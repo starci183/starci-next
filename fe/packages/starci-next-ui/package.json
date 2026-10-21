@@ -1,0 +1,27 @@
+{
+  "name": "@starci-next/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "starci app lint --workspace .",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@heroui/react": "3.2.6",
+    "@starci/grammar": "0.10.0",
+    "@starci/heroicons": "0.3.4",
+    "@xyflow/react": "12.11.6",
+    "next-intl": "4.13.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
+}

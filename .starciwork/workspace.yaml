@@ -1,0 +1,9 @@
+schema: work/workspace@1
+id: starci-next
+project: starci-next
+description: The Work records of starci-next, one StarCi app with its back end in be/ and its front end in fe/.
+repositories:
+  - role: be
+    name: be
+  - role: fe
+    name: fe

@@ -1,0 +1,15 @@
+{
+    admin 127.0.0.1:2019
+}
+
+starci-next.example.invalid {
+    reverse_proxy app:3000
+}
+
+api.starci-next.example.invalid {
+    reverse_proxy core:3001
+}
+
+www.starci-next.example.invalid {
+    reverse_proxy landing:3002
+}
