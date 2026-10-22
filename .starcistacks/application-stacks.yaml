@@ -148,7 +148,6 @@ ci:
 services:
   sonar:
     provider: sonarqube
-    optional: true
     mode: local
     qualityGate: starci-quality
     host: {local: http://127.0.0.1:9000, public: "https://sonar.starci-next.example.invalid"}
@@ -160,7 +159,7 @@ services:
     auth: token
     credentials: []
     projects: [{repository: "starci-next", key: "starci-next"}]
-    ci: {wiring: optional-follow-up, workflow: .github/workflows/ci.yml, token: SONAR_TOKEN, hostVar: SONAR_HOST_URL}
+    ci: {wiring: required, workflow: .github/workflows/ci.yml, token: SONAR_TOKEN, hostVar: SONAR_HOST_URL}
     ownerAction:
       needed: Provision this app's Sonar host and project, then set SONAR_TOKEN with starci app ci secret set and sync SONAR_HOST_URL.
       reason: A fresh app declares its quality service without fabricating credentials or a successful analysis.
@@ -172,7 +171,7 @@ services:
     target: 100
     components: auto
     required: true
-    ci: {wiring: optional-follow-up, workflow: .github/workflows/ci.yml}
+    ci: {wiring: required, workflow: .github/workflows/ci.yml}
     ownerAction: none
   dependabot:
     provider: github
@@ -199,5 +198,5 @@ services:
     host: {public: https://ghcr.io}
     auth: github-token
     projects: [{repository: "starci-next", key: "starci-next"}]
-    ci: {wiring: optional-follow-up}
+    ci: {wiring: required}
     ownerAction: none
