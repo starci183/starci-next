@@ -142,7 +142,7 @@ ci:
     - {name: VPS_SSH_KEY, scope: environment, environment: production, purpose: Deployment SSH key, optional: true}
     - {name: VPS_KNOWN_HOSTS, scope: environment, environment: production, purpose: Pinned deployment SSH host keys, optional: true}
   vars:
-    - {name: SONAR_HOST_URL, scope: repository, value: "https://sonar.starci-next.example.invalid", purpose: Documentation endpoint to replace with this app's public Sonar host, optional: true}
+    - {name: SONAR_HOST_URL, scope: repository, value: "https://sonar.starci.org", purpose: The public endpoint of the host Sonar server that scans release tags}
     - {name: VPS_HOST, scope: environment, environment: production, value: 203.0.113.10, purpose: Documentation deployment address to replace before use, optional: true}
     - {name: VPS_USER, scope: environment, environment: production, value: deploy, purpose: Documentation deployment user to replace before use, optional: true}
 services:
@@ -150,7 +150,7 @@ services:
     provider: sonarqube
     mode: local
     qualityGate: starci-quality
-    host: {local: http://127.0.0.1:9000, public: "https://sonar.starci-next.example.invalid"}
+    host: {local: http://localhost:9010, public: https://sonar.starci.org}
     stack:
       owner: host
       root: .claude/ext/sonar
@@ -161,8 +161,8 @@ services:
     projects: [{repository: "starci-next", key: "starci-next"}]
     ci: {wiring: required, workflow: .github/workflows/ci.yml, token: SONAR_TOKEN, hostVar: SONAR_HOST_URL}
     ownerAction:
-      needed: Provision this app's Sonar host and project, then set SONAR_TOKEN with starci app ci secret set and sync SONAR_HOST_URL.
-      reason: A fresh app declares its quality service without fabricating credentials or a successful analysis.
+      needed: the starci-next project token from sonar.starci.org as the repository secret SONAR_TOKEN (starci app ci secret set SONAR_TOKEN).
+      reason: the token is a credential only the owner can mint on the host Sonar server.
   codecov:
     provider: codecov
     mode: hosted
