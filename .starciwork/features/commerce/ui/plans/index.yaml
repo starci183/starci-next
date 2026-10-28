@@ -1,0 +1,19 @@
+﻿schema: work/ui-screen@1
+id: ui.commerce.plans
+title: Premium plans
+state: todo
+activity: idle
+brand: product brand tokens
+shell: app shell
+route: /premium
+routeParent: app
+surface: Authenticated plan selection
+persona: learner
+ui:
+  - Show monthly Premium 229.000 ₫ and yearly Premium 2.290.000 ₫ (10 months value).
+  - Explain included Premium access, term, renewal behavior, no automatic renewal, and current entitlement end when relevant.
+  - Provide clear plan selection and continue action; show loading, unavailable, and already-Premium states.
+direction: pending
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify plan selection screen.'}

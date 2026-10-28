@@ -1,0 +1,10 @@
+﻿schema: work/implementation@1
+id: impl.commerce.be.payment-rails
+title: Back-end provider payment rails
+state: todo
+activity: idle
+repository: be
+owners: [{role: be, path: core}]
+proves: [contract.commerce.payment-rail, integration.commerce.sepay, integration.commerce.payos, fr.commerce.pay]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track provider rail implementation.'}

@@ -1,0 +1,18 @@
+﻿schema: work/functional-requirement@1
+id: fr.commerce.renew
+title: Renew Premium
+state: todo
+activity: idle
+actors: [learner]
+trigger: Learner with active or expired Premium chooses a new plan.
+mainFlow:
+  - Create a separate purchase for the chosen current offer.
+  - On verified confirmation, extend from premiumUntil if it is in the future; otherwise start from confirmation time.
+  - Apply the plan term once, with no automatic charge.
+exceptionFlows:
+  - Failed, canceled, or unverified payments leave entitlement unchanged.
+  - Duplicate provider events do not extend a second time.
+postconditions: [A verified renewal extends premiumUntil according to the selected plan.]
+composes: [data.commerce.purchase, data.commerce.entitlement, decision.commerce.subscription-policy, contract.commerce.entitlement]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define manual renewal behavior.'}

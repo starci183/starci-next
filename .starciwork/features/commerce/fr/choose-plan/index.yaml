@@ -1,0 +1,17 @@
+﻿schema: work/functional-requirement@1
+id: fr.commerce.choose-plan
+title: Choose a Premium plan
+state: todo
+activity: idle
+actors: [learner]
+trigger: Learner opens the Premium plans screen.
+mainFlow:
+  - Show current server-defined monthly and yearly offers with price, term, and renewal terms.
+  - Learner selects an offer and starts a purchase for the authenticated learner.
+exceptionFlows:
+  - If offers cannot be loaded, explain that plans are temporarily unavailable and provide retry.
+  - If the learner is already Premium, show current expiry and that a new verified purchase extends from that end.
+postconditions: [A pending purchase is created for the selected offer and learner.]
+composes: [br.commerce.premium-subscription, decision.commerce.commercial-offers, ui.commerce.plans, contract.commerce.payment-rail]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define plan selection behavior.'}

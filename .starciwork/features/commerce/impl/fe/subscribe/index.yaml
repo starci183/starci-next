@@ -1,0 +1,10 @@
+﻿schema: work/implementation@1
+id: impl.commerce.fe.subscribe
+title: Front-end Premium subscription flow
+state: todo
+activity: idle
+repository: fe
+owners: [{role: fe, path: app}]
+proves: [ui.commerce.plans, ui.commerce.checkout-result, fr.commerce.choose-plan, fr.commerce.pay, fr.commerce.renew]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track learner subscription screens and flow.'}

@@ -1,0 +1,22 @@
+﻿schema: work/integration@1
+id: integration.commerce.payos
+title: payOS checkout and webhook
+state: todo
+activity: idle
+provider: payOS
+boundary: Server creates a hosted payment link and accepts configured payOS webhook; return URL is display only.
+endpoints:
+  - {purpose: create checkout, method: POST /v2/payment-requests, details: Authenticate with x-client-id and x-api-key; sign request fields with channel checksum key; use unique orderCode and returnUrl/cancelUrl; redirect to returned checkoutUrl.}
+  - {purpose: confirm payment, method: configured merchant webhook, details: Verify webhook checksum/signature with channel checksum key; validate successful payload, orderCode, amount, currency and payment reference before applying purchase.}
+credential: Owner-provisioned payOS Client ID, API Key and channel Checksum Key stored only in server secret configuration.
+sandbox: Use payOS test channel where available; no live verification is claimed without merchant channel and public callback.
+research:
+  readAt: '2026-10-28'
+  sources:
+    - {title: payOS API, url: 'https://payos.vn/docs/api/'}
+    - {title: payOS Payment Webhook, url: 'https://payos.vn/docs/du-lieu-tra-ve/webhook/'}
+    - {title: payOS signature verification, url: 'https://payos.vn/docs/tich-hop-webhook/kiem-tra-du-lieu-voi-signature/'}
+  findings: Current official docs describe POST /v2/payment-requests with x-client-id and x-api-key, a signed request and returned checkoutUrl; webhook carries data plus signature and is verified with HMAC-SHA256 and the channel checksum key. A valid webhook receives a 2xx acknowledgement. Live verification creates a channel payment, receives webhook at configured public HTTPS endpoint, validates signature and purchase match, and observes acknowledgement/retry behavior.
+  prerequisites: Owner creates and verifies a merchant/channel, supplies credentials through server secret management, configures public webhook, return and cancel URLs.
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record current official payOS documentation and verification plan.'}

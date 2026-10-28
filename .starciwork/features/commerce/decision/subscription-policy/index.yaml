@@ -1,0 +1,15 @@
+﻿schema: work/policy-decision@1
+id: decision.commerce.subscription-policy
+title: Premium grant and renewal policy
+state: todo
+activity: idle
+question: When and how does a paid purchase grant or extend Premium?
+options: [Grant only on verified IPN or webhook; grant on browser return, Extend from end or now, Grace or no grace]
+recommendation: Grant only on authenticated provider IPN/webhook after reference, status, amount and currency match; apply each purchase once; extend from future premiumUntil or confirmation time when expired; no grace period.
+recommendationReason: Browser returns are not payment proof; idempotency prevents duplicate extensions and no-grace behavior is explicit.
+outcome: open
+chosen: null
+reason: The requested behavior is specified; owner confirmation for edge handling remains open as Q-W2-5 and calendar arithmetic Q6. Proposed defaults: reconcile a matching late confirmation to its purchased term; use UTC calendar arithmetic clamped to the target month's last day.
+blocks: [entitlement grants, renewals, expiry]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record requested grant policy and open edge-case defaults.'}

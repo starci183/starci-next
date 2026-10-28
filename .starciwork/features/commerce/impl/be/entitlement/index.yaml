@@ -1,0 +1,10 @@
+﻿schema: work/implementation@1
+id: impl.commerce.be.entitlement
+title: Back-end entitlement reader
+state: todo
+activity: idle
+repository: be
+owners: [{role: be, path: core}]
+proves: [data.commerce.entitlement, contract.commerce.entitlement, fr.commerce.expire]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track back-end entitlement implementation.'}

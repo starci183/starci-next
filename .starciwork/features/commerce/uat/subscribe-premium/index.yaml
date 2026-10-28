@@ -1,0 +1,22 @@
+﻿schema: work/uat-flow@1
+id: uat.commerce.subscribe-premium
+title: Subscribe to Premium
+state: todo
+activity: idle
+entry: /premium
+actor: learner
+accounts: accounts.yaml
+environment: _resources/environments/commerce-sandbox
+steps:
+  - {order: 1, actor: learner, action: Open Premium plans, expected: Monthly and yearly prices and terms are visible, checks: [{id: plans, expected: both offers visible}]}
+  - {order: 2, actor: learner, action: Select a plan and start checkout using the provider sandbox, expected: Redirect to provider hosted checkout for matching amount, checks: [{id: checkout, expected: provider checkout opened}]}
+  - {order: 3, actor: provider, action: Deliver valid sandbox IPN or webhook, expected: Purchase is confirmed and entitlement becomes active exactly once, checks: [{id: entitlement, expected: isPremium true and premiumUntil future}]}
+  - {order: 4, actor: learner, action: Return to result screen and refresh entitlement, expected: Server-confirmed Premium status is shown, checks: [{id: result, expected: confirmed status}]}
+failurePaths:
+  - {id: forged_return, step: 3, expected: Browser return without verified callback does not grant Premium.}
+  - {id: duplicate_callback, step: 3, expected: Repeated provider callback does not duplicate entitlement extension.}
+recording: {required: true, covers: plan selection, checkout handoff, and server-confirmed result}
+effects: Creates one sandbox purchase and entitlement for disposable learner.
+cleanup: Remove sandbox purchase and restore learner entitlement after run.
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define subscription acceptance walk.'}

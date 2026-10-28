@@ -1,0 +1,21 @@
+﻿schema: work/data@1
+id: data.commerce.purchase
+title: Premium purchase
+state: todo
+activity: idle
+fields:
+  - {name: purchaseId, type: opaque identifier, required: true}
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: plan, type: monthly or yearly, required: true}
+  - {name: amountVnd, type: integer đồng price snapshot, required: true}
+  - {name: rail, type: sepay or payos, required: true}
+  - {name: providerRef, type: provider order or invoice reference, required: true}
+  - {name: status, type: pending, paid, failed, canceled, required: true}
+  - {name: confirmedAt, type: UTC timestamp, required when paid}
+invariants:
+  - Unique idempotency identity is (rail, providerRef).
+  - Paid confirmation must match purchase, expected amount and currency VND and be verified by the provider-specific mechanism.
+  - Price and plan are immutable snapshots once checkout is created.
+stateMachine: [pending -> paid, pending -> failed, pending -> canceled]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define purchase data and idempotency.'}

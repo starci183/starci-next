@@ -5,3 +5,6 @@ features:
   - id: system-health
     directory: features/system-health
     description: The liveness probe the platform asks before it routes traffic to the app.
+  - id: commerce
+    directory: features/commerce
+    description: Premium monthly and yearly subscriptions through SePay and payOS, with verified payment and learner entitlements.

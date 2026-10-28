@@ -1,0 +1,15 @@
+﻿schema: work/policy-decision@1
+id: decision.commerce.commercial-offers
+title: Premium commercial offers
+state: todo
+activity: idle
+question: What Premium plans and prices can the learner buy?
+options: [Monthly and yearly plans at the approved fixed VND prices, Other pricing]
+recommendation: Monthly 229.000 ₫ and yearly 2.290.000 ₫, with both amounts owned in one server-side offer definition.
+recommendationReason: Prevent client price tampering and keep every checkout and display consistent.
+outcome: open
+chosen: null
+reason: Owner confirmation remains open under Q-W2-2; proposed default is approved display as 229.000 ₫ and 2.290.000 ₫.
+blocks: [server offer publication, checkout]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record one server source of truth and open pricing presentation question.'}

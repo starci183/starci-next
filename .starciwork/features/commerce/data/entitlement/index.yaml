@@ -1,0 +1,16 @@
+﻿schema: work/data@1
+id: data.commerce.entitlement
+title: Premium entitlement
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: premiumUntil, type: UTC timestamp, required: true}
+  - {name: updatedAt, type: UTC timestamp, required: true}
+invariants:
+  - isPremium(learner) is true exactly while premiumUntil is later than current UTC time.
+  - Entitlement changes only after a verified provider event matching a paid purchase.
+  - A paid term extends from a future existing premiumUntil; otherwise it begins at confirmation time.
+stateMachine: [inactive -> active, active -> active by extension, active -> inactive at premiumUntil]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define learner Premium entitlement.'}

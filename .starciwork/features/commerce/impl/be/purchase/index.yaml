@@ -1,0 +1,10 @@
+﻿schema: work/implementation@1
+id: impl.commerce.be.purchase
+title: Back-end Premium purchase lifecycle
+state: todo
+activity: idle
+repository: be
+owners: [{role: be, path: core}]
+proves: [br.commerce.premium-subscription, data.commerce.purchase, decision.commerce.commercial-offers, decision.commerce.subscription-policy, fr.commerce.choose-plan, fr.commerce.pay, fr.commerce.renew]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track purchase and entitlement grant implementation.'}

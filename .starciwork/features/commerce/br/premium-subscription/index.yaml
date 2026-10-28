@@ -1,0 +1,20 @@
+﻿schema: work/business-rule@1
+id: br.commerce.premium-subscription
+title: Premium subscription offers
+state: todo
+activity: idle
+statements:
+  - The server offers Premium monthly for 229.000 ₫ and Premium yearly for 2.290.000 ₫, equal to ten monthly payments.
+  - Buying either plan grants the learner PREMIUM entitlement for its term after verified payment confirmation.
+  - A Premium purchase is an access subscription; it neither sells a course nor creates an enrollment.
+acceptance:
+  - given: A learner chooses either published Premium offer.
+    when: The matching payment is verified by provider IPN or webhook.
+    then: The learner receives the selected Premium term exactly once.
+  - given: A learner buys Premium.
+    when: The purchase completes.
+    then: No course or enrollment is created.
+authorityRefs: [decision.commerce.commercial-offers, decision.commerce.subscription-policy]
+appliesTo: [fr.commerce.choose-plan, fr.commerce.pay, fr.commerce.renew, fr.commerce.expire]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record requested Premium subscription rule.'}

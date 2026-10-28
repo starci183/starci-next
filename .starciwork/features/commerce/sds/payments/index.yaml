@@ -1,0 +1,20 @@
+﻿schema: work/sds-component@1
+id: sds.commerce.payments
+title: Premium payments and entitlement
+state: todo
+activity: idle
+responsibility: Coordinate server-owned offers, pending purchases, provider checkout and verified payment events, idempotent entitlement updates, and learner entitlement reads.
+interfaces:
+  - {name: createPurchase, direction: inbound, accepts: authenticated learner and plan, returns: purchase and checkout destination}
+  - {name: providerCallback, direction: inbound, accepts: provider payload, returns: acknowledged only after safe processing}
+  - {name: entitlementRead, direction: outbound, accepts: learner identity, returns: isPremium and premiumUntil}
+owners: [be]
+stateMachine: [select plan, create pending purchase, create checkout, verify provider event, record paid once, extend entitlement]
+sequence:
+  - Server reads the single commercial offer definition and snapshots amount and term.
+  - Server creates provider checkout and persists provider reference with unique (rail, providerRef).
+  - Provider callback is authenticated and validated against the pending purchase.
+  - One transaction records paid purchase and extends entitlement; duplicate event is a no-op.
+  - Other features consume entitlement through the shared contract.
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Describe logical payment component.'}
