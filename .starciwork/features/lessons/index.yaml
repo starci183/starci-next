@@ -1,0 +1,18 @@
+schema: work/feature@1
+id: lessons
+title: Interactive AI lessons
+purpose: Let learners understand one piece of knowledge by reading the original Academy
+  article and practicing it with an AI coach.
+decisions:
+- Five-step sequence is an open question Q-W1-1.
+- AI credit policy is an open question Q-W1-2; free use gated by Premium is proposed.
+- A shared AI pool routes lesson coaching through @starci/ai-router 0.2.1.
+delivers:
+- Original article at the centre, five AI-coached steps, answer-before-reveal interaction,
+  resume, grounded coaching, and locked preview.
+- Localized lesson content in four languages and a versioned Academy lesson fixture.
+excludes:
+- Changing Academy authoring or commerce entitlement policy.
+openQuestions:
+- 'Q-W1-1: Should each lesson use the proposed five steps?'
+- 'Q-W1-2: Should lesson AI be free with access gated by Premium?'

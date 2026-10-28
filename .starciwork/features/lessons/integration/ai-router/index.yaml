@@ -1,0 +1,41 @@
+schema: work/integration@1
+id: integration.lessons.ai-router
+title: AI router integration
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson boundaries and proof records.
+provider: '@starci/ai-router 0.2.1'
+boundary: One shared AI pool; lesson profile deepseek-4.1-flash with explicitly ordered
+  fallbacks.
+endpoints:
+- Router library interface for lesson coach requests.
+credential:
+  source: custody
+  keysByName:
+  - LESSON_AI_PRIMARY
+  - LESSON_AI_FALLBACK_1
+  secretValuesStored: false
+sandbox: Verify through a non-production provider route.
+research:
+  sources:
+  - '@starci/ai-router 0.2.1 documentation and official documentation for every configured
+    provider are prerequisites for implementation research.'
+  readAt: '2026-10-28'
+  authentication: Resolve named provider key references from custody; secret values
+    are not stored here.
+  limits: Respect the smallest context window across the lesson profile and ordered
+    fallbacks.
+  accountScopeLifecycle: Provider accounts and key lifecycle are owner-controlled.
+  callbackWebhook: No callbacks or webhooks are required for synchronous requests.
+  ownerPrerequisites:
+  - Custody entries for named provider keys.
+  - Provider access to configured models.
+  liveVerificationPlan: Run an authorized sandbox request; verify profile, fallback
+    order, redaction and absence of learner identifiers.
+refs:
+- decision.lessons.ai-pool
+- sds.lessons.grounding

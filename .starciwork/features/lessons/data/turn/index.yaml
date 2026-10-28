@@ -1,0 +1,45 @@
+schema: work/data@1
+id: data.lessons.turn
+title: Lesson turn
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+fields:
+- name: id
+  type: string
+  required: true
+- name: lessonId
+  type: string
+  required: true
+- name: lessonVersion
+  type: string
+  required: true
+- name: stepId
+  type: string
+  required: false
+- name: question
+  type: string
+  required: true
+- name: answer
+  type: string
+  required: false
+- name: reveal
+  type: string
+  required: false
+- name: createdAt
+  type: timestamp
+  required: true
+invariants:
+- A reveal is unavailable until the learner answer is persisted for an answer-step
+  turn.
+- Only lesson content and its code are sent as grounding context.
+- No learner identifier is sent to an AI provider.
+stateMachine:
+- submitted
+- answered
+- unavailable

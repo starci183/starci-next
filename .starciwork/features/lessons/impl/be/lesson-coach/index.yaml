@@ -1,0 +1,22 @@
+schema: work/implementation@1
+id: impl.lessons.be.lesson-coach
+title: Lesson coach
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson screen and implementation proof records.
+repository: be
+owners:
+- role: be
+  path: apps/core
+proves:
+- sds.lessons.coach
+- sds.lessons.grounding
+- contract.lessons.lesson-steps
+refs:
+- sds.lessons.coach
+- sds.lessons.grounding
+- contract.lessons.lesson-steps

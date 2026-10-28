@@ -1,0 +1,24 @@
+schema: work/ui-screen@1
+id: ui.lessons.locked-preview
+title: Locked lesson preview
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson screen and implementation proof records.
+brand: Use app brand tokens.
+shell: Application shell.
+route: /lessons/:lessonId
+routeParent: /lessons
+surface: Premium locked lesson preview
+persona: Learner without required entitlement
+ui:
+- Show title, description, estimated reading time and short article preview.
+- Show locked state and route to entitlement experience.
+- Do not expose full premium body or enable coaching before entitlement is confirmed.
+assets: []
+refs:
+- contract.commerce.entitlement
+- data.lessons.content

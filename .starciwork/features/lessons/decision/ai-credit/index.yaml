@@ -1,0 +1,27 @@
+schema: work/policy-decision@1
+id: decision.lessons.ai-credit
+title: AI credit policy
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+question: Should lesson coaching be free to use and gated by Premium entitlement?
+options:
+- Free with Premium access gate
+- Metered credits
+- Included for all learners
+recommendation: Free with Premium access gate
+recommendationReason: The proposal gives eligible learners a simple access rule while
+  preserving the ability to change the policy after owner decision.
+outcome: open
+chosen: null
+reason: null
+blocks:
+- fr.lessons.ask-lesson
+- sds.lessons.coach
+refs:
+- contract.commerce.entitlement

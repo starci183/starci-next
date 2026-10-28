@@ -1,0 +1,68 @@
+schema: work/uat-flow@1
+id: uat.lessons.interactive-ai-lesson
+title: Interactive AI lesson acceptance walk
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define an acceptance walk for reading, answer-before-reveal, coaching and
+    resume.
+entry: /lessons/academy-http-request-lifecycle
+actor: learner
+accounts:
+  disposable: true
+  accounts:
+  - role: premium learner
+    identity: identity.lessons.premium-learner
+environment: environment.lessons.uat
+steps:
+- order: 1
+  action: Open the lesson in English.
+  expected: Original article is central with five steps and ask panel.
+  checks:
+  - id: article_visible
+    expected: 'true'
+  - id: step_count
+    expected: '5'
+- order: 2
+  action: Request a reveal for step one without an answer.
+  expected: Reveal stays hidden and answer is required.
+  checks:
+  - id: reveal_hidden
+    expected: 'true'
+- order: 3
+  action: Submit an answer, then request coaching.
+  expected: Answer is saved before grounded feedback appears.
+  checks:
+  - id: answer_saved_before_reveal
+    expected: 'true'
+- order: 4
+  action: Leave and reopen the lesson.
+  expected: Saved answer, current step and reading position are restored.
+  checks:
+  - id: progress_restored
+    expected: 'true'
+failurePaths:
+- id: coach_unavailable
+  step: 3
+  expected: Saved answer remains and retry is offered.
+- id: no_entitlement
+  step: 1
+  expected: Locked preview appears without full body or coaching.
+recording:
+  required: true
+  covers: Article, answer-before-reveal, coach feedback and resume.
+effects:
+- Creates lesson turns and progress for disposable account.
+cleanup: Delete disposable learner progress and turns after the walk.
+requiresProof:
+- required: true
+  command: starci uat run
+  note: Run from this flow with a receipted browser walk.
+refs:
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement
+- data.lessons.content
+- data.lessons.turn

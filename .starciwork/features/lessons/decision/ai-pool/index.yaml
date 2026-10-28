@@ -1,0 +1,26 @@
+schema: work/policy-decision@1
+id: decision.lessons.ai-pool
+title: Lesson AI pool
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+question: How should lesson coaching use provider capacity and credentials?
+options:
+- One pool via @starci/ai-router 0.2.1 with lesson profile deepseek-4.1-flash and
+  ordered fallbacks
+recommendation: One shared pool through the router; profile credentials resolve by
+  custody key name.
+recommendationReason: A shared router pool centralizes provider selection, fallback
+  order and named custody references.
+outcome: open
+chosen: null
+reason: null
+blocks:
+- integration.lessons.ai-router
+- sds.lessons.coach
+refs: []

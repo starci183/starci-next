@@ -1,0 +1,29 @@
+schema: work/functional-requirement@1
+id: fr.lessons.read-article
+title: Read a lesson article
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+actors:
+- learner
+trigger: A learner opens an available lesson.
+mainFlow:
+- Load the selected localized lesson content.
+- Show the original article as the main reading surface with the five-step rail and
+  ask panel available.
+- Record reading progress by section.
+exceptionFlows:
+- If the selected translation is unavailable, offer an available language without
+  replacing saved progress.
+- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+postconditions:
+- The learner can read the article and select a step.
+composes:
+- br.lessons.interactive-ai-lesson
+- data.lessons.content
+- data.lessons.turn

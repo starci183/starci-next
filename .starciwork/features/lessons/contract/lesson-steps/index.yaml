@@ -1,0 +1,29 @@
+schema: work/contract@1
+id: contract.lessons.lesson-steps
+title: Lesson steps contract
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson boundaries and proof records.
+owner: lessons
+between:
+- lessons backend
+- lessons frontend
+surface:
+- Read localized lesson and version.
+- Save and resume progress.
+- Submit an answer before requesting reveal.
+- Ask a grounded lesson question.
+guarantees:
+- Answer persistence precedes reveal generation.
+- Provider requests contain no learner identifier.
+consumerObligations:
+- Check contract.commerce.entitlement before premium content or coaching.
+- Retain submitted answer when coach is unavailable.
+refs:
+- contract.commerce.entitlement
+- data.lessons.content
+- data.lessons.turn

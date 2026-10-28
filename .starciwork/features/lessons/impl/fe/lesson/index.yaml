@@ -1,0 +1,28 @@
+schema: work/implementation@1
+id: impl.lessons.fe.lesson
+title: Lesson experience
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson screen and implementation proof records.
+repository: fe
+owners:
+- role: fe
+  path: apps/app
+proves:
+- ui.lessons.lesson
+- ui.lessons.locked-preview
+- fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
+refs:
+- ui.lessons.lesson
+- ui.lessons.locked-preview
+- fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume

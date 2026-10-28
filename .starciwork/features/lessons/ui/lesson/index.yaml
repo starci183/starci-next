@@ -1,0 +1,27 @@
+schema: work/ui-screen@1
+id: ui.lessons.lesson
+title: Lesson screen
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson screen and implementation proof records.
+brand: Use app brand tokens.
+shell: Application shell.
+route: /lessons/:lessonId
+routeParent: /lessons
+surface: Interactive article lesson
+persona: Learner
+ui:
+- Keep original article central and largest.
+- Place five-step rail beside article with current, completed and locked states.
+- Keep ask panel available alongside reading and coaching.
+- Require submitted answer before step reveal.
+- Show progress and resume affordance.
+assets: []
+refs:
+- br.lessons.interactive-ai-lesson
+- fr.lessons.read-article
+- contract.lessons.lesson-steps

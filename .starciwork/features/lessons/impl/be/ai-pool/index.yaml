@@ -1,0 +1,20 @@
+schema: work/implementation@1
+id: impl.lessons.be.ai-pool
+title: Lesson AI pool
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson screen and implementation proof records.
+repository: be
+owners:
+- role: be
+  path: apps/core
+proves:
+- decision.lessons.ai-pool
+- integration.lessons.ai-router
+refs:
+- decision.lessons.ai-pool
+- integration.lessons.ai-router

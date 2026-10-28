@@ -1,0 +1,29 @@
+schema: work/functional-requirement@1
+id: fr.lessons.ask-lesson
+title: Ask the lesson coach
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+actors:
+- learner
+trigger: A learner submits a question from the lesson ask panel.
+mainFlow:
+- Provide only the lesson body and its code as grounding context.
+- Route the question through the lesson AI profile and ordered fallbacks.
+- Return a grounded answer or a clear unavailable response.
+exceptionFlows:
+- If the selected translation is unavailable, offer an available language without
+  replacing saved progress.
+- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+postconditions:
+- The answer is associated with the lesson turn and does not expose a learner identifier
+  to a provider.
+composes:
+- br.lessons.interactive-ai-lesson
+- data.lessons.content
+- data.lessons.turn

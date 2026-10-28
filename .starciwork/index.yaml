@@ -1,7 +1,12 @@
 schema: work/catalog@1
-id: "starci-next"
+id: starci-next
 description: The application's product feature catalog.
 features:
-  - id: system-health
-    directory: features/system-health
-    description: The liveness probe the platform asks before it routes traffic to the app.
+- id: system-health
+  directory: features/system-health
+  description: The liveness probe the platform asks before it routes traffic to the
+    app.
+- id: lessons
+  directory: features/lessons
+  description: Read original Academy articles and learn their knowledge through five
+    AI-coached steps.

@@ -1,0 +1,27 @@
+schema: work/business-rule@1
+id: br.lessons.interactive-ai-lesson
+title: Interactive AI lesson
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+statements:
+- The original Academy article is the centre of a lesson and remains readable as the
+  learner works.
+- A lesson presents five AI-coached steps that help the learner apply one piece of
+  knowledge from that article.
+- For each step, the learner submits an answer before the coach reveals feedback or
+  a suggested answer.
+acceptance:
+- The article remains available beside the step rail and ask panel.
+- The coach grounds each response in the lesson body and its code only.
+- A step answer is recorded before its reveal is returned.
+authorityRefs: []
+appliesTo:
+- lesson reading
+- step coaching
+- resume

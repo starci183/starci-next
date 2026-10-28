@@ -1,0 +1,35 @@
+schema: work/sds-component@1
+id: sds.lessons.coach
+title: Lesson coach
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+responsibility: Coordinate answer-before-reveal coaching for lesson steps and open-ended
+  lesson questions.
+interfaces:
+- Accept a lesson version, step or question, learner answer when applicable, and lesson-scoped
+  context.
+- Return grounded feedback or a typed unavailable result.
+owners:
+- be
+stateMachine:
+- validate access
+- persist learner answer
+- route request
+- persist reveal or unavailable result
+sequence:
+- Check lesson access using contract.commerce.entitlement.
+- Persist submitted answer before generating its reveal.
+- Pass lesson content and its code only to the lesson profile.
+- Return a response without learner identifiers.
+refs:
+- decision.lessons.ai-credit
+- decision.lessons.ai-pool
+- sds.lessons.grounding
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement

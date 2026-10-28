@@ -1,0 +1,52 @@
+schema: work/data@1
+id: data.lessons.content
+title: Lesson content
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+fields:
+- name: id
+  type: string
+  required: true
+- name: version
+  type: string
+  required: true
+- name: title
+  type: localized string
+  required: true
+- name: description
+  type: localized string
+  required: true
+- name: minutesRead
+  type: integer
+  required: true
+- name: isPremium
+  type: boolean
+  required: true
+- name: verified
+  type: boolean
+  required: true
+- name: body
+  type: localized ordered sections by heading
+  required: true
+- name: languages
+  type: object
+  required: true
+  description: Exactly four language variants for the fixture.
+- name: challenges
+  type: ordered challenge array with prompt and rubric
+  required: true
+invariants:
+- One content item represents one piece of knowledge.
+- Every language variant preserves the same concept, section order and challenge rubric.
+- A challenge rubric defines observable criteria for evaluating an answer.
+- Premium availability is checked through the commerce entitlement contract.
+stateMachine:
+- draft
+- published
+- retired

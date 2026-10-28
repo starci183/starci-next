@@ -1,0 +1,24 @@
+schema: work/sds-component@1
+id: sds.lessons.grounding
+title: Lesson grounding
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define lesson boundaries and proof records.
+responsibility: Build the smallest sufficient context from lesson body and code.
+interfaces:
+- 'Input: lesson sections and selected profile context limit.'
+- 'Output: section-bounded context or context-limit result.'
+owners:
+- be
+sequence:
+- Include lesson body and its code only.
+- Start with the relevant section; for large content, add sections in order only while
+  within the smallest profile context window.
+- Never include learner identifiers or unrelated history.
+refs:
+- decision.lessons.ai-pool
+- data.lessons.content

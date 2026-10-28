@@ -1,0 +1,25 @@
+schema: work/policy-decision@1
+id: decision.lessons.five-steps
+title: Five coached steps
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+question: Should every interactive lesson use the proposed five-step sequence?
+options:
+- Five fixed steps
+- Variable steps per lesson
+recommendation: Five fixed steps
+recommendationReason: A predictable sequence makes it clear how one piece of knowledge
+  is practiced.
+outcome: open
+chosen: null
+reason: null
+blocks:
+- br.lessons.interactive-ai-lesson
+- fr.lessons.answer-step
+refs: []

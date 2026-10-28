@@ -1,0 +1,28 @@
+schema: work/functional-requirement@1
+id: fr.lessons.answer-step
+title: Answer a coached step
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: created
+  at: '2026-10-28'
+  reason: Define the lessons feature and its acceptance, design, implementation and
+    fixture records.
+actors:
+- learner
+trigger: A learner selects a step and submits an answer.
+mainFlow:
+- Show the step prompt and accept a learner answer.
+- Persist the submitted answer before requesting a coach reveal.
+- Show grounded feedback and allow the learner to continue or revise.
+exceptionFlows:
+- If the selected translation is unavailable, offer an available language without
+  replacing saved progress.
+- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+postconditions:
+- The submitted answer and reveal are associated with the lesson turn.
+composes:
+- br.lessons.interactive-ai-lesson
+- data.lessons.content
+- data.lessons.turn
