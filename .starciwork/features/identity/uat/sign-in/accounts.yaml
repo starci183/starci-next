@@ -2,6 +2,6 @@
 disposable: true
 accounts:
   - role: learner
-    identity: identity.learner
+    identity: identity.identity.learner-test-account
   - role: invalid-credentials
-    identity: identity.invalid-credentials
+    identity: identity.identity.invalid-credentials

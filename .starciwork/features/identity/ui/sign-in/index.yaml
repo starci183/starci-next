@@ -3,7 +3,7 @@ id: ui.identity.sign-in
 title: Sign-in screen
 state: todo
 activity: idle
-brand: null
+brand: brand
 shell: null
 route: /sign-in
 routeParent: null
@@ -13,14 +13,15 @@ ui:
   states:
     - idle: The learner can start sign-in.
     - redirecting: Sign-in is starting and repeated submissions are prevented.
-    - failed: A clear recoverable error is shown and sign-in can be retried.
-    - signed-in: The authenticated learner and learner role are recognized and the learner can continue.
+    - failed: Invalid credentials show a clear recoverable error and sign-in can be retried.
+    - signed-in: A valid authenticated identity without an operator role is recognized and the learner can continue.
   accessibility: Use a labelled sign-in action, announce status and errors, and preserve keyboard operation.
 direction: null
 assets: []
 requiresProof:
   - required: true
     command: starci task verify <task-id>
-    note: Verify the screen route and its states.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify the sign-in route and interface states.}
-extensions: {}
+    note: Verify the screen route and its states after implementation and owner-approved drawing.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Reference the owner-ruled brand and correct the learner identity assumption; keep drawing unapproved.}
+extensions:
+  brandTokenGaps: The imported brand's legacy --starci-core-* anatomy knob names and --starci-surface-tertiary name are not asserted as current Core contract tokens. Bind only roles and family knobs declared by the current Core DNA/contract; resolve any absent role in the grammar package before implementation, without guessing a token or weakening a gate.

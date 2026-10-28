@@ -1,0 +1,10 @@
+﻿schema: work/resource@1
+id: identity.identity.learner-test-account
+title: Disposable learner test account
+state: todo
+activity: idle
+provider: Keycloak realm starci-next-identity
+custody: Unresolved owner prerequisite Q-A1; owner must name the learner test-account custody. Credential material is held outside Work and is not recorded here.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Identify the disposable learner account without inventing custody or storing credentials.}
+extensions:
+  proof: Use only after owner supplies issuer, client choice, and named account custody under Q-A1.

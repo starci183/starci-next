@@ -3,38 +3,67 @@ id: uat.identity.sign-in
 title: Learner sign-in and sign-out walk
 state: todo
 activity: idle
-entry: /sign-in
+entry: unresolved application origin + /sign-in
 actor: learner
 accounts: accounts.yaml
-environment: null
+environment: environment.identity.development
 steps:
   - order: 1
-    action: Open /sign-in.
+    action: Open the declared application origin at /sign-in; origin is unresolved, so do not run until Q-A1 and the app origin are supplied.
     expected: The sign-in screen appears in idle state.
+    checks:
+      - id: sign-in-screen
+        expected: Visible sign-in action and idle status.
   - order: 2
-    action: Start sign-in and follow the browser hand-off to Keycloak.
-    expected: The browser reaches Keycloak realm starci-next-identity using OIDC authorization code flow with PKCE.
+    action: Start sign-in and follow the browser hand-off to the owner-provisioned Keycloak realm.
+    expected: The browser reaches the owner-supplied issuer for realm starci-next-identity using OIDC authorization code flow with PKCE S256.
+    checks:
+      - id: keycloak-issuer
+        expected: Actual browser origin equals the Q-A1 owner-supplied issuer.
+      - id: pkce-flow
+        expected: Authorization request uses S256 PKCE and registered client callback.
   - order: 3
-    action: Authenticate as the learner at Keycloak and return to the application.
-    expected: The application shows the learner signed in with the learner role.
+    action: Authenticate with the disposable learner account after owner supplies its custody name.
+    expected: The application recognizes an authenticated identity without requiring a learner role and establishes a signed-in session.
+    checks:
+      - id: learner-authenticated
+        expected: Authenticated identity is present; no operator role is required.
+      - id: learner-session
+        expected: Application session is established.
   - order: 4
-    action: Reload the signed-in application.
-    expected: The learner session remains signed in and the learner role remains available.
+    action: Reload the signed-in application and read its session-backed identity endpoint.
+    expected: The authenticated learner identity remains available after reload.
+    checks:
+      - id: session-restored
+        expected: Session-backed identity read remains authenticated after reload.
   - order: 5
     action: Sign out.
-    expected: The application and provider session end and the learner returns to a signed-out state.
+    expected: The local application session ends and the configured provider logout completes.
+    checks:
+      - id: local-session-ended
+        expected: Session-backed identity read is unauthenticated after sign-out.
+      - id: provider-session-ended
+        expected: Provider logout completes according to the provisioned client configuration.
 failurePaths:
-  - id: sign-in-rejected
+  - id: invalid-credentials
     step: 3
-    expected: Invalid credentials or a missing learner role leaves the application signed out with a recoverable error.
+    expected: Invalid credentials leave the application signed out and show a clear recoverable error.
+    checks:
+      - id: invalid-credentials-refused
+        expected: Authentication is refused and no application session is created.
 recording:
   required: true
-  covers: The five ordered steps and the visible signed-in and signed-out states.
+  covers: The five ordered steps and the visible signed-in and signed-out states; capture only after Q-A1 is resolved.
 effects: No persistent application data is changed; the provider session is ended by sign-out.
-cleanup: Sign out and close the disposable browser context.
+cleanup: Sign out and close the disposable browser context; do not retain credentials or session artifacts.
+blockedBy:
+  - Q-A1
+blockers:
+  - Q-A1 OPEN: owner must provide the app development Keycloak issuer, decide whether to reuse confidential client starci-next-identity-lane or register a separate client, and name learner test-account custody. keycloak-client-secret remains in sibling documented SOPS custody only; no proof or acceptance is done.
 requiresProof:
   - required: true
     command: starci uat run
-    note: Run the browser walk against a provisioned non-production Keycloak realm.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the learner identity acceptance walk.}
-extensions: {}
+    note: Walk only after Q-A1 and the application origin are resolved; current record defines checks but no live proof has run.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Link the development resource and define learner-only acceptance checks while preserving open prerequisites.}
+extensions:
+  sessionContract: The intended frontend check reads a backend session-backed identity response after callback and reload; exact route, payload, cookie attributes/lifetime and logout response remain unknown until the backend implementation is confirmed.
