@@ -1,0 +1,18 @@
+﻿schema: work/implementation@1
+id: impl.identity.be.sign-in
+title: Back-end identity sign-in implementation
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: module
+    path: be/src/modules/domain/identity
+  - role: feature
+    path: be/src/features/api/identity
+proves: [br.identity.sign-in, fr.identity.sign-in, fr.identity.sign-out, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify implementation against its identity records.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Assign the back-end identity implementation owners.}
+extensions: {}

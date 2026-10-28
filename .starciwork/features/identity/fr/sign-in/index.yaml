@@ -1,0 +1,24 @@
+﻿schema: work/functional-requirement@1
+id: fr.identity.sign-in
+title: Sign in with Keycloak
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /sign-in and chooses sign in.
+mainFlow:
+  - The application creates an OIDC authorization request using the authorization code flow with PKCE and redirects the browser to Keycloak in realm starci-next-identity.
+  - Keycloak authenticates the learner and redirects to the registered callback with an authorization code.
+  - The application validates the callback, completes the code exchange, checks the learner role, and establishes the application session.
+  - The application returns the learner to the signed-in experience.
+exceptionFlows:
+  - If the learner cancels, Keycloak is unavailable, the callback is invalid, code exchange fails, or the learner role is absent, the application remains signed out and shows a recoverable error.
+postconditions:
+  - A successful flow has an authenticated learner session.
+  - A failed flow has no authenticated learner session.
+composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify the declared sign-in behavior.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify observable learner sign-in behavior.}
+extensions: {}

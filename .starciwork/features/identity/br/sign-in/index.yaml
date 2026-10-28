@@ -1,0 +1,19 @@
+﻿schema: work/business-rule@1
+id: br.identity.sign-in
+title: Identity is established only by a valid learner session
+state: todo
+activity: idle
+statements:
+  - The application grants signed-in access only after validating the identity provider response and establishing a session for a learner.
+  - A rejected or incomplete identity provider response leaves the learner signed out and displays a recoverable sign-in error.
+acceptance:
+  - Given a learner without an application session, when sign-in completes successfully and the learner role is present, then the application establishes a learner session.
+  - Given sign-in fails or the returned identity lacks the learner role, when the callback is processed, then the application does not establish an authenticated learner session.
+authorityRefs: []
+appliesTo: [fr.identity.sign-in, fr.identity.sign-out]
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify the identity records and their implementation task contracts.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the sign-in authorization rule.}
+extensions: {}

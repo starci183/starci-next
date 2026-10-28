@@ -2,6 +2,9 @@ schema: work/catalog@1
 id: "starci-next"
 description: The application's product feature catalog.
 features:
+  - id: identity
+    directory: features/identity
+    description: Sign-in and sign-out for learners through Keycloak.
   - id: system-health
     directory: features/system-health
     description: The liveness probe the platform asks before it routes traffic to the app.

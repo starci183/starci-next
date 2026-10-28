@@ -1,0 +1,40 @@
+﻿schema: work/uat-flow@1
+id: uat.identity.sign-in
+title: Learner sign-in and sign-out walk
+state: todo
+activity: idle
+entry: /sign-in
+actor: learner
+accounts: accounts.yaml
+environment: null
+steps:
+  - order: 1
+    action: Open /sign-in.
+    expected: The sign-in screen appears in idle state.
+  - order: 2
+    action: Start sign-in and follow the browser hand-off to Keycloak.
+    expected: The browser reaches Keycloak realm starci-next-identity using OIDC authorization code flow with PKCE.
+  - order: 3
+    action: Authenticate as the learner at Keycloak and return to the application.
+    expected: The application shows the learner signed in with the learner role.
+  - order: 4
+    action: Reload the signed-in application.
+    expected: The learner session remains signed in and the learner role remains available.
+  - order: 5
+    action: Sign out.
+    expected: The application and provider session end and the learner returns to a signed-out state.
+failurePaths:
+  - id: sign-in-rejected
+    step: 3
+    expected: Invalid credentials or a missing learner role leaves the application signed out with a recoverable error.
+recording:
+  required: true
+  covers: The five ordered steps and the visible signed-in and signed-out states.
+effects: No persistent application data is changed; the provider session is ended by sign-out.
+cleanup: Sign out and close the disposable browser context.
+requiresProof:
+  - required: true
+    command: starci uat run
+    note: Run the browser walk against a provisioned non-production Keycloak realm.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the learner identity acceptance walk.}
+extensions: {}

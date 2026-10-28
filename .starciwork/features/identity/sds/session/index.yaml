@@ -1,0 +1,36 @@
+﻿schema: work/sds-component@1
+id: sds.identity.session
+title: Learner session component
+state: todo
+activity: idle
+responsibility: Establish, expose, restore, and end the authenticated learner session after validating identity provider results and learner role.
+interfaces:
+  - name: sign-in
+    direction: input
+    description: Starts an OIDC authorization code request with PKCE and handles its callback.
+  - name: session
+    direction: output
+    description: Exposes authenticated learner identity and signed-in status to application features.
+  - name: sign-out
+    direction: input
+    description: Ends local session and initiates provider logout.
+owners: []
+stateMachine:
+  states: [signed-out, redirecting, callback-validation, signed-in, failed]
+  transitions:
+    - signed-out -> redirecting: learner starts sign-in
+    - redirecting -> callback-validation: provider returns authorization response
+    - callback-validation -> signed-in: response and learner role validate
+    - callback-validation -> failed: response invalid, exchange fails, or learner role absent
+    - signed-in -> signed-out: learner signs out
+sequence:
+  - Start authorization with a fresh PKCE verifier and state.
+  - Validate callback state and exchange the code through the configured OIDC client.
+  - Validate issuer, audience, signature, expiry, and learner role before establishing session.
+  - Restore the session on reload and clear local session on sign-out.
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify session lifecycle and callback validation.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Describe the logical learner session component.}
+extensions: {}

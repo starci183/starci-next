@@ -1,0 +1,25 @@
+﻿schema: work/contract@1
+id: contract.identity.session-contract
+title: Learner session contract
+state: todo
+activity: idle
+owner: identity
+between: [identity, authenticated application features]
+surface:
+  - name: current-session
+    description: Provides authenticated status and validated learner identity with learner role.
+  - name: end-session
+    description: Ends the local session and initiates provider logout.
+guarantees:
+  - Authenticated status is true only for a validated, unexpired learner identity.
+  - Reload restores the session while it remains valid.
+  - Sign-out clears local authenticated status.
+consumerObligations:
+  - Treat unauthenticated status as signed out and route the learner to sign-in when required.
+  - Enforce authorization for feature-specific permissions independently of authentication.
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify the session interface and its guarantees.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the session contract for consumers.}
+extensions: {}

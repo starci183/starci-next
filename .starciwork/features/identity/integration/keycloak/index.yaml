@@ -1,0 +1,38 @@
+﻿schema: work/integration@1
+id: integration.identity.keycloak
+title: Keycloak identity provider
+state: todo
+activity: idle
+provider: Keycloak
+boundary: The application delegates learner authentication to the configured Keycloak OIDC realm and validates the returned identity before creating a local session.
+endpoints:
+  - authorization: /realms/starci-next-identity/protocol/openid-connect/auth
+  - token: /realms/starci-next-identity/protocol/openid-connect/token
+  - userInfo: /realms/starci-next-identity/protocol/openid-connect/userinfo
+  - logout: /realms/starci-next-identity/protocol/openid-connect/logout
+credential: The OIDC client registration, confidential client credentials if required by the server-side exchange, and test user credentials are provisioned and held in deployment secret custody; no secret value is recorded here.
+sandbox: A non-production Keycloak realm named starci-next-identity with a registered client, exact callback and post-logout redirect URIs, and disposable learner accounts. The realm origin and client configuration are deployment prerequisites.
+research:
+  readAt: '2026-10-28'
+  sources:
+    - https://www.keycloak.org/securing-apps/oidc-layers
+    - https://www.keycloak.org/docs/latest/server_admin/#_oidc
+  findings:
+    - Keycloak documents the authorization code flow as a browser redirect to its authorization endpoint followed by a short-lived code returned to the registered callback and exchanged at the token endpoint.
+    - Keycloak exposes realm-relative authorization, token, userinfo, and logout endpoints; the realm name is part of each endpoint.
+    - PKCE uses a code challenge in the authorization request and a code verifier during code exchange; use S256.
+    - Browser clients require exact allowed redirect URI configuration; provider realm, client registration, callback and post-logout URIs must be provisioned for each environment.
+  lifecycleLimits:
+    - Authorization codes are short-lived and single-use; exchange promptly and reject replay or mismatched state.
+    - Validate issuer, audience, signature, expiry, nonce when used, and role claims before creating a session.
+    - User logout and token/session revocation behavior depends on the configured Keycloak client and realm; verify against the actual realm.
+  prerequisites:
+    - Owner supplies the deployed realm origin and registered client details through secret/configuration custody.
+    - Owner provisions the learner role mapping, callback URI, and post-logout URI in the realm.
+  liveVerification: In a provisioned non-production realm, complete code flow with PKCE S256, verify learner role and callback validation, reload the application session, and confirm logout at both application and provider.
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify integration design and record completeness; live provider verification is required before release.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Record the Keycloak OIDC boundary from current official documentation.}
+extensions: {}

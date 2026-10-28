@@ -1,0 +1,13 @@
+﻿schema: work/feature@1
+id: identity
+title: Identity
+purpose: Learners sign in and out through Keycloak and retain their authenticated session across reloads.
+decisions:
+  - Keycloak realm: starci-next-identity.
+  - Sign-in uses OpenID Connect authorization code flow with PKCE.
+delivers:
+  - Learner sign-in, session restoration, and sign-out.
+excludes:
+  - Account registration and password recovery.
+openQuestions:
+  - The deployed Keycloak origin, client identifier, callback URI, logout redirect URI, and learner role claim mapping are deployment configuration prerequisites.

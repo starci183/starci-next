@@ -1,0 +1,21 @@
+﻿schema: work/functional-requirement@1
+id: fr.identity.sign-out
+title: Sign out
+state: todo
+activity: idle
+actors: [learner]
+trigger: The signed-in learner chooses sign out.
+mainFlow:
+  - The application ends its local session and redirects through the Keycloak logout endpoint when the provider session is available.
+  - The browser returns to the configured post-logout location in a signed-out state.
+exceptionFlows:
+  - If provider logout is unavailable, the application still ends its local session and reports that provider sign-out could not be confirmed.
+postconditions:
+  - The application no longer treats the learner as signed in.
+composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify local and provider sign-out behavior.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify observable learner sign-out behavior.}
+extensions: {}

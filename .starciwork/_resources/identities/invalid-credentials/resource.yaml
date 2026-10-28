@@ -1,0 +1,7 @@
+﻿schema: work/resource@1
+id: identity.invalid-credentials
+title: Disposable invalid-credentials test identity
+kind: identity
+provider: Keycloak
+custody: No credential value is recorded; the non-production test setup supplies an invalid or disabled identity outcome.
+name: starci-invalid-credentials

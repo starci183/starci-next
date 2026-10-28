@@ -1,0 +1,26 @@
+﻿schema: work/ui-screen@1
+id: ui.identity.sign-in
+title: Sign-in screen
+state: todo
+activity: idle
+brand: null
+shell: null
+route: /sign-in
+routeParent: null
+surface: Sign-in form and status feedback for the learner.
+persona: learner
+ui:
+  states:
+    - idle: The learner can start sign-in.
+    - redirecting: Sign-in is starting and repeated submissions are prevented.
+    - failed: A clear recoverable error is shown and sign-in can be retried.
+    - signed-in: The authenticated learner and learner role are recognized and the learner can continue.
+  accessibility: Use a labelled sign-in action, announce status and errors, and preserve keyboard operation.
+direction: null
+assets: []
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify the screen route and its states.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify the sign-in route and interface states.}
+extensions: {}
