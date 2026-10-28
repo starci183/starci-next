@@ -6,7 +6,13 @@ import { CONFIG_ERROR_KINDS } from "@modules/platform/config"
 import { CqrsModule } from "@modules/platform/cqrs"
 import { DATABASE_ERROR_KINDS, DatabaseModule } from "@modules/platform/database"
 import { ERRORS_MESSAGES, ErrorsModule } from "@modules/platform/errors"
-import { HTTP_SECURITY_ERROR_KINDS, HTTP_SECURITY_MESSAGES, HttpSecurityModule } from "@modules/platform/http-security"
+import {
+    HTTP_SECURITY_ERROR_KINDS,
+    HTTP_SECURITY_MESSAGES,
+    HttpSecurityModule,
+    httpSecurityEntities,
+    httpSecurityMigrations,
+} from "@modules/platform/http-security"
 import { I18nModule } from "@modules/platform/i18n"
 import { HTTP_ERROR_KINDS, HTTP_MESSAGES, HttpModule } from "@modules/platform/http"
 import { LoggingModule } from "@modules/platform/logging"
@@ -42,6 +48,12 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     HttpSecurityModule.register({ isGlobal: true, ...options.httpSecurity }),
     DatabaseModule.register({
         isGlobal: true,
-        connections: [{ ...options.database, entities: noteEntities, migrations: noteMigrations }],
+        connections: [
+            {
+                ...options.database,
+                entities: [...httpSecurityEntities, ...noteEntities],
+                migrations: [...httpSecurityMigrations, ...noteMigrations],
+            },
+        ],
     }),
 ]
