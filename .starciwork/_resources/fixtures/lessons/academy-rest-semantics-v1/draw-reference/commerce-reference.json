@@ -1,0 +1,68 @@
+{
+  "schema": "lesson-draw-commerce-reference@1",
+  "sourcePaths": [
+    "D:/.claude/.runtime/projects/starci-next-app-cff4885ec1/worktrees/subscription-premium/.starciwork/features/commerce/contract/entitlement/index.yaml",
+    "D:/.claude/.runtime/projects/starci-next-app-cff4885ec1/worktrees/subscription-premium/.starciwork/features/commerce/ui/plans/index.yaml"
+  ],
+  "sources": [
+    {
+      "absolutePath": "D:/.claude/.runtime/projects/starci-next-app-cff4885ec1/worktrees/subscription-premium/.starciwork/features/commerce/contract/entitlement/index.yaml",
+      "gitRevision": "a8225daf7c7744119c48055d74563f71a12a8abe",
+      "sha256": "802111fb2a1fc59e435b166b2b14f32cc79ecc4a1a2db3eaeae16f5ce8ba3b9d",
+      "bytes": 1106,
+      "committedFileSha256": "802111fb2a1fc59e435b166b2b14f32cc79ecc4a1a2db3eaeae16f5ce8ba3b9d",
+      "matchesCommittedBytes": true,
+      "matchesCommitAfterCrLfNormalization": true,
+      "sourceDirtyPaths": [],
+      "text": "schema: work/contract@1\nid: contract.commerce.entitlement\ntitle: Premium entitlement contract\nstate: todo\nactivity: idle\nowner: be\nbetween:\n  - commerce server\n  - other features\nsurface:\n  - isPremium(learner) returns true only when premiumUntil is later than current\n    UTC time.\n  - premiumUntil(learner) returns the stored UTC entitlement end or null when no\n    entitlement exists.\nguarantees:\n  - Other features can read current Premium status without coupling to payment\n    providers\n  - Expired entitlement is inactive with no grace period\n  - An active renewal extends from the current future entitlement end as\n    proposed in Q-W2-5.\nconsumerObligations:\n  - Pass the authenticated learner identity\n  - enforce the returned status at the feature boundary\nrefs:\n  - data.commerce.entitlement\nrequiresProof:\n  - required: true\n    command: npm --prefix be test -- --runInBand\n    note: Scoped entitlement contract tests; remains todo until green.\nchange:\n  rev: 2\n  kind: revised\n  at: 2026-10-28\n  reason: Restore approved Premium questions, proof obligations and repository\n    module owners.\n"
+    },
+    {
+      "absolutePath": "D:/.claude/.runtime/projects/starci-next-app-cff4885ec1/worktrees/subscription-premium/.starciwork/features/commerce/ui/plans/index.yaml",
+      "gitRevision": "a8225daf7c7744119c48055d74563f71a12a8abe",
+      "sha256": "f22c302c4ea852c97534db82fdd03ea3527d402c22dc09cbe0d7c3c837a87b5c",
+      "bytes": 700,
+      "committedFileSha256": "085125090a71d1cf8f192b1c500560e28d92bffcd61a3cd87aa729e49c092037",
+      "matchesCommittedBytes": false,
+      "matchesCommitAfterCrLfNormalization": true,
+      "sourceDirtyPaths": [],
+      "text": "﻿schema: work/ui-screen@1\nid: ui.commerce.plans\ntitle: Premium plans\nstate: todo\nactivity: idle\nbrand: product brand tokens\nshell: app shell\nroute: /premium\nrouteParent: app\nsurface: Authenticated plan selection\npersona: learner\nui:\n  - Show monthly Premium 229.000 ₫ and yearly Premium 2.290.000 ₫ (10 months value).\n  - Explain included Premium access, term, renewal behavior, no automatic renewal, and current entitlement end when relevant.\n  - Provide clear plan selection and continue action; show loading, unavailable, and already-Premium states.\ndirection: pending\nassets: []\nrequiresProof: []\nchange: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify plan selection screen.'}\r\n"
+    }
+  ],
+  "entitlementContract": {
+    "id": "contract.commerce.entitlement",
+    "text": "schema: work/contract@1\nid: contract.commerce.entitlement\ntitle: Premium entitlement contract\nstate: todo\nactivity: idle\nowner: be\nbetween:\n  - commerce server\n  - other features\nsurface:\n  - isPremium(learner) returns true only when premiumUntil is later than current\n    UTC time.\n  - premiumUntil(learner) returns the stored UTC entitlement end or null when no\n    entitlement exists.\nguarantees:\n  - Other features can read current Premium status without coupling to payment\n    providers\n  - Expired entitlement is inactive with no grace period\n  - An active renewal extends from the current future entitlement end as\n    proposed in Q-W2-5.\nconsumerObligations:\n  - Pass the authenticated learner identity\n  - enforce the returned status at the feature boundary\nrefs:\n  - data.commerce.entitlement\nrequiresProof:\n  - required: true\n    command: npm --prefix be test -- --runInBand\n    note: Scoped entitlement contract tests; remains todo until green.\nchange:\n  rev: 2\n  kind: revised\n  at: 2026-10-28\n  reason: Restore approved Premium questions, proof obligations and repository\n    module owners.\n",
+    "state": "todo",
+    "activity": "idle",
+    "surface": [
+      "isPremium(learner) returns true only when premiumUntil is later than current UTC time.",
+      "premiumUntil(learner) returns the stored UTC entitlement end or null when no entitlement exists."
+    ],
+    "surfaceText": "surface:\n  - isPremium(learner) returns true only when premiumUntil is later than current\n    UTC time.\n  - premiumUntil(learner) returns the stored UTC entitlement end or null when no\n    entitlement exists.\n",
+    "guarantees": [
+      "Other features can read current Premium status without coupling to payment providers",
+      "Expired entitlement is inactive with no grace period",
+      "An active renewal extends from the current future entitlement end as proposed in Q-W2-5."
+    ],
+    "guaranteesText": "guarantees:\n  - Other features can read current Premium status without coupling to payment\n    providers\n  - Expired entitlement is inactive with no grace period\n  - An active renewal extends from the current future entitlement end as\n    proposed in Q-W2-5.\n",
+    "consumerObligations": [
+      "Pass the authenticated learner identity",
+      "enforce the returned status at the feature boundary"
+    ],
+    "requiresProofText": "requiresProof:\n  - required: true\n    command: npm --prefix be test -- --runInBand\n    note: Scoped entitlement contract tests; remains todo until green.\n"
+  },
+  "plansRoute": {
+    "id": "ui.commerce.plans",
+    "route": "/premium",
+    "text": "﻿schema: work/ui-screen@1\nid: ui.commerce.plans\ntitle: Premium plans\nstate: todo\nactivity: idle\nbrand: product brand tokens\nshell: app shell\nroute: /premium\nrouteParent: app\nsurface: Authenticated plan selection\npersona: learner\nui:\n  - Show monthly Premium 229.000 ₫ and yearly Premium 2.290.000 ₫ (10 months value).\n  - Explain included Premium access, term, renewal behavior, no automatic renewal, and current entitlement end when relevant.\n  - Provide clear plan selection and continue action; show loading, unavailable, and already-Premium states.\ndirection: pending\nassets: []\nrequiresProof: []\nchange: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify plan selection screen.'}\r\n",
+    "state": "todo",
+    "activity": "idle",
+    "direction": "pending",
+    "ui": [
+      "Show monthly Premium 229.000 ₫ and yearly Premium 2.290.000 ₫ (10 months value).",
+      "Explain included Premium access, term, renewal behavior, no automatic renewal, and current entitlement end when relevant.",
+      "Provide clear plan selection and continue action; show loading, unavailable, and already-Premium states."
+    ]
+  },
+  "scope": "Traceable read-only drawing-reference snapshot. The source Work records remain authoritative; this snapshot defines no new commerce contract and proves neither a merged commerce runtime nor successful entitlement tests. Both source records are todo and the plans direction is pending. The active-renewal guarantee remains proposed in Q-W2-5 as written. No checkout or provider configuration is supplied or inferred.",
+  "provenanceNote": "The exact source checkout bytes are retained in text and identified by sha256. committedFileSha256 identifies the Git blob at gitRevision separately; clean Windows checkout CRLF conversion can make those hashes differ. matchesCommitAfterCrLfNormalization records whether that is the only difference."
+}

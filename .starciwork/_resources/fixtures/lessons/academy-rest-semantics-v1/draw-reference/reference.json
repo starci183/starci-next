@@ -1,0 +1,567 @@
+{
+  "schema": "lesson-draw-reference@1",
+  "sourceManifestSha256": "7df8c6c562c93b371d1af32be64d4e5e00ee784c0e3011d56c5e27c0e6d1f092",
+  "programmingLanguage": "typescript",
+  "locale": "vi",
+  "scope": "Static projection of the committed test fixture for lesson drawings only. This is not the production content API and does not authorize client access. Programming language typescript and locale vi are independent selections.",
+  "sourceValueEncoding": "Every copied field retains its exact UTF-8 value bytes, including source CRLF terminators between Academy wrapper separators; no trim or newline normalization is applied.",
+  "sourceFixtureId": "fixture.lessons.academy-rest-semantics.v1",
+  "sourceArticlePath": "original/bodies/0-typescript/vi.md",
+  "publicArticle": "## 1. Lời mở đầu\r\n\r\n*\"Cùng là `users`, vì sao tôi không thể chỉ làm `POST /createUser`, `POST /updateUser`, `POST /deleteUser` cho gọn?\"* — một **Senior Engineer** hỏi. **Mid-level Developer** đáp: *\"Miễn server hiểu là được, dùng `POST` hết cũng chạy mà.\"* Câu trả lời thiếu chiều sâu: dồn mọi thứ vào `POST` làm mất hợp đồng (contract) mà client và proxy dựa vào — không phân biệt được đọc với ghi để cache, không biết thao tác nào **idempotent** để retry an toàn, và status code trả về không nói lên kết quả (tạo mới hay không tìm thấy đều `200`).\r\n\r\nREST không phải quy ước tuỳ hứng: mỗi **HTTP verb** ánh xạ tới một *thao tác* trên resource, mỗi **status code** là một câu trả lời chuẩn cho client. Bài học triển khai một backend `users` bằng **NestJS + TypeORM** trên **PostgreSQL**, rồi gọi từng verb để **quan sát** đúng thứ contract này — status code và body:\r\n\r\n- **Phần 2.1**: **thực hành** chạy demo và kiểm chứng 4 luồng (tạo, đọc/404, `PUT` thay-toàn-bộ vs `PATCH` sửa-một-phần, xoá 204).\r\n- **Phần 2.2**: **lý thuyết** hệ thống hoá bản chất *verb → thao tác → status code → idempotency*, kèm các **edge case** điển hình.\r\n\r\n## 2. Các khái niệm cốt lõi\r\n\r\nBài tuân theo **Thực hành dẫn dắt Lý thuyết**. Học viên clone source, dựng PostgreSQL bằng Docker, chạy **NestJS** với `nest start --watch` rồi gọi API để **quan sát** từng HTTP verb ánh xạ ra một thao tác và status code khác nhau. Sau đó phần lý thuyết hệ thống hoá ngữ nghĩa REST (verb, status code, idempotency) và phân tích các edge case chuyên sâu.\r\n\r\n### 2.1. Thực hành\r\n\r\n#### 2.1.1. Chuẩn bị source code và môi trường\r\n\r\nMục đích: chạy demo `users` để thấy mỗi verb (`POST`/`GET`/`PUT`/`PATCH`/`DELETE`) trả về đúng status code và body theo contract REST.\r\n\r\nSource: [StarCi-Academy/fs-3-rest-api-design-and-documentation-0-restful-api-crud-best-practices](https://github.com/StarCi-Academy/fs-3-rest-api-design-and-documentation-0-restful-api-crud-best-practices) trên GitHub.\r\n\r\n```bash\r\n# Step 1: Clone the repository locally\r\ngit clone https://github.com/StarCi-Academy/fs-3-rest-api-design-and-documentation-0-restful-api-crud-best-practices.git\r\n\r\n# Step 2: Navigate to the lesson directory\r\ncd fs-3-rest-api-design-and-documentation-0-restful-api-crud-best-practices\r\n```\r\n\r\n#### 2.1.2. Kiến trúc / thành phần\r\n\r\nDemo gói gọn trong một resource `users` với một bảng PostgreSQL — đủ để mỗi verb tác động lên cùng một tập state quan sát được:\r\n\r\n- `UserController`: HTTP adapter map mỗi verb (`@Post`/`@Get`/`@Put`/`@Patch`/`@Delete`) tới một handler; gắn status code qua `@HttpCode`. Không chứa nghiệp vụ.\r\n- `UserService`: chứa nghiệp vụ CRUD — `create`/`findAll`/`findOne`/`update` (full replace)/`patch` (partial)/`remove`; ném `NotFoundException` (→ 404) khi id không tồn tại.\r\n- `UserEntity`: map bảng `users` (`id`/`name`/`email`) cho TypeORM.\r\n- **PostgreSQL:** lớp persistence — state bền giữa các request để quan sát side-effect của từng verb.\r\n\r\n| Thành phần | File | Vai trò |\r\n| --- | --- | --- |\r\n| `UserController` | `src/modules/user/user.controller.ts` | Map verb → handler + status code (`@HttpCode`) |\r\n| `UserService` | `src/modules/user/user.service.ts` | Nghiệp vụ CRUD; ném `NotFoundException` → 404 |\r\n| `UserEntity` | `src/entities/postgresql/main/user.entity.ts` | Map bảng `users` (id/name/email) |\r\n| `AppModule` | `src/app.module.ts` | Wire `ConfigModule` + TypeORM (PostgreSQL) + `UserModule` |\r\n\r\n```mermaid\r\nflowchart TB\r\n    Client((Client))\r\n    subgraph App [\"NestJS app — resource /users\"]\r\n        Controller[\"UserController — verb → handler + @HttpCode\"] --> Service[\"UserService — CRUD\"]\r\n    end\r\n    DB[(\"PostgreSQL — bảng users\")]\r\n    Client -->|\"POST/GET/PUT/PATCH/DELETE\"| Controller\r\n    Service -->|\"TypeORM repository\"| DB\r\n    Controller -->|\"status code + body\"| Client\r\n```\r\n\r\nHình 1: Mỗi HTTP verb đi vào một handler riêng, tác động lên cùng bảng `users` và trả về status code khác nhau.\r\n\r\n#### 2.1.3. Giải thích code và bản chất\r\n\r\nTrọng tâm: *vì sao mỗi verb cần một handler riêng với status code riêng — và vì sao `PUT` khác `PATCH`, vì sao thao tác xoá idempotent lại trả 204*.\r\n\r\n##### 2.1.3.1. Verb ánh xạ thao tác — và `@HttpCode` chọn status code\r\n\r\n```typescript\r\n@Post()\r\n@HttpCode(HttpStatus.CREATED)\r\nasync create(@Body() payload: Partial<User>): Promise<User> {\r\n    return this.usersService.create(payload)\r\n}\r\n\r\n@Delete(\":id\")\r\n@HttpCode(HttpStatus.NO_CONTENT)\r\nasync remove(@Param(\"id\") id: string): Promise<void> {\r\n    await this.usersService.remove(id)\r\n}\r\n```\r\n\r\n`@Post()` đăng ký handler cho verb tạo resource và `@HttpCode(201)` ép trả `201 Created` thay vì `200` mặc định của NestJS — nói rõ \"đã tạo một resource mới\". `@Delete(\":id\")` + `@HttpCode(204)` trả `204 No Content`: xoá thành công nhưng không có body để trả. Bản chất: status code là *contract* — client đọc con số để biết kết quả mà không cần parse body.\r\n\r\n##### 2.1.3.2. `PUT` thay toàn bộ vs `PATCH` sửa một phần\r\n\r\n```typescript\r\n// PUT — full replace: client sends the whole representation, assign every field DIRECTLY (NO `??` fallback).\r\nasync update(id: string, payload: User): Promise<User> {\r\n    const row = await this.usersRepo.findOne({ where: { id } })\r\n    if (!row) throw new NotFoundException(`User with ID ${id} not found`)\r\n    row.name = payload.name\r\n    row.email = payload.email\r\n    return this.toUser(await this.usersRepo.save(row))\r\n}\r\n\r\n// PATCH — partial update: ONLY provided fields change (use `Partial` + `??`/`!== undefined`).\r\nasync patch(id: string, payload: Partial<User>): Promise<User> {\r\n    const row = await this.usersRepo.findOne({ where: { id } })\r\n    if (!row) throw new NotFoundException(`User with ID ${id} not found`)\r\n    if (payload.name !== undefined) row.name = payload.name\r\n    if (payload.email !== undefined) row.email = payload.email\r\n    return this.toUser(await this.usersRepo.save(row))\r\n}\r\n```\r\n\r\n`PUT` mang ngữ nghĩa *thay toàn bộ representation*: client gửi đủ mọi field, server gán thẳng `payload.name`/`payload.email` lên row — không dùng `??` để giữ giá trị cũ, vì như vậy field vắng mặt sẽ \"sống sót\" và đó chính là hành vi của `PATCH`, mâu thuẫn với \"ghi đè toàn bộ\". Gửi cùng một body `PUT` lần nữa luôn cho ra cùng trạng thái — đó là tính **idempotent**. `PATCH` ngược lại nhận `Partial<User>` và chỉ chạm các field xuất hiện trong payload (phân biệt qua `!== undefined`), nên gửi `{ \"name\": \"X\" }` không đụng tới `email`. Bản chất: hai verb khác nhau vì *phạm vi ghi* khác nhau, không phải vì tiện tay.\r\n\r\n##### 2.1.3.3. Không tìm thấy → `NotFoundException` thành `404`\r\n\r\n```typescript\r\nasync findOne(id: string): Promise<User> {\r\n    const row = await this.usersRepo.findOne({ where: { id } })\r\n    if (!row) {\r\n        throw new NotFoundException(`User with ID ${id} not found`)\r\n    }\r\n    return this.toUser(row)\r\n}\r\n```\r\n\r\nKhi resource không tồn tại, service ném `NotFoundException`; NestJS biến nó thành response `404 Not Found`. Bản chất: lỗi miền (resource vắng mặt) được dịch sang một status code chuẩn — client phân biệt \"không có\" với \"có nhưng rỗng\" (`200` + `[]`) chỉ qua con số.\r\n\r\n> Khái niệm này portable: REST verb/status code/idempotency là contract HTTP phổ quát, không phụ thuộc framework. Đối chiếu ngắn — Spring (`@PostMapping` + `ResponseEntity.status(201)` / `@ResponseStatus`), ASP.NET Core (`[HttpPost]` + `CreatedAtAction`/`NoContent()`/`NotFound()`), Go (`net/http` `mux.HandleFunc` + `w.WriteHeader(http.StatusCreated)`). Đều chung ý: verb chọn thao tác, status code là câu trả lời chuẩn cho client.\r\n\r\n#### 2.1.4. Chuẩn bị & khởi chạy\r\n\r\n##### 2.1.4.1. Điều kiện cần trước\r\n\r\n- **Node.js** LTS (≥ 18), **npm**, **NestJS CLI** (`npm i -g @nestjs/cli`).\r\n- **Docker** + **Docker Compose** (chạy PostgreSQL infra).\r\n- Port **3000** sẵn sàng trên host (backend NestJS); port **5432** sẵn sàng (PostgreSQL).\r\n- **Windows:** dùng `Invoke-RestMethod` thay cho `curl`.\r\n\r\n##### 2.1.4.2. Khởi động\r\n\r\n```bash\r\n# Step 1: Spin up PostgreSQL with Docker (infra — run from lesson root)\r\ndocker compose -f .docker/compose.yaml up -d\r\n\r\n# Step 2: Install dependencies\r\ncd backend/0-typescript\r\nnpm install\r\n\r\n# Step 3: Run the backend in watch mode\r\nnest start --watch\r\n```\r\n\r\nApp lắng nghe tại `http://localhost:3000`. Trước khi chạy các luồng kiểm thử, gọi `POST /users/demo/seed-one` để có sẵn một bản ghi mẫu (faker seed cố định).\r\n\r\n#### 2.1.5. Kiểm thử\r\n\r\n**4 luồng** dưới đây kiểm chứng 4 mặt của contract REST:\r\n\r\n- **Luồng 1 — `POST /users`:** tạo user.\r\n- **Luồng 2 — `GET /users/:id`:** đọc một user / id không tồn tại.\r\n- **Luồng 3 — `PUT /users/:id` rồi `PATCH /users/:id`:** `PUT` (full replace) vs `PATCH` (partial).\r\n- **Luồng 4 — `DELETE /users/:id`:** xoá user.\r\n\r\n::::accordion\r\n:::panel{title=\"Luồng 1 — `POST` tạo resource → 201\"}\r\n\r\n- Bước 1: gọi `POST /users` với body `{ name, email }`.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Method Post -Uri \"http://localhost:3000/users\" -ContentType \"application/json\" -Body '{\"name\":\"Ada Lovelace\",\"email\":\"ada@example.com\"}'\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s -X POST http://localhost:3000/users -H \"Content-Type: application/json\" -d '{\"name\":\"Ada Lovelace\",\"email\":\"ada@example.com\"}'\r\n  ```\r\n\r\n  Response phải trả về (HTTP 201):\r\n\r\n  ```json\r\n  { \"id\": \"a1b2c3\", \"name\": \"Ada Lovelace\", \"email\": \"ada@example.com\" }\r\n  ```\r\n\r\n*Kết luận: Nếu response khớp JSON trên, hệ thống xác nhận:*\r\n\r\n- *`POST` tạo resource mới và trả `201 Created` cùng representation vừa tạo (gồm `id` server gán).*\r\n\r\n:::\r\n:::panel{title=\"Luồng 2 — `GET` đọc → 200 / không tồn tại → 404\"}\r\n\r\n- Bước 1: đọc user vừa tạo bằng `id` ở Luồng 1 — `GET /users/a1b2c3`.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Uri \"http://localhost:3000/users/a1b2c3\"\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s http://localhost:3000/users/a1b2c3\r\n  ```\r\n\r\n  Response phải trả về (HTTP 200):\r\n\r\n  ```json\r\n  { \"id\": \"a1b2c3\", \"name\": \"Ada Lovelace\", \"email\": \"ada@example.com\" }\r\n  ```\r\n\r\n- Bước 2: đọc một id không tồn tại — `GET /users/does-not-exist`.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Uri \"http://localhost:3000/users/does-not-exist\"\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s -i http://localhost:3000/users/does-not-exist\r\n  ```\r\n\r\n  Response phải trả về (HTTP 404):\r\n\r\n  ```json\r\n  { \"statusCode\": 404, \"message\": \"User with ID does-not-exist not found\", \"error\": \"Not Found\" }\r\n  ```\r\n\r\n*Kết luận: Nếu response khớp JSON trên, hệ thống xác nhận:*\r\n\r\n- *`GET` đọc resource trả `200` + body; resource vắng mặt trả `404` — client phân biệt \"không có\" với \"có nhưng rỗng\" qua status code.*\r\n\r\n:::\r\n:::panel{title=\"Luồng 3 — `PUT` (thay toàn bộ) vs `PATCH` (sửa một phần)\"}\r\n\r\n- Bước 1: `PUT /users/a1b2c3` gửi đầy đủ representation (`name` + `email`) → ghi đè toàn bộ resource.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Method Put -Uri \"http://localhost:3000/users/a1b2c3\" -ContentType \"application/json\" -Body '{\"name\":\"Ada L.\",\"email\":\"ada@example.com\"}'\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s -X PUT http://localhost:3000/users/a1b2c3 -H \"Content-Type: application/json\" -d '{\"name\":\"Ada L.\",\"email\":\"ada@example.com\"}'\r\n  ```\r\n\r\n  Response phải trả về (HTTP 200):\r\n\r\n  ```json\r\n  { \"id\": \"a1b2c3\", \"name\": \"Ada L.\", \"email\": \"ada@example.com\" }\r\n  ```\r\n\r\n- Bước 2: `PATCH /users/a1b2c3` chỉ gửi `email` → chỉ field đó đổi, `name` giữ nguyên.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Method Patch -Uri \"http://localhost:3000/users/a1b2c3\" -ContentType \"application/json\" -Body '{\"email\":\"ada.l@example.com\"}'\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s -X PATCH http://localhost:3000/users/a1b2c3 -H \"Content-Type: application/json\" -d '{\"email\":\"ada.l@example.com\"}'\r\n  ```\r\n\r\n  Response phải trả về (HTTP 200):\r\n\r\n  ```json\r\n  { \"id\": \"a1b2c3\", \"name\": \"Ada L.\", \"email\": \"ada.l@example.com\" }\r\n  ```\r\n\r\n*Kết luận: Nếu response khớp JSON trên, hệ thống xác nhận:*\r\n\r\n- *`PUT` mang ngữ nghĩa thay-toàn-bộ (idempotent), `PATCH` chỉ chạm field được gửi — phạm vi ghi của hai verb khác nhau, quan sát rõ qua field nào đổi.*\r\n\r\n:::\r\n:::panel{title=\"Luồng 4 — `DELETE` → 204 không body\"}\r\n\r\n- Bước 1: xoá user — `DELETE /users/a1b2c3`.\r\n\r\n  ```bash\r\n  # Windows (PowerShell)\r\n  Invoke-RestMethod -Method Delete -Uri \"http://localhost:3000/users/a1b2c3\" -StatusCodeVariable code; $code\r\n\r\n  # macOS / Linux\r\n  # → Paste cURL into Postman: Import → Raw text\r\n  curl -s -o /dev/null -w \"%{http_code}\\n\" -X DELETE http://localhost:3000/users/a1b2c3\r\n  ```\r\n\r\n  Response phải trả về HTTP 204 với body rỗng:\r\n\r\n  ```json\r\n  204\r\n  ```\r\n\r\n*Kết luận: Nếu status code là 204 và body rỗng, hệ thống xác nhận:*\r\n\r\n- *`DELETE` xoá resource và trả `204 No Content` — thao tác thành công nhưng không có gì để trả về body.*\r\n\r\n:::\r\n::::\r\n\r\n#### 2.1.6. Dọn tài nguyên\r\n\r\n```bash\r\n# Stop and remove the PostgreSQL container + volume\r\ndocker compose -f .docker/compose.yaml down -v\r\n```\r\n\r\nNhấn `Ctrl+C` trong terminal để dừng NestJS.\r\n\r\n#### 2.1.7. Đọc thêm\r\n\r\n- **Controllers & routing:** cách NestJS map verb (`@Get`/`@Post`/`@Put`/`@Patch`/`@Delete`) tới handler. ([NestJS Controllers](https://docs.nestjs.com/controllers))\r\n- **Status code (`@HttpCode`):** đặt status code mặc định cho handler. ([NestJS Controllers — Status code](https://docs.nestjs.com/controllers#status-code))\r\n- **Exception filters:** cách `NotFoundException` được dịch sang `404`. ([NestJS Exception filters](https://docs.nestjs.com/exception-filters))\r\n\r\n### 2.2. Lý thuyết\r\n\r\n#### 2.2.1. Bản chất\r\n\r\nBản chất của REST trên HTTP gói gọn trong một điều: **một resource (`users`) được thao tác qua một tập verb chuẩn, và mỗi kết quả được mã hoá bằng một status code chuẩn — client hiểu hợp đồng (contract) mà không cần biết chi tiết implementation phía server**. Các mặt dưới đây không phải các quy ước rời rạc mà là các góc nhìn của cùng một contract đó.\r\n\r\n- **Verb → thao tác (uniform interface).** Thay vì đặt tên hành động trong URL (`/createUser`, `/deleteUser`), REST cố định *động từ* ở HTTP method và *danh từ* ở URL: `POST /users` (tạo), `GET /users/:id` (đọc), `PUT` (thay toàn bộ), `PATCH` (sửa một phần), `DELETE` (xoá). Vì sao cốt lõi: bề mặt thống nhất cho phép tooling chung (cache proxy, API gateway, client generator) hiểu API mà không cần đọc tài liệu riêng. Kiểm chứng ở Luồng 1 và 4: cùng URL `/users/:id`, đổi verb thì đổi thao tác.\r\n- **Status code là câu trả lời chuẩn.** `201` (đã tạo), `200` (OK + body), `204` (OK không body), `404` (không tìm thấy) — client đọc *con số* để rẽ nhánh logic, không phải parse chuỗi message. Bản chất: status code tách *kết quả* khỏi *dữ liệu*; một `GET` trả `200 []` (có tài nguyên nhưng rỗng) khác hẳn `404` (tài nguyên vắng mặt) dù body trông na ná. Kiểm chứng ở Luồng 2.\r\n- **Idempotency và an toàn retry.** `GET`/`PUT`/`DELETE` là **idempotent** — gọi lại nhiều lần cho cùng một trạng thái cuối, nên client/proxy retry an toàn khi mạng chập chờn; `POST` không idempotent (gọi 2 lần tạo 2 resource). Vì sao quan trọng: trong hệ phân tán, biết verb nào an toàn retry quyết định được cơ chế chống mất/nhân đôi request. So sánh `PUT` (full replace) và `PATCH` (partial) ở Luồng 3 cho thấy `PUT` cùng body luôn về cùng state.\r\n\r\nGộp lại: REST biến một resource thành một contract gồm *verb + URL + status code + thuộc tính idempotent*. Hiểu một REST API mới chính là đọc xem mỗi verb làm gì trên resource và mỗi status code nói gì với mình.\r\n\r\n#### 2.2.2. Các trường hợp biên (edge cases) cần lưu ý\r\n\r\n- **Dùng `200` cho mọi thứ (kể cả khi tạo/xoá):** client mất tín hiệu phân biệt kết quả. **Giải pháp:** `@HttpCode` đặt đúng `201`/`204` theo ngữ nghĩa verb.\r\n- **Nhầm `PUT` với `PATCH`:** gửi `PUT` với body thiếu field rồi tưởng các field kia giữ nguyên → thực ra `PUT` mang ngữ nghĩa thay-toàn-bộ. **Giải pháp:** dùng `PATCH` khi chỉ muốn sửa một phần; `PUT` luôn gửi đầy đủ representation.\r\n- `DELETE` resource đã xoá: lần xoá thứ hai trả `404` trong khi `DELETE` lẽ ra idempotent. **Giải pháp:** chấp nhận `404` ở lần sau là hợp lệ (trạng thái cuối \"không tồn tại\" không đổi), hoặc trả `204` cho cả lần lặp tuỳ chính sách API.\r\n- **Bọc lỗi miền thành `500`:** ném `Error` thường thay vì `NotFoundException` khiến resource vắng mặt thành lỗi server. **Giải pháp:** dùng đúng exception miền của framework (`NotFoundException` → `404`).\r\n\r\n## 3. Tổng kết\r\n\r\n### 3.1. Các câu hỏi dễ bị phỏng vấn\r\n\r\n- **Câu hỏi 1: Khác nhau giữa `PUT` và `PATCH` là gì, và khi nào dùng cái nào?**\r\n- **Câu hỏi 2: Vì sao không gom hết về `POST` với URL kiểu `/createUser`, `/updateUser`?**\r\n- **Câu hỏi 3: Idempotency là gì và vì sao nó quan trọng với retry?**\r\n",
+  "section1": "## 1. Lời mở đầu\r\n\r\n*\"Cùng là `users`, vì sao tôi không thể chỉ làm `POST /createUser`, `POST /updateUser`, `POST /deleteUser` cho gọn?\"* — một **Senior Engineer** hỏi. **Mid-level Developer** đáp: *\"Miễn server hiểu là được, dùng `POST` hết cũng chạy mà.\"* Câu trả lời thiếu chiều sâu: dồn mọi thứ vào `POST` làm mất hợp đồng (contract) mà client và proxy dựa vào — không phân biệt được đọc với ghi để cache, không biết thao tác nào **idempotent** để retry an toàn, và status code trả về không nói lên kết quả (tạo mới hay không tìm thấy đều `200`).\r\n\r\nREST không phải quy ước tuỳ hứng: mỗi **HTTP verb** ánh xạ tới một *thao tác* trên resource, mỗi **status code** là một câu trả lời chuẩn cho client. Bài học triển khai một backend `users` bằng **NestJS + TypeORM** trên **PostgreSQL**, rồi gọi từng verb để **quan sát** đúng thứ contract này — status code và body:\r\n\r\n- **Phần 2.1**: **thực hành** chạy demo và kiểm chứng 4 luồng (tạo, đọc/404, `PUT` thay-toàn-bộ vs `PATCH` sửa-một-phần, xoá 204).\r\n- **Phần 2.2**: **lý thuyết** hệ thống hoá bản chất *verb → thao tác → status code → idempotency*, kèm các **edge case** điển hình.\r\n\r\n",
+  "outline": [
+    {
+      "id": "section-1",
+      "depth": 2,
+      "text": "1. Lời mở đầu",
+      "start": 184,
+      "end": 209
+    },
+    {
+      "id": "section-2",
+      "depth": 2,
+      "text": "2. Các khái niệm cốt lõi",
+      "start": 1563,
+      "end": 1599
+    },
+    {
+      "id": "section-2.1",
+      "depth": 3,
+      "text": "2.1. Thực hành",
+      "start": 2020,
+      "end": 2043
+    },
+    {
+      "id": "section-2.1.1",
+      "depth": 4,
+      "text": "2.1.1. Chuẩn bị source code và môi trường",
+      "start": 2045,
+      "end": 2102
+    },
+    {
+      "id": "section-2.1.2",
+      "depth": 4,
+      "text": "2.1.2. Kiến trúc / thành phần",
+      "start": 2786,
+      "end": 2828
+    },
+    {
+      "id": "section-2.1.3",
+      "depth": 4,
+      "text": "2.1.3. Giải thích code và bản chất",
+      "start": 4593,
+      "end": 4642
+    },
+    {
+      "id": "section-2.1.3.1",
+      "depth": 5,
+      "text": "2.1.3.1. Verb ánh xạ thao tác — và `@HttpCode` chọn status code",
+      "start": 4822,
+      "end": 4902
+    },
+    {
+      "id": "section-2.1.3.2",
+      "depth": 5,
+      "text": "2.1.3.2. `PUT` thay toàn bộ vs `PATCH` sửa một phần",
+      "start": 5656,
+      "end": 5724
+    },
+    {
+      "id": "section-2.1.3.3",
+      "depth": 5,
+      "text": "2.1.3.3. Không tìm thấy → `NotFoundException` thành `404`",
+      "start": 7412,
+      "end": 7484
+    },
+    {
+      "id": "section-2.1.4",
+      "depth": 4,
+      "text": "2.1.4. Chuẩn bị & khởi chạy",
+      "start": 8532,
+      "end": 8574
+    },
+    {
+      "id": "section-2.1.4.1",
+      "depth": 5,
+      "text": "2.1.4.1. Điều kiện cần trước",
+      "start": 8576,
+      "end": 8622
+    },
+    {
+      "id": "section-2.1.4.2",
+      "depth": 5,
+      "text": "2.1.4.2. Khởi động",
+      "start": 8924,
+      "end": 8955
+    },
+    {
+      "id": "section-2.1.5",
+      "depth": 4,
+      "text": "2.1.5. Kiểm thử",
+      "start": 9425,
+      "end": 9451
+    },
+    {
+      "id": "section-2.1.6",
+      "depth": 4,
+      "text": "2.1.6. Dọn tài nguyên",
+      "start": 14436,
+      "end": 14468
+    },
+    {
+      "id": "section-2.1.7",
+      "depth": 4,
+      "text": "2.1.7. Đọc thêm",
+      "start": 14642,
+      "end": 14668
+    },
+    {
+      "id": "section-2.2",
+      "depth": 3,
+      "text": "2.2. Lý thuyết",
+      "start": 15162,
+      "end": 15185
+    },
+    {
+      "id": "section-2.2.1",
+      "depth": 4,
+      "text": "2.2.1. Bản chất",
+      "start": 15187,
+      "end": 15213
+    },
+    {
+      "id": "section-2.2.2",
+      "depth": 4,
+      "text": "2.2.2. Các trường hợp biên (edge cases) cần lưu ý",
+      "start": 17497,
+      "end": 17564
+    },
+    {
+      "id": "section-3",
+      "depth": 2,
+      "text": "3. Tổng kết",
+      "start": 18583,
+      "end": 18603
+    },
+    {
+      "id": "section-3.1",
+      "depth": 3,
+      "text": "3.1. Các câu hỏi dễ bị phỏng vấn",
+      "start": 18605,
+      "end": 18655
+    }
+  ],
+  "interviewPrompts": [
+    {
+      "id": "interview-1",
+      "prompt": "- **Câu hỏi 1: Khác nhau giữa `PUT` và `PATCH` là gì, và khi nào dùng cái nào?**\r\n",
+      "sourceRange": {
+        "start": 18657,
+        "end": 18753,
+        "sha256": "4e0e788faa7b78127223ea570b1871263f5693e30b284842c57e620753e538a0"
+      }
+    },
+    {
+      "id": "interview-2",
+      "prompt": "- **Câu hỏi 2: Vì sao không gom hết về `POST` với URL kiểu `/createUser`, `/updateUser`?**\r\n",
+      "sourceRange": {
+        "start": 19241,
+        "end": 19346,
+        "sha256": "20aedfa20f13eb3819226355180de0ad6106490448a3e0e6763351d6e490b1c1"
+      }
+    },
+    {
+      "id": "interview-3",
+      "prompt": "- **Câu hỏi 3: Idempotency là gì và vì sao nó quan trọng với retry?**\r\n",
+      "sourceRange": {
+        "start": 19870,
+        "end": 19953,
+        "sha256": "83d3a10cbf60e4d8dc197cfcc74be074658c2646d61a3c4d970b39a48abb47b7"
+      }
+    }
+  ],
+  "challengeDefinitions": [
+    {
+      "id": "0-restful-api-crud-best-practices-easy",
+      "locale": "vi",
+      "programmingLanguage": "typescript",
+      "title": "Xây dựng resource CRUD tôn trọng contract HTTP verb và status code\r\n",
+      "description": "Dựng resource `users` với CRUD đầy đủ theo đúng REST semantics: URL danh từ số nhiều, mỗi operation dùng đúng verb, mỗi outcome trả đúng status code — `201` khi tạo, `200` khi đọc, `204` khi xóa, `404` khi không tìm thấy. Tách HTTP adapter (controller/handler) khỏi business logic (service). Chọn ngôn ngữ của bạn; mọi ngôn ngữ trả cùng một contract output.\r\n",
+      "difficulty": "easy\r\n",
+      "requirements": [
+        {
+          "id": "requirement-0",
+          "title": "Mô hình hóa resource `users` với URL danh từ số nhiều và tách controller khỏi service\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nThiết kế resource `users` theo cách đặt tên REST: URL là danh từ số nhiều `/users`, không bao giờ là verb trong path. Tách HTTP adapter (`UserController`) khỏi business logic (`UserService`).\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- URL dùng danh từ số nhiều `/users` và `/users/:id` — KHÔNG dùng verb trong path kiểu `/getUsers`, `/createUser`, `/deleteUser`.\r\n- `UserController` chỉ map verb → handler và set status code; KHÔNG chứa business logic và không bao giờ chạm trực tiếp vào store.\r\n- `UserService` sở hữu in-memory store và expose một method cho mỗi operation (`create`, `findAll`, `findOne`, `replace`, `patch`, `remove`).\r\n- Đăng ký `UserModule` (controller + service provider) vào `AppModule`.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\n`@Controller(\"users\")` đặt path prefix; handler chỉ khai báo sub-path (`\"\"` hoặc `\":id\"`). Sinh bằng `nest g module/controller/service user` để giữ đúng convention thư mục.\r\n"
+        },
+        {
+          "id": "requirement-1",
+          "title": "Triển khai cả năm operation với đúng verb và status code\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nGhép mỗi HTTP verb với operation CRUD của nó và trả đúng status code mà REST contract yêu cầu cho từng outcome.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- `POST /users` nhận `{name, email}` → trả HTTP 201 + user vừa tạo `{id, name, email}`; `id` là UUID v4 sinh bằng `crypto.randomUUID()`.\r\n- `GET /users` → 200 + một mảng; `GET /users/:id` → 200 + user khi tìm thấy, 404 khi không tìm thấy.\r\n- `PUT /users/:id` → 200 + user đã thay thế toàn bộ; `PATCH /users/:id` → 200 + user cập nhật một phần (chỉ field được gửi mới đổi); cả hai → 404 khi không tìm thấy.\r\n- `DELETE /users/:id` → 204 No Content (body rỗng) khi thành công, 404 khi không tìm thấy.\r\n- Một id không tồn tại KHÔNG BAO GIỜ trả `200` với `null` hoặc body rỗng — nó throw `NotFoundException` → 404.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nNestJS mặc định trả `200`; ép `@HttpCode(201)` khi tạo và `@HttpCode(204)` khi xóa. Throw `new NotFoundException(...)` cho miss; phân biệt field PATCH bằng `!== undefined`, không phải `??`.\r\n"
+        }
+      ],
+      "prerequisites": [
+        {
+          "id": "prerequisite-0",
+          "text": "Node.js >= 18 + NestJS CLI (`npm i -g @nestjs/cli`).\r\n"
+        },
+        {
+          "id": "prerequisite-1",
+          "text": "Hiểu HTTP verb, status code (`201`/`200`/`204`/`404`), và khác biệt giữa `PUT` (thay thế toàn bộ) với `PATCH` (cập nhật một phần).\r\n"
+        }
+      ],
+      "source": {
+        "fixturePath": "original/challenges/0-restful-api-crud-best-practices-easy/vi.md",
+        "sha256": "66b7cd8382c99dce5b92207f6dcbf9a1d69bfb51ba400779567df2c3dcca9452",
+        "publicFieldRanges": [
+          {
+            "field": "title",
+            "start": 109,
+            "end": 184,
+            "sha256": "d2ecaa8a008f3b286616ffc9136a5eedcbebf497437be4df86e433d6e71bdcbc"
+          },
+          {
+            "field": "description",
+            "start": 255,
+            "end": 677,
+            "sha256": "37eff8da40dc5f3dcbb3a2b52751a2d0843a896155aa8b5770e464cfaaf5f4fb"
+          },
+          {
+            "field": "difficulty",
+            "start": 31938,
+            "end": 31944,
+            "sha256": "a2011774545f5f039f18ad05507a478e23ca1bb9df1439f874c3b46e03de1acc"
+          },
+          {
+            "field": "requirements.0.langs.0.title",
+            "start": 867,
+            "end": 969,
+            "sha256": "649d1e8ec6a46ff41bfa0e1fc837e1a30a3810023350f4d230dfdb670f1341a2"
+          },
+          {
+            "field": "requirements.0.langs.0.body",
+            "start": 1037,
+            "end": 2078,
+            "sha256": "59fa89dc374a904dc4ca568e0fd1356128c1599fdd11d8cca89dd8ea3d39acf6"
+          },
+          {
+            "field": "requirements.1.langs.0.title",
+            "start": 6721,
+            "end": 6789,
+            "sha256": "36717c46e9f22b28b88205988d8cf1ecea96a1caa03c75471ad8c99d7fbbb3a7"
+          },
+          {
+            "field": "requirements.1.langs.0.body",
+            "start": 6857,
+            "end": 8018,
+            "sha256": "74e169287e6b84f573bb8836bf0ecf0f421c1b676fa538da44f1e61d04aa3a6c"
+          },
+          {
+            "field": "prerequisites.0.langs.0.text",
+            "start": 30080,
+            "end": 30134,
+            "sha256": "265c297228ce26f3a7d37a43d6559f9f1337f99715da1831bbfcff0be50c7f24"
+          },
+          {
+            "field": "prerequisites.1.langs.0.text",
+            "start": 30798,
+            "end": 30953,
+            "sha256": "d57af331bc0e112a29addeb321ef41a5b5804ea59a4f06ffc4e0cc896db6d070"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1-pagination-filtering-rest-api-medium",
+      "locale": "vi",
+      "programmingLanguage": "typescript",
+      "title": "Phân trang, lọc và tìm kiếm cho một collection endpoint\r\n",
+      "description": "Mở rộng `GET /users` để hỗ trợ phân trang (`page`/`limit`), một filter theo status và tìm kiếm theo tên, trả về envelope chuẩn `{ data: [], meta: { total, page, limit, totalPages } }`. Chọn ngôn ngữ của bạn; mọi ngôn ngữ trả cùng một contract output.\r\n",
+      "difficulty": "medium\r\n",
+      "requirements": [
+        {
+          "id": "requirement-0",
+          "title": "Validate query param (page, limit, status, search) với default hợp lý\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nNhận input phân trang, filter và search dưới dạng query param đã được định kiểu và validate, để endpoint không bao giờ tin tưởng chuỗi thô từ client.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- `GET /users` nhận query param: `page` (default `1`, integer `>= 1`), `limit` (default `10`, integer `1..50`), `status` (optional, một trong `active`/`inactive`), `search` (optional, match theo `name`).\r\n- Khai báo `QueryUsersDto` với decorator `class-validator` và bật `ValidationPipe({ transform: true, whitelist: true })`; query string được cast sang number qua `@Type(() => Number)`.\r\n- `limit > 50` hoặc `page < 1` trả HTTP `400`; thiếu `page`/`limit` thì dùng default.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nGiá trị query luôn về dưới dạng string — thiếu `@Type(() => Number)` thì `@IsInt()` fail ở mọi request. Dùng `@IsIn(['active','inactive'])` cho `status`.\r\n"
+        },
+        {
+          "id": "requirement-1",
+          "title": "Đẩy filter và search xuống tầng data, phân trang, trả envelope meta\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nÁp filter và search ở tầng query (không phải trong bộ nhớ), rồi phân trang, và trả envelope `{ data, meta }` để client render pager mà không cần round-trip thứ hai.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- Filter và search chạy trước phân trang; tuyệt đối không fetch hết rồi `.filter()` trong code ứng dụng.\r\n- Response shape đúng là `{ data: User[], meta: { total, page, limit, totalPages } }`; `totalPages = ceil(total / limit)`; kết quả rỗng là `total = 0`, `data = []`.\r\n- `status` map sang `WHERE status = :status`; `search` match `name` không phân biệt hoa thường (`ILIKE`/`LOWER(...) LIKE`); mỗi clause chỉ được nối khi param có giá trị.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\n`getManyAndCount()` trả `[data, total]` trong một lần gọi — khớp tự nhiên với envelope `{ data, meta }`. Áp `.skip((page-1)*limit).take(limit)` sau các `andWhere` có điều kiện.\r\n"
+        },
+        {
+          "id": "requirement-2",
+          "title": "Seed dữ liệu, smoke-test mọi luồng và viết README kèm bằng chứng\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nTạo ra bằng chứng tái lập được rằng phân trang, filter và search thực sự chạy end-to-end trên một dataset đã được nạp dữ liệu.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- Seed `>= 50` user (một script được commit, không insert thủ công) với mix status `active`/`inactive` để phân trang trải qua nhiều page.\r\n- README có 6 mục (Challenge description, How to run, Architecture/Stack, Smoke Test, Code Execution Trace, Design Decisions); Smoke Test paste output thật cho `page=1`, `page=2`, `status=active`, `search=<word>`, và case `limit=999` → `400`.\r\n- Code Execution Trace liệt kê `>= 4` touchpoint của luồng GET (controller → validation → service → query → response shape) kèm `file:line`.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nDùng `@faker-js/faker` trong `scripts/seed.ts`. Bật query logger để paste SQL `WHERE`/`ILIKE` thật vào Smoke Test làm bằng chứng filter chạy ở tầng data.\r\n"
+        }
+      ],
+      "prerequisites": [
+        {
+          "id": "prerequisite-0",
+          "text": "Đã hoàn thành bản EASY `restful-api-crud-best-practices-easy`.\r\n"
+        },
+        {
+          "id": "prerequisite-1",
+          "text": "Một relational database chạy được local và connection string đọc từ config layer (không hardcode).\r\n"
+        }
+      ],
+      "source": {
+        "fixturePath": "original/challenges/1-pagination-filtering-rest-api-medium/vi.md",
+        "sha256": "54c1310fa247dd95bc1e9f89f6a73b82fd35d70c5cbff8d8bcbe6703a184b685",
+        "publicFieldRanges": [
+          {
+            "field": "title",
+            "start": 109,
+            "end": 175,
+            "sha256": "6590f808cccf323c64e00fe465fd21dc2054dbcf7fdc133a973ede9c0c47dd2f"
+          },
+          {
+            "field": "description",
+            "start": 246,
+            "end": 542,
+            "sha256": "871197f03d5d8af9b73ceea0316a10ed124feceaa7fd8eeb74e7d6a54cba7c11"
+          },
+          {
+            "field": "difficulty",
+            "start": 35710,
+            "end": 35718,
+            "sha256": "385d397f3c618e8e34451e954eac395214dfc66caf21f99229283fbb11c27360"
+          },
+          {
+            "field": "requirements.0.langs.0.title",
+            "start": 732,
+            "end": 808,
+            "sha256": "3824ad8a12be12eef3f454e0cde0a159ffed855159cc8c6b74c49968c66998bb"
+          },
+          {
+            "field": "requirements.0.langs.0.body",
+            "start": 876,
+            "end": 1843,
+            "sha256": "3de4f28751d67e9e3441b453813713007a57498c8ce11d49105072f7e015ebf6"
+          },
+          {
+            "field": "requirements.1.langs.0.title",
+            "start": 5912,
+            "end": 5992,
+            "sha256": "6868940673ab258edb9c635d86b467648d733a86b6e05adc5b577d36e0aee8e4"
+          },
+          {
+            "field": "requirements.1.langs.0.body",
+            "start": 6060,
+            "end": 7058,
+            "sha256": "c3509ae539f1a89f8021511d9b903bf77925298b2cfbbdb29aa1312f1329b491"
+          },
+          {
+            "field": "requirements.2.langs.0.title",
+            "start": 11186,
+            "end": 11268,
+            "sha256": "54ff0a26acf898ec920f3558535f05fec359d74490f6054fa7a54f484e3b27fb"
+          },
+          {
+            "field": "requirements.2.langs.0.body",
+            "start": 11336,
+            "end": 12352,
+            "sha256": "48f803b62fd92158747fbce3590f65a94c27cd81ca381fa88177c2d18a47cae9"
+          },
+          {
+            "field": "prerequisites.0.langs.0.text",
+            "start": 33827,
+            "end": 33897,
+            "sha256": "892f62a02e966360d8eb077626d94f58af01357f0ca29c1a0a80761a4c01e2e9"
+          },
+          {
+            "field": "prerequisites.1.langs.0.text",
+            "start": 34730,
+            "end": 34845,
+            "sha256": "c0437d7ef07f44e41e68c9bf534ce4743be1f66a5e4bf61a28c72cde903e49b3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2-batch-operations-with-transaction-hard",
+      "locale": "vi",
+      "programmingLanguage": "typescript",
+      "title": "Batch insert nhiều resource trong một transaction nguyên tử (all-or-nothing)\r\n",
+      "description": "Thêm endpoint `POST /users/batch` nhận một mảng user và ghi cả lô bên trong MỘT database transaction: nếu bất kỳ record nào fail (email trùng, thiếu field), toàn bộ lô bị `ROLLBACK` — không có partial write. Trả về `{ created, failed: [{ index, reason }] }` để client biết chính xác record nào lỗi. Chọn ngôn ngữ của bạn; mọi ngôn ngữ trả cùng một contract output.\r\n",
+      "difficulty": "hard\r\n",
+      "requirements": [
+        {
+          "id": "requirement-0",
+          "title": "Validate payload lô và định nghĩa contract response của batch\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nThiết kế endpoint `POST /users/batch` nhận `{ users: [{ name, email }, ...] }` và trả về một response mô tả rõ kết quả của cả lô — bao nhiêu record đã tạo và record nào fail vì lý do gì.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- `POST /users/batch` nhận body `{ users: CreateUserDto[] }`; mảng rỗng hoặc thiếu `users` → 400.\r\n- Cột `email` phải UNIQUE ở tầng database (không chỉ check in-memory) — đây là ràng buộc bắt lỗi trùng.\r\n- Response thành công → 201 với shape `{ created: number, failed: [] }` (mảng `failed` rỗng khi cả lô OK).\r\n- Khi lô bị rollback do lỗi → trả về `{ created: 0, failed: [{ index, reason }] }` với `index` là vị trí record trong mảng gửi lên.\r\n- `UserController` chỉ map verb → handler; toàn bộ logic transaction nằm trong tầng service.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nDùng một `BatchCreateUsersDto` với `@ValidateNested()` + `@Type(() => CreateUserDto)` để validate từng phần tử. Đặt ràng buộc `@Column({ unique: true })` trên `email` của entity TypeORM.\r\n"
+        },
+        {
+          "id": "requirement-1",
+          "title": "Bọc cả lô trong một transaction all-or-nothing\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nGhi cả lô bên trong MỘT database transaction sao cho khi một record bất kỳ fail, mọi insert trước đó trong cùng lô đều bị huỷ (`ROLLBACK`) — kết thúc với trạng thái database y hệt lúc trước khi gọi.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- Mở một transaction THẬT ở tầng database, insert toàn bộ record bên trong nó, rồi `COMMIT` một lần ở cuối.\r\n- Nếu bất kỳ insert nào ném lỗi (email trùng → vi phạm unique, hoặc thiếu field) → `ROLLBACK` toàn bộ transaction; KHÔNG được giữ lại bất kỳ record nào của lô.\r\n- CẤM \"insert từng record + tự xoá tay/compensate khi fail\" — phải dùng transaction boundary của database, không phải bù trừ thủ công.\r\n- Khi rollback, thu thập index + lý do của (các) record gây lỗi để trả trong `failed`.\r\n- Lệnh `BEGIN`, các `INSERT`, và `COMMIT`/`ROLLBACK` phải nhìn thấy được trong SQL log (bật query logging).\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nDùng `dataSource.createQueryRunner()` → `connect()` → `startTransaction()`; insert qua `queryRunner.manager`; `commitTransaction()` trong nhánh thành công và `rollbackTransaction()` trong `catch`; luôn `release()` ở `finally`. Bật `logging: true` trong cấu hình TypeORM để thấy `START TRANSACTION` / `ROLLBACK`.\r\n"
+        }
+      ],
+      "prerequisites": [
+        {
+          "id": "prerequisite-0",
+          "text": "Đã hoàn thành challenge medium (pagination/filter trên DB thật) + Docker chạy PostgreSQL local.\r\n"
+        },
+        {
+          "id": "prerequisite-1",
+          "text": "Hiểu khái niệm ACID transaction (`BEGIN`/`COMMIT`/`ROLLBACK`) và atomicity.\r\n"
+        }
+      ],
+      "source": {
+        "fixturePath": "original/challenges/2-batch-operations-with-transaction-hard/vi.md",
+        "sha256": "83d7953aade5a9e9b7b2b39dc0bc82f7aaed724fc06e376fcd4d796e391dc2dd",
+        "publicFieldRanges": [
+          {
+            "field": "title",
+            "start": 109,
+            "end": 194,
+            "sha256": "4f519293175ed2456c306b737d89d5557bfac3c9e9af9047ffaae014ca3c7d3c"
+          },
+          {
+            "field": "description",
+            "start": 265,
+            "end": 698,
+            "sha256": "6b4bbd67c11345dfbe374982a42421bb928f50b1b2baa943d0092f51c254d542"
+          },
+          {
+            "field": "difficulty",
+            "start": 32293,
+            "end": 32299,
+            "sha256": "7df3a7acfd6ea3640058f6cf9035416f14912d563ca66d90251e06486b5ab917"
+          },
+          {
+            "field": "requirements.0.langs.0.title",
+            "start": 888,
+            "end": 959,
+            "sha256": "fb9b714796cbfdccd5ef83b78bef2cad110f67b9454a46871dc67dff37515e53"
+          },
+          {
+            "field": "requirements.0.langs.0.body",
+            "start": 1027,
+            "end": 2191,
+            "sha256": "cea957293a5b70ccfa18be67dab3cdc941410cee0e8a13ab4c9dc29830247ac2"
+          },
+          {
+            "field": "requirements.1.langs.0.title",
+            "start": 6544,
+            "end": 6599,
+            "sha256": "27a3642d8a5f1d0cf16127fd4a94c1a2b16a3fcf77a43d652124bd583fd3198d"
+          },
+          {
+            "field": "requirements.1.langs.0.body",
+            "start": 6667,
+            "end": 8075,
+            "sha256": "f2008a85f980321d3ba482dc01c1d7308469023436121ecac8c8baaff62b663d"
+          },
+          {
+            "field": "prerequisites.0.langs.0.text",
+            "start": 30394,
+            "end": 30500,
+            "sha256": "c0430928a9c925af542e6992d9e3f748c224cf07fd4fe90b341379c6fe3b1e3c"
+          },
+          {
+            "field": "prerequisites.1.langs.0.text",
+            "start": 31441,
+            "end": 31524,
+            "sha256": "9ae3381a069b1354608892719fabbeb5c894f3e9d304b2a794d5636c8194f166"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3-idempotent-csv-import-insane",
+      "locale": "vi",
+      "programmingLanguage": "typescript",
+      "title": "Import CSV bất đồng bộ, idempotent với Idempotency-Key và xử lý theo chunk\r\n",
+      "description": "Xây `POST /users/import` nhận file CSV upload + header `Idempotency-Key`, trả về `202 Accepted` + `{ jobId }` và xử lý bất đồng bộ theo chunk; client poll `GET /users/import/{jobId}` để xem tiến độ (`{ status, processed, total, errors }`). Gửi lại CÙNG `Idempotency-Key` phải trả về kết quả cũ từ Redis, KHÔNG insert trùng. Chọn ngôn ngữ của bạn; mọi ngôn ngữ trả cùng một contract output.\r\n",
+      "difficulty": "insane\r\n",
+      "requirements": [
+        {
+          "id": "requirement-0",
+          "title": "Nhận upload và trả 202 + jobId ngay, xử lý bất đồng bộ\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\n`POST /users/import` không xử lý đồng bộ trong request — nó chỉ ghi nhận job và trả ngay `202 Accepted` + `{ jobId }`, để việc import chạy nền. Đây là pattern chuẩn cho tác vụ dài (file lớn) tránh giữ kết nối HTTP quá lâu.\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- `POST /users/import` nhận `multipart/form-data` chứa file CSV (cột `name,email`) + header `Idempotency-Key` bắt buộc; thiếu key hoặc thiếu file → 400.\r\n- Endpoint phải trả 202 Accepted + body `{ jobId }` NGAY, KHÔNG chờ parse/insert xong.\r\n- Việc parse + insert chạy trên một background worker/queue, KHÔNG block event-loop của request handler.\r\n- `GET /users/import/{jobId}` trả `{ status, processed, total, errors }` với `status ∈ { queued, processing, done, failed }`.\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nDùng BullMQ (`Queue` + `Worker` trên ioredis) cho job nền; `@Post(\"import\")` chỉ `queue.add(...)` rồi `return { jobId }` với `@HttpCode(202)`. Đọc file qua `@UseInterceptors(FileInterceptor(\"file\"))`.\r\n"
+        },
+        {
+          "id": "requirement-1",
+          "title": "Idempotency qua Redis + xử lý theo chunk + báo lỗi từng dòng\r\n",
+          "body": ":::muted\r\nMục đích\r\n:::\r\n\r\nBảo đảm gửi lại CÙNG `Idempotency-Key` không bao giờ insert trùng — kết quả của lần đầu được lưu trong Redis và lần sau trả lại y nguyên. File lớn được xử lý theo chunk (stream), và mỗi dòng lỗi được ghi nhận riêng mà không làm hỏng cả job (partial-success cho import).\r\n\r\n:::muted\r\nRàng buộc kỹ thuật\r\n:::\r\n\r\n- `Idempotency-Key → result` phải lưu trong Redis (restart-safe), CẤM lưu trong `Map`/biến in-memory của process.\r\n- Lần gửi đầu với một key: tạo job, xử lý, lưu kết quả (`jobId` + summary) vào Redis dưới key đó (có TTL).\r\n- Lần gửi lại với CÙNG key: phát hiện key đã tồn tại trong Redis → trả lại kết quả cũ (cùng `jobId`/summary), KHÔNG parse lại, KHÔNG insert thêm dòng nào.\r\n- File phải được đọc/insert theo chunk (vd 500 dòng/lần), KHÔNG nạp toàn bộ rows vào RAM rồi insert một phát; cập nhật `processed` sau mỗi chunk.\r\n- Mỗi dòng không hợp lệ (thiếu email, sai format) được thêm vào `errors: [{ row, reason }]`; các dòng hợp lệ VẪN được insert (partial-success — KHÁC với rollback toàn bộ ở challenge hard).\r\n\r\n:::muted\r\nGợi ý\r\n:::\r\n\r\nDùng `SET <key> <result> NX EX <ttl>` của Redis để vừa kiểm tra-vừa-đặt nguyên tử (chống race 2 request cùng key). Stream CSV bằng `csv-parse` ở chế độ stream; gom dòng thành chunk rồi `insert` theo batch. Lưu trạng thái job (`status/processed/total/errors`) trong Redis hash để `GET .../{jobId}` đọc ra.\r\n"
+        }
+      ],
+      "prerequisites": [
+        {
+          "id": "prerequisite-0",
+          "text": "Đã hoàn thành challenge hard (batch + transaction) + Docker chạy PostgreSQL và Redis local.\r\n"
+        },
+        {
+          "id": "prerequisite-1",
+          "text": "Hiểu idempotency (§2.2.1), pattern async job (`202 Accepted` + polling), và cơ bản về Redis (`SET NX EX`, TTL).\r\n"
+        }
+      ],
+      "source": {
+        "fixturePath": "original/challenges/3-idempotent-csv-import-insane/vi.md",
+        "sha256": "b62ecafa2e8a6a2332ecda8459bdeb16e79a181515e39be7f4fe4290f94014d0",
+        "publicFieldRanges": [
+          {
+            "field": "title",
+            "start": 109,
+            "end": 198,
+            "sha256": "8218c8cc704b59ec0e3cc13406e79a56c1b0a9982870aab81106732f6a206aee"
+          },
+          {
+            "field": "description",
+            "start": 269,
+            "end": 725,
+            "sha256": "7408cb8ccee7959de0235fe979b79d50eddde7518b9917764fdafd4357f4647c"
+          },
+          {
+            "field": "difficulty",
+            "start": 34677,
+            "end": 34685,
+            "sha256": "a9dab8c41079b51fa7a1013ec12dda92e506cf696f6f5e2bf5684e6b614166c8"
+          },
+          {
+            "field": "requirements.0.langs.0.title",
+            "start": 915,
+            "end": 986,
+            "sha256": "adbf39e1ec917aff96f71a738a98ef2f38b7a47f8e9c7dff86ce4353f8883e3c"
+          },
+          {
+            "field": "requirements.0.langs.0.body",
+            "start": 1054,
+            "end": 2163,
+            "sha256": "26a3308cb90b6d6514a740b839f21c1af202cd46d2a32d40ab142fa979a2111a"
+          },
+          {
+            "field": "requirements.1.langs.0.title",
+            "start": 7058,
+            "end": 7129,
+            "sha256": "95b814e7b1e0eeabcb44bfb8d3a4af546a0dc2a0b572f127105877118a39c71c"
+          },
+          {
+            "field": "requirements.1.langs.0.body",
+            "start": 7197,
+            "end": 8854,
+            "sha256": "eafb83d6a29441fe92300f2fed0e2fb92c4992b484c01637ce08424f72e111fb"
+          },
+          {
+            "field": "prerequisites.0.langs.0.text",
+            "start": 32646,
+            "end": 32746,
+            "sha256": "b7a931ce293c759ccd7073f96f34d744247206941a455b960a0e1c26490b1b46"
+          },
+          {
+            "field": "prerequisites.1.langs.0.text",
+            "start": 33669,
+            "end": 33791,
+            "sha256": "fd675471234171a694ac6486e469d95f5721759ad85e7cbb6e57b9341c46d068"
+          }
+        ]
+      }
+    }
+  ],
+  "classificationNotes": [
+    "The complete requirement title/body fields, including their original hints, are public under data.lessons.content; they are copied without rewriting.",
+    "The source steps are guided solution material and are excluded in full. Outputs are outside the public allowlist and are excluded; score and verified fields are excluded at every level. No submissions are read or projected.",
+    "No unresolved field classification remains for this selected variant. Unknown fields or a changed field structure stop projection for review."
+  ]
+}
