@@ -23,36 +23,41 @@ fields:
     type: provider order or invoice reference
     required: true
   - name: status
-    type: pending
-    paid: null
-    failed: null
-    canceled: null
+    type: pending, paid, failed, canceled or expired
     required: true
   - name: confirmedAt
     type: UTC timestamp
-    required when paid: null
+    required: when paid
 invariants:
   - Unique idempotency identity is (rail, providerRef).
-  - Paid confirmation must match purchase, expected amount and currency VND and
-    be verified by the provider-specific mechanism.
+  - Paid confirmation must match purchase, expected amount and currency VND and be verified by the
+    provider-specific mechanism.
   - Price and plan are immutable snapshots once checkout is created.
-  - A valid matching ORDER_PAID confirmation received after cancellation or
-    expiry is proposed to grant exactly once and create an audit/reconciliation
-    record (Q-W2-3).
-  - The default rail is proposed as the learner last-used rail, otherwise SePay
-    (Q-W2-6).
+  - A valid matching ORDER_PAID confirmation received after cancellation or expiry is proposed to
+    grant exactly once and create an audit/reconciliation record (Q-W2-3).
+  - The default rail is proposed as the learner last-used rail, otherwise SePay (Q-W2-6).
 stateMachine:
   - pending -> paid
   - pending -> failed
   - pending -> canceled
+  - pending -> expired
+  - canceled or expired -> paid after verified matching late confirmation, once with audit (Q-W2-3)
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: Scoped purchase tests for late confirmation audit, rail default and
-      idempotency; remains todo until green.
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium questions, proof obligations and repository
-    module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

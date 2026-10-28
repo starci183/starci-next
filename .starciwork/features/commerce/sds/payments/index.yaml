@@ -3,12 +3,11 @@ id: sds.commerce.payments
 title: Premium payments and entitlement
 state: todo
 activity: idle
-responsibility: Coordinate server-owned offers, pending purchases, provider
-  checkout and verified payment events, idempotent entitlement updates, and
-  learner entitlement reads. Use the learner last-used payment rail when
-  available, otherwise SePay by default (Q-W2-6); handle valid matching late
-  ORDER_PAID once with an audit event (Q-W2-3), and extend active renewals from
-  the existing end (Q-W2-5).
+responsibility: Coordinate server-owned offers, pending purchases, provider checkout and verified
+  payment events, idempotent entitlement updates, and learner entitlement reads. Use the learner
+  last-used payment rail when available, otherwise SePay by default (Q-W2-6); handle valid matching
+  late ORDER_PAID once with an audit event (Q-W2-3), and extend active renewals from the existing
+  end (Q-W2-5).
 interfaces:
   - name: createPurchase
     direction: inbound
@@ -32,23 +31,52 @@ stateMachine:
   - record paid once
   - extend entitlement
 sequence:
-  - Server reads the single commercial offer definition and snapshots amount and
-    term.
-  - Server creates provider checkout and persists provider reference with unique
-    (rail, providerRef).
-  - Provider callback is authenticated and validated against the pending
-    purchase.
-  - One transaction records paid purchase and extends entitlement; duplicate
-    event is a no-op.
+  - Server reads the single commercial offer definition and snapshots amount and term.
+  - Purchase uses its unified PaymentRail abstraction to call the selected provider typed client and
+    persists provider reference with unique (rail, providerRef); provider integrations do not import
+    each other.
+  - Provider callback is authenticated and validated against the persisted purchase, including valid
+    matching late ORDER_PAID after cancellation or expiry under proposed Q-W2-3.
+  - One transaction records paid purchase and extends entitlement; duplicate event is a no-op.
   - Other features consume entitlement through the shared contract.
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: Scoped back-end component tests; live provider proof is separately blocked
-      by named sandbox prerequisites.
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+  - required: true
+    command: npm test -- src/modules/integrations
+      --collectCoverageFrom=src/modules/integrations/{sepay,payos}/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped payment-rails unit proof with the managed per-file coverage threshold
+      unchanged at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/payment-rails
+    note: Required scoped payment-rails integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/payment-rails
+    note: Required scoped payment-rails end-to-end proof; no passed result is claimed.
+  - required: true
+    command: npm test -- src/modules/domain/entitlement
+      --collectCoverageFrom=src/modules/domain/entitlement/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped entitlement unit proof with the managed per-file coverage threshold unchanged
+      at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/entitlement
+    note: Required scoped entitlement integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/entitlement
+    note: Required scoped entitlement end-to-end proof; no passed result is claimed.
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium questions, proof obligations and repository
-    module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

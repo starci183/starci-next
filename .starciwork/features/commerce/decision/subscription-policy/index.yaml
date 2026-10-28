@@ -1,18 +1,56 @@
-﻿schema: work/policy-decision@1
+schema: work/policy-decision@1
 id: decision.commerce.subscription-policy
 title: Premium grant and renewal policy
 state: todo
 activity: idle
 question: When and how does a paid purchase grant or extend Premium?
-options: [Grant only on verified IPN or webhook, grant on browser return, extend from end or now, grace or no grace]
-recommendation: Grant only on authenticated provider IPN or webhook after reference, status, amount and currency match; apply each purchase once; extend from future premiumUntil or confirmation time when expired; no grace period.
-recommendationReason: Browser returns are not payment proof; idempotency prevents duplicate extensions and no-grace behavior is explicit.
+options:
+  - Grant only on verified IPN or webhook
+  - grant on browser return
+  - extend from end or now
+  - grace or no grace
+recommendation: Grant only on authenticated provider IPN or webhook after reference, status, amount
+  and currency match; apply each purchase once; extend from future premiumUntil or confirmation time
+  when expired; no grace period.
+recommendationReason: Browser returns are not payment proof; idempotency prevents duplicate
+  extensions and no-grace behavior is explicit.
 outcome: open
 chosen: null
-reason: 'The proposed grant policy is ready for implementation without implying an owner outcome. Accept verified matching confirmation once, including ORDER_PAID after cancellation or expiry with an audit event (Q-W2-3); extend an active renewal from its current end (Q-W2-5); use UTC calendar arithmetic clamped to month end (Q-CALENDAR-ARITHMETIC). Browser return alone never proves payment; expiry has no grace period.'
+reason: "The proposed grant policy is ready for implementation without implying an owner outcome.
+  Accept verified matching confirmation once, including ORDER_PAID after cancellation or expiry with
+  an audit event (Q-W2-3); extend an active renewal from its current end (Q-W2-5); use UTC calendar
+  arithmetic clamped to month end (Q-CALENDAR-ARITHMETIC). Browser return alone never proves
+  payment; expiry has no grace period. Q6 remains open: one real 229.000 VND charge requires
+  explicit owner approval and never runs without it; the already-authorized sandbox walk proceeds
+  otherwise. These proposed defaults authorize implementation and record no chosen owner outcome."
 blocks: []
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: 'Run scoped back-end tests for verified grant, replay idempotency, late ORDER_PAID audit, active renewal arithmetic and no-grace expiry; record remains todo until green.'
-change: {rev: 2, kind: revised, at: '2026-10-28', reason: 'Restore proposed policy defaults without recording an owner decision.'}
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+  - required: true
+    command: npm test -- src/modules/domain/entitlement
+      --collectCoverageFrom=src/modules/domain/entitlement/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped entitlement unit proof with the managed per-file coverage threshold unchanged
+      at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/entitlement
+    note: Required scoped entitlement integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/entitlement
+    note: Required scoped entitlement end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

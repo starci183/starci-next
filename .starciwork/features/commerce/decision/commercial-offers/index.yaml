@@ -1,18 +1,37 @@
-﻿schema: work/policy-decision@1
+schema: work/policy-decision@1
 id: decision.commerce.commercial-offers
 title: Premium commercial offers
 state: todo
 activity: idle
 question: What Premium plans and prices can the learner buy?
-options: [Monthly and yearly plans at the approved fixed VND prices, Other pricing]
-recommendation: Monthly 229.000 ₫ and yearly 2.290.000 ₫, with both amounts owned in one server-side offer definition.
+options:
+  - Monthly and yearly plans at the approved fixed VND prices
+  - Other pricing
+recommendation: Monthly 229.000 ₫ and yearly 2.290.000 ₫, with both amounts owned in one server-side
+  offer definition.
 recommendationReason: Prevent client price tampering and keep every checkout and display consistent.
 outcome: open
 chosen: null
-reason: 'The approved fixed prices are 229.000 ₫ monthly and 2.290.000 ₫ yearly; they are not an unresolved pricing blocker. Q-PRICE-DISPLAY retains the proposed localized presentation, while Q6 gates only an explicitly approved real 229.000 VND charge; sandbox proof is the default.'
+reason: The approved fixed prices are 229.000 ₫ monthly and 2.290.000 ₫ yearly; they are not an
+  unresolved pricing blocker. Q-PRICE-DISPLAY retains the proposed localized presentation, while Q6
+  gates only an explicitly approved real 229.000 VND charge; sandbox proof is the default.
 blocks: []
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: Run scoped back-end offer and price snapshot tests; state remains todo until green.
-change: {rev: 2, kind: revised, at: '2026-10-28', reason: 'Clarify approved offers and real-charge approval gate.'}
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

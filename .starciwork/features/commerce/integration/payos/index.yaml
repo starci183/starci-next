@@ -4,25 +4,21 @@ title: payOS checkout and webhook
 state: todo
 activity: idle
 provider: payOS
-boundary: Server creates a hosted payment link and accepts configured payOS
-  webhook; return URL is display only.
+boundary: Server creates a hosted payment link and accepts configured payOS webhook; return URL is
+  display only.
 endpoints:
   - purpose: create checkout
     method: POST /v2/payment-requests
-    details: Authenticate with x-client-id and x-api-key; sign request fields with
-      channel checksum key; use unique orderCode and returnUrl/cancelUrl;
-      redirect to returned checkoutUrl.
+    details: Authenticate with x-client-id and x-api-key; sign request fields with channel checksum key;
+      use unique orderCode and returnUrl/cancelUrl; redirect to returned checkoutUrl.
   - purpose: confirm payment
     method: configured merchant webhook
-    details: Verify webhook checksum/signature with channel checksum key; validate
-      successful payload
-    orderCode: null
-    amount: null
-    currency and payment reference before applying purchase.: null
-credential: Owner-provisioned payOS Client ID, API Key and channel Checksum Key
-  stored only in server secret configuration.
-sandbox: Use payOS test channel where available; no live verification is claimed
-  without merchant channel and public callback.
+    details: Verify webhook checksum/signature with channel checksum key; validate successful payload,
+      orderCode, amount, currency and payment reference before applying the purchase.
+credential: Owner-provisioned payOS Client ID, API Key and channel Checksum Key stored only in
+  server secret configuration.
+sandbox: Use payOS test channel where available; no live verification is claimed without merchant
+  channel and public callback.
 research:
   readAt: 2026-10-28
   sources:
@@ -32,27 +28,30 @@ research:
       url: https://payos.vn/docs/du-lieu-tra-ve/webhook/
     - title: payOS signature verification
       url: https://payos.vn/docs/tich-hop-webhook/kiem-tra-du-lieu-voi-signature/
-  findings: Current official docs describe POST /v2/payment-requests with
-    x-client-id and x-api-key, a signed request and returned checkoutUrl;
-    webhook carries data plus signature and is verified with HMAC-SHA256 and the
-    channel checksum key. A valid webhook receives a 2xx acknowledgement. Live
-    verification creates a channel payment, receives webhook at configured
-    public HTTPS endpoint, validates signature and purchase match, and observes
-    acknowledgement/retry behavior.
-  prerequisites: Owner creates and verifies a merchant/channel, supplies
-    credentials through server secret management, configures public webhook,
-    return and cancel URLs.
+  findings: Current official docs describe POST /v2/payment-requests with x-client-id and x-api-key, a
+    signed request and returned checkoutUrl; webhook carries data plus signature and is verified
+    with HMAC-SHA256 and the channel checksum key. A valid webhook receives a 2xx acknowledgement.
+    Live verification creates a channel payment, receives webhook at configured public HTTPS
+    endpoint, validates signature and purchase match, and observes acknowledgement/retry behavior.
+  prerequisites: Owner creates and verifies a merchant/channel, supplies credentials through server
+    secret management, configures public webhook, return and cancel URLs.
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: Run scoped provider adapter tests; provider live proof is not claimed and
-      is blocked on the named sandbox resources and credentials.
+    command: npm test -- src/modules/integrations
+      --collectCoverageFrom=src/modules/integrations/{sepay,payos}/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped provider client unit proof; the payos typed client does not import the other
+      provider client.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/payos-live
+    note: Required provider-live sandbox proof after the named account, environment, public callback and
+      sealed credentials are provisioned; no live proof is claimed.
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium questions, proof obligations and repository
-    module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.
 blockers:
   - Missing payos sandbox merchant account/access
   - Missing commerce-sandbox environment resource

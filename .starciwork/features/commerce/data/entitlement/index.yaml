@@ -14,28 +14,33 @@ fields:
     type: UTC timestamp
     required: true
 invariants:
-  - isPremium(learner) is true exactly while premiumUntil is later than current
-    UTC time.
-  - Entitlement changes only after a verified provider event matching a paid
-    purchase.
-  - A paid term extends from a future existing premiumUntil; otherwise it begins
-    at confirmation time.
-  - An active renewal extends from the existing future premiumUntil (Q-W2-5);
-    expired access has no grace period and falls back to preview.
-  - Monthly and yearly end dates use proposed UTC calendar arithmetic clamped to
-    month end (Q-CALENDAR-ARITHMETIC).
+  - isPremium(learner) is true exactly while premiumUntil is later than current UTC time.
+  - Entitlement changes only after a verified provider event matching a paid purchase.
+  - An active renewal extends from the existing future premiumUntil (proposed yes, Q-W2-5);
+    otherwise the term begins at verified confirmation time. Expired access has no grace period and
+    falls back to preview.
+  - Monthly and yearly end dates use proposed UTC calendar arithmetic clamped to month end
+    (Q-CALENDAR-ARITHMETIC).
 stateMachine:
   - inactive -> active
   - active -> active by extension
   - active -> inactive at premiumUntil
 requiresProof:
   - required: true
-    command: npm --prefix be test -- --runInBand
-    note: Scoped entitlement tests for active extension, calendar boundaries and
-      immediate expiry; remains todo until green.
+    command: npm test -- src/modules/domain/entitlement
+      --collectCoverageFrom=src/modules/domain/entitlement/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped entitlement unit proof with the managed per-file coverage threshold unchanged
+      at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/entitlement
+    note: Required scoped entitlement integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/entitlement
+    note: Required scoped entitlement end-to-end proof; no passed result is claimed.
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium questions, proof obligations and repository
-    module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

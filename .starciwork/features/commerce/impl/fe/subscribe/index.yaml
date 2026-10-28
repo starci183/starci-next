@@ -17,12 +17,13 @@ proves:
   - fr.commerce.renew
 requiresProof:
   - required: true
-    command: npm --prefix fe test -- --runInBand
-    note: Scoped module tests for implementation owners and proved records; leave
-      todo until code and proof are green.
+    command: npm run build:fe
+    note: Required front-end build proof for the Premium plans and checkout-result flow; this record
+      remains todo pending green evidence.
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium questions, proof obligations and repository
-    module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

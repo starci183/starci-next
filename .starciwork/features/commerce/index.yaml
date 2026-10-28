@@ -1,42 +1,37 @@
 schema: work/feature@1
 id: commerce
-purpose: Learners can buy Premium access through SePay or payOS and use
-  entitlement-backed premium features.
+purpose: Learners can buy Premium access through SePay or payOS and use entitlement-backed premium features.
 decided:
-  - Premium is available monthly for 229.000 ₫ and yearly for 2.290.000 ₫,
-    equivalent to ten monthly payments.
-  - A successful purchase grants learner PREMIUM; the purchase sells no course
-    and creates no enrollment.
-  - Premium becomes active only after a verified provider IPN or webhook,
-    extends from the existing entitlement end when still active, and has no
-    grace period.
+  - Premium is available monthly for 229.000 ₫ and yearly for 2.290.000 ₫, equivalent to ten monthly
+    payments.
+  - A successful purchase grants learner PREMIUM; the purchase sells no course and creates no
+    enrollment.
+  - Premium becomes active only after a verified provider IPN or webhook, extends from the existing
+    entitlement end when still active, and has no grace period.
 delivers:
-  - Learners choose a plan, complete checkout, see the result, renew, and lose
-    premium access at expiry.
-  - The server owns the two commercial offers and provides an entitlement
-    contract for other features.
+  - Learners choose a plan, complete checkout, see the result, renew, and lose premium access at
+    expiry.
+  - The server owns the two commercial offers and provides an entitlement contract for other
+    features.
 excludes:
   - Course sales and enrollment.
   - Automatic recurring billing.
 openQuestions:
   - id: Q-W2-2
-    question: Which SePay merchant sandbox access and merchant/IPN secrets are
-      available, and how are they held in sealed custody?
-    proposedDefault: Use a SePay sandbox merchant account and keep merchant signing
-      and IPN secrets in sealed server-side custody; do not put secret values in
-      Work.
+    question: Which SePay merchant sandbox access and merchant/IPN secrets are available, and how are
+      they held in sealed custody?
+    proposedDefault: Use a SePay sandbox merchant account and keep merchant signing and IPN secrets in
+      sealed server-side custody; do not put secret values in Work.
     state: open
   - id: Q-W2-3
     question: How should ORDER_PAID be handled after its order was cancelled or expired?
-    proposedDefault: After valid matching provider confirmation, grant the purchased
-      term exactly once and record an audit/reconciliation event, including for
-      a cancelled or expired order.
+    proposedDefault: After valid matching provider confirmation, grant the purchased term exactly once
+      and record an audit/reconciliation event, including for a cancelled or expired order.
     state: open
   - id: Q-W2-5
-    question: Should an active Premium renewal extend from the current entitlement
-      end date?
-    proposedDefault: Yes. Extend from the current future premiumUntil; if expired,
-      start at verified confirmation time.
+    question: Should an active Premium renewal extend from the current entitlement end date?
+    proposedDefault: Yes. Extend from the current future premiumUntil; if expired, start at verified
+      confirmation time.
     state: open
   - id: Q-W2-6
     question: Which checkout rail is selected by default?
@@ -44,22 +39,20 @@ openQuestions:
     state: open
   - id: Q6
     question: May one real 229.000 VND charge be made to prove the complete Premium loop?
-    proposedDefault: Never run a real charge without explicit owner approval; use
-      sandbox walks otherwise.
+    proposedDefault: Never run a real charge without explicit owner approval; use sandbox walks otherwise.
     state: open
   - id: Q-CALENDAR-ARITHMETIC
     question: How are monthly and yearly Premium terms added across calendar boundaries?
-    proposedDefault: Use UTC calendar arithmetic and clamp to the last valid day of
-      the target month.
+    proposedDefault: Use UTC calendar arithmetic and clamp to the last valid day of the target month.
     state: open
   - id: Q-PRICE-DISPLAY
     question: How should approved Premium prices be formatted for display?
-    proposedDefault: Display 229.000 ? monthly and 2.290.000 ? yearly using
-      localized thousands separators.
+    proposedDefault: Display 229.000 ₫ monthly and 2.290.000 ₫ yearly using localized thousands separators.
     state: open
 change:
-  rev: 2
+  rev: 3
   kind: revised
   at: 2026-10-28
-  reason: Restore approved Premium policy questions, proof obligations and
-    repository module owners.
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.
