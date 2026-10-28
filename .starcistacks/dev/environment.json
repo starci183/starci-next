@@ -1,5 +1,14 @@
 {
   "environment": "dev",
   "provider": "docker-compose",
-  "project": "starci-next"
+  "project": "starci-next",
+  "secrets": [
+    {
+      "name": "ai",
+      "where": "secrets/ai",
+      "keys": ["OPENROUTER_API_KEY"],
+      "recipientPolicy": "This app's own age recipient configured in .sops.yaml",
+      "keyCustody": "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+    }
+  ]
 }

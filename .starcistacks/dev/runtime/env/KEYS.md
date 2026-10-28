@@ -10,5 +10,6 @@ This roster declares names only. Store credential values in sealed custody and m
 | `NEXT_PUBLIC_SITE_URL` | Product front-end site URL |
 | `NEXT_PUBLIC_GRAPHQL_URL` | Product front-end GraphQL transport |
 | `NEXT_PUBLIC_APP_URL` | Landing front-end product link |
+| `OPENROUTER_API_KEY` | Lesson AI pool and its live proof; sealed member `secrets/ai` |
 
 Public front-end configuration is supplied at build time and stays outside sealed custody.
