@@ -7,8 +7,8 @@ actors: [learner]
 trigger: The signed-in learner chooses sign out.
 mainFlow:
   - The browser submits a same-origin sign-out request protected by OriginGuard and the existing CSRF policy.
-  - The application atomically revokes the current server-side session before clearing its cookie and initiating Keycloak RP-Initiated Logout with only the registered application post-logout URI.
-  - The browser returns to the fixed /sign-in location in a signed-out state.
+  - The application atomically revokes the current server-side session before clearing its cookie and initiating Keycloak RP-Initiated Logout with client_id and the registered application post_logout_redirect_uri; Keycloak may require user confirmation without an ID-token hint.
+  - The browser returns to the fixed /sign-in location in a signed-out state; the final app redirect carries only a fixed outcome and no identity, role, credential, authorization code, or provider token.
 exceptionFlows:
   - If the session is already expired or revoked, sign-out clears the cookie and returns the signed-out result without recreating or extending a session.
   - If provider logout is unavailable after local revocation, the application remains signed out, reports that provider sign-out could not be confirmed, and does not restore the local session.
@@ -19,7 +19,10 @@ postconditions:
 composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
-    command: npm run test -- --runInBand
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise local revocation ordering, cookie clearing, provider logout failure, replay and concurrent request behavior.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise durable revocation, cookie deletion attributes and logout redirect transport.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify local revocation before provider logout and fail-closed behavior.}
 extensions: {}

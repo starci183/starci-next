@@ -18,12 +18,14 @@ research:
   sources:
     - https://www.keycloak.org/securing-apps/oidc-layers
     - https://www.keycloak.org/docs/latest/server_admin/
-    - https://www.keycloak.org/docs/26.8.1/upgrading/
+    - https://openid.net/specs/openid-connect-rpinitiated-1_0.html
   findings:
-    - Keycloak documents the OIDC authorization-code flow as browser redirection to its authorization endpoint, followed by a short-lived code returned to the registered callback and exchanged at the token endpoint.
+    - Keycloak documents the OIDC authorization-code flow as browser redirection to its authorization endpoint, followed by a short-lived code returned in the provider-to-backend registered callback query and exchanged at the token endpoint. The backend consumes code/state once; neither is forwarded to /sign-in, frontend JavaScript, logs, or error text.
     - Keycloak's OIDC endpoints are realm-relative; discovery, authorization, token, userinfo, logout and JWKS locations derive from the configured issuer, which remains unresolved rather than replaced with a guessed address.
     - Keycloak supports PKCE and can require S256 through client configuration; this integration always sends code_challenge_method=S256 and a matching verifier at exchange.
-    - RP-Initiated Logout is the supported browser logout flow. The legacy redirect_uri logout parameter is removed; post_logout_redirect_uri must be registered and automatic return may require an ID token hint. The provider client configuration must be confirmed before live proof.
+    - RP-Initiated Logout is the supported browser logout flow. Keycloak's current Server Administration Guide (read 2026-10-28) permits client_id plus an exactly registered post_logout_redirect_uri without an ID-token hint, and may ask the user to confirm logout; the OIDC RP-Initiated Logout specification (read 2026-10-28) defines the same client_id use when post_logout_redirect_uri is sent without id_token_hint. Do not send an ID-token hint. Verify selected client behavior before live proof.
+    - The OIDC RP-Initiated Logout specification requires the post-logout URI to be registered and allows provider confirmation where no ID-token hint is supplied; Keycloak documents confirmation and a continue link when configured. If the actual client cannot complete logout and return through client_id plus the registered URI, record the configuration gap under Q-A1.
+    - This provisional client accepts only ID-token signature algorithm RS256 as a literal asymmetric allowlist; a different algorithm requires explicit matching configuration and no token-selected algorithm or HMAC fallback.
     - Authorization and token requests use a 10000 ms required outbound timeout; no protocol default address or secret is invented.
   lifecycleLimits:
     - Authorization transactions expire after 300 seconds and may be claimed once; authorization codes are exchanged once and rejected on replay, mismatch, expiry or second concurrent claim.
@@ -32,11 +34,11 @@ research:
     - Sign-out revokes the local durable session before RP-Initiated Logout; provider failure does not restore the local session. Provider-session termination cannot be claimed until a real provider run confirms it.
   prerequisites:
     - Q-A1 OPEN: owner supplies actual app development issuer, chooses reuse of starci-next-identity-lane versus a separate client, and names disposable learner test-account custody.
-    - Owner provisions exact HTTPS callback /api/identity/session/callback and fixed post-logout /sign-in URIs for the chosen client; keycloak-client-secret remains in documented SOPS custody.
+    - Owner provisions exact HTTPS callback /api/identity/session/callback and fixed post-logout /sign-in URIs for the chosen client; keycloak-client-secret remains in documented SOPS custody. Q-A1 also blocks live proof and acceptance until the client_id + post_logout_redirect_uri behavior is confirmed.
   liveVerification: Blocked by Q-A1 until issuer, client choice, callback registrations and named learner test-account custody are supplied; then run the app behavioral test script and a provider-backed browser journey to verify PKCE S256, callback validation, session reload and RP-Initiated Logout.
 requiresProof:
   - required: true
-    command: npm run test -- --runInBand
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise OIDC request construction, validation, one-use callback and logout construction; live provider proof remains blocked by Q-A1.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Record current official OIDC/Keycloak behavior and the provisional session contract.}
 extensions:

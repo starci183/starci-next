@@ -7,7 +7,7 @@ responsibility: Verify provider identity and manage opaque application sessions 
 interfaces:
   - name: sign-in-transaction
     direction: input
-    description: Creates and atomically consumes one-use browser-bound OIDC authorization transactions with expiring state, nonce and PKCE S256 verifier.
+    description: Creates and atomically consumes one-use browser-bound OIDC authorization transactions with expiring state, nonce and PKCE S256 verifier; accepts the transient authorization code and state only at the registered backend callback and consumes them once.
   - name: current-session
     direction: output
     description: Reads current durable session expiry and revocation and returns verified issuer, subject, provider-asserted roles and expiry.
@@ -24,21 +24,26 @@ stateMachine:
     - callback-claimed -> signed-in: one successful code exchange and verified identity are persisted durably before cookie issuance.
     - callback-claimed -> signed-out: exchange, validation, or persistence fails; transaction stays consumed and no cookie is issued.
     - signed-in -> expired: provider identity-token expiry or configured local maximum is reached, whichever comes first.
-    - signed-in -> revoked: sign-out atomically marks current session revoked before provider redirect.
+    - signed-in -> revoked: sign-out atomically marks current session revoked before browser navigation to the provider logout endpoint.
     - expired -> signed-out: current-session read refuses the expired session and clears the cookie.
     - revoked -> signed-out: reads refuse the session, including copied references, and clear the cookie.
 sequence:
   - POST /api/identity/session/start validates same-origin Origin and CSRF policy; issue state, nonce and PKCE S256 verifier with a 300 second transaction expiry, set a separate Secure HttpOnly SameSite=Lax transaction-binding cookie, and redirect to configured authorization endpoint.
-  - GET /api/identity/session/callback validates the transaction cookie, state, issuer and provider error response, then atomically claims state before one code exchange with a 10 second outbound timeout; validate signature, issuer, audience, nonce and expiry using provider metadata/JWKS.
+  - GET /api/identity/session/callback accepts the transient provider code/state query only at this registered backend endpoint, validates the transaction cookie, state, issuer and provider error response, then atomically claims state before one code exchange with a 10 second outbound timeout; validate RS256 signature, issuer, audience, nonce and expiry using provider metadata/JWKS. Never log the callback query, code, tokens, credentials or provider error text.
+  - After either callback outcome is consumed, redirect only to fixed /sign-in?auth=success or /sign-in?auth=error; carry no identity, role, credential, authorization code, provider token or provider error text.
   - Persist identity and provider role assertions in identity-owned PostgreSQL state. Persist only a digest of a cryptographically random application session reference; session expiry is the earlier of verified identity-token expiry and configured 8 hour maximum. No automatic refresh; expiry requires new sign-in.
-  - Issue raw application session reference only as Secure, HttpOnly, SameSite=Lax, Path=/ cookie with Max-Age capped by actual session expiry. Use a distinct Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie; clear it on every callback outcome.
+  - Issue raw application session reference only as `__Host-identity_session` Secure, HttpOnly, SameSite=Lax, Path=/ cookie with Max-Age capped by actual session expiry. Use a distinct `__Host-identity_login` Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie; clear it on every callback outcome. Delete either cookie with the same name, Path=/, Secure, HttpOnly and SameSite=Lax attributes plus Max-Age=0 and Expires=Thu, 01 Jan 1970 00:00:00 GMT; omit Domain.
   - Every protected request reads durable revocation and expiry state; absent, unknown, expired or revoked references are refused. Concurrent transaction claims are serialized/conditional so exactly one succeeds; persistence uncertainty fails closed.
-  - POST /api/identity/session/sign-out checks OriginGuard and CSRF, atomically revokes before provider navigation, clears the app cookie even when provider logout fails, and redirects only to the configured Keycloak logout endpoint using the registered /sign-in post-logout URI. Expired/revoked sign-out is idempotent.
+  - POST /api/identity/session/sign-out checks OriginGuard and CSRF, atomically revokes before provider navigation, clears the app cookie even when provider logout fails, and redirects only to the configured Keycloak end_session_endpoint using client_id and the registered /sign-in post_logout_redirect_uri without an ID-token hint; Keycloak may request confirmation. If actual client configuration cannot complete logout and return this way, Q-A1 records the gap. Expired/revoked sign-out is idempotent.
 requiresProof:
   - required: true
-    command: npm run test -- --runInBand
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise transaction claim races, browser binding, expiry, durable lookup, revocation, cookie attributes and logout failure.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise durable transaction/session persistence, callback and cookie transport, and revocation ordering.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify provisional durable opaque session lifecycle and concurrency behavior.}
 extensions:
   provisional: Kernel provisional architecture for the authorized sign-in slice; state remains todo until behavioral proof passes.
-  providerTokenHandling: Any ID token needed for RP-Initiated Logout is retained only in protected server-side identity state and never returned to frontend state or logged; no access or refresh token is exposed or refreshed in this slice.
+  providerTokenHandling: No ID-token hint is sent for RP-Initiated Logout; use client_id and the registered post_logout_redirect_uri, allowing provider confirmation. If the chosen client cannot complete that flow, record the configuration gap under Q-A1. No access or refresh token is exposed or refreshed in this slice.
+  signatureAlgorithms: Accept only the literal asymmetric algorithm allowlist [RS256] for this provisional Keycloak client; another algorithm requires matching explicit provider configuration and is never selected from the token or substituted with HMAC.

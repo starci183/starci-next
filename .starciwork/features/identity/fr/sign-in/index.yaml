@@ -9,18 +9,21 @@ mainFlow:
   - The browser submits a same-origin sign-in start request; the application creates a one-use authorization transaction bound to that browser and redirects to configured Keycloak using authorization code flow with PKCE S256, state and nonce.
   - Keycloak authenticates the learner and redirects to the exact registered callback with an authorization code.
   - The application atomically claims the unexpired transaction, validates browser binding, state, nonce, issuer, audience, signature and token expiry, exchanges the code once, and establishes a durable opaque application session for the verified issuer and subject. No learner or operator role is required.
-  - The application returns the browser to the fixed application-owned /sign-in destination; no caller-provided redirect is followed.
+  - After consuming the callback query exactly once, the application redirects to the fixed application-owned /sign-in?auth=success or /sign-in?auth=error destination; it never puts identity, role, credential, authorization code, or provider token in that redirect.
 exceptionFlows:
   - If the learner cancels, Keycloak is unavailable, state or browser binding is absent/mismatched/replayed/expired, the code is replayed, code exchange fails, or identity validation fails, the transaction is consumed or expires, no session is established, cookies are cleared, and a recoverable error is shown at /sign-in.
   - Concurrent callback requests for one transaction have exactly one atomic claimant; all others fail closed without issuing a session.
   - If durable session persistence fails after provider validation, no session cookie is issued and the learner remains signed out.
 postconditions:
   - A successful flow has an authenticated session bound to verified issuer and subject; roles, if present, are provider-asserted and verified.
-  - A failed flow has no authenticated learner session and no provider token, credential, or authorization code in frontend state, logs, or callback query.
+  - A failed flow has no authenticated learner session and no provider token, credential, or authorization code in frontend state, logs, error text, or the final /sign-in redirect. The transient authorization code and state are accepted only on the registered backend callback query and consumed once.
 composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
-    command: npm run test -- --runInBand
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise authorization transaction issuance, browser binding, PKCE, callback replay/expiry, validation and fixed redirect.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise callback transport, one-use persistence, cookies and safe outcome redirect.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify browser-bound OIDC flow without a fabricated learner role.}
 extensions: {}

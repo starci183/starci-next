@@ -10,13 +10,13 @@ surface:
     method: POST
     path: /api/identity/session/start
     request: No body; same-origin Origin and existing CSRF policy required.
-    response: 303 See Other to configured Keycloak authorization endpoint; sets one-use Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie with 300 second Max-Age.
+    response: 303 See Other to configured Keycloak authorization endpoint; sets one-use `__Host-identity_login` Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie with 300 second Max-Age and no Domain attribute.
     errors: [400 IDENTITY_ORIGIN_REFUSED, 403 IDENTITY_CSRF_REFUSED, 429 IDENTITY_RATE_LIMITED, 503 IDENTITY_PROVIDER_UNAVAILABLE]
   - name: sign-in-callback
     method: GET
     path: /api/identity/session/callback
-    request: Provider authorization response; exact registered callback, state and transaction-binding cookie required.
-    response: 303 See Other to fixed app-owned /sign-in; on success sets Secure, HttpOnly, SameSite=Lax, Path=/ opaque application session cookie and clears transaction cookie; on failure clears transaction and session cookies.
+    request: Provider authorization response including transient code/state (or provider error/state) only at this exact registered backend callback; transaction-binding cookie required. Atomically consume the query values once; never forward them.
+    response: 303 See Other to fixed app-owned /sign-in?auth=success or /sign-in?auth=error; success sets opaque `__Host-identity_session` Secure, HttpOnly, SameSite=Lax, Path=/ cookie and clears `__Host-identity_login`; failure clears both cookies. Final app redirect carries only this fixed outcome, never identity, role, credential, authorization code, provider token, or provider error text.
     errors: [400 IDENTITY_CALLBACK_INVALID, 401 IDENTITY_PROVIDER_REFUSED, 409 IDENTITY_TRANSACTION_REPLAYED, 410 IDENTITY_TRANSACTION_EXPIRED, 503 IDENTITY_PROVIDER_UNAVAILABLE]
   - name: current-session
     method: GET
@@ -28,7 +28,7 @@ surface:
     method: POST
     path: /api/identity/session/sign-out
     request: No body; same-origin Origin and existing CSRF policy required; current session cookie optional for idempotent cleanup.
-    response: 303 See Other through Keycloak RP-Initiated Logout after durable local revocation; clears application cookie; provider return URI is fixed /sign-in.
+    response: 303 See Other through Keycloak RP-Initiated Logout after durable local revocation; sends client_id and the registered post_logout_redirect_uri without an ID-token hint; clears `__Host-identity_session` using its exact name, Path=/, Secure, HttpOnly and SameSite=Lax attributes, Max-Age=0, Expires=Thu, 01 Jan 1970 00:00:00 GMT, and no Domain. Provider confirmation may be required; final return is fixed /sign-in with only a fixed outcome.
     errors: [400 IDENTITY_ORIGIN_REFUSED, 403 IDENTITY_CSRF_REFUSED, 503 IDENTITY_SESSION_UNAVAILABLE]
 guarantees:
   - A 200 current-session response represents verified issuer and subject and only provider-asserted roles; client claims grant no authority, PREMIUM is owned by subscription-premium, and no learner role is required.
@@ -38,7 +38,9 @@ guarantees:
   - State-changing start and sign-out requests pass existing OriginGuard and CSRF policy; the provider callback is an explicitly public OIDC handshake route subject to strict rate limiting and one-use state/browser binding.
   - Provider failures, transaction replay, mismatch, expiry, concurrency loss, or database uncertainty fail closed without issuing or retaining an authenticated session; local sign-out revocation occurs before provider logout and remains effective if provider logout fails.
   - Redirects are fixed application-owned callback and /sign-in URIs registered for the selected client; no request parameter, role claim, or absolute user-supplied redirect controls a destination.
-  - No raw provider token, credential, or authorization code appears in frontend state, application logs or callback query; if RP-Initiated Logout requires an ID token hint, it remains protected server-side.
+  - The transient authorization code and state appear only in the provider-to-backend registered callback query and are consumed once; they never enter the app /sign-in redirect, frontend JavaScript state, logs, or error text. Final success/failure redirects carry only fixed safe outcome information, never identity, role or credential.
+  - Cookie names are `__Host-identity_session` and `__Host-identity_login`; both are Secure, HttpOnly, SameSite=Lax, Path=/ and omit Domain. Deletion uses matching attributes plus Max-Age=0 and Expires=Thu, 01 Jan 1970 00:00:00 GMT.
+  - ID-token signatures accept only literal asymmetric algorithm RS256 for this provisional Keycloak client; other algorithms require matching explicit configuration, never token-selected algorithms or HMAC.
 consumerObligations:
   - Treat only 200 as authenticated; on 401 route the learner to /sign-in and do not infer identity or roles from client state.
   - Enforce authorization for feature-specific permissions independently of authentication and provider role claims.
@@ -58,8 +60,12 @@ extensions:
   unresolved:
     - Q-A1 remains OPEN for the actual development issuer, reuse of starci-next-identity-lane versus separate client, and named disposable learner test-account custody. These block live verification and acceptance only.
     - The eventual development origin must support HTTPS and Secure cookies; no local insecure-cookie exception is authorized.
+    - Q-A1 also covers verification that the selected client permits browser logout with client_id and the registered post_logout_redirect_uri; if it cannot complete logout and return without an ID-token hint, record the configuration gap here before live proof or acceptance.
 requiresProof:
   - required: true
-    command: npm run test -- --runInBand
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise all four transport doors, response/status schemas, Origin/CSRF policy, redirect safety and lifecycle failure cases.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Define provisional transport, cookie, session and configuration contract before code resumes.}

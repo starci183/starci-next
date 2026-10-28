@@ -18,3 +18,4 @@ excludes:
   - Subscription entitlement decisions.
 openQuestions:
   - Q-A1 OPEN: Owner must provide the app development Keycloak issuer, decide whether to reuse confidential client starci-next-identity-lane or register a separate client, and name the custody for the disposable learner test account. The sibling development runbook documents keycloak-client-secret as the confidential-client secret and SOPS custody under the shared master identity; this record contains no secret or identity value. This blocks live proof and acceptance only.
+  - Drawing remains held until the published grammar fill-height fix and an owner-approved grammar version are available.
