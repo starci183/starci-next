@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@heroui/react": "3.2.6",
-    "@starci/grammar": "0.10.0",
+    "@starci/grammar": "0.15.0",
     "@starci/heroicons": "0.3.4",
     "@xyflow/react": "12.11.6",
     "next-intl": "4.13.6",

@@ -35,6 +35,7 @@
           "kind": "next"
         }
       ],
+      "grammar": "core",
       "reads": ["be/contracts/"],
       "optionalSlots": ["fe.package.ui", "fe.package.i18n"]
     }

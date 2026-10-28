@@ -8,11 +8,13 @@ module.exports = require("@starci/jest-preset").starciJestConfig({
         ],
         roles: [
             "service",
+            "schema",
             "policy",
             "projection",
             "guard",
             "mapper",
             "client",
+            "adapter",
             "filter",
             "interceptor",
             "processor",
