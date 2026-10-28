@@ -6,6 +6,7 @@ import { ErrorsFilter } from "@modules/platform/errors"
 import { OriginGuard, RateLimitGuard } from "@modules/platform/http-security"
 import { platformModules } from "./compose/platform"
 import { domainModules } from "./compose/domain"
+import { integrationModules } from "./compose/integrations"
 import { systemModules } from "./compose/system"
 import { apiModules } from "./compose/api"
 import { webhooksModules } from "./compose/webhooks"
@@ -20,6 +21,7 @@ export class AppModule {
             module: AppModule,
             imports: [
                 ...platformModules(options),
+                ...integrationModules(options),
                 ...domainModules(),
                 ...systemModules(),
                 ...apiModules(),

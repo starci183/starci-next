@@ -1,0 +1,31 @@
+{
+  "providers": [
+    {
+      "id": "deepseek",
+      "baseUrl": "https://api.deepseek.com",
+      "maxConcurrency": 8,
+      "keys": [
+        { "alias": "lesson-primary", "env": "LESSON_AI_PRIMARY", "maxConcurrency": 4 },
+        { "alias": "lesson-fallback-1", "env": "LESSON_AI_FALLBACK_1", "maxConcurrency": 4 }
+      ],
+      "models": [
+        { "id": "deepseek-flash", "aliases": ["deepseek-4.1-flash"], "contextWindow": 1000000 },
+        { "id": "deepseek-v4-pro", "contextWindow": 1000000 }
+      ]
+    }
+  ],
+  "defaults": { "maxAttempts": 4, "timeoutMs": 30000, "deadlineMs": 60000 },
+  "profiles": {
+    "lesson": {
+      "model": "deepseek-4.1-flash",
+      "fallbacks": ["deepseek-v4-pro"],
+      "allowFallback": true,
+      "maxAttempts": 4,
+      "timeoutMs": 30000,
+      "deadlineMs": 60000
+    }
+  },
+  "resilience": { "keyBreaker": { "failureThreshold": 3 }, "providerBreaker": { "failureThreshold": 8 } },
+  "telemetry": { "includeContent": false },
+  "limits": { "maxOutputTokens": 1024, "reservedPromptTokens": 2048 }
+}

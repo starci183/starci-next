@@ -32,6 +32,8 @@ const environmentOf = (w: AppWiring, extra: Readonly<Record<string, string>> = {
         NODE_ENV: "test",
         HTTP_SECURITY_ALLOWED_ORIGINS: ALLOWED_ORIGIN,
         PRIMARY_DB_URL: w.db.primary.url,
+        LESSON_AI_PRIMARY: "test-placeholder-lesson-primary",
+        LESSON_AI_FALLBACK_1: "test-placeholder-lesson-fallback-1",
         ...extra,
     })
 
