@@ -1,7 +1,7 @@
 export { SepayModule } from "./sepay.module"
 export { parseSepayConfig } from "./sepay.config"
 export type { SepayOptions } from "./sepay.options"
-export { InjectSepayClient } from "./sepay.decorators"
+export { InjectSepayClient, SEPAY_CLIENT } from "./sepay.decorators"
 export type { SepayClient } from "./sepay.client"
 export type {
     SepayCheckout,

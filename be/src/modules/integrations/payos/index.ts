@@ -1,7 +1,7 @@
 export { PayosModule } from "./payos.module"
 export { parsePayosConfig } from "./payos.config"
 export type { PayosOptions } from "./payos.options"
-export { InjectPayosClient } from "./payos.decorators"
+export { InjectPayosClient, PAYOS_CLIENT } from "./payos.decorators"
 export type { PayosClient } from "./payos.client"
 export type {
     PayosCheckout,
