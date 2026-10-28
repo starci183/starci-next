@@ -17,7 +17,7 @@ export const LandingPageBase = (props: LandingPageBaseProps) => (
     <>
         <Heading level={1}>{props.props.title}</Heading>
         <Text tone="muted">{props.props.lede}</Text>
-        <Button href={props.props.appHref} variant="primary">
+        <Button href={props.props.appHref} intent="commit">
             {props.props.openApp}
         </Button>
     </>

@@ -1,4 +1,4 @@
-/** The shell's frame: a full-height column on the theme's page colours. */
+/** The shell's frame: a full-height column; colours come from Grammar's root. */
 export const siteShellClassNames = {
-    frame: "flex min-h-screen flex-col bg-background text-foreground",
+    frame: "flex min-h-screen flex-col",
 } as const

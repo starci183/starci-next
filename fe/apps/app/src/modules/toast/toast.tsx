@@ -10,12 +10,12 @@ import type { ReactNode } from "react"
 /** The options a status toast takes: HeroUI's, minus the variant the status already names. */
 type StatusToastOptions = Parameters<typeof heroToast.success>[1]
 
-/** The one indicator of each status, from the app's one icon set. */
+/** The one indicator of each status, from the app's one icon set; HeroUI's toast variant colours it through currentColor. */
 const INDICATOR: Record<"success" | "danger" | "warning" | "info", ReactNode> = {
-    success: <CheckCircleIcon className="size-6 text-success-soft-foreground" />,
-    danger: <XCircleIcon className="size-6 text-danger-soft-foreground" />,
-    warning: <ExclamationTriangleIcon className="size-6 text-warning-soft-foreground" />,
-    info: <InformationCircleIcon className="size-6 text-accent" />,
+    success: <CheckCircleIcon className="size-6" />,
+    danger: <XCircleIcon className="size-6" />,
+    warning: <ExclamationTriangleIcon className="size-6" />,
+    info: <InformationCircleIcon className="size-6" />,
 }
 
 /** The app's toast: HeroUI's imperative toast with the status indicator injected; the region is mounted by the providers. */
