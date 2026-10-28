@@ -1,6 +1,7 @@
 "use client"
 
 import { I18nProvider } from "@heroui/react"
+import { GrammarRoot } from "@starci/grammar/common"
 import { NextIntlClientProvider } from "next-intl"
 import type { ReactNode } from "react"
 
@@ -13,11 +14,14 @@ type ProvidersProps = {
 }
 
 /**
- * The two contexts above every route: next-intl's copy context and React Aria's locale for the grammar's controls. Both take the
- * same locale, so the sentences and the controls of a page speak one language.
+ * The contexts above every route: next-intl's copy context, React Aria's locale for the grammar's controls and Grammar's Common
+ * boundary (its root holds React Aria's router context, so it renders on the client). Both locales are the same, so the sentences
+ * and the controls of a page speak one language.
  */
 export const Providers = (props: ProvidersProps) => (
     <NextIntlClientProvider locale={props.locale} messages={props.messages} timeZone={props.timeZone}>
-        <I18nProvider locale={props.locale}>{props.children}</I18nProvider>
+        <I18nProvider locale={props.locale}>
+            <GrammarRoot>{props.children}</GrammarRoot>
+        </I18nProvider>
     </NextIntlClientProvider>
 )

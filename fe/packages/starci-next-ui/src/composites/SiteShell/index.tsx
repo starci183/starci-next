@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { GrammarRoot, PageContainer, TextAction, TopBar, WorkspaceShell } from "@starci/grammar/common"
+import { PageContainer, TextAction, TopBar, WorkspaceShell } from "@starci/grammar/common"
 import { siteShellClassNames } from "./classNames"
 
 /** What an app's chrome hands the shell: the brand, its home link and the routed body. */
@@ -13,16 +13,15 @@ type SiteShellProps = {
 }
 
 /**
- * The document chrome both apps share: Grammar's Common boundary, the brand header (the top bar carrying the wordmark that links
+ * The document chrome both apps share (inside the providers' Grammar root): the brand header (the top bar carrying the wordmark that links
  * home), then the routed body in the shell's main landmark at reading measure.
  */
 export const SiteShell = (props: SiteShellProps) => (
-    <GrammarRoot className={siteShellClassNames.frame}>
-        <WorkspaceShell
-            viewport="flow"
-            primaryLabel={props.brand}
-            header={<TopBar brand={<TextAction href={props.homeHref}>{props.brand}</TextAction>} />}
-            primary={<PageContainer measure="reading">{props.children}</PageContainer>}
-        />
-    </GrammarRoot>
+    <WorkspaceShell
+        viewport="flow"
+        className={siteShellClassNames.frame}
+        primaryLabel={props.brand}
+        header={<TopBar brand={<TextAction href={props.homeHref}>{props.brand}</TextAction>} />}
+        primary={<PageContainer measure="reading">{props.children}</PageContainer>}
+    />
 )
