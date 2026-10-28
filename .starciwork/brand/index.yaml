@@ -1490,3 +1490,6 @@ change:
     color.dark (the derived dark palette, pending owner review), the measured dark pairs, two light tokens the
     brand layer needs (--starci-core-accent-text and --starci-core-accent-soft) and the modules/brand/brand.css
     source. The rev 6 light values are unchanged by rev 7 itself. Addendum 2026-09-30 (task y92), owner ruling "follow HeroUI soft pairing, no extreme contrast". It reverts y90 AA darkening; the muted grey, link ink, success, warning and info return to the Academy render values, danger is oklch(62% 0.2335 37.78) with white ink at 3.92:1, and the success, warning, danger and info soft pairs (HeroUI weights) are declared in brand.css for status text and icons (color.policy.heroUiPairing, decision contrastFollowsHeroUI).
+extensions:
+  portGaps:
+    - D:/Repositories/starci-next/.starciwork/brand/assets/provenance.yaml

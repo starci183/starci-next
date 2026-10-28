@@ -18,9 +18,11 @@ blockers:
 proves: [br.identity.sign-in, fr.identity.sign-in, fr.identity.sign-out, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify implementation against its identity records.
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Exercise all four transport doors, response/status schemas, Origin/CSRF policy, redirect safety and lifecycle failure cases.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
 extensions:
   implementationScope: Identity implementation owns the listed domain, API, Keycloak integration and core composition/configuration directories. Package manifest edits are limited to dependencies already pinned in harness stack/pins.yaml; be/contracts/core changes come only from contract emission.
 change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Record authorized Keycloak and core owners, implementation scope and backend ESLint hold.}
-extensions: {}
