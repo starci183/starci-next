@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder } from "@nestjs/common"
-import { SEPAY_OPTIONS } from "./sepay.options-token"
+import { SEPAY_OPTIONS } from "./sepay.decorators"
 import type { SepayModuleOptions } from "./sepay.options"
 
 /** The configurable-module base of the SePay rail; the app root decides whether it is global. */

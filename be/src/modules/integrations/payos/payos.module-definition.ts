@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder } from "@nestjs/common"
-import { PAYOS_OPTIONS } from "./payos.options-token"
+import { PAYOS_OPTIONS } from "./payos.decorators"
 import type { PayosModuleOptions } from "./payos.options"
 
 /** The configurable-module base of the payOS rail; the app root decides whether it is global. */
