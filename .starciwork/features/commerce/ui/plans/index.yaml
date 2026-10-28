@@ -16,6 +16,7 @@ ui:
 direction: .starciwork/features/commerce/ui/plans/direction.html
 assets:
   - slot: academy-learning-journey
+    file: assets/pro-learning-journey-v1.png
     summary: Decorative first face of the joined "What Premium includes" card - the brand's verified Academy
       learning-journey raster (brand artworkSlots academy-learning-journey, master assets/pro-learning-journey-v1.png,
       1672x941, alt empty), shown edge to edge in the ready, starting-checkout, already-Premium and unavailable
