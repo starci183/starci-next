@@ -5,25 +5,40 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
 actors:
 - learner
 trigger: A learner opens an available lesson.
 mainFlow:
-- Load the selected localized lesson content.
-- Show the original article as the main reading surface with the five-step rail and
-  ask panel available.
-- Record reading progress by section.
+- Resolve the requested lesson/version and the independent programming-language/locale combination from the imported
+  source.
+- Check access; render the safe original article projection, all original headings/outline, code fences, Mermaid
+  and Academy directives without replacing it with an AI summary.
+- Keep the article central while the rail and ask panel use the contract; save reading section and offset independently
+  of coached step completion.
+- Select TypeScript, Java, C# or Go to open that language's separate saved progress; locale switches preserve progress
+  for the same version/language.
 exceptionFlows:
-- If the selected translation is unavailable, offer an available language without
-  replacing saved progress.
-- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+- Unknown lesson returns not_found; unavailable version returns version_unavailable with an explicit new-start option,
+  preserving old progress.
+- Missing variant returns the real available combinations for explicit selection; no invented translation or silent
+  reset.
+- Denied entitlement shows exact section 1 and outline only; entitlement failure is a retryable locked/error presentation,
+  never expanded access.
+- Import/hash/structure failure leaves the prior version active; malformed Markdown or missing protected spans is
+  reported rather than quietly dropping original sections.
+- Coaching policy pending or AI unavailable leaves decided article/outline reading operational.
 postconditions:
-- The learner can read the article and select a step.
+- The learner reads the selected original public article and knows whether the reading position is saved.
 composes:
 - br.lessons.interactive-ai-lesson
 - data.lessons.content
-- data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+refs:
+- contract.commerce.entitlement
+- ui.lessons.lesson
+- ui.lessons.locked-preview

@@ -1,29 +1,209 @@
 schema: work/contract@1
 id: contract.lessons.lesson-steps
-title: Lesson steps contract
+title: Public lesson, gated reveal and five-step interaction contract
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson boundaries and proof records.
+  reason: Make the proposed five steps and DTO/access boundaries explicit without deciding Q-W1-1 or Q-W1-2.
 owner: lessons
 between:
 - lessons backend
 - lessons frontend
+- lesson-content importer
 surface:
-- Read localized lesson and version.
-- Save and resume progress.
-- Submit an answer before requesting reveal.
-- Ask a grounded lesson question.
+  activation: This is the explicit five-step candidate under Q-W1-1, not an owner-approved outcome. Labels and payloads
+    here are design proposals; the Academy source itself does not prescribe an AI step sequence. No fixed-step rollout
+    or credit policy is activated while the corresponding decision is open.
+  steps:
+  - id: read-original
+    order: 1
+    label: Read the original article
+    prompt: Read the selected original article, then state its main contract and cite the section you used.
+    answer:
+      kind: article-reflection
+      fields:
+        summary: nonempty text
+        sectionIds: nonempty array of valid outline section ids
+    reveal: Grounded reading feedback citing original sections; no interview samples or challenge rubrics.
+    completion: One saved article-reflection answer and complete feedback acknowledged by Continue.
+  - id: explain-concept
+    order: 2
+    label: Explain the core concept
+    prompt: Explain verb-to-operation mapping, status codes, PUT versus PATCH, and idempotency using the article.
+    answer:
+      kind: concept-explanation
+      fields:
+        explanation: nonempty text
+        verbCases: nonempty array<{verb,status,operation,retryReason}>
+    reveal: Feedback against the original theory; distinguish framework-specific behavior without changing article
+      bytes.
+    completion: One saved concept-explanation answer and complete feedback acknowledged by Continue.
+  - id: trace-code
+    order: 3
+    label: Trace the working code
+    prompt: Choose one of the original four flow tests; trace its request through the selected language and explain
+      the observed result.
+    answer:
+      kind: code-trace
+      fields:
+        flowId: flow-1|flow-2|flow-3|flow-4
+        trace: nonempty text
+        observedStatus: integer HTTP status
+        observedBody: string; empty string allowed for 204
+        runEvidence: optional learner-supplied text, never a fabricated execution receipt
+    reveal: Grounded walkthrough feedback from the chosen source flow and code. The coach does not claim to run
+      the demo.
+    completion: One saved code-trace answer and complete feedback acknowledged by Continue.
+  - id: interview
+    order: 4
+    label: Practice interview questions
+    prompt: Answer each of the three original interview questions for the selected programming language.
+    answer:
+      kind: interview-answer
+      fields:
+        questionId: interview-1|interview-2|interview-3
+        answer: nonempty text
+    reveal: Only the answered question's original sample answer and interviewer points plus grounded feedback; other
+      questions remain hidden.
+    completion: All three question answers and complete per-question feedback acknowledged by Continue.
+  - id: challenge
+    order: 5
+    label: Solve a challenge
+    prompt: Choose one of the four original challenges and submit the artifact its source submission type requests.
+    answer:
+      kind: challenge-submission
+      fields:
+        challengeId: one source challenge id
+        submissionType: source-supported type, githubUrl in this fixture
+        url: https URL for the required source artifact
+        explanation: nonempty text
+        programmingLanguage: must equal progress language
+    reveal: Grounded feedback using only the chosen challenge criteria; no raw grading document or unchosen solution
+      is returned.
+    completion: One chosen challenge submission and complete feedback acknowledged by Continue; other challenges
+      remain available for additional practice.
+  readLesson:
+    input: '{lessonId, version?, locale, programmingLanguage}'
+    output: PublicLesson from data.lessons.content; access=allowed|locked|unavailable. For locked access article
+      is exactly section1, outline remains complete, and stepPrompts contain labels/status only. No ProtectedGrading
+      field exists.
+  readProgress:
+    input: '{lessonId,version,programmingLanguage}'
+    output: Authenticated owner's safe saved progress, answers and completed authorized feedback, progressRevision,
+      currentStepId and readingPosition; no raw rubric or provider metadata.
+  saveReadingPosition:
+    input: '{lessonId,version,programmingLanguage,locale,sectionId,offsetWithinSection,expectedProgressRevision,clientRequestId}'
+    output: Committed position and progressRevision. Local drafts/positions are not represented as persisted until
+      this acknowledgement.
+  submitAnswer:
+    input: '{lessonId,version,programmingLanguage,locale,stepId,itemId,promptVersion,expectedProgressRevision,clientRequestId,payload:discriminated
+      answer union above}'
+    output: Persisted {turnId,answerRevision,status:saved,progressRevision}; validation/access/save failures make
+      no provider call. A direct reveal without this item's saved answer fails answer_required.
+  requestReveal:
+    input: '{turnId,answerRevision,clientRequestId}'
+    output: Authorized stream for that exact saved revision; serialize only safe feedback and permitted same-item
+      reveal material. A client cannot submit its own reference answer/rubric as authoritative grading.
+  askLesson:
+    input: '{lessonId,version,programmingLanguage,locale,question,sectionIds?,clientRequestId}'
+    output: A saved ask turn plus grounded streaming response; no step completion and no unrevealed interviewer/sample/rubric
+      material.
+  continueStep:
+    input: '{lessonId,version,programmingLanguage,stepId,expectedProgressRevision,clientRequestId}'
+    output: Server computes the required item completion and advances currentStepId once; duplicate acknowledgement
+      does not increment progress twice.
+  retryCoach:
+    input: '{turnId,answerRevision,clientRequestId}'
+    output: A new generation attempt for the same saved revision only if no active attempt exists; never a duplicate
+      answer. Client explicitly replaces any provisional failed output.
+  cancelCoach:
+    input: '{turnId,attemptId}'
+    output: Abort the active attempt; preserve saved answer and position, mark partial output cancelled, offer retry.
+  stream:
+    transport: Application-owned authenticated event stream; provider SSE/chunk shapes stay behind the backend integration.
+      These are logical operations, not a claim that routes/schema/code already exist.
+    events:
+    - accepted {turnId,attemptId,eventSequence}
+    - delta {turnId,attemptId,eventSequence,text}
+    - completed {turnId,attemptId,eventSequence,feedback,progressRevision}
+    - failed {turnId,attemptId,eventSequence,code,retryable,retryAt?}
+    - cancelled {turnId,attemptId,eventSequence}
+    rules: accepted is emitted only after answer persistence. Sequences increase per attempt; ignore duplicate/out-of-order
+      deltas by attemptId/sequence. Partial output is labelled provisional. completed follows final feedback persistence.
+      Resume reads the durable turn first; an active attempt can be reattached by attempt id when supported, otherwise
+      show generating and poll the safe status; do not start a duplicate generation. A missing terminal event cannot
+      imply success.
+  validation:
+    text: Trim for emptiness only; retain learner text. question 1..2000 Unicode characters, answer text/trace/explanation
+      1..12000 each, evidence <=40000, URL <=2048 and https. Reject unknown union fields, wrong discriminator, unknown
+      item/section ids, mismatched version/language/prompt and nonfinite status/position values. Apply documented
+      transport size bounds before parsing. HTTP observedStatus is an integer 100..599; section offset is a fraction
+      0..1. The public prompt supplies itemId and promptVersion; the server verifies both against its immutable
+      prompt snapshot.
+    concurrency: One active coach attempt per turn; optimistic progressRevision on writes. Same idempotency key
+      and payload replays saved result; same key with different payload is conflict. Revised answers use new request
+      keys and revisions.
+  errors:
+    not_authenticated: No private progress/coaching; normal sign-in route is supplied by existing auth integration,
+      not invented here.
+    not_found: Unknown lesson, version item or turn; no unrelated ownership information returned.
+    locked: Entitlement denied; return exact preview, block hidden-body/answer/reveal/ask effects, preserve stored
+      progress.
+    entitlement_unavailable: Fail closed for premium body/coaching; show retry; keep locally entered draft and previously
+      saved progress.
+    policy_pending: Q-W1-1/Q-W1-2 or provider configuration is unresolved for the requested effect; read-only article/import/preview
+      continue.
+    variant_unavailable: Return actual available language/locale combinations and require explicit selection; retain
+      saved progress.
+    version_unavailable: Do not remap old answers onto a new source version; offer explicit new start.
+    invalid_payload: Field-specific learner-safe validation errors; no reveal, save or provider effect.
+    answer_required: This exact item has no persisted eligible answer; no sample or grading material is returned.
+    prerequisite_incomplete: Later step is locked; name the first required step without dropping saved downstream
+      history.
+    conflict: Return latest safe progress/revision; preserve unsaved draft and require explicit reconcile.
+    save_failed: Do not claim Saved or send the request to a provider; retry the same idempotency key to resolve
+      uncertain save.
+    context_limit: Explain which section selection can be narrowed; no silent code/section truncation.
+    coach_unavailable: Map exhausted routes, missing custody/config, auth, quota, network, rate-limit and deadline
+      into safe status with retryability; keep saved answer. No provider body/key is exposed.
+    stream_interrupted: Retain saved answer, label partial output incomplete, do not complete progress or splice
+      fallback tokens; offer explicit retry.
+    invalid_coach_output: Malformed/empty/off-topic or unsafe protected-material output is not complete feedback;
+      retain answer and offer retry.
 guarantees:
-- Answer persistence precedes reveal generation.
-- Provider requests contain no learner identifier.
+- The server rechecks ownership and current access on every read of restricted data and every side effect, including
+  resume, retry and reveal.
+- The public projection, per-item reveal gate, progress entity and turn entity own visibility/state/idempotency
+  rules; transport adapters do not bypass them.
+- The original article is readable centrally while the five-step candidate and ask panel use it as grounding; no
+  AI paraphrase replaces the source.
+- No provider request contains the learner's system identifier or unrelated history; provider output cannot change
+  access, progress policy or grading visibility.
 consumerObligations:
-- Check contract.commerce.entitlement before premium content or coaching.
-- Retain submitted answer when coach is unavailable.
+- Read data.lessons.content, data.lessons.turn and data.lessons.progress along with this contract.
+- Never preload protected Markdown into HTML, client bundles, hydration payloads, public caches, API errors or data
+  attributes and hide it with CSS. Use private/no-store responses for learner-specific data and gated reveals.
+- Abort or detach the active stream when navigating away; reopening resolves its durable status before allowing
+  resend.
+- Apply the existing commerce entitlement surface, and leave unresolved policy choices open rather than infer Premium/credit
+  behavior.
 refs:
-- contract.commerce.entitlement
+- br.lessons.interactive-ai-lesson
+- fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
 - data.lessons.content
 - data.lessons.turn
+- data.lessons.progress
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- contract.commerce.entitlement
+extensions:
+  proposalVersion: five-steps-candidate-1
+  essentialUnknowns:
+  - Q-W1-1 owns approval of this proposed fixed sequence; no prior exact step names exist in the supplied Work.
+  - Q-W1-2 owns whether coaching is free and Premium-gated; do not charge credits or infer universal free access.

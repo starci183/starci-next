@@ -1,45 +1,107 @@
 schema: work/data@1
 id: data.lessons.turn
-title: Lesson turn
+title: Learner answer and coaching attempt
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Repair against the read-only Academy REST lesson, one-app scaffold and dated router/provider documentation;
+    preserve unresolved owner choices.
 fields:
 - name: id
-  type: string
+  type: opaque server turn id
+  required: true
+- name: ownerId
+  type: server-only authenticated learner reference
+  required: true
+- name: progressId
+  type: opaque progress id
   required: true
 - name: lessonId
   type: string
   required: true
 - name: lessonVersion
-  type: string
+  type: immutable string
+  required: true
+- name: programmingLanguage
+  type: typescript|java|csharp|go
+  required: true
+- name: locale
+  type: en|vi
+  required: true
+- name: kind
+  type: step|ask
   required: true
 - name: stepId
-  type: string
+  type: canonical step id
   required: false
-- name: question
+- name: itemId
+  type: prompt/question/challenge id
+  required: true
+- name: promptVersion
   type: string
   required: true
-- name: answer
-  type: string
+- name: answerRevision
+  type: positive integer
+  required: true
+- name: payload
+  type: step-specific answer union from contract.lessons.lesson-steps
+  required: true
+- name: clientRequestId
+  type: opaque UUID idempotency key
+  required: true
+- name: payloadHash
+  type: SHA-256 of canonical request
+  required: true
+- name: status
+  type: saved|queued|streaming|complete|unavailable|interrupted|cancelled
+  required: true
+- name: attempts
+  type: ordered generation attempts; server-only routing metadata
+  required: true
+- name: feedback
+  type: authorized learner-visible feedback or null
   required: false
-- name: reveal
-  type: string
-  required: false
+- name: eventSequence
+  type: monotonically increasing integer
+  required: true
 - name: createdAt
   type: timestamp
   required: true
+- name: updatedAt
+  type: timestamp
+  required: true
 invariants:
-- A reveal is unavailable until the learner answer is persisted for an answer-step
-  turn.
-- Only lesson content and its code are sent as grounding context.
-- No learner identifier is sent to an AI provider.
+- The authenticated owner is resolved server-side; another learner cannot read, reveal, retry or mutate this turn
+  by guessing an id.
+- Persist the validated answer and its revision before any reveal-generation call. A failed save makes no provider
+  call and reveals nothing.
+- Deduplicate by owner, lesson version, language, item, answer revision and clientRequestId. The same key and payload
+  returns the same saved turn; the same key with a different payload returns conflict.
+- A deliberate revision creates a new answer revision and invalidates only feedback for that item/revision; it preserves
+  prior attempts for resume. Concurrent writes compare progressRevision.
+- A retry of generation reuses the saved answer and creates an attempt, not another answer or another completed
+  step. Only one attempt per turn is active at a time.
+- Open questions are kind=ask and need a nonempty question, not a fake step answer; they never advance step progress
+  or disclose unrevealed grading data.
+- Partial tokens are provisional and do not count as a completed reveal. A full validated terminal response is stored
+  before completion is reported.
+- No learner identifier, auth token, raw provider error, key reference or unrelated conversation is sent to providers
+  or public DTOs; user-authored text is treated as untrusted input and checked for identity content before dispatch.
+- Keep the original prompt text/hash and answer locale for each saved revision. A later locale preference change
+  displays the saved answer honestly and does not reinterpret it as a new answer or invalidate the matching numbered
+  item gate.
 stateMachine:
-- submitted
-- answered
-- unavailable
+- validated payload -> saved atomically before queueing
+- saved -> queued -> streaming -> complete
+- queued -> unavailable on timeout, exhausted routes, context or configuration error
+- streaming -> interrupted on lost stream or invalid final output; partial content stays provisional
+- queued|streaming -> cancelled on explicit cancel; saved answer survives
+- unavailable|interrupted|cancelled -> queued only by explicit retry of the saved revision
+refs:
+- data.lessons.content
+- data.lessons.progress
+- contract.lessons.lesson-steps
+- sds.lessons.coach

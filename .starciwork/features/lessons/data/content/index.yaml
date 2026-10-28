@@ -1,52 +1,113 @@
 schema: work/data@1
 id: data.lessons.content
-title: Lesson content
+title: Versioned Academy lesson content
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Repair against the read-only Academy REST lesson, one-app scaffold and dated router/provider documentation;
+    preserve unresolved owner choices.
 fields:
 - name: id
   type: string
   required: true
 - name: version
-  type: string
+  type: immutable string
   required: true
 - name: title
-  type: localized string
+  type: map<locale,string>
   required: true
 - name: description
-  type: localized string
+  type: map<locale,string>
   required: true
 - name: minutesRead
-  type: integer
+  type: positive integer
   required: true
 - name: isPremium
   type: boolean
   required: true
-- name: verified
-  type: boolean
+- name: verifiedAt
+  type: ISO date or null
+  required: false
+  description: The source verified field is a verification date, not a boolean; this fixture records 2026-06-02.
+- name: availableLocales
+  type: locale[]
   required: true
-- name: body
-  type: localized ordered sections by heading
+  description: en and vi in this source; locale is independent of programming language.
+- name: programmingLanguages
+  type: enum[]
   required: true
-- name: languages
-  type: object
+  description: Exactly typescript, java, csharp, go in this fixture; labels TypeScript, Java, C#, Go.
+- name: variants
+  type: map<programmingLanguage,map<locale,ArticleVariant>>
   required: true
-  description: Exactly four language variants for the fixture.
+  description: Eight source bodies; never translate one programming variant into another.
+- name: ArticleVariant
+  type: '{originalFile,sha256,articleRange,section1Range,outline,publicArticleRanges,interviewQuestions,protectedRanges}'
+  required: true
+  description: Immutable UTF-8 byte slices from the raw body file, with source Markdown, Mermaid and directives
+    intact.
 - name: challenges
-  type: ordered challenge array with prompt and rubric
+  type: ordered Challenge[]
   required: true
+  description: 'All four source challenges: easy CRUD, medium pagination/filtering, hard batch transaction, insane
+    idempotent CSV import. Each has en/vi definitions and four programming-language requirements.'
+- name: PublicLesson
+  type: '{id,version,locale,programmingLanguage,title,description,minutesRead,isPremium,verifiedAt,availableLocales,programmingLanguages,access,outline,article,stepPrompts,challengePrompts}'
+  required: true
+  description: An explicit allowlist projection; never serialize the raw source object or spread its nested fields.
+- name: ProtectedGrading
+  type: server-only map<itemId,{sampleAnswer,interviewerPoints,rubric,solutionSteps,submissionCriteria,scoreWeights,criticalFlags}>
+  required: true
+  description: Interview child bullets are protected even though embedded in the original body. Challenge submissions/0
+    documents and score fields stay server-only.
 invariants:
-- One content item represents one piece of knowledge.
-- Every language variant preserves the same concept, section order and challenge rubric.
-- A challenge rubric defines observable criteria for evaluating an answer.
-- Premium availability is checked through the commerce entitlement contract.
+- One lesson teaches one piece of knowledge; programming language and locale form independent selection axes.
+- The raw original bytes, including wrapper fields and misspelled Academy separator, remain immutable and are never
+  bundled into frontend assets or exposed by a static file URL.
+- The canonical fixture is fixture.lessons.academy-rest-semantics.v1; its manifest hashes and byte offsets own source
+  fidelity. The invented HTTP lifecycle lesson is removed.
+- The public article concatenates the original publicArticleRanges in source order without paraphrase, heading changes,
+  abridgement or code rewriting. This preserves all source/architecture/walkthrough/run/flow-test/cleanup/reading,
+  Mermaid and theory content.
+- The original interview prompts remain public; only their original interviewer-points and sample-answer ranges
+  are withheld. A per-item, persisted learner answer authorizes a separate reveal of that item, never of all grading
+  data.
+- A general lesson/public-progress DTO never carries ProtectedGrading. A gated reveal DTO contains only permitted
+  sample-answer/feedback material for the learner's answered item; hidden rubrics and score weights remain server-only
+  even after reveal.
+- Challenge public prompts allow only source title, description, difficulty, language-specific requirement title/body
+  and prerequisites. The importer excludes score, verified grading flags, outcomeCriterias, approachCriterias, critical
+  flags and all raw submissions. Guided solution steps are reveal-only.
+- Locked access returns original section 1 and exact outline for the chosen locale and programming language, plus
+  metadata. It excludes the remaining body, challenge bodies and coaching; a denied request never fetches hidden
+  content into the browser.
+- Missing locale/language combinations return available combinations for explicit learner choice; no silent fallback
+  overwrites progress or claims a translation exists.
+- An entitlement lookup error grants no premium body or coaching. Source isPremium=false is preserved; Premium/coaching
+  policy remains Q-W1-2, not a forced rewrite of Academy metadata.
+- Publishing validates all four programming variants, all locales, protected-span completeness, metadata types,
+  heading order, hashes and challenge ordering atomically; failure leaves the previous version active.
 stateMachine:
-- draft
-- published
-- retired
+- draft -> validated after structural and byte/hash checks
+- validated -> published by an explicit import operation
+- published -> retired for future starts; existing versioned progress remains readable when access allows
+refs:
+- fixture.lessons.academy-rest-semantics.v1
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement
+extensions:
+  sourceMetadata:
+    contentId: academy-rest-semantics
+    sourceMinutesRead: 20
+    sourceIsPremium: false
+    sourceVerifiedAt: '2026-06-02'
+  classificationFailure: Unknown source grading fields or changed interview structure fail import closed for review;
+    no permissive generic Markdown-to-public serialization.
+  publicPromptShape: Each stepPrompts item is {stepId,itemId,promptVersion,kind,prompt,requiredFields}; promptVersion
+    is the SHA-256 of the exact immutable public prompt UTF-8 text for that lesson version, programming language,
+    locale and item. The server issues this value; the client echoes it and cannot supply grading fields.
+  outlineIdentity: Outline entries carry id=section-<original numeric heading prefix>, exact text, depth and original
+    byte range. This preserves section identity across en/vi while source text remains unchanged.

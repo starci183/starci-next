@@ -1,0 +1,78 @@
+schema: work/resource@1
+id: fixture.lessons.academy-rest-semantics.v1
+title: 'Original Academy REST semantics: verb and status code contract'
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: replaced
+  at: '2026-10-28'
+  reason: Replace invented HTTP-lifecycle prose with a versioned byte-exact read-only Academy lesson snapshot and
+    independently verifiable provenance.
+kind: fixture
+version: 1.0.0
+seed:
+  contentId: academy-rest-semantics
+  sourceReadOnly: true
+  sourceRoot: D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices
+  sourceRepository: D:/Repositories/starci-lab-data
+  gitRevision: b6e6906222011868211da4535a30ceee12955d97
+  sourceDirtyPaths: []
+  metadata:
+    en: original/en.md
+    vi: original/vi.md
+    minutesRead: 20
+    isPremium: false
+    verifiedAt: '2026-06-02'
+  programmingLanguages:
+    typescript: 0-typescript
+    java: 1-java
+    csharp: 2-csharp
+    go: 3-go
+  locales:
+  - en
+  - vi
+  bodyPattern: original/bodies/{programming-language-directory}/{locale}.md
+  challenges:
+  - id: 0-restful-api-crud-best-practices-easy
+    sourceDefinitionPattern: original/challenges/0-restful-api-crud-best-practices-easy/{locale}.md
+    protectedSubmissionPattern: original/challenges/0-restful-api-crud-best-practices-easy/submissions/0/{locale}.md
+  - id: 1-pagination-filtering-rest-api-medium
+    sourceDefinitionPattern: original/challenges/1-pagination-filtering-rest-api-medium/{locale}.md
+    protectedSubmissionPattern: original/challenges/1-pagination-filtering-rest-api-medium/submissions/0/{locale}.md
+  - id: 2-batch-operations-with-transaction-hard
+    sourceDefinitionPattern: original/challenges/2-batch-operations-with-transaction-hard/{locale}.md
+    protectedSubmissionPattern: original/challenges/2-batch-operations-with-transaction-hard/submissions/0/{locale}.md
+  - id: 3-idempotent-csv-import-insane
+    sourceDefinitionPattern: original/challenges/3-idempotent-csv-import-insane/{locale}.md
+    protectedSubmissionPattern: original/challenges/3-idempotent-csv-import-insane/submissions/0/{locale}.md
+  originalFileCount: 26
+  manifest: manifest.json
+  manifestSha256: 7df8c6c562c93b371d1af32be64d4e5e00ee784c0e3011d56c5e27c0e6d1f092
+  classification: All raw snapshot Markdown is server-only input. data.lessons.content owns its public/reveal allowlists.
+    Keeping complete original bytes in a fixture never authorizes exposing them as client assets.
+  lockedPreview: manifest.articles[] selects the exact original section1 byte range and complete original heading
+    outline for each of eight programming-language/locale combinations.
+  originalFidelity: No article prose, Markdown directive, Mermaid, source link, architecture table, code walkthrough,
+    launch instruction, four-flow test, cleanup, further reading, theory, interview point or challenge/submission
+    rubric is rewritten or omitted from the copied source.
+  captureCommand: python -X utf8 .starciwork/_resources/fixtures/lessons/academy-rest-semantics-v1/capture.py --capture
+requiresProof:
+- required: true
+  command: python -X utf8 .starciwork/_resources/fixtures/lessons/academy-rest-semantics-v1/capture.py --verify
+  note: Offline verification reads only this committed fixture; checks all file hashes and exact article/public/protected/section1/outline
+    indexes.
+- required: false
+  command: python -X utf8 .starciwork/_resources/fixtures/lessons/academy-rest-semantics-v1/capture.py --verify-source
+  note: When the named read-only source checkout is present, additionally compare every copied file byte-for-byte;
+    this is run on 2026-10-28, not a claim about running the lesson demo.
+refs:
+- data.lessons.content
+- sds.lessons.content-import
+extensions:
+  provenanceScope: The git revision identifies the source checkout and sourceDirtyPaths is empty at capture. Per-file
+    SHA-256 and byte length are authoritative for this version. capture.py never writes under sourceRoot.
+  supersededFixture: fixture.lessons.academy-http-request-lifecycle.v1 was invented and its resource is removed;
+    no active lesson record references it.
+  bytePreservingCheckout: The fixture-local .gitattributes marks original/** -text -eol so the app root text=auto
+    eol=lf rule cannot alter source CRLF bytes during clean verification or settlement.

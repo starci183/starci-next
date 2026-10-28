@@ -1,0 +1,7 @@
+schema: work/disposable-accounts@1
+disposable: true
+accounts:
+- role: learner
+  identity: identity.lessons.premium-learner
+- role: denied-entitlement learner
+  identity: identity.lessons.denied-learner

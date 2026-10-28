@@ -5,13 +5,16 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson screen and implementation proof records.
+  reason: Use repository-root implementation owners and complete directly named requirement/design/fixture context
+    for isolated coding workers.
 repository: fe
 owners:
 - role: fe
-  path: apps/app
+  path: fe/apps/app/src/features/pages/LessonPage
+- role: fe
+  path: fe/apps/app/src/app/[locale]/lessons
 proves:
 - ui.lessons.lesson
 - ui.lessons.locked-preview
@@ -20,9 +23,42 @@ proves:
 - fr.lessons.ask-lesson
 - fr.lessons.resume
 refs:
-- ui.lessons.lesson
-- ui.lessons.locked-preview
+- br.lessons.interactive-ai-lesson
 - fr.lessons.read-article
 - fr.lessons.answer-step
 - fr.lessons.ask-lesson
 - fr.lessons.resume
+- data.lessons.content
+- data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- decision.lessons.ai-pool
+- sds.lessons.content-import
+- sds.lessons.grounding
+- sds.lessons.coach
+- integration.lessons.ai-router
+- ui.lessons.lesson
+- ui.lessons.locked-preview
+- fixture.lessons.academy-rest-semantics.v1
+- uat.lessons.interactive-ai-lesson
+extensions:
+  pathBase: All owners are module-root directories relative to the one git app repository root; repository be/fe
+    names the logical side from workspace.yaml. These are target owners, not claims code has already been delivered.
+  responsibilities:
+  - The page feature owns the central original article, exact outline/preview, independent language selector, five
+    distinct answer forms, step rail, in-page ask region and server-driven streaming/error/resume states.
+  - The localized route composes LessonPage through the supplied AppLayout/SiteShell reading surface and existing
+    brand.
+  - Task context includes both UI records, the full steps contract, all data/requirements/design records and fixture
+    manifest/source assets; a UI direction must show real section-1 bytes and outline, not a fake generic teaser.
+  contextRule: Coding workers read named context only. Resolve every refs id explicitly into the task context, including
+    the fixture resource, manifest and selected/all source files needed by the slice; refs are not assumed to auto-load
+    transitive dependencies.
+  activation: Open decision gates apply to the effects they own. Content parsing, public projections and fake-provider
+    proofs can proceed; fixed-step rollout, credit policy, concrete provider configuration and live verification
+    remain conditional.
+  proofStatus: Implementation and downstream runtime/browser proof are not run by this docs task; state remains
+    todo.

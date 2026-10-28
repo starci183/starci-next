@@ -5,24 +5,48 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
 actors:
 - learner
 trigger: A learner selects a step and submits an answer.
 mainFlow:
-- Show the step prompt and accept a learner answer.
-- Persist the submitted answer before requesting a coach reveal.
-- Show grounded feedback and allow the learner to continue or revise.
+- Use the contract's exact proposed order, prompt and discriminated payload; do not treat every step as one generic
+  text question.
+- Validate access, step prerequisites, item/version/language/prompt and progressRevision; save the answer with idempotency
+  before requesting feedback.
+- Stream provisional feedback, then persist and display the complete terminal feedback; reveal protected original
+  text only for the answered item.
+- Continue acknowledges all required items of the step, advances completion exactly once and unlocks the next step;
+  revisiting/revising follows data.lessons.progress.
 exceptionFlows:
-- If the selected translation is unavailable, offer an available language without
-  replacing saved progress.
-- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+- Blank, oversized, malformed or mismatched payload is rejected with field errors, no provider request and no reveal.
+- A request to reveal another interview question/challenge before its own answer returns answer_required even if
+  another step has an answer.
+- Save failure or uncertain acknowledgement preserves the local draft and retries the same idempotency key; it never
+  shows a false Saved state.
+- Repeated submit with the same key/payload returns the stored turn; a changed payload or stale progressRevision
+  returns conflict and retains the draft.
+- Provider failure before tokens may follow the router fallback policy; failure after tokens marks output interrupted,
+  does not complete the step and requires an explicit new attempt.
+- A cancelled, disconnected or failed generation retains the saved answer; retry generates against that revision
+  without another answer or progress increment.
+- Missing entitlement or pending Q-W1-1/Q-W1-2 blocks only the affected coaching/continuation effect and preserves
+  reading/progress.
 postconditions:
-- The submitted answer and reveal are associated with the lesson turn.
+- The saved answer revision and each feedback attempt are tied to the exact item, version and language; no grading
+  material escapes its per-item gate.
 composes:
 - br.lessons.interactive-ai-lesson
 - data.lessons.content
 - data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+blockedBy:
+- decision.lessons.five-steps
+refs:
+- decision.lessons.ai-credit
+- sds.lessons.coach
+- contract.commerce.entitlement

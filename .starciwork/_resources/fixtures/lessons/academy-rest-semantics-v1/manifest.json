@@ -1,0 +1,2291 @@
+{
+  "schema": "lessons.fixture-provenance@1",
+  "id": "fixture.lessons.academy-rest-semantics.v1",
+  "version": "1.0.0",
+  "capturedAt": "2026-10-28",
+  "sourceReadOnly": true,
+  "sourceRoot": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices",
+  "sourceRepository": "D:/Repositories/starci-lab-data",
+  "gitRevision": "b6e6906222011868211da4535a30ceee12955d97",
+  "sourceDirtyPaths": [],
+  "programmingLanguages": [
+    "typescript",
+    "java",
+    "csharp",
+    "go"
+  ],
+  "locales": [
+    "en",
+    "vi"
+  ],
+  "files": [
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/en.md",
+      "fixturePath": "original/en.md",
+      "bytes": 968,
+      "sha256": "81c55409588c352d4988ad43174ca781361d81ce7dda109752aaa1d7a2027eb6",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/vi.md",
+      "fixturePath": "original/vi.md",
+      "bytes": 969,
+      "sha256": "916465cac16293cb78f85e05693c79b9adee842c14bce5acc3eae96d4f6d1289",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/0-typescript/en.md",
+      "fixturePath": "original/bodies/0-typescript/en.md",
+      "bytes": 19553,
+      "sha256": "2868f66480a7ec79eca4a53991a88c4075e386eb2ea6944918b29fcc7de62a8e",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/0-typescript/vi.md",
+      "fixturePath": "original/bodies/0-typescript/vi.md",
+      "bytes": 20484,
+      "sha256": "6815e292b8700fb6afdae84669e86d209747a74c8bc7847bdcf745197b46f825",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/1-java/en.md",
+      "fixturePath": "original/bodies/1-java/en.md",
+      "bytes": 21232,
+      "sha256": "02ab64db529741e6bd15ea95df50df77bac90898794446323c4ec32bfef17563",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/1-java/vi.md",
+      "fixturePath": "original/bodies/1-java/vi.md",
+      "bytes": 22349,
+      "sha256": "10bf5edb8347b3009cda5fc7b80b54a14b4d6c6e66bad6eb450571ae856f3159",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/2-csharp/en.md",
+      "fixturePath": "original/bodies/2-csharp/en.md",
+      "bytes": 19969,
+      "sha256": "2c14634150af64d9c3ad3e8703658e8685cd94f8080866f5732810cd3a4145e7",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/2-csharp/vi.md",
+      "fixturePath": "original/bodies/2-csharp/vi.md",
+      "bytes": 21283,
+      "sha256": "34e7c4692e8cfb58f89579a2617ac7acecc61cbc30910c1abe3152e5b25d73fe",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/3-go/en.md",
+      "fixturePath": "original/bodies/3-go/en.md",
+      "bytes": 20138,
+      "sha256": "8d26997d301bef4503d915ccc45be990fd9f1bf9c8a09408fb6bb281dd2c42ef",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/bodies/3-go/vi.md",
+      "fixturePath": "original/bodies/3-go/vi.md",
+      "bytes": 21097,
+      "sha256": "9213983a56121e099fed2b6b2c568b6661651166fc3989d14470387e250f5a83",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/0-restful-api-crud-best-practices-easy/en.md",
+      "fixturePath": "original/challenges/0-restful-api-crud-best-practices-easy/en.md",
+      "bytes": 30331,
+      "sha256": "c0926c646855d20d2b4e20de082bd268f4bb4333f298cd634c0fa81e13cdd617",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/0-restful-api-crud-best-practices-easy/submissions/0/en.md",
+      "fixturePath": "original/challenges/0-restful-api-crud-best-practices-easy/submissions/0/en.md",
+      "bytes": 14543,
+      "sha256": "cda7916da1bdce9e07946ef9f5e4d25c864b6676c34c586f97030a5bcc60e77c",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/0-restful-api-crud-best-practices-easy/submissions/0/vi.md",
+      "fixturePath": "original/challenges/0-restful-api-crud-best-practices-easy/submissions/0/vi.md",
+      "bytes": 16155,
+      "sha256": "30b0e993a4413ee4dc3067a1e3edaf9d2f5e38a1b66fb608c1757bfc1e1f5381",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/0-restful-api-crud-best-practices-easy/vi.md",
+      "fixturePath": "original/challenges/0-restful-api-crud-best-practices-easy/vi.md",
+      "bytes": 32122,
+      "sha256": "66b7cd8382c99dce5b92207f6dcbf9a1d69bfb51ba400779567df2c3dcca9452",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/1-pagination-filtering-rest-api-medium/en.md",
+      "fixturePath": "original/challenges/1-pagination-filtering-rest-api-medium/en.md",
+      "bytes": 34330,
+      "sha256": "e53ff00e71d51ff9d2f0e20b276edb226deea3eeaa668ab4c4bbba2600c0f5a7",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/1-pagination-filtering-rest-api-medium/submissions/0/en.md",
+      "fixturePath": "original/challenges/1-pagination-filtering-rest-api-medium/submissions/0/en.md",
+      "bytes": 15511,
+      "sha256": "6e4c2bdbb887242f2ab60eff162ccf88acb4a10535a049897904bcdc084bd40d",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/1-pagination-filtering-rest-api-medium/submissions/0/vi.md",
+      "fixturePath": "original/challenges/1-pagination-filtering-rest-api-medium/submissions/0/vi.md",
+      "bytes": 16953,
+      "sha256": "8268bca831aeb23fd82d10eacd3d678dd4726ee0c07322eeff30332bc815e40f",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/1-pagination-filtering-rest-api-medium/vi.md",
+      "fixturePath": "original/challenges/1-pagination-filtering-rest-api-medium/vi.md",
+      "bytes": 35896,
+      "sha256": "54c1310fa247dd95bc1e9f89f6a73b82fd35d70c5cbff8d8bcbe6703a184b685",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/2-batch-operations-with-transaction-hard/en.md",
+      "fixturePath": "original/challenges/2-batch-operations-with-transaction-hard/en.md",
+      "bytes": 31766,
+      "sha256": "dcd5a266f6952c58dd9d75254dbe131d51a2a1353c55256a3485f79ef8e01753",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/2-batch-operations-with-transaction-hard/submissions/0/en.md",
+      "fixturePath": "original/challenges/2-batch-operations-with-transaction-hard/submissions/0/en.md",
+      "bytes": 13664,
+      "sha256": "7bc71b0f7abbbaedb66ce51be0f68516ca790762eee3c3047479458de7f6f341",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/2-batch-operations-with-transaction-hard/submissions/0/vi.md",
+      "fixturePath": "original/challenges/2-batch-operations-with-transaction-hard/submissions/0/vi.md",
+      "bytes": 14539,
+      "sha256": "92b9e57b3963da980f8098232973e12c0b6b5e75cb67fa487f78ceb2da6689bb",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/2-batch-operations-with-transaction-hard/vi.md",
+      "fixturePath": "original/challenges/2-batch-operations-with-transaction-hard/vi.md",
+      "bytes": 32477,
+      "sha256": "83d7953aade5a9e9b7b2b39dc0bc82f7aaed724fc06e376fcd4d796e391dc2dd",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/3-idempotent-csv-import-insane/en.md",
+      "fixturePath": "original/challenges/3-idempotent-csv-import-insane/en.md",
+      "bytes": 34504,
+      "sha256": "6e6e54dc68bc3e11ac00b92a47f999e7413b19464f7e3bb0db9e8e34ce2896f6",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/3-idempotent-csv-import-insane/submissions/0/en.md",
+      "fixturePath": "original/challenges/3-idempotent-csv-import-insane/submissions/0/en.md",
+      "bytes": 14781,
+      "sha256": "24cc8de717a6353938cf72260b46c766d423ae72f3a2444231825b3083d874cc",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/3-idempotent-csv-import-insane/submissions/0/vi.md",
+      "fixturePath": "original/challenges/3-idempotent-csv-import-insane/submissions/0/vi.md",
+      "bytes": 15509,
+      "sha256": "e0b9970447ceb5773d1fefa288dfd96f91f7adec1433df510e1de01f2673c570",
+      "classification": "server-only raw input; project through data.lessons.content"
+    },
+    {
+      "sourcePath": "D:/Repositories/starci-lab-data/courses/0-fullstack-mastery/modules/2-rest-api-design-and-documentation/contents/0-restful-api-crud-best-practices/challenges/3-idempotent-csv-import-insane/vi.md",
+      "fixturePath": "original/challenges/3-idempotent-csv-import-insane/vi.md",
+      "bytes": 34863,
+      "sha256": "b62ecafa2e8a6a2332ecda8459bdeb16e79a181515e39be7f4fe4290f94014d0",
+      "classification": "server-only raw input; project through data.lessons.content"
+    }
+  ],
+  "articles": [
+    {
+      "programmingLanguage": "typescript",
+      "locale": "en",
+      "fixturePath": "original/bodies/0-typescript/en.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 184,
+        "end": 19525,
+        "sha256": "2b8a3470119104378e1dd2ad2698440d519e39c3231a1cdec31c3b571efe57a2"
+      },
+      "section1": {
+        "start": 184,
+        "end": 1423,
+        "sha256": "ffdbf5a9b8b7e85c57368ea439e22d177b336779c5dee3c56e7b77a0c124ab35"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Opening",
+          "start": 184,
+          "end": 199
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Core concepts",
+          "start": 1423,
+          "end": 1444
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Hands-on",
+          "start": 1801,
+          "end": 1820
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Prepare source code and environment",
+          "start": 1822,
+          "end": 1871
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Architecture / components",
+          "start": 2545,
+          "end": 2584
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Code walkthrough and essence",
+          "start": 4297,
+          "end": 4339
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. Verb maps to operation — and `@HttpCode` picks the status code",
+          "start": 4492,
+          "end": 4573
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. `PUT` full replace vs `PATCH` partial update",
+          "start": 5326,
+          "end": 5387
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. Not found → `NotFoundException` becomes `404`",
+          "start": 7051,
+          "end": 7115
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Prepare and launch",
+          "start": 8153,
+          "end": 8185
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Prerequisites",
+          "start": 8187,
+          "end": 8217
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Launch",
+          "start": 8516,
+          "end": 8539
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Testing",
+          "start": 8974,
+          "end": 8995
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Clean up resources",
+          "start": 13867,
+          "end": 13899
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Further reading",
+          "start": 14068,
+          "end": 14097
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Theory",
+          "start": 14578,
+          "end": 14595
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Essence",
+          "start": 14597,
+          "end": 14618
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Edge cases to watch",
+          "start": 16716,
+          "end": 16749
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Summary",
+          "start": 17719,
+          "end": 17734
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Common interview questions",
+          "start": 17736,
+          "end": 17773
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 17870,
+          "end": 17989,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 17989,
+          "end": 18347,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 18451,
+          "end": 18600,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18600,
+          "end": 18968,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19043,
+          "end": 19185,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19185,
+          "end": 19525,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 17775,
+          "promptEnd": 17870,
+          "protectedRanges": [
+            {
+              "start": 17870,
+              "end": 17989,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 17989,
+              "end": 18347,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 18347,
+          "promptEnd": 18451,
+          "protectedRanges": [
+            {
+              "start": 18451,
+              "end": 18600,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18600,
+              "end": 18968,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 18968,
+          "promptEnd": 19043,
+          "protectedRanges": [
+            {
+              "start": 19043,
+              "end": 19185,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19185,
+              "end": 19525,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 184,
+          "end": 17870
+        },
+        {
+          "start": 18347,
+          "end": 18451
+        },
+        {
+          "start": 18968,
+          "end": 19043
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "typescript",
+      "locale": "vi",
+      "fixturePath": "original/bodies/0-typescript/vi.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 184,
+        "end": 20456,
+        "sha256": "f0805837891724141a75961dbb8f6d3127e01c2ff026db8c12a8550948a181d3"
+      },
+      "section1": {
+        "start": 184,
+        "end": 1563,
+        "sha256": "ab35db297f832a41be7f776e3c47b056abe88ce0c5c65be911e7b15de5231f93"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Lời mở đầu",
+          "start": 184,
+          "end": 209
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Các khái niệm cốt lõi",
+          "start": 1563,
+          "end": 1599
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Thực hành",
+          "start": 2020,
+          "end": 2043
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Chuẩn bị source code và môi trường",
+          "start": 2045,
+          "end": 2102
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Kiến trúc / thành phần",
+          "start": 2786,
+          "end": 2828
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Giải thích code và bản chất",
+          "start": 4593,
+          "end": 4642
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. Verb ánh xạ thao tác — và `@HttpCode` chọn status code",
+          "start": 4822,
+          "end": 4902
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. `PUT` thay toàn bộ vs `PATCH` sửa một phần",
+          "start": 5656,
+          "end": 5724
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. Không tìm thấy → `NotFoundException` thành `404`",
+          "start": 7412,
+          "end": 7484
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Chuẩn bị & khởi chạy",
+          "start": 8532,
+          "end": 8574
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Điều kiện cần trước",
+          "start": 8576,
+          "end": 8622
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Khởi động",
+          "start": 8924,
+          "end": 8955
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Kiểm thử",
+          "start": 9425,
+          "end": 9451
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Dọn tài nguyên",
+          "start": 14436,
+          "end": 14468
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Đọc thêm",
+          "start": 14642,
+          "end": 14668
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Lý thuyết",
+          "start": 15162,
+          "end": 15185
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Bản chất",
+          "start": 15187,
+          "end": 15213
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Các trường hợp biên (edge cases) cần lưu ý",
+          "start": 17497,
+          "end": 17564
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Tổng kết",
+          "start": 18583,
+          "end": 18603
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Các câu hỏi dễ bị phỏng vấn",
+          "start": 18605,
+          "end": 18655
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 18753,
+          "end": 18865,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18865,
+          "end": 19241,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19346,
+          "end": 19490,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19490,
+          "end": 19870,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19953,
+          "end": 20097,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20097,
+          "end": 20456,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 18657,
+          "promptEnd": 18753,
+          "protectedRanges": [
+            {
+              "start": 18753,
+              "end": 18865,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18865,
+              "end": 19241,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 19241,
+          "promptEnd": 19346,
+          "protectedRanges": [
+            {
+              "start": 19346,
+              "end": 19490,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19490,
+              "end": 19870,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 19870,
+          "promptEnd": 19953,
+          "protectedRanges": [
+            {
+              "start": 19953,
+              "end": 20097,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20097,
+              "end": 20456,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 184,
+          "end": 18753
+        },
+        {
+          "start": 19241,
+          "end": 19346
+        },
+        {
+          "start": 19870,
+          "end": 19953
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "java",
+      "locale": "en",
+      "fixturePath": "original/bodies/1-java/en.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 178,
+        "end": 21204,
+        "sha256": "d56c9146506bcb88abcda043f40fa9e2a6e0f00dc02a7cd020be77ed577950e7"
+      },
+      "section1": {
+        "start": 178,
+        "end": 1516,
+        "sha256": "22cb5c26414ec7b22804f81c72681ac7115387ebe88a4ab0b49119d859eed469"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Opening",
+          "start": 178,
+          "end": 193
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Core concepts",
+          "start": 1516,
+          "end": 1537
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Hands-on",
+          "start": 1948,
+          "end": 1967
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Prepare source code and environment",
+          "start": 1969,
+          "end": 2018
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Architecture / components",
+          "start": 2778,
+          "end": 2817
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Code walkthrough and essence",
+          "start": 4658,
+          "end": 4700
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. Verb → operation mapping — `@PostMapping`/`@GetMapping` and the status code",
+          "start": 4859,
+          "end": 4955
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. `PUT` full replace vs `PATCH` partial update — and `404` when missing",
+          "start": 5980,
+          "end": 6068
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. `DELETE` returns `204` with no body — and why `POST` is not idempotent",
+          "start": 7527,
+          "end": 7616
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Prerequisites and startup",
+          "start": 8809,
+          "end": 8848
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Prerequisites",
+          "start": 8850,
+          "end": 8880
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Start",
+          "start": 9217,
+          "end": 9239
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Verification",
+          "start": 9447,
+          "end": 9473
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Cleanup",
+          "start": 14339,
+          "end": 14360
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Further reading",
+          "start": 14575,
+          "end": 14604
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Theory",
+          "start": 15257,
+          "end": 15274
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. The essence",
+          "start": 15276,
+          "end": 15301
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Edge cases to internalize",
+          "start": 17919,
+          "end": 17958
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Wrap-up",
+          "start": 18980,
+          "end": 18995
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Common interview questions",
+          "start": 18997,
+          "end": 19034
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 19145,
+          "end": 19322,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19322,
+          "end": 19764,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19887,
+          "end": 20020,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20020,
+          "end": 20463,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 20538,
+          "end": 20708,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20708,
+          "end": 21204,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 19036,
+          "promptEnd": 19145,
+          "protectedRanges": [
+            {
+              "start": 19145,
+              "end": 19322,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19322,
+              "end": 19764,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 19764,
+          "promptEnd": 19887,
+          "protectedRanges": [
+            {
+              "start": 19887,
+              "end": 20020,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20020,
+              "end": 20463,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 20463,
+          "promptEnd": 20538,
+          "protectedRanges": [
+            {
+              "start": 20538,
+              "end": 20708,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20708,
+              "end": 21204,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 178,
+          "end": 19145
+        },
+        {
+          "start": 19764,
+          "end": 19887
+        },
+        {
+          "start": 20463,
+          "end": 20538
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "java",
+      "locale": "vi",
+      "fixturePath": "original/bodies/1-java/vi.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 178,
+        "end": 22321,
+        "sha256": "155487b4139d946096eb0f0f2e3b5c3ce898b2658bb5db35b6dc6e52faf5dbbb"
+      },
+      "section1": {
+        "start": 178,
+        "end": 1674,
+        "sha256": "33d372ac10cf1574c730d027dfb9e12fb3391a248b762b2a94a9fe5f73f60422"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Lời mở đầu",
+          "start": 178,
+          "end": 203
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Các khái niệm cốt lõi",
+          "start": 1674,
+          "end": 1710
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Thực hành",
+          "start": 2201,
+          "end": 2224
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Chuẩn bị source code và môi trường",
+          "start": 2226,
+          "end": 2283
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Kiến trúc / thành phần",
+          "start": 3064,
+          "end": 3106
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Giải thích code và bản chất",
+          "start": 4965,
+          "end": 5014
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. Ánh xạ verb → thao tác — `@PostMapping`/`@GetMapping` và status code",
+          "start": 5205,
+          "end": 5299
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. `PUT` thay toàn bộ vs `PATCH` sửa một phần — và `404` khi thiếu",
+          "start": 6347,
+          "end": 6441
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. `DELETE` trả `204` không body — và vì sao `POST` không idempotent",
+          "start": 7942,
+          "end": 8032
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Chuẩn bị & khởi chạy",
+          "start": 9291,
+          "end": 9333
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Điều kiện cần trước",
+          "start": 9335,
+          "end": 9381
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Khởi động",
+          "start": 9739,
+          "end": 9770
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Kiểm thử",
+          "start": 9988,
+          "end": 10014
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Dọn tài nguyên",
+          "start": 15042,
+          "end": 15074
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Đọc thêm",
+          "start": 15312,
+          "end": 15338
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Lý thuyết",
+          "start": 15992,
+          "end": 16015
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Bản chất",
+          "start": 16017,
+          "end": 16043
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Các trường hợp biên (edge cases) cần lưu ý",
+          "start": 18871,
+          "end": 18938
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Tổng kết",
+          "start": 20026,
+          "end": 20046
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Các câu hỏi dễ bị phỏng vấn",
+          "start": 20048,
+          "end": 20098
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 20223,
+          "end": 20396,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20396,
+          "end": 20835,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 20960,
+          "end": 21099,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 21099,
+          "end": 21571,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 21652,
+          "end": 21821,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 21821,
+          "end": 22321,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 20100,
+          "promptEnd": 20223,
+          "protectedRanges": [
+            {
+              "start": 20223,
+              "end": 20396,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20396,
+              "end": 20835,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 20835,
+          "promptEnd": 20960,
+          "protectedRanges": [
+            {
+              "start": 20960,
+              "end": 21099,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 21099,
+              "end": 21571,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 21571,
+          "promptEnd": 21652,
+          "protectedRanges": [
+            {
+              "start": 21652,
+              "end": 21821,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 21821,
+              "end": 22321,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 178,
+          "end": 20223
+        },
+        {
+          "start": 20835,
+          "end": 20960
+        },
+        {
+          "start": 21571,
+          "end": 21652
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "csharp",
+      "locale": "en",
+      "fixturePath": "original/bodies/2-csharp/en.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 180,
+        "end": 19941,
+        "sha256": "b9f6fd73dd4a42924e64ebdcc075fb10d44c84ed2649e74a07bb03688bce776d"
+      },
+      "section1": {
+        "start": 180,
+        "end": 1322,
+        "sha256": "2c6c1e62fee04669f3b75afc2a33d640742c2de67ca7ed32588906a432493b86"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Opening",
+          "start": 180,
+          "end": 195
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Core concepts",
+          "start": 1322,
+          "end": 1343
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Hands-on",
+          "start": 1811,
+          "end": 1830
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Prepare source code and environment",
+          "start": 1832,
+          "end": 1881
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Architecture / components",
+          "start": 2562,
+          "end": 2601
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Code walkthrough and essence",
+          "start": 4416,
+          "end": 4458
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. POST creates a resource — 201 Created, not idempotent",
+          "start": 4604,
+          "end": 4676
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. GET reads a resource — 200 when present, 404 when missing",
+          "start": 5261,
+          "end": 5337
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. PUT full replace vs PATCH partial — both 200 but different semantics",
+          "start": 5986,
+          "end": 6073
+        },
+        {
+          "id": "section-2.1.3.4",
+          "depth": 5,
+          "text": "2.1.3.4. DELETE removes a resource — 204 No Content",
+          "start": 7160,
+          "end": 7221
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Prepare and run",
+          "start": 8156,
+          "end": 8185
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Prerequisites",
+          "start": 8187,
+          "end": 8217
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Start",
+          "start": 8415,
+          "end": 8437
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Testing",
+          "start": 8635,
+          "end": 8656
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Cleanup",
+          "start": 13284,
+          "end": 13305
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Further reading",
+          "start": 13479,
+          "end": 13508
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Theory",
+          "start": 14005,
+          "end": 14022
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Essence",
+          "start": 14024,
+          "end": 14045
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Edge cases to watch",
+          "start": 16889,
+          "end": 16922
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Summary",
+          "start": 17795,
+          "end": 17810
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Common interview questions",
+          "start": 17812,
+          "end": 17849
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 17960,
+          "end": 18106,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18106,
+          "end": 18556,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 18633,
+          "end": 18779,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18779,
+          "end": 19289,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19379,
+          "end": 19493,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19493,
+          "end": 19941,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 17851,
+          "promptEnd": 17960,
+          "protectedRanges": [
+            {
+              "start": 17960,
+              "end": 18106,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18106,
+              "end": 18556,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 18556,
+          "promptEnd": 18633,
+          "protectedRanges": [
+            {
+              "start": 18633,
+              "end": 18779,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18779,
+              "end": 19289,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 19289,
+          "promptEnd": 19379,
+          "protectedRanges": [
+            {
+              "start": 19379,
+              "end": 19493,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19493,
+              "end": 19941,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 180,
+          "end": 17960
+        },
+        {
+          "start": 18556,
+          "end": 18633
+        },
+        {
+          "start": 19289,
+          "end": 19379
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "csharp",
+      "locale": "vi",
+      "fixturePath": "original/bodies/2-csharp/vi.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 180,
+        "end": 21255,
+        "sha256": "db847c2e201f401c045d824e2dc7ebcf6783adf3f645acf11873d4c69a364cf3"
+      },
+      "section1": {
+        "start": 180,
+        "end": 1562,
+        "sha256": "ce3634db4630855c3be2396fd2f2619cf4b69795a183247502e1c90d4560684b"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Lời mở đầu",
+          "start": 180,
+          "end": 205
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Các khái niệm cốt lõi",
+          "start": 1562,
+          "end": 1598
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Thực hành",
+          "start": 2150,
+          "end": 2173
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Chuẩn bị source code và môi trường",
+          "start": 2175,
+          "end": 2232
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Kiến trúc / thành phần",
+          "start": 2974,
+          "end": 3016
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Giải thích code và bản chất",
+          "start": 4845,
+          "end": 4894
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. POST tạo resource — 201 Created, không idempotent",
+          "start": 5071,
+          "end": 5142
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. GET đọc resource — 200 khi có, 404 khi thiếu",
+          "start": 5765,
+          "end": 5834
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. PUT thay toàn bộ vs PATCH sửa một phần — cùng 200 nhưng khác semantics",
+          "start": 6483,
+          "end": 6584
+        },
+        {
+          "id": "section-2.1.3.4",
+          "depth": 5,
+          "text": "2.1.3.4. DELETE xoá resource — 204 No Content",
+          "start": 7702,
+          "end": 7758
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Chuẩn bị & khởi chạy",
+          "start": 8727,
+          "end": 8769
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Điều kiện cần trước",
+          "start": 8771,
+          "end": 8817
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Khởi động",
+          "start": 9023,
+          "end": 9054
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Kiểm thử",
+          "start": 9262,
+          "end": 9288
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Dọn tài nguyên",
+          "start": 14055,
+          "end": 14087
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Đọc thêm",
+          "start": 14278,
+          "end": 14304
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Lý thuyết",
+          "start": 14810,
+          "end": 14833
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Bản chất",
+          "start": 14835,
+          "end": 14861
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Các trường hợp biên (edge cases) cần lưu ý",
+          "start": 18018,
+          "end": 18085
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Tổng kết",
+          "start": 19020,
+          "end": 19040
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Các câu hỏi dễ bị phỏng vấn",
+          "start": 19042,
+          "end": 19092
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 19209,
+          "end": 19344,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19344,
+          "end": 19830,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19915,
+          "end": 20043,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20043,
+          "end": 20536,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 20652,
+          "end": 20763,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20763,
+          "end": 21255,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 19094,
+          "promptEnd": 19209,
+          "protectedRanges": [
+            {
+              "start": 19209,
+              "end": 19344,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19344,
+              "end": 19830,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 19830,
+          "promptEnd": 19915,
+          "protectedRanges": [
+            {
+              "start": 19915,
+              "end": 20043,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20043,
+              "end": 20536,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 20536,
+          "promptEnd": 20652,
+          "protectedRanges": [
+            {
+              "start": 20652,
+              "end": 20763,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20763,
+              "end": 21255,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 180,
+          "end": 19209
+        },
+        {
+          "start": 19830,
+          "end": 19915
+        },
+        {
+          "start": 20536,
+          "end": 20652
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "go",
+      "locale": "en",
+      "fixturePath": "original/bodies/3-go/en.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 176,
+        "end": 20110,
+        "sha256": "fe9d958ee28132ae2e052855c767b28d494bc0a093fbb08cbedce436d3fd3e38"
+      },
+      "section1": {
+        "start": 176,
+        "end": 1441,
+        "sha256": "239bd48b0d0aeb703464324a98d978b065415032c2fd8696f229fcadc9aca4fe"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Opening",
+          "start": 176,
+          "end": 191
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Core concepts",
+          "start": 1441,
+          "end": 1462
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Hands-on",
+          "start": 1897,
+          "end": 1916
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Prepare source code and environment",
+          "start": 1918,
+          "end": 1967
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Architecture / components",
+          "start": 2690,
+          "end": 2729
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Code walkthrough and essence",
+          "start": 4344,
+          "end": 4386
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. POST creates a resource — returns 201 Created",
+          "start": 4508,
+          "end": 4572
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. GET reads a resource — 200 when present, 404 when missing",
+          "start": 5264,
+          "end": 5340
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. PUT full replace vs PATCH partial update",
+          "start": 5933,
+          "end": 5990
+        },
+        {
+          "id": "section-2.1.3.4",
+          "depth": 5,
+          "text": "2.1.3.4. DELETE removes a resource — returns 204 No Content",
+          "start": 7222,
+          "end": 7291
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Prerequisites and startup",
+          "start": 8467,
+          "end": 8506
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Prerequisites",
+          "start": 8508,
+          "end": 8538
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Start",
+          "start": 8686,
+          "end": 8708
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Verification",
+          "start": 9043,
+          "end": 9069
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Cleanup",
+          "start": 13828,
+          "end": 13849
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Further reading",
+          "start": 14036,
+          "end": 14065
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Theory",
+          "start": 14463,
+          "end": 14480
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. The essence",
+          "start": 14482,
+          "end": 14507
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Edge cases to internalize",
+          "start": 16994,
+          "end": 17033
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Wrap-up",
+          "start": 18009,
+          "end": 18024
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Common interview questions",
+          "start": 18026,
+          "end": 18063
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 18156,
+          "end": 18300,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18300,
+          "end": 18757,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 18842,
+          "end": 18942,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 18942,
+          "end": 19401,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19494,
+          "end": 19610,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19610,
+          "end": 20110,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 18065,
+          "promptEnd": 18156,
+          "protectedRanges": [
+            {
+              "start": 18156,
+              "end": 18300,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18300,
+              "end": 18757,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 18757,
+          "promptEnd": 18842,
+          "protectedRanges": [
+            {
+              "start": 18842,
+              "end": 18942,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 18942,
+              "end": 19401,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 19401,
+          "promptEnd": 19494,
+          "protectedRanges": [
+            {
+              "start": 19494,
+              "end": 19610,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19610,
+              "end": 20110,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 176,
+          "end": 18156
+        },
+        {
+          "start": 18757,
+          "end": 18842
+        },
+        {
+          "start": 19401,
+          "end": 19494
+        }
+      ]
+    },
+    {
+      "programmingLanguage": "go",
+      "locale": "vi",
+      "fixturePath": "original/bodies/3-go/vi.md",
+      "offsetUnit": "zero-based UTF-8 bytes; end exclusive in raw file",
+      "article": {
+        "start": 176,
+        "end": 21069,
+        "sha256": "685935ad1fe952d2a2240c3d46d30e764e2aea21d8af91df95f8fbe905a9e45d"
+      },
+      "section1": {
+        "start": 176,
+        "end": 1591,
+        "sha256": "e453ac98f09e27319d17ce94ac71d05c7b92e9c00e04f36d0c39b99ca0a15fc5"
+      },
+      "outline": [
+        {
+          "id": "section-1",
+          "depth": 2,
+          "text": "1. Lời mở đầu",
+          "start": 176,
+          "end": 201
+        },
+        {
+          "id": "section-2",
+          "depth": 2,
+          "text": "2. Các khái niệm cốt lõi",
+          "start": 1591,
+          "end": 1627
+        },
+        {
+          "id": "section-2.1",
+          "depth": 3,
+          "text": "2.1. Thực hành",
+          "start": 2117,
+          "end": 2140
+        },
+        {
+          "id": "section-2.1.1",
+          "depth": 4,
+          "text": "2.1.1. Chuẩn bị source code và môi trường",
+          "start": 2142,
+          "end": 2199
+        },
+        {
+          "id": "section-2.1.2",
+          "depth": 4,
+          "text": "2.1.2. Kiến trúc / thành phần",
+          "start": 2965,
+          "end": 3007
+        },
+        {
+          "id": "section-2.1.3",
+          "depth": 4,
+          "text": "2.1.3. Giải thích code và bản chất",
+          "start": 4625,
+          "end": 4674
+        },
+        {
+          "id": "section-2.1.3.1",
+          "depth": 5,
+          "text": "2.1.3.1. POST tạo resource — trả 201 Created",
+          "start": 4828,
+          "end": 4886
+        },
+        {
+          "id": "section-2.1.3.2",
+          "depth": 5,
+          "text": "2.1.3.2. GET đọc resource — 200 khi có, 404 khi thiếu",
+          "start": 5567,
+          "end": 5636
+        },
+        {
+          "id": "section-2.1.3.3",
+          "depth": 5,
+          "text": "2.1.3.3. PUT thay toàn bộ vs PATCH sửa một phần",
+          "start": 6229,
+          "end": 6293
+        },
+        {
+          "id": "section-2.1.3.4",
+          "depth": 5,
+          "text": "2.1.3.4. DELETE xóa resource — trả 204 No Content",
+          "start": 7551,
+          "end": 7613
+        },
+        {
+          "id": "section-2.1.4",
+          "depth": 4,
+          "text": "2.1.4. Chuẩn bị & khởi chạy",
+          "start": 8823,
+          "end": 8865
+        },
+        {
+          "id": "section-2.1.4.1",
+          "depth": 5,
+          "text": "2.1.4.1. Điều kiện cần trước",
+          "start": 8867,
+          "end": 8913
+        },
+        {
+          "id": "section-2.1.4.2",
+          "depth": 5,
+          "text": "2.1.4.2. Khởi động",
+          "start": 9064,
+          "end": 9095
+        },
+        {
+          "id": "section-2.1.5",
+          "depth": 4,
+          "text": "2.1.5. Kiểm thử",
+          "start": 9458,
+          "end": 9484
+        },
+        {
+          "id": "section-2.1.6",
+          "depth": 4,
+          "text": "2.1.6. Dọn tài nguyên",
+          "start": 14393,
+          "end": 14425
+        },
+        {
+          "id": "section-2.1.7",
+          "depth": 4,
+          "text": "2.1.7. Đọc thêm",
+          "start": 14620,
+          "end": 14646
+        },
+        {
+          "id": "section-2.2",
+          "depth": 3,
+          "text": "2.2. Lý thuyết",
+          "start": 15039,
+          "end": 15062
+        },
+        {
+          "id": "section-2.2.1",
+          "depth": 4,
+          "text": "2.2.1. Bản chất",
+          "start": 15064,
+          "end": 15090
+        },
+        {
+          "id": "section-2.2.2",
+          "depth": 4,
+          "text": "2.2.2. Các trường hợp biên (edge cases) cần lưu ý",
+          "start": 17716,
+          "end": 17783
+        },
+        {
+          "id": "section-3",
+          "depth": 2,
+          "text": "3. Tổng kết",
+          "start": 18828,
+          "end": 18848
+        },
+        {
+          "id": "section-3.1",
+          "depth": 3,
+          "text": "3.1. Các câu hỏi dễ bị phỏng vấn",
+          "start": 18850,
+          "end": 18900
+        }
+      ],
+      "protectedRanges": [
+        {
+          "start": 18990,
+          "end": 19145,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19145,
+          "end": 19633,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 19728,
+          "end": 19845,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 19845,
+          "end": 20319,
+          "kind": "sampleAnswer"
+        },
+        {
+          "start": 20422,
+          "end": 20532,
+          "kind": "interviewerPoints"
+        },
+        {
+          "start": 20532,
+          "end": 21069,
+          "kind": "sampleAnswer"
+        }
+      ],
+      "interviewQuestions": [
+        {
+          "id": "interview-1",
+          "promptStart": 18902,
+          "promptEnd": 18990,
+          "protectedRanges": [
+            {
+              "start": 18990,
+              "end": 19145,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19145,
+              "end": 19633,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-2",
+          "promptStart": 19633,
+          "promptEnd": 19728,
+          "protectedRanges": [
+            {
+              "start": 19728,
+              "end": 19845,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 19845,
+              "end": 20319,
+              "kind": "sampleAnswer"
+            }
+          ]
+        },
+        {
+          "id": "interview-3",
+          "promptStart": 20319,
+          "promptEnd": 20422,
+          "protectedRanges": [
+            {
+              "start": 20422,
+              "end": 20532,
+              "kind": "interviewerPoints"
+            },
+            {
+              "start": 20532,
+              "end": 21069,
+              "kind": "sampleAnswer"
+            }
+          ]
+        }
+      ],
+      "publicArticleRanges": [
+        {
+          "start": 176,
+          "end": 18990
+        },
+        {
+          "start": 19633,
+          "end": 19728
+        },
+        {
+          "start": 20319,
+          "end": 20422
+        }
+      ]
+    }
+  ]
+}

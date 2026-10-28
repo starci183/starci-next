@@ -5,14 +5,54 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson screen and implementation proof records.
+  reason: Use repository-root implementation owners and complete directly named requirement/design/fixture context
+    for isolated coding workers.
 repository: be
 owners:
 - role: be
-  path: apps/core
+  path: be/src/modules/domain/lesson-content
+- role: be
+  path: be/src/features/cli/lessons
 proves:
 - data.lessons.content
+- sds.lessons.content-import
+- fr.lessons.read-article
 refs:
+- br.lessons.interactive-ai-lesson
+- fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
 - data.lessons.content
+- data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- decision.lessons.ai-pool
+- sds.lessons.content-import
+- sds.lessons.grounding
+- sds.lessons.coach
+- integration.lessons.ai-router
+- fixture.lessons.academy-rest-semantics.v1
+extensions:
+  pathBase: All owners are module-root directories relative to the one git app repository root; repository be/fe
+    names the logical side from workspace.yaml. These are target owners, not claims code has already been delivered.
+  responsibilities:
+  - The domain owner parses source metadata/body/challenges, validates byte hashes and classification, stores immutable
+    versions, and constructs explicit public/full/locked projections with server-only grading.
+  - The CLI feature owns the import command and safe counts/hash reporting; it delegates business import rules to
+    the domain and never executes source demo commands.
+  - Task context includes fixture resource.yaml, manifest.json, source en/vi metadata, all eight bodies and the
+    four challenge/submission locale pairs; import tests prove all combinations and no grading leakage.
+  contextRule: Coding workers read named context only. Resolve every refs id explicitly into the task context, including
+    the fixture resource, manifest and selected/all source files needed by the slice; refs are not assumed to auto-load
+    transitive dependencies.
+  activation: Open decision gates apply to the effects they own. Content parsing, public projections and fake-provider
+    proofs can proceed; fixed-step rollout, credit policy, concrete provider configuration and live verification
+    remain conditional.
+  proofStatus: Implementation and downstream runtime/browser proof are not run by this docs task; state remains
+    todo.

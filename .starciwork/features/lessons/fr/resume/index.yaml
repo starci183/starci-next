@@ -5,24 +5,44 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
 actors:
 - learner
 trigger: A learner returns to a lesson with saved progress.
 mainFlow:
-- Load the same lesson version and saved step answers.
-- Restore the current step and reading position.
-- Allow the learner to continue or revisit completed steps.
+- Authenticate the learner and load progress pinned to the same immutable lesson version and selected programming
+  language.
+- Restore locale preference, current step, all saved answer revisions, safe completed feedback and section/offset
+  reading position.
+- Read active turn status before offering resend; reconnect/observe the same attempt where possible, or offer explicit
+  retry only after a terminal unavailable/interrupted/cancelled state.
+- Offer completed-step revisits, preserve all history and compute completion only from the canonical five distinct
+  step states.
 exceptionFlows:
-- If the selected translation is unavailable, offer an available language without
-  replacing saved progress.
-- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+- A new locale reuses the same version/language progress; a missing locale is offered explicitly without overwriting
+  the saved preference.
+- A programming-language change opens its own prior progress or a new language track and clearly preserves the previous
+  one.
+- Unavailable source version never silently remaps answers; show version_unavailable and an explicit start-new-version
+  action.
+- Stale write returns the latest safe progressRevision; keep drafts and let the learner reconcile rather than overwrite
+  another tab.
+- Entitlement expiration locks content/coaching presentation without erasing answers; lookup failure offers retry.
+- Lost network does not imply completion; provisional text is identified as incomplete and saved answer remains
+  available.
 postconditions:
-- The learner resumes without losing saved progress.
+- A refresh or return never loses a committed answer and never starts a second generation just because its first
+  stream disconnected.
 composes:
 - br.lessons.interactive-ai-lesson
 - data.lessons.content
 - data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+refs:
+- contract.commerce.entitlement
+- ui.lessons.lesson
+- ui.lessons.locked-preview

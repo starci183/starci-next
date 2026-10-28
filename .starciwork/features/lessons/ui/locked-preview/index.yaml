@@ -1,24 +1,93 @@
 schema: work/ui-screen@1
 id: ui.lessons.locked-preview
-title: Locked lesson preview
+title: Exact original opening and outline preview
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson screen and implementation proof records.
-brand: Use app brand tokens.
-shell: Application shell.
-route: /lessons/:lessonId
-routeParent: /lessons
-surface: Premium locked lesson preview
-persona: Learner without required entitlement
+  reason: Resolve feature-local core brand/shell and the article/rail/ask/locked states against the supplied AppLayout
+    and SiteShell.
+brand:
+  direction: 'Use hfs sides.fe.grammar=core and the installed grammar defaults: quiet neutral canvas, white surfaces
+    and one violet commit/focus accent; light and dark follow grammar token roles.'
+  tokens: Inherit surface, separator, accentText, accentSoft, muted and radius through the existing grammar root
+    and globals.css imports. Grammar owns typography, control sizes, pill Buttons, focus, paint and surface depth;
+    no product-specific palette, font or logo is invented.
+  identity: Use the existing app.shell.brand translation resolved by AppLayout and the current home link; no new
+    brand record, replacement wordmark or new artwork is required.
+shell:
+  composition: The supplied server AppLayout resolves app.shell.brand and APP_ROUTES.home and wraps routed content
+    in SiteShell. SiteShell uses WorkspaceShell viewport=flow, primaryLabel=brand, header=TopBar with a TextAction
+    wordmark linking home, primary=PageContainer measure=reading.
+  frame: The existing SiteShell frame is flex min-h-screen flex-col. Lesson content lives within its reading-measure
+    primary region; this task adds no global sidebar, toolbar, secondary header, navigation rail or full-viewport
+    dashboard.
+  responsive: The article is the largest region. At widths where article plus coaching cannot fit the existing reading
+    measure, the step rail and ask panel stack as in-page regions; selecting a step never removes access to the
+    article. Do not widen or replace SiteShell to satisfy an invented three-column mockup.
+  evidence:
+  - hfs.json
+  - fe/apps/app/src/features/layouts/AppLayout/index.tsx
+  - fe/apps/app/src/app/globals.css
+  - fe/packages/starci-next-ui/src/composites/SiteShell/index.tsx
+  - fe/packages/starci-next-ui/src/composites/SiteShell/classNames.ts
+  - harness:contexts/grammars/core.md
+route: /[locale]/lessons/[lessonId]
+routeParent: /[locale]/lessons
+surface: Locked lesson state within the same existing application shell
+persona: Learner without required lesson entitlement or with entitlement temporarily unavailable
 ui:
-- Show title, description, estimated reading time and short article preview.
-- Show locked state and route to entitlement experience.
-- Do not expose full premium body or enable coaching before entitlement is confirmed.
+  hierarchy:
+  - Show original localized title, description, reading estimate, verification date and a clear locked status within
+    the routed page body.
+  - 'Show the full exact original section 1 (## 1. Opening in English or ## 1. Lời mở đầu in Vietnamese), ending
+    immediately before the original section-2 heading, for the selected programming language and locale. Render
+    the source bytes selected by the manifest.'
+  - Show the complete exact original outline, preserving heading text, depth and source order. Locked outline entries
+    show structure but never cause a hidden-body request.
+  - Keep the TypeScript, Java, C#, Go selector distinct from locale selection; all eight exact preview/outline combinations
+    are indexed by the fixture manifest.
+  - Show all five exact candidate step labels from contract.lessons.lesson-steps.surface.steps in locked state and
+    show the ask region as unavailable; neither accepts answers nor calls the provider while access is denied.
+  - Offer the existing commerce entitlement experience as the primary next action; use its provided destination/contract
+    rather than invent a checkout URL. Show retry for an entitlement lookup error.
+  exactSource:
+    fixture: fixture.lessons.academy-rest-semantics.v1
+    manifest: .starciwork/_resources/fixtures/lessons/academy-rest-semantics-v1/manifest.json
+    selection: The server projection finds articles[] by programmingLanguage and locale, decodes only the raw file
+      bytes [section1.start:section1.end] as UTF-8, and sends exact outline ids/text/depth in order. The frontend
+      receives only that safe preview DTO; it never imports raw files or the manifest into a client bundle.
+    originalHeadings: Do not translate heading labels at render time or flatten their hierarchy. Use the selected
+      en/vi original text. In vi section 1 the exact heading is taken from manifest, not assumed from this explanatory
+      prose.
+  states:
+    loading: Show access/preview loading status inside the same shell. Do not request full article or protected
+      files optimistically.
+    denied: Return exact preview and outline, clear locked reason, existing entitlement action and no active coaching
+      controls.
+    entitlementError: Keep restricted material unavailable, distinguish lookup failure from a confirmed denial,
+      retain saved progress and offer Retry.
+    variantMissing: Offer only actual available combinations for explicit choice; do not synthesize a translation.
+    entitlementRestored: Recheck access server-side, then request the public full projection and restore preserved
+      progress; samples/rubrics remain item-gated.
+    offlineOrNotFound: Show a retryable fetch error or not-found state accurately; no invented preview substitutes
+      for missing source.
+  acceptance:
+  - Preview bytes hash to manifest.section1.sha256 for all eight combinations; outline labels match manifest exactly.
+  - No remaining article body, interviewer/sample answers, rubric, submission criteria or provider/credential metadata
+    appears in HTML, client bundle, hydration state, preload requests or response errors.
+  - The locked page retains the supplied AppLayout/SiteShell chrome and the same core defaults; it adds no alternative
+    app navigation.
 assets: []
 refs:
 - contract.commerce.entitlement
 - data.lessons.content
+- data.lessons.progress
+- contract.lessons.lesson-steps
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- fixture.lessons.academy-rest-semantics.v1
+extensions:
+  directionStatus: This screen is specified but not drawn/owner-approved; state remains todo.

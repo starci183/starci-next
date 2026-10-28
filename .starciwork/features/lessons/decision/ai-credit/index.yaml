@@ -5,18 +5,18 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
-question: Should lesson coaching be free to use and gated by Premium entitlement?
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
+question: 'Q-W1-2: Should lesson coaching be free to use and gated by Premium entitlement?'
 options:
 - Free with Premium access gate
 - Metered credits
 - Included for all learners
 recommendation: Free with Premium access gate
-recommendationReason: The proposal gives eligible learners a simple access rule while
-  preserving the ability to change the policy after owner decision.
+recommendationReason: The proposal gives eligible learners a simple access rule while preserving the ability to
+  change the policy after owner decision.
 outcome: open
 chosen: null
 reason: null
@@ -25,3 +25,6 @@ blocks:
 - sds.lessons.coach
 refs:
 - contract.commerce.entitlement
+extensions:
+  scope: Blocks activating coaching access/billing effects; content isPremium stays faithful to source and the existing
+    commerce contract remains authoritative. No credits are charged or fabricated.

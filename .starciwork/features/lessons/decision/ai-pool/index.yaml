@@ -1,26 +1,33 @@
 schema: work/policy-decision@1
 id: decision.lessons.ai-pool
-title: Lesson AI pool
+title: Shared lesson AI pool configuration
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
-question: How should lesson coaching use provider capacity and credentials?
+  reason: Follow coordinator goal version 2 pinning @starci/ai-router exactly 0.3.0; cite read package and official
+    provider docs, not future research.
+question: How is the accepted one shared pool configured with approved provider models, fallback order and custody
+  references?
 options:
-- One pool via @starci/ai-router 0.2.1 with lesson profile deepseek-4.1-flash and
-  ordered fallbacks
-recommendation: One shared pool through the router; profile credentials resolve by
-  custody key name.
-recommendationReason: A shared router pool centralizes provider selection, fallback
-  order and named custody references.
+- One shared pool via @starci/ai-router exactly 0.3.0; candidate lesson profile maps deepseek-4.1-flash alias to
+  DeepSeek deepseek-flash, followed by explicitly ordered approved fallback models.
+recommendation: Use the integration record's documented primary and ordered fallback candidate, resolving keys by
+  sealed custody reference through the server integration.
+recommendationReason: The shared router owns health-aware selection, retries, model fallback and redacted telemetry;
+  the documented application alias must map to a real provider wire id.
 outcome: open
 chosen: null
 reason: null
 blocks:
 - integration.lessons.ai-router
 - sds.lessons.coach
-refs: []
+refs:
+- integration.lessons.ai-router
+extensions:
+  acceptedArchitecture: One shared pool and the exact 0.3.0 pin follow the coordinator goal version 2; this open
+    outcome concerns concrete provider/fallback/custody deployment configuration.
+  scope: Pure content import, public article/preview and fake-provider implementation can proceed without secrets
+    or live account access.

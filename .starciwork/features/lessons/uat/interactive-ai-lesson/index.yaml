@@ -5,64 +5,165 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define an acceptance walk for reading, answer-before-reveal, coaching and
-    resume.
-entry: /lessons/academy-http-request-lifecycle
+  reason: Walk the real fixture and precise proposed steps/preview/retry/resume states; no browser or live-provider
+    proof is claimed.
+entry: /en/lessons/academy-rest-semantics
 actor: learner
-accounts:
-  disposable: true
-  accounts:
-  - role: premium learner
-    identity: identity.lessons.premium-learner
+accounts: accounts.yaml
 environment: environment.lessons.uat
 steps:
 - order: 1
-  action: Open the lesson in English.
-  expected: Original article is central with five steps and ask panel.
+  action: After decision, environment and disposable identity prerequisites are resolved, open the real REST lesson
+    in English/TypeScript.
+  expected: The existing app shell contains the largest original article, exact outline, five canonical candidate
+    steps and in-page ask region.
   checks:
-  - id: article_visible
-    expected: 'true'
+  - id: article_original
+    expected: The public article agrees with manifest publicArticleRanges, retaining Mermaid, launch instructions,
+      four flows, cleanup and theory.
   - id: step_count
-    expected: '5'
+    expected: 5 canonical steps in contract order
+  - id: grading_absent_before_answer
+    expected: No interview sample/interviewer/rubric bytes in HTML, hydration or initial responses.
 - order: 2
-  action: Request a reveal for step one without an answer.
-  expected: Reveal stays hidden and answer is required.
+  action: Switch through TypeScript, Java, C#, Go, then English/Vietnamese, reading source section 1 and outline
+    in each.
+  expected: All eight combinations match the fixture; language and locale controls are distinct and a programming-language
+    switch preserves separate practice history.
   checks:
-  - id: reveal_hidden
-    expected: 'true'
+  - id: four_programming_languages
+    expected: TypeScript, Java, C#, Go
+  - id: eight_source_variants
+    expected: All en/vi bodies match source heading/order and preview hashes.
 - order: 3
-  action: Submit an answer, then request coaching.
-  expected: Answer is saved before grounded feedback appears.
+  action: Request reveal with no answer, then submit the read-original payload, deliberately repeat the same request
+    key, and request feedback.
+  expected: The first reveal is refused; save precedes any generation; duplicate submit returns the same turn and
+    revision.
   checks:
+  - id: answer_required
+    expected: No reveal without this item's saved answer.
   - id: answer_saved_before_reveal
-    expected: 'true'
+    expected: The accepted event follows saved acknowledgement.
+  - id: resend_idempotent
+    expected: Repeated key/payload creates one answer.
 - order: 4
-  action: Leave and reopen the lesson.
-  expected: Saved answer, current step and reading position are restored.
+  action: Continue through explain-concept and trace-code using their typed forms and one real original flow, acknowledging
+    complete feedback once per step.
+  expected: Only required, complete persisted feedback plus Continue advances progress; later steps stay locked
+    until prerequisites complete.
+  checks:
+  - id: typed_step_payloads
+    expected: Concept and code-trace payloads follow their distinct union shapes.
+  - id: progress_distinct_steps
+    expected: Repeated Continue does not increment completed count.
+- order: 5
+  action: At interview, answer interview-1 only and inspect its reveal; try revealing interview-2 before its answer,
+    then answer the remaining original questions.
+  expected: Only the answered question's original sample/interviewer points appear; the other gate remains closed
+    until its own answer.
+  checks:
+  - id: per_item_reveal_gate
+    expected: Other-question sample/interviewer text stays absent.
+- order: 6
+  action: Select one real source challenge and submit its required GitHub artifact payload in the chosen programming
+    language, then acknowledge complete feedback.
+  expected: All four source challenges are available for choice, the selected item uses its own criteria, and raw
+    score/rubric/submission documents remain hidden.
+  checks:
+  - id: five_steps_complete
+    expected: 5 of 5 only after the selected challenge completes.
+- order: 7
+  action: Ask a grounded section question, then ask for an unanswered challenge solution or hidden rubric.
+  expected: The ask response cites source sections; protected material is refused and ask turns never change step
+    progress.
+  checks:
+  - id: ask_grounded_and_scoped
+    expected: No unrelated history or hidden grading leakage.
+- order: 8
+  action: Leave and reopen with a saved position and completed answers; separately disconnect during streaming,
+    reopen and use explicit retry if interrupted.
+  expected: Version/language/locale, current step, saved answers, safe feedback and reading position restore; reopening
+    does not start duplicate generation.
   checks:
   - id: progress_restored
-    expected: 'true'
+    expected: Committed answers/position survive return.
+  - id: stream_resume_no_duplicate
+    expected: Partial text is provisional; a retry reuses the saved answer revision.
+- order: 9
+  action: Using the provisioned denied-entitlement identity and controlled entitlement result, open every language/locale
+    preview.
+  expected: Only exact original section 1 and full exact outline render inside the same shell; ask/coaching are
+    unavailable.
+  checks:
+  - id: locked_preview_exact
+    expected: All eight section1 hashes and outline labels match manifest.
+  - id: locked_hidden_body_absent
+    expected: No rest-of-body, protected grading or hidden-body prefetch.
 failurePaths:
+- id: save_failed
+  step: 3
+  expected: Draft remains, Saved is absent, no provider call occurs, same request key resolves an uncertain resend.
+- id: invalid_payload
+  step: 4
+  expected: Wrong discriminator/item/version/language/blank answer returns field errors and no reveal.
 - id: coach_unavailable
   step: 3
-  expected: Saved answer remains and retry is offered.
+  expected: Saved answer survives rate-limit/auth/config/quota/network/deadline failure; safe retry status, no key/provider
+    body.
+- id: after_first_token
+  step: 8
+  expected: Interrupted provisional text is labelled incomplete; no fallback splice or step completion.
+- id: stale_progress
+  step: 8
+  expected: Latest safe revision is shown, local draft is retained and reconciliation is explicit.
+- id: version_unavailable
+  step: 8
+  expected: No silent migration; old progress is retained with explicit start-new-version choice.
 - id: no_entitlement
-  step: 1
-  expected: Locked preview appears without full body or coaching.
+  step: 9
+  expected: Exact preview/outline only; rechecked backend refuses hidden body, submit, reveal, ask and retry effects.
+- id: entitlement_unavailable
+  step: 9
+  expected: No access grant on lookup failure; retry offered and progress preserved.
+- id: other_learner_or_item
+  step: 5
+  expected: Guessed turn id or unanswered item does not reveal another learner's or another item's grading.
 recording:
   required: true
-  covers: Article, answer-before-reveal, coach feedback and resume.
+  covers: Original article fidelity, selector, five typed steps, per-item gates, ask, duplicate submit/Continue,
+    streaming interruption, resume and exact locked preview.
 effects:
-- Creates lesson turns and progress for disposable account.
-cleanup: Delete disposable learner progress and turns after the walk.
+- Creates disposable learner progress, saved answer revisions and coach/ask turns only after the named environment/identity/policy
+  prerequisites are resolved.
+cleanup: Delete only the disposable learner progress and turns created by this walk; preserve the source snapshot
+  and unrelated learner data.
 requiresProof:
 - required: true
   command: starci uat run
   note: Run from this flow with a receipted browser walk.
 refs:
-- contract.lessons.lesson-steps
-- contract.commerce.entitlement
+- br.lessons.interactive-ai-lesson
+- fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
+- ui.lessons.lesson
+- ui.lessons.locked-preview
 - data.lessons.content
 - data.lessons.turn
+- data.lessons.progress
+- contract.lessons.lesson-steps
+- contract.commerce.entitlement
+- integration.lessons.ai-router
+- fixture.lessons.academy-rest-semantics.v1
+blockedBy:
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- decision.lessons.ai-pool
+blockers:
+- The supplied records name environment.lessons.uat and identity.lessons.premium-learner but do not establish provisioned
+  origins or sealed custody. Denied-entitlement identity and controlled failures also require a separately provisioned
+  UAT environment; none is invented here.

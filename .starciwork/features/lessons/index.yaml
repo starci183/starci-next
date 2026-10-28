@@ -1,18 +1,29 @@
 schema: work/feature@1
 id: lessons
 title: Interactive AI lessons
-purpose: Let learners understand one piece of knowledge by reading the original Academy
-  article and practicing it with an AI coach.
+purpose: Let learners understand one piece of knowledge by reading the original Academy article and practicing it
+  with an AI coach.
 decisions:
-- Five-step sequence is an open question Q-W1-1.
-- AI credit policy is an open question Q-W1-2; free use gated by Premium is proposed.
-- A shared AI pool routes lesson coaching through @starci/ai-router 0.2.1.
+- The original Academy article remains the main lesson surface; answer-before-reveal, grounded coaching and resume
+  are retained.
+- Q-W1-1 remains open; contract.lessons.lesson-steps names the five-step candidate and its exact payloads without
+  recording owner approval.
+- Q-W1-2 remains open; free coaching with a Premium access gate is proposed, not an active billing rule.
+- One shared AI pool uses @starci/ai-router exactly 0.3.0; decision.lessons.ai-pool retains its open outcome for provider/profile/fallback
+  configuration.
 delivers:
-- Original article at the centre, five AI-coached steps, answer-before-reveal interaction,
-  resume, grounded coaching, and locked preview.
-- Localized lesson content in four languages and a versioned Academy lesson fixture.
+- 'Complete versioned Academy REST-semantics source in four PROGRAMMING languages: TypeScript, Java, C# and Go;
+  English and Vietnamese are separate locales.'
+- Central original article, proposed five coached steps, per-item answer-before-reveal, grounded ask panel, durable
+  progress/resume and exact section-1/outline locked preview.
+- Server-only grading and source provenance; current provider and exact router-version research, with missing installation/custody/live/configuration
+  evidence stated honestly.
 excludes:
 - Changing Academy authoring or commerce entitlement policy.
+- Reading secrets, making live provider calls, running source demo commands or publishing code as part of these
+  documentation changes.
 openQuestions:
-- 'Q-W1-1: Should each lesson use the proposed five steps?'
-- 'Q-W1-2: Should lesson AI be free with access gated by Premium?'
+- 'Q-W1-1: Should each lesson use the proposed five steps? The supplied prior Work does not contain exact step names;
+  the explicit candidate is design, not historical approval.'
+- 'Q-W1-2: Should lesson AI be free with access gated by Premium? No credit charge or new entitlement rule is inferred
+  while open.'

@@ -1,41 +1,154 @@
 schema: work/integration@1
 id: integration.lessons.ai-router
-title: AI router integration
+title: Shared lesson pool through @starci/ai-router 0.3.0
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson boundaries and proof records.
-provider: '@starci/ai-router 0.2.1'
-boundary: One shared AI pool; lesson profile deepseek-4.1-flash with explicitly ordered
-  fallbacks.
+  reason: Follow coordinator goal version 2 pinning @starci/ai-router exactly 0.3.0; cite read package and official
+    provider docs, not future research.
+provider: '@starci/ai-router exactly 0.3.0; DeepSeek OpenAI-compatible API is the documented candidate provider'
+boundary: One shared in-process Nest pool for lesson coaching. Consumers inject AiRouterService through the app
+  integration boundary; no per-lesson pool, copied retry engine, new standalone gateway, virtual-key admin service
+  or extra app is required by this feature.
 endpoints:
-- Router library interface for lesson coach requests.
+- library: 'AiRouterModule.register/registerAsync once at composition root; AiRouterService.chat/stream with {profile:
+    lesson}; AiRouterTestingModule/createFakeProvider from @starci/ai-router/testing.'
+  wire: 'Candidate DeepSeek baseUrl https://api.deepseek.com; POST /chat/completions with Bearer API-key authentication;
+    streaming is SSE deltas ending in data: [DONE].'
 credential:
-  source: custody
+  source: sealed custody reference resolved to an env name or resolver per attempt; no custody values are read for
+    this docs task
   keysByName:
   - LESSON_AI_PRIMARY
   - LESSON_AI_FALLBACK_1
+  namesAre: proposed logical references, not evidence these custody entries exist
   secretValuesStored: false
-sandbox: Verify through a non-production provider route.
+  rotation: Router resolves key references per attempt. Provider account key creation/rotation/revocation and policy
+    are owner-controlled; they are not verified by this research.
+sandbox: No dedicated DeepSeek sandbox is established by the pages read. A live proof requires an explicitly authorized
+  isolated account/key with funded balance, bounded calls and approved content; the testing-module fake proves routing
+  logic only.
 research:
-  sources:
-  - '@starci/ai-router 0.2.1 documentation and official documentation for every configured
-    provider are prerequisites for implementation research.'
   readAt: '2026-10-28'
-  authentication: Resolve named provider key references from custody; secret values
-    are not stored here.
-  limits: Respect the smallest context window across the lesson profile and ordered
-    fallbacks.
-  accountScopeLifecycle: Provider accounts and key lifecycle are owner-controlled.
-  callbackWebhook: No callbacks or webhooks are required for synchronous requests.
+  sources:
+  - title: '@starci/ai-router 0.3.0 package manifest'
+    path: D:/.claude/packages/ai-router/package.json
+    url: https://github.com/starci183/starci-harness/tree/main/packages/ai-router
+    readAt: '2026-10-28'
+    gitRevision: c2a4b43817659a66deedbd93d53736132ba897eb
+    sha256: bc304f3f0f51d8549ef6f8c1dfc6453312824a41df6bf68911d13e69fcad454e
+    finding: The local harness package declares version 0.3.0. It retains the Nest/service/profile/testing API;
+      Node >=20, ESM, optional Nest 11/12 peers and yaml dependency are declared. The app manifest currently does
+      not declare/install the package; a separately leased code task owns that.
+  - title: '@starci/ai-router 0.3.0 README: Register, Inject and call, Policies, Selection, Resilience, Streaming,
+      Observability, Testing, gateway additions'
+    path: D:/.claude/packages/ai-router/README.md
+    url: https://github.com/starci183/starci-harness/tree/main/packages/ai-router#readme
+    readAt: '2026-10-28'
+    gitRevision: c2a4b43817659a66deedbd93d53736132ba897eb
+    sha256: e1e37dea5ac899dc89c3e1692ff4a735af795bbe16f93f66122e614ec33ac792
+    finding: RegisterAsync supports injected configuration. Policies merge defaults, profile, per-call override.
+      Fallback models are ordered; retry/breakers/rate-limit handling are library-owned. stream yields an async
+      iterable; before-first-token failure can fail over, afterFirstToken failure cannot. Request ids are sent as
+      x-request-id/idempotency-key but do not prove provider deduplication. telemetry.includeContent stays false.
+      Testing provides deterministic fake providers. 0.3.0 gateway/virtual-key APIs are additive and are not required
+      by this lesson design.
+  - title: DeepSeek Your First API Call
+    url: https://api-docs.deepseek.com/
+    readAt: '2026-10-28'
+    finding: DeepSeek documents base https://api.deepseek.com with Bearer API key. The wire model deepseek-flash
+      serves DeepSeek-V4.1-Flash-1017; deepseek-4.1-flash is an application alias, not the documented wire id.
+  - title: DeepSeek Chat Completions API
+    url: https://api-docs.deepseek.com/api/create-chat-completion/
+    readAt: '2026-10-28'
+    finding: POST /chat/completions accepts messages and model. stream=true returns SSE deltas with [DONE]. JSON
+      output still requires an explicit instruction; length termination can leave incomplete content. The backend
+      validates a complete final result before accepting feedback.
+  - title: DeepSeek Models & Pricing
+    url: https://api-docs.deepseek.com/quick_start/pricing/
+    readAt: '2026-10-28'
+    finding: The documented wire ids are deepseek-flash and deepseek-v4-pro, both with a stated 1M context and maximum
+      384K output. Model/account access and pricing can change; configured output budgets and conservative token
+      estimates are smaller application choices, not claimed provider limits.
+  - title: DeepSeek Error Codes
+    url: https://api-docs.deepseek.com/quick_start/error_codes/
+    readAt: '2026-10-28'
+    finding: 400/422 indicate request errors, 401 authentication failure, 402 insufficient balance, 429 rate limit
+      and 500/503 server failure. The app uses the router error classification and returns safe domain errors without
+      exposing a provider body or retrying a malformed payload.
+  - title: DeepSeek Rate Limit & Isolation
+    url: https://api-docs.deepseek.com/quick_start/rate_limit/
+    readAt: '2026-10-28'
+    finding: Concurrency is account-wide across API keys. The docs state 2500 Flash and 500 Pro connections; key
+      fan-out does not multiply account capacity. SSE keep-alive comments are not tokens. Provider user_id exists
+      but the lesson integration omits it because learner identifiers are excluded.
+  authentication: Upstream Bearer key is resolved server-side from an approved named custody reference; no provider
+    secret goes to frontend, source fixture, logs, examples or Work. Read documentation and package manifests only;
+    no environment/custody secret inspection occurs.
+  limits: Set explicit per-key/provider concurrency, maxAttempts, first-token/chunk timeout and total deadline in
+    approved configuration; leave content telemetry off. Calculate grounding against the smallest active configured
+    model context, reserving prompt and output. The README four-characters/token estimate is approximate; cost/usage
+    estimates are not entitlement or credit policy.
+  accountScopeLifecycle: An active provider account, permitted model access and funded balance are necessary. No
+    account, key scope, rotation/revocation, organization access or retention behavior is proven here. Existing
+    entitlement and Q-W1-2 govern learner access independently of provider billing.
+  callbackWebhook: No callback/webhook is used for the documented synchronous chat/SSE flow. Cancellation and application
+    event streams are handled by the caller; this is not a provider callback registration.
   ownerPrerequisites:
-  - Custody entries for named provider keys.
-  - Provider access to configured models.
-  liveVerificationPlan: Run an authorized sandbox request; verify profile, fallback
-    order, redaction and absence of learner identifiers.
+  - Approve the concrete provider/model mapping, ordered fallback policy and operational limits under decision.lessons.ai-pool.
+  - Provide sealed custody entries and a permitted funded provider account; reference names above do not prove their
+    existence.
+  - Resolve Q-W1-1/Q-W1-2 for fixed-step activation and coaching access/billing.
+  - Authorize a bounded live verification before release; no live call is made by this documentation task.
+  liveVerificationPlan:
+  - After separately leased installation and one app-root registration, use an authorized isolated provider key
+    and a non-identifying source question. Record installed version, profile, answering model, attempts, timing
+    and safe terminal status; never record key or raw protected prompt.
+  - Verify unary and streaming grounded responses against the provider; confirm terminal result persistence, no
+    learner id, per-item reveal and no protected ask leakage.
+  - Use fake providers for deterministic 429/auth/fallback/pre-token/post-token/cancel/deadline tests. A fake test
+    is not reported as real provider failure proof.
+  - Only use controlled live failure scenarios explicitly permitted for that account; prove custody rotation/revocation
+    and real fallback access when authorization exists. Record not-run prerequisites truthfully instead of declaring
+    the integration done.
+  notResearchedOrProven:
+  - No app-installed 0.3.0 dependency or root registration is verified; local harness 0.3.0 docs are read per coordinator
+    guidance of 2026-10-28.
+  - No actual provider pool, custody binding, key, paid account, live request or fixed fallback deployment is inspected
+    or proven.
+  - No official documentation for unnamed future fallback providers is claimed as read; adding one requires its
+    own dated provider research.
+blockedBy:
+- decision.lessons.ai-pool
+blockers:
+- Installation/root registration belongs to separate code leases; custody and live authorization are absent, and
+  actual provider/fallback configuration remains undecided.
 refs:
 - decision.lessons.ai-pool
+- decision.lessons.ai-credit
 - sds.lessons.grounding
+- sds.lessons.coach
+- data.lessons.content
+- data.lessons.turn
+- contract.lessons.lesson-steps
+extensions:
+  candidateProfile:
+    status: proposed mapping, not configured or live-proven
+    name: lesson
+    modelAlias: deepseek-4.1-flash
+    providerModel: deepseek-flash
+    orderedFallbacks:
+    - order: 1
+      provider: DeepSeek
+      providerModel: deepseek-v4-pro
+      status: documented candidate, requires approval/access; only this provider is researched
+    guard: The implementation must receive an approved ordered configuration; it cannot silently treat this recommendation
+      as deployed configuration or invent additional providers.
+  goalUpdate:
+    receivedAt: '2026-10-28'
+    source: 'Coordinator Orca message msg_4a1afd6de00d, Goal version 2: ai-router pin is 0.3.0'
+    supersedes: The original task brief and first records pin of 0.2.1. The cached 0.2.1 distribution was read for
+      comparison but is not the implementation target.

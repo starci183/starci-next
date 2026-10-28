@@ -5,21 +5,29 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
-question: Should every interactive lesson use the proposed five-step sequence?
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
+question: 'Q-W1-1: Should every interactive lesson use the proposed five-step sequence?'
 options:
 - Five fixed steps
 - Variable steps per lesson
-recommendation: Five fixed steps
-recommendationReason: A predictable sequence makes it clear how one piece of knowledge
-  is practiced.
+recommendation: Five fixed steps; the exact proposed labels, item requirements and payloads are owned by contract.lessons.lesson-steps.surface.steps.
+recommendationReason: The candidate separates original reading, concept explanation, code trace, original interviews
+  and a real challenge; it preserves article depth and per-item answer gates.
 outcome: open
 chosen: null
 reason: null
 blocks:
-- br.lessons.interactive-ai-lesson
 - fr.lessons.answer-step
-refs: []
+- data.lessons.progress
+- sds.lessons.coach
+- ui.lessons.lesson
+refs:
+- contract.lessons.lesson-steps
+extensions:
+  scope: Blocks activating the fixed sequence, not importing/preserving source, reading the public article, drawing
+    a clearly proposed layout or producing exact locked previews.
+  evidenceLimit: Prior supplied records name no exact steps; these labels are a documented recommendation, not evidence
+    of an earlier owner decision.

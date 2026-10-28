@@ -1,27 +1,123 @@
 schema: work/ui-screen@1
 id: ui.lessons.lesson
-title: Lesson screen
+title: Original article and lesson coaching
 state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson screen and implementation proof records.
-brand: Use app brand tokens.
-shell: Application shell.
-route: /lessons/:lessonId
-routeParent: /lessons
-surface: Interactive article lesson
-persona: Learner
+  reason: Resolve feature-local core brand/shell and the article/rail/ask/locked states against the supplied AppLayout
+    and SiteShell.
+brand:
+  direction: 'Use hfs sides.fe.grammar=core and the installed grammar defaults: quiet neutral canvas, white surfaces
+    and one violet commit/focus accent; light and dark follow grammar token roles.'
+  tokens: Inherit surface, separator, accentText, accentSoft, muted and radius through the existing grammar root
+    and globals.css imports. Grammar owns typography, control sizes, pill Buttons, focus, paint and surface depth;
+    no product-specific palette, font or logo is invented.
+  identity: Use the existing app.shell.brand translation resolved by AppLayout and the current home link; no new
+    brand record, replacement wordmark or new artwork is required.
+shell:
+  composition: The supplied server AppLayout resolves app.shell.brand and APP_ROUTES.home and wraps routed content
+    in SiteShell. SiteShell uses WorkspaceShell viewport=flow, primaryLabel=brand, header=TopBar with a TextAction
+    wordmark linking home, primary=PageContainer measure=reading.
+  frame: The existing SiteShell frame is flex min-h-screen flex-col. Lesson content lives within its reading-measure
+    primary region; this task adds no global sidebar, toolbar, secondary header, navigation rail or full-viewport
+    dashboard.
+  responsive: The article is the largest region. At widths where article plus coaching cannot fit the existing reading
+    measure, the step rail and ask panel stack as in-page regions; selecting a step never removes access to the
+    article. Do not widen or replace SiteShell to satisfy an invented three-column mockup.
+  evidence:
+  - hfs.json
+  - fe/apps/app/src/features/layouts/AppLayout/index.tsx
+  - fe/apps/app/src/app/globals.css
+  - fe/packages/starci-next-ui/src/composites/SiteShell/index.tsx
+  - fe/packages/starci-next-ui/src/composites/SiteShell/classNames.ts
+  - harness:contexts/grammars/core.md
+route: /[locale]/lessons/[lessonId]
+routeParent: /[locale]/lessons
+surface: Interactive article lesson inside the existing application reading surface
+persona: Learner with current lesson access
 ui:
-- Keep original article central and largest.
-- Place five-step rail beside article with current, completed and locked states.
-- Keep ask panel available alongside reading and coaching.
-- Require submitted answer before step reveal.
-- Show progress and resume affordance.
+  hierarchy:
+  - Lesson title, description, 20-minute source reading estimate and verification date introduce the article. Do
+    not label verifiedAt as a made-up boolean badge.
+  - The original article is the central and largest reading region. Preserve every public section, code fence, Mermaid
+    diagram and accordion in source order; provide section navigation with the exact original heading labels.
+  - Keep a labelled programming-language selector with TypeScript, Java, C#, Go distinct from the locale preference.
+    Show the current variant and explicitly explain that a language switch opens separate saved practice.
+  - Render all five exact candidate labels, in contract.lessons.lesson-steps.surface.steps order, with step number,
+    current/completed/available/locked state and prerequisite explanation. Read, explain, trace, interview and challenge
+    retain their distinct forms.
+  - The ask panel is an in-page region alongside/after reading, with labelled question input, source-section scope,
+    send/cancel/retry and the grounded response. It never replaces the article with a chat transcript.
+  stepInteraction:
+  - Read the original article uses a summary and section references; Explain the core concept uses the verb/status/retry
+    explanation; Trace the working code uses an original flow and observed result.
+  - Practice interview questions shows the three exact original prompts for the chosen variant and a separate answer
+    gate for each. Solve a challenge selects a real source challenge and its required artifact type. The contract
+    owns complete payload validation and labels.
+  - Before submission show a labelled answer input and Submit answer. Sample/interviewer/feedback text is absent
+    from the browser payload and DOM until that exact answer is persisted.
+  - After saved acknowledgement, show Saved with the saved revision and Request feedback/streaming state. Continue
+    stays unavailable until the step's required complete feedback exists; it advances once on server acknowledgement.
+  - Completed steps remain revisitable. Editing clearly creates a revision and marks prior feedback as belonging
+    to the previous answer; warn that the step reopens without deleting later answers.
+  states:
+    loading: Use grammar loading/status components for metadata, article, progress and panel regions; preserve known
+      article height/structure where available. No blank flash claims a reset.
+    empty: No progress means step one available and zero of five complete; no source lesson is a not-found state
+      with a return action.
+    streaming: Display Generating and provisional deltas in the relevant panel, retain saved answer, show Cancel,
+      announce status accessibly, and keep article and reading navigation usable.
+    errorBeforeSave: Retain local draft and field/network errors; show Retry save using the same key. Saved is never
+      shown before acknowledgement.
+    errorAfterSave: Retain saved answer and safe prior feedback; show unavailable, rate-limit retry time when provided,
+      or interrupted partial text labelled incomplete with Retry feedback. Never concatenate a fallback answer onto
+      partial tokens.
+    resume: Restore version, programming language, locale, step, saved answer/revision, completed feedback and section/offset.
+      Show any ongoing attempt before enabling resend.
+    conflict: Preserve local draft beside the latest server revision and offer explicit reconcile; do not silently
+      overwrite another tab.
+    locked: Use ui.lessons.locked-preview on denied access. A later locked step names its prerequisite; it does
+      not hide the permitted article.
+    policyPending: Show the proposed five-step/credit-policy status truthfully and disable affected coaching effects
+      until the open decisions are resolved; reading proceeds.
+    variantOrVersionUnavailable: Offer actual available variants or explicit new-version start, preserving the existing
+      saved progress.
+    complete: Show all five distinct steps completed and allow review; repeated submit/Continue does not increase
+      completion past five.
+  accessibility:
+  - Use a semantic article, heading order, labelled form controls and landmark/region names. Mark current step with
+    accessible current state and locked controls with an explanation.
+  - All rail, selector, ask and answer actions are keyboard-operable with grammar focus. Streaming status uses a
+    polite live region without re-announcing the entire article on each token.
+  - When a step/variant changes, preserve reading position where valid and move focus to its heading only after
+    an explicit learner action; errors link to the invalid input.
+  acceptance:
+  - The rendered article and outline match the fixture public byte ranges rather than an AI paraphrase; protected
+    text is absent from initial HTML/hydration/network responses.
+  - All five contract steps and all four programming-language labels are visible or reachable at narrow widths without
+    adding shell chrome.
+  - Ask/reveal, saved/streaming/error/resume, step locking and denied-entitlement preview follow the same server
+    contract.
 assets: []
 refs:
 - br.lessons.interactive-ai-lesson
 - fr.lessons.read-article
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
+- data.lessons.content
+- data.lessons.turn
+- data.lessons.progress
 - contract.lessons.lesson-steps
+- contract.commerce.entitlement
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- fixture.lessons.academy-rest-semantics.v1
+extensions:
+  directionStatus: A drawing and owner approval are not present; state remains todo. The resolved brand/shell here
+    are feature-local inputs, not references to nonexistent global records.
+  missingCapability: If the installed grammar cannot render an essential source block without app reimplementation,
+    report the package/component error; do not fake a component or override grammar internals.

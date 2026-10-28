@@ -5,31 +5,52 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
-responsibility: Coordinate answer-before-reveal coaching for lesson steps and open-ended
-  lesson questions.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
+responsibility: Coordinate per-item answer-before-reveal, independent article asks, durable progress and the shared
+  router boundary.
 interfaces:
-- Accept a lesson version, step or question, learner answer when applicable, and lesson-scoped
-  context.
-- Return grounded feedback or a typed unavailable result.
+- Use contract.lessons.lesson-steps logical operations and discriminated answer payloads; no all-purpose answer
+  endpoint silently erases step distinctions.
+- Return only safe persisted acknowledgement, application stream events or typed domain failures; raw provider DTOs/errors/keys/rubrics
+  never cross to the learner.
 owners:
 - be
 stateMachine:
-- validate access
-- persist learner answer
-- route request
-- persist reveal or unavailable result
+- validate owner/access/policy -> validate variant/item/revision -> persist answer
+- persisted answer -> queued attempt -> provisional stream -> persist terminal feedback
+- persist terminal feedback -> ready_to_continue -> learner acknowledgement -> server step completion
+- failure/cancellation -> preserved answer and retry_needed; explicit retry creates only a generation attempt
 sequence:
-- Check lesson access using contract.commerce.entitlement.
-- Persist submitted answer before generating its reveal.
-- Pass lesson content and its code only to the lesson profile.
-- Return a response without learner identifiers.
+- Apply the existing entitlement contract and unresolved decision gates before restricted reads or provider effects.
+- Deduplicate the answer transaction using data.lessons.turn, then emit accepted only after the answer is committed;
+  a save failure calls no provider.
+- Select context through sds.lessons.grounding; dispatch through the one shared AI pool with the lesson profile,
+  an opaque non-learner request id and cancellation signal.
+- Before first token the router owns failover; after first token do not splice a fallback response. Map interruption
+  to one failed application event, keep answer and provisional text, allow explicit retry.
+- Validate and persist final learner-safe feedback before emitting completed; only learner Continue and the progress
+  entity's item rules advance the rail.
+- On resume, look up stored progress/turn/attempt status before sending anything again; do not rely on socket state
+  or browser text as proof of completion.
 refs:
+- br.lessons.interactive-ai-lesson
+- fr.lessons.answer-step
+- fr.lessons.ask-lesson
+- fr.lessons.resume
+- data.lessons.content
+- data.lessons.turn
+- data.lessons.progress
 - decision.lessons.ai-credit
+- decision.lessons.five-steps
 - decision.lessons.ai-pool
 - sds.lessons.grounding
+- integration.lessons.ai-router
 - contract.lessons.lesson-steps
 - contract.commerce.entitlement
+blockedBy:
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- decision.lessons.ai-pool

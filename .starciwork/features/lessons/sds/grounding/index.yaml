@@ -5,20 +5,36 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define lesson boundaries and proof records.
-responsibility: Build the smallest sufficient context from lesson body and code.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
+responsibility: Select a bounded, byte-traceable context from the original lesson without exposing protected grading
+  through open-ended asks.
 interfaces:
-- 'Input: lesson sections and selected profile context limit.'
-- 'Output: section-bounded context or context-limit result.'
+- 'Input: immutable content version, selected programming language/locale, step/item or ask question, valid section
+  ids and the approved profile''s context/output limits.'
+- 'Output: source-section-labelled context with immutable hash references, or typed context_limit / content_unavailable
+  / policy_pending.'
 owners:
 - be
 sequence:
-- Include lesson body and its code only.
-- Start with the relevant section; for large content, add sections in order only while
-  within the smallest profile context window.
-- Never include learner identifiers or unrelated history.
+- Use the manifest/publicArticleRanges for open asks; never load interview sample/interviewer spans or challenge
+  submission criteria into an ask context.
+- For per-item coaching, require a saved answer revision before loading only that item's protected reference data
+  server-side; retain all unrelated grading outside the prompt and response.
+- Treat learner text and source code as quoted data, not instructions that can change the reveal/access policy.
+  Provide only selected article/code and current item/answer, never unrelated history or learner system ids.
+- Begin with explicitly selected/relevant complete sections, preserve fenced code and Mermaid, and add sections
+  in original order within the smallest declared active fallback context window after reserving system instructions,
+  learner input and output tokens.
+- Router prompt estimation is a documented four-characters-per-token heuristic, not a semantic truncation service.
+  Bound context conservatively; if an essential section cannot fit, return context_limit and ask for section narrowing.
+- Grounded feedback references valid original section ids; an off-topic/unsupported result is refused or marked
+  invalid, not recorded as a completed reveal.
 refs:
-- decision.lessons.ai-pool
 - data.lessons.content
+- data.lessons.turn
+- contract.lessons.lesson-steps
+- integration.lessons.ai-router
+- decision.lessons.ai-pool

@@ -5,23 +5,36 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
 statements:
-- The original Academy article is the centre of a lesson and remains readable as the
-  learner works.
-- A lesson presents five AI-coached steps that help the learner apply one piece of
-  knowledge from that article.
-- For each step, the learner submits an answer before the coach reveals feedback or
-  a suggested answer.
+- The original Academy article is the central reading surface and remains available while the learner practices
+  one piece of knowledge.
+- A five-step coaching sequence is the explicit proposal under Q-W1-1; the contract owns its labels and typed answers.
+  Its activation waits for that decision.
+- A learner persists an answer to the exact interview question, step prompt or challenge item before any corresponding
+  sample answer or feedback is revealed.
+- Programming language selection offers TypeScript, Java, C# and Go independently of English/Vietnamese locale.
+- Ask coaching grounds itself in the selected lesson body and code; grading material remains outside its context.
 acceptance:
-- The article remains available beside the step rail and ask panel.
-- The coach grounds each response in the lesson body and its code only.
-- A step answer is recorded before its reveal is returned.
+- Every byte of the original source is retained in the versioned server-side fixture; only protected grading spans
+  are withheld from the public projection.
+- The main lesson view keeps the article largest, the five-step rail visible/accessible and the ask panel available.
+- Reload restores the same version/language progress, saved answers, safe feedback and reading position without
+  counting resends twice.
+- Locked access shows exactly original section 1 and exact source outline for the chosen variant, without hidden-body
+  prefetch or coaching.
 authorityRefs: []
 appliesTo:
 - lesson reading
 - step coaching
 - resume
+blockedBy:
+- decision.lessons.five-steps
+refs:
+- decision.lessons.five-steps
+- decision.lessons.ai-credit
+- data.lessons.content
+- contract.lessons.lesson-steps

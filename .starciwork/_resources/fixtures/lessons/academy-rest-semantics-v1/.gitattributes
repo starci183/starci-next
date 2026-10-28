@@ -1,0 +1,2 @@
+# Original Academy files include CRLF bytes. Keep their captured hashes on every checkout.
+original/** -text -eol

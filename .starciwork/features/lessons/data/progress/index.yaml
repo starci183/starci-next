@@ -1,0 +1,79 @@
+schema: work/data@1
+id: data.lessons.progress
+title: Five-step progress and reading position
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: revised
+  at: '2026-10-28'
+  reason: Repair against the read-only Academy REST lesson, one-app scaffold and dated router/provider documentation;
+    preserve unresolved owner choices.
+fields:
+- name: ownerId
+  type: server-only authenticated learner reference
+  required: true
+- name: lessonId
+  type: string
+  required: true
+- name: lessonVersion
+  type: immutable string
+  required: true
+- name: programmingLanguage
+  type: typescript|java|csharp|go
+  required: true
+- name: locale
+  type: en|vi presentation preference
+  required: true
+- name: progressRevision
+  type: monotonically increasing integer
+  required: true
+- name: currentStepId
+  type: canonical step id
+  required: true
+- name: steps
+  type: ordered map<stepId,{status,itemAnswers,completedAt}>
+  required: true
+- name: readingPosition
+  type: '{sectionId: exact manifest outline id, offsetWithinSection: number in [0,1]}'
+  required: true
+  description: A normalized scroll fraction from this heading to the next source heading (or article end), not device
+    pixels. The same numbered section id survives en/vi switches for the same programming language.
+- name: updatedAt
+  type: timestamp
+  required: true
+invariants:
+- Progress identity is owner + lesson + immutable version + programming language; changing locale changes presentation,
+  never resets answers. Changing programming language opens its separate saved progress and never converts code
+  or scores.
+- The contract owns step order and completion conditions. Completion counts distinct step ids, not retries, scroll
+  distance, AI quality scores or ask turns; progress is completedStepCount / 5.
+- Only the first unmet step is available, all earlier completed steps are revisitable, and later steps are locked
+  with the prerequisite named. The original article is readable independently of this rail when access allows.
+- A step completes only when its required items have persisted answers, a complete valid feedback attempt, and an
+  explicit learner Continue acknowledgement. An unavailable/interrupted reveal does not silently complete it.
+- A revision to a completed answer reopens that step and locks later new work until its acknowledgement is restored;
+  already saved downstream answers and completion history remain, never deleted.
+- Reading position is saved separately with revision checks. Backward reading or revisiting completed steps never
+  lowers completion.
+- Client drafts are distinguished from server-saved answers; the UI claims Saved only after acknowledgement. A stale
+  write returns conflict plus the latest safe progress snapshot for explicit reconciliation.
+- A newer published content version never silently migrates existing answers. Resume pins the saved version; if
+  unavailable, report version_unavailable and offer an explicit new start preserving old progress.
+- Q-W1-1 keeps the five-step activation conditional; imported content, public previews and read-only article navigation
+  proceed independently.
+- Outline section ids are section- plus the original numeric heading prefix, for example section-2.1.4; the manifest
+  owns this stable identity independently of locale heading text. Clamp a restored fractional offset to [0,1] after
+  layout and section content are ready.
+stateMachine:
+- not_started -> in_progress after first persisted reading position or answer
+- locked -> available when all prerequisite steps complete
+- available -> answer_saved -> coaching -> ready_to_continue -> completed
+- coaching -> retry_needed on failure; retry_needed -> coaching on explicit retry
+- all five completed -> lesson completed
+- entitlement denied -> locked access presentation without deleting progress
+refs:
+- decision.lessons.five-steps
+- data.lessons.content
+- data.lessons.turn
+- contract.lessons.lesson-steps

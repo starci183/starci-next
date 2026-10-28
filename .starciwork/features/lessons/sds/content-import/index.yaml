@@ -1,0 +1,40 @@
+schema: work/sds-component@1
+id: sds.lessons.content-import
+title: Read-only Academy import and public projection
+state: todo
+activity: idle
+change:
+  rev: HEAD
+  kind: revised
+  at: '2026-10-28'
+  reason: Resolve feature-local core brand/shell and the article/rail/ask/locked states against the supplied AppLayout
+    and SiteShell.
+responsibility: Import an immutable multilingual Academy snapshot and expose an allowlisted public article/preview
+  while retaining grading only on the server.
+interfaces:
+- 'Input: a source manifest and byte-preserved metadata, bodies and challenge files, with expected hashes and version.'
+- 'Output: validated atomic published version plus public projections and server-only per-item grading; structured
+  errors identify source path/field without leaking protected bytes.'
+owners:
+- be
+sequence:
+- Validate metadata field types, independent locale/programming-language axes and every SHA-256 before parsing.
+  Do not execute source demo/run commands, mutate Academy authoring or manufacture source validation dates.
+- Parse the Academy separator-based structure, keeping original raw bytes and exact byte ranges. Body wrappers are
+  not article prose; fenced-code headings are not outline entries. Preserve every source heading, directive, Mermaid
+  and code block.
+- Classify original interview prompts separately from their sample/interviewer child bullets. Split challenge prompts
+  from score/rubric/submission criteria and guided solution material; fail on unknown grading fields.
+- Store raw source and protected structures server-side; construct PublicLesson by explicit allowlist. Build locked
+  preview only from the exact section1 range and complete heading index. Never mount the fixture directory as public
+  assets.
+- Version/hash validation and all variants/challenges commit atomically. An identical version/hash import is a no-op;
+  same version with changed bytes is rejected and needs a new immutable version.
+- Content access is checked independently of import. The CLI reports counts/version/hashes, never raw answer keys;
+  a failed import leaves the previous version available.
+refs:
+- data.lessons.content
+- contract.lessons.lesson-steps
+- fr.lessons.read-article
+- contract.commerce.entitlement
+- fixture.lessons.academy-rest-semantics.v1

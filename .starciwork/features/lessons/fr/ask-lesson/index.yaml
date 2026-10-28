@@ -5,25 +5,41 @@ state: todo
 activity: idle
 change:
   rev: HEAD
-  kind: created
+  kind: revised
   at: '2026-10-28'
-  reason: Define the lessons feature and its acceptance, design, implementation and
-    fixture records.
+  reason: Align requirements and design with the byte-preserved Academy source, scoped reveal and deterministic
+    resume/failure behavior.
 actors:
 - learner
 trigger: A learner submits a question from the lesson ask panel.
 mainFlow:
-- Provide only the lesson body and its code as grounding context.
-- Route the question through the lesson AI profile and ordered fallbacks.
-- Return a grounded answer or a clear unavailable response.
+- Accept a nonempty lesson question and optional valid source section ids from the ask panel while the article stays
+  readable.
+- Persist a separate ask turn; build context only from the selected version/language/locale's public lesson body
+  and code plus the current question.
+- Use the lesson profile through the shared router, stream a grounded answer with source-section citations, and
+  persist the terminal result.
 exceptionFlows:
-- If the selected translation is unavailable, offer an available language without
-  replacing saved progress.
-- If the coach is unavailable, retain the submitted answer and allow retry or continuation.
+- An off-topic request gets a grounded scope response; it does not fetch external content or unrelated learner history.
+- Requests for unrevealed sample answers, interviewer points or hidden rubrics are refused by context exclusion
+  and output checks; asking never satisfies the answer gate.
+- Context too large returns context_limit with explicit section narrowing; complete source code blocks are not silently
+  chopped.
+- Rate limit, missing config/custody, deadline, auth, provider or stream failure returns safe unavailable/interrupted
+  status, retaining the question for explicit retry.
+- Access unavailable/denied or undecided coaching policy prevents provider effects; reading remains available according
+  to content access.
 postconditions:
-- The answer is associated with the lesson turn and does not expose a learner identifier
-  to a provider.
+- The ask turn does not alter five-step completion or expose learner identifiers to the provider.
 composes:
 - br.lessons.interactive-ai-lesson
 - data.lessons.content
 - data.lessons.turn
+- contract.lessons.lesson-steps
+blockedBy:
+- decision.lessons.ai-credit
+refs:
+- sds.lessons.grounding
+- sds.lessons.coach
+- integration.lessons.ai-router
+- contract.commerce.entitlement
