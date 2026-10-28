@@ -13,8 +13,6 @@ owners:
     path: be/src/modules/integrations/keycloak
   - role: composition/configuration
     path: be/apps/core/src
-blockers:
-  - Backend implementation waits for the owner/Debug root ESLint discovery repair.
 proves: [br.identity.sign-in, fr.identity.sign-in, fr.identity.sign-out, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
@@ -24,5 +22,11 @@ requiresProof:
     command: npm run test:integration -- src/tests/integration/identity --runInBand
     note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
 extensions:
+  eslintCanonBeLink:
+    branch: pkg/starci-next-app-eslint-canon-be-build
+    head: 1536c66fe
+    handoff: "none: PKG_HANDOFF_EMPTY, source already on main"
+    tests: "775/775 passed (npm test in the branch worktree)"
+    linkedWith: "starci deps source --local --from D:/.claude/.claude/worktrees/pkg-starci-next-app-eslint-canon-be-build/packages --package @starci/eslint-canon-be; node_modules/@starci/eslint-canon-be 3.6.5 dist/connections.js admits http-security"
   implementationScope: Identity implementation owns the listed domain, API, Keycloak integration and core composition/configuration directories. Package manifest edits are limited to dependencies already pinned in harness stack/pins.yaml; be/contracts/core changes come only from contract emission.
-change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Record authorized Keycloak and core owners, implementation scope and backend ESLint hold.}
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: Record the rebuilt and linked eslint-canon-be 3.6.5 evidence and remove the backend ESLint discovery blocker, repaired on harness 51c0399d.}
