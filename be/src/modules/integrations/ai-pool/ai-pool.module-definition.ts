@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder } from "@nestjs/common"
-import { AI_POOL_OPTIONS } from "./ai-pool.options-token"
+import { AI_POOL_OPTIONS } from "./ai-pool.decorators"
 import type { AiPoolOptions } from "./ai-pool.options"
 
 /** The configurable-module base of the ai-pool capability; `isGlobal` is decided by the app root. */

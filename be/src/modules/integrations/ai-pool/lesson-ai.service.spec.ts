@@ -1,12 +1,12 @@
 import { Test } from "@nestjs/testing"
 import { builder, mock } from "@starci/jest-preset"
-import { AiRouterService } from "@starci/ai-router"
-import { AiRouterTestingModule, createFakeProvider } from "@starci/ai-router/testing"
+import { AiRouterService, createRouter } from "@starci/ai-router"
+import { createFakeProvider } from "@starci/ai-router/testing"
 import type { FakeProvider } from "@starci/ai-router/testing"
 import { LOGGER } from "@modules/platform/logging"
 import type { Logger } from "@modules/platform/logging"
 import type { AiPoolOptions } from "./ai-pool.options"
-import { AI_POOL_OPTIONS } from "./ai-pool.options-token"
+import { AI_POOL_OPTIONS } from "./ai-pool.decorators"
 import type { LessonAiInput } from "./lesson-ai.port"
 import { LessonAiService } from "./lesson-ai.service"
 
@@ -44,17 +44,25 @@ const defaults: AiPoolOptions = {
 const build = async (fake: FakeProvider, overrides?: Partial<AiPoolOptions>) => {
     const options = builder<AiPoolOptions>(defaults)(overrides)
     const logger = mock<Logger>()
-    const router = AiRouterTestingModule.register({ ...options.pool, fake })
+    const real = new AiRouterService<"lesson">(
+        createRouter<"lesson">({ ...options.pool, fetch: fake.fetch, random: () => 0.5 }),
+    )
+    const router = mock<AiRouterService<"lesson">>({
+        chat: (request, call) => real.chat(request, call),
+        stream: (request, call) => real.stream(request, call),
+        on: (event, handler) => real.on(event, handler),
+        onApplicationShutdown: () => real.onApplicationShutdown(),
+    })
     const moduleRef = await Test.createTestingModule({
         providers: [
             LessonAiService,
-            ...(router.providers ?? []),
+            { provide: AiRouterService, useValue: router },
             { provide: AI_POOL_OPTIONS, useValue: options },
             { provide: LOGGER, useValue: logger },
         ],
     }).compile()
     await moduleRef.init()
-    return { service: moduleRef.get(LessonAiService), router: moduleRef.get(AiRouterService), logger, moduleRef }
+    return { service: moduleRef.get(LessonAiService), router, logger, moduleRef }
 }
 
 const input = (overrides: Partial<LessonAiInput> = {}): LessonAiInput => ({
