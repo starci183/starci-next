@@ -3,7 +3,7 @@ import { useTestWorld } from "../../world/use-test-world"
 
 /**
  * lesson-ai-pool: the real core app booted with the shared lesson pool composed from named key custody. The pool is
- * registered at the app root (`options.aiPool` parsed from `LESSON_AI_*` environment references), so a serving app is
+ * registered at the app root (`options.aiPool` parsed from the `OPENROUTER_API_KEY` environment reference), so a serving app is
  * the observable proof of the composition; custody values stay behind the environment and never reach a door or a
  * response body.
  */

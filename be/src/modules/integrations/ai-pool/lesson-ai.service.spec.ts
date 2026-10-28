@@ -10,26 +10,26 @@ import { AI_POOL_OPTIONS } from "./ai-pool.decorators"
 import type { LessonAiInput } from "./lesson-ai.port"
 import { LessonAiService } from "./lesson-ai.service"
 
-const flash = { id: "deepseek-flash", aliases: ["deepseek-4.1-flash"], contextWindow: 1_000_000 }
-const pro = { id: "deepseek-v4-pro", contextWindow: 1_000_000 }
-const deepseek = {
-    id: "deepseek",
-    baseUrl: "https://api.deepseek.com",
+const flash = { id: "deepseek/deepseek-v4.1-flash", contextWindow: 1_048_576 }
+const pro = { id: "deepseek/deepseek-v4-pro", contextWindow: 1_048_576 }
+const openrouter = {
+    id: "openrouter",
+    baseUrl: "https://openrouter.ai/api/v1",
     maxConcurrency: 8,
     keys: [
-        { alias: "lesson-primary", resolve: () => "test-primary", maxConcurrency: 4 },
-        { alias: "lesson-fallback-1", resolve: () => "test-fallback", maxConcurrency: 4 },
+        { alias: "openrouter-primary", resolve: () => "test-primary", maxConcurrency: 4 },
+        { alias: "openrouter-secondary", resolve: () => "test-fallback", maxConcurrency: 4 },
     ],
     models: [flash, pro],
 }
 const defaults: AiPoolOptions = {
     pool: {
-        providers: [deepseek],
+        providers: [openrouter],
         defaults: { maxAttempts: 4, timeoutMs: 30000, deadlineMs: 60000 },
         profiles: {
             lesson: {
-                model: "deepseek-4.1-flash",
-                fallbacks: ["deepseek-v4-pro"],
+                model: "deepseek/deepseek-v4.1-flash",
+                fallbacks: ["deepseek/deepseek-v4-pro"],
                 allowFallback: true,
                 maxAttempts: 4,
                 timeoutMs: 30000,
@@ -89,9 +89,9 @@ describe("LessonAiService.complete", () => {
         expect(logger.info).toHaveBeenCalledWith(
             "ai_pool.attempt_recorded",
             expect.objectContaining({
-                provider: "deepseek",
-                keyAlias: "lesson-primary",
-                model: "deepseek-flash",
+                provider: "openrouter",
+                keyAlias: "openrouter-primary",
+                model: "deepseek/deepseek-v4.1-flash",
                 outcome: "success",
             }),
         )
@@ -149,7 +149,7 @@ describe("LessonAiService grounding", () => {
     it("refuses grounding that cannot fit the smallest configured context", async () => {
         const fake = createFakeProvider()
         const { service, moduleRef } = await build(fake)
-        await expect(service.complete(input({ grounding: "x".repeat(4_000_001) }))).rejects.toThrow(
+        await expect(service.complete(input({ grounding: "x".repeat(4_200_000) }))).rejects.toThrow(
             "AI_POOL_GROUNDING_TOO_LARGE",
         )
         expect(fake.calls).toHaveLength(0)
@@ -159,7 +159,10 @@ describe("LessonAiService grounding", () => {
     it("refuses grounding when a configured model declares no context window", async () => {
         const fake = createFakeProvider()
         const { service, moduleRef } = await build(fake, {
-            pool: { ...defaults.pool, providers: [{ ...deepseek, models: [flash, { id: "deepseek-v4-pro" }] }] },
+            pool: {
+                ...defaults.pool,
+                providers: [{ ...openrouter, models: [flash, { id: "deepseek/deepseek-v4-pro" }] }],
+            },
         })
         await expect(service.complete(input())).rejects.toThrow("AI_POOL_GROUNDING_TOO_LARGE")
         expect(fake.calls).toHaveLength(0)
@@ -239,11 +242,11 @@ describe("LessonAiService failover", () => {
 
     it("lets the router fail over between configured providers", async () => {
         const fake = createFakeProvider()
-        const secondary = { ...deepseek, id: "deepseek-secondary", baseUrl: "https://secondary.test/v1" }
-        fake.on({ baseUrl: "https://api.deepseek.com" }, { status: 401 })
+        const secondary = { ...openrouter, id: "openrouter-secondary", baseUrl: "https://secondary.test/v1" }
+        fake.on({ baseUrl: "https://openrouter.ai/api/v1" }, { status: 401 })
         fake.on({ baseUrl: "https://secondary.test/v1" }, { text: "fallback provider" })
         const { service, moduleRef } = await build(fake, {
-            pool: { ...defaults.pool, providers: [deepseek, secondary] },
+            pool: { ...defaults.pool, providers: [openrouter, secondary] },
         })
         await service.complete(input())
         expect(fake.calls.map((call) => new URL(call.url).origin)).toContain("https://secondary.test")
@@ -252,10 +255,10 @@ describe("LessonAiService failover", () => {
 
     it("leaves ordered model fallback to the router", async () => {
         const fake = createFakeProvider()
-        fake.on({ model: "deepseek-flash" }, { status: 503 })
+        fake.on({ model: "deepseek/deepseek-v4.1-flash" }, { status: 503 })
         const { service, moduleRef } = await build(fake)
         await service.complete(input())
-        expect(fake.calls.map((call) => call.model)).toContain("deepseek-v4-pro")
+        expect(fake.calls.map((call) => call.model)).toContain("deepseek/deepseek-v4-pro")
         await moduleRef.close()
     })
 })

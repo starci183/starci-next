@@ -1,24 +1,21 @@
 {
   "providers": [
     {
-      "id": "deepseek",
-      "baseUrl": "https://api.deepseek.com",
+      "id": "openrouter",
+      "baseUrl": "https://openrouter.ai/api/v1",
       "maxConcurrency": 8,
-      "keys": [
-        { "alias": "lesson-primary", "env": "LESSON_AI_PRIMARY", "maxConcurrency": 4 },
-        { "alias": "lesson-fallback-1", "env": "LESSON_AI_FALLBACK_1", "maxConcurrency": 4 }
-      ],
+      "keys": [{ "alias": "openrouter-primary", "env": "OPENROUTER_API_KEY", "maxConcurrency": 8 }],
       "models": [
-        { "id": "deepseek-flash", "aliases": ["deepseek-4.1-flash"], "contextWindow": 1000000 },
-        { "id": "deepseek-v4-pro", "contextWindow": 1000000 }
+        { "id": "deepseek/deepseek-v4.1-flash", "contextWindow": 1048576 },
+        { "id": "deepseek/deepseek-v4-pro", "contextWindow": 1048576 }
       ]
     }
   ],
   "defaults": { "maxAttempts": 4, "timeoutMs": 30000, "deadlineMs": 60000 },
   "profiles": {
     "lesson": {
-      "model": "deepseek-4.1-flash",
-      "fallbacks": ["deepseek-v4-pro"],
+      "model": "deepseek/deepseek-v4.1-flash",
+      "fallbacks": ["deepseek/deepseek-v4-pro"],
       "allowFallback": true,
       "maxAttempts": 4,
       "timeoutMs": 30000,
