@@ -6,18 +6,22 @@ activity: idle
 change:
   rev: HEAD
   kind: revised
-  at: '2026-10-28'
-  reason: Follow coordinator goal version 2 pinning @starci/ai-router exactly 0.3.0; cite read package and official
-    provider docs, not future research.
-question: How is the accepted one shared pool configured with approved provider models, fallback order and custody
-  references?
+  at: '2026-10-29'
+  reason: 'Owner correction r-4d87cd331347 (goal v38) supersedes the two-key custody of
+    r-ada3eeb24972; the option and recommendation now name one OPENROUTER_API_KEY and two OpenRouter
+    model ids from current provider documentation.'
+question: How is the accepted one shared pool configured with approved provider models, fallback
+  order and custody references?
 options:
-- One shared pool via @starci/ai-router exactly 0.3.0; candidate lesson profile maps deepseek-4.1-flash alias to
-  DeepSeek deepseek-flash, followed by explicitly ordered approved fallback models.
-recommendation: Use the integration record's documented primary and ordered fallback candidate, resolving keys by
-  sealed custody reference through the server integration.
-recommendationReason: The shared router owns health-aware selection, retries, model fallback and redacted telemetry;
-  the documented application alias must map to a real provider wire id.
+- One shared pool via @starci/ai-router exactly 0.3.0 with one OpenRouter provider at baseUrl
+  https://openrouter.ai/api/v1 and one custody key reference OPENROUTER_API_KEY; the candidate
+  lesson profile maps primary model id deepseek/deepseek-v4.1-flash with ordered fallback
+  deepseek/deepseek-v4-pro.
+recommendation: Use the integration record's documented primary and ordered fallback candidate,
+  resolving the single OPENROUTER_API_KEY by name through sealed custody in the server integration.
+recommendationReason: The shared router owns health-aware selection, retries, ordered model
+  fallback and redacted telemetry; OpenRouter's documented Bearer authentication serves both model
+  ids with the one key, so the profile needs no second credential.
 outcome: open
 chosen: null
 reason: null
@@ -27,7 +31,8 @@ blocks:
 refs:
 - integration.lessons.ai-router
 extensions:
-  acceptedArchitecture: One shared pool and the exact 0.3.0 pin follow the coordinator goal version 2; this open
-    outcome concerns concrete provider/fallback/custody deployment configuration.
-  scope: Pure content import, public article/preview and fake-provider implementation can proceed without secrets
-    or live account access.
+  acceptedArchitecture: One shared pool and the exact 0.3.0 pin follow the coordinator goal; owner
+    correction r-4d87cd331347 (goal v38) supersedes the two-key custody of r-ada3eeb24972. This open
+    outcome concerns the concrete model/fallback/custody deployment configuration.
+  scope: Pure content import, public article/preview and fake-provider implementation can proceed
+    without secrets or live account access.

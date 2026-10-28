@@ -1,38 +1,43 @@
 schema: work/integration@1
 id: integration.lessons.ai-router
-title: Shared lesson pool through @starci/ai-router 0.3.0
+title: Shared lesson pool through @starci/ai-router 0.3.0 over OpenRouter
 state: todo
 activity: idle
 change:
   rev: HEAD
   kind: revised
-  at: '2026-10-28'
-  reason: Follow coordinator goal version 2 pinning @starci/ai-router exactly 0.3.0; cite read package and official
-    provider docs, not future research.
-provider: '@starci/ai-router exactly 0.3.0; DeepSeek OpenAI-compatible API is the documented candidate provider'
-boundary: One shared in-process Nest pool for lesson coaching. Consumers inject AiRouterService through the app
-  integration boundary; no per-lesson pool, copied retry engine, new standalone gateway, virtual-key admin service
-  or extra app is required by this feature.
+  at: '2026-10-29'
+  reason: 'Owner correction r-4d87cd331347 (goal v38) supersedes the two-key custody of
+    r-ada3eeb24972: the live provider is OpenRouter with one key OPENROUTER_API_KEY and two
+    OpenRouter model ids; provider facts rewritten from current openrouter.ai documentation.'
+provider: '@starci/ai-router exactly 0.3.0; OpenRouter is the documented live AI provider, reached
+  through its OpenAI-compatible endpoint'
+boundary: One shared in-process Nest pool for lesson coaching. Consumers inject AiRouterService
+  through the app integration boundary; no per-lesson pool, copied retry engine, new standalone
+  gateway, virtual-key admin service or extra app is required by this feature.
 endpoints:
-- library: 'AiRouterModule.register/registerAsync once at composition root; AiRouterService.chat/stream with {profile:
-    lesson}; AiRouterTestingModule/createFakeProvider from @starci/ai-router/testing.'
-  wire: 'Candidate DeepSeek baseUrl https://api.deepseek.com; POST /chat/completions with Bearer API-key authentication;
-    streaming is SSE deltas ending in data: [DONE].'
+- library: 'AiRouterModule.register/registerAsync once at composition root; AiRouterService.chat/stream
+    with {profile: lesson}; AiRouterTestingModule/createFakeProvider from @starci/ai-router/testing.'
+  wire: 'OpenRouter provider baseUrl https://openrouter.ai/api/v1 (OpenAI-compatible); POST
+    /api/v1/chat/completions authenticates with Authorization: Bearer of the one key. stream: true
+    answers SSE chat.completion.chunk deltas ending data: [DONE]; ": OPENROUTER PROCESSING"
+    keep-alive comments are skipped by a spec-compliant parser, and a terminal usage chunk precedes
+    the sentinel.'
 credential:
-  source: sealed custody reference resolved to an env name or resolver per attempt; no custody values are read for
-    this docs task
+  source: sealed custody reference resolved to an env name or resolver per attempt; no custody
+    values are read for this docs task
   keysByName:
-  - LESSON_AI_PRIMARY
-  - LESSON_AI_FALLBACK_1
-  namesAre: proposed logical references, not evidence these custody entries exist
+  - OPENROUTER_API_KEY
+  namesAre: proposed logical reference, not evidence this custody entry exists
   secretValuesStored: false
-  rotation: Router resolves key references per attempt. Provider account key creation/rotation/revocation and policy
-    are owner-controlled; they are not verified by this research.
-sandbox: No dedicated DeepSeek sandbox is established by the pages read. A live proof requires an explicitly authorized
-  isolated account/key with funded balance, bounded calls and approved content; the testing-module fake proves routing
-  logic only.
+  rotation: One upstream key serves every pool model; the router resolves its reference per attempt.
+    OpenRouter key creation/rotation/revocation and per-key credit limits are owner-controlled
+    account operations; they are not verified by this research.
+sandbox: OpenRouter documents no dedicated sandbox for the OpenAI-compatible chat API; /api/v1 is
+  the production surface. A live proof requires an explicitly authorized OpenRouter key with funded
+  credits, bounded calls and approved content; the testing-module fake proves routing logic only.
 research:
-  readAt: '2026-10-28'
+  readAt: '2026-10-29'
   sources:
   - title: '@starci/ai-router 0.3.0 package manifest'
     path: D:/.claude/packages/ai-router/package.json
@@ -40,92 +45,164 @@ research:
     readAt: '2026-10-28'
     gitRevision: c2a4b43817659a66deedbd93d53736132ba897eb
     sha256: bc304f3f0f51d8549ef6f8c1dfc6453312824a41df6bf68911d13e69fcad454e
-    finding: The local harness package declares version 0.3.0. It retains the Nest/service/profile/testing API;
-      Node >=20, ESM, optional Nest 11/12 peers and yaml dependency are declared. The app manifest currently does
-      not declare/install the package; a separately leased code task owns that.
-  - title: '@starci/ai-router 0.3.0 README: Register, Inject and call, Policies, Selection, Resilience, Streaming,
-      Observability, Testing, gateway additions'
+    finding: The local harness package declares version 0.3.0. It retains the Nest/service/profile/testing
+      API; Node >=20, ESM, optional Nest 11/12 peers and yaml dependency are declared. The app manifest
+      currently does not declare/install the package; a separately leased code task owns that.
+  - title: '@starci/ai-router 0.3.0 README: Register, Inject and call, Policies, Selection, Resilience,
+      Streaming, Observability, Testing, gateway additions'
     path: D:/.claude/packages/ai-router/README.md
     url: https://github.com/starci183/starci-harness/tree/main/packages/ai-router#readme
     readAt: '2026-10-28'
     gitRevision: c2a4b43817659a66deedbd93d53736132ba897eb
     sha256: e1e37dea5ac899dc89c3e1692ff4a735af795bbe16f93f66122e614ec33ac792
-    finding: RegisterAsync supports injected configuration. Policies merge defaults, profile, per-call override.
-      Fallback models are ordered; retry/breakers/rate-limit handling are library-owned. stream yields an async
-      iterable; before-first-token failure can fail over, afterFirstToken failure cannot. Request ids are sent as
-      x-request-id/idempotency-key but do not prove provider deduplication. telemetry.includeContent stays false.
-      Testing provides deterministic fake providers. 0.3.0 gateway/virtual-key APIs are additive and are not required
-      by this lesson design.
-  - title: DeepSeek Your First API Call
-    url: https://api-docs.deepseek.com/
-    readAt: '2026-10-28'
-    finding: DeepSeek documents base https://api.deepseek.com with Bearer API key. The wire model deepseek-flash
-      serves DeepSeek-V4.1-Flash-1017; deepseek-4.1-flash is an application alias, not the documented wire id.
-  - title: DeepSeek Chat Completions API
-    url: https://api-docs.deepseek.com/api/create-chat-completion/
-    readAt: '2026-10-28'
-    finding: POST /chat/completions accepts messages and model. stream=true returns SSE deltas with [DONE]. JSON
-      output still requires an explicit instruction; length termination can leave incomplete content. The backend
-      validates a complete final result before accepting feedback.
-  - title: DeepSeek Models & Pricing
-    url: https://api-docs.deepseek.com/quick_start/pricing/
-    readAt: '2026-10-28'
-    finding: The documented wire ids are deepseek-flash and deepseek-v4-pro, both with a stated 1M context and maximum
-      384K output. Model/account access and pricing can change; configured output budgets and conservative token
-      estimates are smaller application choices, not claimed provider limits.
-  - title: DeepSeek Error Codes
-    url: https://api-docs.deepseek.com/quick_start/error_codes/
-    readAt: '2026-10-28'
-    finding: 400/422 indicate request errors, 401 authentication failure, 402 insufficient balance, 429 rate limit
-      and 500/503 server failure. The app uses the router error classification and returns safe domain errors without
-      exposing a provider body or retrying a malformed payload.
-  - title: DeepSeek Rate Limit & Isolation
-    url: https://api-docs.deepseek.com/quick_start/rate_limit/
-    readAt: '2026-10-28'
-    finding: Concurrency is account-wide across API keys. The docs state 2500 Flash and 500 Pro connections; key
-      fan-out does not multiply account capacity. SSE keep-alive comments are not tokens. Provider user_id exists
-      but the lesson integration omits it because learner identifiers are excluded.
-  authentication: Upstream Bearer key is resolved server-side from an approved named custody reference; no provider
-    secret goes to frontend, source fixture, logs, examples or Work. Read documentation and package manifests only;
-    no environment/custody secret inspection occurs.
-  limits: Set explicit per-key/provider concurrency, maxAttempts, first-token/chunk timeout and total deadline in
-    approved configuration; leave content telemetry off. Calculate grounding against the smallest active configured
-    model context, reserving prompt and output. The README four-characters/token estimate is approximate; cost/usage
-    estimates are not entitlement or credit policy.
-  accountScopeLifecycle: An active provider account, permitted model access and funded balance are necessary. No
-    account, key scope, rotation/revocation, organization access or retention behavior is proven here. Existing
-    entitlement and Q-W1-2 govern learner access independently of provider billing.
-  callbackWebhook: No callback/webhook is used for the documented synchronous chat/SSE flow. Cancellation and application
-    event streams are handled by the caller; this is not a provider callback registration.
+    finding: RegisterAsync supports injected configuration. Policies merge defaults, profile, per-call
+      override. Fallback models are ordered; retry/breakers/rate-limit handling are library-owned. stream
+      yields an async iterable; before-first-token failure can fail over, afterFirstToken failure cannot.
+      telemetry.includeContent stays false. Testing provides deterministic fake providers. 0.3.0
+      gateway/virtual-key APIs are additive and are not required by this lesson design. Its provider
+      config shape is {id, baseUrl, keys[{alias, env|file}], models[{id, aliases, cost}]} with profile
+      {model, fallbacks, allowFallback, maxAttempts} and a deadline; an OpenRouter provider at
+      https://openrouter.ai/api/v1 is the README''s own example.
+  - title: OpenRouter Quickstart
+    url: https://openrouter.ai/docs/quickstart
+    readAt: '2026-10-29'
+    finding: 'OpenRouter exposes one OpenAI-compatible API: base URL https://openrouter.ai/api/v1,
+      POST /api/v1/chat/completions with Authorization: Bearer of the API key. The OpenAI SDK works
+      as a drop-in via baseURL. HTTP-Referer and X-OpenRouter-Title are optional attribution headers.'
+  - title: OpenRouter Streaming
+    url: https://openrouter.ai/docs/api_reference/streaming
+    readAt: '2026-10-29'
+    finding: 'stream: true returns SSE deltas; ": OPENROUTER PROCESSING" keep-alive comments are not
+      tokens and must be skipped before JSON.parse. Every chat-completions stream ends with a usage
+      chunk carrying one content-free choice repeating finish_reason, then data: [DONE]. Errors before
+      the response commits are JSON; afterwards they arrive as SSE events with finish_reason "error"
+      on HTTP 200. X-Generation-Id identifies the generation; aborting the connection cancels
+      processing and billing on supported providers, DeepSeek among them.'
+  - title: OpenRouter Errors and Debugging
+    url: https://openrouter.ai/docs/api-reference/errors
+    readAt: '2026-10-29'
+    finding: 'Statuses: 400 invalid request, 401 invalid or expired credentials, 402 insufficient
+      credits, 403 permission/guardrail/budget denial, 408 request timed out, 429 rate limited, 502
+      provider down or invalid response, 503 no provider meets the routing requirements, 500 generic
+      upstream masking, 504 provider timeout. error.metadata.error_type is the stable typed code.
+      Retryable: 429 and 503 honoring Retry-After, 402 only when metadata.limit_source is
+      openrouter_in_flight_budget, and upstream timeouts/overload after backoff. Not retryable:
+      validation 4xx, 401, 403 budget denial before resets_at, 402 for openrouter_credits or
+      openrouter_key_limit until funded. Mid-stream failures keep HTTP 200 and terminate the stream
+      with an error event.'
+  - title: OpenRouter Limits
+    url: https://openrouter.ai/docs/api_reference/limits
+    readAt: '2026-10-29'
+    finding: 'Three limit kinds: credit limits (account balance, per-key credit cap, in-flight
+      spending budget), budget limits (guardrail/workspace/key caps rejected with 403 and metadata),
+      and rate limits. Only :free model variants carry request caps: 20 requests per minute plus 50
+      per day below 10 purchased credits or 1000 per day at 10 or more; paid model ids have no
+      platform request cap, and Cloudflare DDoS protection applies to unreasonable usage. GET
+      /api/v1/key reports limit, limit_remaining, budgets, effective_budget and usage; OpenRouter
+      429 responses carry X-RateLimit-Limit/Remaining/Reset. Extra keys do not raise capacity.'
+  - title: OpenRouter Provider Routing
+    url: https://openrouter.ai/docs/features/provider-routing
+    readAt: '2026-10-29'
+    finding: 'The request provider object controls upstream routing: order, allow_fallbacks,
+      require_parameters, data_collection, zdr, only, ignore, quantizations, sort,
+      preferred_min_throughput, preferred_max_latency, max_price. The default is price-weighted load
+      balancing across each model''s providers with automatic provider fallback; setting sort or
+      order disables load balancing.'
+  - title: OpenRouter Model Fallbacks
+    url: https://openrouter.ai/docs/guides/routing/model-fallbacks
+    readAt: '2026-10-29'
+    finding: A request models array tries listed model ids in order when the first errors (rate
+      limits, downtime, moderation, context length); billing follows the model that answered, echoed
+      in the response model field. This is OpenRouter-side fallback; the lesson profile keeps
+      router-owned ordered fallback instead.
+  - title: OpenRouter Provider Logging and privacy
+    url: https://openrouter.ai/docs/features/privacy-and-logging
+    readAt: '2026-10-29'
+    finding: 'Per-request provider.data_collection "deny" excludes providers that may train on
+      prompts, and provider.zdr true restricts routing to zero-data-retention endpoints, OR-ed with
+      account privacy settings. Each provider''s retention policy differs. EU/US in-region routing
+      exists on Business/Enterprise plans.'
+  - title: OpenRouter App Attribution
+    url: https://openrouter.ai/docs/app-attribution
+    readAt: '2026-10-29'
+    finding: 'Optional attribution headers: HTTP-Referer (required only to create a public app page
+      and rankings entry), X-OpenRouter-Title for the display name (X-Title remains for backwards
+      compatibility), X-OpenRouter-Categories, and X-OpenRouter-App-Visibility hidden to keep a new
+      app unlisted. None is required for inference.'
+  - title: OpenRouter Create a chat completion API reference
+    url: https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion
+    readAt: '2026-10-29'
+    finding: 'The user field is an optional per-end-user identifier for abuse isolation; OpenRouter
+      folds it into a hashed identity sent upstream and never forwards it raw, and omitting it uses
+      an account-level identity. The X-OpenRouter-Metadata header opts into routing metadata on
+      responses.'
+  - title: GET /api/v1/models catalog
+    url: https://openrouter.ai/api/v1/models
+    readAt: '2026-10-29'
+    finding: 'The catalog lists deepseek/deepseek-v4.1-flash (canonical
+      deepseek/deepseek-v4.1-flash-20260910): context_length 1048576, max_completion_tokens 131072,
+      prompt $0.00000014/token ($0.14/M), completion $0.00000042/token ($0.42/M), input_cache_read
+      $0.0000000042 ($0.0042/M). It also lists deepseek/deepseek-v4-pro (canonical
+      deepseek/deepseek-v4-pro-20260423): context_length 1048576, max_completion_tokens 384000,
+      prompt $0.000000888966/token (about $0.89/M), completion $0.000001777932/token (about $1.78/M),
+      input_cache_read $0.0000000740805 (about $0.074/M). A separate dated listing
+      deepseek/deepseek-v4.1-flash-1017 exists at different pricing; the undated id is the offered
+      id closest to the goal''s preferred deepseek-4.1-flash, so no model-id gap is recorded.'
+  authentication: One Bearer key, custody name OPENROUTER_API_KEY, is resolved server-side per
+    attempt; it never reaches frontend, source fixture, logs, examples or Work, and its value is
+    never written, read or printed. No learner email, id or token is sent upstream; the optional
+    user field is an abuse-isolation identifier hashed by OpenRouter and is not sent by default.
+    Optional HTTP-Referer/X-OpenRouter-Title attribution headers carry no learner data; sending
+    them is an owner decision.
+  limits: 'Set explicit per-key/provider concurrency, maxAttempts, first-token/chunk timeout and a
+    total deadlineMs in approved configuration; leave content telemetry off. Retryable failures are
+    429 and 503 honoring Retry-After, 402 only for the in-flight-budget case, and upstream
+    timeouts/overload after backoff; 401, 403 budget denial before resets_at and validation 4xx are
+    not retried. The two paid model ids carry no OpenRouter request cap, but the key can hold a
+    credit limit and the account an in-flight budget; GET /api/v1/key monitors both. Calculate
+    grounding against the smallest active configured model context (1048576 for both candidates),
+    reserving prompt and output.'
+  accountScopeLifecycle: An active OpenRouter account with funded credits and access to both model
+    ids is necessary. Key creation, per-key credit limits, guardrail or workspace budgets, rotation
+    and revocation are owner-controlled; none is proven here. Existing entitlement and Q-W1-2 govern
+    learner access independently of provider billing.
+  callbackWebhook: No callback/webhook is used for the documented synchronous chat/SSE flow.
+    Cancellation and application event streams are handled by the caller; this is not a provider
+    callback registration.
   ownerPrerequisites:
-  - Approve the concrete provider/model mapping, ordered fallback policy and operational limits under decision.lessons.ai-pool.
-  - Provide sealed custody entries and a permitted funded provider account; reference names above do not prove their
-    existence.
+  - Approve the concrete provider/model mapping, ordered fallback policy and operational limits
+    under decision.lessons.ai-pool.
+  - Provide the sealed custody entry OPENROUTER_API_KEY on a permitted funded OpenRouter account;
+    the name above does not prove its existence.
   - Resolve Q-W1-1/Q-W1-2 for fixed-step activation and coaching access/billing.
-  - Authorize a bounded live verification before release; no live call is made by this documentation task.
+  - Authorize a bounded live verification before release; no live call is made by this
+    documentation task.
   liveVerificationPlan:
-  - After separately leased installation and one app-root registration, use an authorized isolated provider key
-    and a non-identifying source question. Record installed version, profile, answering model, attempts, timing
-    and safe terminal status; never record key or raw protected prompt.
-  - Verify unary and streaming grounded responses against the provider; confirm terminal result persistence, no
-    learner id, per-item reveal and no protected ask leakage.
-  - Use fake providers for deterministic 429/auth/fallback/pre-token/post-token/cancel/deadline tests. A fake test
-    is not reported as real provider failure proof.
-  - Only use controlled live failure scenarios explicitly permitted for that account; prove custody rotation/revocation
-    and real fallback access when authorization exists. Record not-run prerequisites truthfully instead of declaring
-    the integration done.
+  - After separately leased installation and one app-root registration, use an authorized isolated
+    OpenRouter key and a non-identifying source question. Record installed version, profile,
+    answering model from the response model field, attempts, timing and safe terminal status; never
+    record the key or a raw protected prompt.
+  - Verify unary and streaming grounded responses against OpenRouter; confirm terminal result
+    persistence, no learner id, per-item reveal and no protected ask leakage; confirm SSE keep-alive
+    comments are skipped and the terminal usage chunk is treated as accounting.
+  - Use fake providers for deterministic 429/auth/402/fallback/pre-token/post-token/cancel/deadline
+    tests. A fake test is not reported as real provider failure proof.
+  - Only use controlled live failure scenarios explicitly permitted for that account; prove custody
+    rotation/revocation and real fallback to deepseek/deepseek-v4-pro when authorization exists.
+    Record not-run prerequisites truthfully instead of declaring the integration done.
   notResearchedOrProven:
-  - No app-installed 0.3.0 dependency or root registration is verified; local harness 0.3.0 docs are read per coordinator
-    guidance of 2026-10-28.
-  - No actual provider pool, custody binding, key, paid account, live request or fixed fallback deployment is inspected
-    or proven.
-  - No official documentation for unnamed future fallback providers is claimed as read; adding one requires its
-    own dated provider research.
+  - No app-installed 0.3.0 dependency or root registration is verified; local harness 0.3.0 docs are
+    read per coordinator guidance.
+  - No OpenRouter account, custody binding, key, paid credits, live request or deployed fallback
+    configuration is inspected or proven.
+  - 'OpenRouter-side routing controls (the provider object, models array, zdr, data_collection) are
+    documented as available, not adopted: the profile keeps router-owned ordered fallback, and the
+    owner decides whether to set attribution headers or privacy filters.'
 blockedBy:
 - decision.lessons.ai-pool
 blockers:
-- Installation/root registration belongs to separate code leases; custody and live authorization are absent, and
-  actual provider/fallback configuration remains undecided.
+- Installation/root registration belongs to separate code leases; custody and live authorization
+  are absent, and the concrete model/fallback configuration awaits decision.lessons.ai-pool.
 refs:
 - decision.lessons.ai-pool
 - decision.lessons.ai-credit
@@ -138,17 +215,35 @@ extensions:
   candidateProfile:
     status: proposed mapping, not configured or live-proven
     name: lesson
-    modelAlias: deepseek-4.1-flash
-    providerModel: deepseek-flash
+    provider: openrouter
+    baseUrl: https://openrouter.ai/api/v1
+    keyRef: OPENROUTER_API_KEY
+    primaryModel:
+      id: deepseek/deepseek-v4.1-flash
+      canonical: deepseek/deepseek-v4.1-flash-20260910
+      contextWindow: 1048576
+      maxCompletion: 131072
+      price: 'input $0.14/M tokens, output $0.42/M tokens, cached input $0.0042/M'
+      source: https://openrouter.ai/api/v1/models
+      retrievedAt: '2026-10-29'
     orderedFallbacks:
     - order: 1
-      provider: DeepSeek
-      providerModel: deepseek-v4-pro
-      status: documented candidate, requires approval/access; only this provider is researched
-    guard: The implementation must receive an approved ordered configuration; it cannot silently treat this recommendation
-      as deployed configuration or invent additional providers.
+      id: deepseek/deepseek-v4-pro
+      canonical: deepseek/deepseek-v4-pro-20260423
+      contextWindow: 1048576
+      maxCompletion: 384000
+      price: 'input about $0.89/M tokens, output about $1.78/M tokens, cached input about $0.074/M'
+      source: https://openrouter.ai/api/v1/models
+      retrievedAt: '2026-10-29'
+      status: documented candidate, requires approval/access
+    semantics: Ordered fallback only as the profile allows (allowFallback), with maxAttempts and a
+      deadlineMs bounding each call; telemetry.includeContent stays false; the optional user field
+      is not sent.
+    guard: The implementation must receive an approved ordered configuration; it cannot silently
+      treat this recommendation as deployed configuration or invent additional providers or keys.
   goalUpdate:
-    receivedAt: '2026-10-28'
-    source: 'Coordinator Orca message msg_4a1afd6de00d, Goal version 2: ai-router pin is 0.3.0'
-    supersedes: The original task brief and first records pin of 0.2.1. The cached 0.2.1 distribution was read for
-      comparison but is not the implementation target.
+    receivedAt: '2026-10-29'
+    source: 'Owner correction r-4d87cd331347, goal version 38: OpenRouter is the live provider with
+      one OPENROUTER_API_KEY and two OpenRouter model ids'
+    supersedes: The two-key DeepSeek-direct custody of r-ada3eeb24972 (LESSON_AI_PRIMARY,
+      LESSON_AI_FALLBACK_1) and its provider mapping; the @starci/ai-router 0.3.0 pin is unchanged.
