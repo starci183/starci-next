@@ -14,7 +14,7 @@
     "@heroui/styles": "3.2.6",
     "@starci-next/i18n": "*",
     "@starci-next/ui": "*",
-    "@starci/grammar": "0.15.2",
+    "@starci/grammar": "0.15.3",
     "@xyflow/react": "12.11.6",
     "next": "16.4.2",
     "next-intl": "4.13.6",
