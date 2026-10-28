@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premium plans direction</title>
+  <!--
+    Direction for ui.commerce.plans (route /premium, surface class form, grammar core, brand rev 7).
+    Composed only of @starci/grammar core roles, each element stamped with the component it stands for
+    (data-component). Colours are the brand record's tokens (brand/index.yaml color.tokens and color.dark);
+    soft pairs, the surface shadow, radii, control heights, gaps and measure are the grammar's own values.
+    The direction chrome above the shell (state and theme pickers) is review tooling, not product UI.
+    States live in <template> elements so the live document always holds one Page and one h1.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&display=swap&subset=vietnamese" rel="stylesheet">
+  <style>
+    /* Brand rev 7 light tokens (brand/index.yaml color.tokens). */
+    :root {
+      --accent: #7547ff;
+      --accent-foreground: oklch(100% 0 0);
+      --background: oklch(97.02% 0.0015 354.13);
+      --surface: oklch(100% 0.0008 354.13);
+      --surface-foreground: oklch(21.03% 0.0015 354.13);
+      --surface-secondary: oklch(95.24% 0.0012 354.13);
+      --surface-secondary-foreground: oklch(21.03% 0.0015 354.13);
+      --starci-surface-tertiary: oklch(93.73% 0.0012 354.13);
+      --foreground: oklch(21.03% 0.0015 354.13);
+      --muted: oklch(55.17% 0.003 354.13);
+      --focus: #7248ff;
+      --border: oklch(90% 0.0015 354.13);
+      --separator: oklch(92% 0.0015 354.13);
+      --success: oklch(73.29% 0.1941 162.85);
+      --starci-core-accent-text: #7547ff;
+      --starci-core-accent-soft: oklch(97.5% 0.015 287);
+      /* HeroUI soft pair, light weights (brand color.policy.heroUiPairing). */
+      --success-soft: color-mix(in oklab, var(--success) 15%, transparent);
+      --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 60%);
+      /* Grammar values (Common and core DNA), not brand colours. */
+      --surface-shadow: 0 2px 4px 0 #0000000a, 0 1px 2px 0 #0000000f, 0 0 1px 0 #0000000f;
+      --radius-control: 0.75rem;
+      --radius-surface: 1rem;
+      --radius-pill: 999px;
+      --control-md: 2.5rem;
+      --gap-inline: 0.5rem;
+      --gap-row: 0.75rem;
+      --gap-section: 1rem;
+      --gap-region: 1.5rem;
+      --page-inset: clamp(1rem, 3vw, 2rem);
+      --reading-measure: 72ch;
+      --motion-duration: 180ms;
+      --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+      color-scheme: light;
+    }
+    /* Brand rev 7 dark tokens (brand/index.yaml color.dark): system default, or the persisted toggle. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --accent: oklch(68% 0.17 287);
+        --accent-foreground: oklch(17% 0.02 287);
+        --background: oklch(15% 0.0015 354.13);
+        --surface: oklch(21.03% 0.003 354.13);
+        --surface-foreground: oklch(97.5% 0.0015 354.13);
+        --surface-secondary: oklch(25.7% 0.0023 354.13);
+        --surface-secondary-foreground: oklch(97.5% 0.0015 354.13);
+        --starci-surface-tertiary: oklch(29% 0.0023 354.13);
+        --foreground: oklch(97.5% 0.0015 354.13);
+        --muted: oklch(74% 0.003 354.13);
+        --focus: oklch(72% 0.16 287);
+        --border: oklch(36% 0.0015 354.13);
+        --separator: oklch(30% 0.0015 354.13);
+        --success: oklch(73.29% 0.1941 162.85);
+        --starci-core-accent-text: oklch(78% 0.12 287);
+        --starci-core-accent-soft: oklch(30% 0.07 287);
+        --success-soft: color-mix(in oklab, var(--success) 12%, transparent);
+        --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 30%);
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: oklch(68% 0.17 287);
+      --accent-foreground: oklch(17% 0.02 287);
+      --background: oklch(15% 0.0015 354.13);
+      --surface: oklch(21.03% 0.003 354.13);
+      --surface-foreground: oklch(97.5% 0.0015 354.13);
+      --surface-secondary: oklch(25.7% 0.0023 354.13);
+      --surface-secondary-foreground: oklch(97.5% 0.0015 354.13);
+      --starci-surface-tertiary: oklch(29% 0.0023 354.13);
+      --foreground: oklch(97.5% 0.0015 354.13);
+      --muted: oklch(74% 0.003 354.13);
+      --focus: oklch(72% 0.16 287);
+      --border: oklch(36% 0.0015 354.13);
+      --separator: oklch(30% 0.0015 354.13);
+      --success: oklch(73.29% 0.1941 162.85);
+      --starci-core-accent-text: oklch(78% 0.12 287);
+      --starci-core-accent-soft: oklch(30% 0.07 287);
+      --success-soft: color-mix(in oklab, var(--success) 12%, transparent);
+      --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 30%);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--starci-font-sans, "Be Vietnam Pro"), ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    /* Direction chrome: review tooling outside the product frame. */
+    .direction-chrome {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-inline) var(--gap-section);
+      padding: var(--gap-inline) var(--page-inset);
+      background: var(--starci-surface-tertiary); color: var(--muted); font-size: 0.75rem; line-height: 1rem;
+    }
+    .direction-chrome fieldset { display: flex; flex-wrap: wrap; gap: 0.25rem; border: 0; margin: 0; padding: 0; align-items: center; }
+    .direction-chrome legend { float: left; margin-right: 0.25rem; font-weight: 600; }
+    .direction-chrome button {
+      font: inherit; color: var(--foreground); background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 0.25rem 0.625rem; cursor: pointer;
+    }
+    .direction-chrome button[aria-pressed="true"] { border-color: var(--accent); background: var(--starci-core-accent-soft); color: var(--starci-core-accent-text); }
+
+    /* Shell: SiteShell / WorkspaceShell viewport flow with its TopBar (shell/index.yaml). */
+    .shell { min-height: calc(100% - 2.25rem); display: flex; flex-direction: column; }
+    .topbar {
+      display: flex; align-items: center; min-height: 4rem; padding: 0 var(--page-inset);
+      background: var(--surface); border-bottom: 1px solid var(--separator);
+    }
+    .brand-lockup { display: inline-flex; align-items: center; gap: var(--gap-row); min-height: var(--control-md); color: var(--foreground); text-decoration: none; font-weight: 600; font-size: 1rem; line-height: 1.5rem; border-radius: var(--radius-control); }
+    .brand-lockup img { width: 40px; height: 40px; display: block; }
+    .shell-main { flex: 1; }
+
+    /* Page: the header band full width, then the body in the measure and gutter, a region step below. */
+    .page-header { background: var(--surface); border-bottom: 1px solid var(--separator); }
+    .page-container { width: 100%; max-width: calc(var(--reading-measure) + 2 * var(--page-inset)); margin: 0 auto; padding-inline: var(--page-inset); }
+    .page-header .page-container { padding-block: var(--gap-region); }
+    .page-header-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--gap-section); }
+    .page-header-copy { display: grid; gap: 0.25rem; min-width: 0; }
+    .page-header-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-inline); }
+    h1 { margin: 0; font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.01em; }
+    .page-header-meta { font-size: 0.75rem; line-height: 1rem; color: var(--muted); }
+    .page-header-description { color: var(--muted); }
+    .page-body { padding-block: var(--gap-region) calc(var(--gap-region) * 2); display: grid; gap: var(--gap-region); overflow: clip; }
+
+    /* Badge (Chip at soft emphasis, below the ramp): success state through the soft pair. */
+    .badge { display: inline-flex; align-items: center; gap: 0.25rem; height: 1.5rem; padding: 0 0.5rem; border-radius: var(--radius-pill); font-size: 0.75rem; line-height: 1rem; font-weight: 500; }
+    .badge[data-tone="success"] { background: var(--success-soft); color: var(--success-soft-foreground); }
+    .badge-dot { width: 0.375rem; height: 0.375rem; border-radius: 50%; background: currentColor; }
+
+    /* SurfaceCard, core: raised top-level surface, shadow without border, label outside the material. */
+    .card-block { display: grid; gap: var(--gap-inline); }
+    .card-label { margin: 0; padding-inline: 0.25rem; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+    .surface-card { background: var(--surface); color: var(--surface-foreground); border-radius: var(--radius-surface); box-shadow: var(--surface-shadow); overflow: hidden; }
+    .band { padding: var(--gap-region); }
+    .band + .band { border-top: 1px solid var(--separator); }
+    .band-art { padding: 0; }
+    .band-art img { display: block; width: 100%; height: auto; aspect-ratio: 1672 / 941; object-fit: cover; }
+
+    /* Field anatomy: label, description, control, error. Inside a surface the field takes `secondary`. */
+    .field { display: grid; gap: var(--gap-inline); border: 0; margin: 0; padding: 0; min-width: 0; }
+    .field-label { font-weight: 500; padding: 0; }
+    .field-description { color: var(--muted); font-size: 0.75rem; line-height: 1rem; margin: 0; }
+
+    /* RadioGroup: one value among a few visible options, each with its sentence. */
+    .choice-options { display: grid; gap: var(--gap-row); }
+    .choice { display: grid; grid-template-columns: auto 1fr; column-gap: var(--gap-row); row-gap: 0.125rem; align-items: start; min-height: var(--control-md); padding-block: 0.25rem; cursor: pointer; }
+    .choice input { position: absolute; opacity: 0; pointer-events: none; }
+    .choice-control { grid-row: 1 / span 2; margin-top: 0.125rem; width: 1.25rem; height: 1.25rem; border-radius: 50%; border: 1.5px solid var(--border); background: var(--surface-secondary); display: grid; place-items: center; transition: background var(--motion-duration) var(--motion-easing), border-color var(--motion-duration) var(--motion-easing); }
+    .choice input:checked + .choice-control { background: var(--accent); border-color: var(--accent); }
+    .choice input:checked + .choice-control::after { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent-foreground); }
+    .choice input:focus-visible + .choice-control { outline: 2px solid var(--focus); outline-offset: 2px; }
+    .choice-label { font-weight: 500; display: flex; flex-wrap: wrap; column-gap: var(--gap-inline); }
+    .choice-price { font-variant-numeric: tabular-nums; }
+    .choice-description { grid-column: 2; color: var(--muted); font-size: 0.75rem; line-height: 1rem; }
+
+    /* SegmentedControl: selected segment on accentSoft with an accent border; md height; fill in a narrow form. */
+    .segmented { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0.25rem; padding: 0.25rem; min-height: var(--control-md); border-radius: var(--radius-pill); background: var(--surface-secondary); justify-self: start; min-width: 16rem; }
+    .segment { position: relative; display: grid; place-items: center; padding: 0 var(--gap-section); border-radius: var(--radius-pill); border: 1px solid transparent; font-weight: 500; cursor: pointer; min-height: 2rem; }
+    .segment input { position: absolute; opacity: 0; pointer-events: none; }
+    .segment:has(input:checked) { background: var(--starci-core-accent-soft); border-color: var(--accent); color: var(--starci-core-accent-text); }
+    .segment:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+    /* Button: commit at the decision placement = accent fill, pill, md. */
+    .action-band { display: flex; justify-content: flex-end; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: var(--gap-inline); height: var(--control-md); padding: 0 1.25rem; border: 0; border-radius: var(--radius-pill); font: inherit; font-weight: 500; cursor: pointer; transition: transform var(--motion-duration) var(--motion-easing); }
+    .button[data-intent="commit"] { background: var(--accent); color: var(--accent-foreground); }
+    .button:active { transform: scale(0.97); }
+    .button[aria-busy="true"] { cursor: progress; }
+    .spinner { width: 1rem; height: 1rem; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* IncludedMark lines: outlined circle-check in inherited foreground (not a status). */
+    .included { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap-row); }
+    .included li { display: grid; grid-template-columns: 1.25rem 1fr; gap: var(--gap-row); align-items: start; }
+    .included svg { width: 1.25rem; height: 1.25rem; color: var(--foreground); }
+
+    /* EmptyNotice: the failed region's one message and its safe retry, in the unchanged surface. */
+    .empty-notice { display: grid; justify-items: center; text-align: center; gap: var(--gap-inline); padding: calc(var(--gap-region) * 1.5) var(--gap-region); }
+    .empty-notice svg { width: 2.5rem; height: 2.5rem; color: var(--muted); }
+    .empty-title { margin: 0; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+    .empty-notice p { margin: 0; color: var(--muted); max-width: 40ch; }
+    .empty-notice .button { margin-top: var(--gap-inline); }
+
+    /* Skeleton: the resolved anatomy as inert geometry. */
+    .skeleton { display: block; border-radius: var(--radius-control); background: var(--surface-secondary); position: relative; overflow: hidden; }
+    .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--surface) 60%, transparent), transparent); animation: shimmer 1.4s var(--motion-easing) infinite; }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+    .sk-line { height: 0.875rem; }
+    .sk-control { width: 1.25rem; height: 1.25rem; border-radius: 50%; }
+    .sk-pill { border-radius: var(--radius-pill); }
+    .sk-art { aspect-ratio: 1672 / 941; border-radius: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    /* Phone width: commands wrap under the heading; the one commit fills its single-column band. */
+    @media (max-width: 40rem) {
+      .band { padding: var(--gap-section); }
+      .band-art { padding: 0; }
+      .action-band .button { width: 100%; }
+      .segmented { justify-self: stretch; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="direction-chrome" data-direction-chrome="true">
+    <fieldset>
+      <legend>State</legend>
+      <button type="button" data-state="ready" aria-pressed="true">Ready</button>
+      <button type="button" data-state="pending" aria-pressed="false">Starting checkout</button>
+      <button type="button" data-state="already-premium" aria-pressed="false">Already Premium</button>
+      <button type="button" data-state="loading" aria-pressed="false">Loading</button>
+      <button type="button" data-state="unavailable" aria-pressed="false">Unavailable</button>
+    </fieldset>
+    <fieldset>
+      <legend>Theme</legend>
+      <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    </fieldset>
+  </div>
+
+  <div class="shell" data-component="SiteShell" data-viewport="flow">
+    <header class="topbar" data-component="TopBar">
+      <a class="brand-lockup" href="/" data-component="TextAction">
+        <img src="../../../../brand/assets/starci-logo.png" alt="" width="40" height="40">
+        <span>StarCi Next</span>
+      </a>
+    </header>
+    <main class="shell-main" id="page-root" aria-live="polite"></main>
+  </div>
+
+  <!-- ===== Shared pieces (cloned into each state) ===== -->
+
+  <!-- About Premium: one joined SurfaceCard (card.choose.role:kinds); its first face is the brand's
+       academy-learning-journey art band, then the IncludedMark lines. Support, so it follows the decision. -->
+  <template id="about-card">
+    <section class="card-block" aria-labelledby="about-title">
+      <h2 class="card-label" id="about-title" data-component="Heading">What Premium includes</h2>
+      <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+        <div class="band band-art" data-artwork-slot="academy-learning-journey" data-component="Image">
+          <img src="../../../../brand/assets/pro-learning-journey-v1.png" alt="" width="1672" height="941" loading="lazy">
+        </div>
+        <div class="band">
+          <ul class="included">
+            <li><svg data-component="IncludedMark" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><span data-component="Text">Every Premium feature on StarCi Next for as long as your plan is active.</span></li>
+            <li><svg data-component="IncludedMark" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><span data-component="Text">Premium starts as soon as SePay or payOS confirms your payment.</span></li>
+            <li><svg data-component="IncludedMark" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg><span data-component="Text">You pay once per term. Nothing renews automatically, and access ends with the term; buy again to continue.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <!-- ===== States: each is the whole Page; only one is mounted at a time. ===== -->
+
+  <!-- Ready: a plan is always selected (monthly by default, so no missing-plan error path exists); the rail is
+       the last-used one, otherwise SePay. -->
+  <template id="state-ready">
+    <div class="page" data-component="Page" data-measure="reading">
+      <header class="page-header" data-component="PageHeader">
+        <div class="page-container"><div class="page-header-row"><div class="page-header-copy">
+          <div class="page-header-title-line"><h1 data-component="Heading" data-level="1">Premium</h1></div>
+          <div class="page-header-description">Pick a plan and pay once. Premium never renews automatically.</div>
+        </div></div></div>
+      </header>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="plan-title">
+          <h2 class="card-label" id="plan-title" data-component="Heading">Choose your plan</h2>
+          <form class="surface-card" data-component="SurfaceCard" data-layout="joined" onsubmit="return false">
+            <div class="band">
+              <fieldset class="field" role="radiogroup" aria-labelledby="plan-label" aria-describedby="plan-desc" data-component="RadioGroup">
+                <legend class="field-label" id="plan-label">Plan</legend>
+                <p class="field-description" id="plan-desc">Choose how long Premium lasts.</p>
+                <div class="choice-options">
+                  <label class="choice"><input type="radio" name="plan" value="monthly" checked><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng tháng <span class="choice-price">229.000 ₫</span></span><span class="choice-description">1 month of Premium.</span></label>
+                  <label class="choice"><input type="radio" name="plan" value="yearly"><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng năm <span class="choice-price">2.290.000 ₫</span></span><span class="choice-description">12 months of Premium for the price of 10.</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="band">
+              <div class="field" data-component="SegmentedControl">
+                <span class="field-label" id="rail-label">Pay with</span>
+                <div class="segmented" role="radiogroup" aria-labelledby="rail-label" aria-describedby="rail-desc">
+                  <label class="segment"><input type="radio" name="rail" value="sepay" checked>SePay</label>
+                  <label class="segment"><input type="radio" name="rail" value="payos">payOS</label>
+                </div>
+                <p class="field-description" id="rail-desc">The provider you used last time is selected for you.</p>
+              </div>
+            </div>
+            <div class="band action-band">
+              <button class="button" type="submit" data-component="Button" data-intent="commit">Continue to payment</button>
+            </div>
+          </form>
+        </section>
+        <div data-slot="about"></div>
+      </div>
+    </div>
+  </template>
+
+
+  <!-- Starting checkout: the commit accepted work; only it is pending (CTA-3). -->
+  <template id="state-pending">
+    <div class="page" data-component="Page" data-measure="reading">
+      <header class="page-header" data-component="PageHeader">
+        <div class="page-container"><div class="page-header-row"><div class="page-header-copy">
+          <div class="page-header-title-line"><h1 data-component="Heading" data-level="1">Premium</h1></div>
+          <div class="page-header-description">Pick a plan and pay once. Premium never renews automatically.</div>
+        </div></div></div>
+      </header>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="plan-title">
+          <h2 class="card-label" id="plan-title" data-component="Heading">Choose your plan</h2>
+          <form class="surface-card" data-component="SurfaceCard" data-layout="joined" onsubmit="return false">
+            <div class="band">
+              <fieldset class="field" role="radiogroup" aria-labelledby="plan-label" aria-describedby="plan-desc" data-component="RadioGroup">
+                <legend class="field-label" id="plan-label">Plan</legend>
+                <p class="field-description" id="plan-desc">Choose how long Premium lasts.</p>
+                <div class="choice-options">
+                  <label class="choice"><input type="radio" name="plan" value="monthly"><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng tháng <span class="choice-price">229.000 ₫</span></span><span class="choice-description">1 month of Premium.</span></label>
+                  <label class="choice"><input type="radio" name="plan" value="yearly" checked><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng năm <span class="choice-price">2.290.000 ₫</span></span><span class="choice-description">12 months of Premium for the price of 10.</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="band">
+              <div class="field" data-component="SegmentedControl">
+                <span class="field-label" id="rail-label">Pay with</span>
+                <div class="segmented" role="radiogroup" aria-labelledby="rail-label" aria-describedby="rail-desc">
+                  <label class="segment"><input type="radio" name="rail" value="sepay">SePay</label>
+                  <label class="segment"><input type="radio" name="rail" value="payos" checked>payOS</label>
+                </div>
+                <p class="field-description" id="rail-desc">The provider you used last time is selected for you.</p>
+              </div>
+            </div>
+            <div class="band action-band">
+              <button class="button" type="submit" data-component="Button" data-intent="commit" aria-busy="true" data-pending="true"><svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity="0.3" stroke-width="2.5"/><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>Continue to payment</button>
+            </div>
+          </form>
+        </section>
+        <div data-slot="about"></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Already Premium: status in the header, the end date as its meta, the extension rule on the plan field. -->
+  <template id="state-already-premium">
+    <div class="page" data-component="Page" data-measure="reading">
+      <header class="page-header" data-component="PageHeader">
+        <div class="page-container"><div class="page-header-row"><div class="page-header-copy">
+          <div class="page-header-title-line"><h1 data-component="Heading" data-level="1">Premium</h1><span class="badge" data-tone="success" data-component="Badge"><span class="badge-dot" aria-hidden="true"></span>Active</span></div>
+          <div class="page-header-meta" data-component="Text">Premium until 31 Dec 2026</div>
+          <div class="page-header-description">Pick a plan and pay once. Premium never renews automatically.</div>
+        </div></div></div>
+      </header>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="plan-title">
+          <h2 class="card-label" id="plan-title" data-component="Heading">Extend your plan</h2>
+          <form class="surface-card" data-component="SurfaceCard" data-layout="joined" onsubmit="return false">
+            <div class="band">
+              <fieldset class="field" role="radiogroup" aria-labelledby="plan-label" aria-describedby="plan-desc" data-component="RadioGroup">
+                <legend class="field-label" id="plan-label">Plan</legend>
+                <p class="field-description" id="plan-desc">A new purchase adds its term after 31 Dec 2026, once your payment is confirmed.</p>
+                <div class="choice-options">
+                  <label class="choice"><input type="radio" name="plan" value="monthly"><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng tháng <span class="choice-price">229.000 ₫</span></span><span class="choice-description">1 month of Premium.</span></label>
+                  <label class="choice"><input type="radio" name="plan" value="yearly" checked><span class="choice-control" aria-hidden="true"></span><span class="choice-label">Premium hằng năm <span class="choice-price">2.290.000 ₫</span></span><span class="choice-description">12 months of Premium for the price of 10.</span></label>
+                </div>
+              </fieldset>
+            </div>
+            <div class="band">
+              <div class="field" data-component="SegmentedControl">
+                <span class="field-label" id="rail-label">Pay with</span>
+                <div class="segmented" role="radiogroup" aria-labelledby="rail-label" aria-describedby="rail-desc">
+                  <label class="segment"><input type="radio" name="rail" value="sepay" checked>SePay</label>
+                  <label class="segment"><input type="radio" name="rail" value="payos">payOS</label>
+                </div>
+                <p class="field-description" id="rail-desc">The provider you used last time is selected for you.</p>
+              </div>
+            </div>
+            <div class="band action-band">
+              <button class="button" type="submit" data-component="Button" data-intent="commit">Continue to payment</button>
+            </div>
+          </form>
+        </section>
+        <div data-slot="about"></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Loading: the same tree with the data missing (STATE-8). Known text stays real; offers, the
+       entitlement status and the art become inert geometry. -->
+  <template id="state-loading">
+    <div class="page" data-component="Page" data-measure="reading" aria-busy="true">
+      <header class="page-header" data-component="PageHeader">
+        <div class="page-container"><div class="page-header-row"><div class="page-header-copy">
+          <div class="page-header-title-line"><h1 data-component="Heading" data-level="1">Premium</h1></div>
+          <div class="page-header-description">Pick a plan and pay once. Premium never renews automatically.</div>
+        </div></div></div>
+      </header>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="plan-title">
+          <h2 class="card-label" id="plan-title" data-component="Heading">Choose your plan</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined" inert>
+            <div class="band">
+              <div class="field" data-component="RadioGroup" data-skeleton="true">
+                <span class="field-label">Plan</span>
+                <span class="skeleton sk-line" style="width: 18rem; max-width: 100%"></span>
+                <div class="choice-options">
+                  <div class="choice"><span class="skeleton sk-control"></span><span class="skeleton sk-line" style="width: 14rem; max-width: 100%"></span><span class="skeleton sk-line choice-description" style="width: 8rem; height: 0.75rem"></span></div>
+                  <div class="choice"><span class="skeleton sk-control"></span><span class="skeleton sk-line" style="width: 15rem; max-width: 100%"></span><span class="skeleton sk-line choice-description" style="width: 12rem; height: 0.75rem"></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="band">
+              <div class="field" data-component="SegmentedControl" data-skeleton="true">
+                <span class="field-label">Pay with</span>
+                <span class="skeleton sk-pill" style="width: 16rem; max-width: 100%; height: var(--control-md)"></span>
+                <span class="skeleton sk-line" style="width: 16rem; max-width: 100%; height: 0.75rem"></span>
+              </div>
+            </div>
+            <div class="band action-band">
+              <span class="skeleton sk-pill" data-component="Button" data-skeleton="true" style="width: 11rem; height: var(--control-md)"></span>
+            </div>
+          </div>
+        </section>
+        <section class="card-block" aria-labelledby="about-title">
+          <h2 class="card-label" id="about-title" data-component="Heading">What Premium includes</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band band-art"><span class="skeleton sk-art" data-component="Image" data-skeleton="true"></span></div>
+            <div class="band" data-slot="about-lines"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Unavailable: the offers read failed; the plan region fails in place with a safe retry (FEEDBACK-2).
+       While the region is empty its notice owns the view's one commit (CTA-1). -->
+  <template id="state-unavailable">
+    <div class="page" data-component="Page" data-measure="reading">
+      <header class="page-header" data-component="PageHeader">
+        <div class="page-container"><div class="page-header-row"><div class="page-header-copy">
+          <div class="page-header-title-line"><h1 data-component="Heading" data-level="1">Premium</h1></div>
+          <div class="page-header-description">Pick a plan and pay once. Premium never renews automatically.</div>
+        </div></div></div>
+      </header>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="plan-title">
+          <h2 class="card-label" id="plan-title" data-component="Heading">Choose your plan</h2>
+          <div class="surface-card" data-component="SurfaceCard">
+            <div class="empty-notice" data-component="EmptyNotice" data-cause="failed">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg>
+              <h3 class="empty-title">Plans are unavailable right now</h3>
+              <p>We couldn't load the Premium plans. Nothing was charged. Try again in a moment.</p>
+              <button class="button" type="button" data-component="Button" data-intent="commit">Try again</button>
+            </div>
+          </div>
+        </section>
+        <div data-slot="about"></div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    (function () {
+      var root = document.getElementById("page-root");
+      var about = document.getElementById("about-card");
+      function mount(state) {
+        var tpl = document.getElementById("state-" + state) || document.getElementById("state-ready");
+        root.replaceChildren(tpl.content.cloneNode(true));
+        root.querySelectorAll('[data-slot="about"]').forEach(function (slot) { slot.replaceWith(about.content.cloneNode(true)); });
+        root.querySelectorAll('[data-slot="about-lines"]').forEach(function (slot) {
+          slot.replaceChildren(about.content.querySelector(".included").cloneNode(true));
+        });
+        document.querySelectorAll("[data-state]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.state === state)); });
+        try { history.replaceState(null, "", "#" + state); } catch (e) {}
+      }
+      function theme(choice) {
+        if (choice === "system") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", choice);
+        document.querySelectorAll("[data-theme-choice]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.themeChoice === choice)); });
+        try { localStorage.setItem("plans-direction-theme", choice); } catch (e) {}
+      }
+      document.querySelectorAll("[data-state]").forEach(function (b) { b.addEventListener("click", function () { mount(b.dataset.state); }); });
+      document.querySelectorAll("[data-theme-choice]").forEach(function (b) { b.addEventListener("click", function () { theme(b.dataset.themeChoice); }); });
+      var saved = "system";
+      try { saved = localStorage.getItem("plans-direction-theme") || "system"; } catch (e) {}
+      theme(saved);
+      mount((location.hash || "#ready").slice(1));
+    })();
+  </script>
+</body>
+</html>

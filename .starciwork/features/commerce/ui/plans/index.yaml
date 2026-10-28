@@ -13,7 +13,12 @@ ui:
   - Show monthly Premium 229.000 ₫ and yearly Premium 2.290.000 ₫ (10 months value).
   - Explain included Premium access, term, renewal behavior, no automatic renewal, and current entitlement end when relevant.
   - Provide clear plan selection and continue action; show loading, unavailable, and already-Premium states.
-direction: pending
-assets: []
+direction: .starciwork/features/commerce/ui/plans/direction.html
+assets:
+  - slot: academy-learning-journey
+    summary: Decorative first face of the joined "What Premium includes" card - the brand's verified Academy
+      learning-journey raster (brand artworkSlots academy-learning-journey, master assets/pro-learning-journey-v1.png,
+      1672x941, alt empty), shown edge to edge in the ready, starting-checkout, already-Premium and unavailable
+      states and drawn as an inert skeleton box while loading.
 requiresProof: []
 change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify plan selection screen.'}
