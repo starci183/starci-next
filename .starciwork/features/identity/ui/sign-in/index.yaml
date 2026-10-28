@@ -16,7 +16,7 @@ ui:
     - failed: Invalid credentials show a clear recoverable error and sign-in can be retried.
     - signed-in: A valid authenticated identity without an operator role is recognized and the learner can continue.
   accessibility: Use a labelled sign-in action, announce status and errors, and preserve keyboard operation.
-direction: null
+direction: .starciwork/features/identity/ui/sign-in/direction.html
 assets: []
 requiresProof:
   - required: true

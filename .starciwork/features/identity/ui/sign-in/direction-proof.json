@@ -1,0 +1,4009 @@
+{
+  "schema": "sign-in-direction-proof@1",
+  "measuredAt": "2026-10-28T11:41:09.041Z",
+  "package": {
+    "name": "@starci/grammar",
+    "version": "0.15.4",
+    "buildStamp": {
+      "schema": "starci/grammar-build-stamp@1",
+      "package": "@starci/grammar",
+      "version": "0.15.4",
+      "algorithm": "starci/grammar-source-digest@1",
+      "sourceDigest": "sha256:1cf89eed19c0a8bd819d5e7be5aee030e47d4275969f2698d1f695e3fc36e340",
+      "distDigest": "sha256:c07e6dfabc25a1392267057e59af8cb19f12a97703af1ad1de6afbaa617af060",
+      "builtAt": "2026-10-28T11:27:39.830Z"
+    },
+    "branch": "pkg/starci-next-app-alert-soft-paint",
+    "head": "36a0c6845bd3eaceead217138851fc79d646188c",
+    "handoff": "Debug queue, recorded 2026-10-28T11:29:18.755Z; grammar; non-urgent"
+  },
+  "artifact": {
+    "path": ".starciwork/features/identity/ui/sign-in/direction.html",
+    "sha256": "3870c878b6f42ebb40ac194855e987edb0afe831a95224768870a5dae8fb2dad",
+    "files": [
+      {
+        "path": "direction.html",
+        "bytes": 27382,
+        "underScanLimit": true,
+        "sha256": "3870c878b6f42ebb40ac194855e987edb0afe831a95224768870a5dae8fb2dad"
+      },
+      {
+        "path": "direction.css",
+        "bytes": 606603,
+        "underScanLimit": true,
+        "sha256": "493052bd1fb36bde5f51fec94d3b0aa65550e7e872b77d16466e5dff702bd20e"
+      },
+      {
+        "path": "fonts/be-vietnam-pro-400.ttf",
+        "bytes": 120228,
+        "underScanLimit": true,
+        "sha256": "4ad53eac036092be79a34b5fa0aa32d0ebb3c7e5df4bc058764f5614fbf148a0"
+      },
+      {
+        "path": "fonts/be-vietnam-pro-500.ttf",
+        "bytes": 122644,
+        "underScanLimit": true,
+        "sha256": "557a1c42a7f8eb83f84255d475017b1235c1101b899367f974a1cbfa19cd7c3d"
+      },
+      {
+        "path": "fonts/be-vietnam-pro-600.ttf",
+        "bytes": 123064,
+        "underScanLimit": true,
+        "sha256": "cbf437bf71c8536a7aaed632dce2583ea5ec97c07efffc625c31991d1027ba3b"
+      }
+    ]
+  },
+  "method": "Existing harness Playwright and Chromium over a file URL; direction.html links the sibling direction.css (generated published Grammar CSS with the exact two-declaration package delta) and fonts/be-vietnam-pro-{400,500,600}.ttf by relative path, nothing base64-embedded; no network or app component override.",
+  "rules": [
+    "DNA-COMMON-CONTROL-MD",
+    "DNA-COMMON-CONTROL-FILL",
+    "DNA-COMMON-PENDING-KEEPS-BOX",
+    "DNA-COMMON-PAGE-BODY-GAP",
+    "DNA-CORE-BUTTON-PILL",
+    "toast-alert.choose.appearance"
+  ],
+  "summary": {
+    "renders": 96,
+    "buttonHeights": [
+      40
+    ],
+    "buttonFailures": 0,
+    "pendingParityPass": true,
+    "stressRenders": 8,
+    "stressPass": true,
+    "softAlertRenders": 48,
+    "softAlertFailures": 0,
+    "allToneRenders": 14,
+    "allTonesPass": true,
+    "anatomyPass": true,
+    "pageErrors": [],
+    "externalRequests": [],
+    "filesUnderScanLimit": true
+  },
+  "matrix": [
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 296,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 328,
+        "top": 24
+      },
+      "formWidth": 296,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 326,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 358,
+        "top": 24
+      },
+      "formWidth": 326,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 639,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 767,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1023,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1184,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1279,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "light",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "idle",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "redirecting",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "true",
+        "label": "Sign in",
+        "disabled": true,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "failed",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Sign in",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "theme": "dark",
+      "state": "signed-in",
+      "button": {
+        "height": 40,
+        "width": 416,
+        "size": "md",
+        "widthMode": "fill",
+        "pending": "false",
+        "label": "Continue",
+        "disabled": false,
+        "radius": "36px"
+      },
+      "card": {
+        "width": 448,
+        "top": 24
+      },
+      "formWidth": 416,
+      "h1Count": 1,
+      "pageCount": 1,
+      "headerCount": 0,
+      "horizontalOverflow": false,
+      "pageBodyGap": "0px",
+      "fontLoaded": true,
+      "alert": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "status",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      }
+    }
+  ],
+  "pendingParity": [
+    {
+      "viewport": 360,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 360,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 390,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 390,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 639,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 639,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 640,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 640,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 767,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 767,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 768,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 768,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1023,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1023,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1024,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1024,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1184,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1184,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1279,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1279,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1280,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1280,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1440,
+      "theme": "light",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    },
+    {
+      "viewport": 1440,
+      "theme": "dark",
+      "heightEqual": true,
+      "widthEqual": true,
+      "labelEqual": true,
+      "repeatPrevented": true
+    }
+  ],
+  "stress": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "light",
+      "state": "idle",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 384,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "light",
+      "state": "redirecting",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 512,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "light",
+      "state": "failed",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 848,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "light",
+      "state": "signed-in",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 776,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "dark",
+      "state": "idle",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 384,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "dark",
+      "state": "redirecting",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 512,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "dark",
+      "state": "failed",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 848,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 320
+      },
+      "rootTextScale": "200%",
+      "theme": "dark",
+      "state": "signed-in",
+      "horizontalOverflow": false,
+      "scrollOwner": "scroll-shadow scroll-shadow--hide-scrollbar scroll-shadow--vertical scroll-shadow--fade starci-core-surface-content starci-core-form-scroll-viewport",
+      "scrollHeight": 776,
+      "clientHeight": 224,
+      "buttonReachable": true,
+      "buttonHeight": 80
+    }
+  ],
+  "alertTones": [
+    {
+      "theme": "light",
+      "tone": "neutral",
+      "soft": {
+        "tone": "neutral",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(95.24% .0012 354.13) 98%, oklch(21.03% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "informative",
+      "soft": {
+        "tone": "informative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.975 0.00438558 -0.0143446 / 0.5)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.975 0.00438558 -0.0143446 / 0.5)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "oklch(97.5% .015 287)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "affirmative",
+      "soft": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 15%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "cautionary",
+      "soft": {
+        "tone": "cautionary",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7819 0.0155985 0.158233 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7819 0.0155985 0.158233 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(78.19% .159 84.37) 15%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "negative",
+      "soft": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.62 0.184551 0.143049 / 0.075)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(62% .2335 37.78) 15%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "pending",
+      "soft": {
+        "tone": "pending",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(95.24% .0012 354.13) 98%, oklch(21.03% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "light",
+      "tone": "unavailable",
+      "soft": {
+        "tone": "unavailable",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.937558 0.00119968 -0.000123339 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(95.24% .0012 354.13) 98%, oklch(21.03% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(1 0.0008 354.13)",
+        "expectedBackground": "oklch(1 0.0008 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.04) 0px 2px 4px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px, rgba(0, 0, 0, 0.06) 0px 0px 1px 0px",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "neutral",
+      "soft": {
+        "tone": "neutral",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(25.7% .0023 354.13) 98%, oklch(97.5% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "informative",
+      "soft": {
+        "tone": "informative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.3 0.020466 -0.0669413 / 0.5)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.3 0.020466 -0.0669413 / 0.5)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "oklch(30% .07 287)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "affirmative",
+      "soft": {
+        "tone": "affirmative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7329 -0.18547 0.0572351 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(73.29% .1941 162.85) 14%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "cautionary",
+      "soft": {
+        "tone": "cautionary",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.8203 0.00393527 0.139144 / 0.07)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.8203 0.00393527 0.139144 / 0.07)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(82.03% .1392 88.38) 14%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "negative",
+      "soft": {
+        "tone": "negative",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.7 0.136355 0.101525 / 0.08)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, oklch(70% .17 36.67) 16%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "pending",
+      "soft": {
+        "tone": "pending",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(25.7% .0023 354.13) 98%, oklch(97.5% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    },
+    {
+      "theme": "dark",
+      "tone": "unavailable",
+      "soft": {
+        "tone": "unavailable",
+        "appearance": "soft",
+        "role": "alert",
+        "background": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "shadow": "none",
+        "expectedSoftBackground": "oklab(0.27136 0.00227202 -0.000233588 / 0.25)",
+        "softTintApplied": true,
+        "noShadow": true,
+        "softToken": "color-mix(in oklab, color-mix(in oklab, oklch(25.7% .0023 354.13) 98%, oklch(97.5% .0015 354.13)) 50%, transparent)"
+      },
+      "surface": {
+        "background": "oklch(0.2103 0.003 354.13)",
+        "expectedBackground": "oklch(0.2103 0.003 354.13)",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px inset",
+        "surfacePreserved": true
+      }
+    }
+  ]
+}
