@@ -1,5 +1,6 @@
 ﻿import { builder } from "@starci/jest-preset"
-import { useTestWorld } from "../../../world/use-test-world"
+import { ENTITLEMENT_BY_LEARNER } from "../../fixtures/persistence/commerce-entitlement.sql"
+import { useTestWorld } from "../../world/use-test-world"
 
 const learnerOf = builder<{ learnerId: string }>({ learnerId: "10000000-0000-4000-8000-000000000005" })
 
@@ -11,7 +12,7 @@ describe("commerce entitlement (e2e)", () => {
         const learner = learnerOf()
         const health = await world.apps.core.api.get("/health/ready")
         const rows = await world.db.primary.query<Array<{ learner_id: string; premium_until: Date; updated_at: Date }>>(
-            "SELECT learner_id, premium_until, updated_at FROM entitlements WHERE learner_id = $1::uuid",
+            ENTITLEMENT_BY_LEARNER,
             [learner.learnerId],
         )
 

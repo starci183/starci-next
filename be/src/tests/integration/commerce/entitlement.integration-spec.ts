@@ -1,8 +1,6 @@
 ﻿import { builder } from "@starci/jest-preset"
-import { EntitlementModule } from "@modules/domain/entitlement"
-import type { GrantPremiumParams } from "@modules/domain/entitlement/entitlement.contracts"
-import { EntitlementService } from "@modules/domain/entitlement/entitlement.service"
-import { useTestWorld } from "../../../world/use-test-world"
+import { EntitlementModule, EntitlementService, type GrantPremiumParams } from "@modules/domain/entitlement"
+import { useTestWorld } from "../../world/use-test-world"
 
 const grantParamsOf = builder<GrantPremiumParams>({
     learnerId: "10000000-0000-4000-8000-000000000001",
@@ -12,7 +10,7 @@ const grantParamsOf = builder<GrantPremiumParams>({
 
 /** The real primary database behind the entitlement capability. */
 describe("commerce entitlement (integration)", () => {
-    const world = useTestWorld({ modules: [() => EntitlementModule.register({ isGlobal: true })] })
+    const world = useTestWorld({ modules: [() => EntitlementModule.register({})] })
     const entitlement = (): EntitlementService => world.resolve(EntitlementService)
 
     it("extends a future end by one calendar month and persists the exact end", async () => {
