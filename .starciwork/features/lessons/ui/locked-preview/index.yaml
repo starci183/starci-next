@@ -80,6 +80,7 @@ ui:
     appears in HTML, client bundle, hydration state, preload requests or response errors.
   - The locked page retains the supplied AppLayout/SiteShell chrome and the same core defaults; it adds no alternative
     app navigation.
+direction: .starciwork/features/lessons/ui/locked-preview/direction.html
 assets: []
 refs:
 - contract.commerce.entitlement

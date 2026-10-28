@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Locked lesson preview</title>
+<meta name="description" content="Direction for ui.lessons.locked-preview: exact original §1 and outline open, steps 2-5 and the AI behind Premium, in the core grammar inside the existing SiteShell." />
+<style>
+/* Token values are @starci/grammar core DNA (STARCI_CORE_DNA, light and dark); nothing here is a product palette. */
+:root {
+  --accent: #7547ff; --accent-foreground: oklch(100% 0 0); --focus: #7248ff;
+  --canvas: oklch(97.02% 0.0015 354.13); --surface: oklch(100% 0.0008 354.13); --surface-secondary: oklch(95.24% 0.0012 354.13);
+  --foreground: oklch(21.03% 0.0015 354.13); --muted: oklch(52% 0.003 354.13); --border: oklch(90% 0.0015 354.13); --separator: oklch(92% 0.0015 354.13);
+  --danger: oklch(55% 0.2 37.78); --accent-text: #6a3cf2; --accent-soft: oklch(95.5% 0.03 287);
+  --shadow-surface: 0 8px 28px oklch(21.03% 0.0059 354.13 / 0.07);
+  --surface-radius: 1rem; --control-radius: 0.75rem; --pill: 999px; --reading: 72ch;
+  --inline-gap: 0.5rem; --row-gap: 0.75rem; --section-gap: 1rem; --region-gap: 1.5rem; --page-inset: clamp(1rem, 3vw, 2rem);
+  --control-md: 2.5rem; --font-sans: ui-sans-serif, system-ui, sans-serif; --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --duration: 180ms; --easing: cubic-bezier(0.2, 0, 0, 1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --canvas: oklch(12% 0.0015 354.13); --surface: oklch(21.03% 0.003 354.13); --surface-secondary: oklch(25.7% 0.0023 354.13);
+  --foreground: oklch(99.11% 0.0015 354.13); --muted: oklch(70.5% 0.003 354.13); --border: oklch(28% 0.0015 354.13); --separator: oklch(25% 0.0015 354.13);
+  --danger: oklch(70% 0.17 36.67); --accent-text: #a48bff; --accent-soft: oklch(30% 0.07 287); color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --canvas: oklch(12% 0.0015 354.13); --surface: oklch(21.03% 0.003 354.13); --surface-secondary: oklch(25.7% 0.0023 354.13);
+  --foreground: oklch(99.11% 0.0015 354.13); --muted: oklch(70.5% 0.003 354.13); --border: oklch(28% 0.0015 354.13); --separator: oklch(25% 0.0015 354.13);
+  --danger: oklch(70% 0.17 36.67); --accent-text: #a48bff; --accent-soft: oklch(30% 0.07 287); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--foreground); font: 1rem/1.6 var(--font-sans); }
+.doc { max-width: 84rem; margin: 0 auto; padding: var(--page-inset); display: grid; gap: 2.5rem; }
+.doc-head h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+.doc-head p, .notes li { color: var(--muted); font-size: .875rem; margin: .25rem 0; }
+.notes { background: var(--surface); border-radius: var(--surface-radius); box-shadow: var(--shadow-surface); padding: 1rem 1.25rem; }
+.notes h2 { font-size: 1rem; margin: 0 0 .5rem; }
+.notes ul { margin: 0; padding-left: 1.1rem; }
+.theme-switch { display: inline-flex; gap: var(--inline-gap); margin-top: .5rem; }
+.theme-switch button { font: inherit; font-size: .875rem; height: var(--control-md); padding: 0 1rem; border-radius: var(--pill); border: 1px solid var(--border); background: transparent; color: var(--foreground); cursor: pointer; }
+.state h2.state-title { font-size: 1.125rem; margin: 0; }
+.state .state-note { color: var(--muted); font-size: .875rem; margin: .25rem 0 1rem; max-width: 80ch; }
+.frames { display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap; }
+.frame { border: 1px solid var(--border); border-radius: var(--surface-radius); overflow: hidden; background: var(--canvas); }
+.frame.desktop { flex: 1 1 52rem; max-width: 64rem; min-width: 0; }
+.frame.phone { width: 390px; max-width: 100%; flex: 0 0 auto; }
+.frame-cap { font-size: .75rem; color: var(--muted); margin: 0 0 .25rem; }
+/* SiteShell: WorkspaceShell viewport=flow, TopBar band with one full-width separator, PageContainer at reading measure. */
+.shell { display: flex; flex-direction: column; min-height: 100%; }
+.topbar { height: 3.5rem; display: flex; align-items: center; padding: 0 var(--page-inset); background: var(--surface); border-bottom: 1px solid var(--separator); }
+.wordmark { font-weight: 600; color: var(--foreground); text-decoration: none; }
+.page { width: 100%; max-width: calc(var(--reading) + 2 * var(--page-inset)); margin: 0 auto; padding: var(--region-gap) var(--page-inset) 3rem; display: grid; gap: var(--region-gap); }
+.slot { font-family: var(--font-mono); font-size: .8em; font-weight: 500; color: var(--muted); border: 1px dashed var(--border); border-radius: .375rem; padding: 0 .35em; }
+.page-head { display: grid; gap: .375rem; }
+.head-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--row-gap); }
+.page-head h1 { font-size: 1.875rem; line-height: 1.25; margin: 0; font-weight: 600; }
+.lede { margin: 0; }
+.meta { margin: 0; color: var(--muted); font-size: .875rem; }
+.badge { display: inline-flex; align-items: center; height: 1.5rem; padding: 0 .5rem; border-radius: var(--pill); font-size: .75rem; font-weight: 500; background: var(--surface-secondary); color: var(--foreground); }
+.variant-row { display: flex; flex-wrap: wrap; gap: var(--row-gap) var(--region-gap); }
+.field { display: grid; gap: .25rem; }
+.field-label { font-size: .875rem; font-weight: 500; }
+.segmented { display: inline-flex; height: var(--control-md); padding: .25rem; gap: .25rem; border-radius: var(--pill); background: var(--surface-secondary); }
+.seg { display: inline-flex; align-items: center; padding: 0 .875rem; border-radius: var(--pill); font-size: .875rem; border: 1px solid transparent; }
+.seg.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-text); font-weight: 500; }
+.seg[data-disabled] { opacity: .45; }
+.article { display: grid; gap: .875rem; }
+.article h2 { font-size: 1.5rem; line-height: 1.3; margin: 0; font-weight: 600; scroll-margin-top: 1rem; }
+.article p, .article ul { margin: 0; }
+.article ul { padding-left: 1.25rem; display: grid; gap: .375rem; }
+code { font-family: var(--font-mono); font-size: .875em; background: var(--surface-secondary); border-radius: .375rem; padding: .05em .35em; }
+.locked-band { display: grid; gap: var(--row-gap); justify-items: start; padding-top: var(--section-gap); border-top: 1px solid var(--separator); }
+.alert { width: 100%; background: var(--surface); border-radius: var(--surface-radius); box-shadow: var(--shadow-surface); padding: 1rem 1.25rem; display: grid; gap: .25rem; justify-items: start; }
+.alert-title { margin: 0; font-weight: 600; }
+.alert.negative .alert-title { color: var(--danger); }
+.alert-desc { margin: 0; color: var(--muted); font-size: .9375rem; }
+.alert .btn { margin-top: .5rem; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: var(--control-md); padding: 0 1.25rem; border-radius: var(--pill); font-weight: 500; font-size: .9375rem; text-decoration: none; cursor: pointer; transition: transform var(--duration) var(--easing); }
+.btn.commit { background: var(--accent); color: var(--accent-foreground); }
+.btn:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.region { display: grid; gap: var(--section-gap); }
+.section-head h2 { font-size: 1.25rem; margin: 0; font-weight: 600; }
+.outline { list-style: none; margin: 0; padding: 0; display: grid; }
+.outline li { padding: .4rem 0 .4rem calc(var(--depth) * 1.25rem); border-bottom: 1px solid var(--separator); display: flex; gap: var(--inline-gap); align-items: baseline; flex-wrap: wrap; font-size: .9375rem; }
+.outline li:last-child { border-bottom: 0; }
+.outline li.locked span { color: var(--muted); }
+.outline a, a[data-component="TextAction"] { color: var(--accent-text); text-decoration: underline; text-underline-offset: 2px; }
+.outline .badge { height: 1.25rem; }
+.stepper { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--row-gap); }
+.stepper li { display: flex; gap: var(--row-gap); align-items: flex-start; }
+.marker { flex: none; width: 1.75rem; height: 1.75rem; border-radius: var(--pill); border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: .8125rem; color: var(--muted); }
+.step-copy { display: grid; flex: 1; }
+.step-label { font-weight: 500; color: var(--muted); }
+.step-note { font-size: .8125rem; color: var(--muted); }
+.empty { display: grid; gap: .25rem; justify-items: center; text-align: center; padding: 2.5rem 1rem; background: var(--surface); border-radius: var(--surface-radius); box-shadow: var(--shadow-surface); }
+.state-sep { border: 0; border-top: 1px dashed var(--border); margin: .5rem 0; }
+.sk { display: block; height: .875rem; border-radius: .375rem; background: var(--surface-secondary); margin: .3rem 0; }
+.sk-h1 { width: 70%; height: 2rem; }
+.sk-h2 { width: 40%; height: 1.5rem; }
+.gap { display: block; height: .5rem; }
+.sk-btn { width: 11rem; background: var(--surface-secondary); }
+.phone .page-head h1 { font-size: 1.5rem; }
+@media (max-width: 640px) { .frame.desktop { flex-basis: 100%; } }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<div class="doc">
+  <header class="doc-head">
+    <p>ui.lessons.locked-preview · route /[locale]/lessons/[lessonId] · grammar core · surface class reader</p>
+    <h1>Locked lesson preview</h1>
+    <p>Reference: fixture.lessons.academy-rest-semantics.v1 · typescript · vi · original/bodies/0-typescript/vi.md · manifest sha256 7df8c6c562c9…</p>
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button type="button" data-set-theme="light">Light</button><button type="button" data-set-theme="dark">Dark</button><button type="button" data-set-theme="">System</button>
+    </div>
+  </header>
+  <section class="notes" aria-labelledby="notes-title">
+    <h2 id="notes-title">What this direction settles</h2>
+    <ul>
+      <li>Chrome is the existing AppLayout → SiteShell (WorkspaceShell flow, TopBar wordmark, PageContainer reading measure). No sidebar, rail, second header or app navigation is added; every region stacks in reading order inside the one measure.</li>
+      <li>Reading order: page head (title, Premium status badge, description, metadata) → language and locale selectors → exact §1 → locked notice with the one commit → complete outline → five steps (inert) → ask region (no controls).</li>
+      <li>The one commit is a destination: <code>Button intent=commit href=/premium</code>, the route of ui.commerce.plans. No price, plan, checkout or provider detail is drawn here; plans owns them.</li>
+      <li>§1 is copied from the draw reference (UTF-8 sha256 ab35db297f83…); the outline is all 20 source headings with their depth and order. Only section-1 links (in-page); locked entries are text and request nothing.</li>
+      <li>Step labels are the exact English candidate labels of contract.lessons.lesson-steps (proposal under Q-W1-1); no Vietnamese label is supplied, so none is invented. Whether this lesson is locked at all is Q-W1-2 (source isPremium=false); this drawing is the locked branch only.</li>
+      <li>Dashed mono text marks a value bound at runtime that the draw reference does not carry: <code>PublicLesson.title[vi]</code>, <code>PublicLesson.description[vi]</code>, <code>app.shell.brand</code>.</li>
+      <li>Gap: the core contract's <code>PageHeader</code> is not exported by the installed @starci/grammar 0.15.2, and SiteShell puts the body inside PageContainer, so the page head is <code>Heading level=1</code> + <code>Badge</code> + <code>Text</code>, as the app's existing pages head themselves (COMMON_CAPABILITY_MISSING, PageHeader).</li>
+      <li>No artwork slot: the brand record allows no mascot or art on this surface, so no signature moment is drawn.</li>
+    </ul>
+  </section>
+  <section class="state" id="state-denied" data-state="denied" aria-labelledby="t-denied">
+    <h2 class="state-title" id="t-denied">Denied (the resting locked state) <code>denied</code></h2>
+    <p class="state-note">Access = locked. Exact §1 and the complete outline; one commit, a destination to the canonical plans route. No §2+ text, interview samples, rubrics, active step or ask control, and no provider call.</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <div class="head-row">
+    <h1 data-component="Heading" data-props="level=1"><span class="slot" title="Bound to PublicLesson.title[vi]; the draw reference carries no value for it">PublicLesson.title[vi]</span></h1>
+    <span data-component="Badge" data-props="tone=neutral" class="badge neutral">Cần Premium</span>
+  </div>
+  <p data-component="Text" class="lede"><span class="slot" title="Bound to PublicLesson.description[vi]; the draw reference carries no value for it">PublicLesson.description[vi]</span></p>
+  <p data-component="Text" data-props="tone=muted" class="meta">20 phút đọc · Xác minh ngày 2026-06-02</p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=TypeScript">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true"  class="seg on">TypeScript</span><span role="radio" aria-checked="false"  class="seg">Java</span><span role="radio" aria-checked="false"  class="seg">C#</span><span role="radio" aria-checked="false"  class="seg">Go</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=vi">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true" class="seg on">Tiếng Việt</span><span role="radio" aria-checked="false" class="seg">English</span></div>
+  </div>
+</div>
+<article data-component="MarkdownArticle" data-props="ariaLabel=Phần 1 của bài · measure=reading" data-source="original/bodies/0-typescript/vi.md" data-section1-sha256="ab35db297f832a41be7f776e3c47b056abe88ce0c5c65be911e7b15de5231f93" class="article">
+<h2 id="section-1">1. Lời mở đầu</h2>
+<p><em>&quot;Cùng là <code data-component="Code">users</code>, vì sao tôi không thể chỉ làm <code data-component="Code">POST /createUser</code>, <code data-component="Code">POST /updateUser</code>, <code data-component="Code">POST /deleteUser</code> cho gọn?&quot;</em> — một <strong data-component="Text" data-props="weight=strong">Senior Engineer</strong> hỏi. <strong data-component="Text" data-props="weight=strong">Mid-level Developer</strong> đáp: <em>&quot;Miễn server hiểu là được, dùng <code data-component="Code">POST</code> hết cũng chạy mà.&quot;</em> Câu trả lời thiếu chiều sâu: dồn mọi thứ vào <code data-component="Code">POST</code> làm mất hợp đồng (contract) mà client và proxy dựa vào — không phân biệt được đọc với ghi để cache, không biết thao tác nào <strong data-component="Text" data-props="weight=strong">idempotent</strong> để retry an toàn, và status code trả về không nói lên kết quả (tạo mới hay không tìm thấy đều <code data-component="Code">200</code>).</p>
+<p>REST không phải quy ước tuỳ hứng: mỗi <strong data-component="Text" data-props="weight=strong">HTTP verb</strong> ánh xạ tới một <em>thao tác</em> trên resource, mỗi <strong data-component="Text" data-props="weight=strong">status code</strong> là một câu trả lời chuẩn cho client. Bài học triển khai một backend <code data-component="Code">users</code> bằng <strong data-component="Text" data-props="weight=strong">NestJS + TypeORM</strong> trên <strong data-component="Text" data-props="weight=strong">PostgreSQL</strong>, rồi gọi từng verb để <strong data-component="Text" data-props="weight=strong">quan sát</strong> đúng thứ contract này — status code và body:</p>
+<ul><li><strong data-component="Text" data-props="weight=strong">Phần 2.1</strong>: <strong data-component="Text" data-props="weight=strong">thực hành</strong> chạy demo và kiểm chứng 4 luồng (tạo, đọc/404, <code data-component="Code">PUT</code> thay-toàn-bộ vs <code data-component="Code">PATCH</code> sửa-một-phần, xoá 204).</li><li><strong data-component="Text" data-props="weight=strong">Phần 2.2</strong>: <strong data-component="Text" data-props="weight=strong">lý thuyết</strong> hệ thống hoá bản chất <em>verb → thao tác → status code → idempotency</em>, kèm các <strong data-component="Text" data-props="weight=strong">edge case</strong> điển hình.</li></ul>
+</article>
+<section class="locked-band" aria-labelledby="locked-title">
+  <div data-component="Alert" data-props="tone=neutral · appearance=surface · urgency=polite" class="alert">
+    <p class="alert-title" id="locked-title">Phần còn lại của bài cần Premium</p>
+    <p class="alert-desc">Bạn đang xem phần 1 và mục lục đầy đủ. Từ phần 2 trở đi, các bước luyện tập và trợ lý AI mở khi tài khoản có Premium đang hiệu lực.</p>
+  </div>
+  <a data-component="Button" data-props="intent=commit · href=/premium (ui.commerce.plans route) · size omitted (md)" href="/premium" class="btn commit">Xem các gói Premium</a>
+</section>
+<section class="region" aria-labelledby="toc-title">
+  <div data-component="SectionHeader" data-props="level=2 · meta" class="section-head"><h2 id="toc-title">Mục lục</h2><p class="meta">20 mục · phần 1 mở, các mục còn lại cần Premium</p></div>
+  <ol data-component="List" data-props="as=ol label=Mục lục" class="outline" aria-label="Mục lục"><li data-component="ListItem" data-outline-id="section-1" data-depth="2" style="--depth:0" class="open"><a data-component="TextAction" data-props="href=#section-1" href="#section-1">1. Lời mở đầu</a><span data-component="Badge" data-props="tone=neutral" class="badge">Đang xem</span></li>
+<li data-component="ListItem" data-outline-id="section-2" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">2. Các khái niệm cốt lõi</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.1. Thực hành</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.1. Chuẩn bị source code và môi trường</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.2. Kiến trúc / thành phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3. Giải thích code và bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.1. Verb ánh xạ thao tác — và <code data-component="Code">@HttpCode</code> chọn status code</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.2. <code data-component="Code">PUT</code> thay toàn bộ vs <code data-component="Code">PATCH</code> sửa một phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.3" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.3. Không tìm thấy → <code data-component="Code">NotFoundException</code> thành <code data-component="Code">404</code></span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4. Chuẩn bị &amp; khởi chạy</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.1. Điều kiện cần trước</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.2. Khởi động</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.5" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.5. Kiểm thử</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.6" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.6. Dọn tài nguyên</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.7" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.7. Đọc thêm</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.2. Lý thuyết</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.1. Bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.2. Các trường hợp biên (edge cases) cần lưu ý</span></li>
+<li data-component="ListItem" data-outline-id="section-3" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">3. Tổng kết</span></li>
+<li data-component="ListItem" data-outline-id="section-3.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">3.1. Các câu hỏi dễ bị phỏng vấn</span></li></ol>
+</section>
+<section class="region" aria-labelledby="steps-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="steps-title">5 bước học cùng AI</h2><p class="meta">Bước nào cũng chưa nhận câu trả lời khi chưa có Premium.</p></div>
+  <ol data-component="Stepper" data-props="label=5 bước học cùng AI · orientation=vertical · currentStepId=read-original · onStepSelect=none" class="stepper" aria-label="5 bước học cùng AI">
+<li data-step-id="read-original" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">1</span><span class="step-copy"><span class="step-label">Read the original article</span><span class="step-note">Đọc §1 miễn phí; phản hồi AI cần Premium</span></span></li>
+<li data-step-id="explain-concept" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">2</span><span class="step-copy"><span class="step-label">Explain the core concept</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="trace-code" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">3</span><span class="step-copy"><span class="step-label">Trace the working code</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="interview" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">4</span><span class="step-copy"><span class="step-label">Practice interview questions</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="challenge" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">5</span><span class="step-copy"><span class="step-label">Solve a challenge</span><span class="step-note">Cần Premium</span></span></li>
+</ol>
+</section>
+<section class="region" aria-labelledby="ask-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="ask-title">Hỏi trợ lý AI về bài học</h2></div>
+  <p data-component="Text" data-props="tone=muted">Trợ lý AI chỉ dành cho tài khoản Premium. Trang này không gửi câu hỏi nào và không gọi nhà cung cấp AI.</p>
+</section>
+    </main>
+  </div>
+</div></div>
+      <div><p class="frame-cap">Phone · 390</p><div class="frame phone">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <div class="head-row">
+    <h1 data-component="Heading" data-props="level=1"><span class="slot" title="Bound to PublicLesson.title[vi]; the draw reference carries no value for it">PublicLesson.title[vi]</span></h1>
+    <span data-component="Badge" data-props="tone=neutral" class="badge neutral">Cần Premium</span>
+  </div>
+  <p data-component="Text" class="lede"><span class="slot" title="Bound to PublicLesson.description[vi]; the draw reference carries no value for it">PublicLesson.description[vi]</span></p>
+  <p data-component="Text" data-props="tone=muted" class="meta">20 phút đọc · Xác minh ngày 2026-06-02</p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=TypeScript">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true"  class="seg on">TypeScript</span><span role="radio" aria-checked="false"  class="seg">Java</span><span role="radio" aria-checked="false"  class="seg">C#</span><span role="radio" aria-checked="false"  class="seg">Go</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=vi">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true" class="seg on">Tiếng Việt</span><span role="radio" aria-checked="false" class="seg">English</span></div>
+  </div>
+</div>
+<article data-component="MarkdownArticle" data-props="ariaLabel=Phần 1 của bài · measure=reading" data-source="original/bodies/0-typescript/vi.md" data-section1-sha256="ab35db297f832a41be7f776e3c47b056abe88ce0c5c65be911e7b15de5231f93" class="article">
+<h2 id="section-1-phone">1. Lời mở đầu</h2>
+<p><em>&quot;Cùng là <code data-component="Code">users</code>, vì sao tôi không thể chỉ làm <code data-component="Code">POST /createUser</code>, <code data-component="Code">POST /updateUser</code>, <code data-component="Code">POST /deleteUser</code> cho gọn?&quot;</em> — một <strong data-component="Text" data-props="weight=strong">Senior Engineer</strong> hỏi. <strong data-component="Text" data-props="weight=strong">Mid-level Developer</strong> đáp: <em>&quot;Miễn server hiểu là được, dùng <code data-component="Code">POST</code> hết cũng chạy mà.&quot;</em> Câu trả lời thiếu chiều sâu: dồn mọi thứ vào <code data-component="Code">POST</code> làm mất hợp đồng (contract) mà client và proxy dựa vào — không phân biệt được đọc với ghi để cache, không biết thao tác nào <strong data-component="Text" data-props="weight=strong">idempotent</strong> để retry an toàn, và status code trả về không nói lên kết quả (tạo mới hay không tìm thấy đều <code data-component="Code">200</code>).</p>
+<p>REST không phải quy ước tuỳ hứng: mỗi <strong data-component="Text" data-props="weight=strong">HTTP verb</strong> ánh xạ tới một <em>thao tác</em> trên resource, mỗi <strong data-component="Text" data-props="weight=strong">status code</strong> là một câu trả lời chuẩn cho client. Bài học triển khai một backend <code data-component="Code">users</code> bằng <strong data-component="Text" data-props="weight=strong">NestJS + TypeORM</strong> trên <strong data-component="Text" data-props="weight=strong">PostgreSQL</strong>, rồi gọi từng verb để <strong data-component="Text" data-props="weight=strong">quan sát</strong> đúng thứ contract này — status code và body:</p>
+<ul><li><strong data-component="Text" data-props="weight=strong">Phần 2.1</strong>: <strong data-component="Text" data-props="weight=strong">thực hành</strong> chạy demo và kiểm chứng 4 luồng (tạo, đọc/404, <code data-component="Code">PUT</code> thay-toàn-bộ vs <code data-component="Code">PATCH</code> sửa-một-phần, xoá 204).</li><li><strong data-component="Text" data-props="weight=strong">Phần 2.2</strong>: <strong data-component="Text" data-props="weight=strong">lý thuyết</strong> hệ thống hoá bản chất <em>verb → thao tác → status code → idempotency</em>, kèm các <strong data-component="Text" data-props="weight=strong">edge case</strong> điển hình.</li></ul>
+</article>
+<section class="locked-band" aria-labelledby="locked-title">
+  <div data-component="Alert" data-props="tone=neutral · appearance=surface · urgency=polite" class="alert">
+    <p class="alert-title" id="locked-title">Phần còn lại của bài cần Premium</p>
+    <p class="alert-desc">Bạn đang xem phần 1 và mục lục đầy đủ. Từ phần 2 trở đi, các bước luyện tập và trợ lý AI mở khi tài khoản có Premium đang hiệu lực.</p>
+  </div>
+  <a data-component="Button" data-props="intent=commit · href=/premium (ui.commerce.plans route) · size omitted (md)" href="/premium" class="btn commit">Xem các gói Premium</a>
+</section>
+<section class="region" aria-labelledby="toc-title">
+  <div data-component="SectionHeader" data-props="level=2 · meta" class="section-head"><h2 id="toc-title">Mục lục</h2><p class="meta">20 mục · phần 1 mở, các mục còn lại cần Premium</p></div>
+  <ol data-component="List" data-props="as=ol label=Mục lục" class="outline" aria-label="Mục lục"><li data-component="ListItem" data-outline-id="section-1" data-depth="2" style="--depth:0" class="open"><a data-component="TextAction" data-props="href=#section-1" href="#section-1">1. Lời mở đầu</a><span data-component="Badge" data-props="tone=neutral" class="badge">Đang xem</span></li>
+<li data-component="ListItem" data-outline-id="section-2" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">2. Các khái niệm cốt lõi</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.1. Thực hành</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.1. Chuẩn bị source code và môi trường</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.2. Kiến trúc / thành phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3. Giải thích code và bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.1. Verb ánh xạ thao tác — và <code data-component="Code">@HttpCode</code> chọn status code</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.2. <code data-component="Code">PUT</code> thay toàn bộ vs <code data-component="Code">PATCH</code> sửa một phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.3" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.3. Không tìm thấy → <code data-component="Code">NotFoundException</code> thành <code data-component="Code">404</code></span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4. Chuẩn bị &amp; khởi chạy</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.1. Điều kiện cần trước</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.2. Khởi động</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.5" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.5. Kiểm thử</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.6" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.6. Dọn tài nguyên</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.7" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.7. Đọc thêm</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.2. Lý thuyết</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.1. Bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.2. Các trường hợp biên (edge cases) cần lưu ý</span></li>
+<li data-component="ListItem" data-outline-id="section-3" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">3. Tổng kết</span></li>
+<li data-component="ListItem" data-outline-id="section-3.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">3.1. Các câu hỏi dễ bị phỏng vấn</span></li></ol>
+</section>
+<section class="region" aria-labelledby="steps-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="steps-title">5 bước học cùng AI</h2><p class="meta">Bước nào cũng chưa nhận câu trả lời khi chưa có Premium.</p></div>
+  <ol data-component="Stepper" data-props="label=5 bước học cùng AI · orientation=vertical · currentStepId=read-original · onStepSelect=none" class="stepper" aria-label="5 bước học cùng AI">
+<li data-step-id="read-original" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">1</span><span class="step-copy"><span class="step-label">Read the original article</span><span class="step-note">Đọc §1 miễn phí; phản hồi AI cần Premium</span></span></li>
+<li data-step-id="explain-concept" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">2</span><span class="step-copy"><span class="step-label">Explain the core concept</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="trace-code" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">3</span><span class="step-copy"><span class="step-label">Trace the working code</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="interview" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">4</span><span class="step-copy"><span class="step-label">Practice interview questions</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="challenge" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">5</span><span class="step-copy"><span class="step-label">Solve a challenge</span><span class="step-note">Cần Premium</span></span></li>
+</ol>
+</section>
+<section class="region" aria-labelledby="ask-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="ask-title">Hỏi trợ lý AI về bài học</h2></div>
+  <p data-component="Text" data-props="tone=muted">Trợ lý AI chỉ dành cho tài khoản Premium. Trang này không gửi câu hỏi nào và không gọi nhà cung cấp AI.</p>
+</section>
+    </main>
+  </div>
+</div></div>
+    </div>
+  </section>
+  <section class="state" id="state-loading" data-state="loading" aria-labelledby="t-loading">
+    <h2 class="state-title" id="t-loading">Loading <code>loading</code></h2>
+    <p class="state-note">The same tree in skeleton mode (STATE-8). Nothing beyond the preview projection is requested; no full article or protected file is fetched optimistically.</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <h1 data-component="Heading" data-props="level=1 isSkeleton"><span class="sk sk-h1"></span></h1>
+  <p data-component="Text" data-props="tone=muted isSkeleton"><span class="sk" style="width:40%"></span></p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=TypeScript · isSkeleton">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true"  class="seg on">&nbsp;&nbsp;&nbsp;&nbsp;</span><span role="radio" aria-checked="false"  class="seg">&nbsp;&nbsp;&nbsp;&nbsp;</span><span role="radio" aria-checked="false"  class="seg">&nbsp;&nbsp;&nbsp;&nbsp;</span><span role="radio" aria-checked="false"  class="seg">&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=vi · isSkeleton">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true" class="seg on">&nbsp;&nbsp;&nbsp;&nbsp;</span><span role="radio" aria-checked="false" class="seg">&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+  </div>
+</div>
+<article data-component="MarkdownArticle" data-props="isSkeleton" class="article"><span class="sk sk-h2"></span><span class="sk" style="width:96%"></span><span class="sk" style="width:88%"></span><span class="sk" style="width:92%"></span><span class="sk" style="width:70%"></span><span class="gap"></span><span class="sk" style="width:94%"></span><span class="sk" style="width:90%"></span><span class="sk" style="width:64%"></span></article>
+<section class="locked-band"><a data-component="Button" data-props="intent=commit · isSkeleton" class="btn commit sk-btn">&nbsp;</a></section>
+<section class="region" aria-labelledby="toc-title">
+  <div data-component="SectionHeader" data-props="level=2 · meta" class="section-head"><h2 id="toc-title">Mục lục</h2><p class="meta">20 mục · phần 1 mở, các mục còn lại cần Premium</p></div>
+  <ol data-component="List" data-props="as=ol label=Mục lục isSkeleton" class="outline"><li data-component="ListItem"><span class="sk" style="width:46%"></span></li><li data-component="ListItem"><span class="sk" style="width:62%"></span></li><li data-component="ListItem"><span class="sk" style="width:38%"></span></li><li data-component="ListItem"><span class="sk" style="width:70%"></span></li><li data-component="ListItem"><span class="sk" style="width:54%"></span></li></ol>
+</section>
+<section class="region" aria-labelledby="steps-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="steps-title">5 bước học cùng AI</h2><p class="meta">Bước nào cũng chưa nhận câu trả lời khi chưa có Premium.</p></div>
+  <ol data-component="Stepper" data-props="label=5 bước học cùng AI · orientation=vertical · currentStepId=read-original · onStepSelect=none · isLoading" class="stepper" aria-label="5 bước học cùng AI">
+<li data-step-id="read-original" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">1</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="explain-concept" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">2</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="trace-code" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">3</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="interview" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">4</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="challenge" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">5</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+</ol>
+</section>
+    </main>
+  </div>
+</div></div>
+      
+    </div>
+  </section>
+  <section class="state" id="state-entitlementError" data-state="entitlementError" aria-labelledby="t-entitlementError">
+    <h2 class="state-title" id="t-entitlementError">Entitlement lookup error <code>entitlementError</code></h2>
+    <p class="state-note">Lookup failure is not a denial: no Premium badge and no plans link (the denial is unconfirmed). The public §1 and outline stay; the negative Alert's own action retries the lookup and is the view's commit. Saved progress and drafts are kept.</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <div class="head-row">
+    <h1 data-component="Heading" data-props="level=1"><span class="slot" title="Bound to PublicLesson.title[vi]; the draw reference carries no value for it">PublicLesson.title[vi]</span></h1>
+    
+  </div>
+  <p data-component="Text" class="lede"><span class="slot" title="Bound to PublicLesson.description[vi]; the draw reference carries no value for it">PublicLesson.description[vi]</span></p>
+  <p data-component="Text" data-props="tone=muted" class="meta">20 phút đọc · Xác minh ngày 2026-06-02</p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=TypeScript">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true"  class="seg on">TypeScript</span><span role="radio" aria-checked="false"  class="seg">Java</span><span role="radio" aria-checked="false"  class="seg">C#</span><span role="radio" aria-checked="false"  class="seg">Go</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=vi">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true" class="seg on">Tiếng Việt</span><span role="radio" aria-checked="false" class="seg">English</span></div>
+  </div>
+</div>
+<article data-component="MarkdownArticle" data-props="ariaLabel=Phần 1 của bài · measure=reading" data-source="original/bodies/0-typescript/vi.md" data-section1-sha256="ab35db297f832a41be7f776e3c47b056abe88ce0c5c65be911e7b15de5231f93" class="article">
+<h2 id="section-1-err">1. Lời mở đầu</h2>
+<p><em>&quot;Cùng là <code data-component="Code">users</code>, vì sao tôi không thể chỉ làm <code data-component="Code">POST /createUser</code>, <code data-component="Code">POST /updateUser</code>, <code data-component="Code">POST /deleteUser</code> cho gọn?&quot;</em> — một <strong data-component="Text" data-props="weight=strong">Senior Engineer</strong> hỏi. <strong data-component="Text" data-props="weight=strong">Mid-level Developer</strong> đáp: <em>&quot;Miễn server hiểu là được, dùng <code data-component="Code">POST</code> hết cũng chạy mà.&quot;</em> Câu trả lời thiếu chiều sâu: dồn mọi thứ vào <code data-component="Code">POST</code> làm mất hợp đồng (contract) mà client và proxy dựa vào — không phân biệt được đọc với ghi để cache, không biết thao tác nào <strong data-component="Text" data-props="weight=strong">idempotent</strong> để retry an toàn, và status code trả về không nói lên kết quả (tạo mới hay không tìm thấy đều <code data-component="Code">200</code>).</p>
+<p>REST không phải quy ước tuỳ hứng: mỗi <strong data-component="Text" data-props="weight=strong">HTTP verb</strong> ánh xạ tới một <em>thao tác</em> trên resource, mỗi <strong data-component="Text" data-props="weight=strong">status code</strong> là một câu trả lời chuẩn cho client. Bài học triển khai một backend <code data-component="Code">users</code> bằng <strong data-component="Text" data-props="weight=strong">NestJS + TypeORM</strong> trên <strong data-component="Text" data-props="weight=strong">PostgreSQL</strong>, rồi gọi từng verb để <strong data-component="Text" data-props="weight=strong">quan sát</strong> đúng thứ contract này — status code và body:</p>
+<ul><li><strong data-component="Text" data-props="weight=strong">Phần 2.1</strong>: <strong data-component="Text" data-props="weight=strong">thực hành</strong> chạy demo và kiểm chứng 4 luồng (tạo, đọc/404, <code data-component="Code">PUT</code> thay-toàn-bộ vs <code data-component="Code">PATCH</code> sửa-một-phần, xoá 204).</li><li><strong data-component="Text" data-props="weight=strong">Phần 2.2</strong>: <strong data-component="Text" data-props="weight=strong">lý thuyết</strong> hệ thống hoá bản chất <em>verb → thao tác → status code → idempotency</em>, kèm các <strong data-component="Text" data-props="weight=strong">edge case</strong> điển hình.</li></ul>
+</article>
+<section class="locked-band">
+  <div data-component="Alert" data-props="tone=negative · appearance=surface · urgency=assertive · action={label: Thử lại, onAction: recheck entitlement}" class="alert negative" role="alert">
+    <p class="alert-title">Chưa kiểm tra được quyền truy cập</p>
+    <p class="alert-desc">Phần 1 và mục lục vẫn mở. Nội dung Premium và trợ lý AI tạm đóng cho đến khi kiểm tra xong; tiến độ đã lưu của bạn được giữ nguyên.</p>
+    <span data-component="Button" data-props="Alert action · onAction=retry entitlement lookup" class="btn commit" role="button" tabindex="0">Thử lại</span>
+  </div>
+</section>
+<section class="region" aria-labelledby="toc-title">
+  <div data-component="SectionHeader" data-props="level=2 · meta" class="section-head"><h2 id="toc-title">Mục lục</h2><p class="meta">20 mục · phần 1 mở, các mục còn lại cần Premium</p></div>
+  <ol data-component="List" data-props="as=ol label=Mục lục" class="outline" aria-label="Mục lục"><li data-component="ListItem" data-outline-id="section-1" data-depth="2" style="--depth:0" class="open"><a data-component="TextAction" data-props="href=#section-1" href="#section-1">1. Lời mở đầu</a><span data-component="Badge" data-props="tone=neutral" class="badge">Đang xem</span></li>
+<li data-component="ListItem" data-outline-id="section-2" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">2. Các khái niệm cốt lõi</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.1. Thực hành</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.1. Chuẩn bị source code và môi trường</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.2. Kiến trúc / thành phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3. Giải thích code và bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.1. Verb ánh xạ thao tác — và <code data-component="Code">@HttpCode</code> chọn status code</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.2. <code data-component="Code">PUT</code> thay toàn bộ vs <code data-component="Code">PATCH</code> sửa một phần</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.3.3" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.3.3. Không tìm thấy → <code data-component="Code">NotFoundException</code> thành <code data-component="Code">404</code></span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4. Chuẩn bị &amp; khởi chạy</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.1" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.1. Điều kiện cần trước</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.4.2" data-depth="5" style="--depth:3" class="locked"><span data-component="Text" data-props="tone=muted">2.1.4.2. Khởi động</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.5" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.5. Kiểm thử</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.6" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.6. Dọn tài nguyên</span></li>
+<li data-component="ListItem" data-outline-id="section-2.1.7" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.1.7. Đọc thêm</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">2.2. Lý thuyết</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.1" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.1. Bản chất</span></li>
+<li data-component="ListItem" data-outline-id="section-2.2.2" data-depth="4" style="--depth:2" class="locked"><span data-component="Text" data-props="tone=muted">2.2.2. Các trường hợp biên (edge cases) cần lưu ý</span></li>
+<li data-component="ListItem" data-outline-id="section-3" data-depth="2" style="--depth:0" class="locked"><span data-component="Text" data-props="tone=muted">3. Tổng kết</span></li>
+<li data-component="ListItem" data-outline-id="section-3.1" data-depth="3" style="--depth:1" class="locked"><span data-component="Text" data-props="tone=muted">3.1. Các câu hỏi dễ bị phỏng vấn</span></li></ol>
+</section>
+<section class="region" aria-labelledby="steps-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="steps-title">5 bước học cùng AI</h2><p class="meta">Bước nào cũng chưa nhận câu trả lời khi chưa có Premium.</p></div>
+  <ol data-component="Stepper" data-props="label=5 bước học cùng AI · orientation=vertical · currentStepId=read-original · onStepSelect=none" class="stepper" aria-label="5 bước học cùng AI">
+<li data-step-id="read-original" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">1</span><span class="step-copy"><span class="step-label">Read the original article</span><span class="step-note">Đọc §1 miễn phí; phản hồi AI cần Premium</span></span></li>
+<li data-step-id="explain-concept" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">2</span><span class="step-copy"><span class="step-label">Explain the core concept</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="trace-code" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">3</span><span class="step-copy"><span class="step-label">Trace the working code</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="interview" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">4</span><span class="step-copy"><span class="step-label">Practice interview questions</span><span class="step-note">Cần Premium</span></span></li>
+<li data-step-id="challenge" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">5</span><span class="step-copy"><span class="step-label">Solve a challenge</span><span class="step-note">Cần Premium</span></span></li>
+</ol>
+</section>
+<section class="region" aria-labelledby="ask-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="ask-title">Hỏi trợ lý AI về bài học</h2></div>
+  <p data-component="Text" data-props="tone=muted">Trợ lý AI chỉ dành cho tài khoản Premium. Trang này không gửi câu hỏi nào và không gọi nhà cung cấp AI.</p>
+</section>
+    </main>
+  </div>
+</div></div>
+      
+    </div>
+  </section>
+  <section class="state" id="state-variantMissing" data-state="variantMissing" aria-labelledby="t-variantMissing">
+    <h2 class="state-title" id="t-variantMissing">Variant missing <code>variantMissing</code></h2>
+    <p class="state-note">Only actual language × locale combinations are offered; an unavailable value is disabled, never filled by a translation. The article, outline and steps regions are absent (STATE-3) until an available pair is chosen. (Illustration: Java · English shown as absent; the fixture indexes all eight pairs.)</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <div class="head-row">
+    <h1 data-component="Heading" data-props="level=1"><span class="slot" title="Bound to PublicLesson.title[vi]; the draw reference carries no value for it">PublicLesson.title[vi]</span></h1>
+    <span data-component="Badge" data-props="tone=neutral" class="badge neutral">Cần Premium</span>
+  </div>
+  <p data-component="Text" class="lede"><span class="slot" title="Bound to PublicLesson.description[vi]; the draw reference carries no value for it">PublicLesson.description[vi]</span></p>
+  <p data-component="Text" data-props="tone=muted" class="meta">20 phút đọc · Xác minh ngày 2026-06-02</p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=Java">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="false"  class="seg">TypeScript</span><span role="radio" aria-checked="true"  class="seg on">Java</span><span role="radio" aria-checked="false"  class="seg">C#</span><span role="radio" aria-checked="false"  class="seg">Go</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=en">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="false" class="seg">Tiếng Việt</span><span role="radio" aria-checked="true" class="seg on">English</span></div>
+  </div>
+</div>
+<div data-component="EmptyNotice" data-props="message · description · no action" class="empty"><p class="alert-title">Chưa có bản Java bằng English</p><p class="alert-desc">Chọn một tổ hợp ngôn ngữ có sẵn ở trên. Bài không tự dịch từ biến thể khác.</p></div>
+    </main>
+  </div>
+</div></div>
+      
+    </div>
+  </section>
+  <section class="state" id="state-entitlementRestored" data-state="entitlementRestored" aria-labelledby="t-entitlementRestored">
+    <h2 class="state-title" id="t-entitlementRestored">Entitlement restored <code>entitlementRestored</code></h2>
+    <p class="state-note">On return from /premium the server rechecks access, then requests the public full projection; the resolved screen is ui.lessons.lesson, with preserved progress. While the recheck runs the page is the full lesson's tree in skeleton mode; sample answers and rubrics stay item-gated.</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<header class="page-head" data-gap="PageHeader">
+  <div class="head-row">
+    <h1 data-component="Heading" data-props="level=1"><span class="slot" title="Bound to PublicLesson.title[vi]; the draw reference carries no value for it">PublicLesson.title[vi]</span></h1>
+    
+  </div>
+  <p data-component="Text" class="lede"><span class="slot" title="Bound to PublicLesson.description[vi]; the draw reference carries no value for it">PublicLesson.description[vi]</span></p>
+  <p data-component="Text" data-props="tone=muted" class="meta">20 phút đọc · Xác minh ngày 2026-06-02</p>
+</header>
+<div class="variant-row" role="group" aria-label="Biến thể bài học">
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ lập trình · value=TypeScript">
+    <span class="field-label">Ngôn ngữ lập trình</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true"  class="seg on">TypeScript</span><span role="radio" aria-checked="false"  class="seg">Java</span><span role="radio" aria-checked="false"  class="seg">C#</span><span role="radio" aria-checked="false"  class="seg">Go</span></div>
+  </div>
+  <div class="field" data-component="SegmentedControl" data-props="label=Ngôn ngữ bài viết · value=vi">
+    <span class="field-label">Ngôn ngữ bài viết</span>
+    <div class="segmented" role="radiogroup"><span role="radio" aria-checked="true" class="seg on">Tiếng Việt</span><span role="radio" aria-checked="false" class="seg">English</span></div>
+  </div>
+</div>
+<article data-component="MarkdownArticle" data-props="isSkeleton" class="article"><span class="sk sk-h2"></span><span class="sk" style="width:96%"></span><span class="sk" style="width:88%"></span><span class="sk" style="width:92%"></span><span class="sk" style="width:70%"></span><span class="gap"></span><span class="sk" style="width:94%"></span><span class="sk" style="width:90%"></span><span class="sk" style="width:64%"></span></article>
+<section class="region" aria-labelledby="steps-title">
+  <div data-component="SectionHeader" data-props="level=2" class="section-head"><h2 id="steps-title">5 bước học cùng AI</h2><p class="meta">Bước nào cũng chưa nhận câu trả lời khi chưa có Premium.</p></div>
+  <ol data-component="Stepper" data-props="label=5 bước học cùng AI · orientation=vertical · currentStepId=read-original · onStepSelect=none · isLoading" class="stepper" aria-label="5 bước học cùng AI">
+<li data-step-id="read-original" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">1</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="explain-concept" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">2</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="trace-code" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">3</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="interview" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">4</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+<li data-step-id="challenge" data-props="state=upcoming isDisabled" aria-disabled="true"><span class="marker">5</span><span class="step-copy"><span class="sk" style="width:60%"></span></span></li>
+</ol>
+</section>
+    </main>
+  </div>
+</div></div>
+      
+    </div>
+  </section>
+  <section class="state" id="state-offlineOrNotFound" data-state="offlineOrNotFound" aria-labelledby="t-offlineOrNotFound">
+    <h2 class="state-title" id="t-offlineOrNotFound">Offline / not found <code>offlineOrNotFound</code></h2>
+    <p class="state-note">A failed route keeps the chrome and puts one negative Alert where the first region would be (STATE-8). Offline retries; not found has no retry and offers the way back to the lessons list. No invented preview stands in for missing source.</p>
+    <div class="frames">
+      <div style="flex:1 1 52rem;min-width:0;max-width:64rem"><p class="frame-cap">Wide</p><div class="frame desktop">
+  <div data-component="WorkspaceShell" data-props="viewport=flow · primaryLabel={app.shell.brand}" class="shell">
+    <div data-component="TopBar" class="topbar"><a data-component="TextAction" data-props="href=APP_ROUTES.home" href="#" class="wordmark"><span class="slot" title="Bound to app.shell.brand; the draw reference carries no value for it">app.shell.brand</span></a></div>
+    <main data-component="PageContainer" data-props="measure=reading" class="page" aria-label="{app.shell.brand}">
+<div data-component="Alert" data-props="tone=negative · appearance=surface · action={label: Thử lại, onAction: refetch}" class="alert negative" role="alert"><p class="alert-title">Không tải được bài học</p><p class="alert-desc">Kiểm tra kết nối rồi thử lại.</p><span data-component="Button" data-props="Alert action" class="btn commit" role="button" tabindex="0">Thử lại</span></div>
+<hr class="state-sep" aria-hidden="true"/>
+<div data-component="Alert" data-props="tone=negative · appearance=surface" class="alert negative" role="alert"><p class="alert-title">Không tìm thấy bài học này</p><p class="alert-desc">Bài có thể đã đổi địa chỉ hoặc không còn được xuất bản.</p></div>
+<p><a data-component="TextAction" data-props="href=/[locale]/lessons" href="#">Về danh sách bài học</a></p>
+    </main>
+  </div>
+</div></div>
+      
+    </div>
+  </section>
+</div>
+<script>
+document.querySelectorAll("[data-set-theme]").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var t = b.getAttribute("data-set-theme");
+    if (t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme");
+  });
+});
+</script>
+</body>
+</html>
