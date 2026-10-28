@@ -1,20 +1,54 @@
-﻿schema: work/sds-component@1
+schema: work/sds-component@1
 id: sds.commerce.payments
 title: Premium payments and entitlement
 state: todo
 activity: idle
-responsibility: Coordinate server-owned offers, pending purchases, provider checkout and verified payment events, idempotent entitlement updates, and learner entitlement reads.
+responsibility: Coordinate server-owned offers, pending purchases, provider
+  checkout and verified payment events, idempotent entitlement updates, and
+  learner entitlement reads. Use the learner last-used payment rail when
+  available, otherwise SePay by default (Q-W2-6); handle valid matching late
+  ORDER_PAID once with an audit event (Q-W2-3), and extend active renewals from
+  the existing end (Q-W2-5).
 interfaces:
-  - {name: createPurchase, direction: inbound, accepts: authenticated learner and plan, returns: purchase and checkout destination}
-  - {name: providerCallback, direction: inbound, accepts: provider payload, returns: acknowledged only after safe processing}
-  - {name: entitlementRead, direction: outbound, accepts: learner identity, returns: isPremium and premiumUntil}
-owners: [be]
-stateMachine: [select plan, create pending purchase, create checkout, verify provider event, record paid once, extend entitlement]
+  - name: createPurchase
+    direction: inbound
+    accepts: authenticated learner and plan
+    returns: purchase and checkout destination
+  - name: providerCallback
+    direction: inbound
+    accepts: provider payload
+    returns: acknowledged only after safe processing
+  - name: entitlementRead
+    direction: outbound
+    accepts: learner identity
+    returns: isPremium and premiumUntil
+owners:
+  - be
+stateMachine:
+  - select plan
+  - create pending purchase
+  - create checkout
+  - verify provider event
+  - record paid once
+  - extend entitlement
 sequence:
-  - Server reads the single commercial offer definition and snapshots amount and term.
-  - Server creates provider checkout and persists provider reference with unique (rail, providerRef).
-  - Provider callback is authenticated and validated against the pending purchase.
-  - One transaction records paid purchase and extends entitlement; duplicate event is a no-op.
+  - Server reads the single commercial offer definition and snapshots amount and
+    term.
+  - Server creates provider checkout and persists provider reference with unique
+    (rail, providerRef).
+  - Provider callback is authenticated and validated against the pending
+    purchase.
+  - One transaction records paid purchase and extends entitlement; duplicate
+    event is a no-op.
   - Other features consume entitlement through the shared contract.
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Describe logical payment component.'}
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped back-end component tests; live provider proof is separately blocked
+      by named sandbox prerequisites.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

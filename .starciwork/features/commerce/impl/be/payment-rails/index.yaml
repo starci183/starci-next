@@ -1,10 +1,29 @@
-﻿schema: work/implementation@1
+schema: work/implementation@1
 id: impl.commerce.be.payment-rails
 title: Back-end provider payment rails
 state: todo
 activity: idle
 repository: be
-owners: [{role: be, path: core}]
-proves: [contract.commerce.payment-rail, integration.commerce.sepay, integration.commerce.payos, fr.commerce.pay]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track provider rail implementation.'}
+owners:
+  - role: be
+    path: be/src/modules/integrations/payment-rail
+  - role: be
+    path: be/src/modules/integrations/sepay
+  - role: be
+    path: be/src/modules/integrations/payos
+proves:
+  - contract.commerce.payment-rail
+  - integration.commerce.sepay
+  - integration.commerce.payos
+  - fr.commerce.pay
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped module tests for implementation owners and proved records; leave
+      todo until code and proof are green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

@@ -1,17 +1,38 @@
-﻿schema: work/functional-requirement@1
+schema: work/functional-requirement@1
 id: fr.commerce.expire
 title: Expire Premium
 state: todo
 activity: idle
-actors: [system, learner]
+actors:
+  - system
+  - learner
 trigger: Current time reaches or passes premiumUntil.
 mainFlow:
-  - Treat entitlement as inactive when premiumUntil is not later than current UTC time.
-  - Allow other features to query isPremium and premiumUntil to make access decisions.
+  - Treat entitlement as inactive when premiumUntil is not later than current
+    UTC time.
+  - Allow other features to query isPremium and premiumUntil to make access
+    decisions.
   - Show expired status and available plans so the learner may renew.
 exceptionFlows:
-  - There is no grace period; a later renewal begins at its verified confirmation time.
-postconditions: [Expired learners are not PREMIUM until a verified purchase grants a future end.]
-composes: [data.commerce.entitlement, contract.commerce.entitlement, decision.commerce.subscription-policy, ui.commerce.checkout-result]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define entitlement expiry behavior.'}
+  - There is no grace period; a later renewal begins at its verified
+    confirmation time.
+  - At expiry, Premium falls back to preview immediately with no grace period.
+postconditions:
+  - Expired learners are not PREMIUM until a verified purchase grants a future
+    end.
+composes:
+  - data.commerce.entitlement
+  - contract.commerce.entitlement
+  - decision.commerce.subscription-policy
+  - ui.commerce.checkout-result
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped entitlement tests for expiry and preview fallback; remains todo
+      until green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

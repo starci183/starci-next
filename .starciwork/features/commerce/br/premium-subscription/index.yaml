@@ -1,12 +1,19 @@
-﻿schema: work/business-rule@1
+schema: work/business-rule@1
 id: br.commerce.premium-subscription
 title: Premium subscription offers
 state: todo
 activity: idle
 statements:
-  - The server offers Premium monthly for 229.000 ₫ and Premium yearly for 2.290.000 ₫, equal to ten monthly payments.
-  - Buying either plan grants the learner PREMIUM entitlement for its term after verified payment confirmation.
-  - A Premium purchase is an access subscription; it neither sells a course nor creates an enrollment.
+  - The server offers Premium monthly for 229.000 ? and Premium yearly for
+    2.290.000 ?; display formatting follows proposed Q-PRICE-DISPLAY.
+  - A verified matching provider confirmation grants the purchased Premium term
+    once, including ORDER_PAID after cancellation or expiry with an audit event
+    as proposed in Q-W2-3.
+  - An active renewal extends from the existing future entitlement end date as
+    proposed in Q-W2-5; expired Premium has no grace period.
+  - A Premium purchase sells no course and creates no enrollment.
+  - A real 229.000 VND charge is never run without owner approval (Q6); sandbox
+    walks are used otherwise.
 acceptance:
   - given: A learner chooses either published Premium offer.
     when: The matching payment is verified by provider IPN or webhook.
@@ -14,7 +21,22 @@ acceptance:
   - given: A learner buys Premium.
     when: The purchase completes.
     then: No course or enrollment is created.
-authorityRefs: [decision.commerce.commercial-offers, decision.commerce.subscription-policy]
-appliesTo: [fr.commerce.choose-plan, fr.commerce.pay, fr.commerce.renew, fr.commerce.expire]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record requested Premium subscription rule.'}
+authorityRefs:
+  - decision.commerce.commercial-offers
+  - decision.commerce.subscription-policy
+appliesTo:
+  - fr.commerce.choose-plan
+  - fr.commerce.pay
+  - fr.commerce.renew
+  - fr.commerce.expire
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped back-end tests for offer, verified grant and renewal policy;
+      remains todo pending green proof.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

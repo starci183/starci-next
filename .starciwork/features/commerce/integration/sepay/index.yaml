@@ -1,20 +1,53 @@
-﻿schema: work/integration@1
+schema: work/integration@1
 id: integration.commerce.sepay
 title: SePay Payment Gateway
 state: todo
 activity: idle
 provider: SePay Payment Gateway
-boundary: Server creates a signed checkout form and accepts SePay IPN; browser return is not confirmation.
+boundary: Server creates a signed checkout form and accepts SePay IPN; browser
+  return is not confirmation.
 endpoints:
-  - {purpose: create checkout, method: provider checkout form, details: Sign form fields using current SePay Payment Gateway signing specification; never expose signing secret to browser.}
-  - {purpose: payment notification, method: HTTPS POST IPN, details: Authenticate X-Secret-Key when configured; process ORDER_PAID and match order_invoice_number and order_amount to pending purchase; acknowledge successful receipt as provider requires.}
-credential: Merchant account, form signing secret and configured IPN X-Secret-Key are owner-provisioned secrets stored only in server secret configuration.
-sandbox: Use provider sandbox merchant/account if enabled; do not claim live verification without owner-provisioned account and public HTTPS callback.
+  - purpose: create checkout
+    method: provider checkout form
+    details: Sign form fields using current SePay Payment Gateway signing
+      specification; never expose signing secret to browser.
+  - purpose: payment notification
+    method: HTTPS POST IPN
+    details: Authenticate X-Secret-Key when configured; process ORDER_PAID and match
+      order_invoice_number and order_amount to pending purchase; acknowledge
+      successful receipt as provider requires.
+credential: Merchant account, form signing secret and configured IPN
+  X-Secret-Key are owner-provisioned secrets stored only in server secret
+  configuration.
+sandbox: Use provider sandbox merchant/account if enabled; do not claim live
+  verification without owner-provisioned account and public HTTPS callback.
 research:
-  readAt: '2026-10-28'
+  readAt: 2026-10-28
   sources:
-    - {title: SePay Payment Gateway IPN, url: 'https://developer.sepay.vn/en/cong-thanh-toan/IPN'}
-  findings: SePay documents an IPN POST to a publicly reachable HTTPS URL, X-Secret-Key when auth type SECRET_KEY is configured, notification_type values ORDER_PAID and TRANSACTION_VOID, and order fields order_invoice_number and order_amount. Live verification must create a sandbox or approved merchant order, receive its IPN, validate authentication/reference/amount/status, and confirm acknowledgement/retry behavior.
-  prerequisites: Owner provisions merchant account, enables/configures IPN authentication and signing credentials, and registers public HTTPS callback.
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record current official SePay Payment Gateway documentation and verification plan.'}
+    - title: SePay Payment Gateway IPN
+      url: https://developer.sepay.vn/en/cong-thanh-toan/IPN
+  findings: SePay documents an IPN POST to a publicly reachable HTTPS URL,
+    X-Secret-Key when auth type SECRET_KEY is configured, notification_type
+    values ORDER_PAID and TRANSACTION_VOID, and order fields
+    order_invoice_number and order_amount. Live verification must create a
+    sandbox or approved merchant order, receive its IPN, validate
+    authentication/reference/amount/status, and confirm acknowledgement/retry
+    behavior.
+  prerequisites: Owner provisions merchant account, enables/configures IPN
+    authentication and signing credentials, and registers public HTTPS callback.
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Run scoped provider adapter tests; provider live proof is not claimed and
+      is blocked on the named sandbox resources and credentials.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.
+blockers:
+  - Missing sepay sandbox merchant account/access
+  - Missing commerce-sandbox environment resource
+  - Missing public HTTPS callback endpoint
+  - Missing sepay provider credentials held in sealed custody

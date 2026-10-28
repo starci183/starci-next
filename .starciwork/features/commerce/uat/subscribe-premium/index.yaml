@@ -1,4 +1,4 @@
-﻿schema: work/uat-flow@1
+schema: work/uat-flow@1
 id: uat.commerce.subscribe-premium
 title: Subscribe to Premium
 state: todo
@@ -8,15 +8,121 @@ actor: learner
 accounts: accounts.yaml
 environment: _resources/environments/commerce-sandbox
 steps:
-  - {order: 1, actor: learner, action: Open Premium plans, expected: Monthly and yearly prices and terms are visible, checks: [{id: plans, expected: both offers visible}]}
-  - {order: 2, actor: learner, action: Select a plan and start checkout using the provider sandbox, expected: Redirect to provider hosted checkout for matching amount, checks: [{id: checkout, expected: provider checkout opened}]}
-  - {order: 3, actor: provider, action: Deliver valid sandbox IPN or webhook, expected: Purchase is confirmed and entitlement becomes active exactly once, checks: [{id: entitlement, expected: isPremium true and premiumUntil future}]}
-  - {order: 4, actor: learner, action: Return to result screen and refresh entitlement, expected: Server-confirmed Premium status is shown, checks: [{id: result, expected: confirmed status}]}
+  - order: 1
+    actor: learner
+    action: Open Premium plans and inspect offers/default rail
+    expected: Monthly 229.000 ? and yearly 2.290.000 ? are shown; last-used rail is
+      selected or SePay is default (Q-PRICE-DISPLAY, Q-W2-6).
+    checks:
+      - id: plans
+        expected: both offers and proposed rail default visible
+  - order: 2
+    actor: learner
+    action: Select monthly plan and complete sandbox checkout through SePay
+    expected: A SePay sandbox checkout is opened for exactly 229.000 VND.
+    checks:
+      - id: monthly_sepay
+        expected: SePay sandbox monthly checkout amount 229000 VND
+  - order: 3
+    actor: provider
+    action: Deliver a valid SePay ORDER_PAID confirmation, then replay the same
+      confirmation
+    expected: Matching confirmation grants once; replay does not extend again.
+    checks:
+      - id: sepay_replay
+        expected: one grant after replay
+  - order: 4
+    actor: learner
+    action: Select yearly plan and complete sandbox checkout through payOS
+    expected: A payOS sandbox checkout is opened for exactly 2290000 VND.
+    checks:
+      - id: yearly_payos
+        expected: payOS sandbox yearly checkout amount 2290000 VND
+  - order: 5
+    actor: learner
+    action: Return in browser before a verified callback
+    expected: Browser return alone grants nothing; result remains pending until
+      server confirmation.
+    checks:
+      - id: return_no_grant
+        expected: isPremium remains false before callback
+  - order: 6
+    actor: provider
+    action: Send forged callback and validly signed callback with wrong amount
+    expected: Both are denied and no entitlement is granted.
+    checks:
+      - id: invalid_denied
+        expected: forged callback and wrong amount denied
+  - order: 7
+    actor: learner
+    action: Renew while Premium is active using a verified sandbox confirmation
+    expected: The new term extends from the current premiumUntil, not confirmation
+      time (Q-W2-5).
+    checks:
+      - id: active_renewal
+        expected: new premiumUntil is term after existing end
+  - order: 8
+    actor: system
+    action: Advance beyond premiumUntil and request Premium feature access
+    expected: Premium expires immediately and learner falls back to preview with no
+      grace period.
+    checks:
+      - id: expiry_preview
+        expected: isPremium false and preview access only
+  - order: 9
+    actor: provider
+    action: Deliver matching ORDER_PAID for a cancelled or expired order
+    expected: Proposed handling grants once and records audit/reconciliation (Q-W2-3).
+    checks:
+      - id: late_paid_audit
+        expected: one grant and audit event
+  - order: 10
+    actor: owner
+    action: Do not perform a real 229.000 VND charge unless explicit owner approval
+      is present (Q6)
+    expected: No real charge is run; sandbox walk remains the proof path otherwise.
+    checks:
+      - id: real_charge_gate
+        expected: real charge skipped absent approval
 failurePaths:
-  - {id: forged_return, step: 3, expected: Browser return without verified callback does not grant Premium.}
-  - {id: duplicate_callback, step: 3, expected: Repeated provider callback does not duplicate entitlement extension.}
-recording: {required: true, covers: plan selection, checkout handoff, and server-confirmed result}
-effects: Creates one sandbox purchase and entitlement for disposable learner.
-cleanup: Remove sandbox purchase and restore learner entitlement after run.
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define subscription acceptance walk.'}
+  - id: forged_callback
+    step: 6
+    expected: Forged callback is denied and grants no Premium.
+  - id: wrong_amount
+    step: 6
+    expected: Wrong amount is denied and grants no Premium.
+  - id: browser_return
+    step: 5
+    expected: Browser return alone grants nothing.
+  - id: replayed_confirmation
+    step: 3
+    expected: Replayed confirmation grants exactly once.
+recording:
+  required: true
+  covers: plan selection
+  checkout handoff: null
+  and server-confirmed result: null
+effects: Creates disposable sandbox purchases only; never creates a real charge
+  without explicit owner approval. Cleanup removes sandbox purchases and
+  restores the disposable learner entitlement.
+cleanup: Remove sandbox purchases and restore disposable learner entitlement; do
+  not touch live accounts or make a live charge.
+requiresProof:
+  - required: true
+    command: node D:/.claude/cli/dist/main.js uat run --help
+    note: Pinned UAT runner availability only; execute the recorded sandbox walk
+      after named resources are provisioned. The help check is not UAT proof.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.
+blockers:
+  - Missing SePay sandbox account and merchant/IPN secrets in sealed custody
+    (Q-W2-2)
+  - Missing payOS sandbox account and credentials in sealed custody
+  - Missing commerce-sandbox environment resource
+  - Missing public HTTPS callback endpoint
+  - Real 229.000 VND charge requires explicit owner approval (Q6); do not run
+    without it

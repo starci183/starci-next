@@ -9,7 +9,10 @@ recommendation: Monthly 229.000 ₫ and yearly 2.290.000 ₫, with both amounts 
 recommendationReason: Prevent client price tampering and keep every checkout and display consistent.
 outcome: open
 chosen: null
-reason: Owner confirmation remains open under Q-W2-2; proposed default is approved display as 229.000 ₫ and 2.290.000 ₫.
-blocks: [server offer publication, checkout]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record one server source of truth and open pricing presentation question.'}
+reason: 'The approved fixed prices are 229.000 ₫ monthly and 2.290.000 ₫ yearly; they are not an unresolved pricing blocker. Q-PRICE-DISPLAY retains the proposed localized presentation, while Q6 gates only an explicitly approved real 229.000 VND charge; sandbox proof is the default.'
+blocks: []
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Run scoped back-end offer and price snapshot tests; state remains todo until green.
+change: {rev: 2, kind: revised, at: '2026-10-28', reason: 'Clarify approved offers and real-charge approval gate.'}

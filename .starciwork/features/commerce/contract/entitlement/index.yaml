@@ -1,15 +1,35 @@
-﻿schema: work/contract@1
+schema: work/contract@1
 id: contract.commerce.entitlement
 title: Premium entitlement contract
 state: todo
 activity: idle
 owner: be
-between: [commerce server, other features]
+between:
+  - commerce server
+  - other features
 surface:
-  - isPremium(learner) returns true only when premiumUntil is later than current UTC time.
-  - premiumUntil(learner) returns the stored UTC entitlement end or null when no entitlement exists.
-guarantees: [Other features can read current Premium status without coupling to payment providers, Expired entitlement is inactive with no grace period]
-consumerObligations: [Pass the authenticated learner identity, enforce the returned status at the feature boundary]
-refs: [data.commerce.entitlement]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify entitlement read surface for other features.'}
+  - isPremium(learner) returns true only when premiumUntil is later than current
+    UTC time.
+  - premiumUntil(learner) returns the stored UTC entitlement end or null when no
+    entitlement exists.
+guarantees:
+  - Other features can read current Premium status without coupling to payment
+    providers
+  - Expired entitlement is inactive with no grace period
+  - An active renewal extends from the current future entitlement end as
+    proposed in Q-W2-5.
+consumerObligations:
+  - Pass the authenticated learner identity
+  - enforce the returned status at the feature boundary
+refs:
+  - data.commerce.entitlement
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped entitlement contract tests; remains todo until green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

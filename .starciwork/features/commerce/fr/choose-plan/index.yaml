@@ -1,17 +1,39 @@
-﻿schema: work/functional-requirement@1
+schema: work/functional-requirement@1
 id: fr.commerce.choose-plan
 title: Choose a Premium plan
 state: todo
 activity: idle
-actors: [learner]
+actors:
+  - learner
 trigger: Learner opens the Premium plans screen.
 mainFlow:
-  - Show current server-defined monthly and yearly offers with price, term, and renewal terms.
+  - Show the server-defined monthly 229.000 ? and yearly 2.290.000 ? offers with
+    terms (Q-PRICE-DISPLAY).
+  - Select the learner last-used rail when available; otherwise propose SePay as
+    the default (Q-W2-6).
   - Learner selects an offer and starts a purchase for the authenticated learner.
 exceptionFlows:
-  - If offers cannot be loaded, explain that plans are temporarily unavailable and provide retry.
-  - If the learner is already Premium, show current expiry and that a new verified purchase extends from that end.
-postconditions: [A pending purchase is created for the selected offer and learner.]
-composes: [br.commerce.premium-subscription, decision.commerce.commercial-offers, ui.commerce.plans, contract.commerce.payment-rail]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define plan selection behavior.'}
+  - If offers cannot be loaded, explain that plans are temporarily unavailable
+    and provide retry.
+  - If the learner is already Premium, show current expiry and that a new
+    verified purchase extends from that end.
+  - SePay sandbox account access and merchant/IPN secrets in sealed custody are
+    prerequisites (Q-W2-2); no secret value is recorded here.
+postconditions:
+  - A pending purchase is created for the selected offer and learner.
+composes:
+  - br.commerce.premium-subscription
+  - decision.commerce.commercial-offers
+  - ui.commerce.plans
+  - contract.commerce.payment-rail
+requiresProof:
+  - required: true
+    command: npm --prefix fe test -- --runInBand
+    note: Scoped front-end tests for offer display and rail selection; remains todo
+      until green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

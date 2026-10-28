@@ -1,0 +1,15 @@
+schema: work/disposable-accounts@1
+id: accounts.commerce.subscribe-premium
+disposable: true
+accounts:
+  - role: learner
+    identity: _resources/identities/commerce-sandbox-learner
+  - role: provider-sepay
+    identity: _resources/identities/commerce-sepay-sandbox
+  - role: provider-payos
+    identity: _resources/identities/commerce-payos-sandbox
+blockers:
+  - Missing sealed sandbox learner identity resource
+  - Missing SePay sandbox merchant account and sealed merchant/IPN credential
+    identity
+  - Missing payOS sandbox account and sealed credential identity

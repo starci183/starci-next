@@ -4,12 +4,15 @@ title: Premium grant and renewal policy
 state: todo
 activity: idle
 question: When and how does a paid purchase grant or extend Premium?
-options: [Grant only on verified IPN or webhook; grant on browser return, Extend from end or now, Grace or no grace]
-recommendation: Grant only on authenticated provider IPN/webhook after reference, status, amount and currency match; apply each purchase once; extend from future premiumUntil or confirmation time when expired; no grace period.
+options: [Grant only on verified IPN or webhook, grant on browser return, extend from end or now, grace or no grace]
+recommendation: Grant only on authenticated provider IPN or webhook after reference, status, amount and currency match; apply each purchase once; extend from future premiumUntil or confirmation time when expired; no grace period.
 recommendationReason: Browser returns are not payment proof; idempotency prevents duplicate extensions and no-grace behavior is explicit.
 outcome: open
 chosen: null
-reason: The requested behavior is specified; owner confirmation for edge handling remains open as Q-W2-5 and calendar arithmetic Q6. Proposed defaults: reconcile a matching late confirmation to its purchased term; use UTC calendar arithmetic clamped to the target month's last day.
-blocks: [entitlement grants, renewals, expiry]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Record requested grant policy and open edge-case defaults.'}
+reason: 'The proposed grant policy is ready for implementation without implying an owner outcome. Accept verified matching confirmation once, including ORDER_PAID after cancellation or expiry with an audit event (Q-W2-3); extend an active renewal from its current end (Q-W2-5); use UTC calendar arithmetic clamped to month end (Q-CALENDAR-ARITHMETIC). Browser return alone never proves payment; expiry has no grace period.'
+blocks: []
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: 'Run scoped back-end tests for verified grant, replay idempotency, late ORDER_PAID audit, active renewal arithmetic and no-grace expiry; record remains todo until green.'
+change: {rev: 2, kind: revised, at: '2026-10-28', reason: 'Restore proposed policy defaults without recording an owner decision.'}

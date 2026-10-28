@@ -1,15 +1,42 @@
-﻿schema: work/contract@1
+schema: work/contract@1
 id: contract.commerce.payment-rail
 title: Payment rail surface
 state: todo
 activity: idle
 owner: be
-between: [commerce server, SePay, payOS]
+between:
+  - commerce server
+  - SePay
+  - payOS
 surface:
-  - Create checkout from a server-owned purchase and return provider checkout details.
-  - Verify provider confirmation using rail-specific authentication/signature, successful status, purchase reference, amount and currency.
+  - Create checkout from a server-owned purchase and return provider checkout
+    details.
+  - Verify provider confirmation using rail-specific authentication/signature,
+    successful status, purchase reference, amount and currency.
   - Idempotency identity is (rail, providerRef).
-guarantees: [Browser redirect never grants entitlement, Duplicate callbacks do not duplicate payment or grant, Invalid or mismatched callbacks do not grant]
-consumerObligations: [Use the returned checkout URL, treat return URL as display only, expose provider callback over public HTTPS, keep provider credentials in server secret configuration]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify provider-neutral payment rail contract.'}
+  - Default rail selection uses the learner last-used rail when available;
+    otherwise SePay is proposed (Q-W2-6).
+  - A valid matching ORDER_PAID after a cancelled or expired order is proposed
+    to grant once and emit an audit/reconciliation event (Q-W2-3).
+guarantees:
+  - Browser redirect never grants entitlement
+  - Duplicate callbacks do not duplicate payment or grant
+  - Invalid or mismatched callbacks do not grant
+consumerObligations:
+  - Use the returned checkout URL
+  - treat return URL as display only
+  - expose provider callback over public HTTPS
+  - keep provider credentials in server secret configuration
+  - SePay merchant sandbox access and merchant/IPN secrets must be available
+    through sealed custody before provider proof (Q-W2-2).
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped contract and provider callback tests; external live verification
+      remains todo and blocked on resources.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

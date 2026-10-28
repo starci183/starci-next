@@ -1,20 +1,47 @@
-﻿schema: work/functional-requirement@1
+schema: work/functional-requirement@1
 id: fr.commerce.pay
 title: Pay for Premium
 state: todo
 activity: idle
-actors: [learner]
+actors:
+  - learner
 trigger: Learner confirms a selected Premium offer.
 mainFlow:
-  - Create a pending purchase with a server-owned price snapshot and unique provider reference.
-  - Create provider checkout and redirect the learner to the returned checkout destination.
-  - Accept payment only after authenticating and verifying the provider IPN or webhook and matching it to the purchase.
+  - Create a pending purchase with a server-owned price snapshot and unique
+    provider reference.
+  - Create provider checkout and redirect the learner to the returned checkout
+    destination.
+  - Accept payment only after authenticating and verifying the provider IPN or
+    webhook and matching it to the purchase.
   - Process duplicate confirmations idempotently and grant entitlement once.
 exceptionFlows:
-  - Invalid authentication, signature, amount, currency, reference, or status does not grant entitlement.
-  - Provider checkout failure leaves purchase pending or failed and offers retry without duplicate entitlement.
+  - Invalid authentication, signature, amount, currency, reference, or status
+    does not grant entitlement.
+  - Provider checkout failure leaves purchase pending or failed and offers retry
+    without duplicate entitlement.
   - Return or cancel redirect alone never confirms payment.
-postconditions: [Verified matching payment is recorded once; entitlement follows subscription policy.]
-composes: [contract.commerce.payment-rail, data.commerce.purchase, integration.commerce.sepay, integration.commerce.payos, decision.commerce.subscription-policy]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Define secure payment behavior.'}
+  - ORDER_PAID received after cancellation or expiry is proposed to grant once
+    after valid matching verification and produce an audit/reconciliation event
+    (Q-W2-3).
+  - A real 229.000 VND charge is never made without owner approval (Q6); use
+    sandbox otherwise.
+postconditions:
+  - Verified matching payment is recorded once; entitlement follows subscription
+    policy.
+composes:
+  - contract.commerce.payment-rail
+  - data.commerce.purchase
+  - integration.commerce.sepay
+  - integration.commerce.payos
+  - decision.commerce.subscription-policy
+requiresProof:
+  - required: true
+    command: npm --prefix be test -- --runInBand
+    note: Scoped back-end payment tests for matching, forged/wrong-amount denial and
+      idempotent callbacks; remains todo until green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.

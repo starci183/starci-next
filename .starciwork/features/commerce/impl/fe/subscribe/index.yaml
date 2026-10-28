@@ -1,10 +1,28 @@
-﻿schema: work/implementation@1
+schema: work/implementation@1
 id: impl.commerce.fe.subscribe
 title: Front-end Premium subscription flow
 state: todo
 activity: idle
 repository: fe
-owners: [{role: fe, path: app}]
-proves: [ui.commerce.plans, ui.commerce.checkout-result, fr.commerce.choose-plan, fr.commerce.pay, fr.commerce.renew]
-requiresProof: []
-change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Track learner subscription screens and flow.'}
+owners:
+  - role: fe
+    path: fe/apps/app/src/features/pages/PlansPage
+  - role: fe
+    path: fe/apps/app/src/features/pages/CheckoutResultPage
+proves:
+  - ui.commerce.plans
+  - ui.commerce.checkout-result
+  - fr.commerce.choose-plan
+  - fr.commerce.pay
+  - fr.commerce.renew
+requiresProof:
+  - required: true
+    command: npm --prefix fe test -- --runInBand
+    note: Scoped module tests for implementation owners and proved records; leave
+      todo until code and proof are green.
+change:
+  rev: 2
+  kind: revised
+  at: 2026-10-28
+  reason: Restore approved Premium questions, proof obligations and repository
+    module owners.
