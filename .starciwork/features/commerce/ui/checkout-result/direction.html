@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premium checkout result direction</title>
+  <!--
+    Direction for ui.commerce.checkout-result (route /premium/result, surface class form, grammar core, brand rev 7).
+    Composed only of @starci/grammar core roles, each element stamped with the component it stands for
+    (data-component). Colours are the brand record's tokens (brand/index.yaml color.tokens and color.dark); the
+    status soft pairs follow color.policy.heroUiPairing; the surface shadow, radii, control heights, gaps and measure
+    are the grammar's own values.
+    The route page is one Page: its header slots (heading, description) are data of that Page, and everything else
+    is its children (page-header.choose.head:page, DNA-COMMON-PAGE-HEADER-ONE-H1, R325).
+    Every outcome on this page is the server's: the checkout status read (an authenticated GET of this order) is the
+    only authority. Returning from SePay or payOS, or the query string the provider appends, never settles a state;
+    until the read answers, the page shows its loading tree, and "Premium is active" appears only when the server
+    reports the order paid and the entitlement written.
+    The direction chrome above the shell (state and theme pickers) is review tooling, not product UI.
+    States live in <template> elements so the live document always holds one Page and one h1.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&display=swap&subset=vietnamese" rel="stylesheet">
+  <style>
+    /* Brand rev 7 light tokens (brand/index.yaml color.tokens). */
+    :root {
+      --accent: #7547ff;
+      --accent-foreground: oklch(100% 0 0);
+      --background: oklch(97.02% 0.0015 354.13);
+      --surface: oklch(100% 0.0008 354.13);
+      --surface-foreground: oklch(21.03% 0.0015 354.13);
+      --surface-secondary: oklch(95.24% 0.0012 354.13);
+      --surface-secondary-foreground: oklch(21.03% 0.0015 354.13);
+      --starci-surface-tertiary: oklch(93.73% 0.0012 354.13);
+      --foreground: oklch(21.03% 0.0015 354.13);
+      --muted: oklch(55.17% 0.003 354.13);
+      --focus: #7248ff;
+      --border: oklch(90% 0.0015 354.13);
+      --separator: oklch(92% 0.0015 354.13);
+      --success: oklch(73.29% 0.1941 162.85);
+      --warning: oklch(78.19% 0.159 84.37);
+      --danger: oklch(62% 0.2335 37.78);
+      --info: oklch(72% 0.17 250);
+      --starci-core-accent-text: #7547ff;
+      --starci-core-accent-soft: oklch(97.5% 0.015 287);
+      /* HeroUI soft pairs, light weights (brand color.policy.heroUiPairing): success 80/60, warning 80/70,
+         danger 70/40, info 60/40 foreground share; the soft ground is the tone at 15%. */
+      --success-soft: color-mix(in oklab, var(--success) 15%, transparent);
+      --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 60%);
+      --warning-soft: color-mix(in oklab, var(--warning) 15%, transparent);
+      --warning-soft-foreground: color-mix(in oklab, var(--warning) 80%, var(--foreground) 70%);
+      --danger-soft: color-mix(in oklab, var(--danger) 15%, transparent);
+      --danger-soft-foreground: color-mix(in oklab, var(--danger) 70%, var(--foreground) 40%);
+      --info-soft: color-mix(in oklab, var(--info) 15%, transparent);
+      --info-soft-foreground: color-mix(in oklab, var(--info) 60%, var(--foreground) 40%);
+      /* Grammar values (Common and core DNA), not brand colours. */
+      --surface-shadow: 0 2px 4px 0 #0000000a, 0 1px 2px 0 #0000000f, 0 0 1px 0 #0000000f;
+      --radius-control: 0.75rem;
+      --radius-surface: 1rem;
+      --radius-pill: 999px;
+      --control-md: 2.5rem;
+      --gap-inline: 0.5rem;
+      --gap-row: 0.75rem;
+      --gap-section: 1rem;
+      --gap-region: 1.5rem;
+      --page-inset: clamp(1rem, 3vw, 2rem);
+      --reading-measure: 72ch;
+      --motion-duration: 180ms;
+      --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+      color-scheme: light;
+    }
+    /* Brand rev 7 dark tokens (brand/index.yaml color.dark): system default, or the persisted toggle. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --accent: oklch(68% 0.17 287);
+        --accent-foreground: oklch(17% 0.02 287);
+        --background: oklch(15% 0.0015 354.13);
+        --surface: oklch(21.03% 0.003 354.13);
+        --surface-foreground: oklch(97.5% 0.0015 354.13);
+        --surface-secondary: oklch(25.7% 0.0023 354.13);
+        --surface-secondary-foreground: oklch(97.5% 0.0015 354.13);
+        --starci-surface-tertiary: oklch(29% 0.0023 354.13);
+        --foreground: oklch(97.5% 0.0015 354.13);
+        --muted: oklch(74% 0.003 354.13);
+        --focus: oklch(72% 0.16 287);
+        --border: oklch(36% 0.0015 354.13);
+        --separator: oklch(30% 0.0015 354.13);
+        --success: oklch(73.29% 0.1941 162.85);
+        --warning: oklch(82.03% 0.1392 88.38);
+        --danger: oklch(70% 0.17 36.67);
+        --info: oklch(72% 0.17 250);
+        --starci-core-accent-text: oklch(78% 0.12 287);
+        --starci-core-accent-soft: oklch(30% 0.07 287);
+        --success-soft: color-mix(in oklab, var(--success) 12%, transparent);
+        --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 30%);
+        --warning-soft: color-mix(in oklab, var(--warning) 12%, transparent);
+        --warning-soft-foreground: color-mix(in oklab, var(--warning) 80%, var(--foreground) 30%);
+        --danger-soft: color-mix(in oklab, var(--danger) 12%, transparent);
+        --danger-soft-foreground: color-mix(in oklab, var(--danger) 80%, var(--foreground) 30%);
+        --info-soft: color-mix(in oklab, var(--info) 12%, transparent);
+        --info-soft-foreground: color-mix(in oklab, var(--info) 80%, var(--foreground) 30%);
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --accent: oklch(68% 0.17 287);
+      --accent-foreground: oklch(17% 0.02 287);
+      --background: oklch(15% 0.0015 354.13);
+      --surface: oklch(21.03% 0.003 354.13);
+      --surface-foreground: oklch(97.5% 0.0015 354.13);
+      --surface-secondary: oklch(25.7% 0.0023 354.13);
+      --surface-secondary-foreground: oklch(97.5% 0.0015 354.13);
+      --starci-surface-tertiary: oklch(29% 0.0023 354.13);
+      --foreground: oklch(97.5% 0.0015 354.13);
+      --muted: oklch(74% 0.003 354.13);
+      --focus: oklch(72% 0.16 287);
+      --border: oklch(36% 0.0015 354.13);
+      --separator: oklch(30% 0.0015 354.13);
+      --success: oklch(73.29% 0.1941 162.85);
+      --warning: oklch(82.03% 0.1392 88.38);
+      --danger: oklch(70% 0.17 36.67);
+      --info: oklch(72% 0.17 250);
+      --starci-core-accent-text: oklch(78% 0.12 287);
+      --starci-core-accent-soft: oklch(30% 0.07 287);
+      --success-soft: color-mix(in oklab, var(--success) 12%, transparent);
+      --success-soft-foreground: color-mix(in oklab, var(--success) 80%, var(--foreground) 30%);
+      --warning-soft: color-mix(in oklab, var(--warning) 12%, transparent);
+      --warning-soft-foreground: color-mix(in oklab, var(--warning) 80%, var(--foreground) 30%);
+      --danger-soft: color-mix(in oklab, var(--danger) 12%, transparent);
+      --danger-soft-foreground: color-mix(in oklab, var(--danger) 80%, var(--foreground) 30%);
+      --info-soft: color-mix(in oklab, var(--info) 12%, transparent);
+      --info-soft-foreground: color-mix(in oklab, var(--info) 80%, var(--foreground) 30%);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: var(--starci-font-sans, "Be Vietnam Pro"), ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+    /* Direction chrome: review tooling outside the product frame. */
+    .direction-chrome {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-inline) var(--gap-section);
+      padding: var(--gap-inline) var(--page-inset);
+      background: var(--starci-surface-tertiary); color: var(--muted); font-size: 0.75rem; line-height: 1rem;
+    }
+    .direction-chrome fieldset { display: flex; flex-wrap: wrap; gap: 0.25rem; border: 0; margin: 0; padding: 0; align-items: center; }
+    .direction-chrome legend { float: left; margin-right: 0.25rem; font-weight: 600; }
+    .direction-chrome button {
+      font: inherit; color: var(--foreground); background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 0.25rem 0.625rem; cursor: pointer;
+    }
+    .direction-chrome button[aria-pressed="true"] { border-color: var(--accent); background: var(--starci-core-accent-soft); color: var(--starci-core-accent-text); }
+
+    /* Shell: SiteShell / WorkspaceShell viewport flow with its TopBar (shell/index.yaml). */
+    .shell { min-height: calc(100% - 2.25rem); display: flex; flex-direction: column; }
+    .topbar {
+      display: flex; align-items: center; min-height: 4rem; padding: 0 var(--page-inset);
+      background: var(--surface); border-bottom: 1px solid var(--separator);
+    }
+    .brand-lockup { display: inline-flex; align-items: center; gap: var(--gap-row); min-height: var(--control-md); color: var(--foreground); text-decoration: none; font-weight: 600; font-size: 1rem; line-height: 1.5rem; border-radius: var(--radius-control); }
+    .brand-lockup img { width: 40px; height: 40px; display: block; }
+    .shell-main { flex: 1; }
+
+    /* Page: the header band full width, then the body in the measure and gutter, a region step below. */
+    .page-header { background: var(--surface); border-bottom: 1px solid var(--separator); }
+    .page-container { width: 100%; max-width: calc(var(--reading-measure) + 2 * var(--page-inset)); margin: 0 auto; padding-inline: var(--page-inset); }
+    .page-header .page-container { padding-block: var(--gap-region); }
+    .page-header-copy { display: grid; gap: 0.25rem; min-width: 0; }
+    h1 { margin: 0; font-size: 1.5rem; line-height: 2rem; font-weight: 600; letter-spacing: -0.01em; }
+    .page-header-description { color: var(--muted); }
+    .page-body { padding-block: var(--gap-region) calc(var(--gap-region) * 2); display: grid; gap: var(--gap-region); overflow: clip; }
+
+    /* SurfaceCard, core: raised top-level surface, shadow without border, label outside the material. */
+    .card-block { display: grid; gap: var(--gap-inline); }
+    .card-label { margin: 0; padding-inline: 0.25rem; font-size: 1rem; line-height: 1.5rem; font-weight: 600; }
+    .surface-card { background: var(--surface); color: var(--surface-foreground); border-radius: var(--radius-surface); box-shadow: var(--surface-shadow); overflow: hidden; }
+    .band { padding: var(--gap-region); }
+    .band + .band { border-top: 1px solid var(--separator); }
+
+    /* Alert: the tone paints only the indicator and the title; soft inside a band, surface on the canvas.
+       A status as text or icon takes its soft pair (brand usage), so danger is never bare text on a surface. */
+    .alert { display: grid; grid-template-columns: 2rem minmax(0, 1fr); column-gap: var(--gap-row); align-items: start; border-radius: var(--radius-control); }
+    .alert[data-appearance="soft"] { padding: var(--gap-section); background: var(--surface-secondary); }
+    .alert[data-appearance="surface"] { padding: var(--gap-region); background: var(--surface); box-shadow: var(--surface-shadow); border-radius: var(--radius-surface); }
+    .alert-indicator { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--surface-secondary); color: var(--muted); }
+    .alert[data-appearance="soft"] .alert-indicator { background: var(--surface); }
+    .alert-indicator svg { width: 1.25rem; height: 1.25rem; }
+    .alert-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.25rem; min-width: 0; padding-top: 0.25rem; }
+    .alert[data-appearance="soft"] .skeleton { background: var(--surface); }
+    .alert-title { margin: 0; font-size: 1rem; line-height: 1.5rem; font-weight: 600; color: var(--foreground); }
+    .alert-description { margin: 0; color: var(--foreground); }
+    .alert-action { grid-column: 2; margin-top: var(--gap-row); display: flex; flex-wrap: wrap; gap: var(--gap-inline); }
+    .alert[data-tone="success"] .alert-indicator { background: var(--success-soft); color: var(--success-soft-foreground); }
+    .alert[data-tone="success"] .alert-title { color: var(--success-soft-foreground); }
+    .alert[data-tone="warning"] .alert-indicator { background: var(--warning-soft); color: var(--warning-soft-foreground); }
+    .alert[data-tone="warning"] .alert-title { color: var(--warning-soft-foreground); }
+    .alert[data-tone="danger"] .alert-indicator { background: var(--danger-soft); color: var(--danger-soft-foreground); }
+    .alert[data-tone="danger"] .alert-title { color: var(--danger-soft-foreground); }
+    .alert[data-tone="info"] .alert-indicator { background: var(--info-soft); color: var(--info-soft-foreground); }
+    .alert[data-tone="info"] .alert-title { color: var(--info-soft-foreground); }
+
+    /* StaticStateRow lines: the order's facts, label muted, value in the reading tone; one line each. */
+    .facts { margin: 0; display: grid; gap: var(--gap-row); }
+    .fact { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: var(--gap-section); row-gap: 0.125rem; }
+    .fact dt { color: var(--muted); }
+    .fact dd { margin: 0; font-weight: 500; text-align: end; font-variant-numeric: tabular-nums; }
+
+    /* Button: commit at the decision placement = accent fill, pill, md; dismiss = no fill, pill, md. */
+    .action-band { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--gap-inline); }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: var(--gap-inline); height: var(--control-md); padding: 0 1.25rem; border: 0; border-radius: var(--radius-pill); font: inherit; font-weight: 500; cursor: pointer; text-decoration: none; transition: transform var(--motion-duration) var(--motion-easing), background var(--motion-duration) var(--motion-easing); }
+    .button[data-intent="commit"] { background: var(--accent); color: var(--accent-foreground); }
+    .button[data-intent="dismiss"] { background: transparent; color: var(--foreground); }
+    .button[data-intent="dismiss"]:hover { background: var(--surface-secondary); }
+    .button:active { transform: scale(0.97); }
+    .button[aria-busy="true"] { cursor: progress; }
+    .spinner { width: 1rem; height: 1rem; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Skeleton: the resolved anatomy as inert geometry. */
+    .skeleton { display: block; border-radius: var(--radius-control); background: var(--surface-secondary); position: relative; overflow: hidden; }
+    .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--surface) 60%, transparent), transparent); animation: shimmer 1.4s var(--motion-easing) infinite; }
+    @keyframes shimmer { to { transform: translateX(100%); } }
+    .sk-line { height: 0.875rem; }
+    .sk-title { height: 1rem; }
+    .sk-dot { width: 2rem; height: 2rem; border-radius: 50%; }
+    .sk-pill { height: var(--control-md); border-radius: var(--radius-pill); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+    /* Phone width: the one commit fills its single-column band; a way out stacks above it (CTA-5). */
+    @media (max-width: 40rem) {
+      .band { padding: var(--gap-section); }
+      .action-band { flex-direction: column; align-items: stretch; }
+      .action-band .button { width: 100%; }
+      .alert[data-appearance="surface"] { padding: var(--gap-section); }
+    }
+  </style>
+</head>
+<body>
+  <div class="direction-chrome" data-direction-chrome="true">
+    <fieldset>
+      <legend>Server state</legend>
+      <button type="button" data-state="loading" aria-pressed="false">Reading status</button>
+      <button type="button" data-state="pending" aria-pressed="true">Pending</button>
+      <button type="button" data-state="checking" aria-pressed="false">Pending, checking</button>
+      <button type="button" data-state="paid" aria-pressed="false">Paid</button>
+      <button type="button" data-state="failed" aria-pressed="false">Failed</button>
+      <button type="button" data-state="cancelled" aria-pressed="false">Cancelled</button>
+      <button type="button" data-state="expired" aria-pressed="false">Expired</button>
+      <button type="button" data-state="unavailable" aria-pressed="false">Status unavailable</button>
+    </fieldset>
+    <fieldset>
+      <legend>Theme</legend>
+      <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    </fieldset>
+  </div>
+
+  <div class="shell" data-component="SiteShell" data-viewport="flow">
+    <header class="topbar" data-component="TopBar">
+      <a class="brand-lockup" href="/" data-component="TextAction">
+        <img src="../../../../brand/assets/starci-logo.png" alt="" width="40" height="40">
+        <span>StarCi Next</span>
+      </a>
+    </header>
+    <main class="shell-main" id="page-root"></main>
+  </div>
+
+  <!-- ===== Shared pieces (cloned into each state) ===== -->
+
+  <!-- Page header, as the Page's `header` data: the heading and one explanation line. The outcome is not a header
+       status chip: it has one carrier, the Alert in the order card, so the header stays the same in every state. -->
+  <template id="page-header">
+    <header class="page-header" data-component="PageHeader" data-owner="Page.header">
+      <div class="page-container"><div class="page-header-copy">
+        <h1 data-component="Heading" data-level="1">Payment status</h1>
+        <div class="page-header-description" data-slot-name="description">We confirm every payment with the provider before Premium starts.</div>
+      </div></div>
+    </header>
+  </template>
+
+  <!-- The order's facts (StaticStateRow lines), the same in every resolved state; the plan name and price are the
+       fixed product facts and stay Vietnamese. -->
+  <template id="order-facts">
+    <dl class="facts" data-component="StaticStateRow" data-list="static">
+      <div class="fact"><dt data-component="Text">Plan</dt><dd data-component="Text">Premium hằng tháng</dd></div>
+      <div class="fact"><dt data-component="Text">Amount</dt><dd data-component="Text">229.000 ₫</dd></div>
+      <div class="fact"><dt data-component="Text">Pay with</dt><dd data-component="Text">SePay</dd></div>
+      <div class="fact"><dt data-component="Text">Order</dt><dd data-component="Text">PRM-48217</dd></div>
+    </dl>
+  </template>
+
+  <!-- ===== States: each is the whole Page; only one is mounted at a time. ===== -->
+
+  <!-- Reading status: the server has not answered yet (STATE-8). The same tree with the data missing: the header
+       and the card label stay real, the outcome and the facts are inert geometry, no action is offered, and nothing
+       claims success. The return from the provider alone never skips this state. -->
+  <template id="state-loading">
+    <div class="page" data-component="Page" data-measure="reading" aria-busy="true">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined" data-skeleton="true" inert>
+            <div class="band">
+              <div class="alert" data-component="Alert" data-appearance="soft" data-skeleton="true">
+                <span class="skeleton sk-dot"></span>
+                <div class="alert-copy"><span class="skeleton sk-title" style="width: 12rem; max-width: 100%"></span><span class="skeleton sk-line" style="width: 22rem; max-width: 100%"></span></div>
+              </div>
+            </div>
+            <div class="band">
+              <dl class="facts" data-component="StaticStateRow" data-skeleton="true">
+                <div class="fact"><dt data-component="Text">Plan</dt><dd><span class="skeleton sk-line" style="width: 9rem"></span></dd></div>
+                <div class="fact"><dt data-component="Text">Amount</dt><dd><span class="skeleton sk-line" style="width: 5rem"></span></dd></div>
+                <div class="fact"><dt data-component="Text">Pay with</dt><dd><span class="skeleton sk-line" style="width: 4rem"></span></dd></div>
+                <div class="fact"><dt data-component="Text">Order</dt><dd><span class="skeleton sk-line" style="width: 6rem"></span></dd></div>
+              </dl>
+            </div>
+            <div class="band action-band"><span class="skeleton sk-pill" style="width: 9rem"></span></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Pending: the server reports the order created and not yet paid. Informative tone; Premium is not shown as
+       active. The commit re-reads the status (a safe GET); the page also re-reads on its own while pending.
+       "Back to plans" is the way out, first in the group (CTA-5). -->
+  <template id="state-pending">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="info" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">We're confirming your payment</p>
+                  <p class="alert-description" data-component="Text">Premium starts once SePay confirms the payment to us. Coming back from the payment page doesn't activate it on its own. This usually takes a minute.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/premium" data-component="Button" data-intent="dismiss">Back to plans</a>
+              <button class="button" type="button" data-component="Button" data-intent="commit">Check status</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Pending, checking: the reader pressed Check status; only that initiator is pending (CTA-3): label and box
+       unchanged, busy exposed, a second press refused. The outcome stays the last one the server reported. -->
+  <template id="state-checking">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="info" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">We're confirming your payment</p>
+                  <p class="alert-description" data-component="Text">Premium starts once SePay confirms the payment to us. Coming back from the payment page doesn't activate it on its own. This usually takes a minute.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/premium" data-component="Button" data-intent="dismiss">Back to plans</a>
+              <button class="button" type="button" data-component="Button" data-intent="commit" aria-busy="true" aria-disabled="true" data-pending="true"><svg class="spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-opacity="0.3" stroke-width="2.5"/><path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>Check status</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Paid: the server reports the order paid and the entitlement written. Only now does the page say Premium is
+       active, with the entitlement's end date from the server (FEEDBACK-3). The commit is a destination: home. -->
+  <template id="state-paid">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="success" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">Premium is active</p>
+                  <p class="alert-description" data-component="Text">Payment received on 28 Oct 2026. You have Premium until 27 Nov 2026. It doesn't renew automatically.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/" data-component="Button" data-intent="commit">Start learning</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Failed: the provider reported the payment failed. Danger tone through the soft pair. Paying again is a new,
+       distinct checkout from the plans page, never a repeat of this one (FEEDBACK-2), so the commit is a destination. -->
+  <template id="state-failed">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="danger" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">Payment didn't go through</p>
+                  <p class="alert-description" data-component="Text">SePay reported this payment as failed, so Premium wasn't activated. You can start a new checkout from the plans page.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/premium" data-component="Button" data-intent="commit">Try again</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Cancelled: the reader cancelled at the provider and the server recorded it. A settled, expected outcome with
+       no fault: the neutral tone, no status hue (ACCENT-5). -->
+  <template id="state-cancelled">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="default" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">Checkout cancelled</p>
+                  <p class="alert-description" data-component="Text">You cancelled this payment at SePay, so Premium wasn't activated.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/premium" data-component="Button" data-intent="commit">Back to plans</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Expired: the checkout's payment window closed before the provider confirmed a payment. Warning tone. -->
+  <template id="state-expired">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <section class="card-block" aria-labelledby="order-title">
+          <h2 class="card-label" id="order-title" data-component="Heading">Your order</h2>
+          <div class="surface-card" data-component="SurfaceCard" data-layout="joined">
+            <div class="band">
+              <div class="alert" role="status" aria-live="polite" data-component="Alert" data-tone="warning" data-appearance="soft">
+                <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg></span>
+                <div class="alert-copy">
+                  <p class="alert-title" data-component="Text">This checkout expired</p>
+                  <p class="alert-description" data-component="Text">We didn't receive a payment before the checkout closed, so Premium wasn't activated. Start a new checkout to continue.</p>
+                </div>
+              </div>
+            </div>
+            <div class="band"><div data-slot="facts"></div></div>
+            <div class="band action-band">
+              <a class="button" href="/premium" data-component="Button" data-intent="commit">Choose a plan</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </template>
+
+  <!-- Status unavailable: the status read itself failed (network or server). The route keeps its chrome and puts
+       one negative Alert where the first region would be (toast-alert.choose.owner:route); its one action re-runs
+       the same safe read. No outcome is guessed: the order may still be pending or paid. -->
+  <template id="state-unavailable">
+    <div class="page" data-component="Page" data-measure="reading">
+      <div data-slot="header"></div>
+      <div class="page-container page-body">
+        <div class="alert" role="alert" data-component="Alert" data-tone="danger" data-appearance="surface">
+          <span class="alert-indicator" aria-hidden="true"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"/></svg></span>
+          <div class="alert-copy">
+            <p class="alert-title" data-component="Text">We couldn't load your payment status</p>
+            <p class="alert-description" data-component="Text">Something went wrong while we read it. Try again in a moment; if you paid, Premium starts as soon as the payment is confirmed.</p>
+          </div>
+          <div class="alert-action">
+            <button class="button" type="button" data-component="Button" data-intent="commit">Try again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    (function () {
+      var root = document.getElementById("page-root");
+      var header = document.getElementById("page-header");
+      var facts = document.getElementById("order-facts");
+      function mount(state) {
+        var tpl = document.getElementById("state-" + state) || document.getElementById("state-pending");
+        root.replaceChildren(tpl.content.cloneNode(true));
+        root.querySelectorAll('[data-slot="header"]').forEach(function (slot) { slot.replaceWith(header.content.cloneNode(true)); });
+        root.querySelectorAll('[data-slot="facts"]').forEach(function (slot) { slot.replaceWith(facts.content.cloneNode(true)); });
+        document.querySelectorAll("[data-state]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.state === state)); });
+        try { history.replaceState(null, "", "#" + state); } catch (e) {}
+      }
+      function theme(choice) {
+        if (choice === "system") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", choice);
+        document.querySelectorAll("[data-theme-choice]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.themeChoice === choice)); });
+        try { localStorage.setItem("checkout-result-direction-theme", choice); } catch (e) {}
+      }
+      document.querySelectorAll("[data-state]").forEach(function (b) { b.addEventListener("click", function () { mount(b.dataset.state); }); });
+      document.querySelectorAll("[data-theme-choice]").forEach(function (b) { b.addEventListener("click", function () { theme(b.dataset.themeChoice); }); });
+      var saved = "system";
+      try { saved = localStorage.getItem("checkout-result-direction-theme") || "system"; } catch (e) {}
+      theme(saved);
+      mount((location.hash || "#pending").slice(1));
+    })();
+  </script>
+</body>
+</html>
