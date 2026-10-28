@@ -101,6 +101,7 @@ ui:
     adding shell chrome.
   - Ask/reveal, saved/streaming/error/resume, step locking and denied-entitlement preview follow the same server
     contract.
+direction: .starciwork/features/lessons/ui/lesson/direction.html
 assets: []
 refs:
 - br.lessons.interactive-ai-lesson

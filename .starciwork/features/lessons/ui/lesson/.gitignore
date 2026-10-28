@@ -1,0 +1,3 @@
+# Local drawing build and isolated browser-check state are not deliverables.
+.browser-profile/
+.direction-build/
