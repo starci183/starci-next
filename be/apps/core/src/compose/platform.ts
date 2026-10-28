@@ -8,6 +8,7 @@ import { DATABASE_ERROR_KINDS, DatabaseModule } from "@modules/platform/database
 import { ERRORS_MESSAGES, ErrorsModule } from "@modules/platform/errors"
 import { HTTP_SECURITY_ERROR_KINDS, HTTP_SECURITY_MESSAGES, HttpSecurityModule } from "@modules/platform/http-security"
 import { I18nModule } from "@modules/platform/i18n"
+import { HTTP_ERROR_KINDS, HTTP_MESSAGES, HttpModule } from "@modules/platform/http"
 import { LoggingModule } from "@modules/platform/logging"
 import { RetryModule } from "@modules/platform/retry"
 import type { CoreOptions } from "../core.options"
@@ -21,13 +22,15 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     ClockModule.register({ isGlobal: true }),
     RetryModule.register({ isGlobal: true }),
     LoggingModule.register({ isGlobal: true }),
+    HttpModule.register({ isGlobal: true }),
     I18nModule.register({
         isGlobal: true,
-        bundles: [ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES],
+        bundles: [HTTP_MESSAGES, ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES],
     }),
     ErrorsModule.register({
         isGlobal: true,
         kinds: [
+            HTTP_ERROR_KINDS,
             CONFIG_ERROR_KINDS,
             DATABASE_ERROR_KINDS,
             HTTP_SECURITY_ERROR_KINDS,
