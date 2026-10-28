@@ -31,10 +31,9 @@
     "@graphql-codegen/cli": "7.4.6",
     "@graphql-codegen/client-preset": "6.2.3",
     "@nestjs/testing": "11.2.5",
-    "@starci/eslint-canon-be": "3.6.0",
-    "@starci/eslint-canon-fe": "9.4.0",
-    "@starci/eslint-grammar-core": "0.15.0",
-    "@starci/hfs": "4.9.1",
+    "@starci/eslint-canon-be": "3.6.2",
+    "@starci/eslint-canon-fe": "9.4.2",
+    "@starci/eslint-grammar-core": "0.15.2",
     "@starci/jest-preset": "2.4.1",
     "@starci/prettier-config": "1.1.0",
     "@starci/stylelint-canon": "2.2.1",
@@ -52,7 +51,7 @@
     "jest": "29.7.0",
     "postcss-value-parser": "4.2.0",
     "prettier": "3.9.6",
-    "starci-harness": "1.1.0-alpha.1",
+    "starci-harness": "1.1.0-alpha.3",
     "stylelint": "17.15.0",
     "tailwindcss": "4.3.3",
     "ts-jest": "29.4.12",
@@ -69,8 +68,7 @@
     "@xyflow/react": "12.11.6",
     "dayjs": "1.11.21",
     "zod": "4.6.7",
-    "zustand": "5.0.12",
-    "@starci/hfs": "4.9.1"
+    "zustand": "5.0.12"
   },
   "scripts": {
     "prepare": "husky",

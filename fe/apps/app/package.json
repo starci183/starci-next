@@ -18,7 +18,7 @@
     "@reduxjs/toolkit": "2.11.2",
     "@starci-next/i18n": "*",
     "@starci-next/ui": "*",
-    "@starci/grammar": "0.15.0",
+    "@starci/grammar": "0.15.2",
     "@starci/heroicons": "0.3.4",
     "@xyflow/react": "12.11.6",
     "axios": "1.20.0",
