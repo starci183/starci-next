@@ -9,6 +9,7 @@ import type { WorldWiring } from "@starci/test-world"
 import { ClockModule } from "@modules/platform/clock"
 import { EnvSource } from "@modules/platform/config"
 import type { AiPoolOptions } from "@modules/integrations/ai-pool"
+import { lessonContentEntities } from "@modules/domain/lesson-content"
 import { DatabaseModule, MigrationRunnerService } from "@modules/platform/database"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
 import type { HttpSecurityOptions } from "@modules/platform/http-security"
@@ -64,7 +65,7 @@ export const platformBase = (w: AppWiring): ReadonlyArray<DynamicModule> => [
     LoggingModule.register({ isGlobal: true }),
     DatabaseModule.register({
         isGlobal: true,
-        connections: [{ ...cliOptionsOf(w).database, entities: [], migrations: [] }],
+        connections: [{ ...cliOptionsOf(w).database, entities: [...lessonContentEntities], migrations: [] }],
     }),
 ]
 

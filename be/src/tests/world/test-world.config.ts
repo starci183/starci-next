@@ -6,6 +6,7 @@
  * the environment or holds a value.
  */
 import { defineTestWorld } from "@starci/test-world"
+import { AppModule as CliApp } from "../../../apps/cli/src/app.module"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
 import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
 
@@ -16,6 +17,7 @@ export const { useTestWorld, useSandbox } = defineTestWorld({
     },
     apps: {
         core: { module: CoreApp, options: coreOptionsOf },
+        cli: { module: CliApp, options: cliOptionsOf, listen: false },
     },
     migrate: { module: migrateCli, options: cliOptionsOf },
     modules: { base: platformBase },
