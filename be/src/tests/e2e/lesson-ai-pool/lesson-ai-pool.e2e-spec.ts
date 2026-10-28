@@ -1,5 +1,5 @@
-import { appliedMigrations, PRIMARY_APPLIED_MIGRATIONS } from "../../../fixtures/persistence/migrations.sql"
-import { useTestWorld } from "../../../world/use-test-world"
+import { appliedMigrations, PRIMARY_APPLIED_MIGRATIONS } from "../../fixtures/persistence/migrations.sql"
+import { useTestWorld } from "../../world/use-test-world"
 
 /**
  * lesson-ai-pool: the real core app booted with the shared lesson pool composed from named key custody. The pool is

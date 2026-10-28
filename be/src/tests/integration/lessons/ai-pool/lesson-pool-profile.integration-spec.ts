@@ -55,7 +55,6 @@ describe("lesson AI pool: fallback only as the profile allows (integration)", ()
         modules: [
             () =>
                 AiPoolModule.register({
-                    isGlobal: true,
                     pool: { ...pool, fetch: fake.fetch, random: () => 0.5 },
                     limits: { maxOutputTokens: 1024, reservedPromptTokens: 2048 },
                 }),
