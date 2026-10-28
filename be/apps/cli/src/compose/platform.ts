@@ -4,6 +4,7 @@ import { entitlementEntities, entitlementMigrations } from "@modules/domain/enti
 import { ClockModule } from "@modules/platform/clock"
 import { DatabaseModule } from "@modules/platform/database"
 import type { DatabaseConnectionConfig, DatabaseConnectionOptions } from "@modules/platform/database"
+import { HttpModule } from "@modules/platform/http"
 import { LoggingModule } from "@modules/platform/logging"
 import type { CliAppOptions } from "../cli.options"
 
@@ -18,6 +19,7 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
 export const platformModules = (options: CliAppOptions): Array<DynamicModule> => [
     ClockModule.register({ isGlobal: true }),
     LoggingModule.register({ isGlobal: true }),
+    HttpModule.register({ isGlobal: true }),
     DatabaseModule.register({
         isGlobal: true,
         connections: [primaryConnectionOf(options.database)],
