@@ -1,36 +1,44 @@
-﻿schema: work/sds-component@1
+schema: work/sds-component@1
 id: sds.identity.session
-title: Learner session component
+title: Identity session component
 state: todo
 activity: idle
-responsibility: Establish, expose, restore, and end the authenticated learner session after validating identity provider results and learner role.
+responsibility: Verify provider identity and manage opaque application sessions in identity-owned durable PostgreSQL state.
 interfaces:
-  - name: sign-in
+  - name: sign-in-transaction
     direction: input
-    description: Starts an OIDC authorization code request with PKCE and handles its callback.
-  - name: session
+    description: Creates and atomically consumes one-use browser-bound OIDC authorization transactions with expiring state, nonce and PKCE S256 verifier.
+  - name: current-session
     direction: output
-    description: Exposes authenticated learner identity and signed-in status to application features.
+    description: Reads current durable session expiry and revocation and returns verified issuer, subject, provider-asserted roles and expiry.
   - name: sign-out
     direction: input
-    description: Ends local session and initiates provider logout.
+    description: Revokes durable local session before RP-Initiated Logout and clears the application session cookie.
 owners: []
 stateMachine:
-  states: [signed-out, redirecting, callback-validation, signed-in, failed]
+  states: [signed-out, transaction-issued, callback-claimed, signed-in, expired, revoked]
   transitions:
-    - signed-out -> redirecting: learner starts sign-in
-    - redirecting -> callback-validation: provider returns authorization response
-    - callback-validation -> signed-in: response and learner role validate
-    - callback-validation -> failed: response invalid, exchange fails, or learner role absent
-    - signed-in -> signed-out: learner signs out
+    - signed-out -> transaction-issued: same-origin start creates unique unconsumed transaction and browser binding.
+    - transaction-issued -> callback-claimed: callback atomically claims matching, unexpired state and browser binding once.
+    - transaction-issued -> signed-out: transaction expires, is cancelled, or binding/state mismatches; no session is created.
+    - callback-claimed -> signed-in: one successful code exchange and verified identity are persisted durably before cookie issuance.
+    - callback-claimed -> signed-out: exchange, validation, or persistence fails; transaction stays consumed and no cookie is issued.
+    - signed-in -> expired: provider identity-token expiry or configured local maximum is reached, whichever comes first.
+    - signed-in -> revoked: sign-out atomically marks current session revoked before provider redirect.
+    - expired -> signed-out: current-session read refuses the expired session and clears the cookie.
+    - revoked -> signed-out: reads refuse the session, including copied references, and clear the cookie.
 sequence:
-  - Start authorization with a fresh PKCE verifier and state.
-  - Validate callback state and exchange the code through the configured OIDC client.
-  - Validate issuer, audience, signature, expiry, and learner role before establishing session.
-  - Restore the session on reload and clear local session on sign-out.
+  - POST /api/identity/session/start validates same-origin Origin and CSRF policy; issue state, nonce and PKCE S256 verifier with a 300 second transaction expiry, set a separate Secure HttpOnly SameSite=Lax transaction-binding cookie, and redirect to configured authorization endpoint.
+  - GET /api/identity/session/callback validates the transaction cookie, state, issuer and provider error response, then atomically claims state before one code exchange with a 10 second outbound timeout; validate signature, issuer, audience, nonce and expiry using provider metadata/JWKS.
+  - Persist identity and provider role assertions in identity-owned PostgreSQL state. Persist only a digest of a cryptographically random application session reference; session expiry is the earlier of verified identity-token expiry and configured 8 hour maximum. No automatic refresh; expiry requires new sign-in.
+  - Issue raw application session reference only as Secure, HttpOnly, SameSite=Lax, Path=/ cookie with Max-Age capped by actual session expiry. Use a distinct Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie; clear it on every callback outcome.
+  - Every protected request reads durable revocation and expiry state; absent, unknown, expired or revoked references are refused. Concurrent transaction claims are serialized/conditional so exactly one succeeds; persistence uncertainty fails closed.
+  - POST /api/identity/session/sign-out checks OriginGuard and CSRF, atomically revokes before provider navigation, clears the app cookie even when provider logout fails, and redirects only to the configured Keycloak logout endpoint using the registered /sign-in post-logout URI. Expired/revoked sign-out is idempotent.
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify session lifecycle and callback validation.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Describe the logical learner session component.}
-extensions: {}
+    command: npm run test -- --runInBand
+    note: Exercise transaction claim races, browser binding, expiry, durable lookup, revocation, cookie attributes and logout failure.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify provisional durable opaque session lifecycle and concurrency behavior.}
+extensions:
+  provisional: Kernel provisional architecture for the authorized sign-in slice; state remains todo until behavioral proof passes.
+  providerTokenHandling: Any ID token needed for RP-Initiated Logout is retained only in protected server-side identity state and never returned to frontend state or logged; no access or refresh token is exposed or refreshed in this slice.

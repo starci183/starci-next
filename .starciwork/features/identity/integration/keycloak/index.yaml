@@ -1,40 +1,44 @@
-﻿schema: work/integration@1
+schema: work/integration@1
 id: integration.identity.keycloak
 title: Keycloak identity provider
 state: todo
 activity: idle
 provider: Keycloak
-boundary: The application delegates authentication to the configured Keycloak OIDC realm, validates the returned identity, and establishes a local application session for an authenticated identity without requiring an operator role.
+boundary: The application delegates authentication to the configured Keycloak OIDC realm, validates provider-signed identity, and establishes a local session for a verified identity without requiring an operator role.
 endpoints:
-  authorization: <unresolved development issuer>/realms/starci-next-identity/protocol/openid-connect/auth
-  token: <unresolved development issuer>/realms/starci-next-identity/protocol/openid-connect/token
-  userInfo: <unresolved development issuer>/realms/starci-next-identity/protocol/openid-connect/userinfo
-  logout: <unresolved development issuer>/realms/starci-next-identity/protocol/openid-connect/logout
-credential: The development runbook documents keycloak-client-secret as the confidential-client secret for client starci-next-identity-lane in realm starci-next-identity, encrypted with SOPS for the shared master age recipient and materialized only on the owner machine. Never store or copy its value or identity here. Whether this app reuses that client or registers a separate client remains Q-A1.
-sandbox: Non-production development Keycloak realm starci-next-identity; issuer, client choice, callback and post-logout URI, and learner test-account custody name are unresolved owner prerequisites under Q-A1.
+  discovery: ${IDENTITY_KEYCLOAK_ISSUER}/.well-known/openid-configuration
+  authorization: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/auth
+  token: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/token
+  userInfo: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo
+  logout: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/logout
+credential: Required confidential client credential is read only from IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE, whose custody name is keycloak-client-secret under the owner's shared-master SOPS identity described in the sibling development runbook. Never store or copy its value or identity here. Whether this app reuses client starci-next-identity-lane or registers a separate client remains Q-A1.
+sandbox: Non-production development Keycloak realm starci-next-identity; issuer, client choice, exact callback and post-logout URI, and disposable learner test-account custody name remain owner prerequisites under Q-A1.
 research:
   readAt: '2026-10-28'
   sources:
     - https://www.keycloak.org/securing-apps/oidc-layers
-    - https://www.keycloak.org/docs/latest/server_admin/#_oidc
+    - https://www.keycloak.org/docs/latest/server_admin/
+    - https://www.keycloak.org/docs/26.8.1/upgrading/
   findings:
-    - Keycloak documents authorization code flow as browser redirect to authorization endpoint followed by a short-lived code returned to the registered callback and exchanged at the token endpoint.
-    - Keycloak exposes realm-relative authorization, token, userinfo, and logout endpoints; the realm name is part of each endpoint.
-    - PKCE uses a code challenge in the authorization request and a code verifier during code exchange; use S256.
-    - Exact callback and post-logout URIs depend on the owner-provisioned client.
+    - Keycloak documents the OIDC authorization-code flow as browser redirection to its authorization endpoint, followed by a short-lived code returned to the registered callback and exchanged at the token endpoint.
+    - Keycloak's OIDC endpoints are realm-relative; discovery, authorization, token, userinfo, logout and JWKS locations derive from the configured issuer, which remains unresolved rather than replaced with a guessed address.
+    - Keycloak supports PKCE and can require S256 through client configuration; this integration always sends code_challenge_method=S256 and a matching verifier at exchange.
+    - RP-Initiated Logout is the supported browser logout flow. The legacy redirect_uri logout parameter is removed; post_logout_redirect_uri must be registered and automatic return may require an ID token hint. The provider client configuration must be confirmed before live proof.
+    - Authorization and token requests use a 10000 ms required outbound timeout; no protocol default address or secret is invented.
   lifecycleLimits:
-    - Authorization codes are short-lived and single-use; exchange promptly and reject replay or mismatched state.
-    - Validate issuer, audience, signature, expiry, and nonce when used before creating a session; do not require a learner role claim.
-    - User logout and token/session revocation behavior depends on configured client and realm and remains unverified.
+    - Authorization transactions expire after 300 seconds and may be claimed once; authorization codes are exchanged once and rejected on replay, mismatch, expiry or second concurrent claim.
+    - The application validates signature using issuer metadata/JWKS, exact issuer, audience, expiry and nonce before creating identity/session state; it does not require a learner realm role.
+    - Application session maximum is 28800 seconds, further bounded by verified ID-token expiry; no automatic refresh occurs in this slice.
+    - Sign-out revokes the local durable session before RP-Initiated Logout; provider failure does not restore the local session. Provider-session termination cannot be claimed until a real provider run confirms it.
   prerequisites:
-    - Q-A1 OPEN: owner supplies the app development Keycloak issuer, decides reuse of starci-next-identity-lane versus a separate client, and names learner test-account custody.
-    - Owner provisions exact callback and post-logout URIs and disposable learner credentials; keycloak-client-secret stays in documented SOPS custody, never in Work.
-  liveVerification: Blocked by Q-A1 until issuer, client choice, and named learner test-account custody are supplied; then verify PKCE S256, callback validation, signed-in session reload, and application/provider logout against the actual non-production realm.
+    - Q-A1 OPEN: owner supplies actual app development issuer, chooses reuse of starci-next-identity-lane versus a separate client, and names disposable learner test-account custody.
+    - Owner provisions exact HTTPS callback /api/identity/session/callback and fixed post-logout /sign-in URIs for the chosen client; keycloak-client-secret remains in documented SOPS custody.
+  liveVerification: Blocked by Q-A1 until issuer, client choice, callback registrations and named learner test-account custody are supplied; then run the app behavioral test script and a provider-backed browser journey to verify PKCE S256, callback validation, session reload and RP-Initiated Logout.
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify integration design and record completeness; live provider verification remains blocked by Q-A1.
-change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Correct learner role assumptions and record owner-held development prerequisites and secret custody.}
+    command: npm run test -- --runInBand
+    note: Exercise OIDC request construction, validation, one-use callback and logout construction; live provider proof remains blocked by Q-A1.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Record current official OIDC/Keycloak behavior and the provisional session contract.}
 extensions:
-  sessionContract: The application establishes a server-managed session after callback and exposes a session-backed identity read to the frontend; cookie name, secure/httpOnly/sameSite attributes, lifetime, refresh behavior, CSRF behavior, exact API route and response schema are not established in the available backend result/current record and must be confirmed before FE integration. Sign-out must invalidate the local session and initiate provider logout; exact response and revocation semantics remain unverified.
+  sessionContract: See contract.identity.session-contract for the four application doors, response/error schema, durable session semantics, lifetimes, configuration keys and fixed redirects.
   authorization: An authenticated identity without operator role is a learner for this feature. PREMIUM is an entitlement owned by subscription-premium. There is no realm admin role; author-editor is an operator role outside this goal.

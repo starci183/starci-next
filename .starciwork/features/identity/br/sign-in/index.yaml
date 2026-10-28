@@ -1,19 +1,22 @@
-﻿schema: work/business-rule@1
+schema: work/business-rule@1
 id: br.identity.sign-in
 title: Identity is established only by a valid learner session
 state: todo
 activity: idle
 statements:
-  - The application grants signed-in access only after validating the identity provider response and establishing a session for a learner.
-  - A rejected or incomplete identity provider response leaves the learner signed out and displays a recoverable sign-in error.
+  - The application grants signed-in access only after validating the provider response and establishing a session for an identity with a verified issuer and subject; no operator role or learner realm role is required.
+  - Roles used by the application come only from provider-asserted role claims in a verified identity token; client-supplied claims grant no authority.
+  - PREMIUM is an entitlement owned by subscription-premium, and author-editor is an operator role outside this sign-in rule.
+  - A rejected or incomplete provider response leaves the learner signed out and displays a recoverable sign-in error.
 acceptance:
-  - Given a learner without an application session, when sign-in completes successfully and the learner role is present, then the application establishes a learner session.
-  - Given sign-in fails or the returned identity lacks the learner role, when the callback is processed, then the application does not establish an authenticated learner session.
+  - Given a learner without an application session, when sign-in completes with a valid provider identity, then the application establishes a learner session without requiring a learner realm role.
+  - Given sign-in fails or verified issuer/subject validation fails, when the callback is processed, then no authenticated session is established.
+  - Given a client supplies a role or entitlement claim, when the application evaluates identity, then the client-supplied value grants no authority.
 authorityRefs: []
 appliesTo: [fr.identity.sign-in, fr.identity.sign-out]
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify the identity records and their implementation task contracts.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the sign-in authorization rule.}
+    command: npm run test -- --runInBand
+    note: Exercise identity verification, role provenance, and refusal behavior with the app test script.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Remove the invented learner role and define verified identity and provider role authority.}
 extensions: {}

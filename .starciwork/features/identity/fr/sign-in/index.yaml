@@ -1,4 +1,4 @@
-﻿schema: work/functional-requirement@1
+schema: work/functional-requirement@1
 id: fr.identity.sign-in
 title: Sign in with Keycloak
 state: todo
@@ -6,19 +6,21 @@ activity: idle
 actors: [learner]
 trigger: The learner opens /sign-in and chooses sign in.
 mainFlow:
-  - The application creates an OIDC authorization request using the authorization code flow with PKCE and redirects the browser to Keycloak in realm starci-next-identity.
-  - Keycloak authenticates the learner and redirects to the registered callback with an authorization code.
-  - The application validates the callback, completes the code exchange, checks the learner role, and establishes the application session.
-  - The application returns the learner to the signed-in experience.
+  - The browser submits a same-origin sign-in start request; the application creates a one-use authorization transaction bound to that browser and redirects to configured Keycloak using authorization code flow with PKCE S256, state and nonce.
+  - Keycloak authenticates the learner and redirects to the exact registered callback with an authorization code.
+  - The application atomically claims the unexpired transaction, validates browser binding, state, nonce, issuer, audience, signature and token expiry, exchanges the code once, and establishes a durable opaque application session for the verified issuer and subject. No learner or operator role is required.
+  - The application returns the browser to the fixed application-owned /sign-in destination; no caller-provided redirect is followed.
 exceptionFlows:
-  - If the learner cancels, Keycloak is unavailable, the callback is invalid, code exchange fails, or the learner role is absent, the application remains signed out and shows a recoverable error.
+  - If the learner cancels, Keycloak is unavailable, state or browser binding is absent/mismatched/replayed/expired, the code is replayed, code exchange fails, or identity validation fails, the transaction is consumed or expires, no session is established, cookies are cleared, and a recoverable error is shown at /sign-in.
+  - Concurrent callback requests for one transaction have exactly one atomic claimant; all others fail closed without issuing a session.
+  - If durable session persistence fails after provider validation, no session cookie is issued and the learner remains signed out.
 postconditions:
-  - A successful flow has an authenticated learner session.
-  - A failed flow has no authenticated learner session.
+  - A successful flow has an authenticated session bound to verified issuer and subject; roles, if present, are provider-asserted and verified.
+  - A failed flow has no authenticated learner session and no provider token, credential, or authorization code in frontend state, logs, or callback query.
 composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify the declared sign-in behavior.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify observable learner sign-in behavior.}
+    command: npm run test -- --runInBand
+    note: Exercise authorization transaction issuance, browser binding, PKCE, callback replay/expiry, validation and fixed redirect.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify browser-bound OIDC flow without a fabricated learner role.}
 extensions: {}

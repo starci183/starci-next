@@ -1,4 +1,4 @@
-﻿schema: work/functional-requirement@1
+schema: work/functional-requirement@1
 id: fr.identity.sign-out
 title: Sign out
 state: todo
@@ -6,16 +6,20 @@ activity: idle
 actors: [learner]
 trigger: The signed-in learner chooses sign out.
 mainFlow:
-  - The application ends its local session and redirects through the Keycloak logout endpoint when the provider session is available.
-  - The browser returns to the configured post-logout location in a signed-out state.
+  - The browser submits a same-origin sign-out request protected by OriginGuard and the existing CSRF policy.
+  - The application atomically revokes the current server-side session before clearing its cookie and initiating Keycloak RP-Initiated Logout with only the registered application post-logout URI.
+  - The browser returns to the fixed /sign-in location in a signed-out state.
 exceptionFlows:
-  - If provider logout is unavailable, the application still ends its local session and reports that provider sign-out could not be confirmed.
+  - If the session is already expired or revoked, sign-out clears the cookie and returns the signed-out result without recreating or extending a session.
+  - If provider logout is unavailable after local revocation, the application remains signed out, reports that provider sign-out could not be confirmed, and does not restore the local session.
+  - Concurrent sign-out and protected requests resolve against durable current revocation state; requests observing revocation are refused, and a copied revoked session reference never authenticates.
 postconditions:
-  - The application no longer treats the learner as signed in.
+  - The application no longer treats the learner as signed in and the raw session cookie is cleared.
+  - The server-side session is revoked before provider logout begins.
 composes: [br.identity.sign-in, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
 requiresProof:
   - required: true
-    command: starci task verify <task-id>
-    note: Verify local and provider sign-out behavior.
-change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Specify observable learner sign-out behavior.}
+    command: npm run test -- --runInBand
+    note: Exercise local revocation ordering, cookie clearing, provider logout failure, replay and concurrent request behavior.
+change: {rev: HEAD, kind: revised, at: '2026-10-28', reason: Specify local revocation before provider logout and fail-closed behavior.}
 extensions: {}

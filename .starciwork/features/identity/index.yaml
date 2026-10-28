@@ -1,13 +1,16 @@
-﻿schema: work/feature@1
+schema: work/feature@1
 id: identity
 title: Identity
 purpose: Learners authenticate through Keycloak and retain an application session across reloads.
 decisions:
   - Keycloak realm: starci-next-identity.
   - Sign-in uses OpenID Connect authorization code flow with PKCE S256.
-  - A learner is an authenticated identity without an operator role; no learner realm role is required.
+  - An authenticated identity with no operator role is a learner for this feature; no learner realm role is required.
+  - Only verified issuer and subject establish identity; roles are accepted only from provider-asserted role claims after token verification. Client-supplied claims grant no authority.
   - PREMIUM is an entitlement owned by subscription-premium, not a Keycloak role.
   - The realm has no admin role; author-editor is an operator role outside this feature.
+  - Sessions are opaque, server-managed and stored durably in identity-owned PostgreSQL state; the raw session reference exists only in its secure cookie.
+  - This slice does not refresh provider tokens automatically; session expiry requires fresh sign-in.
 delivers:
   - Learner sign-in, session restoration, and sign-out.
 excludes:
@@ -15,5 +18,3 @@ excludes:
   - Subscription entitlement decisions.
 openQuestions:
   - Q-A1 OPEN: Owner must provide the app development Keycloak issuer, decide whether to reuse confidential client starci-next-identity-lane or register a separate client, and name the custody for the disposable learner test account. The sibling development runbook documents keycloak-client-secret as the confidential-client secret and SOPS custody under the shared master identity; this record contains no secret or identity value. This blocks live proof and acceptance only.
-  - The application session cookie name, attributes, lifetime, refresh behavior, and sign-out invalidation contract are consequentially unknown; confirm them from the backend implementation before FE integration.
-  - The session-backed API endpoint and response shape for current identity are not established by the available record; confirm the backend contract before FE integration.
