@@ -11,6 +11,12 @@ export enum PayosErrorCode {
     PayloadMalformed = "PAYOS_PAYLOAD_MALFORMED",
     /** The delivery proved the checksum key but reports no paid transfer. */
     PaymentNotConfirmed = "PAYOS_PAYMENT_NOT_CONFIRMED",
+    /** The checkout request names no payable order or return address. */
+    CheckoutInvalid = "PAYOS_CHECKOUT_INVALID",
+    /** payOS could not be reached within the deadline. */
+    Unavailable = "PAYOS_UNAVAILABLE",
+    /** payOS answered the payment request with a refusal. */
+    CheckoutRefused = "PAYOS_CHECKOUT_REFUSED",
 }
 
 /** How each payOS code travels. */
@@ -19,6 +25,9 @@ export const PAYOS_ERROR_KINDS: Record<PayosErrorCode, ErrorKind> = {
     [PayosErrorCode.SignatureInvalid]: "unauthenticated",
     [PayosErrorCode.PayloadMalformed]: "invalid",
     [PayosErrorCode.PaymentNotConfirmed]: "conflict",
+    [PayosErrorCode.CheckoutInvalid]: "invalid",
+    [PayosErrorCode.Unavailable]: "unavailable",
+    [PayosErrorCode.CheckoutRefused]: "conflict",
 }
 
 /** The one error class of the payOS rail. */

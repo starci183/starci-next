@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto"
 import { Test } from "@nestjs/testing"
 import { mock } from "@starci/jest-preset"
 import { LOGGER } from "@modules/platform/logging"
@@ -7,7 +8,7 @@ import { SepayClient } from "./sepay.client"
 import { SepayError, SepayErrorCode } from "./errors/sepay.error"
 import { SepayLogEvent } from "./sepay.log-events"
 import { InjectSepayClient, SEPAY_CLIENT, SEPAY_OPTIONS } from "./sepay.decorators"
-import type { SepayConfirmationHeaders, SepayConfirmationInput } from "./sepay.contracts"
+import type { SepayCheckoutInput, SepayConfirmationHeaders, SepayConfirmationInput } from "./sepay.contracts"
 import type { SepayOptions } from "./sepay.options"
 
 const SECRET_KEY = "spec-ipn-secret-key"
@@ -57,7 +58,74 @@ const build = async (channel: SepayOptions | null): Promise<{ client: SepayClien
     return { client: moduleRef.get(SepayClient), logger }
 }
 
-const channel = (): SepayOptions => ({ secretKey: new Secret(SECRET_KEY) })
+const SIGNING_KEY = "spec-signing-secret-key"
+const CHECKOUT_URL = "https://pay-sandbox.sepay.vn/v1/checkout/init"
+
+const channel = (): SepayOptions => ({
+    secretKey: new Secret(SECRET_KEY),
+    merchantId: "SP-TEST-1",
+    signingKey: new Secret(SIGNING_KEY),
+    checkoutUrl: CHECKOUT_URL,
+})
+
+const checkoutInput: SepayCheckoutInput = {
+    orderCode: "SUB_1",
+    amount: 229000,
+    description: "Premium",
+    successUrl: "https://app.example/ok",
+    errorUrl: "https://app.example/error",
+    cancelUrl: "https://app.example/cancel",
+}
+
+describe("SepayClient.createCheckout", () => {
+    it("refuses every checkout when the environment declares no SePay channel", async () => {
+        const { client, logger } = await build(null)
+
+        expect(client.createCheckout(checkoutInput)).toBeRefused(SepayErrorCode.RailNotConfigured)
+        expect(logger.warn).toHaveBeenCalledWith(SepayLogEvent.CheckoutRefused, {
+            code: SepayErrorCode.RailNotConfigured,
+        })
+    })
+
+    it("refuses an order it cannot sign", async () => {
+        const { client } = await build(channel())
+
+        expect(client.createCheckout({ ...checkoutInput, amount: 0 })).toBeRefused(SepayErrorCode.CheckoutInvalid)
+    })
+
+    it("returns the signed one-time-payment form without exposing the signing secret", async () => {
+        const { client } = await build(channel())
+        const signed =
+            "merchant=SP-TEST-1,operation=PURCHASE,order_invoice_number=SUB_1,order_amount=229000,currency=VND," +
+            "order_description=Premium,success_url=https://app.example/ok,error_url=https://app.example/error," +
+            "cancel_url=https://app.example/cancel"
+
+        const outcome = client.createCheckout(checkoutInput)
+
+        expect(outcome).toSucceedWith({
+            rail: "sepay",
+            orderCode: "SUB_1",
+            amount: 229000,
+            redirect: {
+                method: "POST",
+                url: CHECKOUT_URL,
+                fields: {
+                    merchant: "SP-TEST-1",
+                    operation: "PURCHASE",
+                    order_invoice_number: "SUB_1",
+                    order_amount: "229000",
+                    currency: "VND",
+                    order_description: "Premium",
+                    success_url: "https://app.example/ok",
+                    error_url: "https://app.example/error",
+                    cancel_url: "https://app.example/cancel",
+                    signature: createHmac("sha256", SIGNING_KEY).update(signed, "utf8").digest("base64"),
+                },
+            },
+        })
+        expect(JSON.stringify(outcome)).not.toContain(SIGNING_KEY)
+    })
+})
 
 describe("SepayClient", () => {
     it("refuses every delivery when the environment declares no SePay channel", async () => {

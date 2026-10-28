@@ -11,6 +11,8 @@ export enum SepayErrorCode {
     PayloadMalformed = "SEPAY_PAYLOAD_MALFORMED",
     /** The delivery proved the secret key but reports no paid order. */
     PaymentNotConfirmed = "SEPAY_PAYMENT_NOT_CONFIRMED",
+    /** The checkout request names no payable order or return address. */
+    CheckoutInvalid = "SEPAY_CHECKOUT_INVALID",
 }
 
 /** How each SePay code travels. */
@@ -19,6 +21,7 @@ export const SEPAY_ERROR_KINDS: Record<SepayErrorCode, ErrorKind> = {
     [SepayErrorCode.SecretInvalid]: "unauthenticated",
     [SepayErrorCode.PayloadMalformed]: "invalid",
     [SepayErrorCode.PaymentNotConfirmed]: "conflict",
+    [SepayErrorCode.CheckoutInvalid]: "invalid",
 }
 
 /** The one error class of the SePay rail. */

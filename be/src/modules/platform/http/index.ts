@@ -1,3 +1,5 @@
 export { HTTP_ERROR_KINDS } from "./errors/http.error"
 export { HTTP_MESSAGES } from "./messages/http.messages"
 export { HttpModule } from "./http.module"
+export { HTTP_CLIENT, InjectHttpClient } from "./http.decorators"
+export type { HttpClient, HttpResponse } from "./http.port"

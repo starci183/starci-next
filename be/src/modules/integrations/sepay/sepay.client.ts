@@ -7,7 +7,12 @@ import { SepayErrorCode } from "./errors/sepay.error"
 import { SepayLogEvent } from "./sepay.log-events"
 import { InjectSepayOptions } from "./sepay.decorators"
 import type { SepayModuleOptions } from "./sepay.options"
-import type { SepayConfirmation, SepayConfirmationInput } from "./sepay.contracts"
+import type { SepayCheckout, SepayCheckoutInput, SepayConfirmation, SepayConfirmationInput } from "./sepay.contracts"
+import {
+    sepayCheckoutFields,
+    sepayCheckoutPayable,
+    sepayCheckoutSignature,
+} from "./policies/sepay-checkout.policy"
 import { sepayDeliveryAuthorized, sepayIpnOf, sepayOrderOf } from "./policies/sepay-confirmation.policy"
 
 @Injectable()
@@ -43,9 +48,36 @@ export class SepayClient {
         })
     }
 
+    /**
+     * Builds the server-signed one-time-payment form the buyer's browser submits to SePay. No call is made: the form is
+     * signed here with the signing secret, which never leaves the client.
+     *
+     * @param input the persisted order and the three addresses the buyer returns to.
+     * @returns the signed form `(rail, orderCode, amount, redirect)`, or the refusal that stood in its place.
+     */
+    createCheckout(input: SepayCheckoutInput): Outcome<SepayCheckout, SepayErrorCode> {
+        const channel = this.options.channel
+        if (channel === null) return this.refuseCheckout(SepayErrorCode.RailNotConfigured)
+        if (!sepayCheckoutPayable(input)) return this.refuseCheckout(SepayErrorCode.CheckoutInvalid)
+        const fields = sepayCheckoutFields(input, channel.merchantId)
+        const signature = sepayCheckoutSignature(fields, channel.signingKey.reveal())
+        return ok({
+            rail: "sepay",
+            orderCode: input.orderCode,
+            amount: input.amount,
+            redirect: { method: "POST", url: channel.checkoutUrl, fields: { ...fields, signature } },
+        })
+    }
+
     /** Logs a refused confirmation under its code, never the delivery, and answers it. */
     private refuse(code: SepayErrorCode): Outcome<SepayConfirmation, SepayErrorCode> {
         this.logger.warn(SepayLogEvent.ConfirmationRefused, { code })
+        return refused(code)
+    }
+
+    /** Logs a refused checkout under its code, never the order, and answers it. */
+    private refuseCheckout(code: SepayErrorCode): Outcome<SepayCheckout, SepayErrorCode> {
+        this.logger.warn(SepayLogEvent.CheckoutRefused, { code })
         return refused(code)
     }
 }
