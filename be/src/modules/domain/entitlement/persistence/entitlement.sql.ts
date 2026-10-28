@@ -12,7 +12,7 @@ VALUES (
           extract(day FROM $2::timestamptz AT TIME ZONE 'UTC')::int,
           extract(day FROM (date_trunc('month', $2::timestamptz AT TIME ZONE 'UTC') + make_interval(months => $4::int) + interval '1 month' - interval '1 day'))::int
       ) - 1) * interval '1 day'
-      + ((($2::timestamptz AT TIME ZONE 'UTC') - date_trunc('day', $2::timestamptz AT TIME ZONE 'UTC'))) AT TIME ZONE 'UTC',
+      + (($2::timestamptz AT TIME ZONE 'UTC') - date_trunc('day', $2::timestamptz AT TIME ZONE 'UTC'))) AT TIME ZONE 'UTC',
     $3::timestamptz
 )
 ON CONFLICT (learner_id) DO UPDATE SET
