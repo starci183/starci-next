@@ -1,5 +1,7 @@
 import type { DynamicModule } from "@nestjs/common"
 import { IDENTITY_ERROR_KINDS, IDENTITY_MESSAGES } from "@modules/domain/identity"
+import { SEPAY_ERROR_KINDS, SEPAY_MESSAGES } from "@modules/integrations/sepay"
+import { PAYOS_ERROR_KINDS, PAYOS_MESSAGES } from "@modules/integrations/payos"
 import { NOTE_ERROR_KINDS, noteEntities, noteMigrations } from "@modules/domain/note"
 import {
     ENTITLEMENT_ERROR_KINDS,
@@ -31,7 +33,15 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     HttpModule.register({ isGlobal: true }),
     I18nModule.register({
         isGlobal: true,
-        bundles: [HTTP_MESSAGES, ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES, ENTITLEMENT_MESSAGES],
+        bundles: [
+            HTTP_MESSAGES,
+            ERRORS_MESSAGES,
+            HTTP_SECURITY_MESSAGES,
+            IDENTITY_MESSAGES,
+            ENTITLEMENT_MESSAGES,
+            SEPAY_MESSAGES,
+            PAYOS_MESSAGES,
+        ],
     }),
     ErrorsModule.register({
         isGlobal: true,
@@ -43,6 +53,8 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             IDENTITY_ERROR_KINDS,
             NOTE_ERROR_KINDS,
             ENTITLEMENT_ERROR_KINDS,
+            SEPAY_ERROR_KINDS,
+            PAYOS_ERROR_KINDS,
         ],
     }),
     CqrsModule.register({ isGlobal: true }),

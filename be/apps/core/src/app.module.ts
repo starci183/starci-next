@@ -5,6 +5,7 @@ import { AuthGuard, CredentialGuard } from "@modules/domain/identity"
 import { ErrorsFilter } from "@modules/platform/errors"
 import { OriginGuard, RateLimitGuard } from "@modules/platform/http-security"
 import { platformModules } from "./compose/platform"
+import { integrationsModules } from "./compose/integrations"
 import { domainModules } from "./compose/domain"
 import { systemModules } from "./compose/system"
 import { apiModules } from "./compose/api"
@@ -20,6 +21,7 @@ export class AppModule {
             module: AppModule,
             imports: [
                 ...platformModules(options),
+                ...integrationsModules(options),
                 ...domainModules(),
                 ...systemModules(),
                 ...apiModules(),
