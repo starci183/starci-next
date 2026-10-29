@@ -22,7 +22,8 @@
           "owner": "core",
           "isolation": "database"
         }
-      ]
+      ],
+      "patterns": ["webhooks"]
     },
     "fe": {
       "apps": [
