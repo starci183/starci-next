@@ -1,6 +1,7 @@
 import type { EnvSource } from "@modules/platform/config"
 import { parseServerConfig } from "@modules/platform/config"
 import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
+import { parseHttpConfig } from "@modules/platform/http"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
 import { parseIdentityConfig } from "@modules/domain/identity"
 import { parseKeycloakConfig } from "@modules/integrations/keycloak"
@@ -11,6 +12,8 @@ export interface CoreEnv {
     readonly server: ReturnType<typeof parseServerConfig>
     /** The origin allowlist and rate limits. */
     readonly httpSecurity: ReturnType<typeof parseHttpSecurityConfig>
+    /** What the outbound HTTP client trusts beyond Node's bundled certificate authorities. */
+    readonly http: ReturnType<typeof parseHttpConfig>
     /** The primary database connection. */
     readonly database: ReturnType<typeof parsePrimaryDatabaseConfig>
     /** Durable application session lifetimes. */
@@ -23,6 +26,7 @@ export interface CoreEnv {
 export const readCoreEnv = (env: EnvSource): CoreEnv => ({
     server: parseServerConfig(env),
     httpSecurity: parseHttpSecurityConfig(env),
+    http: parseHttpConfig(env),
     database: parsePrimaryDatabaseConfig(env),
     identity: parseIdentityConfig(env),
     keycloak: parseKeycloakConfig(env),
