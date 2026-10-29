@@ -1,6 +1,7 @@
 import type { DynamicModule } from "@nestjs/common"
 import { LessonContentModule, lessonContentEntities, lessonContentMigrations } from "@modules/domain/lesson-content"
 import { noteEntities, noteMigrations } from "@modules/domain/note"
+import { entitlementEntities, entitlementMigrations } from "@modules/domain/entitlement"
 import { ClockModule } from "@modules/platform/clock"
 import { DatabaseModule } from "@modules/platform/database"
 import type { DatabaseConnectionConfig, DatabaseConnectionOptions } from "@modules/platform/database"
@@ -11,8 +12,8 @@ import type { CliAppOptions } from "../cli.options"
 const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnectionOptions => ({
     ...primary,
     name: "primary",
-    entities: [...noteEntities, ...lessonContentEntities],
-    migrations: [...noteMigrations, ...lessonContentMigrations],
+    entities: [...noteEntities, ...lessonContentEntities, ...entitlementEntities],
+    migrations: [...noteMigrations, ...lessonContentMigrations, ...entitlementMigrations],
 })
 
 /** The clock, logger and declared database connections shared by CLI commands. */

@@ -1,6 +1,7 @@
 import type { DynamicModule } from "@nestjs/common"
 import { IDENTITY_ERROR_KINDS, IDENTITY_MESSAGES } from "@modules/domain/identity"
 import { NOTE_ERROR_KINDS, noteEntities, noteMigrations } from "@modules/domain/note"
+import { ENTITLEMENT_ERROR_KINDS, ENTITLEMENT_MESSAGES, entitlementEntities, entitlementMigrations } from "@modules/domain/entitlement"
 import { ClockModule } from "@modules/platform/clock"
 import { CONFIG_ERROR_KINDS } from "@modules/platform/config"
 import { CqrsModule } from "@modules/platform/cqrs"
@@ -23,7 +24,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     LoggingModule.register({ isGlobal: true }),
     I18nModule.register({
         isGlobal: true,
-        bundles: [ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES],
+        bundles: [ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES, ENTITLEMENT_MESSAGES],
     }),
     ErrorsModule.register({
         isGlobal: true,
@@ -33,12 +34,13 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             HTTP_SECURITY_ERROR_KINDS,
             IDENTITY_ERROR_KINDS,
             NOTE_ERROR_KINDS,
+            ENTITLEMENT_ERROR_KINDS,
         ],
     }),
     CqrsModule.register({ isGlobal: true }),
     HttpSecurityModule.register({ isGlobal: true, ...options.httpSecurity }),
     DatabaseModule.register({
         isGlobal: true,
-        connections: [{ ...options.database, entities: noteEntities, migrations: noteMigrations }],
+        connections: [{ ...options.database, entities: [...noteEntities, ...entitlementEntities], migrations: [...noteMigrations, ...entitlementMigrations] }],
     }),
 ]
