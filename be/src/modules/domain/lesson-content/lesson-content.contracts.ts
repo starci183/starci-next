@@ -231,6 +231,58 @@ export interface ProtectedGrading {
     readonly challenges: Readonly<Record<string, ChallengeGrading>>
 }
 
+/** One interview item's interviewer points, without its protected sample answer. */
+export interface CoachInterviewPoints {
+    /** The stable item id of this CoachInterviewPoints. */
+    readonly itemId: string
+    /** The interviewer points used to grade this item. */
+    readonly interviewerPoints: string
+}
+
+/** One criterion from a challenge rubric in the selected programming language. */
+export interface CoachChallengeCriterion {
+    /** The rubric body for the selected programming language. */
+    readonly body: string
+    /** The score weight of this criterion. */
+    readonly score: number
+    /** Whether this criterion is critical. */
+    readonly critical: boolean
+}
+
+/** The grading rubric of one challenge, with only the selected locale and language's criteria. */
+export interface CoachChallengeRubric {
+    /** The source challenge id. */
+    readonly challengeId: string
+    /** The required submission type. */
+    readonly submissionType: string
+    /** The requested submission title. */
+    readonly submissionTitle: string
+    /** The requested submission description. */
+    readonly submissionDescription: string
+    /** The maximum score for the requested submission. */
+    readonly submissionScore: number
+    /** Criteria describing the required outcome. */
+    readonly outcomeCriteria: ReadonlyArray<CoachChallengeCriterion>
+    /** Criteria describing the acceptable approach. */
+    readonly approachCriteria: ReadonlyArray<CoachChallengeCriterion>
+}
+
+/** Protected grading the coach may use for one published variant; contains no sample answers or source documents. */
+export interface CoachGrading {
+    /** The lesson content id. */
+    readonly contentId: string
+    /** The immutable lesson version. */
+    readonly version: string
+    /** The selected display locale. */
+    readonly locale: LessonLocale
+    /** The selected programming language. */
+    readonly programmingLanguage: ProgrammingLanguage
+    /** The interviewer points for each interview prompt in this variant. */
+    readonly interviewPoints: ReadonlyArray<CoachInterviewPoints>
+    /** The rubric for each challenge in the selected locale and language. */
+    readonly challenges: ReadonlyArray<CoachChallengeRubric>
+}
+
 /** Whether the learner may read the whole article or only its first section. */
 export type LessonAccess = "allowed" | "locked"
 
@@ -346,6 +398,18 @@ export interface RevealInterviewParams {
     readonly itemId: string
     /** The answered item ids of this RevealInterviewParams. */
     readonly answeredItemIds: ReadonlyArray<string>
+}
+
+/** The selector for protected coach grading of one published lesson variant. */
+export interface GradingForParams {
+    /** The content id of this GradingForParams. */
+    readonly contentId: string
+    /** The immutable version of this GradingForParams. */
+    readonly version: string
+    /** The locale of this GradingForParams. */
+    readonly locale: LessonLocale
+    /** The programming language of this GradingForParams. */
+    readonly programmingLanguage: ProgrammingLanguage
 }
 
 /** What an import reports: counts, version and hashes, never answer keys. */
