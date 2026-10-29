@@ -1,5 +1,8 @@
 export type { DomainErrorInit, ErrorKind, ErrorParams } from "./errors.contracts"
+export type { ErrorsService } from "./errors.service"
 export { DomainError } from "./domain.error"
+export { ERRORS_SERVICE } from "./errors.decorators"
 export { ErrorsFilter } from "./errors.filter"
 export { ErrorsModule } from "./errors.module"
+export { formatGraphqlError } from "./graphql-error.mapper"
 export { ERRORS_MESSAGES } from "./messages/errors.messages"
