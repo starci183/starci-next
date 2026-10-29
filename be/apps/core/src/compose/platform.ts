@@ -1,5 +1,6 @@
 import type { DynamicModule } from "@nestjs/common"
-import { IDENTITY_ERROR_KINDS, IDENTITY_MESSAGES } from "@modules/domain/identity"
+import { IDENTITY_ERROR_KINDS, IDENTITY_MESSAGES, identityEntities, identityMigrations } from "@modules/domain/identity"
+import { KEYCLOAK_ERROR_KINDS, KEYCLOAK_MESSAGES } from "@modules/integrations/keycloak"
 import { NOTE_ERROR_KINDS, noteEntities, noteMigrations } from "@modules/domain/note"
 import { ClockModule } from "@modules/platform/clock"
 import { CONFIG_ERROR_KINDS } from "@modules/platform/config"
@@ -31,7 +32,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     HttpModule.register({ isGlobal: true }),
     I18nModule.register({
         isGlobal: true,
-        bundles: [HTTP_MESSAGES, ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES],
+        bundles: [HTTP_MESSAGES, ERRORS_MESSAGES, HTTP_SECURITY_MESSAGES, IDENTITY_MESSAGES, KEYCLOAK_MESSAGES],
     }),
     ErrorsModule.register({
         isGlobal: true,
@@ -42,6 +43,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             HTTP_SECURITY_ERROR_KINDS,
             IDENTITY_ERROR_KINDS,
             NOTE_ERROR_KINDS,
+            KEYCLOAK_ERROR_KINDS,
         ],
     }),
     CqrsModule.register({ isGlobal: true }),
@@ -51,8 +53,8 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
         connections: [
             {
                 ...options.database,
-                entities: [...httpSecurityEntities, ...noteEntities],
-                migrations: [...httpSecurityMigrations, ...noteMigrations],
+                entities: [...httpSecurityEntities, ...noteEntities, ...identityEntities],
+                migrations: [...httpSecurityMigrations, ...noteMigrations, ...identityMigrations],
             },
         ],
     }),

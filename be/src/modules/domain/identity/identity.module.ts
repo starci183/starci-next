@@ -5,6 +5,8 @@ import { CredentialGuard } from "./credential.guard"
 import { IdentityError, IdentityErrorCode } from "./errors/identity.error"
 import { CREDENTIAL_AUTHENTICATOR } from "./identity.decorators"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./identity.module-definition"
+import { SessionService } from "./session.service"
+import { SessionHttpService } from "./session-http.service"
 
 const refusingAuthenticator: Provider = {
     provide: CREDENTIAL_AUTHENTICATOR,
@@ -25,8 +27,15 @@ export class IdentityModule extends ConfigurableModuleClass {
                 : { provide: CREDENTIAL_AUTHENTICATOR, useClass: options.credentialAuthenticator }
         return {
             ...base,
-            providers: [...(base.providers ?? []), authenticator, CredentialGuard, AuthGuard],
-            exports: [CredentialGuard, CREDENTIAL_AUTHENTICATOR, AuthGuard],
+            providers: [
+                ...(base.providers ?? []),
+                authenticator,
+                CredentialGuard,
+                AuthGuard,
+                SessionService,
+                SessionHttpService,
+            ],
+            exports: [CredentialGuard, CREDENTIAL_AUTHENTICATOR, AuthGuard, SessionHttpService],
         }
     }
 }

@@ -2,6 +2,8 @@ import type { EnvSource } from "@modules/platform/config"
 import { parseServerConfig } from "@modules/platform/config"
 import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
+import { parseIdentityConfig } from "@modules/domain/identity"
+import { parseKeycloakConfig } from "@modules/integrations/keycloak"
 
 /** The core environment values required before composition. */
 export interface CoreEnv {
@@ -11,6 +13,10 @@ export interface CoreEnv {
     readonly httpSecurity: ReturnType<typeof parseHttpSecurityConfig>
     /** The primary database connection. */
     readonly database: ReturnType<typeof parsePrimaryDatabaseConfig>
+    /** Durable application session lifetimes. */
+    readonly identity: ReturnType<typeof parseIdentityConfig>
+    /** Registered provider and mounted confidential-client custody. */
+    readonly keycloak: ReturnType<typeof parseKeycloakConfig>
 }
 
 /** Reads the core environment; missing or invalid values fail boot, and secrets use `_FILE` first. */
@@ -18,4 +24,6 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => ({
     server: parseServerConfig(env),
     httpSecurity: parseHttpSecurityConfig(env),
     database: parsePrimaryDatabaseConfig(env),
+    identity: parseIdentityConfig(env),
+    keycloak: parseKeycloakConfig(env),
 })

@@ -1,6 +1,7 @@
 import type { HttpSecurityOptions } from "@modules/platform/http-security"
 import type { ServerOptions } from "@modules/platform/config"
 import type { DatabaseConnectionConfig } from "@modules/platform/database"
+import type { CoreEnv } from "./core.env"
 
 /** Everything the core app needs from its environment, parsed by `core.env.ts` and handed to `AppModule.register`. */
 export interface CoreOptions {
@@ -10,4 +11,8 @@ export interface CoreOptions {
     readonly httpSecurity: HttpSecurityOptions
     /** The primary database connection. */
     readonly database: DatabaseConnectionConfig
+    /** Parsed application session lifetimes. */
+    readonly identity: CoreEnv["identity"]
+    /** Parsed registered provider client. */
+    readonly keycloak: CoreEnv["keycloak"]
 }

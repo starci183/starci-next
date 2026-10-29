@@ -3,6 +3,14 @@ import { injector } from "@modules/platform/composition"
 import type { TypedParameterDecorator } from "@modules/platform/composition"
 import type { CredentialAuthenticator, CredentialMetadata } from "./credential.contracts"
 import type { PublicMetadata } from "./identity.contracts"
+import type { IdentityOptions } from "./identity.options"
+
+/** Token of the identity-owned lifetime configuration. */
+export const IDENTITY_OPTIONS: unique symbol = Symbol("domain.identity.options")
+
+/** Injects validated identity options. Parameter type: IdentityOptions. */
+export const InjectIdentityOptions = (): TypedParameterDecorator<IdentityOptions> =>
+    injector<IdentityOptions>(IDENTITY_OPTIONS)
 
 /** Metadata key of `@Public`. */
 export const PUBLIC_KEY = "domain.identity.public"
