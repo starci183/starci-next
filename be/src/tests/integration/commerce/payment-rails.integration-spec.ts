@@ -1,40 +1,37 @@
 import { createHmac } from "node:crypto"
-import { createServer } from "node:http"
-import type { IncomingHttpHeaders, Server } from "node:http"
-import type { AddressInfo } from "node:net"
-import { builder } from "@starci/jest-preset"
-import { PayosErrorCode, PayosModule, PAYOS_CLIENT, parsePayosConfig } from "@modules/integrations/payos"
+import type { DynamicModule } from "@nestjs/common"
+import { builder, mock } from "@starci/jest-preset"
+import { PayosErrorCode, PayosModule, PAYOS_CLIENT } from "@modules/integrations/payos"
 import type { PayosClient, PayosOptions } from "@modules/integrations/payos"
-import { SepayErrorCode, SepayModule, SEPAY_CLIENT, parseSepayConfig } from "@modules/integrations/sepay"
-import type { SepayClient } from "@modules/integrations/sepay"
-import { EnvSource } from "@modules/platform/config"
-import { HttpModule } from "@modules/platform/http"
+import { SepayErrorCode, SepayModule, SEPAY_CLIENT } from "@modules/integrations/sepay"
+import type { SepayClient, SepayOptions } from "@modules/integrations/sepay"
+import { Secret } from "@modules/platform/config"
+import { HTTP_CLIENT } from "@modules/platform/http"
+import type { HttpClient } from "@modules/platform/http"
 import { useTestWorld } from "../../world/use-test-world"
 
 const SEPAY_SECRET = "fake-sepay-ipn-secret"
 const SEPAY_SIGNING = "fake-sepay-signing-key"
 const PAYOS_CHECKSUM = "fake-payos-checksum-key"
 
-/** One answer the local payOS stand-in gives, and the calls it received. */
-interface EdgeAnswer {
-    readonly status: number
-    readonly body: unknown
-}
+type Json = Record<string, unknown>
 
-interface EdgeCall {
-    readonly path: string
-    readonly headers: IncomingHttpHeaders
-    readonly body: Record<string, unknown>
-}
-
-const sepayEnvOf = builder<Record<string, string>>({
-    SEPAY_IPN_SECRET_KEY: SEPAY_SECRET,
-    SEPAY_MERCHANT_ID: "SP-TEST-MERCHANT",
-    SEPAY_SIGNING_SECRET_KEY: SEPAY_SIGNING,
-    SEPAY_CHECKOUT_URL: "https://sandbox.pay.sepay.test/v1/checkout/init",
+const sepayChannelOf = builder<SepayOptions>({
+    secretKey: new Secret(SEPAY_SECRET),
+    merchantId: "SP-TEST-MERCHANT",
+    signingKey: new Secret(SEPAY_SIGNING),
+    checkoutUrl: "https://sandbox.pay.sepay.test/v1/checkout/init",
 })
 
-const sepayIpnOf = builder<Record<string, unknown>>({
+const payosChannelOf = builder<PayosOptions>({
+    checksumKey: new Secret(PAYOS_CHECKSUM),
+    clientId: "payos-client-id",
+    apiKey: new Secret("fake-payos-api-key"),
+    apiBase: "https://api-merchant.payos.test",
+    timeoutMs: 2000,
+})
+
+const sepayIpnOf = builder<Json>({
     timestamp: 1_790_000_000,
     notification_type: "ORDER_PAID",
     order: { order_invoice_number: "SEPAY-1001", order_amount: "99000.00" },
@@ -51,7 +48,7 @@ const sepayCheckoutOf = builder({
     cancelUrl: "https://app.starci.test/pay/cancel",
 })
 
-const payosDataOf = builder<Record<string, unknown>>({
+const payosDataOf = builder<Json>({
     amount: 99_000,
     description: "StarCi Premium monthly",
     orderCode: 1_001,
@@ -67,19 +64,26 @@ const payosCheckoutOf = builder({
     correlationId: "corr-1001",
 })
 
+const linkOf = builder<Json>({
+    paymentLinkId: "pl-1001",
+    checkoutUrl: "https://pay.payos.test/web/pl-1001",
+    orderCode: 1_001,
+    amount: 99_000,
+})
+
 /** The independent signer of the payOS scheme: keys sorted, `key=value` joined by `&`, lower-case hex HMAC-SHA256. */
-const payosSign = (data: Record<string, unknown>): string =>
+const payosSign = (data: Json): string =>
     createHmac("sha256", PAYOS_CHECKSUM)
         .update(
             Object.keys(data)
-                .sort()
+                .sort((a, b) => a.localeCompare(b))
                 .map((key) => `${key}=${String(data[key])}`)
                 .join("&"),
             "utf8",
         )
         .digest("hex")
 
-const payosWebhookOf = (data: Record<string, unknown>, over: Record<string, unknown> = {}): Record<string, unknown> => ({
+const payosWebhookOf = (data: Json, over: Json = {}): Json => ({
     code: "00",
     desc: "success",
     success: true,
@@ -87,6 +91,8 @@ const payosWebhookOf = (data: Record<string, unknown>, over: Record<string, unkn
     signature: payosSign(data),
     ...over,
 })
+
+const payosAnswerOf = (data: Json): Json => ({ code: "00", desc: "success", data, signature: payosSign(data) })
 
 /** The independent signer of the SePay checkout form: `field=value` pairs joined by commas, base64 HMAC-SHA256. */
 const sepaySign = (fields: Record<string, string>): string =>
@@ -99,81 +105,33 @@ const sepaySign = (fields: Record<string, string>): string =>
         )
         .digest("base64")
 
-/** The real SePay and payOS clients over the local stack, with the payOS merchant API stood in at the network edge. */
-describe("payment rails (integration)", () => {
-    const calls: Array<EdgeCall> = []
-    let answer: EdgeAnswer = { status: 200, body: {} }
-    let edge: Server | undefined
-    let apiBase = ""
+/** The network edge of the payOS merchant API: the one double of the run, composed in place of the fetch client. */
+class HttpEdgeModule {}
+const edge = mock<HttpClient>()
+const edgeModule = (): DynamicModule => ({
+    module: HttpEdgeModule,
+    providers: [{ provide: HTTP_CLIENT, useFactory: (): HttpClient => edge }],
+    exports: [HTTP_CLIENT],
+})
 
-    beforeAll(async () => {
-        edge = createServer((request, response) => {
-            const chunks: Array<Buffer> = []
-            request.on("data", (chunk: Buffer) => chunks.push(chunk))
-            request.on("end", () => {
-                const parsed: Record<string, unknown> = JSON.parse(Buffer.concat(chunks).toString("utf8"))
-                calls.push({ path: request.url ?? "", headers: request.headers, body: parsed })
-                if (answer.status === 0) {
-                    request.socket.destroy()
-                    return
-                }
-                response.writeHead(answer.status, { "content-type": "application/json" })
-                response.end(JSON.stringify(answer.body))
-            })
-        })
-        await new Promise<void>((resolve) => edge?.listen(0, "127.0.0.1", resolve))
-        apiBase = `http://127.0.0.1:${String((edge?.address() as AddressInfo).port)}`
-    })
-
-    afterAll(async () => {
-        await new Promise<void>((resolve) => (edge ? edge.close(() => resolve()) : resolve()))
-    })
-
-    beforeEach(() => {
-        calls.length = 0
-        answer = { status: 200, body: {} }
-    })
-
-    const world = useTestWorld({
-        modules: [
-            () => SepayModule.register({ channel: parseSepayConfig(new EnvSource(sepayEnvOf())) }),
-            () => {
-                const channel: PayosOptions | null = parsePayosConfig(
-                    new EnvSource({
-                        PAYOS_CHECKSUM_KEY: PAYOS_CHECKSUM,
-                        PAYOS_CLIENT_ID: "payos-client-id",
-                        PAYOS_API_KEY: "fake-payos-api-key",
-                        PAYOS_API_BASE: `${apiBase}/`,
-                        PAYOS_TIMEOUT: "2s",
-                    }),
-                )
-                return { ...PayosModule.register({ channel }), imports: [HttpModule.register({})] }
-            },
-        ],
-    })
-    const sepay = (): SepayClient => world.resolve(SEPAY_CLIENT)
-    const payos = (): PayosClient => world.resolve(PAYOS_CLIENT)
+const sepayConfirmationCases = (sepay: () => SepayClient): void => {
+    const headers = { "x-secret-key": SEPAY_SECRET }
 
     describe("SePay IPN confirmation", () => {
         it("proves a paid IPN carrying the configured secret into the shared confirmation shape", () => {
-            const outcome = sepay().verifyConfirmation({
-                body: sepayIpnOf(),
-                headers: { "x-secret-key": SEPAY_SECRET },
-            })
-
-            expect(outcome).toEqual({
+            expect(sepay().verifyConfirmation({ body: sepayIpnOf(), headers })).toEqual({
                 kind: "ok",
                 value: { rail: "sepay", providerRef: "sp-tx-1001", orderCode: "SEPAY-1001", amount: 99_000 },
             })
         })
 
         it("refuses a forged IPN whose secret key differs by one character", () => {
-            const outcome = sepay().verifyConfirmation({
-                body: sepayIpnOf(),
-                headers: { "x-secret-key": `${SEPAY_SECRET}x` },
-            })
+            const forged = { "x-secret-key": `${SEPAY_SECRET}x` }
 
-            expect(outcome).toEqual({ kind: "refused", code: SepayErrorCode.SecretInvalid })
+            expect(sepay().verifyConfirmation({ body: sepayIpnOf(), headers: forged })).toEqual({
+                kind: "refused",
+                code: SepayErrorCode.SecretInvalid,
+            })
         })
 
         it("refuses an IPN that carries no secret key header", () => {
@@ -184,8 +142,6 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses an authenticated delivery whose body is not an IPN envelope", () => {
-            const headers = { "x-secret-key": SEPAY_SECRET }
-
             expect(sepay().verifyConfirmation({ body: "paid", headers })).toEqual({
                 kind: "refused",
                 code: SepayErrorCode.PayloadMalformed,
@@ -197,27 +153,28 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses an authenticated notification that does not report the order paid", () => {
-            const outcome = sepay().verifyConfirmation({
-                body: sepayIpnOf({ notification_type: "TRANSACTION_VOID" }),
-                headers: { "x-secret-key": SEPAY_SECRET },
-            })
+            const body = sepayIpnOf({ notification_type: "TRANSACTION_VOID" })
 
-            expect(outcome).toEqual({ kind: "refused", code: SepayErrorCode.PaymentNotConfirmed })
+            expect(sepay().verifyConfirmation({ body, headers })).toEqual({
+                kind: "refused",
+                code: SepayErrorCode.PaymentNotConfirmed,
+            })
         })
 
         it("refuses a paid IPN whose order names no positive amount", () => {
-            const outcome = sepay().verifyConfirmation({
-                body: sepayIpnOf({ order: { order_invoice_number: "SEPAY-1001", order_amount: "0" } }),
-                headers: { "x-secret-key": SEPAY_SECRET },
-            })
+            const body = sepayIpnOf({ order: { order_invoice_number: "SEPAY-1001", order_amount: "0" } })
 
-            expect(outcome).toEqual({ kind: "refused", code: SepayErrorCode.PayloadMalformed })
+            expect(sepay().verifyConfirmation({ body, headers })).toEqual({
+                kind: "refused",
+                code: SepayErrorCode.PayloadMalformed,
+            })
         })
     })
+}
 
+const sepayCheckoutCases = (sepay: () => SepayClient): void => {
     describe("SePay checkout", () => {
         it("signs the one-time payment form with the signing key in the specified field order", () => {
-            const outcome = sepay().createCheckout(sepayCheckoutOf())
             const unsigned = {
                 merchant: "SP-TEST-MERCHANT",
                 operation: "PURCHASE",
@@ -230,7 +187,7 @@ describe("payment rails (integration)", () => {
                 cancel_url: "https://app.starci.test/pay/cancel",
             }
 
-            expect(outcome).toEqual({
+            expect(sepay().createCheckout(sepayCheckoutOf())).toEqual({
                 kind: "ok",
                 value: {
                     rail: "sepay",
@@ -252,20 +209,19 @@ describe("payment rails (integration)", () => {
             })
         })
     })
+}
 
+const payosConfirmationCases = (payos: () => PayosClient): void => {
     describe("payOS webhook confirmation", () => {
         it("proves a signed paid webhook into the shared confirmation shape", () => {
-            const outcome = payos().verifyConfirmation({ body: payosWebhookOf(payosDataOf()) })
-
-            expect(outcome).toEqual({
+            expect(payos().verifyConfirmation({ body: payosWebhookOf(payosDataOf()) })).toEqual({
                 kind: "ok",
                 value: { rail: "payos", providerRef: "FT-1001", orderCode: 1_001, amount: 99_000 },
             })
         })
 
         it("refuses a forged webhook whose data was changed after it was signed", () => {
-            const signed = payosWebhookOf(payosDataOf())
-            const forged = { ...signed, data: payosDataOf({ amount: 1 }) }
+            const forged = { ...payosWebhookOf(payosDataOf()), data: payosDataOf({ amount: 1 }) }
 
             expect(payos().verifyConfirmation({ body: forged })).toEqual({
                 kind: "refused",
@@ -274,11 +230,12 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses a webhook signed under another key", () => {
-            const outcome = payos().verifyConfirmation({
-                body: payosWebhookOf(payosDataOf(), { signature: "0".repeat(64) }),
-            })
+            const body = payosWebhookOf(payosDataOf(), { signature: "0".repeat(64) })
 
-            expect(outcome).toEqual({ kind: "refused", code: PayosErrorCode.SignatureInvalid })
+            expect(payos().verifyConfirmation({ body })).toEqual({
+                kind: "refused",
+                code: PayosErrorCode.SignatureInvalid,
+            })
         })
 
         it("refuses a body that is not a webhook envelope", () => {
@@ -289,47 +246,54 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses a validly signed webhook that does not report a paid transfer", () => {
-            const outcome = payos().verifyConfirmation({ body: payosWebhookOf(payosDataOf(), { code: "01" }) })
+            const body = payosWebhookOf(payosDataOf(), { code: "01" })
 
-            expect(outcome).toEqual({ kind: "refused", code: PayosErrorCode.PaymentNotConfirmed })
+            expect(payos().verifyConfirmation({ body })).toEqual({
+                kind: "refused",
+                code: PayosErrorCode.PaymentNotConfirmed,
+            })
         })
 
         it("refuses a validly signed webhook whose data names no transfer", () => {
-            const outcome = payos().verifyConfirmation({ body: payosWebhookOf(payosDataOf({ reference: "" })) })
+            const body = payosWebhookOf(payosDataOf({ reference: "" }))
 
-            expect(outcome).toEqual({ kind: "refused", code: PayosErrorCode.PayloadMalformed })
+            expect(payos().verifyConfirmation({ body })).toEqual({
+                kind: "refused",
+                code: PayosErrorCode.PayloadMalformed,
+            })
         })
     })
+}
 
+const sharedShapeCases = (sepay: () => SepayClient, payos: () => PayosClient): void => {
     describe("rails share one confirmation shape", () => {
         it("answers the same keys whichever rail proved the payment", () => {
-            const fromSepay = sepay().verifyConfirmation({ body: sepayIpnOf(), headers: { "x-secret-key": SEPAY_SECRET } })
+            const fromSepay = sepay().verifyConfirmation({
+                body: sepayIpnOf(),
+                headers: { "x-secret-key": SEPAY_SECRET },
+            })
             const fromPayos = payos().verifyConfirmation({ body: payosWebhookOf(payosDataOf()) })
+            const keysOf = (outcome: typeof fromSepay | typeof fromPayos): Array<string> =>
+                Object.keys(outcome.kind === "ok" ? outcome.value : {}).sort((a, b) => a.localeCompare(b))
 
             expect(fromSepay.kind).toBe("ok")
             expect(fromPayos.kind).toBe("ok")
-            expect(Object.keys(fromSepay.kind === "ok" ? fromSepay.value : {}).sort()).toEqual(
-                Object.keys(fromPayos.kind === "ok" ? fromPayos.value : {}).sort(),
-            )
+            expect(keysOf(fromSepay)).toEqual(["amount", "orderCode", "providerRef", "rail"])
+            expect(keysOf(fromPayos)).toEqual(keysOf(fromSepay))
         })
     })
+}
+
+const payosCheckoutCases = (payos: () => PayosClient): void => {
+    const refusedWith = async (code: PayosErrorCode): Promise<void> => {
+        await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({ kind: "refused", code })
+    }
 
     describe("payOS checkout", () => {
-        const linkOf = (over: Record<string, unknown> = {}): Record<string, unknown> => ({
-            paymentLinkId: "pl-1001",
-            checkoutUrl: "https://pay.payos.test/web/pl-1001",
-            orderCode: 1_001,
-            amount: 99_000,
-            ...over,
-        })
-
         it("creates a signed payment request and trusts only a signed answer", async () => {
-            const data = linkOf()
-            answer = { status: 200, body: { code: "00", desc: "success", data, signature: payosSign(data) } }
+            edge.request.mockResolvedValue({ status: 200, body: payosAnswerOf(linkOf()) })
 
-            const outcome = await payos().createCheckout(payosCheckoutOf())
-
-            expect(outcome).toEqual({
+            await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
                 kind: "ok",
                 value: {
                     rail: "payos",
@@ -339,57 +303,60 @@ describe("payment rails (integration)", () => {
                     redirect: { method: "GET", url: "https://pay.payos.test/web/pl-1001" },
                 },
             })
-            expect(calls).toHaveLength(1)
-            expect(calls[0]?.path).toBe("/v2/payment-requests")
-            expect(calls[0]?.headers["x-client-id"]).toBe("payos-client-id")
-            expect(calls[0]?.headers["x-api-key"]).toBe("fake-payos-api-key")
-            expect(calls[0]?.headers["x-request-id"]).toBe("corr-1001")
-            expect(calls[0]?.body).toEqual({
-                orderCode: 1_001,
-                amount: 99_000,
-                description: "StarCi Premium monthly",
-                returnUrl: "https://app.starci.test/pay/return",
-                cancelUrl: "https://app.starci.test/pay/cancel",
-                signature: payosSign({
-                    amount: 99_000,
-                    cancelUrl: "https://app.starci.test/pay/cancel",
-                    description: "StarCi Premium monthly",
-                    orderCode: 1_001,
-                    returnUrl: "https://app.starci.test/pay/return",
-                }),
-            })
+            expect(edge.request.mock.calls).toEqual([
+                [
+                    {
+                        correlationId: "corr-1001",
+                        method: "POST",
+                        url: "https://api-merchant.payos.test/v2/payment-requests",
+                        headers: { "x-client-id": "payos-client-id", "x-api-key": "fake-payos-api-key" },
+                        body: {
+                            orderCode: 1_001,
+                            amount: 99_000,
+                            description: "StarCi Premium monthly",
+                            returnUrl: "https://app.starci.test/pay/return",
+                            cancelUrl: "https://app.starci.test/pay/cancel",
+                            signature: payosSign({
+                                amount: 99_000,
+                                cancelUrl: "https://app.starci.test/pay/cancel",
+                                description: "StarCi Premium monthly",
+                                orderCode: 1_001,
+                                returnUrl: "https://app.starci.test/pay/return",
+                            }),
+                        },
+                        timeoutMs: 2000,
+                    },
+                ],
+            ])
         })
 
         it("refuses an answer whose data signature does not verify", async () => {
-            answer = { status: 200, body: { code: "00", desc: "success", data: linkOf(), signature: "f".repeat(64) } }
-
-            await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
-                kind: "refused",
-                code: PayosErrorCode.SignatureInvalid,
+            edge.request.mockResolvedValue({
+                status: 200,
+                body: { code: "00", desc: "success", data: linkOf(), signature: "f".repeat(64) },
             })
+
+            await refusedWith(PayosErrorCode.SignatureInvalid)
         })
 
         it("refuses an answer that is the link of another order", async () => {
-            const data = linkOf({ orderCode: 2_002 })
-            answer = { status: 200, body: { code: "00", desc: "success", data, signature: payosSign(data) } }
+            edge.request.mockResolvedValue({ status: 200, body: payosAnswerOf(linkOf({ orderCode: 2_002 })) })
 
-            await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
-                kind: "refused",
-                code: PayosErrorCode.PayloadMalformed,
-            })
+            await refusedWith(PayosErrorCode.PayloadMalformed)
         })
 
         it("refuses when payOS answers a refusal code", async () => {
-            answer = { status: 200, body: { code: "231", desc: "order code already exists" } }
+            edge.request.mockResolvedValue({ status: 200, body: { code: "231", desc: "order code already exists" } })
 
-            await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
-                kind: "refused",
-                code: PayosErrorCode.CheckoutRefused,
-            })
+            await refusedWith(PayosErrorCode.CheckoutRefused)
         })
+    })
+}
 
+const payosFailureCases = (payos: () => PayosClient): void => {
+    describe("payOS checkout failures", () => {
         it("refuses a success answer that carries no data or signature", async () => {
-            answer = { status: 200, body: { code: "00", desc: "success" } }
+            edge.request.mockResolvedValue({ status: 200, body: { code: "00", desc: "success" } })
 
             await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
                 kind: "refused",
@@ -398,7 +365,7 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses an answer that is not a payOS envelope", async () => {
-            answer = { status: 200, body: ["not", "an", "envelope"] }
+            edge.request.mockResolvedValue({ status: 200, body: ["not", "an", "envelope"] })
 
             await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
                 kind: "refused",
@@ -407,13 +374,13 @@ describe("payment rails (integration)", () => {
         })
 
         it("refuses as unavailable when the connection to payOS is cut", async () => {
-            answer = { status: 0, body: null }
+            edge.request.mockRejectedValue(new Error("connection reset"))
 
             await expect(payos().createCheckout(payosCheckoutOf())).resolves.toEqual({
                 kind: "refused",
                 code: PayosErrorCode.Unavailable,
             })
-            expect(calls).toHaveLength(1)
+            expect(edge.request).toHaveBeenCalledTimes(1)
         })
 
         it("calls payOS nowhere for a checkout that names no payable order", async () => {
@@ -421,7 +388,30 @@ describe("payment rails (integration)", () => {
                 kind: "refused",
                 code: PayosErrorCode.CheckoutInvalid,
             })
-            expect(calls).toEqual([])
+            expect(edge.request).not.toHaveBeenCalled()
         })
     })
+}
+
+/** The real SePay and payOS clients over the local stack, with the payOS merchant API stood in at the network edge. */
+describe("payment rails (integration)", () => {
+    beforeEach(() => {
+        edge.request.mockReset()
+    })
+
+    const world = useTestWorld({
+        modules: [
+            () => SepayModule.register({ channel: sepayChannelOf() }),
+            () => ({ ...PayosModule.register({ channel: payosChannelOf() }), imports: [edgeModule()] }),
+        ],
+    })
+    const sepay = (): SepayClient => world.resolve(SEPAY_CLIENT)
+    const payos = (): PayosClient => world.resolve(PAYOS_CLIENT)
+
+    sepayConfirmationCases(sepay)
+    sepayCheckoutCases(sepay)
+    payosConfirmationCases(payos)
+    sharedShapeCases(sepay, payos)
+    payosCheckoutCases(payos)
+    payosFailureCases(payos)
 })

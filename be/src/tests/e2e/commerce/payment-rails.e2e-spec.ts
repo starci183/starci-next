@@ -1,10 +1,9 @@
 import { createHmac } from "node:crypto"
 import { builder } from "@starci/jest-preset"
 import { sql } from "@modules/platform/database"
+import { persistPendingPurchase } from "../../fixtures/builders/commerce.builder"
 import { useTestWorld } from "../../world/use-test-world"
 
-const INSERT_PENDING = sql`INSERT INTO purchases (learner_id, plan, amount_vnd, currency, rail, order_code, status, created_at, updated_at, expires_at)
-VALUES ($1::uuid, $2, $3, 'VND', $4, $5, 'pending', now(), now(), now() + interval '1 hour')`
 const PURCHASE_BY_ORDER = sql`SELECT rail, order_code, status, provider_ref, confirmed_at FROM purchases WHERE rail = $1 AND order_code = $2`
 const EVENT_COUNT = sql`SELECT count(*)::int AS total FROM purchase_events`
 const ENTITLEMENT_COUNT = sql`SELECT count(*)::int AS total FROM entitlements`
@@ -16,12 +15,6 @@ interface PurchaseRow {
     provider_ref: string | null
     confirmed_at: Date | null
 }
-
-const pendingOf = builder({
-    learnerId: "10000000-0000-4000-8000-000000000041",
-    plan: "premium-monthly",
-    amountVnd: 99_000,
-})
 
 const payosDataOf = builder<Record<string, unknown>>({
     amount: 99_000,
@@ -59,7 +52,7 @@ const sepayIpnOf = builder<Record<string, unknown>>({
 describe("payment rails webhook doors (e2e)", () => {
     const world = useTestWorld({ apps: ["core"] })
 
-    const purchaseOf = async (rail: string, orderCode: string): Promise<Array<PurchaseRow>> =>
+    const purchaseOf = (rail: string, orderCode: string): Promise<Array<PurchaseRow>> =>
         world.db.primary.query<Array<PurchaseRow>>(PURCHASE_BY_ORDER, [rail, orderCode])
     const totalOf = async (statement: typeof EVENT_COUNT): Promise<number> => {
         const rows = await world.db.primary.query<Array<{ total: number }>>(statement)
@@ -67,8 +60,7 @@ describe("payment rails webhook doors (e2e)", () => {
     }
 
     it("refuses a SePay IPN that carries a wrong secret key and leaves the pending purchase untouched", async () => {
-        const pending = pendingOf()
-        await world.db.primary.query(INSERT_PENDING, [pending.learnerId, pending.plan, pending.amountVnd, "sepay", "SEPAY-1001"])
+        await persistPendingPurchase(world.db.primary, { rail: "sepay", orderCode: "SEPAY-1001" })
 
         const response = await world.apps.core.api.post("/webhooks/sepay", sepayIpnOf(), {
             headers: { "x-secret-key": "not-the-ipn-secret" },
@@ -83,8 +75,7 @@ describe("payment rails webhook doors (e2e)", () => {
     })
 
     it("refuses a SePay IPN that carries no secret key at all", async () => {
-        const pending = pendingOf()
-        await world.db.primary.query(INSERT_PENDING, [pending.learnerId, pending.plan, pending.amountVnd, "sepay", "SEPAY-1002"])
+        await persistPendingPurchase(world.db.primary, { rail: "sepay", orderCode: "SEPAY-1002" })
 
         const response = await world.apps.core.api.post("/webhooks/sepay", sepayIpnOf())
         const rows = await purchaseOf("sepay", "SEPAY-1002")
@@ -96,8 +87,7 @@ describe("payment rails webhook doors (e2e)", () => {
     })
 
     it("refuses a payOS webhook signed under a key the deployment never held and leaves the purchase pending", async () => {
-        const pending = pendingOf()
-        await world.db.primary.query(INSERT_PENDING, [pending.learnerId, pending.plan, pending.amountVnd, "payos", "1001"])
+        await persistPendingPurchase(world.db.primary, { rail: "payos", orderCode: "1001" })
 
         const response = await world.apps.core.api.post("/webhooks/payos", forgedPayosBody(payosDataOf()))
         const rows = await purchaseOf("payos", "1001")
