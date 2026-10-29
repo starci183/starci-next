@@ -4,8 +4,8 @@ import { Test } from "@nestjs/testing"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { ok, refused } from "@modules/platform/primitives"
-import { EntitlementService } from "@modules/domain/entitlement"
-import type { Entitlement } from "@modules/domain/entitlement"
+import { ENTITLEMENT_SERVICE } from "@modules/domain/entitlement"
+import type { Entitlement, EntitlementService } from "@modules/domain/entitlement"
 import { PAYOS_CLIENT, PayosErrorCode } from "@modules/integrations/payos"
 import type { PayosCheckout, PayosClient, PayosConfirmation } from "@modules/integrations/payos"
 import { SEPAY_CLIENT, SepayErrorCode } from "@modules/integrations/sepay"
@@ -137,7 +137,7 @@ const world = async (stubs: { readonly query?: Array<readonly [string, unknown]>
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: SEPAY_CLIENT, useValue: sepay },
             { provide: PAYOS_CLIENT, useValue: payos },
-            { provide: EntitlementService, useValue: entitlement },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
         ],
     }).compile()
     return { service: moduleRef.get(PurchaseService), sepay, payos, entitlement, tx }

@@ -3,8 +3,8 @@ import type { EntityManager } from "typeorm"
 import { InjectClock } from "@modules/platform/clock"
 import type { Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
-import { EntitlementService } from "@modules/domain/entitlement"
-import type { Entitlement, GrantPremiumParams } from "@modules/domain/entitlement"
+import { InjectEntitlementService } from "@modules/domain/entitlement"
+import type { Entitlement, EntitlementService, GrantPremiumParams } from "@modules/domain/entitlement"
 import { InjectSepayClient, SepayErrorCode } from "@modules/integrations/sepay"
 import type {
     SepayCheckout,
@@ -68,7 +68,7 @@ export class PurchaseService {
         @InjectClock() private readonly clock: Clock,
         @InjectSepayClient() private readonly sepay: SepayClient,
         @InjectPayosClient() private readonly payos: PayosClient,
-        private readonly entitlement: EntitlementService,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
     ) {}
 
     /** The server-owned Premium offers, the only plans and prices a learner can buy. */
