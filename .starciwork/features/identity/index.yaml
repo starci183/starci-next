@@ -11,11 +11,12 @@ decisions:
   - The realm has no admin role; author-editor is an operator role outside this feature.
   - Sessions are opaque, server-managed and stored durably in identity-owned PostgreSQL state; the raw session reference exists only in its secure cookie.
   - This slice does not refresh provider tokens automatically; session expiry requires fresh sign-in.
+  - 'Owner ruling r-a6c777d4da5e (Q-A1 answered, tk-0f64ccd66b5e, goal v55): development issuer https://localhost:8089/realms/starci-next-identity; the app reuses confidential client starci-next-identity-lane with its secret in custody keycloak-client-secret; callback https://localhost:3001/api/identity/session/callback and post-logout https://localhost:3000/sign-in are registered on that client; local Keycloak and app origins serve HTTPS with Secure cookies; the learner test account holds no operator role in custody keycloak-learner-test.'
 delivers:
   - Learner sign-in, session restoration, and sign-out.
 excludes:
   - Account registration and password recovery.
   - Subscription entitlement decisions.
 openQuestions:
-  - Q-A1 OPEN: Owner must provide the app development Keycloak issuer, decide whether to reuse confidential client starci-next-identity-lane or register a separate client, and name the custody for the disposable learner test account. The sibling development runbook documents keycloak-client-secret as the confidential-client secret and SOPS custody under the shared master identity; this record contains no secret or identity value. This blocks live proof and acceptance only.
   - Drawing remains held until the published grammar fill-height fix and an owner-approved grammar version are available.
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Q-A1 answered by owner ruling r-a6c777d4da5e (tk-0f64ccd66b5e, goal v55): the development Keycloak facts move to decisions and the question leaves openQuestions.'}

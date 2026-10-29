@@ -50,18 +50,18 @@ consumerObligations:
 extensions:
   provisionalArchitecture: Kernel provisional architecture; contract is the implementation source until provider/client-specific values are supplied and behavior is proven.
   requiredConfiguration:
-    - {key: IDENTITY_KEYCLOAK_ISSUER, type: required HTTPS URL, default: none, custody: owner-provided Q-A1 app development issuer}
-    - {key: IDENTITY_KEYCLOAK_CLIENT_ID, type: required string, default: none, custody: owner-provided Q-A1 client selection and client registration}
+    - {key: IDENTITY_KEYCLOAK_ISSUER, type: required HTTPS URL, default: none, custody: 'owner-provided development issuer per ruling r-a6c777d4da5e', development: 'https://localhost:8089/realms/starci-next-identity'}
+    - {key: IDENTITY_KEYCLOAK_CLIENT_ID, type: required string, default: none, custody: 'owner-provided client selection and registration per ruling r-a6c777d4da5e', development: 'starci-next-identity-lane (reused confidential client)'}
     - {key: IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE, type: required secret file path for confidential client, default: none, custody: keycloak-client-secret in owner shared-master SOPS custody; value never belongs in Work}
-    - {key: IDENTITY_KEYCLOAK_CALLBACK_URI, type: required exact HTTPS URI, default: none, custody: app deployment configuration and exact client registration; must resolve to /api/identity/session/callback}
-    - {key: IDENTITY_KEYCLOAK_POST_LOGOUT_URI, type: required exact HTTPS URI, default: none, custody: app deployment configuration and exact client registration; fixed app destination /sign-in}
+    - {key: IDENTITY_KEYCLOAK_CALLBACK_URI, type: required exact HTTPS URI, default: none, custody: 'app deployment configuration and exact client registration; must resolve to /api/identity/session/callback', development: 'https://localhost:3001/api/identity/session/callback registered on starci-next-identity-lane per r-a6c777d4da5e'}
+    - {key: IDENTITY_KEYCLOAK_POST_LOGOUT_URI, type: required exact HTTPS URI, default: none, custody: 'app deployment configuration and exact client registration; fixed app destination /sign-in', development: 'https://localhost:3000/sign-in registered on starci-next-identity-lane per r-a6c777d4da5e'}
     - {key: IDENTITY_SESSION_MAX_SECONDS, type: positive integer tunable, default: 28800, custody: application configuration}
     - {key: IDENTITY_TRANSACTION_TTL_SECONDS, type: positive integer tunable, default: 300, custody: application configuration}
     - {key: IDENTITY_PROVIDER_TIMEOUT_MS, type: positive integer tunable, default: 10000, custody: application configuration}
   unresolved:
-    - Q-A1 remains OPEN for the actual development issuer, reuse of starci-next-identity-lane versus separate client, and named disposable learner test-account custody. These block live verification and acceptance only.
-    - The eventual development origin must support HTTPS and Secure cookies; no local insecure-cookie exception is authorized.
-    - Q-A1 also covers verification that the selected client permits browser logout with client_id and the registered post_logout_redirect_uri; if it cannot complete logout and return without an ID-token hint, record the configuration gap here before live proof or acceptance.
+    - 'Q-A1 is answered by owner ruling r-a6c777d4da5e (tk-0f64ccd66b5e, goal v55): development issuer https://localhost:8089/realms/starci-next-identity, reuse of starci-next-identity-lane, custody keycloak-learner-test. Live confirmation of the declared client and realm registrations remains a keycloak-live prerequisite and gates live verification and acceptance only.'
+    - 'The development origins serve HTTPS with Secure cookies: app https://localhost:3001, post-logout https://localhost:3000, Keycloak https://localhost:8089. No local insecure-cookie exception is authorized.'
+    - 'keycloak-live still verifies that client starci-next-identity-lane permits browser logout with client_id and the registered post_logout_redirect_uri https://localhost:3000/sign-in without an ID-token hint; if it cannot complete logout and return, record the configuration gap here before live proof or acceptance.'
 requiresProof:
   - required: true
     command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
@@ -69,4 +69,4 @@ requiresProof:
   - required: true
     command: npm run test:integration -- src/tests/integration/identity --runInBand
     note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
-change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Owner decision r-ebaf2ee165b2 (goal v47, option b): the strict same-origin Origin wording on start-sign-in and sign-out is unchanged, and one guarantee is added recording that the global platform guards may refuse before any session door, the callback included, with 403 HTTP_SECURITY_ORIGIN_REJECTED and 429 HTTP_SECURITY_RATE_LIMITED, separate from the callback fixed-303 outcomes (its errors list stays empty).'}
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Owner ruling r-a6c777d4da5e (Q-A1 answered, tk-0f64ccd66b5e, goal v55): record the development issuer, reused client starci-next-identity-lane, callback and post-logout URIs and learner test-account custody in requiredConfiguration and unresolved; live registration and logout-behavior confirmation stays with keycloak-live.'}
