@@ -29,7 +29,7 @@ describe("EntitlementService", () => {
             })
             const service = await build(em)
 
-            await expect(service.premiumUntil(LEARNER_ID)).resolves.toBe("2026-02-28T12:30:00.000Z")
+            await expect(service.premiumUntil({ learnerId: LEARNER_ID })).resolves.toBe("2026-02-28T12:30:00.000Z")
             expect(em.query).toHaveBeenCalledWith(SELECT_ENTITLEMENT, [LEARNER_ID])
         })
     })

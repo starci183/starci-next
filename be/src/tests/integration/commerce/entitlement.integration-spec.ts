@@ -17,7 +17,7 @@ describe("commerce entitlement (integration)", () => {
         const service = entitlement()
         const first = await service.grant(grantParamsOf())
         const extended = await service.grant(grantParamsOf({ confirmedAt: new Date("2027-02-01T12:34:56.000Z") }))
-        const persisted = await service.premiumUntil(grantParamsOf().learnerId)
+        const persisted = await service.premiumUntil({ learnerId: grantParamsOf().learnerId })
 
         expect(first.premiumUntil).toBe("2027-02-28T12:34:56.000Z")
         expect(extended).toEqual({
@@ -41,9 +41,9 @@ describe("commerce entitlement (integration)", () => {
         }))
 
         expect(leapFebruary.premiumUntil).toBe("2028-02-29T12:34:56.000Z")
-        expect(await service.premiumUntil("10000000-0000-4000-8000-000000000006")).toBe("2028-02-29T12:34:56.000Z")
+        expect(await service.premiumUntil({ learnerId: "10000000-0000-4000-8000-000000000006" })).toBe("2028-02-29T12:34:56.000Z")
         expect(leapYearly.premiumUntil).toBe("2029-02-28T12:34:56.000Z")
-        expect(await service.premiumUntil("10000000-0000-4000-8000-000000000007")).toBe("2029-02-28T12:34:56.000Z")
+        expect(await service.premiumUntil({ learnerId: "10000000-0000-4000-8000-000000000007" })).toBe("2029-02-28T12:34:56.000Z")
     })
 
     it("starts an expired entitlement from confirmation and grants no grace after its end", async () => {
@@ -62,7 +62,7 @@ describe("commerce entitlement (integration)", () => {
         await expect(service.isPremium("10000000-0000-4000-8000-000000000002")).resolves.toBe(false)
         expect(active.premiumUntil).toBe("2028-01-31T12:34:56.000Z")
         await expect(service.isPremium("10000000-0000-4000-8000-000000000003")).resolves.toBe(true)
-        await expect(service.premiumUntil("10000000-0000-4000-8000-000000000004")).resolves.toBeNull()
+        await expect(service.premiumUntil({ learnerId: "10000000-0000-4000-8000-000000000004" })).resolves.toBeNull()
     })
 
     it("restarts an expired term from the new confirmation instead of extending its old end", async () => {
@@ -79,7 +79,7 @@ describe("commerce entitlement (integration)", () => {
         }))
 
         expect(restarted.premiumUntil).toBe("2027-02-28T12:34:56.000Z")
-        expect(await service.premiumUntil(learnerId)).toBe("2027-02-28T12:34:56.000Z")
+        expect(await service.premiumUntil({ learnerId })).toBe("2027-02-28T12:34:56.000Z")
     })
 })
 

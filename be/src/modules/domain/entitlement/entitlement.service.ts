@@ -3,7 +3,7 @@ import type { EntityManager } from "typeorm"
 import { InjectClock } from "@modules/platform/clock"
 import type { Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
-import type { Entitlement, GrantPremiumParams } from "./entitlement.contracts"
+import type { Entitlement, GrantPremiumParams, OptionalPremiumUntil, PremiumUntilParams } from "./entitlement.contracts"
 import { EntitlementError, EntitlementErrorCode } from "./errors/entitlement.error"
 import { toEntitlement } from "./persistence/entitlement.rows"
 import type { EntitlementRow } from "./persistence/entitlement.rows"
@@ -18,15 +18,15 @@ export class EntitlementService {
     ) {}
 
     /** The stored end instant, or null when the learner has never held Premium. */
-    async premiumUntil(learnerId: string): Promise<string | null> {
-        const rows: Array<EntitlementRow> = await this.entityManager.query(SELECT_ENTITLEMENT, [learnerId])
+    async premiumUntil(params: PremiumUntilParams): Promise<OptionalPremiumUntil> {
+        const rows: Array<EntitlementRow> = await this.entityManager.query(SELECT_ENTITLEMENT, [params.learnerId])
         const row = rows[0]
         return row ? row.premium_until.toISOString() : null
     }
 
     /** Whether the learner's entitlement end is later than the current injected time. */
     async isPremium(learnerId: string): Promise<boolean> {
-        const premiumUntil = await this.premiumUntil(learnerId)
+        const premiumUntil = await this.premiumUntil({ learnerId })
         return premiumUntil !== null && new Date(premiumUntil).getTime() > this.clock.now().getTime()
     }
 
