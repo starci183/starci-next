@@ -1,0 +1,21 @@
+{
+    "summary":  "Reviewed the payment-rails diff from a8225daf7c7744119c48055d74563f71a12a8abe against impl.commerce.be.payment-rails and the SePay and payOS integration records, and read the payment-rails code task result and its cites. The prior CODE-REVIEW-5 finding no longer holds: a failed or timed-out payOS create is reconciled by orderCode, a verified payable request recovers the checkout, and an unprovable lookup keeps the outcome unknown.",
+    "files":  [
+                  "be/src/tests/reviews/commerce/payment-rails/review.json"
+              ],
+    "verdict":  "passed",
+    "findings":  [
+
+                 ],
+    "rulesApplied":  [
+
+                     ],
+    "workRecords":  [
+                        "impl.commerce.be.payment-rails",
+                        "integration.commerce.sepay",
+                        "integration.commerce.payos"
+                    ],
+    "citeGrades":  [
+
+                   ]
+}
