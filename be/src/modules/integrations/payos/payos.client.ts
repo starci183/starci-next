@@ -8,15 +8,23 @@ import type { Outcome } from "@modules/platform/primitives"
 import { PayosErrorCode } from "./errors/payos.error"
 import { PayosLogEvent } from "./payos.log-events"
 import { InjectPayosOptions } from "./payos.decorators"
-import type { PayosModuleOptions } from "./payos.options"
+import type { PayosModuleOptions, PayosOptions } from "./payos.options"
 import type { PayosCheckout, PayosCheckoutInput, PayosConfirmation, PayosConfirmationInput } from "./payos.contracts"
 import {
     payosCheckoutPayable,
+    payosHostedCheckoutUrl,
     payosPaymentAnswerOf,
     payosPaymentLinkOf,
     payosPaymentRequest,
+    payosRequestPayable,
+    payosRequestStateOf,
 } from "./policies/payos-checkout.policy"
 import { payosSignatureValid, payosTransactionOf, payosWebhookOf } from "./policies/payos-confirmation.policy"
+
+/** The provider code of a create refused because the order code already has a payment request. */
+const PAYOS_ORDER_FOUND_CODE = "231"
+/** The provider code of a read for an order code that has no payment request. */
+const PAYOS_ORDER_NOT_FOUND_CODE = "101"
 
 @Injectable()
 /** The payOS rail's only protocol speaker: it verifies payOS's own confirmations and grants nothing itself. */
@@ -80,9 +88,11 @@ export class PayosClient {
                     return null
                 },
             )
-        if (answered === null) return this.refuseCheckout(PayosErrorCode.Unavailable)
+        if (answered === null) return this.reconcileCheckout(input, channel, PayosErrorCode.Unavailable)
         const answer = payosPaymentAnswerOf(answered)
         if (answer === null) return this.refuseCheckout(PayosErrorCode.PayloadMalformed)
+        if (answer.code === PAYOS_ORDER_FOUND_CODE)
+            return this.reconcileCheckout(input, channel, PayosErrorCode.CheckoutRefused)
         if (answer.code !== "00") return this.refuseCheckout(PayosErrorCode.CheckoutRefused)
         if (answer.data === null || answer.signature === null) return this.refuseCheckout(PayosErrorCode.PayloadMalformed)
         if (!payosSignatureValid(answer.data, answer.signature, checksumKey))
@@ -96,6 +106,55 @@ export class PayosClient {
             amount: input.amount,
             redirect: { method: "GET", url: link.checkoutUrl },
         })
+    }
+
+    /**
+     * Reads the payment request of the order back once with `GET /v2/payment-requests/{orderCode}`, because the create
+     * answer was lost or payOS reports the order code already has a request. The read answer is verified as strictly as
+     * the create answer. Only a proved absence (`absent` is then the refusal) or a proved payable request is answered
+     * definitively; anything else leaves the outcome unknown under the order code.
+     */
+    private async reconcileCheckout(
+        input: PayosCheckoutInput,
+        channel: PayosOptions,
+        absent: PayosErrorCode,
+    ): Promise<Outcome<PayosCheckout, PayosErrorCode>> {
+        const read = await this.http
+            .request({
+                correlationId: input.correlationId,
+                method: "GET",
+                url: `${channel.apiBase}/v2/payment-requests/${input.orderCode}`,
+                headers: { "x-client-id": channel.clientId, "x-api-key": channel.apiKey.reveal() },
+                timeoutMs: channel.timeoutMs,
+            })
+            .then(
+                (response) => response.body,
+                (cause: unknown) => {
+                    this.logger.error(PayosLogEvent.CheckoutRefused, cause, { code: PayosErrorCode.CheckoutOutcomeUnknown })
+                    return null
+                },
+            )
+        const answer = payosPaymentAnswerOf(read)
+        if (answer?.code === PAYOS_ORDER_NOT_FOUND_CODE) return this.refuseCheckout(absent)
+        if (answer?.code !== "00" || answer.data === null || answer.signature === null)
+            return this.refuseUnknownCheckout(input)
+        if (!payosSignatureValid(answer.data, answer.signature, channel.checksumKey.reveal()))
+            return this.refuseUnknownCheckout(input)
+        const state = payosRequestStateOf(answer.data, input)
+        if (state === null || !payosRequestPayable(state)) return this.refuseUnknownCheckout(input)
+        return ok({
+            rail: "payos",
+            providerRef: state.paymentLinkId,
+            orderCode: input.orderCode,
+            amount: input.amount,
+            redirect: { method: "GET", url: payosHostedCheckoutUrl(state.paymentLinkId) },
+        })
+    }
+
+    /** Logs an unprovable checkout under its code, never the order or the answer, and answers it with the order code. */
+    private refuseUnknownCheckout(input: PayosCheckoutInput): Outcome<PayosCheckout, PayosErrorCode> {
+        this.logger.warn(PayosLogEvent.CheckoutRefused, { code: PayosErrorCode.CheckoutOutcomeUnknown })
+        return refused(PayosErrorCode.CheckoutOutcomeUnknown, { orderCode: input.orderCode })
     }
 
     /** Logs a refused checkout under its code, never the order or the answer, and answers it. */

@@ -35,6 +35,17 @@ export interface PayosPaymentLink {
     readonly checkoutUrl: string
 }
 
+/** The state of an existing payment request a signed read answer names. */
+export interface PayosRequestState {
+    /** The provider's payment link id (`id` of the get-payment-request answer). */
+    readonly paymentLinkId: string
+    /** The request status; only `"PENDING"` is still payable. */
+    readonly status: string
+}
+
+/** The hosted checkout page of one payment link, `https://pay.payos.vn/web/<paymentLinkId>`. */
+const HOSTED_CHECKOUT_BASE = "https://pay.payos.vn/web/"
+
 /** True when `value` is a plain record whose fields may be read. */
 const isRecord = (value: unknown): value is Record<string, unknown> =>
     typeof value === "object" && value !== null && !Array.isArray(value)
@@ -87,3 +98,18 @@ export const payosPaymentLinkOf = (data: Record<string, unknown>, input: PayosCh
     if (orderCode !== input.orderCode || amount !== input.amount) return null
     return { paymentLinkId, checkoutUrl }
 }
+
+/** The state of the payment request of the order asked for in an already signature-verified read `data`, or `null` when it is not that request. */
+export const payosRequestStateOf = (data: Record<string, unknown>, input: PayosCheckoutInput): PayosRequestState | null => {
+    const { id, status, orderCode, amount } = data
+    if (typeof id !== "string" || id === "" || typeof status !== "string") return null
+    if (orderCode !== input.orderCode || amount !== input.amount) return null
+    return { paymentLinkId: id, status }
+}
+
+/** True when a request in `state` can still be paid. */
+export const payosRequestPayable = (state: PayosRequestState): boolean => state.status === "PENDING"
+
+/** The hosted checkout address of a payment link id; the read answer carries no `checkoutUrl`. */
+export const payosHostedCheckoutUrl = (paymentLinkId: string): string =>
+    `${HOSTED_CHECKOUT_BASE}${encodeURIComponent(paymentLinkId)}`

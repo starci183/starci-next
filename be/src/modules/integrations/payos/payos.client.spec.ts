@@ -132,27 +132,119 @@ describe("PayosClient.createCheckout", () => {
         })
     })
 
-    it("answers unavailable and records the cause when payOS cannot be reached", async () => {
+    it("answers unavailable when payOS cannot be reached and proves no request exists for the order", async () => {
         const { client, http, logger } = await build(channel())
         const cause = new Error("down")
-        http.request.mockRejectedValue(cause)
+        http.request
+            .mockRejectedValueOnce(cause)
+            .mockResolvedValueOnce({ status: 404, body: { code: "101", desc: "none" } })
 
         await expect(client.createCheckout(checkoutInput)).resolves.toBeRefused(PayosErrorCode.Unavailable)
         expect(logger.error).toHaveBeenCalledWith(PayosLogEvent.CheckoutRefused, cause, {
             code: PayosErrorCode.Unavailable,
         })
     })
+})
 
+describe("PayosClient.createCheckout reconciliation", () => {
+    const stateData = { id: "pl-1", orderCode: 424242, amount: 99000, status: "PENDING" }
+    const unknown = { kind: "refused", code: PayosErrorCode.CheckoutOutcomeUnknown, params: { orderCode: 424242 } }
+    const found = {
+        rail: "payos",
+        providerRef: "pl-1",
+        orderCode: 424242,
+        amount: 99000,
+        redirect: { method: "GET", url: "https://pay.payos.vn/web/pl-1" },
+    }
+
+    it("reads the request back by order code with the same credentials, correlation id and timeout", async () => {
+        const { client, http } = await build(channel())
+        http.request.mockRejectedValueOnce(new Error("timeout")).mockResolvedValueOnce(answer(stateData))
+
+        await client.createCheckout(checkoutInput)
+
+        expect(http.request).toHaveBeenCalledTimes(2)
+        expect(http.request).toHaveBeenLastCalledWith({
+            correlationId: "corr-1",
+            method: "GET",
+            url: "https://payos.example/v2/payment-requests/424242",
+            headers: { "x-client-id": "spec-client-id", "x-api-key": API_KEY },
+            timeoutMs: 5000,
+        })
+    })
+
+    it("answers the checkout of a payable request found after a lost create answer", async () => {
+        const { client, http } = await build(channel())
+        http.request.mockRejectedValueOnce(new Error("timeout")).mockResolvedValueOnce(answer(stateData))
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toSucceedWith(found)
+    })
+
+    it("answers the checkout of the existing request when payOS says the order code already has one", async () => {
+        const { client, http } = await build(channel())
+        http.request
+            .mockResolvedValueOnce({ status: 400, body: { code: "231", desc: "exists" } })
+            .mockResolvedValueOnce(answer(stateData))
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toSucceedWith(found)
+    })
+
+    it("keeps the refusal when the order code is reported existing but the read proves it absent", async () => {
+        const { client, http } = await build(channel())
+        http.request
+            .mockResolvedValueOnce({ status: 400, body: { code: "231", desc: "exists" } })
+            .mockResolvedValueOnce({ status: 404, body: { code: "101", desc: "none" } })
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toBeRefused(PayosErrorCode.CheckoutRefused)
+    })
+
+    it("reconciles a create whose answer body is JSON null", async () => {
+        const { client, http } = await build(channel())
+        http.request.mockResolvedValueOnce({ status: 200, body: null }).mockResolvedValueOnce(answer(stateData))
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toSucceedWith(found)
+    })
+
+    it("refuses with the unknown outcome and the order code when the read itself fails", async () => {
+        const { client, http, logger } = await build(channel())
+        const cause = new Error("down")
+        http.request.mockRejectedValue(cause)
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toEqual(unknown)
+        expect(logger.error).toHaveBeenCalledWith(PayosLogEvent.CheckoutRefused, cause, {
+            code: PayosErrorCode.CheckoutOutcomeUnknown,
+        })
+        expect(logger.warn).toHaveBeenCalledWith(PayosLogEvent.CheckoutRefused, {
+            code: PayosErrorCode.CheckoutOutcomeUnknown,
+        })
+    })
+})
+
+describe("PayosClient.createCheckout unprovable reconciliation", () => {
+    const stateData = { id: "pl-1", orderCode: 424242, amount: 99000, status: "PENDING" }
+    const unknown = { kind: "refused", code: PayosErrorCode.CheckoutOutcomeUnknown, params: { orderCode: 424242 } }
+
+    it.each([
+        ["a read answer that is not a payOS envelope", { status: 200, body: "x" }],
+        ["a provider refusal other than not found", { status: 400, body: { code: "20", desc: "bad" } }],
+        ["an answer without signed data", { status: 200, body: { code: "00", signature: "x" } }],
+        ["an answer without a signature", { status: 200, body: { code: "00", data: stateData } }],
+        ["a signature that does not prove the checksum key", answer(stateData, { signature: "deadbeef" })],
+        ["a request of another order", answer({ ...stateData, orderCode: 1 })],
+        ["a request of another amount", answer({ ...stateData, amount: 1 })],
+        ["a request without a payment link id", answer({ ...stateData, id: "" })],
+        ["a cancelled request", answer({ ...stateData, status: "CANCELLED" })],
+        ["an expired request", answer({ ...stateData, status: "EXPIRED" })],
+        ["a paid request", answer({ ...stateData, status: "PAID" })],
+    ])("refuses with the unknown outcome on %s", async (_name, response) => {
+        const { client, http } = await build(channel())
+        http.request.mockRejectedValueOnce(new Error("timeout")).mockResolvedValueOnce(response)
+
+        await expect(client.createCheckout(checkoutInput)).resolves.toEqual(unknown)
+    })
 })
 
 describe("PayosClient.createCheckout answers", () => {
-    it("answers unavailable when the answer body is JSON null", async () => {
-        const { client, http } = await build(channel())
-        http.request.mockResolvedValue({ status: 200, body: null })
-
-        await expect(client.createCheckout(checkoutInput)).resolves.toBeRefused(PayosErrorCode.Unavailable)
-    })
-
     it("refuses an answer that is not a readable payOS envelope or lacks its signed data", async () => {
         const { client, http } = await build(channel())
 

@@ -10,6 +10,8 @@ export const PAYOS_MESSAGES: MessageBundle = {
         "errors.PAYOS_CHECKOUT_INVALID": "Không thể tạo liên kết thanh toán payOS cho đơn hàng này.",
         "errors.PAYOS_UNAVAILABLE": "payOS hiện không phản hồi.",
         "errors.PAYOS_CHECKOUT_REFUSED": "payOS đã từ chối tạo liên kết thanh toán.",
+        "errors.PAYOS_CHECKOUT_OUTCOME_UNKNOWN":
+            "Chưa xác định được liên kết thanh toán payOS của đơn hàng {{orderCode}}; cần đối soát theo mã đơn hàng này.",
     },
     en: {
         "errors.PAYOS_RAIL_NOT_CONFIGURED": "The payOS payment rail is not configured on this instance.",
@@ -19,5 +21,7 @@ export const PAYOS_MESSAGES: MessageBundle = {
         "errors.PAYOS_CHECKOUT_INVALID": "A payOS payment link cannot be created for this order.",
         "errors.PAYOS_UNAVAILABLE": "payOS is not answering.",
         "errors.PAYOS_CHECKOUT_REFUSED": "payOS refused to create the payment link.",
+        "errors.PAYOS_CHECKOUT_OUTCOME_UNKNOWN":
+            "The payOS payment link of order {{orderCode}} could not be confirmed; reconcile it by this order code.",
     },
 }

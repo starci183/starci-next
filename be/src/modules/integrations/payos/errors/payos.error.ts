@@ -17,6 +17,8 @@ export enum PayosErrorCode {
     Unavailable = "PAYOS_UNAVAILABLE",
     /** payOS answered the payment request with a refusal. */
     CheckoutRefused = "PAYOS_CHECKOUT_REFUSED",
+    /** The payment request may exist at payOS but could not be proved payable; its order code is the reconciliation identity. */
+    CheckoutOutcomeUnknown = "PAYOS_CHECKOUT_OUTCOME_UNKNOWN",
 }
 
 /** How each payOS code travels. */
@@ -28,6 +30,7 @@ export const PAYOS_ERROR_KINDS: Record<PayosErrorCode, ErrorKind> = {
     [PayosErrorCode.CheckoutInvalid]: "invalid",
     [PayosErrorCode.Unavailable]: "unavailable",
     [PayosErrorCode.CheckoutRefused]: "conflict",
+    [PayosErrorCode.CheckoutOutcomeUnknown]: "conflict",
 }
 
 /** The one error class of the payOS rail. */

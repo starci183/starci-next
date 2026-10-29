@@ -4,6 +4,9 @@ import {
     payosPaymentAnswerOf,
     payosPaymentLinkOf,
     payosPaymentRequest,
+    payosHostedCheckoutUrl,
+    payosRequestPayable,
+    payosRequestStateOf,
 } from "./payos-checkout.policy"
 import { payosDataSignature } from "./payos-confirmation.policy"
 import type { PayosCheckoutInput } from "../payos.contracts"
@@ -24,6 +27,9 @@ const subject = async (): Promise<{
     readonly request: typeof payosPaymentRequest
     readonly answerOf: typeof payosPaymentAnswerOf
     readonly linkOf: typeof payosPaymentLinkOf
+    readonly stateOf: typeof payosRequestStateOf
+    readonly payableState: typeof payosRequestPayable
+    readonly hostedUrl: typeof payosHostedCheckoutUrl
 }> => {
     const moduleRef = await Test.createTestingModule({
         providers: [
@@ -34,6 +40,9 @@ const subject = async (): Promise<{
                     request: payosPaymentRequest,
                     answerOf: payosPaymentAnswerOf,
                     linkOf: payosPaymentLinkOf,
+                    stateOf: payosRequestStateOf,
+                    payableState: payosRequestPayable,
+                    hostedUrl: payosHostedCheckoutUrl,
                 }),
             },
         ],
@@ -132,5 +141,45 @@ describe("payosPaymentLinkOf", () => {
         const { linkOf } = await subject()
 
         expect(linkOf({ ...data, [field]: value }, input)).toBeNull()
+    })
+})
+
+describe("payosRequestStateOf", () => {
+    const data = { id: "pl", orderCode: 7, amount: 1000, status: "PENDING" }
+
+    it("reads the state of the request of the order asked for", async () => {
+        const { stateOf } = await subject()
+
+        expect(stateOf(data, input)).toEqual({ paymentLinkId: "pl", status: "PENDING" })
+    })
+
+    it.each([
+        ["id", ""],
+        ["id", 1],
+        ["status", 1],
+        ["orderCode", 8],
+        ["amount", 999],
+    ] as const)("is null when %s is %s", async (field, value) => {
+        const { stateOf } = await subject()
+
+        expect(stateOf({ ...data, [field]: value }, input)).toBeNull()
+    })
+})
+
+describe("payosRequestPayable", () => {
+    it("is true only while the request is pending", async () => {
+        const { payableState } = await subject()
+
+        expect(payableState({ paymentLinkId: "pl", status: "PENDING" })).toBe(true)
+        expect(payableState({ paymentLinkId: "pl", status: "CANCELLED" })).toBe(false)
+    })
+})
+
+describe("payosHostedCheckoutUrl", () => {
+    it("rebuilds the hosted page from the payment link id alone", async () => {
+        const { hostedUrl } = await subject()
+
+        expect(hostedUrl("pl-1")).toBe("https://pay.payos.vn/web/pl-1")
+        expect(hostedUrl("a/b")).toBe("https://pay.payos.vn/web/a%2Fb")
     })
 })
