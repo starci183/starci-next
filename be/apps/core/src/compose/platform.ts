@@ -9,6 +9,7 @@ import {
     entitlementEntities,
     entitlementMigrations,
 } from "@modules/domain/entitlement"
+import { PURCHASE_ERROR_KINDS, PURCHASE_MESSAGES, purchaseEntities, purchaseMigrations } from "@modules/domain/purchase"
 import { ClockModule } from "@modules/platform/clock"
 import { CONFIG_ERROR_KINDS } from "@modules/platform/config"
 import { CqrsModule } from "@modules/platform/cqrs"
@@ -39,6 +40,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             HTTP_SECURITY_MESSAGES,
             IDENTITY_MESSAGES,
             ENTITLEMENT_MESSAGES,
+            PURCHASE_MESSAGES,
             SEPAY_MESSAGES,
             PAYOS_MESSAGES,
         ],
@@ -53,6 +55,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             IDENTITY_ERROR_KINDS,
             NOTE_ERROR_KINDS,
             ENTITLEMENT_ERROR_KINDS,
+            PURCHASE_ERROR_KINDS,
             SEPAY_ERROR_KINDS,
             PAYOS_ERROR_KINDS,
         ],
@@ -64,8 +67,8 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
         connections: [
             {
                 ...options.database,
-                entities: [...noteEntities, ...entitlementEntities],
-                migrations: [...noteMigrations, ...entitlementMigrations],
+                entities: [...noteEntities, ...entitlementEntities, ...purchaseEntities],
+                migrations: [...noteMigrations, ...entitlementMigrations, ...purchaseMigrations],
             },
         ],
     }),
