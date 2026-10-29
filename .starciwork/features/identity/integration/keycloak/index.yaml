@@ -40,7 +40,14 @@ requiresProof:
   - required: true
     command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
     note: Exercise OIDC request construction, validation, one-use callback and logout construction; live provider proof runs under keycloak-live against the recorded development realm.
-change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Record the owner-answered Q-A1 development facts (ruling r-a6c777d4da5e, tk-0f64ccd66b5e): issuer, reused client starci-next-identity-lane, registered callback and post-logout URIs, learner test-account custody; registration and logout-behavior confirmation stays with keycloak-live.'}
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Record the @starci/test-world sandbox browser request package branch, green package tests, local app link and handoff to Debug so keycloak-contract-spec can exercise the provider login and logout redirects with cookies.'}
 extensions:
   sessionContract: See contract.identity.session-contract for the four application doors, response/error schema, durable session semantics, lifetimes, configuration keys and fixed redirects.
   authorization: An authenticated identity without operator role is a learner for this feature. PREMIUM is an entitlement owned by subscription-premium. There is no realm admin role; author-editor is an operator role outside this goal.
+  testWorldSandboxBrowser:
+    branch: pkg/starci-next-app-test-world-sandbox-browser
+    head: b8e867897713a128469bd9c353dcb6210834002d
+    handoff: Handed to Debug on 2026-10-29 for merge, push and publish.
+    tests: 'starci pkg test @starci/test-world: green (exit 0); includes lint, build and package specs.'
+    linkedWith: 'starci deps source --local --from D:/.claude/.claude/worktrees/pkg-starci-next-app-test-world-sandbox-browser/packages --package @starci/test-world; local @starci/test-world 1.3.1 copied into this app worktree.'
+    api: 'SandboxHandle.request(request: SandboxBrowserRequest): Promise<SandboxBrowserAnswer>; request={method: "GET"|"POST", url, headers?, form?}; answer={status, headers, body}. Per-handle cookie jar; manual redirects; form-encoded POST.'
