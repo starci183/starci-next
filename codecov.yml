@@ -41,10 +41,10 @@ component_management:
         - "be/src/modules/domain/identity/**"
         - "be/src/modules/domain/liveness/**"
         - "be/src/modules/domain/note/**"
+        - "be/src/modules/integrations/keycloak/**"
     - component_id: platform
       name: platform
       paths:
-        - "be/src/modules/integrations/*/**"
         - "be/src/modules/platform/*/**"
         - "be/src/modules/projections/*/**"
 ignore:

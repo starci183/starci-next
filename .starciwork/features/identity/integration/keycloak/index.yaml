@@ -1,0 +1,53 @@
+schema: work/integration@1
+id: integration.identity.keycloak
+title: Keycloak identity provider
+state: todo
+activity: idle
+provider: Keycloak
+boundary: The application delegates authentication to the configured Keycloak OIDC realm, validates provider-signed identity, and establishes a local session for a verified identity without requiring an operator role.
+endpoints:
+  discovery: ${IDENTITY_KEYCLOAK_ISSUER}/.well-known/openid-configuration
+  authorization: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/auth
+  token: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/token
+  userInfo: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo
+  logout: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/logout
+credential: Required confidential client credential is read only from IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE, whose custody name is keycloak-client-secret under the owner's shared-master SOPS identity described in the sibling development runbook. Never store or copy its value or identity here. Owner ruling r-a6c777d4da5e reuses the existing confidential client starci-next-identity-lane; no separate client is registered.
+sandbox: Non-production development Keycloak realm starci-next-identity at issuer https://localhost:8089/realms/starci-next-identity, serving HTTPS; the app origin https://localhost:3001 and the post-logout origin https://localhost:3000 serve HTTPS with Secure cookies. Client starci-next-identity-lane carries callback https://localhost:3001/api/identity/session/callback (IDENTITY_KEYCLOAK_CALLBACK_URI) and post-logout https://localhost:3000/sign-in (IDENTITY_KEYCLOAK_POST_LOGOUT_URI), both declared registered on that client by owner ruling r-a6c777d4da5e; keycloak-live confirms the registrations against the running provider before they count as done. The disposable learner test account holds no operator role and sits in custody keycloak-learner-test.
+research:
+  readAt: '2026-10-28'
+  sources:
+    - https://www.keycloak.org/securing-apps/oidc-layers
+    - https://www.keycloak.org/docs/latest/server_admin/
+    - https://openid.net/specs/openid-connect-rpinitiated-1_0.html
+  findings:
+    - Keycloak documents the OIDC authorization-code flow as browser redirection to its authorization endpoint, followed by a short-lived code returned in the provider-to-backend registered callback query and exchanged at the token endpoint. The backend consumes code/state once; neither is forwarded to /sign-in, frontend JavaScript, logs, or error text.
+    - Keycloak's OIDC endpoints are realm-relative; discovery, authorization, token, userinfo, logout and JWKS locations derive from the configured issuer, which owner ruling r-a6c777d4da5e supplies as https://localhost:8089/realms/starci-next-identity rather than a guessed address.
+    - Keycloak supports PKCE and can require S256 through client configuration; this integration always sends code_challenge_method=S256 and a matching verifier at exchange.
+    - RP-Initiated Logout is the supported browser logout flow. Keycloak's current Server Administration Guide (read 2026-10-28) permits client_id plus an exactly registered post_logout_redirect_uri without an ID-token hint, and may ask the user to confirm logout; the OIDC RP-Initiated Logout specification (read 2026-10-28) defines the same client_id use when post_logout_redirect_uri is sent without id_token_hint. Do not send an ID-token hint. Verify selected client behavior before live proof.
+    - The OIDC RP-Initiated Logout specification requires the post-logout URI to be registered and allows provider confirmation where no ID-token hint is supplied; Keycloak documents confirmation and a continue link when configured. If the actual client cannot complete logout and return through client_id plus the registered URI, record the configuration gap under prerequisites before live proof.
+    - This provisional client accepts only ID-token signature algorithm RS256 as a literal asymmetric allowlist; a different algorithm requires explicit matching configuration and no token-selected algorithm or HMAC fallback.
+    - Authorization and token requests use a 10000 ms required outbound timeout; no protocol default address or secret is invented.
+  lifecycleLimits:
+    - Authorization transactions expire after 300 seconds and may be claimed once; authorization codes are exchanged once and rejected on replay, mismatch, expiry or second concurrent claim.
+    - The application validates signature using issuer metadata/JWKS, exact issuer, audience, expiry and nonce before creating identity/session state; it does not require a learner realm role.
+    - Application session maximum is 28800 seconds, further bounded by verified ID-token expiry; no automatic refresh occurs in this slice.
+    - Sign-out revokes the local durable session before RP-Initiated Logout; provider failure does not restore the local session. Provider-session termination cannot be claimed until a real provider run confirms it.
+  prerequisites:
+    - 'Q-A1 is answered by owner ruling r-a6c777d4da5e (tk-0f64ccd66b5e, goal v55): development issuer https://localhost:8089/realms/starci-next-identity, reuse of confidential client starci-next-identity-lane, callback https://localhost:3001/api/identity/session/callback and post-logout https://localhost:3000/sign-in registered on that client, learner test-account custody keycloak-learner-test, HTTPS origins with Secure cookies.'
+    - The declared client and realm registrations of the exact callback and post-logout URIs, and the client_id + post_logout_redirect_uri logout behavior without an ID-token hint, remain for keycloak-live to confirm against the running provider; keycloak-client-secret remains in documented SOPS custody.
+  liveVerification: The owner-supplied development facts are in place; keycloak-live confirms the client and realm registrations and the client_id + registered post_logout_redirect_uri logout path, then runs the app behavioral test script and a provider-backed browser journey to verify PKCE S256, callback validation, session reload and RP-Initiated Logout.
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Exercise OIDC request construction, validation, one-use callback and logout construction; live provider proof runs under keycloak-live against the recorded development realm.
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Record the @starci/test-world sandbox browser request package branch, green package tests, local app link and handoff to Debug so keycloak-contract-spec can exercise the provider login and logout redirects with cookies.'}
+extensions:
+  sessionContract: See contract.identity.session-contract for the four application doors, response/error schema, durable session semantics, lifetimes, configuration keys and fixed redirects.
+  authorization: An authenticated identity without operator role is a learner for this feature. PREMIUM is an entitlement owned by subscription-premium. There is no realm admin role; author-editor is an operator role outside this goal.
+  testWorldSandboxBrowser:
+    branch: pkg/starci-next-app-test-world-sandbox-browser
+    head: b8e867897713a128469bd9c353dcb6210834002d
+    handoff: Handed to Debug on 2026-10-29 for merge, push and publish.
+    tests: 'starci pkg test @starci/test-world: green (exit 0); includes lint, build and package specs.'
+    linkedWith: 'starci deps source --local --from D:/.claude/.claude/worktrees/pkg-starci-next-app-test-world-sandbox-browser/packages --package @starci/test-world; local @starci/test-world 1.3.1 copied into this app worktree.'
+    api: 'SandboxHandle.request(request: SandboxBrowserRequest): Promise<SandboxBrowserAnswer>; request={method: "GET"|"POST", url, headers?, form?}; answer={status, headers, body}. Per-handle cookie jar; manual redirects; form-encoded POST.'

@@ -1,7 +1,14 @@
-/** The signed-in reader as the identity provider states it; the back end verifies the access token on every call. */
+/**
+ * The signed-in reader as the session door verifies it: the verified issuer and subject of the identity assertion, the
+ * roles the provider asserted and the instant the session expires (contract.identity.session-contract). The app never
+ * holds tokens, credentials or provider detail: the session it reads is an opaque durable reference the back end owns.
+ */
 export interface AuthSession {
     readonly userId: string
     readonly email?: string
+    readonly issuer: string
+    readonly roles: ReadonlyArray<string>
+    readonly expiresAt: string
 }
 
 /** Why a sign-in or sign-out failed: the provider's code, its kind (`refused`, `invalid`, `unavailable`) and its message. */
@@ -21,6 +28,7 @@ export interface AuthClient {
     session(): Promise<AuthSession | undefined>
     accessToken(): Promise<string | undefined>
     refreshAccessToken(): Promise<string | undefined>
+    signIn(): Promise<AuthFailure | undefined>
     signInWithPassword(email: string, password: string): Promise<AuthFailure | undefined>
     signOut(): Promise<AuthFailure | undefined>
     onChange(listener: (session: AuthSession | undefined) => void): () => void

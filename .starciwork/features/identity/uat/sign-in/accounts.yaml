@@ -1,0 +1,7 @@
+﻿schema: work/disposable-accounts@1
+disposable: true
+accounts:
+  - role: learner
+    identity: identity.identity.learner-test-account
+  - role: invalid-credentials
+    identity: identity.identity.invalid-credentials

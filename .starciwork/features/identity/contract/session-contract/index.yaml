@@ -1,0 +1,72 @@
+schema: work/contract@1
+id: contract.identity.session-contract
+title: Identity session contract
+state: todo
+activity: idle
+owner: identity
+between: [identity, authenticated application features]
+surface:
+  - name: start-sign-in
+    method: POST
+    path: /api/identity/session/start
+    request: No body; a same-origin Origin is required, checked by the platform OriginGuard, which is the CSRF defence for this route.
+    response: 303 See Other to configured Keycloak authorization endpoint; sets one-use `__Host-identity_login` Secure, HttpOnly, SameSite=Lax, Path=/ transaction-binding cookie with 300 second Max-Age and no Domain attribute.
+    errors: [403 HTTP_SECURITY_ORIGIN_REJECTED, 429 HTTP_SECURITY_RATE_LIMITED, 503 IDENTITY_PROVIDER_UNAVAILABLE]
+  - name: sign-in-callback
+    method: GET
+    path: /api/identity/session/callback
+    request: Provider authorization response including transient code/state (or provider error/state) only at this exact registered backend callback; transaction-binding cookie required. Atomically consume the query values once; never forward them.
+    response: 303 See Other to fixed app-owned /sign-in?auth=success or /sign-in?auth=error; success sets opaque `__Host-identity_session` Secure, HttpOnly, SameSite=Lax, Path=/ cookie and clears `__Host-identity_login`; failure clears both cookies. Every failure (invalid callback, provider refusal, transaction replay, transaction expiry, provider unavailable) is an internal outcome, never an HTTP error response; it clears both cookies and answers the fixed 303 /sign-in?auth=error. Final app redirect carries only this fixed outcome, never identity, role, credential, authorization code, provider token, or provider error text.
+    errors: []
+  - name: current-session
+    method: GET
+    path: /api/identity/session
+    request: Application session cookie.
+    response: '200 application/json {"identity":{"issuer":"verified issuer URI","subject":"verified subject","roles":["provider-asserted role"]},"expiresAt":"RFC3339 UTC timestamp"}; roles may be empty and are provider assertions only.'
+    errors: [401 IDENTITY_SESSION_REQUIRED, 503 IDENTITY_SESSION_UNAVAILABLE]
+  - name: sign-out
+    method: POST
+    path: /api/identity/session/sign-out
+    request: No body; a same-origin Origin is required, checked by the platform OriginGuard, which is the CSRF defence for this route; current session cookie optional for idempotent cleanup.
+    response: 303 See Other through Keycloak RP-Initiated Logout after durable local revocation; sends client_id and the registered post_logout_redirect_uri without an ID-token hint; clears `__Host-identity_session` using its exact name, Path=/, Secure, HttpOnly and SameSite=Lax attributes, Max-Age=0, Expires=Thu, 01 Jan 1970 00:00:00 GMT, and no Domain. Provider confirmation may be required; final return is fixed /sign-in with only a fixed outcome.
+    errors: [403 HTTP_SECURITY_ORIGIN_REJECTED, 503 IDENTITY_SESSION_UNAVAILABLE]
+guarantees:
+  - A 200 current-session response represents verified issuer and subject and only provider-asserted roles; client claims grant no authority, PREMIUM is owned by subscription-premium, and no learner role is required.
+  - A signed-out, unknown, expired or revoked session read returns explicit 401 IDENTITY_SESSION_REQUIRED and clears the cookie; it never returns 200 with an unauthenticated envelope.
+  - Session references are opaque random values; PostgreSQL stores only their digest with identity, expiry and revocation state. Every protected request reads current expiry/revocation, so a revoked copied reference is refused.
+  - Session expiry is the earlier of provider ID-token expiry and configured local maximum (28800 seconds); this slice performs no automatic refresh and expired sessions require sign-in.
+  - State-changing start and sign-out requests pass existing OriginGuard and CSRF policy; the provider callback is an explicitly public OIDC handshake route subject to strict rate limiting and one-use state/browser binding.
+  - The global platform guards run before every session door and may refuse first, before any door including the public sign-in-callback, answering 403 HTTP_SECURITY_ORIGIN_REJECTED or 429 HTTP_SECURITY_RATE_LIMITED; these refusals are platform outcomes separate from each door's own errors, and the callback's fixed 303 outcomes are unchanged (its errors list stays empty).
+  - Provider failures, transaction replay, mismatch, expiry, concurrency loss, or database uncertainty fail closed without issuing or retaining an authenticated session; local sign-out revocation occurs before provider logout and remains effective if provider logout fails.
+  - Redirects are fixed application-owned callback and /sign-in URIs registered for the selected client; no request parameter, role claim, or absolute user-supplied redirect controls a destination.
+  - The transient authorization code and state appear only in the provider-to-backend registered callback query and are consumed once; they never enter the app /sign-in redirect, frontend JavaScript state, logs, or error text. Final success/failure redirects carry only fixed safe outcome information, never identity, role or credential.
+  - Cookie names are `__Host-identity_session` and `__Host-identity_login`; both are Secure, HttpOnly, SameSite=Lax, Path=/ and omit Domain. Deletion uses matching attributes plus Max-Age=0 and Expires=Thu, 01 Jan 1970 00:00:00 GMT.
+  - ID-token signatures accept only literal asymmetric algorithm RS256 for this provisional Keycloak client; other algorithms require matching explicit configuration, never token-selected algorithms or HMAC.
+consumerObligations:
+  - Treat only 200 as authenticated; on 401 route the learner to /sign-in and do not infer identity or roles from client state.
+  - Enforce authorization for feature-specific permissions independently of authentication and provider role claims.
+  - Send state-changing requests with the existing same-origin Origin and CSRF policy; never disable Secure cookie requirements for a development origin.
+  - Do not supply redirect destinations or identity/role claims as authorization inputs.
+extensions:
+  provisionalArchitecture: Kernel provisional architecture; contract is the implementation source until provider/client-specific values are supplied and behavior is proven.
+  requiredConfiguration:
+    - {key: IDENTITY_KEYCLOAK_ISSUER, type: required HTTPS URL, default: none, custody: 'owner-provided development issuer per ruling r-a6c777d4da5e', development: 'https://localhost:8089/realms/starci-next-identity'}
+    - {key: IDENTITY_KEYCLOAK_CLIENT_ID, type: required string, default: none, custody: 'owner-provided client selection and registration per ruling r-a6c777d4da5e', development: 'starci-next-identity-lane (reused confidential client)'}
+    - {key: IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE, type: required secret file path for confidential client, default: none, custody: keycloak-client-secret in owner shared-master SOPS custody; value never belongs in Work}
+    - {key: IDENTITY_KEYCLOAK_CALLBACK_URI, type: required exact HTTPS URI, default: none, custody: 'app deployment configuration and exact client registration; must resolve to /api/identity/session/callback', development: 'https://localhost:3001/api/identity/session/callback registered on starci-next-identity-lane per r-a6c777d4da5e'}
+    - {key: IDENTITY_KEYCLOAK_POST_LOGOUT_URI, type: required exact HTTPS URI, default: none, custody: 'app deployment configuration and exact client registration; fixed app destination /sign-in', development: 'https://localhost:3000/sign-in registered on starci-next-identity-lane per r-a6c777d4da5e'}
+    - {key: IDENTITY_SESSION_MAX_SECONDS, type: positive integer tunable, default: 28800, custody: application configuration}
+    - {key: IDENTITY_TRANSACTION_TTL_SECONDS, type: positive integer tunable, default: 300, custody: application configuration}
+    - {key: IDENTITY_PROVIDER_TIMEOUT_MS, type: positive integer tunable, default: 10000, custody: application configuration}
+  unresolved:
+    - 'Q-A1 is answered by owner ruling r-a6c777d4da5e (tk-0f64ccd66b5e, goal v55): development issuer https://localhost:8089/realms/starci-next-identity, reuse of starci-next-identity-lane, custody keycloak-learner-test. Live confirmation of the declared client and realm registrations remains a keycloak-live prerequisite and gates live verification and acceptance only.'
+    - 'The development origins serve HTTPS with Secure cookies: app https://localhost:3001, post-logout https://localhost:3000, Keycloak https://localhost:8089. No local insecure-cookie exception is authorized.'
+    - 'keycloak-live still verifies that client starci-next-identity-lane permits browser logout with client_id and the registered post_logout_redirect_uri https://localhost:3000/sign-in without an ID-token hint; if it cannot complete logout and return, record the configuration gap here before live proof or acceptance.'
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Exercise all four transport doors, response/status schemas, Origin/CSRF policy, redirect safety and lifecycle failure cases.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Owner ruling r-a6c777d4da5e (Q-A1 answered, tk-0f64ccd66b5e, goal v55): record the development issuer, reused client starci-next-identity-lane, callback and post-logout URIs and learner test-account custody in requiredConfiguration and unresolved; live registration and logout-behavior confirmation stays with keycloak-live.'}

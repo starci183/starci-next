@@ -1,7 +1,17 @@
+import { SetMetadata } from "@nestjs/common"
 import { injector } from "@modules/platform/composition"
 import type { TypedParameterDecorator } from "@modules/platform/composition"
 import type { HttpSecurityOptions } from "./http-security.options"
 import type { WebhookSignatureService } from "./webhook-signature.service"
+
+/** Metadata for doors that require an actual Origin, including the start of a cookie-authenticated flow. */
+export const REQUIRE_ORIGIN_KEY = "platform.http-security.require-origin"
+
+/** The decorator RequireOrigin returns: it marks a handler method or a whole controller class. */
+export type RequireOriginDecorator = MethodDecorator & ClassDecorator
+
+/** Requires an allowed Origin on mutations even before the caller has received its first cookie. */
+export const RequireOrigin = (): RequireOriginDecorator => SetMetadata(REQUIRE_ORIGIN_KEY, true)
 
 /** Token of the http-security options, exported so a spec can provide it. */
 export const HTTP_SECURITY_OPTIONS: unique symbol = Symbol("platform.http-security.options")

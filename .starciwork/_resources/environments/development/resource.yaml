@@ -1,0 +1,20 @@
+﻿schema: work/resource@1
+id: environment.identity.development
+title: Identity development environment
+state: todo
+activity: idle
+refs:
+  - integration.identity.keycloak
+origins:
+  application: unresolved; no application origin is declared by the app runbook available to this task.
+  keycloakIssuer: unresolved owner prerequisite Q-A1; use only the app's actual development issuer when supplied.
+allowedEffects:
+  - Browser navigation and temporary authentication session in the disposable test context.
+  - End the local and provider sessions during cleanup.
+blockedBy:
+  - Q-A1
+blockers:
+  - Q-A1 OPEN: owner must provide app development Keycloak issuer, decide reuse of confidential client starci-next-identity-lane versus a separate client, and name learner test-account custody. The sibling development runbook documents keycloak-client-secret as encrypted SOPS custody under the shared master identity; this resource stores no secret or identity value.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Define the unresolved development environment without inventing a reachable origin.}
+extensions:
+  proof: Live acceptance remains blocked until Q-A1 is resolved; no proof is complete.

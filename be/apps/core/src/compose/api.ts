@@ -1,4 +1,5 @@
 import type { DynamicModule, Type } from "@nestjs/common"
+import { IdentityHttpModule } from "@features/api/identity"
 
 /** The API transports of the app; `starci app add api` registers each generated door here. */
-export const apiModules = (): Array<Type<unknown> | DynamicModule> => []
+export const apiModules = (): Array<Type<unknown> | DynamicModule> => [IdentityHttpModule.register({})]
