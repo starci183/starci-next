@@ -1,0 +1,40 @@
+﻿schema: work/implementation@1
+id: impl.identity.be.sign-in
+title: Back-end identity sign-in implementation
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: module
+    path: be/src/modules/domain/identity
+  - role: feature
+    path: be/src/features/api/identity
+  - role: integration
+    path: be/src/modules/integrations/keycloak
+  - role: composition/configuration
+    path: be/apps/core/src
+proves: [br.identity.sign-in, fr.identity.sign-in, fr.identity.sign-out, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak]
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Exercise all four transport doors, response/status schemas, Origin/CSRF policy, redirect safety and lifecycle failure cases.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Exercise transport schemas, callback redirect and cookie attributes, current-session persistence and revocation behavior.
+extensions:
+  eslintCanonBeLink:
+    branch: pkg/starci-next-app-eslint-canon-be-build
+    head: 1536c66fe
+    handoff: "none: PKG_HANDOFF_EMPTY, source already on main"
+    tests: "775/775 passed (npm test in the branch worktree)"
+    linkedWith: "starci deps source --local --from D:/.claude/.claude/worktrees/pkg-starci-next-app-eslint-canon-be-build/packages --package @starci/eslint-canon-be; node_modules/@starci/eslint-canon-be 3.6.5 dist/connections.js admits http-security"
+  eslintCanonBeKeycloak:
+    branch: pkg/starci-next-app-canon-be-keycloak-verifier
+    head: 5075ac4dae10a3d2ced38bfa84395cc4f32f974d
+    handoff: "starci pkg handoff records head 5075ac4da for Debug; eslint-canon-be 3.6.9 is the only version bump, and the shared runtime and pin copies move together."
+    tests: "npm test in the package branch's packages/eslint-canon-be passes typecheck and all 783 tests; npm run build passes. The exact preserved keycloak.client.ts verifier passes jwtPolicyProblems, and both exact preserved spec files consume their public tokens when staged."
+    linkedWith: "starci deps source --local --prebuilt --from D:/.claude/.claude/worktrees/pkg-starci-next-app-canon-be-keycloak-verifier/packages --package @starci/eslint-canon-be; node_modules/@starci/eslint-canon-be is 3.6.9 and contains the revised OIDC audience policy."
+    r260: "Every jose JWT verifier retains the non-empty literal ES256, RS256 and EdDSA subset and typed configuration issuer requirement. The Supabase integration verifier retains rejection of every role other than authenticated before principal return; other OIDC verifiers require an audience derived from typed configuration. The owning R260 law, bundled catalogs and shared helper copies agree; lite and full specs cover role-free OIDC, configured audiences, unsafe algorithms, invalid issuer/audience and the existing Supabase role cases."
+    r25: "No rule change: the preserved session.service.spec.ts is a counted service spec and keycloak.client.spec.ts is a counted logic-client spec; their @modules public-entry imports and provide/useValue bindings are correct. Reproduction with both complete preserved files accepts KEYCLOAK and HTTP_CLIENT when the specs are staged and reports both tokens unused when those same specs are untracked. be-sign-in must git add be/src/modules/domain/identity/session.service.spec.ts and be/src/modules/integrations/keycloak/keycloak.client.spec.ts before lint, alongside their new production files; no token import, spec kind or provider binding changes are required. Module-alias token-consumer regression specs pass in lite and full."
+  implementationScope: Identity implementation owns the listed domain, API, Keycloak integration and core composition/configuration directories. Package manifest edits are limited to dependencies already pinned in harness stack/pins.yaml; be/contracts/core changes come only from contract emission.
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: Record the eslint-canon-be 3.6.9 package branch and Debug handoff that scope R260 to Supabase roles or configured OIDC audiences, and the preserved R25 reproduction showing new token-consumer specs must be staged before lint.}

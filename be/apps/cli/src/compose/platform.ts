@@ -1,19 +1,33 @@
 import type { DynamicModule } from "@nestjs/common"
 import { noteEntities, noteMigrations } from "@modules/domain/note"
+import { identityEntities, identityMigrations } from "@modules/domain/identity"
 import { entitlementEntities, entitlementMigrations } from "@modules/domain/entitlement"
 import { purchaseEntities, purchaseMigrations } from "@modules/domain/purchase"
 import { ClockModule } from "@modules/platform/clock"
 import { DatabaseModule } from "@modules/platform/database"
 import type { DatabaseConnectionConfig, DatabaseConnectionOptions } from "@modules/platform/database"
 import { HttpModule } from "@modules/platform/http"
+import { httpSecurityEntities, httpSecurityMigrations } from "@modules/platform/http-security"
 import { LoggingModule } from "@modules/platform/logging"
 import type { CliAppOptions } from "../cli.options"
 
 /** Binds the primary connection to its owners' entities and migrations during composition. */
 const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnectionOptions => ({
     ...primary,
-    entities: [...noteEntities, ...entitlementEntities, ...purchaseEntities],
-    migrations: [...noteMigrations, ...entitlementMigrations, ...purchaseMigrations],
+    entities: [
+        ...httpSecurityEntities,
+        ...noteEntities,
+        ...identityEntities,
+        ...entitlementEntities,
+        ...purchaseEntities,
+    ],
+    migrations: [
+        ...httpSecurityMigrations,
+        ...noteMigrations,
+        ...identityMigrations,
+        ...entitlementMigrations,
+        ...purchaseMigrations,
+    ],
 })
 
 /** The clock, logger and declared database connections shared by CLI commands. */

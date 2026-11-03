@@ -6,6 +6,7 @@ import { getMessages, getRequestConfig } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { locale as routeLocale } from "next/root-params"
 import { PRODUCT_TIME_ZONE, routing } from "./routing"
+import type { Routing } from "./routing"
 
 /** Loads one app's own catalog for a served locale. */
 type LoadMessages = (locale: string) => Promise<unknown>
@@ -27,6 +28,20 @@ const isLocaleReader = (value: unknown): value is () => Promise<unknown> => type
 
 const readRouteLocale = async (): Promise<unknown> => (isLocaleReader(routeLocale) ? routeLocale() : undefined)
 
+/** What one app's `modules/i18n` holds: the locale-aware navigation, the request config and the locale segment reader. */
+export type AppI18n = {
+    readonly navigation: ReturnType<typeof createNavigation<Routing["locales"], "as-needed", never, never>>
+    readonly requestConfig: ReturnType<typeof getRequestConfig>
+    readonly readLocaleSegment: (params: Promise<{ readonly locale: string }>) => Promise<LocaleSegment>
+}
+
+/** What a valid `[locale]` segment resolves to: the language, its catalog and the product time zone. */
+type LocaleSegment = {
+    readonly locale: string
+    readonly messages: AbstractIntlMessages
+    readonly timeZone: string
+}
+
 /**
  * The next-intl stack of one app of the product, written once here and called once by each app's `modules/i18n` (R59): the
  * product's one routing with its locale-aware navigation, the request config next-intl's plugin loads (the app's
@@ -34,8 +49,8 @@ const readRouteLocale = async (): Promise<unknown> => (isLocaleReader(routeLocal
  * the app in the text of a message its catalog lacks (`<app>:<namespace>.<key>`); `loadMessages` loads its own catalogs. A server
  * module: a client component reads the default locale from `./routing`.
  */
-export const createAppI18n = (app: string, loadMessages: LoadMessages) => ({
-    navigation: createNavigation(routing),
+export const createAppI18n = (app: string, loadMessages: LoadMessages): AppI18n => ({
+    navigation: createNavigation<Routing["locales"], "as-needed", never, never>(routing),
     /**
      * The locale is the `[locale]` route param read through `next/root-params` (`experimental.rootParams` in the app's next.config.ts,
      * FE-I18N-1), never the deprecated `requestLocale`. An unrecognised locale resolves to the default before the loader runs, so a

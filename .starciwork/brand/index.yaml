@@ -100,7 +100,7 @@ brand:
           danger is lifted to oklch 70% 0.17 36.67 with dark ink, so danger clears AA as text and as a fill."
   color:
     tokens:
-      - token: --accent
+      - name: --accent
         value: "#7547ff"
         role: primary
         foreground: oklch(100% 0 0)
@@ -116,7 +116,7 @@ brand:
         consumedAs: The primary fill for primary actions, the selected navigation state and focus rings, and
           - because HeroUI derives --link and the soft accent from it - the product's only purple, including
           link text.
-      - token: --accent-foreground
+      - name: --accent-foreground
         value: oklch(100% 0 0)
         role: primary-foreground
         source:
@@ -124,7 +124,7 @@ brand:
           line: 144
           declaration: "--accent-foreground: oklch(100% 0 0);"
         familyKnob: --starci-core-accent-foreground (same value)
-      - token: --background
+      - name: --background
         value: oklch(97.02% 0.0015 354.13)
         role: canvas
         foreground: oklch(21.03% 0.0015 354.13)
@@ -137,7 +137,7 @@ brand:
           line: 162
           declaration: "--foreground: oklch(21.03% 0.0015 354.13);"
         familyKnob: --starci-core-canvas (same value)
-      - token: --surface
+      - name: --surface
         value: oklch(100% 0.0008 354.13)
         role: surface
         foreground: oklch(21.03% 0.0015 354.13)
@@ -150,14 +150,14 @@ brand:
           line: 149
           declaration: "--surface-foreground: oklch(21.03% 0.0015 354.13);"
         familyKnob: --starci-core-surface (same value)
-      - token: --surface-foreground
+      - name: --surface-foreground
         value: oklch(21.03% 0.0015 354.13)
         role: surface-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 149
           declaration: "--surface-foreground: oklch(21.03% 0.0015 354.13);"
-      - token: --surface-secondary
+      - name: --surface-secondary
         value: oklch(95.24% 0.0012 354.13)
         role: surface-secondary
         foreground: oklch(21.03% 0.0015 354.13)
@@ -170,19 +170,19 @@ brand:
           line: 151
           declaration: "--surface-secondary-foreground: oklch(21.03% 0.0015 354.13);"
         familyKnob: --starci-core-surface-secondary (same value)
-      - token: --surface-secondary-foreground
+      - name: --surface-secondary-foreground
         value: oklch(21.03% 0.0015 354.13)
         role: surface-secondary-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 151
           declaration: "--surface-secondary-foreground: oklch(21.03% 0.0015 354.13);"
-      - token: --starci-surface-tertiary
+      - name: --starci-surface-tertiary
         value: oklch(93.73% 0.0012 354.13)
         role: surface-tertiary
         valueSource:
           path: starci-academy-fe/src/app/globals.css
-          token: --surface-tertiary
+          name: --surface-tertiary
           value: oklch(93.73% 0.0012 354.13)
           line: 152
           sha256: 0ee8a826f7523716cd7cc9fe4fda0ab852974ad8d3f640d0a74987579e2793f3
@@ -197,7 +197,7 @@ brand:
           and refuses it as planned-source-missing at the verify stage while the app still does not declare it.
         consumedAs: The third surface level of the Academy dashboard and subscriptions render (the tertiary
           face under --surface-secondary), with --foreground as its reading text.
-      - token: --foreground
+      - name: --foreground
         value: oklch(21.03% 0.0015 354.13)
         role: foreground
         source:
@@ -205,7 +205,7 @@ brand:
           line: 162
           declaration: "--foreground: oklch(21.03% 0.0015 354.13);"
         familyKnob: --starci-core-foreground (same value)
-      - token: --muted
+      - name: --muted
         value: oklch(55.17% 0.003 354.13)
         role: muted
         source:
@@ -215,7 +215,7 @@ brand:
         familyKnob: --starci-core-muted (the Core export declares oklch(52% 0.003 354.13); Academy is
           lighter, so the FE must re-point this knob)
         note: "A text colour, so it carries no foreground of its own; its measured pairs are in policy.measuredPairs. Academy value restored 2026-09-30 (owner: follow HeroUI, no extreme contrast; y90 had moved it to 51%): 4.01:1 to 4.82:1 on the four surfaces. sRGB #737172."
-      - token: --focus
+      - name: --focus
         value: "#7248ff"
         role: focus
         source:
@@ -223,7 +223,7 @@ brand:
           line: 179
           declaration: "--focus: #7248ff;"
         familyKnob: --starci-core-focus (same value)
-      - token: --border
+      - name: --border
         value: oklch(90% 0.0015 354.13)
         role: border
         source:
@@ -231,7 +231,7 @@ brand:
           line: 177
           declaration: "--border: oklch(90% 0.0015 354.13);"
         familyKnob: --starci-core-border (same value)
-      - token: --separator
+      - name: --separator
         value: oklch(92% 0.0015 354.13)
         role: separator
         source:
@@ -239,7 +239,7 @@ brand:
           line: 178
           declaration: "--separator: oklch(92% 0.0015 354.13);"
         familyKnob: --starci-core-separator (same value)
-      - token: --success
+      - name: --success
         value: oklch(73.29% 0.1941 162.85)
         role: success
         note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 58%). Dark ink on the fill 8.42:1. As text or an icon it uses --success-soft-foreground on --success-soft (4.08:1 to 4.80:1); as a bare glyph it is 1.75:1 to 2.10:1, accepted. sRGB #00cc84."
@@ -253,14 +253,14 @@ brand:
           line: 167
           declaration: "--success-foreground: oklch(21.03% 0.0059 162.85);"
         familyKnob: --starci-core-success (same value)
-      - token: --success-foreground
+      - name: --success-foreground
         value: oklch(21.03% 0.0059 162.85)
         role: success-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 167
           declaration: "--success-foreground: oklch(21.03% 0.0059 162.85);"
-      - token: --warning
+      - name: --warning
         value: oklch(78.19% 0.159 84.37)
         role: warning
         note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 61%). Dark ink on the fill 8.80:1. As text or an icon it uses --warning-soft-foreground on --warning-soft (4.34:1 to 5.10:1); as a bare glyph it is 1.67:1 to 2.01:1, accepted. sRGB #e7ae0a."
@@ -274,14 +274,14 @@ brand:
           line: 169
           declaration: "--warning-foreground: oklch(21.03% 0.0059 84.37);"
         familyKnob: --starci-core-warning (same value)
-      - token: --warning-foreground
+      - name: --warning-foreground
         value: oklch(21.03% 0.0059 84.37)
         role: warning-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 169
           declaration: "--warning-foreground: oklch(21.03% 0.0059 84.37);"
-      - token: --danger
+      - name: --danger
         value: oklch(62% 0.2335 37.78)
         role: danger
         note: "Solid danger fill with white ink (owner 2026-09-30: follow HeroUI; HeroUI danger takes white ink). Lightness 62%, between the Academy 65.32% (white ink 3.45:1) and y90 56%: white ink on the fill 3.92:1, the tone 3.35:1 to 4.02:1 as a glyph, --danger-soft-foreground on --danger-soft 4.95:1 to 5.85:1. sRGB #f0521c."
@@ -296,14 +296,14 @@ brand:
           declaration: "--danger-foreground: oklch(99.11% 0 0);"
         familyKnob: --starci-core-danger (the Core export declares oklch(55% 0.2 37.78); Academy is lighter
           and the same hue, so the FE must re-point this knob)
-      - token: --danger-foreground
+      - name: --danger-foreground
         value: oklch(99.11% 0 0)
         role: danger-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 171
           declaration: "--danger-foreground: oklch(99.11% 0 0);"
-      - token: --info
+      - name: --info
         value: oklch(72% 0.17 250)
         role: info
         note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 61%). Dark ink on the fill 7.03:1. As text or an icon it uses --info-soft-foreground on --info-soft (4.15:1 to 4.89:1, 60/40 mix); as a bare glyph it is 2.09:1 to 2.51:1, accepted. sRGB #40a9ff."
@@ -317,20 +317,20 @@ brand:
           line: 174
           declaration: "--info-foreground: oklch(21.03% 0.0059 250);"
         familyKnob: --starci-core-info (same value)
-      - token: --info-foreground
+      - name: --info-foreground
         value: oklch(21.03% 0.0059 250)
         role: info-foreground
         source:
           path: starci-academy-fe/src/app/globals.css
           line: 174
           declaration: "--info-foreground: oklch(21.03% 0.0059 250);"
-      - token: --starci-core-accent-text
+      - name: --starci-core-accent-text
         value: "#7547ff"
         role: other
         foreground: oklch(100% 0 0)
         familyKnob: --starci-core-accent-text (the Core root maps --link and --accent-soft-foreground from it)
         note: "The link ink (links, current tab, section eyebrow). Rev 7 declares it in modules/brand/brand.css. It equals the accent value again (owner 2026-09-30: follow HeroUI, no extreme contrast; y90 had darkened it to oklch(54% 0.253 286.6)): 4.26:1 to 5.11:1 on the four surfaces and 4.75:1 on the soft accent ground."
-      - token: --starci-core-accent-soft
+      - name: --starci-core-accent-soft
         value: oklch(97.5% 0.015 287)
         role: other
         foreground: "#7547ff"
@@ -340,104 +340,104 @@ brand:
     dark:
       note: "Authored by the lead on 2026-09-29 under the owner ruling 'dark mode light mode phai co' (no exceptions), derived from the light palette above and PENDING OWNER REVIEW. The brand hue is kept (purple 287 for the accent family, neutral hue 354.13) and every text pair and non-text pair below meets WCAG AA outright; the light-mode contrastExceptions do not carry over. Values live in starci-next-fe apps/web/src/modules/brand/brand.css under .dark, on the --starci-core-* tokens the Core root maps these semantic names from."
       tokens:
-        - token: --accent
+        - name: --accent
           value: oklch(68% 0.17 287)
           foreground: oklch(17% 0.02 287)
           role: primary
           note: "The accent fill in dark: the same purple family lifted to 68% lightness so it reads as an indicator on every dark surface (4.65-6.48:1 non-text against canvas, surface, secondary and tertiary), with dark ink on it (6.31:1). Light keeps #7547ff with white ink. sRGB #9384fa."
-        - token: --accent-foreground
+        - name: --accent-foreground
           value: oklch(17% 0.02 287)
           role: primary-foreground
           note: "The ink on the dark accent fill. sRGB #0f0e18."
-        - token: --background
+        - name: --background
           value: oklch(15% 0.0015 354.13)
           foreground: oklch(97.5% 0.0015 354.13)
           role: canvas
           note: "The dark page canvas. Foreground on it 18.27:1. sRGB #0c0b0b."
-        - token: --surface
+        - name: --surface
           value: oklch(21.03% 0.003 354.13)
           foreground: oklch(97.5% 0.0015 354.13)
           role: surface
           note: "The dark card and panel surface. Foreground on it 16.43:1. sRGB #1a1818."
-        - token: --surface-foreground
+        - name: --surface-foreground
           value: oklch(97.5% 0.0015 354.13)
           role: surface-foreground
           note: "Reading text on dark surfaces. sRGB #f8f6f7."
-        - token: --surface-secondary
+        - name: --surface-secondary
           value: oklch(25.7% 0.0023 354.13)
           foreground: oklch(97.5% 0.0015 354.13)
           role: surface-secondary
           note: "The second dark surface level. Foreground on it 14.57:1. sRGB #242323."
-        - token: --surface-secondary-foreground
+        - name: --surface-secondary-foreground
           value: oklch(97.5% 0.0015 354.13)
           role: surface-secondary-foreground
           note: "Reading text on the second dark surface. sRGB #f8f6f7."
-        - token: --starci-surface-tertiary
+        - name: --starci-surface-tertiary
           value: oklch(29% 0.0023 354.13)
           foreground: oklch(97.5% 0.0015 354.13)
           role: surface-tertiary
           note: "The third dark surface level. Foreground on it 13.12:1. sRGB #2c2b2b."
-        - token: --foreground
+        - name: --foreground
           value: oklch(97.5% 0.0015 354.13)
           role: foreground
           note: "Ordinary reading text in dark. sRGB #f8f6f7."
-        - token: --muted
+        - name: --muted
           value: oklch(74% 0.003 354.13)
           role: muted
           note: "Secondary text in dark; 6.11-8.51:1 on canvas, surface, secondary and tertiary. sRGB #acaaab."
-        - token: --focus
+        - name: --focus
           value: oklch(72% 0.16 287)
           role: focus
           note: "The keyboard focus ring in dark; 5.40-7.52:1 non-text on every dark surface. sRGB #9f92ff."
-        - token: --border
+        - name: --border
           value: oklch(36% 0.0015 354.13)
           role: border
           note: "The outline of one object; decorative, the boundary of a control is carried by its text or fill. sRGB #3e3d3d."
-        - token: --separator
+        - name: --separator
           value: oklch(30% 0.0015 354.13)
           role: separator
           note: "The hairline between two things inside one object. sRGB #2e2d2e."
-        - token: --success
+        - name: --success
           value: oklch(73.29% 0.1941 162.85)
           foreground: oklch(21.03% 0.0059 162.85)
           role: success
           note: "Unchanged from light, 8.40:1 with its ink. sRGB #00cc84."
-        - token: --success-foreground
+        - name: --success-foreground
           value: oklch(21.03% 0.0059 162.85)
           role: success-foreground
           note: "Ink on the success fill. sRGB #161918."
-        - token: --warning
+        - name: --warning
           value: oklch(82.03% 0.1392 88.38)
           foreground: oklch(21.03% 0.0059 88.38)
           role: warning
           note: "The Core dark warning, 10.16:1 with its ink. sRGB #e9bf4b."
-        - token: --warning-foreground
+        - name: --warning-foreground
           value: oklch(21.03% 0.0059 88.38)
           role: warning-foreground
           note: "Ink on the warning fill. sRGB #191815."
-        - token: --danger
+        - name: --danger
           value: oklch(70% 0.17 36.67)
           foreground: oklch(21.03% 0.0059 36.67)
           role: danger
           note: "Lifted to 70% with dark ink (6.19:1); as a fill or as text it clears AA on every dark surface (4.92-6.85:1 as text on canvas, surface, secondary and tertiary). Light stays the owner-accepted white-on-orange-red. sRGB #f4714c."
-        - token: --danger-foreground
+        - name: --danger-foreground
           value: oklch(21.03% 0.0059 36.67)
           role: danger-foreground
           note: "Ink on the dark danger fill. sRGB #1b1716."
-        - token: --info
+        - name: --info
           value: oklch(72% 0.17 250)
           foreground: oklch(21.03% 0.0059 250)
           role: info
           note: "Unchanged from light, 7.01:1 with its ink. sRGB #40a9ff."
-        - token: --info-foreground
+        - name: --info-foreground
           value: oklch(21.03% 0.0059 250)
           role: info-foreground
           note: "Ink on the info fill. sRGB #16191b."
-        - token: --starci-core-accent-text
+        - name: --starci-core-accent-text
           value: oklch(78% 0.12 287)
           role: other
           note: "The text-safe accent (links, current tab, eyebrow) in dark: 6.83-9.51:1 on canvas, surface, secondary and tertiary. sRGB #b2abff."
-        - token: --starci-core-accent-soft
+        - name: --starci-core-accent-soft
           value: oklch(30% 0.07 287)
           foreground: oklch(78% 0.12 287)
           role: other
@@ -1490,3 +1490,6 @@ change:
     color.dark (the derived dark palette, pending owner review), the measured dark pairs, two light tokens the
     brand layer needs (--starci-core-accent-text and --starci-core-accent-soft) and the modules/brand/brand.css
     source. The rev 6 light values are unchanged by rev 7 itself. Addendum 2026-09-30 (task y92), owner ruling "follow HeroUI soft pairing, no extreme contrast". It reverts y90 AA darkening; the muted grey, link ink, success, warning and info return to the Academy render values, danger is oklch(62% 0.2335 37.78) with white ink at 3.92:1, and the success, warning, danger and info soft pairs (HeroUI weights) are declared in brand.css for status text and icons (color.policy.heroUiPairing, decision contrastFollowsHeroUI).
+extensions:
+  portGaps:
+    - D:/Repositories/starci-next/.starciwork/brand/assets/provenance.yaml

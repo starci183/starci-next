@@ -1,0 +1,10 @@
+﻿schema: work/resource@1
+id: identity.identity.learner-test-account
+title: Disposable learner test account
+state: todo
+activity: idle
+provider: Keycloak realm starci-next-identity at issuer https://localhost:8089/realms/starci-next-identity
+custody: Custody name keycloak-learner-test, named by owner ruling r-a6c777d4da5e (tk-0f64ccd66b5e, Q-A1 answered); the account holds no operator role. Credential material is held outside Work and is not recorded here.
+change: {rev: HEAD, kind: revised, at: '2026-10-29', reason: 'Record the owner-named learner test-account custody keycloak-learner-test (ruling r-a6c777d4da5e, Q-A1 answered) without storing credentials.'}
+extensions:
+  proof: 'Runs against development issuer https://localhost:8089/realms/starci-next-identity with reused client starci-next-identity-lane; issuer, client choice and account custody are supplied by owner ruling r-a6c777d4da5e (Q-A1 answered).'

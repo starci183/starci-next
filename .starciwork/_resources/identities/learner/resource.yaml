@@ -1,0 +1,7 @@
+﻿schema: work/resource@1
+id: identity.learner
+title: Disposable Keycloak learner
+kind: identity
+provider: Keycloak
+custody: Test account name is recorded here; credential values are held in the non-production identity provider and secret custody.
+name: starci-learner

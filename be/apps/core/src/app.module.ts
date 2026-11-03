@@ -22,7 +22,7 @@ export class AppModule {
             imports: [
                 ...platformModules(options),
                 ...integrationsModules(options),
-                ...domainModules(),
+                ...domainModules(options),
                 ...systemModules(),
                 ...apiModules(),
                 ...webhooksModules(),

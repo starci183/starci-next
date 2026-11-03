@@ -9,11 +9,14 @@ export const DEFAULT_LOCALE = "vi"
 /** The product's time zone: fixed, not inferred, so the server and the hydrated client format the same instant the same way. */
 export const PRODUCT_TIME_ZONE = "Asia/Ho_Chi_Minh"
 
+/** The type of the routing table: next-intl's routing config over the product's locales. */
+export type Routing = ReturnType<typeof defineRouting<typeof LOCALES, "as-needed">>
+
 /**
  * The one routing table of the product, for the proxy, the navigation and the request config of every app: vi default, a prefix
  * only when the locale is not the default, so `/vi` means the same thing on every app.
  */
-export const routing = defineRouting({
+export const routing: Routing = defineRouting({
     locales: LOCALES,
     defaultLocale: DEFAULT_LOCALE,
     localePrefix: "as-needed",
