@@ -1,9 +1,10 @@
-import type { ReactNode } from "react"
+import type { ReactNode, ReactElement } from "react"
 import { LocaleShell } from "@starci-next/ui"
 import { AppProviders } from "@/components/providers/AppProviders"
 import { AppLayout, appLayoutMetadata } from "@/features/layouts/AppLayout"
 import { appI18n } from "@/modules/i18n"
 import "../globals.css"
+import type { Metadata } from "next"
 
 type LayoutProps = {
     readonly children: ReactNode
@@ -11,10 +12,11 @@ type LayoutProps = {
 }
 
 /** The localized document title of this route segment. */
-export const generateMetadata = async (props: LayoutProps) => appLayoutMetadata((await props.params).locale)
+export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
+    appLayoutMetadata((await props.params).locale)
 
 /** The locale segment's layout slot: the document of the address's language, the app's client providers and its chrome. */
-const Layout = async (props: LayoutProps) => (
+const Layout = async (props: LayoutProps): Promise<ReactElement> => (
     <LocaleShell {...await appI18n.readLocaleSegment(props.params)}>
         <AppProviders>
             <AppLayout content={props.children} />
