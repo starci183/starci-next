@@ -4,10 +4,11 @@
  * run through the cli app and boots the api apps in process.
  */
 import { defineTestWorld } from "@starci/test-world"
+import type { TestWorldApi } from "@starci/test-world"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
 import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
 
-export const { useTestWorld, useSandbox } = defineTestWorld({
+const world: TestWorldApi = defineTestWorld({
     stack: ".starcistacks/dev",
     stacks: {
         postgresql: { connections: [{ name: "primary" }] },
@@ -18,3 +19,9 @@ export const { useTestWorld, useSandbox } = defineTestWorld({
     migrate: { module: migrateCli, options: cliOptionsOf },
     modules: { base: platformBase },
 })
+
+/** Registers the hooks that boot and close the world around a spec and answers its handle; call it inside `describe`. */
+export const useTestWorld: TestWorldApi["useTestWorld"] = world.useTestWorld
+
+/** The contract layer: the real integration client against a provider sandbox, in a `contract-spec`. */
+export const useSandbox: TestWorldApi["useSandbox"] = world.useSandbox

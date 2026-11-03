@@ -8,11 +8,13 @@ module.exports = require("@starci/jest-preset").starciJestConfig({
         ],
         roles: [
             "service",
+            "schema",
             "policy",
             "projection",
             "guard",
             "mapper",
             "client",
+            "adapter",
             "filter",
             "interceptor",
             "processor",
@@ -23,6 +25,7 @@ module.exports = require("@starci/jest-preset").starciJestConfig({
             "consumer",
             "webhook",
         ],
+        files: ["src/modules/integrations/passport/passport.kit.ts"],
         excludes: [
             "src/modules/domain/*/errors/**",
             "src/modules/domain/*/messages/**",

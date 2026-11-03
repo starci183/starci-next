@@ -14,7 +14,7 @@ export interface SignOutButtonBaseProps {
 export const SignOutButtonBase = (props: SignOutButtonBaseProps) => (
     <>
         <Text>{props.props.principal}</Text>
-        <Button variant="secondary" isPending={props.props.pending} onPress={props.on.press}>
+        <Button intent="neutral" isPending={props.props.pending} onPress={props.on.press}>
             {props.props.label}
         </Button>
     </>

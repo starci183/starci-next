@@ -1,0 +1,12 @@
+{"findings":[],"hash":"391404b2b6d1b432dc55c6505c79efbd0356878243825e8c593a2f72f3c0a29c","path":"fe/packages/starci-next-ui/package.json","step":"prettier"}
+{"findings":[],"hash":"544494f010e1b888c274025e25999f1fff5daf266e4fcae0c82a034792a35a02","path":"fe/packages/starci-next-ui/src/branches/Providers/index.tsx","step":"prettier"}
+{"findings":[],"hash":"35a4cad042d2cdecce966476f76b08affab0ff6095c51031f72730e52eaa240f","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"prettier"}
+{"findings":[],"hash":"6ba179c59c8d4df574d610e6e167739328fc9924d6ab7e1302e27a278a87237d","path":"fe/packages/starci-next-ui/src/composites/GlobalErrorNotice/index.tsx","step":"prettier"}
+{"findings":[],"hash":"ab82605601078aa149942f21c11a9771d88235a1c1a08da1260f06786a124b70","path":"fe/packages/starci-next-ui/src/composites/LoadingNotice/index.tsx","step":"prettier"}
+{"findings":[],"hash":"41943ff2509ff4c09424c6ef85554e4420a520b6d2ae7351896edc84f4d10eeb","path":"fe/packages/starci-next-ui/src/composites/LocaleShell/index.tsx","step":"prettier"}
+{"findings":[],"hash":"1c4fb0d9aeac680d82692b030d9714bd34a7cbb2de2e1a5aab69a7f974ec4aac","path":"fe/packages/starci-next-ui/src/composites/NotFoundNotice/index.tsx","step":"prettier"}
+{"findings":[],"hash":"1578a5aeee4c930acbb624cec6c3fdf03449355d78e3c94cb310e2c203f451fe","path":"fe/packages/starci-next-ui/src/frames/SiteShell/index.tsx","step":"prettier"}
+{"findings":[],"hash":"24fb09e15ad59901375862cc22d641cc3ceba978c41818f4763713e210f97acf","path":"fe/packages/starci-next-ui/src/index.ts","step":"prettier"}
+{"findings":[],"hash":"693a16212c60148714c0b31a5b19584f43816b0bfbbaf89250489164141fff34","path":"fe/packages/starci-next-ui/src/leaves/Icon/index.tsx","step":"prettier"}
+{"findings":[],"hash":"2931539bb0f1e29080054fe0a2717352e15285662241480a7358a3ef40b7174e","path":"fe/packages/starci-next-ui/tsconfig.build.json","step":"prettier"}
+{"findings":[],"hash":"73109e2a7ccde906d948dca16e015cf3bd6f6c99b3aff7fcd5ab2fd12fde5069","path":"fe/packages/starci-next-ui/tsconfig.json","step":"prettier"}

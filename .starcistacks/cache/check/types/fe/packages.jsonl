@@ -1,0 +1,2 @@
+{"findings":[],"hash":"82fc0d14c82d85f3ccc293f6ec742fa9fe4a7f3a777ab424ef0d7ec7b7cd7ec3","path":"fe/packages/starci-next-i18n","step":"tsc"}
+{"findings":[],"hash":"ff7526c4afe05d0472a433f21d9f9aa9549bae9122cb89a578fe62009a97a60b","path":"fe/packages/starci-next-ui","step":"tsc"}

@@ -1,0 +1,7 @@
+{"findings":[],"hash":"47d18d5465bc5a599729ff55b60033bf5f4550c1828e68f881ee90f7fb6fcc6e","path":".starcistacks/production/infra/swarm/Caddyfile","step":"prettier"}
+{"findings":[],"hash":"dc9c6af86cedc97c56a76ddabf1dce67ec142c7d1fd9f99eb642ebe177b48758","path":".starcistacks/production/infra/swarm/owner-actions.md","step":"prettier"}
+{"findings":[],"hash":"ac9c584f2a97d0b24cf5fb9843458e1b7d1827b692e8a921b7e531ad034ba721","path":".starcistacks/production/infra/swarm/recovery/restore-proof.md","step":"prettier"}
+{"findings":[],"hash":"fed30f24a5297412e66855225c361fba1bb751f6f8480217fe9327e88129e1e0","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"prettier"}
+{"findings":[],"hash":"d01708493a7da89cd5bd0a5ed97a9bdf19a61fe379be27bff8fbd81015f282ab","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"prettier"}
+{"findings":[],"hash":"1b7ecc8291c0be03b0bb515e55531cce72204df759bd01cf75606cc7a118791b","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"prettier"}
+{"findings":[],"hash":"71f4fcfd453c373634c582f98d2dfd70434d5c67ff2879bca0fcb68f10571c24","path":".starcistacks/production/infra/swarm/stack.yaml","step":"prettier"}

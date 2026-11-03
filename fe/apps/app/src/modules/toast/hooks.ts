@@ -22,8 +22,14 @@ const useToastMessages = (): ToastMessages => {
     )
 }
 
+/** The localized runner: runGraphQLWithToast with the reader's labels already bound. */
+export type GraphQLWithToast = <T>(
+    action: () => Promise<GraphQLResponse<T>>,
+    options?: RunWithToastOptions,
+) => Promise<GraphQLResponse<T>>
+
 /** A localized runGraphQLWithToast: every GraphQL write reports its outcome through it. */
-export const useGraphQLWithToast = () => {
+export const useGraphQLWithToast = (): GraphQLWithToast => {
     const messages = useToastMessages()
     return useCallback(
         <T>(action: () => Promise<GraphQLResponse<T>>, options?: RunWithToastOptions) =>

@@ -5,7 +5,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "starci app lint --workspace .",
     "start": "next start",
     "typecheck": "tsc --noEmit"
   },
@@ -14,11 +13,12 @@
     "@heroui/styles": "3.2.6",
     "@starci-next/i18n": "*",
     "@starci-next/ui": "*",
-    "@starci/grammar": "0.10.0",
+    "@starci/grammar": "0.21.15",
     "@xyflow/react": "12.11.6",
     "next": "16.4.2",
     "next-intl": "4.13.6",
     "react": "19.2.3",
+    "react-aria-components": "1.21.1",
     "react-dom": "19.2.3"
   }
 }

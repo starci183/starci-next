@@ -5,10 +5,6 @@ schema: starci/application-stacks@1
 # A GitHub package.json repository URL also enables the managed block.
 sources:
   - repository: "starci-next"
-backing:
-  primary:
-    provider: external-postgres
-    managed: true
 components:
   core:
     role: service
@@ -157,9 +153,13 @@ services:
       environment: dev
       compose: compose.yaml
     auth: token
-    credentials: []
+    credentials:
+      - id: analysis
+        project: "starci-next"
+        key: SONAR_TOKEN
+        custody: {repository: "starci-next", path: .starcistacks/dev/secrets/sonar.enc.yaml}
     projects: [{repository: "starci-next", key: "starci-next"}]
-    ci: {wiring: required, workflow: .github/workflows/ci.yml, token: SONAR_TOKEN, hostVar: SONAR_HOST_URL}
+    ci: {wiring: required, workflow: .github/workflows/ci.yml, token: SONAR_TOKEN, hostVar: SONAR_HOST_URL, secrets: [{name: SONAR_TOKEN, credential: analysis}]}
     ownerAction:
       needed: the starci-next project token from sonar.starci.org as the repository secret SONAR_TOKEN (starci app ci secret set SONAR_TOKEN).
       reason: the token is a credential only the owner can mint on the host Sonar server.

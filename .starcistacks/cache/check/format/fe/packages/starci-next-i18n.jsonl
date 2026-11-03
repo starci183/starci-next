@@ -1,0 +1,6 @@
+{"findings":[],"hash":"9a884ba87530208b14b01a3082bcafa91ce3a1510d2f06d244ea65ceba1c9fe0","path":"fe/packages/starci-next-i18n/package.json","step":"prettier"}
+{"findings":[],"hash":"3db1fb655c64c0ecceca0f13b47b0c7f99087a4029b6036304b4930eda21ab79","path":"fe/packages/starci-next-i18n/src/index.ts","step":"prettier"}
+{"findings":[],"hash":"e45889f57d35482d6b56a1ca2dedbfdeb15a1291bd14f1d972ee3b6352dd9e30","path":"fe/packages/starci-next-i18n/src/proxy.ts","step":"prettier"}
+{"findings":[],"hash":"1959b2b27dad98cceed82f53da4b19a28ebed8731cdf3449f6c20cfb9fe9dac2","path":"fe/packages/starci-next-i18n/src/routing.ts","step":"prettier"}
+{"findings":[],"hash":"2931539bb0f1e29080054fe0a2717352e15285662241480a7358a3ef40b7174e","path":"fe/packages/starci-next-i18n/tsconfig.build.json","step":"prettier"}
+{"findings":[],"hash":"73109e2a7ccde906d948dca16e015cf3bd6f6c99b3aff7fcd5ab2fd12fde5069","path":"fe/packages/starci-next-i18n/tsconfig.json","step":"prettier"}

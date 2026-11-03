@@ -20,12 +20,11 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "lint": "starci app lint --workspace .",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@starci/next-i18n": "0.1.0",
     "next": "16.4.2",
-    "next-intl": "4.13.6",
     "server-only": "0.0.1"
   }
 }
