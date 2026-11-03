@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
-import type { CaseReducer, PayloadAction, Slice } from "@reduxjs/toolkit"
+import type { CaseReducer, PayloadAction, Reducer, Slice } from "@reduxjs/toolkit"
 import type { AuthSession } from "@/modules/auth"
-import type { Reducer } from "redux"
 
 /** The reader's session as the app shares it: unknown until modules/auth answers, then signed in or signed out. */
 export interface SessionState {

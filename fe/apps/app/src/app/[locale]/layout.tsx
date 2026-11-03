@@ -17,11 +17,14 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
 
 /** The locale segment's layout slot: the document of the address's language, the app's client providers and its chrome. */
 const Layout = async (props: LayoutProps): Promise<ReactElement> => (
-    <LocaleShell {...await appI18n.readLocaleSegment(props.params)}>
-        <AppProviders>
-            <AppLayout content={props.children} />
-        </AppProviders>
-    </LocaleShell>
+    <LocaleShell
+        {...await appI18n.readLocaleSegment(props.params)}
+        content={
+            <AppProviders>
+                <AppLayout content={props.children} />
+            </AppProviders>
+        }
+    />
 )
 
 export default Layout

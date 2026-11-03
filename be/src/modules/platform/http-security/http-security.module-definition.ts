@@ -1,9 +1,12 @@
-import { ConfigurableModuleBuilder } from "@nestjs/common"
+import { ConfigurableModuleBuilder, type ConfigurableModuleHost } from "@nestjs/common"
 import { HTTP_SECURITY_OPTIONS } from "./http-security.decorators"
 import type { HttpSecurityOptions } from "./http-security.options"
 
+const built = new ConfigurableModuleBuilder<HttpSecurityOptions>({ optionsInjectionToken: HTTP_SECURITY_OPTIONS })
+    .setExtras({ isGlobal: false }, (definition, extras) => ({ ...definition, global: extras.isGlobal }))
+    .build()
+type Host = ConfigurableModuleHost<HttpSecurityOptions, "register", "create", { isGlobal: boolean }>
 /** The configurable-module base of the http-security capability; `isGlobal` is decided by the app root. */
-export const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN, OPTIONS_TYPE } =
-    new ConfigurableModuleBuilder<HttpSecurityOptions>({ optionsInjectionToken: HTTP_SECURITY_OPTIONS })
-        .setExtras({ isGlobal: false }, (definition, extras) => ({ ...definition, global: extras.isGlobal }))
-        .build()
+export const ConfigurableModuleClass: Host["ConfigurableModuleClass"] = built.ConfigurableModuleClass
+export const MODULE_OPTIONS_TOKEN: Host["MODULE_OPTIONS_TOKEN"] = built.MODULE_OPTIONS_TOKEN
+export const OPTIONS_TYPE: Host["OPTIONS_TYPE"] = built.OPTIONS_TYPE
