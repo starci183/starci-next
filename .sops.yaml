@@ -1,3 +1,8 @@
+# Managed by starci app secret init and recipients: one rule per environment, public age recipients only.
 creation_rules:
+  - path_regex: \.starcistacks[/\\]dev[/\\]secrets[/\\][^/\\]+\.enc(?:\.yaml)?$
+    age: age173qfq7f776syam9tpkyfej0h2jjt6rc4ha7r38ez40n5mn0lwyaqp9ejt7
+  - path_regex: \.starcistacks[/\\]production[/\\]secrets[/\\][^/\\]+\.enc(?:\.yaml)?$
+    age: age1vh3hqnz29rrc9l9qx0e8786jdlsuk87sh5tg5dweqyphshtfqvvql8d6tq,age173qfq7f776syam9tpkyfej0h2jjt6rc4ha7r38ez40n5mn0lwyaqp9ejt7
   - path_regex: \.starcistacks[/\\][^/\\]+[/\\]secrets[/\\][^/\\]+\.enc$
     age: age1vh3hqnz29rrc9l9qx0e8786jdlsuk87sh5tg5dweqyphshtfqvvql8d6tq
