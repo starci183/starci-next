@@ -1,4 +1,4 @@
-import { Alert, Button, Form, Heading, Page, SurfaceCard, SurfaceCopyGroup, Text } from "@starci/grammar/common"
+import { Alert, Button, Form, Heading, Page, SurfaceCard, Text } from "@starci/grammar/common"
 
 /** The fixed outcomes the identity session callback's final redirect reports (contract.identity.session-contract). */
 export type SignInOutcome = "failed" | "signed-in"
@@ -40,14 +40,12 @@ export type SignInPageBaseProps = {
 export const SignInPageBase = (props: SignInPageBaseProps) => (
     <Page>
         <div className="flex min-w-0 justify-center">
-            <SurfaceCard ariaLabel={props.props.title} measure="formCompact" scroll="contained">
+            <SurfaceCard ariaLabel={props.props.title} measure="formCompact">
                 <Form label={props.props.title} action={props.props.signInDoor} method="post">
-                    <SurfaceCopyGroup density="compact">
-                        <Heading level={1}>{props.props.title}</Heading>
-                        <Text size="sm" tone="muted">
-                            {props.props.support}
-                        </Text>
-                    </SurfaceCopyGroup>
+                    <Heading level={1}>{props.props.title}</Heading>
+                    <Text size="sm" tone="muted">
+                        {props.props.support}
+                    </Text>
                     {props.props.outcome === "failed" ? (
                         <Alert
                             tone="negative"

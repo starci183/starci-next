@@ -4,10 +4,10 @@ import type { Request } from "express"
 import { Reflector } from "@nestjs/core"
 import { Test } from "@nestjs/testing"
 import { mock } from "@starci/jest-preset"
-import { HTTP_SECURITY_ERROR_KINDS, HttpSecurityErrorCode } from "./errors/http-security.error"
+import { HttpSecurityErrorCode } from "./errors/http-security.error"
 import { HTTP_SECURITY_OPTIONS, RequireOrigin } from "./http-security.decorators"
 import type { HttpSecurityOptions } from "./http-security.options"
-import { OriginGuard } from "./origin.guard"
+import { OriginGuard, ServerToServer } from "./origin.guard"
 
 const options: HttpSecurityOptions = {
     allowedOrigins: ["https://app.test"],
@@ -26,6 +26,9 @@ class SignInDoor {
         return undefined
     }
 }
+
+class SignedDoor {}
+ServerToServer()(SignedDoor)
 
 const build = async (
     method: string,
@@ -47,41 +50,57 @@ const build = async (
 }
 
 describe("OriginGuard", () => {
-    it.each(["GET", "HEAD", "OPTIONS"])("allows the safe %s method regardless of origin", async (method) => {
-        const { guard, context } = await build(
-            method,
-            { origin: "https://foreign.test", cookie: "session=opaque" },
-            CookieDoor,
-        )
+    it.each(["GET", "HEAD", "OPTIONS"])("allows the safe %s method without an origin", async (method) => {
+        const { guard, context } = await build(method, { cookie: "session=opaque" }, CookieDoor)
 
         expect(guard.canActivate(context)).toBe(true)
     })
-
-    it.each([{}, { referer: "not a URL" }])(
-        "allows a state-changing non-browser request without a usable origin (%o)",
-        async (headers) => {
-            const { guard, context } = await build("POST", headers)
-
-            expect(guard.canActivate(context)).toBe(true)
-        },
-    )
 
     it("allows a state-changing request carrying an allowed Origin header", async () => {
-        const { guard, context } = await build("POST", { origin: "https://app.test" })
+        const { guard, context } = await build("POST", {
+            origin: "https://app.test",
+        })
 
         expect(guard.canActivate(context)).toBe(true)
     })
 
-    it("uses the origin of an allowed Referer URL", async () => {
-        const { guard, context } = await build("PATCH", { referer: "https://app.test/notes/one" })
+    it("falls back to the origin of an allowed Referer when Origin is absent", async () => {
+        const { guard, context } = await build("PATCH", {
+            referer: "https://app.test/notes/one",
+        })
 
         expect(guard.canActivate(context)).toBe(true)
     })
 
-    it("refuses a state-changing request from an origin outside the allowlist", async () => {
-        const { guard, context } = await build("DELETE", { origin: "https://foreign.test" })
+    it.each([
+        { name: "no Origin and no Referer", headers: {} },
+        { name: "a Referer that is not a URL", headers: { referer: "not a URL" } },
+        {
+            name: "an Origin outside the allowlist",
+            headers: { origin: "https://foreign.test" },
+        },
+        { name: "the opaque null Origin", headers: { origin: "null" } },
+        {
+            name: "a Referer outside the allowlist",
+            headers: { referer: "https://foreign.test/form" },
+        },
+        {
+            name: "a foreign Origin beside an allowed Referer",
+            headers: {
+                origin: "https://foreign.test",
+                referer: "https://app.test/notes/one",
+            },
+        },
+    ])("refuses a state-changing request with $name", async ({ headers }) => {
+        const { guard, context } = await build("DELETE", headers)
 
         expect(() => guard.canActivate(context)).toThrow(HttpSecurityErrorCode.OriginRejected)
+    })
+
+    it("allows a state-changing request without an origin on a door marked server-to-server", async () => {
+        const { guard, context } = await build("POST", {}, SignedDoor)
+
+        expect(guard.canActivate(context)).toBe(true)
     })
 })
 
@@ -89,7 +108,10 @@ describe("OriginGuard", () => {
     it.each(["POST", "PUT", "PATCH", "DELETE"])(
         "allows a cookie-bearing %s with an actual allowed Origin",
         async (method) => {
-            const { guard, context } = await build(method, { origin: "https://app.test", cookie: "session=opaque" })
+            const { guard, context } = await build(method, {
+                origin: "https://app.test",
+                cookie: "session=opaque",
+            })
 
             expect(guard.canActivate(context)).toBe(true)
         },
@@ -97,22 +119,32 @@ describe("OriginGuard", () => {
 
     it.each([
         { name: "no Origin", headers: {} },
-        { name: "an allowed Referer alone", headers: { referer: "https://app.test/form" } },
+        {
+            name: "an allowed Referer alone",
+            headers: { referer: "https://app.test/form" },
+        },
         { name: "a malformed Referer alone", headers: { referer: "not a URL" } },
         { name: "a foreign Origin", headers: { origin: "https://foreign.test" } },
         { name: "an opaque Origin", headers: { origin: "null" } },
         { name: "an empty Origin", headers: { origin: "" } },
         {
             name: "a foreign Origin beside an allowed Referer",
-            headers: { origin: "https://foreign.test", referer: "https://app.test/form" },
+            headers: {
+                origin: "https://foreign.test",
+                referer: "https://app.test/form",
+            },
         },
     ])("refuses a cookie-bearing mutation with $name", async ({ headers }) => {
-        const { guard, context } = await build("POST", { ...headers, cookie: "session=opaque" })
+        const { guard, context } = await build("POST", {
+            ...headers,
+            cookie: "session=opaque",
+        })
 
         expect(() => guard.canActivate(context)).toThrow(HttpSecurityErrorCode.OriginRejected)
-        expect(HTTP_SECURITY_ERROR_KINDS[HttpSecurityErrorCode.OriginRejected]).toBe("forbidden")
     })
+})
 
+describe("OriginGuard", () => {
     it.each([{}, { referer: "https://app.test/sign-in" }])(
         "refuses a marked cookie-flow door without Origin before a cookie exists (%o)",
         async (headers) => {
@@ -132,5 +164,26 @@ describe("OriginGuard", () => {
         const { guard, context } = await build("POST", { origin: "https://app.test" }, CookieDoor)
 
         expect(guard.canActivate(context)).toBe(true)
+    })
+
+    it("refuses Referer-only admission when a server-to-server door receives a cookie", async () => {
+        const { guard, context } = await build(
+            "POST",
+            { cookie: "session=opaque", referer: "https://app.test/form" },
+            SignedDoor,
+        )
+
+        expect(() => guard.canActivate(context)).toThrow(HttpSecurityErrorCode.OriginRejected)
+    })
+
+    it("refuses Referer-only admission when a server-to-server handler requires Origin", async () => {
+        const { guard, context } = await build(
+            "POST",
+            { referer: "https://app.test/form" },
+            SignedDoor,
+            SignInDoor.prototype.start,
+        )
+
+        expect(() => guard.canActivate(context)).toThrow(HttpSecurityErrorCode.OriginRejected)
     })
 })

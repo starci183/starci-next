@@ -16,9 +16,10 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
 
 /** The locale segment's layout slot: the document of the address's language around the landing's chrome. */
 const Layout = async (props: LayoutProps): Promise<ReactElement> => (
-    <LocaleShell {...await landingI18n.readLocaleSegment(props.params)}>
-        <LandingLayout content={props.children} />
-    </LocaleShell>
+    <LocaleShell
+        {...await landingI18n.readLocaleSegment(props.params)}
+        content={<LandingLayout content={props.children} />}
+    />
 )
 
 export default Layout
