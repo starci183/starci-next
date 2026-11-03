@@ -1,0 +1,10 @@
+{"findings":[],"hash":"5da443aa29b8fed655365317b711ab386a2c83fe49765534d39f189c20fe25a6","path":"be/src/tests/contract/http-security/http-security.contract-spec.ts","step":"prettier"}
+{"findings":[],"hash":"5c6d10530e0322f7c5de924babc80741f34c1a3c9421dfe219641432956e9b3a","path":"be/src/tests/e2e/system-health/core-serves-once-migrated.e2e-spec.ts","step":"prettier"}
+{"findings":[],"hash":"00e7c73fa22d4892a1221ccad696cfff54ee45f0018bf4be3ea5c099cc6b22c9","path":"be/src/tests/fixtures/persistence/migrations.sql.ts","step":"prettier"}
+{"findings":[],"hash":"a482379fe8b42a3b8693d83fb22574e51949bd7524a7d0d17a4b08873fdede44","path":"be/src/tests/integration/readiness/readiness.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"051c09d2e086e6b75e867e9ee0e7a7afb745527529adea21204701fea3305291","path":"be/src/tests/tsconfig.json","step":"prettier"}
+{"findings":[],"hash":"7b16540317043a92c6d0dc4acca9b930f0f6315ad5b681ef1d396fe55af2cba0","path":"be/src/tests/world/global-setup.ts","step":"prettier"}
+{"findings":[],"hash":"faa9971d9777c4a91e46f77d548114cf1b088ca720ca7c07050d295984841c65","path":"be/src/tests/world/global-teardown.ts","step":"prettier"}
+{"findings":[],"hash":"d7aca87e9b3b2ff12c7ead28d093b44c6f2ddc0cae3e4ebbb1d2d131017a5cf5","path":"be/src/tests/world/test-apps.options.ts","step":"prettier"}
+{"findings":[],"hash":"f0cbd8a10989b074524f460478c313de94080b5eca3d669de7ff87faf48dae53","path":"be/src/tests/world/test-world.config.ts","step":"prettier"}
+{"findings":[],"hash":"e5a1d6768edeaf6be7b8702f30171cabe6c5d188a09ad85dbcdc9690689366bd","path":"be/src/tests/world/use-test-world.ts","step":"prettier"}
