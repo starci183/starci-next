@@ -1,0 +1,60 @@
+schema: work/feature@1
+id: mock-interview
+state: todo
+activity: idle
+title: Phỏng vấn thử (Mock Interview)
+summary: A text interview with the StarCi AI interviewer, drawn from the teacher's question banks (technical banks per course, one shared behavioural bank). The learner answers a short session with no feedback in between. Then the whole session is graded once against the teacher's rubrics, checklists and idealAnswers. The report links each gap back to the Bản chất lesson to study again.
+purpose: Learners who know the material but cannot say it out loud practise a Vietnamese-first interview, see their score per criterion and retake it to watch the score rise.
+decided:
+  - Wave A builds the mock interview, text first; voice comes later (research §6 Q1, decided).
+  - One Premium (contract.commerce.entitlement isPremium) unlocks unlimited sessions under a server-side fair-use cap; no credits are shown (Q-KS-1, Q4).
+  - Without Premium a learner gets one short session per calendar month, drawn only from questions the teacher marked isPremium false (Q4).
+  - The session is graded once, after the last answer, against the teacher's own rubric, checklist and idealAnswer. There is no per-answer feedback and no retrieval over lesson content (the teacher's bank README and blog 14).
+  - The teacher grades a sample of 30 answers to measure AI agreement before the banks are widened (Q6).
+  - A session is set up for an outcome track of the learning program; the track chooses the banks (decision.learning-program.outcome-layer).
+delivers:
+  - Session setup (track, bank, tier, code language), the interview room (chat), the graded report, retake, history.
+  - Import of courses/*/mock-interview (82 banks, 985 questions) and mock-interview-eq (3 banks, 45 questions) from starci-lab/data.
+  - Interview evidence (best score per family, tier and track) for the learning-program path progress and the career profile.
+excludes:
+  - Voice (speech in or out), the code editor and run tools of debug, optimize and coding questions (text answers only), the 5-phase system-design capstone (kind design), live human interviewers.
+  - Per-answer feedback during a session.
+records:
+  decision: [decision.mock-interview.product, decision.mock-interview.grading, decision.mock-interview.calibration]
+  business: [br.mock-interview.interview]
+  data: [data.mock-interview.question-bank, data.mock-interview.session]
+  functional: [fr.mock-interview.session, fr.mock-interview.report, fr.mock-interview.calibration]
+  design: [sds.mock-interview.content-import, sds.mock-interview.interviewer, sds.mock-interview.grader]
+  contract: [contract.mock-interview.api]
+  ui: [ui.mock-interview.home, ui.mock-interview.room, ui.mock-interview.report]
+  implementation: [impl.mock-interview.be.interview, impl.mock-interview.fe.interview]
+  gap: [gap.mock-interview.skipped-stems]
+dependsOn: [contract.identity.session-contract, contract.commerce.entitlement, decision.essentials.ai-pool, sds.essentials.coach, contract.essentials.api]
+mvp: 'Text only, track backend-fullstack. The banks are courses/0-fullstack-mastery/mock-interview/0-framework-foundation (15 questions: 3 junior, 6 middle, 6 senior) and mock-interview-eq/1-behavioral (15 questions). A Premium session is 5 questions (4 technical, 1 behavioural); a free session is 3 (2 and 1). The MVP measures whether the second session scores higher than the first.'
+openQuestions: # built as configurable defaults with the proposed answers (owner order 2026-11-08: build the open proposals with their proposed values)
+  - id: Q-MI-1
+    question: The research planned "one Fullstack junior bank of about 10 questions", but banks are per module and mix tiers (0-framework-foundation has only 3 junior questions). Which pool does the MVP draw from?
+    proposed: Draw by tier across the first three Fullstack banks (0-framework-foundation, 1-database-integration-and-caching, 2-rest-api-design-and-documentation), so a junior learner has enough questions; middle and senior learners draw from 0-framework-foundation alone.
+    state: decided-default
+  - id: Q-MI-2
+    question: The teacher's blog 14 allows only mid-tier models and above to grade interviews, but decision.essentials.ai-pool prefers deepseek/deepseek-v4.1-flash. Which model grades a session?
+    proposed: An interview profile in the same pool that uses deepseek/deepseek-v4.1-flash like every AI call (owner rule: flash only, no v4-pro, no fallback); the interview profile has its own deadline and token budget, and used to prefer v4-pro, which spent its whole budget thinking. It was kept in the pool only when pro is unhealthy. A report graded by the fallback says so.
+    state: decided-default
+  - id: Q-MI-3
+    question: The bank's hints field says that asking for a hint costs a little score, like a real interviewer's nudge. Does the MVP offer hints?
+    proposed: Yes. One "Gợi ý" button per question gives the authored hints in order. Each hint used is recorded, and the grader takes it off the score as the README says.
+    state: decided-default
+  - id: Q-MI-4
+    question: Only the 110 DevOps questions are isPremium true. Every Fullstack, System Design and behavioural question is isPremium false (875 of 985 technical, 45 of 45 behavioural). Is a free session meant to reach almost the whole bank?
+    proposed: Yes, as decided (Q4 follows the teacher's flag). The monthly session limit is what keeps the free tier a taste.
+    state: decided-default
+  - id: Q-MI-5
+    question: Where are the pass and borderline lines of the verdict?
+    proposed: Pass at 70 or more with no critical checklist item missed on any question; borderline at 50 to 69, or 70 or more with one critical item missed; fail otherwise.
+    state: decided-default
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Wave A draft from the learning research §4.2, the owner''s acceptance of every proposal and the outcome-path layer.'}
+extensions:
+  built: 'Back end module be/src/modules/domain/interview, doors in be/src/features/api/interview, cli interview import and publish, dev seed .starcistacks/dev/seeds/sql/primary-interviews.sql (Fullstack banks 0 to 2 and eq banks 1 and 2 at 231d8cc57). Front end routes /interview, /interview/{sessionId}, /interview/{sessionId}/report and the Phỏng vấn nav entry.'
+  settings: 'Q-MI-1 to Q-MI-5 are settings (INTERVIEW_POOL mvp or widened, AI_GATEWAY_INTERVIEW_MODEL and AI_GATEWAY_INTERVIEW_FALLBACK_MODEL, INTERVIEW_HINT_PENALTY, INTERVIEW_PASS_SCORE, INTERVIEW_BORDERLINE_SCORE), plus INTERVIEW_FREE_SESSIONS_PER_MONTH, INTERVIEW_FREE_LENGTH, INTERVIEW_PREMIUM_LENGTH, INTERVIEW_AI_DAILY_LIMIT and INTERVIEW_IDLE_MINUTES.'
+  streak: 'A submitted session reports StreakService.recordStreakAction(learner, interview, interview-submitted, { actionId: sessionId }) after it is stored; the streak never grants experience.'
+  readiness: 'Hiring readiness (pass on both pillars at a tier) is InterviewHistoryService.readiness and the interviewReadiness door; interviewEvidence lists the best result per track, pillar and tier. Interviews are not CV lines.'

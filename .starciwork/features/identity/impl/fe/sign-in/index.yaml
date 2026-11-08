@@ -1,0 +1,18 @@
+﻿schema: work/implementation@1
+id: impl.identity.fe.sign-in
+title: Front-end identity sign-in implementation
+state: todo
+activity: idle
+repository: fe
+owners:
+  - role: page
+    path: fe/apps/app/src/features/pages/SignInPage
+  - role: auth
+    path: fe/apps/app/src/modules/auth
+proves: [ui.identity.sign-in, fr.identity.sign-in, fr.identity.sign-out, contract.identity.session-contract]
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Verify implementation against its identity records.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Assign the front-end identity implementation owners.}
+extensions: {}

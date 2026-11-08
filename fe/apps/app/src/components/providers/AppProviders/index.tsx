@@ -1,12 +1,12 @@
 "use client"
 
 import { ToastProvider } from "@heroui/react"
-import { viewerCacheKey, viewerSwrConfig } from "@starci/next-data"
-import type { ViewerId } from "@starci/next-data"
+import { viewerCacheKey, viewerSwrConfig, type ViewerId } from "@starci/next-data"
 import { ThemeProvider } from "next-themes"
 import type { ReactNode } from "react"
 import { SWRConfig, useSWRConfig } from "swr"
-import { useViewerId } from "@/hooks/auth"
+import { useSignInRedirect } from "@/hooks/auth"
+import { useViewerId } from "@/hooks/viewer"
 import { useAuthSessionEffect } from "@/hooks/effects"
 import { SwrSideEffects } from "@/hooks/swr"
 import { viewerCache } from "@/modules/viewer-cache"
@@ -42,10 +42,11 @@ const ViewerCacheBinding = (): null => {
 
 /**
  * Each viewer gets their own SWR cache (FE-BOUNDARY-3): a change of person remounts the config on a fresh Map, and
- * `viewerSwrConfig` lists pollingRestart so a read whose refreshInterval stopped at 0 polls again for newer data.
+ * `viewerSwrConfig` lists pollingRestart so a read whose refreshInterval stopped at 0 polls again for newer data. A read that
+ * fails with the stable code of a missing session sends the reader to the sign-in screen (useSignInRedirect).
  */
-const renderViewerScope = (viewerId: ViewerId, children: ReactNode): ReactNode => (
-    <SWRConfig key={viewerCacheKey(viewerId)} value={viewerSwrConfig(SWR_DEFAULTS)}>
+const renderViewerScope = (viewerId: ViewerId, onError: (error: unknown) => void, children: ReactNode): ReactNode => (
+    <SWRConfig key={viewerCacheKey(viewerId)} value={{ ...viewerSwrConfig(SWR_DEFAULTS), onError }}>
         <ViewerCacheBinding />
         <SwrSideEffects />
         {children}
@@ -54,7 +55,8 @@ const renderViewerScope = (viewerId: ViewerId, children: ReactNode): ReactNode =
 )
 
 /** The SWR config of the viewer on screen around the routed tree. */
-const ViewerSwrScope = (props: AppProvidersProps): ReactNode => renderViewerScope(useViewerId(), props.children)
+const ViewerSwrScope = (props: AppProvidersProps): ReactNode =>
+    renderViewerScope(useViewerId(), useSignInRedirect(), props.children)
 
 /**
  * The one client provider stack the locale layout mounts, outer to inner: the theme (light and dark through the `.light` /

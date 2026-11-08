@@ -5,3 +5,23 @@ entries:
     path: sql/primary-notes.sql
     target: primary
     mode: upsert
+  - id: primary-lessons
+    kind: sql
+    path: sql/primary-lessons.sql
+    target: primary
+    mode: upsert
+  - id: primary-interviews
+    kind: sql
+    path: sql/primary-interviews.sql
+    target: primary
+    mode: upsert
+  - id: primary-review
+    kind: sql
+    path: sql/primary-review.sql
+    target: primary
+    mode: upsert
+  - id: primary-content-interviews
+    kind: sql
+    path: sql/primary-content-interviews.sql
+    target: primary
+    mode: upsert

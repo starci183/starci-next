@@ -1,0 +1,51 @@
+schema: work/feature@1
+id: hub
+title: Trang học (hub of every part, today and the streak)
+summary: 'One page lists all eleven parts of StarCi Next (the owner calls them "shards") with their progress, today''s actions and verified experience items, plus one unified streak. The hub lives at /, so the site map''s "Mục tiêu (/) with the Hôm nay queue" becomes this hub, and the active path is its top card.'
+draft: 'Owner 2026-11-08, verbatim: "ý là list ra tất cả shards trong starci-next ví dụ essentials, projects,... để kích thích học và lấy chuỗi".'
+purpose: Show learners everything they can do and where they stand, and bring them back each day with a streak counted only on real work.
+decided:
+  - The hub lists eleven parts in this order. 1 Mục tiêu (paths), 2 Bản chất (essentials), 3 Ôn tập (review), 4 Luyện code (practice), 5 Dự án (projects), 6 Agent & AI coding (agents), 7 Bài toán thực chiến (case studies), 8 Sự cố (incidents), 9 Phỏng vấn thử (interview), 10 Hồ sơ & CV (profile), 11 Kết nối việc làm (hiring).
+  - One streak service for the whole app; the review draft's streak moves here (data.hub.streak).
+  - Only meaningful actions count toward a day; page views never count.
+  - The streak never grants experience. Experience needs evidence plus the teacher's signature (br.career.experience).
+delivers:
+  - The hub at /, the part registry, today's actions across parts, the unified streak with a weekly goal, freezes and per-part counters.
+excludes:
+  - Leaderboards and social streak comparison.
+records:
+  decision: [decision.hub.parts]
+  business: [br.hub.streak]
+  data: [data.hub.part, data.hub.streak]
+  functional: [fr.hub.today, fr.hub.streak]
+  design: [sds.hub.aggregator, sds.hub.streak]
+  contract: [contract.hub.api]
+  ui: [ui.hub.home]
+dependsOn: [contract.identity.session-contract, contract.learning-program.api, contract.career.api, contract.review.api, contract.mock-interview.api, contract.essentials.api, contract.agentic.api]
+extensions:
+  nav: 'Học · Bản chất · Ôn tập · Phỏng vấn · Luyện code · Dự án · Agent & AI · Hồ sơ (UXUI site map, canvas v21); the hub shows all eleven parts, and Mục tiêu is a part card on it.'
+  siteMapRef: 'D:/.claude/.runtime/projects/starci-next-app-cff4885ec1/worktrees/subscription-premium/.starciwork/flows/site-map/index.yaml (read-only). Its / route is "choose an outcome; Hôm nay queue across parts"; the hub keeps that and adds every part. Its nav has seven items; the hub shows all eleven, so the nav can stay short.'
+openQuestions:
+  - id: Q-HUB-1
+    question: Is the hub at / or at /learn?
+    proposed: 'At /. It already matches the site map''s / (Mục tiêu plus Hôm nay); /paths stays the path chooser. /learn is not needed.'
+    state: decided
+  - id: Q-HUB-2
+    question: How many streak freezes a week?
+    proposed: 'One granted every Monday, plus a second one earned by meeting last week''s goal. At most two are held at once.'
+    state: decided
+  - id: Q-HUB-3
+    question: What is the default weekly goal?
+    proposed: 4 active days a week, adjustable from 2 to 7.
+    state: decided
+  - id: Q-HUB-4
+    question: Bài toán thực chiến and Sự cố have no routes or records of their own; today they live inside Bản chất (the case-study collection and tier 2 incident). Do they get their own pages?
+    proposed: Yes, as list pages /case-studies and /incidents. Each item opens its lesson or repo, and progress is read from Bản chất (fr.essentials.incident, decision.essentials.categories). They need no data of their own.
+    state: decided
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner asked for one list of all parts and a streak.}
+buildDecisions:
+  - 'Built at / (Q-HUB-1). Q-HUB-2: 1 freeze granted every Monday plus 1 earned by meeting last week''s goal, at most 2 held; Q-HUB-3: default weekly goal 4 active days (2..7). Both are StreakModule.register({ rules }) options. Q-HUB-4: /incidents is built by another agent; the hub links to it.'
+  - 'Scope built now: the six learning shards (Bản chất, Ôn tập, Luyện code, Dự án, Sự cố, Phỏng vấn thử) as shard cards, plus the three layers (Mục tiêu, Hồ sơ & CV, Kết nối việc làm) shown separately without a streak or experience. Agents are a kind of project (decision.program.structure), so there is no Agent card.'
+  - 'Producer port: StreakService.recordStreakAction(learnerId, shard, kind, { actionId?, sourceRef?, at? }) in @modules/domain/streak; shards essentials|review|practice|projects|incidents|interview, kinds review-due-done|graded-attempt|project-run|interview-submitted. Bản chất calls it for every graded attempt.'
+  - 'Doors: learnerHub(input), streak, setStreakGoal(input). The experience read is an optional port (hub-experience.port); the experience field is null until it is bound.'
+  - 'The paths picker /paths/choose is a placeholder page: there is no path engine, so activePath is always null.'

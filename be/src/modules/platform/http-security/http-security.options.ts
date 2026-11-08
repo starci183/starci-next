@@ -6,8 +6,10 @@ export interface RateLimitOptions {
     readonly windowMs: number
     /** Requests per window for the default tier. */
     readonly defaultLimit: number
-    /** Requests per window for the strict tier (authentication handshakes and signed webhooks). */
+    /** Requests per window for the strict tier (authentication handshakes). */
     readonly strictLimit: number
+    /** Requests per window for the webhook tier (signed provider webhooks), counted apart from the strict tier. */
+    readonly webhookLimit: number
 }
 
 /** The signing proof configured for one webhook provider. */
@@ -24,6 +26,8 @@ export interface HttpSecurityOptions {
     readonly allowedOrigins: ReadonlyArray<string>
     /** Plain HTTP origins are admitted only by a development or test environment reader. */
     readonly allowHttpOrigins?: boolean
+    /** The API schema may be introspected only by a development or test environment reader; never in production. */
+    readonly exposeSchema?: boolean
     /** The rate limit tiers. */
     readonly rateLimit: RateLimitOptions
     /** Signed-webhook providers keyed by their generated route name. */

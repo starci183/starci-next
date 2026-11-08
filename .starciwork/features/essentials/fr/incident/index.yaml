@@ -1,0 +1,26 @@
+schema: work/functional-requirement@1
+id: fr.essentials.incident
+title: Fix an incident on the teacher's real repo and prove it with tests
+state: todo
+activity: idle
+actors: [learner]
+trigger: After the lab, a Premium learner opens the lesson's incident (where the lesson has one).
+mainFlow:
+  - The learner reads an incident ticket written as production symptoms (requests, responses, log lines), never naming the faulty line.
+  - "The learner pulls the seeded repo in the chosen language with one command: starci lesson pull <lesson> --lang <language>. This clones the teacher's lesson repo with 1 to 3 seeded bugs (a per-learner variant), installs dependencies and runs starci check. A Codespaces or devcontainer button is offered for learners without a toolchain."
+  - starci check runs the lesson's flows from the repo's test.md as automated checks and prints each red flow with expected and actual.
+  - The learner fixes the code until every flow is green.
+  - "starci check then reports how many seeded bugs survive the flows (for example \"còn 1 lỗi sống sót\") without saying where. The learner writes new flows or tests until the survivors are caught."
+  - The learner submits a GitHub repo URL or a patch, plus an explanation answered against the incident rubric.
+  - "The grader (sds.essentials.incident-grader) checks out the submission and runs the base flows, hidden flows and the learner's tests against hidden mutants, then records the mutation score. The AI grades the explanation per criterion, quoting the diff and logs as evidence."
+exceptionFlows:
+  - Hints come in three levels, each labelled "có hỗ trợ" when used. Level 1 asks which flow failed first; level 2 names the suspect layer; level 3 names the file.
+  - A submission that does not build, or whose flows fail, gets the failing flow output and stays open for resubmission.
+  - Lessons whose practice needs docker (databases, Redis, System Design faults) run in a grader with docker; until that exists, the learner submits local check output and the grader re-runs only the docker-free part.
+postconditions:
+  - The lesson's outcomes reach the "chứng minh" level only with a passing submission and a mutation score at or above the lesson's threshold (Q-KS-2).
+composes: [br.essentials.learning, data.essentials.lesson, data.essentials.progress, sds.essentials.incident-grader]
+extensions:
+  provenToWork: 'On 2026-11-08 the Go repo of request-response-lifecycle was built in three variants and checked with flows written from its test.md. Original: 5/5 green. Seeded "guard applied globally": 2/5, flows 1 to 3 got 403. Seeded "parsed < 0 instead of <= 0": still 5/5 (it survives), caught only by an added flow GET /items/0 that returned 200 {id: 0}.'
+  rollout: 'Order: Fullstack backend without infrastructure first (four real languages, fast builds); then lessons with databases or Redis (docker); frontend using the repos'' Playwright specs; System Design last.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Owner: "code lỗi tải về bắt thực hành và nộp" and motivating learners to build tests.'}

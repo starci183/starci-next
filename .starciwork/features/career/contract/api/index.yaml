@@ -1,0 +1,36 @@
+schema: work/contract@1
+id: contract.career.api
+title: Career API
+state: todo
+activity: idle
+owner: career
+between: [career, the app's profile, experience and career screens, the teacher and reviewer queue, public visitors, learning-program]
+surface:
+  - {name: experience, kind: GraphQL query, path: /graphql, request: 'myExperience(input: {part?, state?, locale})', response: '[{itemId, itemType, part, subject, state, line {vi, en}, evidence[{kind, url}], aiGrade?, returnNote?, dueAt?, signature? {role, signedAt}, shownPublicly}]', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: grade-experience, kind: GraphQL mutation, path: /graphql, request: 'gradeExperience(input: {itemId})', response: '{itemId, state ai-graded|practising, aiGrade, draftLine}', errors: [403 CAREER_PREMIUM_REQUIRED, 409 CAREER_EVIDENCE_NOT_PROOF, 429 CAREER_AI_LIMIT_REACHED, 404 CAREER_ITEM_NOT_FOUND]}
+  - {name: submit-experience, kind: GraphQL mutation, path: /graphql, request: 'submitExperience(input: {itemId, line: {vi, en}, revision})', response: '{itemId, state pending-review, dueAt}', errors: [400 CAREER_LINE_SLOT_CHANGED, 409 CAREER_RESUBMIT_UNCHANGED, 409 CAREER_STATE_CONFLICT, 403 CAREER_PREMIUM_REQUIRED]}
+  - {name: set-shown, kind: GraphQL mutation, path: /graphql, request: 'showExperience(input: {itemId, shownPublicly})', response: '{itemId, shownPublicly}', errors: [409 CAREER_NOT_VERIFIED]}
+  - {name: review-queue, kind: GraphQL query (TEACHER, REVIEWER), path: /graphql, request: 'reviewQueue(input: {part?, itemType?, track?, overdue?, first?, after?})', response: '{items[{itemId, itemType, part, learnerHandle, line, aiGrade, evidence[{kind, url}], defenseQuestions, dueAt, assignee}], pageInfo, sla {median, overdue}}', errors: [403 CAREER_REVIEW_FORBIDDEN]}
+  - {name: decide, kind: GraphQL mutation (TEACHER, REVIEWER), path: /graphql, request: 'decideExperience(input: {decisions: [{itemId, action APPROVE|RETURN, note?}]})', response: '[{itemId, state verified|returned, signature?}]; each item is applied on its own; one failure does not undo the others', errors: [403 CAREER_REVIEW_FORBIDDEN, 409 CAREER_REVIEW_CONFLICT, 400 CAREER_REVIEW_NOTE_REQUIRED]}
+  - {name: revoke, kind: GraphQL mutation (TEACHER), path: /graphql, request: 'revokeExperience(input: {itemId, reason})', response: '{itemId, state revoked}', errors: [403 CAREER_REVIEW_FORBIDDEN, 400 CAREER_REVIEW_NOTE_REQUIRED, 409 CAREER_NOT_VERIFIED]}
+  - {name: reviewers, kind: GraphQL mutation (TEACHER), path: /graphql, request: 'setReviewer(input: {subject, scope: [{part, track?}], capacity?, end?})', response: '{reviewerId, scope, appointedAt, endedAt?}', errors: [403 CAREER_REVIEW_FORBIDDEN, 404 CAREER_REVIEWER_NOT_FOUND]}
+  - {name: audit, kind: GraphQL query (TEACHER), path: /graphql, request: 'experienceAudit(input: {itemId})', response: '[{action, actorRole, from, to, note, at}]', errors: [403 CAREER_REVIEW_FORBIDDEN]}
+  - {name: verify, kind: GraphQL query (public), path: /graphql, request: 'verifyExperience(input: {code})', response: '{line, itemType, state verified|revoked, signerRole, signedAt, revokedAt?, evidence[public links]}', errors: [404 CAREER_ITEM_NOT_FOUND]}
+  - {name: profile, kind: GraphQL query, path: /graphql, request: 'myProfile', response: '{username, headline, visibility, projects[], items[verified only, with shownPublicly]}', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: update-profile, kind: GraphQL mutation, path: /graphql, request: 'updateProfile(input: {headline?, visibility?})', response: the profile, errors: [400 CAREER_PROFILE_INVALID, 403 CAREER_PREMIUM_REQUIRED]}
+  - {name: public-profile, kind: GraphQL query (public), path: /graphql, request: 'publicProfile(input: {username})', response: '{username, headline, items[verified and shown, each with its verify code]}', errors: [404 CAREER_PROFILE_NOT_FOUND]}
+  - {name: cv-export, kind: GraphQL mutation, path: /graphql, request: 'exportCv(input: {locale, itemIds[], format pdf|text})', response: '{url, expiresAt}; only verified items, each line with its verify link', errors: [409 CAREER_NOT_VERIFIED, 403 CAREER_PREMIUM_REQUIRED]}
+  - {name: review-cv, kind: GraphQL mutation, path: /graphql, request: 'reviewCv(input: {text?, uploadId?, level standard|mid|senior, clientRequestId})', response: '{reviewId, status, report?}', errors: [403 CAREER_PREMIUM_REQUIRED, 400 CAREER_CV_UNREADABLE, 429 CAREER_AI_LIMIT_REACHED]}
+  - {name: cv-review, kind: GraphQL query, path: /graphql, request: 'cvReview(input: {reviewId})', response: '{reviewId, status, report?, failureCode?}', errors: [404 CAREER_REVIEW_NOT_FOUND]}
+  - {name: hiring-opt-in, kind: GraphQL mutation, path: /graphql, request: 'setHiringOptIn(input: {partnerId, consent, shares[]})', response: '{partnerId, consent, shares}', errors: [403 CAREER_PREMIUM_REQUIRED, 404 CAREER_PARTNER_NOT_FOUND]}
+  - {name: delete-data, kind: GraphQL mutation, path: /graphql, request: 'deleteCareerData(input: {what cvs|reports|profile|all})', response: '{deleted}; audit rows stay, anonymised', errors: []}
+guarantees:
+  - Statuses use only the platform error kinds (400, 401, 403, 404, 409, 429, 500, 503); codes carry the CAREER_ prefix.
+  - Every door needs a session except verify and public-profile. Queue, decide, revoke, reviewers and audit need role TEACHER or REVIEWER from the verified session (roles are Keycloak-asserted; client claims grant nothing), checked per item against the reviewer's scope.
+  - Only verified items appear in the profile, public profile, CV export, hiring shares and path progress.
+  - Every state change writes one audit row in the same transaction.
+  - No export to a partner happens through an API door; exports are an operator action logged in data.career.hiring-opt-in.
+consumerObligations:
+  - Show pending items only to their learner, labelled AI đã chấm or chờ thầy duyệt.
+  - Branch on the stable code, never on the status.
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'Experience items, review queue, revoke and verification links.'}

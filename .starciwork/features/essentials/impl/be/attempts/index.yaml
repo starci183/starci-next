@@ -1,0 +1,30 @@
+schema: work/implementation@1
+id: impl.essentials.be.attempts
+title: Back-end lesson attempts (submit, grading, outcome levels and progress doors)
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/attempt
+  - role: be
+    path: be/src/features/api/attempt
+proves:
+  - fr.essentials.study
+  - data.essentials.progress
+  - sds.essentials.coach
+  - contract.essentials.api
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/attempt
+      --collectCoverageFrom=src/modules/domain/attempt/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped unit proof with the managed per-file coverage threshold unchanged at 100; this record remains todo pending green evidence from the harness.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/attempt
+    note: Required scoped integration proof of the doors (session, Premium gate, choice never released before a submit, idempotent revision, foreign attempt not found, unconfigured coach) and of the service over the scripted coach (idempotency, no coach call without Premium, per-criterion grading, retry after a failure, one coach call for two simultaneous sends).
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built, not yet proven by the harness. Doors: mutation submitLessonAttempt, queries lessonAttempt and lessonProgress. Tables: lesson_attempts, lesson_outcome_levels (migration InitAttempt1795000000100). The AI coach is a port with no provider bound yet (sds.essentials.coach extensions.beStatus).'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the attempts, grading and progress side of the MVP.}

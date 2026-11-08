@@ -1,0 +1,16 @@
+schema: work/contract@1
+id: contract.projects.ci-webhook
+title: Signed CI result webhook
+state: todo
+activity: idle
+owner: projects
+between: [the StarCi GitHub Action, projects]
+surface:
+  - {name: project-ci, kind: webhook, method: POST, path: /webhooks/project-ci, request: 'headers x-starci-project (project id), x-starci-timestamp (epoch ms), x-starci-signature (sha256=hex of HMAC-SHA256 over "<timestamp>.<raw body>" with the project secret); body {runId, commit, passed, results[{concept, slot test|e2e|probe, ref, passed}]}', response: '200 {received: true}', errors: [401 PROJECT_CI_SIGNATURE_INVALID, 401 PROJECT_CI_STALE, 400 PROJECT_CI_PAYLOAD_INVALID]}
+guarantees:
+  - The project and its signature are proved before the body is read; the timestamp must be within PROJECT_CI_TOLERANCE (10 minutes by default).
+  - A run id is recorded once per project; a repeat is answered 200 and adds nothing.
+  - Results of concepts the project does not list are ignored; the AI read is never posted by CI.
+consumerObligations:
+  - The Action keeps the secret in GitHub Secrets (STARCI_PROJECT_SECRET) and signs the exact bytes it sends.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

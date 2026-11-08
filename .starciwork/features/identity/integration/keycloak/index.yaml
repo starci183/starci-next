@@ -1,0 +1,32 @@
+schema: work/integration@1
+id: integration.identity.keycloak
+title: Keycloak behind the backend
+state: todo
+activity: idle
+provider: Keycloak
+boundary: Only the backend talks to Keycloak. The learner sees StarCi screens and, for social sign-in, the Facebook or GitHub consent page; never a Keycloak page.
+endpoints:
+  token: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/token (grant_type password, authorization_code, refresh_token)
+  authorization: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/auth (social only, with kc_idp_hint)
+  revoke: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/revoke
+  jwks: ${IDENTITY_KEYCLOAK_ISSUER}/protocol/openid-connect/certs
+  admin: ${KEYCLOAK_ORIGIN}/admin/realms/starci-next-identity/users (create, find by username, set email verified, reset password)
+custody: The confidential client reads its credential from IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE (custody keycloak-client-secret). The admin API uses that client's service-account token. No value is recorded here.
+sandbox: Realm starci-next-identity at https://localhost:8089; client starci-next-identity-lane (owner ruling r-a6c777d4da5e).
+prerequisites:
+  - On client starci-next-identity-lane, Direct Access Grants are enabled and the service account holds realm-management manage-users and view-users.
+  - The realm has identity providers with aliases facebook and github, and their apps (Facebook app id and secret, GitHub OAuth app) are in custody (Q-A4).
+  - http://localhost:3080/sign-in/callback is registered as a redirect URI on the client.
+  - The callback and post-logout URIs of the old redirect design are no longer needed.
+research:
+  reference: starci-academy-backend src/modules/integrations/keycloak (token.service.ts exchangePasswordForToken, exchangeCodeForToken, refresh, revokeRefreshToken, registerUserWithPassword; user.service.ts getUserByUsername, getAdminToken, resetUserPassword, setUserEmailVerified; keycloak-oidc-redirect.service.ts; jwks.service.ts).
+  notes:
+    - The password grant requires a confidential client with Direct Access Grants; it is the Academy's production path.
+    - Social sign-in still uses the authorization-code flow with PKCE, but kc_idp_hint makes Keycloak skip its own page and go straight to the provider.
+    - ID and access tokens are validated against JWKS, issuer and audience; RS256 only.
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/integrations/keycloak --runInBand
+    note: Request construction for every grant, admin calls, kc_idp_hint URL, revocation; live proof against the realm under keycloak-live.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'decision.identity.auth-model B: Keycloak hidden behind the backend (password grant, admin API, social broker, revocation).'}
+extensions: {}

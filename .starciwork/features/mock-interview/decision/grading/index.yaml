@@ -1,0 +1,19 @@
+schema: work/policy-decision@1
+id: decision.mock-interview.grading
+title: Grade the whole session once against the teacher's authored answer, with technical and behavioural scored apart
+state: todo
+activity: idle
+question: When is a mock interview graded, and against what?
+options:
+  - A. Grade each answer as it is given and show feedback before the next question.
+  - B. Grade the whole session once after the last answer, from the full transcript, against each question's rubric, checklist and idealAnswer. Technical and behavioural answers are scored as separate pillars.
+recommendation: B
+recommendationReason: 'These are the teacher''s own rules at starci-lab/data 231d8cc57. courses/0-fullstack-mastery/mock-interview/README.md says "CHẤM = so câu trả lời với ĐÁP ÁN ĐÃ AUTHOR, KHÔNG RAG lesson content" (chốt thầy 2026-07-07) and keeps the two families out of one score. blog/14-mock-interview-whole-session-grading gives no feedback until the end and makes one grading call over every turn, which yields one scorecard.'
+outcome: decided
+chosen: B
+reason: 'Owner 2026-11-08: "theo đề xuất trò từng phần đi". The proposal is the teacher''s design above.'
+blocks: [sds.mock-interview.grader]
+extensions:
+  scorecard: 'The scorecard holds overallScore 0..100, verdict pass|borderline|fail, technicalScore and behaviouralScore. Per question it holds a score 0..100 from the checklist scoreBand, criticalMissed[], rubric hits with evidence quotes and hintsUsed. It also holds attributeScores (communication, problemSolving, technical, testing; the six STAR dimensions for behavioural), strengths[], gaps[] (each with the Bản chất topic or lesson to study) and betterAnswer notes, which are released only after grading.'
+  openQuestions: [Q-MI-2 which model grades, Q-MI-5 verdict lines; both in the feature index]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The teacher's grading rules carried into the draft.}

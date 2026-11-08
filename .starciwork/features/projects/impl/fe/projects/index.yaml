@@ -1,0 +1,15 @@
+schema: work/implementation@1
+id: impl.projects.fe.projects
+title: Front-end projects screens
+state: todo
+activity: idle
+repository: fe
+owners:
+  - {role: fe, path: fe/apps/app/src/components/blocks/ProjectsList}
+  - {role: fe, path: fe/apps/app/src/components/blocks/ProjectNew}
+  - {role: fe, path: fe/apps/app/src/components/blocks/ProjectDetail}
+  - {role: fe, path: fe/apps/app/src/components/blocks/ProjectMilestone}
+  - {role: fe, path: fe/apps/app/src/hooks/projects}
+proves: [ui.projects.list, ui.projects.new, ui.projects.project, ui.projects.milestone]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

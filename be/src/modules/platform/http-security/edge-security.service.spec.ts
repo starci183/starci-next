@@ -16,7 +16,7 @@ const buildEdge = async () => {
 
 const options: HttpSecurityOptions = {
     allowedOrigins: ["https://web.example"],
-    rateLimit: { windowMs: 1, defaultLimit: 1, strictLimit: 1 },
+    rateLimit: { windowMs: 1, defaultLimit: 1, strictLimit: 1, webhookLimit: 1 },
     webhooks: {},
 }
 

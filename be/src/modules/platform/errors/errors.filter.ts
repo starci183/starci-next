@@ -1,14 +1,13 @@
-import { Catch } from "@nestjs/common"
-import type { ArgumentsHost, ExceptionFilter } from "@nestjs/common"
+import { Catch, type ArgumentsHost, type ExceptionFilter } from "@nestjs/common"
 import type { Request, Response } from "express"
-import { InjectRequestLocale } from "@modules/platform/i18n"
-import type { RequestLocale } from "@modules/platform/i18n"
+import { InjectRequestLocale, type RequestLocale } from "@modules/platform/i18n"
 import { InjectErrorsService } from "./errors.decorators"
 import type { ErrorsService } from "./errors.service"
 
 @Catch()
 /**
- * The one REST exception filter of an app: answers `{ code, kind, message, params }` with the status of the kind. In a GraphQL
+ * The one REST exception filter of an app: answers `{ code, kind, message, params }` with the status of the kind, plus a `Retry-After` header when a rate-limited
+ * failure carries `retryAfterSeconds`. In a GraphQL
  * context it hands the failure back untouched, so the GraphQL error formatter (platform/graphql) answers it.
  */
 export class ErrorsFilter implements ExceptionFilter {
@@ -24,14 +23,15 @@ export class ErrorsFilter implements ExceptionFilter {
         const request = http.getRequest<Request>()
         const description = this.errors.describe(exception)
         const locale = this.requestLocale.of(request.headers["accept-language"])
-        http.getResponse<Response>()
-            .status(description.status)
-            .json({
-                code: description.code,
-                kind: description.kind,
-                message: this.errors.text(description.code, description.params, locale),
-                params: description.params,
-            })
+        const response = http.getResponse<Response>()
+        const retryAfter = description.kind === "rate-limited" ? description.params.retryAfterSeconds : undefined
+        if (typeof retryAfter === "number") response.set("Retry-After", String(retryAfter))
+        response.status(description.status).json({
+            code: description.code,
+            kind: description.kind,
+            message: this.errors.text(description.code, description.params, locale),
+            params: description.params,
+        })
         return undefined
     }
 }

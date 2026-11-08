@@ -16,6 +16,14 @@ const expressOf = (app: INestApplication): Express => {
     return instance
 }
 
+/**
+ * The largest JSON body the API parses. The largest input a door accepts is a lesson attempt: 20 files of up to 100,000
+ * characters, a 20,000-character answer and its smaller fields, about 2.1 million characters. JSON escaping and UTF-8
+ * (up to 3 bytes for a Vietnamese character) can nearly triple that, so a valid attempt always fits and reaches the
+ * validator, which refuses an oversized one with its field errors instead of a bare 413.
+ */
+export const HTTP_JSON_BODY_LIMIT = "7mb"
+
 /** The declared ingress hop count and the environment in which HTTP origins may be used. */
 export interface HttpEdgeOptions {
     /** Exact trusted proxy hops; the standard API stack has one ingress in front of it. */

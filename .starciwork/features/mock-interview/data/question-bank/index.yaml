@@ -1,0 +1,29 @@
+schema: work/data@1
+id: data.mock-interview.question-bank
+title: Interview banks and questions (imported, versioned)
+state: todo
+activity: idle
+fields:
+  - {name: bankId, type: 'stable slug; technical <course>/<bank folder> (e.g. 0-fullstack-mastery/0-framework-foundation), behavioural eq/<bank folder> (e.g. eq/1-behavioral)', required: true}
+  - {name: version, type: source ref label plus SHA-256 of the bank's bytes, required: true}
+  - {name: family, type: technical | behavioral, required: true}
+  - {name: bank meta, type: 'sortIndex, title and description by locale, difficulty easy|medium|hard|insane, moduleRefs[] (technical only)', required: true}
+  - {name: questions, type: '[{questionId <bankId>/<n>, sortIndex, isPremium, tier junior|middle|senior, kind, tags[], competency (behavioural), leadershipTier (behavioural senior, optional)}]', required: true}
+  - {name: public prompt, type: 'by locale and code language: prompt, givenCode and givenLang (optional), diagram (optional)', required: true, description: 'Technical prompts live in bodies/<n>-<lang>/{vi,en}.md; behavioural prompts live in the question file itself.'}
+  - {name: interviewer data, type: 'followUps[] (technical), hints[] (technical, optional)', required: false, description: Server-side; the interviewer reads followUps; a hint is released only when the learner asks for one.}
+  - {name: grading data, type: 'technical: rubric[] (text, optional [dimension] prefix), checklist[{text, dimension, critical, scoreBand}], idealAnswer per language, keywords[], exampleResults[{level 1..5, answer, sonnet, haiku}]; behavioural: rubric[6] keyed situationClarity|actionSpecificity|resultImpact|selfAwareness|communication|relevanceToRole, ownershipSignal', required: true, description: Server-only; never in any public projection.}
+  - {name: tracks, type: 'outcome path ids (journey.learning-program.*) this bank serves', required: true, description: From the track map in sds.mock-interview.content-import.}
+  - {name: isPublished, type: boolean, required: true}
+invariants:
+  - A published version is immutable; re-import with changed bytes makes a new version, and an identical import is a no-op.
+  - A technical question has at least one body; every body has a prompt and an idealAnswer; the checklist scoreBands of a question sum to 100.
+  - A behavioural question has exactly the six STAR rubric keys and an ownershipSignal.
+  - vi and en of a question have the same structural ids (rubric and checklist counts, bodies, followUps).
+  - A bank is published only after the exampleResults pre-check of decision.mock-interview.calibration passes (technical banks).
+stateMachine:
+  - draft -> validated (all invariants pass)
+  - validated -> published (calibration pre-check passes)
+  - published -> superseded (a newer version publishes; a session keeps the version it started with)
+extensions:
+  counts: 'At 231d8cc57: technical 82 banks and 985 questions (Fullstack 23 banks and 345 questions, System Design 24 and 360, DevOps 35 and 280, AI/LLM 0). Tiers of the Fullstack and System Design questions: 143 junior, 297 middle, 265 senior. Kinds: theory, scenario, debug, review, optimize and design-lite 94 each, reasoning 141 (DevOps uncounted, CRLF files). isPremium true on 110 questions, all DevOps. Bodies: 592 agnostic, 277 typescript, 228 each of java, csharp and go, plus 116 single-tool bodies (hcl, yaml, bash and others). Behavioural: 3 banks of 15 (behavioral, situational, culture), 45 questions, tiers 10 junior, 25 middle, 10 senior, all isPremium false. Every question exists in vi and en.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Entity from the teacher's bank format at origin/main.}

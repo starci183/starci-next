@@ -1,0 +1,73 @@
+schema: work/policy-decision@1
+id: decision.essentials.categories
+title: One category tree across the merged courses
+state: todo
+activity: idle
+question: How are the Fullstack, System Design and DevOps courses (plus AI/LLM) merged and re-categorised into lessons?
+options:
+  - A. Keep the courses as they are and only tag lessons.
+  - B. One category tree by knowledge area, with overlapping lessons merged into one lesson per concept, cloud providers as a facet and case studies as a separate collection.
+recommendation: B
+recommendationReason: The owner asked to merge the courses and re-categorise them. The same concept is taught two to four times across courses (observability, Kubernetes, secrets, rate limiting, idempotency), and 69 cloud lessons repeat the same concepts per provider.
+outcome: decided
+chosen: B, with the 16-category tree below and all four proposals.
+reason: 'Owner 2026-11-08: "gom chung 3 khóa rồi chia lại category cho knowlege shard", then on the proposed tree: "Chốt cây này".'
+blocks: []
+extensions:
+  counts: 343 lessons on origin/main (Fullstack 95, System Design 87, DevOps 153, AI/LLM 8). A mapping script checked that every lesson is assigned exactly once.
+  tree:
+    - {id: backend, label: Backend nền tảng, lessons: 13, from: FS}
+    - {id: frontend, label: Frontend, lessons: 33, from: FS}
+    - {id: data, label: 'Dữ liệu, lưu trữ & tìm kiếm', lessons: 14, from: FS 7 · SD 7}
+    - {id: caching, label: Caching & Redis, lessons: 4, from: FS 1 · SD 3}
+    - {id: messaging, label: Messaging & xử lý nền, lessons: 10, from: FS 4 · SD 6}
+    - {id: realtime, label: Realtime, lessons: 4, from: FS}
+    - {id: distributed, label: Kiến trúc & hệ phân tán, lessons: 18, from: SD}
+    - {id: security, label: Bảo mật & định danh, lessons: 25, from: FS 8 · SD 7 · DevOps 10}
+    - {id: testing, label: Testing, lessons: 4, from: FS}
+    - {id: observability, label: Observability & SRE, lessons: 26, from: FS 4 · SD 4 · DevOps 18}
+    - {id: infra, label: 'Linux, container, Kubernetes & IaC', lessons: 42, from: FS 1 · SD 5 · DevOps 36}
+    - {id: delivery, label: CI/CD & giao hàng, lessons: 24, from: FS 4 · DevOps 20}
+    - {id: cloud, label: 'Cloud (AWS, GCP, Azure, DigitalOcean)', lessons: 69, from: DevOps}
+    - {id: integrations, label: 'Tích hợp dịch vụ (email, OTP, thanh toán)', lessons: 8, from: FS}
+    - {id: ai, label: AI & LLM, lessons: 12, from: FS 4 · AI/LLM 8}
+    - {id: casestudy, label: Bài toán thực chiến, lessons: 37, from: SD}
+  proposals:
+    - Merge overlapping lessons into one lesson per concept, split by difficulty (foundation, intermediate, advanced) instead of keeping two or three near-duplicates.
+    - Cloud lessons become one lesson per concept with a provider facet.
+    - Case studies become a collection above the lessons; each lists the lessons it needs, using the concept graph in each course's mind-map.json.
+    - Add security to the V2 category vocabulary, which today has backend, frontend, system-design, testing, devops, cloud and ai-harness.
+    - The Claude Mastery course has no modules yet; when it does, it joins AI & LLM beside the agent-harness concept.
+  lessonGroups:
+    note: The teacher's V2 category stays as written on each lesson; the catalog groups by this map, kept in the import (one entry per lesson id). Answers the lane's Q-KS-4 from the approved tree.
+    map:
+      request-response-lifecycle: backend
+      server-state-cache-lifecycle: frontend
+      cqrs-read-models: distributed
+      unit-testing-behavior: testing
+      health-probe-semantics: infra
+      vpc-routing: cloud
+      agent-harness-control-loop: ai
+    fallback: 'backend to backend, frontend to frontend, testing to testing, cloud to cloud, ai-harness to ai; system-design, devops and security need an explicit entry (they split across several groups).'
+  topics:
+    note: 'Owner 2026-11-08 asked for topics ("/essentials có topic nữa chứ?") and chose the route /essentials/[topic]/[lesson]. Three levels: group, topic, lesson. A topic is one source course module; per-provider cloud modules merge by concept. Every lesson belongs to exactly one topic, and a topic is listed once it has a published lesson. `source` (<course>/<module>/<content-folder>) is the path row a published lesson replaces; the import stores it as the source key of the version, and a lesson whose source names no path row is appended after the path.'
+    map:
+      request-response-lifecycle: {topic: backend-framework, title: Backend framework (NestJS), from: Fullstack module 0, source: 0-fullstack-mastery/0-nestjs-core-and-request-lifecycle/1-request-response-lifecycle}
+      server-state-cache-lifecycle: {topic: server-state, title: Server state (TanStack Query), from: Fullstack module 4, source: 0-fullstack-mastery/4-server-state-with-tanstack-query/0-usequery-and-cache-lifecycle}
+      cqrs-read-models: {topic: communication-patterns, title: Communication patterns, from: System Design module 3, source: 1-system-design-mastery/3-communication-patterns/6-cqrs-and-read-models}
+      unit-testing-behavior: {topic: testing-strategy, title: Testing strategy, from: Fullstack module 18, source: 0-fullstack-mastery/18-testing-strategy/0-vitest-unit-tests}
+      health-probe-semantics: {topic: kubernetes, title: Kubernetes, from: System Design module 2 và DevOps module 18, source: 2-devops-mastery/18-kubernetes-core-and-internals/4-probes-autoscaling-and-rollouts}
+      vpc-routing: {topic: cloud-networking, title: Cloud networking (VPC), from: DevOps AWS, GCP, Azure và DigitalOcean VPC lessons, source: 2-devops-mastery/2-aws-foundations/1-vpc-subnet-routing-and-igw}
+      agent-harness-control-loop: {topic: llm-agents, title: LLM & agent, from: Fullstack module 20 và AI/LLM module 0, source: 3-ai-llm-mastery/0-llm-and-the-api/1-calling-the-model-api}
+    details:
+      note: Draft copy by the UXUI session for the Topic page (description, Nên biết trước, Topic liên quan); the teacher may rewrite it. Related topics should later come from each course's mind-map.json.
+      backend-framework: {description: 'Framework backend tổ chức request thế nào: các tầng, cấu hình, log và cách trả lỗi để hệ thống dễ đoán khi chạy thật.', prerequisites: ['Đọc được hàm TypeScript, Promise và lỗi throw.', 'Phân biệt HTTP request, status và handler.'], related: [testing-strategy, communication-patterns]}
+      server-state: {description: 'Dữ liệu từ server trên giao diện là một bản sao có tuổi: khi nào dùng lại, khi nào tải lại và cách đồng bộ sau khi ghi.', prerequisites: ['React component, hook và state cơ bản.', 'Gọi HTTP API từ trình duyệt.'], related: [backend-framework]}
+      communication-patterns: {description: 'Các dịch vụ nói chuyện với nhau thế nào: đồng bộ, bất đồng bộ, sự kiện, saga và tách mô hình đọc khỏi mô hình ghi.', prerequisites: ['Một request đi qua backend thế nào (topic Backend framework).', 'Giao dịch và index trong database.'], related: [backend-framework, kubernetes]}
+      testing-strategy: {description: 'Test nào bảo vệ được hành vi: unit, HTTP e2e, UI e2e và mock mạng, mỗi loại bắt được lỗi gì.', prerequisites: ['Viết được hàm TypeScript và chạy lệnh npm.'], related: [backend-framework, server-state]}
+      kubernetes: {description: 'Từ pod tới control plane: Kubernetes quyết định chạy, nối mạng, kiểm tra sức khoẻ và cập nhật ứng dụng thế nào.', prerequisites: ['Container và image.', 'Đọc được YAML và lệnh shell cơ bản.'], related: [cloud-networking, communication-patterns]}
+      cloud-networking: {description: 'Một gói tin đi trong cloud thế nào: VPC, subnet, route table, gateway và chính sách mạng trên AWS, GCP, Azure và DigitalOcean.', prerequisites: ['Địa chỉ IP, CIDR và cổng.'], related: [kubernetes]}
+      llm-agents: {description: 'Gọi model đúng cách rồi bọc nó trong một harness: context, công cụ, quyền, ngân sách và kiểm chứng kết quả.', prerequisites: ['Gọi HTTP API và đọc JSON.'], related: [backend-framework, testing-strategy]}
+    rule: Topic slugs never equal a lesson id; a lesson without a topic entry is refused at import (LESSON_CONTENT_INVALID).
+  mapping: scratchpad lesson-categories.cjs holds the module-to-category map and the check; rerun it after any change to the tree.
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: Owner approved the tree ("Chốt cây này").}

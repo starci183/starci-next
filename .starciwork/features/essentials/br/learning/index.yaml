@@ -1,0 +1,22 @@
+schema: work/business-rule@1
+id: br.essentials.learning
+title: Learn by doing first, prove with evidence, grade only by the lesson's own rubric
+state: todo
+activity: idle
+statements:
+  - A learner does something before reading the explanation. Phase 1 asks the lesson's diagnostic question first; predictions are made before the simulation runs; the lab breaks code before the theory of why.
+  - No answer key, rubric expected evidence, option explanation or hidden test reaches the browser before the learner submits the matching activity. Feedback is released after submit (feedbackRelease after-submit).
+  - Every AI judgement is grounded in the lesson. Written answers are graded criterion by criterion against the activity's rubric, quoting the learner's text as evidence. Length earns no points, and no free-form model opinion counts as a grade.
+  - The diagnostic question in phase 1 is asked again in the reflect phase with the same rubric; the learner sees the before and after level per criterion.
+  - Using a hint never blocks completion; the attempt is recorded and labelled "có hỗ trợ".
+  - Progress is measured per learning outcome at two levels, "hiểu" (in-browser phases) and "chứng minh" (lab and incident evidence), never by percentage read.
+  - Without Premium, a learner sees every lesson's overview and answers phase 1; every other phase and the AI need Premium, and no AI provider is called for them.
+  - Content is the teacher's. The app renders and grades it but never paraphrases a rubric into a different standard; a missing piece shows as missing, never invented.
+acceptance:
+  - Given a learner without Premium, when they open any phase after phase 1, then the locked state shows and no AI call is made.
+  - Given a submitted written answer, when it is graded, then each rubric criterion gets a level and a quoted span of the answer as evidence.
+  - Given an unanswered choice, when the page is inspected, then neither the correct option nor any option explanation is present in the payload.
+  - Given the reflect phase, when the learner submits, then the result shows the phase 1 level and the new level for each criterion.
+authorityRefs: [decision.essentials.product, decision.essentials.content-format]
+appliesTo: [fr.essentials.study, fr.essentials.lab, fr.essentials.incident, fr.essentials.review]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Rules from the teacher's concepts/ V2 design and the owner's Premium direction.}

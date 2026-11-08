@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit"
-import { sessionReducer } from "./slices/session"
-import type { SessionState } from "./slices/session"
+import { sessionReducer, type SessionState } from "./slices/session"
 
 /** The state of the store, for useAppSelector. */
 export type RootState = { readonly session: SessionState }

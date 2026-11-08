@@ -1,0 +1,22 @@
+schema: work/implementation@1
+id: impl.practice.be.practice
+title: Back-end practice (import, read, queue, submit, hints, doors)
+state: todo
+activity: idle
+repository: be
+owners:
+  - {role: be, path: be/src/modules/domain/practice}
+  - {role: be, path: be/src/features/api/practice}
+  - {role: be, path: be/src/features/cli/practice}
+proves: [data.practice.problem, data.practice.submission, fr.practice.solve, fr.practice.hints, contract.practice.api, decision.practice.limits]
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/practice src/features/cli/practice
+    note: Required scoped unit proof at the managed per-file coverage threshold; no passed result is claimed.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/practice
+    note: Required integration proof of the doors on the test world with a Judge0 fake; no passed result is claimed.
+  - required: true
+    command: starci app check --env local
+    note: The whole app check.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

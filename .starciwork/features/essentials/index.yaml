@@ -1,0 +1,18 @@
+schema: work/feature@1
+id: essentials
+title: Bản chất (Essentials)
+state: todo
+activity: idle
+summary: The separate part of the harness that teaches industry knowledge. One lesson is one concept, learned interactively with the StarCi AI teacher, then proved on the teacher's real code. Premium (monthly or yearly) unlocks every lesson and the AI; there are no per-course sales.
+supersedes: 'All records of feature lessons (workflow lesson-ai, branch starci/lesson-ai). Its reusable decisions are carried over here: the AI pool through @starci/ai-router 0.3.0 over OpenRouter, the save-before-feedback coach and the grounding that never loads grading data into an open question.'
+records:
+  decision: [decision.essentials.product, decision.essentials.content-format, decision.essentials.categories, decision.essentials.ai-pool]
+  business: [br.essentials.learning]
+  data: [data.essentials.lesson, data.essentials.progress]
+  functional: [fr.essentials.study, fr.essentials.lab, fr.essentials.incident, fr.essentials.review, fr.essentials.catalog]
+  design: [sds.essentials.content-import, sds.essentials.coach, sds.essentials.simulation, sds.essentials.incident-grader]
+  contract: [contract.essentials.api]
+  ui: [ui.essentials.lesson, ui.essentials.catalog]
+canvas: https://claude.ai/artifact/Xhn3hEGbmxnXUmEgemj6Tx (page Template bài học)
+dependsOn: [contract.identity.session-contract, contract.commerce.entitlement]
+mvp: 'decision.essentials.mvp-scope: seven lessons (concepts/ folders 0 to 6 at starci-lab/data 231d8cc57), tier 1 only (in-browser phases); the lab runner, incident, review scheduling, hints and Hoi StarCi are later. Proof: impl.essentials.be.content.'

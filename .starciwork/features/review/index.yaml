@@ -1,0 +1,51 @@
+schema: work/feature@1
+id: review
+title: Ôn tập (Review, spaced repetition)
+summary: One daily review queue across everything the learner has met. Flashcards from the teacher's decks are recalled before the card is flipped and self-graded; the retrieval questions of finished Bản chất lessons fall due 1, 7 and 21 days later and are answered in writing and graded by rubric. A daily goal, a streak and the teacher's streak badge bring the learner back each day.
+draft: 'Promoted from flows/wave-a-drafts on 2026-11-08 and built (impl.review.be, impl.review.fe). Owner 2026-11-08 accepted every proposal of the learning research ("theo đề xuất trò từng phần đi").'
+purpose: Learners forget what they studied; review turns Bản chất and the interview banks into lasting memory and a daily habit.
+decided:
+  - Wave A builds review (research §6 Q1).
+  - The scheduler starts with the fixed ladder of the MVP (1, 3, 7 days, then doubling) for cards, and the teacher's authored afterDays (1, 7, 21) for Bản chất retrieval items (decision.review.scheduler).
+  - Free cards follow the teacher's isPremium flag (§6 Q4); Premium unlocks every card, the retrieval items of Bản chất and the queue that is built automatically from studied lessons.
+  - No AI in the MVP; written retrieval answers are graded by the existing coach (sds.essentials.coach) once retrieval grading is built.
+  - Decks are grouped by outcome track (decision.learning-program.outcome-layer).
+delivers:
+  - The daily queue (/review), a review session, deck browsing and adding decks, a daily goal and streak.
+  - Import of courses/*/flashcard-decks (45 decks, 750 cards) from starci-lab/data; Bản chất retrieval items are read from the imported lessons (data.essentials.lesson).
+excludes:
+  - AI-generated cards from the learner's mistakes and short interview questions as review items (later, research §4.1).
+  - FSRS parameter fitting (later; the ladder is enough for the MVP).
+  - Leaderboards.
+records:
+  decision: [decision.review.product, decision.review.scheduler]
+  business: [br.review.review]
+  data: [data.review.item, data.review.card-state, data.review.habit]
+  streak: 'One app-wide streak: data.hub.streak and sds.hub.streak in flows/learning-program/hub; review records its review-due-done action there.'
+  functional: [fr.review.daily, fr.review.card, fr.review.retrieval, fr.review.habit]
+  design: [sds.review.content-import, sds.review.scheduler]
+  contract: [contract.review.api]
+  ui: [ui.review.today, ui.review.session, ui.review.decks]
+dependsOn: [contract.identity.session-contract, contract.commerce.entitlement, contract.essentials.api, data.essentials.lesson, data.essentials.progress, sds.essentials.coach]
+supersedes: 'fr.essentials.review keeps only its producer part (scheduling the retrieval items when a lesson completes); the review inbox, answering and grading move to this feature. That record is not edited by this draft.'
+mvp: 'Deck courses/0-fullstack-mastery/flashcard-decks/0-module-1 (20 cards, 3 of them isPremium false), the 1/3/7-day ladder, a daily goal and streak. No AI.'
+openQuestions:
+  - id: Q-RV-1
+    question: Research §4.1 proposed "free gets one deck per group", while §6 Q4 (decided) says free follows the teacher's isPremium flag. The flag frees 119 of 750 cards, 2 or 3 in every one of the 45 decks. Which one applies?
+    proposed: The flag (Q4 was the owner's decision). A free learner can review the free cards of every deck, and sees the rest of each deck as locked.
+    state: decided
+  - id: Q-RV-2
+    question: How large is the default daily goal? (The streak moved to the hub, Q-HUB-2 and Q-HUB-3.)
+    proposed: A goal of 10 items a day, editable from 5 to 50. A day counts toward the streak when the goal is met or the queue is emptied. One streak freeze per week is granted automatically, so a missed day does not reset a long streak (research §4.1 warns against forcing streaks).
+    state: decided
+  - id: Q-RV-3
+    question: Bản chất retrieval rubrics have one criterion, and its expectedEvidence repeats the sampleAnswer (for example request-response-lifecycle retrieval-1). Is that grading data final?
+    proposed: Use it as it is. Ask the teacher to split each one into 2 or 3 criteria when he next edits the concepts.
+    state: decided
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Wave A draft from the learning research §4.1, the owner''s acceptance of every proposal and the outcome-path layer.'}
+buildDecisions:
+  - 'Q-RV-1, Q-RV-2, Q-RV-3 are built as the proposed defaults: the isPremium flag frees 119 of 750 cards, the daily goal is 10 (5..50, configurable by setReviewGoal), the retrieval rubric data is used as authored.'
+  - 'The one freeze a week of Q-RV-2 moved to the hub streak (Q-HUB-2).'
+  - 'Door rename: the recall item query is recallItem (reviewItem is the career experience query).'
+  - 'Retrieval items are scheduled when a lesson completes (every required activity has a graded attempt; ReviewScheduleService.onActivityGraded, called by the attempt capability) and are answered in writing then self-graded; rubric grading by the coach waits for the attempt door to accept retrieval activities (ATTEMPT_ACTIVITY_UNSUPPORTED today).'
+  - 'Notification: the first read of a day with cards due notifies review.due once a day (ReviewQueueService.notifyDue, claim row review_settings.due_notified_on).'

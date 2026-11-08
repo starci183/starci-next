@@ -1,0 +1,20 @@
+schema: work/sds-component@1
+id: sds.career.experience-engine
+title: Experience engine (AI grade, draft line, assignment, SLA)
+state: todo
+activity: idle
+responsibility: Turn part evidence into experience items, run the AI grade and the CV-line draft, route items to reviewers, run the SLA timers, and apply decisions with the audit trail.
+interfaces:
+  - 'onEvidence(event): creates or updates the matching item from the catalog; proof-form evidence makes it gradeable.'
+  - 'aiGrade(item): grades the evidence against the item''s criteria (the lesson, concept, interview or CV rubric) through the shared pool, and drafts the line from the template with slots filled from evidence; validated so that every filled slot equals an evidence value.'
+  - 'assign(item): picks a reviewer by scope, conflicts and capacity (data.career.reviewer), or the teacher.'
+  - 'decide(item, action, note?): applies approve, return, revoke or reassign with the signer''s role check and writes the decision row in the same transaction.'
+  - 'tick(now): reminders at two days, escalation at the SLA (Q-CA-4).'
+owners: [be]
+sequence:
+  - Check identity, Premium (for the learner side) and role TEACHER or REVIEWER (for the signer side) at every door.
+  - Store the evidence snapshot first; the AI grade is stored before the learner sees it (save before feedback).
+  - Send no learner email or name to the provider; evidence text is quoted data, never instructions.
+  - A state change and its decision row commit together; an item is never in two states.
+refs: [data.career.experience-item, data.career.review-decision, data.career.reviewer, data.learning-program.experience-catalog, br.career.experience, decision.essentials.ai-pool, sds.essentials.coach]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision.}

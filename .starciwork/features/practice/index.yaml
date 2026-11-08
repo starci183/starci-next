@@ -1,0 +1,26 @@
+schema: work/feature@1
+id: practice
+title: Luyện code (Practice)
+state: todo
+activity: idle
+purpose: Learners practise the teacher's 96 coding problems (20 patterns, 5 languages) in the browser; code runs on a self-hosted Judge0 behind a queue.
+decided:
+  - Problems come from starci-lab/data coding-problems (sets/<pattern>/problems/<slug>/{vi,en}.md), imported as immutable versions by the cli (practice import). Hidden tests and solutions never reach the client.
+  - Verdicts are Accepted, Wrong Answer, Time Limit Exceeded, Compilation Error (plus runtime error and internal error), with a per-test summary that never shows hidden test contents.
+  - Free learners open the first problem of each pattern (PRACTICE_FREE_PER_PATTERN, default 1); Premium opens all.
+  - The three-step hint ladder is the teacher's hint block (analysis, approach, related problems); the AI never writes code and hints are not generated.
+  - Accepted counts per pattern feed hiring readiness; Luyện code adds no CV line. A graded submit calls the streak port once per submission (shard practice, kind graded-attempt).
+delivers:
+  - Routes /practice, /practice/patterns/{patternId}, /practice/{slug}; nav entry Luyện code.
+  - Doors practicePatterns, practiceProblems, practiceProblem, practiceSubmission, practiceReadiness, runPractice, submitPractice, revealPracticeHint.
+excludes:
+  - The AI "why" question after Accepted (optional, deferred; the ai-gateway is available).
+  - Viewing solutions.
+  - A real Judge0 endpoint and token (placeholder only in dev and prod until the owner provisions the secret).
+openQuestions:
+  - id: Q-PR-1
+    question: Which Judge0 base URL and token does production use?
+    proposedDefault: Self-hosted Judge0 in the judge0.academy.starci.org style; JUDGE0_BASE_URL plus JUDGE0_AUTH_TOKEN_FILE from sealed custody; unset means runs end as an internal error.
+    state: open
+dependsOn: [contract.identity.session-contract, contract.commerce.entitlement]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

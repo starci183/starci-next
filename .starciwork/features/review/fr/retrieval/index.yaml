@@ -1,0 +1,19 @@
+schema: work/functional-requirement@1
+id: fr.review.retrieval
+title: Answer a Bản chất retrieval question
+state: todo
+activity: idle
+actors: [learner]
+trigger: A retrieval item of a completed Bản chất lesson falls due (1, 7 or 21 days after completion).
+mainFlow:
+  - The item shows the lesson, the outcome it strengthens and the prompt.
+  - The learner writes an answer and submits; it is stored as a Bản chất attempt (submitLessonAttempt of contract.essentials.api), so it uses the existing coach, the rubric, and save-before-feedback.
+  - The result shows per criterion with quoted evidence; a level-2 result closes the item, and a lower one schedules one more attempt after 3 days and offers the lesson section again.
+exceptionFlows:
+  - Without Premium the item shows locked; no AI call.
+  - Grading failed (ATTEMPT_COACH_UNAVAILABLE and the other coach codes), the answer stays saved and the item offers retry; it stays due.
+  - The coach is not yet wired (ATTEMPT_COACH_UNCONFIGURED), the item is listed but answering is disabled with "sắp có"; the MVP ships without this flow.
+postconditions:
+  - The attempt is stored once, and the outcome's understood level is raised, never lowered.
+composes: [br.review.review, data.review.item, data.review.card-state, contract.essentials.api, sds.essentials.coach, data.essentials.progress]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Wave A flow; takes over the answering part of fr.essentials.review.'}

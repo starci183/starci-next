@@ -1,0 +1,21 @@
+schema: work/policy-decision@1
+id: decision.career.verification
+title: AI chấm, thầy ký từng mục
+state: todo
+activity: idle
+question: Who verifies an experience item before it can go on a CV?
+options:
+  - A. The AI alone.
+  - B. The AI grades first and drafts the CV line with its evidence; the teacher, or a reviewer he appoints, approves each item in a review queue.
+  - C. The teacher alone.
+recommendation: B
+recommendationReason: The owner chose it.
+outcome: decided
+chosen: B
+reason: 'Owner 2026-11-08, verbatim: "ý là chia starci next thành các phần học, mỗi phần sẽ gain kinh nghiệp nhất định verify bởi thầy và thầy AI. hiểu k? để lấy kinh nghiệm ghi cv"; "AI chấm, thầy ký từng mục".'
+blocks: [fr.career.review-queue, sds.career.experience-engine]
+extensions:
+  states: 'đang luyện (practising) -> AI đã chấm (ai-graded) -> chờ thầy duyệt (pending-review) -> Đã xác minh (verified), or -> trả lại (returned) with the teacher''s note; verified -> thu hồi (revoked) later, with an audit trail.'
+  counts: Only Đã xác minh items count toward the profile, path done, CV export and the hiring bridge.
+  openQuestions: [Q-CA-3 reviewers, Q-CA-4 SLA, Q-CA-5 resubmits, Q-CA-6 public signature; in the career feature index]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision.}

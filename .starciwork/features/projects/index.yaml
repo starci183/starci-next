@@ -1,0 +1,33 @@
+schema: work/feature@1
+id: projects
+title: Dự án (projects)
+state: todo
+activity: idle
+purpose: A learner owns many projects of any topic, language and structure (kind app or agent); a milestone is a list of Bản chất concepts and passes when each concept has evidence. Practice runs on the learner machine; proof is a signed CI run, a server probe of the deployed address or the AI teacher reading the code.
+decided:
+  - 'Concept milestones in any project (decision.projects.model, UXUI-owned). Learners bring their own projects, as many as they like on any topic, and put the starci/ folder into each; there is no StarCi Shop sample project any more. Owner, 2026-11-09 (verbatim): "ủa giờ giữ án ngẫu nhiều bỏ folder starci vào mà nhỉ? just ask k theo starci shop nữa". The sample, its steps, hints and solution, and the hint reveal door were removed (migration 1797650000002-drop-project-sample drops projects.sample_id); the milestone and concept catalog stays.'
+  - Evidence per concept is a tagged test, an e2e flow, a generic StarCi probe or the AI code read. Behaviour concepts need a test or e2e flow plus probes; structure concepts need the AI code read.
+  - Practice ("Đang luyện") comes through the relay port and is never proof. Proof ("Đã chứng minh") is a signed CI run (HMAC-SHA256, per-project secret), the server probe runner (public http or https only) or the AI read.
+  - Free - 1 project and the first milestone (bf-http-foundation); Premium - more projects, later milestones and the AI read. All configurable (PROJECT_FREE_PROJECTS, PROJECT_FREE_MILESTONES).
+  - A newly proved concept reaches the Bản chất experience line; a proved milestone and a probed deployment reach the career experience producer; each run is one projects / project-run streak action; a milestone or deployment sends one notification.
+  - Agent projects are projects of kind agent; /agents/{projectId} is dropped.
+delivers:
+  - Routes /projects, /projects/new, /projects/{projectId}, /projects/{projectId}/{milestone}; nav entry Dự án.
+  - Doors projects, project, projectMilestone, projectCatalog, provedProjectConcepts, createProject, updateProject, deleteProject, setProjectConcept, explainProjectConcept, runProjectProbes, rotateProjectCiSecret, syncProjectPractice; webhook POST /webhooks/project-ci.
+excludes:
+  - The relay and the CLI (another agent); the port and the integration fake exist.
+  - Cloning the repository: the AI read takes the excerpt the learner pastes.
+  - Any sample project (StarCi Shop) with steps, hints and solution: removed by the owner decision above; the hint reveal door was never built.
+openQuestions:
+  - id: Q-PJ-1
+    question: How does a CI run prove it came from the learner's StarCi Action and not a hand-signed document?
+    proposedDefault: Today the per-project secret signs the run. Add GitHub OIDC (workflow identity and commit check) before the proof counts toward a signed CV line.
+    state: decided
+    decision: 'Owner, 2026-11-09 (verbatim): "ok", then "code trc nhé cấp creds sau"; layout per the owner via NIVO: no integrations/github-oidc slot; @starci/auth-oidc carries issuer presets (keycloak, google, github-actions) and integrations/keycloak, the app's single auth owner, composes the github-actions preset as the CiAttestationVerifier once a package release carries it; no Keycloak token exchange (a CI token has no user). HMAC (per-project secret) stays the transport check. The optional x-starci-oidc header carries the run''s GitHub Actions OIDC token (the configured audience, default starci-next); when it names the repository bound with setProjectRepository (owner/name, repository_id pinned on the first attested run), the signed commit and the run id, the run is recorded attested and its results are source ci (proof); otherwise signed-only, source ci-signed (practice). Only attested runs feed proof and CV lines. Until that preset is composed the app binds UnattestedCiClient, so every run stays signed-only. Migration 1798000000000-project-ci-attestation.'
+    priorArt: 'Read D:/Repositories/starci-academy-backend (read-only) first, as the owner asked. It never attested learner CI runs: its only GitHub OIDC use is its own pipeline (.github/workflows/ci.yml permissions id-token write and codecov use_oidc; deploy-core-vps.yml id-token write), and GitHub login there is Keycloak social sign-in (src/modules/integrations/keycloak/keycloak-oidc-redirect.service.ts). There is no claim check, audience or replay design to reuse. Taken from it: a CV line is backed by a caller-owned passed capstone snapshot selected into a CV run (src/features/api/core/graphql/queries/cv-submissions/graphql-types/cv-evidence.ts, CvCapstoneEvidence/CvSelectedEvidence), which maps here to attested proof claimed once per concept. Replay protection here is the existing one: HMAC over timestamp and body inside the tolerance window, and one row per (project, run id).'
+  - id: Q-PJ-2
+    question: Which probe set proves a non-HTTP project (CLI, library)?
+    proposedDefault: Learner tests and the AI read only, as decision.projects.model says; no probe.
+    state: open
+dependsOn: [decision.projects.model, decision.agents.curriculum, contract.relay.channel]
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

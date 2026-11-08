@@ -1,0 +1,17 @@
+schema: work/ui-screen@1
+id: ui.incidents.list
+title: Sự cố list
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /incidents
+routeParent: app
+surface: Groups of lessons with an incident row each; every row is Sắp có until an incident is authored.
+persona: learner
+ui:
+  - Show the list structure and a Sắp có badge; no start action because there is no runner yet.
+direction: canvas not drawn yet
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

@@ -1,0 +1,35 @@
+schema: work/policy-decision@1
+id: decision.essentials.content-format
+title: A lesson is a concepts/ V2 record from starci-lab/data
+state: todo
+activity: idle
+question: What content format does a lesson use, and how do V1 lessons, languages and cloud providers fit?
+outcome: decided
+chosen: The teacher's concepts/ V2 format in github.com/starci-lab/data (origin/main) is the lesson format. V1 courses are source material only.
+reason: The teacher already authored 7 interactive concepts in this format (request-response-lifecycle, server-state-cache-lifecycle, cqrs-read-models, unit-testing-behavior, health-probe-semantics, vpc-routing, agent-harness-control-loop) covering backend, frontend, system design, testing, devops, cloud and AI harness. The owner pointed to that repository as the source.
+blocks: []
+extensions:
+  source:
+    repository: github.com/starci-lab/data
+    branch: main
+    note: Always read origin/main. The local checkout D:/Repositories/starci-lab-data was two months behind (2026-06-29 vs 2026-09-05) on 2026-11-08.
+  v2Shape:
+    root: title, description, category, difficulty (foundation, intermediate, advanced), minutesRead, implementation, learningOutcomes[], prerequisites[], references[] (V1 sources cited with git sha and sha256), activities[] of kind retrieval with afterDays, workspace {runtime, files[source, test], commands}.
+    sections: 0-interview (phase challenge), 1-prediction (predict), 2-experiment (explore), 3..n-theory (explain), practice and transfer (apply), reflection (reflect). Each section has title, phase, body (markdown with mermaid) and activities[].
+    activity: id, kind (explain, choice, simulation, exercise, retrieval), prompt, responseKind, evaluationMethod (deterministic or ai-rubric), isDiagnostic, feedbackRelease (after-submit), outcomeIds[], hints[], rubric[{criterion, expectedEvidence, misconception, maxScore}], answer, options[] for choice, simulation {engine state-machine, initialStateId, states[{label, observation, isSuccess}], actions[], transitions[], debriefQuestion} and exercise {submissionInstructions, verificationMode, files[]}.
+  languages:
+    rule: The concept text is written once. Only code-bearing parts vary by programming language.
+    shape: workspaces {typescript, java, csharp, go}, each with source, test and commands, all sharing one behavioural test contract (same test names, same expectations, same seeded break). A lesson shows only the languages it really has; a missing language shows as "đang soạn" and cannot be chosen.
+    extendsV2: V2 has a single implementation and workspace; workspaces per language is a proposed extension for the teacher.
+  cloudProviders:
+    rule: Cloud lessons are written once per concept, with a provider facet (AWS, GCP, Azure, DigitalOcean) shown like the language picker; the teacher's vpc-routing concept is already provider-agnostic.
+  v1Material:
+    - The V1 body (§1 hook, §2.1 practice flows with exact expected output, §2.2 essence and edge cases, §3.1 interview questions with "ý interviewer muốn nghe") feeds the V2 sections and rubrics.
+    - The V1 lesson repo in the StarCi-Academy GitHub organisation and its test.md feed tier 2 (incident).
+    - The V1 challenges feed tier 3.
+    - V1 is never edited in place; a V2 lesson corrects V1 misconceptions in its "Điều chỉnh nhận thức" section.
+  knownGaps:
+    - 62 of 82 sampled System Design repos have TypeScript code only, although V1 bodies describe Java, C# and Go.
+    - The request-lifecycle test.md has no flow for id = 0; a seeded "< 0" boundary bug survives all its flows.
+    - Some V1 flows lack an expected-output block, and some edge-case lists are not bold, which breaks parsing.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Content format chosen after reading starci-lab/data origin/main.}

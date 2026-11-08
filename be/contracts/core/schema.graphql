@@ -1,0 +1,1731 @@
+directive @inputBounds(version: Int = 1, maxLength: Int, maxItems: Int, min: Float, max: Float, itemMaxLength: Int, itemMaxItems: Int, itemMin: Float, itemMax: Float) on INPUT_FIELD_DEFINITION
+
+type AgentLabCellType {
+  conceptId: String!
+  conceptLabel: String!
+  labId: String
+  locked: Boolean!
+  open: Boolean!
+  status: String!
+  steps: [AgentLabStepType!]!
+  title: String
+}
+
+type AgentLabConceptType {
+  evidence: String!
+  free: Boolean!
+  id: String!
+  label: String!
+}
+
+input AgentLabInput {
+  locale: String!
+}
+
+type AgentLabOverviewType {
+  concepts: [AgentLabConceptType!]!
+  tracks: [AgentLabTrackSummaryType!]!
+}
+
+type AgentLabStepType {
+  sourceUrl: String!
+  text: String!
+}
+
+input AgentLabTrackInput {
+  locale: String!
+  trackId: String! @inputBounds(maxLength: 40)
+}
+
+type AgentLabTrackSummaryType {
+  focus: String!
+  id: String!
+  keyMode: String!
+  labCount: Int!
+  label: String!
+  openLabCount: Int!
+  pinnedVersion: String
+}
+
+type AgentLabTrackType {
+  cells: [AgentLabCellType!]!
+  focus: String!
+  id: String!
+  keyMode: String!
+  labCount: Int!
+  label: String!
+  openLabCount: Int!
+  pinnedVersion: String
+}
+
+type AgentQuotaType {
+  exhausted: Boolean!
+  limit: Int!
+  remaining: Int!
+  resetsAt: String!
+  used: Int!
+}
+
+input AnswerInterviewInput {
+  isSkipped: Boolean! = false
+  position: Int! @inputBounds(min: 0, max: 40)
+  revision: Int! @inputBounds(min: 0, max: 10)
+  sessionId: String!
+  text: String! = "" @inputBounds(maxLength: 10000)
+}
+
+input AssignExperienceInput {
+  itemId: String! @inputBounds(maxLength: 40)
+  reviewerId: String = null @inputBounds(maxLength: 40)
+}
+
+input CheckRecallClozeInput {
+  choice: String! @inputBounds(maxLength: 300)
+  itemId: String! @inputBounds(maxLength: 300)
+  locale: String! = "vi"
+  n: Int! @inputBounds(min: 1, max: 50)
+}
+
+type CheckoutFieldType {
+  name: String!
+  value: String!
+}
+
+type CheckoutRedirectType {
+  fields: [CheckoutFieldType!]!
+  method: String!
+  url: String!
+}
+
+input ChooseOutcomePathInput {
+  pathId: String! @inputBounds(maxLength: 64)
+}
+
+type ChosenOutcomePathType {
+  activePathId: String!
+  chosenAt: String!
+}
+
+input CreateProjectInput {
+  kind: String!
+  language: String! = "" @inputBounds(maxLength: 40)
+  locale: String! = "vi"
+  name: String! @inputBounds(maxLength: 80)
+  repoUrl: String = null @inputBounds(maxLength: 300)
+  stack: String! = "" @inputBounds(maxLength: 120)
+  topic: String! = "" @inputBounds(maxLength: 120)
+  track: String = null @inputBounds(maxLength: 16)
+}
+
+type CriterionGradeType {
+  criterion: String!
+  evidenceQuote: String!
+  level: Int!
+}
+
+input DecideExperienceInput {
+  decisions: [ReviewDecisionItemInput!]! @inputBounds(maxItems: 50)
+}
+
+type DecisionResultType {
+  itemId: String!
+  refusal: String
+  state: String
+}
+
+input DeleteProjectInput {
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+type ExperienceEvidenceType {
+  at: String!
+  kind: String!
+  proofForm: String!
+  ref: String!
+}
+
+type ExperienceGradeType {
+  criteria: [CriterionGradeType!]!
+  result: String!
+}
+
+type ExperienceItemType {
+  defenseQuestions: [String!]!
+  draftLine: LocalizedLineType
+  dueAt: String
+  evidence: [ExperienceEvidenceType!]!
+  grade: ExperienceGradeType
+  itemId: String!
+  itemType: String!
+  line: LocalizedLineType
+  output: String!
+  part: String!
+  projectId: String
+  returnCount: Int!
+  returnNote: String
+  revokedAt: String
+  shownPublicly: Boolean!
+  signature: ExperienceSignatureType
+  state: String!
+  subject: String!
+  updatedAt: String!
+  verificationCode: String!
+}
+
+type ExperienceSignatureType {
+  role: String!
+  signedAt: String!
+}
+
+input ExplainProjectConceptInput {
+  conceptId: String! @inputBounds(maxLength: 64)
+  excerpt: String! @inputBounds(maxLength: 12000)
+  explanation: String! @inputBounds(maxLength: 1000)
+  locale: String! = "vi"
+  location: String! @inputBounds(maxLength: 300)
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+input FlipRecallCardInput {
+  itemId: String! @inputBounds(maxLength: 300)
+  locale: String! = "vi"
+}
+
+input GradeRecallCardInput {
+  clozeCorrect: Boolean
+  grade: String!
+  itemId: String! @inputBounds(maxLength: 300)
+  revision: Int! @inputBounds(min: 1, max: 100000)
+}
+
+type HubActivePathType {
+  next: [String!]!
+  pathId: String!
+  title: String!
+}
+
+type HubCounterType {
+  current: Int!
+  longest: Int!
+}
+
+type HubExperienceType {
+  pending: Int!
+  verified: Int!
+}
+
+type HubFreezesType {
+  held: Int!
+}
+
+type HubLayerType {
+  id: String!
+  label: String!
+  route: String!
+}
+
+type HubProgressType {
+  label: String!
+  total: Int
+  value: Int
+}
+
+type HubShardType {
+  activeDaysLast30: Int!
+  counter: HubCounterType!
+  experience: HubExperienceType
+  label: String!
+  order: Int!
+  progress: HubProgressType!
+  route: String!
+  shard: String!
+  status: String!
+  todayCounted: Boolean!
+  unavailable: Boolean!
+}
+
+type HubStreakType {
+  current: Int!
+  days: [StreakDayType!]!
+  freezes: HubFreezesType!
+  longest: Int!
+  todayCounted: Boolean!
+  week: HubWeekType!
+}
+
+type HubTodayType {
+  dueAt: String
+  kind: String!
+  link: String!
+  shard: String!
+  title: String!
+}
+
+type HubWeekType {
+  activeDays: Int!
+  goal: Int!
+}
+
+type IncidentListItemType {
+  difficulty: String!
+  group: String!
+  incidentAvailable: Boolean!
+  lessonId: String!
+  minutes: Int!
+  status: String!
+  title: String!
+  topicId: String!
+  topicTitle: String!
+}
+
+input IncidentsInput {
+  locale: String!
+  topic: String = null @inputBounds(maxLength: 100)
+}
+
+type InterviewAbandonType {
+  sessionId: String!
+  status: String!
+}
+
+type InterviewAccessType {
+  freeSessionsLeftThisMonth: Int!
+  isPremium: Boolean!
+  length: Int!
+  resetsAt: String!
+}
+
+type InterviewAnswerType {
+  failureCode: String
+  next: InterviewTurnType
+  saved: InterviewTurnType!
+  status: String!
+}
+
+type InterviewAttributeType {
+  key: String!
+  score: Int!
+}
+
+type InterviewBankOptionType {
+  bankId: String!
+  difficulty: String!
+  family: String!
+  freeQuestionCount: Int!
+  languages: [String!]!
+  questionCount: Int!
+  tiers: [String!]!
+  title: String!
+}
+
+type InterviewChecklistResultType {
+  critical: Boolean!
+  dimension: String!
+  evidenceQuote: String!
+  hit: Boolean!
+  scoreBand: Int!
+  text: String!
+}
+
+type InterviewDimensionResultType {
+  evidenceQuote: String!
+  key: String!
+  level: Int!
+  text: String!
+}
+
+type InterviewEvidenceType {
+  bestScore: Int!
+  family: String!
+  gradedAt: String!
+  sessionId: String!
+  tier: String!
+  track: String!
+  verdict: String!
+}
+
+type InterviewGapType {
+  moduleRefs: [String!]!
+  position: Int!
+  text: String!
+}
+
+type InterviewGradedByType {
+  model: String!
+  profile: String!
+  usedFallback: Boolean!
+}
+
+type InterviewGradingType {
+  failureCode: String
+  sessionId: String!
+  status: String!
+}
+
+input InterviewHintInput {
+  position: Int! @inputBounds(min: 0, max: 40)
+  sessionId: String!
+}
+
+type InterviewHintType {
+  hintsLeft: Int!
+  hintsUsed: Int!
+  text: String!
+  turnId: String!
+}
+
+input InterviewHistoryInput {
+  track: String = null @inputBounds(maxLength: 60)
+}
+
+type InterviewHistoryItemType {
+  overallScore: Int
+  sessionId: String!
+  startedAt: String!
+  status: String!
+  tier: String!
+  track: String!
+  verdict: String
+}
+
+type InterviewHistoryType {
+  items: [InterviewHistoryItemType!]!
+  trend: [InterviewTrendType!]!
+}
+
+type InterviewLessonLinkType {
+  lessonId: String!
+  title: String!
+  topic: String!
+}
+
+type InterviewModuleLessonsType {
+  lessons: [InterviewLessonLinkType!]!
+  moduleRef: String!
+}
+
+input InterviewOptionsInput {
+  locale: String! = "vi"
+  track: String = null @inputBounds(maxLength: 60)
+}
+
+type InterviewOptionsType {
+  access: InterviewAccessType!
+  active: InterviewHistoryItemType
+  banks: [InterviewBankOptionType!]!
+  tracks: [InterviewTrackType!]!
+}
+
+type InterviewPillarType {
+  bestScore: Int!
+  verdict: String!
+}
+
+type InterviewQuestionScoreType {
+  checklist: [InterviewChecklistResultType!]!
+  criticalMissed: [String!]!
+  dimensions: [InterviewDimensionResultType!]!
+  family: String!
+  hintPenalty: Int!
+  hintsUsed: Int!
+  idealAnswer: String!
+  note: String!
+  ownershipWeak: Boolean!
+  position: Int!
+  questionId: String!
+  score: Int!
+  skipped: Boolean!
+}
+
+type InterviewQuestionType {
+  bankTitle: String!
+  bodyLanguage: String!
+  diagram: String
+  family: String!
+  givenCode: String
+  hintCount: Int!
+  kind: String!
+  position: Int!
+  prompt: String!
+  tier: String!
+}
+
+input InterviewReadinessInput {
+  tier: String!
+  track: String! @inputBounds(maxLength: 60)
+}
+
+type InterviewReadinessType {
+  behavioral: InterviewPillarType
+  ready: Boolean!
+  technical: InterviewPillarType
+  tier: String!
+  track: String!
+}
+
+type InterviewScorecardType {
+  attributes: [InterviewAttributeType!]!
+  behavioralScore: Int
+  behavioralVerdict: String
+  gaps: [InterviewGapType!]!
+  overallScore: Int!
+  questions: [InterviewQuestionScoreType!]!
+  strengths: [String!]!
+  technicalScore: Int
+  technicalVerdict: String
+  verdict: String!
+}
+
+input InterviewSessionRefInput {
+  sessionId: String!
+}
+
+type InterviewSessionType {
+  failureCode: String
+  gradedAt: String
+  gradedBy: InterviewGradedByType
+  lessons: [InterviewModuleLessonsType!]!
+  position: Int!
+  previousScore: Int
+  questions: [InterviewQuestionType!]!
+  scorecard: InterviewScorecardType
+  sessionId: String!
+  setup: InterviewSetupType!
+  startedAt: String!
+  status: String!
+  turns: [InterviewTurnType!]!
+}
+
+type InterviewSetupType {
+  access: String!
+  language: String
+  length: Int!
+  locale: String!
+  tier: String!
+  track: String!
+}
+
+type InterviewTrackType {
+  id: String!
+  title: String!
+}
+
+type InterviewTrendType {
+  scores: [Int!]!
+  tier: String!
+  track: String!
+}
+
+type InterviewTurnType {
+  content: String!
+  createdAt: String!
+  kind: String!
+  position: Int!
+  revision: Int
+  role: String!
+  turnId: String!
+}
+
+input LearnerHubInput {
+  locale: String! = "vi"
+}
+
+type LearnerHubType {
+  activePath: HubActivePathType
+  layers: [HubLayerType!]!
+  shards: [HubShardType!]!
+  streak: HubStreakType!
+  today: [HubTodayType!]!
+}
+
+type LessonActivityType {
+  criteria: [LessonCriterionType!]!
+  evaluationMethod: String
+  exercise: LessonExerciseType
+  id: String!
+  isDiagnostic: Boolean!
+  kind: String!
+  options: [LessonOptionType!]!
+  outcomeIds: [String!]!
+  prompt: String!
+  responseKind: String
+  simulation: LessonSimulationType
+}
+
+input LessonAttemptAnswerInput {
+  actionIds: [String!] = null @inputBounds(maxItems: 200, itemMaxLength: 200)
+  debrief: String = null @inputBounds(maxLength: 5000)
+  files: [LessonAttemptFileInput!] = null @inputBounds(maxItems: 20)
+  optionId: String = null @inputBounds(maxLength: 200)
+  reachedStateId: String = null @inputBounds(maxLength: 200)
+  text: String = null @inputBounds(maxLength: 20000)
+}
+
+type LessonAttemptCriterionResultType {
+  criterion: String!
+  criterionId: String!
+  evidenceQuote: String!
+  level: Int!
+  maxScore: Int!
+}
+
+input LessonAttemptFileInput {
+  content: String! @inputBounds(maxLength: 100000)
+  relativePath: String! @inputBounds(maxLength: 200)
+}
+
+input LessonAttemptInput {
+  attemptId: String! @inputBounds(maxLength: 36)
+}
+
+type LessonAttemptOptionResultType {
+  explanation: String!
+  isCorrect: Boolean!
+  optionId: String!
+  selected: Boolean!
+}
+
+type LessonAttemptResultType {
+  correct: Boolean
+  criteria: [LessonAttemptCriterionResultType!]!
+  isDiagnostic: Boolean!
+  maxScore: Float!
+  options: [LessonAttemptOptionResultType!]!
+  reachedStateId: String
+  score: Float!
+  success: Boolean
+}
+
+type LessonAttemptType {
+  activityId: String!
+  attemptId: String!
+  failureCode: String
+  gradedAt: String
+  kind: String!
+  lessonId: String!
+  phase: String!
+  result: LessonAttemptResultType
+  revision: Int!
+  status: String!
+  submittedAt: String!
+  version: String!
+}
+
+type LessonCatalogItemType {
+  category: String!
+  description: String!
+  difficulty: String!
+  group: String!
+  id: String!
+  languages: [String!]!
+  minutes: Int!
+  providers: [String!]!
+  title: String!
+  topic: LessonTopicRefType!
+  version: String!
+}
+
+type LessonCommandsType {
+  unix: String
+  windows: String
+}
+
+type LessonCriterionType {
+  criterion: String!
+  id: String!
+  maxScore: Int!
+}
+
+type LessonExerciseFileType {
+  content: String!
+  relativePath: String!
+  role: String!
+  syntaxLanguage: String!
+}
+
+type LessonExerciseType {
+  files: [LessonExerciseFileType!]!
+  submissionInstructions: String!
+}
+
+input LessonInput {
+  id: String! @inputBounds(maxLength: 100)
+  locale: String!
+}
+
+type LessonOptionType {
+  id: String!
+  label: String!
+}
+
+type LessonProgressActivityType {
+  activityId: String!
+  attempts: Int!
+  kind: String!
+  latestAttemptId: String!
+  latestRevision: Int!
+  latestStatus: String!
+  phase: String!
+}
+
+type LessonProgressAttemptsType {
+  activities: Int!
+  failed: Int!
+  graded: Int!
+  pending: Int!
+  total: Int!
+}
+
+input LessonProgressInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+}
+
+type LessonProgressOutcomeType {
+  id: String!
+  proved: Int!
+  understood: Int!
+}
+
+type LessonProgressType {
+  activities: [LessonProgressActivityType!]!
+  attempts: LessonProgressAttemptsType!
+  lessonId: String!
+  outcomes: [LessonProgressOutcomeType!]!
+  phase: String!
+  version: String
+}
+
+type LessonReferenceType {
+  citation: String!
+  id: String!
+  label: String!
+  url: String
+}
+
+type LessonRelatedTopicType {
+  id: String!
+  listed: Boolean!
+  title: String!
+}
+
+type LessonSectionType {
+  activities: [LessonActivityType!]!
+  body: String
+  id: String!
+  locked: Boolean!
+  phase: String!
+  sortIndex: Int!
+  title: String!
+}
+
+type LessonSimulationActionType {
+  id: String!
+  label: String!
+}
+
+type LessonSimulationStateType {
+  id: String!
+  isSuccess: Boolean!
+  label: String!
+  observation: String!
+}
+
+type LessonSimulationTransitionType {
+  actionId: String!
+  fromStateId: String!
+  id: String!
+  toStateId: String!
+}
+
+type LessonSimulationType {
+  actions: [LessonSimulationActionType!]!
+  debriefQuestion: String!
+  initialStateId: String!
+  states: [LessonSimulationStateType!]!
+  transitions: [LessonSimulationTransitionType!]!
+}
+
+type LessonStatementType {
+  id: String!
+  text: String!
+}
+
+input LessonTopicInput {
+  locale: String!
+  topic: String! @inputBounds(maxLength: 100)
+}
+
+type LessonTopicRefType {
+  id: String!
+  title: String!
+}
+
+type LessonTopicStepType {
+  lessonId: String
+  order: Int!
+  title: String!
+}
+
+type LessonTopicType {
+  description: String
+  from: String!
+  group: String!
+  id: String!
+  path: [LessonTopicStepType!]!
+  prerequisites: [String!]
+  related: [LessonRelatedTopicType!]
+  title: String!
+}
+
+type LessonType {
+  category: String!
+  description: String!
+  difficulty: String!
+  group: String!
+  id: String!
+  implementation: String!
+  isPremium: Boolean!
+  learningOutcomes: [LessonStatementType!]!
+  locale: String!
+  minutes: Int!
+  overview: String!
+  prerequisites: [LessonStatementType!]!
+  references: [LessonReferenceType!]!
+  sections: [LessonSectionType!]!
+  title: String!
+  topic: LessonTopicRefType!
+  version: String!
+  workspace: LessonWorkspaceType
+}
+
+type LessonWorkspaceFileType {
+  content: String!
+  path: String!
+  role: String!
+}
+
+type LessonWorkspaceType {
+  commands: LessonCommandsType!
+  files: [LessonWorkspaceFileType!]!
+  runtime: String!
+}
+
+input LessonsInput {
+  category: String = null @inputBounds(maxLength: 40)
+  difficulty: String = null
+  group: String = null @inputBounds(maxLength: 40)
+  language: String = null @inputBounds(maxLength: 40)
+  locale: String!
+  provider: String = null @inputBounds(maxLength: 40)
+  q: String = null @inputBounds(maxLength: 100)
+  topic: String = null @inputBounds(maxLength: 100)
+}
+
+input LocalizedLineInput {
+  en: String! @inputBounds(maxLength: 600)
+  vi: String! @inputBounds(maxLength: 600)
+}
+
+type LocalizedLineType {
+  en: String!
+  vi: String!
+}
+
+input MarkNotificationsReadInput {
+  all: Boolean = null
+  ids: [ID!] = null @inputBounds(maxItems: 100)
+}
+
+type Mutation {
+  abandonInterview(input: InterviewSessionRefInput!): InterviewAbandonType!
+  addReviewDeck(input: RecallDeckInput!): RecallDeckAddedType!
+  answerInterview(input: AnswerInterviewInput!): InterviewAnswerType!
+  assignExperience(input: AssignExperienceInput!): ExperienceItemType!
+  checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
+  chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
+  confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
+  createProject(input: CreateProjectInput!): ProjectSecretType!
+  decideExperience(input: DecideExperienceInput!): [DecisionResultType!]!
+  deleteProject(input: DeleteProjectInput!): ProjectDeletedType!
+  explainProjectConcept(input: ExplainProjectConceptInput!): ProjectConceptType!
+  flipReviewCard(input: FlipRecallCardInput!): RecallFlipType!
+  gradeReviewCard(input: GradeRecallCardInput!): RecallGradeType!
+  interviewHint(input: InterviewHintInput!): InterviewHintType!
+  markNotificationsRead(input: MarkNotificationsReadInput!): Int!
+  regradeInterview(input: InterviewSessionRefInput!): InterviewGradingType!
+  removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
+  retryInterviewTurn(input: InterviewSessionRefInput!): InterviewAnswerType!
+  revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
+  revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
+  revokeRelayDevice(input: RevokeRelayDeviceInput!): RevokeRelayDeviceType!
+  rotateProjectCiSecret(input: RotateProjectCiSecretInput!): ProjectSecretType!
+  runPractice(input: PracticeSolveInput!): PracticeSubmissionType!
+  runProjectProbes(input: RunProjectProbesInput!): ProjectProbeRunType!
+  setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
+  setProjectConcept(input: SetProjectConceptInput!): ProjectConceptType!
+  setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
+  setStreakGoal(input: SetStreakGoalInput!): StreakGoalType!
+  showExperience(input: ShowExperienceInput!): ExperienceItemType!
+  startInterview(input: StartInterviewInput!): InterviewSessionType!
+  startPremiumCheckout(input: StartPremiumCheckoutInput!): StartPremiumCheckoutType!
+  submitExperience(input: SubmitExperienceInput!): ExperienceItemType!
+  submitInterview(input: InterviewSessionRefInput!): InterviewGradingType!
+  submitLessonAttempt(input: SubmitLessonAttemptInput!): LessonAttemptType!
+  submitPractice(input: PracticeSolveInput!): PracticeSubmissionType!
+  submitReviewRetrieval(input: SubmitRecallRetrievalInput!): RecallFlipType!
+  syncProjectPractice(input: SyncProjectPracticeInput!): ProjectDetailType!
+  updateProject(input: UpdateProjectInput!): ProjectSummaryType!
+}
+
+input MyExperienceInput {
+  state: String = null
+}
+
+type MyExperienceType {
+  hiringMinVerified: Int!
+  items: [ExperienceItemType!]!
+}
+
+input MyNotificationsInput {
+  after: String = null @inputBounds(maxLength: 2048)
+  limit: Int = null @inputBounds(min: 1, max: 50)
+}
+
+type MyPremiumType {
+  isPremium: Boolean!
+  lastRail: String
+  premiumUntil: String
+}
+
+type Notification {
+  createdAt: String!
+  id: ID!
+  isRead: Boolean!
+  kind: String!
+  link: String
+  params: [NotificationParam!]!
+}
+
+type NotificationPage {
+  items: [Notification!]!
+  nextCursor: String
+  unreadCount: Int!
+}
+
+type NotificationParam {
+  key: String!
+  value: String!
+}
+
+type OutcomeCheckType {
+  selfReported: Boolean!
+  text: String!
+}
+
+type OutcomePartType {
+  label: String!
+  part: String!
+}
+
+type OutcomePathType {
+  checks: [OutcomeCheckType!]!
+  done: String!
+  kind: String!
+  parts: [OutcomePartType!]!
+  pathId: String!
+  pitch: String!
+  stages: [OutcomeStageType!]!
+  stepCount: Int!
+  title: String!
+  weeks: Int!
+}
+
+input OutcomePathsInput {
+  locale: String! = "vi"
+}
+
+type OutcomePathsType {
+  activePathId: String
+  paths: [OutcomePathType!]!
+}
+
+type OutcomeStageType {
+  stageId: String!
+  steps: [OutcomeStepType!]!
+  title: String!
+}
+
+type OutcomeStepType {
+  link: String!
+  part: String!
+  stepId: String!
+  title: String!
+}
+
+type PlanType {
+  amountVnd: Int!
+  currency: String!
+  plan: String!
+  term: String!
+}
+
+type PracticeExampleResultType {
+  actual: String!
+  expected: String!
+  input: String!
+}
+
+type PracticeExampleType {
+  input: String!
+  output: String!
+}
+
+type PracticeHintType {
+  markdown: String!
+  step: Int!
+  title: String!
+}
+
+type PracticePatternType {
+  acceptedCount: Int!
+  freeCount: Int!
+  locked: Boolean!
+  patternId: String!
+  problemCount: Int!
+  title: String!
+}
+
+input PracticePatternsInput {
+  locale: String! = "vi"
+}
+
+input PracticeProblemInput {
+  locale: String! = "vi"
+  slug: String! @inputBounds(maxLength: 100)
+}
+
+type PracticeProblemItemType {
+  difficulty: String!
+  locked: Boolean!
+  orderIndex: Int!
+  slug: String!
+  status: String!
+  tags: [String!]!
+  title: String!
+}
+
+type PracticeProblemType {
+  difficulty: String!
+  examples: [PracticeExampleType!]!
+  hintsRevealed: [PracticeHintType!]!
+  hintsTotal: Int!
+  locked: Boolean!
+  memoryLimitKb: Int!
+  nextSlug: String
+  patternId: String!
+  patternTitle: String!
+  slug: String!
+  starterCodes: [PracticeStarterCodeType!]!
+  statementMarkdown: String!
+  status: String!
+  tags: [String!]!
+  timeLimitMs: Int!
+  title: String!
+}
+
+input PracticeProblemsInput {
+  locale: String! = "vi"
+  patternId: String! @inputBounds(maxLength: 40)
+}
+
+input PracticeReadinessInput {
+  locale: String! = "vi"
+}
+
+type PracticeReadinessItemType {
+  acceptedCount: Int!
+  patternId: String!
+  problemCount: Int!
+  title: String!
+}
+
+input PracticeSolveInput {
+  language: String!
+  slug: String! @inputBounds(maxLength: 100)
+  source: String! @inputBounds(maxLength: 200000)
+}
+
+type PracticeStarterCodeType {
+  content: String!
+  language: String!
+}
+
+input PracticeSubmissionInput {
+  submissionId: String! @inputBounds(maxLength: 36)
+}
+
+type PracticeSubmissionType {
+  compileOutput: String
+  createdAt: String!
+  failureCode: String
+  id: String!
+  kind: String!
+  language: String!
+  memoryKb: Int
+  passedCount: Int!
+  slug: String!
+  tests: [PracticeTestSummaryType!]!
+  timeMs: Int
+  totalCount: Int!
+  verdict: String!
+}
+
+type PracticeTestSummaryType {
+  example: PracticeExampleResultType
+  index: Int!
+  memoryKb: Int
+  passed: Boolean!
+  status: String!
+  timeMs: Int
+}
+
+input PremiumOrderInput {
+  orderId: ID! @inputBounds(maxLength: 36)
+}
+
+type PremiumOrderType {
+  amountVnd: Int!
+  orderCode: String!
+  orderId: ID!
+  plan: String!
+  premiumUntil: String
+  rail: String!
+  status: String!
+}
+
+type ProjectCatalogConceptType {
+  comingSoon: Boolean!
+  id: String!
+  kind: String!
+  label: String!
+  probes: [String!]!
+  requires: [[String!]!]!
+}
+
+input ProjectCatalogInput {
+  locale: String! = "vi"
+}
+
+type ProjectCatalogMilestoneType {
+  concepts: [String!]!
+  free: Boolean!
+  id: String!
+  title: String!
+}
+
+type ProjectCatalogType {
+  concepts: [ProjectCatalogConceptType!]!
+  freeProjects: Int!
+  milestones: [ProjectCatalogMilestoneType!]!
+}
+
+type ProjectCiRunType {
+  at: String!
+  commit: String!
+  passed: Boolean!
+  runId: String!
+}
+
+type ProjectConceptLessonType {
+  id: String!
+  title: String!
+  topicId: String!
+}
+
+type ProjectConceptType {
+  aiQuestion: String
+  comingSoon: Boolean!
+  endpoint: String
+  failing: ProjectFailureType
+  id: String!
+  kind: String!
+  label: String!
+  lesson: ProjectConceptLessonType
+  location: String
+  sampleBody: String
+  slots: [ProjectSlotType!]!
+  state: String!
+}
+
+type ProjectDeletedType {
+  id: String!
+}
+
+type ProjectDetailType {
+  conceptCount: Int!
+  createdAt: String!
+  currentMilestoneId: String
+  deployedUrl: String
+  doneMilestoneCount: Int!
+  id: String!
+  kind: String!
+  language: String!
+  lastCiRun: ProjectCiRunType
+  lastProbeRun: ProjectProbeRunType
+  milestoneCount: Int!
+  milestones: [ProjectMilestoneSummaryType!]!
+  name: String!
+  practisingConceptCount: Int!
+  provedConceptCount: Int!
+  repoUrl: String
+  stack: String!
+  topic: String!
+  track: String
+}
+
+type ProjectFactType {
+  key: String!
+  value: String!
+}
+
+type ProjectFailureType {
+  facts: [ProjectFactType!]!
+  probeId: String
+  question: String!
+  reason: String!
+  slot: String!
+}
+
+input ProjectInput {
+  locale: String! = "vi"
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+input ProjectMilestoneInput {
+  locale: String! = "vi"
+  milestoneId: String! @inputBounds(maxLength: 64)
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+type ProjectMilestoneSummaryType {
+  conceptCount: Int!
+  id: String!
+  locked: Boolean!
+  provedCount: Int!
+  state: String!
+  title: String!
+}
+
+type ProjectMilestoneType {
+  concepts: [ProjectConceptType!]!
+  milestone: ProjectMilestoneSummaryType!
+  project: ProjectSummaryType!
+}
+
+type ProjectProbeResultType {
+  conceptId: String
+  facts: [ProjectFactType!]!
+  passed: Boolean!
+  probeId: String!
+  reason: String!
+}
+
+type ProjectProbeRunType {
+  at: String!
+  passed: Boolean!
+  results: [ProjectProbeResultType!]!
+  runId: String!
+  url: String!
+}
+
+type ProjectProvedConceptType {
+  conceptId: String!
+  projectId: String!
+  provedAt: String!
+}
+
+type ProjectSecretType {
+  ciSecret: String!
+  project: ProjectSummaryType!
+}
+
+type ProjectSlotType {
+  at: String
+  proof: Boolean!
+  ref: String
+  required: Boolean!
+  slot: String!
+  source: String
+  state: String!
+}
+
+type ProjectSummaryType {
+  conceptCount: Int!
+  createdAt: String!
+  currentMilestoneId: String
+  deployedUrl: String
+  doneMilestoneCount: Int!
+  id: String!
+  kind: String!
+  language: String!
+  milestoneCount: Int!
+  name: String!
+  provedConceptCount: Int!
+  repoUrl: String
+  stack: String!
+  topic: String!
+  track: String
+}
+
+input ProjectsInput {
+  locale: String! = "vi"
+}
+
+type Query {
+  agentLab(input: AgentLabInput!): AgentLabOverviewType!
+  agentLabTrack(input: AgentLabTrackInput!): AgentLabTrackType!
+  agentQuota: AgentQuotaType!
+  experienceReviewers: [ReviewerType!]!
+  incidents(input: IncidentsInput!): [IncidentListItemType!]!
+  interviewEvidence: [InterviewEvidenceType!]!
+  interviewHistory(input: InterviewHistoryInput!): InterviewHistoryType!
+  interviewOptions(input: InterviewOptionsInput!): InterviewOptionsType!
+  interviewReadiness(input: InterviewReadinessInput!): InterviewReadinessType!
+  interviewSession(input: InterviewSessionRefInput!): InterviewSessionType!
+  learnerHub(input: LearnerHubInput!): LearnerHubType!
+  lesson(input: LessonInput!): LessonType!
+  lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
+  lessonProgress(input: LessonProgressInput!): LessonProgressType!
+  lessonTopic(input: LessonTopicInput!): LessonTopicType!
+  lessons(input: LessonsInput!): [LessonCatalogItemType!]!
+  myExperience(input: MyExperienceInput!): MyExperienceType!
+  myNotifications(input: MyNotificationsInput = {}): NotificationPage!
+  myPremium: MyPremiumType!
+  outcomePaths(input: OutcomePathsInput!): OutcomePathsType!
+  practicePatterns(input: PracticePatternsInput!): [PracticePatternType!]!
+  practiceProblem(input: PracticeProblemInput!): PracticeProblemType!
+  practiceProblems(input: PracticeProblemsInput!): [PracticeProblemItemType!]!
+  practiceReadiness(input: PracticeReadinessInput!): [PracticeReadinessItemType!]!
+  practiceSubmission(input: PracticeSubmissionInput!): PracticeSubmissionType!
+  premiumOrder(input: PremiumOrderInput!): PremiumOrderType!
+  premiumPlans: [PlanType!]!
+  project(input: ProjectInput!): ProjectDetailType!
+  projectCatalog(input: ProjectCatalogInput!): ProjectCatalogType!
+  projectMilestone(input: ProjectMilestoneInput!): ProjectMilestoneType!
+  projects(input: ProjectsInput!): [ProjectSummaryType!]!
+  provedProjectConcepts: [ProjectProvedConceptType!]!
+  recallItem(input: RecallItemInput!): RecallItemType!
+  relayDevices: [RelayDeviceType!]!
+  relayPairing(input: RelayUserCodeInput!): RelayPairingType!
+  reviewDecks(input: RecallDecksInput!): [RecallDeckType!]!
+  reviewItem(input: ReviewItemInput!): ReviewItemType!
+  reviewQueue(input: ReviewQueueInput!): ReviewQueueType!
+  reviewStats(input: RecallStatsInput!): RecallStatsType!
+  reviewToday(input: RecallTodayInput!): RecallTodayType!
+  streak: StreakType!
+  verifyExperience(input: VerifyExperienceInput!): VerificationType!
+}
+
+type RecallClozeChoicesType {
+  choices: [String!]!
+  n: Int!
+}
+
+type RecallClozeResultType {
+  correct: Boolean!
+}
+
+type RecallDeckAddedType {
+  added: Boolean!
+  deckId: String!
+  newCards: Int!
+}
+
+input RecallDeckInput {
+  deckId: String! @inputBounds(maxLength: 200)
+}
+
+type RecallDeckRemovedType {
+  added: Boolean!
+  deckId: String!
+  suspended: Int!
+}
+
+type RecallDeckType {
+  added: Boolean!
+  cardCount: Int!
+  course: String!
+  deckId: String!
+  description: String!
+  difficulty: String!
+  freeCardCount: Int!
+  title: String!
+  track: [String!]!
+}
+
+input RecallDecksInput {
+  locale: String! = "vi"
+  track: String @inputBounds(maxLength: 100)
+}
+
+type RecallFlipType {
+  answer: String!
+  intervals: RecallIntervalsType!
+  itemId: String!
+  revision: Int!
+}
+
+type RecallGoalSetType {
+  daily: Int!
+}
+
+type RecallGoalType {
+  daily: Int!
+  done: Int!
+}
+
+type RecallGradeType {
+  dueOn: String!
+  goal: RecallGoalType!
+  itemId: String!
+  remainingToday: Int!
+  status: String!
+  step: Int!
+}
+
+type RecallIntervalsType {
+  again: Int!
+  easy: Int!
+  good: Int!
+  hard: Int!
+}
+
+input RecallItemInput {
+  itemId: String! @inputBounds(maxLength: 300)
+  locale: String! = "vi"
+}
+
+type RecallItemSummaryType {
+  deckTitle: String
+  dueOn: String!
+  itemId: String!
+  lessonTitle: String
+  level: String
+  locked: Boolean!
+  source: String!
+  status: String!
+}
+
+type RecallItemType {
+  activityId: String
+  cloze: [RecallClozeChoicesType!]!
+  deckTitle: String
+  flipped: Boolean!
+  itemId: String!
+  langs: [String!]!
+  lessonId: String
+  lessonTitle: String
+  level: String
+  question: String!
+  revision: Int!
+  source: String!
+  tags: [String!]!
+}
+
+type RecallRecallRateType {
+  n: Int!
+  rate: Float!
+}
+
+input RecallStatsInput {
+  days: Int @inputBounds(min: 7, max: 365)
+}
+
+type RecallStatsType {
+  activeDaysPerWeek: Float!
+  recallRateByReview: [RecallRecallRateType!]!
+}
+
+input RecallTodayInput {
+  locale: String! = "vi"
+}
+
+type RecallTodayType {
+  date: String!
+  due: Int!
+  goal: RecallGoalType!
+  items: [RecallItemSummaryType!]!
+  lockedCount: Int!
+  newAvailable: Int!
+  overdue: Int!
+}
+
+type RelayDeviceType {
+  id: ID!
+  lastSeenAt: String
+  name: String!
+  online: Boolean!
+  pairedAt: String!
+  platform: String!
+}
+
+type RelayPairingType {
+  expiresAt: String!
+  name: String!
+  platform: String!
+}
+
+input RelayUserCodeInput {
+  userCode: String! @inputBounds(maxLength: 12)
+}
+
+input RevealPracticeHintInput {
+  locale: String! = "vi"
+  slug: String! @inputBounds(maxLength: 100)
+  step: Int! @inputBounds(min: 1, max: 3)
+}
+
+input ReviewDecisionItemInput {
+  itemId: String! @inputBounds(maxLength: 40)
+  note: String = null @inputBounds(maxLength: 2000)
+  verdict: String!
+}
+
+type ReviewDecisionType {
+  action: String!
+  actorRole: String!
+  at: String!
+  fromState: String
+  note: String
+  toState: String!
+}
+
+input ReviewItemInput {
+  itemId: String! @inputBounds(maxLength: 40)
+}
+
+type ReviewItemType {
+  history: [ReviewDecisionType!]!
+  item: ReviewQueueItemType!
+}
+
+type ReviewQueueCountsType {
+  overdue: Int!
+  pending: Int!
+  unassigned: Int!
+}
+
+input ReviewQueueInput {
+  tab: String! = "pending"
+}
+
+type ReviewQueueItemType {
+  assigneeId: String
+  defenseQuestions: [String!]!
+  draftLine: LocalizedLineType
+  dueAt: String
+  evidence: [ExperienceEvidenceType!]!
+  grade: ExperienceGradeType
+  itemId: String!
+  itemType: String!
+  learnerHandle: String!
+  line: LocalizedLineType
+  output: String!
+  part: String!
+  projectId: String
+  returnCount: Int!
+  returnNote: String
+  revokedAt: String
+  shownPublicly: Boolean!
+  signature: ExperienceSignatureType
+  sla: String!
+  state: String!
+  subject: String!
+  teacherOnly: Boolean!
+  updatedAt: String!
+  verificationCode: String!
+}
+
+type ReviewQueueType {
+  counts: ReviewQueueCountsType!
+  items: [ReviewQueueItemType!]!
+  role: String!
+}
+
+type ReviewerType {
+  appointedAt: String!
+  capacity: Int!
+  conflicts: [String!]!
+  endedAt: String
+  openItems: Int!
+  parts: [String!]!
+  reviewerId: String!
+}
+
+input RevokeExperienceInput {
+  itemId: String! @inputBounds(maxLength: 40)
+  reason: String! @inputBounds(maxLength: 2000)
+}
+
+input RevokeRelayDeviceInput {
+  id: ID! @inputBounds(maxLength: 36)
+}
+
+type RevokeRelayDeviceType {
+  id: ID!
+}
+
+input RotateProjectCiSecretInput {
+  locale: String! = "vi"
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+input RunProjectProbesInput {
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+input SetExperienceReviewerInput {
+  capacity: Int = null @inputBounds(min: 1, max: 500)
+  conflicts: [String!]! = [] @inputBounds(maxItems: 200)
+  end: Boolean! = false
+  parts: [String!]! @inputBounds(maxItems: 10)
+  reviewerId: String! @inputBounds(maxLength: 40)
+}
+
+input SetProjectConceptInput {
+  conceptId: String! @inputBounds(maxLength: 64)
+  endpoint: String = null @inputBounds(maxLength: 200)
+  locale: String! = "vi"
+  location: String = null @inputBounds(maxLength: 300)
+  projectId: String! @inputBounds(maxLength: 36)
+  sampleBody: String = null @inputBounds(maxLength: 2000)
+}
+
+input SetRecallGoalInput {
+  daily: Int! @inputBounds(min: -1000, max: 1000)
+}
+
+input SetStreakGoalInput {
+  activeDays: Int!
+  reminder: StreakReminderInput
+}
+
+input ShowExperienceInput {
+  itemId: String! @inputBounds(maxLength: 40)
+  shownPublicly: Boolean!
+}
+
+input StartInterviewInput {
+  bankIds: [String!] = null @inputBounds(maxItems: 40, itemMaxLength: 120)
+  clientRequestId: String! @inputBounds(maxLength: 100)
+  language: String = null @inputBounds(maxLength: 32)
+  locale: String! = "vi"
+  tier: String!
+  track: String! @inputBounds(maxLength: 60)
+}
+
+input StartPremiumCheckoutInput {
+  plan: String! @inputBounds(maxLength: 32)
+  rail: String = null @inputBounds(maxLength: 16)
+}
+
+type StartPremiumCheckoutType {
+  orderId: ID!
+  rail: String!
+  redirect: CheckoutRedirectType!
+}
+
+type StreakDayType {
+  counted: Boolean!
+  day: String!
+  freezeUsed: Boolean!
+  shards: [String!]!
+}
+
+type StreakGoalType {
+  reminder: StreakReminderType
+  weeklyGoal: Int!
+}
+
+input StreakReminderInput {
+  enabled: Boolean!
+  localTime: String! @inputBounds(maxLength: 5)
+}
+
+type StreakReminderType {
+  enabled: Boolean!
+  localTime: String!
+}
+
+type StreakShardCounterType {
+  activeDaysLast30: Int!
+  current: Int!
+  longest: Int!
+  shard: String!
+}
+
+type StreakType {
+  badges: [String!]!
+  current: Int!
+  days: [StreakDayType!]!
+  freezes: HubFreezesType!
+  longest: Int!
+  reminder: StreakReminderType
+  shardCounters: [StreakShardCounterType!]!
+  today: String!
+  todayCounted: Boolean!
+  week: HubWeekType!
+}
+
+input SubmitExperienceInput {
+  itemId: String! @inputBounds(maxLength: 40)
+  line: LocalizedLineInput!
+}
+
+input SubmitLessonAttemptInput {
+  activityId: String! @inputBounds(maxLength: 200)
+  answer: LessonAttemptAnswerInput!
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+  revision: Int! @inputBounds(min: 1, max: 1000)
+  version: String! @inputBounds(maxLength: 100)
+}
+
+input SubmitRecallRetrievalInput {
+  itemId: String! @inputBounds(maxLength: 300)
+  locale: String! = "vi"
+  revision: Int! @inputBounds(min: 1, max: 100000)
+  text: String! @inputBounds(maxLength: 4000)
+}
+
+input SyncProjectPracticeInput {
+  locale: String! = "vi"
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+input UpdateProjectInput {
+  deployedUrl: String = null @inputBounds(maxLength: 300)
+  language: String = null @inputBounds(maxLength: 40)
+  locale: String! = "vi"
+  name: String = null @inputBounds(maxLength: 80)
+  projectId: String! @inputBounds(maxLength: 36)
+  repoUrl: String = null @inputBounds(maxLength: 300)
+  stack: String = null @inputBounds(maxLength: 120)
+  topic: String = null @inputBounds(maxLength: 120)
+}
+
+type VerificationType {
+  code: String!
+  evidenceKinds: [String!]!
+  itemType: String!
+  line: LocalizedLineType!
+  part: String!
+  revokedAt: String
+  signedAt: String!
+  signerRole: String!
+  state: String!
+}
+
+input VerifyExperienceInput {
+  code: String! @inputBounds(maxLength: 20)
+}

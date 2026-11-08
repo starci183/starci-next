@@ -1,0 +1,54 @@
+schema: work/functional-requirement@1
+id: fr.commerce.renew
+title: Renew Premium
+state: todo
+activity: idle
+actors:
+  - learner
+trigger: Learner with active or expired Premium chooses a new plan.
+mainFlow:
+  - Create a separate purchase for the chosen current offer.
+  - On verified confirmation, extend an active entitlement from its current future premiumUntil
+    (proposed yes, Q-W2-5); if expired, start at confirmation time, with UTC calendar arithmetic
+    clamped at month end (Q-CALENDAR-ARITHMETIC).
+  - Apply the plan term once, with no automatic charge.
+exceptionFlows:
+  - Failed, canceled, or unverified payments leave entitlement unchanged.
+  - Duplicate provider events do not extend a second time.
+postconditions:
+  - A verified renewal extends premiumUntil according to the selected plan.
+composes:
+  - data.commerce.purchase
+  - data.commerce.entitlement
+  - decision.commerce.subscription-policy
+  - contract.commerce.entitlement
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+  - required: true
+    command: npm test -- src/modules/domain/entitlement
+      --collectCoverageFrom=src/modules/domain/entitlement/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped entitlement unit proof with the managed per-file coverage threshold unchanged
+      at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/entitlement
+    note: Required scoped entitlement integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/entitlement
+    note: Required scoped entitlement end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

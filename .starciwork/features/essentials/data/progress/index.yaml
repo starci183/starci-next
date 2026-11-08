@@ -1,0 +1,24 @@
+schema: work/data@1
+id: data.essentials.progress
+title: Learner progress, attempts and review schedule
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: learner reference (identity subject), required: true}
+  - {name: lessonId / lessonVersion, type: the version the learner started, required: true}
+  - {name: language / provider, type: chosen code language and cloud provider, required: false}
+  - {name: phase, type: current phase, required: true}
+  - {name: attempts, type: '[{activityId, revision, answer (text, choice id, artifact), usedHints, submittedAt, status (saved|grading|graded|failed), result {perCriterion[{criterionId, level 0..2, evidenceQuote}], score}}]', required: true}
+  - {name: simulationTrail, type: visited state ids per simulation activity, required: false}
+  - {name: lab, type: '{greenFirst, sawRed, fixedAfterRed} per language', required: false}
+  - {name: incident, type: '{variantId (seeded bug set), submission (repo url or patch), baseFlows, hiddenFlows, mutationScore, explanationResult}', required: false}
+  - {name: outcomes, type: '[{outcomeId, understood level, proved level}]', required: true}
+  - {name: reviews, type: '[{activityId, dueAt (completion + afterDays), status}]', required: true}
+invariants:
+  - An answer is persisted before any feedback is generated; a provider failure keeps the answer and allows an explicit retry.
+  - A resend with the same revision never creates a second attempt.
+  - The reflect phase reads the phase 1 attempt to show before and after per criterion.
+  - Review items are scheduled from the lesson's retrieval activities (afterDays 1, 7, 21) when the lesson completes.
+  - "MVP storage (impl.essentials.be.attempts): table lesson_attempts holds one row per (learner, lesson, activity, revision) with the normalized answer, kind, phase, status saved|grading|graded|failed, the result and the failure code; the simulation trail is part of the answer (actionIds, reachedStateId, debrief). Table lesson_outcome_levels holds understood and proved (0..2) per learner, lesson and outcome, raised and never lowered. The phase reached is derived from the attempts (the furthest phase with one); there is no separate progress row. A diagnostic (the challenge activity) is stored and graded but raises no outcome level. Lab, incident and review rows are later."
+  - "Levels: a choice or simulation earns 2 when right and 0 otherwise; a written answer earns maxScore x level / 2 points per criterion and the share of the points gives the level (80% = 2, 50% = 1); an exercise raises understood and proved, every other kind only understood."
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'Record how the MVP back end stores attempts and outcome levels.'}

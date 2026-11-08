@@ -8,7 +8,8 @@ describe("HTTP security environment contract", () => {
         )
         expect(config.allowedOrigins).toEqual(["http://localhost:3000"])
         expect(config.allowHttpOrigins).toBe(true)
-        expect(config.rateLimit).toEqual({ windowMs: 60_000, defaultLimit: 600, strictLimit: 30 })
+        expect(config.exposeSchema).toBe(true)
+        expect(config.rateLimit).toEqual({ windowMs: 60_000, defaultLimit: 600, strictLimit: 30, webhookLimit: 300 })
         expect(config.webhooks).toEqual({})
     })
 
@@ -28,11 +29,13 @@ describe("HTTP security environment contract", () => {
                 HTTP_SECURITY_RATE_WINDOW: "2s",
                 HTTP_SECURITY_RATE_DEFAULT_LIMIT: "100",
                 HTTP_SECURITY_RATE_STRICT_LIMIT: "10",
+                HTTP_SECURITY_RATE_WEBHOOK_LIMIT: "50",
             }),
         )
         expect(config.allowedOrigins).toEqual(["https://web.example", "https://admin.example:8443"])
         expect(config.allowHttpOrigins).toBe(false)
-        expect(config.rateLimit).toEqual({ windowMs: 2_000, defaultLimit: 100, strictLimit: 10 })
+        expect(config.exposeSchema).toBe(false)
+        expect(config.rateLimit).toEqual({ windowMs: 2_000, defaultLimit: 100, strictLimit: 10, webhookLimit: 50 })
     })
 
     it.each(["production", "staging"])("rejects HTTP origins in %s", (mode) => {

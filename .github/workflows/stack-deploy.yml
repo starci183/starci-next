@@ -157,6 +157,7 @@ jobs:
           app app
           core core
           landing landing
+          relay relay
           LIST
       - name: CI run of the commit
         id: ci
@@ -190,6 +191,7 @@ jobs:
           IMAGE_APP: ${{ steps.images.outputs.app }}
           IMAGE_CORE: ${{ steps.images.outputs.core }}
           IMAGE_LANDING: ${{ steps.images.outputs.landing }}
+          IMAGE_RELAY: ${{ steps.images.outputs.relay }}
         run: |
           again=()
           [[ "$OPERATION" != redeploy ]] || again=(--redeploy)
@@ -197,6 +199,7 @@ jobs:
             --image "app=$IMAGE_APP" \
             --image "core=$IMAGE_CORE" \
             --image "landing=$IMAGE_LANDING" \
+            --image "relay=$IMAGE_RELAY" \
             --sha "$GITHUB_SHA" --ci-run "$CI_RUN" "${again[@]}" --execute
       - name: disconnect from the swarm manager
         env:

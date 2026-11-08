@@ -1,0 +1,25 @@
+schema: work/implementation@1
+id: impl.mock-interview.fe.interview
+title: Front-end mock interview (home, room, report and the Phỏng vấn nav entry)
+state: todo
+activity: idle
+repository: fe
+owners:
+  - role: fe
+    path: fe/apps/app/src/features/pages
+  - role: fe
+    path: fe/apps/app/src/hooks/interview
+  - role: fe
+    path: fe/apps/app/src/modules/api/graphql
+proves:
+  - ui.mock-interview.home
+  - ui.mock-interview.room
+  - ui.mock-interview.report
+requiresProof:
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here. UXUI walks the three screens against the canvas screens interview, interview-report and interview.m.
+extensions:
+  status: 'Built, not rendered yet. Routes /interview, /interview/{sessionId} and /interview/{sessionId}/report under app/[locale]/(app); copy under app.interview in vi and en; colours come from theme tokens only.'
+  deferred: 'A separate mobile layout of the room (it relies on the Grammar main-rail collapse) and image slots of the canvas.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the screens of the mock interview.}

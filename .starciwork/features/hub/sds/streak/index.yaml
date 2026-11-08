@@ -1,0 +1,19 @@
+schema: work/sds-component@1
+id: sds.hub.streak
+title: Streak service (one for the whole app)
+state: todo
+activity: idle
+responsibility: Record meaningful actions from every part, close days, apply freezes and weekly goals, and keep per-part counters and badges.
+interfaces:
+  - 'record(learner, {actionId, partId, kind, sourceRef, at}): idempotent per actionId; called by a part after it has stored the action (review grade, graded attempt, relay project run, interview submit).'
+  - 'closeDay(learner, day): idempotent; runs at local midnight and lazily on the next request.'
+  - 'summary(learner): streak, week, freezes, part counters, badges.'
+owners: [be]
+sequence:
+  - Accept only the four action kinds of br.hub.streak; any other kind is refused.
+  - Days and weeks are computed in Asia/Ho_Chi_Minh.
+  - The service exposes no door that the experience engine reads.
+refs: [data.hub.streak, br.hub.streak]
+extensions:
+  replaces: 'The streak part of sds.review.scheduler closeDay and data.review.habit; review keeps only its daily item goal.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: One streak service.}

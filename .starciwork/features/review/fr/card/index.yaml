@@ -1,0 +1,20 @@
+schema: work/functional-requirement@1
+id: fr.review.card
+title: Recall a flashcard, flip it and grade yourself
+state: todo
+activity: idle
+actors: [learner]
+trigger: A card comes up in a review session.
+mainFlow:
+  - The front shows the question, level and tags. The learner recalls the answer (optionally typing a note to themselves; it is not graded).
+  - The learner may check a cloze term by picking among the authored choices; the result shows at once (deterministic).
+  - Lật thẻ reveals the answer with its :::muted sections (Trả lời thẳng, Cơ chế, Bẫy thường gặp, Đào sâu tiếp).
+  - The learner grades themselves Quên, Khó, Nhớ or Dễ; the grade is stored and the scheduler sets the next due date.
+exceptionFlows:
+  - A premium card for a free learner is not served (REVIEW_PREMIUM_REQUIRED).
+  - A card whose deck was superseded keeps its state; the new version's text shows from the next review.
+  - A save failure keeps the card on screen with "thử lại"; the session does not advance.
+postconditions:
+  - The card state and its review history are updated exactly once per grade.
+composes: [br.review.review, data.review.item, data.review.card-state, sds.review.scheduler, contract.review.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A flow.}

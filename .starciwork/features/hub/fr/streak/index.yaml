@@ -1,0 +1,18 @@
+schema: work/functional-requirement@1
+id: fr.hub.streak
+title: Keep a streak with a weekly goal
+state: todo
+activity: idle
+actors: [learner]
+trigger: A meaningful action is stored in any part, or a day closes, or the learner changes the weekly goal.
+mainFlow:
+  - The part reports the action to the streak service; the hub and the part's own screen show the day as counted, with the part's counter.
+  - At day close the day counts, or a freeze is used, or the streak resets; on Monday the freezes are granted (Q-HUB-2) and the weekly goal is checked.
+  - The learner sets the weekly goal (2..7 active days) and an optional reminder; at 7 days the blazing-fox badge is granted.
+exceptionFlows:
+  - A goal outside 2..7 is refused STREAK_GOAL_INVALID.
+  - The reminder is sent at most once a day, and never once the day already counts.
+postconditions:
+  - The streak changes at most once a day; no experience item changes.
+composes: [br.hub.streak, data.hub.streak, sds.hub.streak, contract.hub.api, ui.hub.home]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner request "lấy chuỗi".}

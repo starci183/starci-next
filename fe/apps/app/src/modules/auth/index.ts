@@ -1,2 +1,2 @@
-export { authClient } from "./client"
-export type { AuthFailure, AuthSession } from "./contracts"
+export type { AuthSession } from "./contracts"
+export { hasSignInMark, markSignInRedirect } from "./sign-in-mark"

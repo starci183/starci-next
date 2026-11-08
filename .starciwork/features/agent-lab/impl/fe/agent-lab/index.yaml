@@ -1,0 +1,14 @@
+schema: work/implementation@1
+id: impl.agent-lab.fe.agent-lab
+title: Front-end agent lab screens
+state: todo
+activity: idle
+repository: fe
+owners:
+  - {role: fe, path: fe/apps/app/src/components/blocks/AgentLab}
+  - {role: fe, path: fe/apps/app/src/components/blocks/AgentTrack}
+  - {role: fe, path: fe/apps/app/src/hooks/agents}
+  - {role: fe, path: fe/packages/starci-next-ui/src/composites/AgentLabGrid}
+proves: [ui.agent-lab.lab, ui.agent-lab.track]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

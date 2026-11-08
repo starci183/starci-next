@@ -1,11 +1,14 @@
-import { Module } from "@nestjs/common"
-import type { DynamicModule } from "@nestjs/common"
+import { Module, type DynamicModule } from "@nestjs/common"
 import { APP_FILTER, APP_GUARD } from "@nestjs/core"
 import { AuthGuard, CredentialGuard } from "@modules/domain/identity"
 import { ErrorsFilter } from "@modules/platform/errors"
 import { OriginGuard, RateLimitGuard } from "@modules/platform/http-security"
 import { platformModules } from "./compose/platform"
-import { domainModules } from "./compose/domain"
+import { integrationsModules } from "./compose/integrations"
+import { identityModules } from "./compose/identity"
+import { commerceModules } from "./compose/commerce"
+import { learningModules } from "./compose/learning"
+import { careerModules } from "./compose/career"
 import { systemModules } from "./compose/system"
 import { apiModules } from "./compose/api"
 import { webhooksModules } from "./compose/webhooks"
@@ -20,7 +23,11 @@ export class AppModule {
             module: AppModule,
             imports: [
                 ...platformModules(options),
-                ...domainModules(),
+                ...integrationsModules(options),
+                ...identityModules(options),
+                ...commerceModules(options),
+                ...learningModules(options),
+                ...careerModules(options),
                 ...systemModules(),
                 ...apiModules(),
                 ...webhooksModules(),

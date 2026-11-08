@@ -1,0 +1,25 @@
+schema: work/functional-requirement@1
+id: fr.essentials.study
+title: Study a lesson through its phases
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens a lesson from the catalog or a link.
+mainFlow:
+  - Overview shows the title, category, difficulty, minutes, outcomes, prerequisites and the six phases. The code language picker shows the languages the lesson really has, and the cloud picker shows its providers.
+  - "Phase 1 Bị hỏi (challenge): the diagnostic explain activity. The learner writes an answer; after submit the AI grades it per criterion, labelled as a diagnostic that does not count toward passing."
+  - "Phase 2 Dự đoán (predict): choice activities graded deterministically; each option's explanation is revealed after the choice."
+  - "Phase 3 Thí nghiệm (explore): the simulation activity (fr via sds.essentials.simulation); the learner takes actions, reads each state's observation, reaches the success state and answers the debrief question."
+  - "Phase 4 Hiểu (explain): the theory sections in order, with any embedded choice checks."
+  - "Phase 5 Áp dụng (apply): the in-browser lab (fr.essentials.lab), then the transfer exercise graded by rubric, then the real-repo incident (fr.essentials.incident) where the lesson has one."
+  - "Phase 6 Phỏng vấn lại (reflect): the reflection explain activity graded with the same rubric as phase 1, showing before and after per criterion."
+  - Completing the lesson schedules its retrieval activities (fr.essentials.review).
+  - A side panel offers Hỏi StarCi, answered only from the lesson's public content, and the lesson's references.
+exceptionFlows:
+  - Without Premium, phases 2 to 6, the lab, the incident, Hỏi StarCi and review show the locked state with a link to the plans; no AI call is made.
+  - If grading fails or times out, the answer stays saved with status grading or failed; the learner can continue reading and retry grading explicitly.
+  - Phases are not hard-locked in order for Premium learners; skipping is recorded, and the reflect comparison shows "chưa làm" for an unanswered phase 1.
+postconditions:
+  - Every submitted answer is persisted with its revision and result; outcome levels are updated from graded attempts.
+composes: [br.essentials.learning, data.essentials.lesson, data.essentials.progress, sds.essentials.coach, sds.essentials.simulation, contract.essentials.api, ui.essentials.lesson]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Phases from the teacher's concepts/ V2 sections.}

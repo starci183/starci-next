@@ -1,0 +1,61 @@
+schema: work/integration@1
+id: integration.commerce.sepay
+title: SePay Payment Gateway
+state: todo
+activity: idle
+provider: SePay Payment Gateway
+boundary: Server creates a signed checkout form and accepts SePay IPN; browser return is not confirmation.
+endpoints:
+  - purpose: create checkout
+    method: provider checkout form
+    details: Sign the form as SePay's create-order specification says - base64 HMAC-SHA256 of field=value
+      pairs joined by commas, in the fixed order order_amount, merchant, currency, operation,
+      order_description, order_invoice_number, customer_id, payment_method, success_url, error_url,
+      cancel_url, empty values left out - and post the fields in that same order; never expose the
+      signing secret to the browser.
+  - purpose: payment notification
+    method: HTTPS POST IPN
+    details: Authenticate X-Secret-Key when configured; settle only an ORDER_PAID whose order_status is
+      CAPTURED, transaction_status APPROVED and order_currency VND, matching order_invoice_number and
+      order_amount to the persisted purchase, including late ORDER_PAID under proposed Q-W2-3; record a
+      TRANSACTION_VOID of a paid order as payment-voided and premium-revoked, revoking exactly that order's
+      Premium term in the same transaction (Q-W2-VOID, decided: revoke); answer every
+      authenticated delivery 200 {"success": true} as the IPN specification requires, 401 only for a
+      failed X-Secret-Key.
+custody: The SePay rail reads its form signing secret from SEPAY_SIGNING_SECRET_KEY_FILE and its IPN X-Secret-Key from
+  SEPAY_IPN_SECRET_KEY_FILE (custody sepay); the merchant id is the non-secret SEPAY_MERCHANT_ID. No value is recorded here.
+sandbox: Use provider sandbox merchant/account if enabled; do not claim live verification without
+  owner-provisioned account and public HTTPS callback.
+research:
+  readAt: 2026-10-28
+  sources:
+    - title: SePay Payment Gateway IPN
+      url: https://developer.sepay.vn/en/cong-thanh-toan/IPN
+  findings: SePay documents an IPN POST to a publicly reachable HTTPS URL, X-Secret-Key when auth type
+    SECRET_KEY is configured, notification_type values ORDER_PAID and TRANSACTION_VOID, and order
+    fields order_invoice_number and order_amount. Live verification must create a sandbox or
+    approved merchant order, receive its IPN, validate authentication/reference/amount/status, and
+    confirm acknowledgement/retry behavior.
+  prerequisites: Owner provisions merchant account, enables/configures IPN authentication and signing
+    credentials, and registers public HTTPS callback.
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/integrations
+      --collectCoverageFrom=src/modules/integrations/{sepay,payos}/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped provider client unit proof; the sepay typed client does not import the other
+      provider client.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/sepay-live
+    note: Required provider-live sandbox proof after the named account, environment, public callback and
+      sealed credentials are provisioned; no live proof is claimed.
+change:
+  rev: 4
+  kind: revised
+  at: 2026-11-08
+  reason: Security review fixes - documented signing field order, payment status and currency checks,
+    void recording and the 200 acknowledgement; retain open proposed defaults and todo state.
+blockers:
+  - Missing sepay sandbox merchant account/access
+  - Missing commerce-sandbox environment resource
+  - Missing public HTTPS callback endpoint
+  - Missing sepay provider credentials held in sealed custody

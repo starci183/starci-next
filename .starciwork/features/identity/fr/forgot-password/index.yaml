@@ -1,0 +1,24 @@
+schema: work/functional-requirement@1
+id: fr.identity.forgot-password
+title: Reset a forgotten password
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner chooses "Quên mật khẩu?" and enters the registered email.
+mainFlow:
+  - The backend opens a reset challenge (6-digit email code, 10 minutes, 5 attempts) and sends the code if the email belongs to an account. The answer is the same either way, so it never reveals whether an email is registered.
+  - The learner enters the code and a new password (6 to 256 characters, confirmed).
+  - On the right code the backend sets the new password through the Keycloak admin API and revokes the learner's existing application sessions. The learner then signs in with the new password.
+exceptionFlows:
+  - Wrong, expired or exhausted code, and resend, behave as in fr.identity.sign-in.
+  - An account that signs in only through Facebook or GitHub has no password to reset; the code still arrives and the screen points to the social button. (proposed)
+postconditions:
+  - The old password no longer works and every earlier session of that learner is revoked.
+composes: [decision.identity.auth-model, sds.identity.session, integration.identity.keycloak, ui.identity.sign-in]
+reference: starci-academy-backend features/api/core/graphql/mutations/keycloak/sign-in/forgot-password (init, resend, verify-otp); modules/integrations/keycloak/user.service.ts resetUserPassword.
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Non-revealing init, challenge flow, admin reset, revocation of existing sessions.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Academy-style password reset drawn on the canvas; StarCi Next had no record.}
+extensions: {}

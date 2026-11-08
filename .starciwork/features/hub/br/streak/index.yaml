@@ -1,0 +1,20 @@
+schema: work/business-rule@1
+id: br.hub.streak
+title: The streak counts real work only, and never grants experience
+state: todo
+activity: idle
+statements:
+  - 'A day (Asia/Ho_Chi_Minh) counts toward the streak when the learner does at least one meaningful action that day. The actions are: every review item due that day is done; one graded attempt (a Bản chất or retrieval attempt graded, an Accepted or failed judged practice submission, a graded agent or project explanation); one project run (a check run through the learner CLI and relay, practice included); one interview session submitted.'
+  - Page views, opening a lesson, reading, flipping a card without grading it, and sign-ins never count.
+  - Each meaningful action also counts for its part's own counter, so the learner sees which parts are strong.
+  - A weekly goal sets the number of active days a week (Q-HUB-3); meeting it earns the second freeze of the next week (Q-HUB-2).
+  - A missed day uses a held freeze, at most 1 or 2 a week; with none left, the current streak resets to 0 and the longest stays. The app never shames a broken streak.
+  - The streak and its badges (the teacher's achievements seed, blazing-fox at 7 streakDays) never create or verify an experience item, never count toward a path's done, and never appear as a CV line.
+  - An action counts once, when it is stored; a resend or retry of the same action does not count twice.
+acceptance:
+  - Given a learner who only opened three lessons today, when the day closes, then the day does not count.
+  - Given a learner who submitted one interview session, when the day closes, then the day counts for the overall streak and the interview counter.
+  - Given a 30-day streak, when the profile and the CV export are built, then no experience item comes from it.
+authorityRefs: [decision.hub.parts, br.career.experience]
+appliesTo: [fr.hub.streak, fr.review.habit]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Owner: "để kích thích học và lấy chuỗi"; one streak for the app.'}

@@ -1,0 +1,18 @@
+schema: work/implementation@1
+id: impl.hub.fe
+title: Front-end Học hub, /paths/choose placeholder, nav entries and header streak chip
+state: todo
+activity: idle
+repository: fe
+owners:
+  - role: fe
+    path: fe/apps/app/src/components/blocks/LearnHub
+proves:
+  - ui.hub.home
+requiresProof:
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built, walked with a mocked payload until core is rebuilt. /paths/choose is a placeholder (no path engine).'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The Học screen and chrome.}

@@ -1,0 +1,32 @@
+schema: work/implementation@1
+id: impl.hub.be
+title: Back-end streak service and hub aggregator
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/streak
+  - role: be
+    path: be/src/features/api/hub
+proves:
+  - fr.hub.streak
+  - fr.hub.today
+  - br.hub.streak
+  - data.hub.streak
+  - sds.hub.streak
+  - sds.hub.aggregator
+  - contract.hub.api
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/streak src/features/api/hub
+    note: Required scoped unit proof at the managed per-file coverage threshold.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/streak src/tests/integration/hub
+    note: Required scoped integration proof of the hub doors and the streak service.
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built, not yet proven by the harness. Doors: learnerHub, streak, setStreakGoal. Tables: streak actions and state (migration InitStreak1796300000000). Producer port StreakService.recordStreakAction(learnerId, shard, kind, ref?) is documented in the module index; Bản chất wires it on every graded attempt, Luyện code through StreakServiceClient, interview and projects call the same port.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the one streak and the hub.}

@@ -1,14 +1,20 @@
 {"data":{},"findings":[],"hash":"ad64b8a12b892bfff729f39a21e4cd24a962c18c6f62d6bfb92a9bf12d63fa3f","path":".starcistacks/production/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"36442c7c2aa6bb83bbb5b8a0541e3ad7c59afcfa565bfff26fa8b26690a91dd1","path":".starcistacks/production/environment.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e417b6c76f5a6d9d1c1785803eb1b5d405536decc56542e566bdddbd8dc94b9a","path":".starcistacks/production/infra/swarm/Caddyfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9b5a11633937a4eff4c0126d3855885e9c57ce4a238825a16c4e676c2cd78d0d","path":".starcistacks/production/infra/swarm/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"156927e2e194228821129c2027356d973b6681bb67f81c5a1e72bc45b7185478","path":".starcistacks/production/infra/swarm/owner-actions.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5c529b816e5219be1359f40e3702ba34a336c34e609b2fb9d2dbf1f770660a75","path":".starcistacks/production/infra/swarm/recovery/restore-proof.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4c1447aa8d4173f06169646b3a523065619c1a295666b75953090a151102bcd1","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9b1b833e13d6c06ce99033ddb5a169f184fc1cf35d7bc4e064904eaa2f2c8452","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"82544386730812f191e1689b2b48038afb8e71c9c8058b91946fc1ed610dff1a","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5b4f2e0a2d08d1ffcd21e7d9a70dc3b1efcbc14f1f988961a7e0be6d4a4ba8c7","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"42a966a979dab058e4664c8b3703760a5e12c642afd1c214769153a3b52ca5a0","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9a37da548a3a48898a783a48117716e9a781586fed536b5c3428d33beb764241","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ef11fc9ac60f7c1bc74e8165462c91e04a29a4bc061365fbab754e06baa8f71a","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":".starcistacks/production/secrets/ai.enc.yaml is neither tracked nor git-ignored, and no ignored slot owns it","path":".starcistacks/production/secrets/ai.enc.yaml","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":".starcistacks/production/secrets/ai.enc.yaml","step":"hfs"}
+{"data":{},"findings":[],"hash":"95783af680e9c2b47548d5ebabb7200a3b95bd6d86b3a274f4d37f6acf93652f","path":".starcistacks/production/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b9c4b61d264f6d1f2ce4c79d82b7a11934a6270205e25ad751f38950c373a703","path":".starcistacks/production/secrets/keycloak-client-secret.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4c837f562915e8be6bf8c25e3f308976f9c88757bbdf28269c67162e569656ff","path":".starcistacks/production/secrets/mail-password.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b86fa793f035a91ef3fb626442d58d121dd9ff54ccf79d91d89e7ac615447c4d","path":".starcistacks/production/secrets/payos.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e04541c4630490f38ae710ff479f185a83cc5ada8a49918a1aa6e3c0061c24e7","path":".starcistacks/production/secrets/primary-db-url.enc","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2be2ccff4a4444796a1cfa3fc08a474581f7d57585d8ddb4a5fb23692c45700c","path":".starcistacks/production/secrets/sepay.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/data/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/files/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3e6fafc2f2b5e9244dc38747c50b91c38894d547e8ce0de17e9181e1b608b76e","path":".starcistacks/production/seeds/seeds.yaml","step":"file-rules"}

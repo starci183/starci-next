@@ -1,0 +1,20 @@
+schema: work/sds-component@1
+id: sds.essentials.incident-grader
+title: Seeded-bug variants, starci check and the submission grader
+state: todo
+activity: idle
+responsibility: Produce per-learner seeded variants of the teacher's lesson repo, give learners a local check, and grade submissions by flows, hidden flows and mutation score.
+interfaces:
+  - 'Variant builder: applies 1 to 3 mutants (each tied to a lesson misconception) to the lesson repo for a language; records which mutants survive the base flows.'
+  - 'starci lesson pull and starci check (CLI): fetch the learner variant and run the base flows from test.md, reporting red flows and the count of surviving seeded bugs, never their location.'
+  - 'Grader: in an isolated sandbox per submission (no network except package registries, a time and memory limit), build the submission, run the base flows, hidden flows and the learner tests against hidden mutants, then compute the mutation score.'
+owners: [be]
+sequence:
+  - Flows are generated from the repo's test.md (command, expected status and body, pass criteria) into a runner; a flow without an expected output is refused at import.
+  - "Grading runs in tiers: build and start; base flows; hidden flows; then learner tests against hidden mutants. The result stores each flow's expected and actual."
+  - The explanation goes to sds.essentials.coach with the diff and the flow logs as quotable evidence.
+  - Docker-dependent lessons run only in a grader with docker; until then, local check output is accepted and only the docker-free part is re-run.
+refs: [fr.essentials.incident, data.essentials.lesson, data.essentials.progress]
+extensions:
+  prototype: 'scratchpad fs-repos/flows-rrl.mjs is the hand-written flow runner used for the 2026-11-08 experiment on the Go repo.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Real-repo practice with seeded bugs and learner-written tests.}

@@ -1,0 +1,4 @@
+{"data":{},"findings":[],"hash":"7f8bb3f1a44823a285d6ec3865b3306ba50c649fe27e57c0b1bc486457ed0251","path":".starciwork/_resources/environments/development/resource.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3b6b0fdf19773212033f6b486a90ac390f12a51bf052d0fdb76a736371c82698","path":".starciwork/_resources/identities/invalid-credentials/resource.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d529c9180003a66a870e857fa00c29d8efd50a2021532f88a3f680ab13725adb","path":".starciwork/_resources/identities/learner-test-account/resource.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"be44feb710f4394f41e0192f6661a310160d9513c5627719b6533ec9e36a1e40","path":".starciwork/_resources/identities/learner/resource.yaml","step":"file-rules"}

@@ -1,0 +1,18 @@
+schema: work/functional-requirement@1
+id: fr.agent-lab.lab
+title: Open an agent track and its labs
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /agents and a track.
+mainFlow:
+  - The overview shows the tracks, the seven-concept grid, the quota bar and the coming-soon cards (Orca and others; StarCi harness, optional, not open).
+  - A track page shows its pinned tool version and the lab steps per concept; a concept without an approved lab shows "thầy đang soạn".
+  - The Claude Code track says the learner uses their own Anthropic account; the other tracks use the capped proxy key.
+exceptionFlows:
+  - AGENT_LAB_TRACK_NOT_FOUND (404) for an unknown track.
+  - AGENT_LAB_QUOTA_EXHAUSTED (429) is the hard stop of the day; the bar shows the stop state until the next UTC day.
+postconditions:
+  - A lab result is practice only; the proof is a project of kind agent in /projects (link from the page).
+composes: [data.agent-lab.track, data.agent-lab.quota, contract.agent-lab.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

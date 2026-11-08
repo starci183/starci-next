@@ -1,5 +1,7 @@
-import { injector } from "@modules/platform/composition"
-import type { TypedParameterDecorator } from "@modules/platform/composition"
+import { createParamDecorator, type ExecutionContext } from "@nestjs/common"
+import { injector, type TypedParameterDecorator } from "@modules/platform/composition"
+import { localeOfAcceptLanguage } from "./accept-language.policy"
+import type { Locale } from "./i18n.contracts"
 import type { I18nOptions } from "./i18n.options"
 import type { MessageCatalog, RequestLocale } from "./i18n.port"
 
@@ -21,3 +23,12 @@ export const InjectMessageCatalog = (): TypedParameterDecorator<MessageCatalog> 
 
 /** Injects the RequestLocale port. Parameter type: RequestLocale. */
 export const InjectRequestLocale = (): TypedParameterDecorator<RequestLocale> => injector<RequestLocale>(REQUEST_LOCALE)
+
+/** The locale of the request: the first supported language of its `Accept-Language` header, Vietnamese by default. Argument type: Locale. */
+export const AcceptedLocale: (...dataOrPipes: Array<unknown>) => ParameterDecorator = createParamDecorator(
+    (_data: unknown, context: ExecutionContext): Locale =>
+        localeOfAcceptLanguage(
+            context.switchToHttp().getRequest<{ headers: Record<string, string | Array<string> | undefined> }>()
+                .headers["accept-language"],
+        ),
+)

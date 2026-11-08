@@ -1,0 +1,24 @@
+schema: work/policy-decision@1
+id: decision.mock-interview.product
+title: Mock interview is part of Premium, with one short free session a month
+state: todo
+activity: idle
+question: What is the mock interview, what does a learner get for free, and what does Premium add?
+options:
+  - A. An AI interviewer over the teacher's banks, text first. Free is one short session a month from isPremium false questions; Premium is unlimited under a fair-use cap.
+  - B. Free practice of single questions with instant feedback (the old flashcard-interview mode); Premium adds the full session.
+recommendation: A
+recommendationReason: 'Research §4.2 and §6 Q1 and Q4. The teacher''s blog 14 explains why per-answer feedback trains the wrong reflex, so B contradicts his own design.'
+outcome: decided
+chosen: A
+reason: 'Owner 2026-11-08, verbatim: "theo đề xuất trò từng phần đi". This accepts every proposal of the research, including §6 Q1 (text first, voice later), Q4 (the free tier) and Q6 (the teacher calibration).'
+blocks: [fr.mock-interview.session, contract.mock-interview.api]
+extensions:
+  access:
+    free: One short session (3 questions) per calendar month in Asia/Ho_Chi_Minh, drawn only from questions with isPremium false. It is graded and reported like any other session.
+    premium: Unlimited sessions of 5 questions (10 later), every bank, retakes, history and the score trend. AI use falls under the server-side fair-use cap of Q-KS-1 and is never shown as credits.
+    gate: contract.commerce.entitlement isPremium(learner) is read before a session is created. A learner without Premium who has used the free session causes no AI provider call.
+  sessionLength: {free: 3, premium: 5, later: 10}
+  mix: 'Technical questions from the track''s banks (limited to modules the learner has studied, once Bản chất progress maps to moduleRefs), plus one behavioural question from mock-interview-eq at the same tier. The teacher''s README calls this "trộn như loop phỏng vấn thật".'
+  measures: [score change across sessions, free to Premium conversion after the first session, AI and teacher agreement on the calibration sample (target 80% or better), learner-reported interview passes]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner accepted the research proposal.}

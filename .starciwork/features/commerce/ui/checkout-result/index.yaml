@@ -1,0 +1,19 @@
+﻿schema: work/ui-screen@1
+id: ui.commerce.checkout-result
+title: Premium checkout result
+state: todo
+activity: idle
+brand: product brand tokens
+shell: app shell
+route: /premium/result
+routeParent: app
+surface: Checkout return status and entitlement
+persona: learner
+ui:
+  - Explain payment is being verified; browser return alone does not activate Premium.
+  - Reflect server-confirmed pending, active, failed/canceled, and expired states with retry or return to plans actions.
+  - Never display a success claim or premium-only access before server confirmation.
+direction: .starciwork/features/commerce/ui/checkout-result/direction.html
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-10-28', reason: 'Specify checkout result screen.'}

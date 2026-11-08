@@ -1,0 +1,18 @@
+schema: work/sds-component@1
+id: sds.essentials.simulation
+title: Simulation engine (state machine core, optional views)
+state: todo
+activity: idle
+responsibility: Run every lesson's simulation from data, with no per-lesson code.
+interfaces:
+  - 'Core: the V2 state machine {initialStateId, states[{label, observation, isSuccess}], actions[], transitions[], debriefQuestion}. The default view shows the states as a row, the current observation, the available actions, a reset button, and the debrief once a success state is reached.'
+  - 'Optional view: a lesson may declare view and view data to draw the same states richer. Views are path tracer, topology with failure toggle, compare with counters, virtual clock, queue/log lanes, race timeline, keyspace map, algorithm step-through, ledger inspector and estimator. A lesson without a view still renders through the core.'
+owners: [fe]
+sequence:
+  - The engine is deterministic and runs in the browser; it never calls the AI.
+  - Views read only the lesson's declared data, so a view never adds facts the lesson does not hold.
+  - The visited trail is saved with progress so the learner resumes where they left off.
+refs: [data.essentials.lesson, fr.essentials.study]
+extensions:
+  coverage: 'The survey of 87 System Design lessons classed them as topology 14, path 12, algorithm 11, clock 10, queue 10, ledger 9, compare 7, race 4+, keyspace 4, estimator 1 and terminal-replay-only 5.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: One engine for every lesson.}

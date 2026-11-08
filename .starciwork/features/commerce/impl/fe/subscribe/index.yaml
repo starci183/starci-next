@@ -1,0 +1,29 @@
+schema: work/implementation@1
+id: impl.commerce.fe.subscribe
+title: Front-end Premium subscription flow
+state: todo
+activity: idle
+repository: fe
+owners:
+  - role: fe
+    path: fe/apps/app/src/features/pages/PlansPage
+  - role: fe
+    path: fe/apps/app/src/features/pages/CheckoutResultPage
+proves:
+  - ui.commerce.plans
+  - ui.commerce.checkout-result
+  - fr.commerce.choose-plan
+  - fr.commerce.pay
+  - fr.commerce.renew
+requiresProof:
+  - required: true
+    command: npm run build:fe
+    note: Required front-end build proof for the Premium plans and checkout-result flow; this record
+      remains todo pending green evidence.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

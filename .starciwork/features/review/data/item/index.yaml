@@ -1,0 +1,23 @@
+schema: work/data@1
+id: data.review.item
+title: Review item (a flashcard or a Bản chất retrieval question)
+state: todo
+activity: idle
+fields:
+  - {name: itemId, type: 'card:<course>/<deck folder>/<n> or retrieval:<lessonId>/<activityId>', required: true}
+  - {name: source, type: flashcard | retrieval, required: true}
+  - {name: version, type: deck version (ref label plus SHA-256) or lesson version, required: true}
+  - {name: deck, type: '{deckId <course>/<deck folder>, title and description by locale, difficulty, moduleRefs[], tracks[]} (flashcards)', required: false}
+  - {name: public front, type: 'question by locale, level junior|middle|senior|staff, tags[], langs[] (optional code languages)', required: true}
+  - {name: hidden back, type: 'answer markdown by locale with :::muted blocks and cloze terms {{cN::term::distractor,distractor}}; for retrieval the activity rubric and sampleAnswer', required: true, description: Released only after flip or submit.}
+  - {name: isPremium, type: 'boolean (flashcards: the teacher''s flag; retrieval: always true)', required: true}
+  - {name: outcomeIds, type: Bản chất outcome ids (retrieval), required: false}
+  - {name: afterDays, type: '1 | 7 | 21 (retrieval)', required: false}
+invariants:
+  - A published deck version is immutable; an identical import is a no-op.
+  - Every cloze term has a non-empty answer and at least one distractor that differs from it.
+  - vi and en of a card have the same cloze numbering.
+  - A retrieval item exists only while its lesson version is published; learners keep the version they studied.
+extensions:
+  counts: '45 decks (15 per course: Fullstack 300 cards, System Design 300, DevOps 150), 750 cards, all with vi and en and all with at least one cloze term. Levels: junior 235, middle 228, senior 219, staff 68. isPremium false on 119 cards (3 per Fullstack and System Design deck, except one SD deck with 2; 2 per DevOps deck). 21 cards carry langs. Bản chất retrieval: 3 per concept (afterDays 1, 7, 21), so 21 across the 7 concepts at 231d8cc57.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Entity from the deck format at origin/main and concepts/ V2.}

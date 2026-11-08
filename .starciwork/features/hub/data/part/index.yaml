@@ -1,0 +1,17 @@
+schema: work/data@1
+id: data.hub.part
+title: Part registry (configuration)
+state: todo
+activity: idle
+fields:
+  - {name: partId, type: one of the eleven ids of decision.hub.parts, required: true}
+  - {name: order / label (vi, en) / route / icon, type: display, required: true}
+  - {name: status, type: 'live | coming-soon (thầy đang soạn) | hidden', required: true}
+  - {name: progressSource, type: the contract door the aggregator reads, required: true}
+  - {name: meaningfulActions, type: 'the action kinds of br.hub.streak this part emits', required: true}
+  - {name: grantsExperience, type: itemTypes of data.learning-program.experience-catalog, required: true}
+  - {name: freeTaste, type: what a learner without Premium can do here (Q4), required: true}
+invariants:
+  - A coming-soon part shows on the hub with its promise, but has no actions or progress.
+  - Every itemType of the experience catalog belongs to exactly one part.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Hub entity.}

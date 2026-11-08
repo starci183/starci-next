@@ -1,0 +1,20 @@
+schema: work/ui-screen@1
+id: ui.mock-interview.room
+title: Interview room (text chat)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /interview/{sessionId}
+routeParent: /interview
+surface: A focused chat. The header shows the question counter (2/5), tier and an end button; the transcript holds interviewer bubbles, givenCode or a diagram above the answer box, and a multiline answer box with Gửi.
+persona: learner
+ui:
+  - No score, tick or feedback appears between questions; the interviewer's follow-ups appear as chat turns.
+  - A Gợi ý button shows the hints left (Q-MI-3); Bỏ qua câu này; Kết thúc phỏng vấn with a confirm dialog.
+  - A sent answer shows as saved at once; an interviewer failure shows "thử lại" on that turn, never a lost answer.
+  - Submitting shows the grading state ("đang chấm cả buổi"), then routes to the report.
+  - Locale follows the app (VI first, EN); the code-language label shows on givenCode.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

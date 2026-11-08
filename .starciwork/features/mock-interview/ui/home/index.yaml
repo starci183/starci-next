@@ -1,0 +1,20 @@
+schema: work/ui-screen@1
+id: ui.mock-interview.home
+title: Interview home and setup
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /interview
+routeParent: app
+surface: The aside lists tracks (outcome paths); the middle well holds the setup card, the free-quota or Premium state, and the history with the score trend.
+persona: learner
+ui:
+  - Setup card with track (preselected from the learner's outcome path), tier junior|middle|senior, code language (only languages the banks have, the rest shown as "đang soạn"), length (3 free or 5 Premium), and Bắt đầu phỏng vấn.
+  - A resume card when a session is active.
+  - The free state shows "còn 1 buổi miễn phí tháng này" or the reset date, and the Premium upsell; Premium shows no counters and no credits.
+  - History rows (date, track, tier, score, verdict) and a trend chart per track and tier.
+  - Empty, loading, pool-empty and locked states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

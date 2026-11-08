@@ -1,13 +1,11 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectClock } from "@modules/platform/clock"
-import type { Clock } from "@modules/platform/clock"
+import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import type { CreateNoteParams, Note } from "./note.contracts"
 import { NoteError, NoteErrorCode } from "./errors/note.error"
 import { NoteEntity } from "./persistence/entities/note.entity"
-import { toNote } from "./persistence/note.rows"
-import type { NoteRow } from "./persistence/note.rows"
+import { toNote, type NoteRow } from "./persistence/note.rows"
 import { INSERT_NOTE } from "./persistence/note.sql"
 
 @Injectable()

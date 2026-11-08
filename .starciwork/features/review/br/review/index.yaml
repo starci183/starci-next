@@ -1,0 +1,20 @@
+schema: work/business-rule@1
+id: br.review.review
+title: Recall before you see the answer, and never lose a review
+state: todo
+activity: idle
+statements:
+  - The learner answers before the answer appears. A card's answer, cloze answer or rubric is not in any payload until the learner flips the card or submits the written answer.
+  - A self-grade or written answer is stored before the next item is shown or any grading runs; a resend is idempotent.
+  - A cloze card may be checked by picking the hidden term among the authored choices (the answer and its distractors, shuffled); this check is deterministic and calls no AI.
+  - Written retrieval answers are graded only against the activity's rubric by the Bản chất coach, with quoted evidence; the outcome level they raise is the lesson's understood level, raised and never lowered.
+  - Without Premium, only cards with isPremium false can be reviewed; locked items are listed as locked and no AI call is made for them.
+  - Due dates and streak days are calendar days in Asia/Ho_Chi_Minh.
+  - A streak is encouragement, not pressure; the app never sends more than one reminder a day and never shames a broken streak.
+acceptance:
+  - Given an unflipped card, when the payload is inspected, then it holds the question but not the answer or the cloze term.
+  - Given a free learner, when they open a premium card, then it shows locked and the call returns REVIEW_PREMIUM_REQUIRED.
+  - Given a self-grade sent twice with the same revision, when the queue is read, then the item moved once.
+authorityRefs: [decision.review.product, decision.review.scheduler, br.essentials.learning]
+appliesTo: [fr.review.daily, fr.review.card, fr.review.retrieval, fr.review.habit]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A rules.}

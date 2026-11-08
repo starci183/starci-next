@@ -1,0 +1,19 @@
+schema: work/sds-component@1
+id: sds.mock-interview.grader
+title: Whole-session grader
+state: todo
+activity: idle
+responsibility: Grade a submitted session once, from the full transcript, against the teacher's grading data, and store a validated scorecard before anything is shown.
+interfaces:
+  - 'grade(session): the scorecard of decision.mock-interview.grading, validated against the checklist ids and STAR keys of the session''s questions.'
+  - 'precheck(bankVersion): scores the exampleResults of every technical question for decision.mock-interview.calibration.'
+owners: [be]
+sequence:
+  - Take the session for grading by a conditional update (submitted or failed to grading); a stale grading is taken over after five minutes.
+  - 'Load server-side, for the session''s questions only: technical rubric, checklist, idealAnswer of the body language used, keywords; behavioural rubric and ownershipSignal. No lesson content is retrieved (the teacher''s rule).'
+  - 'Send one request with the whole transcript as quoted data and the grading data, asking for per-question checklist hits (each with an evidence quote that the answer really contains), rubric levels, STAR dimension levels and strengths and gaps.'
+  - 'Compute the scores on the server, not in the model: the question score is the sum of the scoreBands hit minus the hint penalty; criticalMissed is the critical items not hit; pillars and overallScore are weighted means by question; the verdict follows Q-MI-5. A behavioural question score is the mean of its six dimensions, with the ownershipSignal deduction applied when the model flags it.'
+  - Reject a result whose ids do not match or whose quotes are not in the answer; retry once, then fail with INTERVIEW_COACH_INVALID.
+  - Persist the scorecard, then set graded. Map gaps to Bản chất topics through the bank's moduleRefs and the lesson index of contract.essentials.api.
+refs: [decision.mock-interview.grading, decision.mock-interview.calibration, data.mock-interview.session, data.mock-interview.question-bank, decision.essentials.ai-pool, contract.essentials.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A design.}

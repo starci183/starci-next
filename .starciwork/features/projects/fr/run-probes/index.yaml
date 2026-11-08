@@ -1,0 +1,18 @@
+schema: work/functional-requirement@1
+id: fr.projects.run-probes
+title: Probe the deployed address of a project
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner saves a deployed address on /projects/{projectId} and presses Chạy kiểm tra.
+mainFlow:
+  - The server checks the address is public http or https, then calls it with health and the generic probes of each concept the learner may open, aimed at the endpoints the learner declared.
+  - Each probe result is stored as server-probe evidence and shown with its reason; a probe that needs an undeclared endpoint is reported as such and proves nothing.
+  - A run that passes grants the deployed experience item once.
+exceptionFlows:
+  - PROJECT_TARGET_REFUSED for a private, loopback, link-local or non-allowed port address, including a name that resolves inside.
+  - PROJECT_DEPLOYED_URL_MISSING without a saved address; PROJECT_PROBE_RATE_LIMITED after the hourly cap.
+postconditions:
+  - Requests are capped in time and bytes, follow no redirect and keep no cookie.
+composes: [sds.projects.probe-runner, contract.projects.api]
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

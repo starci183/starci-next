@@ -35,7 +35,7 @@ The core api app reads `PORT`, `HTTP_SECURITY_ALLOWED_ORIGINS` (comma-separated 
 requests) and `PRIMARY_DB_URL` at boot; every door is closed until it is marked public or sign-in is designed. The cli app reads
 `PRIMARY_DB_URL`: `npm run migrate` applies the migrations of the primary database before the api starts, and
 `npm run cli -- seed run` runs the dev seeds of `.starcistacks/dev/seeds` (run both from the app root). The product app reads
-`NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_GRAPHQL_URL` (the back end it calls through `fe/apps/app/src/modules/api`, read once the first GraphQL operation exists), the landing `NEXT_PUBLIC_APP_URL` (the product app it hands the reader over to). A missing key stops the process with an error that names it.
+`NEXT_PUBLIC_SITE_URL`; it calls the back end through `fe/apps/app/src/modules/api` on its own origin (`/api/*` and `/graphql`, so the host-only session cookie reaches the doors): the production ingress routes those paths to the core api, and a native `next dev` proxies them to `CORE_INTERNAL_ORIGIN`; the dev compose stack mirrors production with a Caddy ingress at `http://localhost:3080` (the core api origin; defaults to `http://127.0.0.1:3001`, the compose port on a developer host; read by `next dev` alone). The landing reads `NEXT_PUBLIC_APP_URL` (the product app it hands the reader over to). A missing key stops the process with an error that names it.
 
 Production browser build values live in `.starcistacks/application-stacks.yaml` under `environments.production.deploy.images.*.buildArgs.values`. Replace the placeholder origins for the product's `NEXT_PUBLIC_SITE_URL` and the landing's `NEXT_PUBLIC_APP_URL` with your product app's public origin before building deployment images.
 

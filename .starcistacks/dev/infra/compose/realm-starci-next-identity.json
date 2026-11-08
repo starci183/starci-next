@@ -1,0 +1,67 @@
+{
+  "realm": "starci-next-identity",
+  "displayName": "StarCi Next (development)",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "verifyEmail": false,
+  "bruteForceProtected": false,
+  "passwordPolicy": "length(8)",
+  "accessTokenLifespan": 300,
+  "ssoSessionIdleTimeout": 2592000,
+  "ssoSessionMaxLifespan": 5184000,
+  "eventsEnabled": true,
+  "requiredActions": [
+    { "alias": "VERIFY_PROFILE", "name": "Verify Profile", "providerId": "VERIFY_PROFILE", "enabled": false, "defaultAction": false, "priority": 90 }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "TEACHER", "description": "Thầy: signs every experience item and appoints reviewers." },
+      { "name": "REVIEWER", "description": "Reviewer appointed by the teacher: signs the experience items of the appointed parts." }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "starci-next-identity-lane",
+      "name": "StarCi Next identity (development)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "${KC_CLIENT_SECRET}",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "implicitFlowEnabled": false,
+      "redirectUris": ["https://localhost:3080/sign-in/callback"],
+      "webOrigins": [],
+      "attributes": { "pkce.code.challenge.method": "S256", "post.logout.redirect.uris": "https://localhost:3080/sign-in/callback" },
+      "protocolMappers": [
+        {
+          "name": "audience-self",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "starci-next-identity-lane",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "introspection.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-starci-next-identity-lane",
+      "enabled": true,
+      "serviceAccountClientId": "starci-next-identity-lane",
+      "clientRoles": { "realm-management": ["manage-users", "view-users"] }
+    }
+  ]
+}

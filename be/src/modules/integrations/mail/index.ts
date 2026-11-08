@@ -1,0 +1,6 @@
+export { MAIL_ERROR_KINDS, MailErrorCode } from "./errors/mail.error"
+export { renderTransactional } from "@starci/mail"
+export type { Mailer } from "@starci/mail"
+export { parseMailConfig } from "./mail.config"
+export { InjectMailer, MAIL_PORT } from "./mail.decorators"
+export { MailModule } from "./mail.module"

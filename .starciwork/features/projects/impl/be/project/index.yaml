@@ -1,0 +1,20 @@
+schema: work/implementation@1
+id: impl.projects.be.project
+title: Back-end projects (domain, probe transport, doors, CI webhook)
+state: todo
+activity: idle
+repository: be
+owners:
+  - {role: be, path: be/src/modules/domain/project}
+  - {role: be, path: be/src/modules/integrations/probe}
+  - {role: be, path: be/src/features/api/project}
+  - {role: be, path: be/src/features/webhooks/project-ci}
+proves: [fr.projects.prove-concept, fr.projects.run-probes, data.projects.project, data.projects.evidence, contract.projects.api, contract.projects.ci-webhook, contract.projects.relay-port, sds.projects.probe-runner]
+requiresProof:
+  - required: true
+    command: npx jest --maxWorkers=2 src/modules/domain/project src/modules/integrations/probe src/features/webhooks/project-ci
+    note: Scoped unit proof.
+  - required: true
+    command: npx jest --maxWorkers=2 src/tests/integration/project
+    note: Flow proof on the test world.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

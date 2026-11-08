@@ -1,0 +1,20 @@
+schema: work/ui-screen@1
+id: ui.career.experience
+title: Kinh nghiệm (my experience items)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /experience
+routeParent: app
+surface: The aside filters by part. The middle well holds item cards grouped by part, each with a state chip (Đang luyện, AI đã chấm, Chờ thầy duyệt with its date, Đã xác minh, Trả lại, Thu hồi), the CV line, evidence links and the next action.
+persona: learner
+ui:
+  - The AI đã chấm card shows the per-criterion result, the draft line in VI and EN with editable words outside the filled slots, the defense questions, and Gửi thầy duyệt.
+  - The Trả lại card shows the teacher's note prominently, with Sửa và gửi lại.
+  - The Đã xác minh card shows the signer role and date, the verify link, Hiện trên hồ sơ and Thêm vào CV.
+  - A header shows progress per part ("3 kinh nghiệm đã xác minh") and items still pending.
+  - Empty, loading and locked (free) states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision; screen for the UX mockups.}

@@ -37,4 +37,16 @@ module.exports = require("@starci/jest-preset").starciJestConfig({
             "src/modules/projections/*/persistence/**",
         ],
     },
+    packages: {
+        folders: ["packages/next-cli"],
+        files: ["packages/next-cli/src/**/*.ts"],
+        excludes: [
+            "packages/next-cli/src/workbench/**",
+            "packages/next-cli/src/public/**",
+            "packages/next-cli/src/client/**",
+            "packages/next-cli/src/**/index.ts",
+            "packages/next-cli/src/**/*.types.ts",
+            "packages/next-cli/src/**/*-types.ts",
+        ],
+    },
 })

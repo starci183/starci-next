@@ -1,0 +1,17 @@
+schema: work/functional-requirement@1
+id: fr.review.habit
+title: Set a daily review goal (streak via the hub)
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner changes the goal or the reminder, or a day closes.
+mainFlow:
+  - The learner sets the daily item goal (5..50).
+  - When every item due today is done, review records a review-due-done action to the hub streak service; the streak, freezes, weekly goal, reminder and badges follow fr.hub.streak.
+exceptionFlows:
+  - A goal outside 5..50 is refused REVIEW_GOAL_INVALID.
+  - Viewing the queue or flipping cards without grading records nothing (br.hub.streak).
+postconditions:
+  - The streak and badges change at most once per day.
+composes: [data.review.habit, contract.review.api, ui.review.today, sds.hub.streak, br.hub.streak]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A flow.}

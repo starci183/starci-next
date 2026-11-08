@@ -1,0 +1,72 @@
+directive @inputBounds(version: Int = 1, maxLength: Int, maxItems: Int, min: Float, max: Float, itemMaxLength: Int, itemMaxItems: Int, itemMin: Float, itemMax: Float) on INPUT_FIELD_DEFINITION
+
+type Mutation {
+  relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
+  relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
+  relayLog(input: RelayLogInput!): RelayUploadType!
+  relayManifestAck(input: RelayManifestAckInput!): RelayUploadType!
+}
+
+type Query {
+  relayManifest(input: RelayManifestInput!): RelayManifestType!
+}
+
+input RelayCheckResultInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  commit: String @inputBounds(maxLength: 40)
+  conceptId: String @inputBounds(maxLength: 100)
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  eventId: String! @inputBounds(maxLength: 36)
+  exitCode: Int! @inputBounds(min: -1, max: 255)
+  passed: Boolean!
+  ref: String @inputBounds(maxLength: 300)
+  runId: String! @inputBounds(maxLength: 100)
+  slot: String @inputBounds(maxLength: 5)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayCheckStartedInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayLogInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+  text: String! @inputBounds(maxLength: 16384)
+}
+
+input RelayManifestAckInput {
+  eventId: String! @inputBounds(maxLength: 36)
+  manifestId: String! @inputBounds(maxLength: 100)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+type RelayManifestCheckType {
+  command: String!
+  cwd: String!
+  id: String!
+  timeoutMs: Int!
+}
+
+input RelayManifestInput {
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+type RelayManifestType {
+  checks: [RelayManifestCheckType!]!
+  manifestId: String!
+  payload: String!
+  signature: String!
+  taskId: String!
+}
+
+type RelayUploadType {
+  accepted: Boolean!
+  eventId: String!
+}

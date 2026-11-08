@@ -44,6 +44,10 @@ jobs:
             file: be/apps/core/Dockerfile
             deployed: true
             args: false
+          - name: relay
+            file: be/apps/relay/Dockerfile
+            deployed: true
+            args: false
           - name: cli
             file: be/apps/cli/Dockerfile
             deployed: false
@@ -143,6 +147,7 @@ jobs:
             refs=$(jq -c --arg service "$service" --arg ref "$repo@$digest" '. + {($service): $ref}' <<<"$refs")
           done <<'LIST'
           core core false
+          relay relay false
           landing landing false
           app app false
           LIST

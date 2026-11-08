@@ -1,0 +1,65 @@
+schema: work/feature@1
+id: career
+title: Hồ sơ & kết nối (Experience, verified profile, CV, hiring bridge)
+summary: 'Every learning part grants experience items. The AI grades an item first and drafts its CV line with the evidence; the teacher, or a reviewer he appoints, signs each item in a review queue. Only "Đã xác minh" items reach the profile, the path done, the CV export and the hiring bridge.'
+draft: 'Program-level draft. Owner 2026-11-08: "dạy học xây prifole kết nối"; "ý là chia starci next thành các phần học, mỗi phần sẽ gain kinh nghiệp nhất định verify bởi thầy và thầy AI. hiểu k? để lấy kinh nghiệm ghi cv"; decision: "AI chấm, thầy ký từng mục". Q8: the hiring bridge is a Premium perk, opt-in, manual with Pegasi.'
+purpose: Learners gain experience they can put on a CV and defend in an interview, verified by both the AI and the teacher.
+decided:
+  - Each part declares the experience items it grants, with a CV-line template and the evidence it needs (data.learning-program.experience-catalog).
+  - AI chấm, thầy ký từng mục (decision.career.verification). States are đang luyện, AI đã chấm, chờ thầy duyệt and Đã xác minh, or returned with the teacher's note; a revoke is possible later, with an audit trail.
+  - Only Đã xác minh items count toward the profile, a path's done and the CV export.
+  - CV review uses the teacher's rubrics cv/0-standard, cv/1-mid, cv/2-senior and the 17 catalogs, with a rule never to invent numbers.
+  - The hiring bridge is a Premium perk, opt-in, manual with one partner (Pegasi) for the MVP (Q8).
+  - Free gets one summary CV review; Premium gets full reviews, the experience queue and the public profile (research §4.5).
+delivers:
+  - The learner's Kinh nghiệm list, the teacher and reviewer review queue, the public profile with verification links, the CV review and export, and the hiring opt-in.
+excludes:
+  - Fees charged to companies, automatic job matching, guaranteed placement, and any CV line the evidence cannot back.
+records:
+  decision: [decision.career.verification]
+  business: [br.career.experience]
+  data: [data.career.experience-item, data.career.review-decision, data.career.reviewer, data.learning-program.experience-catalog]
+  functional: [fr.career.experience, fr.career.review-queue, fr.career.revoke]
+  design: [sds.career.experience-engine]
+  contract: [contract.career.api]
+  ui: [ui.career.experience, ui.career.review-queue, ui.career.review-item, ui.career.verify, ui.career.profile]
+pending: 'Still drafts in flows/learning-program/career (not built in this round): decision.career.product, br.career.proof, data.career.profile, data.career.cv-review, data.career.hiring-opt-in, fr.career.profile, fr.career.cv-review, fr.career.hiring-bridge, sds.career.profile-assembler, sds.career.cv-reviewer, ui.career.public, ui.career.cv, ui.career.hiring.'
+built: 'be/src/modules/domain/career (experience engine, producer port EXPERIENCE_PRODUCER, Bản chất producer EssentialsExperienceService.record, notifier port EXPERIENCE_NOTIFIER (core binds NotificationService: experience.verified and experience.returned after each committed decision), ExperienceReadService.verifiedItems for the path engine), be/src/features/api/career (GraphQL doors), fe /experience, /review-queue, /review-queue/{itemId}, /verify/{code}, /profile.'
+roles: 'Keycloak realm roles TEACHER and REVIEWER (.starcistacks/dev/infra/compose/realm-starci-next-identity.json declares both; no user is seeded, an operator assigns the role to a signed-up account). A REVIEWER also needs an active appointment by the teacher (setExperienceReviewer).'
+settings: 'Q-CA-3..8 built as CareerModule.register options with the proposed defaults: reviewWorkingDays 3, reminderWorkingDays 2, returnsBeforeTeacher 3, teacherHoldDays 7, reviewerCapacity 30, hiringMinVerified 3.' 
+dependsOn: [contract.identity.session-contract, contract.commerce.entitlement, contract.mock-interview.api, contract.agentic.api, contract.essentials.api, contract.review.api, decision.essentials.ai-pool, data.learning-program.experience-catalog]
+openQuestions:
+  - id: Q-CA-1
+    question: How long are uploaded CVs kept?
+    proposed: The CV file is deleted after the review completes. The extracted text and the report are kept until the learner deletes them, with a delete-all button; nothing goes to a partner without the opt-in.
+    state: open
+  - id: Q-CA-2
+    question: What does a partner receive?
+    proposed: A one-time export of the public profile and the CV the learner chooses, sent by hand by the operator; each export is logged and shown to the learner.
+    state: open
+  - id: Q-CA-3
+    question: Who can be a reviewer, and how are they appointed?
+    proposed: 'The teacher holds role TEACHER and is a reviewer for every part. He appoints reviewers (role REVIEWER, asserted by Keycloak like every role) and scopes each one to parts and tracks; an appointment and its end are logged. A reviewer never reviews their own items or a learner they mentor privately; the teacher can take over any item.'
+    state: open
+  - id: Q-CA-4
+    question: What is the review SLA?
+    proposed: Three working days (Asia/Ho_Chi_Minh) from chờ thầy duyệt. A reminder goes to the assignee at two days; at three days the item escalates to the teacher's queue. The learner sees the expected date.
+    state: open
+  - id: Q-CA-5
+    question: Can a returned item be resubmitted, and how often?
+    proposed: Yes, after the learner changes the evidence or the line (an unchanged resubmit is refused). The AI regrades each resubmit. After three returns, the next resubmit goes to the teacher only and waits 7 days.
+    state: open
+  - id: Q-CA-6
+    question: Does the teacher's signature appear on the public profile?
+    proposed: 'Each verified item shows "Đã xác minh bởi StarCi" with the signer''s role (Thầy, or Reviewer do thầy chỉ định) and the date, and links to a verification page /verify/{code}. The teacher''s name and signature image show only on the items he signed himself, and only if he agrees; a reviewer''s personal name is never public.'
+    state: open
+  - id: Q-CA-7
+    question: The review queue route /review-queue sits beside the learner's /review (Ôn tập). Is the name clear enough?
+    proposed: Keep /review-queue for the teacher and reviewers, labelled "Duyệt kinh nghiệm", and hide it from learners; the two never appear in the same navigation.
+    answered: 'UXUI canvas v20 (2026-11-08): /experience for the learner list and /review-queue for the role-gated queue; /review stays Ôn tập.'
+    state: answered
+  - id: Q-CA-8
+    question: How many verified items open the hiring bridge?
+    proposed: At least 3 items Đã xác minh (UXUI canvas v20).
+    state: open
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'Owner: experience per part, "AI chấm, thầy ký từng mục".'}

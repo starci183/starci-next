@@ -1,0 +1,18 @@
+schema: work/ui-screen@1
+id: ui.mock-interview.report
+title: Interview report (scorecard)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /interview/{sessionId}/report
+routeParent: /interview
+surface: The scorecard header (overall score, verdict, the technical and behavioural pillars apart); attribute bars; one card per question; strengths and gaps with links; Phỏng vấn lại.
+persona: learner
+ui:
+  - The question card shows the prompt, the learner's answer with evidence quotes highlighted, checklist items covered and missed (critical marked), hints used, then "câu trả lời mạnh hơn" (the teacher's idealAnswer) collapsed.
+  - Gaps link to the Bản chất lesson or topic and to the review deck; a missing mapping shows the topic name only.
+  - Grading, failed (retry) and superseded-bank states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

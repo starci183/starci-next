@@ -1,0 +1,61 @@
+schema: work/functional-requirement@1
+id: fr.commerce.pay
+title: Pay for Premium
+state: todo
+activity: idle
+actors:
+  - learner
+trigger: Learner confirms a selected Premium offer.
+mainFlow:
+  - Create a pending purchase with a server-owned price snapshot and unique provider reference.
+  - Create provider checkout and redirect the learner to the returned checkout destination.
+  - Accept payment only after authenticating and verifying the provider IPN or webhook and matching
+    it to the purchase.
+  - Process duplicate confirmations idempotently and grant entitlement once.
+exceptionFlows:
+  - Invalid authentication, signature, amount, currency, reference, or status does not grant
+    entitlement.
+  - Provider checkout failure leaves purchase pending or failed and offers retry without duplicate
+    entitlement.
+  - Return or cancel redirect alone never confirms payment.
+  - ORDER_PAID received after cancellation or expiry is proposed to grant once after valid matching
+    verification and produce an audit/reconciliation event (Q-W2-3).
+  - A real 229.000 VND charge is never made without owner approval (Q6); use sandbox otherwise.
+postconditions:
+  - Verified matching payment is recorded once; entitlement follows subscription policy.
+composes:
+  - contract.commerce.payment-rail
+  - data.commerce.purchase
+  - integration.commerce.sepay
+  - integration.commerce.payos
+  - decision.commerce.subscription-policy
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+  - required: true
+    command: npm test -- src/modules/integrations
+      --collectCoverageFrom=src/modules/integrations/{sepay,payos}/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped payment-rails unit proof with the managed per-file coverage threshold
+      unchanged at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/payment-rails
+    note: Required scoped payment-rails integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/payment-rails
+    note: Required scoped payment-rails end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

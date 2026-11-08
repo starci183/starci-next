@@ -1,0 +1,35 @@
+schema: work/data@1
+id: data.learning-program.experience-catalog
+title: Experience items each part grants (CV-line templates and required evidence)
+state: todo
+activity: idle
+fields:
+  - {name: itemType, type: 'stable id <part>.<item>', required: true}
+  - {name: part, type: 'essentials | projects | incidents | practice | interview (decision.program.structure)', required: true}
+  - {name: output, type: 'cv-line | readiness', required: true}
+  - {name: cvLine, type: 'map<locale vi|en, template>; slots in <angle brackets> are filled only from StarCi evidence or the learner''s declared project facts, tech and metric in bold (cv/catalogs/05-bullet-formulas style)', required: true}
+  - {name: cvSection, type: 'experience-projects | skills | certifications | profile-only', required: true}
+  - {name: evidence, type: what must exist, and in which proof form, before the AI may grade the item, required: true}
+  - {name: slots, type: '[{slot, source}] the evidence field each slot is filled from', required: true}
+  - {name: defenseQuestions, type: 'interview questions the line must survive (cv/catalogs/13-interview-defense); the reviewer checks the learner can answer them', required: false}
+invariants:
+  - No slot is filled with a number the learner typed; numbers come only from StarCi evidence (problems Accepted, concepts proved, probe results, interview scores).
+  - A template never claims users, revenue, scale or a team the evidence does not show; such claims stay self-reported and outside the line.
+  - Every item is granted only as an experience item in state Đã xác minh (br.career.experience).
+  - vi and en templates carry the same slots.
+extensions:
+  projectsRefs: [decision.projects.model, decision.agents.curriculum, decision.program.structure]
+  structure: 'decision.program.structure: CV lines come only from Dự án (agent projects are a project kind), Sự cố and Bản chất attached to a project. Luyện code and Phỏng vấn thử produce hiring-readiness items (output readiness), never CV lines. Ôn tập counts toward the streak only. Mục tiêu, Hồ sơ & CV and Kết nối việc làm grant nothing. Bài toán thực chiến is deferred.'
+  partsWithoutItems: 'review (Ôn tập, streak only), paths (Mục tiêu), career (Hồ sơ & CV), hiring (Kết nối việc làm), case-studies (deferred); the streak never grants an item.'
+  owner: 'Code owner: be/src/modules/domain/career/experience-catalog.policy.ts (EXPERIENCE_CATALOG); slots are written <slotId> in both templates and filled only from StarCi evidence.'
+  items:
+    - {itemType: essentials.concept-proved, part: essentials, output: cv-line, requiresProject: true, slots: [concept, project, language, lesson], evidence: 'every learning outcome of the lesson proved at level 2 (attempt capability), the lesson attached to a project by the projects shard'}
+    - {itemType: projects.milestone, part: projects, output: cv-line, requiresProject: true, slots: [project, stack, concepts, ci], evidence: 'every concept of the milestone proved by a signed CI run or server probes', defenseQuestions: ['Why this design for each concept?', 'What breaks without it, and which test shows it?']}
+    - {itemType: projects.deployed, part: projects, output: cv-line, requiresProject: true, slots: [project, url], evidence: 'the server probes of the deployed URL passed'}
+    - {itemType: projects.agent-built, part: projects, output: cv-line, requiresProject: true, slots: [project, tool], evidence: 'a project of kind agent with milestone agent-mindset proved and the server probes passed'}
+    - {itemType: projects.ai-coding-mindset, part: projects, output: cv-line, requiresProject: true, slots: [project, tool], evidence: 'milestone ai-coding-mindset proved in the project'}
+    - {itemType: incidents.fixed, part: incidents, output: cv-line, requiresProject: false, slots: [bugClass, lesson, score], evidence: 'the tier-2 incident completed with the server rerun of tests and mutants'}
+    - {itemType: practice.pattern-solved, part: practice, output: readiness, requiresProject: false, slots: [count, pattern, language], evidence: 'Judge0 Accepted for every problem of the pattern, each before its solution was unlocked'}
+    - {itemType: interview.pass, part: interview, output: readiness, requiresProject: false, slots: [tier, track], evidence: 'a graded session with verdict pass on both pillars'}
+  removed: 'review.retention (Ôn tập is streak only), casestudy.designed (case studies deferred), career.cv-rubric (Hồ sơ grants nothing); agentic.* became projects.agent-built and projects.ai-coding-mindset.'
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'decision.program.structure: CV lines only from Dự án, Sự cố and Bản chất in a project; Luyện code and Phỏng vấn thử feed readiness.'}

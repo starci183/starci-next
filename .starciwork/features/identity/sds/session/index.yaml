@@ -1,0 +1,50 @@
+schema: work/sds-component@1
+id: sds.identity.session
+title: Identity session component
+state: todo
+activity: idle
+responsibility: Talk to Keycloak on the learner's behalf (password grant, admin API, social broker), run the email-code challenges, and keep opaque application sessions in identity-owned PostgreSQL with the Keycloak tokens server-side (Q-A2 proposed).
+interfaces:
+  - name: credentials
+    direction: input
+    description: Identifier and password checked by the Keycloak password grant; success opens a sign-in challenge.
+  - name: challenge
+    direction: input
+    description: One-use email-code challenges for sign-in, sign-up and password reset. Each has 6 digits, 10 minutes and 5 attempts; resend rotates the code.
+  - name: social
+    direction: input
+    description: Start (PKCE bundle plus a Keycloak URL with kc_idp_hint) and exchange (code plus state, consumed once).
+  - name: current-session
+    direction: output
+    description: Verified Keycloak subject, provider-asserted roles and expiry, read from durable state on every protected request.
+  - name: sign-out
+    direction: input
+    description: Durable local revocation, then Keycloak refresh-token revocation.
+owners: []
+stateMachine:
+  states: [signed-out, credentials-accepted, social-pending, signed-in, expired, revoked]
+  transitions:
+    - signed-out -> credentials-accepted: the password grant succeeds; the Keycloak tokens are held in the challenge and the code is emailed.
+    - credentials-accepted -> signed-in: the right code within 10 minutes and 5 attempts; the session is persisted before the cookie is issued.
+    - credentials-accepted -> signed-out: the challenge expires or its attempts run out.
+    - signed-out -> social-pending: a social start stores a one-use PKCE bundle.
+    - social-pending -> signed-in: the callback exchange consumes the bundle and the ID token validates.
+    - social-pending -> signed-out: cancel, error, or expired, replayed or mismatched state.
+    - signed-in -> expired: the session's end is reached (Keycloak refresh-token lifetime or the local maximum, whichever is first).
+    - signed-in -> revoked: sign-out or password reset.
+sequence:
+  - "Session reference: a random opaque value in cookie __Host-identity_session (Secure, HttpOnly, SameSite=Lax, Path=/, no Domain). PostgreSQL stores only its digest, the Keycloak subject, roles, the Keycloak refresh token (encrypted at rest), expiry and revocation."
+  - "While the session lives, the backend refreshes Keycloak tokens server-side when it needs them (grant_type=refresh_token, coalesced per session as Academy does). The browser never sees a Keycloak token. A failed refresh ends the session."
+  - Every protected request reads durable expiry and revocation; unknown, expired or revoked references answer 401 and clear the cookie.
+  - Challenges and PKCE bundles live in the cache with their TTL. Verification is atomic, so concurrent verifies cannot both succeed.
+  - Never log passwords, codes, Keycloak tokens, the callback query or provider error text.
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Challenge lifecycle, social bundle, session persistence, server-side refresh, revocation and cookie attributes.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Durable session and revocation, cookie transport, concurrent verify.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'decision.identity.auth-model B: credential, challenge and social-broker states replace the browser-redirect transaction; opaque session kept (Q-A2).'}
+extensions:
+  keptFromAuthBranch: The opaque session store, cookie attributes, guards and revocation reads built on starci/auth-sign-in stay; the redirect transaction (__Host-identity_login, session/start, the session/callback redirect) is removed.

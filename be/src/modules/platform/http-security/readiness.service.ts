@@ -1,8 +1,6 @@
 import { Injectable } from "@nestjs/common"
-import { InjectDatabaseProbe } from "@modules/platform/database"
-import type { DatabaseProbeService } from "@modules/platform/database"
-import { InjectTimer } from "@modules/platform/retry"
-import type { Timer } from "@modules/platform/retry"
+import { InjectDatabaseProbe, type DatabaseProbeService } from "@modules/platform/database"
+import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { HttpSecurityError, HttpSecurityErrorCode } from "./errors/http-security.error"
 import type { ReadinessReport } from "./readiness.contracts"
 
@@ -22,17 +20,23 @@ export class ReadinessService {
     /** Returns ready only when the required primary database answers within one second. */
     async probeRequired(): Promise<ReadinessReport> {
         let cancel: () => void = noCancel
+        let deadline: HttpSecurityError | undefined
         try {
             await Promise.race([
                 this.database.probe(),
                 new Promise<never>((_resolve, reject) => {
-                    cancel = this.timer.schedule(
-                        () => reject(new Error("Required database readiness timed out")),
-                        READINESS_TIMEOUT_MS,
-                    )
+                    cancel = this.timer.schedule(() => {
+                        deadline = new HttpSecurityError({
+                            code: HttpSecurityErrorCode.RequiredDependencyUnavailable,
+                            cause: new Error("Required database readiness timed out"),
+                        })
+                        reject(deadline)
+                    }, READINESS_TIMEOUT_MS)
                 }),
             ])
         } catch (cause) {
+            // The deadline's own error already names the cause; any other failure, even a synchronous one, is wrapped.
+            if (deadline !== undefined && cause === deadline) throw cause
             throw new HttpSecurityError({ code: HttpSecurityErrorCode.RequiredDependencyUnavailable, cause })
         } finally {
             cancel()

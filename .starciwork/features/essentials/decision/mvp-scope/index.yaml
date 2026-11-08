@@ -1,0 +1,36 @@
+schema: work/policy-decision@1
+id: decision.essentials.mvp-scope
+title: MVP of Essentials is seven lessons, tier 1 only
+state: todo
+activity: idle
+question: What does the first release of Essentials hold, and what waits?
+outcome: decided
+chosen: Seven of the teacher's concepts/ V2 lessons (folders 0 to 6), studied in the browser (tier 1). The lab runner, the incident, review scheduling, hints and Hỏi StarCi are later.
+reason: 'Owner 2026-11-08: "start from 3 lessons and see if it works"; the import then took all seven V2 lessons the teacher has written (folders 0 to 6).'
+blocks: []
+extensions:
+  lessons:
+    - {folder: 0-request-response-lifecycle, id: request-response-lifecycle, category: backend, topic: backend framework (NestJS)}
+    - {folder: 1-server-state-cache-lifecycle, id: server-state-cache-lifecycle, category: frontend, topic: server state (TanStack Query)}
+    - {folder: 2-cqrs-read-models, id: cqrs-read-models, category: system-design, topic: CQRS}
+    - {folder: 3-unit-testing-behavior, id: unit-testing-behavior, category: testing, topic: unit testing behaviour}
+    - {folder: 4-health-probe-semantics, id: health-probe-semantics, category: devops, topic: Kubernetes probes}
+    - {folder: 5-vpc-routing, id: vpc-routing, category: cloud, topic: VPC routing}
+    - {folder: 6-agent-harness-control-loop, id: agent-harness-control-loop, category: ai-harness, topic: agent harness control loop}
+  source:
+    repository: github.com/starci-lab/data
+    commit: 231d8cc57
+    note: The import reads a directory of concept folders and labels the version with the commit; a local read-only checkout is enough.
+  tier1Only:
+    inScope: [the content import, the public projection, the catalog and lesson doors, the Premium gate on phases, the server-side content port, the attempts mutation with deterministic grading of choices and simulations, written-answer grading behind the coach port, the attempt and progress queries]
+    later: [lab runner, incident (tier 2), V1 challenge ladder (tier 3), review scheduling, hints, Hỏi StarCi, the live AI provider wiring of the coach]
+  choices:
+    - "Category: the V2 value is stored and listed as the teacher wrote it; the map to the 16-category tree waits for the catalog screen (Q-KS-4 of the feature)."
+    - "Doors: GraphQL queries `lessons` and `lesson`, not the REST routes GET /api/lessons and GET /api/lessons/{id} of contract.essentials.api. The harness opens a REST route only for a probe, an auth handshake, a signed webhook, a byte transfer or a declared operation table (BE-TRANSPORT-1, lint rest-door-needs-a-reason). The queries return the data of those routes; the REST paths stay the target surface until the owner rules on the lint."
+    - "Error codes carry the capability prefix the harness requires (BE-ERROR-2): LESSON_NOT_FOUND (404), LESSON_PREMIUM_REQUIRED (403)."
+    - "Group and topic: the import resolves each lesson group (group map, then the category fallback) and topic (decision.essentials.categories lessonGroups and topics) and stores both on the version; a lesson with no group or no topic entry, or a topic slug equal to a lesson id, is refused with LESSON_CONTENT_INVALID. The topic path is read at import from the V1 course module folders beside the concepts folder (courses/), in the teacher order, and stored with the topic; a topic whose modules the checkout lacks lists only its published lessons."
+    - "Attempts: GraphQL mutation `submitLessonAttempt` and queries `lessonAttempt` and `lessonProgress` (impl.essentials.be.attempts). Error codes ATTEMPT_REVISION_CONFLICT (409), ATTEMPT_NOT_FOUND (404), ATTEMPT_ANSWER_INVALID and ATTEMPT_ACTIVITY_UNSUPPORTED (400); a failed grading is an attempt with status failed and failureCode ATTEMPT_COACH_UNCONFIGURED, ATTEMPT_COACH_UNAVAILABLE or ATTEMPT_COACH_INVALID, not an error of the call."
+    - "Coach: written answers are graded through a port (AttemptCoach) bound with AttemptModule.register({ coach }); @starci/ai-router is not installed in this app yet, so the core app binds the unconfigured coach and a written answer is saved then failed with ATTEMPT_COACH_UNCONFIGURED. Tests use a scripted fake coach."
+    - "Version: the import ref label (a git sha) is the version; the content hash of the source bytes is stored beside it. The same version with other bytes is refused."
+    - "The import reads every field of the @starci/seperator format itself and runs no workspace test; the workspace tests, the language parity and the V1 citation checks of sds.essentials.content-import are later."
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'The attempts, grading and progress side moves into the MVP; the live AI wiring stays later.'}

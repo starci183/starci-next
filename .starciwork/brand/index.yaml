@@ -1,0 +1,1311 @@
+schema: work/brand@1
+id: brand
+kind: brand
+state: todo
+activity: idle
+rev: 8
+brand:
+  identity:
+    name: StarCi Next
+    product: starci-next
+    family: starci
+    familyId: core
+    tokenVocabulary: The Core family's own token names - the semantic bindings the Core root sets
+      (--accent, --accent-foreground, --background, --surface, --surface-foreground, --surface-secondary,
+      --surface-secondary-foreground, --foreground, --muted, --border, --separator, --focus, --success,
+      --success-foreground, --warning, --warning-foreground, --danger, --danger-foreground, --info,
+      --info-foreground) plus the family-owned binding --starci-surface-tertiary, over the --starci-core-*
+      anatomy knobs the family maps them from. Every name is a
+      token the Core DNA snapshot declares (knowledge/grammars/starci/DNA.yaml, familyId core, provenance
+      version 0.5.0, regenerated with the unreleased tertiary surface role); starci-next-fe consumes them through @starci/grammar/core.css
+      (starci-next-fe/src/app/globals.css line 3).
+    identitySource: The StarCi Academy dashboard and subscriptions render, read from
+      starci-academy-fe/src/app/globals.css (sha256 0ee8a826f7523716cd7cc9fe4fda0ab852974ad8d3f640d0a74987579e2793f3),
+      which paints the [lang]/dashboard surfaces (DashboardPage plus layout.tsx) and the
+      [lang]/subscriptions surfaces (ShellNav plus ProSubscriptionPage). Every colour value below is read
+      from a declaration in that file; the file list is in sources.
+    ownerRulingsVerbatim: |-
+      Ruling of 2026-09-23, relayed by the supervisor and recorded in incident inc-8965d90fa153:
+      starci next dùng core grammar, brand mặc định như trang dashboard và subscriptions của starci academy á
+
+      Ruling of 2026-09-24 (goal revision 1, identity ba03ea2d42b19dba), carried verbatim in this dispatch's
+      params.ownerRulings: the starci-next brand and page look are IDENTICAL to the original StarCi Academy
+      dashboard and subscription pages. brand.decide re-derives the brand from those renders and supersedes
+      brand rev 3 where they differ.
+
+      Answer of 2026-09-24, option A of serve-ask ctx_eb5a945a39ea (answeredBy owner at
+      2026-09-24T18:27:55.561Z), verbatim: A. Giống hệt Academy cả 3 màu, chấp nhận độ tương phản dưới chuẩn
+      (xám 4.0-4.8:1, chữ trên nút đỏ 3.45:1, link 4.46:1)
+
+      Ruling of 2026-11-08 on the dark theme, verbatim: tối tự code vẽ chi, có token theme
+    ownerRulingsEnglish: StarCi Next uses the Core grammar, and its brand is the one the StarCi Academy
+      dashboard and subscriptions pages show. Where the Academy render and the Core grammar export disagree -
+      the muted grey, the danger red and the link violet - the Academy render wins, and the owner accepted
+      those three tones' sub-AA contrast (grey 4.0-4.8:1, white ink on danger 3.45:1, link 4.46:1).
+      Ruling of 2026-11-08 - the dark theme is not hand-written, it comes from the theme tokens of the Grammar Core / HeroUI
+      theme and the app declares no dark literal. (Translation for readers; the verbatim text above is the ruling.)
+    decisions:
+      - subject: grammarFamily
+        options: [core]
+        chosen: core
+        authority: inc-8965d90fa153 ("starci next dùng core grammar")
+      - subject: primary
+        options: ["--accent #7547ff (the Academy dashboard/subscriptions accent)"]
+        chosen: "--accent #7547ff"
+        authority: inc-8965d90fa153 plus the 2026-09-24 ruling; the value is read from
+          starci-academy-fe/src/app/globals.css line 143.
+      - subject: dangerMayMatchPrimary
+        options: [false]
+        chosen: false
+        authority: The Academy render ships an orange-red danger (hue 37.78, 41.15 OKLab deltaE x100 from the
+          purple accent) and no ruling allows danger to share the primary hue.
+      - subject: typography
+        options: [Be Vietnam Pro via --starci-font-sans]
+        chosen: Be Vietnam Pro
+        authority: inc-8965d90fa153, traced to the Academy root layout that serves dashboard and subscriptions.
+      - subject: brandColourValues
+        options:
+          - "A. Academy render values for all three tones; accept the sub-AA contrast (muted 4.04-4.85:1, white ink on danger 3.45:1, link 4.46:1)"
+          - "B. Academy look with the Core grammar 0.5.0 AA values for the three tones (rev 3: muted 52%, danger 55%, accent-text #6a3cf2)"
+          - "C. Academy values for muted and link, AA danger (white ink 5.17:1)"
+        chosen: "A. Academy render values for all three tones; accept the sub-AA contrast"
+        authority: "Owner answer A, serve-ask ctx_eb5a945a39ea, answeredBy owner at 2026-09-24T18:27:55.561Z;
+          receipt .starciwork/kernel-evidence/wf-sn-foundation-mufrhftf/serve-ask/answer-1790274475561.json.
+          It withdraws rev 3's decision core-grammar-0.5.0-source-values and records the three accepted tones
+          as color.policy.contrastExceptions, keeping color.policy.minContrast at the WCAG AA floor 4.5:1. SUPERSEDED
+          2026-09-30: the sub-AA tones stay as brand values under decision contrastFollowsHeroUI."
+      - subject: contrastFollowsHeroUI
+        options:
+          - "Adjust the tones in lightness at the same hue so every pair reaches AA (task y90, 2026-09-30)"
+          - "Follow HeroUI: bright solid status tones with a soft pair (a HeroUI flat Chip) for text and icons, no extreme contrast"
+        chosen: "Follow HeroUI: bright solid status tones with a soft pair for text and icons, no extreme contrast"
+        decision: "owner 2026-09-30: follow HeroUI soft pairing, no extreme contrast"
+        authority: "Owner 2026-09-30: follow HeroUI, no need for extreme contrast. text-soft goes with background-soft like a Chip soft/flat variant, not strictly standard but acceptable, or lower the contrast requirement. Not just miamia: nivo and starci-next too. Applied by task y92; it supersedes y90's AA darkening (decision contrastAdjustedForAA, withdrawn) and restores the Academy render values for muted, link ink, success, warning and info. Danger is oklch(62% 0.2335 37.78), between the Academy 65.32% and y90's 56%. See color.policy.heroUiPairing."
+      - subject: surfaceTertiary
+        options: ["--starci-surface-tertiary oklch(93.73% 0.0012 354.13) (the Academy render's --surface-tertiary), utility bg-starci-surface-tertiary; HeroUI --surface-tertiary untouched"]
+        chosen: "--starci-surface-tertiary oklch(93.73% 0.0012 354.13)"
+        authority: "Owner ruling relayed by the supervisor in incident inc-b077846a4012 and carried in this
+          dispatch's title (job op-brand.decide-4792c615ef, attempt 10): declare --starci-surface-tertiary =
+          oklch(93.73% 0.0012 354.13) with utility class bg-starci-surface-tertiary and do NOT override HeroUI
+          --surface-tertiary. The runtime change brand-planned-token-value-source (contract-changes.yaml,
+          effective 2026-09-25T03:40:00+07:00) added the name to the Core DNA and let a planned token bind a
+          valueSource; the value is read from starci-academy-fe/src/app/globals.css line 152."
+      - subject: darkMode
+        options:
+          - "A. Light only (rev 6: dark optional, Academy's own dark block left unsettled)"
+          - "B. Light and dark, system default with a persisted user choice, dark values derived from the light palette at AA (rev 7)"
+          - "C. Light and dark, system default with a persisted user choice, dark from the Grammar Core / HeroUI theme tokens only (rev 8)"
+        chosen: "C. Light and dark: system default, user toggle, persisted; the dark theme is Grammar Core's own theme (@starci/grammar/core/theme.css), with no dark token written by the app"
+        authority: "Owner ruling of 2026-09-29, 'dark mode light mode phai co' (no exceptions), relayed to the lead, still stands: both modes are
+          required. Owner ruling of 2026-11-08, 'tối tự code vẽ chi, có token theme': the dark values are not hand-derived
+          by the app; dark comes only from the Grammar Core / HeroUI theme tokens, with no app literals. It withdraws rev 7's
+          lead-derived palette (color.dark) and its dark-pair measurements. The Core theme owns the dark values and their
+          contrast; the owner reviews the dark colours later, in the Core theme itself."
+  color:
+    tokens:
+      - name: --accent
+        value: "#7547ff"
+        role: primary
+        foreground: oklch(100% 0 0)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 143
+          declaration: "--accent: #7547ff;"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 144
+          declaration: "--accent-foreground: oklch(100% 0 0);"
+        familyKnob: --starci-core-accent (same value)
+        consumedAs: The primary fill for primary actions, the selected navigation state and focus rings, and
+          - because HeroUI derives --link and the soft accent from it - the product's only purple, including
+          link text.
+      - name: --accent-foreground
+        value: oklch(100% 0 0)
+        role: primary-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 144
+          declaration: "--accent-foreground: oklch(100% 0 0);"
+        familyKnob: --starci-core-accent-foreground (same value)
+      - name: --background
+        value: oklch(97.02% 0.0015 354.13)
+        role: canvas
+        foreground: oklch(21.03% 0.0015 354.13)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 147
+          declaration: "--background: oklch(97.02% 0.0015 354.13);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 162
+          declaration: "--foreground: oklch(21.03% 0.0015 354.13);"
+        familyKnob: --starci-core-canvas (same value)
+      - name: --surface
+        value: oklch(100% 0.0008 354.13)
+        role: surface
+        foreground: oklch(21.03% 0.0015 354.13)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 148
+          declaration: "--surface: oklch(100% 0.0008 354.13);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 149
+          declaration: "--surface-foreground: oklch(21.03% 0.0015 354.13);"
+        familyKnob: --starci-core-surface (same value)
+      - name: --surface-foreground
+        value: oklch(21.03% 0.0015 354.13)
+        role: surface-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 149
+          declaration: "--surface-foreground: oklch(21.03% 0.0015 354.13);"
+      - name: --surface-secondary
+        value: oklch(95.24% 0.0012 354.13)
+        role: surface-secondary
+        foreground: oklch(21.03% 0.0015 354.13)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 150
+          declaration: "--surface-secondary: oklch(95.24% 0.0012 354.13);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 151
+          declaration: "--surface-secondary-foreground: oklch(21.03% 0.0015 354.13);"
+        familyKnob: --starci-core-surface-secondary (same value)
+      - name: --surface-secondary-foreground
+        value: oklch(21.03% 0.0015 354.13)
+        role: surface-secondary-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 151
+          declaration: "--surface-secondary-foreground: oklch(21.03% 0.0015 354.13);"
+      - name: --starci-surface-tertiary
+        value: oklch(93.73% 0.0012 354.13)
+        role: surface-tertiary
+        valueSource:
+          path: starci-academy-fe/src/app/globals.css
+          name: --surface-tertiary
+          value: oklch(93.73% 0.0012 354.13)
+          line: 152
+          sha256: 0ee8a826f7523716cd7cc9fe4fda0ab852974ad8d3f640d0a74987579e2793f3
+        familyKnob: --starci-core-surface-tertiary (the Core root binds --starci-surface-tertiary to it; the DNA
+          light value is the same oklch(93.73% 0.0012 354.13))
+        utilityClass: bg-starci-surface-tertiary
+        heroUi: HeroUI --surface-tertiary is NOT overridden; it stays Common's derived mix. The Academy
+          tertiary face is reached only through --starci-surface-tertiary / bg-starci-surface-tertiary.
+        status: planned - starci-next-fe/src/app/globals.css does not declare it yet. interface.implement must
+          declare --starci-surface-tertiary in the starci-next-fe theme (and expose bg-starci-surface-tertiary)
+          before review.verify; the brand check passes it as planned-from-reference at the decide stage only
+          and refuses it as planned-source-missing at the verify stage while the app still does not declare it.
+        consumedAs: The third surface level of the Academy dashboard and subscriptions render (the tertiary
+          face under --surface-secondary), with --foreground as its reading text.
+      - name: --foreground
+        value: oklch(21.03% 0.0015 354.13)
+        role: foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 162
+          declaration: "--foreground: oklch(21.03% 0.0015 354.13);"
+        familyKnob: --starci-core-foreground (same value)
+      - name: --muted
+        value: oklch(55.17% 0.003 354.13)
+        role: muted
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 163
+          declaration: "--muted: oklch(55.17% 0.003 354.13);"
+        familyKnob: --starci-core-muted (the Core export declares oklch(52% 0.003 354.13); Academy is
+          lighter, so the FE must re-point this knob)
+        note: "A text colour, so it carries no foreground of its own; its measured pairs are in policy.measuredPairs. Academy value restored 2026-09-30 (owner: follow HeroUI, no extreme contrast; y90 had moved it to 51%): 4.01:1 to 4.82:1 on the four surfaces. sRGB #737172."
+      - name: --focus
+        value: "#7248ff"
+        role: focus
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 179
+          declaration: "--focus: #7248ff;"
+        familyKnob: --starci-core-focus (same value)
+      - name: --border
+        value: oklch(90% 0.0015 354.13)
+        role: border
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 177
+          declaration: "--border: oklch(90% 0.0015 354.13);"
+        familyKnob: --starci-core-border (same value)
+      - name: --separator
+        value: oklch(92% 0.0015 354.13)
+        role: separator
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 178
+          declaration: "--separator: oklch(92% 0.0015 354.13);"
+        familyKnob: --starci-core-separator (same value)
+      - name: --success
+        value: oklch(73.29% 0.1941 162.85)
+        role: success
+        note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 58%). Dark ink on the fill 8.42:1. As text or an icon it uses --success-soft-foreground on --success-soft (4.08:1 to 4.80:1); as a bare glyph it is 1.75:1 to 2.10:1, accepted. sRGB #00cc84."
+        foreground: oklch(21.03% 0.0059 162.85)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 166
+          declaration: "--success: oklch(73.29% 0.1941 162.85);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 167
+          declaration: "--success-foreground: oklch(21.03% 0.0059 162.85);"
+        familyKnob: --starci-core-success (same value)
+      - name: --success-foreground
+        value: oklch(21.03% 0.0059 162.85)
+        role: success-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 167
+          declaration: "--success-foreground: oklch(21.03% 0.0059 162.85);"
+      - name: --warning
+        value: oklch(78.19% 0.159 84.37)
+        role: warning
+        note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 61%). Dark ink on the fill 8.80:1. As text or an icon it uses --warning-soft-foreground on --warning-soft (4.34:1 to 5.10:1); as a bare glyph it is 1.67:1 to 2.01:1, accepted. sRGB #e7ae0a."
+        foreground: oklch(21.03% 0.0059 84.37)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 168
+          declaration: "--warning: oklch(78.19% 0.159 84.37);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 169
+          declaration: "--warning-foreground: oklch(21.03% 0.0059 84.37);"
+        familyKnob: --starci-core-warning (same value)
+      - name: --warning-foreground
+        value: oklch(21.03% 0.0059 84.37)
+        role: warning-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 169
+          declaration: "--warning-foreground: oklch(21.03% 0.0059 84.37);"
+      - name: --danger
+        value: oklch(62% 0.2335 37.78)
+        role: danger
+        note: "Solid danger fill with white ink (owner 2026-09-30: follow HeroUI; HeroUI danger takes white ink). Lightness 62%, between the Academy 65.32% (white ink 3.45:1) and y90 56%: white ink on the fill 3.92:1, the tone 3.35:1 to 4.02:1 as a glyph, --danger-soft-foreground on --danger-soft 4.95:1 to 5.85:1. sRGB #f0521c."
+        foreground: oklch(99.11% 0 0)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 170
+          declaration: "--danger: oklch(65.32% 0.2335 37.78);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 171
+          declaration: "--danger-foreground: oklch(99.11% 0 0);"
+        familyKnob: --starci-core-danger (the Core export declares oklch(55% 0.2 37.78); Academy is lighter
+          and the same hue, so the FE must re-point this knob)
+      - name: --danger-foreground
+        value: oklch(99.11% 0 0)
+        role: danger-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 171
+          declaration: "--danger-foreground: oklch(99.11% 0 0);"
+      - name: --info
+        value: oklch(72% 0.17 250)
+        role: info
+        note: "HeroUI-bright solid tone (Academy value restored 2026-09-30, owner: follow HeroUI, no extreme contrast; y90 had darkened it to 61%). Dark ink on the fill 7.03:1. As text or an icon it uses --info-soft-foreground on --info-soft (4.15:1 to 4.89:1, 60/40 mix); as a bare glyph it is 2.09:1 to 2.51:1, accepted. sRGB #40a9ff."
+        foreground: oklch(21.03% 0.0059 250)
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 173
+          declaration: "--info: oklch(72% 0.17 250);"
+        foregroundSource:
+          path: starci-academy-fe/src/app/globals.css
+          line: 174
+          declaration: "--info-foreground: oklch(21.03% 0.0059 250);"
+        familyKnob: --starci-core-info (same value)
+      - name: --info-foreground
+        value: oklch(21.03% 0.0059 250)
+        role: info-foreground
+        source:
+          path: starci-academy-fe/src/app/globals.css
+          line: 174
+          declaration: "--info-foreground: oklch(21.03% 0.0059 250);"
+      - name: --starci-core-accent-text
+        value: "#7547ff"
+        role: other
+        foreground: oklch(100% 0 0)
+        familyKnob: --starci-core-accent-text (the Core root maps --link and --accent-soft-foreground from it)
+        note: "The link ink (links, current tab, section eyebrow). Rev 7 declares it in modules/brand/brand.css. It equals the accent value again (owner 2026-09-30: follow HeroUI, no extreme contrast; y90 had darkened it to oklch(54% 0.253 286.6)): 4.26:1 to 5.11:1 on the four surfaces and 4.75:1 on the soft accent ground."
+      - name: --starci-core-accent-soft
+        value: oklch(97.5% 0.015 287)
+        role: other
+        foreground: "#7547ff"
+        familyKnob: --starci-core-accent-soft
+        note: The soft accent ground behind accent text. Not an Academy declaration (HeroUI derives it); rev 7
+          authors it at 97.5% lightness so the accent text on it measures 5.0:1 or better and needs no exception.
+    dark:
+      note: "Rev 8, owner ruling of 2026-11-08 ('tối tự code vẽ chi, có token theme'). The app declares no dark token. The dark theme is
+        Grammar Core's own theme, the .dark block of @starci/grammar/core/theme.css, imported in globals.css before the brand layer, and the
+        mode is the app's: .dark on html, set by next-themes (system default, the reader's choice persisted). The rev 7 lead-derived palette
+        that stood here is withdrawn."
+      source: "@starci/grammar/core/theme.css (.dark)"
+      tokens: []
+    policy:
+      dangerMayMatchPrimary: false
+      minContrast: 3
+      targetContrast: 4.5
+      nonTextMinContrast: 3
+      largeTextMinContrast: 3
+      minPrimaryDangerDeltaE: 20
+      minContrastAuthority: "Owner 2026-09-30: follow HeroUI, no extreme contrast. The WCAG AA target 4.5:1 stays the design target (targetContrast) and every neutral text pair still reaches it, but the enforced floor for a text pair is 3:1 (minContrast), the way a HeroUI flat Chip pairs its soft text with its soft ground: not strictly standard, accepted by the owner. It supersedes the owner rule of 2026-09-29 (no exceptions) and the AA darkening of y90 for the status tones, the muted grey and the link ink; the tones are the Academy render values again. No per-pair contrastExceptions are needed under this floor."
+      contrastExceptions: []
+      heroUiPairing:
+        decision: "owner 2026-09-30: follow HeroUI soft pairing, no extreme contrast"
+        date: 2026-09-30
+        rule: A solid status tone is a fill with its own ink on it. A status shown as text or an icon uses the soft pair, the way a HeroUI flat Chip does, --<tone>-soft-foreground (the tone mixed toward the foreground) on --<tone>-soft (the tone at 15% over the ground), at 3:1 or better; bare-glyph contrast of a solid tone is not held to a floor.
+        changes:
+          - "--muted: oklch(51% 0.003 354.13) -> oklch(55.17% 0.003 354.13) (Academy value). 4.42, 4.82, 4.20, 4.01:1 on canvas, surface, secondary, tertiary (y90: 5.28 on canvas)."
+          - "--starci-core-accent-text: oklch(54% 0.253 286.6) -> #7547ff (the accent value). 4.69, 5.11, 4.45, 4.26:1 on the four surfaces; 4.75:1 on --starci-core-accent-soft."
+          - "--danger: oklch(56% 0.2335 37.78) -> oklch(62% 0.2335 37.78). White ink 3.92:1 (y90 5.02:1, Academy 3.45:1); glyph 3.35:1 to 4.02:1."
+          - "--success oklch(58% 0.16 162.85) -> oklch(73.29% 0.1941 162.85); --warning oklch(61% 0.15 84.37) -> oklch(78.19% 0.159 84.37); --info oklch(61% 0.17 250) -> oklch(72% 0.17 250). Dark ink on the fill 8.42, 8.80 and 7.03:1; bare glyph 1.67:1 to 2.51:1, accepted; soft text on soft ground 4.08:1 to 5.10:1 (weights below)."
+          - "brand.css declares --<tone>-soft and --<tone>-soft-foreground for success, warning, danger and info from the --starci-core-* tokens, with HeroUI's own light weights (success 80/60, warning 80/70, danger 70/40 foreground share; info 60/40, which HeroUI does not define) and its dark weights (80/30 at 12%)."
+        dark: Not declared by the app since rev 8 (the dark theme is Grammar Core's own); the soft pairs are read from the Core theme.
+        review: decided by the owner on 2026-09-30
+      measuredPairs:
+        - pair: "--foreground on --background (text)"
+          ratio: 16.24
+          outcome: pass
+        - pair: "--muted on --background (text)"
+          ratio: 4.42
+          outcome: pass
+        - pair: "--starci-core-accent-text on --background (link ink, text)"
+          ratio: 4.69
+          outcome: pass
+        - pair: "--accent on --background (non-text glyph or boundary)"
+          ratio: 4.69
+          outcome: pass
+        - pair: "--focus on --background (non-text glyph or boundary)"
+          ratio: 4.71
+          outcome: pass
+        - pair: "--danger on --background (non-text glyph or boundary)"
+          ratio: 3.69
+          outcome: pass
+        - pair: "--success on --background (non-text glyph or boundary)"
+          ratio: 1.93
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--warning on --background (non-text glyph or boundary)"
+          ratio: 1.84
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--info on --background (non-text glyph or boundary)"
+          ratio: 2.31
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--foreground on --surface (text)"
+          ratio: 17.69
+          outcome: pass
+        - pair: "--muted on --surface (text)"
+          ratio: 4.82
+          outcome: pass
+        - pair: "--starci-core-accent-text on --surface (link ink, text)"
+          ratio: 5.11
+          outcome: pass
+        - pair: "--accent on --surface (non-text glyph or boundary)"
+          ratio: 5.11
+          outcome: pass
+        - pair: "--focus on --surface (non-text glyph or boundary)"
+          ratio: 5.13
+          outcome: pass
+        - pair: "--danger on --surface (non-text glyph or boundary)"
+          ratio: 4.02
+          outcome: pass
+        - pair: "--success on --surface (non-text glyph or boundary)"
+          ratio: 2.10
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--warning on --surface (non-text glyph or boundary)"
+          ratio: 2.01
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--info on --surface (non-text glyph or boundary)"
+          ratio: 2.51
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--foreground on --surface-secondary (text)"
+          ratio: 15.41
+          outcome: pass
+        - pair: "--muted on --surface-secondary (text)"
+          ratio: 4.20
+          outcome: pass
+        - pair: "--starci-core-accent-text on --surface-secondary (link ink, text)"
+          ratio: 4.45
+          outcome: pass
+        - pair: "--accent on --surface-secondary (non-text glyph or boundary)"
+          ratio: 4.45
+          outcome: pass
+        - pair: "--focus on --surface-secondary (non-text glyph or boundary)"
+          ratio: 4.47
+          outcome: pass
+        - pair: "--danger on --surface-secondary (non-text glyph or boundary)"
+          ratio: 3.50
+          outcome: pass
+        - pair: "--success on --surface-secondary (non-text glyph or boundary)"
+          ratio: 1.83
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--warning on --surface-secondary (non-text glyph or boundary)"
+          ratio: 1.75
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--info on --surface-secondary (non-text glyph or boundary)"
+          ratio: 2.19
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--foreground on --starci-surface-tertiary (text)"
+          ratio: 14.73
+          outcome: pass
+        - pair: "--muted on --starci-surface-tertiary (text)"
+          ratio: 4.01
+          outcome: pass
+        - pair: "--starci-core-accent-text on --starci-surface-tertiary (link ink, text)"
+          ratio: 4.26
+          outcome: pass
+        - pair: "--accent on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 4.26
+          outcome: pass
+        - pair: "--focus on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 4.27
+          outcome: pass
+        - pair: "--danger on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 3.35
+          outcome: pass
+        - pair: "--success on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 1.75
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--warning on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 1.67
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--info on --starci-surface-tertiary (non-text glyph or boundary)"
+          ratio: 2.09
+          outcome: "accepted (owner 2026-09-30, HeroUI; text and icons use the soft pair)"
+        - pair: "--starci-core-accent-text on --starci-core-accent-soft (text)"
+          ratio: 4.75
+          outcome: pass
+        - pair: "--accent-foreground on --accent (fill)"
+          ratio: 5.12
+          outcome: pass
+        - pair: "--success-foreground on --success (fill)"
+          ratio: 8.42
+          outcome: pass
+        - pair: "--warning-foreground on --warning (fill)"
+          ratio: 8.80
+          outcome: pass
+        - pair: "--danger-foreground on --danger (fill)"
+          ratio: 3.92
+          outcome: pass
+        - pair: "--info-foreground on --info (fill)"
+          ratio: 7.03
+          outcome: pass
+        - pair: "--success-soft-foreground on --success-soft over --background (soft pair, text)"
+          ratio: 4.45
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--success-soft-foreground on --success-soft over --surface (soft pair, text)"
+          ratio: 4.80
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--success-soft-foreground on --success-soft over --surface-secondary (soft pair, text)"
+          ratio: 4.25
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--success-soft-foreground on --success-soft over --starci-surface-tertiary (soft pair, text)"
+          ratio: 4.08
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--warning-soft-foreground on --warning-soft over --background (soft pair, text)"
+          ratio: 4.73
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--warning-soft-foreground on --warning-soft over --surface (soft pair, text)"
+          ratio: 5.10
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--warning-soft-foreground on --warning-soft over --surface-secondary (soft pair, text)"
+          ratio: 4.51
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--warning-soft-foreground on --warning-soft over --starci-surface-tertiary (soft pair, text)"
+          ratio: 4.34
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--danger-soft-foreground on --danger-soft over --background (soft pair, text)"
+          ratio: 5.41
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--danger-soft-foreground on --danger-soft over --surface (soft pair, text)"
+          ratio: 5.85
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--danger-soft-foreground on --danger-soft over --surface-secondary (soft pair, text)"
+          ratio: 5.16
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--danger-soft-foreground on --danger-soft over --starci-surface-tertiary (soft pair, text)"
+          ratio: 4.95
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--info-soft-foreground on --info-soft over --background (soft pair, text)"
+          ratio: 4.53
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--info-soft-foreground on --info-soft over --surface (soft pair, text)"
+          ratio: 4.89
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--info-soft-foreground on --info-soft over --surface-secondary (soft pair, text)"
+          ratio: 4.32
+          outcome: pass (floor 3, HeroUI soft pairing)
+        - pair: "--info-soft-foreground on --info-soft over --starci-surface-tertiary (soft pair, text)"
+          ratio: 4.15
+          outcome: pass (floor 3, HeroUI soft pairing)
+      darkPairs: []
+      darkPairsNote: Rev 8 withdraws the dark pairs that rev 7 measured on the lead-derived palette. The dark theme is Grammar Core's own
+        (owner ruling of 2026-11-08), so its contrast is the Core theme's to prove (the grammar's prove-theme), not this record's, and
+        no pair is measured here for dark. The owner reviews the dark colours later.
+      infoIsNotBrand: Info (oklch 72% 0.17 250) is a status tone only, never a second brand colour.
+      contrastScope: The pairs the brand checks measure are the ones declared with a foreground above plus every
+        text and non-text pair listed in measuredPairs (light; the dark theme is Grammar Core's), on the canvas, the surface, the
+        secondary surface and the tertiary face. No pair is carried by an exception. Ratios are WCAG 2.x, computed from the
+        oklch values with the same conversion scripts/checks/brand.mjs uses; a formula, not a composed-pixel capture.
+      grammarKnobs:
+        - knob: --starci-core-muted
+          value: oklch(55.17% 0.003 354.13)
+        - knob: --starci-core-danger
+          value: oklch(62% 0.2335 37.78)
+        - knob: --starci-core-accent-text
+          value: "#7547ff"
+          because: The Core root sets --link and the soft-accent ink from this knob; Academy has no
+            accent-text and derives them from --accent, so the knob equals the accent value.
+      grammarKnobsNote: These are the only three knobs that must move for the Academy render; every other
+        --starci-core-* value the installed export declares already equals the value above. The knob is the
+        Core root's own name for the binding, so the FE may set the knob or the binding, never a second
+        invented name.
+      usage:
+        - Primary actions, the selected navigation state and focus rings use --accent with
+          --accent-foreground, and links use the same --accent, exactly as on the Academy dashboard and
+          subscriptions pages.
+        - Pages sit on --background; cards and panels are --surface lifted by the core surface shadow, with
+          --surface-secondary for a second level and --starci-surface-tertiary (utility
+          bg-starci-surface-tertiary) for the Academy tertiary face - never outlined boxes, and never by
+          re-binding HeroUI --surface-tertiary.
+        - --muted carries secondary text only. It measures 4.01:1 to 4.82:1 on the four surfaces (HeroUI-like, owner 2026-09-30), and it is still secondary copy;
+          do not use it for the primary reading text of a surface.
+        - Success, warning, danger and info are status tones only; categorical data maps onto them rather
+          than adding a hue. Danger is a fill; never set it as text on a surface. A status shown as text or an icon uses its soft pair (--<tone>-soft-foreground on --<tone>-soft), like a HeroUI flat Chip.
+        - The Core root maps the semantic names from the --starci-core-* knobs; where the installed export
+          still carries the grammar's own AA values (muted, danger, accent-text) the FE must re-point the knob
+          as recorded in grammarKnobs, or the pages will render the grammar's tones instead of Academy's.
+  typography:
+    sans: Be Vietnam Pro
+    variable: --starci-font-sans
+    weights: ["400", "500", "600"]
+    subsets: [latin, vietnamese]
+    source:
+      path: starci-academy-fe/src/app/[lang]/layout.tsx
+      lines: 38-42
+      declaration: 'Be_Vietnam_Pro({ display: "swap", subsets: ["latin", "vietnamese"], variable: "--starci-font-sans", weight: ["400", "500", "600"] })'
+    grammarConsumer: The core stylesheet sets font-family var(--starci-font-sans, ui-sans-serif, system-ui,
+      sans-serif) on the core root.
+    implementation: starci-next-fe is scaffolded (src/app with layout.tsx, page.tsx, globals.css and the
+      /health/live route) but does not load the font yet; loading it through next/font with the same variable
+      belongs to interface.implement.
+    scale: Use Grammar Heading and Text sizes; no product-specific numeric scale is ruled.
+  mascot:
+    name: StarCi AI teacher
+    status: copied-byte-identical-from-academy
+    description: The StarCi AI teacher character and its compact mark, as shipped by StarCi Academy.
+    mayAppearIn:
+      - global AI assistant trigger (floating action button)
+      - AI assistant chat panel
+    neverIn:
+      - danger or destructive surfaces
+      - inside form controls
+      - error or refusal regions
+      - as a substitute for the StarCi logo
+    rules:
+      - Reuse the Academy masters unchanged; do not redraw, recolour or generate a second mascot.
+      - The mascot is the AI assistant's face only; other surfaces use no mascot.
+    assets:
+      - path: assets/starci-ai-teacher-v1.png
+        sha256: ca3fd1ae9b5de5d147d556287f3b262dee3ed34c90ad972a1688a1f3ad241cad
+        format: png
+        width: 1303
+        height: 1207
+        purpose: master - the AI assistant's face on the global assistant trigger and its chat panel
+        provenance: Byte-identical copy of starci-academy-fe/public/brand/starci-ai-teacher-v1.png (committed
+          by starci183 in starci-academy-fe b9a1a8e, 2026-08-30; owner's own product asset). Copied under
+          brand/assets by brand.decide job op-brand.decide-43e6b4b2b5, cut brand-foundation-r1 2/3 (commit
+          ecbfad6, 2026-09-25) and recorded in assets/provenance.yaml; this op re-hashed the bytes.
+      - path: assets/starci-ai-mark-v1.png
+        sha256: 74ae6263ec642933967422d33a2b5a099295b97c346c39512795007e4352e055
+        format: png
+        width: 256
+        height: 256
+        purpose: compact mark - the assistant glyph at small sizes
+        provenance: Byte-identical copy of starci-academy-fe/public/brand/starci-ai-mark-v1.png (committed by
+          starci183 in starci-academy-fe 6a3cf19, 2026-08-15; owner's own product asset). Copied under
+          brand/assets by brand.decide job op-brand.decide-43e6b4b2b5, cut brand-foundation-r1 2/3 (commit
+          ecbfad6, 2026-09-25) and recorded in assets/provenance.yaml; this op re-hashed the bytes.
+    referenceAssets:
+      - path: starci-academy-fe/public/brand/starci-ai-teacher-v1.png
+        sha256: ca3fd1ae9b5de5d147d556287f3b262dee3ed34c90ad972a1688a1f3ad241cad
+        format: png
+        width: 1303
+        height: 1207
+        provenance: Committed by starci183 in starci-academy-fe b9a1a8e (2026-08-30); owner's own product asset.
+        usedBy: starci-academy-fe/src/components/leaves/StarCiAiTeacher/index.tsx
+      - path: starci-academy-fe/public/brand/starci-ai-mark-v1.png
+        sha256: 74ae6263ec642933967422d33a2b5a099295b97c346c39512795007e4352e055
+        format: png
+        width: 256
+        height: 256
+        provenance: Committed by starci183 in starci-academy-fe 6a3cf19 (2026-08-15); owner's own product asset.
+        usedBy: starci-academy-fe/src/components/leaves/StarCiAiMark/index.tsx
+    copied: The two masters above live under this record's own assets. The byte-for-byte copy rev 4 declared
+      as deferred was executed on 2026-09-25 by brand.decide job op-brand.decide-43e6b4b2b5, cut
+      brand-foundation-r1 2/3 (commit ecbfad6), and is recorded in assets/provenance.yaml; this op re-hashed
+      the bytes and points mascot.assets at them. No image was generated because the mascot already exists.
+  logo:
+    status: copied-byte-identical-from-academy
+    mark: StarCi logo, 40x40 in the product navbar beside the product name.
+    assets:
+      - path: assets/starci-logo.png
+        sha256: b00fa437370ef3752c214d7068e0521393262fe6a85c5e19fae53dd67fadf77f
+        format: png
+        width: 256
+        height: 256
+        purpose: master - the navbar brand mark, drawn at 40x40
+        provenance: Byte-identical copy of starci-academy-fe/public/brand/starci-logo.png (committed by
+          starci183 in starci-academy-fe 35c31fd, 2026-08-28; owner's own product asset). Copied under
+          brand/assets by brand.decide job op-brand.decide-43e6b4b2b5, cut brand-foundation-r1 2/3 (commit
+          ecbfad6, 2026-09-25) and recorded in assets/provenance.yaml; this op re-hashed the bytes.
+    referenceAssets:
+      - path: starci-academy-fe/public/brand/starci-logo.png
+        sha256: b00fa437370ef3752c214d7068e0521393262fe6a85c5e19fae53dd67fadf77f
+        format: png
+        width: 256
+        height: 256
+        provenance: Committed by starci183 in starci-academy-fe 35c31fd (2026-08-28); owner's own product asset.
+        usedBy: starci-academy-fe/src/components/product-shells/ShellNav/component.tsx line 84
+    usage: Navbar brand mark at 40x40 with empty alt when the product name is written beside it; never
+      recoloured, stretched or placed on a danger surface.
+  iconography:
+    set: ["@heroicons/react", "@starci/heroicons"]
+    custom: []
+    forbidden: [lucide-react, react-icons, "@tabler/icons-react", "@phosphor-icons/react", "@fortawesome"]
+    rule: Heroicons only - 24/outline for navigation and actions, 16/solid for compact states - drawn through
+      the Grammar Icon carrier; @starci/heroicons is the StarCi extension of the same set, not a second set.
+    source:
+      path: starci-academy-fe/src/components/leaves/Icon/index.tsx
+      lines: 1-152
+  imagery:
+    style: Flat product UI on core surfaces; illustration only through the verified Academy artwork masters
+      named in artworkSlots. The Academy learning-journey raster is decorative content in the subscription
+      benefits band, not a UI colour token or a source for controls, links or status states.
+    photography: false
+    forbidden:
+      - photography
+      - off-palette illustration or gradients outside the core tokens, except the exact verified Academy
+        artwork master in the academy-learning-journey slot; its pixels never authorize a new UI colour
+      - a second mascot or a generated mascot variant
+      - mascot inside a control or a danger surface
+    promptRules:
+      - "Every image prompt names StarCi Next, the StarCi Core grammar family, this record's rev (6) and its
+        palette (--accent #7547ff on --background oklch(97.02% 0.0015 354.13), danger oklch(65.32% 0.2335 37.78))."
+      - Every prompt states the mascot policy (AI assistant surfaces only) and passes the Academy master as
+        the reference when the mascot appears.
+      - Generated directions are drawings, never captures of a shipped surface.
+  voice:
+    rule: Friendly and concise like the Academy dashboard; name the action, its result and how to recover,
+      without promises the product does not keep.
+    locales: [en]
+    localeSource: The product locale is en (shell/index.yaml productLocale.default, which this op settles);
+      every string a product user reads is written in en. Vietnamese remains the owner's own language for
+      owner-facing questions, and Academy's bilingual catalogs are not a StarCi Next requirement.
+  motion:
+    duration: 180ms
+    easing: cubic-bezier(0.2, 0, 0, 1)
+    source:
+      path: starci-academy-fe/src/app/globals.css
+      lines: 194-195
+      declaration: "--dashboard-calm-duration: 180ms; --dashboard-calm-easing: cubic-bezier(0.2, 0, 0, 1);"
+    grammarSource:
+      path: starci-academy-backend/.claude/packages/grammar/dist/core/styles.css
+      lines: 42-43
+      declaration: "--starci-core-motion-duration / --starci-core-motion-easing (the family's own motion tokens)"
+    rule: Use only the core motion tokens and published Grammar states; honour reduced motion; skeletons
+      shimmer as in Academy.
+  artworkSlots:
+    - id: academy-learning-journey
+      kind: raster-asset
+      surfaces: [subscription benefits joined-card image band]
+      states: [eligible, active, pending, expired]
+      master: assets/pro-learning-journey-v1.png
+      masterSource: starci-academy-fe/public/images/pro-subscription/pro-learning-journey-v1.png
+      sha256: b01f982b323eb0359a57643976bc9a7e6ada92b518618e3544ac1a5f3df25294
+      dimensions: 1672x941
+      purpose: Reuse the exact Academy learning-journey illustration in the subscription benefits band.
+      decorative: true
+      paletteScope: The verified raster master alone may contain its original shaded purple-magenta pixels;
+        the allowance does not extend to UI tokens, generated drawings, controls, links or other artwork.
+      authority: The owner's ruling that the StarCi Next dashboard and subscription pages look identical
+        to the Academy originals; the Academy subscription source renders this exact asset.
+      provenance: Committed by starci183 in starci-academy-fe 82b9e9af7a8816026db4514aca924104c5b08528
+        on 2026-09-02; copied byte-for-byte into this record's assets with its SHA-256.
+    - id: ai-assistant-mascot
+      surfaces: [global AI assistant trigger, AI chat panel]
+      master: assets/starci-ai-teacher-v1.png
+      masterSource: starci-academy-fe/public/brand/starci-ai-teacher-v1.png, copied byte-for-byte (sha256
+        ca3fd1ae...; provenance assets/provenance.yaml) - the slot names this record's own bytes
+      purpose: the AI assistant's face
+      decorative: false
+    - id: navbar-logo
+      surfaces: [product navbar]
+      master: assets/starci-logo.png
+      masterSource: starci-academy-fe/public/brand/starci-logo.png, copied byte-for-byte (sha256 b00fa437...;
+        provenance assets/provenance.yaml) - the slot names this record's own bytes
+      purpose: product mark
+      decorative: true
+  forbidden:
+    - Never place normal-size text below minContrast 3:1 or a non-text glyph of a neutral or accent tone below 3:1, in either theme; 4.5:1 stays the design target. Owner 2026-09-30 (follow HeroUI, no extreme contrast): the solid success, warning and info tones are not held to 3:1 as bare glyphs, their text and icons use the soft pair (color.policy.heroUiPairing).
+    - Never set danger as text on a surface; danger is a fill and an indicator only (as a glyph it is 3.35:1 or better on every light surface).
+    - Never introduce a UI colour value that is not one of the tokens declared above; no second purple, no
+      second red, and no second grey for secondary text. The academy-learning-journey master is a bounded
+      decorative raster asset, not a colour token and not a palette precedent for new drawings.
+    - Never let danger share the primary purple hue (OKLab deltaE x100 must stay at or above 20; the Academy
+      values are 41.15 apart).
+    - Never restate the Core grammar's AA tones (muted oklch(52% 0.003 354.13), danger oklch(55% 0.2 37.78))
+      as the StarCi Next palette; the pages must render the Academy values, which means re-pointing the knobs
+      in color.policy.grammarKnobs.
+    - Never use an icon package other than @heroicons/react and @starci/heroicons.
+    - Never show the mascot outside AI assistant surfaces, and never in a danger surface or form control.
+    - Never draw cards as outlined boxes; core cards are shadow-lifted surfaces.
+  limitations:
+    - The installed Core export (@starci/grammar 0.5.0, dist/core/styles.css sha256 e172f171...) declares its
+      own AA tones (muted oklch(52% 0.003 354.13), danger oklch(55% 0.2 37.78), accent-text (#6a3cf2)).
+      StarCi Next deliberately renders the Academy values over them, so the FE must set the knobs recorded in
+      color.policy.grammarKnobs; until it does, the pages will show the grammar's tones, not Academy's.
+    - The Academy render declares more colour than the Core DNA names - --field-placeholder oklch(55.17% 0.003 354.13), --default, --segment, --overlay and
+      --scrollbar have no --starci-core-* or semantic DNA name, so declaring them as colour tokens would fail
+      tokens-in-grammar; they are recorded here and must be reached through the Grammar's own anatomy.
+    - --link, --accent-soft and --accent-soft-foreground are not declarations Academy writes - HeroUI derives
+      them from --accent. This record measures the link ink as --accent and records the derivation rather than
+      inventing a token for it.
+    - Dark mode is required (owner ruling 2026-09-29, 'dark mode light mode phai co'). Since rev 8 (owner ruling 2026-11-08, 'tối tự code vẽ
+      chi, có token theme') the dark theme is Grammar Core's own theme tokens, not an app palette (the app declares no dark token), and the
+      owner reviews the dark colours later. Academy's own dark block was never adopted. Under forced-colors the brand layer's unlayered values
+      win over the grammar's system-colour mapping for the --starci-core-* tokens, because brand.css may hold no forced-colors block; the
+      browser's own forced-colour substitution still applies to text, borders and backgrounds.
+    - starci-next-fe/src/modules/brand/brand.css (rev 8) is the FE's one brand layer, and it sets the
+      --starci-core-* tokens under .light (rev 8, no .dark block; the dark theme is Grammar Core's), imported by src/app/globals.css after the grammar.
+    - The Academy source file is read from the working tree - starci-academy-fe/src/app/globals.css is
+      modified (uncommitted) at recorded sha256 0ee8a826...; a change to those bytes invalidates this trace.
+    - The mascot and logo masters are byte-identical Academy copies under brand/assets since 2026-09-25
+      (commit ecbfad6, provenance assets/provenance.yaml); the Academy repository stays their origin, so a
+      later Academy change to those masters is not picked up here by itself.
+    - color.policy.contrastExceptions is empty; since 2026-09-30 the enforced floor is color.policy.minContrast 3 (owner 2026-09-30: follow HeroUI soft pairing, no extreme contrast) and scripts/checks/brand.mjs contrast-aa has not been re-run against it.
+    - --starci-surface-tertiary is a planned token (rev 5). The Core DNA names it since the runtime change
+      brand-planned-token-value-source, but the tertiary surface role is unreleased - registry @starci/grammar
+      stays 0.5.0 and the installed starci-next-fe export does not bind it - so starci-next-fe must declare
+      --starci-surface-tertiary with value oklch(93.73% 0.0012 354.13) in its own theme (interface.implement) before
+      review.verify, which runs the brand check at --stage verify and fails the token as
+      planned-source-missing while the app still does not declare it.
+  grammar:
+    package: "@starci/grammar"
+    version: 0.5.0
+    family: core
+    styleEntrypoint: "@starci/grammar/core.css"
+    resolvedExport: dist/core/styles.css (package.json exports "./core.css" and "./core/styles.css" to the same file)
+    resolvedPath: D:/Repositories/starci-next-fe/node_modules/@starci/grammar
+    sourceCommit: cc411f9fe0f30b39d1f1682f9db2736bb4d2208d (starci-skills main, 2026-09-23)
+    consumerReference: starci-next-fe/src/app/globals.css lines 1-5 import tailwindcss, @heroui/styles/css and
+      @starci/grammar/core.css. The installed package is a real (not symlinked) 0.5.0 copy whose
+      dist/core/styles.css is byte-identical to the family source; it sets the semantic bindings only inside
+      .grammar-common-root[data-grammar-family="core"].
+    exportMatchesSource: true
+    inspectedFiles:
+      - path: starci-next-fe/node_modules/@starci/grammar/package.json
+        sha256: 1c5a1df2e724ba3c53fdcdf3c3cd7d63a0fb7b5725d265090b82c27f9684f373
+      - path: starci-next-fe/node_modules/@starci/grammar/dist/core/styles.css
+        sha256: e172f1715f3c59609c77cf6fdbff0d4d46669ba805b044c1c002c2558afe0ef2
+        note: the resolved export the starci-next renderer consumes; byte-identical to src/core/styles.css
+      - path: starci-next-fe/node_modules/@starci/grammar/dist/common/styles.css
+        sha256: cac7a96d546eb7fd62babc87357961f94649cf639bff6021560d747f3c9404dc
+        note: imported by dist/core/styles.css line 1
+      - path: starci-next-fe/src/app/globals.css
+        sha256: 974b864ee51fdd6856b7f660a4bab14ec57e7cdfd1f95dab037cb1f7a77ddd2b
+      - path: starci-academy-fe/node_modules/@starci/grammar/dist/core/styles.css
+        sha256: e172f1715f3c59609c77cf6fdbff0d4d46669ba805b044c1c002c2558afe0ef2
+        note: the Academy consumer resolves the same export, so the difference between the two products is the
+          globals.css override, not the package.
+    dna:
+      path: knowledge/grammars/starci/DNA.yaml
+      sha256: beb55c8a3798b60ce433c2e8758d4d7708a8df865fd0e6285f1140ca8f5380f9
+      version: 0.5.0 (plus the unreleased tertiary surface role)
+  sources:
+    - repository: starci-academy-fe
+      path: starci-academy-fe/src/app/globals.css
+      inspectionRoot: D:/Repositories
+      kind: css
+      sha256: 0ee8a826f7523716cd7cc9fe4fda0ab852974ad8d3f640d0a74987579e2793f3
+      note: the Academy dashboard/subscriptions render stylesheet the owner's ruling names. Every colour token
+        value in this record is read from a declaration in it; it declares no --starci-core-* token, so it is
+        the render, not the family, that supplies the values.
+    - repository: starci-next-fe
+      path: starci-next-fe/apps/web/src/modules/brand/brand.css
+      inspectionRoot: D:/Repositories
+      kind: css
+      sha256: e974e6f8d807520327c4e72ec391aa7ced3cd878ae559e90f37bc79e3cafb983
+      note: the app one brand layer from rev 7, with the --starci-core-* tokens under .light (the Academy render values
+        above) on .light only; the dark theme is Grammar Core's (@starci/grammar/core/theme.css), with no .dark block here since rev 8. Sets no semantic name; the Core root maps those from these tokens.
+    - repository: starci-next-fe
+      path: starci-next-fe/apps/web/src/app/globals.css
+      inspectionRoot: D:/Repositories
+      kind: css
+      sha256: 1e1ba226371b1e2383feeb3403de8b797085d03c2c53ee32f9698e9c0069f4d8
+      note: the consuming app stylesheet, which imports the grammar, then modules/brand/brand.css, and declares no
+        colour token of its own.
+    - repository: starci-academy-fe
+      path: starci-academy-fe/src/app/[lang]/layout.tsx
+      inspectionRoot: D:/Repositories
+      kind: font
+      sha256: 553fd1ea307c677b44aed34841f046cfe45f5379e223e852e1392c86b3aee281
+    - repository: starci-academy-fe
+      path: starci-academy-fe/src/components/product-shells/ShellNav/component.tsx
+      inspectionRoot: D:/Repositories
+      kind: chrome
+      sha256: 35ff2b854d34243a7da3ab68ee8f15b83a20d4388297a4cbf8e5b892f81d8f36
+      note: the chrome both named surfaces render; it uses tokens only (one text-muted class, no colour
+        literal), so it introduces no value this record does not declare.
+  direction:
+    rev: 2
+    status: proposed
+    surfaceClass: "learning catalog: a learner chooses a published section, then reads one section's
+      ordered lesson summaries and opens a selected lesson"
+    referenceClass: The StarCi Academy dashboard and subscription light surfaces, applied to a calm
+      learning catalog rather than copied as a dashboard
+    authority: knowledge/ui composition and proof, then the StarCi Core DNA, then the settled StarCi
+      Next identity and shell; this direction may not override them
+    principles:
+      - id: P1
+        name: One job and one focal point
+        rule: The page names the collection in one heading. The collection heading and the neutral summary
+          are its two secondary ranks; all entity names are equal scan anchors. Cut any element with
+          no part in choosing a section.
+        cites:
+          - composition/taste.yaml DISCIPLINE-1 case-1
+          - composition/hierarchy.yaml HIERARCHY-6 case-1
+      - id: P2
+        name: Equal sections remain equal
+        rule: Published learning sections have no inferred prerequisite or recommendation. Their cards have
+          equal weight and order follows the published display order. A section action uses a quiet
+          Button; when no global action is justified, the page has no filled primary Button.
+        cites:
+          - composition/hierarchy.yaml HIERARCHY-3 case-1
+          - composition/accent.yaml ACCENT-1 case-3
+          - proof/render-truth.yaml TRUTH-1 case-1
+      - id: P3
+        name: Grammar default surfaces
+        rule: Use the Core PageContainer, SectionHeader, SurfaceCard, Text and Button anatomy. The canvas is
+          HeroUI --background and cards use --surface. A notice is the DNA Alert, a verified ratio the
+          DNA Meter, and an identity tile neutral; missing variants are grammar proposals.
+        cites:
+          - grammars/starci/DNA.yaml
+          - composition/accent.yaml ACCENT-6 case-4
+          - composition/taste.yaml DISCIPLINE-1 case-5
+          - composition/accent.yaml ACCENT-2 case-1
+      - id: P4
+        name: Accent is scarce
+        rule: Keep purple under ten percent of the content area, for the one justified primary action,
+          focus, or a small navigation cue. Counts and facts stay in the default tone. Never use
+          danger for a normal section.
+        cites:
+          - composition/accent.yaml ACCENT-6
+          - composition/taste.yaml DISCIPLINE-2 case-5
+          - proof/brand.yaml BRAND-1
+      - id: P5
+        name: No mascot in the collection
+        rule: The brand mascot is confined to its AI assistant slots. List rows and tables use no mascot,
+          hero illustration or second brand moment; the product logo remains in the shell lockup only.
+        cites:
+          - composition/taste.yaml DISCIPLINE-3 case-2
+          - proof/brand.yaml BRAND-2
+          - proof/taste.yaml TASTE-8
+      - id: P6
+        name: Detail preserves one subject
+        rule: A detail page names one section, puts the selected lesson's verified facts and one onward
+          action within reach, then lets the learner scan its ordered lesson summaries. Do not reveal a
+          lesson body, claim unknown progress, or promote a metadata fact into a status.
+        cites:
+          - composition/taste.yaml DISCIPLINE-1 case-1 and case-4
+          - composition/hierarchy.yaml HIERARCHY-6
+          - proof/render-truth.yaml TRUTH-1
+    geometry:
+      contentWidth: 1184px desktop; 390px mobile reference viewport
+      canvas: --background, the Core/HeroUI light canvas (composition/accent.yaml ACCENT-6 case-4)
+      card: --surface; Core SurfaceCard default radius and shadow, no added outline
+        (grammars/starci/DNA.yaml)
+      rhythm: 24px between regions, 16px between peer cards, 12px between rows, 8px inline
+        (proof/taste.yaml TASTE-3; grammars/starci/DNA.yaml)
+      mobileInset: 16px (composition/responsive.yaml RESPONSIVE-1)
+    archetypes:
+      list:
+        status: proposed
+        regionOrder:
+          - "page header: one h1, one supporting line, optional global action"
+          - optional neutral summary, at most four facts
+          - conditional attention or last-result Alert, before the collection when an actionable
+            condition exists
+          - collection heading with count and published order, then peer entities
+          - pagination only when the source paginates
+        grid1184: At 1184px, a three-cell neutral summary and two equal entity columns; switch to rows for
+          terse entities. Keep a 32px content inset and 16px peer gap.
+        grid390: At 390px, a two-column neutral summary with the third fact full width, then one entity
+          column; DOM order is unchanged and the 16px inset stays clear.
+        emphasis: "Primary focal point: the page h1 naming the list. Secondary: the collection heading and
+          the neutral summary. Equal entity names are scan anchors beneath them; no metric or image
+          outweighs the h1."
+        primaryActionPlacement: A justified global action belongs beside the heading at desktop and within
+          easy reach below it on mobile. For equal section choices, omit the global primary;
+          per-entity onward actions use quiet Buttons in each card action band.
+        never:
+          - a SurfaceCard wrapping the collection of SurfaceCards
+          - filled primary Buttons repeated per entity
+          - Badge on a plain lesson count or display order
+          - mascot art on a list row or table
+          - status colour as the only meaning
+          - a chosen section implied by visual weight when all choices are peers
+        whenNotToUse: Use detail for one entity with no comparison; use empty for a collection with no
+          published entries; use dashboard only when verified overview numbers are the page job.
+        components:
+          - PageContainer
+          - SectionHeader
+          - SurfaceCard
+          - Text
+          - Button
+          - Alert
+          - Meter
+          - IconTile
+        notes:
+          - Golden copy and counts use the three-section LearnContentSections frontend fixture
+            (component.spec.tsx, 3 sections, 10 lessons, 2 studied); it is a reference, not a live
+            capture.
+          - The product shell owns its real navigation and lockup; a page direction is composed into
+            that shell by interface.draw.
+          - A current frontend list gives every card a filled primary Button; this proposal asks for a
+            quiet per-card action and does not claim that implementation has changed.
+      detail:
+        status: proposed
+        regionOrder:
+          - breadcrumb back to the collection, then the one section heading and supporting summary
+          - learner progress as plain text only when the section read supplied a count
+          - selected lesson facts with the one dominant Open lesson action
+          - published lesson summaries in source order with quiet per-row View lesson actions
+        grid1184: At 1184px, use a 32px page inset and a 24px gap. The selected lesson occupies the
+          first column at roughly two fifths of the width; the joined lesson list occupies the rest.
+          Align their top edges and keep each as one Core SurfaceCard with its own title.
+        grid390: At 390px, keep a 16px page inset. Stack the selected lesson before the ordered list in
+          DOM and visual order; keep the one primary action full width and at least 40px high. The
+          list reflows to one column and no detail or action clips.
+        emphasis: "Primary focal point: the section h1. Secondary: the selected lesson title and the
+          Lessons heading. Facts, progress and row titles stay below those ranks; no illustration or
+          number competes with the section name."
+        primaryActionPlacement: The selected lesson's Open lesson Button ends its fact card. It is the
+          only filled primary; each list row uses a quiet TextAction. On mobile, the selected card
+          precedes the list so the action remains reachable without searching below every row.
+        never:
+          - lesson body or quiz answer shown in the section overview
+          - a progress value when the learner read returned no count
+          - metadata facts rendered as success or warning badges
+          - a second filled primary in a lesson row
+          - mascot or decorative artwork in the lesson list or a loading state
+          - CSS order that reverses the semantic reading sequence
+        whenNotToUse: Use list when the learner compares independent sections; use empty when the selected
+          section has no published lessons; use the lesson viewer for a lesson body or challenge.
+        components:
+          - PageContainer
+          - Breadcrumbs
+          - SectionHeader
+          - SurfaceCard
+          - DescriptionList
+          - Text
+          - Button
+          - TextAction
+          - EmptyNotice
+          - Alert
+        notes:
+          - The golden uses the ContentSectionPage ready fixture and the two lesson summaries from
+            ContentSectionLessons/index.spec.tsx as reference copy; it is not a live product capture.
+          - Pending, unavailable, refused, not found and no-lessons states preserve the same heading
+            frame and replace facts with the Core EmptyNotice or Alert appropriate to the state.
+          - The current frontend renders the list before the selected summary; this proposed direction
+            places the selected action first on mobile and does not claim implementation has changed.
+    vocabulary:
+      listHeader:
+        dna:
+          - SectionHeader
+          - Button
+        recipe: One heading and one muted line. Show a global Button only when the page job has one dominant
+          global action; a backlink is secondary.
+      neutralSummary:
+        dna:
+          - SurfaceCard
+          - Text
+        recipe: At most four neutral facts. Values have their own noun or unit and never receive a success
+          or danger tone merely for being a count.
+      entityCard:
+        dna:
+          - SurfaceCard
+          - Text
+          - Button
+        recipe: One peer SurfaceCard per section with its name, one supporting line, plain lesson count and
+          one quiet onward Button in the final band. No nested card or count Badge.
+      attentionNotice:
+        dna:
+          - Alert
+          - Button
+        recipe: "Only for an actual condition needing action. Use the HeroUI Alert anatomy: white surface,
+          small toned indicator to the left of the title, and its action in the actions slot; never a
+          tone-filled card."
+      verifiedRatio:
+        dna:
+          - Meter
+        recipe: A verified completion ratio uses the DNA Meter, full-width track; a discrete n/m may use the
+          published segments variant only when the consuming grammar version supports it.
+      identityTile:
+        dna:
+          - IconTile
+        recipe: If a section needs a glyph for scanning, use the DNA IconTile in neutral tone with its text
+          name beside it; the golden reference has no unnecessary tiles.
+      detailHeader:
+        dna:
+          - Breadcrumbs
+          - SectionHeader
+          - Text
+        recipe: A trail back to the collection and one section h1 with one summary line. Show a study
+          count as muted Text only when the learner read supplied it; never invent zero or a time.
+      selectedLesson:
+        dna:
+          - SurfaceCard
+          - DescriptionList
+          - Button
+        recipe: One joined card names the selected lesson, presents only its answered learning outcome,
+          phase, prerequisite and code language facts, and ends in the single filled Open lesson Button.
+      lessonRows:
+        dna:
+          - SurfaceCard
+          - Text
+          - TextAction
+        recipe: One joined Lessons card keeps publication order. Each row has an ordinal, title,
+          supporting line and quiet View lesson TextAction; the selected row may use a neutral surface.
+      detailFallback:
+        dna:
+          - SurfaceCard
+          - EmptyNotice
+          - Alert
+          - Button
+          - TextAction
+        recipe: Missing lessons use EmptyNotice and a way back; an actionable failure uses the Core
+          Alert with its recovery action. Withheld or unknown facts never appear as empty or zero.
+    voice:
+      locale: en
+      persona: learner Mai from shell/index.yaml
+      rule: Use the product locale, name the section and action plainly, and claim progress only from
+        verified learner data. Keep internal keys and route paths out of visible copy.
+      time: Show a source time only when the data source supplies one; never invent freshness.
+    antiPatterns:
+      - id: A1
+        seen: Existing LearnContentSections frontend card, 2026-09-27
+        bad: Each peer section has a filled primary Button, making independent choices compete.
+        fix: Use quiet per-card Buttons; reserve one filled primary for a justified global action.
+        cites:
+          - composition/accent.yaml ACCENT-1 case-3
+          - proof/taste.yaml TASTE-5
+      - id: A2
+        bad: A plain lesson count rendered as a status Badge.
+        fix: Show the count as neutral Text with the lesson unit.
+        cites:
+          - composition/hierarchy.yaml HIERARCHY-4 case-1
+          - composition/taste.yaml DISCIPLINE-1 case-3
+      - id: A3
+        bad: Mascot or decorative artwork inside a list card.
+        fix: Leave the list quiet; the mascot remains in the settled AI assistant slots.
+        cites:
+          - proof/brand.yaml BRAND-2
+          - composition/taste.yaml DISCIPLINE-3 case-2
+    rubric:
+      gateCap: 5
+      checks:
+        - id: H1
+          group: hierarchy
+          gate: true
+          test: On a list at both widths the Learn content h1 is the one focal point; collection heading
+            and summary follow it, and no card or number visually outweighs it.
+          cites:
+            - composition/hierarchy.yaml HIERARCHY-6
+            - proof/taste.yaml TASTE-1
+        - id: H2
+          group: hierarchy
+          test: "On a list, DOM and visual order match: header, summary, conditional notice, collection,
+            then real pagination if present."
+          cites:
+            - composition/hierarchy.yaml HIERARCHY-3
+            - composition/responsive.yaml RESPONSIVE-1
+        - id: B1
+          group: brand
+          gate: true
+          test: "Canvas is --background, cards are --surface, accent matches --accent #7547ff and covers less
+            than ten percent of the content area."
+          cites:
+            - proof/brand.yaml BRAND-1
+            - composition/accent.yaml ACCENT-6
+            - proof/taste.yaml TASTE-5
+        - id: B2
+          group: brand
+          test: No mascot appears in list or detail rows, notices, loading states or tables; the shell
+            alone carries the logo.
+          cites:
+            - proof/brand.yaml BRAND-2
+            - composition/taste.yaml DISCIPLINE-3
+        - id: A1
+          group: action
+          gate: true
+          test: On a list, equal entity choices have equal quiet actions. A filled primary appears only
+            when a single global action is justified, never once per peer card.
+          cites:
+            - composition/accent.yaml ACCENT-1 case-3
+            - composition/hierarchy.yaml HIERARCHY-6
+        - id: T1
+          group: truth
+          gate: true
+          test: Section and lesson titles, counts and progress come from the bound data. Plain counts
+            carry no Badge or success tone; unknown progress is not rendered as zero.
+          cites:
+            - proof/render-truth.yaml TRUTH-1
+            - composition/hierarchy.yaml HIERARCHY-4
+        - id: G1
+          group: grammar
+          test: Every recipe maps to published Core DNA components; an actionable notice uses Alert and a
+            verified ratio uses Meter.
+          cites:
+            - grammars/starci/DNA.yaml
+            - composition/taste.yaml DISCIPLINE-1 case-5
+        - id: M1
+          group: mobile
+          gate: true
+          test: At 390px cards form one column, a list summary reflows without changing meaning order,
+            text and actions remain unclipped, and the page has no horizontal scroll.
+          cites:
+            - composition/responsive.yaml RESPONSIVE-1
+            - proof/taste.yaml TASTE-4
+        - id: C1
+          group: copy
+          test: Copy is English, names the action in plain words, and shows no section key, route or internal
+            enum.
+          cites:
+            - proof/ux.yaml UX-11
+            - proof/render-truth.yaml TRUTH-1
+        - id: R1
+          group: reference
+          gate: true
+          test: The render belongs beside the Academy light dashboard/subscription visual class in
+            typography, quiet surfaces and purple accent while preserving its own page job.
+          cites:
+            - proof/taste.yaml TASTE-12
+            - proof/brand.yaml BRAND-3
+        - id: D1
+          group: detail hierarchy
+          gate: true
+          test: At both widths the section h1 is the one focal point. Selected lesson facts and action
+            appear before the ordered list on mobile without CSS order reversal or horizontal scroll.
+          cites:
+            - composition/hierarchy.yaml HIERARCHY-6
+            - composition/responsive.yaml RESPONSIVE-1
+            - proof/taste.yaml TASTE-1
+        - id: D2
+          group: detail truth
+          gate: true
+          test: The section and lesson names, summaries, facts, publication order and progress come from
+            their bound read. An unknown study count, unpublished lesson body or challenge answer is absent.
+          cites:
+            - proof/render-truth.yaml TRUTH-1
+            - composition/taste.yaml DISCIPLINE-1
+        - id: D3
+          group: detail action
+          gate: true
+          test: The selected lesson has the only filled Open lesson Button. Row actions are quiet
+            TextActions and the primary is reachable before the list on mobile.
+          cites:
+            - composition/accent.yaml ACCENT-1
+            - proof/ux.yaml UX-9
+        - id: D4
+          group: detail grammar
+          test: Breadcrumbs, SectionHeader, joined SurfaceCard, DescriptionList, Button and TextAction
+            follow Core DNA. A no-lessons state uses EmptyNotice; an actionable failure uses Alert.
+          cites:
+            - grammars/starci/DNA.yaml
+            - composition/taste.yaml DISCIPLINE-1 case-5
+        - id: D5
+          group: detail brand
+          test: The HeroUI --background canvas and Core --surface cards remain calm; purple occupies under
+            ten percent of content area; mascot and extra artwork are absent from the lesson detail.
+          cites:
+            - composition/accent.yaml ACCENT-6
+            - proof/brand.yaml BRAND-2
+      beautyAnchors:
+        - score: 1-2
+          anchor: A plain text dump with no clear list heading, actions or grouping.
+        - score: 3-4
+          anchor: Correct content and colours but flat rhythm, competing filled actions or badges on facts.
+        - score: 5-6
+          anchor: Readable list with a focal point, yet crowded summary or weak mobile reflow.
+        - score: 7-8
+          anchor: Calm Academy-family list with equal peer cards, one clear focal point, accurate copy and
+            clean mobile.
+        - score: 9-10
+          anchor: "A highly polished product catalog: every element earns its place and a reviewer sorts it
+            into the Academy-class family at first glance."
+    golden:
+      - archetype: list
+        html: assets/direction/list.html
+        png: assets/direction/list-desktop.png
+        sha256: 506d05ee87b6beb89d4b6ca6ceaa69081d8fb50255e6b85d8a81e12d1b948ffe
+        htmlSha256: 2dc6ac214ae67d4cedc4e594945946a1fb0f6850c895ae59da1a7589a251ca79
+        breakpoint: desktop
+      - archetype: list
+        html: assets/direction/list.html
+        png: assets/direction/list-mobile.png
+        sha256: 8fca5d283c7179d88b68f1bdc80ab072dfc8cd54d9f08b183b1605108681ae97
+        htmlSha256: 2dc6ac214ae67d4cedc4e594945946a1fb0f6850c895ae59da1a7589a251ca79
+        breakpoint: mobile
+      - archetype: detail
+        html: assets/direction/detail.html
+        png: assets/direction/detail-desktop.png
+        sha256: 8b4cb8f9e2c55bc819721856acf5dc83b0fdd2c7c5965c7157cb7b9252c8ed5d
+        htmlSha256: bba679ceb6bc49186d2ab0156fde67240a74c0766340d0b6438283133bed9683
+        breakpoint: desktop
+      - archetype: detail
+        html: assets/direction/detail.html
+        png: assets/direction/detail-mobile.png
+        sha256: 526229b5bf5c362235e9a561034dd014e5964676ecbd1388ae0071d63bd97abb
+        htmlSha256: bba679ceb6bc49186d2ab0156fde67240a74c0766340d0b6438283133bed9683
+        breakpoint: mobile
+    pendingRulings:
+      - id: light-tones-adjusted-for-aa
+        question: "The muted grey, the link ink and the success, warning and info tones are the Academy render values again, danger is oklch(62% 0.2335 37.78), and status text and icons use the HeroUI soft pair. Contrast: neutral text 4.01:1 to 5.11:1, soft text 4.08:1 to 5.85:1, solid tone as a bare glyph 1.67:1 to 2.51:1. Accept, or say which tone to change."
+        options:
+          - Accept the HeroUI status tones and soft pairing as written
+          - Change a tone - say which token and to what
+        status: decided
+        decision: "owner 2026-09-30: follow HeroUI soft pairing, no extreme contrast"
+        ownerStated: "Owner 2026-09-30: follow HeroUI, no need for extreme contrast. text-soft goes with background-soft like a Chip soft/flat variant, not strictly standard but acceptable, or lower the contrast requirement. Not just miamia: nivo and starci-next too. It supersedes the AA darkening of y90 (task y92 reverts it) and the rule of 2026-09-29 for these tones."
+review:
+  reviewer: owner
+  authority: "The owner rulings this record carries verbatim in brand.identity.ownerRulingsVerbatim, settled through rev 4 and retained unchanged by revs 5 and 6: the ruling of 2026-09-23 (incident inc-8965d90fa153, 'starci next dùng core grammar, brand mặc định như trang dashboard và subscriptions của starci academy'), the ruling of 2026-09-24 that the brand and page look are identical to the StarCi Academy dashboard and subscription pages, and answer A of serve-ask ctx_eb5a945a39ea (answeredBy owner at 2026-09-24T18:27:55.561Z, receipt .starciwork/kernel-evidence/wf-sn-foundation-mufrhftf/serve-ask/answer-1790274475561.json) accepting the three Academy tones' sub-AA contrast as color.policy.contrastExceptions. Revs 5 (2026-09-25, the --starci-surface-tertiary role at Academy globals.css:152) and 6 (2026-09-27, the Academy pro-learning-journey-v1.png subscription artwork master) are recorded in the change block as implementing those rulings; the git history of this record carries no separate owner answer for either, and rev 6 adds no colour, token or precedent beyond the one decorative raster. The 2026-09-28 list and detail directions were proposed for owner review as direction parts, not as brand revisions, and are not settled by this review."
+  reviewedAt: 2026-09-24T18:27:55Z
+change:
+  rev: 8
+  kind: breaking
+  at: 2026-11-09T00:00:00.000Z
+  withdraws:
+    - "Rev 7's lead-derived dark palette (color.dark, every dark token with its sRGB note), the measured dark pairs (color.policy.darkPairs) and the decision text that called them pending owner review."
+    - "The brand.css .dark block of rev 7; the brand layer carries the light tokens on .light only."
+  retains:
+    - "Every rev 7 light colour token, source value, owner ruling (the verbatim rulings stay in brand.identity.ownerRulingsVerbatim), typography, mascot, logo, iconography, voice, motion and artwork slot, unchanged."
+    - "The requirement that both light and dark exist (owner ruling of 2026-09-29), with the system default and the persisted user choice."
+  reason: Rev 8 applies the owner ruling of 2026-11-08, 'tối tự code vẽ chi, có token theme'. Dark comes only from the Grammar Core / HeroUI theme
+    tokens (@starci/grammar/core/theme.css, imported in globals.css before the brand layer, the mode set by next-themes), with no app literals. It empties
+    color.dark and color.policy.darkPairs, rewrites the darkMode decision, and records that brand.css holds light tokens on .light only. The light values
+    are unchanged. The owner reviews the dark colours later, in the Core theme. Rev 7 history - it added dark mode under the owner ruling of
+    2026-09-29 ('dark mode light mode phai co'), two light tokens the brand layer needs (--starci-core-accent-text and --starci-core-accent-soft) and
+    the modules/brand/brand.css source; addendum 2026-09-30 (task y92), owner ruling "follow HeroUI soft pairing, no extreme contrast", reverted the y90
+    AA darkening (muted grey, link ink, success, warning and info return to the Academy render values, danger is oklch(62% 0.2335 37.78) with white ink at
+    3.92:1, and the soft pairs are declared in brand.css, color.policy.heroUiPairing, decision contrastFollowsHeroUI).
+extensions:
+  portGaps:
+    - D:/Repositories/starci-next/.starciwork/brand/assets/provenance.yaml

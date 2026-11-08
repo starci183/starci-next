@@ -7,6 +7,8 @@ type SiteShellProps = {
     readonly brand: string
     /** The destination of the wordmark: the app's front door. */
     readonly homeHref: string
+    /** The app's own header band (a top bar); the shell draws the plain brand bar when the app gives none. */
+    readonly header?: ReactNode
     /** The routed page body. */
     readonly children: ReactNode
 }
@@ -19,7 +21,7 @@ export const SiteShell = (props: SiteShellProps) => (
     <WorkspaceShell
         viewport="flow"
         primaryLabel={props.brand}
-        header={<TopBar brand={<Link href={props.homeHref}>{props.brand}</Link>} />}
+        header={props.header ?? <TopBar brand={<Link href={props.homeHref}>{props.brand}</Link>} />}
         primary={props.children}
     />
 )

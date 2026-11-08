@@ -1,0 +1,14 @@
+schema: work/contract@1
+id: contract.agent-lab.api
+title: Agent lab API
+state: todo
+activity: idle
+owner: agent-lab
+between: [agent-lab, the app's /agents screens]
+surface:
+  - {name: overview, kind: GraphQL query, path: /graphql, request: 'agentLab(input: {locale})', response: 'tracks, concepts, grid cells, coming-soon entries', errors: []}
+  - {name: track, kind: GraphQL query, path: /graphql, request: 'agentLabTrack(input: {trackId, locale})', response: 'track with pinned version, key mode and cells with steps', errors: [404 AGENT_LAB_TRACK_NOT_FOUND]}
+  - {name: quota, kind: GraphQL query, path: /graphql, request: agentQuota, response: '{limit, used, remaining, exhausted}', errors: []}
+guarantees:
+  - Every door needs a session. The hard stop is a state of agentQuota; AGENT_LAB_QUOTA_EXHAUSTED (429) is the code a metered call would raise.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

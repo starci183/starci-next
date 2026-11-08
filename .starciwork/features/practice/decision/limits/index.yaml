@@ -1,0 +1,17 @@
+schema: work/policy-decision@1
+id: decision.practice.limits
+title: Free tier, judge queue and rate limit of Luyện code
+state: todo
+activity: idle
+question: How many problems are free, how many submissions are judged at once and how often may a learner submit?
+options:
+  - Free first problem of each pattern, queue concurrency 4, 10 submissions a minute per learner
+  - Free by difficulty
+  - No queue
+recommendation: Configurable defaults. PRACTICE_FREE_PER_PATTERN=1, PRACTICE_JUDGE_CONCURRENCY=4, PRACTICE_SUBMISSIONS_PER_MINUTE=10 and one submission in flight per learner, PRACTICE_MAX_SOURCE_BYTES=65536, PRACTICE_WAIT=25s before a run answers still running.
+recommendationReason: Matches the proposed free taste of one problem per pattern and keeps a shared Judge0 from being flooded.
+outcome: open
+chosen: null
+reason: Proposed defaults build the capability; the owner may retune them with the environment without code changes.
+blocks: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

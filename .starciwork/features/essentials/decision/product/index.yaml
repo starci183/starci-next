@@ -1,0 +1,36 @@
+schema: work/policy-decision@1
+id: decision.essentials.product
+title: Essentials is the industry-knowledge part of the harness, unlocked by Premium
+state: todo
+activity: idle
+question: What is the learning part, how is it sold, and what does a learner get?
+outcome: decided
+chosen: A separate part named Bản chất (EN Essentials) teaching industry knowledge; one Premium subscription (monthly or yearly) unlocks every lesson and the AI; no per-course sales and no enrollment.
+reason: |-
+  Owner 2026-11-08, verbatim:
+  - "h không bán khóa mà unlock tất cả content như 1 phần trong harness của thầy"
+  - "là 1 phần riêng dạy về kiến thức của ngành"
+  - "mua premium là unlock hết kèm AI, gia hạn theo tháng/năm"
+  - "phần này gọi là knowlege shard (mảnh kiến thức nhé)"
+  - "gom chung 3 khóa rồi chia lại category cho knowlege shard"
+  - "sửa knowleges shard thành từ gì hay hơn đi, kiểu kiến thức đi", then picked Bản chất in the code session's choice dialog (EN Essentials and id essentials are that session's labels).
+blocks: []
+extensions:
+  access:
+    free: The lesson overview (title, outcomes, prerequisites, phase list) and phase 1 Bị hỏi (the diagnostic question) for every lesson.
+    premium: Every phase, the AI teacher (grading, hints, Hỏi StarCi), the in-browser lab, the real-repo incident and the review schedule.
+    gate: contract.commerce.entitlement isPremium(learner); a learner without Premium causes no AI provider call.
+  tiers:
+    - 1 Học trong trình duyệt: the concepts/ V2 phases (challenge, predict, explore, explain, apply lab, reflect) plus review.
+    - 2 Sự cố trên repo thật: the teacher's lesson repo with seeded bugs, fixed locally and proved with learner-written tests.
+    - 3 Challenge (optional): the V1 challenge ladder, built from scratch and submitted as a GitHub repo.
+  openQuestions:
+    - id: Q-KS-1
+      answered: 'Owner 2026-11-08: "Theo đề xuất" (included with Premium, server-side fair-use cap, no credits shown).'
+      question: Does Premium include unlimited AI use, or a fair-use cap per day or month?
+      proposed: Included with Premium, with a server-side fair-use cap configured in the AI pool and not shown as credits.
+    - id: Q-KS-2
+      answered: 'Owner 2026-11-08: "Theo đề xuất" (learner tests count; proved needs the mutation score).'
+      question: Do learner-written tests count toward the lesson's "proved" level?
+      proposed: Yes. The incident tier completes only when the learner's tests catch the surviving seeded bug (mutation score).
+change: {rev: 3, kind: revised, at: '2026-11-08', reason: Renamed Knowledge Shard to Bản chất / Essentials.}

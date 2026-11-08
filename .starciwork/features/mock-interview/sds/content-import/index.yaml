@@ -1,0 +1,24 @@
+schema: work/sds-component@1
+id: sds.mock-interview.content-import
+title: Import interview banks from starci-lab/data (mount V1 format)
+state: todo
+activity: idle
+responsibility: Turn courses/*/mock-interview and mock-interview-eq into immutable bank versions, refusing anything incomplete, and keep grading data server-only.
+interfaces:
+  - 'Input: a git ref of github.com/starci-lab/data (origin/main), read-only, and the track map below.'
+  - 'Output: validated bank versions with public prompt projections per locale and language, interviewer data and server-only grading data.'
+  - 'CLI: cli interview import --dir <data checkout> --ref <label> [--only <bankId>]; prints counts, versions and hashes, never answers.'
+owners: [be]
+sequence:
+  - 'Read the mount V1 format, shared with flashcards and the other V1 importers: each field is a "# fieldName" line, then <!-- @starci/seperator -->, the value, then <!-- @starci/seperator -->. A list field has "## 0", "## 1" items, each wrapped in separators; an object list item has "### key" sub-fields. CRLF and LF are both accepted (the DevOps banks are CRLF).'
+  - 'Technical layout: courses/<course>/mock-interview/<n>-<bank>/{vi,en}.md is the bank meta (sortIndex, title, description, difficulty, family technical, moduleRefs[]). questions/<n>-question/{vi,en}.md holds sortIndex, isPremium, family, tier, kind, tags[], rubric[], checklist[{text, dimension, critical, scoreBand}], exampleResults (one JSON array), followUps[], hints[], keywords[]. questions/<n>-question/bodies/<n>-<lang>/{vi,en}.md holds lang, prompt, givenCode (optional), diagram (optional) and idealAnswer, whose markdown uses :::muted blocks.'
+  - 'Behavioural layout: mock-interview-eq/<n>-<bank>/{vi,en}.md is the bank meta (family behavioral, no moduleRefs). questions/<n>-question/{vi,en}.md holds sortIndex, isPremium, family, tier, kind, competency, tags[], prompt, rubric[6] (each "[dimension] text"), ownershipSignal and leadershipTier (optional). There are no bodies, idealAnswer, checklist or exampleResults.'
+  - Skip the non-content files README.md, RESEARCH.md and ROADMAP.md of a mock-interview folder.
+  - Validate per data.mock-interview.question-bank invariants; any failure blocks that bank and names the source path and field. Then run the exampleResults pre-check (decision.mock-interview.calibration) before publishing.
+  - Store each bank in one transaction that supersedes the live version; an identical version is a no-op; changed bytes under the same version are refused (INTERVIEW_BANK_IMMUTABLE).
+  - Build the public projection by explicit allowlist (bank title and description, question id, tier, kind, tags, prompt, givenCode, givenLang, diagram); nothing else.
+extensions:
+  trackMap: 'Proposed, editable without code: backend-fullstack uses Fullstack banks 0..22 and eq/*. devops-sre uses DevOps banks 0-bank..34-bank and eq/*. system-design-senior uses System Design banks 0..23 at tiers middle and senior, and eq/* with leadershipTier. ai-engineer uses Fullstack 20-ai-llm-integration plus eq/*; it is thin, see gap.learning-program.ai-interview-bank. founder uses eq/3-culture, eq/2-situational and Fullstack 20-ai-llm-integration and 22-payment-integration until product-defense questions exist.'
+  notInReadme: 'The bank README does not document checklist, exampleResults or the kind design-lite that the data uses. The importer accepts them as found in the files; the README''s kind coding is absent from the data.'
+refs: [data.mock-interview.question-bank, decision.mock-interview.calibration, sds.essentials.content-import]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Source format read from starci-lab/data 231d8cc57.}

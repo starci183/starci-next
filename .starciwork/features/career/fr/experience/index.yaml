@@ -1,0 +1,22 @@
+schema: work/functional-requirement@1
+id: fr.career.experience
+title: My experience items (Kinh nghiệm)
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /experience, or a part's evidence makes a new item gradeable.
+mainFlow:
+  - The list groups items by part with their state (đang luyện, AI đã chấm, chờ thầy duyệt with the expected date, Đã xác minh, trả lại, thu hồi), the CV line in the current locale and the evidence links.
+  - When proof-form evidence exists, the AI grades the item and drafts its line (VI and EN). The learner reads the per-criterion result and the defense questions, may reword the line within the template, and chooses Gửi thầy duyệt.
+  - A returned item shows the reviewer's note. The learner improves the evidence or the line and resubmits (Q-CA-5).
+  - A verified item can be shown publicly, added to the CV export, and counts for path done.
+exceptionFlows:
+  - Evidence only from the relay, the item stays đang luyện with "push để CI ký" guidance.
+  - The AI grade fails, the item stays đang luyện with the AI's feedback and the lesson to study.
+  - A reword that changes a filled slot is refused CAREER_LINE_SLOT_CHANGED.
+  - An unchanged resubmit is refused CAREER_RESUBMIT_UNCHANGED.
+  - Without Premium, items are listed but AI grading and submission need Premium (CAREER_PREMIUM_REQUIRED).
+postconditions:
+  - Every transition is in the audit trail.
+composes: [br.career.experience, data.career.experience-item, data.career.review-decision, data.learning-program.experience-catalog, sds.career.experience-engine, contract.career.api, ui.career.experience]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision.}

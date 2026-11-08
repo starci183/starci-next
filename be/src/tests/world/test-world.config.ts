@@ -3,18 +3,25 @@
  * definition (`.starcistacks/dev`); the library runs the Postgres of every connection real behind toxiproxy, migrates it once per
  * run through the cli app and boots the api apps in process.
  */
-import { defineTestWorld } from "@starci/test-world"
-import type { TestWorldApi } from "@starci/test-world"
+import { defineTestWorld, type TestWorldApi } from "@starci/test-world"
+import { judge0Fake } from "./fakes/judge0/judge0.client"
+import { oidcIssuerFake } from "./fakes/oidc-issuer/oidc-issuer.client"
+import { openrouterFake } from "./fakes/openrouter/openrouter.client"
+import { payosFake } from "./fakes/payos/payos.client"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
-import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
+import { AppModule as RelayApp } from "../../../apps/relay/src/app.module"
+import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase, relayOptionsOf } from "./test-apps.options"
 
 const world: TestWorldApi = defineTestWorld({
     stack: ".starcistacks/dev",
     stacks: {
         postgresql: { connections: [{ name: "primary" }] },
+        mail: {},
     },
+    fakes: { idp: oidcIssuerFake(), payos: payosFake(), openrouter: openrouterFake(), judge0: judge0Fake() },
     apps: {
-        core: { module: CoreApp, options: coreOptionsOf },
+        core: { module: CoreApp, options: coreOptionsOf, rawBody: true },
+        relay: { module: RelayApp, options: relayOptionsOf },
     },
     migrate: { module: migrateCli, options: cliOptionsOf },
     modules: { base: platformBase },

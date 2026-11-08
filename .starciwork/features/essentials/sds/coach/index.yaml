@@ -1,0 +1,25 @@
+schema: work/sds-component@1
+id: sds.essentials.coach
+title: StarCi AI teacher (grading, hints, Hỏi StarCi)
+state: todo
+activity: idle
+responsibility: Grade written attempts against the activity rubric, give graded hints, and answer Hỏi StarCi from the lesson's public content, through the shared AI pool.
+interfaces:
+  - 'grade(attempt): per criterion {level 0..2, evidenceQuote}; the AI returns a structured result validated against the rubric ids, and an invalid result is retried or failed, never stored.'
+  - 'hint(activity, level 1..3): a hint grounded in the activity and its section; marks the attempt as assisted.'
+  - 'ask(lesson, question): answers only from the public sections and workspace code; refuses questions about answers or rubrics.'
+owners: [be]
+sequence:
+  - Check identity (contract.identity.session-contract) and Premium (contract.commerce.entitlement) before any provider call.
+  - Persist the answer first; a save failure calls no provider. Deduplicate by activity and revision.
+  - For grading, load only that activity's rubric server-side. Treat learner text and code as quoted data, never as instructions.
+  - Dispatch through the shared pool (decision.essentials.ai-pool) with an opaque request id, a deadline and cancellation; stream progress, then persist the validated result before reporting completed.
+  - On failure keep the answer with status failed, and allow an explicit retry.
+refs: [br.essentials.learning, data.essentials.progress, decision.essentials.ai-pool]
+extensions:
+  carriedFrom: [sds.lessons.coach, sds.lessons.grounding]
+  beStatus:
+    built: 'grade(attempt) behind the AttemptCoach port of be/src/modules/domain/attempt (impl.essentials.be.attempts): Premium is checked before the answer is stored and before any coach call (the challenge phase is free, so its diagnostic is graded for any signed-in learner); the answer is stored first with status saved, taken for grading by a conditional update (a concurrent resend or a stale grading is taken over after two minutes), sent to the coach with the rubric under a 60 s deadline and an opaque request id (the attempt id), validated against the rubric ids (exactly one level 0..2 per criterion, a level above 0 must quote words the answer really contains) and only then stored; a refused grade, a deadline or a provider failure marks the attempt failed with ATTEMPT_COACH_INVALID or ATTEMPT_COACH_UNAVAILABLE, and a resend of the same revision and answer grades it again.'
+    aiWiring: 'The real coach is wired: @starci/ai-router 0.5.0 (exact) is installed; be/src/modules/integrations/ai-gateway (the only importer of the package) builds one OpenRouter pool from OPENROUTER_API_KEY (read as a Secret, OPENROUTER_API_KEY_FILE works, resolved at each attempt) with the coach profile deepseek/deepseek-v4.1-flash falling back to deepseek/deepseek-v4-pro (AI_GATEWAY_MODEL, AI_GATEWAY_FALLBACK_MODEL), json_object replies, temperature 0 and the request deadline, and exposes the AiGateway port. AiCoachClient (domain/attempt) implements AttemptCoach over it: the system prompt holds the rubric with expectedEvidence and misconception (never in the learner block and never in the answer), the learner text and files sit between fence lines derived from the opaque attempt id (a copy of the fence inside the text is removed) and the model is told to treat them as untrusted data; the reply is parsed to {criteria:[{criterionId, level, evidenceQuote}]} and then validated by gradeRubric. A gateway failure (every key and model failed, a refused key, network, deadline, empty text) is ATTEMPT_COACH_UNAVAILABLE and a reply that is not a grade is ATTEMPT_COACH_INVALID. With no OPENROUTER_API_KEY declared the core app binds UnconfiguredCoachClient (ATTEMPT_COACH_UNCONFIGURED). The sealed key of dev and production is a placeholder until the owner fills the member ai, so grading fails cleanly with ATTEMPT_COACH_UNAVAILABLE. Fair use: a learner gets at most ATTEMPT_COACH_DAILY_LIMIT (default 100) coach gradings per UTC day, counted from graded written attempts; the next fails the attempt with ATTEMPT_COACH_LIMIT_REACHED (answer saved, grading can be retried the next day) and shows no credits. The integration spec be/src/tests/integration/attempt/ai-coach.integration-spec.ts drives the real pool over the package fake provider, outage included.'
+    later: 'hint(activity, level) and ask(lesson, question) are not built.'
+change: {rev: 3, kind: revised, at: '2026-11-08', reason: 'Wire the ai-router coach behind the AttemptCoach port with a per-learner daily fair-use cap.'}

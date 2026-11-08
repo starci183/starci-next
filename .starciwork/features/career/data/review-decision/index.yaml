@@ -1,0 +1,18 @@
+schema: work/data@1
+id: data.career.review-decision
+title: Review decision and audit trail
+state: todo
+activity: idle
+fields:
+  - {name: decisionId, type: opaque id, required: true}
+  - {name: itemId, type: data.career.experience-item reference, required: true}
+  - {name: action, type: 'submit | assign | approve | return | resubmit | escalate | revoke | reassign', required: true}
+  - {name: actorId / actorRole, type: 'learner | REVIEWER | TEACHER | system (SLA escalation)', required: true}
+  - {name: from / to, type: item states, required: true}
+  - {name: note, type: 'text; required for return and revoke', required: false}
+  - {name: snapshot, type: the line and evidence refs at the moment of the action, required: true}
+  - {name: at, type: UTC timestamp, required: true}
+invariants:
+  - Append-only; never edited or deleted, also when the learner deletes their profile (kept anonymised for audit).
+  - Every state change of an experience item has exactly one decision row.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision (audit trail).}

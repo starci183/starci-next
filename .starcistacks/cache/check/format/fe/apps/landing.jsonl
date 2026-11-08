@@ -1,6 +1,6 @@
-{"findings":[],"hash":"85f856ff7b4cbe0c9b08a8bf2b96fe7045bb518569f5aba1d7ff199f494e54d5","path":"fe/apps/landing/Dockerfile","step":"prettier"}
+{"findings":[],"hash":"5da6ff3a1e0f27056e39bd18351b387b0886bdc966957ee98ebcde079f4c2120","path":"fe/apps/landing/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"a7c331a1e5c52942998cbed69c6d931cf56f2ca2fe98f7e1c709251dc909c6b8","path":"fe/apps/landing/next.config.ts","step":"prettier"}
-{"findings":[],"hash":"5f427d7ea8e5b6e098d80bebd55db28ec164de969690fd7927b8dc08ed190a3b","path":"fe/apps/landing/package.json","step":"prettier"}
+{"findings":[],"hash":"1df0db1152b0022bc8853832cac526bbce789f46f40b6e6708a8116a985eca4f","path":"fe/apps/landing/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/landing/postcss.config.mjs","step":"prettier"}
 {"findings":[],"hash":"1d236fa63c21df0b5e631c724aa02926553bc3e6720b620477a0a23dea683f5b","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"prettier"}
 {"findings":[],"hash":"04441aa97793b3958bdcfe935cd1e34d9de9d2bc4a067248dc865a3f24aa9f78","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"prettier"}
@@ -18,7 +18,7 @@
 {"findings":[],"hash":"223e709b2452369bce835f4bbdf38317862256bc551b79224d39ecfabe7e426e","path":"fe/apps/landing/src/features/pages/LandingPage/component.tsx","step":"prettier"}
 {"findings":[],"hash":"0f21dc65569f8cfe18236d73380c36024aa0ca060848456b0379b2d547cb8a9f","path":"fe/apps/landing/src/features/pages/LandingPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"7c0c1c5c1d408c5d20ea8067ac78b48fbaf1146c461da9c3fd1bd058e7771c33","path":"fe/apps/landing/src/modules/config/index.ts","step":"prettier"}
-{"findings":[],"hash":"17cb488341368d9a0f01ff3fc4adf02df4de7d08530ad066188d4909a6ca0653","path":"fe/apps/landing/src/modules/i18n/index.ts","step":"prettier"}
+{"findings":[],"hash":"bec4f9a9f7b384b2e4162c66c991f40c21ed173b3797083f4c6d58bfd2734513","path":"fe/apps/landing/src/modules/i18n/index.ts","step":"prettier"}
 {"findings":[],"hash":"174a5fc6359053088c2518523043d078fe21fc07ed66e5c39dd045980d0e3234","path":"fe/apps/landing/src/modules/i18n/messages/en.json","step":"prettier"}
 {"findings":[],"hash":"ecd96a274e782e228634fc83189aa0569c43aeb3e3a9a3a89662595f8a700393","path":"fe/apps/landing/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"8e1c1c3ab7d1460c28b35141c89d4f5547501cab6c9c41e9eedfad1184048546","path":"fe/apps/landing/src/modules/i18n/request.ts","step":"prettier"}

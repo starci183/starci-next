@@ -1,0 +1,17 @@
+schema: work/ui-screen@1
+id: ui.career.profile
+title: My profile
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /profile
+routeParent: app
+surface: Headline and path; evidence sections (Bản chất đã chứng minh, Dự án của bạn, each with its proved concepts and its CI and URL links, Phỏng vấn, Agent và sản phẩm, Ôn tập); a show-publicly toggle per item; the public-page switch and link.
+persona: learner
+ui:
+  - Verified badge on signed evidence; a self-reported label; đang luyện items listed privately only.
+  - The empty state points at the next path steps.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: 'decision.projects.model and decision.agents.curriculum.'}

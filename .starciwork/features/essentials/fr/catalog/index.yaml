@@ -1,0 +1,19 @@
+schema: work/functional-requirement@1
+id: fr.essentials.catalog
+title: Browse and find lessons
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens Essentials.
+mainFlow:
+  - The catalog groups lessons by category (decision.essentials.categories) and shows each lesson's difficulty, minutes, languages or providers, and the learner's progress (understood or proved).
+  - Filters cover category, difficulty, language and provider; search matches title and description.
+  - Each category shows its topics (decision.essentials.categories extensions.topics); a topic page at /essentials/{topic} lists its lessons in the source order, published ones linking to /essentials/{topic}/{lesson}.
+  - Case studies appear as a separate collection, each listing the lessons it builds on.
+  - A lesson page shows prerequisite lessons and the lessons that build on it, from the concept graph.
+exceptionFlows:
+  - Unpublished lessons are not listed.
+postconditions:
+  - None; the catalog is read-only.
+composes: [data.essentials.lesson, data.essentials.progress, ui.essentials.catalog, ui.essentials.topic]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Catalog for the merged courses.}

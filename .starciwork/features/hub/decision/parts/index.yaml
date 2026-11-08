@@ -1,0 +1,28 @@
+schema: work/policy-decision@1
+id: decision.hub.parts
+title: Eleven parts on one hub, at /
+state: todo
+activity: idle
+question: Which parts does StarCi Next show, in what order, and where?
+options:
+  - A. The eleven parts the owner listed, on one hub at /, each card showing progress, today's actions and verified experience.
+recommendation: A
+recommendationReason: Owner request; the site map's / is already the Hôm nay queue.
+outcome: decided
+chosen: A (route open as Q-HUB-1)
+reason: 'Owner 2026-11-08: "ý là list ra tất cả shards trong starci-next ví dụ essentials, projects,... để kích thích học và lấy chuỗi".'
+blocks: [ui.hub.home]
+extensions:
+  parts:
+    - {order: 1, id: paths, label: Mục tiêu, route: '/paths/choose (goal picker), /paths/{pathId}', owner: learning-program, progress: 'active path steps done of total', grantsExperience: false}
+    - {order: 2, id: essentials, label: Bản chất, route: /essentials, owner: essentials, progress: 'lessons understood and proved', grantsExperience: [essentials.concept-proved]}
+    - {order: 3, id: review, label: Ôn tập, route: /review, owner: review, progress: 'due today, recall rate', grantsExperience: [review.retention]}
+    - {order: 4, id: practice, label: Luyện code, route: /practice, owner: 'practice (wave B, not drafted)', progress: 'patterns solved', grantsExperience: [practice.pattern-solved]}
+    - {order: 5, id: projects, label: Dự án, route: /projects, owner: 'projects (decision.projects.model)', progress: 'concept milestones proved across projects', grantsExperience: [projects.milestone, projects.deployed]}
+    - {order: 6, id: agents, label: Agent & AI coding, route: /agents, owner: agentic, progress: 'mindset concepts proved, labs done per track', grantsExperience: [agentic.coding-mindset, agentic.agent-built]}
+    - {order: 7, id: case-studies, label: Bài toán thực chiến, route: /case-studies (new), owner: 'essentials (casestudy collection)', progress: 'case studies whose prerequisite lessons are proved, design answers graded', grantsExperience: [casestudy.designed]}
+    - {order: 8, id: incidents, label: Sự cố, route: /incidents (new), owner: 'essentials (tier 2, fr.essentials.incident)', progress: 'incidents fixed with the surviving mutant caught', grantsExperience: [incident.fixed]}
+    - {order: 9, id: interview, label: Phỏng vấn thử, route: /interview, owner: mock-interview, progress: 'best score per track and tier', grantsExperience: [interview.pass]}
+    - {order: 10, id: profile, label: Hồ sơ & CV, route: /profile, owner: career, progress: 'experience items Đã xác minh, CV rubric', grantsExperience: [career.cv-rubric]}
+    - {order: 11, id: hiring, label: Kết nối việc làm, route: /career/hiring, owner: career, progress: 'opt-in and exports', grantsExperience: false}
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner request.}

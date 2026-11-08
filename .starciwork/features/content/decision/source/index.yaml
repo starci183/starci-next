@@ -1,0 +1,20 @@
+schema: work/policy-decision@1
+id: decision.content.source
+title: The content lives in its own git repository, written by us first and by the teacher later, pulled like the academy backend
+state: todo
+activity: idle
+question: Where does the content the app needs beyond starci-lab/data live, and who writes it?
+options:
+  - A. A separate private repository starci183/starci-next-data that we fill with placeholder content now and the teacher edits later; the app pulls it into versioned snapshots.
+  - B. Keep the content in the app repository, built into the code and the dev seeds.
+recommendation: A
+recommendationReason: The teacher must be able to change content without a release, and the academy backend already works this way with starci-lab/data.
+outcome: decided
+chosen: A
+reason: 'Owner 2026-11-09: "trò tự viết đi hiện tại data giả chạy dc thôi, xây bộ khung thầy viết ở 1 git khác nhé pull về như starci academy backend", then: "nghe này dữ liệu tự seed rồi push git như starci-academy-backend để làm data mồi hiểu k?". Repository starci183/starci-next-data, private. "just ask k theo starci shop nữa": there is no StarCi Shop sample project.'
+blocks: []
+extensions:
+  localPath: D:/Repositories/starci-next-data
+  placeholders: 'Every placeholder file carries status draft and author ai-placeholder so the teacher can find and replace it: 6 rewritten interview stems, 36 text versions of design and coding questions, agent-lab labs, two tier-2 incidents, 5 outcome paths, the project catalog and the experience catalog.'
+  pull: 'metadata of the academy backend gitmounts.data (repo, path, credential env, no ref = default branch) maps to CONTENT_GIT_URL, CONTENT_GIT_REF, CONTENT_GIT_TOKEN (sealed through `starci app secret`, never a value in a file) and CONTENT_DATASOURCES_DIR (a host bind that survives redeploys); the data repository is CONTENT_DATA_GIT_URL, CONTENT_DATA_GIT_REF, CONTENT_DATA_GIT_TOKEN.'
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Owner clarification relayed by the coordinator.'}

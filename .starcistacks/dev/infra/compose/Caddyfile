@@ -1,0 +1,20 @@
+{
+    admin 127.0.0.1:2019
+    auto_https off
+}
+
+# The dev entry origin, the same routing as the production app host: the identity doors (/api/*) and GraphQL (/graphql) go to the core api,
+# /relay/* (the device socket and the upload GraphQL, prefix stripped, WebSocket upgrade passed through) to the relay app,
+# everything else to the Next app, so the host-only session cookie reaches the doors. Plain http on localhost (a secure context for Chrome).
+:3080 {
+    handle_path /relay/* {
+        reverse_proxy host.docker.internal:3003
+    }
+    @core path /api/* /graphql
+    handle @core {
+        reverse_proxy host.docker.internal:3001
+    }
+    handle {
+        reverse_proxy host.docker.internal:3000
+    }
+}

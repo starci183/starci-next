@@ -1,0 +1,22 @@
+schema: work/functional-requirement@1
+id: fr.projects.prove-concept
+title: Prove the concepts of a milestone in a project
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /projects/{projectId}/{milestone}.
+mainFlow:
+  - The page lists the concepts of the milestone with the evidence slots each needs (test, e2e flow, StarCi probe, teacher reads code) as chips, each pass, fail or pending, marked practising or proved.
+  - The learner points a concept at a code location and at the endpoint the probes aim at, with a sample JSON body.
+  - Results from the machine arrive through the relay port and show as practising. A signed CI run, a server probe or the AI read makes a slot proved.
+  - A concept is proved when every group of its requirement has a passing proof; the milestone is done when every concept with a lesson is proved.
+  - A failing slot shows the reason, the facts, the fixed Socratic question and a link to the Essentials lesson.
+exceptionFlows:
+  - A concept whose lesson is not written shows "thầy đang soạn" and is left out of done (PROJECT_CONCEPT_NOT_READY on a read).
+  - A milestone past the free ones needs Premium (PROJECT_PREMIUM_REQUIRED).
+  - A secret-like excerpt is refused before any provider call (PROJECT_EXCERPT_SECRET).
+postconditions:
+  - Evidence is append-only; where a concept stands is computed from the latest results.
+  - A concept proved in one project counts once for the path.
+composes: [data.projects.project, data.projects.evidence, contract.projects.api]
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

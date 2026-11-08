@@ -1,5 +1,4 @@
-import { defineI18n } from "@starci/next-i18n"
-import type { I18n } from "@starci/next-i18n"
+import { defineI18n, type I18n } from "@starci/next-i18n"
 
 /** The locales every app of the product serves; every catalog of an app has the same keys in each. */
 const LOCALES = ["vi", "en"] as const
@@ -18,5 +17,7 @@ export const DEFAULT_LOCALE: ProductI18n["defaultLocale"] = "vi"
 export const i18n: ProductI18n = defineI18n({
     locales: LOCALES,
     defaultLocale: DEFAULT_LOCALE,
+    // An unprefixed path is always vi: the language changes only through the locale switch, never from Accept-Language or a cookie.
+    localeDetection: false,
     timeZone: "Asia/Ho_Chi_Minh",
 })

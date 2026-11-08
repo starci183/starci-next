@@ -1,0 +1,20 @@
+schema: work/policy-decision@1
+id: decision.review.scheduler
+title: A fixed ladder for cards, the teacher's afterDays for Bản chất retrieval
+state: todo
+activity: idle
+question: How is the next review of an item scheduled?
+options:
+  - A. Fixed ladder for cards (1, 3, 7 days, then doubling up to 180) driven by a four-button self-grade; Bản chất retrieval items fall due on the lesson's authored afterDays.
+  - B. SM-2 or FSRS from the start.
+recommendation: A
+recommendationReason: Research §4.1 MVP ("lịch 1/3/7 ngày"); FSRS needs review history to fit, which a new app does not have. The algorithm sits behind one scheduler interface, so FSRS can replace the ladder later.
+outcome: decided
+chosen: A
+reason: 'Owner 2026-11-08: "theo đề xuất trò từng phần đi".'
+blocks: [sds.review.scheduler]
+extensions:
+  ladder: 'Steps 1, 3, 7, 14, 30, 60, 120, 180 days. Quên (again) goes back to step 0 and the item returns at the end of today''s session. Khó (hard) stays on the step. Nhớ (good) moves one step up. Dễ (easy) moves two steps up.'
+  retrieval: 'A lesson''s retrieval activities fall due at completion + afterDays (1, 7, 21). A result below level 2 schedules one extra attempt after 3 days. A level-2 result closes the item (the next authored afterDays item carries on).'
+  dueDay: Due dates are calendar days in Asia/Ho_Chi_Minh; overdue items sort first, oldest first.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner accepted the research proposal.}

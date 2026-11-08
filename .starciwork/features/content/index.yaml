@@ -1,0 +1,17 @@
+schema: work/feature@1
+id: content
+title: Nội dung từ kho git (gitmount)
+state: todo
+activity: idle
+purpose: The app pulls its content from git the way starci-academy-backend pulls starci-lab/data, so the seed content we write and the content the teacher writes later reach the app without a release.
+decided:
+  - We write the placeholder content ourselves now (status draft, author ai-placeholder) and push it to its own private repository starci183/starci-next-data; the teacher edits the same repository later (decision.content.source).
+  - The app pulls repositories into versioned snapshots `<datasourcesDir>/<sha>/` with a `manifest.json`, then runs each importer at that version; `--dir` and `--data-dir` take local checkouts in development, without any git credential.
+  - Concepts, interview banks, flashcard decks and coding problems stay sourced from starci-lab/data; the content repository adds an interview overlay, the catalogs (projects, agent lab, incidents, experience, outcome paths) and any extra concept folders.
+delivers:
+  - `cli content sync [--dir <content>] [--data-dir <data>] [--only <kinds>]`, the content capability be/src/modules/domain/content, the interview import `--overlay`, and the content repository layout (contract.content.layout).
+excludes:
+  - The GitHub repository and the sealed secret CONTENT_GIT_TOKEN: the owner creates and sets them.
+  - Importers for the catalog kinds (projects, agent lab, incidents, experience, outcome paths): the sync checks and counts them; their modules still read the catalogs built into the code until they are wired to the active snapshot.
+dependsOn: [decision.content.source, contract.content.layout]
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Owner order: build the framework the teacher''s content is pulled by; we write the seed data.'}

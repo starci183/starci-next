@@ -1,0 +1,38 @@
+schema: work/implementation@1
+id: impl.mock-interview.be.interview
+title: Back-end mock interview (banks, sessions, interviewer, whole-session grader, history and readiness doors)
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/interview
+  - role: be
+    path: be/src/features/api/interview
+  - role: be
+    path: be/src/features/cli/interview
+proves:
+  - fr.mock-interview.session
+  - fr.mock-interview.report
+  - fr.mock-interview.calibration
+  - data.mock-interview.question-bank
+  - data.mock-interview.session
+  - sds.mock-interview.content-import
+  - sds.mock-interview.interviewer
+  - sds.mock-interview.grader
+  - contract.mock-interview.api
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/interview
+      --collectCoverageFrom=src/modules/domain/interview/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped unit proof with the managed per-file coverage threshold unchanged at 100; this record remains todo pending green evidence from the harness.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/interview
+    note: Required scoped integration proof of the doors over the OpenRouter fake (session gate, free quota, nothing graded released before the grade, one grading call, saved answer on a provider outage, foreign session not found, quote check on the grader).
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built. Doors: queries interviewOptions, interviewSession, interviewHistory, interviewEvidence, interviewReadiness; mutations startInterview, answerInterview, interviewHint, retryInterviewTurn, submitInterview, abandonInterview, regradeInterview. Tables: interview_banks, interview_questions, interview_sessions, interview_turns (migration InitInterview1796300000000). Importer: cli interview import (mount V1 format, all 85 banks and 994 questions validate; the 36 design and coding questions are skipped), cli interview publish (calibration pre-check, --skip-precheck for a dev stack without a key). Gateway: an interview profile preferring deepseek-v4.1-flash (owner rule: flash only, no fallback).'
+  deferred: 'Rephrasing the opening prompt by the model (the authored prompt is asked as written), the teacher 30-answer sample export, the public evidence projection for a hiring-opted-in learner, and voice.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the back end of the mock interview.}

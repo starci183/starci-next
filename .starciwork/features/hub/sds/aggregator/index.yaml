@@ -1,0 +1,14 @@
+schema: work/sds-component@1
+id: sds.hub.aggregator
+title: Hub aggregator
+state: todo
+activity: idle
+responsibility: Build the hub view from every part's own door, never storing part progress itself.
+interfaces:
+  - 'hub(learner): the active path summary, Hôm nay actions, and per part {progress, counter, experience verified and pending, status}.'
+owners: [be]
+sequence:
+  - 'Read in parallel, each with a short deadline: pathProgress (contract.learning-program.api), reviewToday (contract.review.api), lessonProgress (contract.essentials.api), interviewHistory (contract.mock-interview.api), agentProgress (contract.agentic.api), myExperience (contract.career.api), the streak (sds.hub.streak); and the projects and practice doors when those parts exist.'
+  - A source that times out returns its card as unavailable; the rest still render.
+refs: [data.hub.part, contract.learning-program.api, contract.review.api, contract.essentials.api, contract.mock-interview.api, contract.agentic.api, contract.career.api, sds.hub.streak]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Hub design.}

@@ -1,0 +1,35 @@
+schema: work/implementation@1
+id: impl.commerce.be.payment-rails
+title: Back-end provider payment rails
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/integrations/sepay
+  - role: be
+    path: be/src/modules/integrations/payos
+proves:
+  - integration.commerce.sepay
+  - integration.commerce.payos
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/integrations
+      --collectCoverageFrom=src/modules/integrations/{sepay,payos}/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped payment-rails unit proof with the managed per-file coverage threshold
+      unchanged at 100; this record remains todo pending green evidence. Each integration exposes
+      its own typed client without importing the other provider; purchase owns the unified
+      PaymentRail abstraction.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/payment-rails
+    note: Required scoped payment-rails integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/payment-rails
+    note: Required scoped payment-rails end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

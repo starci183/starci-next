@@ -15,7 +15,7 @@ const BODY = Buffer.from('{"id":"evt_1"}')
 
 const options: HttpSecurityOptions = {
     allowedOrigins: [],
-    rateLimit: { windowMs: 60_000, defaultLimit: 100, strictLimit: 10 },
+    rateLimit: { windowMs: 60_000, defaultLimit: 100, strictLimit: 10, webhookLimit: 10 },
     webhooks: { payments: { secret: new Secret(SECRET), toleranceMs: 300_000 } },
 }
 

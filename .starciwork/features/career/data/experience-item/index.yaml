@@ -1,0 +1,32 @@
+schema: work/data@1
+id: data.career.experience-item
+title: Experience item (a learner's CV-worthy experience, verified by the AI and a reviewer)
+state: todo
+activity: idle
+fields:
+  - {name: itemId / verificationCode, type: 'opaque id, plus a short public code for /verify/{code}', required: true}
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: itemType, type: data.learning-program.experience-catalog itemType, required: true}
+  - {name: subject, type: 'what it is about: lesson id, pattern, project id and milestone id, track, interview session', required: true}
+  - {name: evidence, type: '[{kind, ref, url, proofForm signed-ci|server-probe|graded-session|proved-lesson|judge, at}]', required: true}
+  - {name: aiGrade, type: '{result pass|fail, perCriterion[{criterion, level, evidenceQuote}], draftLine {vi, en}, gradedAt, model profile}', required: false}
+  - {name: line, type: '{vi, en} the line submitted for review (the draft or the learner''s rewording within the template)', required: false}
+  - {name: state, type: 'practising | ai-graded | pending-review | verified | returned | revoked', required: true}
+  - {name: assignee, type: reviewer id while pending-review, required: false}
+  - {name: dueAt, type: SLA deadline while pending-review (Q-CA-4), required: false}
+  - {name: signature, type: '{signerId, signerRole TEACHER|REVIEWER, signedAt}', required: false}
+  - {name: returnCount, type: integer, required: true}
+  - {name: shownPublicly, type: boolean (verified only), required: true}
+invariants:
+  - state verified requires a signature and an aiGrade with result pass.
+  - The line keeps the template's slots; filled slot values must equal the evidence values.
+  - The evidence of a verified item is frozen; new evidence creates a new item or a resubmit after a revoke.
+  - One open item per learner, itemType and subject.
+stateMachine:
+  - practising -> ai-graded (proof-form evidence exists and the AI grade passes; a failing grade stays practising with the AI's feedback)
+  - ai-graded -> pending-review (the learner submits; assigned to a reviewer of the part)
+  - pending-review -> verified (approved and signed)
+  - pending-review -> returned (returned with a note)
+  - returned -> ai-graded (the learner changed the evidence or the line; the AI regrades)
+  - verified -> revoked (with a reason; audit)
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision.}

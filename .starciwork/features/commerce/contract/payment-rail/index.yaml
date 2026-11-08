@@ -1,0 +1,63 @@
+schema: work/contract@1
+id: contract.commerce.payment-rail
+title: Payment rail surface
+state: todo
+activity: idle
+owner: commerce purchase domain
+between:
+  - commerce purchase domain
+  - SePay typed integration client
+  - payOS typed integration client
+surface:
+  - Create checkout from a server-owned purchase and return provider checkout details.
+  - Verify provider confirmation using rail-specific authentication/signature, successful status,
+    purchase reference, amount and currency.
+  - Idempotency identity is (rail, providerRef).
+  - Default rail selection uses the learner last-used rail when available; otherwise SePay is
+    proposed (Q-W2-6).
+  - A valid matching ORDER_PAID after a cancelled or expired order is proposed to grant once and
+    emit an audit/reconciliation event (Q-W2-3).
+  - A delivery that fails the rail's authentication or signature is refused 401 and writes nothing.
+    Every verified delivery is acknowledged 200 {"success": true}, whether it settled, was a
+    duplicate, or could not be applied.
+  - A verified delivery that cannot be applied (unknown order, a second payment of a paid order, a
+    failed purchase, another amount or currency, not reported paid) is recorded once as a
+    confirmation-refused audit event with the reported order code, amount, currency and reason; a
+    SePay TRANSACTION_VOID is recorded as payment-voided; for a paid purchase it also voids the purchase,
+    records premium-revoked and rebuilds the entitlement from the paid purchases that still stand, so exactly that
+    purchase's term is removed (Q-W2-VOID, decided: revoke).
+guarantees:
+  - Browser redirect never grants entitlement
+  - Duplicate callbacks do not duplicate payment or grant
+  - Invalid or mismatched callbacks do not grant
+  - The paid mark, its audit event and the entitlement grant commit in one transaction, so a paid
+    purchase never exists without its grant and a provider retry after any failure settles again.
+  - The purchase domain owns the unified PaymentRail abstraction; each provider integration exposes
+    its own typed client without importing the other provider integration.
+consumerObligations:
+  - Use the returned checkout URL
+  - treat return URL as display only
+  - expose provider callback over public HTTPS
+  - keep provider credentials in server secret configuration
+  - SePay merchant sandbox access and merchant/IPN secrets must be available through sealed custody
+    before provider proof (Q-W2-2).
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence. The purchase owner proves this unified
+      contract; provider-specific client proof belongs to the integration records.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+change:
+  rev: 4
+  kind: revised
+  at: 2026-11-08
+  reason: Security review fixes - SePay form signed in the documented field order, Premium granted in the
+    settlement transaction, verified-but-unappliable deliveries recorded and acknowledged 200, SePay
+    payment status and currency checked, voids recorded; retain open proposed defaults and todo state.

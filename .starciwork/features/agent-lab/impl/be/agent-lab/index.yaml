@@ -1,0 +1,18 @@
+schema: work/implementation@1
+id: impl.agent-lab.be.agent-lab
+title: Back-end agent lab (catalog, quota, doors)
+state: todo
+activity: idle
+repository: be
+owners:
+  - {role: be, path: be/src/modules/domain/agent-lab}
+  - {role: be, path: be/src/features/api/agent-lab}
+proves: [fr.agent-lab.lab, data.agent-lab.track, data.agent-lab.quota, contract.agent-lab.api]
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/agent-lab
+    note: Scoped unit proof; no passed result is claimed.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/agent-lab
+    note: Door proof on the test world; no passed result is claimed.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

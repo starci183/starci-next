@@ -1,11 +1,9 @@
 import { Injectable } from "@nestjs/common"
-import { InjectLogger } from "@modules/platform/logging"
-import type { Logger } from "@modules/platform/logging"
-import { InjectMessageCatalog } from "@modules/platform/i18n"
-import type { Locale, MessageCatalog } from "@modules/platform/i18n"
+import { InjectLogger, type Logger } from "@modules/platform/logging"
+import { InjectMessageCatalog, type Locale, type MessageCatalog } from "@modules/platform/i18n"
 import { isDomainError } from "./domain.error"
 import { InjectErrorsOptions } from "./errors.decorators"
-import type { ErrorDescription, ErrorKind, ErrorParams } from "./errors.contracts"
+import type { ErrorDescription, ErrorKind, ErrorParamValues, ErrorParams } from "./errors.contracts"
 import { ERRORS_ERROR_KINDS, ErrorsErrorCode } from "./errors/errors.error"
 import { ErrorsLogEvent } from "./errors.log-events"
 import type { ErrorsOptions } from "./errors.options"
@@ -35,7 +33,7 @@ export class ErrorsService {
     }
 
     /** The display text of a failure code in `locale`; a code without a catalog entry answers the text of the internal error. */
-    text(code: string, params: ErrorParams, locale: Locale): string {
+    text(code: string, params: ErrorParamValues, locale: Locale): string {
         const key = `errors.${code}`
         const text = this.catalog.get(key, params, locale)
         return text === key ? this.catalog.get(`errors.${ErrorsErrorCode.Internal}`, {}, locale) : text

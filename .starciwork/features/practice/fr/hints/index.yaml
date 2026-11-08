@@ -1,0 +1,16 @@
+schema: work/functional-requirement@1
+id: fr.practice.hints
+title: Open the three-step hint ladder
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner is stuck on a problem and asks for a hint.
+mainFlow:
+  - Step 1 problem analysis, step 2 approach, step 3 related problems; each comes from the teacher's hint block, in the learner's locale.
+  - A step opens only after the one before it (revealPracticeHint) and stays open; opened steps are stored per learner.
+exceptionFlows:
+  - PRACTICE_HINT_OUT_OF_ORDER (409) when a later step is asked first.
+postconditions:
+  - The AI never writes code; no hint is generated. An AI "why" question after Accepted is deferred.
+composes: [data.practice.problem, contract.practice.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

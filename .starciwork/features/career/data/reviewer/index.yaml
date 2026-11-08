@@ -1,0 +1,15 @@
+schema: work/data@1
+id: data.career.reviewer
+title: Reviewer role and assignment
+state: todo
+activity: idle
+fields:
+  - {name: reviewerId, type: identity subject with role TEACHER or REVIEWER (asserted by Keycloak), required: true}
+  - {name: scope, type: '[{part, track?}] the parts (and tracks) the reviewer may sign', required: true}
+  - {name: appointedBy / appointedAt / endedAt, type: 'TEACHER subject and dates', required: true}
+  - {name: capacity, type: open items at once (default 30), required: false}
+  - {name: conflicts, type: learner ids the reviewer must not review, required: false}
+invariants:
+  - Only TEACHER appoints or ends a reviewer; a role from the client grants nothing (contract.identity.session-contract guarantees).
+  - Assignment picks a reviewer whose scope covers the item's part, not the learner, not in conflicts, and with spare capacity; otherwise the teacher's queue.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision (reviewer the teacher appoints).}

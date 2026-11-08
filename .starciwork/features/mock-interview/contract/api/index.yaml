@@ -1,0 +1,33 @@
+schema: work/contract@1
+id: contract.mock-interview.api
+title: Mock interview API
+state: todo
+activity: idle
+owner: mock-interview
+between: [mock-interview, the app's interview screens, learning-program path progress, career profile, the starci CLI]
+surface:
+  - {name: options, kind: GraphQL query, path: /graphql, request: 'interviewOptions(input: {locale, track?})', response: '{tracks[{id, title}], banks[{bankId, family, title, difficulty, tiers[], languages[], questionCount, freeQuestionCount}], access {isPremium, freeSessionsLeftThisMonth, resetsAt}}', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: start, kind: GraphQL mutation, path: /graphql, request: 'startInterview(input: {track, bankIds?, tier, locale, language?, clientRequestId})', response: '{sessionId, status, length, position, turns[the first interviewer turn]}; idempotent on clientRequestId', errors: [401 IDENTITY_SESSION_REQUIRED, 403 INTERVIEW_PREMIUM_REQUIRED, 409 INTERVIEW_SESSION_ACTIVE, 404 INTERVIEW_POOL_EMPTY, 429 INTERVIEW_AI_LIMIT_REACHED, 400 INTERVIEW_SETUP_INVALID]}
+  - {name: answer, kind: GraphQL mutation, path: /graphql, request: 'answerInterview(input: {sessionId, position, revision, text})', response: '{saved {turnId}, next: interviewer turn {kind followUp|probe|prompt|done, text, position} | null, status}; the candidate turn is saved even when next is null because the interviewer failed (failureCode)', errors: [401 IDENTITY_SESSION_REQUIRED, 404 INTERVIEW_SESSION_NOT_FOUND, 409 INTERVIEW_REVISION_CONFLICT, 409 INTERVIEW_SESSION_CLOSED, 400 INTERVIEW_ANSWER_INVALID, 429 INTERVIEW_AI_LIMIT_REACHED]}
+  - {name: hint, kind: GraphQL mutation, path: /graphql, request: 'interviewHint(input: {sessionId, position})', response: '{turnId, text, hintsUsed, hintsLeft}', errors: [404 INTERVIEW_SESSION_NOT_FOUND, 404 INTERVIEW_HINT_NONE_LEFT, 409 INTERVIEW_SESSION_CLOSED]}
+  - {name: retry-turn, kind: GraphQL mutation, path: /graphql, request: 'retryInterviewTurn(input: {sessionId})', response: the interviewer turn the last failure skipped, errors: [404 INTERVIEW_SESSION_NOT_FOUND, 409 INTERVIEW_NOTHING_TO_RETRY, 429 INTERVIEW_AI_LIMIT_REACHED]}
+  - {name: submit, kind: GraphQL mutation, path: /graphql, request: 'submitInterview(input: {sessionId})', response: '{sessionId, status grading|graded|failed, failureCode?}', errors: [404 INTERVIEW_SESSION_NOT_FOUND, 409 INTERVIEW_SESSION_CLOSED, 400 INTERVIEW_NO_ANSWER]}
+  - {name: abandon, kind: GraphQL mutation, path: /graphql, request: 'abandonInterview(input: {sessionId})', response: '{sessionId, status abandoned}', errors: [404 INTERVIEW_SESSION_NOT_FOUND]}
+  - {name: session, kind: GraphQL query, path: /graphql, request: 'interviewSession(input: {sessionId})', response: '{sessionId, setup, status, questions[{position, bankTitle, tier, kind, prompt, givenCode?, diagram?}], turns[], scorecard? (only when graded, with idealAnswer per question released now), failureCode?}', errors: [404 INTERVIEW_SESSION_NOT_FOUND]}
+  - {name: retry-grade, kind: GraphQL mutation, path: /graphql, request: 'regradeInterview(input: {sessionId})', response: '{status grading|graded|failed, failureCode?}', errors: [404 INTERVIEW_SESSION_NOT_FOUND, 409 INTERVIEW_NOTHING_TO_RETRY]}
+  - {name: history, kind: GraphQL query, path: /graphql, request: 'interviewHistory(input: {track?, first?, after?})', response: '{items[{sessionId, track, tier, startedAt, status, overallScore?, verdict?}], trend[{track, tier, scores[]}], pageInfo}', errors: []}
+  - {name: evidence, kind: GraphQL query, path: /graphql, request: 'interviewEvidence(input: {learnerId?})', response: '[{track, family, tier, bestScore, verdict, sessionId, gradedAt}]; learnerId other than the caller is allowed only to the career profile''s public projection for an opted-in learner', errors: [404 INTERVIEW_EVIDENCE_HIDDEN]}
+  - {name: import-errors, kind: content import, path: n/a, request: bank import (CLI), response: one immutable version per bank, errors: [409 INTERVIEW_BANK_IMMUTABLE, 400 INTERVIEW_BANK_INVALID, 400 INTERVIEW_CALIBRATION_FAILED]}
+extensions:
+  deviations: 'answerInterview also takes skip (a skipped question is stored as a skip turn and advances without an AI call). interviewReadiness(input: {track, tier}) is added for the hiring layer. interviewEvidence takes no input (own evidence only; the public projection for an opted-in learner waits for the career profile). startInterview answers the whole session view. Statuses use the platform kinds only.'
+  fairUse: 'The AI calls of the interview (interviewer turns the model wrote and gradings) count against INTERVIEW_AI_DAILY_LIMIT per UTC day, the same concept as ATTEMPT_COACH_DAILY_LIMIT, and a failed call costs nothing. A turn over the cap is stored first and then refused with INTERVIEW_AI_LIMIT_REACHED.'
+guarantees:
+  - Statuses use only the platform error kinds (400, 401, 403, 404, 409, 429, 500, 503); clients branch on the stable error code, which carries the INTERVIEW_ prefix (or IDENTITY_ for the session).
+  - Every door needs a session. Premium or the free monthly quota is checked before a session is created and before any AI call.
+  - No response before grading carries idealAnswer, rubric, checklist, keywords, ownershipSignal, unasked hints or exampleResults.
+  - A candidate answer is stored before any AI call; a resend of the same position and revision answers the stored turn; the same revision with other text is INTERVIEW_REVISION_CONFLICT.
+  - 'A failed AI step is not an error of the call: the turn or session comes back with a failureCode: INTERVIEW_COACH_UNCONFIGURED (503), INTERVIEW_COACH_UNAVAILABLE (503) or INTERVIEW_COACH_INVALID (500).'
+consumerObligations:
+  - On INTERVIEW_PREMIUM_REQUIRED show the locked state and route to /premium; branch on the code, never on the status.
+  - Never cache a scorecard client-side as the source of truth.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A GraphQL doors.}

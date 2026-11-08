@@ -2,6 +2,42 @@ schema: work/catalog@1
 id: "starci-next"
 description: The application's product feature catalog.
 features:
+  - id: identity
+    directory: features/identity
+    description: Sign-in and sign-out for learners through Keycloak.
   - id: system-health
     directory: features/system-health
     description: The liveness probe the platform asks before it routes traffic to the app.
+  - id: commerce
+    directory: features/commerce
+    description: Premium monthly and yearly subscriptions through SePay and payOS, with verified payment and learner entitlements.
+  - id: essentials
+    directory: features/essentials
+    description: Bản chất (Essentials), the industry-knowledge part of the harness; MVP of seven lessons studied in the browser.
+  - id: practice
+    directory: features/practice
+    description: 'Luyện code: the teacher''s 96 coding problems in 5 languages, judged on a self-hosted Judge0 behind a queue, with a three-step hint ladder.'
+  - id: incidents
+    directory: features/incidents
+    description: 'Sự cố list: the lessons that have a tier-2 incident, shown as Sắp có until one is authored; no runner yet.'
+  - id: agent-lab
+    directory: features/agent-lab
+    description: 'Agent lab: three tool tracks and the seven mindset concepts, with lab steps the teacher writes and a daily model-call quota.'
+  - id: career
+    directory: features/career
+    description: 'Verified experience (AI chấm, thầy ký từng mục): experience items, the teacher and reviewer queue, revoke and the public verification page.'
+  - id: mock-interview
+    directory: features/mock-interview
+    description: "Phỏng vấn thử: a text interview over the teacher's banks with no feedback in between, graded once at the end, with hiring readiness and one streak action."
+  - id: review
+    directory: features/review
+    description: "Ôn tập: one daily queue of the teacher's flashcards and Bản chất retrieval questions, recalled before the flip and self-graded on a fixed ladder."
+  - id: hub
+    directory: features/hub
+    description: "Học: the hub at / with the one app-wide streak (meaningful actions only), weekly goal, freezes, per-shard counters and the producer port every learning shard calls."
+  - id: projects
+    directory: features/projects
+    description: "Dự án: many projects of any topic and kind; concept milestones proved by tagged tests, e2e flows, StarCi probes and the AI reading the code, practice through the relay port and proof through signed CI, server probes or the AI read."
+  - id: content
+    directory: features/content
+    description: "Nội dung từ kho git (gitmount): the app pulls the content repository and the data repository into versioned snapshots and runs each importer at that version."

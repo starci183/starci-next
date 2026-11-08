@@ -1,0 +1,20 @@
+schema: work/data@1
+id: data.hub.streak
+title: Unified streak, weekly goal, freezes and per-part counters
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: actions, type: '[{actionId (idempotency key), partId, kind review-due-done|graded-attempt|project-run|interview-submitted, sourceRef, day, at}]', required: true}
+  - {name: days, type: '[{day, counted, parts[], freezeUsed}]', required: true}
+  - {name: streak, type: '{current, longest, lastCountedDay}', required: true}
+  - {name: weeklyGoal, type: '{activeDays 2..7, weekStart Monday}', required: true}
+  - {name: freezes, type: '{held 0..2, grantedThisWeek, earnedThisWeek}', required: true}
+  - {name: partCounters, type: '[{partId, current, longest, activeDaysLast30}]', required: true}
+  - {name: badges, type: achievement slugs earned (streakDays thresholds), required: false}
+  - {name: reminder, type: '{enabled, localTime}', required: false}
+invariants:
+  - An action is stored once per actionId; a day is closed once.
+  - Nothing in this record is read by the experience engine.
+  - longest never decreases; a revoked or failed action that was stored still counts (it was real work), but a deleted duplicate does not.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'One streak; replaces the streak fields of data.review.habit.'}

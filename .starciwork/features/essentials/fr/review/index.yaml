@@ -1,0 +1,17 @@
+schema: work/functional-requirement@1
+id: fr.essentials.review
+title: Schedule the retrieval items when a lesson completes
+state: todo
+activity: idle
+actors: [learner]
+trigger: A Bản chất lesson completes, that is every required activity of the lesson version the learner studies has a graded attempt.
+mainFlow:
+  - The attempt capability tells the review capability after each graded attempt (ReviewScheduleService.onActivityGraded); review checks whether the lesson is complete.
+  - On completion review schedules the lesson's retrieval activities as review items due 1, 7 and 21 days later (the authored afterDays); scheduling again changes nothing.
+  - Reading the inbox, answering and grading the items belong to the Ôn tập feature (fr.review.daily, fr.review.retrieval), not to Bản chất.
+exceptionFlows:
+  - A lesson without retrieval activities schedules nothing.
+postconditions:
+  - Each retrieval item exists once per learner, lesson version and activity.
+composes: [data.essentials.progress, sds.review.scheduler]
+change: {rev: 2, kind: changed, at: '2026-11-08', reason: 'Review moved to the Ôn tập feature (features/review); this record keeps only the producer part that schedules items when a lesson completes.'}

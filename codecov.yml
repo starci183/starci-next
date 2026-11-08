@@ -16,6 +16,7 @@ coverage:
           - "be/src/modules/integrations/*/**"
           - "be/src/modules/platform/*/**"
           - "be/src/modules/projections/*/**"
+          - "packages/next-cli/src/**"
     patch:
       default:
         target: 100%
@@ -25,6 +26,7 @@ coverage:
           - "be/src/modules/integrations/*/**"
           - "be/src/modules/platform/*/**"
           - "be/src/modules/projections/*/**"
+          - "packages/next-cli/src/**"
 component_management:
   default_rules:
     statuses:
@@ -38,15 +40,45 @@ component_management:
     - component_id: core
       name: core
       paths:
-        - "be/src/modules/domain/identity/**"
+        - "be/src/modules/domain/agent-lab/**"
+        - "be/src/modules/domain/attempt/**"
+        - "be/src/modules/domain/career/**"
+        - "be/src/modules/domain/hub/**"
+        - "be/src/modules/domain/incident/**"
+        - "be/src/modules/domain/interview/**"
+        - "be/src/modules/domain/lesson/**"
         - "be/src/modules/domain/liveness/**"
         - "be/src/modules/domain/note/**"
+        - "be/src/modules/domain/notification/**"
+        - "be/src/modules/domain/path/**"
+        - "be/src/modules/domain/practice/**"
+        - "be/src/modules/domain/project/**"
+        - "be/src/modules/domain/purchase/**"
+        - "be/src/modules/domain/review/**"
+        - "be/src/modules/domain/streak/**"
+        - "be/src/modules/integrations/ai-gateway/**"
+        - "be/src/modules/integrations/judge0/**"
+        - "be/src/modules/integrations/payos/**"
+        - "be/src/modules/integrations/probe/**"
+        - "be/src/modules/integrations/sepay/**"
+    - component_id: relay
+      name: relay
+      paths:
+        - "be/src/modules/domain/relay/**"
     - component_id: platform
       name: platform
       paths:
-        - "be/src/modules/integrations/*/**"
+        - "be/src/modules/domain/content/**"
+        - "be/src/modules/domain/entitlement/**"
+        - "be/src/modules/domain/identity/**"
+        - "be/src/modules/integrations/keycloak/**"
+        - "be/src/modules/integrations/mail/**"
         - "be/src/modules/platform/*/**"
         - "be/src/modules/projections/*/**"
+    - component_id: package-next-cli
+      name: package-next-cli
+      paths:
+        - "packages/next-cli/src/**"
 ignore:
   - "be/**/*.args.ts"
   - "be/**/*.builder.ts"
@@ -141,3 +173,9 @@ ignore:
   - "be/tsconfig.build.json"
   - "be/tsconfig.json"
   - "fe/**"
+  - "packages/next-cli/src/workbench/**"
+  - "packages/next-cli/src/public/**"
+  - "packages/next-cli/src/client/**"
+  - "packages/next-cli/src/**/index.ts"
+  - "packages/next-cli/src/**/*.types.ts"
+  - "packages/next-cli/src/**/*-types.ts"

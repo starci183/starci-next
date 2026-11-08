@@ -1,0 +1,15 @@
+schema: work/functional-requirement@1
+id: fr.incidents.list
+title: See the lessons that have an incident
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /incidents.
+mainFlow:
+  - The page groups lessons by group and topic and shows each row with title, difficulty, minutes and a status (available or Sắp có).
+exceptionFlows:
+  - An empty authored set shows the full structure with every row Sắp có.
+postconditions:
+  - Nothing is graded here; incidents later count as the Sự cố shard of the streak and may add CV lines (decision.program.structure).
+composes: [data.essentials.lesson, contract.incidents.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

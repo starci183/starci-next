@@ -1,10 +1,13 @@
 import type { CredentialPrincipal } from "./credential.contracts"
+import type { IdentityPrincipal } from "./session.contracts"
 
 declare module "express-serve-static-core" {
     /** The request carries what the credential guard established. */
     interface Request {
         /** The identity `CredentialGuard` authenticated on a door marked `@Credential`; never a session principal. */
         credentialPrincipal?: CredentialPrincipal
+        /** Verified durable session assertions established afresh by AuthGuard. */
+        identityPrincipal?: IdentityPrincipal
     }
 }
 

@@ -1,0 +1,28 @@
+schema: work/ui-screen@1
+id: ui.essentials.lesson
+title: Lesson screen (one template for every lesson)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /essentials/{topic}/{lesson}?phase=&lang=&provider=
+routeParent: /essentials/{topic}
+surface: Three columns. Left is the phase rail and outcome bars; centre is the phase content with a 3D phase illustration; right is Hỏi StarCi and references.
+persona: learner
+ui:
+  rule: One component renders every lesson from data; no lesson has its own screen.
+  header: Breadcrumb Kiến thức ngành / category / lesson; code language picker (only languages the lesson has; others shown as "đang soạn"); cloud provider picker for cloud lessons; the Premium badge.
+  phases:
+    - overview: outcomes, prerequisites, six phase cards with their images, start button.
+    - challenge: context, the teacher's question, the answer box, then per-criterion feedback marked as diagnostic.
+    - predict: fixture, question, options; explanations after choosing.
+    - explore: the state row, current observation, action buttons, reset, then the debrief question at the success state.
+    - explain: tabs per theory section.
+    - apply: the four-step lab (goal, steps with status, code with the break line highlighted, run tests, break or restore, failing test expected vs actual, explanation, submit), then the transfer exercise, then the incident card.
+    - reflect: same rubric as phase 1, before and after per criterion.
+    - review: due items with their days.
+  locked: Without Premium every phase after challenge shows the 3D teacher, what Premium unlocks, prices and a link to the plans.
+  art: The generic 3D set (teacher-3d, stage-map, stage-ask, stage-predict-run, stage-what-breaks, stage-explain, stage-fix-code, stage-interview, stage-prove, stage-remember) in flows/lesson-art-3d, made with Codex imagegen.
+direction: 'canvas https://claude.ai/artifact/Xhn3hEGbmxnXUmEgemj6Tx, page Template bài học, component ConceptLesson.dc.html, version 12; owner approved 2026-11-08 ("Duyệt template")'
+assets: []
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: Owner approved the template; route parent /essentials.}

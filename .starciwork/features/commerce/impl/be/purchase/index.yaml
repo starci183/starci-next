@@ -1,0 +1,41 @@
+schema: work/implementation@1
+id: impl.commerce.be.purchase
+title: Back-end Premium purchase lifecycle
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/purchase
+  - role: be
+    path: be/src/features/api/commerce
+proves:
+  - br.commerce.premium-subscription
+  - data.commerce.purchase
+  - decision.commerce.commercial-offers
+  - decision.commerce.subscription-policy
+  - fr.commerce.choose-plan
+  - fr.commerce.pay
+  - fr.commerce.renew
+  - contract.commerce.payment-rail
+  - sds.commerce.payments
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/purchase
+      --collectCoverageFrom=src/modules/domain/purchase/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped purchase unit proof with the managed per-file coverage threshold unchanged at
+      100; this record remains todo pending green evidence. Purchase owns the unified PaymentRail
+      abstraction and adapts the independent provider clients.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/commerce/purchase
+    note: Required scoped purchase integration proof; no passed result is claimed.
+  - required: true
+    command: npm run test:e2e -- src/tests/e2e/commerce/purchase
+    note: Required scoped purchase end-to-end proof; no passed result is claimed.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.

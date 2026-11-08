@@ -1,0 +1,26 @@
+schema: work/functional-requirement@1
+id: fr.mock-interview.session
+title: Take a mock interview
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /interview, picks a track, tier and code language, and chooses Bắt đầu phỏng vấn.
+mainFlow:
+  - The server checks the session and Premium, or the free quota for this month, then draws the questions. Technical questions come from the track's banks at the chosen tier (limited to the learner's studied modules when known); the last question is behavioural from mock-interview-eq at the same tier. A free session uses only isPremium false questions.
+  - The room shows the interviewer's first prompt in the chosen locale and code language; the interviewer may rephrase it, as the README's anti-gaming rule allows. For a question with givenCode or a diagram, they show above the answer box.
+  - The learner writes an answer and sends it. The server stores it first, then the interviewer replies with a follow-up (an authored followUp or a probe when the answer is vague; for behavioural, a STAR probe such as "cụ thể bạn đã làm gì?") or moves to the next question. There are at most two follow-ups per question.
+  - The learner may ask for a hint (Q-MI-3) or skip a question; both are recorded.
+  - After the last question the learner submits. The session is graded once and the report opens when the scorecard is stored (fr.mock-interview.report).
+exceptionFlows:
+  - Without Premium, after this month's free session, the start is refused with INTERVIEW_PREMIUM_REQUIRED and the plans page is offered; no AI call is made.
+  - Over the fair-use cap, the start or a turn is refused with INTERVIEW_AI_LIMIT_REACHED (429) and the learner is told when to come back; the transcript stays.
+  - Interviewer unavailable (deadline or provider failure), the answer stays saved and the room shows "thử lại"; a retry asks for the reply again without a second answer.
+  - Not enough questions at the chosen tier and filter, the start is refused with INTERVIEW_POOL_EMPTY and suggests another tier.
+  - An active session already exists, the start offers to resume it or abandon it (INTERVIEW_SESSION_ACTIVE).
+  - Leaving the room keeps the session active; returning resumes at the same turn. After 60 minutes idle it is abandoned.
+  - Ending early with at least one answer submits the answered questions only; with none, the session is abandoned.
+postconditions:
+  - The session holds every turn in order, and a submitted session is queued for grading.
+  - No grading data was sent to the browser or the interviewer.
+composes: [br.mock-interview.interview, data.mock-interview.session, data.mock-interview.question-bank, sds.mock-interview.interviewer, contract.mock-interview.api, ui.mock-interview.home, ui.mock-interview.room]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A main flow.}

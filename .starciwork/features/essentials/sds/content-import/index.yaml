@@ -1,0 +1,21 @@
+schema: work/sds-component@1
+id: sds.essentials.content-import
+title: Import concepts from starci-lab/data and validate before publishing
+state: todo
+activity: idle
+responsibility: Turn concepts/ V2 folders (and later converted V1 lessons) into immutable lesson versions, refusing anything incomplete, and expose only allowlisted public projections.
+interfaces:
+  - 'Input: a git ref of github.com/starci-lab/data (origin/main), its concepts/ folders and the category map.'
+  - 'Output: validated lesson versions, public projections per locale, and server-only grading data.'
+owners: [be]
+sequence:
+  - Fetch the ref read-only. Parse each concept with the @starci/seperator field format (root vi.md/en.md and sections/*/vi.md, en.md), keeping raw bytes and their hashes.
+  - "Validate before publishing; any failure blocks publication and names the source path and field: every activity id, outcome id and transition id resolves; every activity has a rubric or a deterministic answer; every simulation reaches a success state from its initial state; the workspace tests pass; every language workspace yields the same results for the base code and for the lab break; locales en and vi have the same structural ids; references cite their V1 sources."
+  - Store the whole activity objects server-side. Build the public projection by explicit allowlist, with no rubric expectedEvidence, no answer, no option isCorrect or explanation and no hidden mutant.
+  - An identical version is a no-op. Changed bytes under the same version are refused. A failed import leaves the previous version live.
+  - A CLI reports counts, versions and hashes, never answers. `cli lessons import --dir <concepts directory> --ref <label> [--only <folders>]` logs one line per folder and fails after all folders were tried when one is refused or invalid.
+  - "MVP: the version is the ref label and the SHA-256 of the source bytes is stored beside it; each folder is stored in one transaction that supersedes the live version, with a unique index of one published version per lesson. The workspace tests, the language parity and the V1 citation checks wait for their lessons."
+refs: [decision.essentials.content-format, data.essentials.lesson]
+extensions:
+  carriedFrom: sds.lessons.content-import (immutability, allowlist projection, atomic publish)
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Import from concepts/ V2 instead of byte-preserved V1 lessons.}

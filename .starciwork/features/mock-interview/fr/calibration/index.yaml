@@ -1,0 +1,17 @@
+schema: work/functional-requirement@1
+id: fr.mock-interview.calibration
+title: Calibrate AI grading against the teacher
+state: todo
+activity: idle
+actors: [teacher (owner), operator]
+trigger: A bank is imported (automatic pre-check), or 30 graded learner answers exist for the calibration sample.
+mainFlow:
+  - On import, the grader scores the five exampleResults answers of every technical question; a bank whose order or scores fall outside decision.mock-interview.calibration is not published and the CLI names the question.
+  - The operator exports 30 anonymised graded answers (no learner id or email) without the AI's grade; the teacher grades each checklist item.
+  - The CLI compares the two and reports agreement per bank, tier and family; below 80%, no new bank is widened beyond the MVP until the rubric or the prompt is fixed.
+exceptionFlows:
+  - Fewer than 30 graded answers, the report states the count and is marked preliminary.
+postconditions:
+  - The calibration result is stored with the bank versions and the model profile it measured.
+composes: [decision.mock-interview.calibration, sds.mock-interview.grader, data.mock-interview.question-bank]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Q6 decided.}

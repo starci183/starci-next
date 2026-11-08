@@ -1,0 +1,21 @@
+schema: work/functional-requirement@1
+id: fr.mock-interview.report
+title: Read the scorecard, study the gaps and retake
+state: todo
+activity: idle
+actors: [learner]
+trigger: A submitted session finishes grading, or the learner opens a past session from the history.
+mainFlow:
+  - The report shows overallScore, the verdict, the technical and behavioural pillars apart, attribute scores, and per question its score, the checklist items covered and missed (critical ones marked), the quoted evidence and the hints used.
+  - Strengths and gaps are listed; each gap links to the Bản chất topic or lesson of the bank's moduleRefs, and to the matching review deck (feature review).
+  - After grading, and only then, each question shows the teacher's idealAnswer as "câu trả lời mạnh hơn" with notes on what the learner's answer missed.
+  - Phỏng vấn lại starts a new session with the same setup and different questions where the pool allows; the history shows the score trend per track and tier.
+  - The best score per family, tier and track becomes interview evidence for the path progress and the career profile.
+exceptionFlows:
+  - Grading failed (INTERVIEW_COACH_UNAVAILABLE, INTERVIEW_COACH_INVALID, INTERVIEW_COACH_UNCONFIGURED), the report says "chưa chấm được", keeps the transcript and offers retry; a retry never re-asks the learner.
+  - Grading in progress, the report shows the transcript with a grading state and updates when it is done.
+  - A bank that was superseded, the report still uses the version the session was graded against.
+postconditions:
+  - Gaps link only to lessons and decks that exist; a missing mapping shows the topic name without a link, never an invented lesson.
+composes: [br.mock-interview.interview, data.mock-interview.session, sds.mock-interview.grader, contract.mock-interview.api, ui.mock-interview.report]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A report flow.}

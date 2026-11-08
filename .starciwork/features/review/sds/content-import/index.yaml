@@ -1,0 +1,23 @@
+schema: work/sds-component@1
+id: sds.review.content-import
+title: Import flashcard decks from starci-lab/data (mount V1 format) and link Bản chất retrieval items
+state: todo
+activity: idle
+responsibility: Turn courses/*/flashcard-decks into immutable deck versions, and expose the retrieval activities of published Bản chất lessons as review items.
+interfaces:
+  - 'Input: a git ref of github.com/starci-lab/data (origin/main), read-only; the track map.'
+  - 'Output: deck versions with public fronts and hidden backs per locale; retrieval items derived from data.essentials.lesson.'
+  - 'CLI: cli review import --dir <data checkout> --ref <label> [--only <deckId>]; prints counts, versions and hashes, never answers.'
+owners: [be]
+sequence:
+  - 'Read the mount V1 format shared with sds.mock-interview.content-import: "# field" lines with <!-- @starci/seperator --> around each value, "## n" list items; CRLF and LF accepted.'
+  - 'Deck layout: courses/<course>/flashcard-decks/<n>-<deck>/{vi,en}.md holds sortIndex, title, description, difficulty and moduleRefs[]. cards/<n>-card/{vi,en}.md holds sortIndex, isPremium, question, level junior|middle|senior|staff, tags[], langs (optional, one code language) and answer, a markdown block with :::muted section headers and cloze terms {{cN::term::distractor1,distractor2}}.'
+  - Parse cloze terms into {n, term, distractors[]}; the public front keeps none of them; the stored back keeps the original markdown.
+  - Validate per data.review.item invariants; a failure blocks that deck and names the path and field.
+  - Store each deck in one transaction that supersedes the live version; an identical version is a no-op; changed bytes under the same version are refused (REVIEW_DECK_IMMUTABLE).
+  - 'Retrieval items are not imported here: for each published lesson (sds.essentials.content-import), its activities of kind retrieval (responseKind written-explanation, evaluationMethod ai-rubric, afterDays) become review items by reference.'
+extensions:
+  trackMap: 'Proposed. backend-fullstack uses Fullstack decks 0..14. devops-sre uses DevOps decks 0..14. system-design-senior uses System Design decks 0..14. ai-engineer uses Fullstack decks on AI and integrations where tagged, plus Bản chất ai retrieval; it is thin, see gap.learning-program.ai-interview-bank. founder uses Fullstack 0, 1, 2, 14 and System Design 0.'
+  note: 'Deck moduleRefs use the bare module slug (e.g. nestjs-core-and-request-lifecycle), while interview banks use the numbered folder (0-nestjs-core-and-request-lifecycle); the importer normalises both to the bare slug.'
+refs: [data.review.item, sds.essentials.content-import, data.essentials.lesson]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Source format read from starci-lab/data 231d8cc57.}

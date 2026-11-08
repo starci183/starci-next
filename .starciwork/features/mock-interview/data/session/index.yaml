@@ -1,0 +1,31 @@
+schema: work/data@1
+id: data.mock-interview.session
+title: Interview session, its transcript and its scorecard
+state: todo
+activity: idle
+fields:
+  - {name: sessionId, type: opaque id, required: true}
+  - {name: learnerId, type: learner reference (identity subject), required: true}
+  - {name: track, type: outcome path id (journey.learning-program.*), required: true}
+  - {name: setup, type: '{bankIds[], tier, locale vi|en, language (code language), length 3|5, access free|premium}', required: true}
+  - {name: questions, type: '[{position, questionId, bankVersion, bodyLanguage}] drawn at start and fixed for the session', required: true}
+  - {name: turns, type: '[{turnId, position, role interviewer|candidate, kind prompt|followUp|probe|hint|answer|skip, content, revision, createdAt}]', required: true}
+  - {name: status, type: 'active | submitted | grading | graded | failed | abandoned', required: true}
+  - {name: scorecard, type: the decision.mock-interview.grading scorecard, required: false}
+  - {name: failureCode, type: stable code when grading failed, required: false}
+  - {name: gradedBy, type: 'model profile and model id (opaque, for calibration); never shown as credits', required: false}
+  - {name: startedAt / submittedAt / gradedAt, type: UTC timestamps, required: true}
+  - {name: freeMonth, type: 'YYYY-MM in Asia/Ho_Chi_Minh when access is free', required: false}
+invariants:
+  - A candidate turn is persisted before the interviewer or the grader is called; a resend with the same position and revision is a no-op, and the same revision with other text is refused.
+  - The questions of a session are fixed at start; the version the session started with is the one it is graded against.
+  - At most one active session per learner; starting another needs the active one submitted or abandoned.
+  - At most one free session per learner per freeMonth, counted when the session is created.
+  - The scorecard is stored before status becomes graded; a failed grading keeps the transcript and allows a retry.
+  - An active session with no candidate turn for 60 minutes becomes abandoned; an abandoned free session still counts for its month.
+stateMachine:
+  - active -> submitted (last question answered or the learner ends early with at least one answer)
+  - active -> abandoned (60 minutes idle, or the learner abandons it)
+  - submitted -> grading -> graded
+  - grading -> failed -> grading (explicit retry)
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Session entity for wave A.}

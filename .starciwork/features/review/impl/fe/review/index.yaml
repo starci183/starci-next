@@ -1,0 +1,24 @@
+schema: work/implementation@1
+id: impl.review.fe
+title: Front-end Ôn tập (/review, /review/session, /review/decks)
+state: todo
+activity: idle
+repository: fe
+owners:
+  - role: fe
+    path: fe/apps/app/src/components/blocks/ReviewToday
+  - role: fe
+    path: fe/apps/app/src/components/blocks/ReviewSession
+  - role: fe
+    path: fe/apps/app/src/components/blocks/ReviewDecks
+proves:
+  - ui.review.today
+  - ui.review.session
+  - ui.review.decks
+requiresProof:
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built, not yet walked in the UI. Gaps: no 7-day forecast (reviewToday does not return one); retrieval items are self-graded after the written answer.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The screens of the Ôn tập shard.}

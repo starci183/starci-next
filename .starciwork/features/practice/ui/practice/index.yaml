@@ -1,0 +1,18 @@
+schema: work/ui-screen@1
+id: ui.practice.practice
+title: Luyện code
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /practice
+routeParent: app
+surface: "/practice lists the patterns (locks for free learners); /practice/patterns/{patternId} lists the problems; /practice/{slug} is the solve screen of the canvas screens practice and practice-ran."
+persona: learner
+ui:
+  - Problem panel, five-language select, plain textarea editor with a local draft, Run and Submit, result with per-test rows and the hint ladder.
+  - Locked, rate-limited, judge-unavailable and still-running states branch on stable error codes.
+direction: Program.dc.html screens practice and practice-ran
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

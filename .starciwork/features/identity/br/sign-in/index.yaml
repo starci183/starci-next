@@ -1,0 +1,24 @@
+schema: work/business-rule@1
+id: br.identity.sign-in
+title: Identity is established only by the backend after Keycloak verifies the learner
+state: todo
+activity: idle
+statements:
+  - A learner signs in on StarCi's own screen with email or username and a password, or with Facebook or GitHub. Keycloak checks the credentials behind the backend and the learner never sees a Keycloak page.
+  - A password sign-in completes only after the 6-digit code sent to the account's email is entered (Q-A3, as Academy).
+  - Access is granted only after the backend verifies Keycloak's answer and stores a session for the verified subject; no learner or operator role is required.
+  - Roles come only from Keycloak's verified token claims; anything the client sends grants nothing. PREMIUM is the commerce entitlement, not a role; author-editor is an operator role outside sign-in.
+  - Refusals are generic and recoverable and never reveal whether an account exists.
+acceptance:
+  - Given a registered, verified learner, when the right password and then the right code are entered, then a learner session exists.
+  - Given a wrong password, when sign-in is submitted, then no challenge is created and the refusal does not say which part was wrong.
+  - Given a learner choosing Facebook or GitHub, when the provider approves, then a learner session exists without a Keycloak page being shown.
+  - Given a client-supplied role or entitlement, when identity is evaluated, then it grants no authority.
+authorityRefs: [decision.identity.auth-model]
+appliesTo: [fr.identity.sign-in, fr.identity.sign-in-social, fr.identity.sign-up, fr.identity.forgot-password, fr.identity.sign-out]
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Verification, challenge, role provenance and refusal behaviour.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'decision.identity.auth-model B (owner): Academy-style sign-in with Keycloak hidden behind the backend.'}
+extensions: {}

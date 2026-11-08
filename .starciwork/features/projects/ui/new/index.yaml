@@ -1,0 +1,17 @@
+schema: work/ui-screen@1
+id: ui.projects.new
+title: Projects new
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /projects/new
+routeParent: /projects
+surface: A form for the name, the topic, language and stack of the learner, the agent tool for an agent, the repository address; after the create the CI secret is shown once.
+persona: learner
+ui:
+  - Vietnamese and English copy with the same keys; branch on stable error codes.
+direction: Program.dc.html screen project
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

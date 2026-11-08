@@ -1,0 +1,26 @@
+schema: work/functional-requirement@1
+id: fr.identity.sign-up
+title: Create an account with email and password
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens Đăng ký, enters email, password (6 to 256 characters) and its confirmation, accepts the terms and chooses Đăng ký.
+mainFlow:
+  - The browser checks that the two passwords match and that the terms are accepted. The backend validates again.
+  - The backend creates the user in Keycloak through the admin API (username = email, unless a 3 to 100 character username is given), unverified. If the user exists but is not verified, it reuses that user.
+  - The backend opens a sign-up challenge (6-digit email code, 10 minutes, 5 attempts) and sends the code.
+  - On the right code it marks the email verified in Keycloak, signs the learner in with the password grant, creates the local learner and establishes the session.
+exceptionFlows:
+  - An email that is already verified answers "Email này đã có tài khoản" with a link to Đăng nhập.
+  - Wrong, expired or exhausted code, and resend, behave as in fr.identity.sign-in.
+postconditions:
+  - A verified Keycloak user, a local learner and a session exist; the account is a learner with no operator role.
+composes: [decision.identity.auth-model, sds.identity.session, integration.identity.keycloak, ui.identity.sign-in]
+reference: starci-academy-backend features/api/core/graphql/mutations/keycloak/sign-up (init, verify-otp, resend); sign-up/init/graphql-types/request.ts (password MinLength 6, MaxLength 256; username 3 to 100).
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Admin-API registration, existing-unverified reuse, verified-email refusal, challenge flow, verify then sign in.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Academy-style sign-up drawn on the canvas; StarCi Next had no record.}
+extensions:
+  terms: The terms and privacy page addresses are not settled; the screen links placeholders.

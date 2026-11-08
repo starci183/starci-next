@@ -1,0 +1,23 @@
+schema: work/business-rule@1
+id: br.mock-interview.interview
+title: An interview gives no answer away, saves every word first and grades only by the teacher's bank
+state: todo
+activity: idle
+statements:
+  - Nothing used for grading reaches the browser or the interviewer before the session is graded. idealAnswer, rubric, checklist, keywords, ownershipSignal, hints not yet asked for and exampleResults stay server-side, and only the grader reads them.
+  - Every learner answer is stored before the interviewer replies or the grader runs. A provider failure never loses an answer.
+  - No feedback or score is shown between questions. The scorecard appears once, after the whole session is graded.
+  - Technical and behavioural answers are scored as separate pillars and never averaged into one technical number.
+  - Each rubric point awarded cites the learner's own words as evidence. Length earns nothing.
+  - The interviewer may rephrase the prompt, ask the authored followUps, or ask a short probe when an answer is vague, at most two follow-ups per question. It never teaches, corrects or hints unless the learner asks for a hint.
+  - A hint used is recorded and lowers that question's score slightly, as the teacher's bank README says.
+  - Without Premium a learner has one 3-question session per calendar month from isPremium false questions; with Premium, unlimited sessions under the fair-use cap. A refused learner causes no AI call.
+  - Every gap in the report points back to the Bản chất topic or lesson of the question's bank (moduleRefs), never to invented material.
+acceptance:
+  - Given a session in progress, when its payloads are inspected, then none carries idealAnswer, rubric, checklist, keywords or exampleResults.
+  - Given an answer sent while the provider is down, when the learner reloads, then the answer is still in the transcript and the session can continue.
+  - Given a learner without Premium who finished this month's free session, when they start another, then the call is refused with INTERVIEW_PREMIUM_REQUIRED and no AI call is made.
+  - Given a graded session, when the report opens, then each awarded rubric point shows a quote from the learner's answer.
+authorityRefs: [decision.mock-interview.product, decision.mock-interview.grading, br.essentials.learning]
+appliesTo: [fr.mock-interview.session, fr.mock-interview.report]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Rules from the teacher''s bank README, blog 14 and the Bản chất grounding rule.'}

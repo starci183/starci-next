@@ -1,0 +1,19 @@
+schema: work/ui-screen@1
+id: ui.essentials.catalog
+title: Essentials catalog
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /essentials
+routeParent: app
+surface: Category sections with lesson cards, filters and search, plus the case-study collection.
+persona: learner
+ui:
+  - Categories from decision.essentials.categories, each a section with its topic cards (lessons opened of total, a preview of the path, progress); search or a difficulty filter shows lesson cards instead, each (title, difficulty, minutes, languages or providers, progress understood or proved).
+  - Filters for category, difficulty, language and provider; a search box.
+  - A case-study collection row whose cards list their prerequisite lessons.
+  - Empty, loading and no-result states.
+direction: "Canvas page essentials (Catalog.dc.html, version 13): category aside, intro with Premium upsell, continue card, search and filters, case-study collection, lesson cards with progress; ready, free, no-result, loading and empty states."
+assets: []
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: Drawn on the canvas; route /essentials.}

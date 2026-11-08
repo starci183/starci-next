@@ -1,0 +1,9 @@
+schema: work/gap@1
+id: gap.agent-lab.content
+title: The lab content is written by the teacher
+state: todo
+activity: idle
+statement: The app ships the lab content model and empty states. None of the labs exist, the version pins are not chosen and the seven concept rubrics are not written.
+closedBy: [data.agent-lab.track]
+blockers: ['The teacher writes the labs at a pinned tool version (Q-AG-3).']
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

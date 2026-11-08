@@ -8,6 +8,14 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./health": {
+      "types": "./dist/health.d.ts",
+      "default": "./dist/health.js"
+    },
+    "./navigation": {
+      "types": "./dist/navigation.d.ts",
+      "default": "./dist/navigation.js"
+    },
     "./proxy": {
       "types": "./dist/proxy.d.ts",
       "default": "./dist/proxy.js"

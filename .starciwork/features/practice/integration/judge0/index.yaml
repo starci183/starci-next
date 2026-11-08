@@ -1,0 +1,30 @@
+schema: work/integration@1
+id: integration.practice.judge0
+title: Self-hosted Judge0
+state: todo
+activity: idle
+provider: Judge0 (self-hosted)
+boundary: Server submits a batch of source plus stdin per test, polls the batch until judged and maps statuses to verdicts. The browser never talks to Judge0.
+endpoints:
+  - purpose: submit a batch
+    method: POST {JUDGE0_BASE_URL}/submissions/batch
+    details: X-Auth-Token header; language ids per language (the teacher's audits use python 71); cpu and memory limits from the problem.
+  - purpose: read the batch
+    method: GET {JUDGE0_BASE_URL}/submissions/batch?tokens=...
+    details: Polled every JUDGE0_POLL_INTERVAL (500 ms) until judged or JUDGE0_DEADLINE (60 s).
+custody: The token is read from JUDGE0_AUTH_TOKEN_FILE; the base URL is the non-secret JUDGE0_BASE_URL. Dev and prod hold placeholders only; no real value is recorded here.
+sandbox: A Judge0 HTTP fake in the test world proves the client and the queue; no live run is claimed.
+research:
+  readAt: '2026-11-08'
+  sources:
+    - title: starci-lab/data coding-problems judge0 audits
+      url: https://github.com/starci-lab/data
+  findings: The teacher audited every reference solution against judge0.academy.starci.org (language ids, limits, per-case status, time and memory).
+  prerequisites: Owner provisions the Judge0 host and the sealed token.
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/integrations/judge0
+    note: Scoped unit proof; no passed result is claimed here.
+blockers:
+  - No real Judge0 base URL and token are provisioned in dev or prod.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

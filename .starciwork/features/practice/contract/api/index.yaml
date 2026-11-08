@@ -1,0 +1,23 @@
+schema: work/contract@1
+id: contract.practice.api
+title: Practice API
+state: todo
+activity: idle
+owner: practice
+between: [practice, the app's /practice screens]
+surface:
+  - {name: patterns, kind: GraphQL query, path: /graphql, request: 'practicePatterns(input: {locale})', response: '[{id, title, problems, accepted, freeProblems}]', errors: []}
+  - {name: problems, kind: GraphQL query, path: /graphql, request: 'practiceProblems(input: {pattern, locale})', response: '[{slug, title, difficulty, status, locked}]', errors: [404 PRACTICE_PATTERN_NOT_FOUND]}
+  - {name: problem, kind: GraphQL query, path: /graphql, request: 'practiceProblem(input: {slug, locale})', response: 'statement, example, starter codes, limits, opened hints; no hidden test, no solution', errors: [404 PRACTICE_PROBLEM_NOT_FOUND, 403 PRACTICE_PROBLEM_LOCKED]}
+  - {name: run, kind: GraphQL mutation, path: /graphql, request: 'runPractice(input: {slug, language, source})', response: 'submission with the example result', errors: [403 PRACTICE_PROBLEM_LOCKED, 429 PRACTICE_RATE_LIMITED, 400 PRACTICE_LANGUAGE_UNSUPPORTED, 400 PRACTICE_SOURCE_EMPTY, 400 PRACTICE_SOURCE_TOO_LARGE, 503 JUDGE0_UNAVAILABLE, 503 JUDGE0_NOT_CONFIGURED]}
+  - {name: submit, kind: GraphQL mutation, path: /graphql, request: 'submitPractice(input: same as run)', response: 'submission with verdict and per-test summary', errors: [same as run]}
+  - {name: submission, kind: GraphQL query, path: /graphql, request: 'practiceSubmission(input: {id})', response: the submission, errors: [404 PRACTICE_SUBMISSION_NOT_FOUND]}
+  - {name: hint, kind: GraphQL mutation, path: /graphql, request: 'revealPracticeHint(input: {slug, step, locale})', response: '{step, title, body}', errors: [409 PRACTICE_HINT_OUT_OF_ORDER, 404 PRACTICE_PROBLEM_NOT_FOUND]}
+  - {name: readiness, kind: GraphQL query, path: /graphql, request: 'practiceReadiness(input?: {learnerId?})', response: '[{pattern, accepted, total}]', errors: []}
+  - {name: import, kind: cli, path: n/a, request: 'cli practice import --dir --ref', response: report per problem, errors: [400 PRACTICE_CONTENT_INVALID, 409 PRACTICE_VERSION_IMMUTABLE, 400 PRACTICE_IMPORT_REJECTED]}
+guarantees:
+  - Every door needs a session. Statuses use only platform kinds; clients branch on the stable code.
+  - No response carries a hidden test input or output, or a solution.
+consumerObligations:
+  - Branch on PRACTICE_PROBLEM_LOCKED to the plans page and on PRACTICE_RATE_LIMITED to a wait state.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

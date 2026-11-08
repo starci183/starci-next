@@ -1,0 +1,29 @@
+schema: work/implementation@1
+id: impl.essentials.be.content
+title: Back-end lesson content (import, projection, catalog and lesson doors)
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/lesson
+  - role: be
+    path: be/src/features/api/lesson
+  - role: be
+    path: be/src/features/cli/lesson
+proves:
+  - sds.essentials.content-import
+  - data.essentials.lesson
+  - fr.essentials.catalog
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/lesson src/features/cli/lesson
+      --collectCoverageFrom=src/modules/domain/lesson/**/*.{service,schema,policy,projection,guard,mapper,client,adapter,filter,interceptor,processor,step,saga,saga-step,compensation,consumer,webhook}.ts
+    note: Required scoped unit proof with the managed per-file coverage threshold unchanged at 100; this record remains todo pending green evidence.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/lesson
+    note: Required scoped integration proof of the import (first, identical, changed bytes, new version, failed version) and of the doors (session, catalog filters, locked phases, no answer in any response).
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the MVP content side.}

@@ -1,0 +1,19 @@
+schema: work/data@1
+id: data.practice.submission
+title: Practice submission and hint reveal
+state: todo
+activity: idle
+fields:
+  - {name: id, type: uuid, required: true}
+  - {name: learnerId / problem slug / version / language, type: references and enum, required: true}
+  - {name: kind, type: run | submit, required: true}
+  - {name: source, type: text up to 65536 bytes, required: true}
+  - {name: status, type: running | done, required: true}
+  - {name: verdict, type: accepted | wrong-answer | time-limit | compile-error | runtime-error | internal-error, required: false}
+  - {name: tests, type: per-test summary without hidden contents, required: false}
+  - {name: timeMs / memoryKb, type: maximum over the tests, required: false}
+  - {name: hint reveal, type: '(learnerId, problem, step 1..3, revealedAt)', required: true}
+invariants:
+  - A submission belongs to one learner; reading another learner's submission is PRACTICE_SUBMISSION_NOT_FOUND.
+  - The streak action of a graded submit is sent once per submission.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

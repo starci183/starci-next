@@ -1,0 +1,39 @@
+schema: work/implementation@1
+id: impl.review.be
+title: Back-end Ôn tập (decks, daily queue, self-grade, ladder, retrieval schedule, deck import)
+state: todo
+activity: idle
+repository: be
+owners:
+  - role: be
+    path: be/src/modules/domain/review
+  - role: be
+    path: be/src/features/api/review
+  - role: be
+    path: be/src/features/cli/review
+proves:
+  - fr.review.daily
+  - fr.review.card
+  - fr.review.retrieval
+  - fr.review.habit
+  - fr.essentials.review
+  - data.review.item
+  - data.review.card-state
+  - data.review.habit
+  - sds.review.scheduler
+  - sds.review.content-import
+  - contract.review.api
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/domain/review
+    note: Required scoped unit proof at the managed per-file coverage threshold.
+  - required: true
+    command: npm run test:integration -- src/tests/integration/review
+    note: Required scoped integration proof of the doors (session, answer not served before the flip, REVIEW_NOT_FLIPPED, one move per revision, Premium cut by the teacher's flag, goal range).
+  - required: true
+    command: starci app check --env local
+    note: The whole app check; no passed result is claimed here.
+extensions:
+  status: 'Built, not yet proven by the harness. Doors: reviewToday, recallItem, checkReviewCloze, flipReviewCard, gradeReviewCard, submitReviewRetrieval, reviewDecks, addReviewDeck, removeReviewDeck, setReviewGoal, reviewStats. Tables: review_decks, review_deck_versions, review_cards, review_states, review_reviews, review_answers, review_learner_decks, review_settings (migrations InitReview1796400000000, ReviewDueNotice1796400000001). Dev seed: .starcistacks/dev/seeds/sql/primary-review.sql (3 decks, 60 cards at 231d8cc57).'
+  notification: 'Call site ReviewQueueService.notifyDue sends review.due {count} to /review through the notification producer port once a day.'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: The code that proves the Ôn tập shard.}

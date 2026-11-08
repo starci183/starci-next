@@ -1,0 +1,16 @@
+schema: work/ui-screen@1
+id: ui.career.review-item
+title: Review one experience item
+state: todo
+activity: idle
+brand: brand
+shell: app shell (teacher and reviewer role only)
+route: /review-queue/{itemId}
+routeParent: /review-queue
+surface: The line in VI and EN, the AI per-criterion grade with quotes, the evidence panel (signed CI run, probe run, interview transcript, lesson result, pointed code), the defense-question checklist, the item's history (returns and notes), and Duyệt or Trả lại with a required note.
+persona: teacher, reviewer
+ui:
+  - The teacher also sees Thu hồi on verified items and the audit trail.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision; screen for the UX mockups.}

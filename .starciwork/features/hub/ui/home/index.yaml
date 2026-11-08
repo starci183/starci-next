@@ -1,0 +1,19 @@
+schema: work/ui-screen@1
+id: ui.hub.home
+title: Học (hub)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /
+routeParent: app
+surface: 'The middle well has the active-path card (or choose a path), the streak card (current streak, a 7-day row, the weekly-goal ring, freezes held), the Hôm nay list across parts, then a grid of eleven part cards in the decided order. The aside holds per-part streak counters and the latest experience items (Đã xác minh, chờ thầy duyệt, trả lại).'
+persona: learner
+ui:
+  - A part card shows its icon, label, one progress line, the counter flame, experience verified and pending, and a coming-soon state ("thầy đang soạn").
+  - The relay device card (ui.relay.devices in the relay records) embeds in the aside, not redrawn.
+  - Copy never says the streak earns experience; the experience counts link to /experience.
+  - Empty (new learner), loading and per-card unavailable states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Owner request; replaces ui.learning-program.home at /.'}

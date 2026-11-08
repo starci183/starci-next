@@ -38,6 +38,18 @@ export class EnvSource {
         return new EnvSource(values)
     }
 
+    /**
+     * The environment a child process inherits: every declared key with a value, except the values read from a `<KEY>_FILE`, so a
+     * mounted secret reaches only the code that asked for it by name.
+     */
+    inherited(): Readonly<Record<string, string>> {
+        const entries = Object.entries(this.values).filter(
+            (entry): entry is [string, string] =>
+                entry[1] !== undefined && this.values[`${entry[0]}${FILE_SUFFIX}`] === undefined,
+        )
+        return Object.fromEntries(entries)
+    }
+
     /** True when the key is declared and not empty. */
     has(key: string): boolean {
         return Boolean(this.values[key])
@@ -50,7 +62,8 @@ export class EnvSource {
 
     /** The declared value of an optional key, or undefined. */
     optional(key: string): string | undefined {
-        return this.values[key] || undefined
+        const value = this.values[key]
+        return value === "" ? undefined : value
     }
 
     /**

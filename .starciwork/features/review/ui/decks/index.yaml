@@ -1,0 +1,18 @@
+schema: work/ui-screen@1
+id: ui.review.decks
+title: Review decks
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /review/decks
+routeParent: /review
+surface: The aside filters by track and course; the middle well shows deck cards (title, difficulty, cards, free cards, added or Thêm), and the goal and reminder settings.
+persona: learner
+ui:
+  - Deck card states added, not added, partly locked (free learner).
+  - Goal and reminder form (5..50 a day, time).
+  - Empty, loading states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

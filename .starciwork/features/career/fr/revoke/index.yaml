@@ -1,0 +1,17 @@
+schema: work/functional-requirement@1
+id: fr.career.revoke
+title: Revoke a verified item
+state: todo
+activity: idle
+actors: [teacher (TEACHER)]
+trigger: The teacher finds a verified item that no longer holds (cheating, evidence proven wrong, a rubric error).
+mainFlow:
+  - The teacher opens the item from the queue history or the learner's profile and chooses Thu hồi with a reason.
+  - The item becomes revoked. The profile, path progress and CV export drop it; its verification page shows revoked with the date; the learner is notified with the reason.
+exceptionFlows:
+  - A reviewer may request a revoke of an item they signed; it takes effect when the teacher approves.
+  - A revoke without a reason is refused CAREER_REVIEW_NOTE_REQUIRED.
+postconditions:
+  - The revoke and its reason are in the audit trail; CVs exported earlier cannot be recalled, but their verification links now show revoked.
+composes: [br.career.experience, data.career.experience-item, data.career.review-decision, contract.career.api]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision (revoke later with audit).}

@@ -1,0 +1,18 @@
+schema: work/sds-component@1
+id: sds.review.scheduler
+title: Review scheduler and daily queue
+state: todo
+activity: idle
+responsibility: Compute each item's next due date, build the daily queue, and report the day's due-done action to the hub streak service.
+interfaces:
+  - 'schedule(state, grade | attemptResult): the next {step, dueOn, status}; the ladder of decision.review.scheduler behind one interface, so FSRS can replace it.'
+  - 'queue(learner, date): due items (overdue first) then new items up to the goal, with locked items marked for a free learner.'
+  - 'dueDone(learner, date): when the last due item of the day is done, records one review-due-done action to sds.hub.streak; the streak itself is the hub''s.'
+  - 'enqueueLesson(learner, lessonId, version, completedAt): creates retrieval item states due at completedAt + afterDays; called when a Bản chất lesson completes.'
+owners: [be]
+sequence:
+  - Check identity and Premium before serving a locked item or calling the coach.
+  - Store the review first (idempotent per item and revision), then compute and store the new state in the same transaction.
+  - Days are computed in Asia/Ho_Chi_Minh; dueDone is idempotent per date.
+refs: [decision.review.scheduler, data.review.card-state, data.review.habit, data.review.item, fr.essentials.review, sds.hub.streak]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A design.}

@@ -21,6 +21,10 @@ components:
     volumes: [ingress-data, ingress-config-data]
     image: caddy:2.10.2@sha256:c3d7ee5d2b11f9dc54f947f68a734c84e9c9666c92c88a7f30b9cba5da182adb
     purpose: The single public entry point; TLS state stays on its declared persistent volume.
+  keycloak:
+    role: stateful
+    image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
+    purpose: The development identity provider with the imported dev realm; production uses the owner-provisioned Keycloak realm.
   postgres:
     role: stateful
     image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
@@ -29,28 +33,93 @@ environments:
   dev:
     status: supported
     runtime: docker-compose
-    composeFiles: [infra/compose/stack.yaml]
+    composeFiles: [infra/compose/compose.yaml]
     components:
       core: { port: 3001 }
       app: { port: 3000 }
       landing: { port: 3002 }
+      ingress: { port: 3080 }
       postgres: { port: 5432 }
+      keycloak: { port: 8089 }
     runbook: README.md
     # Custody starts empty; add real sealed members after owner provisioning.
-    secrets: []
-    # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): the compose services of infra/compose/stack.yaml,
-    # the environment's own database role, readiness probes and origins. The three apps run as the compose images, so no native process.
+    secrets:
+      - name: "identity-keycloak-client-secret"
+        member: "keycloak-client-secret"
+        key: "IDENTITY_KEYCLOAK_CLIENT_SECRET"
+        where: "secrets/keycloak-client-secret"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "identity-session-encryption-key"
+        member: "identity-session-encryption-key"
+        key: "IDENTITY_SESSION_ENCRYPTION_KEY"
+        where: "secrets/identity-session-encryption-key"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "payos-checksum-key"
+        member: "payos"
+        key: "PAYOS_CHECKSUM_KEY"
+        where: "secrets/payos"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "payos-api-key"
+        member: "payos"
+        key: "PAYOS_API_KEY"
+        where: "secrets/payos"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "sepay-ipn-secret-key"
+        member: "sepay"
+        key: "SEPAY_IPN_SECRET_KEY"
+        where: "secrets/sepay"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "sepay-signing-secret-key"
+        member: "sepay"
+        key: "SEPAY_SIGNING_SECRET_KEY"
+        where: "secrets/sepay"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "openrouter-api-key"
+        member: "ai"
+        key: "OPENROUTER_API_KEY"
+        where: "secrets/ai"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "postgres-password"
+        member: "db"
+        key: "POSTGRES_PASSWORD"
+        where: "secrets/db"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "dev-db-owner-password"
+        member: "db"
+        key: "DEV_DB_OWNER_PASSWORD"
+        where: "secrets/db"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+    # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (postgres, the mail sink, the
+    # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:
       ports:
         db: 5432
+        mail: 1025
+        mailui: 8025
         core: 3001
+        relay: 3003
         app: 3000
         landing: 3002
+        ingress: 3080
+        keycloak: 8089
+      dirs: [keycloak-tls]
       services:
         - {name: postgres, wait: healthy}
-        - {name: core, wait: healthy}
-        - {name: app, wait: healthy}
-        - {name: landing, wait: healthy}
+        - {name: mail, wait: healthy}
+        - {name: ingress, wait: healthy}
+        - {name: keycloak, wait: healthy}
+      grants:
+        - {name: db, keys: [POSTGRES_PASSWORD]}
+        - {name: keycloak, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET]}
       database:
         service: postgres
         port: db
@@ -60,9 +129,106 @@ environments:
       custody:
         - {member: db, key: POSTGRES_PASSWORD, kind: password}
         - {member: db, key: DEV_DB_OWNER_PASSWORD, kind: password}
+      setup:
+        - {name: install, argv: [npm, ci], heavy: install, skipIfExists: node_modules}
+        - {name: codegen, argv: [npm, run, codegen, --silent], heavy: build}
+        # The fe workspace packages (@starci-next/i18n, @starci-next/ui) are consumed built, as the lint script builds them first.
+        - {name: build-packages, argv: [npx, turbo, run, build, "--filter=./fe/packages/*"], heavy: build}
+        # The core api runs compiled (Nest reads GraphQL field types from the decorator metadata only tsc emits); the cli of the migrate seed step is in the same build.
+        - {name: build-be, argv: [npm, run, build:be], heavy: build}
+      seed:
+        # The TypeORM migrations of the app (the harness `db migrate` only reads db/migrations/*.sql, which this app does not use, hence the empty db/migrations folder).
+        - name: migrate-typeorm
+          argv: [node, dist/apps/cli/src/main.js, migrate, run]
+          cwd: be
+          after: migrate
+      processes:
+        - name: core
+          argv: [node, dist/apps/core/src/main.js]
+          cwd: be
+          port: core
+          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY]
+          env:
+            NODE_ENV: development
+            PORT: "${port.core}"
+            HTTP_SECURITY_ALLOWED_ORIGINS: "http://localhost:${port.ingress}"
+            # The dev Keycloak of the compose project (realm file realm-starci-next-identity.json): https with a self-signed certificate whose public part the core trusts.
+            IDENTITY_KEYCLOAK_ISSUER: "https://localhost:${port.keycloak}/realms/starci-next-identity"
+            HTTP_TRUSTED_CA_FILE: "${data}/keycloak-tls/ca.crt"
+            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity-lane
+            # The OIDC package admits https addresses only (the app never sets allowInsecureHttp), so the registered callback is https on the ingress host;
+            # the dev Keycloak registers it on its client and no social provider is configured, so no browser ever follows it.
+            IDENTITY_SOCIAL_CALLBACK_URI: "https://localhost:${port.ingress}/sign-in/callback"
+            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
+            IDENTITY_SESSION_MAX_SECONDS: "0"
+            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
+            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
+            MAIL_HOST: 127.0.0.1
+            MAIL_PORT: "${port.mail}"
+            MAIL_SECURITY: none
+            MAIL_FROM: no-reply@starci-next.localhost
+            MAIL_FROM_NAME: Starci Next
+            MAIL_DEFAULT_LANGUAGE: en
+            PAYOS_CLIENT_ID: sandbox-placeholder-payos-client-id
+            SEPAY_MERCHANT_ID: sandbox-placeholder-sepay-merchant-id
+            AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
+            ATTEMPT_COACH_DAILY_LIMIT: "100"
+            # Dev only: every agent and walker shares one loopback caller behind the ingress, so the per-address windows are widened here; production keeps the defaults (600 / 30 per minute).
+            HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
+            HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
+          health: {url: "http://localhost:${port.core}/health/live"}
+        # The learner relay (decision.relay.placement): its own app on 3003, the push-only device socket and the upload GraphQL, behind /relay of the ingress.
+        - name: relay
+          argv: [node, dist/apps/relay/src/main.js]
+          cwd: be
+          port: relay
+          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY]
+          env:
+            NODE_ENV: development
+            PORT: "${port.relay}"
+            HTTP_SECURITY_ALLOWED_ORIGINS: "http://localhost:${port.ingress}"
+            IDENTITY_KEYCLOAK_ISSUER: "https://localhost:${port.keycloak}/realms/starci-next-identity"
+            HTTP_TRUSTED_CA_FILE: "${data}/keycloak-tls/ca.crt"
+            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity-lane
+            IDENTITY_SOCIAL_CALLBACK_URI: "https://localhost:${port.ingress}/sign-in/callback"
+            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
+            IDENTITY_SESSION_MAX_SECONDS: "0"
+            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
+            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
+            MAIL_HOST: 127.0.0.1
+            MAIL_PORT: "${port.mail}"
+            MAIL_SECURITY: none
+            MAIL_FROM: no-reply@starci-next.localhost
+            MAIL_FROM_NAME: Starci Next
+            MAIL_DEFAULT_LANGUAGE: en
+            # One relay replica: the in-process hub (a shared hub is not built yet). Dev signs manifests with a key of the process.
+            REALTIME_HUB: memory
+            HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
+            HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
+          health: {url: "http://localhost:${port.relay}/health/live"}
+        - name: app
+          # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). Behind the ingress the browser's /api/* and
+          # /graphql never reach this server; the dev rewrite of next.config.ts (CORE_INTERNAL_ORIGIN, default http://127.0.0.1:3001) only serves a direct visit to this port.
+          argv: [npx, next, dev]
+          cwd: fe/apps/app
+          port: app
+          env:
+            PORT: "${port.app}"
+            NEXT_PUBLIC_SITE_URL: "http://localhost:${port.ingress}"
+            CORE_INTERNAL_ORIGIN: "http://127.0.0.1:${port.core}"
+          health: {url: "http://localhost:${port.app}/health/live"}
+        - name: landing
+          argv: [npx, next, dev]
+          cwd: fe/apps/landing
+          port: landing
+          env:
+            PORT: "${port.landing}"
+            NEXT_PUBLIC_APP_URL: "http://localhost:${port.ingress}"
+          health: {url: "http://localhost:${port.landing}/health/live"}
       ready:
         - {name: core-live, url: "http://localhost:${port.core}/health/live"}
         - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
+        - {name: relay-live, url: "http://localhost:${port.relay}/health/live"}
         - {name: app-live, url: "http://localhost:${port.app}/health/live"}
         - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
       verify:
@@ -70,10 +236,18 @@ environments:
         - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
         - {name: app-live, url: "http://localhost:${port.app}/health/live"}
         - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
+        # The cookie path: the dev entry origin routes /api/* to the core api (a signed-out GET answers its 401 code; the Next app would answer 404).
+        - {name: identity-session-door, url: "http://localhost:${port.ingress}/api/identity/session", status: 401, contains: IDENTITY_SESSION_REQUIRED}
+        - {name: relay-live, url: "http://localhost:${port.relay}/health/live"}
+        # The relay path of the ingress: /relay/* is stripped and served by the relay app (its health probe through the ingress).
+        - {name: relay-ingress, url: "http://localhost:${port.ingress}/relay/health/live", status: 200}
       origins:
+        - {name: entry, url: "http://localhost:${port.ingress}"}
         - {name: app, url: "http://localhost:${port.app}"}
         - {name: core, url: "http://localhost:${port.core}"}
+        - {name: relay, url: "http://localhost:${port.relay}"}
         - {name: landing, url: "http://localhost:${port.landing}"}
+        - {name: mail, url: "http://localhost:${port.mailui}"}
   production:
     status: supported
     runtime: docker-swarm
@@ -104,7 +278,7 @@ environments:
       imagesLock: .starcistacks/production/infra/swarm/releases/images.lock.yaml
       pointer: .starcistacks/production/infra/swarm/releases/current.yaml
       previous: .starcistacks/production/infra/swarm/releases/previous.yaml
-      healthAssertions: [API /health/live, API /health/ready, App /health/live, Landing /health/live, Signed-in GraphQL request over TLS]
+      healthAssertions: [API /health/live, API /health/ready, App /health/live, Landing /health/live, App host /api/identity/session reaches the core api, Signed-in GraphQL request over TLS]
     backup:
       - component: ingress
         target: Owner-provisioned encrypted off-host storage for both ingress volumes
@@ -124,6 +298,59 @@ environments:
         where: secrets/primary-db-url
         recipientPolicy: This app's own age recipient configured in .sops.yaml
         keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: keycloak-client-secret
+        runtimeName: "starci-next-production-keycloak-client-secret-v1"
+        version: 1
+        where: secrets/keycloak-client-secret
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: identity-session-encryption-key
+        runtimeName: "starci-next-production-identity-session-encryption-key-v1"
+        version: 1
+        where: secrets/identity-session-encryption-key
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: mail-password
+        runtimeName: "starci-next-production-mail-password-v1"
+        version: 1
+        where: secrets/mail-password
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: payos-checksum-key
+        runtimeName: "starci-next-production-payos-checksum-key-v1"
+        version: 1
+        where: secrets/payos
+        key: PAYOS_CHECKSUM_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: payos-api-key
+        runtimeName: "starci-next-production-payos-api-key-v1"
+        version: 1
+        where: secrets/payos
+        key: PAYOS_API_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: sepay-ipn-secret-key
+        runtimeName: "starci-next-production-sepay-ipn-secret-key-v1"
+        version: 1
+        where: secrets/sepay
+        key: SEPAY_IPN_SECRET_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: sepay-signing-secret-key
+        runtimeName: "starci-next-production-sepay-signing-secret-key-v1"
+        version: 1
+        where: secrets/sepay
+        key: SEPAY_SIGNING_SECRET_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: openrouter-api-key
+        runtimeName: "starci-next-production-openrouter-api-key-v1"
+        version: 1
+        where: secrets/ai
+        key: OPENROUTER_API_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
     # What `starci app stack` deploys (verbs: prepare, doctor, deploy, verify, rollback); names and shapes only, never a value.
     # Add secrets.grants once the real sealed members exist under .starcistacks/production/secrets, and a backup block for stateful volumes.
     deploy:
@@ -136,6 +363,8 @@ environments:
       images:
         core:
           app: core
+        relay:
+          app: relay
         app:
           app: app
           # Public browser configuration; replace the placeholder origin before deployment.
@@ -156,6 +385,10 @@ environments:
             url: "https://api.starci-next.example.invalid/health/live"
             status: 200
             retry: true
+          - name: relay liveness through the app host
+            url: "https://starci-next.example.invalid/relay/health/live"
+            status: 200
+            retry: true
           - name: app liveness
             url: "https://starci-next.example.invalid/health/live"
             status: 200
@@ -163,6 +396,12 @@ environments:
           - name: landing liveness
             url: "https://www.starci-next.example.invalid/health/live"
             status: 200
+            retry: true
+          # The cookie path: the app host's /api/* reaches the core api. A signed-out GET answers the core's 401 code; the Next app would answer 404.
+          - name: identity session door through the app host
+            url: "https://starci-next.example.invalid/api/identity/session"
+            status: 401
+            contains: IDENTITY_SESSION_REQUIRED
             retry: true
 k8s:
   status: deferred

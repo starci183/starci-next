@@ -1,0 +1,33 @@
+schema: work/data@1
+id: data.essentials.lesson
+title: Lesson (imported concept, versioned)
+state: todo
+activity: idle
+fields:
+  - {name: id, type: stable slug from the concept folder (e.g. request-response-lifecycle), required: true}
+  - {name: version, type: immutable content version (source git sha plus content hash), required: true}
+  - {name: category, type: category id from decision.essentials.categories, required: true}
+  - {name: difficulty, type: foundation | intermediate | advanced, required: true}
+  - {name: minutesRead, type: positive integer, required: true}
+  - {name: locales, type: 'locale[] (vi, en)', required: true}
+  - {name: title / description, type: map<locale, string>, required: true}
+  - {name: learningOutcomes, type: '[{id, text by locale}]', required: true}
+  - {name: prerequisites, type: '[{id, text by locale}] plus optional prerequisite lesson ids', required: true}
+  - {name: references, type: '[{id, label, url?, citation}] (V1 sources cite git sha and sha256)', required: true}
+  - {name: sections, type: '[{id, sortIndex, phase (challenge|predict|explore|explain|apply|reflect), title, body markdown, activityIds[]}]', required: true}
+  - {name: activities, type: 'the V2 activity objects, stored whole server-side', required: true}
+  - {name: workspaces, type: 'map<language, {files[source, test], commands, runtime, lab {breakLine, brokenLine, toggleLabel}}>', required: true, description: 'Languages share one test contract; at least one language is present.'}
+  - {name: providers, type: 'provider[] for cloud lessons (aws, gcp, azure, do); provider-specific body blocks', required: false}
+  - {name: incident, type: '{repo, languages[], flows (from test.md), mutants[{id, misconceptionId, patch, survivesBaseFlows}]}', required: false, description: Tier 2; absent until authored.}
+  - {name: challenges, type: V1 challenge ladder refs, required: false}
+  - {name: isPublished, type: boolean, required: true}
+invariants:
+  - A published version is immutable. Re-import with changed bytes needs a new version; an identical import is a no-op.
+  - The public projection is an explicit allowlist. It holds no rubric expectedEvidence, no answer, no option isCorrect or explanation, no hidden test and no mutant patch.
+  - Every activity id, outcome id and transition id resolves inside the lesson; every simulation reaches a success state from its initial state.
+  - Every language workspace yields the same test results as the others for the base code and for the lab's broken line.
+stateMachine:
+  - draft -> validated (all invariants pass)
+  - validated -> published
+  - published -> superseded (a newer version publishes; learners keep their version until they restart)
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Lesson data from concepts/ V2 plus languages, providers and incident.}

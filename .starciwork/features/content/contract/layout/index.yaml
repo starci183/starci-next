@@ -1,0 +1,21 @@
+schema: work/contract@1
+id: contract.content.layout
+title: Layout of the content repository and of the snapshots the app pulls
+state: todo
+activity: idle
+owner: content
+between: [content, the content repository starci183/starci-next-data, the interview, lesson, review and practice imports, the cli]
+surface:
+  - {name: manifest, kind: file, path: manifest.yaml, request: 'schema starci-next-data/manifest@1: name, contentVersion, kinds[{id, folder, format concept-v2|mount-md|yaml, schema?, source this-repo|starci-lab/data, files? (a regex of the paths), importer?}]', response: the kinds the repository holds and where, errors: [400 CONTENT_MANIFEST_INVALID]}
+  - {name: interview-overlay, kind: folder, path: interview/overlay, request: 'courses/<course>/mock-interview/<bank>/questions/<n>-question/** laid out like starci-lab/data, plus index.yaml', response: 'files that replace or add to the files of the same bank path of the data checkout; a bank only the overlay holds is imported too', errors: [400 INTERVIEW_BANK_INVALID, 409 INTERVIEW_BANK_IMMUTABLE]}
+  - {name: catalogs, kind: yaml files, path: 'projects/catalog.yaml, agent-lab/catalog.yaml, agent-lab/labs/<track>/<concept>.yaml, incidents/<lessonId>.yaml, experience/catalog.yaml, paths/<id>.yaml', request: 'each file carries schema, status draft|approved and author; the JSON Schema of its kind is schemas/<kind>.schema.json', response: 'checked by `npm run validate` in the repository; the sync counts them', errors: []}
+  - {name: snapshot, kind: folder, path: '<datasourcesDir>/<sha>/', request: 'the files of one commit plus manifest.json {schema starci-next/datasource-snapshot@1, source, url without credentials, ref, sha, fetchedAt}', response: 'a snapshot is written once and never changes; `.mirror/<source>` holds the bare clone and `active.json` {schema starci-next/datasource-active@1, content, data, syncedAt} points at the snapshots in use', errors: [500 CONTENT_PULL_FAILED]}
+  - {name: sync, kind: cli, path: 'cli content sync', request: '--dir <content checkout> --data-dir <data checkout> --only lessons,interview,review,practice,catalogs', response: 'one log line per kind (imported, skipped, failed with a code) and a non-zero exit when any kind failed', errors: [400 CONTENT_SYNC_REJECTED, 500 CONTENT_SYNC_FAILED]}
+extensions:
+  versionLabel: 'An import stores its version as the first 9 characters of the sha (a local checkout: the short sha, with -dirty-<hash of the files> when the tree is not clean). The interview import with an overlay uses <dataRef>+<contentRef>.'
+  credentials: 'The token reaches git only through GIT_CONFIG_* environment variables of the child process (an http.extraHeader), never in the URL, the argv, the manifest or a log line.'
+guarantees:
+  - A pull is idempotent: the same commit is found already stored and not written again.
+  - A kind that fails leaves its live version untouched and does not stop the other kinds; the command fails at the end naming the kinds.
+  - A failure line carries an error code or UNEXPECTED, never file content, a path or a token.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'The gitmount contract.'}

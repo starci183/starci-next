@@ -1,0 +1,23 @@
+schema: work/functional-requirement@1
+id: fr.essentials.lab
+title: In-browser lab on the lesson's model code
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner reaches phase 5 Áp dụng.
+mainFlow:
+  - The lab states its goal in one sentence, taken from the practice exercise. Example for request-response-lifecycle: prove the return order is inner.after then outer.after.
+  - "Step 1: the learner runs the workspace tests on the original model code; each test shows a plain-language name and passes."
+  - "Step 2: the learner applies the one seeded break the exercise names. That line is highlighted, and a button applies the break. The learner runs the tests again; the failing test shows expected and actual side by side."
+  - "Step 3: the learner explains why it failed, using the practice exercise's prompt, with the rubric criterion names visible."
+  - "Step 4: the learner restores the line, runs the tests green again, and only then can submit for grading."
+  - Changing the code language restarts the lab at step 1 in that language's workspace; all languages share one test contract.
+exceptionFlows:
+  - TypeScript model code runs in the browser. Java, C# and Go run through the sandbox runner (Judge0); their results for the base and broken code are also recorded at build time from a real run, so the lab still answers when the runner is slow.
+  - A language the lesson does not have is not selectable.
+postconditions:
+  - The progress lab flags {greenFirst, sawRed, fixedAfterRed} and the graded explanation are stored for the chosen language.
+composes: [br.essentials.learning, data.essentials.lesson, data.essentials.progress, sds.essentials.coach]
+extensions:
+  provenToWork: 'On 2026-11-08 the template on the canvas ran both pilot lessons end to end in the browser: request-response-lifecycle (reversed return order turns test 3 red in all four languages) and cqrs-read-models (removing the version guard turns "không ghi lùi" red).'
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner asked that practice not just hand over code to change.}

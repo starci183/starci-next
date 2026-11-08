@@ -1,0 +1,13 @@
+schema: work/implementation@1
+id: impl.incidents.fe.incidents
+title: Front-end incident list
+state: todo
+activity: idle
+repository: fe
+owners:
+  - {role: fe, path: fe/apps/app/src/components/blocks/IncidentsList}
+  - {role: fe, path: fe/apps/app/src/hooks/incidents}
+  - {role: fe, path: fe/packages/starci-next-ui/src/composites/IncidentGroups}
+proves: [ui.incidents.list]
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

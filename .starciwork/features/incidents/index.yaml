@@ -1,0 +1,15 @@
+schema: work/feature@1
+id: incidents
+title: Sự cố list
+state: todo
+activity: idle
+purpose: A list page over the Bản chất lessons that have a tier-2 incident, so the learner sees what is available and what is coming.
+decided:
+  - Own list page at /incidents (Q-HUB-4 proposal); a lesson without an authored incident shows "Sắp có". None are authored yet.
+  - The list is built from lesson and topic data; the door is read-only.
+delivers:
+  - Route /incidents and nav entry Sự cố; door incidents (input locale, topic).
+excludes:
+  - The incident runner (pull, check, submit, grade); it needs the relay and the CLI another agent builds, see fr.essentials.incident and sds.essentials.incident-grader.
+dependsOn: [fr.essentials.incident, contract.identity.session-contract]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

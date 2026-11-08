@@ -1,0 +1,14 @@
+schema: work/data@1
+id: data.agent-lab.quota
+title: Agent lab daily usage
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: uuid, required: true}
+  - {name: day, type: UTC date, required: true}
+  - {name: calls, type: whole number of model calls used, required: true}
+  - {name: limit, type: 'AGENT_LAB_DAILY_CALLS, default 50', required: true}
+invariants:
+  - Remaining is limit minus calls, never below 0; at 0 the lab is hard-stopped until the next UTC day.
+  - The counter is local; the proxy key issuance that fills it is a later item.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

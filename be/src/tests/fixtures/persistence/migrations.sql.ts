@@ -1,3 +1,4 @@
+import { TestWorldError, TestWorldErrorCode } from "@starci/test-world"
 import type { EntityManager } from "typeorm"
 import { sql } from "@modules/platform/database"
 
@@ -16,4 +17,11 @@ export const appliedMigrations = (
     manager: EntityManager | undefined,
     query: ReturnType<typeof sql>,
 ): Promise<ReadonlyArray<AppliedMigrationRow>> =>
-    manager === undefined ? Promise.reject(new Error("The test world wired no such connection")) : manager.query(query)
+    manager === undefined
+        ? Promise.reject(
+              new TestWorldError({
+                  code: TestWorldErrorCode.NotDeclared,
+                  params: { detail: "the test world wired no such connection" },
+              }),
+          )
+        : manager.query(query)

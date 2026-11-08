@@ -1,0 +1,18 @@
+schema: work/implementation@1
+id: impl.practice.fe.practice
+title: Front-end Luyện code screens
+state: todo
+activity: idle
+repository: fe
+owners:
+  - {role: fe, path: fe/apps/app/src/components/blocks/PracticeCatalog}
+  - {role: fe, path: fe/apps/app/src/components/blocks/PracticePattern}
+  - {role: fe, path: fe/apps/app/src/components/blocks/PracticeSolve}
+  - {role: fe, path: fe/apps/app/src/hooks/practice}
+  - {role: fe, path: fe/packages/starci-next-ui/src/composites/PracticeEditor}
+proves: [ui.practice.practice, fr.practice.solve, fr.practice.hints]
+requiresProof:
+  - required: true
+    command: starci app check --env local
+    note: Whole app check; UXUI walks /practice, a pattern and a problem; no passed result is claimed.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

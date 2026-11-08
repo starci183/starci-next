@@ -1,0 +1,32 @@
+schema: work/ui-screen@1
+id: ui.identity.sign-in
+title: Sign-in, sign-up and password reset screen
+state: todo
+activity: idle
+brand: brand
+shell: null
+route: /sign-in (modes sign-in, sign-up, forgot-password; /sign-in/callback for social)
+routeParent: null
+surface: One centred card on the background in the Academy AuthenticationPanel layout.
+persona: learner
+ui:
+  layout: Logo and wordmark above the card. The card holds a title and subtitle; the Facebook and GitHub buttons; an "hoặc" divider; the form; a footer prompt that switches mode ("Chưa có tài khoản? Đăng ký" / "Đã có tài khoản? Đăng nhập").
+  states:
+    - sign-in: Email or username, password with show/hide, "Ghi nhớ đăng nhập", "Quên mật khẩu?", primary Đăng nhập.
+    - failed: A danger alert with the generic refusal; the password field marked; the identifier kept.
+    - social-pending: The chosen provider button shows a spinner with "Đang chuyển sang Facebook…"; the others are disabled.
+    - sign-up: Email, password with the rule hint, confirm password, terms checkbox (submit disabled until accepted), primary Đăng ký.
+    - code: Nhập mã 6 số vừa gửi tới <masked email>. Six digit boxes, primary Xác minh, "Gửi lại mã", "Dùng email khác". A wrong code shows the attempts left. Used after sign-in (Q-A3), sign-up and forgot-password.
+    - forgot-password: An email field and primary "Gửi mã"; then the code step with new-password fields.
+    - signed-out: A success alert "Bạn đã đăng xuất." above the sign-in form.
+  accessibility: Real labelled inputs with autocomplete (username, current-password, new-password, one-time-code); errors announced through role=alert; status through role=status; the code boxes are one labelled group.
+direction: canvas https://claude.ai/artifact/Xhn3hEGbmxnXUmEgemj6Tx boards Main, signin-failed, signin-social.m, signup.m, signup-code.m, forgot.m, signed-out.m (awaiting owner approval)
+assets:
+  - {slot: logo, summary: brand/assets/starci-logo.png beside the wordmark}
+requiresProof:
+  - required: true
+    command: starci task verify <task-id>
+    note: Each state at 1280 and 390 against the approved canvas.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'decision.identity.auth-model B: the app-owned credential, social and code screen (Academy AuthenticationPanel) replaces the single redirect button.'}
+extensions:
+  reference: starci-academy-fe src/components/blocks/auth/AuthenticationPanel (modes signIn, signUp, forgotPassword; states details, code, done).

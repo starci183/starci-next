@@ -1,0 +1,18 @@
+schema: work/functional-requirement@1
+id: fr.hub.today
+title: See every part and today's actions
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens / after sign-in.
+mainFlow:
+  - The top card shows the active path with its next three steps (or the choose-a-path invitation), and the streak with this week's goal.
+  - Hôm nay lists today's actions across parts, each one click away. Examples are N review items due, a lesson to continue, a project run that failed, an experience item returned by the teacher, and an interview retake.
+  - The eleven part cards show each part's progress, its per-part streak counter, the count of experience items Đã xác minh and pending, and a coming-soon state where content is still being written.
+exceptionFlows:
+  - A part whose source is down shows its card without numbers and "thử lại", never wrong numbers.
+  - Without Premium, cards show the free taste and what Premium unlocks.
+postconditions:
+  - Opening the hub counts for nothing in the streak.
+composes: [decision.hub.parts, data.hub.part, sds.hub.aggregator, contract.hub.api, ui.hub.home]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner request.}

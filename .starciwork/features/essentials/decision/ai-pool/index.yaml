@@ -1,0 +1,21 @@
+schema: work/policy-decision@1
+id: decision.essentials.ai-pool
+title: Shared AI pool for the StarCi AI teacher
+state: todo
+activity: idle
+question: Which AI pool serves grading, hints and Hỏi StarCi?
+outcome: open
+chosen: null
+recommendation: Carry over decision.lessons.ai-pool unchanged. Use one shared pool through @starci/ai-router exactly 0.5.0 (the harness canon pin) with one OpenRouter provider (baseUrl https://openrouter.ai/api/v1) and one custody key reference OPENROUTER_API_KEY. A lesson profile prefers deepseek/deepseek-v4.1-flash, with ordered fallback deepseek/deepseek-v4-pro.
+recommendationReason: Owner correction r-4d87cd331347 (goal v38) set one key and these two model ids for lesson coaching. The router owns health-aware selection, retries, fallback, streaming and redacted telemetry.
+reason: null
+blocks: [sds.essentials.coach]
+extensions:
+  carriedFrom: [decision.lessons.ai-pool, integration.lessons.ai-router, decision.lessons.ai-credit]
+  rules:
+    - No learner email, id or token is sent to a provider; requests carry an opaque request id.
+    - Tests and the walk use the package's testing module (a deterministic fake provider); no live call without an authorised, funded key.
+    - Premium includes the AI teacher under a server-side fair-use cap per learner per UTC day (ATTEMPT_COACH_DAILY_LIMIT, default 100); the learner sees no credits, only the stable code ATTEMPT_COACH_LIMIT_REACHED once the cap is reached.
+    - The OpenRouter key is the owner's: the sealed member ai holds a placeholder in dev and production until the owner sets the real one (starci app secret set --env <env> ai OPENROUTER_API_KEY); the models are non-secret AI_GATEWAY_MODEL and AI_GATEWAY_FALLBACK_MODEL.
+    - The cost cap belongs to Q-KS-1 in decision.essentials.product.
+change: {rev: 2, kind: revised, at: '2026-11-08', reason: Pin 0.5.0, record the fair-use cap and the key custody now that the pool is wired.}

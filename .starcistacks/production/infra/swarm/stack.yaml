@@ -8,9 +8,51 @@ services:
       PORT: "3001"
       HTTP_SECURITY_ALLOWED_ORIGINS: https://starci-next.example.invalid
       PRIMARY_DB_URL_FILE: /run/secrets/primary-db-url
+      IDENTITY_KEYCLOAK_ISSUER: https://auth.starci-next.example.invalid/realms/starci-next
+      IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity
+      IDENTITY_SOCIAL_CALLBACK_URI: https://starci-next.example.invalid/sign-in/callback
+      IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
+      IDENTITY_SESSION_MAX_SECONDS: "0"
+      IDENTITY_CHALLENGE_TTL_SECONDS: "600"
+      IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
+      IDENTITY_SESSION_ENCRYPTION_KEY_FILE: /run/secrets/identity-session-encryption-key
+      MAIL_HOST: smtp.starci-next.example.invalid
+      MAIL_PORT: "587"
+      MAIL_SECURITY: starttls
+      MAIL_USER: replace-with-smtp-user
+      MAIL_PASSWORD_FILE: /run/secrets/mail-password
+      MAIL_FROM: no-reply@starci-next.example.invalid
+      MAIL_FROM_NAME: Starci Next
+      MAIL_DEFAULT_LANGUAGE: en
+      IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE: /run/secrets/keycloak-client-secret
+      PAYOS_CLIENT_ID: replace-with-payos-client-id
+      PAYOS_CHECKSUM_KEY_FILE: /run/secrets/payos-checksum-key
+      PAYOS_API_KEY_FILE: /run/secrets/payos-api-key
+      SEPAY_MERCHANT_ID: replace-with-sepay-merchant-id
+      SEPAY_IPN_SECRET_KEY_FILE: /run/secrets/sepay-ipn-secret-key
+      SEPAY_SIGNING_SECRET_KEY_FILE: /run/secrets/sepay-signing-secret-key
+      OPENROUTER_API_KEY_FILE: /run/secrets/openrouter-api-key
+      AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
+      ATTEMPT_COACH_DAILY_LIMIT: "100"
     secrets:
       - source: primary-db-url
         target: primary-db-url
+      - source: keycloak-client-secret
+        target: keycloak-client-secret
+      - source: identity-session-encryption-key
+        target: identity-session-encryption-key
+      - source: payos-checksum-key
+        target: payos-checksum-key
+      - source: payos-api-key
+        target: payos-api-key
+      - source: sepay-ipn-secret-key
+        target: sepay-ipn-secret-key
+      - source: sepay-signing-secret-key
+        target: sepay-signing-secret-key
+      - source: openrouter-api-key
+        target: openrouter-api-key
+      - source: mail-password
+        target: mail-password
     networks: [app]
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
@@ -25,6 +67,66 @@ services:
       update_config:
         parallelism: 1
         order: start-first
+        failure_action: rollback
+        monitor: 30s
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+  relay:
+    image: "starci-next/relay:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    environment:
+      NODE_ENV: production
+      PORT: "3003"
+      HTTP_SECURITY_ALLOWED_ORIGINS: https://starci-next.example.invalid
+      PRIMARY_DB_URL_FILE: /run/secrets/primary-db-url
+      IDENTITY_KEYCLOAK_ISSUER: https://auth.starci-next.example.invalid/realms/starci-next
+      IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity
+      IDENTITY_SOCIAL_CALLBACK_URI: https://starci-next.example.invalid/sign-in/callback
+      IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
+      IDENTITY_SESSION_MAX_SECONDS: "0"
+      IDENTITY_CHALLENGE_TTL_SECONDS: "600"
+      IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
+      IDENTITY_SESSION_ENCRYPTION_KEY_FILE: /run/secrets/identity-session-encryption-key
+      IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE: /run/secrets/keycloak-client-secret
+      MAIL_HOST: smtp.starci-next.example.invalid
+      MAIL_PORT: "587"
+      MAIL_SECURITY: starttls
+      MAIL_USER: replace-with-smtp-user
+      MAIL_PASSWORD_FILE: /run/secrets/mail-password
+      MAIL_FROM: no-reply@starci-next.example.invalid
+      MAIL_FROM_NAME: Starci Next
+      MAIL_DEFAULT_LANGUAGE: en
+      REALTIME_HUB: memory
+      RELAY_MANIFEST_SIGNING_KEY_FILE: /run/secrets/relay-manifest-signing-key
+    secrets:
+      - source: primary-db-url
+        target: primary-db-url
+      - source: keycloak-client-secret
+        target: keycloak-client-secret
+      - source: identity-session-encryption-key
+        target: identity-session-encryption-key
+      - source: mail-password
+        target: mail-password
+      - source: relay-manifest-signing-key
+        target: relay-manifest-signing-key
+    networks: [app]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3003/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    deploy:
+      # One replica: the relay runs the in-process realtime hub until a shared hub is built (BE-REALTIME-7).
+      replicas: 1
+      placement:
+        constraints: ["node.labels.starci-next == production"]
+      update_config:
+        parallelism: 1
+        order: stop-first
         failure_action: rollback
         monitor: 30s
       rollback_config:
@@ -130,6 +232,33 @@ secrets:
   primary-db-url:
     external: true
     name: "starci-next-production-primary-db-url-v1"
+  keycloak-client-secret:
+    external: true
+    name: "starci-next-production-keycloak-client-secret-v1"
+  identity-session-encryption-key:
+    external: true
+    name: "starci-next-production-identity-session-encryption-key-v1"
+  mail-password:
+    external: true
+    name: "starci-next-production-mail-password-v1"
+  payos-checksum-key:
+    external: true
+    name: "starci-next-production-payos-checksum-key-v1"
+  payos-api-key:
+    external: true
+    name: "starci-next-production-payos-api-key-v1"
+  sepay-ipn-secret-key:
+    external: true
+    name: "starci-next-production-sepay-ipn-secret-key-v1"
+  sepay-signing-secret-key:
+    external: true
+    name: "starci-next-production-sepay-signing-secret-key-v1"
+  openrouter-api-key:
+    external: true
+    name: "starci-next-production-openrouter-api-key-v1"
+  relay-manifest-signing-key:
+    external: true
+    name: "starci-next-production-relay-manifest-signing-key-v1"
 configs:
   ingress-config:
     file: ./Caddyfile

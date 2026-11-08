@@ -1,0 +1,15 @@
+schema: work/contract@1
+id: contract.projects.relay-port
+title: Relay check results as Dự án reads them
+state: todo
+activity: idle
+owner: projects
+between: [projects, the relay gateway (be/apps/relay, another agent)]
+surface:
+  - {name: checkResults, kind: in-process port, path: ProjectRelayPort.checkResults, request: '{learnerId, projectId, after}', response: '[{eventId, runId, conceptId, slot test|e2e|probe, ref, passed, commit, at}] oldest first', errors: []}
+guarantees:
+  - Each result is one check.result event of contract.relay.channel; the event id is stable, so a repeat counts once.
+  - Results are practice only. The app binds the port with ProjectModule.register({ relay }); NoRelayClient reads none until the relay is built.
+consumerObligations:
+  - The relay adapter reads only the results of the learner's own paired devices for the named project.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

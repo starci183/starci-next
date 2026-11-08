@@ -1,0 +1,23 @@
+schema: work/feature@1
+id: agent-lab
+title: Agent lab (Agent and AI)
+state: todo
+activity: idle
+purpose: A lab area where learners try the mindset concepts on real agent tools; its proof lives in /projects with kind agent.
+decided:
+  - Three tracks now - Claude Code with the Agent SDK (the learner's own Anthropic account), OpenClaw, Hermes Agent; seven mindset concepts per track (decision.agents.curriculum, UXUI-owned).
+  - The teacher writes the labs; the app ships the lab content model and the empty "thầy đang soạn" states, with no invented lab text.
+  - Quota bar "Còn X lượt gọi model hôm nay" with a hard stop; the daily limit is configurable (AGENT_LAB_DAILY_CALLS, default 50, UTC day).
+  - Orca and other tools are shown as sắp có; StarCi harness is the last optional step, not open.
+delivers:
+  - Routes /agents and /agents/tracks/{trackId}; nav entry Agent and AI; doors agentLab, agentLabTrack, agentQuota.
+excludes:
+  - Real proxy key issuance and the metering that decrements the quota (a later item).
+  - Lab content and the relay-checked labs.
+openQuestions:
+  - id: Q-AL-1
+    question: When does the quota read from the real proxy instead of the local counter?
+    proposedDefault: Keep the door and the default; the proxy key issuance replaces the counter source later.
+    state: open
+dependsOn: [fr.agentic.lab]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

@@ -10,11 +10,15 @@
           "kind": "api"
         },
         {
+          "name": "relay",
+          "kind": "api"
+        },
+        {
           "name": "cli",
           "kind": "cli"
         }
       ],
-      "kinds": ["api", "cli"],
+      "kinds": ["api", "cli", "jobs", "webhooks"],
       "connections": [
         {
           "name": "primary",
@@ -22,7 +26,10 @@
           "owner": "core",
           "isolation": "database"
         }
-      ]
+      ],
+      "patterns": ["fenced-job", "queue", "webhooks", "realtime"],
+      "optionalSlots": ["be.contract.graphql"],
+      "backing": ["redis"]
     },
     "fe": {
       "apps": [
@@ -37,7 +44,7 @@
       ],
       "grammar": "core",
       "reads": ["be/contracts/"],
-      "optionalSlots": ["fe.package.ui", "fe.package.i18n"]
+      "optionalSlots": ["fe.package.ui", "fe.package.i18n", "repo.i18n-dynamic-keys"]
     }
   }
 }

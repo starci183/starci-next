@@ -1,0 +1,169 @@
+schema: work/uat-flow@1
+id: uat.commerce.subscribe-premium
+title: Subscribe to Premium
+state: todo
+activity: idle
+entry: /premium
+actor: learner-monthly
+accounts: accounts.yaml
+environment: _resources/environments/commerce-sandbox
+steps:
+  - order: 1
+    actor: learner-monthly
+    action: Resolve both fresh disposable learner identities and the sandbox scenario; sign in as
+      learner-monthly and open Premium plans. Confirm both learners have no active Premium
+      entitlement and no last-used rail before checkout.
+    expected: Monthly 229.000 ₫ and yearly 2.290.000 ₫ are shown; fresh learners are not Premium and
+      SePay is the default (Q-PRICE-DISPLAY, Q-W2-6).
+    checks:
+      - id: plans
+        expected: Both approved offers are visible and SePay is selected for the fresh learner.
+      - id: fresh_learners
+        expected: Distinct learner-monthly and learner-yearly identities both start with isPremium false.
+  - order: 2
+    actor: learner-monthly
+    action: Select the monthly plan and complete sandbox checkout through SePay.
+    expected: SePay sandbox checkout opens for exactly 229000 VND.
+    checks:
+      - id: monthly_sepay
+        expected: Monthly SePay checkout amount is 229000 VND.
+  - order: 3
+    actor: provider-sepay
+    action: Deliver valid matching sandbox ORDER_PAID for the monthly purchase; capture premiumUntil
+      after confirmation, then replay the identical confirmation and read the same learner
+      entitlement again.
+    expected: learner-monthly becomes Premium once; replay preserves the exact post-confirmation
+      premiumUntil and grant count.
+    checks:
+      - id: monthly_grant
+        expected: learner-monthly isPremium true after verified matching confirmation.
+      - id: sepay_replay
+        expected: Exactly one grant and identical premiumUntil before and after replay.
+  - order: 4
+    actor: learner-yearly
+    action: Start a separate fresh browser session as learner-yearly; confirm isPremium false, select
+      yearly and payOS, and open the sandbox checkout. Withhold the valid callback for this
+      purchase.
+    expected: The distinct non-Premium learner opens payOS sandbox checkout for exactly 2290000 VND.
+    checks:
+      - id: yearly_payos
+        expected: Fresh learner-yearly isPremium false; yearly payOS checkout amount is 2290000 VND.
+  - order: 5
+    actor: learner-yearly
+    action: Return from payOS in the browser before any valid callback, then request the server
+      entitlement and a Premium feature.
+    expected: Browser return alone grants nothing; learner-yearly remains non-Premium with preview
+      access and the purchase result remains pending.
+    checks:
+      - id: return_no_grant
+        expected: learner-yearly isPremium false, premiumUntil unchanged, preview only and payment pending
+          before callback.
+  - order: 6
+    actor: provider-payos
+    action: Before the valid yearly confirmation, send a forged callback and a validly signed
+      wrong-amount callback for learner-yearly; request the server entitlement after each refusal.
+    expected: Both invalid callbacks are denied; learner-yearly remains non-Premium and no grant is recorded.
+    checks:
+      - id: invalid_denied
+        expected: Forged callback and wrong amount denied; isPremium false with zero grants.
+  - order: 7
+    actor: provider-payos
+    action: Deliver the valid matching payOS sandbox confirmation for the yearly purchase; capture
+      premiumUntil, replay that same confirmation, and read entitlement again.
+    expected: learner-yearly becomes Premium for the yearly term once; replay preserves the exact
+      entitlement end.
+    checks:
+      - id: yearly_grant
+        expected: learner-yearly isPremium true after the valid yearly payOS confirmation.
+      - id: payos_replay
+        expected: Exactly one yearly grant and identical premiumUntil before and after replay.
+  - order: 8
+    actor: learner-monthly
+    action: Using the active monthly learner, record its exact prior premiumUntil and the sandbox
+      confirmation time. Verify that last-used SePay is selected (Q-W2-6), buy another monthly term,
+      and deliver its valid sandbox confirmation.
+    expected: Active renewal adds the monthly term to that exact prior end using proposed calendar
+      arithmetic, rather than starting at confirmation time (Q-W2-5).
+    checks:
+      - id: active_renewal
+        expected: New premiumUntil equals one UTC calendar month after the captured future prior end,
+          clamped to month end; confirmation time does not replace that end.
+      - id: last_used_rail
+        expected: The learner last-used SePay rail is selected.
+  - order: 9
+    actor: learner-monthly
+    action: Use the environment-controlled disposable test-world clock/scenario to reach exactly the
+      renewed premiumUntil; request entitlement and Premium feature access at that instant and after
+      it. Do not change the host or live clock.
+    expected: At and after expiry the learner immediately falls back to preview with no grace period.
+    checks:
+      - id: expiry_preview
+        expected: At current time equal to premiumUntil and afterward, isPremium false and preview access
+          only.
+  - order: 10
+    actor: provider-sepay
+    action: In a reset disposable sandbox scenario, create cancelled and expired orders for
+      learner-monthly, capture entitlement before each, deliver a valid matching ORDER_PAID for each
+      and replay each confirmation.
+    expected: Proposed Q-W2-3 handling grants the purchased term once per valid late confirmation,
+      records an audit/reconciliation event, and does not extend on replay.
+    checks:
+      - id: late_paid_audit
+        expected: Cancelled and expired orders each produce exactly one term grant plus an audit event;
+          replay leaves premiumUntil unchanged.
+failurePaths:
+  - id: forged_callback
+    step: 6
+    expected: Forged callback is denied and grants no Premium.
+  - id: wrong_amount
+    step: 6
+    expected: Wrong amount is denied and grants no Premium.
+  - id: browser_return
+    step: 5
+    expected: Fresh learner-yearly remains non-Premium after return alone, before its valid callback.
+  - id: replayed_confirmation
+    step: 3
+    expected: Replayed SePay confirmation grants exactly once.
+  - id: replayed_payos_confirmation
+    step: 7
+    expected: Replayed payOS confirmation grants exactly once.
+recording:
+  required: true
+  covers: Plan selection, monthly SePay and yearly payOS checkout handoff, fresh yearly browser return
+    without callback, invalid callback refusals, server-confirmed results, both provider
+    confirmation replays, active renewal from the exact prior end, controlled no-grace expiry to
+    preview, and late paid audit scenarios.
+effects: "Creates disposable sandbox purchases and entitlement changes only. Q6 is an authorization
+  constraint: never run the one real 229.000 VND charge without explicit owner approval; its open
+  approval is not a prerequisite or owner-actor step for this sandbox walk."
+cleanup: Remove all sandbox purchases and audit fixtures, restore both disposable learner
+  entitlements and last-used rail fixtures, and reset the disposable test-world clock/scenario; do
+  not touch live accounts or make a real charge.
+requiresProof:
+  - required: true
+    command: node D:/.claude/cli/dist/main.js uat run
+      .starciwork/features/commerce/uat/subscribe-premium/runs/subscription-premium-accept/walk.mjs
+      --out .starciwork/features/commerce/uat/subscribe-premium/runs/subscription-premium-accept
+    note: The UAT worker creates walk.mjs from this flow and adds environment-derived forwarding options
+      after named resources and sandbox prerequisites are provisioned. The recorded browser walk
+      must include per-step screenshots, checks.json and runner receipt; this obligation is not a
+      passed proof claim.
+change:
+  rev: 3
+  kind: revised
+  at: 2026-10-28
+  reason: Replace invalid proof commands with root-managed scoped obligations, assign unified
+    PaymentRail proof to purchase, and isolate the sandbox acceptance scenarios; retain open
+    proposed defaults and todo state.
+blockers:
+  - Missing distinct sealed identity resource _resources/identities/commerce-sandbox-learner-monthly
+    for learner-monthly
+  - Missing distinct sealed identity resource _resources/identities/commerce-sandbox-learner-yearly
+    for learner-yearly
+  - Missing SePay sandbox merchant account and merchant/IPN secrets in sealed custody (Q-W2-2),
+    referenced by _resources/identities/commerce-sepay-sandbox
+  - Missing payOS sandbox merchant account and credentials in sealed custody, referenced by
+    _resources/identities/commerce-payos-sandbox
+  - Missing _resources/environments/commerce-sandbox environment resource with allowed sandbox
+    effects, browser origins and controlled disposable test-world clock/scenario
+  - Missing public HTTPS callback endpoint for SePay IPN and payOS webhook

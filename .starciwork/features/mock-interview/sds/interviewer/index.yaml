@@ -1,0 +1,23 @@
+schema: work/sds-component@1
+id: sds.mock-interview.interviewer
+title: StarCi AI interviewer (asks, follows up, never grades)
+state: todo
+activity: idle
+responsibility: Run the conversation of one session. It asks each drawn question, asks the authored followUps or a short probe, and gives an authored hint when the learner asks for one. It never sees or reveals grading data.
+interfaces:
+  - 'start(session): the first interviewer turn.'
+  - 'reply(session, candidateTurn): the next interviewer turn, either {followUp|probe} on the same question or {prompt} for the next one, or {done}.'
+  - 'hint(session, position): the next authored hint of that question, recorded as a hint turn.'
+owners: [be]
+sequence:
+  - Check identity (contract.identity.session-contract), Premium or the free quota (contract.commerce.entitlement), and the fair-use cap before any provider call.
+  - Persist the candidate turn first; a save failure calls no provider. Deduplicate by position and revision.
+  - 'Build the prompt from the public prompt, givenCode, the authored followUps and the transcript of this question only. For behavioural questions, add a fixed STAR probing instruction. Never include idealAnswer, rubric, checklist, keywords, ownershipSignal or exampleResults. Learner text is quoted data, never instructions.'
+  - The model returns a structured decision {action followUp|probe|next, text}; the server enforces the two-follow-up limit and the question order, whatever the model says.
+  - Dispatch through the shared pool (decision.essentials.ai-pool) with the session id as an opaque request id, a 30 s deadline and cancellation; stream the text, then persist the interviewer turn before reporting it.
+  - On failure keep the candidate turn and answer INTERVIEW_COACH_UNAVAILABLE; a retry asks for the same interviewer turn again.
+refs: [br.mock-interview.interview, data.mock-interview.session, data.mock-interview.question-bank, decision.essentials.ai-pool, sds.essentials.coach]
+extensions:
+  reuse: 'Implements a second method beside AttemptCoach on the same ai-router adapter of be/src/modules/domain/attempt (being wired now). It does not fork the AI wiring.'
+  cost: Only the current question's turns are sent per reply, not the whole session, to bound tokens.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A design.}

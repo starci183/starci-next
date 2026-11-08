@@ -1,0 +1,21 @@
+schema: work/data@1
+id: data.practice.problem
+title: Practice problem (imported, versioned)
+state: todo
+activity: idle
+fields:
+  - {name: slug, type: stable folder name (e.g. insert-interval), required: true}
+  - {name: pattern, type: one of the 20 patterns (the domain field of the file), required: true}
+  - {name: version, type: immutable source ref plus content hash, required: true}
+  - {name: difficulty, type: easy | medium | hard, required: true}
+  - {name: orderIndex / tags / timeLimitMs / memoryLimitKb, type: from the file header, required: true}
+  - {name: statement, type: map<locale, markdown>, required: true}
+  - {name: starterCodes, type: 'map<language, source> for cpp, java, javascript, python, typescript', required: true}
+  - {name: example, type: '{input, output}', required: true}
+  - {name: tests, type: '[{input, output}] hidden', required: true, description: Stored server-side only.}
+  - {name: solutions, type: map<language, source>, required: true, description: 'Stored server-side only, never sent.'}
+  - {name: hints, type: map<locale, three steps>, required: true}
+invariants:
+  - A stored version is immutable; an identical import is a no-op, other bytes under a version are PRACTICE_VERSION_IMMUTABLE.
+  - The public projection is an allowlist with no hidden test, solution or hint beyond the steps the learner opened.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

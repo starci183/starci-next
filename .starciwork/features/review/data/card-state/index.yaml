@@ -1,0 +1,24 @@
+schema: work/data@1
+id: data.review.card-state
+title: A learner's schedule and history for one item
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: itemId / version, type: data.review.item reference, required: true}
+  - {name: status, type: 'new | learning | review | done (retrieval closed) | suspended', required: true}
+  - {name: step, type: ladder step index, required: true}
+  - {name: dueOn, type: calendar date (Asia/Ho_Chi_Minh), required: true}
+  - {name: reviews, type: '[{reviewId, revision, grade again|hard|good|easy (card) | attemptId (retrieval), clozeCorrect?, answeredAt}]', required: true}
+  - {name: addedBy, type: 'deck (the learner added the deck) | lesson (the lesson completed) | track (the outcome path)', required: true}
+invariants:
+  - One state per learner and item; a review with an existing revision is a no-op.
+  - dueOn is computed only by the scheduler (decision.review.scheduler).
+  - A suspended item is never due; removing a deck suspends its items and keeps their history.
+stateMachine:
+  - new -> learning (first review)
+  - learning -> review (step 2 or higher)
+  - review -> learning (again)
+  - 'any -> suspended -> previous (deck removed, then added again)'
+  - learning|review -> done (retrieval item graded at level 2)
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A entity.}

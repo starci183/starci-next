@@ -1,0 +1,20 @@
+schema: work/data@1
+id: data.projects.project
+title: Learner project
+state: todo
+activity: idle
+fields:
+  - {name: projectId, type: uuid, required: true}
+  - {name: learnerId, type: uuid, required: true}
+  - {name: name, type: text up to 80, required: true}
+  - {name: kind, type: app | agent, required: true}
+  - {name: topic / language / stack, type: free text, required: true}
+  - {name: track, type: claude | openclaw | hermes, required: false}
+  - {name: repoUrl, type: https address, required: false}
+  - {name: deployedUrl, type: public http or https address, required: false}
+  - {name: ciSecret, type: 32 random bytes as hex, required: true}
+invariants:
+  - A learner without Premium owns at most PROJECT_FREE_PROJECTS projects, counted under a per-learner lock.
+  - The CI secret is shown once, when the project is created or the secret rotated; it is never served again.
+  - Concept pointers (location, endpoint, sample body) live per project and concept and never hold a secret-like file path.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

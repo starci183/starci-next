@@ -1,0 +1,19 @@
+schema: work/contract@1
+id: contract.hub.api
+title: Hub and streak API
+state: todo
+activity: idle
+owner: hub
+between: [hub, the app's hub and every part screen that shows the streak, every part that records actions]
+surface:
+  - {name: hub, kind: GraphQL query, path: /graphql, request: 'learnerHub(input: {locale})', response: '{activePath? {pathId, title, next[3]}, today[{partId, kind, title, link, dueAt?}], streak {current, longest, todayCounted, week {activeDays, goal}, freezes {held}}, parts[{partId, order, label, route, status, progress {label, value?, total?}, counter {current, longest}, experience {verified, pending}, unavailable?}]}', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: streak, kind: GraphQL query, path: /graphql, request: 'streak', response: '{current, longest, days[last 30 {day, counted, parts[], freezeUsed}], week, freezes, partCounters[], badges[]}', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: weekly-goal, kind: GraphQL mutation, path: /graphql, request: 'setStreakGoal(input: {activeDays, reminder?: {enabled, localTime}})', response: '{weeklyGoal, reminder}', errors: [400 STREAK_GOAL_INVALID]}
+  - {name: record-action, kind: internal (server module call, no client door), path: n/a, request: 'record({actionId, partId, kind, sourceRef, at})', response: '{counted, day}', errors: [400 STREAK_ACTION_UNKNOWN]}
+guarantees:
+  - Statuses use only the platform error kinds; codes carry the STREAK_ prefix (and HUB_ for the hub where needed).
+  - Every door needs a session. Actions are recorded only server-side by the part that stored them; no client door can add an action.
+  - The streak is never an input to experience items, path done or CV export.
+consumerObligations:
+  - A part calls record only after its action is stored, with a stable actionId (its own id for the stored attempt, run, session or review batch).
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Hub doors.}

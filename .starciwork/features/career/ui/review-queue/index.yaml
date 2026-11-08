@@ -1,0 +1,20 @@
+schema: work/ui-screen@1
+id: ui.career.review-queue
+title: Duyệt kinh nghiệm (teacher and reviewer queue)
+state: todo
+activity: idle
+brand: brand
+shell: app shell (teacher and reviewer role only)
+route: /review-queue
+routeParent: app
+surface: A batch table of items to sign (due date with an SLA badge, part, item type, learner handle, the line, the AI result), with filters (part, type, track, overdue) and checkboxes. A side pane previews the selected item; the bulk bar has Duyệt and Trả lại kèm ghi chú.
+persona: teacher, reviewer
+ui:
+  - The teacher sees extra tabs Quá hạn and Chưa giao, the reviewer list with scopes and capacity, and SLA statistics.
+  - Concurrent-decision and evidence-gone states.
+  - Role-gated to TEACHER and REVIEWER; hidden from learners.
+  - '/review-queue (Duyệt kinh nghiệm, teacher and reviewer) and /review (Ôn tập, every learner) are two different screens; neither links to the other, and the label always says Duyệt kinh nghiệm.'
+  - Trả lại needs a note; every decision shows its signer and time in the item history.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision; screen for the UX mockups.}

@@ -1,0 +1,28 @@
+schema: work/contract@1
+id: contract.essentials.api
+title: Essentials API
+state: todo
+activity: idle
+owner: essentials
+between: [essentials, the app's Essentials screens, the starci CLI]
+surface:
+  - {name: lessons, kind: GraphQL query, path: /graphql, request: 'lessons(input: {locale, group?, topic?, category?, difficulty?, language?, provider?, q?})', response: '[{id, version, title, description, category, group, topic {id, title}, difficulty, minutes, languages, providers}]', errors: []}
+  - {name: lesson, kind: GraphQL query, path: /graphql, request: 'lesson(input: {id, locale})', response: 'public projection; overview and phase challenge open to any signed-in learner; other phases {locked: true, body: null, activities: []} and workspace null without Premium', errors: [404 LESSON_NOT_FOUND]}
+  - {name: topic, kind: GraphQL query, path: /graphql, request: 'lessonTopic(input: {topic, locale})', response: '{id, title, group, from, description?, prerequisites?, related?, path: [{order, title, lessonId?}]}; path rows follow the teacher''s V1 module order at the imported ref', errors: [404 LESSON_TOPIC_NOT_FOUND]}
+  - {name: submit-attempt, kind: GraphQL mutation, path: /graphql, request: 'submitLessonAttempt(input: {lessonId, version, activityId, revision, locale?, answer: {optionId?, text?, actionIds?, reachedStateId?, debrief?, files?: [{relativePath, content}]}})', response: '{attemptId, lessonId, version, activityId, revision, kind, phase, status saved|grading|graded|failed, failureCode, result?, submittedAt, gradedAt}; a choice and a simulation come back graded (result {correct, options[{optionId, isCorrect, selected, explanation}]} or {success, reachedStateId}); a written answer is graded by the coach inside the call and comes back graded or failed', errors: [401 IDENTITY_SESSION_REQUIRED, 403 LESSON_PREMIUM_REQUIRED, 404 LESSON_NOT_FOUND, 409 ATTEMPT_REVISION_CONFLICT, 400 ATTEMPT_ANSWER_INVALID, 400 ATTEMPT_ACTIVITY_UNSUPPORTED]}
+  - {name: attempt, kind: GraphQL query, path: /graphql, request: 'lessonAttempt(input: {attemptId})', response: 'the attempt of submit-attempt; a written result is criteria[{criterionId, criterion, level, evidenceQuote, maxScore}], score, maxScore, isDiagnostic; a failed attempt carries failureCode', errors: [404 ATTEMPT_NOT_FOUND]}
+  - {name: progress, kind: GraphQL query, path: /graphql, request: 'lessonProgress(input: {lessonId})', response: '{version, phase, outcomes[{id, understood, proved}], attempts {total, activities, graded, failed, pending}, activities[{activityId, phase, kind, attempts, latestAttemptId, latestRevision, latestStatus}]}; lab and incident are later', errors: []}
+  - {name: later, kind: deferred, path: /graphql, request: 'hint, ask (Hỏi StarCi), lab-run, reviews, incident-pull, incident-submit', response: 'after the tier-1 MVP (decision.essentials.mvp-scope in the lane)', errors: [403 LESSON_PREMIUM_REQUIRED, 400 CONTEXT_LIMIT, 404 INCIDENT_NOT_AVAILABLE]}
+  - {name: import-errors, kind: content import, path: n/a, request: concepts/ V2 import, response: one immutable version per lesson, errors: [409 LESSON_VERSION_IMMUTABLE, 400 LESSON_CONTENT_INVALID (also a lesson without a topic, or a topic slug equal to a lesson id), 400 LESSON_IMPORT_REJECTED]}
+guarantees:
+  - Statuses use only the platform error kinds (400, 401, 403, 404, 409, 429, 500, 503); clients branch on the stable error code.
+  - No response before a submit carries an answer, an option correctness, rubric expected evidence or a hidden test.
+  - Every door needs a session; every door except catalog, lesson overview and the phase 1 attempt also needs Premium.
+  - Attempts are idempotent per learner, activity and revision: a resend with the same answer answers the stored attempt (and grades a failed written answer again), the same revision with another answer is refused ATTEMPT_REVISION_CONFLICT.
+  - "Premium is checked before an answer is stored and before any coach call, so no AI call is made for a learner without Premium; the challenge phase is free, so its diagnostic is graded by the coach for any signed-in learner."
+  - "A grading that fails is not an error of the call: the attempt comes back with status failed and a stable failureCode, ATTEMPT_COACH_UNCONFIGURED (503, no AI provider bound), ATTEMPT_COACH_UNAVAILABLE (503, deadline or provider failure) or ATTEMPT_COACH_INVALID (500, a grade the rubric refuses); the answer stays saved."
+  - A choice result (correctness and an explanation per option) exists only in the answer to a submit and in the later read of that attempt; the coach result carries per-criterion level and evidence quote, never the expected evidence, the misconception or the sample answer.
+consumerObligations:
+  - Show the locked state on code LESSON_PREMIUM_REQUIRED (status 403) and route to the plans page; branch on the stable code, never on the status.
+  - Never cache a graded result client-side as the source of truth; read progress from the server.
+change: {rev: 4, kind: revised, at: '2026-11-08', reason: 'Attempts, grading and progress built as GraphQL doors with stable error codes (impl.essentials.be.attempts).'}

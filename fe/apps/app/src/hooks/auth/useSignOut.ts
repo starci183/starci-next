@@ -1,32 +1,26 @@
 "use client"
 
-import { useTransition } from "react"
-import { authClient } from "@/modules/auth"
-import type { AuthFailure } from "@/modules/auth"
+import { usePostIdentitySignOutSwr } from "@/hooks/swr"
 import { useGraphQLWithToast } from "@/modules/toast"
-
-/** The app's one outcome of an auth call, so modules/toast reports it like any other write. */
-const responseOf = (failure: AuthFailure | undefined) =>
-    failure === undefined
-        ? { success: true as const, data: null }
-        : { success: false as const, error: failure.code, kind: failure.kind, message: failure.message }
 
 /** What useSignOut answers: the pending flag and the sign-out itself. */
 export type SignOutHook = {
     readonly pending: boolean
-    readonly signOut: () => void
+    readonly signOut: (destination: string) => void
 }
 
 /**
- * Ends the reader's session through modules/auth: whether the request runs and the sign-out itself. A failure is reported by
- * modules/toast; a success needs no toast, the session effect moves the reader to signed out.
+ * Ends the reader's session through the sign-out door: whether the request runs and the sign-out itself. A failure is
+ * reported by modules/toast; a success leaves for `destination` (the signed-out sign-in screen) with a full navigation, so
+ * the next screen starts with no session in any cache.
  */
 export const useSignOut = (): SignOutHook => {
     const withToast = useGraphQLWithToast()
-    const [pending, startTransition] = useTransition()
-    const signOut = (): void =>
-        startTransition(async () => {
-            await withToast(async () => responseOf(await authClient.signOut()), { showSuccessToast: false })
+    const { trigger, pending } = usePostIdentitySignOutSwr()
+    const signOut = (destination: string): void => {
+        void withToast(trigger, { showSuccessToast: false }).then((response) => {
+            if (response.success) window.location.assign(destination)
         })
+    }
     return { pending, signOut }
 }

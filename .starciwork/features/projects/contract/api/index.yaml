@@ -1,0 +1,27 @@
+schema: work/contract@1
+id: contract.projects.api
+title: Projects API
+state: todo
+activity: idle
+owner: projects
+between: [projects, the app's /projects screens, the path engine, career]
+surface:
+  - {name: projects, kind: GraphQL query, path: /graphql, request: 'projects(input: {locale})', response: '[{id, name, kind, topic, language, stack, repoUrl, deployedUrl, provedConceptCount, conceptCount, currentMilestoneId, doneMilestoneCount, milestoneCount}]', errors: []}
+  - {name: project, kind: GraphQL query, path: /graphql, request: 'project(input: {projectId, locale})', response: 'summary plus milestones, practisingConceptCount, lastCiRun, lastProbeRun', errors: [404 PROJECT_NOT_FOUND]}
+  - {name: projectMilestone, kind: GraphQL query, path: /graphql, request: 'projectMilestone(input: {projectId, milestoneId, locale})', response: 'milestone and concepts with slots, failing, aiQuestion, lesson', errors: [404 PROJECT_NOT_FOUND, 404 PROJECT_MILESTONE_NOT_FOUND, 403 PROJECT_PREMIUM_REQUIRED]}
+  - {name: projectCatalog, kind: GraphQL query, path: /graphql, request: 'projectCatalog(input: {locale})', response: 'milestones, concepts, freeProjects', errors: []}
+  - {name: provedProjectConcepts, kind: GraphQL query, path: /graphql, request: provedProjectConcepts, response: '[{projectId, conceptId, provedAt}] for the path engine', errors: []}
+  - {name: createProject, kind: GraphQL mutation, path: /graphql, request: 'createProject(input: {name, kind, topic, language, stack, track, repoUrl, locale})', response: '{project, ciSecret}', errors: [403 PROJECT_PREMIUM_REQUIRED, 400 PROJECT_INPUT_INVALID]}
+  - {name: updateProject, kind: GraphQL mutation, path: /graphql, request: 'updateProject(input: {projectId, name, topic, language, stack, repoUrl, deployedUrl, locale})', response: project summary, errors: [404 PROJECT_NOT_FOUND, 400 PROJECT_INPUT_INVALID, 400 PROJECT_TARGET_REFUSED]}
+  - {name: deleteProject, kind: GraphQL mutation, path: /graphql, request: 'deleteProject(input: {projectId})', response: '{id}', errors: [404 PROJECT_NOT_FOUND]}
+  - {name: setProjectConcept, kind: GraphQL mutation, path: /graphql, request: 'setProjectConcept(input: {projectId, conceptId, location, endpoint, sampleBody, locale})', response: concept, errors: [404 PROJECT_NOT_FOUND, 404 PROJECT_CONCEPT_NOT_FOUND, 400 PROJECT_LOCATION_INVALID, 400 PROJECT_ENDPOINT_INVALID]}
+  - {name: explainProjectConcept, kind: GraphQL mutation, path: /graphql, request: 'explainProjectConcept(input: {projectId, conceptId, location, excerpt, explanation, locale})', response: concept, errors: [403 PROJECT_PREMIUM_REQUIRED, 409 PROJECT_CONCEPT_NOT_READY, 400 PROJECT_EXPLANATION_INVALID, 400 PROJECT_EXCERPT_SECRET, 429 PROJECT_CODE_READ_LIMIT, 503 PROJECT_COACH_UNCONFIGURED, 503 PROJECT_COACH_UNAVAILABLE, 500 PROJECT_COACH_INVALID]}
+  - {name: runProjectProbes, kind: GraphQL mutation, path: /graphql, request: 'runProjectProbes(input: {projectId})', response: 'probe run with each result', errors: [404 PROJECT_NOT_FOUND, 400 PROJECT_DEPLOYED_URL_MISSING, 400 PROJECT_TARGET_REFUSED, 429 PROJECT_PROBE_RATE_LIMITED]}
+  - {name: rotateProjectCiSecret, kind: GraphQL mutation, path: /graphql, request: 'rotateProjectCiSecret(input: {projectId, locale})', response: '{project, ciSecret}', errors: [404 PROJECT_NOT_FOUND]}
+  - {name: syncProjectPractice, kind: GraphQL mutation, path: /graphql, request: 'syncProjectPractice(input: {projectId, locale})', response: project, errors: [404 PROJECT_NOT_FOUND]}
+guarantees:
+  - Statuses use only the platform error kinds; codes carry the PROJECT_ prefix. Every door needs a session.
+  - Where a concept stands is computed from append-only evidence; relay results never prove.
+consumerObligations:
+  - Show Đang luyện and Đã chứng minh apart; branch on the stable code, never the status.
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

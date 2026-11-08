@@ -67,3 +67,36 @@ describe("ErrorsFilter", () => {
         })
     })
 })
+
+describe("ErrorsFilter Retry-After", () => {
+    const answer = async (kind: "rate-limited" | "internal", params: Record<string, string | number>) => {
+        const { filter, errors, requestLocale } = await build()
+        const response = mock<Response>()
+        response.status.mockReturnValue(response)
+        const http = mock<ReturnType<ArgumentsHost["switchToHttp"]>>()
+        http.getRequest.mockReturnValue(mock<Request>({ headers: {} }))
+        http.getResponse.mockReturnValue(response)
+        const host = mock<ArgumentsHost>()
+        host.switchToHttp.mockReturnValue(http)
+        errors.describe.mockReturnValue({ code: "SOME_CODE", kind, status: kind === "internal" ? 500 : 429, params })
+        requestLocale.of.mockReturnValue("vi")
+        errors.text.mockReturnValue("text")
+        filter.catch(new Error("x"), host)
+        return response
+    }
+
+    it("sets the Retry-After header of a rate-limited answer from its retryAfterSeconds param", async () => {
+        const response = await answer("rate-limited", { retryAfterSeconds: 17 })
+
+        expect(response.set).toHaveBeenCalledWith("Retry-After", "17")
+        expect(response.status).toHaveBeenCalledWith(429)
+    })
+
+    it("sets no header on a rate-limited answer without the param or on any other kind", async () => {
+        const bare = await answer("rate-limited", {})
+        const other = await answer("internal", { retryAfterSeconds: 5 })
+
+        expect(bare.set).not.toHaveBeenCalled()
+        expect(other.set).not.toHaveBeenCalled()
+    })
+})

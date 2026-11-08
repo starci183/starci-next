@@ -1,0 +1,13 @@
+schema: work/data@1
+id: data.review.habit
+title: Daily review goal (the streak lives in the hub)
+state: todo
+activity: idle
+fields:
+  - {name: learnerId, type: learner reference, required: true}
+  - {name: dailyGoal, type: 'integer 5..50, default 10 (Q-RV-2)', required: true}
+  - {name: days, type: '[{date, reviewed, goalMet, allDueDone}]', required: true}
+invariants:
+  - When every item due that day is done, review records one review-due-done action to the hub streak service (sds.hub.streak), once per day.
+  - The streak, freezes, weekly goal, reminder and badges are the hub's (data.hub.streak); this record keeps only the daily item goal.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A entity.}

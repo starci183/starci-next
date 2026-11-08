@@ -1,0 +1,22 @@
+schema: work/policy-decision@1
+id: decision.review.product
+title: Review is one daily queue; free gets the teacher's free cards, Premium gets everything
+state: todo
+activity: idle
+question: What is review, and what is free?
+options:
+  - A. One daily queue of flashcards and Bản chất retrieval items, self-graded cards and rubric-graded written answers. Free gets the cards with isPremium false; Premium gets every card, the retrieval items and the automatic queue from studied lessons.
+  - B. Free gets one whole deck per group.
+recommendation: A
+recommendationReason: Research §4.1 and §6 Q4. The data marks free cards one by one, so the flag is the teacher's own cut (see Q-RV-1).
+outcome: decided
+chosen: A
+reason: 'Owner 2026-11-08: "theo đề xuất trò từng phần đi" (§6 Q1 wave A, Q4 free follows isPremium).'
+blocks: [contract.review.api]
+extensions:
+  access:
+    free: Cards with isPremium false in every deck (119 of 750), the ladder, goal and streak.
+    premium: Every card, Bản chất retrieval items (the review phase of decision.essentials.product), the queue built automatically from studied lessons and decks, and AI grading of written retrieval answers under the fair-use cap.
+    gate: contract.commerce.entitlement isPremium(learner) at every door that returns a locked item or calls the coach.
+  measures: [D7 and D30 retention, recall rate at the 2nd and 3rd review, active days per week]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner accepted the research proposal.}

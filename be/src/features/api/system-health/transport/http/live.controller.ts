@@ -3,6 +3,7 @@ import type { QueryBus } from "@nestjs/cqrs"
 import { Public, PublicReason } from "@modules/domain/identity"
 import type { LivenessReport } from "@modules/domain/liveness"
 import { InjectQueryBus } from "@modules/platform/cqrs"
+import { RateLimit, RateTier } from "@modules/platform/http-security"
 import { CheckLivenessQuery } from "../../application/check-liveness.query"
 
 @Controller("health")
@@ -13,6 +14,7 @@ export class LiveController {
     /** Reports the process alive while its event loop still answers requests. */
     @Get("live")
     @Public({ reason: PublicReason.Health })
+    @RateLimit(RateTier.Probe)
     live(): Promise<LivenessReport> {
         return this.queryBus.execute(new CheckLivenessQuery({ request: {} }))
     }

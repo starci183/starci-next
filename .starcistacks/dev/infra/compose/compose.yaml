@@ -1,0 +1,108 @@
+# The dev environment's dependencies, run by `starci app stack up --env dev --execute` (PROJECT-STACKS-3, PROJECT-STACKS-6); nobody runs docker by hand.
+# Only infrastructure runs here: the database, the mail sink and the dev ingress. The core api, the product app and the landing run natively
+# on the host (environments.dev.local.processes). Host ports come from environments.dev.local.ports through STACK_PORT_<NAME>; the superuser
+# password is read from a file through the least grant STACK_GRANT_DB (a directory holding only POSTGRES_PASSWORD), never from the environment.
+name: starci-next-dev
+services:
+  postgres:
+    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/POSTGRES_PASSWORD
+    ports:
+      - "127.0.0.1:${STACK_PORT_DB}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ${STACK_GRANT_DB}:/run/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    restart: unless-stopped
+  # The dev mail sink (Mailpit): the core api sends the sign-in mails to its SMTP port on loopback, a person reads them in its web UI.
+  mail:
+    image: axllent/mailpit:v1.31.6@sha256:23fe39e81bde596a918000b3135c0f85dc8bb4c9ea6be274b051143f3e300387
+    environment:
+      MP_SMTP_BIND_ADDR: 0.0.0.0:1025
+      MP_UI_BIND_ADDR: 0.0.0.0:8025
+      MP_MAX_MESSAGES: "500"
+    ports:
+      - "127.0.0.1:${STACK_PORT_MAIL}:1025"
+      - "127.0.0.1:${STACK_PORT_MAILUI}:8025"
+    healthcheck:
+      test: ["CMD", "/mailpit", "readyz"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    restart: unless-stopped
+  # The dev identity provider (Keycloak, the image test-world pins elsewhere: quay.io/keycloak/keycloak). The OIDC package the core api uses admits https
+  # only, so the server speaks https with a self-signed certificate it makes on its first start (a PKCS12 keystore in its own volume); the certificate
+  # (public part only) is written to the data directory keycloak-tls, where the core api reads it as HTTP_TRUSTED_CA_FILE. The realm is imported from
+  # realm-starci-next-identity.json; its confidential client's secret is the sealed IDENTITY_KEYCLOAK_CLIENT_SECRET, read from the least grant keycloak
+  # and substituted into the import as KC_CLIENT_SECRET. The master-realm admin gets a random password nobody keeps (the realm file is the one source).
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
+    # root so the fresh named volume and the data directory are writable (a named volume starts root-owned); a dev-only container on loopback.
+    user: "0"
+    entrypoint:
+      - bash
+      - -c
+      - |
+        set -eu
+        if [ ! -f /tls/keystore.p12 ]; then
+          head -c 24 /dev/urandom | base64 | tr -d '/+=' > /tls/storepass
+          keytool -genkeypair -alias dev -keyalg RSA -keysize 2048 -validity 3650 -dname CN=localhost -ext san=dns:localhost,ip:127.0.0.1 -storetype PKCS12 -keystore /tls/keystore.p12 -storepass "$$(cat /tls/storepass)" -keypass "$$(cat /tls/storepass)"
+        fi
+        keytool -exportcert -rfc -alias dev -keystore /tls/keystore.p12 -storepass "$$(cat /tls/storepass)" -file /out/ca.crt
+        export KC_CLIENT_SECRET="$$(cat /run/secrets/IDENTITY_KEYCLOAK_CLIENT_SECRET)"
+        export KC_HTTPS_KEY_STORE_PASSWORD="$$(cat /tls/storepass)"
+        export KC_BOOTSTRAP_ADMIN_PASSWORD="$$(head -c 24 /dev/urandom | base64 | tr -d '/+=')"
+        exec /opt/keycloak/bin/kc.sh start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_HOSTNAME: https://localhost:${STACK_PORT_KEYCLOAK}
+      KC_HTTP_ENABLED: "false"
+      KC_HTTPS_PORT: "8443"
+      KC_HTTPS_KEY_STORE_FILE: /tls/keystore.p12
+    ports:
+      - "127.0.0.1:${STACK_PORT_KEYCLOAK}:8443"
+    volumes:
+      - keycloak-tls:/tls
+      # The dev database (H2 under start-dev): realm users registered in dev survive a stack down/up and a reboot; --import-realm skips an existing realm.
+      - keycloak-data:/opt/keycloak/data/h2
+      - ${STACK_DATA_DIR}/keycloak-tls:/out
+      - ${STACK_GRANT_KEYCLOAK}:/run/secrets:ro
+      - ./realm-starci-next-identity.json:/opt/keycloak/data/import/realm-starci-next-identity.json:ro
+    healthcheck:
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8443"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+      start_period: 40s
+    restart: unless-stopped
+  # The dev entry origin http://localhost:3080: /api/* and /graphql to the native core api, everything else to the native app (Caddyfile).
+  # The upstreams are the host's processes, reached as host.docker.internal (Docker Desktop resolves it; host-gateway covers a Linux engine).
+  ingress:
+    image: caddy:2.10.2@sha256:c3d7ee5d2b11f9dc54f947f68a734c84e9c9666c92c88a7f30b9cba5da182adb
+    configs:
+      - source: ingress-config
+        target: /etc/caddy/Caddyfile
+    ports:
+      - "127.0.0.1:3080:3080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+configs:
+  ingress-config:
+    file: ./Caddyfile
+volumes:
+  postgres-data: {}
+  keycloak-tls: {}
+  keycloak-data: {}

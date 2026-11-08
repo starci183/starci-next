@@ -1,0 +1,35 @@
+schema: work/policy-decision@1
+id: decision.identity.auth-model
+title: Keycloak hidden behind the backend, Academy style
+state: todo
+activity: idle
+question: How does a learner sign in, and where does Keycloak show?
+options:
+  - A. Browser redirect to the Keycloak login page (authorization code + PKCE); the app has no credential form. This was the earlier record on branch starci/auth-sign-in.
+  - B. Academy style. The app owns the sign-in screen; the backend talks to Keycloak (password grant, admin API for sign-up and reset, broker with kc_idp_hint for social); the learner never sees a Keycloak page.
+recommendation: B
+recommendationReason: Owner direction; one consistent screen in the StarCi brand; matches the proven starci-academy-backend integration.
+outcome: decided
+chosen: B
+reason: "Owner 2026-11-08, verbatim: \"đăng nhập có username passworrd với fb github chớ? sao trò lại vẽ theo hướng này. cách dùng keycloak của thầy là kiểu ẩn sau thôi như starci academy backend\". Reference implementation: D:/Repositories/starci-academy-backend src/modules/integrations/keycloak (token.service.ts, user.service.ts, keycloak-oidc-redirect.service.ts) and src/features/api/core/graphql/mutations/keycloak (sign-in, sign-up, forgot-password, exchange-code-for-token, refresh-token, sign-out); screen starci-academy-fe src/components/blocks/auth/AuthenticationPanel."
+blocks: []
+extensions:
+  supersedes: The browser-redirect design of fr.identity.sign-in, sds.identity.session and contract.identity.session-contract as committed on starci/auth-sign-in (3bc364d).
+  openQuestions:
+    - id: Q-A2
+      question: Where do Keycloak tokens live after sign-in?
+      answered: "Owner 2026-11-08: \"Theo đề xuất\" (server-side, as proposed below)."
+      proposed: "Server-side. The backend keeps the Keycloak refresh token with an opaque application session in PostgreSQL; the browser holds only __Host-identity_session (HttpOnly). This keeps the session store the auth branch already built and hides Keycloak further than Academy, which returns the access token to JavaScript and keeps the refresh token in an HttpOnly cookie."
+      alternative: Academy exactly. Access token in the response body, refresh token in an HttpOnly cookie, CSRF cookie for refresh and sign-out.
+    - id: Q-A3
+      question: Does every password sign-in also require an emailed OTP, as Academy does?
+      answered: "Owner 2026-11-08: \"Theo đề xuất\" (yes, as proposed below)."
+      proposed: Yes, as Academy does. Credentials are checked first, then a 6-digit email code completes the sign-in.
+    - id: Q-A4
+      question: Which social providers, and is Facebook configured on realm starci-next-identity?
+      proposed: Facebook and GitHub (owner). Academy uses Google and GitHub. The realm needs identity providers with aliases facebook and github before live proof.
+    - id: Q-A5
+      question: Where does the learner land after sign-in?
+      answered: "Owner 2026-11-08: \"Trang đang xem dở\" (the page the learner was on)."
+      rule: "When a protected page sends the learner to /sign-in, it carries returnTo = that page's path. After any successful sign-in (password plus code, social, or sign-up) the app goes to returnTo. returnTo is accepted only as a same-origin relative path (starts with a single /, no scheme, no //, not /sign-in itself). Social sign-in keeps it server-side in the PKCE bundle, never in the provider URL. If it is missing or invalid the learner lands on the app home / (proposed default)."
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Record the owner's Academy-style direction.}

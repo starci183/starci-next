@@ -1,0 +1,17 @@
+schema: work/ui-screen@1
+id: ui.projects.list
+title: Projects list
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /projects
+routeParent: /projects
+surface: The learner projects with progress, the way to create one and the Máy của bạn placeholder card (Đang luyện and Đã chứng minh told apart).
+persona: learner
+ui:
+  - Vietnamese and English copy with the same keys; branch on stable error codes.
+direction: Program.dc.html screen project
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}

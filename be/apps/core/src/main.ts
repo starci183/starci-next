@@ -1,7 +1,8 @@
 import { NestFactory } from "@nestjs/core"
+import type { NestExpressApplication } from "@nestjs/platform-express"
 import { SystemClockService } from "@modules/platform/clock"
 import { EnvSource } from "@modules/platform/config"
-import { applyHttpSecurity } from "@modules/platform/http-security"
+import { applyHttpSecurity, HTTP_JSON_BODY_LIMIT } from "@modules/platform/http-security"
 import { createJsonLogger, LoggingLogEvent } from "@modules/platform/logging"
 import { AppModule } from "./app.module"
 import { readCoreEnv } from "./core.env"
@@ -10,7 +11,8 @@ import { readCoreEnv } from "./core.env"
 const bootstrap = async (): Promise<void> => {
     const env = EnvSource.fromProcess()
     const options = readCoreEnv(env)
-    const app = await NestFactory.create(AppModule.register(options), { rawBody: true })
+    const app = await NestFactory.create<NestExpressApplication>(AppModule.register(options), { rawBody: true })
+    app.useBodyParser("json", { limit: HTTP_JSON_BODY_LIMIT })
     applyHttpSecurity(app, options.httpSecurity, { trustProxy: 1 })
     app.enableShutdownHooks()
     await app.listen(options.server.port)

@@ -1,0 +1,30 @@
+schema: work/contract@1
+id: contract.review.api
+title: Review API
+state: todo
+activity: idle
+owner: review
+between: [review, the app's review screens, Bản chất (lesson completion), learning-program path progress, the starci CLI]
+surface:
+  - {name: today, kind: GraphQL query, path: /graphql, request: 'reviewToday(input: {locale})', response: '{date, due, overdue, newAvailable, goal {daily, done}, streak (read from contract.hub.api), items[{itemId, source, deckTitle?, lessonTitle?, level, locked}]}', errors: [401 IDENTITY_SESSION_REQUIRED]}
+  - {name: item, kind: GraphQL query, path: /graphql, request: 'reviewItem(input: {itemId, locale})', response: '{itemId, source, question, level, tags, langs, cloze[{n, choices[] shuffled}] (no term), lessonId?, activityId?}', errors: [404 REVIEW_ITEM_NOT_FOUND, 403 REVIEW_PREMIUM_REQUIRED]}
+  - {name: check-cloze, kind: GraphQL mutation, path: /graphql, request: 'checkReviewCloze(input: {itemId, n, choice})', response: '{correct}', errors: [404 REVIEW_ITEM_NOT_FOUND, 403 REVIEW_PREMIUM_REQUIRED]}
+  - {name: flip, kind: GraphQL mutation, path: /graphql, request: 'flipReviewCard(input: {itemId})', response: '{answer markdown with cloze terms revealed}', errors: [404 REVIEW_ITEM_NOT_FOUND, 403 REVIEW_PREMIUM_REQUIRED]}
+  - {name: grade-card, kind: GraphQL mutation, path: /graphql, request: 'gradeReviewCard(input: {itemId, revision, grade AGAIN|HARD|GOOD|EASY, clozeCorrect?})', response: '{itemId, status, step, dueOn, goal {daily, done}, streak}', errors: [404 REVIEW_ITEM_NOT_FOUND, 403 REVIEW_PREMIUM_REQUIRED, 409 REVIEW_REVISION_CONFLICT, 409 REVIEW_NOT_FLIPPED, 400 REVIEW_GRADE_INVALID]}
+  - {name: retrieval-answer, kind: GraphQL mutation (delegates), path: /graphql, request: 'submitLessonAttempt of contract.essentials.api with the retrieval activityId', response: 'the attempt; review reads the result and reschedules', errors: [403 LESSON_PREMIUM_REQUIRED, 409 ATTEMPT_REVISION_CONFLICT, 400 ATTEMPT_ANSWER_INVALID]}
+  - {name: decks, kind: GraphQL query, path: /graphql, request: 'reviewDecks(input: {locale, track?})', response: '[{deckId, title, description, difficulty, cardCount, freeCardCount, added, track[]}]', errors: []}
+  - {name: add-deck, kind: GraphQL mutation, path: /graphql, request: 'addReviewDeck(input: {deckId})', response: '{deckId, added true, newCards}', errors: [404 REVIEW_DECK_NOT_FOUND]}
+  - {name: remove-deck, kind: GraphQL mutation, path: /graphql, request: 'removeReviewDeck(input: {deckId})', response: '{deckId, added false, suspended}', errors: [404 REVIEW_DECK_NOT_FOUND]}
+  - {name: goal, kind: GraphQL mutation, path: /graphql, request: 'setReviewGoal(input: {daily})', response: '{daily}; the weekly goal and reminder are setStreakGoal of contract.hub.api', errors: [400 REVIEW_GOAL_INVALID]}
+  - {name: stats, kind: GraphQL query, path: /graphql, request: 'reviewStats(input: {days?})', response: '{activeDaysPerWeek, recallRateByReview[{n, rate}]}; streak and badges are in contract.hub.api', errors: []}
+  - {name: import-errors, kind: content import, path: n/a, request: deck import (CLI), response: one immutable version per deck, errors: [409 REVIEW_DECK_IMMUTABLE, 400 REVIEW_DECK_INVALID]}
+guarantees:
+  - Statuses use only the platform error kinds (400, 401, 403, 404, 409, 429, 500, 503); codes carry the REVIEW_ prefix (or IDENTITY_, LESSON_, ATTEMPT_ for the doors they reuse).
+  - Every door needs a session; premium cards, retrieval items and AI grading also need Premium.
+  - No response before flip carries the answer or a cloze term; check-cloze answers only correct or not.
+  - Grades are idempotent per item and revision; the same revision with another grade is REVIEW_REVISION_CONFLICT.
+  - Retrieval answers reuse the Bản chất attempt door, so its save-before-feedback and coach failure codes apply unchanged.
+consumerObligations:
+  - Show the locked state on REVIEW_PREMIUM_REQUIRED or LESSON_PREMIUM_REQUIRED and route to /premium.
+  - Call enqueueLesson (sds.review.scheduler) when a Bản chất lesson completes; this is the producer part of fr.essentials.review.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A GraphQL doors.}

@@ -1,0 +1,21 @@
+schema: work/functional-requirement@1
+id: fr.practice.solve
+title: Solve a coding problem and see the verdict
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /practice, picks a pattern and a problem.
+mainFlow:
+  - The pattern list shows 20 patterns with problem counts and the learner's accepted count; problems beyond the free ones show a lock without Premium.
+  - The problem panel shows the statement, difficulty, tags, limits and the public example; a five-language select (cpp, java, javascript, python, typescript) loads the starter code; the editor is a plain textarea and keeps a local draft.
+  - Run judges the public example only (runPractice); Submit judges every test (submitPractice). Both go through the queue and answer within a wait window, or answer a submission still running that the client reads again (practiceSubmission).
+  - The result shows Accepted, Wrong Answer, Time Limit Exceeded or Compilation Error, the time and memory, and a per-test summary (passed or not, index, no input or expected output of hidden tests).
+exceptionFlows:
+  - PRACTICE_PROBLEM_LOCKED (403) on a locked problem without Premium routes to the plans page.
+  - PRACTICE_RATE_LIMITED (429) when a submission is in flight or the minute limit is reached.
+  - PRACTICE_SOURCE_EMPTY, PRACTICE_SOURCE_TOO_LARGE, PRACTICE_LANGUAGE_UNSUPPORTED (400).
+  - JUDGE0_NOT_CONFIGURED or JUDGE0_UNAVAILABLE (503) show a retry state; the submission is stored.
+postconditions:
+  - Accepted per pattern feeds hiring readiness (practiceReadiness); a graded submit records a streak action once.
+composes: [data.practice.problem, data.practice.submission, contract.practice.api, integration.practice.judge0, decision.practice.limits]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

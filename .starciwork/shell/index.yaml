@@ -1,0 +1,173 @@
+schema: work/layout-tree@1
+id: shell
+kind: shell
+state: todo
+activity: idle
+rev: 1
+origin: repository
+app:
+  repository: fe
+  root: fe/apps/app
+  appDir: fe/apps/app/src/app
+  framework: next-app-router
+  localeParam: locale
+source:
+  scanner: manual read by docs task t-19dc853d
+  revision: 987e98b71a6f5bd8d234254d5dd95561ef750ffe
+  scannedAt: 2026-10-28T07:30:27Z
+productLocale:
+  default: en
+  fallback: en
+  locales:
+    - en
+  source: >-
+    Settled by brand.decide from the accepted brand record - brand/index.yaml rev 4
+    voice.locales [en] with localeSource "the product locale is en (shell/index.yaml
+    productLocale.default, which this op settles) ... Academy's bilingual catalogs are not a StarCi
+    Next requirement" - and the owner ruling that the look is identical to the StarCi Academy
+    dashboard and subscription renders, whose own i18n/config.ts declares LOCALES ["en","vi"] with
+    DEFAULT_LOCALE "en" and PRODUCT_TIME_ZONE "Asia/Ho_Chi_Minh". Preserved verbatim from the
+    sibling record D:/Repositories/starci-next/.starciwork/shell/index.yaml as owner-settled; this
+    record does not re-decide it. The current implementation observed below still ships a vi
+    catalog and a vi-default routing table, recorded under gaps.
+i18n:
+  catalogs:
+    - locale: en
+      path: fe/apps/app/src/modules/i18n/messages/en.json
+      sha256: 7834ff2616709edd01349833739b022e9b7cde3139e74f2fe7952ea22645ae1a
+    - locale: vi
+      path: fe/apps/app/src/modules/i18n/messages/vi.json
+      sha256: fa805da1f26aa11a69aac1d93956068156b9c417d1ca175a42eb8eb429f7a1fb
+  routing:
+    source: fe/packages/starci-next-i18n/src/routing.ts
+    sha256: 07140e7a5d5ceeb0d755c7e6d1ee61e0e940b6719b5176ed94b183d42b524f2c
+    locales:
+      - vi
+      - en
+    defaultLocale: vi
+    localePrefix: as-needed
+    timeZone: Asia/Ho_Chi_Minh
+  module: fe/apps/app/src/modules/i18n
+themes:
+  - light
+  - dark
+  - system
+themesSource: >-
+  fe/apps/app/src/components/providers/AppProviders mounts next-themes ThemeProvider
+  with attribute "class", defaultTheme "system" and enableSystem; no fixed theme list is authored
+  in this repository.
+nodes:
+  - id: /
+    parent: null
+    segment: /
+    segmentKind: root
+    url: /
+    origin: repository
+    files:
+      globalError:
+        path: fe/apps/app/src/app/global-error.tsx
+        sha256: 630a9fbdfe0e0817eb606b6673ee6d0339019ec17bad1dfac44c896cac60c19a
+      styles:
+        path: fe/apps/app/src/app/globals.css
+        sha256: 83edd53c4caf41874eff6a342b1b9fcd30ca04dc3c9a23634121f0aa885cea70
+    note: >-
+      No root layout file exists; the [locale] segment's LocaleShell renders the document
+      element. global-error.tsx is the last-resort boundary for failures no locale reached.
+  - id: /[locale]
+    parent: /
+    segment: "[locale]"
+    segmentKind: dynamic
+    url: /[locale]
+    origin: repository
+    files:
+      layout:
+        path: fe/apps/app/src/app/[locale]/layout.tsx
+        sha256: 0040885d66dc05e92bf43043e9b6be1910a2d890aacf3d194a24690c4f271fa5
+      page:
+        path: fe/apps/app/src/app/[locale]/page.tsx
+        sha256: c45ac40c1db58c42c04317afb7b7e1de328e22398f39b9fa9a9557ecdd957b02
+      loading:
+        path: fe/apps/app/src/app/[locale]/loading.tsx
+        sha256: 691d563b5f01d7c398caf2b9d2427386b82098773e997e35bde1062130e9c85d
+      error:
+        path: fe/apps/app/src/app/[locale]/error.tsx
+        sha256: 425158222cc8eacdced946252fd1bad3cdb694d6cd1a96ca47fea8817be0c707
+      not-found:
+        path: fe/apps/app/src/app/[locale]/not-found.tsx
+        sha256: af3973df3fd0ee5d684d0172875e73b255b48059266ddc3f98e1ce023136675d
+    layout:
+      component: SiteShell
+      chrome: visible
+      state: todo
+      rev: 1
+      composition: >-
+        The locale layout resolves appI18n.readLocaleSegment (locale, messages,
+        Asia/Ho_Chi_Minh time zone) and mounts LocaleShell (html lang, body, ui Providers), then
+        AppProviders (next-themes class theme, redux, SWR defaults, auth session and SWR side
+        effects, HeroUI toast region), then AppLayout. AppLayout is a server component that renders
+        SiteShell from @starci-next/ui, a WorkspaceShell of viewport "flow" with a TopBar whose brand
+        TextAction links to APP_ROUTES.home "/" and the routed body in a PageContainer of reading
+        measure. The brand word resolves from the app catalog key app.shell.brand; brand direction
+        itself is not authored here.
+      nav:
+        component: APP_ROUTES
+        source: fe/apps/app/src/modules/routes/index.ts
+        items:
+          - key: home
+            route: /
+            target: /[locale]
+        findings:
+          - code: SHELL_CHROME_MINIMAL
+            detail: >-
+              The observed chrome is site chrome only - a TopBar carrying the wordmark that
+              links home; there are no named navigation destinations, no sidebar, and no right
+              cluster (language, theme, notifications, account). Whether the product app grows the
+              richer app chrome FE-APP-SHELL-1..7 describe is not decided in this record.
+      page: >-
+        The locale segment's page mounts AppHomePage; loading, error and not-found slots mount
+        AppLoadingPage, AppErrorPage and AppNotFoundPage respectively.
+  - id: /health
+    parent: /
+    segment: health
+    segmentKind: static
+    url: /health
+    origin: repository
+  - id: /health/live
+    parent: /health
+    segment: live
+    segmentKind: static
+    url: /health/live
+    origin: repository
+    files:
+      route:
+        path: fe/apps/app/src/app/health/live/route.ts
+        sha256: 0f75274eb0e1833d402247676bec264c4f1df3a8ae6ee4d73b66a9f1b15c4b18
+    note: >-
+      Liveness probe answering a status object of status, info, error and details from
+      process-local state; force-dynamic, never prerendered. The i18n proxy excludes health from
+      locale negotiation.
+gaps:
+  - id: shell.locale-implementation-vs-product-locale
+    statement: >-
+      The owner-settled product locale is en only (productLocale above), but the app's
+      i18n package declares LOCALES ["vi","en"] with DEFAULT_LOCALE "vi" and localePrefix
+      "as-needed", and a Vietnamese catalog vi.json ships beside en.json. This is an implementation
+      observation recorded against the settled locale, not a product choice; the owner decides
+      whether the routing narrows to en.
+    closedBy: []
+  - id: shell.richer-app-chrome-absent
+    statement: >-
+      The current shell is the shared SiteShell site chrome (brand TopBar plus a
+      reading-measure body). The persistent navbar destinations, optional sidebar, right cluster
+      and compact drawer that FE-APP-SHELL-1..7 describe for an app shell are absent; later
+      directions frame them against this record.
+    closedBy: []
+change:
+  rev: 1
+  kind: created
+  at: 2026-10-28T07:30:27Z
+  reason: "First layout-tree record of this repository's fe/apps/app shell, read by hand (the
+    scanner belongs to the sibling product tree and was not run here): the [locale] route segment,
+    its visible SiteShell chrome and the health route, with the owner-settled English product
+    locale preserved from the sibling record. The vi-default routing and catalog and the absent
+    richer shell structure are recorded as gaps."

@@ -1,0 +1,14 @@
+schema: work/implementation@1
+id: impl.practice.be.judge0
+title: Back-end Judge0 integration
+state: todo
+activity: idle
+repository: be
+owners:
+  - {role: be, path: be/src/modules/integrations/judge0}
+proves: [integration.practice.judge0]
+requiresProof:
+  - required: true
+    command: npm test -- src/modules/integrations/judge0
+    note: Scoped unit proof with the managed coverage threshold; error codes JUDGE0_CONFIG_INVALID, JUDGE0_NOT_CONFIGURED, JUDGE0_UNAVAILABLE, JUDGE0_REJECTED, JUDGE0_LANGUAGE_UNSUPPORTED; no passed result is claimed.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

@@ -1,0 +1,130 @@
+schema: starci/i18n-dynamic-keys@1
+namespaces:
+  app.auth.signIn:
+    - key: title
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: subtitle
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: submit
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptQuestion
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptAction
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.signUp:
+    - key: title
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: subtitle
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: submit
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptQuestion
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptAction
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.forgot:
+    - key: title
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: subtitle
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: submit
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptQuestion
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: promptAction
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth:
+    - key: forgotLink
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.field:
+    - key: identifier
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: email
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: password
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: newPassword
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: confirm
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: passwordHint
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: reveal
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: hide
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: emailPlaceholder
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: passwordPlaceholder
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: confirmPlaceholder
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: terms
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.social:
+    - key: facebook
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: github
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: facebookName
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: githubName
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: or
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: redirecting
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.code:
+    - key: title
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: subtitle
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: subtitleNoEmail
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: label
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: lifetime
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: submit
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: submitReset
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: resend
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: anotherEmail
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.notice:
+    - key: credentials
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: signedOut
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: passwordReset
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: codeResent
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: challengeExpired
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: socialFailed
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: unavailable
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.auth.error:
+    - key: username
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: emailRegistered
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: password
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: mismatch
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: code
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: codeAttempts
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: codeShort
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
+  app.signInCallback:
+    - key: title
+      reason: read by the callback page metadata and body through its translator
+    - key: status
+      reason: read by the callback page metadata and body through its translator

@@ -1,0 +1,25 @@
+schema: work/functional-requirement@1
+id: fr.identity.sign-in-social
+title: Sign in with Facebook or GitHub
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner chooses "Tiếp tục với Facebook" or "Tiếp tục với GitHub" on /sign-in or /sign-up.
+mainFlow:
+  - The browser asks the application for a social sign-in start, naming the provider (facebook or github) and the validated returnTo. The backend stores a one-use PKCE bundle (verifier, state, provider, redirect URI, returnTo) and answers with the Keycloak authorization URL carrying kc_idp_hint=<provider>, code_challenge_method=S256 and the app's registered callback.
+  - The browser goes there. Keycloak brokers straight to the provider, so the learner sees Facebook's or GitHub's consent page and never a Keycloak login form.
+  - The provider returns through Keycloak to the app's callback page with code and state. The page sends them once to the backend's exchange door and clears them from the address bar.
+  - The backend consumes the PKCE bundle once, checks state and provider, exchanges the code (grant_type=authorization_code with the verifier) and validates the ID token. It creates the local learner on first sign-in (authentication type facebook or github) and establishes the application session. The answer carries the bundle's returnTo; the callback page goes there, or to / when there is none (Q-A5).
+exceptionFlows:
+  - Learner cancels at the provider, provider error, missing, expired or replayed state, or a provider mismatch end at /sign-in with a recoverable error and no session.
+  - An email already registered with a password is linked or refused according to Keycloak's first-broker-login flow; the app never merges accounts on its own.
+postconditions:
+  - Same as fr.identity.sign-in. No code, state or token is kept in frontend state, logs or the final URL.
+composes: [decision.identity.auth-model, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak, ui.identity.sign-in]
+reference: starci-academy-backend modules/integrations/keycloak/keycloak-oidc-redirect.service.ts (kc_idp_hint, PKCE bundle, TTL CACHE_TTL_KEYCLOAK_OIDC_PKCE); features/api/core/graphql/mutations/keycloak/exchange-code-for-token.
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Authorization URL construction, one-use PKCE bundle, state/provider mismatch, code exchange, first-sign-in creation per provider.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner wants Facebook and GitHub sign-in with Keycloak brokered behind the backend (Q-A4).}
+extensions: {}

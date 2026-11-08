@@ -14,6 +14,8 @@ export interface GraphQLFailure {
     readonly error: string
     readonly kind: string
     readonly message: string
+    /** The parameters of the code (for example `attemptsLeft` of a wrong emailed code), when the back end sent any. */
+    readonly params?: Readonly<Record<string, unknown>> | undefined
 }
 
 /** The one outcome every operation of modules/api/graphql answers; components and hooks never see an Apollo result. */
@@ -23,4 +25,15 @@ export type GraphQLResponse<TData> = GraphQLSuccess<TData> | GraphQLFailure
 export interface OperationParams<TRequest> {
     readonly request: TRequest
     readonly signal?: AbortSignal
+}
+
+/** The variables bag of an operation whose single argument is `input`. */
+export interface InputVariables<TInput> {
+    readonly input: TInput
+}
+
+/** What one query function takes: its request and the abort signal SWR hands the fetcher. */
+export interface QueryParams<TRequest> {
+    readonly request: TRequest
+    readonly signal?: AbortSignal | undefined
 }

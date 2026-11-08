@@ -1,0 +1,28 @@
+schema: work/functional-requirement@1
+id: fr.identity.sign-in
+title: Sign in with email or username and password
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /sign-in, enters an email or username and a password, and chooses Đăng nhập.
+mainFlow:
+  - The browser sends the identifier and password to the application's own sign-in door, from the same origin. The application never sends the learner to a Keycloak page.
+  - The backend exchanges them at Keycloak's token endpoint (grant_type=password, confidential client, scope openid profile email). Keycloak's answer stays on the server.
+  - On success the backend opens a one-use sign-in challenge. It holds the Keycloak tokens server-side, has a 6-digit email code, expires after 10 minutes and allows 5 attempts. The backend queues the code to the account's email and answers with an opaque challenge reference, never a token (Q-A3).
+  - The learner enters the code. The backend verifies it once and creates the local learner on first sign-in (keyed by the Keycloak subject; authentication type credentials). It then establishes the application session (sds.identity.session) and answers success. The browser returns to the page the learner was on (returnTo, a validated same-origin relative path), or to the app home / when there is none (Q-A5, owner).
+exceptionFlows:
+  - Wrong identifier or password, a disabled account or an unverified email answers one generic refusal ("Email, tên đăng nhập hoặc mật khẩu không đúng"). It never says which part failed and never echoes the password.
+  - A wrong code lowers the attempts left. After 5 wrong codes, or after 10 minutes, the challenge is gone and the learner signs in again. "Gửi lại mã" rotates the code and resets attempts without extending an expired challenge.
+  - Keycloak unavailable or timing out (10 s) answers a recoverable "thử lại sau" error and creates no session.
+  - Repeated failures are rate-limited per identifier and per client address.
+postconditions:
+  - A successful sign-in has a session bound to the verified Keycloak subject. Its roles come from Keycloak's verified token claims only.
+  - No password, Keycloak token or code appears in frontend state, logs, URLs or error text.
+composes: [br.identity.sign-in, decision.identity.auth-model, sds.identity.session, contract.identity.session-contract, integration.identity.keycloak, ui.identity.sign-in]
+reference: starci-academy-backend features/api/core/graphql/mutations/keycloak/sign-in (init, verify-otp, resend); modules/integrations/code/otp-challenge.service.ts (6 digits, 5 attempts, TTL CACHE_TTL_SEND_OTP_CODE default 10m).
+requiresProof:
+  - required: true
+    command: npm run test -- src/modules/domain/identity src/modules/integrations/keycloak --runInBand
+    note: Password exchange, generic refusal, challenge issue/verify/expiry/attempts/resend, first-sign-in learner creation, rate limit.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'Owner direction decision.identity.auth-model B: the app owns the credential form, Keycloak hidden behind the backend (Academy style); replaces the browser-redirect flow.'}
+extensions: {}

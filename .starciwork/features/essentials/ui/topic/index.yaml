@@ -1,0 +1,19 @@
+schema: work/ui-screen@1
+id: ui.essentials.topic
+title: Essentials topic
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /essentials/{topic}
+routeParent: /essentials
+surface: One topic with its ordered lesson path, prerequisites and related topics.
+persona: learner
+ui:
+  - Breadcrumb Bản chất / group / topic.
+  - Topic card with description, source modules, lessons opened of total, the learner's progress (Premium) or the Premium upsell.
+  - Lộ trình lists every source lesson in the teacher's module order; published lessons open the lesson page, the rest show Sắp có.
+  - Aside with prerequisites and related topics.
+direction: 'Canvas page essentials (Topic.dc.html, props topic and premium; boards Topic, topic-free, topic.m).'
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Owner asked for topics and chose the route /essentials/[topic]/[lesson] ("ok best route nhé").'}

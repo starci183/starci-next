@@ -1,0 +1,21 @@
+schema: work/business-rule@1
+id: br.career.experience
+title: An experience item is verified only when the AI graded it and a reviewer signed it
+state: todo
+activity: idle
+statements:
+  - Each part grants only the experience items of data.learning-program.experience-catalog. The AI may grade an item only when its required evidence exists in proof form (signed CI, server probes, a graded session, a proved lesson); relay-only evidence keeps it đang luyện.
+  - The AI grades the evidence and drafts the CV line from the template, filling slots only from evidence. A number the learner typed is never used.
+  - The learner may reword the draft within its template and then submits it to chờ thầy duyệt. The reviewer sees exactly the line and evidence that will be exported.
+  - Only a reviewer appointed for the item's part (or the teacher) can approve or return it. Every decision (approve, return, revoke, reassign) is recorded with the signer, their role and the time; returning or revoking requires a note.
+  - Only Đã xác minh items count toward the profile, a path's done, the CV export and the hiring bridge. AI đã chấm and chờ thầy duyệt items are shown to the learner as pending, never publicly.
+  - A verified item can be revoked by the teacher, or by its signer with the teacher's approval, with a reason. The profile, path progress and future CV exports drop it at once, and its verification page shows it as revoked.
+  - Every state change is appended to an audit trail (who, when, from, to, note); nothing is edited in place.
+  - A reviewer never reviews their own item.
+acceptance:
+  - Given an item the AI graded but no reviewer approved, when the profile or a CV export is built, then the item is absent.
+  - Given a return without a note, when submitted, then it is refused CAREER_REVIEW_NOTE_REQUIRED.
+  - Given a revoked item, when its verification link is opened, then it shows revoked with the date, and the path done that relied on it is no longer met.
+authorityRefs: [decision.career.verification]
+appliesTo: [fr.career.experience, fr.career.review-queue, fr.career.revoke, fr.career.profile, fr.learning-program.path-progress]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision "AI chấm, thầy ký từng mục".}

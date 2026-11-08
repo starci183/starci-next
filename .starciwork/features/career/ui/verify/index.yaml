@@ -1,0 +1,16 @@
+schema: work/ui-screen@1
+id: ui.career.verify
+title: Public verification page of one item
+state: todo
+activity: idle
+brand: brand
+shell: public page (no app chrome)
+route: /verify/{code}
+routeParent: app
+surface: 'For a recruiter: the CV line, Đã xác minh bởi StarCi with the signer role and date (Q-CA-6), public evidence links, or the revoked state with its date.'
+persona: visitor
+ui:
+  - No learner email, no private report, no reviewer personal name.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision; verification links on CV lines.}

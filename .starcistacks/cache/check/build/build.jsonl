@@ -1,3 +1,3 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"07e7b5e5c7d350f756474ea199e9559e3ac3406b5a299a2a0c63e15b6b89c330","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"95456c56d982e94faaf7dee06c9853a0e9e956e565e587f79e927d2276e73e80","path":"build/build fe app","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"9672af9222c886156badb66eeff3a3745f0575306dd63fb5702d62d6d2c066a5","path":"build/build fe landing","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"37f545d86fffbda9e25237b71f34f4381dfc9ea45f3016f4ce651c0c2e611fa5","path":"build/build be","step":"ci-step"}
+{"data":{"verdict":"red"},"findings":[{"column":0,"line":0,"message":".github/workflows/ci.yml build / build fe app (npm run codegen --silent && npx --no-install turbo run build --filter=./fe/apps/app) failed locally as it would in CI (exit 1)","path":".github/workflows/ci.yml","rule":"CI_PARITY_STEP_FAILED"}],"hash":"d98b3e9d9293f98e0e51a9ad1816db4e9832a5d2c0e8e954b2fd4248b4e16f95","path":"build/build fe app","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"79bd36f3face0e1d8529020c9eba6677509ffd66b31ad1345ce99a41dd01309c","path":"build/build fe landing","step":"ci-step"}

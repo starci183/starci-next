@@ -1,0 +1,18 @@
+schema: work/ui-screen@1
+id: ui.agent-lab.lab
+title: Agent lab
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /agents
+routeParent: app
+surface: Three track tiles, the seven-concept grid, the quota bar and the coming-soon cards; links to /projects for the proof.
+persona: learner
+ui:
+  - Quota bar "Còn X lượt gọi model hôm nay" and a hard-stop state.
+  - Cards "Orca và công cụ khác — sắp có" and "StarCi harness — phần cuối, tuỳ chọn · chưa mở".
+direction: Program.dc.html screen agent
+assets: []
+requiresProof: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

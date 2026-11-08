@@ -1,0 +1,21 @@
+schema: work/functional-requirement@1
+id: fr.career.review-queue
+title: Teacher and reviewer review queue
+state: todo
+activity: idle
+actors: [teacher (TEACHER), reviewer (REVIEWER)]
+trigger: The teacher or a reviewer opens /review-queue.
+mainFlow:
+  - The queue lists the items assigned to the signer (the teacher also sees escalated and unassigned items), oldest due first, with the part, item type, learner handle, SLA countdown and the AI grade.
+  - 'Batch view: filter by part, item type or track and select several items; each row expands to the line, the AI per-criterion grade with quotes, and evidence links (signed CI run, probe run, transcript, lesson result, the pointed code). The defense questions are shown as a checklist.'
+  - Duyệt signs the selected items (one confirmation per batch, each item signed separately). Trả lại requires a note per item and can apply one note to several items.
+  - The teacher appoints and scopes reviewers, reassigns items and sees SLA statistics (median time, overdue count).
+exceptionFlows:
+  - An item outside the signer's scope or the signer's own item is refused CAREER_REVIEW_FORBIDDEN.
+  - An item already decided by another reviewer (concurrent) is refused CAREER_REVIEW_CONFLICT and the row refreshes.
+  - Evidence that has gone (a deleted CI run, a URL down) is marked; the signer can return the item with the auto note "bằng chứng không còn truy cập được".
+  - Past the SLA, the item escalates to the teacher and the learner sees the new date.
+postconditions:
+  - Each approval carries a signature; each return carries a note; both are in the audit trail.
+composes: [br.career.experience, data.career.experience-item, data.career.review-decision, data.career.reviewer, sds.career.experience-engine, contract.career.api, ui.career.review-queue, ui.career.review-item]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner decision "thầy ký từng mục".}

@@ -1,0 +1,15 @@
+schema: work/data@1
+id: data.agent-lab.track
+title: Agent track, concept cell and lab step
+state: todo
+activity: idle
+fields:
+  - {name: trackId, type: claude | openclaw | hermes, required: true}
+  - {name: keyMode, type: byo (own Anthropic account) | proxy (capped StarCi key), required: true}
+  - {name: pinnedVersion, type: the tool version the labs are written against, required: true}
+  - {name: concepts, type: the seven mindset concepts, required: true}
+  - {name: cells, type: '[{conceptId, status authoring|draft|approved|outdated, steps[{title, body, source url}]}]', required: true}
+invariants:
+  - A lab opens only when the teacher approved it; until then the cell is "thầy đang soạn" and has no steps.
+  - No lab text is invented by the app; the catalog starts with empty cells.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

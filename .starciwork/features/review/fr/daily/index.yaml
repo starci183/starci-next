@@ -1,0 +1,19 @@
+schema: work/functional-requirement@1
+id: fr.review.daily
+title: Review today's queue
+state: todo
+activity: idle
+actors: [learner]
+trigger: The learner opens /review, or a daily reminder.
+mainFlow:
+  - The queue shows today's due items (overdue first, oldest first), new cards up to the goal, the goal progress and the streak.
+  - Ôn ngay starts a session over the due items. Cards follow fr.review.card; retrieval items follow fr.review.retrieval.
+  - Finishing the goal or the queue updates the day, the streak and badges (fr.review.habit), and shows a short summary (items reviewed, recall rate, next due count tomorrow).
+exceptionFlows:
+  - Nothing due, the screen offers new cards from the learner's decks or track, or links to Bản chất.
+  - Without Premium, retrieval items and premium cards show as locked with the upsell; the free cards are still reviewable.
+  - Leaving mid-session keeps every stored review; returning continues with what is still due.
+postconditions:
+  - Every review is stored before the next item shows.
+composes: [br.review.review, data.review.card-state, data.review.habit, sds.review.scheduler, contract.review.api, ui.review.today, ui.review.session]
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A flow.}

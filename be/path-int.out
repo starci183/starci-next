@@ -1,0 +1,36 @@
+{"applied":{"primary":["CreateRateWindows1789900000000","InitNote1790000000000","InitEntitlement1790000000001","InitPurchase1790000000002","CreateIdentitySessions1793232000000","IdentityChallengesAndSessionTokens1794106800000","InitLesson1795000000000","InitAttempt1795000000100","AddLessonGroup1795100000000","AddLessonTopic1795200000000","PurchaseConfirmationRefusals1796000000000","InitInterview1796300000000","InitStreak1796300000000","InitReview1796400000000","InitAgentLab1796400000000","ReviewDueNotice1796400000001","InitPractice1796500000000","InitCareer1797300000000","InitNotification1797400000000","InitProject1797650000000","ProjectKinds1797650000001","PurchaseVoids1797700000000","PremiumRevokedKind1797700000001","InitRelay1797700000002","IdentitySessionProfile1797800000000","InitPath1797900000000"]},"level":"info","event":"migrations.applied","time":"2026-11-08T19:15:38.287Z"}
+FAIL integration src/tests/integration/path/path.integration-spec.ts
+  ● Test suite failed to run
+
+    fakeIds: the prefix is 1 to 8 hex digits
+
+    [0m [90m 11 |[39m [90m/** A credential for the cookie of a session that was never issued. */[39m
+     [90m 12 |[39m [36mexport[39m [36mconst[39m [33mUNKNOWN_COOKIE[39m[33m:[39m string [33m=[39m [32m`__Host-identity_session=${"r".repeat(43)}`[39m
+    [31m[1m>[22m[39m[90m 13 |[39m
+     [90m    |[39m [31m[1m^[22m[39m
+     [90m 14 |[39m [90m/** The challenge a sign-in or sign-up door answers. */[39m
+     [90m 15 |[39m [36mexport[39m [36minterface[39m [33mChallengeBody[39m {
+     [90m 16 |[39m     readonly challenge[33m:[39m string[0m
+
+      at new FakeIds (../node_modules/@starci/jest-preset/dist/ids.js:18:19)
+      at fakeIds (../node_modules/@starci/jest-preset/dist/ids.js:41:12)
+      at learnersOf (src/tests/fixtures/builders/identity.builder.ts:13:43)
+      at src/tests/integration/path/path.integration-spec.ts:30:59
+      at Object.<anonymous> (src/tests/integration/path/path.integration-spec.ts:27:1)
+
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[CommandBus] [39m[33mCommand handler [StartRelayPairingHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[CommandBus] [39m[33mCommand handler [TakeRelayTokenHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[CommandBus] [39m[33mCommand handler [ConfirmRelayDeviceHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[CommandBus] [39m[33mCommand handler [RevokeRelayDeviceHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[QueryBus] [39m[33mQuery handler [GetRelayPairingHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[QueryBus] [39m[33mQuery handler [ListRelayDevicesHandler] is already registered. Overriding previously registered handler.[39m
+[33m[Nest] 48072  - [39m11/09/2026, 2:15:50 AM [33m   WARN[39m [38;5;3m[DataSourceNameRegistry] [39m[33mA data source with the primary name is already registered. Multiple data sources must be registered with unique names; otherwise, they will override each other. Please assign a unique "name" property to each TypeOrmModule.forRoot()/forRootAsync() registration.[39m
+{"operation":"SetStreakGoalHandler","errorName":"StreakError","errorMessage":"STREAK_GOAL_INVALID","stack":"StreakError: STREAK_GOAL_INVALID\n    at StreakService.setGoal (D:\\starci-lanes\\starci-next-integration\\be\\src\\modules\\domain\\streak\\streak.service.ts:105:19)\n    at SetStreakGoalHandler.process (D:\\starci-lanes\\starci-next-integration\\be\\src\\features\\api\\hub\\application\\set-streak-goal.handler.ts:29:29)\n    at SetStreakGoalHandler.execute (D:\\starci-lanes\\starci-next-integration\\be\\src\\modules\\platform\\cqrs\\cqrs.handler.ts:33:31)\n    at D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\cqrs\\dist\\command-bus.js:81:57\n    at CommandBus.execute (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\cqrs\\dist\\command-bus.js:73:16)\n    at SetStreakGoalResolver.setStreakGoal (D:\\starci-lanes\\starci-next-integration\\be\\src\\features\\api\\hub\\transport\\graphql\\set-streak-goal.resolver.ts:31:46)\n    at D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-context-creator.js:67:33\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at target (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-context-creator.js:74:28)\n    at Object.setStreakGoal (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-proxy.js:9:24)","errorCode":"STREAK_GOAL_INVALID","level":"error","event":"cqrs.operation.failed","time":"2026-11-08T19:15:51.543Z"}
+{"operation":"SetStreakGoalHandler","errorName":"StreakError","errorMessage":"STREAK_GOAL_INVALID","stack":"StreakError: STREAK_GOAL_INVALID\n    at StreakService.setGoal (D:\\starci-lanes\\starci-next-integration\\be\\src\\modules\\domain\\streak\\streak.service.ts:105:19)\n    at SetStreakGoalHandler.process (D:\\starci-lanes\\starci-next-integration\\be\\src\\features\\api\\hub\\application\\set-streak-goal.handler.ts:29:29)\n    at SetStreakGoalHandler.execute (D:\\starci-lanes\\starci-next-integration\\be\\src\\modules\\platform\\cqrs\\cqrs.handler.ts:33:31)\n    at D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\cqrs\\dist\\command-bus.js:81:57\n    at CommandBus.execute (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\cqrs\\dist\\command-bus.js:73:16)\n    at SetStreakGoalResolver.setStreakGoal (D:\\starci-lanes\\starci-next-integration\\be\\src\\features\\api\\hub\\transport\\graphql\\set-streak-goal.resolver.ts:31:46)\n    at D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-context-creator.js:67:33\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at target (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-context-creator.js:74:28)\n    at Object.setStreakGoal (D:\\starci-lanes\\starci-next-integration\\node_modules\\@nestjs\\core\\helpers\\external-proxy.js:9:24)","errorCode":"STREAK_GOAL_INVALID","level":"error","event":"cqrs.operation.failed","time":"2026-11-08T19:15:51.679Z"}
+PASS integration src/tests/integration/hub/hub.integration-spec.ts (7.497 s)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       7 passed, 7 total
+Snapshots:   0 total
+Time:        13.371 s
+Ran all test suites matching /src\\tests\\integration\\path|src\\tests\\integration\\hub/i.

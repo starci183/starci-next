@@ -1,0 +1,12 @@
+schema: work/contract@1
+id: contract.incidents.api
+title: Incidents API
+state: todo
+activity: idle
+owner: incidents
+between: [incidents, the app's /incidents screen]
+surface:
+  - {name: incidents, kind: GraphQL query, path: /graphql, request: 'incidents(input: {locale, topic?})', response: '[{lessonId, title, topicId, topicTitle, group, difficulty, minutes, incidentAvailable, status}]', errors: []}
+guarantees:
+  - Needs a session; carries no incident repo, flow, mutant or patch.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: 'Promoted from the build of Luyện code, Sự cố list and Agent lab (owner order: code everything).'}

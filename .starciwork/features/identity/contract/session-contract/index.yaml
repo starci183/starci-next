@@ -1,0 +1,105 @@
+schema: work/contract@1
+id: contract.identity.session-contract
+title: Identity session contract
+state: todo
+activity: idle
+owner: identity
+between: [identity, the app's sign-in screen and authenticated features]
+surface:
+  - name: sign-in
+    method: POST
+    path: /api/identity/sign-in
+    request: '{"identifier": string (email or username), "password": string}'
+    response: '200 {"challenge": opaque string, "email": masked email, "expiresAt": RFC3339}'
+    errors: [401 IDENTITY_CREDENTIALS_REJECTED, 429 HTTP_SECURITY_RATE_LIMITED, 503 IDENTITY_PROVIDER_UNAVAILABLE]
+  - name: sign-in-verify
+    method: POST
+    path: /api/identity/sign-in/verify
+    request: '{"challenge": string, "code": 6 digits}'
+    response: 204; sets __Host-identity_session.
+    errors: ['400 IDENTITY_CODE_MISMATCH {attemptsLeft}', 404 IDENTITY_CHALLENGE_EXPIRED, 503 IDENTITY_SESSION_UNAVAILABLE]
+  - name: code-resend
+    method: POST
+    path: /api/identity/challenge/resend
+    request: '{"challenge": string}'
+    response: 204; a new code is sent, attempts reset, expiry unchanged.
+    errors: [404 IDENTITY_CHALLENGE_EXPIRED, 429 HTTP_SECURITY_RATE_LIMITED]
+  - name: sign-up
+    method: POST
+    path: /api/identity/sign-up
+    request: '{"email": string, "password": 6..256, "username"?: 3..100, "acceptTerms": true}'
+    response: '200 {"challenge", "email", "expiresAt"}'
+    errors: [409 IDENTITY_EMAIL_REGISTERED, 400 IDENTITY_PASSWORD_INVALID, 400 IDENTITY_USERNAME_INVALID, 503 IDENTITY_PROVIDER_UNAVAILABLE]
+  - name: sign-up-verify
+    method: POST
+    path: /api/identity/sign-up/verify
+    request: '{"challenge", "code"}'
+    response: 204; sets __Host-identity_session.
+    errors: ['400 IDENTITY_CODE_MISMATCH {attemptsLeft}', 404 IDENTITY_CHALLENGE_EXPIRED]
+  - name: password-reset
+    method: POST
+    path: /api/identity/password-reset
+    request: '{"email": string}'
+    response: '200 {"challenge", "expiresAt"}, the same for registered and unknown emails'
+    errors: [429 HTTP_SECURITY_RATE_LIMITED]
+  - name: password-reset-verify
+    method: POST
+    path: /api/identity/password-reset/verify
+    request: '{"challenge", "code", "password": 6..256}'
+    response: 204; the password changes and every session of that learner is revoked.
+    errors: ['400 IDENTITY_CODE_MISMATCH {attemptsLeft}', 404 IDENTITY_CHALLENGE_EXPIRED, 400 IDENTITY_PASSWORD_INVALID]
+  - name: social-start
+    method: POST
+    path: /api/identity/social/start
+    request: '{"provider": "facebook" | "github", "returnTo"?: same-origin relative path}'
+    response: '200 {"authorizationUrl": Keycloak auth URL with kc_idp_hint and S256 challenge}; sets the
+      short-lived __Host-identity_social pre-authentication cookie holding the state, which binds the
+      sign-in to this browser.'
+    errors: [400 IDENTITY_PROVIDER_UNKNOWN, 503 IDENTITY_PROVIDER_UNAVAILABLE]
+  - name: social-exchange
+    method: POST
+    path: /api/identity/social/exchange
+    request: '{"code": string, "state": string} sent once by the app callback page /sign-in/callback, only
+      for the state this tab started; the __Host-identity_social cookie must carry the same state, or
+      the exchange refuses it (login CSRF) before the bundle is consumed.'
+    response: '200 {"returnTo": the bundle''s validated path or "/"}; sets __Host-identity_session and
+      deletes __Host-identity_social.'
+    errors: [400 IDENTITY_SOCIAL_STATE_INVALID, 401 IDENTITY_SOCIAL_REJECTED, 503 IDENTITY_PROVIDER_UNAVAILABLE]
+  - name: current-session
+    method: GET
+    path: /api/identity/session
+    request: Session cookie.
+    response: '200 {"identity": {"subject", "roles": [provider-asserted]}, "expiresAt"}'
+    errors: [401 IDENTITY_SESSION_REQUIRED, 503 IDENTITY_SESSION_UNAVAILABLE]
+  - name: sign-out
+    method: POST
+    path: /api/identity/session/sign-out
+    request: No body; same origin.
+    response: 204; clears __Host-identity_session.
+    errors: [403 HTTP_SECURITY_ORIGIN_REJECTED]
+guarantees:
+  - Statuses use only the platform error kinds (400, 401, 403, 404, 409, 429, 500, 503). Clients branch on the stable error code, never on the status; an expired or consumed challenge is 404 because it no longer exists.
+  - Every door is same-origin and passes OriginGuard; the platform rate limit runs first.
+  - No response carries a Keycloak token, a password or a code. The only credential the browser holds is the HttpOnly session cookie.
+  - Credential refusals are generic and do not reveal whether the identifier exists; password-reset answers the same for any email.
+  - Roles are Keycloak-asserted from verified tokens; client-supplied claims grant nothing. PREMIUM is the commerce entitlement, not a role.
+  - A 401 from current-session always clears the cookie; it never answers 200 for a signed-out learner.
+consumerObligations:
+  - Treat only 200 from current-session as signed in; on 401 route to /sign-in?returnTo=<current path>.
+  - After a successful sign-in go to returnTo only when it is a same-origin relative path (a single leading /, no scheme, no //, not /sign-in); otherwise go to / (Q-A5).
+  - Send the code only to the verify door of the same challenge, and clear code and state from the callback page's URL after social-exchange.
+extensions:
+  requiredConfiguration:
+    - {key: IDENTITY_KEYCLOAK_ISSUER, development: 'https://localhost:8089/realms/starci-next-identity'}
+    - {key: IDENTITY_KEYCLOAK_CLIENT_ID, development: starci-next-identity-lane, note: needs Direct Access Grants enabled and a service account with manage-users for the admin API}
+    - {key: IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE, custody: keycloak-client-secret}
+    - {key: IDENTITY_SOCIAL_CALLBACK_URI, development: 'http://localhost:3080/sign-in/callback', note: registered on the client}
+    - {key: IDENTITY_CHALLENGE_TTL_SECONDS, default: 600}
+    - {key: IDENTITY_CHALLENGE_MAX_ATTEMPTS, default: 5}
+    - {key: IDENTITY_SESSION_MAX_SECONDS, default: 'none yet (Academy refresh cookie: 30 days)'}
+    - {key: IDENTITY_PROVIDER_TIMEOUT_MS, default: 10000}
+requiresProof:
+  - required: true
+    command: npm run test:integration -- src/tests/integration/identity --runInBand
+    note: Every door's schema, status codes, cookie attributes and refusals.
+change: {rev: HEAD, kind: revised, at: '2026-11-08', reason: 'decision.identity.auth-model B: the app-owned credential, challenge and social doors replace session/start and the redirect callback. Statuses mapped to the platform error kinds (410 to 404, 422 to 400) with stable codes unchanged.'}

@@ -1,0 +1,8 @@
+﻿schema: work/resource@1
+id: identity.identity.invalid-credentials
+title: Invalid credentials refusal fixture
+state: todo
+activity: idle
+provider: Keycloak realm starci-next-identity
+custody: Owner-provisioned disposable invalid-credentials fixture under Q-A1; no username or credential is recorded here.
+change: {rev: HEAD, kind: created, at: '2026-10-28', reason: Name the invalid-credentials refusal fixture without storing credentials.}

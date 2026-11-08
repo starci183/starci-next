@@ -1,0 +1,19 @@
+schema: work/policy-decision@1
+id: decision.mock-interview.calibration
+title: The teacher grades 30 sample answers before the banks are widened
+state: todo
+activity: idle
+question: Who checks that the AI grades like the teacher, and how?
+options:
+  - A. The teacher grades 30 real learner answers without seeing the AI's grade, and agreement with the AI is measured before more banks open.
+  - B. Trust the model.
+recommendation: A
+recommendationReason: Research §4.2 names the risk that the AI drifts from the teacher's standard; §6 Q6 proposes the teacher sample.
+outcome: decided
+chosen: 'A, plus an automatic pre-check on the teacher''s own exampleResults.'
+reason: 'Owner 2026-11-08: "theo đề xuất trò từng phần đi" (Q6: the teacher grades 30 sample answers).'
+blocks: [fr.mock-interview.calibration]
+extensions:
+  autoCheck: 'Every technical question carries exampleResults: five authored answers at levels 1..5, each with the score two reference models gave (fields level, answer, sonnet, haiku). Before a bank is published, the grader scores those five answers. It must keep their order (level 1 highest) and land within 15 points of the authored scores; a bank that fails stays unpublished. Behavioural questions have no exampleResults and rely on the teacher sample alone.'
+  sample: 30 answers (20 technical across tiers, 10 behavioural), anonymised, graded by the teacher per checklist item. Agreement means the same verdict and a per-question score within 10 points; the target is 80% of answers.
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Owner accepted Q6; exampleResults found in the data.}

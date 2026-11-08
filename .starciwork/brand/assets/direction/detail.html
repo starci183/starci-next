@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StarCi Next — detail direction</title>
+  <style>
+    :root { --accent:#7547ff; --background:oklch(97.02% 0.0015 354.13); --surface:oklch(100% 0.0008 354.13); --surface-secondary:oklch(95.24% 0.0012 354.13); --foreground:oklch(21.03% 0.0015 354.13); --muted:oklch(55.17% 0.003 354.13); --separator:oklch(92% 0.0015 354.13); }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--background); color:var(--foreground); font-family:"Be Vietnam Pro",Inter,Arial,sans-serif; font-size:14px; line-height:1.5; }
+    a { color:inherit; text-decoration:none; }
+    .page { max-width:1184px; margin:auto; padding:32px; }
+    .breadcrumb { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; margin-bottom:26px; }
+    .breadcrumb strong { color:var(--foreground); font-weight:600; }
+    .heading { margin-bottom:24px; }
+    .eyebrow { color:var(--muted); font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
+    h1 { font-size:30px; line-height:1.2; letter-spacing:-.035em; font-weight:600; margin:0 0 8px; max-width:28ch; }
+    .summary { color:var(--muted); margin:0; max-width:58ch; }
+    .columns { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.65fr); gap:24px; align-items:start; }
+    .card { background:var(--surface); border-radius:16px; box-shadow:0 8px 25px #2114320b; overflow:hidden; }
+    .card-head { padding:18px 22px 16px; border-bottom:1px solid var(--separator); }
+    .card-label { color:var(--muted); font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin:0 0 5px; }
+    h2 { font-size:18px; line-height:1.35; letter-spacing:-.02em; font-weight:600; margin:0; }
+    .facts { padding:4px 22px 8px; }
+    .fact { padding:12px 0; }
+    .fact + .fact { border-top:1px solid var(--separator); }
+    .term { color:var(--muted); font-size:12px; margin-bottom:4px; }
+    .value { font-size:13px; margin:0; }
+    .fact ul { margin:5px 0 0; padding-left:18px; }
+    .fact li + li { margin-top:3px; }
+    .card-action { border-top:1px solid var(--separator); padding:16px 22px; }
+    .primary { display:flex; align-items:center; justify-content:center; min-height:40px; border-radius:999px; background:var(--accent); color:white; font-size:13px; font-weight:600; }
+    .lessons-head { display:flex; align-items:baseline; justify-content:space-between; padding:18px 22px 16px; border-bottom:1px solid var(--separator); }
+    .lessons-head span { color:var(--muted); font-size:12px; }
+    .lesson { padding:18px 22px; }
+    .lesson + .lesson { border-top:1px solid var(--separator); }
+    .lesson.selected { background:var(--surface-secondary); }
+    .lesson-top { display:flex; gap:14px; align-items:baseline; }
+    .ordinal { color:var(--muted); font-size:12px; flex:none; }
+    h3 { font-size:14px; line-height:1.4; font-weight:600; margin:0; }
+    .lesson p { color:var(--muted); margin:7px 0 10px 30px; font-size:12px; }
+    .quiet { color:var(--accent); font-size:12px; font-weight:600; margin-left:30px; }
+    @media(max-width:700px) {
+      .page { padding:23px 16px 32px; }
+      .breadcrumb { margin-bottom:25px; }
+      h1 { font-size:26px; }
+      .columns { grid-template-columns:1fr; gap:16px; }
+      .card-head,.lessons-head { padding:16px 18px 14px; }
+      .facts { padding:4px 18px 8px; }
+      .card-action { padding:14px 18px; }
+      .lesson { padding:16px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" data-grammar-component="PageContainer">
+    <nav class="breadcrumb" aria-label="Breadcrumb" data-grammar-component="Breadcrumbs"><span>Learn content</span><span aria-hidden="true">/</span><strong>NestJS core and the request lifecycle</strong></nav>
+    <header class="heading" data-grammar-component="SectionHeader">
+      <div class="eyebrow">Content section</div>
+      <h1>NestJS core and the request lifecycle</h1>
+      <p class="summary" data-grammar-component="Text">Study the core of NestJS and how one request travels through it.</p>
+    </header>
+    <div class="columns">
+      <section class="card" aria-label="Selected lesson" data-grammar-component="SurfaceCard">
+        <div class="card-head"><p class="card-label">Selected lesson</p><h2>NestJS core and the request lifecycle</h2></div>
+        <div class="facts" data-grammar-component="DescriptionList">
+          <div class="fact"><div class="term">Learning outcome</div><p class="value">Read a request from socket to response.</p></div>
+          <div class="fact"><div class="term">Phase</div><p class="value">Challenge</p></div>
+          <div class="fact"><div class="term">Prerequisite</div><p class="value">Concept foundations</p></div>
+          <div class="fact"><div class="term">Code language</div><p class="value">TypeScript</p></div>
+        </div>
+        <div class="card-action"><a class="primary" href="/learn-content/learn-content/nestjs-core" data-grammar-component="Button">Open lesson</a></div>
+      </section>
+      <section class="card" aria-label="Lessons" data-grammar-component="SurfaceCard">
+        <div class="lessons-head"><h2>Lessons</h2><span>Publication order</span></div>
+        <div class="lesson"><div class="lesson-top"><span class="ordinal">01</span><h3>Concept foundations</h3></div><p>How one request travels through the pipeline.</p><a class="quiet" href="/learn-content/learn-content/concept-foundations" data-grammar-component="TextAction">View lesson →</a></div>
+        <div class="lesson selected"><div class="lesson-top"><span class="ordinal">02</span><h3>NestJS core and the request lifecycle</h3></div><p>How one request travels through the pipeline.</p><a class="quiet" href="/learn-content/learn-content/nestjs-core" data-grammar-component="TextAction">View lesson →</a></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

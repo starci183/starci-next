@@ -1,0 +1,20 @@
+schema: work/ui-screen@1
+id: ui.review.today
+title: Review today
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /review
+routeParent: app
+surface: The middle well shows the goal ring, the streak, a due count with Ôn ngay, the next-days forecast, and the decks of the learner's track.
+persona: learner
+ui:
+  - Due today and overdue counts; the split of cards and Bản chất questions; Ôn ngay.
+  - The goal ring (done of daily) and the app-wide streak from the hub (contract.hub.api), with the review counter.
+  - A 7-day forecast of due items.
+  - Locked rows for premium items with the upsell for a free learner.
+  - Empty (nothing due), all-done, loading states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

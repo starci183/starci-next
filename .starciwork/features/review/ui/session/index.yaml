@@ -1,0 +1,19 @@
+schema: work/ui-screen@1
+id: ui.review.session
+title: Review session (card and written question)
+state: todo
+activity: idle
+brand: brand
+shell: app shell
+route: /review/session
+routeParent: /review
+surface: One item at a time with progress (7/20). A card shows its front, the optional cloze check, Lật thẻ, then the back and the four grade buttons with their next intervals. A retrieval item shows the prompt, the answer box, then per-criterion feedback.
+persona: learner
+ui:
+  - Grade buttons Quên, Khó, Nhớ, Dễ, each with its next interval ("1 ngày", "3 ngày" and so on).
+  - Keyboard shortcuts (space to flip, 1 to 4 to grade).
+  - The end summary (reviewed, recall rate, streak).
+  - Save-failure, locked and coach-unavailable states.
+direction: canvas not drawn yet
+assets: []
+change: {rev: 1, kind: created, at: '2026-11-08', reason: Wave A screen.}

@@ -1,0 +1,18 @@
+schema: work/sds-component@1
+id: sds.projects.probe-runner
+title: Server probe runner
+state: todo
+activity: idle
+responsibility: Call a learner's deployed address with generic probes and judge the replies deterministically, without ever reaching an internal address.
+interfaces:
+  - 'planOf(probeId, target): the requests of a probe aimed at the declared endpoint, or the reason it is skipped.'
+  - 'judgeProbe(probeId, replies): the verdict, a stable reason code and facts.'
+  - 'ProbeTransport.send(request): a guarded HTTP client (integrations/probe).'
+owners: [be]
+sequence:
+  - Check the saved address (public http or https, allowed ports, no credentials, no internal host name or IP literal).
+  - Resolve the name at connection time and refuse any address that is not public, so a name that changes its answer cannot slip through.
+  - Send with a deadline and a byte cap, follow no redirect, run at most 24 probes, three at a time.
+  - Store each verdict as evidence and the run as a whole; settle the project.
+refs: [data.projects.evidence]
+change: {rev: 1, kind: created, at: '2026-11-09', reason: 'Promoted from the build of Dự án (projects shard, back end and front end).'}
