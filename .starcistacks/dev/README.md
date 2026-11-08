@@ -5,12 +5,12 @@ Starter release images and external secrets must be prepared before starting the
 
 | Command | Operation |
 | --- | --- |
-| prepare | Build the app images and provide the local database connection through sealed custody. Materialize its real sealed member to the owner-controlled file `/run/starci-secrets/starci-next/dev/primary-db-url`; Docker Compose mounts that file into the API. |
-| doctor | From this directory, run `docker compose config -f infra/compose/stack.yaml`. Confirm image, secret and database availability. |
-| up | Run `docker compose -f infra/compose/stack.yaml up -d` from this directory after preparation. |
-| status | Run `docker compose -f infra/compose/stack.yaml ps`. |
-| logs | Run `docker compose -f infra/compose/stack.yaml logs core`; never print mounted credentials. |
-| down | Run `docker compose -f infra/compose/stack.yaml down`. |
-| verification | Confirm the API `/health/live` and `/health/ready` endpoints, then run `npm run lint` from the app root. |
+| prepare | `starci app stack prepare --env dev --execute`: builds the app images and provides the local database connection through sealed custody. |
+| doctor | `starci app stack doctor --env dev`: read-only table of host prerequisites, custody, compose render and ports. |
+| up | `starci app stack up --env dev --execute`: prepare, then the services, the database role, the seed levels and readiness; prints the origins. |
+| status | `starci app stack status --env dev`: desired against running and every readiness probe. |
+| logs | `starci app stack logs --env dev --service core`: bounded and redacted; never prints mounted credentials. |
+| down | `starci app stack down --env dev --execute`: stops the compose project; volumes and sealed values stay. |
+| verification | `starci app stack verify --env dev`: the API `/health/live` and `/health/ready` probes, then `npm run lint` from the app root. |
 
 Keep real sealed members under `.starcistacks/dev/secrets/*.enc`, add them to the manifest after sealing and inventory their key names in the environment record. The scaffold creates no fake secret or successful proof.

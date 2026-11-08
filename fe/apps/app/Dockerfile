@@ -23,7 +23,6 @@ COPY turbo.json ./
 COPY scripts scripts
 COPY fe/tsconfig.json fe/tsconfig.json
 COPY fe/packages fe/packages
-COPY be/contracts be/contracts
 COPY fe/apps/app fe/apps/app
 RUN mkdir -p fe/apps/app/public
 RUN npm run codegen --silent

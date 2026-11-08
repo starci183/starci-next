@@ -1,0 +1,7 @@
+schema: starci/seeds@1
+entries:
+  - id: primary-notes
+    kind: sql
+    path: sql/primary-notes.sql
+    target: primary
+    mode: upsert

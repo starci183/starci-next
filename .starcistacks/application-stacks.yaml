@@ -38,6 +38,42 @@ environments:
     runbook: README.md
     # Custody starts empty; add real sealed members after owner provisioning.
     secrets: []
+    # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): the compose services of infra/compose/stack.yaml,
+    # the environment's own database role, readiness probes and origins. The three apps run as the compose images, so no native process.
+    local:
+      ports:
+        db: 5432
+        core: 3001
+        app: 3000
+        landing: 3002
+      services:
+        - {name: postgres, wait: healthy}
+        - {name: core, wait: healthy}
+        - {name: app, wait: healthy}
+        - {name: landing, wait: healthy}
+      database:
+        service: postgres
+        port: db
+        urlEnv: PRIMARY_DB_URL
+        password: {member: db, key: DEV_DB_OWNER_PASSWORD}
+        adminPassword: {member: db, key: POSTGRES_PASSWORD}
+      custody:
+        - {member: db, key: POSTGRES_PASSWORD, kind: password}
+        - {member: db, key: DEV_DB_OWNER_PASSWORD, kind: password}
+      ready:
+        - {name: core-live, url: "http://localhost:${port.core}/health/live"}
+        - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
+        - {name: app-live, url: "http://localhost:${port.app}/health/live"}
+        - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
+      verify:
+        - {name: core-live, url: "http://localhost:${port.core}/health/live"}
+        - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
+        - {name: app-live, url: "http://localhost:${port.app}/health/live"}
+        - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
+      origins:
+        - {name: app, url: "http://localhost:${port.app}"}
+        - {name: core, url: "http://localhost:${port.core}"}
+        - {name: landing, url: "http://localhost:${port.landing}"}
   production:
     status: supported
     runtime: docker-swarm

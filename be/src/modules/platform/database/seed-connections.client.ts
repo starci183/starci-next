@@ -27,8 +27,8 @@ export interface SeedReport {
     readonly unmatched: ReadonlyArray<string>
 }
 
-/** The seed directory of a stack environment, relative to the working directory of the run: the app root. */
-export const seedDirectoryOf = (env: string): string => join(".starcistacks", env, "seeds")
+/** The SQL seed directory of a stack environment, relative to the working directory of the run: the app root. */
+export const seedDirectoryOf = (env: string): string => join(".starcistacks", env, "seeds", "sql")
 
 /** Reads every `*.sql` file of the seed directory, sorted by name; a missing directory fails the run. */
 export const readSeedFiles = async (directory: string): Promise<ReadonlyArray<SeedFile>> => {

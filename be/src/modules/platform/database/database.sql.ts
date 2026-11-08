@@ -48,7 +48,7 @@ export const ident = (name: string, allowed: ReadonlyArray<string>): SqlIdent =>
 }
 
 /**
- * Brands the statements of one tracked seed file (`.starcistacks/<env>/seeds/<connection>-<name>.sql`) as SQL text. A seed file
+ * Brands the statements of one tracked seed file (`.starcistacks/<env>/seeds/sql/<connection>-<name>.sql`) as SQL text. A seed file
  * is source reviewed like a migration and run as written by the cli seed command; no value is ever spliced into it.
  */
 export const seedText = (text: string): SqlText => {

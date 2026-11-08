@@ -3,7 +3,7 @@ import { DEFAULT_SEED_ENV, SeedRunnerService } from "@modules/platform/database"
 
 /** The options of `cli seed run`. */
 export interface SeedRunOptions {
-    /** The stack environment whose `.starcistacks/<env>/seeds` run. */
+    /** The stack environment whose `.starcistacks/<env>/seeds/sql` run. */
     readonly env?: string
 }
 
@@ -11,7 +11,7 @@ export interface SeedRunOptions {
     name: "run",
     description: "Run every seed file of a stack environment on the connection it names",
 })
-/** `cli seed run [--env <name>]`: seeds every connection of the back end from `.starcistacks/<env>/seeds` and logs what it ran. */
+/** `cli seed run [--env <name>]`: seeds every connection of the back end from `.starcistacks/<env>/seeds/sql` and logs what it ran. */
 export class RunSeedsCli extends CommandRunner {
     constructor(private readonly seeds: SeedRunnerService) {
         super()
