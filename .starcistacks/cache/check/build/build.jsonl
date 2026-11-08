@@ -1,0 +1,3 @@
+{"data":{"verdict":"green"},"findings":[],"hash":"07e7b5e5c7d350f756474ea199e9559e3ac3406b5a299a2a0c63e15b6b89c330","path":"build/build be","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"95456c56d982e94faaf7dee06c9853a0e9e956e565e587f79e927d2276e73e80","path":"build/build fe app","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"9672af9222c886156badb66eeff3a3745f0575306dd63fb5702d62d6d2c066a5","path":"build/build fe landing","step":"ci-step"}

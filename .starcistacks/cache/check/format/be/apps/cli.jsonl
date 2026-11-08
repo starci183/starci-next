@@ -4,4 +4,4 @@
 {"findings":[],"hash":"4d27e572f449a39fde15da9b9c383a3f40f1e0302238da2592cbfbfceddc0fae","path":"be/apps/cli/src/cli.options.ts","step":"prettier"}
 {"findings":[],"hash":"a2868b43cd5eac362c4f0525fe3d1f23c7d67b20cf9f1684a65e77651a87b680","path":"be/apps/cli/src/compose/cli.ts","step":"prettier"}
 {"findings":[],"hash":"a35be6369bb90aa3ab824a019ee88fa55cca0cf5124fe02c093831ca09b1cf06","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
-{"findings":[],"hash":"b9e2c982b8ef1d3b26f3c330777fa6ddfff4ae0c172626e750a4ffdb5278a1dd","path":"be/apps/cli/src/main.ts","step":"prettier"}
+{"findings":[],"hash":"c113fab44282bdc7bf0cbb0fefa3bb12ab90524d27c42e51bbe1e4c18a41256e","path":"be/apps/cli/src/main.ts","step":"prettier"}

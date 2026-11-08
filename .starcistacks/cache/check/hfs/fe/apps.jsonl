@@ -1,6 +1,6 @@
-{"data":{},"findings":[],"hash":"9f6b6861678960627b5ecc75fb8892ea776aa08222fed0b3bd5b45266772b00e","path":"fe/apps/app/Dockerfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"827a147584fb2bae74009c09cb3a74835c7e720da4578e1cbcc76c9a03e81b9f","path":"fe/apps/app/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7b78c5396f5923b8f4605895cf2cb76810c6525a8b5cf9a2c13719257c4c86b8","path":"fe/apps/app/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5b115a0dfd746baa9f7e4417c4c7667876c46d9c39b8dd52a599c49eb7d88f5d","path":"fe/apps/app/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"59312bcd1b39b78482bd6fef134529d30265093433cfeb6caa556397def3b382","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/app/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7d853cc529e3ba1469e62689ebfb0e6b101b51a9b935b69769d78d5350f9dfef","path":"fe/apps/app/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"22f95bdda670717a7450a17ca0e577f502dd0b858fe365bb6b7aad7e38531a92","path":"fe/apps/app/src/app/[locale]/layout.tsx","step":"file-rules"}
@@ -61,9 +61,9 @@
 {"data":{},"findings":[],"hash":"f26e989bb80591217daebe61f961f059eadaf17f64b16d36dc1323b1b84132c8","path":"fe/apps/app/src/redux/slices/session.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a68f4ef247d583ea283cdd492f3fe6879faa18f469cb6f5a03c243b5259366be","path":"fe/apps/app/src/redux/store.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c8acb681064d234fb2115f7db3b0333ffb16a769c262e23029f67a6d68a36229","path":"fe/apps/app/tsconfig.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"3f7ad8476e61a3e5a962f0ad42202be2a6c4613dbb1720ffc9b3b5a40b1ff103","path":"fe/apps/landing/Dockerfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b25814e448ec16bf418c502856d66dd201b49652cc2ccec0ba0e89487a2b528c","path":"fe/apps/landing/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a2dbe4706aae5a56baa7b34192679f6f0112e1e99f4591fc3087cb3d9645de75","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bf2cdf0d91ff4c2e810d90f62bc3ea982a804e6d5dcce4dc65b27e66ec767f0f","path":"fe/apps/landing/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0a26e8ea056704bdef9defd9092a9665634cc042a838144710336007d2c514d6","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/landing/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e8fd9f6306a044e6750eff9f6532af155b24ed134d697bc36ad4c7c39c4ad09","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"441ae22edfd58019f16c35dbbbd74a21408ed4047440c8cff41c3d6426f4cceb","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"file-rules"}

@@ -1,3 +1,3 @@
-{"data":{"digestOf":"sonar-project.properties"},"findings":[],"hash":"ac06fb3df9358ca247855a755fb6a33fb626b67220df44476ebab3ddf7c3099b","path":"analysis-scope","step":"reference"}
-{"data":{"baseCommit":"aefd3eeabb8a5ed5d7a0972be95eda6731f8ae5b"},"findings":[],"hash":"aefd3eeabb8a5ed5d7a0972be95eda6731f8ae5b","path":"new-code-base","step":"reference"}
-{"data":{"coverageMinPercent":100,"duplicationMaxPercent":3,"owner":"runtime/knowledge/sonar-gate.yaml"},"findings":[],"hash":"e05f0ccb6c27e52f6e82507a2873ce4512ef13daf3e61573dcf34c3c43cdb726","path":"quality-gate","step":"reference"}
+{"data":{"digestOf":"sonar-project.properties"},"findings":[],"hash":"ea7bd6483b28bc8da0191340cc5ff2c51fe0c9ce6c23fe164a4947b3a26dbe50","path":"analysis-scope","step":"reference"}
+{"data":{"baseContent":"24f1fa3c543adb05106837f44a51980dafd2ac37333d624d45e56f5c466952d3"},"findings":[],"hash":"24f1fa3c543adb05106837f44a51980dafd2ac37333d624d45e56f5c466952d3","path":"new-code-base","step":"reference"}
+{"data":{"coverageMinPercent":100,"duplicationMaxPercent":3,"owner":"runtime/knowledge/sonar-gate.yaml"},"findings":[],"hash":"aabe365c020ca12bf20c9707d3918c71b393207c502ef8f5e41b4b09888ea6b7","path":"quality-gate","step":"reference"}

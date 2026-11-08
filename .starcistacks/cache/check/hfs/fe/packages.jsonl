@@ -4,7 +4,7 @@
 {"data":{},"findings":[],"hash":"09421c5e729fccb04620b13e5faf14945446fc1d6f0df42bc2e62af36298b8fc","path":"fe/packages/starci-next-i18n/src/routing.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f28ba0af1502e4fc2ff8fb674ee3b6b79efe12c7fdb3af9f41cfd3e17bf1f71e","path":"fe/packages/starci-next-i18n/tsconfig.build.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f2388b528bf9cddb2e94bd8a76066f56cfc4ce7ad712e76d8ac8f4c0156ceb43","path":"fe/packages/starci-next-i18n/tsconfig.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9af5ec9726257f654733612b03d365b6b85b38bf65aff920c930a68f44f5e58c","path":"fe/packages/starci-next-ui/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"fb9e4624850d42c412016e2c048003a507e65a4d172a4696d83b0f25c855eb79","path":"fe/packages/starci-next-ui/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b9bd56ee4c76da19d93e7f73fc234014f5faa61cbf3a8d443b38fe52939a83e3","path":"fe/packages/starci-next-ui/src/branches/Providers/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bf819e1b4d1465b1ac3e439c741f1b944a0ae7a31d64599713c4244941660090","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7a6294a03c151076a2924e3e9fc8a7292fb3764247c990e1e536c9487275d67e","path":"fe/packages/starci-next-ui/src/composites/GlobalErrorNotice/index.tsx","step":"file-rules"}

@@ -1,2 +1,1 @@
-{"data":{},"findings":[],"hash":"99ccd955f46cd3cfc2a046c47f0d9569d7b200f2b1855f5e5dcfc0967718338c","path":".starcistacks/application-stacks.yaml","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":"environments.dev runs docker-compose and declares no local block: declare the ports, services, processes and probes `starci app stack up --env dev` runs","path":".starcistacks/application-stacks.yaml","rule":"STACKS_LOCAL_CONFIG_INVALID"}],"hash":"a8d3eb15250ff05bd7a72d7359393bb61667434057849deeab61abcf6a04c83d","path":".starcistacks/application-stacks.yaml","step":"hfs"}
+{"data":{},"findings":[],"hash":"9f67781e23be61b7accb0e820a82b1572dabbc17516b2e130e897f3dca50b344","path":".starcistacks/application-stacks.yaml","step":"file-rules"}

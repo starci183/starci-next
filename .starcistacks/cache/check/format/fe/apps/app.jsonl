@@ -1,6 +1,6 @@
-{"findings":[],"hash":"aae43b2513a742e6118296a1721445bce9eee70f8caee8a15ca11d0dd53ad523","path":"fe/apps/app/Dockerfile","step":"prettier"}
+{"findings":[],"hash":"2ca9727a93aa1bf8c2c07934237a72dcf5f1e7f4131376f039df32cbe8e5e5e6","path":"fe/apps/app/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"f951b6b4d25e9ffcc364935cf146a1bca58358ca1ba20a8312da82f62fdba1e2","path":"fe/apps/app/next.config.ts","step":"prettier"}
-{"findings":[],"hash":"402da81e0655932401e1c47830ffbc4531165cccd58e83eecef0f660c102eb0d","path":"fe/apps/app/package.json","step":"prettier"}
+{"findings":[],"hash":"62b75c743e98eb67a2e364be9b2bfca82cb070eedb4da4d87ec3f1752858c2b7","path":"fe/apps/app/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/app/postcss.config.mjs","step":"prettier"}
 {"findings":[],"hash":"425158222cc8eacdced946252fd1bad3cdb694d6cd1a96ca47fea8817be0c707","path":"fe/apps/app/src/app/[locale]/error.tsx","step":"prettier"}
 {"findings":[],"hash":"49bc3a78f18d950f7db96520bd287a5fdad90c039953994b9dd1a6ee802c85e1","path":"fe/apps/app/src/app/[locale]/layout.tsx","step":"prettier"}
