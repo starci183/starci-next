@@ -1,0 +1,40 @@
+schema: work/concept@1
+id: concept.dev-only-test-grants
+title: Premium for testing is granted by a dev-only command, never by a door
+rule: >-
+  To test Premium without a payment, a developer runs `cli entitlement dev-grant --learner <subject> [--term monthly|yearly]`.
+  The command works only when the environment sets ENTITLEMENT_DEV_GRANT=true, which is declared only on the development
+  cli run by hand, never in production and never on a core process; otherwise it is refused ENTITLEMENT_DEV_GRANT_DISABLED.
+  No API door, webhook or screen calls it.
+why: >-
+  Testing needs Premium without taking money, but a free grant must be impossible to reach in production.
+forbids:
+  - A door (GraphQL, REST, webhook) or a screen that grants Premium without a purchase.
+  - ENTITLEMENT_DEV_GRANT declared in production or on a core process.
+  - A free-grant path that survives under another name.
+example: >-
+  On a dev machine with ENTITLEMENT_DEV_GRANT=true the command grants a yearly term to one test learner; on any machine
+  without the variable the same command is refused.
+livesIn:
+  - path: be/src/features/cli/entitlement/subs/dev-grant.cli.ts
+    holds: the command `cli entitlement dev-grant` and its options
+  - path: be/src/modules/domain/entitlement/entitlement.service.ts
+    holds: "`devGrant`, refused unless the setting is on; no door calls it"
+  - path: be/src/modules/domain/entitlement/entitlement.config.ts
+    holds: "`devGrant: env.bool(\"ENTITLEMENT_DEV_GRANT\", false)`"
+  - path: .starcistacks/dev/runtime/env/KEYS.md
+    holds: the variable declared for the dev cli only
+decided:
+  by: owner
+  at: 2026-11-10
+  words:
+    - "Có, chỉ dev"
+  source: The owner's 2026-11-10 ruling in the coordinator brief of lane S17 (a dev-only Premium grant command for testing).
+status: built
+built:
+  - The command, its delegation to the entitlement service, the refusal when the setting is off, the default false and the KEYS.md entry exist (read; a spec file exists for the command; not run in this pass).
+notBuilt:
+  - Not run end to end against a database in this pass.
+  - Production and core environment files were not read to prove the variable is absent there.
+refs:
+  - concept.premium-unlocks-all

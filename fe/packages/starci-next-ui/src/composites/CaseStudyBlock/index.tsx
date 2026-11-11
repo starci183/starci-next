@@ -1,4 +1,5 @@
-import { Grid, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { SurfaceCard } from "@starci/grammar/common"
+import { FileGlyph } from "../../leaves/Icon"
 
 /** One case study of the collection, announced and not open yet, already in words. */
 export type CatalogCaseCard = {
@@ -21,34 +22,21 @@ type CaseStudyBlockProps = {
     readonly cards: ReadonlyArray<CatalogCaseCard>
 }
 
-/** What a case tile needs. */
-type CaseTileProps = { readonly card: CatalogCaseCard }
-
-/** One announced case study as a peer tile. */
-const CaseTile = (props: CaseTileProps) => (
-    <SurfaceCard
-        kind="tile"
-        name={props.card.title}
-        description={props.card.description}
-        mark={{ avatar: { name: props.card.title, seed: props.card.id } }}
-        badges={[{ label: props.card.kind }, { label: props.card.status, tone: "muted" }]}
-    />
-)
-
-/** The case-study collection of the catalog: announced real-world case studies, each naming the lessons it needs, until they are published. */
+/** The case-study collection of the catalog: one list card of announced real-world case studies, each naming the lessons it needs, until they are published. */
 export const CaseStudyBlock = (props: CaseStudyBlockProps) => (
-    <Section title={props.title} meta={props.meta}>
-        <Stack gap="row">
-            <Grid kind="cards">
-                {props.cards.map((card) => (
-                    <CaseTile key={card.id} card={card} />
-                ))}
-            </Grid>
-            {props.pending === "" ? null : (
-                <Text size="sm" tone="muted">
-                    {props.pending}
-                </Text>
-            )}
-        </Stack>
-    </Section>
+    <SurfaceCard
+        kind="list"
+        label={props.title}
+        count={props.cards.length}
+        {...(props.meta === "" ? {} : { fact: props.meta })}
+        items={props.cards.map((card) => ({
+            id: card.id,
+            title: card.title,
+            description: card.description,
+            leading: { icon: FileGlyph },
+            badges: [{ label: card.kind }, { label: card.status, tone: "muted" as const }],
+        }))}
+        empty={props.pending}
+        {...(props.pending === "" ? {} : { note: props.pending })}
+    />
 )

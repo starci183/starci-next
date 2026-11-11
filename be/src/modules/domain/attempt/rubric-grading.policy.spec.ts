@@ -7,9 +7,9 @@ import {
     coachGradeOf,
 } from "@tests/fixtures/builders/attempt.builder"
 import { SECRET, exerciseActivityOf, explainActivityOf } from "@tests/fixtures/builders/lesson.builder"
-import type { CoachCriterionGrade } from "./attempt.contracts"
+import type { CoachCriterionGrade, StoredAttemptResult } from "./attempt.contracts"
 import { AttemptErrorCode } from "./errors/attempt.error"
-import { coachRubricOf, gradeRubric } from "./rubric-grading.policy"
+import { MISSING_MAX, coachRubricOf, gradeRubric, missingOf, withExpectedNotes } from "./rubric-grading.policy"
 
 const RUBRIC_POLICY: unique symbol = Symbol("attempt.rubric-policy")
 const policy = { coachRubricOf, gradeRubric }
@@ -74,8 +74,22 @@ describe("gradeRubric of a grade that fits the rubric", () => {
             success: null,
             reachedStateId: null,
             criteria: [
-                { criterionId: C1, criterion: "vi: Mechanism", level: 2, evidenceQuote: QUOTE_1, maxScore: 2 },
-                { criterionId: C2, criterion: "vi: Limits", level: 1, evidenceQuote: QUOTE_2, maxScore: 3 },
+                {
+                    criterionId: C1,
+                    criterion: "vi: Mechanism",
+                    level: 2,
+                    evidenceQuote: QUOTE_1,
+                    maxScore: 2,
+                    missing: "",
+                },
+                {
+                    criterionId: C2,
+                    criterion: "vi: Limits",
+                    level: 1,
+                    evidenceQuote: QUOTE_2,
+                    maxScore: 3,
+                    missing: `${SECRET} evidence two`,
+                },
             ],
             score: 3.5,
             maxScore: 5,
@@ -117,6 +131,79 @@ describe("gradeRubric of a grade that fits the rubric", () => {
         const { gradeRubric: grade } = await build()
 
         expect(grade(bareActivityOf(), written, gradeOf())).toMatchObject({ criteria: [], score: 0, maxScore: 0 })
+    })
+})
+
+describe("gradeRubric notes on what is missing", () => {
+    it("keeps the line the coach gave for a criterion below the full level and none at the full level", async () => {
+        const { gradeRubric: grade } = await build()
+        const noted = gradeOf(
+            { ...first, missing: "should not be kept at full level" },
+            { ...second, missing: "  Does not say  \n the limit " },
+        )
+
+        const result = grade(explainActivityOf("vi"), written, noted)
+
+        expect(result.criteria.map((entry) => entry.missing)).toEqual(["", "Does not say the limit"])
+    })
+
+    it("falls back to the expected evidence of the rubric when the coach gave no line", async () => {
+        const { gradeRubric: grade } = await build()
+        const none = gradeOf(
+            { criterionId: C1, level: 0, evidenceQuote: "" },
+            { criterionId: C2, level: 1, evidenceQuote: QUOTE_2, missing: "   " },
+        )
+
+        const result = grade(explainActivityOf("en"), written, none)
+
+        expect(result.criteria.map((entry) => entry.missing)).toEqual([
+            `${SECRET} evidence one`,
+            `${SECRET} evidence two`,
+        ])
+    })
+})
+
+describe("missingOf", () => {
+    it("is empty at the full level whatever the lines say", () => {
+        expect(missingOf(2, "x", "y")).toBe("")
+    })
+
+    it("cuts a long line at a word within the limit", () => {
+        const long = `${"word ".repeat(200)}end`
+
+        const line = missingOf(1, long, "")
+
+        expect(line.length).toBeLessThanOrEqual(MISSING_MAX)
+        expect(line.endsWith("…")).toBe(true)
+        expect(line).not.toContain("  ")
+    })
+})
+
+describe("withExpectedNotes", () => {
+    const stored: StoredAttemptResult = {
+        isDiagnostic: false,
+        correct: null,
+        options: [],
+        success: null,
+        reachedStateId: null,
+        score: 1,
+        maxScore: 4,
+        criteria: [
+            { criterionId: "a", criterion: "A", level: 1, evidenceQuote: "q", maxScore: 2 },
+            { criterionId: "b", criterion: "B", level: 2, evidenceQuote: "q", maxScore: 2, missing: "" },
+        ],
+    }
+
+    it("fills the note of a criterion below the full level that has none, from the rubric", () => {
+        const noted = withExpectedNotes(stored, { a: "shows the retry key", b: "unused" })
+
+        expect(noted.criteria.map((entry) => entry.missing)).toEqual(["shows the retry key", ""])
+    })
+
+    it("returns a result whose notes are all there as it is", () => {
+        const complete = withExpectedNotes(stored, { a: "x" })
+
+        expect(withExpectedNotes(complete, { a: "other" })).toBe(complete)
     })
 })
 

@@ -152,7 +152,7 @@ export class ContentSyncService {
     private async importLessons(content: Root, data: Root | null): Promise<ContentKindReport> {
         const roots = [
             ...(data === null ? [] : [{ directory: join(data.directory, "concepts"), ref: data.ref }]),
-            { directory: join(content.directory, "concepts"), ref: content.ref },
+            { directory: join(content.directory, "essentials"), ref: content.ref },
         ]
         const imported: Array<string> = []
         await eachInOrder(roots, async (root) => {
@@ -161,7 +161,7 @@ export class ContentSyncService {
             imported.push(root.ref)
         })
         if (imported.length === 0)
-            return { kind: "lessons", status: "skipped", version: "", detail: "no concepts folder" }
+            return { kind: "lessons", status: "skipped", version: "", detail: "no essentials folder" }
         return {
             kind: "lessons",
             status: "imported",

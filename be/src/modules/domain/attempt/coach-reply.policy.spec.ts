@@ -4,8 +4,8 @@ import { coachGradeOf } from "./coach-reply.policy"
 
 const GOOD = {
     criteria: [
-        { criterionId: "c1", level: 2, evidenceQuote: "the read model lags" },
-        { criterionId: "c2", level: 0, evidenceQuote: "" },
+        { criterionId: "c1", level: 2, evidenceQuote: "the read model lags", missing: "" },
+        { criterionId: "c2", level: 0, evidenceQuote: "", missing: "Does not name the mechanism" },
     ],
 }
 
@@ -47,7 +47,15 @@ describe("coachGradeOf", () => {
         const gradeOf = await build()
 
         expect(gradeOf('{"criteria":[{"criterionId":"c1","level":0}]}')).toEqual({
-            criteria: [{ criterionId: "c1", level: 0, evidenceQuote: "" }],
+            criteria: [{ criterionId: "c1", level: 0, evidenceQuote: "", missing: "" }],
+        })
+    })
+
+    it("takes a note that is not text as no note, never as a refusal", async () => {
+        const gradeOf = await build()
+
+        expect(gradeOf('{"criteria":[{"criterionId":"c1","level":1,"evidenceQuote":"x","missing":7}]}')).toEqual({
+            criteria: [{ criterionId: "c1", level: 1, evidenceQuote: "x", missing: "" }],
         })
     })
 

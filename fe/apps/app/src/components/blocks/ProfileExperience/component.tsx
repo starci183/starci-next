@@ -77,7 +77,7 @@ export const ProfileExperienceBase = (props: ProfileExperienceBaseProps) => (
                                 <Text size="sm" tone="muted">
                                     {props.props.labels.publicNote}
                                 </Text>
-                                <Link href={props.props.labels.seeAllHref}>{props.props.labels.seeAll}</Link>
+                                <Link variant="plain" href={props.props.labels.seeAllHref}>{props.props.labels.seeAll}</Link>
                             </Cluster>
                             <Text isStrong>{view.gate}</Text>
                             {view.rows.map((row) => (

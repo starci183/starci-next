@@ -73,6 +73,35 @@ describe("RelayFeedService manifest", () => {
         expect(isSigned).toBe(true)
     })
 
+    it("issues a project run manifest with the learner's command and the milestone plan", async () => {
+        const { feed } = await build(mockEntityManager())
+
+        const signed = await feed.manifest(DEVICE, "project-1", {
+            milestone: "bf-data-and-cache",
+            testCommand: "node --test",
+        })
+
+        expect(signed.body.checks).toEqual([{ id: "test", command: "node --test", cwd: ".", timeoutMs: 600_000 }])
+        expect(signed.body.plan).toEqual({
+            milestone: "bf-data-and-cache",
+            report: "starci/reports/junit.xml",
+            concepts: ["server-state-cache-lifecycle", "cqrs-read-models", "transactions-and-isolation", "indexing-and-query-plans"],
+        })
+        expect(signed.payload).toContain('"plan":{"milestone":"bf-data-and-cache"')
+    })
+
+    it("refuses a project run whose command cannot be one", async () => {
+        const { feed, hub } = await build(mockEntityManager())
+
+        await expect(
+            feed.manifest(DEVICE, "project-1", { milestone: "bf-data-and-cache", testCommand: "a\nb" }),
+        ).rejects.toMatchObject({ code: RelayErrorCode.PayloadInvalid })
+        await expect(feed.manifest(DEVICE, "project-1", { milestone: "no-such" })).rejects.toMatchObject({
+            code: RelayErrorCode.PayloadInvalid,
+        })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
     it("refuses a task id that cannot be one", async () => {
         const { feed } = await build(mockEntityManager())
 

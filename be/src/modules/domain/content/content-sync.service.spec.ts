@@ -100,7 +100,7 @@ describe("ContentSyncService sync from local directories", () => {
         ])
         expect(git.materialize).not.toHaveBeenCalled()
         expect(lessons.import).toHaveBeenNthCalledWith(1, { directory: join("/d", "concepts"), ref: "fp-/d", only: "" })
-        expect(lessons.import).toHaveBeenNthCalledWith(2, { directory: join("/c", "concepts"), ref: "fp-/c", only: "" })
+        expect(lessons.import).toHaveBeenNthCalledWith(2, { directory: join("/c", "essentials"), ref: "fp-/c", only: "" })
         expect(interviews.import).toHaveBeenCalledWith({
             directory: "/d",
             ref: "fp-/d+fp-/c",

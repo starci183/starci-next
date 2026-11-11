@@ -30,6 +30,7 @@ export type {
     ReviewGoalSetView,
     ReviewGradeView,
     ReviewItemView,
+    LessonReviewSlotView,
     ReviewLocale,
     ReviewStatsView,
     ReviewTodayView,

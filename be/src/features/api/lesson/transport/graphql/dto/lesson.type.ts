@@ -4,6 +4,7 @@ import { LessonReferenceType } from "./lesson-reference.type"
 import { LessonSectionType } from "./lesson-section.type"
 import { LessonStatementType } from "./lesson-statement.type"
 import { LessonWorkspaceType } from "./lesson-workspace.type"
+import { LessonWorkspaceVariantType } from "./lesson-workspace-variant.type"
 
 @ObjectType()
 /** The public projection of one live lesson in one locale. */
@@ -79,4 +80,8 @@ export class LessonType {
     /** The workspace, or null without Premium or without a workspace. */
     @Field(() => LessonWorkspaceType, { nullable: true })
     workspace!: LessonWorkspaceType | null
+
+    /** The workspace per language, empty without Premium or when the lesson ships one language only. */
+    @Field(() => [LessonWorkspaceVariantType])
+    workspaces!: ReadonlyArray<LessonWorkspaceVariantType>
 }

@@ -24,6 +24,7 @@ export const toLessonAttemptType = (view: AttemptView): LessonAttemptType => ({
     kind: view.kind,
     phase: view.phase,
     status: view.status,
+    answer: view.answer,
     result: view.result,
     failureCode: view.failureCode,
     submittedAt: view.submittedAt,

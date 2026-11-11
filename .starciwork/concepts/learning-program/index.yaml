@@ -1,0 +1,53 @@
+schema: work/concept@1
+id: concept.learning-program
+title: The learning program - seven parts, three waves, outcome paths, real tools for agents
+rule: >-
+  StarCi Next is a learning program in seven parts built in three waves, strung into outcome paths ("Mục tiêu đầu ra":
+  Khởi nghiệp, AI Engineer, job tracks) that each end in a concrete "done". It teaches building a profile, connecting,
+  building Agents and using AI coding the right way, and reaching an outcome. Wave A is Phỏng vấn thử (text first) and
+  Ôn tập; wave B is Xây app thật (GitHub Action grading) and Luyện code (the self-hosted Judge0); wave C is Hồ sơ và CV,
+  Code ra app cùng AI and Kết nối việc làm (a Premium perk, manual with Pegasi). The agent curriculum teaches real tools
+  (Claude Code and Agent SDK, OpenClaw, Hermes Agent) through seven tool-agnostic concepts, not the teacher's own method;
+  the teacher's harness appears only as an example. Build order: Bản chất first, then Dự án.
+why: >-
+  The product's value is verified, CV-worthy experience and a reached outcome, not a list of courses. The owner wants
+  the agent teaching to stay valid when tools change.
+forbids:
+  - Teaching agents by the teacher's harness method as the curriculum.
+  - A part without a place in an outcome path or without experience items (see concept.verified-experience).
+  - Starting a later part while Bản chất and then Dự án are not done.
+example: >-
+  The "AI Engineer" path strings Bản chất lessons, an agent lab and a project into one path whose "done" is a verified
+  experience set; it does not say "finish course 3".
+livesIn:
+  - path: fe/apps/app/src/app/[locale]/(app)
+    holds: "routes of the parts: essentials, review (Ôn tập), interview, practice, incidents, projects, agents, experience, profile, paths/choose, devices, premium"
+  - path: fe/apps/app/src/components/blocks/AppSidebar/index.tsx
+    holds: the eight part destinations and the two experience destinations of the sidebar
+  - path: be/src/modules/domain/path
+    holds: outcome paths
+  - path: be/src/modules/domain/agent-lab
+    holds: the agent lab and its catalog
+decided:
+  by: owner
+  at: 2026-11-08
+  words:
+    - "theo đề xuất trò từng phần đi, và vẽ canva mockup ra cho thầy. đại loại dạy học xây prifole kết nối xây Agent dùng AI coding cho đúng (như thầy) và giải quyết outcome (khởi nghiệp, AI engineer,...)"
+    - "ko theo giáo án của thầy nhma dạy theo tư duy chuẩn"
+    - "xong tính năng essential trước nhé, rồi projects"
+  source: >-
+    Memory learning-program-outcomes (owner 2026-11-08, the agent curriculum ruling the same day) and the owner's
+    2026-11-10 priority ruling in the coordinator brief of lane S17.
+status: partial
+built:
+  - Routes and sidebar destinations exist for Bản chất, Ôn tập, Phỏng vấn thử, Luyện code, Sự cố, Dự án, Agent và AI, Kinh nghiệm and Hồ sơ, plus paths/choose and devices (read in fe/apps/app/src/app and AppSidebar).
+  - Back-end modules exist for path, agent-lab, interview, practice, incident, review, career, project, relay.
+notBuilt:
+  - Wave C parts "Code ra app cùng AI" and "Kết nối việc làm" have no route or module (not found).
+  - Not verified that the agent-lab content follows the seven tool-agnostic concepts; the content comes from the content repo, which is not pulled in this lane.
+  - Not verified that the outcome paths hold real content and a concrete "done".
+refs:
+  - concept.essentials-lessons
+  - concept.projects-bring-your-own
+  - concept.verified-experience
+  - concept.content-repo

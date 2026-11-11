@@ -9,6 +9,8 @@ import type {
     LessonLocaleDocument,
     LessonWorkspaceDeclaration,
     LessonWorkspaceFile,
+    LessonWorkspaceVariant,
+    LessonWorkspaceVariantDeclaration,
 } from "./lesson.contracts"
 import type { LessonDraftResult, LessonIssue, LessonParsedLocale, LessonSourceFile } from "./lesson-import.contracts"
 
@@ -30,6 +32,7 @@ const documentOf = (parsed: LessonParsedLocale): LessonLocaleDocument => ({
     title: parsed.root.title,
     description: parsed.root.description,
     body: parsed.root.body,
+    ...(parsed.root.isPremium === undefined ? {} : { isPremium: parsed.root.isPremium }),
     learningOutcomes: parsed.root.learningOutcomes,
     prerequisites: parsed.root.prerequisites,
     references: parsed.root.references,
@@ -46,6 +49,7 @@ interface WorkspaceAttachment {
 const workspaceFiles = (
     declaration: LessonWorkspaceDeclaration | null,
     byPath: ReadonlyMap<string, LessonSourceFile>,
+    field = "workspace",
 ): WorkspaceAttachment => {
     const files: Array<LessonWorkspaceFile> = []
     const issues: Array<LessonIssue> = []
@@ -54,12 +58,33 @@ const workspaceFiles = (
         if (source === undefined) {
             issues.push({
                 path: "vi.md",
-                field: `workspace.files[${index}].path`,
+                field: `${field}.files[${index}].path`,
                 message: `${entry.path} is not in the folder`,
             })
         } else files.push({ ...entry, content: source.text })
     })
     return { files, issues }
+}
+
+/** The workspaces of every language with their files, and the issues of the files the folder lacks. */
+interface VariantAttachment {
+    readonly variants: Array<LessonWorkspaceVariant>
+    readonly issues: Array<LessonIssue>
+}
+
+/** The workspace of every language the root declares, with the text of its files, and the issues of the files it lacks. */
+const variantsOf = (
+    declared: ReadonlyArray<LessonWorkspaceVariantDeclaration>,
+    byPath: ReadonlyMap<string, LessonSourceFile>,
+): VariantAttachment => {
+    const attached = declared.map((variant, index) => ({
+        variant,
+        found: workspaceFiles(variant, byPath, `workspaces[${index}]`),
+    }))
+    return {
+        variants: attached.map(({ variant, found }) => ({ ...variant, files: found.files })),
+        issues: attached.flatMap(({ found }) => found.issues),
+    }
 }
 
 /**
@@ -75,13 +100,16 @@ export const buildLessonDraft = (
     if (source.parsed === null) return { draft: null, issues: source.issues }
     const { vi, en } = source.parsed
     const workspace = vi.root.workspace ?? null
-    const attached = workspaceFiles(workspace, new Map(files.map((file) => [file.path, file])))
+    const byPath = new Map(files.map((file) => [file.path, file]))
+    const attached = workspaceFiles(workspace, byPath)
+    const variants = variantsOf(vi.root.workspaces ?? [], byPath)
     const id = lessonIdOf(folder)
     const group = groupOf(id, vi.root.category)
     const placed = resolveTopic(id, catalog)
     const issues = [
         ...validateLesson(source.parsed),
         ...attached.issues,
+        ...variants.issues,
         ...(group === null
             ? [
                   {
@@ -99,6 +127,7 @@ export const buildLessonDraft = (
         locales: { vi: documentOf(vi), en: documentOf(en) },
         workspace,
         files: attached.files,
+        ...(variants.variants.length === 0 ? {} : { workspaces: variants.variants }),
     }
     return {
         draft: {

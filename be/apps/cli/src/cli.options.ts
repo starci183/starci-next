@@ -16,6 +16,8 @@ export interface CliAppOptions {
     readonly aiGateway: AiGatewayOptions | null
     /** The career settings: whether the development seed of experience items may run. */
     readonly career: CliEnv["career"]
+    /** The entitlement settings: whether the development grant of Premium may run. */
+    readonly entitlement: CliEnv["entitlement"]
     /** The git mount of the content repositories, or null when this instance has none. */
     readonly content: CliEnv["content"]
 }
@@ -27,5 +29,6 @@ export const createCliAppOptions = (env: CliEnv): CliAppOptions => ({
     payos: env.payos,
     aiGateway: env.aiGateway,
     career: env.career,
+    entitlement: env.entitlement,
     content: env.content,
 })

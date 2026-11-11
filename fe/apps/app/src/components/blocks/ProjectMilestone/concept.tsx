@@ -1,5 +1,5 @@
-import { Alert, Badge, Button, Cluster, Input, Link, Stack, Text, Textarea } from "@starci/grammar/common"
-import type { ConceptCardView, ConceptDraftView, FailureNoteView, ProjectMilestoneLabels } from "./types"
+import { Button, Cluster, Input, Stack, Text, Textarea } from "@starci/grammar/common"
+import type { ConceptCardView, ConceptDraftView, ProjectMilestoneLabels } from "./types"
 
 /** What a form of one concept needs apart from its handlers: the concept, its words and draft, and whether its command runs. */
 type FormBaseProps = {
@@ -38,12 +38,6 @@ type DraftFieldProps = {
 /** What one text area of a concept form needs: a field and its height. */
 type DraftAreaProps = DraftFieldProps & { readonly rows: number }
 
-/** What the evidence of a concept needs: the concept and the label of the question. */
-type ConceptEvidenceProps = { readonly concept: ConceptCardView; readonly questionLabel: string }
-
-/** What the failure note needs: the failure and the label of the question. */
-type FailureProps = { readonly rejection: FailureNoteView; readonly questionLabel: string }
-
 /** One text field of a concept form. */
 const DraftInput = (props: DraftFieldProps) => (
     <Input
@@ -69,45 +63,6 @@ const DraftArea = (props: DraftAreaProps) => (
         onValueChange={props.onWrite}
     />
 )
-
-/** What failed in a concept: the reason, the question the AI asked and the lesson to relearn. */
-const FailureNote = (props: FailureProps) => {
-    const failure = props.rejection
-    const description = failure.question === "" ? undefined : `${props.questionLabel}: ${failure.question}`
-    return (
-        <>
-            <Alert tone="negative" title={failure.text} {...(description === undefined ? {} : { description })} />
-            <Link href={failure.relearnHref}>{failure.relearnLabel}</Link>
-        </>
-    )
-}
-
-/** The evidence chips of a concept and what failed. */
-export const ConceptEvidence = (props: ConceptEvidenceProps) => {
-    const { concept } = props
-    return (
-        <Stack gap="inline">
-            <Cluster gap="inline" wrap align="center">
-                {concept.chips.map((chip) => (
-                    <Badge key={chip.id} tone={chip.tone}>
-                        {[chip.label, chip.state, chip.mark].filter((part) => part !== "").join(" · ")}
-                    </Badge>
-                ))}
-            </Cluster>
-            {concept.rejection === undefined ? null : (
-                <FailureNote rejection={concept.rejection} questionLabel={props.questionLabel} />
-            )}
-            {concept.rejection !== undefined || concept.aiQuestion === "" ? null : (
-                <Text>
-                    {props.questionLabel}: {concept.aiQuestion}
-                </Text>
-            )}
-            {concept.rejection === undefined && concept.relearnHref !== "" ? (
-                <Link href={concept.relearnHref}>{concept.relearnLabel}</Link>
-            ) : null}
-        </Stack>
-    )
-}
 
 /** The pointer form: the code location and the endpoint the probes aim at. */
 export const PointerForm = (props: PointerFormProps) => {

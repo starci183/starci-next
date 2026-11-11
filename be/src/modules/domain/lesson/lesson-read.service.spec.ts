@@ -5,6 +5,7 @@ import { demoContentOf } from "@tests/fixtures/builders/lesson.builder"
 import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { LessonErrorCode } from "./errors/lesson.error"
+import type { LessonWorkspaceVariant } from "./lesson.contracts"
 import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
 import {
     SELECT_CATALOG,
@@ -228,5 +229,49 @@ describe("LessonReadService topic", () => {
         await expect(unpublished.service.topic({ topic: "demo-topic", locale: "vi" })).rejects.toMatchObject({
             code: "LESSON_TOPIC_NOT_FOUND",
         })
+    })
+})
+
+describe("LessonReadService workspaceArchive", () => {
+    const variant: LessonWorkspaceVariant = {
+        language: "typescript",
+        runtime: "node 22",
+        files: [{ path: "src/a.ts", role: "source", content: "A" }],
+        commands: { unix: "npm test" },
+    }
+    const rowWith = (workspaces: ReadonlyArray<LessonWorkspaceVariant>): VersionRow =>
+        versionRowOf({ content: { ...demoContentOf(), workspaces } })
+
+    it("zips the workspace of the language for a Premium learner", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [rowWith([variant])]] }), true)
+
+        const archive = await service.workspaceArchive({
+            id: "demo-lesson",
+            language: "typescript",
+            learnerId: LEARNER,
+        })
+
+        expect(archive.fileName).toBe("demo-lesson-typescript.zip")
+        expect(archive.content.subarray(0, 4).toString("hex")).toBe("504b0304")
+    })
+
+    it("refuses a learner without Premium before building anything", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [rowWith([variant])]] }), false)
+
+        await expect(
+            service.workspaceArchive({ id: "demo-lesson", language: "typescript", learnerId: LEARNER }),
+        ).rejects.toMatchObject({ code: LessonErrorCode.PremiumRequired })
+    })
+
+    it("is not found for a language the lesson does not ship and for a lesson that is not live", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [rowWith([variant])]] }), true)
+        const none = await build(mockEntityManager({ query: [SELECT_PUBLISHED, []] }), true)
+
+        await expect(
+            service.workspaceArchive({ id: "demo-lesson", language: "go", learnerId: LEARNER }),
+        ).rejects.toMatchObject({ code: LessonErrorCode.NotFound })
+        await expect(
+            none.service.workspaceArchive({ id: "x", language: "go", learnerId: LEARNER }),
+        ).rejects.toMatchObject({ code: LessonErrorCode.NotFound })
     })
 })

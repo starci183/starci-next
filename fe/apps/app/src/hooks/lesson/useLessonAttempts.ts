@@ -44,6 +44,10 @@ const nextRevisionOf = (previous: AttemptState | undefined, answerKey: string): 
     return isRetry ? previous.revision : previous.revision + 1
 }
 
+/** The attempts the server already holds, as the states they stand in. */
+const restoredStatesOf = (restored: Readonly<Record<string, AttemptView>>): Readonly<Record<string, AttemptState>> =>
+    Object.fromEntries(Object.entries(restored).map(([activityId, view]) => [activityId, settledOf(view, "")]))
+
 /** The attempts as sent, with the one the server settled while it was being read again. */
 const settledByPoll = (
     sent: Readonly<Record<string, AttemptState>>,
@@ -54,16 +58,17 @@ const settledByPoll = (
 }
 
 /**
- * The attempts of a lesson. A new answer takes the next revision; resending a failed grading keeps its revision, and a
+ * The attempts of a lesson: the ones the server already holds (`restored`, read again after every submit) and the ones sent in this visit,
+ * which win while they are newer. A new answer takes the next revision; resending a failed grading keeps its revision, and a
  * revision the server refuses (ATTEMPT_REVISION_CONFLICT) is bumped once and sent again. An attempt that is grading is read
  * again until the server settles it. PREMIUM_REQUIRED is read by its stable code, never by the status.
  */
-export const useLessonAttempts = (): LessonAttempts => {
+export const useLessonAttempts = (restored: Readonly<Record<string, AttemptView>>): LessonAttempts => {
     const [sent, setSent] = useState<Readonly<Record<string, AttemptState>>>({})
     const post = usePostLessonAttemptSwr()
     const grading = Object.values(sent).find((each) => each.status === "grading")
     const polled = useGetLessonAttemptSwr(grading?.view?.attemptId).data
-    const attempts = settledByPoll(sent, polled)
+    const attempts = { ...restoredStatesOf(restored), ...settledByPoll(sent, polled) }
 
     const settle = (activityId: string, state: AttemptState): void =>
         setSent((all) => ({ ...all, [activityId]: state }))

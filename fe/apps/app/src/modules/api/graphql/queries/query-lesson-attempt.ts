@@ -17,6 +17,13 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
             failureCode
             submittedAt
             gradedAt
+            answer {
+                optionId
+                text
+                actionIds
+                reachedStateId
+                debrief
+            }
             result {
                 correct
                 success
@@ -36,6 +43,7 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
                     level
                     evidenceQuote
                     maxScore
+                    missing
                 }
             }
         }

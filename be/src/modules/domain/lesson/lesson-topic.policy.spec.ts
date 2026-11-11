@@ -43,15 +43,20 @@ describe("resolveTopic", () => {
 })
 
 describe("the teacher's catalog sources", () => {
-    it("names one distinct topic path row for every lesson it places", () => {
+    it("names one distinct topic path row for every lesson that replaces a V1 folder", () => {
         const lessonIds = Object.keys(DEFAULT_TOPIC_CATALOG.byLesson)
-        const sources = lessonIds.map((id) => DEFAULT_TOPIC_CATALOG.sources[id])
+        const sources = Object.values(DEFAULT_TOPIC_CATALOG.sources)
 
-        expect(sources.every((source) => /^courses\/[^/]+\/modules\/[^/]+\/contents\/[^/]+$/u.test(source ?? ""))).toBe(
-            true,
-        )
-        expect(new Set(sources).size).toBe(lessonIds.length)
-        expect(Object.keys(DEFAULT_TOPIC_CATALOG.sources).sort()).toEqual([...lessonIds].sort())
+        expect(sources.every((source) => /^courses\/[^/]+\/modules\/[^/]+\/contents\/[^/]+$/u.test(source))).toBe(true)
+        expect(new Set(sources).size).toBe(sources.length)
+        expect(Object.keys(DEFAULT_TOPIC_CATALOG.sources).every((id) => lessonIds.includes(id))).toBe(true)
+    })
+
+    it("leaves the essentials written for starci-next with no V1 folder to replace", () => {
+        const fresh = ["transactions-and-isolation", "indexing-and-query-plans", "idempotency"]
+
+        expect(fresh.map((id) => DEFAULT_TOPIC_CATALOG.byLesson[id] !== undefined)).toEqual([true, true, true])
+        expect(fresh.map((id) => DEFAULT_TOPIC_CATALOG.sources[id])).toEqual([undefined, undefined, undefined])
     })
 
     it("puts Health probes on the Kubernetes probes row of DevOps module 18, not on its Fullstack module 16 legacy folder", () => {

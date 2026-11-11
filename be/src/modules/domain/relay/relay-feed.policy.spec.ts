@@ -4,6 +4,7 @@ import type { RelayUpload } from "./relay-feed.contracts"
 import {
     PROJECT_CHECKS,
     manifestPayloadOf,
+    projectRunOf,
     publicKeyPemOf,
     relayDeviceTopic,
     signManifest,
@@ -56,6 +57,35 @@ describe("relay feed policy signing", () => {
         const { relayDeviceTopic: topicOf } = await build()
 
         expect(topicOf("learner-1", "device-1")).toEqual({ name: "relay:learner-1:device-1" })
+    })
+
+    it("reads the learner's test command and the milestone's concepts into the checks and plan of a project run", () => {
+        const milestone = { id: "bf-data-and-cache", concepts: ["idempotency"] }
+
+        expect(projectRunOf({ milestone, testCommand: "node --test", testReport: "reports/j.xml" })).toEqual({
+            checks: [{ id: "test", command: "node --test", cwd: ".", timeoutMs: 600_000 }],
+            plan: { milestone: "bf-data-and-cache", report: "reports/j.xml", concepts: ["idempotency"] },
+        })
+        expect(projectRunOf({ milestone })?.checks[0]?.command).toBe("npm test")
+        expect(projectRunOf({ milestone })?.plan.report).toBe("starci/reports/junit.xml")
+    })
+
+    it.each([
+        ["a command with a second line", { testCommand: "npm test\nrm -rf ~" }],
+        ["an empty command", { testCommand: "  " }],
+        ["a command that is too long", { testCommand: "x".repeat(401) }],
+        ["a report above the project", { testReport: "../x.xml" }],
+        ["an absolute report", { testReport: "/etc/x.xml" }],
+        ["a report with a drive", { testReport: "C:/x.xml" }],
+    ])("refuses a project run with %s", (_name, request) => {
+        expect(projectRunOf({ milestone: { id: "m", concepts: [] }, ...request })).toBeNull()
+    })
+
+    it("signs the plan into the canonical payload so the CLI verifies it", async () => {
+        const subject = await build()
+        const plan = { milestone: "m", report: "r.xml", concepts: ["idempotency"] }
+
+        expect(payloadOf(subject.manifestPayloadOf({ ...body, plan }))).toMatchObject({ value: { plan } })
     })
 
     it("signs the canonical payload with Ed25519, verifiable with the public key the CLI ships", async () => {

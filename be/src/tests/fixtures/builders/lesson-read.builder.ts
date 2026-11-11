@@ -22,6 +22,10 @@ export const progressOf = (lessonId: string, total: number): LessonProgressView 
     version: null,
     phase: "challenge",
     outcomes: [],
+    phases: [],
+    completedAt: null,
+    simulations: [],
+    reviews: [],
     attempts: { total, activities: 0, graded: 0, failed: 0, pending: 0 },
     activities: [],
 })

@@ -1,6 +1,7 @@
 import type { EnvSource } from "@modules/platform/config"
 import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseCareerConfig } from "@modules/domain/career"
+import { parseEntitlementConfig } from "@modules/domain/entitlement"
 import { parseContentConfig } from "@modules/domain/content"
 import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseSepayConfig } from "@modules/integrations/sepay"
@@ -18,6 +19,8 @@ export interface CliEnv {
     readonly aiGateway: ReturnType<typeof parseAiGatewayConfig>
     /** The career settings: whether the development seed of experience items may run. */
     readonly career: ReturnType<typeof parseCareerConfig>
+    /** The entitlement settings: whether the development grant of Premium may run. */
+    readonly entitlement: ReturnType<typeof parseEntitlementConfig>
     /** The git mount of the content repositories, or null when the environment declares none. */
     readonly content: ReturnType<typeof parseContentConfig>
 }
@@ -29,5 +32,6 @@ export const readCliEnv = (env: EnvSource): CliEnv => ({
     payos: parsePayosConfig(env),
     aiGateway: parseAiGatewayConfig(env),
     career: parseCareerConfig(env),
+    entitlement: parseEntitlementConfig(env),
     content: parseContentConfig(env),
 })

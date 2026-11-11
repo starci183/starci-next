@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
+import { LessonAttemptAnswerType } from "./lesson-attempt-answer.type"
 import { LessonAttemptResultType } from "./lesson-attempt-result.type"
 
 @ObjectType()
@@ -35,6 +36,10 @@ export class LessonAttemptType {
     /** saved, grading, graded or failed. */
     @Field(() => String)
     status!: string
+
+    /** What the learner answered, as stored. */
+    @Field(() => LessonAttemptAnswerType)
+    answer!: LessonAttemptAnswerType
 
     /** The grade once graded, otherwise null. */
     @Field(() => LessonAttemptResultType, { nullable: true })

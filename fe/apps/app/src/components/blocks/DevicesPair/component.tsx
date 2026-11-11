@@ -1,56 +1,27 @@
 import {
-    Alert,
-    Badge,
     Button,
-    Cluster,
-    FencedCodeBlock,
-    Heading,
-    Input,
+    Divider,
     Page,
+    Pane,
+    PaneGrid,
+    PaneSection,
+    Section,
     Stack,
     SurfaceCard,
     Text,
+    type ListRowData,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { ConnectDrawer } from "./connect"
+import { StepRows } from "./steps"
+import type {
+    DevicesPairDevice,
+    DevicesPairLabels,
+    DevicesPairRule,
+    DevicesPairStep,
+    DevicesPairPreview,
+} from "./types"
 import type { DataSlot, SlotLabels } from "@/modules/types"
-
-/** One install or sign-in step of the pairing guide. */
-export type DevicesPairStep = { readonly title: string; readonly command: string | undefined; readonly note: string }
-
-/** One rule of what the CLI may and may not do. */
-export type DevicesPairRule = { readonly text: string; readonly isAllowed: boolean }
-
-/** One paired device, already in words. */
-export type DevicesPairDevice = {
-    readonly id: string
-    readonly name: string
-    readonly detail: string
-    readonly isOnline: boolean
-    readonly isRevoking: boolean
-}
-
-/** The pending pairing the learner is about to confirm, in words. */
-export type DevicesPairPreview = { readonly name: string; readonly detail: string }
-
-/** The fixed words of the devices screen. */
-export type DevicesPairLabels = {
-    readonly eyebrow: string
-    readonly title: string
-    readonly intro: string
-    readonly codeLabel: string
-    readonly codePlaceholder: string
-    readonly codeHint: string
-    readonly codeUnknown: string
-    readonly previewTitle: string
-    readonly confirm: string
-    readonly confirming: string
-    readonly devicesTitle: string
-    readonly devicesLimit: string
-    readonly online: string
-    readonly offline: string
-    readonly revoke: string
-    readonly rulesTitle: string
-}
 
 /** Props for {@link DevicesPairBase}. */
 export type DevicesPairBaseProps = {
@@ -69,12 +40,15 @@ export type DevicesPairBaseProps = {
         readonly isNoticeError: boolean
         readonly devices: DataSlot<ReadonlyArray<DevicesPairDevice>>
         readonly placeholder: ReadonlyArray<DevicesPairDevice>
+        /** True while the connect drawer is open. */
+        readonly isConnectOpen: boolean
     }
     readonly on: {
         readonly changeCode: (value: string) => void
         readonly confirm: () => void
         readonly revoke: (id: string) => void
         readonly retry: () => void
+        readonly setConnectOpen: (isOpen: boolean) => void
     }
 }
 
@@ -87,138 +61,166 @@ export const DEVICES_PLACEHOLDER: ReadonlyArray<DevicesPairDevice> = [1, 2].map(
     isRevoking: false,
 }))
 
-/** Props of the intro card. */
-type DevicesPairIntroProps = { readonly labels: DevicesPairLabels }
-
-/** Props of the rules card. */
-type DevicesPairRulesProps = { readonly title: string; readonly rules: ReadonlyArray<DevicesPairRule> }
-
-/** The intro card: what working on the learner's own machine means. */
-const IntroCard = (props: DevicesPairIntroProps) => (
-    <SurfaceCard>
-        <Stack gap="row">
+/** The empty list: why there is no machine, the pairing steps and the one primary. */
+const EmptyDevices = (props: DevicesPairBaseProps) => (
+    <Stack gap="row">
+        <Stack gap="identity">
+            <Text isStrong>{props.props.labels.emptyTitle}</Text>
             <Text size="sm" tone="muted">
-                {props.labels.eyebrow}
+                {props.props.labels.emptyText}
             </Text>
-            <Heading level={1}>{props.labels.title}</Heading>
-            <Text>{props.labels.intro}</Text>
         </Stack>
-    </SurfaceCard>
+        <StepRows steps={props.props.steps} />
+        <Button intent="commit" startGlyph="plus" onPress={() => props.on.setConnectOpen(true)}>
+            {props.props.labels.connect}
+        </Button>
+    </Stack>
 )
 
-/** The pairing card: the install and login steps, the code entry with its preview and the confirm. */
-const PairCard = (props: DevicesPairBaseProps) => {
-    const view = props.props
-    return (
-        <SurfaceCard>
-            <Stack gap="row">
-                {view.steps.map((step, index) => (
-                    <Stack key={step.title} gap="identity">
-                        <Text isStrong>{`${index + 1}. ${step.title}`}</Text>
-                        {step.command === undefined ? null : <FencedCodeBlock code={step.command} language="bash" />}
-                        <Text size="sm" tone="muted">
-                            {step.note}
-                        </Text>
-                    </Stack>
-                ))}
-                <Input
-                    id="relay-pair-code"
-                    name="userCode"
-                    label={view.labels.codeLabel}
-                    description={view.labels.codeHint}
-                    placeholder={view.labels.codePlaceholder}
-                    value={view.code}
-                    onValueChange={props.on.changeCode}
-                />
-                {view.isCodeUnknown ? <Alert tone="negative" title={view.labels.codeUnknown} /> : null}
-                {view.preview === undefined ? null : (
-                    <Alert
-                        tone="informative"
-                        title={`${view.labels.previewTitle}: ${view.preview.name} · ${view.preview.detail}`}
-                    />
-                )}
-                <Cluster gap="inline" wrap align="center">
-                    <Button
-                        intent="commit"
-                        onPress={props.on.confirm}
-                        isDisabled={!view.canConfirm}
-                        isPending={view.isConfirming}
-                    >
-                        {view.isConfirming ? view.labels.confirming : view.labels.confirm}
-                    </Button>
-                </Cluster>
-                {view.notice === "" ? null : (
-                    <Alert tone={view.isNoticeError ? "negative" : "affirmative"} title={view.notice} />
-                )}
-            </Stack>
-        </SurfaceCard>
-    )
-}
+/** The row of one paired machine: name, platform and last seen, the online chip and the revoke command. */
+const deviceRowOf = (device: DevicesPairDevice, props: DevicesPairBaseProps): ListRowData => ({
+    id: device.id,
+    title: device.name,
+    description: device.detail,
+    badges: [
+        {
+            label: device.isOnline ? props.props.labels.online : props.props.labels.offline,
+            tone: device.isOnline ? "success" : "muted",
+            isDot: true,
+        },
+    ],
+    action: { label: props.props.labels.revoke, press: () => props.on.revoke(device.id), isPending: device.isRevoking },
+})
 
-/** The device list card with online state and revoke. */
+/** The paired machines as one list card; the empty state lives inside it. */
 const DevicesCard = (props: DevicesPairBaseProps) => {
     const view = props.props
     return (
-        <SurfaceCard label={view.labels.devicesTitle}>
-            <SlotView
-                slot={view.devices}
-                placeholder={view.placeholder}
-                labels={view.slotLabels}
-                onRetry={props.on.retry}
-                render={(devices) => (
-                    <Stack gap="row">
-                        {devices.map((device) => (
-                            <Cluster key={device.id} gap="row" wrap align="center">
-                                <Stack gap="identity">
-                                    <Text isStrong>{device.name}</Text>
-                                    <Text size="sm" tone="muted">
-                                        {device.detail}
-                                    </Text>
-                                </Stack>
-                                <Cluster gap="inline" wrap align="center">
-                                    <Badge tone={device.isOnline ? "success" : "neutral"}>
-                                        {device.isOnline ? view.labels.online : view.labels.offline}
-                                    </Badge>
-                                    <Button
-                                        intent="neutral"
-                                        size="sm"
-                                        onPress={() => props.on.revoke(device.id)}
-                                        isPending={device.isRevoking}
-                                    >
-                                        {view.labels.revoke}
-                                    </Button>
-                                </Cluster>
-                            </Cluster>
-                        ))}
-                    </Stack>
-                )}
-            />
-            <Text size="sm" tone="muted">
-                {view.labels.devicesLimit}
-            </Text>
-        </SurfaceCard>
+        <SlotView
+            slot={view.devices}
+            placeholder={view.placeholder}
+            labels={view.slotLabels}
+            onRetry={props.on.retry}
+            render={(devices, isLoading) =>
+                devices.length === 0 ? (
+                    <SurfaceCard label={view.labels.pairedTitle} count={0} isLoading={isLoading}>
+                        <EmptyDevices {...props} />
+                    </SurfaceCard>
+                ) : (
+                    <SurfaceCard
+                        kind="list"
+                        label={view.labels.pairedTitle}
+                        count={devices.length}
+                        isLoading={isLoading}
+                        items={devices.map((device) => deviceRowOf(device, props))}
+                        empty={null}
+                        note={view.labels.devicesLimit}
+                    />
+                )
+            }
+        />
     )
 }
 
-/** The rules card: what the CLI may and may not do. */
-const RulesCard = (props: DevicesPairRulesProps) => (
-    <SurfaceCard label={props.title}>
-        <Stack gap="identity">
-            {props.rules.map((rule) => (
-                <Text key={rule.text}>{`${rule.isAllowed ? "✓" : "✕"} ${rule.text}`}</Text>
-            ))}
-        </Stack>
-    </SurfaceCard>
-)
+/** What the aside needs: the words and the rules. */
+type AsideProps = { readonly labels: DevicesPairLabels; readonly rules: ReadonlyArray<DevicesPairRule> }
 
-/** The pairing screen: what the CLI is, the install and login steps, the code entry with its preview, the devices and the rules. */
-export const DevicesPairBase = (props: DevicesPairBaseProps) => (
-    <Page>
+/** The aside: the two proof levels as rows, then what the CLI may and may not do. */
+const Aside = (props: AsideProps) => {
+    const labels = props.labels
+    return (
         <Stack gap="section">
-            <IntroCard labels={props.props.labels} />
-            <PairCard {...props} />
-            <DevicesCard {...props} />
-            <RulesCard title={props.props.labels.rulesTitle} rules={props.props.rules} />
+            <Section
+                title={labels.levelsTitle}
+                kind="list"
+                items={[
+                    {
+                        id: "practice",
+                        title: labels.practiceTitle,
+                        description: labels.practiceText,
+                    },
+                    {
+                        id: "proof",
+                        title: labels.proofTitle,
+                        description: labels.proofText,
+                    },
+                ]}
+                empty={null}
+            />
+            <Divider />
+            <Section
+                title={labels.rulesTitle}
+                kind="list"
+                items={props.rules.map((rule, index) => ({
+                    id: `rule-${index}`,
+                    title: rule.text,
+                    badges: [
+                        rule.isAllowed
+                            ? { label: labels.allowed, tone: "success" as const }
+                            : { label: labels.denied, tone: "danger" as const },
+                    ],
+                }))}
+                empty={null}
+            />
         </Stack>
-    </Page>
-)
+    )
+}
+
+/** The devices screen: the band with the connect command, the list of paired machines and the aside on proof levels and CLI rules. */
+export const DevicesPairBase = (props: DevicesPairBaseProps) => {
+    const view = props.props
+    const hasDevices = "items" in view.devices && view.devices.items.length > 0
+    return (
+        <Page
+            chrome="panes"
+            header={{
+                breadcrumbs: "root",
+                title: view.labels.pageHeading,
+                meta: view.labels.pageSub,
+                ...(hasDevices
+                    ? {
+                          actions: (
+                              <Button intent="commit" startGlyph="plus" onPress={() => props.on.setConnectOpen(true)}>
+                                  {view.labels.connect}
+                              </Button>
+                          ),
+                      }
+                    : {}),
+            }}
+        >
+            <PaneGrid
+                label={view.labels.pairedTitle}
+                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+            >
+                <Pane area="main" scroll label={view.labels.pairedTitle}>
+                    <PaneSection>
+                        <DevicesCard {...props} />
+                        <ConnectDrawer
+                            labels={view.labels}
+                            steps={view.steps}
+                            code={view.code}
+                            preview={view.preview}
+                            isCodeUnknown={view.isCodeUnknown}
+                            canConfirm={view.canConfirm}
+                            isConfirming={view.isConfirming}
+                            notice={view.notice}
+                            isNoticeError={view.isNoticeError}
+                            isOpen={view.isConnectOpen}
+                            on={{
+                                changeCode: props.on.changeCode,
+                                confirm: props.on.confirm,
+                                setOpen: props.on.setConnectOpen,
+                            }}
+                        />
+                    </PaneSection>
+                </Pane>
+                <Pane area="aside" surface scroll label={view.labels.levelsTitle}>
+                    <PaneSection>
+                        <Aside labels={view.labels} rules={view.rules} />
+                    </PaneSection>
+                </Pane>
+            </PaneGrid>
+        </Page>
+    )
+}

@@ -1,2 +1,1 @@
 {"data":{},"findings":[],"hash":"de36deda271272df8cacb4c33b48342e65e5ccd5f0abc3d3626c3b5fa644c60b","path":"scripts/codegen.mjs","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":"scripts/dev/ is neither tracked nor git-ignored, and no ignored slot owns it","path":"scripts/dev","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":"scripts/dev","step":"hfs"}

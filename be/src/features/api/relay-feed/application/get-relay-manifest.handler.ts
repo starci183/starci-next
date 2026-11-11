@@ -15,6 +15,6 @@ export class GetRelayManifestHandler extends ICQRSHandler<GetRelayManifestQuery,
     }
 
     protected override process(query: GetRelayManifestQuery): Promise<SignedManifest> {
-        return this.feed.manifest(query.params.request.device, query.params.request.taskId)
+        return this.feed.manifest(query.params.request.device, query.params.request.taskId, query.params.request)
     }
 }

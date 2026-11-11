@@ -41,7 +41,7 @@ export type ReviewItemBaseProps = {
 export const ReviewItemBase = (props: ReviewItemBaseProps) => (
     <Page>
         <Stack gap="region">
-            <Link href={props.props.backHref}>{props.props.backLabel}</Link>
+            <Link variant="plain" href={props.props.backHref}>{props.props.backLabel}</Link>
             <SlotView
                 slot={props.props.slot}
                 placeholder={props.props.placeholder}

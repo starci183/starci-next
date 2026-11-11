@@ -10,6 +10,44 @@ export interface ManifestCheck {
     readonly timeoutMs: number
 }
 
+/** What a project run adds to a manifest: the milestone it is for, the JUnit report it reads and the concepts that count. */
+export interface ManifestPlan {
+    /** The milestone the learner runs. */
+    readonly milestone: string
+    /** The JUnit XML report, relative to the project folder, that the test command writes. */
+    readonly report: string
+    /** The concepts of the milestone: only tests tagged with one of them count. */
+    readonly concepts: ReadonlyArray<string>
+}
+
+/** A milestone of the catalog with the concepts it lists. */
+export interface ManifestMilestone {
+    /** The milestone id. */
+    readonly id: string
+    /** The concept ids it lists. */
+    readonly concepts: ReadonlyArray<string>
+}
+
+/** What the device asks a manifest for: the milestone of a project run (absent for a plain task) and the `starci/project.yaml` values. */
+export interface ManifestRequest {
+    /** The milestone id of a project run, or undefined for a plain task. */
+    readonly milestone?: string | undefined
+    /** The test command of `starci/project.yaml`, or undefined for the default `npm test`. */
+    readonly testCommand?: string | undefined
+    /** The JUnit report path of `starci/project.yaml`, or undefined for the default. */
+    readonly testReport?: string | undefined
+}
+
+/** A project run resolved against the catalog: the milestone with its concepts, and the test command and report. */
+export interface ProjectRunRequest {
+    /** The milestone and its concepts, from the catalog. */
+    readonly milestone: ManifestMilestone
+    /** The test command of `starci/project.yaml`, or undefined for the default `npm test`. */
+    readonly testCommand?: string | undefined
+    /** The JUnit report path of `starci/project.yaml`, or undefined for the default. */
+    readonly testReport?: string | undefined
+}
+
 /** The manifest body StarCi signs: the task, who may run it, when it was issued and its allowlisted checks. */
 export interface ManifestBody {
     /** The manifest id the ack names. */
@@ -24,6 +62,8 @@ export interface ManifestBody {
     readonly issuedAt: string
     /** The allowlisted checks. */
     readonly checks: ReadonlyArray<ManifestCheck>
+    /** The milestone, report and concepts of a project run, absent for a plain task. */
+    readonly plan?: ManifestPlan
 }
 
 /** A signed manifest: the body, its canonical text and the base64 Ed25519 signature of that text. */

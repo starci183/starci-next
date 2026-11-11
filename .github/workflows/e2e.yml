@@ -19,7 +19,5 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci --ignore-scripts
-      - name: build the workspace packages
-        run: npm run build:modules --silent
       - name: e2e
         run: npm run test:e2e

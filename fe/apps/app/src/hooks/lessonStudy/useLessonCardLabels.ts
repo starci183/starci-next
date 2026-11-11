@@ -1,13 +1,14 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import type { ChoiceCardLabels, SimulationCardLabels, WrittenCardLabels } from "@/modules/types"
+import type { ApplyEvidenceLabels, ChoiceCardLabels, SimulationCardLabels, WrittenCardLabels } from "@/modules/types"
 
 /** The words of the three kinds of activity card. */
 type LessonCardLabels = {
     readonly choice: ChoiceCardLabels
     readonly written: WrittenCardLabels
     readonly simulation: SimulationCardLabels
+    readonly evidence: ApplyEvidenceLabels
 }
 
 /** Resolves the words of the choice, written-answer and simulation cards. */
@@ -32,7 +33,6 @@ export const useLessonCardLabels = (): LessonCardLabels => {
             submit: t("written.submit"),
             retry: t("written.retry"),
             pending: t("written.pending"),
-            diagnostic: t("written.diagnostic"),
             criteria: t("written.criteria"),
             saved: t("attempt.saved"),
             grading: t("attempt.grading"),
@@ -47,13 +47,38 @@ export const useLessonCardLabels = (): LessonCardLabels => {
         },
         simulation: {
             states: t("simulation.states"),
+            moves: t("simulation.moves"),
+            log: t("simulation.log"),
+            logEmpty: t("simulation.logEmpty"),
             current: t("simulation.current"),
-            seen: t("simulation.seen"),
-            ahead: t("simulation.ahead"),
+            tried: t("simulation.tried"),
+            untried: t("simulation.untried"),
+            unavailable: t("simulation.unavailable"),
             observing: t("simulation.observing"),
             succeeded: t("simulation.succeeded"),
-            noMoves: t("simulation.noMoves"),
+            progress: t("simulation.progress", { tried: "{tried}", total: "{total}" }),
+            back: t("simulation.back"),
             restart: t("simulation.restart"),
+            noMoves: t("simulation.noMoves"),
+        },
+        evidence: {
+            output: t("evidence.output"),
+            outputHint: t("evidence.outputHint"),
+            explanation: t("evidence.explanation"),
+            explanationHint: t("evidence.explanationHint"),
+            submit: t("evidence.submit"),
+            retry: t("evidence.retry"),
+            pending: t("evidence.pending"),
+            saved: t("attempt.saved"),
+            grading: t("attempt.grading"),
+            failedSaved: t("attempt.failedSaved"),
+            error: t("attempt.error"),
+            premium: t("written.premium"),
+            plans: t("locked.plans"),
+            result: t("evidence.result"),
+            levels: [t("levels.none"), t("levels.half"), t("levels.reached")],
+            missing: t("evidence.missing"),
+            savedAt: t("evidence.savedAt", { time: "{time}" }),
         },
     }
 }

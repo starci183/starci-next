@@ -1,0 +1,63 @@
+schema: work/concept@1
+id: concept.verified-experience
+title: Verified experience - the AI grades, the teacher signs each item
+rule: >-
+  Every learning part (Bản chất, Ôn tập, Luyện code, Dự án, Agent, Phỏng vấn thử, Hồ sơ và CV) grants specific
+  CV-ready experience. Each part declares its experience items, each with a CV-line template and the evidence it needs.
+  An item moves đang luyện, then AI đã chấm (the AI drafts the CV line and the evidence), then chờ thầy duyệt, then Đã
+  xác minh, or it returns with a note. A verified item can be revoked with an audit. Only "Đã xác minh" items count
+  for the profile, a finished path and the CV export. The AI alone never marks an item verified; the teacher (or an
+  appointed reviewer) signs each item from a review queue.
+why: >-
+  The owner: the product's value is verified, CV-worthy experience, not course completion.
+forbids:
+  - An item marked verified by AI grading alone.
+  - A part without declared experience items and evidence.
+  - Counting a not-verified item in the profile, a path or the CV export.
+example: >-
+  A learner proves a Bản chất concept; the AI drafts "Triển khai CQRS read model trong NestJS" with its evidence; the item
+  waits in the teacher's queue; only after the teacher signs does it show "Đã xác minh" and appear in the CV export.
+livesIn:
+  - path: be/src/modules/domain/career/career.contracts.ts
+    holds: "ExperienceState practising, ai-graded, pending-review, verified, returned, revoked; ProofForm"
+  - path: be/src/modules/domain/career/experience-review.service.ts
+    holds: the teacher's decision per item, revoke with a reason, overdue escalation
+  - path: be/src/modules/domain/career/cv-line.policy.ts
+    holds: the CV line templates
+  - path: be/src/modules/domain/career/experience-audit.service.ts
+    holds: the audit of each change
+  - path: fe/apps/app/src/app/[locale]/(app)/review-queue
+    holds: the teacher's queue
+  - path: fe/apps/app/src/app/[locale]/(app)/experience
+    holds: the learner's experience page
+decided:
+  by: owner
+  at: 2026-11-08
+  words:
+    - "chia starci next thành các phần học, mỗi phần sẽ gain kinh nghiệm nhất định verify bởi thầy và thầy AI ... để lấy kinh nghiệm ghi cv"
+    - "AI chấm, thầy ký từng mục"
+  source: Memory verified-experience-per-part (owner 2026-11-08).
+amendments:
+  - at: 2026-11-10
+    by: coordinator under owner delegation
+    words:
+      - "cứ làm theo ý trò đi, cách nào tốt nhất thì làm"
+      - "the 'proved' level needs the incident mutation score (owner 2026-11-08, reaffirmed)"
+    ruling: >-
+      A Bản chất item (essentials.concept-proved) is drafted for review only when every learning outcome of the lesson has
+      proved level 2, and that level needs the incident mutation score of at least 80 percent; an apply exercise alone
+      gives understood, never proved.
+status: partial
+built:
+  - The six-state lifecycle, the review queue with revoke and overdue escalation, CV line templates and an audit exist in be/, and the queue and experience routes exist in fe/ (read, not run).
+  - "essentialsGradeOf already passes a lesson only at proved level 2 for every outcome; since 2026-11-10 that level comes only from AttemptProofService.recordMutationScore (unit specs run, passing)."
+notBuilt:
+  - "The Bản chất item cannot reach ai-graded yet: no incident run records a mutation score, so no outcome is proved (see concept.essentials-lessons)."
+  - Not verified that every part declares its items (the catalog policy was not read item by item).
+  - Not verified that no path lets AI grading set a verified state; the review service sets it from the teacher's decision, but the other writers were not traced.
+  - The CV export was not checked.
+  - The experience seed uses a development "dev-shop" project name for sample items; it is development data, noted in the report of lane S17.
+refs:
+  - concept.learning-program
+  - concept.projects-bring-your-own
+  - concept.learner-cli-relay-proof

@@ -1,5 +1,5 @@
 import type { LessonLocale, LessonPhase } from "@modules/domain/lesson"
-import type { AttemptAnswer, AttemptKind, AttemptResult, AttemptStatus } from "../attempt.contracts"
+import type { AttemptAnswer, AttemptKind, AttemptStatus, StoredAttemptResult } from "../attempt.contracts"
 
 /** One stored attempt: the answer as normalized, where grading stands and the result once there is one. */
 export interface AttemptRow {
@@ -28,7 +28,7 @@ export interface AttemptRow {
     /** Where the attempt stands. */
     status: AttemptStatus
     /** The grade once graded, otherwise null. */
-    result: AttemptResult | null
+    result: StoredAttemptResult | null
     /** The code of a failed grading, otherwise null. */
     failure_code: string | null
     /** When the answer was stored. */
@@ -43,6 +43,12 @@ export interface ReplayRow extends AttemptRow {
     same_answer: boolean
 }
 
+/** The best incident mutation score a learner holds in a lesson. */
+export interface IncidentScoreRow {
+    /** The score in percent, 0 to 100. */
+    mutation_score: number
+}
+
 /** The levels of one outcome of one learner in one lesson. */
 export interface OutcomeRow {
     /** The outcome id. */
@@ -53,24 +59,30 @@ export interface OutcomeRow {
     proved: number
 }
 
-/** The newest attempt of one activity and how many attempts the activity has. */
-export interface ActivityProgressRow {
-    /** The activity. */
-    activity_id: string
-    /** Its phase. */
-    phase: LessonPhase
-    /** What it asks. */
-    kind: AttemptKind
-    /** The version of the newest attempt. */
-    lesson_version: string
-    /** The newest attempt. */
-    attempt_id: string
-    /** Its revision. */
-    revision: number
-    /** Its status. */
-    status: AttemptStatus
-    /** When it was stored. */
-    submitted_at: Date
+/** The newest attempt of one activity, whole, and how many attempts the activity has. */
+export interface ActivityProgressRow extends AttemptRow {
     /** How many attempts the activity has. */
     attempts: number
+}
+
+/** When a learner finished a lesson. */
+export interface CompletionRow {
+    /** The version finished. */
+    lesson_version: string
+    /** The instant. */
+    completed_at: Date
+}
+
+/** Where a learner stands in a simulation. */
+export interface SimulationProgressRow {
+    /** The simulation activity. */
+    activity_id: string
+    /** The state the learner is in. */
+    current_state_id: string
+    /** The actions of the current path. */
+    action_ids: Array<string>
+    /** Every transition ever taken. */
+    tried_transition_ids: Array<string>
+    /** When it last changed. */
+    updated_at: Date
 }

@@ -18,7 +18,12 @@ export const toGetRelayManifestParams = (
     credential: CredentialPrincipal,
     input: RelayManifestInput,
 ): PublicExecuteParams<GetRelayManifestRequest> => ({
-    request: { device: { learnerId: credential.workspaceId, deviceId: credential.subject }, taskId: input.taskId },
+    request: { device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+        taskId: input.taskId,
+        milestone: input.milestone,
+        testCommand: input.testCommand,
+        testReport: input.testReport,
+    },
 })
 
 /** Maps a started check: the device is the one the tool-token credential proved (its learner the workspace, the device the subject). */

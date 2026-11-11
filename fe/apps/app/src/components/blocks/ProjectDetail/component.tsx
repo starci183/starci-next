@@ -1,34 +1,47 @@
-import { Alert, Link, Page, Stack, Text } from "@starci/grammar/common"
-import { CatalogIntro, MissingNotice, PracticeList, SlotView } from "@starci-next/ui"
+import { Badge, Button, Page, Pane, PaneGrid, PaneSection } from "@starci/grammar/common"
+import { MissingNotice, SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
-import { LayoutCard, PracticeCard, ProofCards, SecretCard } from "./cards"
+import { ProjectAside } from "./aside"
+import { DeployCard, ExperienceCard, MilestonesCard, ProbesCard, RunsCard } from "./cards"
 import type { ProjectDetailBusy, ProjectDetailFields, ProjectDetailLabels, ProjectDetailView } from "./types"
 
 /** The fake project with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_DETAIL_PLACEHOLDER: ProjectDetailView = {
-    eyebrow: "xxxxxx",
     title: "xxxxxxxxxx",
-    description: "xxxxxxxxxxxxxxxx",
-    facts: ["xxxxxx", "xxxxxxxx"],
+    meta: "xxxxxxxx · xxxxxxxx",
+    state: { label: "xxxxxx", tone: "muted" },
     repo: "",
+    repoLabel: "",
     milestones: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
         title: "xxxxxxxxxx",
-        description: "xxxxxxxx",
-        badge: "xxxxxx",
-        badgeTone: "muted" as const,
+        meta: "xxxxxxxx",
+        percent: 0,
+        chip: { label: "xxxxxx", tone: "muted" as const },
         href: "",
-        cta: "xxxxxx",
-        isCurrent: false,
     })),
-    progress: "xxxxxxxxxx",
-    practising: "",
-    ciLine: "xxxxxxxxxxxx",
-    ciPassed: undefined,
-    deployedUrl: "",
-    probeLine: "xxxxxxxxxxxx",
-    probePassed: undefined,
+    runs: [1, 2].map((index) => ({
+        id: `placeholder-${index}`,
+        kind: "xxxxxxxx",
+        detail: "xxxxxxxxxxxx",
+        verdict: { label: "xxxxxx", tone: "muted" as const },
+        at: "",
+    })),
+    experience: [1, 2, 3].map((index) => ({ id: `placeholder-${index}`, title: "xxxxxxxxxx", count: 0 })),
     probes: [],
+    ci: { label: "xxxxxx", tone: "muted" },
+    ciLine: "xxxxxxxxxxxx",
+    deployedUrl: "",
+}
+
+/** The commands of the page. */
+export type ProjectDetailCommands = {
+    readonly retry: () => void
+    readonly deployed: (value: string) => void
+    readonly saveDeployed: () => void
+    readonly runProbes: () => void
+    readonly sync: () => void
+    readonly rotate: () => void
 }
 
 /** Props for {@link ProjectDetailBase}. */
@@ -43,84 +56,119 @@ export type ProjectDetailBaseProps = {
         /** True when the back end said the learner has no such project. */
         readonly isNotFound: boolean
     }
-    readonly on: {
-        readonly retry: () => void
-        readonly deployed: (value: string) => void
-        readonly saveDeployed: () => void
-        readonly runProbes: () => void
-        readonly sync: () => void
-        readonly rotate: () => void
+    readonly on: ProjectDetailCommands
+}
+
+/** What the cards of the well need: the project, the words, the fields, the busy flags and the commands. */
+type WellCardsProps = {
+    readonly view: ProjectDetailView
+    readonly isLoading: boolean
+    readonly props: ProjectDetailBaseProps["props"]
+    readonly on: ProjectDetailCommands
+}
+
+/** The cards of the well, drawn once for the settled project or its placeholder. */
+const WellCards = (props: WellCardsProps) => {
+    const card = { view: props.view, labels: props.props.labels, isLoading: props.isLoading }
+    return (
+        <>
+            <MilestonesCard
+                rows={props.view.milestones}
+                label={card.labels.milestones}
+                emptyLabel={card.labels.emptyMilestones}
+                isLoading={props.isLoading}
+            />
+            <RunsCard {...card} locale={props.props.fields.locale} />
+            <ProbesCard
+                rows={props.view.probes}
+                label={card.labels.probesTitle}
+                emptyLabel={card.labels.runsEmpty}
+                isLoading={props.isLoading}
+            />
+            <ExperienceCard rows={props.view.experience} labels={card.labels} isLoading={props.isLoading} />
+            <DeployCard {...card} fields={props.props.fields} busy={props.props.busy} on={props.on} />
+        </>
+    )
+}
+
+/** The band of the page: the trail, and for a settled project its state chip, repo line and the one command. */
+const headerOf = (props: ProjectDetailBaseProps, view: ProjectDetailView | undefined) => {
+    const { labels, busy } = props.props
+    const trail = [{ id: "projects", label: labels.pageTitle, href: labels.pageHref }]
+    if (view === undefined) {
+        return { title: labels.pageTitle, breadcrumbs: { label: labels.breadcrumbs, items: trail } }
+    }
+    return {
+        title: view.title,
+        breadcrumbs: { label: labels.breadcrumbs, items: [...trail, { id: "project", label: view.title }] },
+        meta: view.meta,
+        status: (
+            <Badge isDot tone={view.state.tone}>
+                {view.state.label}
+            </Badge>
+        ),
+        actions: (
+            <Button intent="neutral" isPending={busy.isSyncing} onPress={props.on.sync}>
+                {busy.isSyncing ? labels.syncing : labels.sync}
+            </Button>
+        ),
     }
 }
 
-/** Draws one project: the intro, the milestones, practice and proof, the CI secret and the starci/ layout. */
+/** Draws one project: the band with the trail, state and commands, then the well of cards beside the aside pane. */
 export const ProjectDetailBase = (props: ProjectDetailBaseProps) => {
-    const { labels, fields, busy } = props.props
-    return (
-        <Page>
-            {props.props.isNotFound ? (
+    const { labels, slot } = props.props
+    if (props.props.isNotFound) {
+        return (
+            <Page>
                 <MissingNotice
                     message={labels.notFound}
                     description={labels.notFoundText}
                     backLabel={labels.back}
-                    backHref={labels.backHref}
+                    backHref={labels.pageHref}
                 />
-            ) : (
-                <SlotView
-                    slot={props.props.slot}
-                    placeholder={props.props.placeholder}
-                    labels={props.props.slotLabels}
-                    onRetry={props.on.retry}
-                    render={(view, isLoading) => (
-                        <Stack gap="region">
-                            <Link href={labels.backHref}>{labels.back}</Link>
-                            <CatalogIntro
-                                eyebrow={view.eyebrow}
-                                title={view.title}
-                                description={view.description}
-                                facts={[...view.facts, view.progress]}
-                                upsell={undefined}
-                            />
-                            {view.repo === "" ? null : (
-                                <Text size="sm" tone="muted">
-                                    {labels.repo}: {view.repo}
-                                </Text>
-                            )}
-                            {fields.issueWords === "" ? null : <Alert tone="negative" title={fields.issueWords} />}
-                            <Stack gap="row">
-                                <Text isStrong>{labels.milestones}</Text>
-                                <Text tone="muted">{labels.milestoneIntro}</Text>
-                                <PracticeList
-                                    label={labels.milestones}
-                                    emptyLabel={labels.milestones}
-                                    rows={view.milestones}
-                                    isLoading={isLoading}
-                                />
-                            </Stack>
-                            <PracticeCard
-                                labels={labels}
-                                practising={view.practising}
-                                isSyncing={busy.isSyncing}
-                                onSync={props.on.sync}
-                            />
-                            <ProofCards
-                                labels={labels}
+            </Page>
+        )
+    }
+    const view = "items" in slot ? slot.items : undefined
+    return (
+        <Page
+            chrome="panes"
+            layout="workspace"
+            isLoading={"isLoading" in slot}
+            header={headerOf(props, view)}
+        >
+            <PaneGrid
+                label={labels.pageTitle}
+                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+            >
+                <Pane area="main" scroll label={labels.milestones}>
+                    <PaneSection gap="section">
+                        <SlotView
+                            slot={slot}
+                            placeholder={props.props.placeholder}
+                            labels={props.props.slotLabels}
+                            onRetry={props.on.retry}
+                            render={(settled, loading) => <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />}
+                        />
+                    </PaneSection>
+                </Pane>
+                <Pane area="aside" surface label={labels.asideRepo}>
+                    <PaneSection>
+                        {view === undefined ? null : (
+                            <ProjectAside
                                 view={view}
-                                deployed={fields.deployed}
-                                busy={busy}
+                                labels={labels}
+                                isLoading={false}
+                                fields={props.props.fields}
+                                busy={props.props.busy}
                                 on={props.on}
                             />
-                            <SecretCard
-                                labels={labels}
-                                secret={fields.secret}
-                                isRotating={busy.isRotating}
-                                onRotate={props.on.rotate}
-                            />
-                            <LayoutCard labels={labels} />
-                        </Stack>
-                    )}
-                />
-            )}
+                        )}
+                    </PaneSection>
+                </Pane>
+            </PaneGrid>
         </Page>
     )
 }

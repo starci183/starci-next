@@ -1,0 +1,65 @@
+schema: work/concept@1
+id: concept.app-shell-nivo-parity
+title: App shell and navigation mirror the NIVO console
+rule: >-
+  The starci-next shell and navigation mirror the NIVO console: the same TopBar over the content area with the brand
+  lockup, and a white Sidebar that is not full height. The top bar carries, at the end, the round locale button with its
+  dropdown, the theme switch and the account avatar menu. The VI/EN switch is the round icon button with a dropdown (the
+  `LocaleSwitch`), never a pill or chips, and never redrawn. Signed out, the account slot stays the guest avatar button in a
+  menu whose "Đăng nhập" item opens the sign-in modal in place (password, mailed code, social); there is no visible sign-in
+  button, and /sign-in stays the full page for redirects. The streak lives only in the aside of the Học page, not in the
+  header. A bell is added later through the TopBar `customButtons` slot, which NIVO also wires for its own bell; until that
+  ships there is no bell in the header. The status dot and chip are exactly NIVO's (Badge isDot as it is, no hollow-ring
+  variant, no second component).
+why: >-
+  The owner wants NIVO and starci-next to feel like one product family with one navigation; the language switch is a rule of
+  the whole Grammar.
+forbids:
+  - A full-height sidebar with the top bar only over the content column (dropped by the owner).
+  - A VI/EN segmented pill, chips, or any redraw of the round locale dropdown.
+  - A visible "Đăng nhập" button in the header, or a navigation to /sign-in from the avatar item.
+  - A streak chip in the header, or a bell in the header before TopBar customButtons ships.
+  - A StatusDot hollow-ring prop or a starci-next-only status chip.
+example: >-
+  A signed-out visitor opens the avatar menu, presses "Đăng nhập", and the sign-in modal opens over the same page; after
+  signing in the session refreshes and the page does not navigate.
+livesIn:
+  - path: fe/apps/app/src/features/layouts/AppLayout/index.tsx
+    holds: the shell with the white sidebar and the top bar around the routed page, the sign-in modal
+  - path: fe/apps/app/src/components/blocks/AppHeader
+    holds: the lockup, the round locale dropdown, the theme switch, the avatar menu with the sign-in item that opens the modal, an empty customButtons list
+  - path: fe/apps/app/src/components/blocks/AppSidebar
+    holds: navigation only, in groups, no footer
+  - path: fe/apps/app/src/components/blocks/LearnHub/component.tsx
+    holds: the streak card in the Học aside
+  - path: fe/apps/app/src/components/blocks/LocaleSwitch
+    holds: the round locale switch block
+decided:
+  by: owner
+  at: 2026-11-10
+  words:
+    - "với thầy muốn đồng bộ kiểu nav của nivo và starci next nên sidebar full height cũng bỏ nốt"
+    - "Đồng ý"
+    - "à riêng cái đó bổ sung chuông ở nivo đi, ghi là custom buttons đi"
+    - "Duyệt"
+    - "Một component: StatusDot thêm prop cái này tốt nhất không làm để chip của nivo y chang của starci next."
+    - "Avatar + modal"
+    - "với vi en chốt cái nút tròn dropdown trong code r nhé, tuyệt đối k tự ý sửa, đấy là rules của cả grammar"
+  source: >-
+    STARCI-NEXT-GRAMMAR-NEEDS-20261110.md (owner review of the drawings, items 4/6 and 10, and "Duyệt" on item 15); the
+    owner's 2026-11-10 "Đồng ý" for streak only in the Học aside and no header bell; memories signed-out-header-avatar-modal
+    (owner 2026-11-09) and locale-switch-round-dropdown (owner 2026-11-08). The earlier brief
+    STARCI-NEXT-UI-BRIEF-20261110.md drew a streak chip and a bell in the top bar; these rulings supersede that.
+status: partial
+built:
+  - The top bar has the lockup, the round locale dropdown (IconButton with a language glyph and a DropdownMenu), the theme switch and the avatar menu; no streak chip and no bell (read in AppHeader).
+  - The guest avatar menu's "Đăng nhập" item calls the sign-in modal store; the modal is mounted in AppLayout.
+  - The sidebar is navigation only, under the top bar, not full height; the streak card sits in the Học aside (LearnHub).
+  - Badge isDot is used as NIVO's, with no starci-next-only variant.
+notBuilt:
+  - The bell: Grammar 0.37.12 (installed) has no TopBar customButtons slot; AppHeader passes an empty customButtons list to its own drawing. NIVO's bell and the starci-next wiring wait for the Grammar release.
+  - Not verified in a browser: the 390 width, the drawer carrying the locale and theme controls, and the sign-in modal flow.
+refs:
+  - concept.premium-placement
+  - concept.surface-layering
+  - concept.theme-and-type

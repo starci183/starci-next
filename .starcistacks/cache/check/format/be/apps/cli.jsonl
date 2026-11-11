@@ -1,9 +1,0 @@
-{"findings":[],"hash":"0ba67b45879ff17871874b83e8f98a7b8d7b6765647e83abd457a00081e1a8af","path":"be/apps/cli/Dockerfile","step":"prettier"}
-{"findings":[],"hash":"0f7d9b8fb9b55afde1909538a6a8785a242fac039adafe44612cb583923c1c4d","path":"be/apps/cli/src/app.module.ts","step":"prettier"}
-{"findings":[],"hash":"05825c4db2d803030732db0f42c8672750b8aad0a184fb226cfbab033bd78439","path":"be/apps/cli/src/cli.env.ts","step":"prettier"}
-{"findings":[],"hash":"df09456fc1daa7f30b09a1d122d0d65ef429cea2a50410c0a7c829877fae5b6c","path":"be/apps/cli/src/cli.options.ts","step":"prettier"}
-{"findings":[],"hash":"a2868b43cd5eac362c4f0525fe3d1f23c7d67b20cf9f1684a65e77651a87b680","path":"be/apps/cli/src/compose/cli.ts","step":"prettier"}
-{"findings":[],"hash":"c7675b619a2b33e00bcd89f0c651bfb225a891ceb83dd05fb911f9ea44ba7306","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
-{"findings":[],"hash":"5ea25163140ad7e940f758cccd5e8047af53f641ecf0153ec7ffb47312b4d906","path":"be/apps/cli/src/compose/integrations.ts","step":"prettier"}
-{"findings":[],"hash":"e26a4faef449d196d3d2890db1bee6333feef024bd6246b8f3bcf250d02a1a7a","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
-{"findings":[],"hash":"c113fab44282bdc7bf0cbb0fefa3bb12ab90524d27c42e51bbe1e4c18a41256e","path":"be/apps/cli/src/main.ts","step":"prettier"}

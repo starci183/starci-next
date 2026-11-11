@@ -1,23 +1,26 @@
-import { Alert, Button, Cluster, Grid, Input, Page, Select, Stack, SurfaceCard, Text } from "@starci/grammar/common"
-import { CatalogIntro } from "@starci-next/ui"
+import { Alert, Button, Cluster, Grid, Input, Page, Stack, SurfaceCard, type SurfaceCardProps } from "@starci/grammar/common"
 
-/** One choice of a select. */
-export type ProjectChoice = { readonly id: string; readonly label: string }
+/** One choice of a choice list, with the words that explain it. */
+export type ProjectChoice = { readonly id: string; readonly label: string; readonly hint: string }
 
 /** The fixed words of the new-project screen. */
 export type ProjectNewLabels = {
-    readonly eyebrow: string
+    readonly breadcrumbs: string
+    readonly projects: string
     readonly title: string
-    readonly description: string
+    readonly infoLabel: string
+    readonly kindLabel: string
+    readonly trackLabel: string
+    readonly howLabel: string
+    readonly howEmpty: string
     readonly name: string
-    readonly kind: string
     readonly topic: string
     readonly language: string
     readonly stack: string
-    readonly track: string
     readonly repo: string
     readonly submit: string
     readonly submitting: string
+    readonly cancel: string
     readonly createdTitle: string
     readonly createdText: string
     readonly secretLabel: string
@@ -40,12 +43,17 @@ export type ProjectNewState = {
 /** The project just created, already in words: the secret shown once and where the project opens. */
 export type ProjectCreatedView = { readonly secret: string; readonly href: string }
 
+/** One numbered step of the how-to list. */
+export type ProjectStep = { readonly id: string; readonly title: string; readonly text: string }
+
 /** Props for {@link ProjectNewBase}. */
 export type ProjectNewBaseProps = {
     readonly props: {
         readonly labels: ProjectNewLabels
+        readonly projectsHref: string
         readonly kinds: ReadonlyArray<ProjectChoice>
         readonly tracks: ReadonlyArray<ProjectChoice>
+        readonly steps: ReadonlyArray<ProjectStep>
         readonly state: ProjectNewState
         readonly isCreating: boolean
         /** The words of the refusal of the last create; empty for none. */
@@ -83,18 +91,34 @@ type ChoiceProps = {
     readonly on: ProjectNewBaseProps["on"]
 }
 
-/** One select of the form. */
-const ChoiceField = (props: ChoiceProps) => (
-    <Select
+/** One choice list of the form: a select card with one checked row. */
+const ChoiceCard = (props: ChoiceProps) => (
+    <SurfaceCard
         label={props.label}
-        options={props.options.map((each) => ({ id: each.id, label: each.label }))}
+        kind="select"
+        selectionMode="single"
+        items={props.options.map((each) => ({
+            id: each.id,
+            title: each.label,
+            ...(each.hint === "" ? {} : { subtitle: each.hint }),
+        }))}
         value={props.props.state[props.id]}
-        isDisabled={props.props.isCreating}
-        onValueChange={(next) => {
-            if (next !== null) props.on.set(props.id, next)
-        }}
+        onChange={(next) => props.on.set(props.id, next)}
     />
 )
+
+/** The numbered how-to rows as a list card. */
+const stepsCard = (props: ProjectNewBaseProps["props"]): SurfaceCardProps => ({
+    label: props.labels.howLabel,
+    kind: "list",
+    items: props.steps.map((step, index) => ({
+        id: step.id,
+        title: step.title,
+        description: step.text,
+        leading: { position: index + 1 },
+    })),
+    empty: props.labels.howEmpty,
+})
 
 /** What the created card needs: the words and the project just created. */
 type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: ProjectCreatedView }
@@ -103,7 +127,7 @@ type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: Proje
 const Created = (props: CreatedProps) => (
     <SurfaceCard label={props.labels.createdTitle}>
         <Stack gap="row">
-            <Text>{props.labels.createdText}</Text>
+            <Alert tone="informative" title={props.labels.createdText} />
             <Input
                 id="project-secret"
                 name="secret"
@@ -124,56 +148,71 @@ const Created = (props: CreatedProps) => (
     </SurfaceCard>
 )
 
-/** Draws the new-project form: a name and kind, the topic, language and stack, and the repository address. */
+/** Draws the new-project page: the kind choice, the details form with its commands, and the how-to list. */
 export const ProjectNewBase = (props: ProjectNewBaseProps) => {
     const { labels, state } = props.props
     return (
-        <Page>
+        <Page
+            header={{
+                title: labels.title,
+                breadcrumbs: {
+                    label: labels.breadcrumbs,
+                    items: [
+                        { id: "projects", label: labels.projects, href: props.props.projectsHref },
+                        { id: "new", label: labels.title },
+                    ],
+                },
+            }}
+        >
             <Stack gap="region">
-                <CatalogIntro
-                    eyebrow={labels.eyebrow}
-                    title={labels.title}
-                    description={labels.description}
-                    facts={[]}
-                    upsell={undefined}
-                />
                 {props.props.created === undefined ? (
-                    <SurfaceCard label={labels.title}>
-                        <Stack gap="row">
-                            <Grid kind="form">
-                                <TextField id="name" label={labels.name} {...props} />
-                                <ChoiceField id="kind" label={labels.kind} options={props.props.kinds} {...props} />
-                                <TextField id="topic" label={labels.topic} {...props} />
-                                <TextField id="language" label={labels.language} {...props} />
-                                <TextField id="stack" label={labels.stack} {...props} />
-                                {state.kind === "agent" ? (
-                                    <ChoiceField
-                                        id="track"
-                                        label={labels.track}
-                                        options={props.props.tracks}
-                                        {...props}
-                                    />
-                                ) : null}
-                                <TextField id="repoUrl" label={labels.repo} {...props} />
-                            </Grid>
-                            {props.props.issueWords === "" ? null : (
-                                <Alert tone="negative" title={props.props.issueWords} />
-                            )}
-                            <Cluster gap="inline" wrap>
-                                <Button
-                                    intent="commit"
-                                    isPending={props.props.isCreating}
-                                    isDisabled={state.name.trim() === "" || props.props.isCreating}
-                                    onPress={props.on.submit}
-                                >
-                                    {props.props.isCreating ? labels.submitting : labels.submit}
-                                </Button>
-                            </Cluster>
-                        </Stack>
-                    </SurfaceCard>
+                    <>
+                        <ChoiceCard id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
+                        {state.kind === "agent" ? (
+                            <ChoiceCard id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
+                        ) : null}
+                        <SurfaceCard
+                            label={labels.infoLabel}
+                            footers={[
+                                {
+                                    kind: "custom",
+                                    children: (
+                                        <Cluster gap="inline" wrap justify="end">
+                                            <Button intent="neutral" href={props.props.projectsHref}>
+                                                {labels.cancel}
+                                            </Button>
+                                            <Button
+                                                intent="commit"
+                                                startGlyph="plus"
+                                                isPending={props.props.isCreating}
+                                                isDisabled={state.name.trim() === "" || props.props.isCreating}
+                                                onPress={props.on.submit}
+                                            >
+                                                {props.props.isCreating ? labels.submitting : labels.submit}
+                                            </Button>
+                                        </Cluster>
+                                    ),
+                                },
+                            ]}
+                        >
+                            <Stack gap="region">
+                                <Grid kind="form">
+                                    <TextField id="name" label={labels.name} {...props} />
+                                    <TextField id="repoUrl" label={labels.repo} {...props} />
+                                    <TextField id="stack" label={labels.stack} {...props} />
+                                    <TextField id="topic" label={labels.topic} {...props} />
+                                    <TextField id="language" label={labels.language} {...props} />
+                                </Grid>
+                                {props.props.issueWords === "" ? null : (
+                                    <Alert tone="negative" title={props.props.issueWords} />
+                                )}
+                            </Stack>
+                        </SurfaceCard>
+                    </>
                 ) : (
                     <Created labels={labels} created={props.props.created} />
                 )}
+                <SurfaceCard {...stepsCard(props.props)} />
             </Stack>
         </Page>
     )

@@ -1,0 +1,44 @@
+schema: work/concept@1
+id: concept.content-repo
+title: Content lives in a separate git repo, pulled like the academy backend; placeholders meanwhile
+rule: >-
+  The teacher's content lives in a separate private git repo (starci183/starci-next-data), not in the app's repo. The app
+  pulls it the way starci-academy-backend does: a gitmount config (repo and a credential token from the environment),
+  versioned snapshots under `.datasources/<sha>/` with a manifest.json, then the importers. Until the teacher writes it,
+  we write the seed data ourselves, marked draft or ai-placeholder, and push it to that repo; a fake dataset that runs is
+  enough. The build never waits for the teacher, and nobody asks the teacher to write content before shipping.
+why: >-
+  The teacher authors content apart from the code; the build must not block on content.
+forbids:
+  - Waiting for the teacher's content before building a screen or an importer.
+  - Content text kept in the app repo as the source of truth.
+  - A placeholder not marked draft or ai-placeholder.
+example: >-
+  An interview stem with no real text is written as an ai-placeholder in the content repo; the importer reads the pinned
+  snapshot, and the screen shows it with its draft mark until the teacher replaces it.
+livesIn:
+  - path: be/src/modules/domain/content
+    holds: "the git mount (CONTENT_GIT_URL, CONTENT_DATA_GIT_URL, CONTENT_DATASOURCES_DIR), snapshots, the manifest schema starci-next-data/manifest@1, the sync service"
+  - path: be/src/features/cli/content/content.cli.ts
+    holds: the content sync command
+decided:
+  by: owner
+  at: 2026-11-09
+  words:
+    - "trò tự viết đi hiện tại data giả chạy dc thôi, xây bộ khung thầy viết ở 1 git khác nhé pull về như starci academy backend"
+    - "dữ liệu tự seed rồi push git như starci-academy-backend để làm data mồi"
+  source: >-
+    Memory content-repo-separate-git (owner 2026-11-09, verbatim first line; repo starci183/starci-next-data private "ok"
+    in learning-program-outcomes).
+status: partial
+built:
+  - "2026-11-10: the lessons of the content repo live in `essentials/<n>-<slug>/` (the teacher's repo starci-lab/data keeps `concepts/`); the sync service imports data `concepts/` first, then our `essentials/`. A lesson ships its workspace in four languages (`workspace/{0-typescript,1-java,2-csharp,3-go}/`, root section `# workspaces`); the teacher's lessons keep `workspace/source.ts` only. Unit-verified on the real files, not run through a live sync."
+  - The git mount, the versioned snapshot directory, the manifest schema and the sync service exist in be/ (read, not run).
+notBuilt:
+  - No `.datasources` snapshot exists in this lane, so no sync was seen.
+  - Not verified that the repo starci183/starci-next-data exists, holds seed data, or that the placeholders are marked draft or ai-placeholder.
+  - The credential token for the private repo is "later" by the owner ("cấp creds sau").
+refs:
+  - concept.essentials-lessons
+  - concept.projects-bring-your-own
+  - concept.learning-program

@@ -22,4 +22,8 @@ export class LessonAttemptCriterionResultType {
     /** The most points the criterion gives. */
     @Field(() => Int)
     maxScore!: number
+
+    /** One line on what the answer still lacks, in the locale of the attempt; empty at the full level. */
+    @Field(() => String)
+    missing!: string
 }

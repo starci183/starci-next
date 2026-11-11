@@ -1,11 +1,14 @@
 "use client"
 
 import { useFormatter, useTranslations } from "next-intl"
+import { useState } from "react"
 import { useSession } from "@/hooks/auth"
 import { useDevicePairing, type DevicePairing } from "@/hooks/devices"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useDocumentTitle } from "@/hooks/title"
-import { DEVICES_PLACEHOLDER, DevicesPairBase, type DevicesPairDevice } from "./component"
+import type { DataSlot } from "@/modules/types"
+import { DEVICES_PLACEHOLDER, DevicesPairBase } from "./component"
+import type { DevicesPairDevice, DevicesPairLabels } from "./types"
 
 type Translate = ReturnType<typeof useTranslations>
 type Formatter = ReturnType<typeof useFormatter>
@@ -38,35 +41,50 @@ const devicesOf = (t: Translate, format: Formatter, pairing: DevicePairing): Rea
         isRevoking: pairing.revokingId === device.id,
     }))
 
+/** The fixed words of the devices screen, from the catalogue. */
+const labelsOf = (t: Translate): DevicesPairLabels => ({
+    codeLabel: t("codeLabel"),
+    codePlaceholder: t("codePlaceholder"),
+    codeHint: t("codeHint"),
+    codeUnknown: t("error.codeNotFound"),
+    previewTitle: t("previewTitle"),
+    confirm: t("confirm"),
+    confirming: t("confirming"),
+    devicesLimit: t("devicesLimit"),
+    online: t("online"),
+    offline: t("offline"),
+    revoke: t("revoke"),
+    rulesTitle: t("rulesTitle"),
+    pageHeading: t("pageHeading"),
+    pageSub: t("pageSub"),
+    connect: t("connect"),
+    connectTitle: t("connectTitle"),
+    pairedTitle: t("pairedTitle"),
+    emptyTitle: t("emptyTitle"),
+    emptyText: t("emptyText"),
+    levelsTitle: t("levelsTitle"),
+    practiceTitle: t("practiceTitle"),
+    practiceText: t("practiceText"),
+    proofTitle: t("proofTitle"),
+    proofText: t("proofText"),
+    closeLabel: t("closeLabel"),
+    allowed: t("allowed"),
+    denied: t("denied"),
+})
+
 /** The connected devices screen: pair the learner's machine with a code from the CLI and manage the paired devices. */
 export const DevicesPair = () => {
     const t = useTranslations("app.devices")
     const format = useFormatter()
     const session = useSession()
     const pairing = useDevicePairing(session.status === "signed-in")
+    const [isConnectOpen, setIsConnectOpen] = useState(false)
     useDocumentTitle(t("pageTitle"))
     const devicesRead = { data: pairing.devices, error: pairing.devicesError, isLoading: pairing.isDevicesLoading }
     return (
         <DevicesPairBase
             props={{
-                labels: {
-                    eyebrow: t("eyebrow"),
-                    title: t("title"),
-                    intro: t("intro"),
-                    codeLabel: t("codeLabel"),
-                    codePlaceholder: t("codePlaceholder"),
-                    codeHint: t("codeHint"),
-                    codeUnknown: t("error.codeNotFound"),
-                    previewTitle: t("previewTitle"),
-                    confirm: t("confirm"),
-                    confirming: t("confirming"),
-                    devicesTitle: t("devicesTitle"),
-                    devicesLimit: t("devicesLimit"),
-                    online: t("online"),
-                    offline: t("offline"),
-                    revoke: t("revoke"),
-                    rulesTitle: t("rulesTitle"),
-                },
+                labels: labelsOf(t),
                 slotLabels: useSlotLabels()(t("devicesEmpty")),
                 steps: [
                     { title: t("step.install"), command: "npm install -g @starci/next", note: t("step.installNote") },
@@ -90,15 +108,21 @@ export const DevicesPair = () => {
                 isConfirming: pairing.isConfirming,
                 notice: noticeOf(t, pairing),
                 isNoticeError: pairing.issue !== "none",
-                devices: mapSlot(slotOfSwr(devicesRead), () => devicesOf(t, format, pairing)),
+                devices: listSlotOf(mapSlot(slotOfSwr(devicesRead), () => devicesOf(t, format, pairing))),
                 placeholder: DEVICES_PLACEHOLDER,
+                isConnectOpen,
             }}
             on={{
                 changeCode: pairing.setCode,
                 confirm: pairing.confirm,
                 revoke: pairing.revoke,
                 retry: pairing.retryDevices,
+                setConnectOpen: setIsConnectOpen,
             }}
         />
     )
 }
+
+/** The device list slot where an empty list is a settled list of no rows: the card draws its own empty state with the pairing steps. */
+const listSlotOf = (slot: DataSlot<ReadonlyArray<DevicesPairDevice>>): DataSlot<ReadonlyArray<DevicesPairDevice>> =>
+    "isEmpty" in slot ? { items: [] } : slot

@@ -1,4 +1,5 @@
 import type { LessonContentService, LessonLocale, LessonPhase } from "@modules/domain/lesson"
+import type { LessonReviewSlotView } from "@modules/domain/review"
 
 /** Where an attempt stands: stored, being graded by the coach, graded, or failed with a code and open to a retry. */
 export type AttemptStatus = "saved" | "grading" | "graded" | "failed"
@@ -57,6 +58,20 @@ export interface CriterionResult {
     readonly evidenceQuote: string
     /** The most points the criterion gives. */
     readonly maxScore: number
+    /** One line on what the answer still lacks, in the locale of the attempt; empty at the full level. */
+    readonly missing: string
+}
+
+/** A criterion grade as stored: results graded before the grader notes existed carry no `missing`. */
+export interface StoredCriterionResult extends Omit<CriterionResult, "missing"> {
+    /** One line on what the answer still lacks; absent in results graded before the notes existed. */
+    readonly missing?: string
+}
+
+/** A result as stored; it reads as an `AttemptResult` once every criterion has its note (the empty one at least). */
+export type StoredAttemptResult = Omit<AttemptResult, "criteria"> & {
+    /** The grade of each criterion in rubric order. */
+    readonly criteria: ReadonlyArray<StoredCriterionResult>
 }
 
 /** What a graded attempt holds; it never carries the expected evidence, the misconception or the sample answer. */
@@ -99,6 +114,8 @@ export interface AttemptView {
     readonly status: AttemptStatus
     /** True for a diagnostic. */
     readonly isDiagnostic: boolean
+    /** What the learner answered, as stored; it is the learner's own text and choice. */
+    readonly answer: AttemptAnswer
     /** The grade once graded; otherwise null. */
     readonly result: AttemptResult | null
     /** The stable code of a failed grading; otherwise null. */
@@ -141,6 +158,18 @@ export interface ProgressLookupParams {
     readonly learnerId: string
     /** The lesson. */
     readonly lessonId: string
+    /** The locale of the notes the progress may complete from the lesson (a grader note an old grade lacks); Vietnamese by default. */
+    readonly locale?: LessonLocale
+}
+
+/** The incident mutation score of a learner in a lesson. */
+export interface RecordMutationScoreParams {
+    /** The learner whose tests were run. */
+    readonly learnerId: string
+    /** The lesson the incident belongs to. */
+    readonly lessonId: string
+    /** The mutation score in percent, a whole number from 0 to 100. */
+    readonly mutationScore: number
 }
 
 /** The levels an attempt gives to the outcomes its activity trains. */
@@ -173,6 +202,8 @@ export interface ActivityProgressView {
     readonly latestRevision: number
     /** The status of the newest attempt. */
     readonly latestStatus: AttemptStatus
+    /** The newest attempt whole: the answer, the grade with its per-criterion notes, and when. */
+    readonly latest: AttemptView
 }
 
 /** The attempts of one learner in one lesson, counted. */
@@ -189,6 +220,62 @@ export interface AttemptSummaryView {
     readonly pending: number
 }
 
+/** Where one outcome stands for a learner. */
+export type OutcomeState = "not-started" | "learning" | "mastered" | "needs-review"
+
+/** Whether a phase of the lesson is finished. */
+export type PhaseState = "open" | "done"
+
+/** One outcome with its state. */
+export interface OutcomeStateView extends OutcomeProgressView {
+    /** Not started, learning, mastered (apply and reflect graded at 4/6 or more) or needs review (the lesson ended without that). */
+    readonly state: OutcomeState
+}
+
+/** One phase of the lesson with its state and how many of its activities are done. */
+export interface PhaseProgressView {
+    /** The phase. */
+    readonly phase: LessonPhase
+    /** Open, or done. */
+    readonly state: PhaseState
+    /** The activities of the phase the learner finished. */
+    readonly done: number
+    /** The activities of the phase. */
+    readonly total: number
+}
+
+/** Where a learner stands in a simulation activity. */
+export interface SimulationProgressView {
+    /** The simulation activity. */
+    readonly activityId: string
+    /** The state the learner is in now. */
+    readonly currentStateId: string
+    /** The actions of the current path, from the initial state. */
+    readonly actionIds: ReadonlyArray<string>
+    /** Every transition ever taken. */
+    readonly triedTransitionIds: ReadonlyArray<string>
+    /** When it last changed. */
+    readonly updatedAt: string
+}
+
+/** What saving the simulation progress is given. */
+export interface SaveSimulationProgressParams {
+    /** The learner. */
+    readonly learnerId: string
+    /** The lesson. */
+    readonly lessonId: string
+    /** The version the learner plays. */
+    readonly version: string
+    /** The simulation activity. */
+    readonly activityId: string
+    /** The locale of the stored content to validate against. */
+    readonly locale: LessonLocale
+    /** The state the learner is in now. */
+    readonly currentStateId: string
+    /** The actions of the current path, from the initial state. */
+    readonly actionIds: ReadonlyArray<string>
+}
+
 /** Where a learner stands in a lesson. */
 export interface LessonProgressView {
     /** The lesson. */
@@ -197,8 +284,16 @@ export interface LessonProgressView {
     readonly version: string | null
     /** The furthest phase with an attempt; the first phase before any attempt. */
     readonly phase: LessonPhase
-    /** The outcomes the attempts of the learner train, with their levels. */
-    readonly outcomes: ReadonlyArray<OutcomeProgressView>
+    /** The outcomes of the lesson with their levels and their state; the lesson's own outcomes come first, in its order. */
+    readonly outcomes: ReadonlyArray<OutcomeStateView>
+    /** The six phases in order, each open or done. */
+    readonly phases: ReadonlyArray<PhaseProgressView>
+    /** When the learner finished the lesson, or null while it is open. */
+    readonly completedAt: string | null
+    /** The simulation progress per simulation activity the learner touched. */
+    readonly simulations: ReadonlyArray<SimulationProgressView>
+    /** The reviews the completion opened (1, 7 and 21 days); empty while the lesson is open. */
+    readonly reviews: ReadonlyArray<LessonReviewSlotView>
     /** The attempts counted. */
     readonly attempts: AttemptSummaryView
     /** The attempts of each activity. */
@@ -247,6 +342,8 @@ export interface CoachCriterionGrade {
     readonly level: number
     /** The words of the answer of the learner that show the level. */
     readonly evidenceQuote: string
+    /** One line on what the answer still lacks; absent or empty when the coach gave none or the level is full. */
+    readonly missing?: string
 }
 
 /** What the coach answers. */

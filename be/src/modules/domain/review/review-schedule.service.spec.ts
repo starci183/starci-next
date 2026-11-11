@@ -4,8 +4,8 @@ import { REVIEW_LEARNER } from "@tests/fixtures/builders/review.builder"
 import { LessonContentService } from "@modules/domain/lesson"
 import type { LessonPlan } from "@modules/domain/lesson"
 import { CLOCK } from "@modules/platform/clock"
-import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
-import { INSERT_RETRIEVAL_STATE, SELECT_GRADED_ACTIVITIES } from "./persistence/review.sql"
+import { LIST_ROWS_MAX, PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
+import { INSERT_RETRIEVAL_STATE, SELECT_GRADED_ACTIVITIES, SELECT_LESSON_RETRIEVAL } from "./persistence/review.sql"
 import { ReviewScheduleService } from "./review-schedule.service"
 
 const NOW = new Date("2026-11-08T03:00:00.000Z")
@@ -100,5 +100,23 @@ describe("ReviewScheduleService onActivityGraded", () => {
         await expect(service.onActivityGraded(REVIEW_LEARNER, "demo-lesson", "v1")).resolves.toBe(false)
 
         expect(em.query).not.toHaveBeenCalled()
+    })
+})
+
+describe("ReviewScheduleService lessonSchedule", () => {
+    it("lists the reviews a lesson opened for the learner, soonest first, with whether each is done", async () => {
+        const { service, em } = await build(PLAN, [])
+        em.query.mockResolvedValueOnce([
+            { activity_id: "r1", after_days: 1, due_on: "2026-11-09", status: "done" },
+            { activity_id: "r7", after_days: 7, due_on: "2026-11-15", status: "learning" },
+        ])
+
+        const slots = await service.lessonSchedule(REVIEW_LEARNER, "demo-lesson")
+
+        expect(slots).toEqual([
+            { activityId: "r1", afterDays: 1, dueOn: "2026-11-09", done: true },
+            { activityId: "r7", afterDays: 7, dueOn: "2026-11-15", done: false },
+        ])
+        expect(em.query).toHaveBeenCalledWith(SELECT_LESSON_RETRIEVAL, [REVIEW_LEARNER, "demo-lesson", LIST_ROWS_MAX])
     })
 })

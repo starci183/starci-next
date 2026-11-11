@@ -1,0 +1,73 @@
+schema: work/concept@1
+id: concept.premium-unlocks-all
+title: Premium unlocks everything - one subscription, no per-course sale
+rule: >-
+  There is no sale of single courses and no enrollment. One Premium subscription, renewed monthly (229.000 ₫) or yearly
+  (2.290.000 ₫), unlocks every lesson and the AI. Premium is the single gate for all content and the AI. The AI comes
+  with Premium under a server-side fair-use cap, and the learner sees no credits. A free tier exists (the free phase of a
+  lesson, milestone 0, one short interview a month); everything beyond it needs Premium.
+why: >-
+  The owner treats the content as one part of the harness, not as products to sell one by one. One gate keeps the
+  product, the price and the screens simple.
+forbids:
+  - A per-course, per-lesson or per-topic purchase, price, cart or enrollment.
+  - A credit counter, a token balance or a "N AI answers left" shown to the learner.
+  - A second gate for content or for the AI besides Premium (and the free tier the owner ruled).
+example: >-
+  A learner without Premium opens a lesson and can study its first phase (challenge); the other five phases show a lock
+  and "Xem Premium". After paying 229.000 ₫ for a month, the same lesson and the AI coach open, with no extra step.
+livesIn:
+  - path: be/src/modules/domain/purchase/offer.policy.ts
+    holds: the two offers, monthly 229_000 and yearly 2_290_000 VND
+  - path: be/src/modules/domain/entitlement/entitlement.service.ts
+    holds: "`isPremium`, `premiumUntil`, `grant`; the one question every gate asks"
+  - path: be/src/modules/domain/lesson/lesson-access.policy.ts
+    holds: "needsPremium(phase, mark): the teacher's isPremium mark decides first, then the default (only the challenge phase is free)"
+  - path: be/src/modules/domain/lesson/lesson-content.service.ts
+    holds: requireAccess refuses Premium content (by the teacher's mark, else every phase but the free one) for a learner without Premium
+  - path: be/src/modules/domain/interview/interview-access.service.ts
+    holds: Premium or the free monthly quota decides whether a session may start
+  - path: be/src/modules/domain/attempt/attempt-fair-use.service.ts
+    holds: the fair-use cap of the AI coach, a fixed number of gradings per UTC day, no credits shown
+  - path: be/src/modules/domain/purchase/purchase-settlement.service.ts
+    holds: a verified SePay void revokes exactly the Premium time that order added
+decided:
+  by: owner
+  at: 2026-11-08
+  words:
+    - "h không bán khóa mà unlock tất cả content như 1 phần trong harness của thầy"
+    - "mua premium là unlock hết kèm AI, gia hạn theo tháng/năm"
+    - "Theo đề xuất"
+    - "có"
+  source: >-
+    Memory starci-next-learning-direction (owner 2026-11-08; "Theo đề xuất" answered Q-KS-1: AI is included with Premium
+    under a server-side fair-use cap, no credits shown) and memory learning-program-outcomes (owner 2026-11-09 "có" on
+    Q-W2-VOID: a SePay void removes exactly the Premium time that order added).
+status: partial
+built:
+  - The two offers, the entitlement service and the Premium checks on the lesson phases, the interview start and the AI coach grading exist in be/ (read, not run).
+  - The fair-use cap of the AI coach (per UTC day) and the exact-time void of a paid order exist in be/ (read, not run).
+  - No per-course purchase, price or enrollment was found in be/src, fe/apps or fe/packages.
+  - "The free tier of a lesson follows the teacher's `isPremium` marks (2026-11-10, below); without a mark only the challenge phase is free. Unit specs cover both paths (run, passing)."
+notBuilt:
+  - The teacher's marks are read from the imported content (front matter `isPremium: true|false` on a lesson's root file or on a section file), but the three MVP lessons of starci-lab/data carry no mark today, so they use the default until the teacher adds marks. The mark is per lesson or per section; the interview bank keeps its own per-question `isPremium`.
+  - Nothing proves a real SePay payment, a void or the cap end to end; no run was made.
+  - Whether every AI door (the project coach, the agent lab, the interview grader) shares the one cap was not read; the lesson coach and the agent lab quota each have their own service.
+refs:
+  - concept.premium-placement
+  - concept.dev-only-test-grants
+  - concept.essentials-lessons
+extensions:
+  freeTier:
+    ownerWords: "Free tier per teacher's isPremium flags + milestone 0 + 1 per pattern + 1 short interview/month (learning-program-outcomes, accepted 'theo đề xuất' 2026-11-08)."
+    decided:
+      by: coordinator under owner delegation
+      at: 2026-11-10
+      words:
+        - "cứ làm theo ý trò đi, cách nào tốt nhất thì làm"
+      ruling: >-
+        A lesson or a phase is free when the teacher's content marks it `isPremium: false` (front matter of the lesson root
+        file for the whole lesson, of a section file for one phase; the section mark wins over the lesson mark). A mark
+        `isPremium: true` holds the content back, even the challenge phase. When the content carries no mark, the default
+        stays: only the challenge phase ("Bị hỏi", LESSON_FREE_PHASE) is free and the review activities need Premium.
+    code: "Built 2026-11-10: lesson-access.policy.ts (needsPremium, premiumMarkOf), lesson-source.policy.ts reads the boolean mark, lesson-draft.policy.ts stores it, lesson-validation.policy.ts requires vi and en to agree, LessonContentService.requireAccess and toLessonView read it before the default. The view's `locked` per section already carries the result, so the fe needs no change. Read from unit specs (run, passing); not run against an imported lesson that carries a mark."

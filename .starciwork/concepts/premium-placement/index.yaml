@@ -1,0 +1,37 @@
+schema: work/concept@1
+id: concept.premium-placement
+title: Premium placement B - the plan in the lockup line, the upgrade in the avatar menu
+rule: >-
+  There is no sidebar footer. The plan (the free or the Premium word) sits in the muted line of the top bar's brand lockup,
+  beside the learner role. The avatar menu carries "Nâng cấp Premium" for a learner without Premium and "Gói của bạn" for
+  one with it, as a link to the Premium page, and its identity row shows the plan name.
+why: >-
+  The owner chose placement B of the proposed options, so the sidebar stays navigation only as in NIVO.
+forbids:
+  - A sidebar footer with the plan, price or a "Xem Premium" link (the first brief drew one; superseded).
+  - A plan chip or an upgrade button in the top bar besides the lockup line.
+example: >-
+  A free learner sees "Học viên · Chưa có Premium" under the brand and "Nâng cấp Premium" in the avatar menu; a paying
+  learner sees "Gói của bạn" in the same place.
+livesIn:
+  - path: fe/apps/app/src/components/blocks/AppHeader/index.tsx
+    holds: the role and plan line of the lockup and the plan item of the account menu (upgradePremium or yourPlan)
+  - path: fe/apps/app/src/components/blocks/AppSidebar/component.tsx
+    holds: the sidebar without a footer
+decided:
+  by: owner
+  at: 2026-11-10
+  words:
+    - "B đi"
+    - "ok trò chốt"
+  source: >-
+    The owner's 2026-11-10 rulings in the coordinator brief of lane S17; the first brief STARCI-NEXT-UI-BRIEF-20261110.md
+    still describes the sidebar footer "Chưa có Premium" and is superseded.
+status: built
+built:
+  - The sidebar has no footer; the lockup line is "learner · plan"; the account menu item reads "Nâng cấp Premium" or "Gói của bạn" and links to the Premium page (read in AppHeader/index.tsx and component.tsx).
+notBuilt:
+  - Not verified in a browser or by a screenshot; the exact words come from the i18n messages, which were not read.
+refs:
+  - concept.app-shell-nivo-parity
+  - concept.premium-unlocks-all

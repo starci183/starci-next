@@ -5,6 +5,7 @@ import {
     demoTopicCatalogOf,
     demoLocaleFilesOf,
     demoRootOf,
+    demoSectionsOf,
     separatorTextOf,
     sourceFileOf,
 } from "@tests/fixtures/builders/lesson.builder"
@@ -144,6 +145,58 @@ describe("buildLessonDraft source", () => {
     })
 })
 
+describe("buildLessonDraft teacher premium marks", () => {
+    it("keeps the mark of a lesson and of a section in the stored content", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+        const marked = (locale: "vi" | "en") =>
+            demoLocaleFilesOf(
+                locale,
+                { ...demoRootOf(locale), isPremium: true },
+                demoSectionsOf(locale).map((section) =>
+                    section.id === "4-practice" ? { ...section, isPremium: false } : section,
+                ),
+            )
+        const workspace = demoFilesOf().filter((file) => file.path.startsWith("workspace/"))
+
+        const result = draftOf("2-demo-lesson", [...marked("vi"), ...marked("en"), ...workspace])
+
+        expect(result.issues).toEqual([])
+        const vi = result.draft?.content.locales.vi
+        expect([vi?.isPremium, vi?.sections.map((section) => section.isPremium)]).toEqual([
+            true,
+            [undefined, undefined, undefined, undefined, false, undefined],
+        ])
+    })
+
+    it("stores no mark when the content carries none", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+
+        const document = draftOf("2-demo-lesson", demoFilesOf()).draft?.content.locales.vi
+
+        expect(document).not.toHaveProperty("isPremium")
+    })
+
+    it("refuses a mark that is not true or false and locales that disagree on a mark", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+        const invalid = [
+            ...demoFilesOf().filter((file) => file.path !== "vi.md"),
+            sourceFileOf("vi.md", separatorTextOf({ ...demoRootOf("vi"), isPremium: "maybe" })),
+        ]
+        const disagree = [
+            ...demoFilesOf().filter((file) => file.path !== "en.md"),
+            sourceFileOf("en.md", separatorTextOf({ ...demoRootOf("en"), isPremium: false })),
+        ]
+
+        expect(draftOf("2-demo-lesson", invalid).issues).toEqual([
+            { path: "vi.md", field: "isPremium", message: "expected true or false" },
+        ])
+        expect(draftOf("2-demo-lesson", disagree).issues.map((issue) => issue.message)).toEqual([
+            'differs from vi.md: lacks "premium-mark default"',
+            'differs from en.md: lacks "premium-mark false"',
+        ])
+    })
+})
+
 describe("buildLessonDraft topics", () => {
     it.each([
         ["2-stranger", "lesson stranger has no topic entry"],
@@ -189,5 +242,64 @@ describe("buildLessonDraft topics", () => {
         expect(result.issues).toEqual([
             { path: "vi.md", field: "workspace.files[1].path", message: "workspace/source.ts is not in the folder" },
         ])
+    })
+})
+
+describe("buildLessonDraft workspaces", () => {
+    const javaDeclared = {
+        language: "java",
+        runtime: "Java 21",
+        files: [{ path: "workspace/1-java/Source.java", role: "source" }],
+        commands: { unix: "java Source.java" },
+    }
+    const withJava = (declared: ReadonlyArray<typeof javaDeclared>, hasFile: boolean) => {
+        const roots = (["vi", "en"] as const).flatMap((locale) =>
+            demoLocaleFilesOf(locale, { ...demoRootOf(locale), workspaces: declared }),
+        )
+        const rest = demoFilesOf().filter((file) => !/^(vi|en)\.md$/u.test(file.path))
+        return [
+            ...roots,
+            ...rest,
+            ...(hasFile ? [sourceFileOf("workspace/1-java/Source.java", "class Source {}\n")] : []),
+        ]
+    }
+
+    it("attaches the files of every language the root declares", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+        const result = draftOf("2-demo-lesson", withJava([javaDeclared], true))
+
+        expect(result.issues).toEqual([])
+        expect(result.draft?.content.workspaces).toEqual([
+            {
+                ...javaDeclared,
+                files: [{ path: "workspace/1-java/Source.java", role: "source", content: "class Source {}\n" }],
+            },
+        ])
+    })
+
+    it("names a language file the folder lacks", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+        const result = draftOf("2-demo-lesson", withJava([javaDeclared], false))
+
+        expect(result.draft).toBeNull()
+        expect(result.issues[0]).toEqual({
+            path: "vi.md",
+            field: "workspaces[0].files[0].path",
+            message: "workspace/1-java/Source.java is not in the folder",
+        })
+    })
+
+    it("refuses a language the platform does not ship", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+        const result = draftOf("2-demo-lesson", withJava([{ ...javaDeclared, language: "cobol" }], true))
+
+        expect(result.draft).toBeNull()
+        expect(result.issues.length).toBeGreaterThan(0)
+    })
+
+    it("keeps no workspaces for a concept that declares one language only", async () => {
+        const { buildLessonDraft: draftOf } = await build()
+
+        expect(draftOf("2-demo-lesson", demoFilesOf()).draft?.content.workspaces).toBeUndefined()
     })
 })

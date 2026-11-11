@@ -2,8 +2,9 @@ import { FakeClock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
 import { CLOCK } from "@modules/platform/clock"
+import { ENTITLEMENT_OPTIONS } from "./entitlement.decorators"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
-import { EntitlementErrorCode } from "./errors/entitlement.error"
+import { EntitlementError, EntitlementErrorCode } from "./errors/entitlement.error"
 import { EntitlementService } from "./entitlement.service"
 import {
     DELETE_ENTITLEMENT,
@@ -15,12 +16,13 @@ import {
 const NOW = "2026-01-31T12:30:00.000Z"
 const LEARNER_ID = "b8099f0e-58c7-4685-8292-f3a49ec994b1"
 
-const build = async (entityManager: MockEntityManager): Promise<EntitlementService> => {
+const build = async (entityManager: MockEntityManager, devGrant = false): Promise<EntitlementService> => {
     const moduleRef = await Test.createTestingModule({
         providers: [
             EntitlementService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: entityManager },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
+            { provide: ENTITLEMENT_OPTIONS, useValue: { devGrant } },
         ],
     }).compile()
     return moduleRef.get(EntitlementService)
@@ -195,5 +197,32 @@ describe("EntitlementService rebuildWith", () => {
         await expect(service.rebuildWith(caller, { learnerId: LEARNER_ID, grants: [] })).rejects.toMatchObject({
             code: EntitlementErrorCode.EntitlementMissing,
         })
+    })
+})
+
+describe("EntitlementService devGrant", () => {
+    it("is refused outside development and never writes", async () => {
+        const em = mockEntityManager()
+        const service = await build(em)
+
+        expect(() => service.devGrant({ learnerId: LEARNER_ID, term: "yearly" })).toThrow(
+            new EntitlementError({ code: EntitlementErrorCode.DevGrantDisabled }),
+        )
+        expect(em.query).not.toHaveBeenCalled()
+    })
+
+    it("grants the term confirmed now when the environment enables it", async () => {
+        const row = {
+            learner_id: LEARNER_ID,
+            premium_until: new Date("2027-01-31T12:30:00.000Z"),
+            updated_at: new Date(NOW),
+        }
+        const em = mockEntityManager({ query: [GRANT_ENTITLEMENT, [row]] })
+        const service = await build(em, true)
+
+        await expect(service.devGrant({ learnerId: LEARNER_ID, term: "yearly" })).resolves.toMatchObject({
+            learnerId: LEARNER_ID,
+        })
+        expect(em.query).toHaveBeenCalledWith(GRANT_ENTITLEMENT, [LEARNER_ID, new Date(NOW), new Date(NOW), 12])
     })
 })

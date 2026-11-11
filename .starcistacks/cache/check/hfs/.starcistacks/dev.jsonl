@@ -1,13 +1,13 @@
-{"data":{},"findings":[],"hash":"9d9676d0f7dc6eb4c8ae6c1607a85ae4d2d2b393f9997b8390437a0e09a46bfa","path":".starcistacks/dev/README.md","step":"file-rules"}
-{"findings":[{"column":0,"line":30,"message":".starcistacks/dev/README.md cites a missing repository path scripts/dev/simulate-sepay-ipn.mjs; update the documentation or restore the path","path":".starcistacks/dev/README.md","rule":"HFS_DOC_PATH_MISSING"}],"hash":"e298c925e955857360b2ce31485a14a43e91bf0379e74fe8a995ee0cb61a845f","path":".starcistacks/dev/README.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"7ec235c5fae2ef7a5aafd043bcfbcb154c30a2530131c4fb06e75e5d2b06c446","path":".starcistacks/dev/README.md","step":"file-rules"}
+{"findings":[{"column":0,"line":34,"message":".starcistacks/dev/README.md cites a missing repository path starci/project.yaml; update the documentation or restore the path","path":".starcistacks/dev/README.md","rule":"HFS_DOC_PATH_MISSING"}],"hash":"2e028fe9b2fde413ed91f2ff366a93c7f56642002bd170dd88a2388810c93a85","path":".starcistacks/dev/README.md","step":"hfs"}
 {"data":{},"findings":[],"hash":"be7d4a045ca8426f88cf5d02d0f8df51ee8cfde57293a74135d98b2b3f955849","path":".starcistacks/dev/environment.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"53b1fd064fdcad01e28116a4ee0c98498ca2823c952112920a3cdfc44dcd5b25","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"95af4d8ff24aef3a06d6a7d5750b4cadff3f6ed0adc5ead5e15f2aafe5ac5f87","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c40ed15c12df41da4c10aa2e139cc7712908f14d0bd0d5ed469075509dafb5a9","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f94cbb307a4d629bca9ff3aa108fb37acf69b868d7f28bc8a7cd69dac7a00a68","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f2256465772712f0fe55bc406ed45c6a7c963c699c3a40ddd72dd928551483e1","path":".starcistacks/dev/infra/compose/stack.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"29a3b6341800a1d89774bf675d7a471e12189e2cd3df80f4070d2529d2dc37c5","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":".starcistacks/dev/secrets/ai.enc.yaml is neither tracked nor git-ignored, and no ignored slot owns it","path":".starcistacks/dev/secrets/ai.enc.yaml","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"hfs"}
-{"findings":[{"column":0,"line":0,"message":".starcistacks/dev/secrets/db.enc.yaml is neither tracked nor git-ignored, and no ignored slot owns it","path":".starcistacks/dev/secrets/db.enc.yaml","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":".starcistacks/dev/secrets/db.enc.yaml","step":"hfs"}
+{"data":{},"findings":[],"hash":"62055f53ad291699e0a2ffca9239380e30796c441830e82955a503e4b0aa7532","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"dd99d38b8f954873c5febf8107a05bf6aab4865f1ddb5d7215246553fb7f06d7","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"512538543d1f10cb30b05108cbd03b3fee613927e11f16fe3018bfdacdffa712","path":".starcistacks/dev/secrets/db.enc.yaml","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":".starcistacks/dev/secrets/db.enc.yaml seals DEV_DB_OWNER_PASSWORD, which no EnvSource reader and no declared consumer uses; unseal it or declare who consumes it","path":".starcistacks/dev/secrets/db.enc.yaml","rule":"ENV_SEALED_UNREAD"}],"hash":"b4269495635a3e682b6081641fd6cace1815e949b932621aa59b6270f3094d31","path":".starcistacks/dev/secrets/db.enc.yaml","step":"hfs"}
 {"data":{},"findings":[],"hash":"53542d9265b4864a57913fdf8ede3f79ebb7d60cc9b215040e3973a72787400b","path":".starcistacks/dev/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"175bfeff769eca85f0ef025bee81e341b5557c9c7e6b43c7a9208db5762e827a","path":".starcistacks/dev/secrets/keycloak-client-secret.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6c8252c11ac197f4837aea4060c0459932574ce306ccc6b6b782757a81df2391","path":".starcistacks/dev/secrets/payos.enc.yaml","step":"file-rules"}
@@ -15,7 +15,8 @@
 {"data":{},"findings":[],"hash":"0dbb747d4fc828789d8a5c526769598b33e4af7d490b72e675f48f646ca5ec9e","path":".starcistacks/dev/secrets/sonar.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/dev/seeds/data/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/dev/seeds/files/.gitkeep","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6cf4cd4a9e0703a169e71807c0a8e3557dd53fb09c4595f0b8fdfe8888a26446","path":".starcistacks/dev/seeds/seeds.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"188601b2e238fbb2cc81d1bcf2382901d71add1ea7bfdf23fd79b57921c6e634","path":".starcistacks/dev/seeds/seeds.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"530d7fc433dd5edfb2b13b52db925baef972cdc4c28c1190c1dab02d0b401195","path":".starcistacks/dev/seeds/sql/primary-content-interviews.sql","step":"file-rules"}
 {"data":{},"findings":[],"hash":"948403fa13280c5d8519aa894172edfff3f3c88ced7a3a5a33ba0fb73b904608","path":".starcistacks/dev/seeds/sql/primary-interviews.sql","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa729a9b7a8939a75360b505dbf15a138a502dff1624ce9bddabd1c83949fb2b","path":".starcistacks/dev/seeds/sql/primary-lessons.sql","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8bc4765916783946a33a552b29f77534c0a9c2bdd22b3d77aa822a6d3bf20505","path":".starcistacks/dev/seeds/sql/primary-notes.sql","step":"file-rules"}

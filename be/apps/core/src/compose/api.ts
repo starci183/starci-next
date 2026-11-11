@@ -7,7 +7,7 @@ import { HubGraphqlModule } from "@features/api/hub"
 import { IdentityHttpModule } from "@features/api/identity"
 import { IncidentGraphqlModule } from "@features/api/incident"
 import { InterviewGraphqlModule } from "@features/api/interview"
-import { LessonGraphqlModule } from "@features/api/lesson"
+import { LessonGraphqlModule, LessonHttpModule } from "@features/api/lesson"
 import { NotificationGraphqlModule } from "@features/api/notification"
 import { PathGraphqlModule } from "@features/api/path"
 import { PracticeGraphqlModule } from "@features/api/practice"
@@ -22,6 +22,7 @@ export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     CommerceGraphqlModule.register({}),
     IdentityHttpModule.register({}),
     LessonGraphqlModule.register({}),
+    LessonHttpModule.register({}),
     AttemptGraphqlModule.register({}),
     InterviewGraphqlModule.register({}),
     ReviewGraphqlModule.register({}),

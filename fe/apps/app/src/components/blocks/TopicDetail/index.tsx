@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useGetEssentialsSwr, useGetLessonProgressSwr, useGetLessonTopicSwr } from "@/hooks/swr"
+import { useGetEssentialsSwr, useGetLessonLanguagesSwr, useGetLessonProgressSwr, useGetLessonTopicSwr } from "@/hooks/swr"
 import { topicScreenOf, useLegacyLessonDestination, useTopicLabels, useTopicWords } from "@/hooks/topic"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"
@@ -21,6 +21,8 @@ export const TopicDetail = (props: TopicDetailProps) => {
     const progress =
         useGetLessonProgressSwr((read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId])))
             .data ?? {}
+    const lessonIds = (read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId]))
+    const languages = useGetLessonLanguagesSwr(lessonIds, locale).data ?? {}
     const movedTo = useLegacyLessonDestination(props.topicId, read.error)
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.title} · ${t("pageTitle")}`)
     return (
@@ -29,12 +31,13 @@ export const TopicDetail = (props: TopicDetailProps) => {
                 slot:
                     movedTo === ""
                         ? mapSlot(slotOfSwr(read), (topic) =>
-                              topicScreenOf({ topic, catalog: catalog.data ?? [], progress, words }),
+                              topicScreenOf({ topic, catalog: catalog.data ?? [], progress, words, languages }),
                           )
                         : loadingSlot(),
                 placeholder: TOPIC_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 labels: useTopicLabels(),
+                progressTitle: t("progressTitle"),
                 plansHref: APP_ROUTES.premium,
                 catalogHref: APP_ROUTES.essentials,
                 movedTo,

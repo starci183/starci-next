@@ -1,4 +1,4 @@
-import { Badge, Cluster, Progress, Stack, StatusDot, SurfaceCard, Text } from "@starci/grammar/common"
+import { Cluster, Divider, Progress, Section, Stack, StatusDot, Text } from "@starci/grammar/common"
 import { HubGoalEditor, type HubGoalEditorLabels, type HubGoalEditorState } from "../HubGoalEditor"
 
 /** One of the seven days of the strip. */
@@ -11,21 +11,23 @@ export type HubDayView = {
     readonly title: string
 }
 
-/** The streak card, every word resolved. */
+/** The streak, every word resolved. */
 export type HubStreakView = {
-    readonly current: string
-    readonly longest: string
-    readonly freezes: string
+    /** The run as a figure and its unit (a figure, then "days in a row"). */
+    readonly currentFigure: string
+    readonly currentUnit: string
+    /** The one 12 muted line: the best run and the freezes left. */
+    readonly line: string
+    readonly weekTitle: string
     readonly weekLabel: string
     /** The share of the weekly goal reached, 0 to 100. */
     readonly weekPercent: number
     readonly days: ReadonlyArray<HubDayView>
 }
 
-/** The fixed words of the streak card. */
+/** The fixed words of the streak sections. */
 export type HubStreakLabels = {
     readonly title: string
-    readonly rule: string
     readonly goalBar: string
     readonly dayStripLabel: string
 }
@@ -41,22 +43,10 @@ const TONES: Readonly<Record<HubDayView["state"], DotTone>> = {
     missed: "neutral",
 }
 
-/** The streak card of the learn hub: the run, a 7-day strip, the weekly goal, freezes, the goal editor and the rule in words. */
-type HubStreakCardProps = {
-    readonly view: HubStreakView
-    readonly labels: HubStreakLabels
-    readonly goalState: HubGoalEditorState
-    readonly goalLabels: HubGoalEditorLabels
-    readonly onGoalOpenChange: (isOpen: boolean) => void
-    readonly onGoalChoose: (value: string) => void
-    readonly onGoalSave: () => void
-    readonly isLoading?: boolean
-}
-
 /** What one day of the strip needs. */
 type DayProps = { readonly day: HubDayView }
 
-/** One day of the strip: its weekday and a dot. */
+/** One day of the strip: its weekday and Grammar's status dot. */
 const Day = (props: DayProps) => (
     <Stack gap="identity" align="center">
         <Text tone="muted" size="xs">
@@ -71,24 +61,59 @@ const Day = (props: DayProps) => (
     </Stack>
 )
 
-/** The streak card; it never says the streak earns experience. */
-export const HubStreakCard = (props: HubStreakCardProps) => (
-    <SurfaceCard label={props.labels.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
-        <Stack gap="section">
-            <Cluster gap="row" align="baseline">
-                <Text as="p" size="md">
-                    {props.view.current}
+/** What the streak section is given. */
+type HubStreakSectionProps = {
+    readonly view: HubStreakView
+    readonly labels: HubStreakLabels
+    readonly isLoading?: boolean
+}
+
+/** The streak section of the aside: the run as a figure with its unit, the best run, and the seven days. */
+const HubStreakSection = (props: HubStreakSectionProps) => (
+    <Section title={props.labels.title} headingLevel={2} {...(props.isLoading === true ? { isLoading: true } : {})}>
+        <Stack gap="inline">
+            <Cluster gap="identity" align="baseline">
+                <Text as="p" size="figure">
+                    {props.view.currentFigure}
                 </Text>
-                <Badge tone="accent">{props.view.freezes}</Badge>
+                <Text size="figure" tone="muted">
+                    {props.view.currentUnit}
+                </Text>
             </Cluster>
-            <Text tone="muted">{props.view.longest}</Text>
-            <Cluster gap="row" label={props.labels.dayStripLabel} justify="between">
+            <Text tone="muted" size="xs">
+                {props.view.line}
+            </Text>
+            <Cluster gap="identity" label={props.labels.dayStripLabel} justify="between">
                 {props.view.days.map((day) => (
                     <Day key={day.id} day={day} />
                 ))}
             </Cluster>
-            <Progress label={props.labels.goalBar} value={props.view.weekPercent} valueText={props.view.weekLabel} />
-            <Text size="sm">{props.view.weekLabel}</Text>
+        </Stack>
+    </Section>
+)
+
+/** What the weekly goal section is given. */
+type HubGoalSectionProps = {
+    readonly view: HubStreakView
+    readonly goalBar: string
+    readonly goalState: HubGoalEditorState
+    readonly goalLabels: HubGoalEditorLabels
+    readonly onGoalOpenChange: (isOpen: boolean) => void
+    readonly onGoalChoose: (value: string) => void
+    readonly onGoalSave: () => void
+    readonly isLoading?: boolean
+}
+
+/** The weekly goal section of the aside: the days reached (a chip beside the title), the bar and the command that changes the goal. */
+const HubGoalSection = (props: HubGoalSectionProps) => (
+    <Section
+        title={props.view.weekTitle}
+        headingLevel={2}
+        fact={props.view.weekLabel}
+        {...(props.isLoading === true ? { isLoading: true } : {})}
+    >
+        <Stack gap="inline">
+            <Progress label={props.goalBar} value={props.view.weekPercent} valueText={props.view.weekLabel} />
             <HubGoalEditor
                 state={props.goalState}
                 labels={props.goalLabels}
@@ -96,9 +121,22 @@ export const HubStreakCard = (props: HubStreakCardProps) => (
                 onChoose={props.onGoalChoose}
                 onSave={props.onGoalSave}
             />
-            <Text tone="muted" size="xs">
-                {props.labels.rule}
-            </Text>
         </Stack>
-    </SurfaceCard>
+    </Section>
+)
+
+/** What the streak card is given. */
+type HubStreakCardProps = HubStreakSectionProps & Omit<HubGoalSectionProps, "view" | "isLoading" | "goalBar">
+
+/** The streak and the weekly goal as the two first sections of the aside, a divider between them. */
+export const HubStreakCard = (props: HubStreakCardProps) => (
+    <>
+        <HubStreakSection
+            view={props.view}
+            labels={props.labels}
+            {...(props.isLoading === true ? { isLoading: true } : {})}
+        />
+        <Divider semantics="presentation" />
+        <HubGoalSection {...props} goalBar={props.labels.goalBar} />
+    </>
 )

@@ -29,13 +29,13 @@ import {
     type QueryStub,
 } from "@tests/fixtures/builders/attempt-stub.builder"
 import { LessonContentService, type LessonActivity } from "@modules/domain/lesson"
-import { ReviewScheduleService } from "@modules/domain/review"
 import { StreakService } from "@modules/domain/streak"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { LOGGER, type Logger } from "@modules/platform/logging"
 import { TIMER, type Timer } from "@modules/platform/retry"
 import { ATTEMPT_COACH, type AttemptCoach } from "./attempt-coach.port"
+import { AttemptCompletionService } from "./attempt-completion.service"
 import { AttemptFairUseService } from "./attempt-fair-use.service"
 import type { AttemptServerActivity } from "./attempt.contracts"
 import { AttemptLogEvent } from "./attempt.log-events"
@@ -59,7 +59,6 @@ const NOW = new Date("2026-11-08T10:00:00.000Z")
 const STALE = new Date("2026-11-08T09:58:00.000Z")
 const IDS = ["demo--o1", "demo--o2"]
 const UNAVAILABLE = AttemptErrorCode.CoachUnavailable
-
 const choiceStubs: ReadonlyArray<QueryStub> = [
     [INSERT_ATTEMPT, [attemptRowOf()]],
     [UPSERT_OUTCOMES, []],
@@ -86,7 +85,7 @@ const build = async (queries: ReadonlyArray<QueryStub>, found: AttemptServerActi
     timer.schedule.mockReturnValue(cancel)
     const logger = mock<Logger>()
     const streak = mock<StreakService>()
-    const review = mock<ReviewScheduleService>()
+    const completion = mock<AttemptCompletionService>()
     const moduleRef = await Test.createTestingModule({
         providers: [
             AttemptService,
@@ -98,7 +97,7 @@ const build = async (queries: ReadonlyArray<QueryStub>, found: AttemptServerActi
             { provide: AttemptFairUseService, useValue: fairUse },
             { provide: LessonContentService, useValue: content },
             { provide: StreakService, useValue: streak },
-            { provide: ReviewScheduleService, useValue: review },
+            { provide: AttemptCompletionService, useValue: completion },
         ],
     }).compile()
     return {
@@ -111,7 +110,7 @@ const build = async (queries: ReadonlyArray<QueryStub>, found: AttemptServerActi
         logger,
         fairUse,
         streak,
-        review,
+        completion,
     }
 }
 
@@ -239,7 +238,7 @@ describe("AttemptService submit of a written answer", () => {
         )
 
         expect(coach.grade.mock.calls[0]?.[0]).toMatchObject({ kind: "exercise", answerText: "done", files })
-        expect(callsOf(tx, UPSERT_OUTCOMES).at(-1)).toEqual(upsert(["demo--o2"], 2, 2))
+        expect(callsOf(tx, UPSERT_OUTCOMES).at(-1)).toEqual(upsert(["demo--o2"], 2, 0))
     })
 
     it("reads a stored answer with no text as an empty text", async () => {
@@ -459,7 +458,7 @@ describe("AttemptService submit of a resend", () => {
 describe("AttemptService fair use and producers", () => {
     it("fails with the limit code, keeps the answer, never calls the coach and tells nobody", async () => {
         const code = AttemptErrorCode.CoachLimitReached
-        const { service, coach, fairUse, streak, review } = await build(withFailure(code), explainFound)
+        const { service, coach, fairUse, streak, completion } = await build(withFailure(code), explainFound)
         fairUse.isWithinDailyLimit.mockResolvedValue(false)
 
         expect(await service.submit(writtenParamsOf())).toMatchObject({
@@ -470,11 +469,11 @@ describe("AttemptService fair use and producers", () => {
         expect(fairUse.isWithinDailyLimit).toHaveBeenCalledWith(LEARNER)
         expect(coach.grade).not.toHaveBeenCalled()
         expect(streak.recordStreakAction).not.toHaveBeenCalled()
-        expect(review.onActivityGraded).not.toHaveBeenCalled()
+        expect(completion.complete).not.toHaveBeenCalled()
     })
 
-    it("records one graded attempt for the streak and tells review once a choice is stored graded", async () => {
-        const { service, streak, review } = await build(choiceStubs, choiceFound)
+    it("records one graded attempt for the streak and tells completion once a choice is stored graded", async () => {
+        const { service, streak, completion } = await build(choiceStubs, choiceFound)
 
         await service.submit(submitParamsOf())
 
@@ -482,7 +481,7 @@ describe("AttemptService fair use and producers", () => {
             actionId: `attempt:${ATTEMPT_ID}`,
             sourceRef: ATTEMPT_ID,
         })
-        expect(review.onActivityGraded).toHaveBeenCalledWith(LEARNER, "demo-lesson", "v1")
+        expect(completion.complete).toHaveBeenCalledWith(expect.objectContaining({ attempt_id: ATTEMPT_ID }))
     })
 
     it("keeps the attempt graded when the streak cannot be told", async () => {

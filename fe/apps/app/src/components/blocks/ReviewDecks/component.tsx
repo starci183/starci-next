@@ -161,7 +161,7 @@ const Rail = (props: ReviewDecksBaseProps) => (
                 />
             </Stack>
         </SurfaceCard>
-        <Link href={props.props.todayHref}>{props.props.labels.back}</Link>
+        <Link variant="plain" href={props.props.todayHref}>{props.props.labels.back}</Link>
     </Stack>
 )
 

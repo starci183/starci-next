@@ -129,3 +129,31 @@ describe("readLessonSource issues", () => {
         ])
     })
 })
+
+describe("readLessonSource workspaces", () => {
+    const rootsWith = (workspaces: ReadonlyArray<object>) =>
+        (["vi", "en"] as const).flatMap((locale) =>
+            demoLocaleFilesOf(
+                locale,
+                { ...demoRootOf(locale), workspaces, status: "draft", author: "ai-placeholder" },
+                demoSectionsOf(locale),
+            ),
+        )
+
+    it("reads the languages of the workspaces field and tolerates the status and author sections", async () => {
+        const read = await build()
+        const declared = [{ language: "csharp", runtime: ".NET 8", files: [], commands: {} }]
+        const result = read(rootsWith(declared))
+
+        expect(result.issues).toEqual([])
+        expect(result.parsed?.vi.root.workspaces?.[0]?.language).toBe("csharp")
+    })
+
+    it("names a language outside the four", async () => {
+        const read = await build()
+        const result = read(rootsWith([{ language: "cobol", runtime: "x", files: [], commands: {} }]))
+
+        expect(result.parsed).toBeNull()
+        expect(result.issues[0]?.field).toContain("workspaces")
+    })
+})

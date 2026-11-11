@@ -15,6 +15,10 @@ export class GetLessonProgressHandler extends ICQRSHandler<GetLessonProgressQuer
     }
 
     protected override process(query: GetLessonProgressQuery): Promise<LessonProgressView> {
-        return this.attempts.progress({ learnerId: query.params.principal.id, lessonId: query.params.request.lessonId })
+        return this.attempts.progress({
+            learnerId: query.params.principal.id,
+            lessonId: query.params.request.lessonId,
+            locale: query.params.request.locale,
+        })
     }
 }

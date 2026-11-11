@@ -12,11 +12,15 @@ import {
     SELECT_TOPIC_LESSONS,
 } from "./persistence/lesson.sql"
 import type {
+    LessonArchiveParams,
+    LessonArchiveView,
     LessonCatalogFilter,
     LessonCatalogItemView,
     LessonLookupParams,
     LessonView,
 } from "./lesson-read.contracts"
+import { workspaceVariantOf } from "./lesson-workspace.policy"
+import { workspaceEntriesOf, zipOf } from "./workspace-archive.policy"
 import { toTopicView } from "./lesson-topic.mapper"
 import type { LessonTopicParams, LessonTopicView } from "./lesson-topic-view.contracts"
 import { toCatalogItem, toLessonView } from "./lesson-view.mapper"
@@ -75,5 +79,24 @@ export class LessonReadService {
                 ? []
                 : await this.entityManager.query(SELECT_RELATED_TOPICS, [row.related, LIST_ROWS_MAX])
         return toTopicView(row, lessons, first.lesson_group, params.locale, related)
+    }
+
+    /**
+     * A ZIP of one language workspace of the live version of a lesson: its files at their lesson-relative paths and a README with
+     * the test commands. Premium like `LessonView.workspaces`: without it the learner is refused. A lesson that is not live, or
+     * has no workspace in that language, is not found.
+     */
+    async workspaceArchive(params: LessonArchiveParams): Promise<LessonArchiveView> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [params.id])
+        const row = rows[0]
+        if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
+        if (!(await this.entitlement.isPremium(params.learnerId)))
+            throw new LessonError({ code: LessonErrorCode.PremiumRequired })
+        const variant = workspaceVariantOf(row, params.language)
+        if (variant === null) throw new LessonError({ code: LessonErrorCode.NotFound })
+        return {
+            fileName: `${row.lesson_id}-${variant.language}.zip`,
+            content: zipOf(workspaceEntriesOf(variant)),
+        }
     }
 }

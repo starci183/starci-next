@@ -1,4 +1,4 @@
-import { Grid, Select, SurfaceCard } from "@starci/grammar/common"
+import { SurfaceCard } from "@starci/grammar/common"
 
 /** One choice of a filter. */
 type CatalogOption = { readonly id: string; readonly label: string }
@@ -30,55 +30,47 @@ type CatalogToolbarProps = {
 }
 
 /**
- * The toolbar card of the catalog: Grammar's one toolbar row (the difficulty pills at the leading edge, the search over title and
- * description at the trailing edge) with the language and provider selects inline beside them as pills.
+ * The toolbar card of the catalog, two header zones and no body: the filter zone (the difficulty tabs), then the search zone (the search
+ * over title and description, with the language and provider as its trailing `filters` selects).
  */
 export const CatalogToolbar = (props: CatalogToolbarProps) => (
     <SurfaceCard
+        kind="list"
         ariaLabel={props.labels.search}
+        items={[]}
+        empty={null}
         headers={[
             {
-                kind: "toolbar",
-                filter: {
-                    label: props.labels.difficulty,
-                    items: props.difficulties.map((each) => ({ id: each.id, label: each.label })),
-                    selectedKey: props.difficulty,
-                    onSelect: props.onDifficulty,
-                },
-                search: {
-                    label: props.labels.search,
-                    placeholder: props.labels.searchPlaceholder,
-                    clearLabel: props.labels.clearSearch,
-                    value: props.query,
-                    onChange: props.onQuery,
-                },
+                kind: "filter",
+                label: props.labels.difficulty,
+                items: props.difficulties.map((each) => ({ id: each.id, label: each.label })),
+                selectedKey: props.difficulty,
+                onSelect: props.onDifficulty,
+            },
+            {
+                kind: "search",
+                label: props.labels.search,
+                placeholder: props.labels.searchPlaceholder,
+                clearLabel: props.labels.clearSearch,
+                value: props.query,
+                onChange: props.onQuery,
+                filters: [
+                    {
+                        label: props.labels.language,
+                        prefix: props.labels.language,
+                        options: props.languages,
+                        value: props.language,
+                        onChange: (id) => props.onLanguage(id ?? ""),
+                    },
+                    {
+                        label: props.labels.provider,
+                        prefix: props.labels.provider,
+                        options: props.providers,
+                        value: props.provider,
+                        onChange: (id) => props.onProvider(id ?? ""),
+                    },
+                ],
             },
         ]}
-    >
-        <Grid
-            kind="pair"
-            leading={
-                <Select
-                    label={props.labels.language}
-                    isLabelHidden
-                    appearance="pill"
-                    prefix={props.labels.language}
-                    options={props.languages}
-                    value={props.language}
-                    onValueChange={(id) => props.onLanguage(id ?? "")}
-                />
-            }
-            trailing={
-                <Select
-                    label={props.labels.provider}
-                    isLabelHidden
-                    appearance="pill"
-                    prefix={props.labels.provider}
-                    options={props.providers}
-                    value={props.provider}
-                    onValueChange={(id) => props.onProvider(id ?? "")}
-                />
-            }
-        />
-    </SurfaceCard>
+    />
 )

@@ -10,4 +10,8 @@ export class LessonSimulationActionType {
     /** The action text. */
     @Field(() => String)
     label!: string
+
+    /** True when the action opens a branch worth trying. */
+    @Field(() => Boolean)
+    isBranch!: boolean
 }

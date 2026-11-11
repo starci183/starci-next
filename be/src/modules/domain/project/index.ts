@@ -7,8 +7,8 @@
  * the learner cannot edit, and the AI teacher reading the code the learner points to. Behaviour concepts need a test or e2e flow and the
  * probes; structure concepts need the AI code read; a concept whose lesson is not written yet shows being written by the teacher.
  *
- * Practice versus proof: results from the learner machine arrive through `ProjectRelayPort` (the relay is not built; `NoRelayClient`
- * until it is) and are practice only, like a CI run GitHub did not attest (`ci-signed`). Proof comes from an attested CI run
+ * Practice versus proof: results from the learner machine arrive through `ProjectRelayPort` (the app binds the relay's `RelayProjectService`;
+ * `NoRelayClient` is the default) and are practice only, like a CI run GitHub did not attest (`ci-signed`). Proof comes from an attested CI run
  * (`ProjectCiService.recordRun`, behind the webhook door `POST /webhooks/project-ci`: HMAC-SHA256 with a per-project secret is the
  * transport check, and the run's GitHub Actions OIDC token in `x-starci-oidc`, checked through `CiAttestationVerifier` against the
  * repository bound with `ProjectRepositoryService.set`, makes it attested; `UnattestedCiClient` until the GitHub OIDC integration is
@@ -28,7 +28,7 @@ export { PROJECT_ERROR_KINDS } from "./errors/project.error"
 export { PROJECT_MESSAGES } from "./messages/project.messages"
 export { AiProjectCoachClient } from "./ai-project-coach.client"
 export { LessonCatalogClient } from "./lesson-catalog.client"
-export { NoRelayClient } from "./no-relay.client"
+export { milestoneOf } from "./project-catalog.policy"
 export { parseProjectConfig } from "./project.config"
 export { ProjectCiService } from "./project-ci.service"
 export { ProjectCodeReadService } from "./project-code-read.service"

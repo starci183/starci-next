@@ -30,7 +30,9 @@ describe("AiCoachClient grade", () => {
     it("sends the prompt under the request deadline and answers the grade the model wrote", async () => {
         const { coach, gateway } = await build()
         const written = coachGradeOf({
-            criteria: [{ criterionId: "demo--interview--c1", level: 2, evidenceQuote: "the read model lags" }],
+            criteria: [
+                { criterionId: "demo--interview--c1", level: 2, evidenceQuote: "the read model lags", missing: "" },
+            ],
         })
         gateway.complete.mockResolvedValue({ text: JSON.stringify(written), model: "m", usedFallback: false })
 

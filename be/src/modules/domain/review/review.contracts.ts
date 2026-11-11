@@ -399,3 +399,15 @@ export interface ReviewSummary {
     /** Items reviewed today. */
     readonly doneToday: number
 }
+
+/** One review a lesson opened after its completion: the 1, 7 or 21 day retrieval. */
+export interface LessonReviewSlotView {
+    /** The retrieval activity. */
+    readonly activityId: string
+    /** The days after completion. */
+    readonly afterDays: number
+    /** The day it falls due, `YYYY-MM-DD`. */
+    readonly dueOn: string
+    /** Whether the learner finished it. */
+    readonly done: boolean
+}

@@ -37,7 +37,7 @@ const stepsOf = (steps: ReadonlyArray<AgentLabStepRow>, sourceLabel: string) =>
             {steps.map((step) => (
                 <Cluster key={step.text} gap="inline" wrap align="center">
                     <Text as="span">{step.text}</Text>
-                    <Link href={step.sourceUrl}>{sourceLabel}</Link>
+                    <Link variant="plain" href={step.sourceUrl}>{sourceLabel}</Link>
                 </Cluster>
             ))}
         </Stack>

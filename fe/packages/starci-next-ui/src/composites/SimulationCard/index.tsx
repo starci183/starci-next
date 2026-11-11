@@ -1,71 +1,45 @@
-import { Alert, Badge, Button, Cluster, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+"use client"
 
-/** The words of a simulation card, resolved by its block. */
-export type SimulationCardLabels = {
-    readonly states: string
-    readonly current: string
-    readonly seen: string
-    readonly ahead: string
-    readonly observing: string
-    readonly succeeded: string
-    readonly noMoves: string
-    readonly restart: string
-}
+import { useState } from "react"
+import { Stack } from "@starci/grammar/common"
+import { EventLog, Moves, Observation, StatesRow } from "./parts"
+import type { SimulationCardProps, Walk } from "./types"
+import { pressed, progressOf, startWalk, stateIdAfter } from "./walk"
 
-/** Where a state stands in the row of states: the one the learner is in, one they walked through, or one still ahead. */
-type StepMark = "current" | "seen" | "ahead"
-
-/** One simulation: the row of states, the observation of the current one and the actions that lead on. */
-type SimulationCardProps = {
-    readonly prompt: string
-    readonly steps: ReadonlyArray<{ readonly id: string; readonly label: string; readonly mark: StepMark }>
-    readonly currentLabel: string
-    readonly observation: string
-    /** True when the current state is a goal. */
-    readonly isSuccess: boolean
-    readonly moves: ReadonlyArray<{ readonly id: string; readonly label: string; readonly toStateId: string }>
-    readonly labels: SimulationCardLabels
-    readonly onMove: (actionId: string, toStateId: string) => void
-    readonly onRestart: () => void
-}
-
-/** The tone of a state in the row: the current one stands out, the ones walked are settled, the ones ahead are quiet. */
-const toneOf = (mark: StepMark): "accent" | "success" | "muted" => {
-    if (mark === "current") return "accent"
-    return mark === "seen" ? "success" : "muted"
-}
+export type {
+    SimulationAction,
+    SimulationCardLabels,
+    SimulationProgress,
+    SimulationState,
+    SimulationStep,
+    SimulationTransition,
+} from "./types"
 
 /**
- * A client-side state machine from the public projection of a simulation: the learner takes an action, reads the observation of
- * the state it leads to and goes on until a goal state. It holds no answer and calls no door.
+ * A client-side state machine in cards: the row of states (the current one with the accent ring), its observation and counters,
+ * every action as a button (an action the current state has no edge for is disabled and says so) with the progress line, "back
+ * one step" and "start over" (no state is a dead end), and the event log. It keeps the walk itself, starts from `initialSteps`
+ * and reports every change through `onChange`; it calls no door.
  */
-export const SimulationCard = (props: SimulationCardProps) => (
-    <SurfaceCard ariaLabel={props.prompt}>
-        <Stack gap="row">
-            <Text as="p">{props.prompt}</Text>
-            <Cluster gap="inline" label={props.labels.states}>
-                {props.steps.map((step) => (
-                    <Badge key={step.id} tone={toneOf(step.mark)}>
-                        {`${props.labels[step.mark]} · ${step.label}`}
-                    </Badge>
-                ))}
-            </Cluster>
-            <Alert
-                tone={props.isSuccess ? "affirmative" : "informative"}
-                title={`${props.isSuccess ? props.labels.succeeded : props.labels.observing} · ${props.currentLabel}`}
-                description={props.observation}
+export const SimulationCard = (props: SimulationCardProps) => {
+    const [walk, setWalk] = useState<Walk>(() => startWalk(props))
+    const current = props.states.find((state) => state.id === stateIdAfter(props.initialStateId, walk.steps))
+    const commit = (next: Walk): void => {
+        setWalk(next)
+        props.onChange?.(progressOf(props, next))
+    }
+    return (
+        <Stack gap="section">
+            <StatesRow card={props} walk={walk} />
+            {current === undefined ? null : <Observation state={current} labels={props.labels} />}
+            <Moves
+                card={props}
+                walk={walk}
+                onPress={(actionId) => commit(pressed(props, walk, actionId))}
+                onBack={() => commit({ steps: walk.steps.slice(0, -1), tried: walk.tried })}
+                onRestart={() => commit({ steps: [], tried: walk.tried })}
             />
-            <Cluster gap="row" wrap>
-                {props.moves.map((move) => (
-                    <Button key={move.id} intent="alternative" onPress={() => props.onMove(move.id, move.toStateId)}>
-                        {move.label}
-                    </Button>
-                ))}
-                {props.moves.length === 0 ? <Text tone="muted">{props.labels.noMoves}</Text> : null}
-                <Button intent="neutral" onPress={props.onRestart}>
-                    {props.labels.restart}
-                </Button>
-            </Cluster>
+            <EventLog card={props} walk={walk} />
         </Stack>
-    </SurfaceCard>
-)
+    )
+}

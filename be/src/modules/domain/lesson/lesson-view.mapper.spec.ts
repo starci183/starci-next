@@ -136,6 +136,37 @@ describe("toLessonView for a learner with Premium", () => {
     })
 })
 
+describe("toLessonView workspaces", () => {
+    const variant = {
+        language: "go" as const,
+        runtime: "Go 1.21+",
+        files: [{ path: "workspace/3-go/source.go", role: "source", content: "package main\n" }],
+        commands: { unix: "go test ./..." },
+    }
+
+    it("hands over the lab of every language with its commands to a Premium learner", async () => {
+        const { toLessonView: toView } = await build()
+        const content = { ...demoContentOf(), workspaces: [variant] }
+
+        expect(toView(versionRowOf({ content }), "vi", true).workspaces).toEqual([
+            {
+                language: "go",
+                runtime: "Go 1.21+",
+                commands: { windows: null, unix: "go test ./..." },
+                files: [{ path: "workspace/3-go/source.go", role: "source", content: "package main\n" }],
+            },
+        ])
+    })
+
+    it("hands over no language lab without Premium or for a version stored before the languages", async () => {
+        const { toLessonView: toView } = await build()
+        const content = { ...demoContentOf(), workspaces: [variant] }
+
+        expect(toView(versionRowOf({ content }), "vi", false).workspaces).toEqual([])
+        expect(toView(versionRowOf(), "vi", true).workspaces).toEqual([])
+    })
+})
+
 describe("toLessonView activities", () => {
     it("shows each kind of activity by its public fields only", async () => {
         const { toLessonView: toView } = await build()
@@ -221,6 +252,60 @@ describe("toLessonView for a learner without Premium", () => {
     })
 })
 
+describe("toLessonView with the teacher's isPremium marks, for a learner without Premium", () => {
+    it("opens a section marked free and locks the challenge marked Premium", async () => {
+        const { toLessonView: toView } = await build()
+        const content = demoContentOf()
+        const marked: LessonContent = {
+            ...content,
+            locales: {
+                ...content.locales,
+                vi: {
+                    ...content.locales.vi,
+                    sections: content.locales.vi.sections.map((section) => {
+                        if (section.id === "0-interview") return { ...section, isPremium: true }
+                        return section.id === "4-practice" ? { ...section, isPremium: false } : section
+                    }),
+                },
+            },
+        }
+
+        const view = toView(versionRowOf({ content: marked }), "vi", false)
+
+        expect(view.sections.map((section) => [section.phase, section.locked])).toEqual([
+            ["challenge", true],
+            ["predict", true],
+            ["explore", true],
+            ["explain", true],
+            ["apply", false],
+            ["reflect", true],
+        ])
+        expect(view.sections[4]?.body).toBe("vi: Body of 4-practice")
+    })
+
+    it("opens every section of a lesson marked free, and a section mark wins over the lesson mark", async () => {
+        const { toLessonView: toView } = await build()
+        const content = demoContentOf()
+        const lesson: LessonContent = {
+            ...content,
+            locales: {
+                ...content.locales,
+                vi: {
+                    ...content.locales.vi,
+                    isPremium: false,
+                    sections: content.locales.vi.sections.map((section) =>
+                        section.id === "5-reflection" ? { ...section, isPremium: true } : section,
+                    ),
+                },
+            },
+        }
+
+        const view = toView(versionRowOf({ content: lesson }), "vi", false)
+
+        expect(view.sections.map((section) => section.locked)).toEqual([false, false, false, false, false, true])
+    })
+})
+
 describe("toLessonView projection", () => {
     it.each([true, false])(
         "never carries an answer, evidence, correctness, explanation or hint (premium %s)",
@@ -244,5 +329,31 @@ describe("toLessonView projection", () => {
         }))
 
         expect(JSON.stringify(toView(versionRowOf({ content }), "vi", true))).not.toContain(SECRET)
+    })
+})
+
+describe("toLessonView simulation facts and branches", () => {
+    it("always shows facts per state and the branch mark per action, empty and false when the content has none", async () => {
+        const { toLessonView: toView } = await build()
+        const content = withSection("2-experiment", (section) => ({
+            activities: (section.activities ?? []).map((activity) => ({
+                ...activity,
+                simulation: activity.simulation && {
+                    ...activity.simulation,
+                    states: activity.simulation.states.map((state, index) =>
+                        index === 0 ? { ...state, facts: [{ label: "Charges", value: "2" }] } : state,
+                    ),
+                    actions: activity.simulation.actions.map((action, index) =>
+                        index === 0 ? { ...action, isBranch: true } : action,
+                    ),
+                },
+            })),
+        }))
+
+        const simulation = toView(versionRowOf({ content }), "vi", true).sections[2]?.activities[0]?.simulation
+
+        expect(simulation?.states[0]?.facts).toEqual([{ label: "Charges", value: "2" }])
+        expect(simulation?.states[1]?.facts).toEqual([])
+        expect(simulation?.actions.map((action) => action.isBranch)).toEqual([true, false])
     })
 })

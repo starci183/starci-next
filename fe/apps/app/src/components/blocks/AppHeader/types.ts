@@ -1,24 +1,10 @@
-import type { BadgeTone } from "@starci/grammar/common"
-
-/** One main destination: its words, its address and whether the reader is on it. */
-export interface AppHeaderLink {
-    readonly id: string
-    readonly label: string
-    readonly href: string
-    readonly isCurrent: boolean
-}
+import type { TopBarCustomButton } from "@starci/grammar/common"
 
 /** One language the header's switch offers: its code, short mark and spoken name. */
 export interface AppHeaderLanguageOption {
     readonly value: string
     readonly label: string
     readonly name: string
-}
-
-/** The plan badge words and tone. */
-export interface AppHeaderPlan {
-    readonly label: string
-    readonly tone: BadgeTone
 }
 
 /** The words, options and state of the language switch. */
@@ -29,76 +15,45 @@ export interface AppHeaderLanguage {
     readonly options: ReadonlyArray<AppHeaderLanguageOption>
 }
 
-/** The streak chip: its words and whether a streak is running (amber) or not (neutral). */
-export interface AppHeaderStreak {
-    readonly label: string
-    readonly isActive: boolean
-}
-
 /** The theme switch: its accessible name and whether the dark theme is on. */
 export interface AppHeaderTheme {
     readonly label: string
     readonly isDark: boolean
 }
 
-/** One notification of the bell's list: its worded message, where it leads (undefined for none) and whether it was read. */
-export interface AppHeaderNotification {
-    readonly id: string
-    readonly text: string
-    readonly href: string | undefined
-    readonly isRead: boolean
-}
-
-/** The words and state of the notifications popover. */
-export interface AppHeaderNotifications {
-    readonly label: string
-    readonly title: string
-    /** The count worded for assistive technology ("3 unread"). */
-    readonly unreadLabel: string
-    readonly emptyLabel: string
-    readonly markAllLabel: string
-    readonly unreadCount: number
-    readonly rows: ReadonlyArray<AppHeaderNotification>
-    readonly isPending: boolean
-}
-
 /** The drawings of the account area: nothing yet (the session is unknown), the signed-in reader, or the way to sign in. */
 export type AppHeaderAccountShape = "unknown" | "signedIn" | "signedOut"
+
+/** One round button before the locale, theme and avatar cluster: Grammar's TopBar `customButtons` entry (0.37.15), a glyph name, an accessible name, an optional attention dot and a destination or a command. */
+export type AppHeaderCustomButton = TopBarCustomButton
 
 /** Copy, state and actions supplied by the connected header block. */
 export interface AppHeaderBaseProps {
     readonly shape: AppHeaderAccountShape
     readonly props: {
-        readonly brand: string
-        readonly logoSrc: string
-        readonly homeHref: string
-        readonly navLabel: string
-        readonly links: ReadonlyArray<AppHeaderLink>
-        /** The plan badge words and tone, or undefined while the entitlement is unknown. */
-        readonly plan: AppHeaderPlan | undefined
-        /** The streak chip words ("3 days"), or undefined while the streak is unknown. */
-        readonly streak: AppHeaderStreak | undefined
+        /** The brand lockup at the bar's start (logo, wordmark over a muted role and plan line), as the NIVO console bar. */
+        readonly brand: { readonly name: string; readonly logoSrc: string; readonly roleLine: string }
+        /** Round buttons before the language cluster; empty while the app has no notifications page for the bell to open. */
+        readonly customButtons: ReadonlyArray<AppHeaderCustomButton>
         readonly language: AppHeaderLanguage
         readonly theme: AppHeaderTheme
-        readonly notifications: AppHeaderNotifications
         readonly accountName: string
         readonly accountLabel: string
-        readonly premiumLabel: string
-        readonly premiumHref: string
+        /** The identity row at the head of the account menu: the reader's email over the plan line. */
+        readonly identity: { readonly title: string; readonly subtitle: string }
+        /** The plan command after the identity: upgrade when the reader has no Premium, the plan page when they have it. */
+        readonly plan: { readonly label: string; readonly href: string }
+        readonly profileLabel: string
+        readonly profileHref: string
         readonly signOutLabel: string
         readonly signInLabel: string
         readonly signOutPending: boolean
-        readonly menuOpenLabel: string
-        readonly menuCloseLabel: string
-        readonly menuTitle: string
-        readonly isMenuOpen: boolean
     }
     readonly on: {
         readonly chooseLanguage: (locale: string) => void
         readonly themeChange: (isDark: boolean) => void
-        readonly markAllRead: () => void
+        readonly goHome: () => void
         readonly signOut: () => void
         readonly signIn: () => void
-        readonly menuOpenChange: (isOpen: boolean) => void
     }
 }

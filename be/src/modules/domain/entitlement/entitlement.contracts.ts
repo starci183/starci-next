@@ -45,3 +45,11 @@ export interface GrantPremiumParams {
     /** The provider confirmation instant, supplied by the verified purchase flow. */
     readonly confirmedAt: Date
 }
+
+/** What the development grant is given: the learner and the term, with no purchase behind it. */
+export interface DevGrantParams {
+    /** The learner who receives Premium. */
+    readonly learnerId: string
+    /** The term granted. */
+    readonly term: PremiumTerm
+}

@@ -1,9 +1,12 @@
 import { Module, type DynamicModule, type Provider } from "@nestjs/common"
 import { ATTEMPT_COACH } from "./attempt-coach.port"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./attempt.module-definition"
+import { AttemptCompletionService } from "./attempt-completion.service"
 import { AttemptFairUseService } from "./attempt-fair-use.service"
+import { AttemptProofService } from "./attempt-proof.service"
 import { AttemptReadService } from "./attempt-read.service"
 import { AttemptService } from "./attempt.service"
+import { AttemptSimulationService } from "./attempt-simulation.service"
 import { UnconfiguredCoachClient } from "./unconfigured-coach.client"
 
 @Module({})
@@ -21,10 +24,19 @@ export class AttemptModule extends ConfigurableModuleClass {
                 coachClass,
                 coach,
                 AttemptService,
+                AttemptCompletionService,
                 AttemptReadService,
                 AttemptFairUseService,
+                AttemptProofService,
+                AttemptSimulationService,
             ],
-            exports: [AttemptService, AttemptReadService, AttemptFairUseService],
+            exports: [
+                AttemptService,
+                AttemptReadService,
+                AttemptFairUseService,
+                AttemptProofService,
+                AttemptSimulationService,
+            ],
         }
     }
 }

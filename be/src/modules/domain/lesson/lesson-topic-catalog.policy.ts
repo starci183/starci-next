@@ -14,6 +14,9 @@ const LESSON_TOPIC_BY_LESSON: Readonly<Record<string, string>> = {
     "health-probe-semantics": "kubernetes",
     "vpc-routing": "cloud-networking",
     "agent-harness-control-loop": "llm-agents",
+    "transactions-and-isolation": "databases",
+    "indexing-and-query-plans": "databases",
+    idempotency: "api-reliability",
 }
 
 /**
@@ -129,6 +132,30 @@ const LESSON_TOPICS: Readonly<Record<string, LessonTopicSource>> = {
                 "G\u1ecdi model \u0111\u00fang c\u00e1ch r\u1ed3i b\u1ecdc n\u00f3 trong m\u1ed9t harness: context, c\u00f4ng c\u1ee5, quy\u1ec1n, ng\u00e2n s\u00e1ch v\u00e0 ki\u1ec3m ch\u1ee9ng k\u1ebft qu\u1ea3.",
             prerequisites: ["G\u1ecdi HTTP API v\u00e0 \u0111\u1ecdc JSON."],
             related: ["backend-framework", "testing-strategy"],
+        },
+    },
+    databases: {
+        title: "C\u01a1 s\u1edf d\u1eef li\u1ec7u",
+        from: "starci-next-data essentials",
+        modules: [],
+        details: {
+            description:
+                "Giao d\u1ecbch, m\u1ee9c c\u00f4 l\u1eadp, index v\u00e0 k\u1ebf ho\u1ea1ch truy v\u1ea5n: d\u1eef li\u1ec7u v\u1eabn \u0111\u00fang v\u00e0 truy v\u1ea5n v\u1eabn nhanh khi nhi\u1ec1u y\u00eau c\u1ea7u ch\u1ea1y c\u00f9ng l\u00fac.",
+            prerequisites: ["Bi\u1ebft SQL c\u01a1 b\u1ea3n: SELECT, UPDATE, INSERT."],
+            related: ["backend-framework", "api-reliability"],
+        },
+    },
+    "api-reliability": {
+        title: "\u0110\u1ed9 tin c\u1eady c\u1ee7a API",
+        from: "starci-next-data essentials",
+        modules: [],
+        details: {
+            description:
+                "C\u00f9ng m\u1ed9t y\u00eau c\u1ea7u g\u1eedi l\u1ea1i nhi\u1ec1u l\u1ea7n ch\u1ec9 \u0111\u01b0\u1ee3c t\u1ea1o m\u1ed9t k\u1ebft qu\u1ea3: kh\u00f3a idempotency, retry v\u00e0 l\u01b0u k\u1ebft qu\u1ea3 \u0111\u00e3 tr\u1ea3.",
+            prerequisites: [
+                "M\u1ed9t y\u00eau c\u1ea7u HTTP \u0111i qua backend th\u1ebf n\u00e0o (topic Backend framework).",
+            ],
+            related: ["backend-framework", "databases"],
         },
     },
 }

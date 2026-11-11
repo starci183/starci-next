@@ -2,13 +2,13 @@ import { Injectable, Optional } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { LessonContentService, type LessonActivity, type LessonPhase } from "@modules/domain/lesson"
 import { InjectClock, type Clock } from "@modules/platform/clock"
-import { ReviewScheduleService } from "@modules/domain/review"
 import { StreakService } from "@modules/domain/streak"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { ok, refused, type Outcome } from "@modules/platform/primitives"
 import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { InjectAttemptCoach, type AttemptCoach } from "./attempt-coach.port"
+import { AttemptCompletionService } from "./attempt-completion.service"
 import { AttemptFairUseService } from "./attempt-fair-use.service"
 import { attemptKindOf, attemptPhaseOf, normalizeAnswer } from "./attempt-answer.policy"
 import type {
@@ -73,8 +73,8 @@ export class AttemptService {
         @InjectAttemptCoach() private readonly coach: AttemptCoach,
         private readonly content: LessonContentService,
         private readonly fairUse: AttemptFairUseService,
+        private readonly completion: AttemptCompletionService,
         @Optional() private readonly streak?: StreakService,
-        @Optional() private readonly review?: ReviewScheduleService,
     ) {}
 
     /**
@@ -92,7 +92,7 @@ export class AttemptService {
         })
         const kind = attemptKindOf(found.activity)
         const phase = attemptPhaseOf(found)
-        await this.content.requireAccess({ learnerId: params.learnerId, phase })
+        await this.content.requireAccess({ learnerId: params.learnerId, phase, isPremium: found.isPremium })
         const answer = normalizeAnswer(found.activity, kind, params.answer)
         const stored = await this.store(params, found.activity, kind, answer, phase)
         const row = stored ?? (await this.replay(params, answer))
@@ -118,7 +118,7 @@ export class AttemptService {
         phase: LessonPhase,
     ): Promise<StoredAttempt> {
         const result = this.gradeNow(activity, kind, answer)
-        const levels = result === null ? NO_OUTCOME_LEVELS : levelsOf(kind, result)
+        const levels = result === null ? NO_OUTCOME_LEVELS : levelsOf(result)
         const now = this.clock.now()
         return this.entityManager.transaction(async (manager) => {
             const inserted: Array<AttemptRow> = await manager.query(INSERT_ATTEMPT, [
@@ -229,7 +229,7 @@ export class AttemptService {
     /** Stores the grade and raises the outcome levels in one transaction; answers the attempt as it stands when it is no longer being graded. */
     private async complete(row: AttemptRow, activity: LessonActivity, result: AttemptResult): Promise<AttemptView> {
         const now = this.clock.now()
-        const levels = levelsOf(row.kind, result)
+        const levels = levelsOf(result)
         const completed = await this.entityManager.transaction(async (manager) => {
             const rows: Array<AttemptRow> = await manager.query(COMPLETE_GRADING, [
                 row.attempt_id,
@@ -253,8 +253,8 @@ export class AttemptService {
     }
 
     /**
-     * Tells the streak (one graded attempt of Essentials, counted once per attempt id) and review (a lesson may now be complete,
-     * so its retrieval items are scheduled) that a graded attempt was stored. Neither can fail the attempt.
+     * Tells the streak (one graded attempt of Essentials, counted once per attempt id) that a graded attempt was stored, and
+     * finishes the lesson when this was the last required activity (`AttemptCompletionService`). Neither can fail the attempt.
      */
     private async afterGraded(row: AttemptRow): Promise<void> {
         try {
@@ -262,7 +262,7 @@ export class AttemptService {
                 actionId: `attempt:${row.attempt_id}`,
                 sourceRef: row.attempt_id,
             })
-            await this.review?.onActivityGraded(row.learner_id, row.lesson_id, row.lesson_version)
+            await this.completion.complete(row)
         } catch (cause) {
             this.logger.error(AttemptLogEvent.AfterGradedFailed, cause, { attemptId: row.attempt_id })
         }

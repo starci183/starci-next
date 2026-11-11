@@ -16,7 +16,6 @@ coverage:
           - "be/src/modules/integrations/*/**"
           - "be/src/modules/platform/*/**"
           - "be/src/modules/projections/*/**"
-          - "packages/next-cli/src/**"
     patch:
       default:
         target: 100%
@@ -26,7 +25,6 @@ coverage:
           - "be/src/modules/integrations/*/**"
           - "be/src/modules/platform/*/**"
           - "be/src/modules/projections/*/**"
-          - "packages/next-cli/src/**"
 component_management:
   default_rules:
     statuses:
@@ -47,7 +45,6 @@ component_management:
         - "be/src/modules/domain/incident/**"
         - "be/src/modules/domain/interview/**"
         - "be/src/modules/domain/lesson/**"
-        - "be/src/modules/domain/liveness/**"
         - "be/src/modules/domain/note/**"
         - "be/src/modules/domain/notification/**"
         - "be/src/modules/domain/path/**"
@@ -71,14 +68,12 @@ component_management:
         - "be/src/modules/domain/content/**"
         - "be/src/modules/domain/entitlement/**"
         - "be/src/modules/domain/identity/**"
+        - "be/src/modules/domain/liveness/**"
         - "be/src/modules/integrations/keycloak/**"
         - "be/src/modules/integrations/mail/**"
+        - "be/src/modules/integrations/relay-client/**"
         - "be/src/modules/platform/*/**"
         - "be/src/modules/projections/*/**"
-    - component_id: package-next-cli
-      name: package-next-cli
-      paths:
-        - "packages/next-cli/src/**"
 ignore:
   - "be/**/*.args.ts"
   - "be/**/*.builder.ts"
@@ -120,7 +115,10 @@ ignore:
   - "be/**/*.templates.ts"
   - "be/**/*.type.ts"
   - "be/apps/*/Dockerfile"
+  - "be/apps/*/README.md"
+  - "be/apps/*/package.json"
   - "be/apps/*/src/**"
+  - "be/apps/*/tsconfig.build.json"
   - "be/contracts/*/*.tools.json"
   - "be/contracts/*/events.json"
   - "be/contracts/*/events.pin.json"
@@ -140,6 +138,7 @@ ignore:
   - "be/src/assets/*/**"
   - "be/src/features/api/*/**"
   - "be/src/features/cli/**"
+  - "be/src/features/client-cli/*/**"
   - "be/src/features/jobs/*/**"
   - "be/src/features/reactors/*/**"
   - "be/src/features/realtime/*/**"
@@ -159,6 +158,7 @@ ignore:
   - "be/src/modules/integrations/*/errors/**"
   - "be/src/modules/integrations/*/index.ts"
   - "be/src/modules/integrations/*/messages/**"
+  - "be/src/modules/integrations/keycloak/keycloak.attestation.ts"
   - "be/src/modules/integrations/keycloak/keycloak.registration.ts"
   - "be/src/modules/platform/*/index.ts"
   - "be/src/modules/platform/*/messages/**"
@@ -173,9 +173,3 @@ ignore:
   - "be/tsconfig.build.json"
   - "be/tsconfig.json"
   - "fe/**"
-  - "packages/next-cli/src/workbench/**"
-  - "packages/next-cli/src/public/**"
-  - "packages/next-cli/src/client/**"
-  - "packages/next-cli/src/**/index.ts"
-  - "packages/next-cli/src/**/*.types.ts"
-  - "packages/next-cli/src/**/*-types.ts"

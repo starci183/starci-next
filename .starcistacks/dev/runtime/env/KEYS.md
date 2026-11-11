@@ -21,7 +21,13 @@ This roster declares names only. Store credential values in sealed custody and m
 | `IDENTITY_SESSION_MAX_SECONDS` | Core API absolute session lifetime in seconds; 0 leaves only the provider refresh lifetime |
 | `IDENTITY_CHALLENGE_TTL_SECONDS` | Core API sign-in, sign-up and password-reset code lifetime in seconds |
 | `IDENTITY_CHALLENGE_MAX_ATTEMPTS` | Core API wrong-code attempts allowed per challenge |
+| `RELAY_MANIFEST_SIGNING_KEY` | Relay app Ed25519 PEM (pkcs8) the task manifests are signed with; the relay reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/dev/relay-manifest-key.mjs`; any other mode refuses to boot without it |
+| `RELAY_MANIFEST_SIGNING_KEY_FILE` | Host-local path of the manifest signing key file |
+| `STARCI_NEXT_MANIFEST_KEY` | Learner CLI (`starci-next`) only: the SPKI PEM of the public half, which it verifies manifests with; in dev `export STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"` |
+| `STARCI_NEXT_URL` | Learner CLI only: the StarCi origin (dev: `http://localhost:3080`, the ingress, which routes `/relay` and `/api`) |
+| `STARCI_NEXT_DATA_DIR` | Learner CLI only: a starci-next-data checkout `starci-next init` reads the kit from when `--from` is not given |
 | `CAREER_DEV_SEED` | CLI `career seed` only: `true` lets the development seed create sample experience items; never declared in production, where the seed is refused `CAREER_DEV_SEED_DISABLED` |
+| `ENTITLEMENT_DEV_GRANT` | CLI `entitlement dev-grant` only: `true` lets the development command grant Premium to a learner with no purchase; set on the dev cli run by hand, never declared in production or on a core process, where the command is refused `ENTITLEMENT_DEV_GRANT_DISABLED` |
 | `MAIL_HOST` | Core API outgoing mail server host |
 | `MAIL_PORT` | Core API outgoing mail server port |
 | `MAIL_SECURITY` | Core API mail transport security: `tls`, `starttls` or `none` |

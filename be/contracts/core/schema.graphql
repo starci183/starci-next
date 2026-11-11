@@ -561,17 +561,32 @@ input LessonAttemptAnswerInput {
   text: String = null @inputBounds(maxLength: 20000)
 }
 
+type LessonAttemptAnswerType {
+  actionIds: [String!]
+  debrief: String
+  files: [LessonAttemptFileType!]
+  optionId: String
+  reachedStateId: String
+  text: String
+}
+
 type LessonAttemptCriterionResultType {
   criterion: String!
   criterionId: String!
   evidenceQuote: String!
   level: Int!
   maxScore: Int!
+  missing: String!
 }
 
 input LessonAttemptFileInput {
   content: String! @inputBounds(maxLength: 100000)
   relativePath: String! @inputBounds(maxLength: 200)
+}
+
+type LessonAttemptFileType {
+  content: String!
+  relativePath: String!
 }
 
 input LessonAttemptInput {
@@ -598,6 +613,7 @@ type LessonAttemptResultType {
 
 type LessonAttemptType {
   activityId: String!
+  answer: LessonAttemptAnswerType!
   attemptId: String!
   failureCode: String
   gradedAt: String
@@ -662,6 +678,7 @@ type LessonProgressActivityType {
   activityId: String!
   attempts: Int!
   kind: String!
+  latest: LessonAttemptType!
   latestAttemptId: String!
   latestRevision: Int!
   latestStatus: String!
@@ -678,20 +695,48 @@ type LessonProgressAttemptsType {
 
 input LessonProgressInput {
   lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
 }
 
 type LessonProgressOutcomeType {
   id: String!
   proved: Int!
+  state: String!
   understood: Int!
+}
+
+type LessonProgressPhaseType {
+  done: Int!
+  phase: String!
+  state: String!
+  total: Int!
+}
+
+type LessonProgressReviewType {
+  activityId: String!
+  afterDays: Int!
+  done: Boolean!
+  dueOn: String!
+}
+
+type LessonProgressSimulationType {
+  actionIds: [String!]!
+  activityId: String!
+  currentStateId: String!
+  triedTransitionIds: [String!]!
+  updatedAt: String!
 }
 
 type LessonProgressType {
   activities: [LessonProgressActivityType!]!
   attempts: LessonProgressAttemptsType!
+  completedAt: String
   lessonId: String!
   outcomes: [LessonProgressOutcomeType!]!
   phase: String!
+  phases: [LessonProgressPhaseType!]!
+  reviews: [LessonProgressReviewType!]!
+  simulations: [LessonProgressSimulationType!]!
   version: String
 }
 
@@ -720,10 +765,17 @@ type LessonSectionType {
 
 type LessonSimulationActionType {
   id: String!
+  isBranch: Boolean!
   label: String!
 }
 
+type LessonSimulationFactType {
+  label: String!
+  value: String!
+}
+
 type LessonSimulationStateType {
+  facts: [LessonSimulationFactType!]!
   id: String!
   isSuccess: Boolean!
   label: String!
@@ -796,6 +848,7 @@ type LessonType {
   topic: LessonTopicRefType!
   version: String!
   workspace: LessonWorkspaceType
+  workspaces: [LessonWorkspaceVariantType!]!
 }
 
 type LessonWorkspaceFileType {
@@ -807,6 +860,13 @@ type LessonWorkspaceFileType {
 type LessonWorkspaceType {
   commands: LessonCommandsType!
   files: [LessonWorkspaceFileType!]!
+  runtime: String!
+}
+
+type LessonWorkspaceVariantType {
+  commands: LessonCommandsType!
+  files: [LessonWorkspaceFileType!]!
+  language: String!
   runtime: String!
 }
 
@@ -861,6 +921,7 @@ type Mutation {
   rotateProjectCiSecret(input: RotateProjectCiSecretInput!): ProjectSecretType!
   runPractice(input: PracticeSolveInput!): PracticeSubmissionType!
   runProjectProbes(input: RunProjectProbesInput!): ProjectProbeRunType!
+  saveLessonSimulation(input: SaveLessonSimulationInput!): LessonProgressSimulationType!
   setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
   setProjectConcept(input: SetProjectConceptInput!): ProjectConceptType!
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
@@ -1582,6 +1643,15 @@ input RotateProjectCiSecretInput {
 
 input RunProjectProbesInput {
   projectId: String! @inputBounds(maxLength: 36)
+}
+
+input SaveLessonSimulationInput {
+  actionIds: [String!]! @inputBounds(maxItems: 60, itemMaxLength: 200)
+  activityId: String! @inputBounds(maxLength: 200)
+  currentStateId: String! @inputBounds(maxLength: 200)
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+  version: String! @inputBounds(maxLength: 100)
 }
 
 input SetExperienceReviewerInput {

@@ -1,4 +1,6 @@
 export { ART, ArtImage, PHASE_ART, groupArtOf } from "./leaves/Art"
+export { ApplyEvidence } from "./composites/ApplyEvidence"
+export type { ApplyEvidenceLabels, EvidenceCriterion, EvidenceResult } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export { ArtBeside } from "./frames/ArtBeside"
 export { TitledGrid } from "./frames/TitledGrid"
@@ -15,6 +17,7 @@ export { ChoiceCard } from "./composites/ChoiceCard"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
 export { ErrorNotice } from "./composites/ErrorNotice"
 export { FilesCard } from "./composites/FilesCard"
+export { HighlightedCode } from "./composites/HighlightedCode"
 export { GlobalErrorNotice } from "./composites/GlobalErrorNotice"
 export { LanguageMenu, languageMenuEntries } from "./composites/LanguageMenu"
 export { LoadingNotice } from "./composites/LoadingNotice"
@@ -28,7 +31,14 @@ export type { OverviewPanelLabels } from "./composites/OverviewPanel"
 export { ReflectCompare } from "./composites/ReflectCompare"
 export type { ReflectCompareLabels } from "./composites/ReflectCompare"
 export { SimulationCard } from "./composites/SimulationCard"
-export type { SimulationCardLabels } from "./composites/SimulationCard"
+export type {
+    SimulationAction,
+    SimulationCardLabels,
+    SimulationProgress,
+    SimulationState,
+    SimulationStep,
+    SimulationTransition,
+} from "./composites/SimulationCard"
 export { SlotView } from "./composites/SlotView"
 export type { DataSlot, SlotLabels, SlotRead } from "./composites/SlotView"
 export { StudyRail } from "./composites/StudyRail"
@@ -39,7 +49,28 @@ export { BarFill } from "./frames/BarFill"
 export { BarNav } from "./frames/BarNav"
 export { BarWide } from "./frames/BarWide"
 export { SiteShell } from "./frames/SiteShell"
-export { BellGlyph, Icon, LanguageGlyph, MenuGlyph, MoonGlyph, SunGlyph } from "./leaves/Icon"
+export {
+    AgentsGlyph,
+    BellGlyph,
+    CollapseGlyph,
+    EssentialsGlyph,
+    ExperienceGlyph,
+    Icon,
+    IncidentsGlyph,
+    InterviewGlyph,
+    LanguageGlyph,
+    LearnGlyph,
+    LockIcon,
+    MenuGlyph,
+    MoonGlyph,
+    MoreGlyph,
+    PlayGlyph,
+    PracticeGlyph,
+    ProfileGlyph,
+    ProjectsGlyph,
+    ReviewGlyph,
+    SunGlyph,
+} from "./leaves/Icon"
 export { AuthCodeForm } from "./composites/AuthCodeForm"
 export type { AuthCodeLabels } from "./composites/AuthCodeForm"
 export { AuthDetailsForm } from "./composites/AuthDetailsForm"
@@ -49,6 +80,7 @@ export type { AuthSocialProvider } from "./composites/AuthSocialButtons"
 export { TopicAside } from "./composites/TopicAside"
 export type { TopicAsideEntry } from "./composites/TopicAside"
 export { TopicIntro } from "./composites/TopicIntro"
+export { TopicHero } from "./composites/TopicHero"
 export { TopicPath } from "./composites/TopicPath"
 export type { TopicPathRow } from "./composites/TopicPath"
 export { UpsellRow } from "./composites/UpsellRow"
@@ -86,14 +118,12 @@ export type { OutcomePathDetailView, OutcomePathDialogLabels } from "./composite
 export { IncidentGroups } from "./composites/IncidentGroups"
 export type { IncidentGroupView } from "./composites/IncidentGroups"
 export type { HubGoalEditorLabels, HubGoalEditorState } from "./composites/HubGoalEditor"
-export { HubLayerTile } from "./composites/HubLayerTile"
-export type { HubLayerView } from "./composites/HubLayerTile"
 export { HubPathCard } from "./composites/HubPathCard"
 export type { HubPathLabels, HubPathView } from "./composites/HubPathCard"
-export { HubShardTile } from "./composites/HubShardTile"
-export type { HubShardLabels, HubShardView } from "./composites/HubShardTile"
 export { HubStreakCard } from "./composites/HubStreakCard"
 export type { HubDayView, HubStreakLabels, HubStreakView } from "./composites/HubStreakCard"
+export { HubExperience } from "./composites/HubExperience"
+export type { HubExperienceView } from "./composites/HubExperience"
 export { HubTodayCard } from "./composites/HubTodayCard"
 export type { HubTodayRow } from "./composites/HubTodayCard"
 export { InterviewChat } from "./composites/InterviewChat"
@@ -118,3 +148,4 @@ export type {
 export { AssignItemCard } from "./composites/AssignItemCard"
 export type { AssignItemCardProps } from "./composites/AssignItemCard"
 export { MissingNotice } from "./composites/MissingNotice"
+export { RowProgress } from "./composites/RowProgress"

@@ -121,12 +121,14 @@ const activityLines = (activity: LessonActivity): Array<string> => [
 const structureOf = (parsed: LessonParsedLocale): Array<string> => [
     `meta ${parsed.root.category} ${parsed.root.difficulty} ${parsed.root.minutesRead} ${parsed.root.implementation} ${parsed.root.sortIndex}`,
     `workspace ${JSON.stringify(parsed.root.workspace ?? null)}`,
+    `workspaces ${JSON.stringify(parsed.root.workspaces ?? null)}`,
+    `premium-mark ${String(parsed.root.isPremium ?? "default")}`,
     ...parsed.root.learningOutcomes.map((outcome) => `outcome ${outcome.id}`),
     ...parsed.root.prerequisites.map((prerequisite) => `prerequisite ${prerequisite.id}`),
     ...parsed.root.references.map((reference) => `reference ${reference.id} ${reference.url ?? ""}`),
     ...(parsed.root.activities ?? []).flatMap((activity) => activityLines(activity)),
     ...parsed.sections.flatMap((section) => [
-        `section ${section.id} ${section.phase} ${section.sortIndex}`,
+        `section ${section.id} ${section.phase} ${section.sortIndex} ${String(section.isPremium ?? "default")}`,
         ...(section.activities ?? []).flatMap((activity) => activityLines(activity)),
     ]),
 ]

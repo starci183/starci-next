@@ -12,6 +12,6 @@ type NotFoundNoticeProps = {
 export const NotFoundNotice = (props: NotFoundNoticeProps) => (
     <>
         <Heading level={1}>{props.title}</Heading>
-        <Link href={props.homeHref}>{props.homeLabel}</Link>
+        <Link variant="plain" href={props.homeHref}>{props.homeLabel}</Link>
     </>
 )

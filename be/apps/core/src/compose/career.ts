@@ -18,14 +18,20 @@ import { NotificationService } from "@modules/domain/notification"
 import {
     AiProjectCoachClient,
     LessonCatalogClient,
-    NoRelayClient,
     PROJECT_ERROR_KINDS,
     PROJECT_MESSAGES,
     ProjectModule,
     projectEntities,
     projectMigrations,
 } from "@modules/domain/project"
-import { RELAY_ERROR_KINDS, RELAY_MESSAGES, RelayModule, relayEntities, relayMigrations } from "@modules/domain/relay"
+import {
+    RELAY_ERROR_KINDS,
+    RELAY_MESSAGES,
+    RelayModule,
+    RelayProjectService,
+    relayEntities,
+    relayMigrations,
+} from "@modules/domain/relay"
 import { PROBE_ERROR_KINDS, PROBE_MESSAGES, ProbeModule } from "@modules/integrations/probe"
 import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
@@ -44,7 +50,7 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         isGlobal: true,
         ...options.project,
         coach: AiProjectCoachClient,
-        relay: NoRelayClient,
+        relay: RelayProjectService,
         lessons: LessonCatalogClient,
     }),
     ProbeModule.register({ isGlobal: true }),

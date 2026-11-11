@@ -16,9 +16,15 @@
         {
           "name": "cli",
           "kind": "cli"
+        },
+        {
+          "name": "relay-cli",
+          "kind": "client-cli",
+          "package": "@starci/next",
+          "bin": "starci-next"
         }
       ],
-      "kinds": ["api", "cli", "jobs", "webhooks"],
+      "kinds": ["api", "cli", "client-cli", "jobs", "webhooks"],
       "connections": [
         {
           "name": "primary",

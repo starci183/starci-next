@@ -6,6 +6,7 @@ import type {
     CoachCriterionGrade,
     CoachGrade,
     CriterionResult,
+    StoredAttemptResult,
 } from "./attempt.contracts"
 import { AttemptError, AttemptErrorCode } from "./errors/attempt.error"
 
@@ -14,6 +15,9 @@ export const CRITERION_LEVEL_MAX = 2
 
 /** The longest evidence quote a grade may carry. */
 const QUOTE_MAX = 600
+
+/** The longest "missing" line a result keeps; a longer one is cut at a word. */
+export const MISSING_MAX = 200
 
 const invalid = (): AttemptError => new AttemptError({ code: AttemptErrorCode.CoachInvalid })
 
@@ -36,6 +40,20 @@ const quoteOf = (grade: CoachCriterionGrade, source: string): string => {
     return quote
 }
 
+const squashedLine = (value: string): string => value.replaceAll(/\s+/gu, " ").trim()
+
+/**
+ * The one-line note on what a criterion still lacks: nothing at the full level; otherwise the line the coach gave, and when it
+ * gave none, the expected evidence the rubric states, in the locale the lesson is written in.
+ */
+export const missingOf = (level: number, coachLine: string, expectedEvidence: string): string => {
+    if (level >= CRITERION_LEVEL_MAX) return ""
+    const line = squashedLine(coachLine) === "" ? squashedLine(expectedEvidence) : squashedLine(coachLine)
+    if (line.length <= MISSING_MAX) return line
+    const cut = line.slice(0, MISSING_MAX - 1)
+    return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), 1)).trimEnd()}…`
+}
+
 const criterionResultOf = (
     criterion: CoachCriterion,
     grade: CoachCriterionGrade | undefined,
@@ -50,6 +68,7 @@ const criterionResultOf = (
         level: grade.level,
         evidenceQuote: quoteOf(grade, source),
         maxScore: criterion.maxScore,
+        missing: missingOf(grade.level, grade.missing ?? "", criterion.expectedEvidence),
     }
 }
 
@@ -78,5 +97,30 @@ export const gradeRubric = (activity: LessonActivity, answer: AttemptAnswer, gra
         criteria,
         score: criteria.reduce((total, entry) => total + (entry.maxScore * entry.level) / CRITERION_LEVEL_MAX, 0),
         maxScore: criteria.reduce((total, entry) => total + entry.maxScore, 0),
+    }
+}
+
+/**
+ * Completes the notes of a result stored before graders gave them: a criterion below the full level with no note takes the
+ * expected evidence of the rubric. A result that has every note comes back unchanged.
+ */
+export const withExpectedNotes = (
+    result: StoredAttemptResult,
+    expectedEvidence: Readonly<Record<string, string>>,
+): StoredAttemptResult => {
+    if (
+        result.criteria.every((criterion) => criterion.level >= CRITERION_LEVEL_MAX || (criterion.missing ?? "") !== "")
+    )
+        return result
+    return {
+        ...result,
+        criteria: result.criteria.map((criterion) => {
+            const note = criterion.missing ?? ""
+            return {
+                ...criterion,
+                missing:
+                    note === "" ? missingOf(criterion.level, "", expectedEvidence[criterion.criterionId] ?? "") : note,
+            }
+        }),
     }
 }

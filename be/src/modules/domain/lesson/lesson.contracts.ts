@@ -72,8 +72,18 @@ export interface LessonAnswer {
     readonly misconception?: string
 }
 
+/** A counter or reading shown with a simulation state, such as "Charges: 2". */
+export interface LessonSimulationFact {
+    /** What is measured. */
+    readonly label: string
+    /** Its value in this state. */
+    readonly value: string
+}
+
 /** One state of a simulation. */
 export interface LessonSimulationState {
+    /** The facts shown with the state. */
+    readonly facts?: ReadonlyArray<LessonSimulationFact>
     /** The stable id. */
     readonly id: string
     /** The short name of the state. */
@@ -86,6 +96,8 @@ export interface LessonSimulationState {
 
 /** One action the learner may take in a simulation. */
 export interface LessonSimulationAction {
+    /** True when the action opens a branch worth trying; the learner is shown how many branches were tried. */
+    readonly isBranch?: boolean
     /** The stable id. */
     readonly id: string
     /** The action as the learner reads it. */
@@ -188,6 +200,18 @@ export interface LessonWorkspaceDeclaration {
     readonly commands: LessonWorkspaceCommands
 }
 
+/** The languages a workspace ships in. */
+export const LESSON_WORKSPACE_LANGUAGES = ["typescript", "java", "csharp", "go"] as const
+
+/** One language of a workspace. */
+export type LessonWorkspaceLanguage = (typeof LESSON_WORKSPACE_LANGUAGES)[number]
+
+/** The workspace of one language as the root file declares it. */
+export interface LessonWorkspaceVariantDeclaration extends LessonWorkspaceDeclaration {
+    /** The language id. */
+    readonly language: LessonWorkspaceLanguage
+}
+
 /** One declared workspace file. */
 export interface LessonWorkspaceEntry {
     /** The path relative to the lesson folder. */
@@ -210,6 +234,12 @@ export interface LessonWorkspaceFile extends LessonWorkspaceEntry {
     readonly content: string
 }
 
+/** The workspace of one language with the text of its files. */
+export interface LessonWorkspaceVariant extends LessonWorkspaceVariantDeclaration {
+    /** The files with their text. */
+    readonly files: ReadonlyArray<LessonWorkspaceFile>
+}
+
 /** The fields of a section file (`sections/<id>/<locale>.md`) once decoded. */
 export interface LessonSectionFile {
     /** The section title. */
@@ -220,6 +250,8 @@ export interface LessonSectionFile {
     readonly sortIndex: number
     /** The markdown body. */
     readonly body: string
+    /** The teacher's mark: `false` makes the section free, `true` makes it Premium; absent leaves it to the lesson mark and the default. */
+    readonly isPremium?: boolean
     /** The activities of the section. */
     readonly activities?: ReadonlyArray<LessonActivity>
 }
@@ -248,6 +280,8 @@ export interface LessonRootFile {
     readonly sortIndex: number
     /** The overview markdown. */
     readonly body: string
+    /** The teacher's mark for every section of the lesson that carries none of its own; absent leaves it to the default. */
+    readonly isPremium?: boolean
     /** What the learner can do after the lesson. */
     readonly learningOutcomes: ReadonlyArray<LessonStatement>
     /** What the learner should know before. */
@@ -258,6 +292,8 @@ export interface LessonRootFile {
     readonly activities?: ReadonlyArray<LessonActivity>
     /** The workspace declaration. */
     readonly workspace?: LessonWorkspaceDeclaration
+    /** The workspace in each language the lesson ships, when it ships more than one. */
+    readonly workspaces?: ReadonlyArray<LessonWorkspaceVariantDeclaration>
 }
 
 /** One locale of a lesson as stored. */
@@ -268,6 +304,8 @@ export interface LessonLocaleDocument {
     readonly description: string
     /** The overview markdown. */
     readonly body: string
+    /** The teacher's mark for the sections that carry none of their own; absent when the content carries none. */
+    readonly isPremium?: boolean
     /** The outcomes. */
     readonly learningOutcomes: ReadonlyArray<LessonStatement>
     /** The prerequisites. */
@@ -288,4 +326,6 @@ export interface LessonContent {
     readonly workspace: LessonWorkspaceDeclaration | null
     /** The workspace files with their text. */
     readonly files: ReadonlyArray<LessonWorkspaceFile>
+    /** The workspace per language; absent in a version stored before the languages existed. */
+    readonly workspaces?: ReadonlyArray<LessonWorkspaceVariant>
 }

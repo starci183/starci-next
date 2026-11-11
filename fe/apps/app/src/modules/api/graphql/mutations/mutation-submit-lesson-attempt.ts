@@ -21,6 +21,13 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
             failureCode
             submittedAt
             gradedAt
+            answer {
+                optionId
+                text
+                actionIds
+                reachedStateId
+                debrief
+            }
             result {
                 correct
                 success
@@ -40,6 +47,7 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
                     level
                     evidenceQuote
                     maxScore
+                    missing
                 }
             }
         }

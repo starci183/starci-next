@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server"
 import type { ReactNode, ReactElement } from "react"
 import { SiteShell } from "@starci-next/ui"
 import { AppHeader } from "@/components/blocks/AppHeader"
+import { AppSidebar } from "@/components/blocks/AppSidebar"
 import { SignInModal } from "@/features/overlays/SignInModal"
 import { siteUrl } from "@/modules/config"
 import { appI18n } from "@/modules/i18n"
@@ -17,34 +18,29 @@ export const appLayoutMetadata = async (locale: string): Promise<Metadata> => {
     return { title: t("title"), metadataBase: new URL(siteUrl()) }
 }
 
-/** The product app's chrome, resolved on the server: the shared shell with the app header (brand, navigation, plan, account) around the routed body. */
+/** The product app's chrome, resolved on the server: the shell with the white sidebar and top bar around the routed body. */
 export const AppLayout = async (props: AppLayoutProps): Promise<ReactElement> => {
     const t = await getTranslations("app.shell")
     const locale = await getLocale()
     const hrefOf = (href: string): string => appI18n.navigation.getPathname({ href, locale })
     const homeHref = hrefOf(APP_ROUTES.home)
+    const premiumHref = hrefOf(APP_ROUTES.premium)
+    const sidebar = (presentation: "rail" | "drawer"): ReactElement => (
+        <AppSidebar presentation={presentation} />
+    )
     return (
         <SiteShell
             brand={t("brand")}
             homeHref={homeHref}
-            header={
-                <AppHeader
-                    brand={t("brand")}
-                    logoSrc="/brand/starci-logo.png"
-                    homeHref={homeHref}
-                    essentialsHref={hrefOf(APP_ROUTES.essentials)}
-                    reviewHref={hrefOf(APP_ROUTES.review)}
-                    practiceHref={hrefOf(APP_ROUTES.practice)}
-                    projectsHref={hrefOf(APP_ROUTES.projects)}
-                    interviewHref={hrefOf(APP_ROUTES.interview)}
-                    agentsHref={hrefOf(APP_ROUTES.agents)}
-                    premiumHref={hrefOf(APP_ROUTES.premium)}
-                    profileHref={hrefOf(APP_ROUTES.profile)}
-                    experienceHref={hrefOf(APP_ROUTES.experience)}
-                    reviewQueueHref={hrefOf(APP_ROUTES.reviewQueue)}
-                    signInHref={hrefOf(APP_ROUTES.signIn)}
-                />
-            }
+            header={<AppHeader brand={t("brand")} logoSrc="/brand/starci-logo.png" premiumHref={premiumHref} profileHref={hrefOf(APP_ROUTES.profile)} signInHref={hrefOf(APP_ROUTES.signIn)} />}
+            navigation={{
+                rail: sidebar("rail"),
+                label: t("sidebarLabel"),
+                drawerContent: sidebar("drawer"),
+                drawerTitle: t("menuTitle"),
+                openLabel: t("menuOpen"),
+                closeLabel: t("menuClose"),
+            }}
         >
             {props.content}
             <SignInModal />

@@ -16,8 +16,10 @@ const JSON_FIELDS: ReadonlySet<string> = new Set([
     "references",
     "activities",
     "workspace",
+    "workspaces",
 ])
 const NUMBER_FIELDS: ReadonlySet<string> = new Set(["minutesRead", "sortIndex"])
+const BOOLEAN_FIELDS: ReadonlySet<string> = new Set(["isPremium"])
 const SECTION_FILE = /^sections\/([^/]+)\/(?:vi|en)\.md$/u
 
 const issueOf = (path: string, field: string, message: string): LessonIssue => ({ path, field, message })
@@ -44,6 +46,9 @@ const decodeField = (path: string, name: string, raw: string, issues: Array<Less
     if (NUMBER_FIELDS.has(name)) {
         if (/^\d+$/u.test(raw)) return Number(raw)
         issues.push(issueOf(path, name, "expected a whole number"))
+    } else if (BOOLEAN_FIELDS.has(name)) {
+        if (raw === "true" || raw === "false") return raw === "true"
+        issues.push(issueOf(path, name, "expected true or false"))
     } else if (JSON_FIELDS.has(name)) {
         const json = readJson(raw)
         if (json.kind === "read") return json.value

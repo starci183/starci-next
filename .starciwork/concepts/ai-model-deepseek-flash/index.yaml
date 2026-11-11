@@ -1,0 +1,30 @@
+schema: work/concept@1
+id: concept.ai-model-deepseek-flash
+title: One AI model - deepseek/deepseek-v4.1-flash, no pro, no fallback
+rule: >-
+  Every AI call of StarCi Next (coach, interview grader, project coach, agent lab) uses `deepseek/deepseek-v4.1-flash`
+  through OpenRouter. There is no `deepseek-v4-pro` and no fallback model: the default fallback equals the model.
+why: >-
+  The owner fixes the cost and the behaviour to one model.
+forbids:
+  - deepseek-v4-pro as a default, an interview model or a fallback.
+  - A different default model for one door (the interview grader uses the same model; only its deadlines are longer).
+example: >-
+  With no AI_GATEWAY_* variable set, a coach grading and an interview grading both call deepseek/deepseek-v4.1-flash, and a
+  failed attempt retries the same model.
+livesIn:
+  - path: be/src/modules/integrations/ai-gateway/ai-gateway.config.ts
+    holds: DEFAULT_MODEL, DEFAULT_FALLBACK_MODEL equal to it, the interview model and its fallback equal to it
+decided:
+  by: owner
+  at: 2026-11-09
+  words:
+    - "xài 4.1 flash thôi"
+  source: Memory learning-program-outcomes (owner 2026-11-09, "every AI call uses deepseek/deepseek-v4.1-flash only, no v4-pro, no fallback model").
+status: built
+built:
+  - The defaults in ai-gateway.config.ts are the flash model for the call and the interview, and every fallback equals it (read on 2026-11-10; the old lcov report in be/coverage still shows the v4-pro fallback, a stale artifact).
+notBuilt:
+  - An environment may still name another model through AI_GATEWAY_MODEL, AI_GATEWAY_FALLBACK_MODEL and the interview keys; the owner's rule is the default, and no gate forbids an override. Not checked in the deployed environment files.
+refs:
+  - concept.premium-unlocks-all

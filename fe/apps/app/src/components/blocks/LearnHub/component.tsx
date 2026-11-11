@@ -1,23 +1,15 @@
-import { Button, Dialog, Grid, Page, Stack, Text } from "@starci/grammar/common"
+import { Button, Dialog, Divider, Page, Pane, PaneGrid, PaneSection, Stack, Text } from "@starci/grammar/common"
 import {
-    ART,
-    ArtBeside,
-    ArtImage,
-    HubLayerTile,
+    HubExperience,
     HubPathCard,
-    HubShardTile,
     HubStreakCard,
     HubTodayCard,
-    Icon,
     SlotView,
-    TitledGrid,
+    type HubExperienceView,
     type HubGoalEditorLabels,
     type HubGoalEditorState,
-    type HubLayerView,
     type HubPathLabels,
     type HubPathView,
-    type HubShardLabels,
-    type HubShardView,
     type HubStreakLabels,
     type HubStreakView,
     type HubTodayRow,
@@ -30,20 +22,27 @@ export type HubScreenView = {
     readonly todayTitle: string
     readonly today: ReadonlyArray<HubTodayRow>
     readonly streak: HubStreakView
-    readonly shards: ReadonlyArray<HubShardView>
-    readonly layers: ReadonlyArray<HubLayerView>
+    /** The verified and pending experience counts. */
+    readonly experience: { readonly verified: number; readonly pending: number }
 }
 
 /** The fake hub with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const HUB_PLACEHOLDER: HubScreenView = {
     path: undefined,
     todayTitle: "xxxxxxxxxxxxxxxx",
-    today: [1, 2, 3].map((index) => ({ id: `p-${index}`, title: "xxxxxxxxxxxx", part: "xxxxxx", href: "/" })),
+    today: [1, 2, 3].map((index) => ({
+        id: `p-${index}`,
+        title: "xxxxxxxxxxxx",
+        shard: "essentials",
+        part: "xxxxxx",
+        href: "/",
+    })),
     streak: {
-        current: "xxxxxx",
-        longest: "xxxxxx",
-        freezes: "xxxxxx",
-        weekLabel: "xxxxxxxxxx",
+        currentFigure: "0",
+        currentUnit: "xxxxxxxxxx",
+        line: "xxxxxxxxxxxxxxxxxxxx",
+        weekTitle: "xxxxxxxxxx",
+        weekLabel: "xxxxxx",
         weekPercent: 0,
         days: [1, 2, 3, 4, 5, 6, 7].map((index) => ({
             id: `d-${index}`,
@@ -52,19 +51,7 @@ export const HUB_PLACEHOLDER: HubScreenView = {
             title: "xx",
         })),
     },
-    shards: [1, 2, 3, 4, 5, 6].map((index) => ({
-        id: `s-${index}`,
-        stage: "xxxxx",
-        title: "xxxxxxxx",
-        href: "/",
-        next: "xxxxxxxxxxxxxxxx",
-        progressLabel: "xxxxxx",
-        counter: "xxxxxx",
-        isSoon: false,
-        verified: undefined,
-        pending: undefined,
-    })),
-    layers: [1, 2, 3].map((index) => ({ id: `l-${index}`, title: "xxxxxxxx", body: "xxxxxxxxxxxx", href: "/" })),
+    experience: { verified: 0, pending: 0 },
 }
 
 /** The fixed words of the hub. */
@@ -76,12 +63,7 @@ export type HubLabels = {
     readonly todayEmpty: string
     readonly streak: HubStreakLabels
     readonly goal: HubGoalEditorLabels
-    readonly shardsTitle: string
-    readonly shardsSubtitle: string
-    readonly shard: HubShardLabels
-    readonly layersTitle: string
-    readonly layersSubtitle: string
-    readonly layerOpen: string
+    readonly experience: Omit<HubExperienceView, "verified" | "pending">
     /** The words of the guide dialog opened from the page header. */
     readonly guide: {
         readonly trigger: string
@@ -120,47 +102,6 @@ export type LearnHubBaseProps = {
     }
 }
 
-/** What the today section is given. */
-type TodaySectionProps = {
-    readonly view: HubScreenView
-    readonly labels: HubLabels
-    readonly goal: HubGoalEditorState
-    readonly onGoalOpenChange: (isOpen: boolean) => void
-    readonly onGoalChoose: (value: string) => void
-    readonly onGoalSave: () => void
-    readonly isLoading: boolean
-}
-
-/** Today beside the streak card. */
-const TodaySection = (props: TodaySectionProps) => (
-    <Grid
-        kind="main-rail"
-        primary={
-            <HubTodayCard
-                label={props.labels.todayLabel}
-                summary={props.view.todayTitle}
-                rows={props.view.today}
-                emptyLabel={props.labels.todayEmpty}
-                isLoading={props.isLoading}
-            />
-        }
-        rail={
-            <HubStreakCard
-                view={props.view.streak}
-                labels={props.labels.streak}
-                goalState={props.goal}
-                goalLabels={props.labels.goal}
-                onGoalOpenChange={props.onGoalOpenChange}
-                onGoalChoose={props.onGoalChoose}
-                onGoalSave={props.onGoalSave}
-                isLoading={props.isLoading}
-            />
-        }
-        railWidth="medium"
-        align="start"
-    />
-)
-
 /** What the guide dialog is given. */
 type GuideProps = {
     readonly labels: HubLabels["guide"]
@@ -175,11 +116,7 @@ const Guide = (props: GuideProps) => (
         onOpenChange={props.onOpenChange}
         title={props.labels.title}
         closeLabel={props.labels.close}
-        trigger={
-            <Button intent="neutral" startContent={<Icon />}>
-                {props.labels.trigger}
-            </Button>
-        }
+        trigger={<Button intent="neutral">{props.labels.trigger}</Button>}
     >
         <Text>{props.labels.description}</Text>
     </Dialog>
@@ -192,63 +129,123 @@ const SignInAction = (props: Pick<LearnHubBaseProps["props"], "labels" | "links"
     </Button>
 )
 
-/**
- * Draws the learn hub the way the canvas does: the active path (or the invitation to choose a goal), today beside the streak card,
- * the six learning-shard cards, then the three layers apart. Data status (loading, empty, error with retry, signed out) belongs to the slot.
- */
-export const LearnHubBase = (props: LearnHubBaseProps) => (
-    <Page
-        header={{
-            title: props.props.labels.pageTitle,
-            description: props.props.labels.pageDescription,
-            actions: (
-                <Guide
-                    labels={props.props.labels.guide}
-                    isOpen={props.props.isGuideOpen}
-                    onOpenChange={props.on.guideOpenChange}
-                />
-            ),
-        }}
-    >
-        <SlotView
-            slot={props.props.slot}
-            placeholder={props.props.placeholder}
-            labels={{ ...props.props.slotLabels, forbidden: props.props.labels.signedOut.title }}
-            forbiddenDescription={props.props.labels.signedOut.body}
-            forbiddenAction={<SignInAction labels={props.props.labels} links={props.props.links} />}
-            onRetry={props.on.retry}
-            render={(view, isLoading) => (
-                <Stack gap="region">
-                    <ArtBeside art={<ArtImage asset={ART.journey} />}>
-                        <HubPathCard
-                            view={view.path}
-                            labels={props.props.labels.path}
-                            chooseHref={props.props.links.chooseHref}
-                            continueHref={props.props.links.continueHref}
-                            isLoading={isLoading}
-                        />
-                    </ArtBeside>
-                    <TodaySection
-                        view={view}
-                        labels={props.props.labels}
-                        goal={props.props.goal}
-                        onGoalOpenChange={props.on.goalOpenChange}
-                        onGoalChoose={props.on.goalChoose}
-                        onGoalSave={props.on.goalSave}
-                        isLoading={isLoading}
-                    />
-                    <TitledGrid title={props.props.labels.shardsTitle} subtitle={props.props.labels.shardsSubtitle}>
-                        {view.shards.map((shard) => (
-                            <HubShardTile key={shard.id} shard={shard} labels={props.props.labels.shard} />
-                        ))}
-                    </TitledGrid>
-                    <TitledGrid title={props.props.labels.layersTitle} subtitle={props.props.labels.layersSubtitle}>
-                        {view.layers.map((layer) => (
-                            <HubLayerTile key={layer.id} layer={layer} openLabel={props.props.labels.layerOpen} />
-                        ))}
-                    </TitledGrid>
-                </Stack>
-            )}
+/** What the well is drawn from. */
+type WellProps = {
+    readonly view: HubScreenView
+    readonly isLoading: boolean
+    readonly props: LearnHubBaseProps["props"]
+}
+
+/** The well: the active path (or the invitation to choose a goal), then today as ONE list card; each card names itself on the well above it. */
+const HubWell = (props: WellProps) => (
+    <Stack gap="region">
+        <HubPathCard
+            view={props.view.path}
+            labels={props.props.labels.path}
+            chooseHref={props.props.links.chooseHref}
+            continueHref={props.props.links.continueHref}
+            isLoading={props.isLoading}
         />
-    </Page>
+        <HubTodayCard
+            label={props.props.labels.todayLabel}
+            count={props.view.today.length}
+            summary={props.view.todayTitle}
+            rows={props.view.today}
+            emptyLabel={props.props.labels.todayEmpty}
+            isLoading={props.isLoading}
+        />
+    </Stack>
 )
+
+/** What the aside is drawn from. */
+type RailProps = {
+    readonly view: HubScreenView
+    readonly isLoading: boolean
+    readonly props: LearnHubBaseProps["props"]
+    readonly on: LearnHubBaseProps["on"]
+}
+
+/** The aside pane: the streak, the weekly goal and the experience as sections with a divider between (never floating cards). */
+const HubRail = (props: RailProps) => (
+    <Stack gap="section">
+        <HubStreakCard
+            view={props.view.streak}
+            labels={props.props.labels.streak}
+            goalState={props.props.goal}
+            goalLabels={props.props.labels.goal}
+            onGoalOpenChange={props.on.goalOpenChange}
+            onGoalChoose={props.on.goalChoose}
+            onGoalSave={props.on.goalSave}
+            isLoading={props.isLoading}
+        />
+        <Divider semantics="presentation" />
+        <HubExperience
+            view={{ ...props.props.labels.experience, ...props.view.experience }}
+            isLoading={props.isLoading}
+        />
+    </Stack>
+)
+
+/** What the aside draws: the settled hub, the placeholder while the first read runs, nothing when the read failed or was refused (the well says why). */
+const railViewOf = (props: LearnHubBaseProps["props"]): { view: HubScreenView; isLoading: boolean } | undefined => {
+    if ("items" in props.slot) return { view: props.slot.items, isLoading: false }
+    if ("isLoading" in props.slot) return { view: props.placeholder, isLoading: true }
+    return undefined
+}
+
+/**
+ * Draws the learn hub the way the approved page is drawn: the white band (title, the 12 muted sublabel, the guide), the well with the
+ * active path and today as two separate cards, and the white aside with the streak, the weekly goal and the experience. Data status
+ * (loading, empty, error with retry, signed out) belongs to the slot.
+ */
+export const LearnHubBase = (props: LearnHubBaseProps) => {
+    const rail = railViewOf(props.props)
+    return (
+        <Page
+            chrome="panes"
+            layout="workspace"
+            header={{
+                breadcrumbs: "root",
+                title: props.props.labels.pageTitle,
+                description: props.props.labels.pageDescription,
+                actions: (
+                    <Guide
+                        labels={props.props.labels.guide}
+                        isOpen={props.props.isGuideOpen}
+                        onOpenChange={props.on.guideOpenChange}
+                    />
+                ),
+            }}
+        >
+            <PaneGrid
+                label={props.props.labels.pageTitle}
+                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+                rows={{ base: ["auto", "fill"], wide: ["fill"] }}
+            >
+                <Pane area="main" scroll label={props.props.labels.pageTitle} content="cards">
+                    <PaneSection>
+                        <SlotView
+                            slot={props.props.slot}
+                            placeholder={props.props.placeholder}
+                            labels={{ ...props.props.slotLabels, forbidden: props.props.labels.signedOut.title }}
+                            forbiddenDescription={props.props.labels.signedOut.body}
+                            forbiddenAction={<SignInAction labels={props.props.labels} links={props.props.links} />}
+                            onRetry={props.on.retry}
+                            render={(view, isLoading) => (
+                                <HubWell view={view} isLoading={isLoading} props={props.props} />
+                            )}
+                        />
+                    </PaneSection>
+                </Pane>
+                <Pane area="aside" surface scroll label={props.props.labels.streak.title}>
+                    {rail === undefined ? null : (
+                        <PaneSection>
+                            <HubRail view={rail.view} isLoading={rail.isLoading} props={props.props} on={props.on} />
+                        </PaneSection>
+                    )}
+                </Pane>
+            </PaneGrid>
+        </Page>
+    )
+}

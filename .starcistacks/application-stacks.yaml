@@ -101,6 +101,7 @@ environments:
     # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (postgres, the mail sink, the
     # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:
+      basePort: 3000
       ports:
         db: 5432
         mail: 1025
@@ -111,7 +112,7 @@ environments:
         landing: 3002
         ingress: 3080
         keycloak: 8089
-      dirs: [keycloak-tls]
+      dirs: [keycloak-tls, relay-dev]
       services:
         - {name: postgres, wait: healthy}
         - {name: mail, wait: healthy}
@@ -201,8 +202,10 @@ environments:
             MAIL_FROM: no-reply@starci-next.localhost
             MAIL_FROM_NAME: Starci Next
             MAIL_DEFAULT_LANGUAGE: en
-            # One relay replica: the in-process hub (a shared hub is not built yet). Dev signs manifests with a key of the process.
+            # One relay replica: the in-process hub (a shared hub is not built yet).
             REALTIME_HUB: memory
+            # Dev signs task manifests with a key pair made once by `node scripts/dev/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
+            RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
             HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
             HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
           health: {url: "http://localhost:${port.relay}/health/live"}

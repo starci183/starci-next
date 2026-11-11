@@ -43,6 +43,16 @@ const simulationWith = (change: (simulation: LessonSimulation) => Partial<Lesson
 })
 
 describe("validateLesson", () => {
+    it("refuses locales that disagree on the teacher's isPremium mark", async () => {
+        const validate = await build()
+        const issues = validate(parsedOf({}, { root: { ...demoRootOf("en"), isPremium: false } }))
+
+        expect(issues.map((issue) => issue.message)).toEqual([
+            'differs from vi.md: lacks "premium-mark default"',
+            'differs from en.md: lacks "premium-mark false"',
+        ])
+    })
+
     it("accepts a lesson whose ids resolve, whose activities can be graded and whose locales agree", async () => {
         const validate = await build()
 

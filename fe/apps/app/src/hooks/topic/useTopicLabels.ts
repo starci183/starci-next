@@ -12,6 +12,8 @@ export const useTopicLabels = (): TopicLabels => {
         pageTitle: t("catalog.title"),
         breadcrumbs: t("study.breadcrumbs"),
         path: t("topic.path"),
+        ringsLabel: t("topic.ringsLabel"),
+        doneLabel: t("topic.doneLabel"),
         pathEmpty: t("topic.pathEmpty"),
         asideEmpty: t("catalog.asideEmpty"),
         prerequisites: t("topic.prerequisites"),

@@ -1,0 +1,53 @@
+schema: work/concept@1
+id: concept.projects-bring-your-own
+title: Dự án - the learner brings their own projects, there is no sample
+rule: >-
+  A learner creates as many projects as they like, on any topic, and puts the `starci/` folder into each. There is no
+  StarCi Shop sample project and no sample steps, hints or solution. A project's milestones are lists of Bản chất concepts;
+  a concept is proved by tagged tests, e2e flows, StarCi probes or an AI code read. The StarCi harness is not forced on the
+  learner's project: no spec records, no architecture lint, no mutation score. The content repo holds only the
+  milestone and concept catalog for projects. Dự án is built after Bản chất.
+why: >-
+  The projects model is "many projects, any topic"; a fixed sample contradicts it and teaches the sample, not the learner's
+  own work.
+forbids:
+  - Building or seeding a sample project (no StarCi Shop), sample steps, hints or a solution.
+  - Forcing the StarCi harness, spec records, architecture lint or mutation on a learner's project.
+  - A limit of one project per learner.
+example: >-
+  A learner makes "my-blog-api" and "shop-bot", copies the starci/ folder into both, and sees "3/8 concept đã chứng minh"
+  on each; neither starts from a template.
+livesIn:
+  - path: be/src/modules/domain/project
+    holds: projects, milestones, evidence slots (test, e2e, probe, AI read), CI runs, the AI code read
+  - path: be/src/modules/domain/project/persistence/migrations/1797650000002-drop-project-sample.ts
+    holds: the column that stored a sample is dropped
+  - path: fe/apps/app/src/app/[locale]/(app)/projects
+    holds: list, new, detail and milestone routes
+  - path: fe/apps/app/src/components/blocks/ProjectsList
+    holds: the list card with tabs Tất cả, Đang luyện, Đã chứng minh and the Máy của bạn aside
+decided:
+  by: owner
+  at: 2026-11-09
+  words:
+    - "với kèm AI đọc code là chốt phần projects nhé, mỗi người dc làm nhiều projects"
+    - "ủa giờ giữ án ngẫu nhiều bỏ folder starci vào mà nhỉ? just ask k theo starci shop nữa"
+    - "xong tính năng essential trước nhé, rồi projects"
+  source: >-
+    Memory learning-program-outcomes (owner 2026-11-08 projects model), memory projects-no-sample (owner 2026-11-09,
+    verbatim), and the owner's 2026-11-10 priority ruling.
+status: partial
+built:
+  - The project, milestone and evidence modules, the four evidence slots and the AI code read exist in be/ (read, not run).
+  - The sample column was dropped by a migration; no StarCi Shop sample was found in be/src, fe/apps or fe/packages.
+  - The routes and the reworked list, new and detail pages exist in fe/ (other lanes were still editing them on 2026-11-10).
+notBuilt:
+  - Not verified that a learner may create many projects (no limit was looked for).
+  - The "starci/ folder" contract was not read against the CLI.
+  - Proof from CI depends on the GitHub attestation, which is not composed; see concept.learner-cli-relay-proof.
+  - A development seed in career/experience-seed.service.ts names a sample project "dev-shop" for sample experience items; it is development data, raised in the report.
+refs:
+  - concept.learning-program
+  - concept.essentials-lessons
+  - concept.learner-cli-relay-proof
+  - concept.content-repo

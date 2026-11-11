@@ -11,11 +11,11 @@ export interface ContentManifestKind {
     /** The folder that holds it. */
     readonly folder: string
     /** How its files are written. */
-    readonly format: "concept-v2" | "mount-md" | "yaml"
+    readonly format: "concept-v2" | "mount-md" | "yaml" | "files"
     /** The schema its YAML files follow. */
     readonly schema?: string | undefined
     /** Which repository owns the files. */
-    readonly source: "this-repo" | "starci-lab/data"
+    readonly source: "this-repo" | "starci-lab/data" | "both"
     /** The pattern the paths of its files match. */
     readonly files?: string | undefined
     /** The importer that reads it. */
@@ -38,9 +38,9 @@ export interface ContentManifest {
 const kindSchema = z.object({
     id: z.string().min(1).max(TEXT_MAX),
     folder: z.string().min(1).max(TEXT_MAX),
-    format: z.enum(["concept-v2", "mount-md", "yaml"]),
+    format: z.enum(["concept-v2", "mount-md", "yaml", "files"]),
     schema: z.string().max(TEXT_MAX).optional(),
-    source: z.enum(["this-repo", "starci-lab/data"]),
+    source: z.enum(["this-repo", "starci-lab/data", "both"]),
     files: z.string().max(PATTERN_MAX).optional(),
     importer: z.string().max(TEXT_MAX).optional(),
 })

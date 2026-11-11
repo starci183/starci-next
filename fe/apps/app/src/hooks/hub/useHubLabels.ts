@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { APP_ROUTES } from "@/modules/routes"
 import type { HubLabelSet } from "./hub.shared"
 
 /** The weekly goals the learner may choose, as the back end accepts them. */
@@ -12,7 +13,7 @@ export const useHubLabels = (status: string): HubLabelSet => {
     const guide = useTranslations("app.guide")
     return {
         pageTitle: t("pageTitle"),
-        pageDescription: t("shards.subtitle"),
+        pageDescription: t("pageSubtitle"),
         path: {
             eyebrow: t("path.eyebrow"),
             nextLabel: t("path.nextLabel"),
@@ -26,7 +27,6 @@ export const useHubLabels = (status: string): HubLabelSet => {
         todayEmpty: t("today.empty"),
         streak: {
             title: t("streak.title"),
-            rule: t("streak.rule"),
             goalBar: t("streak.goalBar"),
             dayStripLabel: t("streak.title"),
         },
@@ -41,12 +41,13 @@ export const useHubLabels = (status: string): HubLabelSet => {
             cancel: t("streak.goalCancel"),
             status,
         },
-        shardsTitle: t("shards.title"),
-        shardsSubtitle: t("shards.subtitle"),
-        shard: { open: t("shards.open"), soon: t("shards.soon") },
-        layersTitle: t("layers.title"),
-        layersSubtitle: t("layers.subtitle"),
-        layerOpen: t("layers.open"),
+        experience: {
+            title: t("experience.title"),
+            verifiedLabel: t("experience.verified"),
+            pendingLabel: t("experience.pending"),
+            moreLabel: t("experience.more"),
+            moreHref: APP_ROUTES.experience,
+        },
         guide: {
             trigger: guide("open"),
             title: guide("title"),

@@ -5,14 +5,17 @@ import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
 import { SELECT_VERSION } from "./persistence/lesson.sql"
-import { LESSON_FREE_PHASE } from "./lesson.contracts"
+import { needsPremium } from "./lesson-access.policy"
 import type {
     LessonAccessParams,
     LessonActivityParams,
+    LessonOutline,
     LessonPlan,
     LessonServerActivity,
 } from "./lesson-read.contracts"
 import { findActivity } from "./lesson-activity.policy"
+import { outlineOf } from "./lesson-outline.policy"
+import type { LessonLocale } from "./lesson.contracts"
 
 @Injectable()
 /**
@@ -62,9 +65,24 @@ export class LessonContentService {
         }
     }
 
-    /** Lets the free phase through for any learner and refuses every other phase, review included, without Premium. */
+    /**
+     * The activities of a lesson version in one locale with their phase, outcomes and diagnostic mark, and the outcome ids of the
+     * lesson: what a progress read judges phases and outcomes against. Not found when the version does not exist.
+     */
+    async outline(lessonId: string, version: string, locale: LessonLocale): Promise<LessonOutline> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_VERSION, [lessonId, version])
+        const row = rows[0]
+        if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
+        return outlineOf(row.content.locales[locale])
+    }
+
+    /**
+     * Lets free content through for any learner and refuses the rest without Premium. Content is free when the teacher marked it
+     * `isPremium: false`; with no mark only the free phase is free, and review is not.
+     */
     async requireAccess(params: LessonAccessParams): Promise<void> {
-        if (params.phase === LESSON_FREE_PHASE || (await this.entitlement.isPremium(params.learnerId))) return
+        if (!needsPremium(params.phase, params.isPremium) || (await this.entitlement.isPremium(params.learnerId)))
+            return
         throw new LessonError({ code: LessonErrorCode.PremiumRequired })
     }
 }

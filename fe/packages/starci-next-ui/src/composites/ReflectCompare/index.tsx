@@ -3,6 +3,8 @@ import { SurfaceCard } from "@starci/grammar/common"
 /** The words of the comparison, resolved by its block. */
 export type ReflectCompareLabels = {
     readonly title: string
+    /** The head of the first column, the noun of what is compared. */
+    readonly criterion: string
     readonly before: string
     readonly after: string
     /** Said for a criterion with no grade yet. */
@@ -27,16 +29,24 @@ type ReflectCompareProps = {
 /** The words for a level, or the "no grade" words for -1. */
 const wordsOf = (level: number, labels: ReflectCompareLabels): string => labels.levels[level] ?? labels.none
 
-/** The before and after of each criterion: the opening diagnostic against the reflection graded by the same rubric. */
+/** The before and after of each criterion: the opening diagnostic against the reflection graded by the same rubric, as a table. */
 export const ReflectCompare = (props: ReflectCompareProps) => (
     <SurfaceCard
-        kind="list"
+        kind="table"
         label={props.labels.title}
         empty={props.labels.empty}
-        items={props.rows.map((row) => ({
+        columns={[
+            { id: "criterion", label: props.labels.criterion },
+            { id: "before", label: props.labels.before },
+            { id: "after", label: props.labels.after },
+        ]}
+        rows={props.rows.map((row) => ({
             id: row.id,
-            title: row.criterion,
-            description: `${props.labels.before}: ${wordsOf(row.before, props.labels)} → ${props.labels.after}: ${wordsOf(row.after, props.labels)}`,
+            cells: {
+                criterion: row.criterion,
+                before: wordsOf(row.before, props.labels),
+                after: wordsOf(row.after, props.labels),
+            },
         }))}
     />
 )

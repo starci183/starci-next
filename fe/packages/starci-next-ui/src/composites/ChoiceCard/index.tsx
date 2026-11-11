@@ -1,4 +1,4 @@
-import { Alert, Button, RadioGroup, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Stack, SurfaceCard } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a choice card, resolved by its block. */
@@ -37,37 +37,60 @@ type ChoiceCardProps = {
     readonly onSubmit: () => void
 }
 
-/** What the verdict needs of the card. */
-type VerdictProps = Pick<ChoiceCardProps, "status" | "isCorrect" | "labels" | "plansHref">
-
-/** The verdict under the options: the grade once the server answered it, the notice of the attempt otherwise. */
-const Verdict = (props: VerdictProps) => {
-    if (props.status === "graded") {
-        return (
-            <Alert
-                tone={props.isCorrect ? "affirmative" : "negative"}
-                title={props.isCorrect ? props.labels.correct : props.labels.incorrect}
-            />
-        )
-    }
-    return (
-        <AttemptNotice
-            status={props.status}
-            saved={props.labels.saved}
-            grading={props.labels.grading}
-            failedSaved={props.labels.failedSaved}
-            error={props.labels.error}
-            premium={props.labels.premium}
-            plansLabel={props.labels.plans}
-            plansHref={props.plansHref}
-        />
-    )
-}
-
 /** The label of the submit button from where the attempt stands. */
 const submitLabelOf = (props: Pick<ChoiceCardProps, "status" | "labels">): string => {
     if (props.status === "pending" || props.status === "grading") return props.labels.pending
     return props.status === "error" ? props.labels.retry : props.labels.submit
+}
+
+/** What the feedback card needs. */
+type FeedbackProps = Pick<ChoiceCardProps, "isCorrect" | "labels">
+
+/** The verdict after the grade as one row; its tone mark says right or wrong. The reason of each option is the subtitle of its row above. */
+const Feedback = (props: FeedbackProps) => {
+    const words = props.isCorrect ? props.labels.correct : props.labels.incorrect
+    return (
+        <SurfaceCard
+            kind="list"
+            ariaLabel={words}
+            empty={words}
+            items={[{ id: "verdict", title: words, state: props.isCorrect ? "affirmative" : "negative" }]}
+        />
+    )
+}
+
+/** What the form footer needs. */
+type FooterProps = Pick<ChoiceCardProps, "status" | "pickedId" | "labels" | "plansHref" | "onSubmit">
+
+/** The form footer: the attempt's notice, then the primary submit with its icon. */
+const FormFooter = (props: FooterProps) => {
+    const isPending = props.status === "pending" || props.status === "grading"
+    const isSettled = props.status === "graded" || props.status === "saved"
+    return (
+        <Stack gap="row">
+            <AttemptNotice
+                status={props.status}
+                saved={props.labels.saved}
+                grading={props.labels.grading}
+                failedSaved={props.labels.failedSaved}
+                error={props.labels.error}
+                premium={props.labels.premium}
+                plansLabel={props.labels.plans}
+                plansHref={props.plansHref}
+            />
+            <Cluster gap="inline" justify="end">
+                <Button
+                    intent="commit"
+                    startGlyph="send"
+                    isPending={isPending}
+                    isDisabled={props.pickedId === "" || isSettled}
+                    onPress={props.onSubmit}
+                >
+                    {submitLabelOf(props)}
+                </Button>
+            </Cluster>
+        </Stack>
+    )
 }
 
 /**
@@ -75,40 +98,54 @@ const submitLabelOf = (props: Pick<ChoiceCardProps, "status" | "labels">): strin
  * explanation come back from the attempt and are never held here before the grade.
  */
 export const ChoiceCard = (props: ChoiceCardProps) => {
-    const isPending = props.status === "pending" || props.status === "grading"
+    const isBusy = props.status === "pending" || props.status === "grading"
     const isSettled = props.status === "graded" || props.status === "saved"
+    if (props.status === "premium") {
+        return (
+            <SurfaceCard ariaLabel={props.prompt}>
+                <EmptyNotice
+                    frame="frameless"
+                    message={props.labels.premium}
+                    actionIntent="neutral"
+                    actionLabel={props.labels.plans}
+                    actionHref={props.plansHref}
+                />
+            </SurfaceCard>
+        )
+    }
     return (
-        <SurfaceCard ariaLabel={props.prompt}>
-            <Stack gap="row">
-                <RadioGroup
-                    label={props.prompt}
-                    name={props.prompt}
-                    options={props.options.map((option) => ({
-                        value: option.id,
-                        label: option.label,
-                        ...(props.explanations[option.id] === undefined
-                            ? {}
-                            : { description: props.explanations[option.id] }),
-                    }))}
-                    value={props.pickedId === "" ? null : props.pickedId}
-                    isDisabled={isPending || isSettled}
-                    onValueChange={props.onPick}
-                />
-                <Verdict
-                    status={props.status}
-                    isCorrect={props.isCorrect}
-                    labels={props.labels}
-                    plansHref={props.plansHref}
-                />
-                <Button
-                    intent="commit"
-                    isPending={isPending}
-                    isDisabled={props.pickedId === "" || isSettled}
-                    onPress={props.onSubmit}
-                >
-                    {submitLabelOf(props)}
-                </Button>
-            </Stack>
-        </SurfaceCard>
+        <Stack gap="row">
+            <SurfaceCard
+                kind="select"
+                selectionMode="single"
+                label={props.prompt}
+                items={props.options.map((option) => {
+                    const explanation = props.explanations[option.id]
+                    return {
+                        id: option.id,
+                        title: option.label,
+                        isDisabled: isBusy || isSettled,
+                        ...(explanation === undefined ? {} : { subtitle: explanation }),
+                    }
+                })}
+                value={props.pickedId === "" ? null : props.pickedId}
+                onChange={props.onPick}
+                footers={[
+                    {
+                        kind: "custom",
+                        children: (
+                            <FormFooter
+                                status={props.status}
+                                pickedId={props.pickedId}
+                                labels={props.labels}
+                                plansHref={props.plansHref}
+                                onSubmit={props.onSubmit}
+                            />
+                        ),
+                    },
+                ]}
+            />
+            {props.status === "graded" ? <Feedback isCorrect={props.isCorrect} labels={props.labels} /> : null}
+        </Stack>
     )
 }

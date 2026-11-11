@@ -1,10 +1,12 @@
 import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
-import { LESSON_FREE_PHASE, type LessonActivity, type LessonLocale, type LessonSection } from "./lesson.contracts"
+import type { LessonActivity, LessonLocale, LessonLocaleDocument, LessonSection } from "./lesson.contracts"
+import { needsPremium, premiumMarkOf } from "./lesson-access.policy"
 import type {
     LessonActivityView,
     LessonCatalogItemView,
     LessonSectionView,
     LessonView,
+    LessonWorkspaceVariantView,
     LessonWorkspaceView,
 } from "./lesson-read.contracts"
 
@@ -54,8 +56,13 @@ const toActivityView = (activity: LessonActivity): LessonActivityView => ({
                   label: state.label,
                   observation: state.observation,
                   isSuccess: state.isSuccess,
+                  facts: (state.facts ?? []).map((fact) => ({ label: fact.label, value: fact.value })),
               })),
-              actions: activity.simulation.actions.map((action) => ({ id: action.id, label: action.label })),
+              actions: activity.simulation.actions.map((action) => ({
+                  id: action.id,
+                  label: action.label,
+                  isBranch: action.isBranch === true,
+              })),
               transitions: activity.simulation.transitions.map((transition) => ({
                   id: transition.id,
                   fromStateId: transition.fromStateId,
@@ -77,8 +84,12 @@ const toActivityView = (activity: LessonActivity): LessonActivityView => ({
         : null,
 })
 
-const toSectionView = (section: LessonSection, isPremium: boolean): LessonSectionView => {
-    const locked = section.phase !== LESSON_FREE_PHASE && !isPremium
+const toSectionView = (
+    section: LessonSection,
+    document: LessonLocaleDocument,
+    isPremium: boolean,
+): LessonSectionView => {
+    const locked = needsPremium(section.phase, premiumMarkOf(section, document)) && !isPremium
     return {
         id: section.id,
         sortIndex: section.sortIndex,
@@ -99,6 +110,16 @@ const toWorkspaceView = (row: VersionRow, isPremium: boolean): LessonWorkspaceVi
         files: files.map((file) => ({ path: file.path, role: file.role, content: file.content })),
     }
 }
+
+const toWorkspaceVariants = (row: VersionRow, isPremium: boolean): ReadonlyArray<LessonWorkspaceVariantView> =>
+    isPremium
+        ? (row.content.workspaces ?? []).map((variant) => ({
+              language: variant.language,
+              runtime: variant.runtime,
+              commands: { windows: variant.commands.windows ?? null, unix: variant.commands.unix ?? null },
+              files: variant.files.map((file) => ({ path: file.path, role: file.role, content: file.content })),
+          }))
+        : []
 
 /**
  * The public projection of a stored lesson version: an explicit allowlist, so a field added to the stored content stays
@@ -128,7 +149,8 @@ export const toLessonView = (row: VersionRow, locale: LessonLocale, isPremium: b
             citation: reference.citation,
         })),
         isPremium,
-        sections: document.sections.map((section) => toSectionView(section, isPremium)),
+        sections: document.sections.map((section) => toSectionView(section, document, isPremium)),
         workspace: toWorkspaceView(row, isPremium),
+        workspaces: toWorkspaceVariants(row, isPremium),
     }
 }

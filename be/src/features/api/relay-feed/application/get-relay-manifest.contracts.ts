@@ -6,4 +6,10 @@ export interface GetRelayManifestRequest {
     readonly device: DevicePrincipal
     /** The task (a project id). */
     readonly taskId: string
+    /** The milestone of a project run, or undefined for a plain task. */
+    readonly milestone?: string | undefined
+    /** The test command of the project's `starci/project.yaml`, or undefined. */
+    readonly testCommand?: string | undefined
+    /** The JUnit report path of the project's `starci/project.yaml`, or undefined. */
+    readonly testReport?: string | undefined
 }

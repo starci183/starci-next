@@ -4,8 +4,10 @@ import { ToastProvider } from "@heroui/react"
 import { viewerCacheKey, viewerSwrConfig, type ViewerId } from "@starci/next-data"
 import { ThemeProvider } from "next-themes"
 import type { ReactNode } from "react"
+import { RouterProvider } from "react-aria-components"
 import { SWRConfig, useSWRConfig } from "swr"
 import { useSignInRedirect } from "@/hooks/auth"
+import { useGrammarRouting } from "@/hooks/locale"
 import { useViewerId } from "@/hooks/viewer"
 import { useAuthSessionEffect } from "@/hooks/effects"
 import { SwrSideEffects } from "@/hooks/swr"
@@ -58,6 +60,16 @@ const renderViewerScope = (viewerId: ViewerId, onError: (error: unknown) => void
 const ViewerSwrScope = (props: AppProvidersProps): ReactNode =>
     renderViewerScope(useViewerId(), useSignInRedirect(), props.children)
 
+/** The Grammar router context around the tree (see {@link useGrammarRouting}). */
+const renderRouting = (routing: ReturnType<typeof useGrammarRouting>, children: ReactNode): ReactNode => (
+    <RouterProvider navigate={routing.navigate} useHref={routing.hrefOf}>
+        {children}
+    </RouterProvider>
+)
+
+/** Client routing for Grammar's destinations: an internal row or link is a real anchor that navigates without a reload. */
+const GrammarRouting = (props: AppProvidersProps): ReactNode => renderRouting(useGrammarRouting(), props.children)
+
 /**
  * The one client provider stack the locale layout mounts, outer to inner: the theme (light and dark through the `.light` /
  * `.dark` class the grammar and the brand layer read, the system theme by default), the redux store, the session effect, the
@@ -68,7 +80,9 @@ export const AppProviders = (props: AppProvidersProps) => (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <ReduxProvider>
             <AuthSessionEffect />
-            <ViewerSwrScope>{props.children}</ViewerSwrScope>
+            <GrammarRouting>
+                <ViewerSwrScope>{props.children}</ViewerSwrScope>
+            </GrammarRouting>
         </ReduxProvider>
     </ThemeProvider>
 )

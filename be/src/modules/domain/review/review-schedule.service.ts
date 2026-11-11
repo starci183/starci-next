@@ -2,9 +2,10 @@ import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { LessonContentService } from "@modules/domain/lesson"
 import { InjectClock, type Clock } from "@modules/platform/clock"
-import { InjectPrimaryEntityManager } from "@modules/platform/database"
-import type { GradedActivityRow } from "./persistence/review.rows"
-import { INSERT_RETRIEVAL_STATE, SELECT_GRADED_ACTIVITIES } from "./persistence/review.sql"
+import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
+import type { LessonReviewSlotView } from "./review.contracts"
+import type { GradedActivityRow, LessonRetrievalRow } from "./persistence/review.rows"
+import { INSERT_RETRIEVAL_STATE, SELECT_GRADED_ACTIVITIES, SELECT_LESSON_RETRIEVAL } from "./persistence/review.sql"
 import { addDays, dayOf } from "@modules/domain/streak"
 
 /** The most activities of one lesson read. */
@@ -66,5 +67,20 @@ export class ReviewScheduleService {
         if (!plan.required.every((activityId) => done.has(activityId))) return false
         await this.enqueueLesson(learnerId, lessonId, version, this.clock.now())
         return true
+    }
+
+    /** The reviews a lesson opened for a learner (the 1, 7 and 21 day retrievals), soonest first; empty before the lesson is complete. */
+    async lessonSchedule(learnerId: string, lessonId: string): Promise<ReadonlyArray<LessonReviewSlotView>> {
+        const rows: Array<LessonRetrievalRow> = await this.entityManager.query(SELECT_LESSON_RETRIEVAL, [
+            learnerId,
+            lessonId,
+            LIST_ROWS_MAX,
+        ])
+        return rows.map((row) => ({
+            activityId: row.activity_id,
+            afterDays: row.after_days,
+            dueOn: row.due_on,
+            done: row.status === "done",
+        }))
     }
 }

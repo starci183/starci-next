@@ -178,7 +178,7 @@ const Rail = (props: PieceProps) => (
                 <Text size="sm" tone="muted">
                     {props.base.labels.streakNote}
                 </Text>
-                <Link href={props.base.hubHref}>{props.base.labels.hubLink}</Link>
+                <Link variant="plain" href={props.base.hubHref}>{props.base.labels.hubLink}</Link>
             </Stack>
         </SurfaceCard>
     </Stack>

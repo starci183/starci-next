@@ -1,0 +1,56 @@
+schema: work/concept@1
+id: concept.theme-and-type
+title: Theme, font and type scale - the owner's values, exact
+rule: >-
+  The theme of starci-next is the HeroUI theme file the owner pasted on 2026-11-10 (D:/starci-tmp/claude-20261105/lanes/starci-next-theme-20261110.css),
+  installed verbatim after `@heroui/styles`; its values are exact and no colour is swapped for another, even for
+  contrast - a concern is raised as a question. The font is IBM Plex Sans (owner 2026-11-11), one font for the whole app including markdown lesson
+  content, through next/font/google with subsets latin and vietnamese. All UI text is 14 px, small names (meta, badges, counts, timestamps) 12 px; there is no 13 and no 16. The page
+  title is 18 and big figures 20 (display sizes); hierarchy comes from weight and the muted tone. Links use the exact
+  primary colour. Dark mode is never drawn and never hand-picked: it resolves only from theme tokens, with no literal dark
+  value in the app.
+why: >-
+  Design colours are the owner's brand decision, an accessibility trade-off is the owner's to make; the owner measured 16 px
+  labels live and rejected them.
+forbids:
+  - Replacing a theme value or using another token because a contrast looks low.
+  - A font other than IBM Plex Sans anywhere in the app (no second font for lesson content), or a font size of 13 or 16 for UI text.
+  - A literal dark value or a hex colour in app code.
+  - The accent colour on a standalone secondary or navigation link (back, cancel, "Xem Premium", aside and resource links, legal footer), or a pink/purple ground on an informative Alert or Toast.
+  - A second brand palette file (the old Academy palette #7547ff).
+example: >-
+  A section title is 14 px at weight 500 to 600 in the foreground; its count is a 12 px muted chip; no title is made
+  bigger to look important.
+livesIn:
+  - path: fe/apps/app/src/app/globals.css
+    holds: the owner theme, imported after @heroui/styles, identical to the owner's file (compared on 2026-11-10 from the first :root block)
+  - path: fe/apps/app/src/modules/brand/font.ts
+    holds: IBM Plex Sans 400/500/600 with variable --font-brand, subsets latin and vietnamese; the theme's --font-sans reads it
+  - path: fe/apps/app/src/features/layouts/LocaleLayout/index.tsx
+    holds: the typeface variable on the document
+decided:
+  by: owner
+  at: 2026-11-11
+  words:
+    - "(2026-11-11, after a canvas comparison of IBM Plex Sans, Source Sans 3, Be Vietnam Pro, Literata, Inter:) ý là chốt 1 font cho cả app kể cả markdown thui ấy"
+    - "(2026-11-11:) IBM Plex Sans"
+    - "font chữ y chang nivo nhé … với bộ theme đây"
+    - "14 hết á, có font bold text-muted để represent; 12 cho tên nhỏ á, k có 13"
+    - "ý là màu đỏ là primary… k tự quyết lấy màu khác hiểu k, sai tương phản cũng dc"
+    - "tối tự code vẽ chi, có token theme"
+    - "sửa thành màu foreground ở mấy cái link nhé, duyệt sửa luôn"
+  source: >-
+    The owner's 2026-11-10 theme and font ruling in the coordinator brief of lane S17; memory type-scale-14-12 (owner
+    2026-11-09); memory owner-colors-exact (owner 2026-11-05, and 2026-11-08 for dark mode).
+status: partial
+built:
+  - "Font switched to IBM Plex Sans in fe/apps/app/src/modules/brand/font.ts and globals.css (--font-sans: var(--font-brand)); tsc clean; not yet screenshot-verified."
+  - "Link law (memory red-budget-links-foreground, owner 2026-11-10, ACCENT-5/ACCENT-6): the accent is spent only on the one main CTA of a view and on links inside a sentence (MarkdownBody and prose, kept as Link inline). Every standalone secondary or navigation Link in fe/apps/app and fe/packages/starci-next-ui now uses Grammar Link variant=plain (foreground, no underline, no icon); section-head links stay variant=head; TextAction is already foreground in Grammar 0.37.18; informative Alerts are neutral in Grammar and the app adds no styling to them."
+  - The theme file is in globals.css verbatim, and Inter is wired through brandFont and the layout.
+  - No 13 px or 16 px text size and no literal hex colour were found in fe/apps/app/src or fe/packages/starci-next-ui/src outside globals.css (grep on 2026-11-10).
+notBuilt:
+  - Not verified in a browser: the computed sizes of every page, the dark mode, and that Grammar parts that default to other sizes (MarkdownArticle headings at 20 to 30 px) are corrected; Grammar 0.37.14 is awaited.
+  - A stale file fe/apps/app/src/modules/brand/brand.css still holds the old Academy palette (#7547ff); it is no longer imported. .starciwork/brand/index.yaml still records "--accent #7547ff" as chosen. Both contradict the owner's theme and are raised, not edited here.
+refs:
+  - concept.surface-layering
+  - concept.app-shell-nivo-parity

@@ -128,7 +128,7 @@ const QueueRow = (props: QueueRowProps) => (
             >
                 {props.labels.preview}
             </Button>
-            <Link href={props.row.href}>{props.labels.open}</Link>
+            <Link variant="plain" href={props.row.href}>{props.labels.open}</Link>
         </Cluster>
     </Stack>
 )

@@ -7,7 +7,7 @@ purpose: The app pulls its content from git the way starci-academy-backend pulls
 decided:
   - We write the placeholder content ourselves now (status draft, author ai-placeholder) and push it to its own private repository starci183/starci-next-data; the teacher edits the same repository later (decision.content.source).
   - The app pulls repositories into versioned snapshots `<datasourcesDir>/<sha>/` with a `manifest.json`, then runs each importer at that version; `--dir` and `--data-dir` take local checkouts in development, without any git credential.
-  - Concepts, interview banks, flashcard decks and coding problems stay sourced from starci-lab/data; the content repository adds an interview overlay, the catalogs (projects, agent lab, incidents, experience, outcome paths) and any extra concept folders.
+  - Concepts, interview banks, flashcard decks and coding problems stay sourced from starci-lab/data; the content repository adds an interview overlay, the catalogs (projects, agent lab, incidents, experience, outcome paths) and the lessons of our own in essentials/ (concept V2 format, four workspace languages).
 delivers:
   - `cli content sync [--dir <content>] [--data-dir <data>] [--only <kinds>]`, the content capability be/src/modules/domain/content, the interview import `--overlay`, and the content repository layout (contract.content.layout).
 excludes:

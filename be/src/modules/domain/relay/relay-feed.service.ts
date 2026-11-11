@@ -8,10 +8,12 @@ import { RelayError, RelayErrorCode } from "./errors/relay.error"
 import { InjectRelayOptions } from "./relay.decorators"
 import type { RelayOptions } from "./relay.options"
 import type { DevicePrincipal } from "./relay.contracts"
-import type { RelayUpload, SignedManifest, UploadReceipt } from "./relay-feed.contracts"
+import { milestoneOf } from "@modules/domain/project"
+import type { ManifestRequest, RelayUpload, SignedManifest, UploadReceipt } from "./relay-feed.contracts"
 import {
     PROJECT_CHECKS,
     manifestIdOf,
+    projectRunOf,
     relayDeviceTopic,
     signManifest,
     signingKeyOf,
@@ -39,9 +41,16 @@ export class RelayFeedService {
         this.key = signingKeyOf(options.manifestSigningKey?.reveal() ?? null)
     }
 
-    /** Issues the signed manifest of a task to the device, and pushes it to the device's topic. */
-    async manifest(device: DevicePrincipal, taskId: string): Promise<SignedManifest> {
+    /**
+     * Issues the signed manifest of a task to the device, and pushes it to the device's topic. With a project run request the
+     * manifest carries the learner's own test command and the milestone's concepts; without one it carries the default check.
+     */
+    async manifest(device: DevicePrincipal, taskId: string, request?: ManifestRequest): Promise<SignedManifest> {
         if (!/^[A-Za-z0-9._:/-]{1,100}$/u.test(taskId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        const milestone = request?.milestone === undefined ? null : milestoneOf(request.milestone)
+        const run = milestone === null ? null : projectRunOf({ ...request, milestone })
+        if (request?.milestone !== undefined && run === null)
+            throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         const issuedAt = this.clock.now().toISOString()
         const signed = signManifest(
             {
@@ -50,7 +59,8 @@ export class RelayFeedService {
                 learnerId: device.learnerId,
                 deviceId: device.deviceId,
                 issuedAt,
-                checks: PROJECT_CHECKS,
+                checks: run?.checks ?? PROJECT_CHECKS,
+                ...(run === null ? {} : { plan: run.plan }),
             },
             this.key,
         )

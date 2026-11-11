@@ -38,6 +38,19 @@ describe("coachPromptOf", () => {
         expect(prompt.user).not.toContain("expected evidence")
         expect(prompt.user).not.toContain("Misconception")
     })
+})
+
+describe("coachPromptOf notes", () => {
+    it("asks for a short missing line in the language of the learner and names it in the answer shape", async () => {
+        const promptOf = await build()
+
+        const vi = promptOf(coachRequestOf({ rubric }))
+        const en = promptOf(coachRequestOf({ rubric, locale: "en" }))
+
+        expect(vi.system).toContain("missing is ONE short sentence in Vietnamese")
+        expect(en.system).toContain("missing is ONE short sentence in English")
+        expect(vi.system).toContain('"evidenceQuote":"","missing":""')
+    })
 
     it("fences the learner text between lines derived from the request id and orders the model to ignore what is inside", async () => {
         const promptOf = await build()

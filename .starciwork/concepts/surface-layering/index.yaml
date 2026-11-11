@@ -1,0 +1,62 @@
+schema: work/concept@1
+id: concept.surface-layering
+title: Surface layering - white chrome, one pink well of separate white cards
+rule: >-
+  The chrome - sidebar, top bar, page header band and the right aside pane - is white (`--surface`), flat and separated by
+  borders only. Only the middle well takes the pink `--background`; it holds SEPARATE floating white cards (shadow, no border),
+  one card per job, 12 to 16 px apart, and never a card inside a card. Block labels sit on the well above their card. The
+  aside pane is made of sections and rows with dividers, never floating cards, and below lg it becomes the first blocks of
+  the well. The header band is flush left; the well's content is capped at 80rem (`--grammar-content-max`) and centred.
+  One card holds one content (list, form, table or figures); a lone sentence is a row of a list card. Group sublabels above
+  a card are 12 px, weight 500, muted. Buttons: only a primary CTA (md or lg) carries a leading icon; size sm never has an
+  icon; neutral buttons, suggestion pills and row actions are text only. Icons are outline only; an icon standing alone is an
+  icon tile, an inline icon is plain. Links are the primary colour, underlined on hover only, with an arrow at the end for
+  inline links; navigation links in a section head end with "→" and sidebar items carry no arrow. Empty, loading and error
+  states live inside their card, with a neutral "Thử lại" on error.
+why: >-
+  The owner reacted to shots: filters on pink looked patched together, one big card lost the separate blocks, and the
+  header was ruled white with a border.
+forbids:
+  - Merging blocks into one big card, a card in a card, or aside items as floating cards.
+  - Centring the header band over narrow content.
+  - A size sm button with an icon, a filled icon, or an icon on a neutral button.
+  - A lone sentence inside its own card.
+example: >-
+  The Dự án page: a white band with the title, the well with one list card (tabs and search in its toolbar zone, rows
+  below) under a label "Dự án của bạn" with a grey count chip, and a white aside "Máy của bạn".
+livesIn:
+  - path: fe/apps/app/src/components/blocks
+    holds: the page blocks built from Grammar SurfaceCard, Pane and PaneGrid (ProjectsList, LessonStudy, LearnHub, EssentialsCatalog and others)
+  - path: fe/packages/starci-next-ui/src
+    holds: the shared composites and the error, empty and loading states
+decided:
+  by: owner
+  at: 2026-11-06
+  words:
+    - "tách ra nhiều khối nổi"
+    - "chốt nằm ở bên trái thôi"
+    - "sublabel size xs nhé chốt grammar mới"
+    - "luật chỉ có nút cta (primary) mới có icon thôi"
+    - "10 sonnet code lại, chụp và ghi explain"
+  source: >-
+    Memories pink-page-surface-rule (owner 2026-11-06 and 2026-11-07), nivo-surface-layering (owner 2026-11-07),
+    page-header-left-sublabel-xs and verify-against-visualize (owner 2026-11-09); the owner approved the three drawings
+    (Học, bài Bản chất, Dự án) and ordered the rework on 2026-11-10 (STARCI-NEXT-UI-BRIEF-20261110.md).
+status: not-verified
+built:
+  - The three drawn pages and the shell were recoded on 2026-11-10 with Grammar parts, and the gallery holds screenshots of many pages.
+notBuilt:
+  - No page was compared to its approved drawing in this pass; the rework lanes were still editing fe/ and Grammar 0.37.14 (flat aside lists, stacked panes at phone width, navigation rows without the arrow) is awaited. The Grammar needs list names the gaps that still break these laws.
+  - Whether every one of the screens obeys each law is answered by the explain.md files, and 14 of the 32 gallery screens have none yet.
+refs:
+  - concept.theme-and-type
+  - concept.app-shell-nivo-parity
+  - concept.gallery-explained-screens
+extensions:
+  grammarGaps:
+    note: "Open Grammar needs from STARCI-NEXT-GRAMMAR-NEEDS-20261110.md that keep a law from being met until the release lands."
+    items:
+      - "internal ListRow href and Link draw an external arrow (law: no arrow on navigation); approved for 0.37.14"
+      - "Section kind list in the aside draws a bordered card (law: flat rows); approved for 0.37.14"
+      - "PaneGrid stacked panes clip at 390 (approved for 0.37.14)"
+      - "MarkdownArticle headings at 20 to 30 px (law: 14); approved for 0.37.14"

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react"
-import { Button, DropdownMenu, Icon, IconButton, type DropdownMenuEntry } from "@starci/grammar/common"
+import { Button, DropdownMenu, IconButton, type DropdownMenuEntry } from "@starci/grammar/common"
 import { LanguageGlyph } from "../../leaves/Icon"
 import { NAME_ONLY_CLASS_NAME, PHONE_ONLY_CLASS_NAME } from "./classNames"
 
@@ -64,7 +64,6 @@ export const LanguageMenu = (props: LanguageMenuProps): ReactElement => {
                             intent="dismiss"
                             size="md"
                             isDisabled={props.isDisabled}
-                            startContent={<Icon source={LanguageGlyph} usage="leading" />}
                         >
                             {chosen}
                         </Button>

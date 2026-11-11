@@ -1,4 +1,4 @@
-import { Alert, Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a written-answer card, resolved by its block. */
@@ -7,7 +7,6 @@ export type WrittenCardLabels = {
     readonly submit: string
     readonly retry: string
     readonly pending: string
-    readonly diagnostic: string
     readonly criteria: string
     readonly saved: string
     readonly grading: string
@@ -48,8 +47,6 @@ type WrittenDraft = {
 /** One written activity (an explanation, an exercise, a review question): the question, its criteria and the answer box. */
 type WrittenCardProps = {
     readonly prompt: string
-    /** True for the opening diagnostic, which does not count toward passing. */
-    readonly isDiagnostic: boolean
     /** The names of the grading criteria, never their expected evidence. */
     readonly criteria: ReadonlyArray<string>
     /** What an exercise asks the learner to submit; empty for a question. */
@@ -62,47 +59,18 @@ type WrittenCardProps = {
     readonly onSubmit: () => void
 }
 
-/** What the receipt needs of the card. */
-type ReceiptProps = Pick<WrittenCardProps, "draft" | "labels" | "plansHref">
-
-/** The words of a saved answer whose grading failed, by why it failed. */
-const failedWordsOf = (props: ReceiptProps): string => {
-    if (props.draft.issue === "unconfigured") return props.labels.failedUnconfigured
-    return props.draft.issue === "limit" ? props.labels.failedLimit : props.labels.failedSaved
-}
-
-/** The line under the answer box: a saved answer whose grading failed says so, and says when no AI provider is set up. */
-const Receipt = (props: ReceiptProps) => (
-    <AttemptNotice
-        status={props.draft.status}
-        saved={props.labels.saved}
-        grading={props.labels.grading}
-        failedSaved={failedWordsOf(props)}
-        error={props.labels.error}
-        premium={props.labels.premium}
-        plansLabel={props.labels.plans}
-        plansHref={props.plansHref}
-    />
-)
-
-/** What the criteria row needs of the card. */
+/** What the criteria rows need of the card. */
 type CriteriaProps = Pick<WrittenCardProps, "criteria" | "labels">
 
-/** The criteria of the question as quiet tags under a title. */
+/** The criteria of the question as the rows of one list card; nothing when the question has none. */
 const Criteria = (props: CriteriaProps) =>
     props.criteria.length === 0 ? null : (
-        <Stack gap="inline">
-            <Text size="sm" tone="muted">
-                {props.labels.criteria}
-            </Text>
-            <Cluster gap="inline">
-                {props.criteria.map((criterion) => (
-                    <Badge key={criterion} tone="muted">
-                        {criterion}
-                    </Badge>
-                ))}
-            </Cluster>
-        </Stack>
+        <SurfaceCard
+            kind="list"
+            label={props.labels.criteria}
+            empty={props.labels.criteria}
+            items={props.criteria.map((criterion) => ({ id: criterion, title: criterion }))}
+        />
     )
 
 /** The tone of a graded level. */
@@ -114,33 +82,37 @@ const toneOf = (level: number): "success" | "warning" | "muted" => {
 /** What the grade needs of the card. */
 type GradeProps = Pick<WrittenCardProps, "draft" | "labels">
 
-/** The grade per criterion with the quote of the answer that earns it, and the score; nothing before a grade. */
+/** The grade per criterion as the rows of one list card: the level, the criterion and the quote of the answer that earns it; nothing before a grade. */
 const Grade = (props: GradeProps) =>
     props.draft.criteria.length === 0 ? null : (
-        <Stack gap="row">
-            <Text isStrong>{props.draft.scoreLine}</Text>
-            {props.draft.criteria.map((each) => (
-                <Stack key={each.id} gap="inline">
-                    <Cluster gap="inline" wrap align="center">
-                        <Badge tone={toneOf(each.level)}>
-                            {props.labels.levels[Math.min(2, Math.max(0, each.level))] ?? ""}
-                        </Badge>
-                        <Text isStrong>{each.criterion}</Text>
-                    </Cluster>
-                    {each.evidence === "" ? null : (
-                        <Text size="sm" tone="muted">
-                            {`${props.labels.evidence}: ${each.evidence}`}
-                        </Text>
-                    )}
-                </Stack>
-            ))}
-        </Stack>
+        <SurfaceCard
+            kind="list"
+            label={props.draft.scoreLine}
+            empty={props.draft.scoreLine}
+            items={props.draft.criteria.map((each) => ({
+                id: each.id,
+                title: each.criterion,
+                ...(each.evidence === "" ? {} : { description: `${props.labels.evidence}: ${each.evidence}` }),
+                badges: [
+                    {
+                        label: props.labels.levels[Math.min(2, Math.max(0, each.level))] ?? "",
+                        tone: toneOf(each.level),
+                    },
+                ],
+            }))}
+        />
     )
 
 /** The label of the submit button from where the attempt stands. */
 const submitLabelOf = (props: Pick<WrittenCardProps, "draft" | "labels">): string => {
     if (props.draft.status === "pending" || props.draft.status === "grading") return props.labels.pending
     return props.draft.status === "failed" || props.draft.status === "error" ? props.labels.retry : props.labels.submit
+}
+
+/** The words of a saved answer whose grading failed, by why it failed. */
+const failedWordsOf = (props: Pick<WrittenCardProps, "draft" | "labels">): string => {
+    if (props.draft.issue === "unconfigured") return props.labels.failedUnconfigured
+    return props.draft.issue === "limit" ? props.labels.failedLimit : props.labels.failedSaved
 }
 
 /**
@@ -150,38 +122,70 @@ const submitLabelOf = (props: Pick<WrittenCardProps, "draft" | "labels">): strin
 export const WrittenCard = (props: WrittenCardProps) => {
     const isPending = props.draft.status === "pending" || props.draft.status === "grading"
     const isSettled = props.draft.status === "saved" || props.draft.status === "graded"
-    return (
-        <SurfaceCard ariaLabel={props.prompt}>
-            <Stack gap="row">
-                <Heading level={3} scale="standard">
-                    {props.prompt}
-                </Heading>
-                {props.isDiagnostic ? <Alert tone="informative" title={props.labels.diagnostic} /> : null}
-                {props.instructions === "" ? null : (
-                    <Text as="p" tone="muted">
-                        {props.instructions}
-                    </Text>
-                )}
-                <Criteria criteria={props.criteria} labels={props.labels} />
-                <Textarea
-                    label={props.labels.answer}
-                    name={props.prompt}
-                    rows={6}
-                    value={props.draft.value}
-                    isDisabled={isPending}
-                    onValueChange={props.onChange}
+    if (props.draft.status === "premium") {
+        return (
+            <SurfaceCard ariaLabel={props.prompt}>
+                <EmptyNotice
+                    frame="frameless"
+                    message={props.labels.premium}
+                    actionIntent="neutral"
+                    actionLabel={props.labels.plans}
+                    actionHref={props.plansHref}
                 />
-                <Receipt draft={props.draft} labels={props.labels} plansHref={props.plansHref} />
-                <Grade draft={props.draft} labels={props.labels} />
-                <Button
-                    intent="commit"
-                    isPending={isPending}
-                    isDisabled={props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"}
-                    onPress={props.onSubmit}
-                >
-                    {submitLabelOf(props)}
-                </Button>
-            </Stack>
-        </SurfaceCard>
+            </SurfaceCard>
+        )
+    }
+    return (
+        <Stack gap="row">
+            <Criteria criteria={props.criteria} labels={props.labels} />
+            <SurfaceCard
+                ariaLabel={props.prompt}
+                footers={[
+                    {
+                        kind: "custom",
+                        children: (
+                            <Cluster gap="inline" justify="end">
+                                <Button
+                                    intent="commit"
+                                    startGlyph="send"
+                                    isPending={isPending}
+                                    isDisabled={props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"}
+                                    onPress={props.onSubmit}
+                                >
+                                    {submitLabelOf(props)}
+                                </Button>
+                            </Cluster>
+                        ),
+                    },
+                ]}
+            >
+                <Stack gap="row">
+                    <Text isStrong>{props.prompt}</Text>
+                    <Textarea
+                        label={props.labels.answer}
+                        isLabelHidden
+                        name={props.prompt}
+                        rows={3}
+                        {...(props.instructions === "" || props.instructions === props.prompt
+                            ? {}
+                            : { description: props.instructions })}
+                        value={props.draft.value}
+                        isDisabled={isPending}
+                        onValueChange={props.onChange}
+                    />
+                    <AttemptNotice
+                        status={props.draft.status}
+                        saved={props.labels.saved}
+                        grading={props.labels.grading}
+                        failedSaved={failedWordsOf(props)}
+                        error={props.labels.error}
+                        premium={props.labels.premium}
+                        plansLabel={props.labels.plans}
+                        plansHref={props.plansHref}
+                    />
+                </Stack>
+            </SurfaceCard>
+            <Grade draft={props.draft} labels={props.labels} />
+        </Stack>
     )
 }

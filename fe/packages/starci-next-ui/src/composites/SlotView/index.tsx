@@ -87,13 +87,16 @@ const errorNotice = (props: Pick<SlotViewProps<unknown>, "errorDescription" | "l
 /** The empty notice of a read that settled with nothing to draw. */
 const emptyNotice = (
     props: Pick<SlotViewProps<unknown>, "emptyDescription" | "emptyArtwork" | "labels">,
-): ReactNode => (
-    <EmptyNotice
-        message={props.labels.empty}
-        {...descriptionOf(props.emptyDescription)}
-        {...(props.emptyArtwork === undefined ? {} : { artwork: { ...props.emptyArtwork, alt: "" } })}
-    />
-)
+): ReactNode =>
+    props.emptyArtwork === undefined ? (
+        <EmptyNotice message={props.labels.empty} {...descriptionOf(props.emptyDescription)} />
+    ) : (
+        <EmptyNotice
+            message={props.labels.empty}
+            {...descriptionOf(props.emptyDescription)}
+            artwork={{ ...props.emptyArtwork, alt: "" }}
+        />
+    )
 
 /**
  * The one recipe for a slot's data status. No block writes its own loading, forbidden, error or empty branch; each one

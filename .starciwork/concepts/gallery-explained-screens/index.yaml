@@ -1,0 +1,45 @@
+schema: work/concept@1
+id: concept.gallery-explained-screens
+title: Every screen is in the gallery with an explain.md, and is compared with its drawing
+rule: >-
+  The gallery is organised per screen: `gallery/pages/<area>/<screen>/` holds only `1440.png`, `1920.png`, `390.png`, the
+  required `explain.md` and an optional `links.json`. There is no before/ folder and no variant file name; `gallery/flows.json`
+  holds the named flows. `explain.md` states, for every visible region, what it is, why it is drawn that way (which owner law)
+  and the Grammar reference (component, prop and source path or story). A region that cannot be explained with a law and a
+  Grammar reference is a bug and is fixed before reporting. After a screen is coded, it is screenshotted and compared with the
+  approved drawing (layout, gaps, alignment, type sizes, component choice) and the differences are fixed before the owner is
+  told it is done. Pride shots are after-fix screenshots of finished pages only.
+why: >-
+  The owner wants every design decision traceable so shots stop drifting from the laws, and a screen is not done from tsc alone.
+forbids:
+  - A screen shipped or reported with no explain.md.
+  - Reporting a UI as done without the shot and the comparison.
+  - Before/after folders or variant file names in the gallery.
+example: >-
+  gallery/pages/projects/list/ holds 1440.png, 1920.png, 390.png and explain.md whose region "Ô tìm kiếm" says why (law
+  surfacecard-zones-api) and names SurfaceCard headers with a search zone.
+livesIn:
+  - path: gallery/pages
+    holds: "32 screen folders in 10 areas on 2026-11-10; 18 have an explain.md, 14 have none (agents/catalog, agents/track, career/experience, career/profile, career/review-queue, commerce/premium, commerce/premium-result, incidents/list, interview/start, paths/choose, practice/list, review/decks, review/hub, review/session)"
+  - path: gallery/scripts/capture.cjs
+    holds: the capture script that writes the three widths
+decided:
+  by: owner
+  at: 2026-11-09
+  words:
+    - "sao trò code xong không đối chiếu với visualize gì hết"
+    - "10 sonnet code lại, chụp và ghi explain"
+    - "chốt"
+  source: >-
+    Memories gallery-explain-per-page (owner 2026-11-09, FINAL pattern "chốt", enforced in hfs) and
+    verify-against-visualize (owner 2026-11-09); the owner's 2026-11-10 order in STARCI-NEXT-UI-BRIEF-20261110.md.
+status: partial
+built:
+  - The per-screen folders with three widths exist for 32 screens, 18 with an explain.md, 17 of those mark a region SAI or CHƯA RÕ for the Grammar needs (counted on 2026-11-10).
+notBuilt:
+  - 14 screens have no explain.md (listed in livesIn).
+  - gallery/flows.json does not exist in the lane.
+  - Not verified that the screenshots are current after the latest edits or were compared with the drawings.
+refs:
+  - concept.surface-layering
+  - concept.theme-and-type

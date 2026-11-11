@@ -40,7 +40,6 @@ jobs:
           - "--gate build"
           - "--gate lint --side be"
           - "--gate lint --side fe"
-          - "--gate lint --side packages"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -66,11 +65,9 @@ jobs:
             ${{ runner.os }}-node22-build-
       - run: npm ci --ignore-scripts
         if: steps.deps.outputs.cache-hit != 'true'
-      - name: build the workspace packages
-        run: npm run build:modules --silent
       - name: build the lint inputs
         if: ${{ startsWith(matrix.args, '--gate lint') }}
-        run: npm run build:modules --silent && npm run codegen --silent && npx --no-install turbo run build --filter=./fe/packages/*
+        run: npm run codegen --silent && npx --no-install turbo run build --filter=./fe/packages/*
       - name: verify the committed cache
         run: npx --no-install starci app check --env prod --fresh ${{ matrix.args }}
         env:

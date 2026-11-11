@@ -1,4 +1,3 @@
-import type { PracticeRow } from "@starci-next/ui"
 import type { ProjectsRead } from "@/hooks/swr"
 import { ApiFailure } from "@/modules/failure"
 import { projectPath } from "@/modules/routes"
@@ -58,28 +57,45 @@ export const isProjectPremiumRequired = (error: unknown): boolean =>
 
 /** The words a list of projects is built with, resolved by the block. */
 export type ProjectsWords = {
-    readonly kind: Readonly<Record<string, string>>
-    readonly open: string
-    readonly meta: (done: number, total: number, proved: number, count: number) => string
+    readonly state: { readonly practicing: string; readonly proved: string }
+    readonly concepts: (proved: number, count: number) => string
 }
 
-/** The projects as rows of a list. */
-export const projectRowsOf = (projects: ProjectsRead, words: ProjectsWords): ReadonlyArray<PracticeRow> =>
-    projects.map((project) => ({
-        id: project.id,
-        title: project.name,
-        description: [
-            project.stack,
-            words.meta(
-                project.doneMilestoneCount,
-                project.milestoneCount,
-                project.provedConceptCount,
-                project.conceptCount,
-            ),
-        ].join(" · "),
-        badge: words.kind[project.kind] ?? project.kind,
-        badgeTone: project.kind === "agent" ? "accent" : "muted",
-        href: projectPath(project.id),
-        cta: words.open,
-        isCurrent: false,
-    }))
+/** The repository as a short path ("owner/name"), or the address itself when it is not a plain URL. */
+const repoOf = (url: string | null): string | undefined => {
+    if (url === null || url === "") return undefined
+    try {
+        const path = new URL(url).pathname.replaceAll(/^\/|\/$/g, "")
+        return path === "" ? new URL(url).host : path
+    } catch {
+        return url
+    }
+}
+
+/** One project as the list draws it. */
+type ProjectListRow = {
+    readonly id: string
+    readonly name: string
+    readonly sub: string
+    readonly concepts: string
+    readonly percent: number
+    readonly stateLabel: string
+    readonly isProved: boolean
+    readonly href: string
+}
+
+/** The projects as rows of the list: proved when every concept of the project is proved. */
+export const projectRowsOf = (projects: ProjectsRead, words: ProjectsWords): ReadonlyArray<ProjectListRow> =>
+    projects.map((project) => {
+        const isProved = project.conceptCount > 0 && project.provedConceptCount >= project.conceptCount
+        return {
+            id: project.id,
+            name: project.name,
+            sub: [repoOf(project.repoUrl), project.stack].filter((part) => part !== undefined && part !== "").join(" · "),
+            concepts: words.concepts(project.provedConceptCount, project.conceptCount),
+            percent: project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
+            stateLabel: isProved ? words.state.proved : words.state.practicing,
+            isProved,
+            href: projectPath(project.id),
+        }
+    })

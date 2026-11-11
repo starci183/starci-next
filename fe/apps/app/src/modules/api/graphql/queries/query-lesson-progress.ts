@@ -9,10 +9,18 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
             lessonId
             version
             phase
+            completedAt
+            phases {
+                phase
+                state
+                done
+                total
+            }
             outcomes {
                 id
                 understood
                 proved
+                state
             }
             attempts {
                 total
@@ -29,6 +37,61 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
                 latestAttemptId
                 latestRevision
                 latestStatus
+                latest {
+                    attemptId
+                    lessonId
+                    version
+                    activityId
+                    revision
+                    kind
+                    phase
+                    status
+                    failureCode
+                    submittedAt
+                    gradedAt
+                    answer {
+                        optionId
+                        text
+                        actionIds
+                        reachedStateId
+                        debrief
+                    }
+                    result {
+                        correct
+                        success
+                        reachedStateId
+                        score
+                        maxScore
+                        isDiagnostic
+                        options {
+                            optionId
+                            isCorrect
+                            selected
+                            explanation
+                        }
+                        criteria {
+                            criterionId
+                            criterion
+                            level
+                            evidenceQuote
+                            maxScore
+                            missing
+                        }
+                    }
+                }
+            }
+            simulations {
+                activityId
+                currentStateId
+                actionIds
+                triedTransitionIds
+                updatedAt
+            }
+            reviews {
+                activityId
+                afterDays
+                dueOn
+                done
             }
         }
     }

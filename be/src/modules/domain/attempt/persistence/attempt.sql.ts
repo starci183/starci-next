@@ -98,12 +98,76 @@ WHERE learner_id = $1::uuid AND lesson_id = $2::text
 ORDER BY outcome_id
 LIMIT $3::int`
 
-/** Lists the newest attempt of each activity of a learner in a lesson, with the attempt count ($1 learner, $2 lesson, $3 row bound). */
+/** Lists the newest attempt of each activity of a learner in a lesson, whole, with the attempt count ($1 learner, $2 lesson, $3 row bound). */
 export const SELECT_ACTIVITY_PROGRESS: ReturnType<typeof sql> =
-    sql`SELECT DISTINCT ON (activity_id) activity_id, phase, kind,
-    lesson_version, attempt_id, revision, status, submitted_at,
+    sql`SELECT DISTINCT ON (activity_id) attempt_id, learner_id, lesson_id, lesson_version, activity_id, revision, kind, phase,
+    locale, is_diagnostic, answer, status, result, failure_code, submitted_at, graded_at,
     (count(*) OVER (PARTITION BY activity_id))::int AS attempts
 FROM lesson_attempts
 WHERE learner_id = $1::uuid AND lesson_id = $2::text
 ORDER BY activity_id, submitted_at DESC, revision DESC
 LIMIT $3::int`
+
+/** Lists the activities of a lesson version that have a graded attempt ($1 learner, $2 lesson, $3 version, $4 row bound). */
+export const SELECT_GRADED_ACTIVITY_IDS: ReturnType<typeof sql> = sql`SELECT DISTINCT activity_id
+FROM lesson_attempts
+WHERE learner_id = $1::uuid AND lesson_id = $2::text AND lesson_version = $3::text AND status = 'graded'
+LIMIT $4::int`
+
+/**
+ * Records that a learner finished a lesson, once: the first instant stays, and the row held is answered either way
+ * ($1 learner, $2 lesson, $3 version, $4 now).
+ */
+export const UPSERT_COMPLETION: ReturnType<typeof sql> = sql`INSERT INTO lesson_completions (
+    learner_id, lesson_id, lesson_version, completed_at
+) VALUES ($1::uuid, $2::text, $3::text, $4::timestamptz)
+ON CONFLICT (learner_id, lesson_id) DO UPDATE SET lesson_version = lesson_completions.lesson_version
+RETURNING lesson_version, completed_at`
+
+/** Reads when a learner finished a lesson ($1 learner, $2 lesson). */
+export const SELECT_COMPLETION: ReturnType<typeof sql> = sql`SELECT lesson_version, completed_at
+FROM lesson_completions
+WHERE learner_id = $1::uuid AND lesson_id = $2::text`
+
+/**
+ * Keeps where a learner stands in a simulation: the state and the path are replaced, the transitions tried only grow within a
+ * version ($1 learner, $2 lesson, $3 activity, $4 version, $5 state, $6 actions, $7 transitions taken on the path, $8 now).
+ */
+export const UPSERT_SIMULATION_PROGRESS: ReturnType<typeof sql> = sql`INSERT INTO lesson_simulation_progress (
+    learner_id, lesson_id, activity_id, lesson_version, current_state_id, action_ids, tried_transition_ids, updated_at
+) VALUES ($1::uuid, $2::text, $3::text, $4::text, $5::text, $6::text[], $7::text[], $8::timestamptz)
+ON CONFLICT (learner_id, lesson_id, activity_id) DO UPDATE SET
+    tried_transition_ids = CASE WHEN lesson_simulation_progress.lesson_version = EXCLUDED.lesson_version THEN (
+        SELECT COALESCE(array_agg(DISTINCT tried ORDER BY tried), '{}'::text[])
+        FROM unnest(lesson_simulation_progress.tried_transition_ids || EXCLUDED.tried_transition_ids) AS tried
+    ) ELSE EXCLUDED.tried_transition_ids END,
+    lesson_version = EXCLUDED.lesson_version,
+    current_state_id = EXCLUDED.current_state_id,
+    action_ids = EXCLUDED.action_ids,
+    updated_at = EXCLUDED.updated_at
+RETURNING activity_id, current_state_id, action_ids, tried_transition_ids, updated_at`
+
+/** Lists where a learner stands in the simulations of a lesson ($1 learner, $2 lesson, $3 row bound). */
+export const SELECT_SIMULATION_PROGRESS: ReturnType<typeof sql> = sql`SELECT activity_id, current_state_id, action_ids,
+    tried_transition_ids, updated_at
+FROM lesson_simulation_progress
+WHERE learner_id = $1::uuid AND lesson_id = $2::text
+ORDER BY activity_id
+LIMIT $3::int`
+
+/**
+ * Keeps the best incident mutation score of a learner in a lesson and answers the score now held ($1 learner, $2 lesson,
+ * $3 score in percent, $4 now).
+ */
+export const UPSERT_INCIDENT_SCORE: ReturnType<typeof sql> =
+    sql`INSERT INTO lesson_incident_scores (learner_id, lesson_id, mutation_score, updated_at)
+VALUES ($1::uuid, $2::text, $3::smallint, $4::timestamptz)
+ON CONFLICT (learner_id, lesson_id) DO UPDATE SET
+    mutation_score = GREATEST(lesson_incident_scores.mutation_score, EXCLUDED.mutation_score),
+    updated_at = CASE WHEN EXCLUDED.mutation_score > lesson_incident_scores.mutation_score THEN EXCLUDED.updated_at ELSE lesson_incident_scores.updated_at END
+RETURNING mutation_score::int AS mutation_score`
+
+/** Raises the proved level of the outcomes of a lesson that the learner understood fully, never lowering one ($1 learner, $2 lesson, $3 proved level, $4 now). */
+export const RAISE_PROVED: ReturnType<typeof sql> = sql`UPDATE lesson_outcome_levels
+SET proved = $3::smallint, updated_at = $4::timestamptz
+WHERE learner_id = $1::uuid AND lesson_id = $2::text AND understood = 2 AND proved < $3::smallint`

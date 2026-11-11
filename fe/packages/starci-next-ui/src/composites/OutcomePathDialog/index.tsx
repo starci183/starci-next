@@ -66,7 +66,7 @@ const StageSteps = (props: StageStepsProps) => (
         {props.steps.map((step) => (
             <Cluster key={step.id} gap="inline" wrap>
                 <Badge tone="neutral">{step.part}</Badge>
-                <Link href={step.href}>{step.title}</Link>
+                <Link variant="plain" href={step.href}>{step.title}</Link>
             </Cluster>
         ))}
     </Stack>

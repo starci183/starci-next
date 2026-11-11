@@ -9,6 +9,9 @@ import type {
 } from "@/modules/types"
 import { understoodOf } from "@/hooks/lessonStatus"
 
+/** The 3D cover of a chapter: one picture per topic id under public/art/topics. */
+export const topicCoverOf = (topicId: string): string => `/art/topics/${topicId}.webp`
+
 /** How many rows of a topic's path a card previews that are not open yet. */
 const PREVIEW_PENDING_ROWS = 2
 
@@ -51,6 +54,7 @@ const topicCardOf = (
                 ? inTopic.map((lesson) => ({ id: lesson.id, title: shortTitleOf(lesson.title), isOpen: true }))
                 : previewOf(topic, words),
         status: words.isPremium ? words.understood(done, total) : words.statuses.free,
+        cover: topicCoverOf(id),
         progress: words.isPremium && total > 0 ? Math.round((done / total) * 100) : 0,
         href: topicPath(id),
     }

@@ -3,7 +3,10 @@ import type { EntityManager } from "typeorm"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
+import { InjectEntitlementOptions } from "./entitlement.decorators"
+import type { EntitlementOptions } from "./entitlement.options"
 import type {
+    DevGrantParams,
     Entitlement,
     GrantPremiumParams,
     OptionalPremiumUntil,
@@ -25,6 +28,7 @@ export class EntitlementService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
+        @InjectEntitlementOptions() private readonly options: EntitlementOptions,
     ) {}
 
     /** The stored end instant, or null when the learner has never held Premium. */
@@ -43,6 +47,15 @@ export class EntitlementService {
     /** Grants a verified paid term, extending a future end and starting an expired term at confirmation. */
     grant(params: GrantPremiumParams): Promise<Entitlement> {
         return this.grantWith(this.entityManager, params)
+    }
+
+    /**
+     * Development only: grants a term with no purchase, confirmed now, so a test learner can open the Premium screens. It is
+     * refused ENTITLEMENT_DEV_GRANT_DISABLED unless the environment enables it; no door calls it, only `cli entitlement dev-grant`.
+     */
+    devGrant(params: DevGrantParams): Promise<Entitlement> {
+        if (this.options.devGrant !== true) throw new EntitlementError({ code: EntitlementErrorCode.DevGrantDisabled })
+        return this.grant({ learnerId: params.learnerId, term: params.term, confirmedAt: this.clock.now() })
     }
 
     /**

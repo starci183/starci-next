@@ -211,3 +211,11 @@ VALUES ($1::uuid, $3::int, $4::timestamptz, $2::date)
 ON CONFLICT (learner_id) DO UPDATE SET due_notified_on = EXCLUDED.due_notified_on
 WHERE review_settings.due_notified_on IS DISTINCT FROM EXCLUDED.due_notified_on
 RETURNING learner_id`
+
+/** Lists the retrieval items a lesson opened for a learner, soonest first ($1 learner, $2 lesson, $3 row bound). */
+export const SELECT_LESSON_RETRIEVAL: ReturnType<typeof sql> =
+    sql`SELECT activity_id, after_days, due_on::text AS due_on, status
+FROM review_states
+WHERE learner_id = $1::uuid AND lesson_id = $2::text AND source = 'retrieval'
+ORDER BY after_days, due_on, item_id
+LIMIT $3::int`

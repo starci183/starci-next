@@ -25,6 +25,14 @@ Compose also runs a dev Keycloak (`keycloak`, a digest-pinned image) with the re
 3. Open Mailpit at `http://localhost:8025`, open the newest mail to that address and read the six-digit code.
 4. Enter the code: the session cookie is set and you land on the page you came from. Signing in later asks for the password, then a new emailed code the same way.
 
+## Dự án: chạy trên máy học viên
+
+The learner CLI runs a project's tests on the learner's own machine and relays the results as practice ("Đang luyện"). The relay signs every manifest, so the dev relay needs a key pair that outlives its process:
+
+1. Once per machine: `node scripts/dev/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the relay) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
+2. In the learner's shell: `export STARCI_NEXT_URL=http://localhost:3080 STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"`.
+3. `starci-next login` pairs the machine (confirm the code at `/devices`), `starci-next init --from <starci-next-data checkout> --project <project id>` copies the kit, `starci-next run <milestone>` runs `test.command` of `starci/project.yaml`, reads the JUnit XML for tests tagged `[concept]` and posts one result per concept. Open the project page to see "Đang luyện".
+
 ## Thử Premium
 
 In dev the SePay and payOS secrets are sandbox placeholders, so a real gateway can never call back. `scripts/dev/simulate-sepay-ipn.mjs` stands in for SePay: it posts the paid-order IPN the gateway would post to the core API's webhook door (`POST http://localhost:3001/webhooks/sepay`, authenticated by the `x-secret-key` header the sepay client compares with the IPN secret key; amount = the order's amount).

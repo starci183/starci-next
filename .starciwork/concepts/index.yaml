@@ -1,0 +1,51 @@
+schema: work/concept-catalog@1
+description: >-
+  The concepts of StarCi Next: what the owner ruled the product is. Read the catalog and every concept your work touches
+  before you design, plan or code. A request, a note or code that contradicts a concept is raised to the owner with the
+  concept id; it is never applied silently, and a concept is never edited to fit the code. Each concept says how much of
+  it the code holds (status: built, partial, not-built, not-verified): a concept is not a shipped fact until its status
+  says so. "The code" below is the working tree of the integration lane (branch starci/integration-1.3) as read on
+  2026-11-10 while other lanes were still editing fe/; nothing here was proved by a run, a test or a real payment.
+concepts:
+  - id: concept.premium-unlocks-all
+    directory: premium-unlocks-all
+    description: One Premium subscription, renewed monthly or yearly, unlocks every lesson and the AI. No per-course sale, no enrollment. AI is included under a server-side fair-use cap with no credits shown.
+  - id: concept.learning-program
+    directory: learning-program
+    description: The product is seven learning parts in three waves, strung into outcome paths; agents are taught by real tools and tool-agnostic concepts; build order is Bản chất, then Dự án.
+  - id: concept.essentials-lessons
+    directory: essentials-lessons
+    description: Bản chất (Essentials) is a separate part that teaches industry knowledge, in the teacher's concepts/ V2 format with six phases; routes, levels, the three MVP lessons, the free phase.
+  - id: concept.verified-experience
+    directory: verified-experience
+    description: Every part grants CV-ready experience; the AI grades and drafts, the teacher signs each item before it is Đã xác minh; only verified items count.
+  - id: concept.projects-bring-your-own
+    directory: projects-bring-your-own
+    description: Dự án has no sample project; a learner brings as many projects as they like, on any topic, and puts the starci/ folder into each; milestones are Bản chất concept lists proved by tests, e2e, probes and an AI code read.
+  - id: concept.learner-cli-relay-proof
+    directory: learner-cli-relay-proof
+    description: Code tasks run on the learner's machine through the learner CLI and a relay server (be/apps/relay); results are Đang luyện, and Đã chứng minh needs a CI run GitHub attests or a server rerun.
+  - id: concept.ai-model-deepseek-flash
+    directory: ai-model-deepseek-flash
+    description: Every AI call uses deepseek/deepseek-v4.1-flash through OpenRouter; no v4-pro and no fallback model.
+  - id: concept.content-repo
+    directory: content-repo
+    description: Content lives in a separate private git repo (starci183/starci-next-data) the app pulls like the academy backend's gitmount; placeholder data is fine meanwhile and the build never waits for the teacher.
+  - id: concept.app-shell-nivo-parity
+    directory: app-shell-nivo-parity
+    description: The shell and navigation mirror the NIVO console (sidebar under the top bar, not full height); signed-out header is a guest avatar menu that opens the sign-in modal in place; streak only in the Học aside; bell through TopBar customButtons once shipped; status dot and chip exactly as NIVO.
+  - id: concept.premium-placement
+    directory: premium-placement
+    description: Placement B - no sidebar footer; the plan sits in the lockup line of the top bar, and "Nâng cấp Premium" or "Gói của bạn" is an item of the avatar menu.
+  - id: concept.theme-and-type
+    directory: theme-and-type
+    description: The theme is the owner's HeroUI theme file, values exact and never swapped; the font is Inter as NIVO; every UI text is 14, small names 12, no 13 and no 16; dark comes only from theme tokens.
+  - id: concept.surface-layering
+    directory: surface-layering
+    description: Chrome (sidebar, top bar, header band, aside pane) is white and flat; only the middle well is pink and holds separate white cards; header flush left, well capped at 80rem and centred; button, icon and link laws.
+  - id: concept.dev-only-test-grants
+    directory: dev-only-test-grants
+    description: Premium for testing is granted only by the dev command `cli entitlement dev-grant`, enabled only by ENTITLEMENT_DEV_GRANT, never reachable from a door and never in production.
+  - id: concept.gallery-explained-screens
+    directory: gallery-explained-screens
+    description: Every screen has a gallery folder with 1440, 1920 and 390 shots and an explain.md saying why each region is drawn so, which law and which Grammar part; a built screen is compared with its approved drawing before it is reported done.

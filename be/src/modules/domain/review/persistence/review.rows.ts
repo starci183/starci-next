@@ -131,3 +131,15 @@ export interface AffectedRow {
     /** The count. */
     total: number
 }
+
+/** A retrieval item a lesson opened for a learner. */
+export interface LessonRetrievalRow {
+    /** The retrieval activity. */
+    activity_id: string
+    /** The days after completion it is asked again. */
+    after_days: number
+    /** The day it falls due, `YYYY-MM-DD`. */
+    due_on: string
+    /** Where the item stands: learning, review, done or suspended. */
+    status: string
+}

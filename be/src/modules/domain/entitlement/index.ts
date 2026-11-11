@@ -1,5 +1,6 @@
 export type { Entitlement, PremiumTerm } from "./entitlement.contracts"
 export { ENTITLEMENT_SERVICE, InjectEntitlementService } from "./entitlement.decorators"
+export { parseEntitlementConfig } from "./entitlement.config"
 export { EntitlementModule } from "./entitlement.module"
 export { EntitlementService } from "./entitlement.service"
 export { ENTITLEMENT_ERROR_KINDS } from "./errors/entitlement.error"

@@ -29,7 +29,14 @@ export const useTopicWords = (): TopicWords => {
         openFacts: (open, total) => t("topic.openFacts", { open, total }),
         source: (from) => t("topic.source", { from }),
         progress: (done, total) => t("topic.progress", { done, total }),
-        meta: (difficulty, minutes) => t("topic.meta", { difficulty, minutes }),
+        meta: (difficulty, minutes, languages) =>
+            t("topic.meta", { difficulty, minutes, languages: languages === "" ? t("topic.noLanguage") : languages }),
+        facts: (lessons, minutes, languages) =>
+            languages === 0 ? t("topic.factsAgnostic", { lessons, minutes }) : t("topic.facts", { lessons, minutes, languages }),
+        phasesNote: (done, total) => t("topic.phasesNote", { done, total }),
+        phases: catalog.phases,
+        languageNames: { ...catalog.languageNames, csharp: "C#" },
+        shortLanguageNames: { typescript: "TS", java: "Java", csharp: "C#", go: "Go", python: "Python" },
         difficulty: {
             foundation: t("difficulty.foundation"),
             intermediate: t("difficulty.intermediate"),

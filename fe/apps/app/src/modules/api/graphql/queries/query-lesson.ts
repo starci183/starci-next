@@ -64,10 +64,15 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                             label
                             observation
                             isSuccess
+                            facts {
+                                label
+                                value
+                            }
                         }
                         actions {
                             id
                             label
+                            isBranch
                         }
                         transitions {
                             id
@@ -87,6 +92,15 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                 }
             }
             workspace {
+                runtime
+                files {
+                    path
+                    role
+                    content
+                }
+            }
+            workspaces {
+                language
                 runtime
                 files {
                     path

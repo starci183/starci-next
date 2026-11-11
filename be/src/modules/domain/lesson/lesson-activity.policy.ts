@@ -1,4 +1,5 @@
 import type { LessonLocaleDocument } from "./lesson.contracts"
+import { premiumMarkOf } from "./lesson-access.policy"
 import type { LessonServerActivity } from "./lesson-read.contracts"
 
 /**
@@ -8,8 +9,8 @@ import type { LessonServerActivity } from "./lesson-read.contracts"
 export const findActivity = (document: LessonLocaleDocument, activityId: string): LessonServerActivity | null => {
     for (const section of document.sections) {
         const found = section.activities?.find((activity) => activity.id === activityId)
-        if (found) return { activity: found, phase: section.phase }
+        if (found) return { activity: found, phase: section.phase, isPremium: premiumMarkOf(section, document) }
     }
     const retrieval = document.retrieval.find((activity) => activity.id === activityId)
-    return retrieval ? { activity: retrieval, phase: "retrieval" } : null
+    return retrieval ? { activity: retrieval, phase: "retrieval", isPremium: premiumMarkOf(null, document) } : null
 }

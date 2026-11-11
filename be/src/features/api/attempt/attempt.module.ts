@@ -1,9 +1,17 @@
 import { Module } from "@nestjs/common"
 import { GetLessonAttemptHandler } from "./application/get-lesson-attempt.handler"
 import { GetLessonProgressHandler } from "./application/get-lesson-progress.handler"
+import { SaveLessonSimulationHandler } from "./application/save-lesson-simulation.handler"
 import { SubmitLessonAttemptHandler } from "./application/submit-lesson-attempt.handler"
 import { ConfigurableModuleClass } from "./attempt.module-definition"
 
-@Module({ providers: [SubmitLessonAttemptHandler, GetLessonAttemptHandler, GetLessonProgressHandler] })
+@Module({
+    providers: [
+        SubmitLessonAttemptHandler,
+        GetLessonAttemptHandler,
+        GetLessonProgressHandler,
+        SaveLessonSimulationHandler,
+    ],
+})
 /** Application handlers of the attempt feature: submitting an answer, reading an attempt and reading the progress of a lesson. */
 export class AttemptApiModule extends ConfigurableModuleClass {}

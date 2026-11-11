@@ -23,6 +23,11 @@ export type ConceptCardView = {
     readonly stateLabel: string
     readonly stateTone: "success" | "warning" | "muted"
     readonly kindLabel: string
+    /** The kinds of proof the concept needs, in words. */
+    readonly proofLine: string
+    /** The essentials lesson of the concept, or an empty href when it has none. */
+    readonly lessonHref: string
+    readonly lessonTitle: string
     readonly where: string
     readonly comingSoon: boolean
     readonly chips: ReadonlyArray<EvidenceChipView>
@@ -36,11 +41,25 @@ export type ConceptCardView = {
     readonly needsCodeRead: boolean
 }
 
+/** One evidence run (one slot of one concept) as a row of the runs table, already in words. */
+export type EvidenceRunView = {
+    readonly id: string
+    readonly concept: string
+    readonly evidence: string
+    readonly resultLabel: string
+    readonly resultTone: "success" | "warning" | "muted"
+    readonly levelLabel: string
+    readonly when: string
+}
+
 /** The milestone as it is drawn. */
 export type ProjectMilestoneView = {
     readonly title: string
     readonly projectName: string
     readonly intro: string
+    readonly stateLabel: string
+    readonly stateTone: "success" | "warning" | "muted"
+    readonly runs: ReadonlyArray<EvidenceRunView>
     readonly concepts: ReadonlyArray<ConceptCardView>
 }
 
@@ -56,6 +75,28 @@ export type ProjectMilestoneLabels = {
     readonly plans: string
     readonly plansHref: string
     readonly conceptsLabel: string
+    readonly crumbRoot: string
+    readonly crumbRootHref: string
+    readonly crumbTrail: string
+    readonly editTitle: string
+    readonly lessonLink: string
+    readonly runsLabel: string
+    readonly runsEmpty: string
+    readonly runsEmptyText: string
+    readonly columns: {
+        readonly concept: string
+        readonly evidence: string
+        readonly result: string
+        readonly level: string
+        readonly when: string
+    }
+    readonly howTitle: string
+    readonly how: ReadonlyArray<string>
+    readonly ciTitle: string
+    readonly ciText: string
+    readonly ciLink: string
+    readonly ciHref: string
+    readonly closeLabel: string
     readonly comingSoon: string
     readonly questionLabel: string
     readonly pointerTitle: string

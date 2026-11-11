@@ -4,11 +4,14 @@ import { DomainError, type ErrorKind } from "@modules/platform/errors"
 export enum EntitlementErrorCode {
     /** The entitlement grant did not return its stored row. */
     EntitlementMissing = "ENTITLEMENT_MISSING",
+    /** The development grant of Premium ran outside development. */
+    DevGrantDisabled = "ENTITLEMENT_DEV_GRANT_DISABLED",
 }
 
 /** How each entitlement code travels. */
 export const ENTITLEMENT_ERROR_KINDS: Record<EntitlementErrorCode, ErrorKind> = {
     [EntitlementErrorCode.EntitlementMissing]: "internal",
+    [EntitlementErrorCode.DevGrantDisabled]: "forbidden",
 }
 
 /** The one error class of the entitlement capability. */

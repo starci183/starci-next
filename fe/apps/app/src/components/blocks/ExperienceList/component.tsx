@@ -148,7 +148,7 @@ const ExperienceCard = (props: ExperienceCardProps) => {
                 <CardEdit card={card} labels={labels} on={on} />
                 {card.verified === undefined ? null : (
                     <Cluster gap="inline" wrap align="center" justify="between">
-                        <Link href={card.verified.href}>{`${labels.verifyLink}: ${card.verified.code}`}</Link>
+                        <Link variant="plain" href={card.verified.href}>{`${labels.verifyLink}: ${card.verified.code}`}</Link>
                         <Button
                             intent="alternative"
                             size="sm"

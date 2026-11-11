@@ -24,15 +24,21 @@ const parsed = (text: string): unknown => {
 
 const gradeOf = (entry: unknown): CoachCriterionGrade => {
     if (!isJson(entry)) throw invalid()
-    const { criterionId, level, evidenceQuote } = entry
+    const { criterionId, level, evidenceQuote, missing } = entry
     if (typeof criterionId !== "string" || typeof level !== "number") throw invalid()
     if (evidenceQuote !== undefined && typeof evidenceQuote !== "string") throw invalid()
-    return { criterionId, level, evidenceQuote: evidenceQuote ?? "" }
+    // The note is a courtesy: a model that sends something else than text for it loses the note, never the grade.
+    return {
+        criterionId,
+        level,
+        evidenceQuote: evidenceQuote ?? "",
+        missing: typeof missing === "string" ? missing : "",
+    }
 }
 
 /**
  * Reads the text a model answered into the per-criterion grade: one JSON object holding `criteria`, each entry a criterion id,
- * a level and an evidence quote (absent at level 0). A text that is not that shape is refused as ATTEMPT_COACH_INVALID; the
+ * a level, an evidence quote (absent at level 0) and an optional one-line note on what is missing. A text that is not that shape is refused as ATTEMPT_COACH_INVALID; the
  * rubric check of the attempt capability then judges the ids, the levels and the quotes, so nothing here is stored.
  */
 export const coachGradeOf = (text: string): CoachGrade => {

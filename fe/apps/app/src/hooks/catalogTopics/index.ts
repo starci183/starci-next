@@ -1,1 +1,1 @@
-export { casesOf, topicsOf } from "./catalogTopics.shared"
+export { casesOf, topicCoverOf, topicsOf } from "./catalogTopics.shared"

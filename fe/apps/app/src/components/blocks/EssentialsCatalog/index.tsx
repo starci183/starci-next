@@ -5,7 +5,8 @@ import { catalogViewOf, useCatalogFilters, useCatalogLabels, useCatalogWords } f
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useGetEssentialsSwr, useGetLessonProgressSwr, useGetLessonTopicsSwr } from "@/hooks/swr"
 import { APP_ROUTES } from "@/modules/routes"
-import { CATALOG_PLACEHOLDER, EssentialsCatalogBase } from "./component"
+import { EssentialsCatalogBase } from "./component"
+import { CATALOG_PLACEHOLDER } from "./placeholder"
 
 /** The connected Essentials catalog: reads the published lessons in the page's language, filters them on the client and words every card. */
 export const EssentialsCatalog = () => {

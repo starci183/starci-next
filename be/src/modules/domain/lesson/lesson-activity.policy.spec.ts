@@ -32,6 +32,22 @@ describe("findActivity", () => {
         expect(found?.activity.options?.map((option) => option.isCorrect)).toEqual([true, false, false])
     })
 
+    it("answers the teacher's mark of the section, else of the lesson, and none when the content carries none", async () => {
+        const find = await build()
+        const marked: LessonLocaleDocument = {
+            ...documentOf,
+            isPremium: true,
+            sections: documentOf.sections.map((section) =>
+                section.phase === "apply" ? { ...section, isPremium: false } : section,
+            ),
+        }
+
+        expect(find(marked, "demo--practice")?.isPremium).toBe(false)
+        expect(find(marked, "demo--predict")?.isPremium).toBe(true)
+        expect(find(marked, "demo--review")?.isPremium).toBe(true)
+        expect(find(documentOf, "demo--predict")?.isPremium).toBeUndefined()
+    })
+
     it("answers a review activity with the retrieval phase", async () => {
         const find = await build()
 

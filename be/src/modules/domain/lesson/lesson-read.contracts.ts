@@ -5,6 +5,7 @@ import type {
     LessonDifficulty,
     LessonActivityKind,
     LessonStatement,
+    LessonSimulationFact,
     LessonSimulationState,
     LessonSimulationAction,
     LessonSimulationTransition,
@@ -77,6 +78,18 @@ export interface LessonOptionView {
     readonly label: string
 }
 
+/** A simulation state as the learner plays it: the facts are always there, empty when the state has none. */
+export type LessonSimulationStateView = Omit<LessonSimulationState, "facts"> & {
+    /** The facts shown with the state. */
+    readonly facts: ReadonlyArray<LessonSimulationFact>
+}
+
+/** A simulation action as the learner plays it: `isBranch` is always there. */
+export type LessonSimulationActionView = Omit<LessonSimulationAction, "isBranch"> & {
+    /** True when the action opens a branch worth trying. */
+    readonly isBranch: boolean
+}
+
 /** A simulation as the learner plays it. */
 export interface LessonSimulationView {
     /** The state to start in. */
@@ -84,9 +97,9 @@ export interface LessonSimulationView {
     /** The question asked at the goal. */
     readonly debriefQuestion: string
     /** Every state. */
-    readonly states: ReadonlyArray<LessonSimulationState>
+    readonly states: ReadonlyArray<LessonSimulationStateView>
     /** Every action. */
-    readonly actions: ReadonlyArray<LessonSimulationAction>
+    readonly actions: ReadonlyArray<LessonSimulationActionView>
     /** Every edge. */
     readonly transitions: ReadonlyArray<LessonSimulationTransition>
 }
@@ -161,6 +174,12 @@ export interface LessonWorkspaceView {
     readonly files: ReadonlyArray<LessonWorkspaceFile>
 }
 
+/** The workspace of one language a premium learner receives. */
+export interface LessonWorkspaceVariantView extends LessonWorkspaceView {
+    /** The language id: typescript, java, csharp or go. */
+    readonly language: string
+}
+
 /** A reference as the learner sees it. */
 export interface LessonReferenceView {
     /** The stable id. */
@@ -211,6 +230,8 @@ export interface LessonView {
     readonly sections: ReadonlyArray<LessonSectionView>
     /** The workspace, or null without Premium or without a workspace. */
     readonly workspace: LessonWorkspaceView | null
+    /** The workspace per language, empty without Premium or when the lesson ships one language only. */
+    readonly workspaces: ReadonlyArray<LessonWorkspaceVariantView>
 }
 
 /** A lesson to read: its id and the locale of the text. */
@@ -241,6 +262,8 @@ export interface LessonServerActivity {
     readonly activity: LessonActivity
     /** The phase of its section, or `retrieval` for a review activity. */
     readonly phase: LessonPhase | "retrieval"
+    /** The teacher's mark that covers the activity (its section's, else the lesson's); absent when the content carries none. */
+    readonly isPremium?: boolean | undefined
 }
 
 /** The learner and the phase of the content they ask to study; `retrieval` is a review activity. */
@@ -249,6 +272,8 @@ export interface LessonAccessParams {
     readonly learnerId: string
     /** The phase of the content. */
     readonly phase: LessonPhase | "retrieval"
+    /** The teacher's mark that covers the content; absent when the content carries none, and the default decides. */
+    readonly isPremium?: boolean | undefined
 }
 
 /** One retrieval activity a lesson schedules after completion. */
@@ -265,4 +290,46 @@ export interface LessonPlan {
     readonly required: ReadonlyArray<string>
     /** The retrieval activities with their authored days. */
     readonly retrieval: ReadonlyArray<LessonRetrievalPlan>
+}
+
+/** One activity of a lesson version as the progress read needs it: where it sits and what it trains, never its answers. */
+export interface LessonOutlineActivity {
+    /** The activity. */
+    readonly id: string
+    /** What it asks. */
+    readonly kind: LessonActivityKind
+    /** The phase of its section. */
+    readonly phase: LessonPhase
+    /** Whether it is a diagnostic that does not count toward passing. */
+    readonly isDiagnostic: boolean
+    /** The outcomes it trains. */
+    readonly outcomeIds: ReadonlyArray<string>
+    /** What a full answer shows, per criterion id; server side only, used as the fallback of a grader note. */
+    readonly expectedEvidence: Readonly<Record<string, string>>
+}
+
+/** The activities of a lesson version by phase, with its outcomes: what a progress read judges phases and outcomes against. */
+export interface LessonOutline {
+    /** The outcome ids the lesson declares, in order. */
+    readonly outcomeIds: ReadonlyArray<string>
+    /** The section activities in order. */
+    readonly activities: ReadonlyArray<LessonOutlineActivity>
+}
+
+/** A workspace archive to build: the lesson, the language and who asks. */
+export interface LessonArchiveParams {
+    /** The lesson id. */
+    readonly id: string
+    /** The language id of the workspace: typescript, java, csharp or go. */
+    readonly language: string
+    /** The learner who asks. */
+    readonly learnerId: string
+}
+
+/** A built workspace archive. */
+export interface LessonArchiveView {
+    /** The file name to offer, `<lesson>-<language>.zip`. */
+    readonly fileName: string
+    /** The ZIP bytes. */
+    readonly content: Buffer
 }

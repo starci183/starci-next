@@ -7,6 +7,7 @@ import type {
     AttemptStatus,
     CoachGrade,
     CoachGradeRequest,
+    StoredAttemptResult,
 } from "@modules/domain/attempt"
 import type { LessonActivity, LessonLocale, LessonPhase } from "@modules/domain/lesson"
 
@@ -47,7 +48,7 @@ export interface StoredAttemptShape {
     /** The status. */
     status: AttemptStatus
     /** The result once graded. */
-    result: AttemptResult | null
+    result: StoredAttemptResult | null
     /** The failure code, or null. */
     failure_code: string | null
     /** When the answer was stored. */
@@ -56,24 +57,8 @@ export interface StoredAttemptShape {
     graded_at: Date | null
 }
 
-/** The newest attempt of one activity as the progress read returns it. */
-export interface ActivityProgressShape {
-    /** The activity. */
-    activity_id: string
-    /** The phase. */
-    phase: LessonPhase
-    /** The kind. */
-    kind: AttemptKind
-    /** The version of the newest attempt. */
-    lesson_version: string
-    /** The newest attempt. */
-    attempt_id: string
-    /** Its revision. */
-    revision: number
-    /** Its status. */
-    status: AttemptStatus
-    /** When it was stored. */
-    submitted_at: Date
+/** The newest attempt of one activity as the progress read returns it: the whole attempt row and the attempt count. */
+export interface ActivityProgressShape extends StoredAttemptShape {
     /** How many attempts the activity has. */
     attempts: number
 }
@@ -143,19 +128,10 @@ export const attemptRowOf: (overrides?: Partial<StoredAttemptShape>) => StoredAt
         graded_at: new Date("2026-11-08T10:00:00.000Z"),
     })
 
-/** The newest attempt of one activity with its attempt count. */
-export const activityProgressRowOf: (overrides?: Partial<ActivityProgressShape>) => ActivityProgressShape =
-    builder<ActivityProgressShape>({
-        activity_id: "demo--predict",
-        phase: "predict",
-        kind: "choice",
-        lesson_version: "v1",
-        attempt_id: ATTEMPT_ID,
-        revision: 1,
-        status: "graded",
-        submitted_at: new Date("2026-11-08T10:00:00.000Z"),
-        attempts: 1,
-    })
+/** The newest attempt of one activity with its attempt count: the graded choice of the demo lesson, attempted once. */
+export const activityProgressRowOf: (overrides?: Partial<ActivityProgressShape>) => ActivityProgressShape = (
+    overrides = {},
+) => ({ ...attemptRowOf(), attempts: 1, ...overrides })
 
 /** A grade that satisfies the rubric of the demo explain activity: both criteria quote the answer. */
 export const coachGradeOf: (overrides?: Partial<CoachGrade>) => CoachGrade = builder<CoachGrade>({

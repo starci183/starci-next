@@ -142,9 +142,48 @@ describe("LessonContentService requireAccess", () => {
         },
     )
 
+    it("lets a phase through when the teacher marked it isPremium false, without asking the entitlement", async () => {
+        const { service, entitlement } = await build(mockEntityManager(), false)
+
+        await expect(
+            service.requireAccess({ learnerId: LEARNER, phase: "apply", isPremium: false }),
+        ).resolves.toBeUndefined()
+        expect(entitlement.isPremium).not.toHaveBeenCalled()
+    })
+
+    it("refuses the challenge phase when the teacher marked it isPremium true", async () => {
+        const { service } = await build(mockEntityManager(), false)
+
+        await expect(
+            service.requireAccess({ learnerId: LEARNER, phase: "challenge", isPremium: true }),
+        ).rejects.toMatchObject({ code: LessonErrorCode.PremiumRequired })
+    })
+
     it("lets every phase through for a learner with Premium", async () => {
         const { service } = await build(mockEntityManager(), true)
 
         await expect(service.requireAccess({ learnerId: LEARNER, phase: "apply" })).resolves.toBeUndefined()
+    })
+})
+
+describe("LessonContentService outline", () => {
+    it("lists the section activities with phase, outcomes and diagnostic mark, in the asked locale", async () => {
+        const em = mockEntityManager({ query: [SELECT_VERSION, [versionRowOf()]] })
+        const { service } = await build(em)
+
+        const outline = await service.outline("demo-lesson", "v1", "en")
+
+        expect(outline.outcomeIds.length).toBeGreaterThan(0)
+        expect(outline.activities.length).toBeGreaterThan(0)
+        expect(outline.activities.every((activity) => activity.phase !== undefined)).toBe(true)
+        expect(JSON.stringify(outline)).not.toContain("isCorrect")
+    })
+
+    it("is not found for a version that does not exist", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_VERSION, []] }))
+
+        await expect(service.outline("demo-lesson", "v9", "vi")).rejects.toMatchObject({
+            code: LessonErrorCode.NotFound,
+        })
     })
 })

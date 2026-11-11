@@ -1,4 +1,7 @@
-import { Button, Cluster, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import type { ReactNode } from "react"
+import { Button, Cluster, Icon, Mascot, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { ART } from "../../leaves/Art"
+import { PlayGlyph } from "../../leaves/Icon"
 
 /** The active path of the learner, already in words. */
 export type HubPathView = {
@@ -30,44 +33,62 @@ type HubPathCardProps = {
     readonly isLoading?: boolean
 }
 
-/** The invitation shown while the learner follows no path. */
-const EmptyPath = (props: Pick<HubPathCardProps, "labels" | "chooseHref" | "isLoading">) => (
-    <SurfaceCard
-        label={props.labels.eyebrow}
-        footers={[{ kind: "more", label: props.labels.choose, href: props.chooseHref }]}
-        {...(props.isLoading === true ? { isLoading: true } : {})}
-    >
+/** What the copy beside the artwork says: a title, one muted line and the commands. */
+type PathCopy = {
+    readonly title: string
+    readonly line: string
+    readonly commands: ReactNode
+}
+
+/** The first-run artwork at the card's start and the copy beside it. */
+const PathBody = (props: PathCopy) => (
+    <Cluster gap="section" align="center">
+        <Mascot src={ART.journey.src} size="md" loading="eager" assetSlot="hub-path-journey" />
         <Stack gap="row">
-            <Text as="p" size="md">
-                {props.labels.emptyTitle}
-            </Text>
-            <Text tone="muted">{props.labels.emptyBody}</Text>
+            <Stack gap="identity">
+                <Text isStrong>{props.title}</Text>
+                {props.line === "" ? null : <Text tone="muted">{props.line}</Text>}
+            </Stack>
+            <Cluster gap="inline">{props.commands}</Cluster>
         </Stack>
-    </SurfaceCard>
+    </Cluster>
 )
 
-/** The active-path card, or the invitation to choose a goal. */
+/** The active-path card, or the invitation to choose a goal: ONE card, the artwork at its start. */
 export const HubPathCard = (props: HubPathCardProps) => {
     const { view } = props
-    if (view === undefined) return <EmptyPath {...props} />
+    const loading = props.isLoading === true ? { isLoading: true as const } : {}
+    if (view === undefined) {
+        return (
+            <SurfaceCard label={props.labels.eyebrow} {...loading}>
+                <PathBody
+                    title={props.labels.emptyTitle}
+                    line={props.labels.emptyBody}
+                    commands={
+                        <Button intent="commit" startContent={<Icon source={PlayGlyph} />} href={props.chooseHref}>
+                            {props.labels.choose}
+                        </Button>
+                    }
+                />
+            </SurfaceCard>
+        )
+    }
     return (
-        <SurfaceCard label={props.labels.eyebrow} {...(props.isLoading === true ? { isLoading: true } : {})}>
-            <Stack gap="row">
-                <Text as="p" size="md">
-                    {view.title}
-                </Text>
-                {view.next.length === 0 ? null : (
-                    <Text tone="muted">{`${props.labels.nextLabel}: ${view.next.join(" / ")}`}</Text>
-                )}
-                <Cluster gap="row">
-                    <Button intent="commit" href={props.continueHref}>
-                        {props.labels.continue}
-                    </Button>
-                    <Button intent="neutral" href={props.chooseHref}>
-                        {props.labels.change}
-                    </Button>
-                </Cluster>
-            </Stack>
+        <SurfaceCard label={props.labels.eyebrow} {...loading}>
+            <PathBody
+                title={view.title}
+                line={view.next.length === 0 ? "" : `${props.labels.nextLabel}: ${view.next.join(" / ")}`}
+                commands={
+                    <>
+                        <Button intent="commit" startContent={<Icon source={PlayGlyph} />} href={props.continueHref}>
+                            {props.labels.continue}
+                        </Button>
+                        <Button intent="neutral" href={props.chooseHref}>
+                            {props.labels.change}
+                        </Button>
+                    </>
+                }
+            />
         </SurfaceCard>
     )
 }

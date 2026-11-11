@@ -172,7 +172,7 @@ const Summary = (props: ReadyProps) => (
                         <Text>{gap.text}</Text>
                         <Cluster gap="inline" wrap>
                             {gap.links.map((link) => (
-                                <Link key={link.id} href={link.href}>
+                                <Link variant="plain" key={link.id} href={link.href}>
                                     {`${props.labels.studyAgain}: ${link.label}`}
                                 </Link>
                             ))}
@@ -225,7 +225,7 @@ export const InterviewReportBase = (props: InterviewReportBaseProps) => (
                             <InterviewQuestionCard key={question.id} question={question} labels={props.props.labels} />
                         ))}
                         <Summary view={view} labels={props.props.labels} />
-                        {view.reviewLine === "" ? null : <Link href={props.props.reviewHref}>{view.reviewLine}</Link>}
+                        {view.reviewLine === "" ? null : <Link variant="plain" href={props.props.reviewHref}>{view.reviewLine}</Link>}
                         <InterviewExitLinks
                             first={{ label: props.props.labels.retake, href: props.props.retakeHref }}
                             firstIntent="commit"

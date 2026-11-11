@@ -1,1 +1,1 @@
-export { sectionCardsOf } from "./lessonCards.shared"
+export { sectionCardsOf, timeOf } from "./lessonCards.shared"

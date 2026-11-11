@@ -1,5 +1,5 @@
 import { shapeIssues, type ObjectShape, type ShapeIssue, type LessonShape } from "./shape.policy"
-import type { LessonRootFile, LessonSectionFile } from "./lesson.contracts"
+import { LESSON_WORKSPACE_LANGUAGES, type LessonRootFile, type LessonSectionFile } from "./lesson.contracts"
 
 /** The categories the content format knows. */
 export const LESSON_CATEGORIES: ReadonlyArray<string> = [
@@ -35,8 +35,11 @@ const simulation: ObjectShape = {
         engine: text,
         initialStateId: text,
         debriefQuestion: text,
-        states: list({ required: { id: text, label: text, observation: text, isSuccess: "boolean" } }),
-        actions: list({ required: { id: text, label: text } }),
+        states: list({
+            required: { id: text, label: text, observation: text, isSuccess: "boolean" },
+            optional: { facts: list({ required: { label: text, value: text } }) },
+        }),
+        actions: list({ required: { id: text, label: text }, optional: { isBranch: "boolean" } }),
         transitions: list({ required: { id: text, fromStateId: text, actionId: text, toStateId: text } }),
     },
 }
@@ -79,6 +82,15 @@ const workspace: ObjectShape = {
     },
 }
 
+const workspaceVariant: ObjectShape = {
+    required: {
+        language: { oneOf: LESSON_WORKSPACE_LANGUAGES },
+        runtime: text,
+        files: list({ required: { path: text, role: text } }),
+        commands: { required: {}, optional: { windows: text, unix: text } },
+    },
+}
+
 /** The shape of a root file once its json and number fields are decoded. */
 export const ROOT_SHAPE: ObjectShape = {
     required: {
@@ -94,13 +106,13 @@ export const ROOT_SHAPE: ObjectShape = {
         prerequisites: list(statement),
         references: list(reference),
     },
-    optional: { activities: list(activity), workspace },
+    optional: { activities: list(activity), workspace, workspaces: list(workspaceVariant), isPremium: "boolean" },
 }
 
 /** The shape of a section file once its json and number fields are decoded. */
 export const SECTION_SHAPE: ObjectShape = {
     required: { title: text, phase: { oneOf: LESSON_PHASES }, sortIndex: "integer", body: text },
-    optional: { activities: list(activity) },
+    optional: { activities: list(activity), isPremium: "boolean" },
 }
 
 /** True when the decoded fields of a root file fit the content format. */

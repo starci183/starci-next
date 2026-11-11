@@ -1,6 +1,14 @@
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign, type KeyObject } from "node:crypto"
 import type { RealtimeTopic } from "@modules/platform/realtime"
-import type { ManifestBody, ManifestCheck, RelayFrame, RelayUpload, SignedManifest } from "./relay-feed.contracts"
+import type {
+    ManifestBody,
+    ManifestCheck,
+    ManifestPlan,
+    ProjectRunRequest,
+    RelayFrame,
+    RelayUpload,
+    SignedManifest,
+} from "./relay-feed.contracts"
 
 /** The longest log text an upload carries. */
 export const LOG_TEXT_MAX = 16_384
@@ -17,6 +25,41 @@ export const manifestIdOf = (deviceId: string, taskId: string, issuedAt: string)
 export const PROJECT_CHECKS: ReadonlyArray<ManifestCheck> = [
     { id: "test", command: "npm test", cwd: ".", timeoutMs: 600_000 },
 ]
+
+/** The JUnit report a project run reads when `starci/project.yaml` names none. */
+const DEFAULT_REPORT = "starci/reports/junit.xml"
+const COMMAND_MAX = 400
+const REPORT_PATH = /^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/u
+
+/** True when a test command is one printable line of a bounded length. */
+const commandValid = (command: string): boolean =>
+    command.trim().length > 0 &&
+    command.length <= COMMAND_MAX &&
+    ![...command].some((char) => {
+        const code = char.codePointAt(0) ?? 0
+        return code < 32 || code === 127
+    })
+
+/** True when a report path stays inside the project folder (relative, no `..`). */
+const reportValid = (report: string): boolean =>
+    report.length <= 200 && REPORT_PATH.test(report) && !report.split("/").includes("..")
+
+/**
+ * The checks and plan of a project run, read from the learner's `starci/project.yaml`: its test command (which must write
+ * the JUnit XML at the report path) is the one allowlisted check, run in the project folder. Null when the command or the
+ * report cannot be one, which the service refuses as an invalid payload.
+ */
+export const projectRunOf = (
+    request: ProjectRunRequest,
+): { readonly checks: ReadonlyArray<ManifestCheck>; readonly plan: ManifestPlan } | null => {
+    const command = request.testCommand ?? "npm test"
+    const report = request.testReport ?? DEFAULT_REPORT
+    if (!commandValid(command) || !reportValid(report)) return null
+    return {
+        checks: [{ id: "test", command, cwd: ".", timeoutMs: 600_000 }],
+        plan: { milestone: request.milestone.id, report, concepts: request.milestone.concepts },
+    }
+}
 
 /** The push topic of one paired device, inside its learner's prefix (BE-REALTIME-3). */
 export const relayDeviceTopic = (learnerId: string, deviceId: string): RealtimeTopic<RelayFrame> => ({
@@ -37,6 +80,11 @@ export const manifestPayloadOf = (body: ManifestBody): string =>
             cwd: check.cwd,
             timeoutMs: check.timeoutMs,
         })),
+        ...(body.plan === undefined
+            ? {}
+            : {
+                  plan: { milestone: body.plan.milestone, report: body.plan.report, concepts: [...body.plan.concepts] },
+              }),
     })
 
 /** Signs a manifest body with the relay's Ed25519 key. */

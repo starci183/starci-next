@@ -1,11 +1,9 @@
 import type {
     HubDayView,
+    HubExperienceView,
     HubGoalEditorLabels,
-    HubLayerView,
     HubPathLabels,
     HubPathView,
-    HubShardLabels,
-    HubShardView,
     HubStreakLabels,
     HubStreakView,
     HubTodayRow,
@@ -15,22 +13,15 @@ import { ApiFailure } from "@/modules/failure"
 
 /** The words the hub is built with, resolved by the block from the `app.hub` catalog. */
 export type HubWords = {
-    readonly counter: (count: number) => string
-    readonly counterOff: string
-    readonly verified: (count: number) => string
-    readonly pending: (count: number) => string
-    readonly streakCurrent: (count: number) => string
-    readonly streakLongest: (count: number) => string
-    readonly freezes: (count: number) => string
-    readonly weekGoal: (done: number, goal: number) => string
+    readonly streakUnit: (count: number) => string
+    readonly streakLine: (longest: number, freezes: number) => string
+    readonly weekTitle: string
+    readonly weekValue: (done: number, goal: number) => string
     readonly dayCounted: string
     readonly dayMissed: string
     readonly dayFreeze: string
     readonly dayToday: string
     readonly weekday: Readonly<Record<"sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat", string>>
-    readonly stage: Readonly<Record<string, string>>
-    readonly next: Readonly<Record<string, string>>
-    readonly layerBody: Readonly<Record<string, string>>
     readonly todayLeft: (count: number) => string
     readonly todayDone: string
 }
@@ -41,8 +32,8 @@ export type HubScreen = {
     readonly todayTitle: string
     readonly today: ReadonlyArray<HubTodayRow>
     readonly streak: HubStreakView
-    readonly shards: ReadonlyArray<HubShardView>
-    readonly layers: ReadonlyArray<HubLayerView>
+    /** The verified and pending experience counts, summed over the learning parts, without the words. */
+    readonly experience: { readonly verified: number; readonly pending: number }
 }
 
 /** The fixed words of the hub screen. */
@@ -54,12 +45,7 @@ export type HubLabelSet = {
     readonly todayEmpty: string
     readonly streak: HubStreakLabels
     readonly goal: HubGoalEditorLabels
-    readonly shardsTitle: string
-    readonly shardsSubtitle: string
-    readonly shard: HubShardLabels
-    readonly layersTitle: string
-    readonly layersSubtitle: string
-    readonly layerOpen: string
+    readonly experience: Omit<HubExperienceView, "verified" | "pending">
     readonly guide: {
         readonly trigger: string
         readonly title: string
@@ -102,33 +88,26 @@ const daysOf = (hub: LearnerHub, words: HubWords): ReadonlyArray<HubDayView> => 
     })
 }
 
-/** The streak card: the current run, the best run, freezes, the weekly goal and the strip. */
+/** The streak: the current run as a figure with its unit, the best run with the freezes left, the weekly goal and the strip. */
 const streakOf = (hub: LearnerHub, words: HubWords): HubStreakView => ({
-    current: words.streakCurrent(hub.streak.current),
-    longest: words.streakLongest(hub.streak.longest),
-    freezes: words.freezes(hub.streak.freezes.held),
-    weekLabel: words.weekGoal(hub.streak.week.activeDays, hub.streak.week.goal),
+    currentFigure: String(hub.streak.current),
+    currentUnit: words.streakUnit(hub.streak.current),
+    line: words.streakLine(hub.streak.longest, hub.streak.freezes.held),
+    weekTitle: words.weekTitle,
+    weekLabel: words.weekValue(hub.streak.week.activeDays, hub.streak.week.goal),
     weekPercent: percentOf(hub.streak.week.activeDays, hub.streak.week.goal),
     days: daysOf(hub, words),
 })
 
-/** One shard card; the experience counts exist only while the experience read answers them. */
-const shardOf = (hub: LearnerHub, words: HubWords, shard: LearnerHub["shards"][number]): HubShardView => {
-    const prompt = hub.today.find((entry) => entry.shard === shard.shard)
-    const experience = shard.experience
-    return {
-        id: shard.shard,
-        stage: words.stage[shard.shard] ?? "",
-        title: shard.label,
-        href: shard.route,
-        next: prompt?.title ?? words.next[shard.shard] ?? "",
-        progressLabel: shard.progress.label,
-        counter: shard.counter.current > 0 ? words.counter(shard.counter.current) : words.counterOff,
-        isSoon: shard.status === "coming-soon",
-        verified: experience === null ? undefined : words.verified(experience.verified),
-        pending: experience === null || experience.pending <= 0 ? undefined : words.pending(experience.pending),
-    }
-}
+/** The experience counts of the learner, summed over the learning parts whose experience read answered. */
+const experienceOf = (hub: LearnerHub): HubScreen["experience"] =>
+    hub.shards.reduce(
+        (sum, shard) => ({
+            verified: sum.verified + (shard.experience?.verified ?? 0),
+            pending: sum.pending + (shard.experience?.pending ?? 0),
+        }),
+        { verified: 0, pending: 0 },
+    )
 
 /** The active path, or undefined when the learner follows none. */
 const pathOf = (hub: LearnerHub): HubPathView | undefined =>
@@ -141,17 +120,12 @@ export const hubScreenOf = (hub: LearnerHub, words: HubWords): HubScreen => ({
     today: hub.today.map((entry, index) => ({
         id: `${entry.shard}-${entry.kind}-${index}`,
         title: entry.title,
+        shard: entry.shard,
         part: hub.shards.find((shard) => shard.shard === entry.shard)?.label ?? entry.shard,
         href: entry.link,
     })),
     streak: streakOf(hub, words),
-    shards: [...hub.shards].sort((a, b) => a.order - b.order).map((shard) => shardOf(hub, words, shard)),
-    layers: hub.layers.map((layer) => ({
-        id: layer.id,
-        title: layer.label,
-        body: words.layerBody[layer.id] ?? "",
-        href: layer.route,
-    })),
+    experience: experienceOf(hub),
 })
 
 /** The stable code the goal door answers for a number of days outside 2 to 7. */

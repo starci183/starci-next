@@ -58,3 +58,38 @@ describe("lesson format policy", () => {
         expect(section(broken).map((item) => item.field)).toEqual(expect.arrayContaining(["phase", "sortIndex"]))
     })
 })
+
+describe("lesson format policy simulation extras", () => {
+    const withSimulation = (state: Record<string, unknown>, action: Record<string, unknown>) => {
+        const [first] = demoSectionsOf("vi")
+        const activity = {
+            id: "a",
+            kind: "simulation",
+            prompt: "p",
+            outcomeIds: [],
+            simulation: {
+                engine: "state-machine",
+                initialStateId: "s",
+                debriefQuestion: "q",
+                states: [{ id: "s", label: "S", observation: "o", isSuccess: true, ...state }],
+                actions: [{ id: "a", label: "A", ...action }],
+                transitions: [],
+            },
+        }
+        return { ...first, activities: [activity] }
+    }
+
+    it("accepts optional facts on a state and isBranch on an action", async () => {
+        const { sectionIssues: section } = await build()
+
+        expect(section(withSimulation({ facts: [{ label: "Charges", value: "2" }] }, { isBranch: true }))).toEqual([])
+    })
+
+    it("refuses facts and isBranch of the wrong shape", async () => {
+        const { sectionIssues: section } = await build()
+
+        const issues = section(withSimulation({ facts: [{ label: "Charges" }] }, { isBranch: "yes" }))
+
+        expect(issues.length).toBeGreaterThanOrEqual(2)
+    })
+})

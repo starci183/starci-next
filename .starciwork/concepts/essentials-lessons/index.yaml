@@ -1,0 +1,86 @@
+schema: work/concept@1
+id: concept.essentials-lessons
+title: Bản chất (Essentials) - a separate part that teaches industry knowledge
+rule: >-
+  Bản chất (VI; Essentials in EN; id `essentials`) is a separate part of the product that teaches knowledge of the
+  industry, not knowledge for the harness's agents. One item is a "bài" (lesson); one lesson is one concept of the
+  teacher's concepts/ V2 format. The levels are group (16) then topic (one source module) then lesson, on the routes
+  /essentials, /essentials/[topic] and /essentials/[topic]/[lesson]. A lesson has six phases - challenge (diagnostic
+  interview), predict, explore (state-machine simulation), explain (theory), apply (workspace with `node --test`, then a
+  transfer exercise), reflect (re-interview) - and five activity kinds: explain, choice, simulation, exercise,
+  retrieval. Each activity carries a rubric of expected evidence plus a misconception; feedback is released after submit;
+  retrieval is spaced at 1, 7 and 21 days. The MVP is the teacher's three existing lessons (2-cqrs-read-models,
+  4-health-probe-semantics, 0-request-response-lifecycle), not new writing. V1 lessons are source material only; V2 is
+  rewritten, never edited in place.
+why: >-
+  The owner wants the industry knowledge taught as its own part with the real format of the teacher's data repo, so the
+  screens are designed from the phases and activity kinds, not from an invented flow.
+forbids:
+  - A nine-stage flow of our own; the phases are the six of concepts/ V2.
+  - The old name "Knowledge Shard" or "mảnh kiến thức".
+  - Editing a V1 lesson in place.
+  - Releasing feedback before the learner submits.
+example: >-
+  /essentials/<topic>/<lesson> shows the overview, one list card of the six phases (each with a state chip or a lock) and
+  an aside with the learning result, the retrieval after 1, 7 and 21 days and the references.
+livesIn:
+  - path: be/src/modules/domain/lesson/lesson.contracts.ts
+    holds: the six phases, LESSON_FREE_PHASE, the three difficulties, the five activity kinds, vi and en locales
+  - path: be/src/modules/domain/lesson/lesson-access.policy.ts
+    holds: "which phase is free: the teacher's isPremium mark of a section or lesson first, then LESSON_FREE_PHASE"
+  - path: be/src/modules/domain/attempt/outcome-level.policy.ts
+    holds: "levelsOf (an attempt gives understood only) and provedLevelOf (proved needs the incident mutation score >= 80)"
+  - path: be/src/modules/domain/attempt/attempt-proof.service.ts
+    holds: recordMutationScore, the only writer of the proved level
+  - path: be/src/modules/domain/lesson/lesson-group.policy.ts
+    holds: the map from the teacher's category or a lesson to its catalog group
+  - path: be/src/modules/domain/review/review.contracts.ts
+    holds: "RETRIEVAL_AFTER_DAYS = [1, 7, 21]"
+  - path: fe/apps/app/src/app/[locale]/(app)/essentials
+    holds: the catalog, the topic and the lesson routes
+  - path: fe/apps/app/src/components/blocks/LessonStudy
+    holds: the lesson page with the six phases
+decided:
+  by: owner
+  at: 2026-11-08
+  words:
+    - "là 1 phần riêng dạy về kiến thức của ngành"
+    - "Bản chất"
+    - "Duyệt template"
+    - "Duyệt cả hai"
+    - "Chốt cây này"
+  source: >-
+    Memory starci-next-learning-direction (owner 2026-11-08: the separate part, the name Bản chất chosen in the choice
+    dialog, "Duyệt template" for ConceptLesson, "Duyệt cả hai" for catalog and topic pages, "Chốt cây này" for the 16
+    categories over 343 lessons).
+amendments:
+  - at: 2026-11-10
+    by: coordinator under owner delegation
+    words:
+      - "cứ làm theo ý trò đi, cách nào tốt nhất thì làm"
+      - "the 'proved' level needs the incident mutation score (owner 2026-11-08, reaffirmed)"
+    rulings:
+      - >-
+        Proof level: "Đã chứng minh" (proved, outcome level 2) REQUIRES the incident mutation score, at least 80 percent. An
+        Áp dụng (apply) exercise scoring 80 percent or more gives at most the level below proved (understood, level 2). A
+        graded attempt never raises `proved`.
+      - >-
+        Free tier of a lesson: the teacher's `isPremium: false` mark on a lesson or a section makes it free; without a mark
+        only the challenge phase (Bị hỏi) is free. See concept.premium-unlocks-all.
+status: partial
+built:
+  - The three routes, the six phases, the five activity kinds, the free phase and the 1, 7, 21 day retrieval exist in code (read, not run).
+  - The lesson page was reworked on 2026-11-10 toward the approved layout (band, one phase list card, aside); the gallery holds its screens.
+  - "Proof level rule built 2026-11-10: levelsOf gives understood only, provedLevelOf(mutationScore) gives 2 at 80 percent or more, AttemptProofService.recordMutationScore keeps the best score of a learner per lesson (new table lesson_incident_scores, migration 1798100000000) and raises `proved` for the outcomes the learner fully understood. Unit specs run and pass."
+  - "Free-tier marks built 2026-11-10 (lesson-access.policy.ts); unit specs run and pass."
+notBuilt:
+  - "`proved` is unreachable today: no incident run reports a mutation score yet, so nothing calls AttemptProofService.recordMutationScore. Until a caller exists (the incident door, from a server rerun of the learner's tests), every outcome stays at understood and no Essentials experience reaches ai-graded. The migration is written but not applied to any database."
+  - Not verified that the three MVP lessons are imported in any database; the lane holds no content snapshot.
+  - Not verified that the grouping holds exactly 16 groups (the map is in lesson-group.policy.ts, not counted).
+  - The simulation and apply phases need the learner CLI and the relay for tests on the learner's machine; see concept.learner-cli-relay-proof.
+  - Grammar 0.37.14 follow-ups (navigation rows without the external arrow, article headings on 14) wait for the local registry.
+refs:
+  - concept.premium-unlocks-all
+  - concept.content-repo
+  - concept.learning-program
+  - concept.learner-cli-relay-proof
