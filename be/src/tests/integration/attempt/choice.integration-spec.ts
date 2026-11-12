@@ -3,6 +3,12 @@ import { SECRET } from "../../fixtures/builders/lesson.builder"
 import { attemptModules, storedAttemptsOf, useAttemptWorld } from "../../world/attempt-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
+/** The outcomes after the right choice: the first is being learned, the second is not started. */
+const AFTER_RIGHT_CHOICE = [
+    { id: "demo--o1", understood: 2, proved: 0, state: "learning" },
+    { id: "demo--o2", understood: 0, proved: 0, state: "not-started" },
+]
+
 /**
  * Lesson attempts, choices and simulations (integration): the real attempt capability over the real primary database and the
  * real lesson content. It proves deterministic grading, the outcome levels, the validation of a simulation path and that an
@@ -28,7 +34,7 @@ describe("lesson attempts of a choice and a simulation (integration)", () => {
         expect(progress).toMatchObject({
             version: "v1",
             phase: "predict",
-            outcomes: [{ id: "demo--o1", understood: 2, proved: 0 }],
+            outcomes: AFTER_RIGHT_CHOICE,
             attempts: { total: 1, activities: 1, graded: 1, failed: 0, pending: 0 },
         })
         expect(w.coach().requests).toEqual([])

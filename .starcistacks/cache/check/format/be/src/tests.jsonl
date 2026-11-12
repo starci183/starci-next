@@ -40,11 +40,11 @@
 {"findings":[],"hash":"98006a1a5532a6b2ad059dbc6dedc520b9f67ae574969055c6caae8e866f1061","path":"be/src/tests/integration/agent-lab/quota.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"2f7f912fdc75e4faa421924175a9522f63c860da42afed261e6a7d6e9e586ef1","path":"be/src/tests/integration/ai-gateway/ai-gateway.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"53f2eb98276b33a92bc7e1cb526edcd8d003d9650b787edfe059c5e3974b8168","path":"be/src/tests/integration/attempt/ai-coach.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"f0d786cda39732bfc8e160a4e1e5e7f59693a64daf327307e05122a846ef56ee","path":"be/src/tests/integration/attempt/choice.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"4813c19907a13a7b8e96c5089d59049e244f3908068164832ddd3a6d64855f55","path":"be/src/tests/integration/attempt/choice.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"309be6a38d6cf0958949126c90556364d98201929d41dbf9237886dd4117cb6d","path":"be/src/tests/integration/attempt/coach.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"f710ea489542f2e96f7d33c89a7c5b3cf348706a883ece9df179c6d6da3ab342","path":"be/src/tests/integration/attempt/doors.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"ad042decd896ff014064570fd493b27f97dca8de4c708f5f6aa48e7c3ae8ac55","path":"be/src/tests/integration/attempt/flow.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"6a00763c209673abf2d7aabff3892aa6ad1c227f09b2e894ac528c67a09a8fe9","path":"be/src/tests/integration/attempt/premium.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"4fbf12b0d6d45ae6a4807bbfab781b9cb3261a37bbb24c856193c30e00b9392f","path":"be/src/tests/integration/attempt/doors.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"47e5bbc7e52922e77aa4d1a5ce8ea946d731fbc134035a2fb0374a2014642afa","path":"be/src/tests/integration/attempt/flow.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"5162099fb49c801114b19142665f5c0bcb4fb69b50454f229f061b75caff0df5","path":"be/src/tests/integration/attempt/premium.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"459a715009c9ddeefbf79e8cad2d8d6dde883e94edb829d0edee63db36efa343","path":"be/src/tests/integration/attempt/revision.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"56573c851aba255bb433282928ffe533b92d6d44301a73249a70e185d7702676","path":"be/src/tests/integration/career/doors.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"708392615f3e94cbf507ffe3504c351ff743d0d2b3d8a4bf23a784137935a0eb","path":"be/src/tests/integration/career/flow.integration-spec.ts","step":"prettier"}
@@ -96,7 +96,7 @@
 {"findings":[],"hash":"051c09d2e086e6b75e867e9ee0e7a7afb745527529adea21204701fea3305291","path":"be/src/tests/tsconfig.json","step":"prettier"}
 {"findings":[],"hash":"ea94acf7be5612de1f991b8377b8b65a5250d5ff4341e971a3aca04baa30bc02","path":"be/src/tests/world/ai-coach-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"619eed39d28ed6e7b40e56cf05c9cf527faf0b1db5681ffb0b35a40ee4ab8ec3","path":"be/src/tests/world/ai-gateway-world.options.ts","step":"prettier"}
-{"findings":[],"hash":"de0c1b2fdc555d767f30a440a0bc4379eb78d44e662c3a27dd9cc0a3d8274159","path":"be/src/tests/world/attempt-doors.client.ts","step":"prettier"}
+{"findings":[],"hash":"fc7fe30ccb856d6629c346cecfdcbaa6f828444ad4f0b72e9636d965d9dee492","path":"be/src/tests/world/attempt-doors.client.ts","step":"prettier"}
 {"findings":[],"hash":"4266af89cd72ff0902589dbadf106e73286f45bd9206d76f1050a3496e42f6a1","path":"be/src/tests/world/attempt-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"955fbe853b4d2c34f0adabfb8b15d0d9e0ef77930eebd252476fddfe5d22c524","path":"be/src/tests/world/career-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"9c7d796e128d3164a63d45c1ee46f62a7e9b5d7eecb370d837d86f776fd225f6","path":"be/src/tests/world/concepts-directory.client.ts","step":"prettier"}

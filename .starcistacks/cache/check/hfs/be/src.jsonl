@@ -3854,11 +3854,11 @@
 {"data":{},"findings":[],"hash":"acc5699cd75d7a727551a913fdbdf54415e3975f40e94967ce00643409b91b4e","path":"be/src/tests/integration/agent-lab/quota.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8f304dbe6af62198b66885e0688ca992d7047945df49becdc728b665ce56393a","path":"be/src/tests/integration/ai-gateway/ai-gateway.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"65dd10d9876070d6ab3851004ff61eb629d08423d2d1118809428cd857fb6539","path":"be/src/tests/integration/attempt/ai-coach.integration-spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5c7119c42ed4477f3701809edc4f06f1fdf67bc53c4286b58ff75bd38b159ad0","path":"be/src/tests/integration/attempt/choice.integration-spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ff1905b9e377a95cf1c842d2952a908423da9e21573a8ed39e509cd2ba83e1dd","path":"be/src/tests/integration/attempt/choice.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b905fb205c23eaa71c65612524ead4a6c1a6b1bb2738b17aa67a1b5a14a75c76","path":"be/src/tests/integration/attempt/coach.integration-spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"3e18591863deffd0e226eb841d90b87ed87807f5e6d4fa535ede04cae680f408","path":"be/src/tests/integration/attempt/doors.integration-spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ff87889e708be20a3eac1bc4bcd7c3e7aa82c6dd65b104a0f659e91c6fe9b31d","path":"be/src/tests/integration/attempt/flow.integration-spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"26f55d2ce862aaa18525f10eeeb0e0ccb06c516dd5abb0e493f019908ea3a78b","path":"be/src/tests/integration/attempt/premium.integration-spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"581e03a428d8faf247c6646e48bd15909f492b778479cb9c96f42443c54e63db","path":"be/src/tests/integration/attempt/doors.integration-spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e8d15e1618f9a141de1fba4c1754e3427388f29f0732710f49c5b404f33c182a","path":"be/src/tests/integration/attempt/flow.integration-spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cbe04973b5f738df4249e56f79e27a91042844b681f1435fa248ad1d4c24d860","path":"be/src/tests/integration/attempt/premium.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9dc5ac66b2aa243834e4bb65a62845abdb175f997a2fff82cf39ce871de3c3cd","path":"be/src/tests/integration/attempt/revision.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7bbdb9c125e59477fd579e24016d5340f5c769c210c62398e1f7a8837a07c4cd","path":"be/src/tests/integration/career/doors.integration-spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c5ea5168b6e0fc46dce1695243a4c96df3875189a7deefda10b787460a8e2a9","path":"be/src/tests/integration/career/flow.integration-spec.ts","step":"file-rules"}
@@ -3910,7 +3910,7 @@
 {"data":{},"findings":[],"hash":"d1e93d14e6594118a0f836181c3024cfb7a4abf162506e6e39227af56a49aacb","path":"be/src/tests/tsconfig.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e4de8789b84a177e41690b7ebfd34a38aa13f1e3b086f67823741aa452702c60","path":"be/src/tests/world/ai-coach-world.options.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6e8dc045c26a9cee50b2477c4ab258f5e6ccdfb81fb26998031b4243c1471b8c","path":"be/src/tests/world/ai-gateway-world.options.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e10f1c1404792ec8236d7b1e098ae226c0c9b5b35d035fa0f3d9eee59aea899d","path":"be/src/tests/world/attempt-doors.client.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8134f728bdfbbe0788f443eacd2f50c5a513e355478acde0bed7c507488d8151","path":"be/src/tests/world/attempt-doors.client.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e81e6e1701af441ddc69765154eb6a645e7630362840d0dc174699189028ad81","path":"be/src/tests/world/attempt-world.options.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a332135a9aac0c3306d0a126d870ab0bf29e4b7169c5f0df86a690147166f556","path":"be/src/tests/world/career-world.options.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ad0e3cc2b2e44f756c6c175970a5bcc17341ef216521180ca731ca34b6d44ba3","path":"be/src/tests/world/concepts-directory.client.ts","step":"file-rules"}

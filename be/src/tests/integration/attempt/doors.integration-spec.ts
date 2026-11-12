@@ -14,6 +14,12 @@ import { storedAttemptsOf } from "../../world/attempt-world.options"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
+/** Every outcome of the demo lesson before the learner answered anything: zero levels, not started. */
+const UNTOUCHED = [
+    { id: "demo--o1", understood: 0, proved: 0, state: "not-started" },
+    { id: "demo--o2", understood: 0, proved: 0, state: "not-started" },
+]
+
 /**
  * Attempt doors, access and release (integration): `submitLessonAttempt`, `lessonAttempt` and `lessonProgress` of the real core
  * app behind the real session guard. It proves the session and Premium gates, that nothing of a choice is released before a
@@ -62,7 +68,7 @@ describe("lesson attempt doors, access and release (integration)", () => {
         const read = await doors.ask<AttemptReadBody>(ATTEMPT, { input: { attemptId: attempt?.attemptId } }, cookie)
 
         expect(JSON.stringify(before)).not.toContain(SECRET)
-        expect(before.data?.lessonProgress).toMatchObject({ version: null, phase: "challenge", outcomes: [] })
+        expect(before.data?.lessonProgress).toMatchObject({ version: null, phase: "challenge", outcomes: UNTOUCHED })
         expect(attempt).toMatchObject({ kind: "choice", phase: "predict", status: "graded", failureCode: null })
         expect(attempt?.result?.correct).toBe(false)
         expect(

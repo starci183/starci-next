@@ -66,6 +66,7 @@ export interface ProgressOutcomeBody {
     readonly id: string
     readonly understood: number
     readonly proved: number
+    readonly state: string
 }
 
 /** The attempt counts as the progress door answers them. */
@@ -112,7 +113,7 @@ export const ATTEMPT: string = `query Attempt($input: LessonAttemptInput!) {
 export const PROGRESS: string = `query Progress($input: LessonProgressInput!) {
   lessonProgress(input: $input) {
     version phase
-    outcomes { id understood proved }
+    outcomes { id understood proved state }
     attempts { total graded failed }
     activities { activityId latestStatus }
   }

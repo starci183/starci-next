@@ -39,6 +39,7 @@ describe("lesson attempts and the Premium gate (integration)", () => {
                 level: 2,
                 evidenceQuote: quote,
                 maxScore: 2,
+                missing: "",
             },
             {
                 criterionId: "demo--interview--c2",
@@ -46,14 +47,15 @@ describe("lesson attempts and the Premium gate (integration)", () => {
                 level: 2,
                 evidenceQuote: quote,
                 maxScore: 3,
+                missing: "",
             },
         ])
         expect(JSON.stringify(view)).not.toContain(SECRET)
         expect(w.coach().requests[0]?.rubric[0]?.expectedEvidence).toBe(`${SECRET} evidence one`)
         expect(progress.phase).toBe("challenge")
         expect(progress.outcomes).toEqual([
-            { id: "demo--o1", understood: 0, proved: 0 },
-            { id: "demo--o2", understood: 0, proved: 0 },
+            { id: "demo--o1", understood: 0, proved: 0, state: "not-started" },
+            { id: "demo--o2", understood: 0, proved: 0, state: "not-started" },
         ])
     })
 

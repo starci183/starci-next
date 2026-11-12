@@ -13,9 +13,16 @@ import { storedAttemptsOf } from "../../world/attempt-world.options"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
+/** The outcomes after one correct answer to the choice: the first is being learned, the second is not started. */
+const AFTER_PREDICT = [
+    { id: "demo--o1", understood: 2, proved: 0, state: "learning" },
+    { id: "demo--o2", understood: 0, proved: 0, state: "not-started" },
+]
+
 /**
- * Attempt doors, the flow of a learner (integration): the real core app, which binds no AI provider, so a written answer is
- * saved and fails with a stable code instead of being graded. It proves idempotency over the door, the progress read and the
+ * Attempt doors, the flow of a learner (integration): the real core app, whose AI gateway reaches the world's OpenRouter fake
+ * that answers a grade holding no criteria until a spec scripts it, so a written answer is saved and fails with a stable code
+ * instead of being graded. It proves idempotency over the door, the progress read and the
  * refusals of input and of a locked phase.
  */
 describe("lesson attempt doors, the flow of a learner (integration)", () => {
@@ -48,13 +55,13 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
         expect(progress.data?.lessonProgress).toEqual({
             version: "v1",
             phase: "predict",
-            outcomes: [{ id: "demo--o1", understood: 2, proved: 0 }],
+            outcomes: AFTER_PREDICT,
             attempts: { total: 1, graded: 1, failed: 0 },
             activities: [{ activityId: "demo--predict", latestStatus: "graded" }],
         })
     })
 
-    it("saves the free diagnostic of a learner without Premium and fails it with the unconfigured coach code", async () => {
+    it("saves the free diagnostic of a learner without Premium and fails it with the invalid coach code when the model answers no grade", async () => {
         const { cookie, subject } = await doors.signIn(nextLearner(), false)
 
         const answer = await doors.ask<SubmitBody>(SUBMIT, { input: writtenInput("demo--interview") }, cookie)
@@ -65,11 +72,11 @@ describe("lesson attempt doors, the flow of a learner (integration)", () => {
             kind: "explain",
             phase: "challenge",
             status: "failed",
-            failureCode: "ATTEMPT_COACH_UNCONFIGURED",
+            failureCode: "ATTEMPT_COACH_INVALID",
             result: null,
         })
         expect(stored.map((row) => [row.status, row.failure_code, row.answer.text])).toEqual([
-            ["failed", "ATTEMPT_COACH_UNCONFIGURED", WRITTEN_ANSWER],
+            ["failed", "ATTEMPT_COACH_INVALID", WRITTEN_ANSWER],
         ])
     })
 
