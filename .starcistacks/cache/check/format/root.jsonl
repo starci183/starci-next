@@ -10,6 +10,6 @@
 {"findings":[],"hash":"a2617f034cfe0bb773736fbab65d29c000176baa02b4842b914b5ae5b11760b8","path":"codecov.yml","step":"prettier"}
 {"findings":[],"hash":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da","path":"eslint.config.mjs","step":"prettier"}
 {"findings":[],"hash":"42c617fb467761d062ec7055e8f9e3df9917d5b6343d88431eee382597d7adb6","path":"hfs.json","step":"prettier"}
-{"findings":[],"hash":"68566ea008244478c8aa44d9a433a8a0fef7ac3fd1d1c946651ccd7ffe6a57bf","path":"package.json","step":"prettier"}
+{"findings":[],"hash":"b8b9bedfd0d8c371d02cbefa59acb6ca4a99ed4a8bb0de9be0c0f1719b511a76","path":"package.json","step":"prettier"}
 {"findings":[],"hash":"89faf9a45ee0bf580517de9051ace86b758a0262ddfa39098e47d4302c58f947","path":"sonar-project.properties","step":"prettier"}
 {"findings":[],"hash":"b249ad2cdb8664438d3833a9e7e856d55adfdc56115486bd441d5ce03ed3810a","path":"turbo.json","step":"prettier"}
