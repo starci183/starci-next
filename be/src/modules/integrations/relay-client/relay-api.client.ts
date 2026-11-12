@@ -1,4 +1,11 @@
-import type { Fetcher, PairingDevice, PairingStart, Refusal, TokenPoll } from "./relay-client.contracts"
+import {
+    RelayRefusalCode,
+    type Fetcher,
+    type PairingDevice,
+    type PairingStart,
+    type Refusal,
+    type TokenPoll,
+} from "./relay-client.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
 
 /** A door's status with its parsed body (null when it is not JSON). */
@@ -30,7 +37,7 @@ const post = async (fetcher: Fetcher, url: string, body: unknown): Promise<DoorA
 /** The refusal of a door answer: its stable code, RELAY_UNREACHABLE when no answer came. */
 export const refusalOf = (status: number, code: string | undefined): Refusal => ({
     kind: "refused",
-    code: code ?? (status === 0 ? "RELAY_UNREACHABLE" : "RELAY_UNAVAILABLE"),
+    code: code ?? (status === 0 ? RelayRefusalCode.Unreachable : RelayRefusalCode.Unavailable),
     status,
 })
 
@@ -56,5 +63,5 @@ export const pollToken = async (fetcher: Fetcher, baseUrl: string, deviceCode: s
     const deviceToken = field(answer.body, "deviceToken")
     if (answer.status === 200 && deviceToken) return { kind: "token", deviceToken }
     const refusal = refusalOf(answer.status, field(answer.body, "code"))
-    return refusal.code === "RELAY_PENDING" ? { kind: "pending" } : refusal
+    return refusal.code === RelayRefusalCode.Pending ? { kind: "pending" } : refusal
 }

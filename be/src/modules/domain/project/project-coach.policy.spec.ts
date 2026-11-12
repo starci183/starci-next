@@ -167,6 +167,7 @@ describe("codeReadGradeOf (part 3)", () => {
         ["not JSON", "I cannot answer"],
         ["no object", "just { text"],
         ["an array", "[1]"],
+        ["a scalar", "5"],
         ["no criteria", JSON.stringify({ question: "q" })],
         ["too few criteria", reply([{ criterionId: "c1", level: 1 }])],
         [

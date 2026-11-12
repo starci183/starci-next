@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing"
 import type { AgentLabDefinition, AgentLabTrackDefinition } from "./agent-lab.contracts"
-import { AGENT_LAB_COPY } from "./messages/agent-lab.messages"
+import { agentLabCopyOf } from "./messages/agent-lab.messages"
 import { toConceptViews, toTrackSummary, toTrackView, type AgentLabTrackSource } from "./agent-lab-view.mapper"
 
 const MAPPER: unique symbol = Symbol("agent-lab.view-mapper")
@@ -62,7 +62,7 @@ describe("agent lab view mapper", () => {
         expect(view.cells).toHaveLength(7)
         expect(view.cells[0]).toEqual({
             conceptId: "task-spec",
-            conceptLabel: AGENT_LAB_COPY.vi["concept.task-spec.label"],
+            conceptLabel: agentLabCopyOf("concept.task-spec.label").vi,
             labId: null,
             status: "being-written",
             title: null,

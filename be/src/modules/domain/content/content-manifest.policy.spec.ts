@@ -58,4 +58,11 @@ describe("catalog helpers", () => {
             ),
         ).toEqual(["paths/founder.yaml"])
     })
+
+    it("matches no file for a kind that declares no file pattern", async () => {
+        const subject = await build()
+        const kind = subject.manifestOf(TEXT).kinds[0]
+
+        expect(kind && subject.catalogFilesOf(kind, ["concepts/a.yaml"])).toEqual([])
+    })
 })

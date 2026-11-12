@@ -1,8 +1,12 @@
 import { Alert, Button, Page, Progress, Stack } from "@starci/grammar/common"
-import { SlotView, UpsellRow } from "@starci-next/ui"
-import type { DataSlot, ReviewSessionLabels, ReviewSessionScreen, SlotLabels } from "@/modules/types"
-import { ReviewItemCard, type ReviewItemCardProps } from "./item"
-import { ReviewSummaryCard } from "./summary"
+import { ReviewItemCard, ReviewSummaryCard, SlotView, UpsellRow } from "@starci-next/ui"
+import type {
+    DataSlot,
+    ReviewItemCommands,
+    ReviewSessionLabels,
+    ReviewSessionScreen,
+    SlotLabels,
+} from "@/modules/types"
 
 /** The fake item with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
@@ -35,7 +39,7 @@ export type ReviewSessionBaseProps = {
         readonly hubHref: string
         readonly plansHref: string
     }
-    readonly on: ReviewItemCardProps["on"]
+    readonly on: ReviewItemCommands
 }
 
 /** The notice of an item behind Premium, with the way to the plans and a way past it. */

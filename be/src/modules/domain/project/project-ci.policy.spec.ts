@@ -93,6 +93,8 @@ describe("ciRunOf", () => {
         ["no body", undefined],
         ["text", Buffer.from("not json")],
         ["an array", rawOf([])],
+        ["a scalar", Buffer.from("5")],
+        ["null", Buffer.from("null")],
         ["a bad run id", rawOf({ ...BODY, runId: "has space" })],
         ["a run id that is not text", rawOf({ ...BODY, runId: 1 })],
         ["a bad commit", rawOf({ ...BODY, commit: "xyz" })],

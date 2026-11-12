@@ -21,7 +21,7 @@ This roster declares names only. Store credential values in sealed custody and m
 | `IDENTITY_SESSION_MAX_SECONDS` | Core API absolute session lifetime in seconds; 0 leaves only the provider refresh lifetime |
 | `IDENTITY_CHALLENGE_TTL_SECONDS` | Core API sign-in, sign-up and password-reset code lifetime in seconds |
 | `IDENTITY_CHALLENGE_MAX_ATTEMPTS` | Core API wrong-code attempts allowed per challenge |
-| `RELAY_MANIFEST_SIGNING_KEY` | Core API Ed25519 PEM (pkcs8) the task manifests of the learner relay are signed with; the core reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/dev/relay-manifest-key.mjs`; any other mode refuses to boot without it |
+| `RELAY_MANIFEST_SIGNING_KEY` | Core API Ed25519 PEM (pkcs8) the task manifests of the learner relay are signed with; the core reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/relay-manifest-key.mjs`; any other mode refuses to boot without it |
 | `RELAY_MANIFEST_SIGNING_KEY_FILE` | Host-local path of the manifest signing key file |
 | `STARCI_NEXT_MANIFEST_KEY` | Learner CLI (`starci-next`) only: the SPKI PEM of the public half, which it verifies manifests with; in dev `export STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"` |
 | `STARCI_NEXT_URL` | Learner CLI only: the StarCi origin (dev: `http://localhost:3080`, the ingress, which routes `/api`, `/graphql` and `/socket.io` to the core api) |
@@ -59,6 +59,15 @@ This roster declares names only. Store credential values in sealed custody and m
 | `JUDGE0_TIMEOUT` | Core API most time one call to Judge0 may take (non-secret, default 10s) |
 | `JUDGE0_POLL_INTERVAL` | Core API wait between two reads of a batch that is still judging (non-secret, default 500ms) |
 | `JUDGE0_DEADLINE` | Core API most time a whole batch may take (non-secret, default 60s) |
+| `CONTENT_GIT_URL` | CLI `content sync` only: the content repository the git mount pulls (optional integration; set together with `CONTENT_DATASOURCES_DIR`, unset means local directories only) |
+| `CONTENT_GIT_REF` | CLI `content sync` only: branch, tag or pinned sha of the content repository (optional) |
+| `CONTENT_GIT_TOKEN` | CLI `content sync` only: access token of the content repository; read from `CONTENT_GIT_TOKEN_FILE`, a sealed member once the repository is private |
+| `CONTENT_GIT_TOKEN_FILE` | Host-local path of the content repository token file |
+| `CONTENT_DATA_GIT_URL` | CLI `content sync` only: the teacher's data repository (optional; unset pulls the content repository alone) |
+| `CONTENT_DATA_GIT_REF` | CLI `content sync` only: branch, tag or pinned sha of the data repository (optional) |
+| `CONTENT_DATA_GIT_TOKEN` | CLI `content sync` only: access token of the data repository; read from `CONTENT_DATA_GIT_TOKEN_FILE`, a sealed member once the repository is private |
+| `CONTENT_DATA_GIT_TOKEN_FILE` | Host-local path of the data repository token file |
+| `CONTENT_DATASOURCES_DIR` | CLI `content sync` only: the directory the versioned content snapshots live in |
 | `PRACTICE_FREE_PER_PATTERN` | Core API problems of each pattern open without Premium (non-secret, default 1) |
 | `PRACTICE_JUDGE_CONCURRENCY` | Core API most submissions judged at once on one instance (non-secret, default 4) |
 | `PRACTICE_SUBMISSIONS_PER_MINUTE` | Core API most runs and submits one learner may make in a minute (non-secret, default 10) |

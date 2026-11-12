@@ -25,10 +25,10 @@ const BODY = {
 
 const BOUND: RepositoryRow = { github_repository: "starci/shop", github_repository_id: null }
 
-const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND]) => {
+const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = true) => {
     const em = mockEntityManager({
         query: [
-            [SELECT_PROJECT_BY_ID, [projectRowOf({ ci_secret: "a".repeat(64) })]],
+            [SELECT_PROJECT_BY_ID, found ? [projectRowOf({ ci_secret: "a".repeat(64) })] : []],
             [SELECT_PROJECT_REPOSITORY, [...binding]],
             [SET_PROJECT_REPOSITORY_ID, [{ project_id: PROJECT_ID }]],
         ],
@@ -107,6 +107,13 @@ describe("ProjectCiService recordRun", () => {
             code: "PROJECT_CI_PAYLOAD_INVALID",
         })
         expect(inbox.claims).toEqual([])
+    })
+
+    it("gives the claim back and refuses a delivery that names no project", async () => {
+        const { service, inbox } = await build([BOUND], false)
+
+        await expect(record(service)).rejects.toMatchObject({ code: "PROJECT_CI_SIGNATURE_INVALID" })
+        expect(inbox.released).toEqual([{ source: "project-ci", eventId: "gh-1" }])
     })
 
     it("returns on a run id the inbox already holds, before attesting or recording anything", async () => {

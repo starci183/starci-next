@@ -1,17 +1,10 @@
 import type {
     AgentLabConceptDefinition,
     AgentLabDefinition,
-    AgentLabText,
     AgentLabTrackDefinition,
     AgentLabTrackId,
 } from "./agent-lab.contracts"
-import { AGENT_LAB_COPY } from "./messages/agent-lab.messages"
-
-/** The copy of one catalog entry in both locales, read from the message file. */
-const copy = (key: string): AgentLabText => ({
-    vi: AGENT_LAB_COPY.vi[key] ?? key,
-    en: AGENT_LAB_COPY.en[key] ?? key,
-})
+import { agentLabCopyOf } from "./messages/agent-lab.messages"
 
 /**
  * The seven mindset concepts every track is graded on, as decision.agents.curriculum keeps them (ids are the record's; the names and
@@ -20,38 +13,38 @@ const copy = (key: string): AgentLabText => ({
 export const AGENT_LAB_CONCEPTS: ReadonlyArray<AgentLabConceptDefinition> = [
     {
         id: "task-spec",
-        label: copy("concept.task-spec.label"),
-        evidence: copy("concept.task-spec.evidence"),
+        label: agentLabCopyOf("concept.task-spec.label"),
+        evidence: agentLabCopyOf("concept.task-spec.evidence"),
     },
     {
         id: "context",
-        label: copy("concept.context.label"),
-        evidence: copy("concept.context.evidence"),
+        label: agentLabCopyOf("concept.context.label"),
+        evidence: agentLabCopyOf("concept.context.evidence"),
     },
     {
         id: "tools-permissions",
-        label: copy("concept.tools-permissions.label"),
-        evidence: copy("concept.tools-permissions.evidence"),
+        label: agentLabCopyOf("concept.tools-permissions.label"),
+        evidence: agentLabCopyOf("concept.tools-permissions.evidence"),
     },
     {
         id: "verify",
-        label: copy("concept.verify.label"),
-        evidence: copy("concept.verify.evidence"),
+        label: agentLabCopyOf("concept.verify.label"),
+        evidence: agentLabCopyOf("concept.verify.evidence"),
     },
     {
         id: "decompose",
-        label: copy("concept.decompose.label"),
-        evidence: copy("concept.decompose.evidence"),
+        label: agentLabCopyOf("concept.decompose.label"),
+        evidence: agentLabCopyOf("concept.decompose.evidence"),
     },
     {
         id: "cost-limits",
-        label: copy("concept.cost-limits.label"),
-        evidence: copy("concept.cost-limits.evidence"),
+        label: agentLabCopyOf("concept.cost-limits.label"),
+        evidence: agentLabCopyOf("concept.cost-limits.evidence"),
     },
     {
         id: "operate",
-        label: copy("concept.operate.label"),
-        evidence: copy("concept.operate.evidence"),
+        label: agentLabCopyOf("concept.operate.label"),
+        evidence: agentLabCopyOf("concept.operate.evidence"),
     },
 ]
 
@@ -63,20 +56,20 @@ export const AGENT_LAB_CONCEPTS: ReadonlyArray<AgentLabConceptDefinition> = [
 export const AGENT_LAB_TRACKS: ReadonlyArray<AgentLabTrackDefinition> = [
     {
         id: "claude",
-        label: copy("track.claude.label"),
-        focus: copy("track.claude.focus"),
+        label: agentLabCopyOf("track.claude.label"),
+        focus: agentLabCopyOf("track.claude.focus"),
         keyMode: "byo",
     },
     {
         id: "openclaw",
-        label: copy("track.openclaw.label"),
-        focus: copy("track.openclaw.focus"),
+        label: agentLabCopyOf("track.openclaw.label"),
+        focus: agentLabCopyOf("track.openclaw.focus"),
         keyMode: "starci-proxy",
     },
     {
         id: "hermes",
-        label: copy("track.hermes.label"),
-        focus: copy("track.hermes.focus"),
+        label: agentLabCopyOf("track.hermes.label"),
+        focus: agentLabCopyOf("track.hermes.focus"),
         keyMode: "starci-proxy",
     },
 ]

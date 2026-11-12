@@ -3,14 +3,6 @@
     "title": "starci-next",
     "shell": {
       "brand": "StarCi Next",
-      "navLabel": "Main",
-      "learn": "Learn",
-      "review": "Review",
-      "streakChip": "{count} days",
-      "essentials": "Essentials",
-      "practice": "Practice code",
-      "projects": "Projects",
-      "agents": "Agents & AI",
       "upgradePremium": "Upgrade to Premium",
       "yourPlan": "Your plan",
       "nav": {
@@ -26,9 +18,7 @@
         "profile": "Profile"
       },
       "sidebarLabel": "Main navigation",
-      "incidents": "Incidents",
       "experienceGroup": "Experience",
-      "experienceVerified": "Verified experience",
       "planPremium": "Premium",
       "planFree": "No Premium",
       "account": "Account",
@@ -44,33 +34,10 @@
       "localeShortEn": "EN",
       "localeNameVi": "Tiếng Việt",
       "localeNameEn": "English",
-      "interview": "Mock interview",
       "profile": "Profile",
       "themeLabel": "Dark theme"
     },
-    "notifications": {
-      "label": "Notifications",
-      "title": "Notifications",
-      "unread": "{count} unread",
-      "empty": "No notifications yet.",
-      "markAll": "Mark all as read",
-      "unavailable": "Notifications could not be loaded.",
-      "kind": {
-        "premiumActivated": "Your Premium is active until {until}.",
-        "premiumRevoked": "A Premium payment was voided by the payment provider, so its time was removed. Your Premium now ends on {until}.",
-        "experienceVerified": "One of your experience items ({itemType}, part {part}) was verified.",
-        "experienceReturned": "One of your experience items ({itemType}, part {part}) was returned for changes.",
-        "projectMilestoneProved": "A milestone of your project {project} is proved.",
-        "projectDeployed": "The deployed address of your project {project} passed the StarCi probes.",
-        "reviewDue": "{count} review cards are due today.",
-        "other": "You have a new notification."
-      }
-    },
-    "home": {
-      "title": "Home"
-    },
     "signOut": {
-      "signedIn": "Signed in",
       "submit": "Sign out",
       "working": "Signing out",
       "signIn": "Sign in"
@@ -267,9 +234,6 @@
       "factStatus": "Status"
     },
     "review": {
-      "nav": {
-        "title": "Review"
-      },
       "today": {
         "pageTitle": "Today's review",
         "intro": "Recall before you see the answer. Each card you grade schedules its next review.",
@@ -290,7 +254,6 @@
         "doneBody": "Goal of {daily} cards reached. Come back tomorrow for more.",
         "lockedTitle": "Premium needed",
         "lockedBody": "{count} items are waiting behind Premium: the rest of each deck and the review questions of Essentials.",
-        "lockedRow": "Premium needed",
         "upsell": "Unlock with Premium",
         "upsellNote": "Premium opens every card and the review questions of the lessons you studied.",
         "queueTitle": "Today's queue",
@@ -301,8 +264,7 @@
         "hubLink": "See your streak on Learn",
         "levelLabel": "Level {level}",
         "overdueBadge": "Overdue",
-        "newBadge": "New",
-        "retry": "Try again"
+        "newBadge": "New"
       },
       "levels": {
         "junior": "Junior",
@@ -316,8 +278,6 @@
         "progressLabel": "Review session progress",
         "sourceCard": "Card · {deck}",
         "sourceRetrieval": "Essentials · {lesson}",
-        "sourceCardPlain": "Review card",
-        "sourceRetrievalPlain": "Essentials question",
         "noteLabel": "Answer in your own words first",
         "notePlaceholder": "Answer in your own words before you flip the card. Keep it short but complete. This is only for you to look back on and is not graded.",
         "retrievalLabel": "Your answer",
@@ -338,13 +298,11 @@
         "good": "Good",
         "easy": "Easy",
         "interval": "{days, plural, one {# day} other {# days}}",
-        "intervalToday": "End of session",
         "shortcuts": "Shortcuts: Space to flip, 1 to 4 to grade",
         "lessonLine": "From the lesson {lesson}",
         "saveFailedTitle": "The grade was not saved",
         "saveFailedBody": "The card stays here and does not move on. Try again.",
         "retry": "Try again",
-        "loadFailed": "This item could not be loaded.",
         "lockedTitle": "This item needs Premium",
         "lockedBody": "You can still review the free cards. Open Premium to review every card and the questions of your lessons.",
         "upsell": "See Premium",
@@ -361,7 +319,6 @@
         "summaryBack": "Back to Review",
         "summaryHub": "See your streak on Learn",
         "emptyTitle": "Nothing to review",
-        "emptyBody": "Add a deck or come back when items are due.",
         "emptyBack": "Back to Review"
       },
       "decks": {
@@ -513,7 +470,6 @@
     },
     "hub": {
       "pageTitle": "Learn",
-      "loadingLabel": "Loading the Learn page",
       "signedOut": {
         "title": "Sign in to open Learn",
         "body": "Your streak, today's work and the learning parts belong to your account.",
@@ -524,11 +480,9 @@
         "nextLabel": "Next step",
         "continue": "Continue",
         "change": "Change goal",
-        "emptyEyebrow": "GOAL",
         "emptyTitle": "What do you want to be able to do?",
         "emptyBody": "Pick a target and StarCi strings the parts into an ordered path.",
-        "choose": "Choose a goal",
-        "slotLabel": "Learning goal"
+        "choose": "Choose a goal"
       },
       "today": {
         "eyebrow": "Today",
@@ -551,7 +505,6 @@
         "goalOption": "{count} days",
         "goalSave": "Save",
         "goalCancel": "Close",
-        "goalSaving": "Saving",
         "goalSaved": "Weekly goal saved.",
         "goalInvalid": "The goal must be 2 to 7 days.",
         "goalFailed": "The goal was not saved, try again.",
@@ -767,8 +720,6 @@
         "outcomeUnderstood": "Understood",
         "outcomeProved": "Proved in code",
         "outcomesLocked": "Learning outcomes appear once you have Premium and work through the phases.",
-        "facts": "{minutes} min · {language}",
-        "factsAgnostic": "{minutes} min",
         "factsWithPhases": "{minutes} min · {language} · {count} phases",
         "factsAgnosticWithPhases": "{minutes} min · {count} phases",
         "factsLanguages": "{minutes} min · {languages} languages · {count} phases",
@@ -864,8 +815,6 @@
       "simulation": {
         "states": "States of the simulation",
         "current": "Now",
-        "seen": "Visited",
-        "ahead": "Ahead",
         "observing": "Observing",
         "succeeded": "Goal reached",
         "noMoves": "No action is left from this state.",
@@ -1246,7 +1195,6 @@
         "agent": "Agent"
       },
       "list": {
-        "eyebrow": "BUILD A REAL APP",
         "title": "Projects",
         "description": "Bring your own project and put the starci/ folder in each one",
         "create": "Create a project",
@@ -1269,19 +1217,13 @@
         "searchPlaceholder": "Search projects",
         "searchClear": "Clear search",
         "emptyFilteredTitle": "No project matches",
-        "errorTitle": "Projects could not be loaded",
-        "open": "Open project",
-        "meta": "{done}/{total} milestones · {proved}/{count} concepts proved"
+        "errorTitle": "Projects could not be loaded"
       },
       "device": {
         "connect": "Connect machine",
         "title": "Your machine",
         "badge": "Not connected",
-        "text": "Results from the CLI on your machine will show here once device pairing opens. For now you prove with signed CI or the server probing your deployed address.",
-        "practice": "PRACTISING",
-        "practiceNote": "results from your machine, not counted",
-        "proof": "PROVED",
-        "proofNote": "signed CI or a server rerun"
+        "text": "Results from the CLI on your machine will show here once device pairing opens. For now you prove with signed CI or the server probing your deployed address."
       },
       "levels": {
         "asideLabel": "Levels of proof",
@@ -1292,15 +1234,11 @@
         "proofNote": "Signed CI or a server re-run"
       },
       "new": {
-        "eyebrow": "NEW PROJECT",
         "title": "Create a project",
-        "description": "Name your project and say what it is built with. After creating it you get a secret for the GitHub Action to post signed CI results.",
         "name": "Project name",
-        "kind": "Kind",
         "topic": "Topic",
         "language": "Main language",
         "stack": "Stack",
-        "track": "Agent tool",
         "trackNone": "Not chosen",
         "trackClaude": "Claude Code",
         "trackOpenclaw": "OpenClaw",
@@ -1341,42 +1279,27 @@
         "notFound": "Project not found",
         "notFoundText": "This project is not in your list.",
         "milestones": "Milestone",
-        "milestoneIntro": "A milestone passes when every concept has evidence. When one is missing, you are sent to its Essentials lesson.",
         "milestoneState": {
           "todo": "Not started",
           "in-progress": "In progress",
           "done": "Done"
         },
         "locked": "Needs Premium",
-        "milestoneMeta": "{proved}/{count} concepts",
-        "progress": "{proved}/{count} concepts proved",
-        "practising": "{count} concepts practising: results from your machine, not counted.",
-        "repo": "Repository",
-        "syncTitle": "Practising",
-        "syncText": "Results you ran on your machine through the relay. Not yet proof.",
         "sync": "Refresh results from your machine",
         "syncing": "Refreshing...",
-        "ciTitle": "Proved: signed CI",
         "ciNone": "No CI run yet. Add the StarCi GitHub Action and push.",
         "ciRun": "Run {runId} · commit {commit}",
         "ciPassed": "Passed",
         "ciFailed": "Failed",
-        "probeTitle": "Proved: the server probes your deployed address",
         "probeText": "HTTP apps that run with Docker. StarCi calls your public address with health and the generic probes of each concept.",
         "deployedLabel": "Deployed address (public http or https)",
         "saveDeployed": "Save address",
         "runProbes": "Run the probes",
         "runningProbes": "Probing...",
-        "probeNone": "Not probed yet.",
-        "probePassed": "All passed",
-        "probeFailed": "Some probes failed",
-        "probeResult": "{probe}",
-        "secretTitle": "CI secret",
         "secretText": "The Action signs its result with this project's secret. Rotate it if it leaks.",
         "rotate": "Rotate the CI secret",
         "rotating": "Rotating...",
         "newSecret": "New secret (shown once)",
-        "layoutTitle": "The starci/ folder in your repo",
         "layoutTree": "starci/\n  project.yaml   start, health, test\n  e2e/\n    [concept].md",
         "layoutTests": "Unit and integration tests",
         "layoutTestsText": "Keep them where the language expects them (Go: _test.go beside the code, Java: src/test, Jest/pytest). Put the concept in the test name, for example [idempotency] booking twice with the same key.",
@@ -1404,7 +1327,6 @@
         "expMilestones": "Milestones done",
         "expLink": "View experience",
         "probesTitle": "Probe results",
-        "probesEmpty": "No probe results yet.",
         "deployTitle": "Deployed address",
         "asideRepo": "Repository",
         "asideCi": "CI attestation",
@@ -1415,9 +1337,6 @@
         "deviceConnect": "Connect machine",
         "secretAside": "CI secret",
         "layoutAside": "The starci/ folder",
-        "retry": "Retry",
-        "loadFailed": "Could not load the project",
-        "loadFailedText": "The project could not be read; try again in a few minutes.",
         "milestonesEmpty": "This project has no milestones.",
         "expEmpty": "No experience yet."
       },
@@ -1428,7 +1347,6 @@
         "locked": "This milestone needs Premium",
         "lockedText": "The first milestone is free; later milestones and the AI code read need Premium.",
         "plans": "See Premium",
-        "intro": "The {title} milestone passes with all {count} concepts. Each concept needs the evidence listed below; when one is missing you are sent to its Essentials lesson.",
         "conceptsLabel": "Milestone concepts",
         "crumbRoot": "Projects",
         "provedLine": "{proved}/{count} concepts proved",
@@ -1482,7 +1400,6 @@
           "structure": "Structure"
         },
         "comingSoon": "The teacher is still writing this Essentials lesson, so this concept is left out of the milestone.",
-        "where": "Code location",
         "noWhere": "No code location yet",
         "slot": {
           "test": "Your tests",
@@ -1738,9 +1655,6 @@
     },
     "devices": {
       "pageTitle": "Devices",
-      "eyebrow": "WORK ON YOUR OWN MACHINE",
-      "title": "Connect your machine to the StarCi teacher",
-      "intro": "Every coding task (Essentials Apply and Incident, Build a real app, the AI Engineer path) runs on your machine, in your IDE with your agents. The StarCi CLI keeps one outbound connection so the teacher sees your tests and asks at the right moment. Your machine opens no port.",
       "codeLabel": "The code in your terminal",
       "codePlaceholder": "ABCD-1234",
       "codeHint": "Only confirm a code you just ran yourself. Check the device name and system before you confirm.",
@@ -1748,7 +1662,6 @@
       "confirm": "Confirm this device",
       "confirming": "Confirming…",
       "confirmed": "{name} is connected. Your terminal will say so.",
-      "devicesTitle": "Your devices",
       "devicesEmpty": "No device is connected yet.",
       "devicesLimit": "Premium: up to 2 devices. Free plan: 1 device.",
       "online": "Online",

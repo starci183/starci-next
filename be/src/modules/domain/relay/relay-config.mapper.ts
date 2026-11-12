@@ -17,13 +17,10 @@ const sealedFrom = (env: EnvSource, key: string): Secret | null => {
 
 /**
  * Reads the relay tunables; the confirm page is the learner web origin's /devices. The manifest signing key is the sealed
- * `RELAY_MANIFEST_SIGNING_KEY` (PEM); without it a development or test process signs with a key of its own. The service key is
- * the sealed `RELAY_SERVICE_KEY` the relay app calls core's internal relay doors with; without it in development or test
- * those doors refuse every call. Any other mode refuses to boot without either.
+ * `RELAY_MANIFEST_SIGNING_KEY` (PEM); without it a development or test process signs with a key of its own. Any other mode refuses to boot without it.
  */
 export const parseRelayConfig = (env: EnvSource, webOrigin: string): RelayOptions => ({
     manifestSigningKey: sealedFrom(env, "RELAY_MANIFEST_SIGNING_KEY"),
-    serviceKey: sealedFrom(env, "RELAY_SERVICE_KEY"),
     verifyUrl: `${webOrigin}/devices`,
     pairingTtlSeconds: env.int("RELAY_PAIRING_TTL_SECONDS", PAIRING_TTL_SECONDS),
     premiumDeviceLimit: env.int("RELAY_PREMIUM_DEVICE_LIMIT", PREMIUM_DEVICE_LIMIT),

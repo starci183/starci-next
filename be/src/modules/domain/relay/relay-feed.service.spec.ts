@@ -20,7 +20,6 @@ const OPTIONS = {
     premiumDeviceLimit: 2,
     freeDeviceLimit: 1,
     manifestSigningKey: null,
-    serviceKey: null,
 }
 
 const build = async (em: MockEntityManager, signingKeyPem: string | null = null) => {

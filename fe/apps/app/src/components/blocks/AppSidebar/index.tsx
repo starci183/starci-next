@@ -18,7 +18,8 @@ import { useRailCollapsed } from "@/hooks/rail"
 import { useThemeSwitch } from "@/hooks/theme"
 import { useLocaleSwitch, useLocalizedPathname } from "@/hooks/locale"
 import { APP_ROUTES } from "@/modules/routes"
-import { AppSidebarBase, type AppSidebarEntry } from "./component"
+import type { AppSidebarEntry } from "@/modules/types"
+import { AppSidebarBase } from "./component"
 
 /** The drawing: the wide rail or the drawer. */
 type AppSidebarProps = {

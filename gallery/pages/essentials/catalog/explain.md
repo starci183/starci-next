@@ -62,7 +62,7 @@ Grammar: `SurfaceCard kind="list" empty={<EmptyNotice actionIntent="neutral">}` 
 
 ## Trạng thái lỗi và đang tải
 
-Vì sao: SAI — lần đọc đầu tải xong thì các thẻ vẽ khung xương trong chính thẻ (tốt), nhưng khi lỗi, `SlotView` (`fe/packages/starci-next-ui/src/composites/SlotView/index.tsx`, ngoài phạm vi lane) vẽ một `Alert` ngoài thẻ với nút thử lại, trái luật "lỗi nằm trong thẻ, nút Thử lại trung tính". Lint `slot-status-through-slotview` bắt buộc đi qua `SlotView`, nên cần sửa ở SlotView.
+Vì sao: lần đọc đầu các thẻ vẽ khung xương ngay trong thẻ; khi đọc lỗi, trạng thái đi qua đúng một công thức `SlotView` (`fe/packages/starci-next-ui/src/composites/SlotView/index.tsx`), vẽ một `Alert` có nút "Thử lại" thay cho vùng dữ liệu. Không khối nào tự viết nhánh lỗi riêng (lint `slot-status-through-slotview`), nên mọi trang có cùng một cách báo lỗi.
 Luật: ghi chú brief (trạng thái rỗng, đang tải, lỗi sống TRONG thẻ với EmptyNotice).
 Grammar: `SurfaceCard error={{ message, actionLabel, onAction }}` (`frame/SurfaceCard/index.d.ts`, `loadingState.d.ts`).
 

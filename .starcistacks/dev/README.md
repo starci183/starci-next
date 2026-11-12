@@ -29,16 +29,16 @@ Compose also runs a dev Keycloak (`keycloak`, a digest-pinned image) with the re
 
 The learner CLI runs a project's tests on the learner's own machine and relays the results as practice ("Đang luyện"). The core api signs every manifest, so the dev core needs a key pair that outlives its process:
 
-1. Once per machine: `node scripts/dev/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the core api) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
+1. Once per machine: `node scripts/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the core api) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
 2. In the learner's shell: `export STARCI_NEXT_URL=http://localhost:3080 STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"`.
-3. `starci-next login` pairs the machine (confirm the code at `/devices`), `starci-next init --from <starci-next-data checkout> --project <project id>` copies the kit, `starci-next run <milestone>` runs `test.command` of `starci/project.yaml`, reads the JUnit XML for tests tagged `[concept]` and posts one result per concept. Open the project page to see "Đang luyện".
+3. `starci-next login` pairs the machine (confirm the code at `/devices`), `starci-next init --from <starci-next-data checkout> --project <project id>` copies the kit, `starci-next run <milestone>` runs `test.command` of the project file in the kit's own `starci` folder, reads the JUnit XML for tests tagged `[concept]` and posts one result per concept. Open the project page to see "Đang luyện".
 
 ## Thử Premium
 
-In dev the SePay and payOS secrets are sandbox placeholders, so a real gateway can never call back. `scripts/dev/simulate-sepay-ipn.mjs` stands in for SePay: it posts the paid-order IPN the gateway would post to the core API's webhook door (`POST http://localhost:3001/webhooks/sepay`, authenticated by the `x-secret-key` header the sepay client compares with the IPN secret key; amount = the order's amount).
+In dev the SePay and payOS secrets are sandbox placeholders, so a real gateway can never call back. `scripts/simulate-sepay-ipn.mjs` stands in for SePay: it posts the paid-order IPN the gateway would post to the core API's webhook door (`POST http://localhost:3001/webhooks/sepay`, authenticated by the `x-secret-key` header the sepay client compares with the IPN secret key; amount = the order's amount).
 
 1. Sign in (see "Signing in"), open the Premium page and click "Tiếp tục thanh toán". The redirect to `pay.sepay.vn` fails (sandbox placeholder merchant); that is expected. The order stays `verifying`.
-2. From the repo root run `node scripts/dev/simulate-sepay-ipn.mjs`. It picks the newest pending sepay order in the dev database; `--order-id <uuid>` (the id `startPremiumCheckout` returned) or `--order-code <SE-n>` names one.
+2. From the repo root run `node scripts/simulate-sepay-ipn.mjs`. It picks the newest pending sepay order in the dev database; `--order-id <uuid>` (the id `startPremiumCheckout` returned) or `--order-code <SE-n>` names one.
 3. `/premium/result` turns `active` within a few seconds, `myPremium.isPremium` is true and the locked lesson phases open.
 
 The script reads the IPN secret through `npx starci app secret get --env dev sepay SEPAY_IPN_SECRET_KEY --to-file` and the dev database URL the stack materialized beside it (never printed), and refuses anything but a loopback core API (a 200 or 204 answer counts as accepted; `--core` defaults to `http://localhost:3001`), the dev custody and a loopback database. The core must be running (`starci app stack status --env dev`). payOS has no simulator; start checkout on the sepay rail.

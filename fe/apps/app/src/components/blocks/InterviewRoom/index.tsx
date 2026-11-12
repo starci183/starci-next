@@ -9,6 +9,7 @@ import {
     type InterviewIssue,
     type InterviewTurnRead,
 } from "@/hooks/interview"
+import { roomHeaderOf, useInterviewRoomLabels } from "@/hooks/interviewRoom"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import type { InterviewSessionRead } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
@@ -17,7 +18,6 @@ import {
     INTERVIEW_ROOM_PLACEHOLDER,
     InterviewRoomBase,
     type InterviewProgressView,
-    type InterviewRoomLabels,
     type InterviewRoomView,
 } from "./component"
 
@@ -103,47 +103,11 @@ const progressOf = (t: Translate, session: InterviewSessionRead): ReadonlyArray<
         }
     })
 
-/** The fixed words of the room. */
-const labelsOf = (t: Translate): InterviewRoomLabels => ({
-    title: t("roomTitle"),
-    note: t("room.note"),
-    progressTitle: t("room.progressTitle"),
-    end: t("room.end"),
-    endTitle: t("room.endTitle"),
-    endDescription: t("room.endDescription"),
-    endConfirm: t("room.endConfirm"),
-    endCancel: t("room.endCancel"),
-    endAbandon: t("room.endAbandon"),
-    noAnswer: t("room.noAnswer"),
-    answer: t("room.answerLabel"),
-    placeholder: t("room.answerPlaceholder"),
-    send: t("room.send"),
-    sending: t("room.sending"),
-    saved: t("room.saved"),
-    hint: t("room.hint"),
-    hintNone: t("room.hintNone"),
-    hintNote: t("room.hintNote"),
-    skip: t("room.skip"),
-    retry: t("room.retry"),
-    retrying: t("room.retrying"),
-    done: t("room.done"),
-    submit: t("room.submit"),
-    grading: t("room.grading"),
-    gradingNote: t("room.gradingNote"),
-    closedTitle: t("room.closedTitle"),
-    closedDescription: t("room.closedDescription"),
-    openReport: t("room.openReport"),
-    material: t("room.codeLabel"),
-    diagram: t("room.diagramLabel"),
-    diagramError: t("room.errors.other"),
-    back: t("room.back"),
-    abandonNow: t("room.abandonNow"),
-})
-
 /** The connected interview room: reads the session, keeps the draft and the actions, and words every label. */
 export const InterviewRoom = (props: InterviewRoomProps) => {
     const t = useTranslations("app.interview")
     const room = useInterviewRoom(props.sessionId)
+    const labels = useInterviewRoomLabels()
     useDocumentTitle(t("roomTitle"))
     const slotLabels = useSlotLabels()(t("room.closedDescription"))
     const viewOf = (session: InterviewSessionRead): InterviewRoomView => ({
@@ -165,7 +129,8 @@ export const InterviewRoom = (props: InterviewRoomProps) => {
                 slot: mapSlot(slotOfSwr(room.session), viewOf),
                 placeholder: INTERVIEW_ROOM_PLACEHOLDER,
                 slotLabels,
-                labels: labelsOf(t),
+                labels,
+                header: roomHeaderOf(labels.title, labels.back, APP_ROUTES.interview),
                 state: {
                     draft: room.draft,
                     hintLabel: t("room.hintLeft", { count: room.hintsLeft }),

@@ -16,8 +16,6 @@ export enum RelayErrorCode {
     PairingInvalid = "RELAY_PAIRING_INVALID",
     /** An upload or a manifest request is not well formed for its kind or is over its size. */
     PayloadInvalid = "RELAY_PAYLOAD_INVALID",
-    /** A call to core's internal relay doors did not carry the relay app's service key. */
-    ServiceUnauthenticated = "RELAY_SERVICE_UNAUTHENTICATED",
     /** The relay could not read or write its device state. */
     Unavailable = "RELAY_UNAVAILABLE",
 }
@@ -31,7 +29,6 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.DeviceNotFound]: "not-found",
     [RelayErrorCode.PairingInvalid]: "invalid",
     [RelayErrorCode.PayloadInvalid]: "invalid",
-    [RelayErrorCode.ServiceUnauthenticated]: "unauthenticated",
     [RelayErrorCode.Unavailable]: "unavailable",
 }
 

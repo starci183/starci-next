@@ -1,5 +1,4 @@
 export { ART, ArtImage } from "./leaves/Art"
-export { ApplyEvidence } from "./composites/ApplyEvidence"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export type { CatalogCaseCard } from "./composites/CaseStudyBlock"
@@ -10,11 +9,8 @@ export { CatalogSection } from "./composites/CatalogSection"
 export type { CatalogNode } from "./composites/CatalogSection"
 export { CatalogToolbar } from "./composites/CatalogToolbar"
 export type { CatalogToolbarLabels } from "./composites/CatalogToolbar"
-export { ChoiceCard } from "./composites/ChoiceCard"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
 export { ErrorNotice } from "./composites/ErrorNotice"
-export { FilesCard } from "./composites/FilesCard"
-export { HighlightedCode } from "./composites/HighlightedCode"
 export { GlobalErrorNotice } from "./composites/GlobalErrorNotice"
 export { LanguageMenu, languageMenuEntries } from "./composites/LanguageMenu"
 export { LoadingNotice } from "./composites/LoadingNotice"
@@ -23,21 +19,10 @@ export { LockedNotice } from "./composites/LockedNotice"
 export { MarkdownBody } from "./composites/MarkdownBody"
 export type { InlineNode, MarkdownBlock } from "./composites/MarkdownBody"
 export { NotFoundNotice } from "./composites/NotFoundNotice"
-export { OverviewPanel } from "./composites/OverviewPanel"
-export type { OverviewPanelLabels } from "./composites/OverviewPanel"
-export type { ReflectCompareLabels } from "./composites/ReflectCompare"
-export { SimulationCard } from "./composites/SimulationCard"
-export type {
-    SimulationAction,
-    SimulationCardLabels,
-    SimulationProgress,
-    SimulationState,
-    SimulationStep,
-    SimulationTransition,
-} from "./composites/SimulationCard"
+export type { SimulationCardLabels, SimulationStep } from "./branches/SimulationCard"
+export { WalkProvider } from "./branches/WalkProvider"
 export { SlotView } from "./composites/SlotView"
 export type { DataSlot, SlotLabels, SlotRead } from "./composites/SlotView"
-export { WrittenCard } from "./composites/WrittenCard"
 export type { WrittenCardLabels } from "./composites/WrittenCard"
 export { BarWide } from "./frames/BarWide"
 export { SiteShell } from "./frames/SiteShell"
@@ -51,7 +36,6 @@ export {
     InterviewGlyph,
     LanguageGlyph,
     LearnGlyph,
-    LockIcon,
     MoonGlyph,
     MoreGlyph,
     PlayGlyph,
@@ -138,3 +122,82 @@ export { AssignItemCard } from "./composites/AssignItemCard"
 export type { AssignItemCardProps } from "./composites/AssignItemCard"
 export { MissingNotice } from "./composites/MissingNotice"
 export { RowProgress } from "./composites/RowProgress"
+export { ConceptDrawer } from "./composites/ConceptDrawer"
+export { ConnectDrawer } from "./composites/ConnectDrawer"
+export { DeployCard } from "./composites/DeployCard"
+export { ExperienceCard } from "./composites/ExperienceCard"
+export { LessonAside } from "./composites/LessonAside"
+export { LessonStepper } from "./composites/LessonStepper"
+export { MilestonesCard } from "./composites/MilestonesCard"
+export { ProbesCard } from "./composites/ProbesCard"
+export { ProjectAside } from "./composites/ProjectAside"
+export { ProjectsAside } from "./composites/ProjectsAside"
+export { ReviewItemCard } from "./composites/ReviewItemCard"
+export { ReviewSummaryCard } from "./composites/ReviewSummaryCard"
+export { RunsCard } from "./composites/RunsCard"
+export { StepRows } from "./composites/StepRows"
+export { StudyBody } from "./composites/StudyBody"
+export type {
+    ConceptCardView,
+    ConceptDraftView,
+    EvidenceChipView,
+    EvidenceRunView,
+    ProjectMilestoneLabels,
+    ProjectMilestoneView,
+} from "./composites/ConceptDrawer/types"
+export type {
+    DevicesPairDevice,
+    DevicesPairLabels,
+    DevicesPairPreview,
+    DevicesPairRule,
+    DevicesPairStep,
+} from "./composites/ConnectDrawer/types"
+export type {
+    ChipView,
+    ProjectDetailBusy,
+    ProjectDetailFields,
+    ProjectDetailLabels,
+    ProjectDetailView,
+} from "./composites/ProjectAside/types"
+export type { ProjectsAsideLabels } from "./composites/ProjectsAside/types"
+export type {
+    ReviewAnswerPart,
+    ReviewBackView,
+    ReviewGradeButton,
+    ReviewItemCommands,
+    ReviewItemScreen,
+    ReviewSessionLabels,
+    ReviewSummaryScreen,
+    ReviewTone,
+} from "./composites/ReviewItemCard/types"
+export type {
+    ExerciseFileView,
+    LessonDifficulty,
+    LessonPhase,
+    WorkspaceVariantView,
+} from "./composites/StudyBody/lesson"
+export type {
+    AttemptStatus,
+    BandProps,
+    LessonCompareLabels,
+    LessonCompletionLabels,
+    LessonNavLabels,
+    LessonProgressLabels,
+    LessonResultLabels,
+    LessonStudyActions,
+    LessonStudyLabels,
+    LessonStudyScreen,
+    MarkdownLabels,
+    NavTarget,
+    OutcomeState,
+    PhaseResultView,
+    PhaseWords,
+    SectionCheckView,
+    StepView,
+    StudyBodyProps,
+    StudyCardView,
+    StudyView,
+    StudyWords,
+    WrittenDraftView,
+} from "./composites/StudyBody/types"
+export { FREE_PHASES, LESSON_PHASES } from "./composites/StudyBody/lesson"

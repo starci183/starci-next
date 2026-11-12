@@ -83,6 +83,18 @@ export interface PairingStarted {
     readonly expiresAt: string
 }
 
+/** The stable refusal codes the CLI itself reads or answers: the relay's pending pairing and refused payload, and the two it tells apart when no door answered. */
+export enum RelayRefusalCode {
+    /** The pairing is not confirmed on the web yet. */
+    Pending = "RELAY_PENDING",
+    /** The upload is not well formed for its kind or is over its size; the CLI drops it instead of retrying. */
+    PayloadInvalid = "RELAY_PAYLOAD_INVALID",
+    /** The StarCi origin did not answer: refused, timed out or cut. */
+    Unreachable = "RELAY_UNREACHABLE",
+    /** A door answered without a stable code. */
+    Unavailable = "RELAY_UNAVAILABLE",
+}
+
 /** A door's refusal: its stable code and HTTP status (status 0: StarCi could not be reached). */
 export interface Refusal {
     /** The refusal tag. */

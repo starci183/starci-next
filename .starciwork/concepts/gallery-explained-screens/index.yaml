@@ -21,7 +21,7 @@ example: >-
 livesIn:
   - path: gallery/pages
     holds: "32 screen folders in 10 areas on 2026-11-10; 18 have an explain.md, 14 have none (agents/catalog, agents/track, career/experience, career/profile, career/review-queue, commerce/premium, commerce/premium-result, incidents/list, interview/start, paths/choose, practice/list, review/decks, review/hub, review/session)"
-  - path: gallery/scripts/capture.cjs
+  - path: scripts/gallery-capture.cjs
     holds: the capture script that writes the three widths
 decided:
   by: owner

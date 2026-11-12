@@ -11,7 +11,6 @@ import type {
     DevicePrincipal,
     DeviceToken,
     PairingPreview,
-    RelayAdmission,
     RelayDevice,
     StartPairingInput,
 } from "./relay.contracts"
@@ -135,12 +134,6 @@ export class RelayDeviceService {
         const row = rows[0]
         if (!row?.learner_id) throw new RelayError({ code: RelayErrorCode.DeviceRevoked })
         return { learnerId: row.learner_id, deviceId: row.device_id }
-    }
-
-    /** Proves a device token for the relay app and answers its learner's Premium state now (the relay's internal door). */
-    async admit(deviceToken: string): Promise<RelayAdmission> {
-        const device = await this.authenticate(deviceToken)
-        return { ...device, premium: await this.entitlement.isPremium(device.learnerId) }
     }
 
     /** Opens or closes the socket presence of a device; a revoked device is left alone. */

@@ -1,9 +1,22 @@
 import { Badge, Button, Page, Pane, PaneGrid, PaneSection } from "@starci/grammar/common"
-import { MissingNotice, SlotView } from "@starci-next/ui"
-import type { DataSlot, SlotLabels } from "@/modules/types"
-import { ProjectAside } from "./aside"
-import { DeployCard, ExperienceCard, MilestonesCard, ProbesCard, RunsCard } from "./cards"
-import type { ProjectDetailBusy, ProjectDetailFields, ProjectDetailLabels, ProjectDetailView } from "./types"
+import {
+    DeployCard,
+    ExperienceCard,
+    MilestonesCard,
+    MissingNotice,
+    ProbesCard,
+    ProjectAside,
+    RunsCard,
+    SlotView,
+} from "@starci-next/ui"
+import type {
+    DataSlot,
+    ProjectDetailBusy,
+    ProjectDetailFields,
+    ProjectDetailLabels,
+    ProjectDetailView,
+    SlotLabels,
+} from "@/modules/types"
 
 /** The fake project with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_DETAIL_PLACEHOLDER: ProjectDetailView = {

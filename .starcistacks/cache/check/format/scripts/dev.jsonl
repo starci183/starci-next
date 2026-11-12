@@ -1,2 +1,0 @@
-{"findings":[{"column":0,"line":0,"message":"scripts/dev/relay-manifest-key.mjs is not formatted by prettier; run `npm run format`","path":"scripts/dev/relay-manifest-key.mjs","rule":"HFS_FORMAT"}],"hash":"610ef778e594f0c49aaaa7d150e00624736affa1954ac5f65c1d3faa93e48442","path":"scripts/dev/relay-manifest-key.mjs","step":"prettier"}
-{"findings":[],"hash":"d4a6296f93f1f2fd23f389e6097172cc9369255022d0f3293ba4287bf7d8f019","path":"scripts/dev/simulate-sepay-ipn.mjs","step":"prettier"}

@@ -17,7 +17,7 @@ import {
     judge0BatchBody,
     judge0EntriesOf,
     judge0IsPending,
-    judge0ResultOf,
+    judge0ResultsOf,
     judge0StatusIdOf,
     judge0TokensOf,
 } from "./policies/judge0-wire.policy"
@@ -89,8 +89,7 @@ export class Judge0Client implements Judge0Gateway {
             const entries = judge0EntriesOf(read, tokens.length)
             if (entries === null) throw this.refuse(Judge0ErrorCode.Rejected)
             if (entries.some((entry) => judge0StatusIdOf(entry) === null)) throw this.refuse(Judge0ErrorCode.Rejected)
-            if (!entries.some((entry) => judge0IsPending(entry)))
-                return entries.flatMap((entry) => judge0ResultOf(entry) ?? [])
+            if (!entries.some((entry) => judge0IsPending(entry))) return judge0ResultsOf(entries)
             if (this.clock.now().getTime() - startedAt + endpoint.pollIntervalMs > endpoint.deadlineMs)
                 throw this.refuse(Judge0ErrorCode.Unavailable)
             await new Promise<void>((resolve) => this.timer.schedule(resolve, endpoint.pollIntervalMs))

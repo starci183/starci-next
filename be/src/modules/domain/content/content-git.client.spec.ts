@@ -8,6 +8,15 @@ import { ContentErrorCode } from "./errors/content.error"
 import type { ContentGitReader } from "./content-git.port"
 import { bareUrlOf, contentGitOf } from "./content-git.client"
 
+/** The variables the real git processes of the spec need to run, read from the process environment. */
+const inheritedOf = (env: EnvSource): Readonly<Record<string, string>> =>
+    Object.fromEntries(
+        ["PATH", "PATHEXT", "HOME", "USERPROFILE", "SYSTEMROOT", "COMSPEC", "TMPDIR", "TEMP", "TMP"].flatMap((key) => {
+            const value = env.optional(key)
+            return value === undefined ? [] : [[key, value] as const]
+        }),
+    )
+
 const CONTENT_GIT_READER: unique symbol = Symbol("content.git-reader")
 
 const build = async (): Promise<ContentGitReader> => {
@@ -15,7 +24,7 @@ const build = async (): Promise<ContentGitReader> => {
         providers: [
             {
                 provide: CONTENT_GIT_READER,
-                useFactory: () => contentGitOf({ read: () => EnvSource.fromProcess().inherited() }),
+                useFactory: () => contentGitOf({ read: () => inheritedOf(EnvSource.fromProcess()) }),
             },
         ],
     }).compile()
@@ -129,6 +138,7 @@ describe("contentGit fingerprint", () => {
         const contentGit = await build()
         const clean = await contentGit.fingerprint(repo)
         await writeFile(join(repo, "manifest.yaml"), "edited")
+        await writeFile(join(repo, "extra.yaml"), "more")
         const dirty = await contentGit.fingerprint(repo)
         const plain = await mkdtemp(join(tmpdir(), "starci-content-plain-"))
 

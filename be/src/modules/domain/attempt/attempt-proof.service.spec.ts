@@ -54,6 +54,13 @@ describe("AttemptProofService recordMutationScore", () => {
         expect(callsOf(tx, RAISE_PROVED)).toHaveLength(1)
     })
 
+    it("proves nothing when the upsert answers no row", async () => {
+        const { service, tx } = await build([[UPSERT_INCIDENT_SCORE, []]])
+
+        expect(await service.recordMutationScore(record(50))).toBe(0)
+        expect(callsOf(tx, RAISE_PROVED)).toEqual([])
+    })
+
     it.each([-1, 101, 80.5, Number.NaN])("refuses the score %s", async (score) => {
         const { service, tx } = await build([])
 

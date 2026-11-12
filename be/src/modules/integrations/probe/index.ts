@@ -6,8 +6,9 @@
  */
 export { InjectProbeTransport, PROBE_TRANSPORT } from "./probe.port"
 export { isPublicAddress } from "./probe-address.policy"
+export { parseProbeConfig } from "./probe.config"
 export { ProbeModule } from "./probe.module"
-export { PROBE_ERROR_KINDS } from "./errors/probe.error"
+export { PROBE_ERROR_KINDS, ProbeErrorCode } from "./errors/probe.error"
 export { PROBE_MESSAGES } from "./messages/probe.messages"
 export type { ProbeTransport } from "./probe.port"
 export type { ProbeReply } from "./probe.contracts"

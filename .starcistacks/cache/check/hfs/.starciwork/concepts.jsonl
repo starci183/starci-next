@@ -3,9 +3,9 @@
 {"data":{},"findings":[],"hash":"cdb0c13955c1a3a47525d21ec2a91735d44354a87873b32910d08ae12ae6b655","path":".starciwork/concepts/content-repo/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3422d614ad34feb77cc73e009cd825b01973643b90e9686414cccc5551fda5be","path":".starciwork/concepts/dev-only-test-grants/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e4e6e37fe2adcc87a69bdeb2f3f111aa97806b24d362206c1061f2468ce2bc30","path":".starciwork/concepts/essentials-lessons/index.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"03992053e623a0865be2e6758166344d42104a0d22d4191e767ceceddbf544e5","path":".starciwork/concepts/gallery-explained-screens/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e5df362d0e5cdbd56be1e03952fbbd98e092f4da14a3fce7ccfa26b6faddd679","path":".starciwork/concepts/gallery-explained-screens/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5a9ab24760b5110b6db037d06275938415aea6962af738236e487a68ebf63cdf","path":".starciwork/concepts/index.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4337f7a03b95e499a6489d03f07c2f7f6a176e8d08dee2acf7504c328ca51488","path":".starciwork/concepts/learner-cli-relay-proof/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4398ce94a3b9fcfe912cafd686a3b20f4b271b5c3d234115c35d60c1fb11cf16","path":".starciwork/concepts/learner-cli-relay-proof/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f2be3bd487fd35327e9fbe0c9ca0c86aad90b43e1cd4a60e0365c88d72c9640","path":".starciwork/concepts/learning-program/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"64e5d8839c8cff00d9317b543535c23471aa284aa702da65a6b55047d2b8c97f","path":".starciwork/concepts/premium-placement/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"de4db0322cba4c852d6520e875b1e6bbecbaaaf958da52d5440ae801b8ff88fd","path":".starciwork/concepts/premium-unlocks-all/index.yaml","step":"file-rules"}

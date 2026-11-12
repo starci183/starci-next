@@ -12,8 +12,9 @@ import {
     type AuthMode,
     type AuthState,
 } from "@/hooks/auth"
+import { fieldErrorsOf, noticeOf, retryOf, type Translator } from "@/hooks/authNotices"
+import { useSignInModalStore } from "@/hooks/zustand/signInModal"
 import { AuthPanelBase, type AuthPanelBaseProps, type AuthPanelShape } from "./component"
-import { fieldErrorsOf, noticeOf, retryOf, type Translator } from "./notices"
 
 /** What the sign-in page hands the card: where it starts, the notice the route brought and where a finished sign-in goes. */
 export type AuthPanelProps = {
@@ -25,8 +26,6 @@ export type AuthPanelProps = {
     readonly returnTo: string | undefined
     /** `page` is the full sign-in screen (it leaves once signed in); `modal` sits on the reader's page and stays there. */
     readonly presentation: "page" | "modal"
-    /** What the modal does once the session is refreshed (close itself); the page needs none. */
-    readonly onDone?: (() => void) | undefined
 }
 
 /** The drawing of a state: the code step, or the details form of the mode. */
@@ -98,12 +97,16 @@ export const AuthPanel = (props: AuthPanelProps) => {
     const t = useTranslations("app.auth")
     const locale = useLocale()
     const refresh = useSessionRefresh()
+    const setSignInOpen = useSignInModalStore((state) => state.setOpen)
     const panel = useAuthPanel({
         mode: props.mode,
         notice: props.notice,
         destination: props.destination,
         returnTo: props.returnTo,
-        onSignedIn: () => void refresh().then(props.onDone),
+        onSignedIn: () =>
+            void refresh().then(() => {
+                if (props.presentation === "modal") setSignInOpen(false)
+            }),
     })
     const [isTermsAccepted, setIsTermsAccepted] = useState(false)
     const isSignedOut = useSignedInGuard(props.destination, props.presentation === "page")

@@ -147,6 +147,12 @@ describe("buildHub sources", () => {
         expect(subject.buildHub(sourcesOf(), text).activePath).toBeNull()
     })
 
+    it("counts zero for a shard the streak holds no counter for", () => {
+        const hub = subject.buildHub(sourcesOf({ streak: streakOf({ shardCounters: [] }) }), text)
+
+        expect(hub.shards[0]).toMatchObject({ counter: { current: 0, longest: 0 }, activeDaysLast30: 0 })
+    })
+
     it("shows the last seven days of the strip and the layers without any counter", () => {
         const hub = subject.buildHub(sourcesOf(), text)
 

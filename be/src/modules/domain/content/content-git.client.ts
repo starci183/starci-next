@@ -122,21 +122,16 @@ const treeHashOf = async (directory: string, env: NodeJS.ProcessEnv): Promise<st
         .split("\0")
         .filter((name) => name !== "")
         .sort(byCodeUnit)
-    const contents = await Promise.all(
+    const files = await Promise.all(
         names.map((name) =>
             readFile(join(directory, name)).then(
-                (bytes) => bytes,
-                () => Buffer.alloc(0),
+                (bytes) => ({ name, bytes }),
+                () => ({ name, bytes: Buffer.alloc(0) }),
             ),
         ),
     )
     const hash = createHash("sha256")
-    names.forEach((name, index) =>
-        hash
-            .update(`${name}\0`)
-            .update(contents[index] ?? Buffer.alloc(0))
-            .update("\0"),
-    )
+    for (const { name, bytes } of files) hash.update(`${name}\0`).update(bytes).update("\0")
     return hash.digest("hex").slice(0, 8)
 }
 

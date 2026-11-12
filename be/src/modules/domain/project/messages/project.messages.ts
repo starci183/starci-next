@@ -1,4 +1,5 @@
 import type { MessageBundle } from "@modules/platform/i18n"
+import type { LocalizedText, ProbeId } from "../project.contracts"
 
 /** Display text of project errors, Vietnamese and English. */
 export const PROJECT_MESSAGES: MessageBundle = {
@@ -58,8 +59,70 @@ export const PROJECT_MESSAGES: MessageBundle = {
     },
 }
 
-/** The Vietnamese and English copy of the catalog: concept labels, milestone titles, the question asked about each failed probe. */
-export const PROJECT_COPY: MessageBundle = {
+/** The concepts that have a label in the copy. */
+type ConceptSlug =
+    | "agent-harness-control-loop"
+    | "authentication-and-authorization"
+    | "backup-and-failover"
+    | "ci-cd-pipelines"
+    | "consistency-and-transactions"
+    | "containers-and-images"
+    | "context"
+    | "cost-limits"
+    | "cqrs-read-models"
+    | "decompose"
+    | "distributed-locks"
+    | "health-probe-semantics"
+    | "idempotency"
+    | "indexing-and-query-plans"
+    | "infrastructure-as-code"
+    | "linux-processes-and-services"
+    | "logs-and-traces"
+    | "metrics-and-dashboards"
+    | "operate"
+    | "outbox-and-event-delivery"
+    | "partitioning-and-replication"
+    | "payment-integration"
+    | "rate-limiting"
+    | "request-response-lifecycle"
+    | "saga"
+    | "secrets-management"
+    | "server-state-cache-lifecycle"
+    | "slo-and-alerting"
+    | "structured-logging-and-tracing"
+    | "task-spec"
+    | "tools-permissions"
+    | "transactions-and-isolation"
+    | "unit-testing-behavior"
+    | "verify"
+    | "vpc-routing"
+
+/** The milestones that have a title in the copy. */
+type MilestoneSlug =
+    | "agent-mindset"
+    | "agent-theory"
+    | "ai-coding-mindset"
+    | "bf-data-and-cache"
+    | "bf-http-foundation"
+    | "bf-safe-and-reliable"
+    | "launch"
+    | "ops-deliver"
+    | "ops-observe-and-recover"
+    | "ops-run-a-service"
+    | "sd-distributed-data"
+    | "sd-reliable-messaging"
+    | "sd-scale"
+
+/** The keys of the catalog copy, each present in both locales. */
+type ProjectCopyKey = `concept.${ConceptSlug}.label` | `milestone.${MilestoneSlug}.title` | `probe.${ProbeId}.question`
+
+/** The copy of the catalog by locale. */
+interface ProjectCopy {
+    readonly vi: Readonly<Record<ProjectCopyKey, string>>
+    readonly en: Readonly<Record<ProjectCopyKey, string>>
+}
+
+const COPY: ProjectCopy = {
     vi: {
         "concept.request-response-lifecycle.label": "Vòng đời request và response",
         "concept.health-probe-semantics.label": "Health và readiness probe",
@@ -201,3 +264,6 @@ export const PROJECT_COPY: MessageBundle = {
             "When a tool or the model fails, what does the agent tell the user and what does it log?",
     },
 }
+
+/** The copy of one catalog entry in both locales: concept labels, milestone titles, the question asked about each failed probe. */
+export const projectCopyOf = (key: ProjectCopyKey): LocalizedText => ({ vi: COPY.vi[key], en: COPY.en[key] })

@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { mock } from "@starci/jest-preset"
 import { catalogItemOf, progressOf } from "@tests/fixtures/builders/lesson-read.builder"
-import { AttemptReadService } from "@modules/domain/attempt"
+import { AttemptError, AttemptErrorCode, AttemptReadService } from "@modules/domain/attempt"
 import { LessonReadService } from "@modules/domain/lesson"
 import { PathService } from "@modules/domain/path"
 import { ReviewQueueService } from "@modules/domain/review"
@@ -66,7 +66,7 @@ const build = async () => {
             { provide: LOGGER, useValue: logger },
         ],
     }).compile()
-    return { service: moduleRef.get(HubService), reviews, lessons, paths, experience, logger }
+    return { service: moduleRef.get(HubService), reviews, lessons, attempts, paths, experience, logger }
 }
 
 describe("HubService read", () => {
@@ -95,8 +95,12 @@ describe("HubService read", () => {
     })
 
     it("counts a lesson as started only when its progress could be read and holds an attempt", async () => {
-        const { service, lessons } = await build()
+        const { service, lessons, attempts } = await build()
         lessons.catalog.mockResolvedValue([catalogItemOf("l1"), catalogItemOf("l2"), catalogItemOf("l3")])
+        attempts.progress.mockImplementation(({ lessonId }) => {
+            if (lessonId === "l3") throw new AttemptError({ code: AttemptErrorCode.NotFound })
+            return Promise.resolve(progressOf(lessonId, lessonId === "l1" ? 2 : 0))
+        })
 
         const hub = await service.read(LEARNER, "vi")
 

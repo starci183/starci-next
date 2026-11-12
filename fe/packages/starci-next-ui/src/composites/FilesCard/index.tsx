@@ -1,6 +1,6 @@
 import { Button, Cluster, FencedCodeBlock, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { FileGlyph } from "../../leaves/Icon"
-import { FileView } from "./FileView"
+import { FileView } from "../../branches/FileView"
 import { WRAPPED_CODE_CLASS_NAME } from "./classNames"
 
 /** One code file of a lab or an exercise. */

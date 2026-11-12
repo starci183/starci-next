@@ -21,7 +21,6 @@ describe("parseRelayConfig", () => {
             premiumDeviceLimit: 2,
             freeDeviceLimit: 1,
             manifestSigningKey: null,
-            serviceKey: null,
         })
     })
 
@@ -32,14 +31,12 @@ describe("parseRelayConfig", () => {
             new EnvSource({
                 NODE_ENV: "production",
                 RELAY_MANIFEST_SIGNING_KEY: "pem",
-                RELAY_SERVICE_KEY: "service",
                 RELAY_FREE_DEVICE_LIMIT: "2",
             }),
             "https://app.test",
         )
 
         expect(options.manifestSigningKey?.reveal()).toBe("pem")
-        expect(options.serviceKey?.reveal()).toBe("service")
         expect(options.freeDeviceLimit).toBe(2)
     })
 
@@ -47,8 +44,5 @@ describe("parseRelayConfig", () => {
         const parse = await build()
 
         expect(() => parse(new EnvSource({ NODE_ENV: "production" }), "https://app.test")).toThrow("RELAY_UNAVAILABLE")
-        expect(() =>
-            parse(new EnvSource({ NODE_ENV: "production", RELAY_MANIFEST_SIGNING_KEY: "pem" }), "https://app.test"),
-        ).toThrow("RELAY_UNAVAILABLE")
     })
 })

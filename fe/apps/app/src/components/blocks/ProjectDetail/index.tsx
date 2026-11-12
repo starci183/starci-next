@@ -1,13 +1,12 @@
 "use client"
 
 import { useLocale, useTranslations } from "next-intl"
+import { projectDetailViewOf, useProjectDetailLabels } from "@/hooks/projectDetail"
 import { isProjectMissing, useProjectActions, type ProjectIssue } from "@/hooks/projects"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { PROJECT_DETAIL_PLACEHOLDER, ProjectDetailBase } from "./component"
-import { labelsOf } from "./labels"
-import { viewOf } from "./view"
 
 type Translate = ReturnType<typeof useTranslations>
 
@@ -44,12 +43,13 @@ export const ProjectDetail = (props: ProjectDetailProps) => {
     const t = useTranslations("app.projects")
     const locale = useLocale()
     const read = useQueryProjectSwr({ projectId: props.projectId, locale })
+    const labels = useProjectDetailLabels()
     const actions = useProjectActions(props.projectId, () => void read.mutate())
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.name} · ${t("pageTitle")}`)
     return (
         <ProjectDetailBase
             props={{
-                slot: mapSlot(slotOfSwr(read), (project) => viewOf(t, project)),
+                slot: mapSlot(slotOfSwr(read), (project) => projectDetailViewOf(t, project)),
                 placeholder: PROJECT_DETAIL_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 isNotFound: isProjectMissing(read.error),
@@ -65,7 +65,7 @@ export const ProjectDetail = (props: ProjectDetailProps) => {
                     isSyncing: actions.isSyncing,
                     isRotating: actions.isRotating,
                 },
-                labels: labelsOf(t),
+                labels,
             }}
             on={{
                 retry: () => void read.mutate(),

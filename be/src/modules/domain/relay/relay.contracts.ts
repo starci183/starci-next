@@ -53,16 +53,6 @@ export interface RelayDevice {
     readonly online: boolean
 }
 
-/** What core answers the relay app for a device token: the device, its learner and whether that learner is Premium now. */
-export interface RelayAdmission {
-    /** The learner the device belongs to. */
-    readonly learnerId: string
-    /** The device id. */
-    readonly deviceId: string
-    /** Whether the learner holds Premium now; the relay gates Premium task checks on it. */
-    readonly premium: boolean
-}
-
 /** The identity a device token proves: the learner it was paired to and the device itself. */
 export interface DevicePrincipal {
     /** The learner the device belongs to. */

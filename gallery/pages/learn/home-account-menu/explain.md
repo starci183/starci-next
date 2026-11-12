@@ -26,6 +26,6 @@ Grammar: `DropdownMenuItem` {href, tone="danger"}, `AvatarButton` (trigger); ph�
 
 ## Nhãn nhóm "Tài khoản"
 
-Vì sao: CHƯA RÕ. Section label của Grammar luôn vẽ tiêu đề nhóm; NIVO để section tài khoản không nhãn. Giữ nhãn vì hàng danh tính cần một tên nhóm cho trình đọc màn hình; nếu muốn bỏ thì cần quyết định.
+Vì sao: `DropdownMenuSection` của Grammar luôn vẽ tiêu đề nhóm, và nhãn "Tài khoản" đặt tên cho nhóm gồm hàng danh tính, lệnh gói, hồ sơ cho trình đọc màn hình; menu tài khoản của NIVO không dùng nhãn này, nên giữ hay bỏ là quyết định riêng của chủ sản phẩm.
 Luật: nav parity with NIVO console.
 Grammar: `DropdownMenuSection` {label}.

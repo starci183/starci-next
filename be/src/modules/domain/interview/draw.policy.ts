@@ -40,7 +40,10 @@ const AGNOSTIC = "agnostic"
 
 /** The 32-bit FNV-1a hash of a text. */
 const hashOf = (text: string): number =>
-    [...text].reduce((hash, char) => Math.imul(hash ^ (char.codePointAt(0) ?? 0), 16_777_619) >>> 0, 2_166_136_261)
+    Array.from(text).reduce(
+        (hash, char) => Math.imul(hash ^ Number(char.codePointAt(0)), 16_777_619) >>> 0,
+        2_166_136_261,
+    )
 
 /** The code language of a question's body for the language asked, or null when the question has none to give. */
 export const bodyLanguageOf = (bodyLanguages: ReadonlyArray<string>, language: string | null): string | null => {
@@ -65,19 +68,17 @@ const pickFrom = (pool: ReadonlyArray<Usable>, count: number, params: DrawParams
     )
     const picked: Array<Usable> = []
     const perBank = new Map<string, number>()
-    while (picked.length < count) {
+    const wanted = Math.min(count, pool.length)
+    while (picked.length < wanted) {
         const rest = ordered.filter((entry) => !picked.includes(entry))
         const lowest = Math.min(...rest.map((entry) => seen(entry)))
         const unseen = rest.filter((entry) => seen(entry) === lowest)
-        const [first, ...others] = unseen
-        if (first === undefined) break
-        const next = others.reduce(
-            (best, entry) =>
-                (perBank.get(entry.candidate.bankId) ?? 0) < (perBank.get(best.candidate.bankId) ?? 0) ? entry : best,
-            first,
-        )
-        picked.push(next)
-        perBank.set(next.candidate.bankId, (perBank.get(next.candidate.bankId) ?? 0) + 1)
+        const bankLoad = (entry: Usable): number => perBank.get(entry.candidate.bankId) ?? 0
+        const fewest = Math.min(...unseen.map((entry) => bankLoad(entry)))
+        for (const next of unseen.filter((entry) => bankLoad(entry) === fewest).slice(0, 1)) {
+            picked.push(next)
+            perBank.set(next.candidate.bankId, bankLoad(next) + 1)
+        }
     }
     return picked
 }

@@ -15,46 +15,19 @@ export type {
 export { LESSON_GROUP_SOURCES, LESSON_GROUPS, LESSON_SOURCE_TOTAL } from "./catalog"
 export type { LessonStatus } from "./catalog"
 export type { CatalogFilters, CatalogLabels, CatalogTopics, CatalogView, CatalogWords } from "./catalog"
-export { FREE_PHASES, LESSON_PHASES } from "./lesson"
 export type {
     ActivityView,
     AttemptAnswer,
     AttemptView,
     CatalogLessonView,
-    ExerciseFileView,
     SectionView,
     TopicView,
-    LessonDifficulty,
     LessonView,
     OutcomeServerState,
     ProgressView,
     SimulationProgressView,
-    LessonPhase,
     SimulationView,
-    WorkspaceVariantView,
 } from "./lesson"
-export type {
-    AttemptStatus,
-    NavTarget,
-    OutcomeState,
-    PhaseResultView,
-    PhaseWords,
-    SectionCheckView,
-    StepView,
-    LessonCompareLabels,
-    LessonCompletionLabels,
-    LessonNavLabels,
-    LessonProgressLabels,
-    LessonResultLabels,
-    LessonStudyActions,
-    LessonStudyLabels,
-    LessonStudyScreen,
-    MarkdownLabels,
-    StudyCardView,
-    StudyView,
-    StudyWords,
-    WrittenDraftView,
-} from "./study"
 export type { TopicLabels, TopicScreenView, TopicWords } from "./topic"
 export type { AgentQuotaView, AgentTrackTileView } from "./agents"
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
@@ -80,18 +53,12 @@ export type {
     ReviewTodayView,
 } from "./review"
 export type {
-    ReviewAnswerPart,
-    ReviewBackView,
     ReviewDeckCard,
     ReviewDeckNote,
     ReviewDecksLabels,
     ReviewFilterOption,
     ReviewGoalForm,
-    ReviewGradeButton,
-    ReviewItemScreen,
-    ReviewSessionLabels,
     ReviewSessionScreen,
-    ReviewSummaryScreen,
     ReviewTodayLabels,
     ReviewTodayRow,
     ReviewTodayScreen,
@@ -103,3 +70,61 @@ export type {
     ReviewQueueRowView,
     ReviewQueueScreenView,
 } from "./experience"
+export { CATALOG_PLACEHOLDER } from "./catalogPlaceholder"
+export type { AppHeaderLanguage, AppHeaderTheme, AppHeaderAccountShape, AppHeaderBaseProps } from "./appHeader"
+export type { AuthNoticeTone, AuthRetry, FieldErrors } from "./authNotice"
+export { FREE_PHASES, LESSON_PHASES } from "@starci-next/ui"
+export type {
+    AttemptStatus,
+    BandProps,
+    ChipView,
+    ConceptCardView,
+    ConceptDraftView,
+    DevicesPairDevice,
+    DevicesPairLabels,
+    DevicesPairPreview,
+    DevicesPairRule,
+    DevicesPairStep,
+    EvidenceChipView,
+    EvidenceRunView,
+    ExerciseFileView,
+    LessonCompareLabels,
+    LessonCompletionLabels,
+    LessonDifficulty,
+    LessonNavLabels,
+    LessonPhase,
+    LessonProgressLabels,
+    LessonResultLabels,
+    LessonStudyActions,
+    LessonStudyLabels,
+    LessonStudyScreen,
+    MarkdownLabels,
+    NavTarget,
+    OutcomeState,
+    PhaseResultView,
+    PhaseWords,
+    ProjectDetailBusy,
+    ProjectDetailFields,
+    ProjectDetailLabels,
+    ProjectDetailView,
+    ProjectMilestoneLabels,
+    ProjectMilestoneView,
+    ProjectsAsideLabels,
+    ReviewAnswerPart,
+    ReviewBackView,
+    ReviewGradeButton,
+    ReviewItemCommands,
+    ReviewItemScreen,
+    ReviewSessionLabels,
+    ReviewSummaryScreen,
+    SectionCheckView,
+    StepView,
+    StudyBodyProps,
+    StudyCardView,
+    StudyView,
+    StudyWords,
+    WorkspaceVariantView,
+    WrittenDraftView,
+} from "@starci-next/ui"
+export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
+export type { InterviewRoomLabels } from "./interviewRoom"

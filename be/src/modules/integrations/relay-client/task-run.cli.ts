@@ -1,4 +1,11 @@
-import type { CheckRun, CliIo, ManifestCheck, ManifestFetch, PendingUpload } from "./relay-client.contracts"
+import {
+    RelayRefusalCode,
+    type CheckRun,
+    type CliIo,
+    type ManifestCheck,
+    type ManifestFetch,
+    type PendingUpload,
+} from "./relay-client.contracts"
 import { readConfig } from "./device-settings.adapter"
 import { isRecord } from "./json.mapper"
 import { refusalLine } from "./relay-api.client"
@@ -34,7 +41,7 @@ export const flush = async (
     const answer = await relayGraphql(io.fetch, session.baseUrl, session.token, uploadMutationOf(next.mutation), {
         input: next.input,
     })
-    if (answer.kind === "data" || answer.code === "RELAY_PAYLOAD_INVALID") return flush(io, session, rest)
+    if (answer.kind === "data" || answer.code === RelayRefusalCode.PayloadInvalid) return flush(io, session, rest)
     return queue
 }
 

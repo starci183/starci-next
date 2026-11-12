@@ -108,11 +108,12 @@ const gradeOf = (entry: unknown, criterion: ProjectCriterion, sources: string): 
  */
 export const codeReadGradeOf = (text: string, request: ProjectCodeReadRequest): ProjectCodeReadGrade => {
     const body = objectOf(text)
-    const list: unknown = isRecord(body) ? body["criteria"] : undefined
+    if (!isRecord(body)) throw invalid()
+    const list: unknown = body["criteria"]
     if (!Array.isArray(list) || list.length !== request.rubric.length) throw invalid()
     const sources = normalized(`${request.explanation}\n${request.excerpt}`)
     const criteria = request.rubric.map((criterion, index) => gradeOf(list[index], criterion, sources))
-    const question: unknown = isRecord(body) ? body["question"] : undefined
+    const question: unknown = body["question"]
     return { criteria, question: typeof question === "string" ? question.trim().slice(0, MAX_QUESTION) : "" }
 }
 

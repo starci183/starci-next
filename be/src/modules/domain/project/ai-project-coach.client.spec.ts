@@ -62,6 +62,13 @@ describe("AiProjectCoachClient read", () => {
         await expect(coach.read(REQUEST)).rejects.toMatchObject({ code: "PROJECT_COACH_INVALID" })
     })
 
+    it("refuses with PROJECT_COACH_UNAVAILABLE when the gateway names its own outage", async () => {
+        const { coach, gateway } = await build()
+        gateway.complete.mockRejectedValue(new AiGatewayError({ code: AiGatewayErrorCode.Unavailable }))
+
+        await expect(coach.read(REQUEST)).rejects.toMatchObject({ code: "PROJECT_COACH_UNAVAILABLE" })
+    })
+
     it("asks again with twice the room when the model answered with nothing, and refuses with PROJECT_COACH_INVALID when it stays empty", async () => {
         const { coach, gateway } = await build()
         const empty = new AiGatewayError({ code: AiGatewayErrorCode.ReplyEmpty })

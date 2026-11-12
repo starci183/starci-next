@@ -108,7 +108,7 @@ const worldOf = async (door: (request: Request) => Answer, machine: Machine = {}
             { provide: HTTP_CLIENT, useValue: http },
         ],
     }).compile()
-    return { service: moduleRef.get(RelayClientService), home, env, out, err, exits, requests, terminal }
+    return { service: moduleRef.get(RelayClientService), home, env, out, err, exits, requests, terminal, http }
 }
 
 const started: Answer = {
@@ -195,6 +195,17 @@ describe("RelayClientService login", () => {
         await world.service.login()
 
         expect(world.requests[0]?.body).toEqual({ deviceName: "my-machine", platform: "windows" })
+        expect(world.err[0]).toBe("StarCi refused (RELAY_UNAVAILABLE).")
+    })
+})
+
+describe("RelayClientService an answer that is not bytes", () => {
+    it("reads an answer whose body is not bytes as unavailable", async () => {
+        const world = await worldOf(replay([started]))
+        world.http.request.mockResolvedValue({ status: 200, body: "text" })
+
+        await world.service.login()
+
         expect(world.err[0]).toBe("StarCi refused (RELAY_UNAVAILABLE).")
     })
 })

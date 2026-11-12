@@ -14,9 +14,4 @@ export interface RelayOptions {
     readonly freeDeviceLimit: number
     /** The sealed Ed25519 PEM manifests are signed with, or null (development and test: a key made per process). */
     readonly manifestSigningKey: Secret | null
-    /**
-     * The sealed key the relay app presents to core's internal relay doors (`Authorization: Bearer <key>`), or null in
-     * development and test without one, where those doors refuse every call.
-     */
-    readonly serviceKey: Secret | null
 }

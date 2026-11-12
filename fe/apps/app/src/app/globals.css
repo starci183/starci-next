@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "@heroui/styles/css";
-@import "@starci/grammar/core/theme.css";
 @import "@starci/grammar/common.css";
 @import "../modules/brand/brand.css";
 

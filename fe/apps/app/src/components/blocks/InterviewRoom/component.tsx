@@ -1,4 +1,16 @@
-import { Alert, Badge, Button, Cluster, Grid, Page, Stack, Stepper, SurfaceCard, Text } from "@starci/grammar/common"
+import {
+    Alert,
+    Badge,
+    Button,
+    Cluster,
+    Grid,
+    Page,
+    Stack,
+    Stepper,
+    SurfaceCard,
+    Text,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import {
     InterviewChat,
     InterviewComposer,
@@ -10,8 +22,7 @@ import {
     type InterviewBubble,
     type MarkdownBlock,
 } from "@starci-next/ui"
-import type { DataSlot, SlotLabels } from "@/modules/types"
-import { roomHeaderOf } from "./header"
+import type { DataSlot, InterviewRoomLabels, SlotLabels } from "@/modules/types"
 
 /** One question of the progress list. */
 export type InterviewProgressView = {
@@ -56,43 +67,6 @@ export const INTERVIEW_ROOM_PLACEHOLDER: InterviewRoomView = {
     needsReply: false,
 }
 
-/** The fixed words of the room. */
-export type InterviewRoomLabels = {
-    readonly title: string
-    readonly note: string
-    readonly progressTitle: string
-    readonly end: string
-    readonly endTitle: string
-    readonly endDescription: string
-    readonly endConfirm: string
-    readonly endCancel: string
-    readonly endAbandon: string
-    readonly noAnswer: string
-    readonly answer: string
-    readonly placeholder: string
-    readonly send: string
-    readonly sending: string
-    readonly saved: string
-    readonly hint: string
-    readonly hintNone: string
-    readonly hintNote: string
-    readonly skip: string
-    readonly retry: string
-    readonly retrying: string
-    readonly done: string
-    readonly submit: string
-    readonly grading: string
-    readonly gradingNote: string
-    readonly closedTitle: string
-    readonly closedDescription: string
-    readonly openReport: string
-    readonly material: string
-    readonly diagram: string
-    readonly diagramError: string
-    readonly back: string
-    readonly abandonNow: string
-}
-
 /** What the learner holds in the room. */
 export type InterviewRoomState = {
     readonly draft: string
@@ -126,6 +100,7 @@ export type InterviewRoomBaseProps = {
         readonly state: InterviewRoomState
         readonly reportHref: string
         readonly homeHref: string
+        readonly header: PageHeaderContent
         readonly isSending: boolean
         readonly isRetrying: boolean
         readonly isHinting: boolean
@@ -281,7 +256,7 @@ const Rail = (props: RailProps) => (
  * actions below; beside it the progress and the note that answers are judged only once graded. On a phone the rail follows.
  */
 export const InterviewRoomBase = (props: InterviewRoomBaseProps) => (
-    <Page header={roomHeaderOf(props.props.labels.title, props.props.labels.back, props.props.homeHref)}>
+    <Page header={props.props.header}>
         <SlotView
             slot={props.props.slot}
             placeholder={props.props.placeholder}

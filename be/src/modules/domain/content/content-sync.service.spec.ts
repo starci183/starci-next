@@ -151,6 +151,44 @@ describe("ContentSyncService sync from local directories", () => {
     })
 })
 
+describe("ContentSyncService sync of folders that hold nothing", () => {
+    it("skips the lessons and the practice sets when no source holds a folder", async () => {
+        const { service, disk, lessons, practice } = await build()
+        disk.folders.mockResolvedValue([])
+
+        const reports = await service.sync({ contentDir: "/c", dataDir: "/d", only: "" })
+
+        expect(reports.filter((report) => ["lessons", "practice"].includes(report.kind))).toEqual([
+            { kind: "lessons", status: "skipped", version: "", detail: "no essentials folder" },
+            { kind: "practice", status: "skipped", version: "", detail: "no sets folder" },
+        ])
+        expect(lessons.import).not.toHaveBeenCalled()
+        expect(practice.import).not.toHaveBeenCalled()
+    })
+
+    it("skips the interview banks with no data checkout and no overlay", async () => {
+        const { service, disk, interviews } = await build()
+        disk.folders.mockResolvedValue([])
+
+        const reports = await service.sync({ contentDir: "/c", only: "interview" })
+
+        expect(reports).toEqual([
+            { kind: "interview", status: "skipped", version: "", detail: "no data checkout and no overlay" },
+        ])
+        expect(interviews.import).not.toHaveBeenCalled()
+    })
+
+    it("imports the interview banks of the data checkout alone when there is no overlay", async () => {
+        const { service, disk, interviews } = await build()
+        disk.folders.mockImplementation((directory) => Promise.resolve(directory.includes("overlay") ? [] : ["x"]))
+
+        const reports = await service.sync({ contentDir: "/c", dataDir: "/d", only: "interview" })
+
+        expect(reports).toEqual([{ kind: "interview", status: "imported", version: "fp-/d", detail: "data only" }])
+        expect(interviews.import).toHaveBeenCalledWith({ directory: "/d", ref: "fp-/d", only: "" })
+    })
+})
+
 describe("ContentSyncService sync failures", () => {
     it("keeps going when a kind fails, reports it by code, fails the call at the end and does not record the snapshots", async () => {
         const { service, lessons, interviews, disk, logger } = await build(GIT_OPTIONS)

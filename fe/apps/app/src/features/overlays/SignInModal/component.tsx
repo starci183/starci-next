@@ -27,7 +27,6 @@ export const SignInModalBase = (props: SignInModalBaseProps) => (
             destination={props.props.returnTo}
             returnTo={props.props.returnTo}
             presentation="modal"
-            onDone={() => props.on.openChange(false)}
         />
     </Dialog>
 )

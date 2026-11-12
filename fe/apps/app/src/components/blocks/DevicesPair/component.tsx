@@ -11,17 +11,16 @@ import {
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
-import { SlotView } from "@starci-next/ui"
-import { ConnectDrawer } from "./connect"
-import { StepRows } from "./steps"
+import { ConnectDrawer, SlotView, StepRows } from "@starci-next/ui"
 import type {
+    DataSlot,
     DevicesPairDevice,
     DevicesPairLabels,
+    DevicesPairPreview,
     DevicesPairRule,
     DevicesPairStep,
-    DevicesPairPreview,
-} from "./types"
-import type { DataSlot, SlotLabels } from "@/modules/types"
+    SlotLabels,
+} from "@/modules/types"
 
 /** Props for {@link DevicesPairBase}. */
 export type DevicesPairBaseProps = {

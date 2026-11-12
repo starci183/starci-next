@@ -4,7 +4,7 @@ route: /essentials/api-reliability/idempotency?phase=predict
 area: essentials
 ---
 
-Route: `/essentials/[topic]/[lesson]?phase=predict`. Chụp bằng người học Premium (state của `sign-in.cjs`), 1440. Thiết kế gốc: canvas 6 artboard của lane STARCI-NEXT-6STEP-REDESIGN-20261111.
+Route: `/essentials/[topic]/[lesson]?phase=predict`. Chụp bằng người học Premium (state của `scripts/gallery-sign-in.cjs`), 1440. Thiết kế gốc: canvas 6 artboard của lane STARCI-NEXT-6STEP-REDESIGN-20261111.
 
 ## Band (ảnh 3D của pha, breadcrumbs, "Pha: câu hỏi", meta, stepper 6 bước)
 

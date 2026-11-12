@@ -9,9 +9,8 @@ import {
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
-import { ProjectsGlyph, RowProgress, SlotView } from "@starci-next/ui"
-import type { DataSlot, SlotLabels } from "@/modules/types"
-import { ProjectsAside, type ProjectsAsideLabels } from "./aside"
+import { ProjectsAside, ProjectsGlyph, RowProgress, SlotView } from "@starci-next/ui"
+import type { DataSlot, ProjectsAsideLabels, SlotLabels } from "@/modules/types"
 
 /** One project as the list draws it: every field already in words, numbers or booleans. */
 export type ProjectRowView = {

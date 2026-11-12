@@ -2,12 +2,12 @@
 
 import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
+import { issueWordsOf, projectMilestoneViewOf, useProjectMilestoneLabels } from "@/hooks/projectMilestone"
 import { isProjectMissing, isProjectPremiumRequired, useConceptForms } from "@/hooks/projects"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectMilestoneSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { PROJECT_MILESTONE_PLACEHOLDER, ProjectMilestoneBase } from "./component"
-import { issueWordsOf, labelsOf, viewOf } from "./view"
 
 /** What the route hands the milestone block: the segments of the address. */
 type ProjectMilestoneProps = { readonly projectId: string; readonly milestoneId: string }
@@ -22,12 +22,13 @@ export const ProjectMilestone = (props: ProjectMilestoneProps) => {
         milestoneId: props.milestoneId,
         locale: useLocale(),
     })
+    const labels = useProjectMilestoneLabels(props.projectId)
     const forms = useConceptForms(props.projectId, () => void read.mutate())
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.milestone.title} · ${t("pageTitle")}`)
     return (
         <ProjectMilestoneBase
             props={{
-                slot: mapSlot(slotOfSwr(read), (milestone) => viewOf(t, format, milestone)),
+                slot: mapSlot(slotOfSwr(read), (milestone) => projectMilestoneViewOf(t, format, milestone)),
                 placeholder: PROJECT_MILESTONE_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 isNotFound: isProjectMissing(read.error),
@@ -39,7 +40,7 @@ export const ProjectMilestone = (props: ProjectMilestoneProps) => {
                 issueId: forms.issueId,
                 issueWords: issueWordsOf(t, forms.issue),
                 openId,
-                labels: labelsOf(t, props.projectId),
+                labels,
             }}
             on={{
                 retry: () => void read.mutate(),

@@ -34,3 +34,4 @@ Grammar: `PaneGrid`, `Pane area surface`, `PaneSection rule="start"`, `Meter`, `
 
 Vì sao: dưới 48rem aside thành các khối đầu của well; hero xếp ảnh trên, chữ dưới; vòng pha xuống dòng dưới tên bài.
 Luật: `pink-page-surface-rule.md`.
+Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`): dưới `medium` aside đứng trước main; `Grid kind="pair"` (`frame/Grid/index.d.ts`) xếp ảnh trên, chữ dưới. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`.

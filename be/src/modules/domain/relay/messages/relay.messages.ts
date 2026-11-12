@@ -11,7 +11,6 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_DEVICE_NOT_FOUND": "Không tìm thấy thiết bị này.",
         "errors.RELAY_PAIRING_INVALID": "Tên thiết bị hoặc hệ điều hành không hợp lệ.",
         "errors.RELAY_PAYLOAD_INVALID": "Dữ liệu gửi lên từ máy không hợp lệ hoặc quá lớn.",
-        "errors.RELAY_SERVICE_UNAUTHENTICATED": "Lời gọi nội bộ tới relay không được xác thực.",
         "errors.RELAY_UNAVAILABLE": "Chưa kết nối được tới máy chủ relay; hãy thử lại.",
     },
     en: {
@@ -22,7 +21,6 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_DEVICE_NOT_FOUND": "This device was not found.",
         "errors.RELAY_PAIRING_INVALID": "The device name or platform is not valid.",
         "errors.RELAY_PAYLOAD_INVALID": "What the machine sent is not valid or is too large.",
-        "errors.RELAY_SERVICE_UNAUTHENTICATED": "The internal relay call was not authenticated.",
         "errors.RELAY_UNAVAILABLE": "The relay could not be reached; please try again.",
     },
 }

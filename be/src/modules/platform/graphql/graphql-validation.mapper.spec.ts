@@ -45,5 +45,6 @@ describe("requestInvalidOf", () => {
         expect(requestInvalidOf(formattedWith("UNAUTHENTICATED"), undefined)).toBeUndefined()
         expect(requestInvalidOf(formattedWith(), new Error("boom"))).toBeUndefined()
         expect(requestInvalidOf(formattedWith(), "text")).toBeUndefined()
+        expect(requestInvalidOf(formattedWith(), { extensions: {} })).toBeUndefined()
     })
 })

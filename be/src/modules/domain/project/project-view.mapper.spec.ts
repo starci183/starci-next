@@ -247,6 +247,27 @@ describe("toConceptView (part 2)", () => {
     })
 })
 
+describe("toConceptView of several failures", () => {
+    it("shows the newest failure when a test and a probe both fail", async () => {
+        const subject = await build()
+        const rows = subject.toEvidenceRows([
+            evidenceDbRowOf({ passed: false, ref: "[idempotency] twice", at: new Date("2026-11-08T09:30:00.000Z") }),
+            evidenceDbRowOf({
+                slot: "probe",
+                source: "server-probe",
+                passed: false,
+                ref: "repeat-same-key",
+                run_id: "p1",
+                at: new Date("2026-11-08T08:00:00.000Z"),
+            }),
+        ])
+
+        const view = subject.toConceptView(standingOf(rows), undefined, LESSON, "en")
+
+        expect(view.failing?.slot).toBe("test")
+    })
+})
+
 describe("toConceptView (part 3)", () => {
     let subject: typeof policies
 

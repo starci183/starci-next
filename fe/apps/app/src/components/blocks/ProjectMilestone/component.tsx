@@ -13,16 +13,16 @@ import {
     type ListRowData,
     type TableRowData,
 } from "@starci/grammar/common"
-import { MissingNotice, SlotView } from "@starci-next/ui"
-import type { DataSlot, SlotLabels } from "@/modules/types"
-import { ConceptDrawer } from "./drawer"
+import { ConceptDrawer, MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
     ConceptDraftView,
+    DataSlot,
     EvidenceRunView,
     ProjectMilestoneLabels,
     ProjectMilestoneView,
-} from "./types"
+    SlotLabels,
+} from "@/modules/types"
 
 /** The fake milestone with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_MILESTONE_PLACEHOLDER: ProjectMilestoneView = {

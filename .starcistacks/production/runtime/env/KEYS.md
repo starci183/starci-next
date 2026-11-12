@@ -51,6 +51,15 @@ This inventory declares names, consumers and mounted file paths. Scaffolding sea
 | `JUDGE0_TIMEOUT` | Core API most time one call to Judge0 may take (non-secret, default 10s) |
 | `JUDGE0_POLL_INTERVAL` | Core API wait between two reads of a batch that is still judging (non-secret, default 500ms) |
 | `JUDGE0_DEADLINE` | Core API most time a whole batch may take (non-secret, default 60s) |
+| `CONTENT_GIT_URL` | CLI `content sync` only: the content repository the git mount pulls (optional integration; set together with `CONTENT_DATASOURCES_DIR`, unset means local directories only) |
+| `CONTENT_GIT_REF` | CLI `content sync` only: branch, tag or pinned sha of the content repository (optional) |
+| `CONTENT_GIT_TOKEN` | CLI `content sync` only: access token of the content repository; read from `CONTENT_GIT_TOKEN_FILE`, a sealed member once the repository is private |
+| `CONTENT_GIT_TOKEN_FILE` | Host-local path of the content repository token file |
+| `CONTENT_DATA_GIT_URL` | CLI `content sync` only: the teacher's data repository (optional; unset pulls the content repository alone) |
+| `CONTENT_DATA_GIT_REF` | CLI `content sync` only: branch, tag or pinned sha of the data repository (optional) |
+| `CONTENT_DATA_GIT_TOKEN` | CLI `content sync` only: access token of the data repository; read from `CONTENT_DATA_GIT_TOKEN_FILE`, a sealed member once the repository is private |
+| `CONTENT_DATA_GIT_TOKEN_FILE` | Host-local path of the data repository token file |
+| `CONTENT_DATASOURCES_DIR` | CLI `content sync` only: the directory the versioned content snapshots live in |
 | `PRACTICE_FREE_PER_PATTERN` | Core API problems of each pattern open without Premium (non-secret, default 1) |
 | `PRACTICE_JUDGE_CONCURRENCY` | Core API most submissions judged at once on one instance (non-secret, default 4) |
 | `PRACTICE_SUBMISSIONS_PER_MINUTE` | Core API most runs and submits one learner may make in a minute (non-secret, default 10) |

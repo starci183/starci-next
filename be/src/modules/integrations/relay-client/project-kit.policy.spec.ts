@@ -47,6 +47,18 @@ describe("kitConfigOf", () => {
     })
 })
 
+const NL = String.fromCharCode(10)
+
+describe("kitConfigOf values", () => {
+    it("reads an unterminated or empty quote and a missing value as no value", async () => {
+        const subject = await build()
+        const text = ["test:", '  command: "never closed', '  report: ""', ""].join(NL)
+
+        expect(subject.kitConfigOf(text)).toMatchObject({ testCommand: null, testReport: null })
+        expect(subject.kitConfigOf(["test:", "  command:", ""].join(NL))).toMatchObject({ testCommand: null })
+    })
+})
+
 describe("withIdentity", () => {
     it("writes the language and keeps the placeholder when no project id is given", async () => {
         const subject = await build()

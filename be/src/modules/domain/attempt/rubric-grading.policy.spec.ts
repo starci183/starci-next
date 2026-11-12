@@ -200,6 +200,26 @@ describe("withExpectedNotes", () => {
         expect(noted.criteria.map((entry) => entry.missing)).toEqual(["shows the retry key", ""])
     })
 
+    it("keeps the note a criterion below the full level already has", () => {
+        const mixed: StoredAttemptResult = {
+            ...stored,
+            criteria: [
+                { criterionId: "a", criterion: "A", level: 1, evidenceQuote: "q", maxScore: 2, missing: "kept" },
+                { criterionId: "c", criterion: "C", level: 0, evidenceQuote: "", maxScore: 2 },
+            ],
+        }
+
+        const noted = withExpectedNotes(mixed, { a: "other", c: "names the key" })
+
+        expect(noted.criteria.map((entry) => entry.missing)).toEqual(["kept", "names the key"])
+    })
+
+    it("leaves the note empty for a criterion the rubric holds no evidence for", () => {
+        const noted = withExpectedNotes(stored, {})
+
+        expect(noted.criteria.map((entry) => entry.missing)).toEqual(["", ""])
+    })
+
     it("returns a result whose notes are all there as it is", () => {
         const complete = withExpectedNotes(stored, { a: "x" })
 

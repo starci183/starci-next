@@ -8,7 +8,8 @@ import { useLocaleSwitch } from "@/hooks/locale"
 import { useThemeSwitch } from "@/hooks/theme"
 import { useSignInModalStore } from "@/hooks/zustand/signInModal"
 import { APP_ROUTES, signInSearch } from "@/modules/routes"
-import { AppHeaderBase, type AppHeaderAccountShape } from "./component"
+import type { AppHeaderAccountShape } from "@/modules/types"
+import { AppHeaderBase } from "./component"
 
 /** The addresses the top bar needs: the account menu's Premium page, the profile page and the sign-in screen (where sign out returns). */
 type AppHeaderProps = {

@@ -1,4 +1,5 @@
 import type { MessageBundle } from "@modules/platform/i18n"
+import type { AgentLabText, AgentLabTrackId } from "../agent-lab.contracts"
 
 /** Display text of agent lab errors, Vietnamese and English. */
 export const AGENT_LAB_MESSAGES: MessageBundle = {
@@ -16,8 +17,21 @@ export const AGENT_LAB_MESSAGES: MessageBundle = {
     },
 }
 
-/** The Vietnamese and English copy of the catalog: the seven mindset concepts and the tool tracks (the canvas copy). */
-export const AGENT_LAB_COPY: MessageBundle = {
+/** The mindset concepts that have copy. */
+type AgentLabConceptSlug =
+    "task-spec" | "context" | "tools-permissions" | "verify" | "decompose" | "cost-limits" | "operate"
+
+/** The keys of the catalog copy, each present in both locales. */
+type AgentLabCopyKey =
+    `concept.${AgentLabConceptSlug}.${"label" | "evidence"}` | `track.${AgentLabTrackId}.${"label" | "focus"}`
+
+/** The copy of the catalog by locale. */
+interface AgentLabCopy {
+    readonly vi: Readonly<Record<AgentLabCopyKey, string>>
+    readonly en: Readonly<Record<AgentLabCopyKey, string>>
+}
+
+const COPY: AgentLabCopy = {
     vi: {
         "concept.task-spec.label": "Giao việc rõ",
         "concept.task-spec.evidence": "Tiêu chí đạt viết trước khi chạy agent",
@@ -63,3 +77,6 @@ export const AGENT_LAB_COPY: MessageBundle = {
         "track.hermes.focus": "Model-agnostic, with persistent memory and self-made skills",
     },
 }
+
+/** The copy of one catalog entry in both locales: the seven mindset concepts and the tool tracks (the canvas copy). */
+export const agentLabCopyOf = (key: AgentLabCopyKey): AgentLabText => ({ vi: COPY.vi[key], en: COPY.en[key] })

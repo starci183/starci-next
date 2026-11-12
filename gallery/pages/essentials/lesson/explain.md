@@ -50,6 +50,6 @@ Grammar: `Link variant="plain" kind="external"` (`node_modules/@starci/grammar/d
 
 ## Aside dưới lg (điện thoại)
 
-Vì sao: CHƯA RÕ. Luật nói dưới lg aside thành các khối đầu của giếng; Grammar chỉ có `Pane collapse="drawer"` (nút "Kết quả học tập" mở ngăn kéo). Dùng cách đó.
+Vì sao: trang bài học chỉ có một cột nội dung chính; dưới lg phần kết quả học tập không chen vào cột đó mà thu vào một ngăn kéo mở bằng nút "Kết quả học tập" ở thanh dưới, để màn hình điện thoại dành chỗ cho bài.
 Luật: `pink-page-surface-rule.md`.
-Grammar: `Pane collapse="drawer" trigger="bar"` (`frame/PaneGrid/index.d.ts`). Cần Grammar: chế độ "aside xuống giếng" cho PaneGrid.
+Grammar: `Pane collapse="drawer" trigger="bar"` (`frame/PaneGrid/index.d.ts`). Code: `fe/apps/app/src/components/blocks/LessonStudy/component.tsx` (`PaneGrid areas={{ base: ["main"], wide: ["main aside"] }}`).

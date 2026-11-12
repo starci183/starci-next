@@ -73,3 +73,6 @@ next-env.d.ts
 # Host-local agent credentials and app age identity never enter Git.
 .claude/
 # <<< starci app sync <<<
+
+# fe: the agent notes `next dev` writes at each Next app root, never tracked (slot fe.dev-server-generated).
+fe/apps/*/AGENTS.md

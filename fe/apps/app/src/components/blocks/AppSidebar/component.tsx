@@ -1,8 +1,6 @@
 import { Cluster, DropdownMenu, IconButton, Sidebar, Switch, type SidebarGroup } from "@starci/grammar/common"
 import { CollapseGlyph, LanguageGlyph, languageMenuEntries, MoonGlyph, SunGlyph } from "@starci-next/ui"
-import type { AppSidebarBaseProps } from "./types"
-
-export type * from "./types"
+import type { AppSidebarBaseProps } from "@/modules/types"
 
 /** Draws the white sidebar as the NIVO console sidebar (ConsoleSidebar): the collapse button, the destinations in their groups with the current one marked (navigation only, no footer: the plan lives in the top bar); the drawer carries the language and theme controls above the groups. */
 export const AppSidebarBase = (props: AppSidebarBaseProps) => {

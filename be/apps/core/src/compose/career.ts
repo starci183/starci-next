@@ -56,7 +56,7 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         lessons: LessonCatalogClient,
         attestation: UnattestedCiClient,
     }),
-    ProbeModule.register({ isGlobal: true }),
+    ProbeModule.register({ isGlobal: true, ...options.probe }),
 ]
 
 /** The error kind tables of the career area. */

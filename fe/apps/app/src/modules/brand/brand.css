@@ -49,6 +49,14 @@
     /* Border Radius */
     --radius: 0.5rem;
     --field-radius: 0.75rem;
+    /* Carried from the Grammar core theme the app used to import, values unchanged */
+    --accent-soft: oklch(95.5% 0.03 287);
+    --accent-soft-foreground: #6a3cf2;
+    --link: var(--accent-soft-foreground);
+    --surface-shadow: 0 8px 28px oklch(21.03% 0.0059 354.13 / 0.07);
+    --terminal-background: oklch(20% 0.01 286);
+    --terminal-foreground: oklch(92% 0.005 286);
+    --terminal-title-foreground: oklch(72% 0.01 286);
 }
 
 .dark,
@@ -86,4 +94,13 @@
     --surface-tertiary-foreground: oklch(99.11% 0.0015 305);
     --warning: oklch(82.03% 0.1392 82.48);
     --warning-foreground: oklch(21.03% 0.0059 82.48);
+    /* Carried from the Grammar core theme the app used to import, values unchanged */
+    --accent-soft: oklch(30% 0.07 287);
+    --accent-soft-foreground: #a48bff;
+    --link: var(--accent-soft-foreground);
+    --info: oklch(72% 0.17 250);
+    --surface-shadow: 0 8px 28px oklch(21.03% 0.0059 354.13 / 0.07);
+    --terminal-background: oklch(20% 0.01 286);
+    --terminal-foreground: oklch(92% 0.005 286);
+    --terminal-title-foreground: oklch(72% 0.01 286);
 }

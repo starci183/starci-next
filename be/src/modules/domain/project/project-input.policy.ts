@@ -34,7 +34,7 @@ const SECRET_NAMES: ReadonlySet<string> = new Set([
     "secrets.json",
     "secrets.toml",
 ])
-const SECRET_PREFIXES: ReadonlyArray<string> = [".env", "id_rsa", "id_ed25519", "credentials."]
+const SECRET_PREFIXES = [".env", "id_rsa", "id_ed25519", "credentials."] as const
 const SECRET_SUFFIXES: ReadonlyArray<string> = [".pem", ".key", ".p12"]
 const ENDPOINT = /^(GET|POST|PUT|PATCH|DELETE) \/[\w\-./{}:?=&%~]*$/u
 

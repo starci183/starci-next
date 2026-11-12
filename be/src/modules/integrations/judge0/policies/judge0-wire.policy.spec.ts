@@ -106,12 +106,13 @@ describe("judge0StatusOf", () => {
 describe("judge0ResultOf", () => {
     let judge0IsPending: typeof subject.judge0IsPending
     let judge0ResultOf: typeof subject.judge0ResultOf
+    let judge0ResultsOf: typeof subject.judge0ResultsOf
 
     beforeAll(async () => {
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: SUBJECT, useFactory: () => subject }],
         }).compile()
-        ;({ judge0IsPending, judge0ResultOf } = moduleRef.get<typeof subject>(SUBJECT))
+        ;({ judge0IsPending, judge0ResultOf, judge0ResultsOf } = moduleRef.get<typeof subject>(SUBJECT))
     })
 
     it.each([
@@ -123,9 +124,18 @@ describe("judge0ResultOf", () => {
         expect(judge0ResultOf(entry)).toBeNull()
     })
 
+    it("does not wait on an entry without a status", () => {
+        expect(judge0IsPending({})).toBe(false)
+    })
+
     it.each([1, 2])("waits while Judge0 still holds the submission (status %i)", (id) => {
         expect(judge0IsPending({ status: { id } })).toBe(true)
         expect(judge0ResultOf({ status: { id } })).toBeNull()
+    })
+
+    it("keeps the judged submissions of a batch and drops the ones not judged yet", () => {
+        const judged = { status: { id: 3 }, stdout: b64("ok") }
+        expect(judge0ResultsOf([{ status: { id: 2 } }, judged, "x"])).toEqual([judge0ResultOf(judged)])
     })
 
     it("reads a judged submission: decoded streams, time in milliseconds and memory in kilobytes", () => {

@@ -1,1 +1,5 @@
 {"data":{},"findings":[],"hash":"de36deda271272df8cacb4c33b48342e65e5ccd5f0abc3d3626c3b5fa644c60b","path":"scripts/codegen.mjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"17a96dfe886c21a1a0d24787e80ce0fd4d4e28301771b051f5e0ea188e6158f1","path":"scripts/gallery-capture.cjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"97244a1d562844079058770f383eac8093a6fe64d9ea3a972e88af352169dc7e","path":"scripts/gallery-sign-in.cjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4cf1b50ca486cbdd1d1681a18e19b73d7d8d30cd806a3da903a91a0a1bc75af5","path":"scripts/relay-manifest-key.mjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"28279d1943c3d64180c841ef5f861cddab2fba9e9bd6bc9dc0d562e3c3ee63a3","path":"scripts/simulate-sepay-ipn.mjs","step":"file-rules"}

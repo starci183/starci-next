@@ -181,6 +181,43 @@ describe("AttemptReadService progress of a finished lesson", () => {
         expect(review.lessonSchedule).toHaveBeenCalledWith(LEARNER, "demo-lesson")
     })
 
+    it("lists no reviews when the review module is not present", async () => {
+        const em = mockEntityManager({
+            query: rowsFor([
+                SELECT_COMPLETION,
+                [{ lesson_version: "v1", completed_at: new Date("2026-11-11T08:00:00.000Z") }],
+            ]),
+        })
+        const { service, review } = await build(em)
+        review.lessonSchedule.mockReset()
+
+        const view = await service.progress({ learnerId: LEARNER, lessonId: "demo-lesson" })
+
+        expect(view.reviews).toEqual([])
+    })
+})
+
+describe("AttemptReadService progress of the stored grades", () => {
+    it("leaves the grade of an activity the outline does not hold as stored", async () => {
+        const em = mockEntityManager({
+            query: rowsFor([
+                SELECT_ACTIVITY_PROGRESS,
+                [
+                    activityProgressRowOf({
+                        activity_id: "demo--gone",
+                        phase: "apply",
+                        result: resultOf({ score: 1, maxScore: 2 }),
+                    }),
+                ],
+            ]),
+        })
+        const { service } = await build(em)
+
+        const view = await service.progress({ learnerId: LEARNER, lessonId: "demo-lesson" })
+
+        expect(view.activities[0]?.latest.result?.score).toBe(1)
+    })
+
     it("completes the note of a grade stored before notes with the expected evidence of the rubric", async () => {
         const legacy = {
             ...resultOf({ score: 1, maxScore: 2 }),

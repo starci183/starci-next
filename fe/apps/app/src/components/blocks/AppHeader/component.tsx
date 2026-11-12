@@ -9,9 +9,7 @@ import {
     type DropdownMenuItem,
 } from "@starci/grammar/common"
 import { BarWide, LanguageGlyph, languageMenuEntries, MoonGlyph, SunGlyph } from "@starci-next/ui"
-import type { AppHeaderBaseProps, AppHeaderLanguage, AppHeaderTheme } from "./types"
-
-export type * from "./types"
+import type { AppHeaderBaseProps, AppHeaderLanguage, AppHeaderTheme } from "@/modules/types"
 
 /** What the language menu reads: its words and state, and the command that chooses a language. */
 type LanguageControlProps = {

@@ -7,13 +7,14 @@
 {"data":{},"findings":[],"hash":"9b1b833e13d6c06ce99033ddb5a169f184fc1cf35d7bc4e064904eaa2f2c8452","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"82544386730812f191e1689b2b48038afb8e71c9c8058b91946fc1ed610dff1a","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"268bce43f0437ca0b8331ac101785e6fe9e32c9bfdd3004938db3e16f4235d8e","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"8aa500c7eacb8a4732b388fa219858eef84e54502b25084c4a114dc2e3de71e7","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b1d3722fa64f908f7687aa8c1d18385fe4e78e5ed8bbf93b64203d8e12dd4747","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1a6018c4e2d40501f580e80cfc77ed06081275853998f50cecbbae4d89551828","path":".starcistacks/production/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"95783af680e9c2b47548d5ebabb7200a3b95bd6d86b3a274f4d37f6acf93652f","path":".starcistacks/production/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b9c4b61d264f6d1f2ce4c79d82b7a11934a6270205e25ad751f38950c373a703","path":".starcistacks/production/secrets/keycloak-client-secret.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4c837f562915e8be6bf8c25e3f308976f9c88757bbdf28269c67162e569656ff","path":".starcistacks/production/secrets/mail-password.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b86fa793f035a91ef3fb626442d58d121dd9ff54ccf79d91d89e7ac615447c4d","path":".starcistacks/production/secrets/payos.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e04541c4630490f38ae710ff479f185a83cc5ada8a49918a1aa6e3c0061c24e7","path":".starcistacks/production/secrets/primary-db-url.enc","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ebb020fa872abb79ab93dffc86d98db3d0b48bd8a37e685ab38bd80372d8a6be","path":".starcistacks/production/secrets/relay.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2be2ccff4a4444796a1cfa3fc08a474581f7d57585d8ddb4a5fb23692c45700c","path":".starcistacks/production/secrets/sepay.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/data/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/files/.gitkeep","step":"file-rules"}

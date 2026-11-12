@@ -1,5 +1,4 @@
-import { LESSON_PHASES } from "./lesson"
-import type { StudyView } from "./study"
+import { LESSON_PHASES, type StudyView } from "@starci-next/ui"
 
 /** The fake lesson with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const STUDY_PLACEHOLDER: StudyView = {

@@ -37,7 +37,7 @@ export const junitCasesOf = (xml: string): ReadonlyArray<JunitCase> =>
         const inner = match[2] ?? ""
         const skipped = /<skipped\b/u.test(inner)
         return {
-            name: decoded(NAME.exec(match[1] ?? "")?.[1] ?? ""),
+            name: decoded(NAME.exec(String(match[1]))?.[1] ?? ""),
             skipped,
             passed: !skipped && !/<(?:failure|error)\b/u.test(inner),
         }

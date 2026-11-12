@@ -20,7 +20,7 @@
           "bin": "starci-next"
         }
       ],
-      "kinds": ["api", "cli", "client-cli", "jobs", "webhooks"],
+      "kinds": ["api", "cli", "client-cli", "realtime", "webhooks"],
       "connections": [
         {
           "name": "primary",
@@ -29,9 +29,8 @@
           "isolation": "database"
         }
       ],
-      "patterns": ["fenced-job", "queue", "webhooks", "realtime"],
-      "optionalSlots": ["be.contract.graphql"],
-      "backing": ["redis"]
+      "patterns": ["webhooks", "realtime"],
+      "optionalSlots": ["be.contract.graphql"]
     },
     "fe": {
       "apps": [

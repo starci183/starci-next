@@ -1,5 +1,5 @@
 import { Alert, Cluster, Heading, RelativeTime, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
-import type { AuthNoticeTone, AuthRetry } from "./notices"
+import type { AuthNoticeTone, AuthRetry } from "@/modules/types"
 import {
     AuthCodeForm,
     AuthDetailsForm,

@@ -39,16 +39,17 @@ const DOS_TIME = 0
 /** The CRC-32 polynomial of the IEEE checksum, reflected. */
 const CRC_POLYNOMIAL = 0xed_b8_83_20
 
-const CRC_TABLE: ReadonlyArray<number> = Array.from({ length: 256 }, (_unused, index) => {
-    let value = index
+/** One byte folded into a running CRC-32, bit by bit. */
+const crcStep = (crc: number, byte: number): number => {
+    let value = crc ^ byte
     for (let bit = 0; bit < 8; bit += 1) value = (value & 1) === 1 ? (value >>> 1) ^ CRC_POLYNOMIAL : value >>> 1
     return value >>> 0
-})
+}
 
 /** The CRC-32 (IEEE) of the bytes, as an unsigned number. */
 export const crc32Of = (bytes: Uint8Array): number => {
     let crc = 0xff_ff_ff_ff
-    for (const byte of bytes) crc = (CRC_TABLE[(crc ^ byte) & 0xff] ?? 0) ^ (crc >>> 8)
+    for (const byte of bytes) crc = crcStep(crc, byte)
     return (crc ^ 0xff_ff_ff_ff) >>> 0
 }
 

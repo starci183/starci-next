@@ -36,6 +36,12 @@ describe("junitCasesOf", () => {
         expect(cases.filter((test) => test.skipped)).toHaveLength(1)
     })
 
+    it("names a test case with no name attribute as empty", async () => {
+        const subject = await build()
+
+        expect(subject.junitCasesOf('<testcase classname="x"/>')).toEqual([{ name: "", skipped: false, passed: true }])
+    })
+
     it("reads nothing from a report without test cases", async () => {
         const subject = await build()
         expect(subject.junitCasesOf("<testsuites/>")).toEqual([])

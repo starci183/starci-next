@@ -10,6 +10,7 @@ import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
 import { parseProjectConfig } from "@modules/domain/project"
 import { parseRelayConfig } from "@modules/domain/relay"
+import { parseProbeConfig } from "@modules/integrations/probe"
 import type { PurchaseOptions } from "@modules/domain/purchase"
 import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseJudge0Config } from "@modules/integrations/judge0"
@@ -54,6 +55,8 @@ export interface CoreEnv {
     readonly agentLab: ReturnType<typeof parseAgentLabConfig>
     /** The project capability: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: ReturnType<typeof parseProjectConfig>
+    /** The probe transport options (no key of its own: the transport reaches public addresses only). */
+    readonly probe: ReturnType<typeof parseProbeConfig>
     /** The relay capability: the pairing code lifetime, the confirm page, the device limits per plan and the manifest key. */
     readonly relay: ReturnType<typeof parseRelayConfig>
     /** The realtime hub the device socket reads (memory, one replica). */
@@ -82,6 +85,7 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         practice: parsePracticeConfig(env),
         agentLab: parseAgentLabConfig(env),
         project: parseProjectConfig(env),
+        probe: parseProbeConfig(env),
         relay: parseRelayConfig(env, httpSecurity.allowedOrigins[0] ?? ""),
         realtime: parseRealtimeConfig(env),
     }

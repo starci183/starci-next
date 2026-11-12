@@ -40,7 +40,7 @@ export const SEPAY_IPN_SECRET: string = randomBytes(24).toString("base64url")
 const environmentOf = (w: AppWiring, extra: Readonly<Record<string, string>> = {}): EnvSource =>
     new EnvSource({
         NODE_ENV: "test",
-        HTTP_SECURITY_ALLOWED_ORIGINS: ALLOWED_ORIGIN,
+        HTTP_SECURITY_ALLOWED_ORIGINS: [ALLOWED_ORIGIN, ...Object.values(w.apps).map((app) => app.url)].join(","),
         PRIMARY_DB_URL: w.db.primary.url,
         MAIL_HOST: w.mail.host,
         MAIL_PORT: String(w.mail.port),

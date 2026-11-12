@@ -26,21 +26,19 @@ const params = {
     actionIds: [A1],
 } as const
 
-const build = async (phase: "explore" | "retrieval" = "explore") => {
-    const em = mockEntityManager({
-        query: [
-            UPSERT_SIMULATION_PROGRESS,
-            [
-                {
-                    activity_id: "demo--explore",
-                    current_state_id: S1,
-                    action_ids: [A1],
-                    tried_transition_ids: [T1],
-                    updated_at: NOW,
-                },
-            ],
-        ],
-    })
+const SAVED_ROW = {
+    activity_id: "demo--explore",
+    current_state_id: S1,
+    action_ids: [A1],
+    tried_transition_ids: [T1],
+    updated_at: NOW,
+}
+
+const build = async (
+    phase: "explore" | "retrieval" = "explore",
+    saved: ReadonlyArray<typeof SAVED_ROW> = [SAVED_ROW],
+) => {
+    const em = mockEntityManager({ query: [UPSERT_SIMULATION_PROGRESS, saved] })
     const content = mock<LessonContentService>()
     content.activity.mockResolvedValue({ activity, phase })
     const moduleRef = await Test.createTestingModule({
@@ -87,6 +85,12 @@ describe("AttemptSimulationService save", () => {
             code: AttemptErrorCode.AnswerInvalid,
         })
         expect(em.query).not.toHaveBeenCalled()
+    })
+
+    it("is not saved when the upsert answers no row", async () => {
+        const { service } = await build("explore", [])
+
+        await expect(service.save(params)).rejects.toMatchObject({ code: AttemptErrorCode.NotSaved })
     })
 
     it("refuses a review activity", async () => {

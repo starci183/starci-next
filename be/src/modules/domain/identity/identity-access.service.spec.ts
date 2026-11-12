@@ -17,8 +17,6 @@ import { SocialService } from "./social.service"
 
 const EXPIRES = new Date("2026-01-01T00:10:00.000Z")
 const CHALLENGE = "c".repeat(43)
-const STATE = "s".repeat(43)
-const BUNDLE = { state: STATE, nonce: "n".repeat(43), codeChallenge: "challenge", maxAgeSeconds: 600 }
 const tokensOf = builder<KeycloakTokens>({
     subject: "learner-1",
     roles: ["student"],
@@ -409,92 +407,5 @@ describe("IdentityAccessService", () => {
             await expect(service.verifyPasswordReset(input)).resolves.toBeUndefined()
             expect(logger.error).toHaveBeenCalledWith(IdentityLogEvent.ProviderLogoutAllFailed, cause)
         })
-    })
-})
-
-describe("IdentityAccessService", () => {
-    describe("startSocial", () => {
-        it("stores a bundle and answers the provider URL for the chosen broker", async () => {
-            const { service, gateway, social } = await build()
-            social.begin.mockResolvedValue(BUNDLE)
-            const url = "https://idp.example/auth?kc_idp_hint=github"
-            gateway.socialAuthorizationUrl.mockResolvedValue(url)
-            const started = await service.startSocial({ provider: "github", returnTo: "/courses" })
-            expect(started).toEqual({ authorizationUrl: url, binding: STATE, bindingMaxAgeSeconds: 600 })
-            expect(social.begin).toHaveBeenCalledWith("/courses")
-            expect(gateway.socialAuthorizationUrl).toHaveBeenCalledWith({
-                provider: "github",
-                state: STATE,
-                nonce: "n".repeat(43),
-                codeChallenge: "challenge",
-            })
-        })
-        it("refuses a provider that is not offered before storing anything", async () => {
-            const { service, social } = await build()
-            const started = service.startSocial({ provider: "google" })
-            await expect(started).rejects.toMatchObject({ code: IdentityErrorCode.ProviderUnknown })
-            expect(social.begin).not.toHaveBeenCalled()
-        })
-        it("refuses as unavailable when the provider address cannot be built", async () => {
-            const { service, gateway, social } = await build()
-            const cause = new KeycloakError({ code: KeycloakErrorCode.Unavailable })
-            social.begin.mockResolvedValue(BUNDLE)
-            gateway.socialAuthorizationUrl.mockRejectedValue(cause)
-            const started = service.startSocial({ provider: "facebook" })
-            await expect(started).rejects.toMatchObject({ code: IdentityErrorCode.ProviderUnavailable, cause })
-        })
-    })
-})
-
-describe("IdentityAccessService", () => {
-    describe("exchangeSocial", () => {
-        const claimed = { nonce: "n".repeat(43), codeVerifier: "v".repeat(43), returnTo: "/courses" }
-        const EXCHANGE = { code: "auth-code", state: STATE, binding: STATE }
-        it("exchanges the code with the bundle's verifier and issues a session that returns to the stored path", async () => {
-            const { service, gateway, social, accounts, sessions } = await build()
-            social.claim.mockResolvedValue(claimed)
-            gateway.exchangeSocialCode.mockResolvedValue(tokensOf({ username: null }))
-            accounts.usernameOf.mockResolvedValue("ada.l")
-            sessions.issue.mockResolvedValue(sessionOf())
-            await expect(service.exchangeSocial(EXCHANGE)).resolves.toEqual({
-                ...sessionOf(),
-                returnTo: "/courses",
-            })
-            expect(social.claim).toHaveBeenCalledWith(STATE)
-            expect(gateway.exchangeSocialCode).toHaveBeenCalledWith({
-                code: "auth-code",
-                codeVerifier: "v".repeat(43),
-                nonce: "n".repeat(43),
-            })
-            expect(sessions.issue).toHaveBeenCalledWith(SESSION_TOKENS)
-        })
-        it.each(["", "c".repeat(4097)])("refuses an unusable code after consuming the bundle", async (code) => {
-            const { service, gateway, social } = await build()
-            social.claim.mockResolvedValue(claimed)
-            await expect(service.exchangeSocial({ code, state: STATE, binding: STATE })).rejects.toMatchObject({
-                code: IdentityErrorCode.SocialRejected,
-            })
-            expect(gateway.exchangeSocialCode).not.toHaveBeenCalled()
-        })
-        it.each([
-            [KeycloakErrorCode.SocialRejected, IdentityErrorCode.SocialRejected],
-            [KeycloakErrorCode.Unavailable, IdentityErrorCode.ProviderUnavailable],
-        ])("maps the provider answer %s to %s and issues no session", async (provider, expected) => {
-            const { service, gateway, social, sessions } = await build()
-            social.claim.mockResolvedValue(claimed)
-            gateway.exchangeSocialCode.mockRejectedValue(refusal(provider))
-            await expect(service.exchangeSocial(EXCHANGE)).rejects.toMatchObject({ code: expected })
-            expect(sessions.issue).not.toHaveBeenCalled()
-        })
-        it.each([undefined, "o".repeat(43), "short"])(
-            "refuses the binding %s before touching the bundle (login CSRF)",
-            async (binding) => {
-                const { service, gateway, social, sessions } = await build()
-                const exchanged = service.exchangeSocial({ ...EXCHANGE, binding })
-                await expect(exchanged).rejects.toMatchObject({ code: IdentityErrorCode.SocialStateInvalid })
-                const calls = social.claim.mock.calls.length + gateway.exchangeSocialCode.mock.calls.length
-                expect(calls + sessions.issue.mock.calls.length).toBe(0)
-            },
-        )
     })
 })

@@ -33,12 +33,7 @@ const REPORT_PATH = /^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/u
 
 /** True when a test command is one printable line of a bounded length. */
 const commandValid = (command: string): boolean =>
-    command.trim().length > 0 &&
-    command.length <= COMMAND_MAX &&
-    ![...command].some((char) => {
-        const code = char.codePointAt(0) ?? 0
-        return code < 32 || code === 127
-    })
+    command.trim().length > 0 && command.length <= COMMAND_MAX && !/\p{Cc}/u.test(command)
 
 /** True when a report path stays inside the project folder (relative, no `..`). */
 const reportValid = (report: string): boolean =>

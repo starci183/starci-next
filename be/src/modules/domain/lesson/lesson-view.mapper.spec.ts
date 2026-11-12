@@ -158,6 +158,16 @@ describe("toLessonView workspaces", () => {
         ])
     })
 
+    it("hands over a lab that has only a Windows command with no Unix one", async () => {
+        const { toLessonView: toView } = await build()
+        const content = { ...demoContentOf(), workspaces: [{ ...variant, commands: { windows: "go test" } }] }
+
+        expect(toView(versionRowOf({ content }), "vi", true).workspaces[0]?.commands).toEqual({
+            windows: "go test",
+            unix: null,
+        })
+    })
+
     it("hands over no language lab without Premium or for a version stored before the languages", async () => {
         const { toLessonView: toView } = await build()
         const content = { ...demoContentOf(), workspaces: [variant] }

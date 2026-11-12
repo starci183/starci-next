@@ -6,4 +6,5 @@
 export { InjectRelayClient } from "./relay-client.decorators"
 export { parseRelayClientConfig } from "./relay-client.config"
 export { RelayClientModule } from "./relay-client.module"
+export { RelayRefusalCode } from "./relay-client.contracts"
 export type { RelayClientPort } from "./relay-client.port"

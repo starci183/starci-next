@@ -86,6 +86,16 @@ describe("ReviewDeckService decks", () => {
     })
 })
 
+describe("ReviewDeckService decks of every track", () => {
+    it("asks for no track when none is given", async () => {
+        const { service, em } = await build()
+
+        await service.decks(REVIEW_LEARNER, { locale: "vi" })
+
+        expect(em.query).toHaveBeenCalledWith(SELECT_DECKS, [REVIEW_LEARNER, null, 200])
+    })
+})
+
 describe("ReviewDeckService add and remove", () => {
     it("gives the learner the cards of a deck due today, bringing back suspended ones first", async () => {
         const { service, em, tx } = await build()

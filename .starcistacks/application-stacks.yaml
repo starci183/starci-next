@@ -94,9 +94,9 @@ environments:
         where: "secrets/db"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
-      - name: "dev-db-owner-password"
+      - name: "db-owner-password"
         member: "db"
-        key: "DEV_DB_OWNER_PASSWORD"
+        key: "DB_OWNER_PASSWORD"
         where: "secrets/db"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
@@ -126,11 +126,11 @@ environments:
         service: postgres
         port: db
         urlEnv: PRIMARY_DB_URL
-        password: {member: db, key: DEV_DB_OWNER_PASSWORD}
+        password: {member: db, key: DB_OWNER_PASSWORD}
         adminPassword: {member: db, key: POSTGRES_PASSWORD}
       custody:
         - {member: db, key: POSTGRES_PASSWORD, kind: password}
-        - {member: db, key: DEV_DB_OWNER_PASSWORD, kind: password}
+        - {member: db, key: DB_OWNER_PASSWORD, kind: password}
       setup:
         - {name: install, argv: [npm, ci], heavy: install, skipIfExists: node_modules}
         - {name: codegen, argv: [npm, run, codegen, --silent], heavy: build}
@@ -178,7 +178,7 @@ environments:
             # The learner relay (decision.relay.placement) is part of the core api: the push-only device socket (/socket.io) and the upload GraphQL (/graphql).
             # One core replica: the in-process hub (a shared hub is not built yet).
             REALTIME_HUB: memory
-            # Dev signs task manifests with a key pair made once by `node scripts/dev/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
+            # Dev signs task manifests with a key pair made once by `node scripts/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
             RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
             # Dev only: every agent and walker shares one loopback caller behind the ingress, so the per-address windows are widened here; production keeps the defaults (600 / 30 per minute).
             HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
@@ -324,6 +324,13 @@ environments:
         version: 1
         where: secrets/ai
         key: OPENROUTER_API_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: relay-manifest-signing-key
+        runtimeName: "starci-next-production-relay-manifest-signing-key-v1"
+        version: 1
+        where: secrets/relay
+        key: RELAY_MANIFEST_SIGNING_KEY
         recipientPolicy: This app's own age recipient configured in .sops.yaml
         keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
     # What `starci app stack` deploys (verbs: prepare, doctor, deploy, verify, rollback); names and shapes only, never a value.

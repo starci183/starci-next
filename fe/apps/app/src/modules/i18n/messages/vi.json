@@ -3,14 +3,6 @@
     "title": "starci-next",
     "shell": {
       "brand": "StarCi Next",
-      "navLabel": "Chính",
-      "learn": "Học",
-      "review": "Ôn tập",
-      "streakChip": "{count} ngày",
-      "essentials": "Bản chất",
-      "practice": "Luyện code",
-      "projects": "Dự án",
-      "agents": "Agent và AI",
       "upgradePremium": "Nâng cấp Premium",
       "yourPlan": "Gói của bạn",
       "nav": {
@@ -26,9 +18,7 @@
         "profile": "Hồ sơ"
       },
       "sidebarLabel": "Điều hướng chính",
-      "incidents": "Sự cố",
       "experienceGroup": "Kinh nghiệm",
-      "experienceVerified": "Kinh nghiệm đã xác minh",
       "planPremium": "Premium",
       "planFree": "Chưa có Premium",
       "account": "Tài khoản",
@@ -44,33 +34,10 @@
       "localeShortEn": "EN",
       "localeNameVi": "Tiếng Việt",
       "localeNameEn": "English",
-      "interview": "Phỏng vấn thử",
       "profile": "Hồ sơ",
       "themeLabel": "Giao diện tối"
     },
-    "notifications": {
-      "label": "Thông báo",
-      "title": "Thông báo",
-      "unread": "{count} chưa đọc",
-      "empty": "Chưa có thông báo nào.",
-      "markAll": "Đánh dấu đã đọc",
-      "unavailable": "Chưa tải được thông báo.",
-      "kind": {
-        "premiumActivated": "Premium của bạn đã được kích hoạt đến {until}.",
-        "premiumRevoked": "Cổng thanh toán đã huỷ một khoản thanh toán Premium nên thời gian của khoản đó đã được thu hồi. Premium của bạn nay kết thúc vào {until}.",
-        "experienceVerified": "Một mục kinh nghiệm của bạn ({itemType}, phần {part}) đã được xác minh.",
-        "experienceReturned": "Một mục kinh nghiệm của bạn ({itemType}, phần {part}) được trả lại để chỉnh sửa.",
-        "projectMilestoneProved": "Một milestone của dự án {project} đã được chứng minh.",
-        "projectDeployed": "Địa chỉ đã triển khai của dự án {project} vượt kiểm tra của StarCi.",
-        "reviewDue": "Có {count} thẻ ôn tập đến hạn hôm nay.",
-        "other": "Bạn có một thông báo mới."
-      }
-    },
-    "home": {
-      "title": "Trang chủ"
-    },
     "signOut": {
-      "signedIn": "Đã đăng nhập",
       "submit": "Đăng xuất",
       "working": "Đang đăng xuất",
       "signIn": "Đăng nhập"
@@ -267,9 +234,6 @@
       "factStatus": "Trạng thái"
     },
     "review": {
-      "nav": {
-        "title": "Ôn tập"
-      },
       "today": {
         "pageTitle": "Ôn tập hôm nay",
         "intro": "Nhớ lại trước khi xem đáp án. Mỗi thẻ bạn tự chấm sẽ hẹn lần ôn kế tiếp.",
@@ -290,7 +254,6 @@
         "doneBody": "Đạt mục tiêu {daily} thẻ. Quay lại ngày mai để ôn tiếp.",
         "lockedTitle": "Cần Premium",
         "lockedBody": "{count} mục đang chờ sau Premium: các thẻ còn lại của bộ thẻ và câu hỏi ôn tập của Bản chất.",
-        "lockedRow": "Cần Premium",
         "upsell": "Mở khoá bằng Premium",
         "upsellNote": "Premium mở mọi thẻ và câu hỏi ôn tập từ các bài đã học.",
         "queueTitle": "Hàng đợi hôm nay",
@@ -301,8 +264,7 @@
         "hubLink": "Xem chuỗi ở trang Học",
         "levelLabel": "Mức {level}",
         "overdueBadge": "Quá hạn",
-        "newBadge": "Mới",
-        "retry": "Thử lại"
+        "newBadge": "Mới"
       },
       "levels": {
         "junior": "Junior",
@@ -316,8 +278,6 @@
         "progressLabel": "Tiến độ phiên ôn",
         "sourceCard": "Thẻ · {deck}",
         "sourceRetrieval": "Bản chất · {lesson}",
-        "sourceCardPlain": "Thẻ ôn tập",
-        "sourceRetrievalPlain": "Câu hỏi Bản chất",
         "noteLabel": "Tự trả lời trước",
         "notePlaceholder": "Tự trả lời trước khi lật thẻ. Viết ngắn, đủ ý. Phần này chỉ để bạn tự nhìn lại, không được chấm.",
         "retrievalLabel": "Câu trả lời của bạn",
@@ -338,13 +298,11 @@
         "good": "Nhớ",
         "easy": "Dễ",
         "interval": "{days} ngày",
-        "intervalToday": "Cuối phiên",
         "shortcuts": "Phím tắt: Space để lật, 1 đến 4 để chấm",
         "lessonLine": "Từ bài {lesson}",
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
         "retry": "Thử lại",
-        "loadFailed": "Không tải được mục này.",
         "lockedTitle": "Mục này cần Premium",
         "lockedBody": "Bạn vẫn ôn được các thẻ miễn phí. Mở Premium để ôn mọi thẻ và câu hỏi từ các bài đã học.",
         "upsell": "Xem Premium",
@@ -361,7 +319,6 @@
         "summaryBack": "Về Ôn tập",
         "summaryHub": "Xem chuỗi ở trang Học",
         "emptyTitle": "Không có mục nào để ôn",
-        "emptyBody": "Thêm một bộ thẻ hoặc quay lại khi có mục đến hạn.",
         "emptyBack": "Về Ôn tập"
       },
       "decks": {
@@ -513,7 +470,6 @@
     },
     "hub": {
       "pageTitle": "Học",
-      "loadingLabel": "Đang tải trang Học",
       "signedOut": {
         "title": "Đăng nhập để vào trang Học",
         "body": "Chuỗi ngày học, việc hôm nay và các phần học gắn với tài khoản của bạn.",
@@ -524,11 +480,9 @@
         "nextLabel": "Bước tiếp theo",
         "continue": "Làm tiếp",
         "change": "Đổi mục tiêu",
-        "emptyEyebrow": "MỤC TIÊU",
         "emptyTitle": "Bạn học để làm được gì?",
         "emptyBody": "Chọn một đích, StarCi xâu các phần học thành một lộ trình có thứ tự.",
-        "choose": "Chọn mục tiêu",
-        "slotLabel": "Mục tiêu học"
+        "choose": "Chọn mục tiêu"
       },
       "today": {
         "eyebrow": "Hôm nay",
@@ -551,7 +505,6 @@
         "goalOption": "{count} ngày",
         "goalSave": "Lưu",
         "goalCancel": "Đóng",
-        "goalSaving": "Đang lưu",
         "goalSaved": "Đã lưu mục tiêu tuần.",
         "goalInvalid": "Mục tiêu phải từ 2 đến 7 ngày.",
         "goalFailed": "Chưa lưu được mục tiêu, hãy thử lại.",
@@ -767,8 +720,6 @@
         "outcomeUnderstood": "Đã hiểu",
         "outcomeProved": "Đã chứng minh bằng mã",
         "outcomesLocked": "Kết quả học tập hiện khi bạn có Premium và làm bài ở các pha.",
-        "facts": "{minutes} phút · {language}",
-        "factsAgnostic": "{minutes} phút",
         "factsWithPhases": "{minutes} phút · {language} · {count} pha",
         "factsAgnosticWithPhases": "{minutes} phút · {count} pha",
         "factsLanguages": "{minutes} phút · {languages} ngôn ngữ · {count} pha",
@@ -864,8 +815,6 @@
       "simulation": {
         "states": "Các trạng thái của mô phỏng",
         "current": "Hiện tại",
-        "seen": "Đã qua",
-        "ahead": "Chưa tới",
         "observing": "Đang quan sát",
         "succeeded": "Đã đạt mục tiêu",
         "noMoves": "Không còn hành động nào từ trạng thái này.",
@@ -1246,7 +1195,6 @@
         "agent": "Agent"
       },
       "list": {
-        "eyebrow": "XÂY APP THẬT",
         "title": "Dự án",
         "description": "Mang dự án của bạn vào, đặt thư mục starci/ trong mỗi dự án",
         "create": "Tạo dự án",
@@ -1269,19 +1217,13 @@
         "searchPlaceholder": "Tìm dự án",
         "searchClear": "Xoá tìm kiếm",
         "emptyFilteredTitle": "Không có dự án nào khớp",
-        "errorTitle": "Không tải được dự án",
-        "open": "Mở dự án",
-        "meta": "{done}/{total} milestone · {proved}/{count} concept đã chứng minh"
+        "errorTitle": "Không tải được dự án"
       },
       "device": {
         "connect": "Kết nối máy",
         "title": "Máy của bạn",
         "badge": "Chưa kết nối",
-        "text": "Kết quả chạy trên máy qua CLI sẽ hiện ở đây khi tính năng kết nối thiết bị mở. Hiện tại bạn chứng minh bằng CI có chữ ký hoặc server kiểm tra địa chỉ đã triển khai.",
-        "practice": "ĐANG LUYỆN",
-        "practiceNote": "kết quả từ máy, chưa tính",
-        "proof": "ĐÃ CHỨNG MINH",
-        "proofNote": "CI có chữ ký hoặc server chạy lại"
+        "text": "Kết quả chạy trên máy qua CLI sẽ hiện ở đây khi tính năng kết nối thiết bị mở. Hiện tại bạn chứng minh bằng CI có chữ ký hoặc server kiểm tra địa chỉ đã triển khai."
       },
       "levels": {
         "asideLabel": "Mức chứng minh",
@@ -1292,15 +1234,11 @@
         "proofNote": "CI có chữ ký hoặc server chạy lại"
       },
       "new": {
-        "eyebrow": "DỰ ÁN MỚI",
         "title": "Tạo dự án",
-        "description": "Đặt tên dự án và cho biết nó làm bằng gì. Sau khi tạo, bạn nhận một bí mật để GitHub Action gửi kết quả CI có chữ ký.",
         "name": "Tên dự án",
-        "kind": "Loại",
         "topic": "Đề tài",
         "language": "Ngôn ngữ chính",
         "stack": "Công nghệ",
-        "track": "Công cụ agent",
         "trackNone": "Chưa chọn",
         "trackClaude": "Claude Code",
         "trackOpenclaw": "OpenClaw",
@@ -1341,42 +1279,27 @@
         "notFound": "Không tìm thấy dự án",
         "notFoundText": "Dự án này không có trong danh sách của bạn.",
         "milestones": "Milestone",
-        "milestoneIntro": "Một milestone đạt khi mọi concept của nó có bằng chứng. Thiếu concept nào, thầy chỉ về đúng bài Bản chất.",
         "milestoneState": {
           "todo": "Chưa bắt đầu",
           "in-progress": "Đang làm",
           "done": "Xong"
         },
         "locked": "Cần Premium",
-        "milestoneMeta": "{proved}/{count} concept",
-        "progress": "{proved}/{count} concept đã chứng minh",
-        "practising": "{count} concept đang luyện: kết quả từ máy, chưa tính.",
-        "repo": "Repo",
-        "syncTitle": "Đang luyện",
-        "syncText": "Kết quả bạn chạy trên máy qua relay. Chưa tính là chứng minh.",
         "sync": "Cập nhật kết quả từ máy",
         "syncing": "Đang cập nhật...",
-        "ciTitle": "Đã chứng minh: CI có chữ ký",
         "ciNone": "Chưa có lần chạy CI nào. Thêm GitHub Action của StarCi và đẩy code lên.",
         "ciRun": "Run {runId} · commit {commit}",
         "ciPassed": "Đạt",
         "ciFailed": "Chưa đạt",
-        "probeTitle": "Đã chứng minh: server kiểm tra địa chỉ đã triển khai",
         "probeText": "Ứng dụng HTTP chạy được bằng Docker. StarCi gọi địa chỉ công khai của bạn với health và các probe chung cho từng concept.",
         "deployedLabel": "Địa chỉ đã triển khai (http hoặc https công khai)",
         "saveDeployed": "Lưu địa chỉ",
         "runProbes": "Chạy kiểm tra",
         "runningProbes": "Đang kiểm tra...",
-        "probeNone": "Chưa kiểm tra lần nào.",
-        "probePassed": "Đạt toàn bộ",
-        "probeFailed": "Có probe chưa đạt",
-        "probeResult": "{probe}",
-        "secretTitle": "Bí mật CI",
         "secretText": "Action ký kết quả bằng bí mật của dự án này. Đổi bí mật nếu nó bị lộ.",
         "rotate": "Đổi bí mật CI",
         "rotating": "Đang đổi...",
         "newSecret": "Bí mật mới (chỉ hiện một lần)",
-        "layoutTitle": "Thư mục starci/ trong repo của bạn",
         "layoutTree": "starci/\n  project.yaml   start · health · test\n  e2e/\n    [concept].md",
         "layoutTests": "Test unit và integration",
         "layoutTestsText": "Để đúng chỗ của ngôn ngữ (Go: _test.go cạnh code, Java: src/test, Jest/pytest). Gắn concept vào tên test, ví dụ [idempotency] đặt lịch 2 lần cùng key.",
@@ -1404,7 +1327,6 @@
         "expMilestones": "Milestone xong",
         "expLink": "Xem kinh nghiệm",
         "probesTitle": "Kết quả từng probe",
-        "probesEmpty": "Chưa có kết quả probe.",
         "deployTitle": "Địa chỉ đã triển khai",
         "asideRepo": "Kho mã",
         "asideCi": "Chứng thực CI",
@@ -1415,9 +1337,6 @@
         "deviceConnect": "Kết nối máy",
         "secretAside": "Bí mật CI",
         "layoutAside": "Thư mục starci/",
-        "retry": "Thử lại",
-        "loadFailed": "Không tải được dự án",
-        "loadFailedText": "Dự án chưa đọc được; thử lại sau ít phút.",
         "milestonesEmpty": "Dự án chưa có milestone.",
         "expEmpty": "Chưa có kinh nghiệm."
       },
@@ -1428,7 +1347,6 @@
         "locked": "Milestone này cần Premium",
         "lockedText": "Milestone đầu miễn phí; các milestone sau và thầy AI đọc code cần Premium.",
         "plans": "Xem Premium",
-        "intro": "Milestone {title} đạt khi đủ {count} concept. Mỗi concept cần đủ loại bằng chứng ghi bên dưới; thiếu concept nào, thầy chỉ về đúng bài Bản chất.",
         "conceptsLabel": "Concept của milestone",
         "crumbRoot": "Dự án",
         "provedLine": "{proved}/{count} concept đã chứng minh",
@@ -1482,7 +1400,6 @@
           "structure": "Cấu trúc"
         },
         "comingSoon": "Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone.",
-        "where": "Vị trí code",
         "noWhere": "Chưa chỉ vị trí code",
         "slot": {
           "test": "Test của bạn",
@@ -1738,9 +1655,6 @@
     },
     "devices": {
       "pageTitle": "Thiết bị",
-      "eyebrow": "LÀM TRÊN MÁY CỦA BẠN",
-      "title": "Nối máy của bạn với thầy StarCi",
-      "intro": "Mọi bài có code (Áp dụng và Sự cố của Bản chất, Xây app thật, lộ trình AI Engineer) làm trên máy bạn, bằng IDE và agent của bạn. StarCi CLI giữ một kết nối đi ra để thầy thấy test và hỏi đúng lúc. Máy bạn không mở cổng nào.",
       "codeLabel": "Mã trên terminal của bạn",
       "codePlaceholder": "ABCD-1234",
       "codeHint": "Chỉ xác nhận mã do chính bạn vừa chạy. Kiểm tra tên máy và hệ điều hành trước khi bấm.",
@@ -1748,7 +1662,6 @@
       "confirm": "Xác nhận máy này",
       "confirming": "Đang xác nhận…",
       "confirmed": "Đã nối {name}. Terminal sẽ báo đã kết nối.",
-      "devicesTitle": "Thiết bị của bạn",
       "devicesEmpty": "Chưa có máy nào được nối.",
       "devicesLimit": "Premium: tối đa 2 máy. Gói miễn phí: 1 máy.",
       "online": "Đang kết nối",

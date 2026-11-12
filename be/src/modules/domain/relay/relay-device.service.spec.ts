@@ -243,14 +243,6 @@ describe("RelayDeviceService authenticate, devices and revoke", () => {
         expect(tx.em.query).toHaveBeenCalledWith(TOUCH_BY_TOKEN, [relayDigest(TOKEN), new Date(NOW)])
     })
 
-    it("admits a device token for the relay app with its learner's Premium state now", async () => {
-        const { service, entitlement } = await world([[TOUCH_BY_TOKEN, [rowOf()]]])
-        entitlement.isPremium.mockResolvedValue(true)
-
-        await expect(service.admit(TOKEN)).resolves.toEqual({ learnerId: LEARNER, deviceId: DEVICE, premium: true })
-        expect(entitlement.isPremium).toHaveBeenCalledWith(LEARNER)
-    })
-
     it("refuses a malformed, unknown or revoked token without telling them apart", async () => {
         const unknown = await world([[TOUCH_BY_TOKEN, []]])
 

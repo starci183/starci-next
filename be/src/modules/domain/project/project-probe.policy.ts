@@ -1,5 +1,5 @@
 import type { ProbeReply } from "@modules/integrations/probe"
-import { PROJECT_COPY } from "./messages/project.messages"
+import { projectCopyOf } from "./messages/project.messages"
 import { PROBE_IDS, type ProbeId, type ProjectLocale } from "./project.contracts"
 
 /** The fixed prompt-injection message of the probe: versioned here, never generated per learner. */
@@ -306,15 +306,17 @@ const JUDGES: Readonly<Record<ProbeId, Judge>> = {
     "failure-path": judgeFailurePath,
 }
 
+const isAnswer = (reply: ProbeReply): reply is ProbeReply & { readonly ok: true } => reply.ok
+
 /** Judges the replies of a probe's requests, deterministically; a request that got no response fails the probe with the transport reason. */
 export const judgeProbe = (probeId: ProbeId, replies: ReadonlyArray<ProbeReply>): ProbeVerdict => {
     const failed = replies.find((reply) => !reply.ok)
     if (failed !== undefined && !failed.ok) return fail(failed.error)
-    return JUDGES[probeId](replies.flatMap((reply) => (reply.ok ? [reply] : [])))
+    return JUDGES[probeId](replies.filter(isAnswer))
 }
 
 /** The Socratic question the AI teacher asks about a failed probe, in the learner's locale. */
 export const probeQuestionOf = (probeId: string, locale: ProjectLocale): string => {
     const known = PROBE_IDS.find((id) => id === probeId)
-    return known === undefined ? "" : (PROJECT_COPY[locale][`probe.${known}.question`] ?? "")
+    return known === undefined ? "" : projectCopyOf(`probe.${known}.question`)[locale]
 }

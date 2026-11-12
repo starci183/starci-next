@@ -97,6 +97,13 @@ export const judge0ResultOf = (entry: unknown): Judge0CaseResult | null => {
     }
 }
 
+/** The judged submissions among the entries of a batch read, in order; an entry that is not judged yet gives none. */
+export const judge0ResultsOf = (entries: ReadonlyArray<unknown>): ReadonlyArray<Judge0CaseResult> =>
+    entries.flatMap((entry) => {
+        const result = judge0ResultOf(entry)
+        return result === null ? [] : [result]
+    })
+
 /** The submissions of a batch read, in the order of the tokens asked; null when the answer is not a batch of that size. */
 export const judge0EntriesOf = (body: unknown, expected: number): ReadonlyArray<unknown> | null => {
     const list = isRecord(body) ? body["submissions"] : undefined

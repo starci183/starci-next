@@ -6,9 +6,8 @@ import { useSession } from "@/hooks/auth"
 import { useDevicePairing, type DevicePairing } from "@/hooks/devices"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useDocumentTitle } from "@/hooks/title"
-import type { DataSlot } from "@/modules/types"
+import type { DataSlot, DevicesPairDevice, DevicesPairLabels } from "@/modules/types"
 import { DEVICES_PLACEHOLDER, DevicesPairBase } from "./component"
-import type { DevicesPairDevice, DevicesPairLabels } from "./types"
 
 type Translate = ReturnType<typeof useTranslations>
 type Formatter = ReturnType<typeof useFormatter>

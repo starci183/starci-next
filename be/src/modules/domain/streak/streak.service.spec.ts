@@ -29,13 +29,13 @@ const stateRow = (overrides: Partial<StateRow> = {}): StateRow => ({
 })
 
 const build = async (
-    rows: { state?: StateRow; days?: ReadonlyArray<ActionDayRow>; inserted?: boolean } = {},
+    rows: { state?: StateRow; days?: ReadonlyArray<ActionDayRow>; inserted?: boolean; missing?: boolean } = {},
     rules: Partial<StreakRules> = {},
 ) => {
     const em = mockEntityManager({
         query: [
             [INSERT_STATE, []],
-            [LOCK_STATE, [rows.state ?? stateRow()]],
+            [LOCK_STATE, rows.missing === true ? [] : [rows.state ?? stateRow()]],
             [SELECT_ACTION_DAYS, rows.days ?? []],
             [INSERT_ACTION, rows.inserted === false ? [] : [{ day: "2026-11-11" }]],
             [UPDATE_STATE, []],
@@ -152,6 +152,22 @@ describe("StreakService summary", () => {
 
         expect(summary).toMatchObject({ today: "2026-11-11", current: 3, longest: 4, todayCounted: true })
         expect(saved(em)).toHaveLength(1)
+    })
+
+    it("starts from the fresh state when the lock finds no row", async () => {
+        const { service } = await build({ missing: true })
+
+        const summary = await service.summary(LEARNER)
+
+        expect(summary).toMatchObject({ today: "2026-11-11", todayCounted: false, current: 0 })
+    })
+
+    it("counts zero for a shard the stored counters hold nothing for", async () => {
+        const { service } = await build({ state: stateRow({ shard_counters: {} }) })
+
+        const summary = await service.summary(LEARNER)
+
+        expect(summary.shardCounters.every((entry) => entry.current === 0 && entry.longest === 0)).toBe(true)
     })
 
     it("closes a missed day with a freeze when the state is behind", async () => {
