@@ -28,7 +28,7 @@ const Figure = (props: FigureProps) => (
 export const ReviewSummaryCard = (props: ReviewSummaryCardProps) => (
     <SurfaceCard label={props.labels.summaryTitle}>
         <Stack gap="row">
-            <Cluster gap="row" wrap>
+            <Cluster gap="inline" wrap>
                 <Figure caption={props.labels.summaryReviewed} value={props.summary.reviewed} />
                 <Figure caption={props.labels.summaryRecall} value={props.summary.recall} />
                 {props.summary.goal === undefined ? null : (
@@ -36,7 +36,7 @@ export const ReviewSummaryCard = (props: ReviewSummaryCardProps) => (
                 )}
             </Cluster>
             <Text>{props.summary.isAllDone ? props.labels.summaryAllDone : props.summary.remaining}</Text>
-            <Cluster gap="row" wrap>
+            <Cluster gap="inline" wrap>
                 <Button intent="commit" href={props.todayHref}>
                     {props.labels.summaryBack}
                 </Button>

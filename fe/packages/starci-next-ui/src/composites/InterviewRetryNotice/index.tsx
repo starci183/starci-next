@@ -25,7 +25,7 @@ type InterviewRetryNoticeProps = {
 export const InterviewRetryNotice = (props: InterviewRetryNoticeProps) => {
     if (!props.needsReply && props.issueWords === "") return null
     return (
-        <Stack gap="inline">
+        <Stack gap="row">
             {props.issueWords === "" ? null : (
                 <Alert tone={props.isIssueSaved ? "cautionary" : "negative"} title={props.issueWords} />
             )}

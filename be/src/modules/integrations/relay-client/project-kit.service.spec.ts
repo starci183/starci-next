@@ -81,8 +81,8 @@ const worldOf = async (manifest: FetchAnswer, setup: Setup = {}) => {
     const operations: Array<{ readonly name: string; readonly input: Record<string, unknown> }> = []
     const commands: Array<string> = []
     let counter = 0
-    const moduleRef = await Test.createTestingModule({ providers: [ProjectKitService, ManifestPolicy] }).compile()
-    const policy = moduleRef.get(ManifestPolicy)
+    const moduleRef = await Test.createTestingModule({ providers: [ProjectKitService] }).compile()
+    const policy = new ManifestPolicy()
     const io: CliIo = {
         env: {
             STARCI_NEXT_HOME: home,
@@ -190,7 +190,6 @@ describe("ProjectKitService run", () => {
         expect(await declined.kit.run(io, "bf-data-and-cache", false, projectOf(REPORT))).toBe(0)
         expect(declined.commands).toEqual([])
     })
-
 })
 
 describe("ProjectKitService run refusals", () => {
@@ -216,7 +215,10 @@ describe("ProjectKitService run refusals", () => {
         expect(await refused.kit.run(refused.io, "m", true, projectOf(REPORT))).toBe(1)
         expect(refused.err[0]).toContain("RELAY_DEVICE_REVOKED")
 
-        const forged = await worldOf({ status: 200, text: JSON.stringify({ data: { relayManifest: { payload: "{}", signature: "AA==" } } }) })
+        const forged = await worldOf({
+            status: 200,
+            text: JSON.stringify({ data: { relayManifest: { payload: "{}", signature: "AA==" } } }),
+        })
         expect(await forged.kit.run(forged.io, "m", true, projectOf(REPORT))).toBe(1)
         expect(forged.err[0]).toContain("not signed by StarCi")
         expect(forged.commands).toEqual([])
@@ -235,7 +237,11 @@ describe("ProjectKitService init", () => {
         const cwd = mkdtempSync(join(tmpdir(), "starci-learner-"))
         const world = await worldOf(manifestAnswer(PLAN))
 
-        const code = world.kit.init(world.io, { from: dataCheckout(), project: "p-1", language: "go", force: false }, cwd)
+        const code = world.kit.init(
+            world.io,
+            { from: dataCheckout(), project: "p-1", language: "go", force: false },
+            cwd,
+        )
 
         expect(code).toBe(0)
         const yaml = readFileSync(join(cwd, "starci", "project.yaml"), "utf8")

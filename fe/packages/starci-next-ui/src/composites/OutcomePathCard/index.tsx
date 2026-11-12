@@ -77,7 +77,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         ]}
     >
         <Stack gap="row">
-            <Cluster gap="row" align="start" wrap={false}>
+            <Cluster gap="inline" align="start" wrap={false}>
                 <Avatar name={props.path.title} seed={props.path.id} />
                 <Stack gap="identity">
                     <Text size="xs" tone="muted">

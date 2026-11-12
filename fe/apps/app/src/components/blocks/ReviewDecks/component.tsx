@@ -113,7 +113,7 @@ type DeckProps = {
 const Deck = (props: DeckProps) => (
     <SurfaceCard ariaLabel={props.deck.title}>
         <Stack gap="row">
-            <Cluster gap="row" wrap align="center" justify="between">
+            <Cluster gap="inline" wrap align="center" justify="between">
                 <Heading level={3} scale="standard">
                     {props.deck.title}
                 </Heading>
@@ -127,7 +127,7 @@ const Deck = (props: DeckProps) => (
                 <Badge tone="muted">{props.deck.free}</Badge>
                 {props.deck.isPartlyLocked ? <Badge tone="warning">{props.labels.partlyLocked}</Badge> : null}
             </Cluster>
-            <Cluster gap="row" wrap align="center">
+            <Cluster gap="inline" wrap align="center">
                 <Button
                     intent={props.deck.isAdded ? "alternative" : "commit"}
                     isPending={props.deck.isPending}
@@ -161,7 +161,9 @@ const Rail = (props: ReviewDecksBaseProps) => (
                 />
             </Stack>
         </SurfaceCard>
-        <Link variant="plain" href={props.props.todayHref}>{props.props.labels.back}</Link>
+        <Link variant="plain" href={props.props.todayHref}>
+            {props.props.labels.back}
+        </Link>
     </Stack>
 )
 
@@ -189,7 +191,18 @@ const Primary = (props: ReviewDecksBaseProps) => (
 /** The decks screen: filters in the aside, deck cards in the well, and the daily goal form. */
 export const ReviewDecksBase = (props: ReviewDecksBaseProps) => (
     <Page
-        header={{ title: props.props.labels.pageTitle, titleScale: "standard", description: props.props.labels.intro }}
+        header={{
+            title: props.props.labels.pageTitle,
+            titleScale: "standard",
+            description: props.props.labels.intro,
+            breadcrumbs: {
+                label: props.props.labels.back,
+                items: [
+                    { id: "review", label: props.props.labels.back, href: props.props.todayHref },
+                    { id: "decks", label: props.props.labels.pageTitle },
+                ],
+            },
+        }}
     >
         <Grid
             kind="main-rail"

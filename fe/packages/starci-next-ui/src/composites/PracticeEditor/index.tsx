@@ -40,7 +40,7 @@ type PracticeEditorProps = {
 export const PracticeEditor = (props: PracticeEditorProps) => (
     <SurfaceCard label={props.labels.title}>
         <Stack gap="row">
-            <Cluster gap="row" wrap align="end" justify="between">
+            <Cluster gap="inline" wrap align="end" justify="between">
                 <Select
                     label={props.labels.language}
                     name="practice-language"

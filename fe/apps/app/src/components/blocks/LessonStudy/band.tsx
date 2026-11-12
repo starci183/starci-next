@@ -1,4 +1,12 @@
-import { Badge, Button, Icon as GlyphIcon, Mascot, Stepper, type PageHeaderContent, type StepperStepState } from "@starci/grammar/common"
+import {
+    Badge,
+    Button,
+    Icon as GlyphIcon,
+    Mascot,
+    Stepper,
+    type PageHeaderContent,
+    type StepperStepState,
+} from "@starci/grammar/common"
 import { PlayGlyph } from "@starci-next/ui"
 import { FREE_PHASES, type StepView, type StudyView } from "@/modules/types"
 import type { CardEnv } from "./cards"
@@ -102,7 +110,11 @@ export const bandOf = (props: BandProps): PageHeaderContent => {
         titleScale: "standard",
         ...(study.imageSrc === ""
             ? {}
-            : { mark: <Mascot src={study.imageSrc} size="lg" loading="eager" assetSlot={`lesson-step-${study.phase}`} /> }),
+            : {
+                  mark: (
+                      <Mascot src={study.imageSrc} size="lg" loading="eager" assetSlot={`lesson-step-${study.phase}`} />
+                  ),
+              }),
         meta: metaOf(props),
         description: <StepsOf study={study} env={env} />,
     }

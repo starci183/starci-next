@@ -80,13 +80,13 @@ const switchOf = (
     const [a, b, c, d] = items
     if (a === undefined || b === undefined) return []
     const tabs = tabsOf(a, b, c, d)
-    return [
-        { kind: "switch", label: props.variantLabel ?? props.label, items: tabs, selectedKey: selected, onSelect },
-    ]
+    return [{ kind: "switch", label: props.variantLabel ?? props.label, items: tabs, selectedKey: selected, onSelect }]
 }
 
 /** The commands to run, as blocks: one block when every OS runs the same text, else one labelled block per OS. */
-const commandBlocksOf = (commands: ReadonlyArray<RunCommand>): ReadonlyArray<{ readonly key: string; readonly label?: string; readonly command: string }> => {
+const commandBlocksOf = (
+    commands: ReadonlyArray<RunCommand>,
+): ReadonlyArray<{ readonly key: string; readonly label?: string; readonly command: string }> => {
     const first = commands[0]
     if (first === undefined) return []
     if (commands.every((each) => each.command === first.command)) return [{ key: "all", command: first.command }]
@@ -114,7 +114,10 @@ const RunBlocks = (props: RunBlocksProps) => {
                             {block.label}
                         </Text>
                     )}
-                    <FencedCodeBlock label={block.label ?? props.variant.runHeading ?? block.command} showLanguage={false}>
+                    <FencedCodeBlock
+                        label={block.label ?? props.variant.runHeading ?? block.command}
+                        showLanguage={false}
+                    >
                         <span className={WRAPPED_CODE_CLASS_NAME}>{block.command}</span>
                     </FencedCodeBlock>
                 </Stack>
@@ -150,7 +153,10 @@ export const FilesCard = (props: FilesCardProps) => {
                       ),
                   },
               ]
-    const headers: NonNullable<React.ComponentProps<typeof SurfaceCard>["headers"]> = [...switchOf(props, chosen, props.onVariant ?? noop), ...download]
+    const headers: NonNullable<React.ComponentProps<typeof SurfaceCard>["headers"]> = [
+        ...switchOf(props, chosen, props.onVariant ?? noop),
+        ...download,
+    ]
     return (
         <SurfaceCard
             kind="list"
@@ -161,13 +167,15 @@ export const FilesCard = (props: FilesCardProps) => {
                 title: file.path,
                 description: metaOf(file),
                 leading: { icon: FileGlyph },
-                control: <FileView
+                control: (
+                    <FileView
                         file={file}
                         {...(props.openLabel === undefined ? {} : { openLabel: props.openLabel })}
                         {...(props.closeLabel === undefined ? {} : { closeLabel: props.closeLabel })}
                         {...(props.copyLabel === undefined ? {} : { copyLabel: props.copyLabel })}
                         {...(props.copiedLabel === undefined ? {} : { copiedLabel: props.copiedLabel })}
-                    />,
+                    />
+                ),
             }))}
             empty={props.label}
             {...(selected?.commands === undefined || selected.commands.length === 0

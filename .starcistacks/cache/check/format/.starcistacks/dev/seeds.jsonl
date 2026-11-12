@@ -1,0 +1,8 @@
+{"findings":[],"hash":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","path":".starcistacks/dev/seeds/data/.gitkeep","step":"prettier"}
+{"findings":[],"hash":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855","path":".starcistacks/dev/seeds/files/.gitkeep","step":"prettier"}
+{"findings":[],"hash":"75c8c7f252130a4cf053a16a8100df7a7efb24bd77a0f4fae34c44211858d6c8","path":".starcistacks/dev/seeds/seeds.yaml","step":"prettier"}
+{"findings":[],"hash":"13c892213d80f6d46a72677a1fdb69358771b16a6e1aeea36d44ce7b7bfe14ce","path":".starcistacks/dev/seeds/sql/primary-content-interviews.sql","step":"prettier"}
+{"findings":[],"hash":"a58214774248f9593962ee48bb04ed645fcfec6413c1592ee79793d23a4c59a2","path":".starcistacks/dev/seeds/sql/primary-interviews.sql","step":"prettier"}
+{"findings":[],"hash":"ca1e819437ecde117038beea68f456833b506d87f1d983d789c9f4a90332ec6c","path":".starcistacks/dev/seeds/sql/primary-lessons.sql","step":"prettier"}
+{"findings":[],"hash":"fa797a131bb3614c1330e34352215805135c9ced3e7776229b0f4fdb1dfd944a","path":".starcistacks/dev/seeds/sql/primary-notes.sql","step":"prettier"}
+{"findings":[],"hash":"904cee39380bf5022132f67c991fe9ae2165819b4a5920e26e2c8cb9f7850782","path":".starcistacks/dev/seeds/sql/primary-review.sql","step":"prettier"}

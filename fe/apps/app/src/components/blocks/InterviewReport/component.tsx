@@ -131,14 +131,12 @@ const ScoreHeader = (props: ReadyProps) => (
             </Cluster>
             <Grid kind="cards">
                 {props.view.pillars.map((pillar) => (
-                    <Stack key={pillar.label} gap="inline">
+                    <Stack key={pillar.label} gap="identity">
                         <Text size="sm" tone="muted">
                             {pillar.label}
                         </Text>
-                        <Cluster gap="inline" align="center">
-                            <Text isStrong>{pillar.score}</Text>
-                            <Badge tone={pillar.tone}>{pillar.verdict}</Badge>
-                        </Cluster>
+                        <Text isStrong>{pillar.score}</Text>
+                        <Badge tone={pillar.tone}>{pillar.verdict}</Badge>
                     </Stack>
                 ))}
             </Grid>
@@ -163,12 +161,12 @@ const Summary = (props: ReadyProps) => (
             </Stack>
         </SurfaceCard>
         <SurfaceCard label={props.labels.gapsTitle}>
-            <Stack gap="row">
+            <Stack gap="section">
                 {props.view.gaps.length === 0 && props.view.looseGaps === "" ? (
                     <Text tone="muted">{props.labels.gapsEmpty}</Text>
                 ) : null}
                 {props.view.gaps.map((gap) => (
-                    <Stack key={gap.id} gap="inline">
+                    <Stack key={gap.id} gap="row">
                         <Text>{gap.text}</Text>
                         <Cluster gap="inline" wrap>
                             {gap.links.map((link) => (
@@ -225,7 +223,11 @@ export const InterviewReportBase = (props: InterviewReportBaseProps) => (
                             <InterviewQuestionCard key={question.id} question={question} labels={props.props.labels} />
                         ))}
                         <Summary view={view} labels={props.props.labels} />
-                        {view.reviewLine === "" ? null : <Link variant="plain" href={props.props.reviewHref}>{view.reviewLine}</Link>}
+                        {view.reviewLine === "" ? null : (
+                            <Link variant="plain" href={props.props.reviewHref}>
+                                {view.reviewLine}
+                            </Link>
+                        )}
                         <InterviewExitLinks
                             first={{ label: props.props.labels.retake, href: props.props.retakeHref }}
                             firstIntent="commit"

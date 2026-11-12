@@ -330,6 +330,8 @@ export interface LessonArchiveParams {
 export interface LessonArchiveView {
     /** The file name to offer, `<lesson>-<language>.zip`. */
     readonly fileName: string
+    /** The `Content-Disposition` value that offers the file as an attachment. */
+    readonly disposition: string
     /** The ZIP bytes. */
     readonly content: Buffer
 }

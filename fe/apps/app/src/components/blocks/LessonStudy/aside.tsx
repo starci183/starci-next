@@ -35,9 +35,7 @@ type LessonAsideProps = {
 
 /** The words of a phase result's chip: the words of its status, or the score with "saved" for a graded phase. */
 const phaseWordsOf = (result: PhaseResultView, labels: LessonStudyLabels["progress"]): string =>
-    result.status === "graded"
-        ? `${result.scoreLine} \u00b7 ${labels.saved}`
-        : labels.phaseStatus[result.status]
+    result.status === "graded" ? `${result.scoreLine} \u00b7 ${labels.saved}` : labels.phaseStatus[result.status]
 
 /** The outcomes of the lesson with their state, or for a reader without Premium the line that says why there are none and the link to the plans. */
 const OutcomesSection = (props: LessonAsideProps) => {

@@ -27,9 +27,9 @@ Compose also runs a dev Keycloak (`keycloak`, a digest-pinned image) with the re
 
 ## Dự án: chạy trên máy học viên
 
-The learner CLI runs a project's tests on the learner's own machine and relays the results as practice ("Đang luyện"). The relay signs every manifest, so the dev relay needs a key pair that outlives its process:
+The learner CLI runs a project's tests on the learner's own machine and relays the results as practice ("Đang luyện"). The core api signs every manifest, so the dev core needs a key pair that outlives its process:
 
-1. Once per machine: `node scripts/dev/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the relay) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
+1. Once per machine: `node scripts/dev/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the core api) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
 2. In the learner's shell: `export STARCI_NEXT_URL=http://localhost:3080 STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"`.
 3. `starci-next login` pairs the machine (confirm the code at `/devices`), `starci-next init --from <starci-next-data checkout> --project <project id>` copies the kit, `starci-next run <milestone>` runs `test.command` of `starci/project.yaml`, reads the JUnit XML for tests tagged `[concept]` and posts one result per concept. Open the project page to see "Đang luyện".
 

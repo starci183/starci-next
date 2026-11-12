@@ -32,7 +32,9 @@ export const useTopicWords = (): TopicWords => {
         meta: (difficulty, minutes, languages) =>
             t("topic.meta", { difficulty, minutes, languages: languages === "" ? t("topic.noLanguage") : languages }),
         facts: (lessons, minutes, languages) =>
-            languages === 0 ? t("topic.factsAgnostic", { lessons, minutes }) : t("topic.facts", { lessons, minutes, languages }),
+            languages === 0
+                ? t("topic.factsAgnostic", { lessons, minutes })
+                : t("topic.facts", { lessons, minutes, languages }),
         phasesNote: (done, total) => t("topic.phasesNote", { done, total }),
         phases: catalog.phases,
         languageNames: { ...catalog.languageNames, csharp: "C#" },

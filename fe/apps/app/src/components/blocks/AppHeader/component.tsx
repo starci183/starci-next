@@ -8,18 +8,8 @@ import {
     useTopBarOverflowEntries,
     type DropdownMenuItem,
 } from "@starci/grammar/common"
-import {
-    BarWide,
-    LanguageGlyph,
-    languageMenuEntries,
-    MoonGlyph,
-    SunGlyph,
-} from "@starci-next/ui"
-import type {
-    AppHeaderBaseProps,
-    AppHeaderLanguage,
-    AppHeaderTheme,
-} from "./types"
+import { BarWide, LanguageGlyph, languageMenuEntries, MoonGlyph, SunGlyph } from "@starci-next/ui"
+import type { AppHeaderBaseProps, AppHeaderLanguage, AppHeaderTheme } from "./types"
 
 export type * from "./types"
 
@@ -98,7 +88,10 @@ const AccountControl = (props: AppHeaderBaseProps) => {
         <DropdownMenu
             placement="bottom end"
             trigger={<AvatarButton name={p.accountName} size="control" isDisabled={shape === "unknown"} />}
-            entries={[{ kind: "section", id: "account", label: p.accountLabel, items: accountItemsOf(props) }, ...overflow]}
+            entries={[
+                { kind: "section", id: "account", label: p.accountLabel, items: accountItemsOf(props) },
+                ...overflow,
+            ]}
             onAction={(id) => {
                 if (id === "sign-out") props.on.signOut()
                 if (id === "sign-in") props.on.signIn()

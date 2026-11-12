@@ -68,8 +68,6 @@ export type {
     PracticeSubmissionView,
     PracticeOutcome,
 } from "./practice"
-export { pageHeaderOf } from "./lessonHeader"
-export { topicHeaderOf } from "./topicHeader"
 export { STUDY_PLACEHOLDER } from "./placeholder"
 export type {
     ReviewDeckView,

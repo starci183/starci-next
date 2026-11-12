@@ -129,15 +129,15 @@ const connect = (baseUrl: string, deviceToken: string, after?: string): Promise<
 
 /** The booted world of this spec and the doors every scenario drives. */
 const relayContext = () => {
-    const world = useTestWorld({ modules: identityModules, apps: ["core", "relay"] })
+    const world = useTestWorld({ modules: identityModules, apps: ["core"] })
     const doors = () => identityDoors(world)
     const nextLearner = learnersOf("r2")
     const relay = (): TestApi => {
-        const app = world.apps.relay
+        const app = world.apps.core
         if (app === undefined)
             throw new TestWorldError({
                 code: TestWorldErrorCode.NotDeclared,
-                params: { detail: "the relay world boots the relay app" },
+                params: { detail: "the relay world boots the core app" },
             })
         return app.api
     }
@@ -252,7 +252,7 @@ const revoked = async ({ doors, relay, paired }: RelayContext): Promise<void> =>
 }
 
 /**
- * The learner relay of the real relay app beside the core doors (decision.relay.placement, contract.relay.channel): a paired
+ * The learner relay of the real core app beside its pairing doors (decision.relay.placement, contract.relay.channel): a paired
  * device opens its push-only socket (online), receives its signed manifest and the ack of each upload, re-uploads under the
  * same client event id without a second row, resumes after the last frame it took, and is refused once revoked.
  */

@@ -1,6 +1,13 @@
 import { Badge, Markdown, SurfaceCard } from "@starci/grammar/common"
 import { renderLessonCode } from "./code"
-import type { LessonCompareLabels, LessonCompletionLabels, LessonResultLabels, MarkdownLabels, StudyView, WrittenDraftView } from "@/modules/types"
+import type {
+    LessonCompareLabels,
+    LessonCompletionLabels,
+    LessonResultLabels,
+    MarkdownLabels,
+    StudyView,
+    WrittenDraftView,
+} from "@/modules/types"
 
 /** The tone of a graded level: reached, half, not yet. */
 const toneOf = (level: number): "success" | "warning" | "muted" => {
@@ -31,7 +38,9 @@ const lineOf = (
 export const ResultCard = (props: ResultCardProps) => {
     const { draft, labels } = props
     if (draft.criteria.length === 0) return null
-    const fact = [draft.scoreShort, draft.savedAt === "" ? "" : labels.savedAt(draft.savedAt)].filter((each) => each !== "").join(" · ")
+    const fact = [draft.scoreShort, draft.savedAt === "" ? "" : labels.savedAt(draft.savedAt)]
+        .filter((each) => each !== "")
+        .join(" · ")
     return (
         <SurfaceCard
             kind="list"
@@ -43,7 +52,9 @@ export const ResultCard = (props: ResultCardProps) => {
                     id: criterion.id,
                     title: criterion.criterion,
                     ...lineOf(criterion, labels),
-                    badges: [{ label: levelWordsOf(criterion.level, labels.levels, ""), tone: toneOf(criterion.level) }] as const,
+                    badges: [
+                        { label: levelWordsOf(criterion.level, labels.levels, ""), tone: toneOf(criterion.level) },
+                    ] as const,
                 })),
                 ...(draft.isDiagnostic ? [{ id: "note", title: labels.diagnosticNote }] : []),
             ]}
@@ -157,7 +168,9 @@ type ChoiceWhyProps = {
 
 /** The reason behind each option of a graded choice, in normal text under the option it explains: the right one first, marked. */
 export const ChoiceWhy = (props: ChoiceWhyProps) => {
-    const ordered = [...props.options].toSorted((a, b) => Number(b.id === props.correctId) - Number(a.id === props.correctId))
+    const ordered = [...props.options].toSorted(
+        (a, b) => Number(b.id === props.correctId) - Number(a.id === props.correctId),
+    )
     return (
         <SurfaceCard
             kind="list"
@@ -170,8 +183,17 @@ export const ChoiceWhy = (props: ChoiceWhyProps) => {
                     {
                         id: option.id,
                         title: option.label,
-                        ...(option.id === props.correctId ? { badges: [{ label: props.correctWords, tone: "success" as const }] as const } : {}),
-                        detail: <Markdown source={explanation} measure="compact" labels={props.markdownLabels} renderCode={renderLessonCode} />,
+                        ...(option.id === props.correctId
+                            ? { badges: [{ label: props.correctWords, tone: "success" as const }] as const }
+                            : {}),
+                        detail: (
+                            <Markdown
+                                source={explanation}
+                                measure="compact"
+                                labels={props.markdownLabels}
+                                renderCode={renderLessonCode}
+                            />
+                        ),
                     },
                 ]
             })}

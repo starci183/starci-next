@@ -29,7 +29,9 @@ describe("junitCasesOf", () => {
         const subject = await build()
         const cases = subject.junitCasesOf(XML)
 
-        expect(cases.map((test) => test.name)).toContain("[transactions-and-isolation] [idempotency] two buyers & one stock")
+        expect(cases.map((test) => test.name)).toContain(
+            "[transactions-and-isolation] [idempotency] two buyers & one stock",
+        )
         expect(cases.filter((test) => test.passed)).toHaveLength(3)
         expect(cases.filter((test) => test.skipped)).toHaveLength(1)
     })
@@ -43,7 +45,11 @@ describe("junitCasesOf", () => {
 describe("conceptRunsOf", () => {
     it("groups tagged tests by concept; a failing test fails the concept and a skipped one counts for nothing", async () => {
         const subject = await build()
-        const runs = subject.conceptRunsOf(subject.junitCasesOf(XML), ["transactions-and-isolation", "idempotency", "rate-limiting"])
+        const runs = subject.conceptRunsOf(subject.junitCasesOf(XML), [
+            "transactions-and-isolation",
+            "idempotency",
+            "rate-limiting",
+        ])
 
         expect(runs).toEqual([
             {
@@ -70,8 +76,8 @@ describe("conceptRunsOf", () => {
         const runs = subject.conceptRunsOf(subject.junitCasesOf(XML), ["no-such"])
 
         expect(runs).toEqual([])
-        expect(subject.conceptRunsOf([{ name: "[idempotency] ok", passed: true, skipped: false }], ["idempotency"])).toEqual([
-            { conceptId: "idempotency", passed: true, names: ["[idempotency] ok"] },
-        ])
+        expect(
+            subject.conceptRunsOf([{ name: "[idempotency] ok", passed: true, skipped: false }], ["idempotency"]),
+        ).toEqual([{ conceptId: "idempotency", passed: true, names: ["[idempotency] ok"] }])
     })
 })

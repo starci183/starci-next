@@ -63,4 +63,3 @@ export const ProjectsAside = (props: ProjectsAsideProps) => {
         </Stack>
     )
 }
-

@@ -4,12 +4,10 @@ import {
     Button,
     Cluster,
     Grid,
-    Heading,
     Link,
     Page,
     Stack,
     SurfaceCard,
-    Tabs,
     Text,
     Textarea,
 } from "@starci/grammar/common"
@@ -148,7 +146,10 @@ const ExperienceCard = (props: ExperienceCardProps) => {
                 <CardEdit card={card} labels={labels} on={on} />
                 {card.verified === undefined ? null : (
                     <Cluster gap="inline" wrap align="center" justify="between">
-                        <Link variant="plain" href={card.verified.href}>{`${labels.verifyLink}: ${card.verified.code}`}</Link>
+                        <Link
+                            variant="plain"
+                            href={card.verified.href}
+                        >{`${labels.verifyLink}: ${card.verified.code}`}</Link>
                         <Button
                             intent="alternative"
                             size="sm"
@@ -165,19 +166,18 @@ const ExperienceCard = (props: ExperienceCardProps) => {
     )
 }
 
+/** The state tabs for the page header: the settled ones once the read is ready, the placeholder's while it runs. */
+const tabsOf = (base: ExperienceListBaseProps["props"]) =>
+    ("items" in base.slot ? base.slot.items : base.placeholder).tabs.map((tab) => ({
+        id: tab.id,
+        label: tab.label,
+        count: tab.count,
+    }))
+
 /** The intro: what an item is, the four steps and the counts. */
 const ExperienceIntro = (props: ExperienceIntroProps) => (
     <SurfaceCard ariaLabel={props.labels.title}>
         <Stack gap="row">
-            <Stack gap="identity">
-                <Text size="sm" tone="muted">
-                    {props.labels.eyebrow}
-                </Text>
-                <Heading level={1} scale="title">
-                    {props.labels.title}
-                </Heading>
-            </Stack>
-            <Text as="p">{props.labels.description}</Text>
             <Cluster gap="inline" wrap label={props.labels.flowLabel}>
                 {props.view.flow.map((step) => (
                     <Badge key={step} tone="neutral">
@@ -202,7 +202,22 @@ const ExperienceIntro = (props: ExperienceIntroProps) => (
  * line editable in words but not in figures; a verified card links to its verification page.
  */
 export const ExperienceListBase = (props: ExperienceListBaseProps) => (
-    <Page>
+    <Page
+        header={{
+            breadcrumbs: "root",
+            title: props.props.labels.title,
+            titleScale: "title",
+            description: props.props.labels.description,
+            meta: props.props.labels.eyebrow,
+            tabs: {
+                label: props.props.labels.tabsLabel,
+                kind: "views",
+                items: tabsOf(props.props),
+                selectedKey: props.props.tab,
+                onSelect: props.on.selectTab,
+            },
+        }}
+    >
         <SlotView
             slot={props.props.slot}
             placeholder={props.props.placeholder}
@@ -211,13 +226,6 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => (
             render={(view) => (
                 <Stack gap="region">
                     <ExperienceIntro view={view} labels={props.props.labels} />
-                    <Tabs
-                        label={props.props.labels.tabsLabel}
-                        kind="views"
-                        items={view.tabs.map((tab) => ({ id: tab.id, label: tab.label, count: tab.count }))}
-                        selectedKey={props.props.tab}
-                        onSelect={props.on.selectTab}
-                    />
                     {view.cards.length === 0 ? (
                         <Text tone="muted">{props.props.labels.emptyTab}</Text>
                     ) : (

@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { getTranslations } from "next-intl/server"
 import type { ReactNode, ReactElement } from "react"
 import { SiteShell } from "@starci-next/ui"
-import { LANDING_ROUTES } from "@/modules/routes"
 
 /** Framework-layout boundary input: the routed page body and nothing else. */
 type LandingLayoutProps = { readonly content: ReactNode }
@@ -16,9 +15,5 @@ export const landingLayoutMetadata = async (locale: string): Promise<Metadata> =
 /** The landing's chrome, resolved on the server: the shared brand shell with the wordmark linking home, around the routed body. */
 export const LandingLayout = async (props: LandingLayoutProps): Promise<ReactElement> => {
     const t = await getTranslations("landing.shell")
-    return (
-        <SiteShell brand={t("brand")} homeHref={LANDING_ROUTES.home}>
-            {props.content}
-        </SiteShell>
-    )
+    return <SiteShell brand={t("brand")}>{props.content}</SiteShell>
 }

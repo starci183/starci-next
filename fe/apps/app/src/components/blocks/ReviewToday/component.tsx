@@ -67,9 +67,9 @@ type PieceProps = {
 const Summary = (props: PieceProps) => (
     <SurfaceCard label={props.base.labels.dueTitle} isLoading={props.isLoading}>
         <Stack gap="row">
-            <Cluster gap="row" wrap align="center">
+            <Cluster gap="inline" wrap align="center">
                 <ProgressCircle label={props.base.labels.goalLabel} value={props.screen.goalPercent} size="lg" />
-                <Stack gap="inline">
+                <Stack gap="identity">
                     <Text isStrong>{props.base.labels.goalLabel}</Text>
                     <Text tone="muted">{props.screen.goalText}</Text>
                 </Stack>
@@ -82,7 +82,7 @@ const Summary = (props: PieceProps) => (
                 <Badge tone="accent">{props.screen.splitRetrieval}</Badge>
             </Cluster>
             {props.screen.newLine === undefined ? null : <Text tone="muted">{props.screen.newLine}</Text>}
-            <Cluster gap="row" wrap>
+            <Cluster gap="inline" wrap>
                 <Button intent="commit" href={props.base.sessionHref}>
                     {props.screen.canStartNew ? props.base.labels.startNew : props.base.labels.start}
                 </Button>
@@ -110,7 +110,7 @@ const Rest = (props: PieceProps) => (
                     description={props.base.labels.emptyBody}
                 />
             )}
-            <Cluster gap="row" wrap>
+            <Cluster gap="inline" wrap>
                 <Button intent="commit" href={props.base.decksHref}>
                     {props.base.labels.decks}
                 </Button>
@@ -127,7 +127,7 @@ const Queue = (props: PieceProps) => (
     <SurfaceCard label={props.base.labels.queueTitle} isLoading={props.isLoading}>
         <Stack gap="row">
             {props.screen.rows.map((row) => (
-                <Cluster key={row.id} gap="row" wrap align="center" justify="between">
+                <Cluster key={row.id} gap="inline" wrap align="center" justify="between">
                     <Stack gap="identity">
                         <Text isStrong overflow="clamp-2">
                             {row.title}
@@ -178,7 +178,9 @@ const Rail = (props: PieceProps) => (
                 <Text size="sm" tone="muted">
                     {props.base.labels.streakNote}
                 </Text>
-                <Link variant="plain" href={props.base.hubHref}>{props.base.labels.hubLink}</Link>
+                <Link variant="plain" href={props.base.hubHref}>
+                    {props.base.labels.hubLink}
+                </Link>
             </Stack>
         </SurfaceCard>
     </Stack>
@@ -187,7 +189,12 @@ const Rail = (props: PieceProps) => (
 /** Today's review: the goal ring, what is due, the queue and the way into the session and the decks. */
 export const ReviewTodayBase = (props: ReviewTodayBaseProps) => (
     <Page
-        header={{ title: props.props.labels.pageTitle, titleScale: "standard", description: props.props.labels.intro }}
+        header={{
+            title: props.props.labels.pageTitle,
+            titleScale: "standard",
+            description: props.props.labels.intro,
+            breadcrumbs: "root",
+        }}
     >
         <SlotView
             slot={props.props.slot}

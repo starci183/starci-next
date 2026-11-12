@@ -8,12 +8,7 @@ import { useQueryProjectsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot } from "@/modules/types"
-import {
-    PROJECTS_LIST_PLACEHOLDER,
-    ProjectsListBase,
-    type ProjectsListView,
-    type ProjectsTab,
-} from "./component"
+import { PROJECTS_LIST_PLACEHOLDER, ProjectsListBase, type ProjectsListView, type ProjectsTab } from "./component"
 
 /** The connected projects screen: reads the learner's projects with their progress and words every row. */
 export const ProjectsList = () => {

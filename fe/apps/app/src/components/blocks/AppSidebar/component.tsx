@@ -1,11 +1,4 @@
-import {
-    Cluster,
-    DropdownMenu,
-    IconButton,
-    Sidebar,
-    Switch,
-    type SidebarGroup,
-} from "@starci/grammar/common"
+import { Cluster, DropdownMenu, IconButton, Sidebar, Switch, type SidebarGroup } from "@starci/grammar/common"
 import { CollapseGlyph, LanguageGlyph, languageMenuEntries, MoonGlyph, SunGlyph } from "@starci-next/ui"
 import type { AppSidebarBaseProps } from "./types"
 

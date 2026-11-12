@@ -132,7 +132,9 @@ export const runProject = async (io: CliIo, milestone: string, isConfirmed: bool
     )
     if (fetched.kind !== "verified") {
         io.err(
-            fetched.kind === "refused" ? refusalLine(fetched) : "The manifest is not signed by StarCi; nothing was run.",
+            fetched.kind === "refused"
+                ? refusalLine(fetched)
+                : "The manifest is not signed by StarCi; nothing was run.",
         )
         return 1
     }

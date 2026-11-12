@@ -5,7 +5,8 @@ const T = {
     empty: "Chưa có màn hình nào. Đặt ảnh và explain.md vào gallery/pages/<area>/<screen>/",
     noPages: "Không có màn hình.",
     onlyBugs: "chỉ màn hình lỗi",
-    summary: "{shown} màn hình · {regions} vùng đã ghi · {badRegions} vùng thiếu Vì sao/Grammar hoặc chưa rõ · {hidden} màn hình bị ẩn (thiếu explain.md)",
+    summary:
+        "{shown} màn hình · {regions} vùng đã ghi · {badRegions} vùng thiếu Vì sao/Grammar hoặc chưa rõ · {hidden} màn hình bị ẩn (thiếu explain.md)",
     explained: "đã giải thích",
     noRegions: "LỖI: chưa có vùng nào",
     unclearRegions: "LỖI: {n} vùng chưa rõ",
@@ -15,7 +16,8 @@ const T = {
     meta: "route: {route} · khu: {area}",
     screensTab: "Màn hình",
     flowsTab: "Bản đồ luồng",
-    noFlows: "Chưa có luồng. Đặt tên luồng trong gallery/flows.json và đánh dấu vùng bấm trong links.json của màn hình.",
+    noFlows:
+        "Chưa có luồng. Đặt tên luồng trong gallery/flows.json và đánh dấu vùng bấm trong links.json của màn hình.",
     linksHeading: "Liên kết giữa các màn hình",
     openScreen: "Mở {to}",
 }

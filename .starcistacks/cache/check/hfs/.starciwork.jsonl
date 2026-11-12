@@ -1,4 +1,3 @@
 {"data":{},"findings":[],"hash":"d9d53a657630e85b26c2a10e73f7d120c104a70f7691b6ce3a509605bf0a5697","path":".starciwork/.gitignore","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":".starciwork/concepts/ is neither tracked nor git-ignored, and no ignored slot owns it","path":".starciwork/concepts","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":".starciwork/concepts","step":"hfs"}
 {"data":{},"findings":[],"hash":"0319eb2cdc2036beabfc8320e22320e6d6fd9a06877e9023b5cc51ae146c4b1e","path":".starciwork/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d23ba2c940844d65096e25d3ad6018c4ed547053cdd1a961ee61069fd969a465","path":".starciwork/workspace.yaml","step":"file-rules"}

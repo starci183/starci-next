@@ -24,7 +24,15 @@ export const TopicHero = (props: TopicHeroProps) => (
                     aspect="landscape"
                     fit="cover"
                     assetSlot={`topic-cover-${props.title}`}
-                    media={<Image src={props.cover.src} alt="" width={props.cover.width} height={props.cover.height} loading="eager" />}
+                    media={
+                        <Image
+                            src={props.cover.src}
+                            alt=""
+                            width={props.cover.width}
+                            height={props.cover.height}
+                            loading="eager"
+                        />
+                    }
                 />
             }
             trailing={
@@ -40,7 +48,11 @@ export const TopicHero = (props: TopicHeroProps) => (
                         </Text>
                     )}
                     {props.action === undefined ? null : (
-                        <Button intent="commit" startContent={<GlyphIcon source={PlayGlyph} />} href={props.action.href}>
+                        <Button
+                            intent="commit"
+                            startContent={<GlyphIcon source={PlayGlyph} />}
+                            href={props.action.href}
+                        >
                             {props.action.label}
                         </Button>
                     )}

@@ -68,12 +68,7 @@ const AboutCard = (props: Pick<OverviewPanelProps, "summary" | "scope" | "labels
                   {
                       id: "scope",
                       term: props.labels.scope,
-                      description: (
-                          <Disclosure
-                              title={props.labels.scopeShow}
-                              body={props.scope}
-                          />
-                      ),
+                      description: <Disclosure title={props.labels.scopeShow} body={props.scope} />,
                   },
               ]),
     ]
@@ -83,9 +78,7 @@ const AboutCard = (props: Pick<OverviewPanelProps, "summary" | "scope" | "labels
 
 /** The chip of a phase: finished (success) or open (neutral). */
 const phaseBadgeOf = (phase: OverviewPhase, labels: OverviewPanelLabels) =>
-    phase.isDone
-        ? { label: labels.done, tone: "success" as const }
-        : { label: labels.open, tone: "neutral" as const }
+    phase.isDone ? { label: labels.done, tone: "success" as const } : { label: labels.open, tone: "neutral" as const }
 
 /** What the line under a phase name needs. */
 type PhaseLineProps = { readonly text: string }

@@ -273,7 +273,7 @@ const pairedWorld = async (
 ) => {
     const world = await worldOf(
         (request) => {
-            expect(request.url).toBe("https://app.test/relay/graphql")
+            expect(request.url).toBe("https://app.test/graphql")
             expect(request.authorization).toBe(`Bearer ${TOKEN}`)
             const operation = operationOf(request).name
             return operation === "relayManifest" ? manifest : uploads(operation)

@@ -14,7 +14,8 @@ type PhaseNavProps = {
 
 /** The words of a control from where it leads. */
 const wordsOf = (target: NavTarget, side: "previous" | "next", props: PhaseNavProps): string => {
-    if (side === "previous") return target.kind === "section" ? props.labels.previousSection : props.labels.previousPhase
+    if (side === "previous")
+        return target.kind === "section" ? props.labels.previousSection : props.labels.previousPhase
     if (target.kind === "section") return props.labels.nextSection(target.index, target.title)
     return target.kind === "lesson" ? props.labels.nextLesson : props.labels.nextPhase(props.phaseTitle(target.phase))
 }
@@ -26,7 +27,10 @@ type ControlProps = PhaseNavProps & { readonly target: NavTarget; readonly side:
 const Control = (props: ControlProps) => {
     const { target, side } = props
     const label = wordsOf(target, side, props)
-    const common = side === "next" ? ({ intent: "commit", startGlyph: "arrow-end", width: "wrap" } as const) : ({ intent: "neutral" } as const)
+    const common =
+        side === "next"
+            ? ({ intent: "commit", startGlyph: "arrow-end", width: "wrap" } as const)
+            : ({ intent: "neutral" } as const)
     return target.kind === "section" ? (
         <Button {...common} onPress={() => props.onOpenSection(props.phase, target.id)}>
             {label}

@@ -13,13 +13,39 @@ import type {
     SimulationStep,
     SimulationTransition,
     SlotLabels,
-    StudyRailLabels,
     WrittenCardLabels,
 } from "@starci-next/ui"
 import type { ExerciseFileView, LessonDifficulty, LessonPhase, WorkspaceVariantView } from "./lesson"
 
-/** Where one activity's attempt stands: nothing sent, running, graded now, accepted to be graded later, refused for Premium or failed. */
-export type AttemptStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium" | "error"
+/** The words of the lesson aside: outcomes, review, references and the drawer. */
+export type StudyRailLabels = {
+    /** The accessible name of the phase tabs of the lesson page. */
+    readonly phases: string
+    /** The title of the learning-outcomes section. */
+    readonly outcomes: string
+    /** What the outcomes section says to a reader whose plan does not track them. */
+    readonly outcomesLocked: string
+    /** The words of the link to the plans. */
+    readonly seePremium: string
+    /** The words of an outcome that is not started, understood, or proved in code. */
+    readonly outcomeStates: readonly [string, string, string]
+    /** The title of the review section. */
+    readonly review: string
+    readonly empty: string
+    /** The accessible name of the lock on what needs Premium. */
+    readonly locked: string
+    /** The title of the section of references. */
+    readonly references: string
+    /** The words of a review that falls due after the given number of days. */
+    readonly reviewAfter: (days: number) => string
+    /** What a review says before the lesson is finished. */
+    readonly reviewState: string
+    /** The accessible name of the control that closes the aside drawer. */
+    readonly close: string
+}
+
+/** Where one activity's attempt stands: nothing accepted, running, graded now, accepted to be graded later, refused for Premium or failed. */
+export type AttemptStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium"
 
 /** A reader's way into one phase, drawn as a row of the phase rail. */
 type PhaseRailRow = {
@@ -33,6 +59,8 @@ type PhaseRailRow = {
 export type WrittenDraftView = {
     readonly value: string
     readonly status: AttemptStatus
+    /** True when the last send of this answer was rejected by the transport; false once a new send starts or settles. */
+    readonly isSendFailed: boolean
     /** Why the grading failed: no AI provider is configured, or anything else; none while it has not failed. */
     readonly issue: "none" | "unconfigured" | "limit" | "other"
     /** The grade per criterion once the server gave one. */
@@ -71,6 +99,8 @@ export type StudyCardView =
           readonly options: ReadonlyArray<{ readonly id: string; readonly label: string }>
           readonly pickedId: string
           readonly status: AttemptStatus
+          /** True when the last send of this pick was rejected by the transport; false once a new send starts or settles. */
+          readonly isSendFailed: boolean
           readonly isCorrect: boolean
           readonly explanations: Readonly<Record<string, string>>
           /** The right option once graded; empty before. */
@@ -228,7 +258,11 @@ export type StudyView = {
         readonly before: number
         readonly after: number
         /** Why the level moved (or stayed): the quote that earns it, or what is still missing. */
-        readonly reason: { readonly kind: "same" | "better" | "worse" | "none"; readonly detail: string; readonly missing: string }
+        readonly reason: {
+            readonly kind: "same" | "better" | "worse" | "none"
+            readonly detail: string
+            readonly missing: string
+        }
     }>
     /** The totals of the opening diagnostic and of the closing interview, for the "2/6 → 5/6" chip; empty before the grade. */
     readonly compareScore: string

@@ -7,7 +7,11 @@ const LEARNER = "10000000-0000-4000-8000-0000000000c1"
 
 const build = async () => {
     const entitlements = mock<EntitlementService>()
-    entitlements.devGrant.mockResolvedValue({ learnerId: LEARNER, premiumUntil: "2027-01-31T12:30:00.000Z" })
+    entitlements.devGrant.mockResolvedValue({
+        learnerId: LEARNER,
+        premiumUntil: "2027-01-31T12:30:00.000Z",
+        updatedAt: "2026-11-12T00:00:00.000Z",
+    })
     const moduleRef = await Test.createTestingModule({
         providers: [DevGrantCli, { provide: ENTITLEMENT_SERVICE, useValue: entitlements }],
     }).compile()

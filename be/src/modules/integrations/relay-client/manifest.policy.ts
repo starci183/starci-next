@@ -1,6 +1,12 @@
 import { verify } from "node:crypto"
 import { Injectable } from "@nestjs/common"
-import type { ManifestCheck, ManifestPlan, ManifestRead, SignatureRead, VerifiedManifest } from "./relay-client.contracts"
+import type {
+    ManifestCheck,
+    ManifestPlan,
+    ManifestRead,
+    SignatureRead,
+    VerifiedManifest,
+} from "./relay-client.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
 
 /** One check of a payload, or null when it is not one (a cwd above the task workspace is not one). */

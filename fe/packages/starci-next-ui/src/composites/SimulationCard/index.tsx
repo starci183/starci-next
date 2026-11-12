@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Stack } from "@starci/grammar/common"
 import { EventLog, Moves, Observation, StatesRow } from "./parts"

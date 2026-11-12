@@ -23,9 +23,9 @@ const barToneOf = (score: number): "success" | "warning" | "danger" => {
 export const InterviewAttributeBars = (props: InterviewAttributeBarsProps) =>
     props.attributes.length === 0 ? null : (
         <SurfaceCard label={props.title}>
-            <Stack gap="row">
+            <Stack gap="section">
                 {props.attributes.map((each) => (
-                    <Stack key={each.id} gap="inline">
+                    <Stack key={each.id} gap="row">
                         <Cluster gap="inline" align="center">
                             <Text size="sm">{each.label}</Text>
                             <Text size="sm" isStrong>

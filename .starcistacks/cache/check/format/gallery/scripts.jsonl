@@ -1,0 +1,4 @@
+{"findings":[],"hash":"b5ef198ed391004712ea557541d8ff1871d146053988dcec0d91dca78060a944","path":"gallery/scripts/_home.png","step":"prettier"}
+{"findings":[],"hash":"8b28991d7e5549239be666e6d98453f9c14b3687cb249cf8f140de9fde32a8eb","path":"gallery/scripts/_signup.png","step":"prettier"}
+{"findings":[{"column":0,"line":0,"message":"gallery/scripts/capture.cjs is not formatted by prettier; run `npm run format`","path":"gallery/scripts/capture.cjs","rule":"HFS_FORMAT"}],"hash":"a103ea9d040b375e5fe7479fc162cf90728d74fcb6eed606e4420b1ae4415357","path":"gallery/scripts/capture.cjs","step":"prettier"}
+{"findings":[{"column":0,"line":0,"message":"gallery/scripts/sign-in.cjs is not formatted by prettier; run `npm run format`","path":"gallery/scripts/sign-in.cjs","rule":"HFS_FORMAT"}],"hash":"8b6dffc78c54759468dbe91422cc5f0b942f6074daf434615eb95f64fb5707fd","path":"gallery/scripts/sign-in.cjs","step":"prettier"}

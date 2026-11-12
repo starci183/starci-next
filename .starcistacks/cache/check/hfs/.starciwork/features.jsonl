@@ -158,7 +158,7 @@
 {"data":{},"findings":[],"hash":"e49e521359564fe09054d03bbf77d84d0fe9f738cac3280f5f823f4e63e9cc1a","path":".starciwork/features/practice/ui/practice/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"810dcb25ec221cdda89e67d1cf107eae8e59e9f36ecff160eadbaf04e7ce9a5a","path":".starciwork/features/projects/contract/api/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b3333024647637700c24d01a6c53935f31509890bff5c2bb2de5341ecceb12d4","path":".starciwork/features/projects/contract/ci-webhook/index.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b8e45d15b770852c7022dc41a51dc46169bc1e20b7b77789b6b8a9849a477d3e","path":".starciwork/features/projects/contract/relay-port/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0ce3181c71a87bd35fd2b84de68de80e391202a32823d46342adce18e3e88691","path":".starciwork/features/projects/contract/relay-port/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"09449499c67ddcf51b0ad9dfc09d8ee2953cce2533e0cf90c19d106f320e7cab","path":".starciwork/features/projects/data/project/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8ecfbb6f3c24c7f3a6f90609bd74dc6e3c12e18d576405a18855ca6e13e06a60","path":".starciwork/features/projects/fr/prove-concept/index.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"db90e0b307cc8cc954479e3652fd0724a5cc8ae3f18915ab91da5c5236ff0a07","path":".starciwork/features/projects/fr/run-probes/index.yaml","step":"file-rules"}

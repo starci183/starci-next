@@ -18,7 +18,8 @@ export const toGetRelayManifestParams = (
     credential: CredentialPrincipal,
     input: RelayManifestInput,
 ): PublicExecuteParams<GetRelayManifestRequest> => ({
-    request: { device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+    request: {
+        device: { learnerId: credential.workspaceId, deviceId: credential.subject },
         taskId: input.taskId,
         milestone: input.milestone,
         testCommand: input.testCommand,

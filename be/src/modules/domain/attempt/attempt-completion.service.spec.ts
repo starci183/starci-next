@@ -27,14 +27,25 @@ const build = async (
     const content = mock<LessonContentService>()
     content.plan.mockResolvedValue({ required, retrieval: [] })
     const review = mock<ReviewScheduleService>()
-    const providers = [
-        AttemptCompletionService,
-        { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
-        { provide: CLOCK, useValue: new FakeClock(NOW) },
-        { provide: LessonContentService, useValue: content },
-        ...(withReview ? [{ provide: ReviewScheduleService, useValue: review }] : []),
-    ]
-    const moduleRef = await Test.createTestingModule({ providers }).compile()
+    const testing = withReview
+        ? Test.createTestingModule({
+              providers: [
+                  AttemptCompletionService,
+                  { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
+                  { provide: CLOCK, useValue: new FakeClock(NOW) },
+                  { provide: LessonContentService, useValue: content },
+                  { provide: ReviewScheduleService, useValue: review },
+              ],
+          })
+        : Test.createTestingModule({
+              providers: [
+                  AttemptCompletionService,
+                  { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
+                  { provide: CLOCK, useValue: new FakeClock(NOW) },
+                  { provide: LessonContentService, useValue: content },
+              ],
+          })
+    const moduleRef = await testing.compile()
     return { service: moduleRef.get(AttemptCompletionService), em, content, review }
 }
 

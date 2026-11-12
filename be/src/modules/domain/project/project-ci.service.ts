@@ -2,53 +2,65 @@ import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
+import { InjectInbox, type Inbox } from "@modules/platform/inbox"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import type { EvidenceInput, ProjectSettings } from "./project.contracts"
-import { InjectProjectOptions } from "./project.decorators"
+import type { EvidenceInput } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
-import type { ProjectOptions } from "./project.options"
 import { milestonesOfKind } from "./project-catalog.policy"
-import { ciRunOf, isCiFresh, isCiSignatureValid, type CiRun } from "./project-ci.policy"
+import { ciRunOf, type CiRun } from "./project-ci.policy"
 import { InjectCiAttestation, type CiAttestationVerifier } from "./project-ci-attestation.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
-import type { CiAttestation, CiDelivery, CiReceipt } from "./project-params.contracts"
-import { projectSettingsOf } from "./project-settings.policy"
+import type { CiAttestation, CiDelivery, CiReceipt, CiRunReceipt } from "./project-params.contracts"
 import { projectKindOf } from "./project-view.mapper"
 import type { ProjectRow, RepositoryRow } from "./persistence/project.rows"
 import { SELECT_PROJECT_BY_ID, SELECT_PROJECT_REPOSITORY, SET_PROJECT_REPOSITORY_ID } from "./persistence/project.sql"
 
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu
+/** The inbox source of the signed CI deliveries; the CI run id is the delivery key. */
+const CI_INBOX_SOURCE = "project-ci"
 
 @Injectable()
 /**
  * The intake of signed CI runs (proof): a StarCi GitHub Action posts the tagged tests, e2e flows and probes of a run signed with the
- * project's own secret. The delivery is proved first (project, signature, replay window), and only then is the document read; the
- * run is recorded once per run id, its results join the evidence, and the project is settled.
+ * project's own secret. `ProjectCiProofService` proves the delivery first; this service records the proved run once per run id, its
+ * results join the evidence, and the project is settled.
  */
 export class ProjectCiService {
-    private readonly settings: ProjectSettings
-
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
         @InjectLogger() private readonly logger: Logger,
-        @InjectProjectOptions() options: ProjectOptions,
+        @InjectInbox() private readonly inbox: Inbox,
         private readonly evidence: ProjectEvidenceService,
         @InjectCiAttestation() private readonly attestation: CiAttestationVerifier,
-    ) {
-        this.settings = projectSettingsOf(options)
-    }
+    ) {}
 
     /**
-     * Proves and records one delivery. A delivery for no project, or with a signature that does not match the project's secret, is
-     * PROJECT_CI_SIGNATURE_INVALID before anything else is read; a timestamp outside the window is PROJECT_CI_STALE; a body that is
-     * not the result document is PROJECT_CI_PAYLOAD_INVALID. A run id seen before is answered as a duplicate and adds nothing.
+     * Records one delivery the door proved (`ProjectCiProofService.prove`). The body is read as the result document and its run id is
+     * claimed on the inbox first: a run id seen before answers undefined and adds nothing, and a claim is given back when recording
+     * fails, so the Action's retry records the run. An attested run's results are proof, a signed-only run's are practice; the
+     * project settles once the run is recorded.
      */
-    async recordRun(delivery: CiDelivery): Promise<CiReceipt> {
-        const project = await this.proved(delivery)
+    async recordRun(delivery: CiDelivery): Promise<CiRunReceipt> {
         const run = ciRunOf(delivery.rawBody)
-        return this.apply(project, run, await this.attest(project, run, delivery.oidcToken))
+        if (!(await this.inbox.claim(CI_INBOX_SOURCE, run.runId))) return
+        try {
+            const project = await this.projectOf(delivery.project)
+            const receipt = await this.apply(project, run, await this.attest(project, run, delivery.oidcToken))
+            if (!receipt.duplicate) await this.evidence.settle(project, [`ci:${project.project_id}:${run.runId}`])
+            return receipt
+        } catch (cause) {
+            await this.inbox.release(CI_INBOX_SOURCE, run.runId)
+            throw cause
+        }
+    }
+
+    /** The project a proved delivery names. */
+    private async projectOf(projectId: string | undefined): Promise<ProjectRow> {
+        const rows: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT_BY_ID, [projectId])
+        const [project] = rows
+        if (project === undefined) throw new ProjectError({ code: ProjectErrorCode.CiSignatureInvalid })
+        return project
     }
 
     /**
@@ -79,8 +91,8 @@ export class ProjectCiService {
         return attestation
     }
 
-    /** Records a proved run once and settles the project; an attested run's results are proof, a signed-only run's are practice. */
-    private async apply(project: ProjectRow, run: CiRun, attestation: CiAttestation): Promise<CiReceipt> {
+    /** Records a claimed run once with its evidence results. */
+    private apply(project: ProjectRow, run: CiRun, attestation: CiAttestation): Promise<CiReceipt> {
         const source = attestation.kind === "attested" ? ("ci" as const) : ("ci-signed" as const)
         const now = this.clock.now()
         const listed = new Set(milestonesOfKind(projectKindOf(project)).flatMap((milestone) => milestone.concepts))
@@ -97,7 +109,7 @@ export class ProjectCiService {
                 detail: {},
                 at: now,
             }))
-        const receipt = await this.evidence.recordCiRun({
+        return this.evidence.recordCiRun({
             projectId: project.project_id,
             runId: run.runId,
             commit: run.commit,
@@ -105,27 +117,5 @@ export class ProjectCiService {
             attestation: attestation.kind,
             results,
         })
-        if (!receipt.duplicate) await this.evidence.settle(project, [`ci:${project.project_id}:${run.runId}`])
-        return receipt
-    }
-
-    private async proved(delivery: CiDelivery): Promise<ProjectRow> {
-        const refused = (code: ProjectErrorCode): ProjectError => {
-            this.logger.warn(ProjectLogEvent.CiRefused, { code })
-            return new ProjectError({ code })
-        }
-        const { rawBody, projectId, timestamp, signature } = delivery
-        if (rawBody === undefined || projectId === undefined || timestamp === undefined || signature === undefined) {
-            throw refused(ProjectErrorCode.CiSignatureInvalid)
-        }
-        if (!UUID.test(projectId)) throw refused(ProjectErrorCode.CiSignatureInvalid)
-        const rows: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT_BY_ID, [projectId])
-        const [project] = rows
-        if (project === undefined || !isCiSignatureValid(project.ci_secret, timestamp, rawBody, signature)) {
-            throw refused(ProjectErrorCode.CiSignatureInvalid)
-        }
-        if (!isCiFresh(timestamp, this.clock.now(), this.settings.ciToleranceMs))
-            throw refused(ProjectErrorCode.CiStale)
-        return project
     }
 }

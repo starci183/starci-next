@@ -85,7 +85,8 @@ const actionsOf = (
         })
     },
     writeEvidence: (activityId, field, text) => workbench.write(evidenceKeyOf(activityId, field), text),
-    submitEvidence: (activityId, output, explanation) => submit(activityId, { text: evidenceTextOf(output, explanation) }),
+    submitEvidence: (activityId, output, explanation) =>
+        submit(activityId, { text: evidenceTextOf(output, explanation) }),
 })
 
 /**
@@ -115,7 +116,9 @@ export const useLessonStudyScreen = (route: LessonStudyRoute): LessonStudyScreen
         workbench.submit({ lessonId: route.lessonId, version: read.data?.version ?? "", locale, activityId, answer })
     return {
         props: {
-            slot: mapSlot(slotOfSwr(read), (lesson) => studyOf({ lesson, phase, workbench, progress, words: wordsOf(lesson) })),
+            slot: mapSlot(slotOfSwr(read), (lesson) =>
+                studyOf({ lesson, phase, workbench, progress, words: wordsOf(lesson) }),
+            ),
             placeholder: STUDY_PLACEHOLDER,
             slotLabels: slotLabels(t("study.empty")),
             labels,

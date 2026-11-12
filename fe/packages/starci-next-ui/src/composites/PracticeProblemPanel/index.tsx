@@ -31,7 +31,7 @@ type PracticeProblemPanelProps = {
 /** The problem panel: pattern line, title, difficulty and limits, the statement from the data's markdown, then the examples. */
 export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
     <SurfaceCard ariaLabel={props.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
-        <Stack gap="row">
+        <Stack gap="section">
             <Text size="sm" tone="muted">
                 {props.eyebrow}
             </Text>

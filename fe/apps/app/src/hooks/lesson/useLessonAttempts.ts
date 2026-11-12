@@ -7,7 +7,9 @@ import type { AttemptAnswer, AttemptStatus, AttemptView } from "@/modules/types"
 
 /** One activity attempt: where it stands, the revision, the answer it carried and what the server said. */
 export type AttemptState = {
-    readonly status: Exclude<AttemptStatus, "idle">
+    readonly status: AttemptStatus
+    /** True when the last send of this answer was rejected by the transport; false once a new send starts or settles. */
+    readonly isSendFailed: boolean
     readonly revision: number
     /** The answer as text, to tell a retry of the same answer from a new answer. */
     readonly answerKey: string
@@ -32,6 +34,7 @@ export type LessonAttempts = {
 /** The state an attempt is in once the server has answered. */
 const settledOf = (view: AttemptView, answerKey: string): AttemptState => ({
     status: view.status,
+    isSendFailed: false,
     revision: view.revision,
     answerKey,
     view,
@@ -74,7 +77,7 @@ export const useLessonAttempts = (restored: Readonly<Record<string, AttemptView>
         setSent((all) => ({ ...all, [activityId]: state }))
 
     const send = (request: SubmitRequest, revision: number, answerKey: string, canBump: boolean): void => {
-        settle(request.activityId, { status: "pending", revision, answerKey, view: undefined })
+        settle(request.activityId, { status: "pending", isSendFailed: false, revision, answerKey, view: undefined })
         post.trigger({ ...request, revision })
             .then((view) => settle(request.activityId, settledOf(view, answerKey)))
             .catch((error: unknown) => {
@@ -83,7 +86,8 @@ export const useLessonAttempts = (restored: Readonly<Record<string, AttemptView>
                     return
                 }
                 settle(request.activityId, {
-                    status: isPremiumRequired(error) ? "premium" : "error",
+                    status: isPremiumRequired(error) ? "premium" : "idle",
+                    isSendFailed: !isPremiumRequired(error),
                     revision,
                     answerKey,
                     view: undefined,

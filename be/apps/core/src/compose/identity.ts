@@ -7,6 +7,7 @@ import {
     identityMigrations,
 } from "@modules/domain/identity"
 import { LivenessModule } from "@modules/domain/liveness"
+import { RelayCredentialAdapter } from "@modules/domain/relay"
 import { NOTE_ERROR_KINDS, NoteModule, noteEntities, noteMigrations } from "@modules/domain/note"
 import { KEYCLOAK_ERROR_KINDS, KEYCLOAK_MESSAGES, KeycloakModule } from "@modules/integrations/keycloak"
 import { MAIL_ERROR_KINDS, MailModule } from "@modules/integrations/mail"
@@ -15,9 +16,12 @@ import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
 
-/** The identity area: sign-in through Keycloak and its mail, the liveness probe and the notes. */
+/**
+ * The identity area: sign-in through Keycloak and its mail, the liveness probe and the notes. A paired device's token is the
+ * credential of the `@Credential` doors (the relay feed uploads).
+ */
 export const identityModules = (options: CoreOptions): Array<DynamicModule> => [
-    IdentityModule.register({ isGlobal: true, ...options.identity }),
+    IdentityModule.register({ isGlobal: true, ...options.identity, credentialAuthenticator: RelayCredentialAdapter }),
     KeycloakModule.register({ isGlobal: true, ...options.keycloak }),
     MailModule.register({ isGlobal: true, ...options.mail }),
     LivenessModule.register({ isGlobal: true }),

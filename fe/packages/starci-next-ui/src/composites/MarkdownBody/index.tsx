@@ -1,12 +1,4 @@
-import {
-    Code,
-    FencedCodeBlock,
-    Link,
-    MarkdownArticle,
-    MermaidDiagram,
-    Stack,
-    Text,
-} from "@starci/grammar/common"
+import { Code, FencedCodeBlock, Link, MarkdownArticle, MermaidDiagram, Stack, Text } from "@starci/grammar/common"
 
 /** One run of inline text inside a paragraph, a list item or a quote. */
 export type InlineNode = {
@@ -61,7 +53,12 @@ const Run = (props: RunProps) => {
         )
     }
     if (props.node.kind === "code") return <Code>{props.node.text}</Code>
-    if (props.node.kind === "link") return <Link href={props.node.href} {...(isExternal(props.node.href) ? { kind: "external" as const } : {})}>{props.node.text}</Link>
+    if (props.node.kind === "link")
+        return (
+            <Link href={props.node.href} {...(isExternal(props.node.href) ? { kind: "external" as const } : {})}>
+                {props.node.text}
+            </Link>
+        )
     return <Text as="span">{props.node.text}</Text>
 }
 
@@ -145,7 +142,12 @@ const BodyBlock = (props: BlockProps) => {
 
 /** The plain words of a paragraph or a quote, for comparing one with another. */
 const wordsOf = (block: MarkdownBlock): string =>
-    block.kind === "paragraph" || block.kind === "quote" ? block.runs.map((run) => run.text).join("").trim() : ""
+    block.kind === "paragraph" || block.kind === "quote"
+        ? block.runs
+              .map((run) => run.text)
+              .join("")
+              .trim()
+        : ""
 
 /** The blocks with one caption per diagram: a lead-in paragraph that says what the quote under the diagram says is dropped, the quote stays as the caption. */
 const withOneCaption = (blocks: ReadonlyArray<MarkdownBlock>): ReadonlyArray<MarkdownBlock> =>

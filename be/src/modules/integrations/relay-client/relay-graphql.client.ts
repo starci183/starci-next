@@ -27,7 +27,7 @@ const errorCodeOf = (body: unknown): string | null | undefined => {
     return isRecord(extensions) && typeof extensions.code === "string" ? extensions.code : undefined
 }
 
-/** Runs one GraphQL operation on the relay app with the device token; a refusal answers its stable code. */
+/** Runs one GraphQL operation on the core api with the device token; a refusal answers its stable code. */
 export const relayGraphql = async (
     fetcher: Fetcher,
     baseUrl: string,
@@ -35,7 +35,7 @@ export const relayGraphql = async (
     query: string,
     variables: Readonly<Record<string, unknown>>,
 ): Promise<GraphqlAnswer> => {
-    const answer = await fetcher(`${baseUrl}/relay/graphql`, {
+    const answer = await fetcher(`${baseUrl}/graphql`, {
         method: "POST",
         headers: {
             "content-type": "application/json",

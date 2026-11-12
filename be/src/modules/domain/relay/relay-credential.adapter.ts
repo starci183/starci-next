@@ -8,7 +8,7 @@ const DEVICE_CREDENTIAL = "tool-token"
 
 @Injectable()
 /**
- * The identity credential port of the relay app: a door marked `@Credential({ kind: "tool-token" })` admits a paired
+ * The identity credential port of the relay capability: a door marked `@Credential({ kind: "tool-token" })` admits a paired
  * device's `Authorization: Bearer <device token>`, as the device (subject) of its learner (workspace).
  */
 export class RelayCredentialAdapter implements CredentialAuthenticator {

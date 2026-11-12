@@ -77,16 +77,18 @@ export const ProfileExperienceBase = (props: ProfileExperienceBaseProps) => (
                                 <Text size="sm" tone="muted">
                                     {props.props.labels.publicNote}
                                 </Text>
-                                <Link variant="plain" href={props.props.labels.seeAllHref}>{props.props.labels.seeAll}</Link>
+                                <Link variant="plain" href={props.props.labels.seeAllHref}>
+                                    {props.props.labels.seeAll}
+                                </Link>
                             </Cluster>
                             <Text isStrong>{view.gate}</Text>
                             {view.rows.map((row) => (
                                 <Cluster key={row.itemId} gap="inline" wrap align="center" justify="between">
-                                    <Cluster gap="inline" align="center">
+                                    <Cluster gap="identity" align="center">
                                         <Badge tone="neutral">{row.part}</Badge>
                                         <Text>{row.title}</Text>
                                     </Cluster>
-                                    <Cluster gap="inline" align="center">
+                                    <Cluster gap="identity" align="center">
                                         <Text size="sm" tone="muted">
                                             {row.evidence}
                                         </Text>

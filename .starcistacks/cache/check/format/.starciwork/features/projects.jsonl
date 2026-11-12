@@ -1,0 +1,14 @@
+{"findings":[],"hash":"43c9b65813a3057dab254423c7381ab185d81289e37780fb5b6b589e41ef7277","path":".starciwork/features/projects/contract/api/index.yaml","step":"prettier"}
+{"findings":[],"hash":"9e290ad525a2993b230ed59b13fa032695b8ebaf36536690c8d86bc87791bfb9","path":".starciwork/features/projects/contract/ci-webhook/index.yaml","step":"prettier"}
+{"findings":[],"hash":"470f338f16afec7ec0f75a9d94d158bf2382338cd36d73bbfd318bed39f1206f","path":".starciwork/features/projects/contract/relay-port/index.yaml","step":"prettier"}
+{"findings":[],"hash":"c55ea6af9e4998b6794e42e4442933f53c40cac73a997ed4bc4d5b43ed0fd669","path":".starciwork/features/projects/data/project/index.yaml","step":"prettier"}
+{"findings":[],"hash":"c26cd439d61c1fc2f86a88b953088e9ebee9a57474feef7021ee5375c949f658","path":".starciwork/features/projects/fr/prove-concept/index.yaml","step":"prettier"}
+{"findings":[],"hash":"ef98a7d69808e645edcfdc2587fa4b5bfb90913758dad859cd3062aa36f02e8a","path":".starciwork/features/projects/fr/run-probes/index.yaml","step":"prettier"}
+{"findings":[],"hash":"c331f0db3342533b287e311d582ad2b9bb95436151c87d3aa05bd5d4e6d91f99","path":".starciwork/features/projects/impl/be/project/index.yaml","step":"prettier"}
+{"findings":[],"hash":"896296c8502662574fc7a589fd1bc00f28182e681f5b3c1ec27660871d2aab42","path":".starciwork/features/projects/impl/fe/projects/index.yaml","step":"prettier"}
+{"findings":[],"hash":"f18261b92d7426c509cd51d8ca65806647aa3f7c095ae83230501da8da818afa","path":".starciwork/features/projects/index.yaml","step":"prettier"}
+{"findings":[],"hash":"8fd4cf9b5b69d314eb743fb3246bd19ec24e6b4ca14b71a82d1817b745a12387","path":".starciwork/features/projects/sds/probe-runner/index.yaml","step":"prettier"}
+{"findings":[],"hash":"c393fd5979ce163faf57dbf3b29fe12307c19af677d45ad86aa66256b4931b3f","path":".starciwork/features/projects/ui/list/index.yaml","step":"prettier"}
+{"findings":[],"hash":"d94e04c4707f883020b063a9df65884196f6e2a045a8980445f6e82b23f86ea1","path":".starciwork/features/projects/ui/milestone/index.yaml","step":"prettier"}
+{"findings":[],"hash":"957f34c771d5a74ba3581aed6a5b50f7a4d406bebb9345ea652ca20e0b7ab9c5","path":".starciwork/features/projects/ui/new/index.yaml","step":"prettier"}
+{"findings":[],"hash":"6880077445394f3661ba881b9642924cc5a9c44042a72b322d84a0c94c55c16e","path":".starciwork/features/projects/ui/project/index.yaml","step":"prettier"}

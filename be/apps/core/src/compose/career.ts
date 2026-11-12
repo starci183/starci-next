@@ -23,6 +23,7 @@ import {
     ProjectModule,
     projectEntities,
     projectMigrations,
+    UnattestedCiClient,
 } from "@modules/domain/project"
 import {
     RELAY_ERROR_KINDS,
@@ -39,7 +40,8 @@ import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
 
 /**
- * The career area: mock interviews, projects with their probes and the device relay, and the verified experience they produce.
+ * The career area: mock interviews, projects with their probes and the device relay (pairing and the feed), and the verified
+ * experience they produce.
  * The project probes go through the guarded HTTP transport: public addresses only.
  */
 export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
@@ -52,6 +54,7 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         coach: AiProjectCoachClient,
         relay: RelayProjectService,
         lessons: LessonCatalogClient,
+        attestation: UnattestedCiClient,
     }),
     ProbeModule.register({ isGlobal: true }),
 ]

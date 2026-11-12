@@ -15,7 +15,11 @@ export type TopicPathRow = {
     readonly cta: string
     readonly isOpen: boolean
     /** The six phases of the lesson as the learner stands on them (Premium only); empty draws no rings. */
-    readonly phases?: ReadonlyArray<{ readonly id: string; readonly label: string; readonly state: "done" | "current" | "later" }>
+    readonly phases?: ReadonlyArray<{
+        readonly id: string
+        readonly label: string
+        readonly state: "done" | "current" | "later"
+    }>
     /** The words of the phase count ("3/6 pha"); empty hides it. */
     readonly phasesNote?: string
 }
@@ -69,7 +73,8 @@ const Rings = (props: RingsProps) => {
 /** The end of a row: the rings of an open lesson with phases, the state chip of one without, the lock of a lesson not yet open. */
 const endOf = (row: TopicPathRow, props: TopicPathProps) => {
     if (!row.isOpen) return { control: <LockIcon label={row.status} />, state: "neutral" as const }
-    if ((row.phases ?? []).length === 0) return { badges: [{ label: row.status, tone: "accent" }] as const, state: "informative" as const }
+    if ((row.phases ?? []).length === 0)
+        return { badges: [{ label: row.status, tone: "accent" }] as const, state: "informative" as const }
     return { control: <Rings row={row} ringsLabel={props.ringsLabel} doneLabel={props.doneLabel} /> }
 }
 

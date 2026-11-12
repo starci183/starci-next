@@ -16,6 +16,8 @@ export const MissingNotice = (props: MissingNoticeProps) => (
     <Stack gap="row">
         <EmptyNotice message={props.message} description={props.description} />
         {props.action}
-        <Link variant="plain" href={props.backHref}>{props.backLabel}</Link>
+        <Link variant="plain" href={props.backHref}>
+            {props.backLabel}
+        </Link>
     </Stack>
 )

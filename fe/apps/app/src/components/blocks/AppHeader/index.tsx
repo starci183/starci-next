@@ -4,13 +4,13 @@ import { navigation } from "@starci-next/i18n/navigation"
 import { useTranslations } from "next-intl"
 import { useViewerPlan } from "@/hooks/plan"
 import { useSession, useSignOut } from "@/hooks/auth"
-import { useLocaleSwitch, useLocalizedPathname } from "@/hooks/locale"
+import { useLocaleSwitch } from "@/hooks/locale"
 import { useThemeSwitch } from "@/hooks/theme"
 import { useSignInModalStore } from "@/hooks/zustand/signInModal"
 import { APP_ROUTES, signInSearch } from "@/modules/routes"
 import { AppHeaderBase, type AppHeaderAccountShape } from "./component"
 
-/** The addresses the top bar needs: the account menu's Premium page, the profile page and the sign-in screen (the bar is hidden there). */
+/** The addresses the top bar needs: the account menu's Premium page, the profile page and the sign-in screen (where sign out returns). */
 type AppHeaderProps = {
     readonly brand: string
     readonly logoSrc: string
@@ -19,9 +19,6 @@ type AppHeaderProps = {
     readonly signInHref: string
 }
 
-/** True when the reader is on `href` or below it. */
-const isOn = (pathname: string, href: string): boolean => pathname === href || pathname.startsWith(`${href}/`)
-
 /** The drawing the session selects. */
 const shapeOf = (status: "unknown" | "signed-in" | "signed-out"): AppHeaderAccountShape => {
     if (status === "unknown") return "unknown"
@@ -29,17 +26,21 @@ const shapeOf = (status: "unknown" | "signed-in" | "signed-out"): AppHeaderAccou
 }
 
 /** The muted line under the brand: the role and the plan of a signed-in reader, the guest word of a signed-out one, nothing while unknown. */
-const roleLineOf = (status: "unknown" | "signed-in" | "signed-out", learner: string, guest: string, plan: string): string => {
+const roleLineOf = (
+    status: "unknown" | "signed-in" | "signed-out",
+    learner: string,
+    guest: string,
+    plan: string,
+): string => {
     if (status === "signed-in") return `${learner} · ${plan}`
     return status === "signed-out" ? guest : ""
 }
 
 /**
  * The shell's top bar (as NIVO's ConsoleHeader): the lockup with the role and plan line, the language and theme switches and the account menu (sign out) or, for a
- * signed-out reader, the guest avatar whose entry opens the sign-in modal. Hidden on the sign-in screens, which draw their own centred brand.
+ * signed-out reader, the guest avatar whose entry opens the sign-in modal. The sign-in screens sit in the auth layout, which draws no header.
  */
 export const AppHeader = (props: AppHeaderProps) => {
-    const pathname = useLocalizedPathname()
     const session = useSession()
     const language = useLocaleSwitch()
     const theme = useThemeSwitch()
@@ -49,7 +50,6 @@ export const AppHeader = (props: AppHeaderProps) => {
     const out = useTranslations("app.signOut")
     const { pending, signOut } = useSignOut()
     const setSignInOpen = useSignInModalStore((state) => state.setOpen)
-    if (isOn(pathname, props.signInHref)) return null
     const planName = plan === "premium" ? t("planPremium") : t("planFree")
     const roleLine = roleLineOf(session.status, t("roleLearner"), t("roleGuest"), planName)
     return (
@@ -67,7 +67,10 @@ export const AppHeader = (props: AppHeaderProps) => {
                 theme: { label: theme.label, isDark: theme.isDark },
                 accountName: session.session?.displayName ?? session.session?.email ?? t("account"),
                 accountLabel: t("account"),
-                identity: { title: session.session?.email ?? session.session?.displayName ?? t("account"), subtitle: planName },
+                identity: {
+                    title: session.session?.email ?? session.session?.displayName ?? t("account"),
+                    subtitle: planName,
+                },
                 plan: { label: plan === "premium" ? t("yourPlan") : t("upgradePremium"), href: props.premiumHref },
                 profileLabel: t("profile"),
                 profileHref: props.profileHref,

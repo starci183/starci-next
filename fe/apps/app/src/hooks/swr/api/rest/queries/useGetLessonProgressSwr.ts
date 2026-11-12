@@ -19,7 +19,9 @@ const GRADING_POLL_MS = 2000
 
 /** True while any lesson of the read has an attempt still being graded. */
 const isGrading = (progress: Readonly<Record<string, ProgressView>> | undefined): boolean =>
-    Object.values(progress ?? {}).some((each) => each.activities.some((activity) => activity.latest.status === "grading"))
+    Object.values(progress ?? {}).some((each) =>
+        each.activities.some((activity) => activity.latest.status === "grading"),
+    )
 
 /**
  * Reads the learner progress in each of the given lessons, by lesson id. A lesson the learner has not touched answers an empty
@@ -35,7 +37,9 @@ export const useGetLessonProgressSwr = (
         async () => {
             const entries = await Promise.all(
                 lessonIds.map(async (lessonId) => {
-                    const { data } = await failing(() => queryLessonProgress({ request: { lessonId, locale: locale ?? DEFAULT_LOCALE } }))
+                    const { data } = await failing(() =>
+                        queryLessonProgress({ request: { lessonId, locale: locale ?? DEFAULT_LOCALE } }),
+                    )
                     if (data === undefined) throw new Error("progress answered no data")
                     return [lessonId, lessonProgressOf(data)] as const
                 }),

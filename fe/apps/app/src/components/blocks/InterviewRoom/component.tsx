@@ -11,6 +11,7 @@ import {
     type MarkdownBlock,
 } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
+import { roomHeaderOf } from "./header"
 
 /** One question of the progress list. */
 export type InterviewProgressView = {
@@ -164,7 +165,7 @@ const Answer = (props: BodyProps) => (
 /** The header line: the question counter, the tier and the way to end the interview. */
 const Header = (props: Omit<BodyProps, "isLoading">) => (
     <Cluster gap="inline" wrap align="center" justify="between">
-        <Cluster gap="inline" align="center">
+        <Cluster gap="identity" align="center">
             <Badge tone="accent">{props.view.counter}</Badge>
             <Badge tone="muted">{props.view.tier}</Badge>
         </Cluster>
@@ -276,12 +277,11 @@ const Rail = (props: RailProps) => (
 )
 
 /**
- * Draws the interview room the way the canvas does: a focused text chat in the middle with the question counter, the code or
- * diagram above the answer box and the actions below it; beside it the progress of the questions and the note that nothing is
- * said about the answers until the whole session is graded. On a phone the rail follows the chat.
+ * The interview room as the canvas draws it: the chat with the counter, the code or diagram above the answer box and the
+ * actions below; beside it the progress and the note that answers are judged only once graded. On a phone the rail follows.
  */
 export const InterviewRoomBase = (props: InterviewRoomBaseProps) => (
-    <Page header={{ title: props.props.labels.title, titleScale: "standard" as const }}>
+    <Page header={roomHeaderOf(props.props.labels.title, props.props.labels.back, props.props.homeHref)}>
         <SlotView
             slot={props.props.slot}
             placeholder={props.props.placeholder}

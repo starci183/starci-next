@@ -47,10 +47,10 @@ const phasesOf = (input: TopicInput, lessonId: string): NonNullable<TopicScreenV
     )
     const firstOpen = phases.findIndex((each) => each.state !== "done")
     return phases.map((each, index) => ({
-            id: each.phase,
-            label: input.words.phases[each.phase] ?? each.phase,
-            state: phaseStateOf(each.state, index === firstOpen),
-        }))
+        id: each.phase,
+        label: input.words.phases[each.phase] ?? each.phase,
+        state: phaseStateOf(each.state, index === firstOpen),
+    }))
 }
 
 /** The path of the topic: published lessons link to the lesson and say where the learner stands; the others say they are coming. */
@@ -76,7 +76,13 @@ const rowsOf = (input: TopicInput): TopicScreenView["rows"] =>
             isOpen,
             ...(phases.length === 0
                 ? {}
-                : { phases, phasesNote: input.words.phasesNote(phases.filter((each) => each.state === "done").length, phases.length) }),
+                : {
+                      phases,
+                      phasesNote: input.words.phasesNote(
+                          phases.filter((each) => each.state === "done").length,
+                          phases.length,
+                      ),
+                  }),
         }
     })
 
@@ -91,10 +97,14 @@ const relatedOf = (input: TopicInput): TopicScreenView["related"] =>
 /** The lesson the hero's command opens: the first open one the learner has not understood yet, else the first open one. */
 const nextOf = (input: TopicInput, rows: TopicScreenView["rows"]): TopicScreenView["next"] => {
     const unfinished = input.topic.path.find(
-        (path) => path.lessonId !== "" && !["understood", "proved"].includes(lessonStatusOf(input.progress[path.lessonId])),
+        (path) =>
+            path.lessonId !== "" && !["understood", "proved"].includes(lessonStatusOf(input.progress[path.lessonId])),
     )
-    const row = rows.find((each) => each.id === `${unfinished?.order}`) ?? rows.find((each) => each.isOpen && each.href !== "")
-    return row === undefined || row.href === "" ? undefined : { label: `${row.cta}: ${row.title.split(" — ")[0] ?? row.title}`, href: row.href }
+    const row =
+        rows.find((each) => each.id === `${unfinished?.order}`) ?? rows.find((each) => each.isOpen && each.href !== "")
+    return row === undefined || row.href === ""
+        ? undefined
+        : { label: `${row.cta}: ${row.title.split(" — ")[0] ?? row.title}`, href: row.href }
 }
 
 /** The facts of the band: lessons, minutes and languages across the lessons the chapter has open. */

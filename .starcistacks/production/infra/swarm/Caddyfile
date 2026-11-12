@@ -2,14 +2,11 @@
     admin 127.0.0.1:2019
 }
 
-# The app host is one origin for the browser: the identity doors (/api/*) and GraphQL (/graphql) go to the core api, so the host-only
-# session cookie reaches them; /relay/* (the learner device socket and the upload GraphQL, prefix stripped, WebSocket upgrade
-# passed through) goes to the relay app; every other path is the Next app. The api. host stays for the payment webhooks (SePay, payOS IPN).
+# The app host is one origin for the browser: the identity doors (/api/*), GraphQL (/graphql, the learner device uploads included) and
+# the learner device socket (/socket.io/*, WebSocket upgrade passed through) go to the core api, so the host-only session cookie
+# reaches them; every other path is the Next app. The api. host stays for the payment webhooks (SePay, payOS IPN).
 starci-next.example.invalid {
-    handle_path /relay/* {
-        reverse_proxy relay:3003
-    }
-    @core path /api/* /graphql
+    @core path /api/* /graphql /socket.io/*
     handle @core {
         reverse_proxy core:3001
     }

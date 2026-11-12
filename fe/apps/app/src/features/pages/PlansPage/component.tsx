@@ -9,7 +9,7 @@ export type PlansPageBaseProps = {
 
 /** Draws the Premium plans route: one Page whose header carries the heading and the term promise, and the plans block as its body. */
 export const PlansPageBase = (props: PlansPageBaseProps) => (
-    <Page header={{ title: props.props.title, description: props.props.description }}>
+    <Page header={{ title: props.props.title, description: props.props.description, breadcrumbs: "root" }}>
         <PremiumPlans />
     </Page>
 )

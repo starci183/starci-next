@@ -1,0 +1,15 @@
+{"data":{},"findings":[],"hash":"f25739afb25021fdc9287caa3d599a15aedb81e600b69da17668331eda040963","path":".starciwork/concepts/ai-model-deepseek-flash/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c568bf57dc0d2403233f486fd0bfa8926038664bcb60b13c86ee6d1c59b26a83","path":".starciwork/concepts/app-shell-nivo-parity/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cdb0c13955c1a3a47525d21ec2a91735d44354a87873b32910d08ae12ae6b655","path":".starciwork/concepts/content-repo/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3422d614ad34feb77cc73e009cd825b01973643b90e9686414cccc5551fda5be","path":".starciwork/concepts/dev-only-test-grants/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e4e6e37fe2adcc87a69bdeb2f3f111aa97806b24d362206c1061f2468ce2bc30","path":".starciwork/concepts/essentials-lessons/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"03992053e623a0865be2e6758166344d42104a0d22d4191e767ceceddbf544e5","path":".starciwork/concepts/gallery-explained-screens/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5a9ab24760b5110b6db037d06275938415aea6962af738236e487a68ebf63cdf","path":".starciwork/concepts/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4337f7a03b95e499a6489d03f07c2f7f6a176e8d08dee2acf7504c328ca51488","path":".starciwork/concepts/learner-cli-relay-proof/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9f2be3bd487fd35327e9fbe0c9ca0c86aad90b43e1cd4a60e0365c88d72c9640","path":".starciwork/concepts/learning-program/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"64e5d8839c8cff00d9317b543535c23471aa284aa702da65a6b55047d2b8c97f","path":".starciwork/concepts/premium-placement/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"de4db0322cba4c852d6520e875b1e6bbecbaaaf958da52d5440ae801b8ff88fd","path":".starciwork/concepts/premium-unlocks-all/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7ee5da808391e4996b23a87dfff92c0bf8a61f94864c50ebf52d969e58d4c5f8","path":".starciwork/concepts/projects-bring-your-own/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2af7eb7a5495e41217d860855b0dca3431e609d78c8576e8f3588100953bd698","path":".starciwork/concepts/surface-layering/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"466e06b214180d2e0aea286baa37c391742f669dd477431d5e5e3c1491af6f17","path":".starciwork/concepts/theme-and-type/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7e5148fab629df57f3dd117ccae0797576237988382fa1a9af4ff69a0349f578","path":".starciwork/concepts/verified-experience/index.yaml","step":"file-rules"}

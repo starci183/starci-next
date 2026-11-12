@@ -14,5 +14,8 @@ export const evidenceTextOf = (output: string, explanation: string): string =>
 /** The two fields an apply evidence's saved answer text holds; both empty for a text that is not one. */
 export const evidenceFieldsOf = (text: string): { readonly output: string; readonly explanation: string } => {
     const [head = "", tail = ""] = text.split(`\n\n${EXPLANATION_HEADING}\n\n`)
-    return { output: head.startsWith(`${OUTPUT_HEADING}\n\n`) ? head.slice(OUTPUT_HEADING.length + 2) : "", explanation: tail }
+    return {
+        output: head.startsWith(`${OUTPUT_HEADING}\n\n`) ? head.slice(OUTPUT_HEADING.length + 2) : "",
+        explanation: tail,
+    }
 }

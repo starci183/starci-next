@@ -172,8 +172,8 @@ export interface RubricRequest {
 export interface CiDelivery {
     /** The unparsed request bytes the signature covers. */
     readonly rawBody: Buffer | undefined
-    /** The project header. */
-    readonly projectId: string | undefined
+    /** The project header: the id of the project the run belongs to. */
+    readonly project: string | undefined
     /** The timestamp header, epoch milliseconds. */
     readonly timestamp: string | undefined
     /** The signature header, `sha256=<hex>`. */
@@ -181,6 +181,21 @@ export interface CiDelivery {
     /** The `x-starci-oidc` header: the run's GitHub Actions OIDC token, or undefined when the workflow sent none. */
     readonly oidcToken?: string | undefined
 }
+
+/** What a CI delivery is proved by: the project it names, the moment it was signed, the signature and the bytes it covers. */
+export interface CiProof {
+    /** The project header: the id of the project the run belongs to. */
+    readonly project: string | undefined
+    /** The timestamp header, epoch milliseconds. */
+    readonly timestamp: string | undefined
+    /** The signature header, `sha256=<hex>`. */
+    readonly signature: string | undefined
+    /** The unparsed request bytes the signature covers. */
+    readonly body: Buffer | undefined
+}
+
+/** What the CI intake answers for a recorded run; undefined when its run id was already claimed, so nothing was recorded again. */
+export type CiRunReceipt = CiReceipt | undefined
 
 /** Why a CI run stays signed-only: no token, no bound repository, no verifier, an unreachable GitHub, or what the token did not match. */
 export type CiAttestationRefusal =

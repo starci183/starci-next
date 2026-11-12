@@ -2,7 +2,12 @@
 
 import { useLocale, useTranslations } from "next-intl"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useGetEssentialsSwr, useGetLessonLanguagesSwr, useGetLessonProgressSwr, useGetLessonTopicSwr } from "@/hooks/swr"
+import {
+    useGetEssentialsSwr,
+    useGetLessonLanguagesSwr,
+    useGetLessonProgressSwr,
+    useGetLessonTopicSwr,
+} from "@/hooks/swr"
 import { topicScreenOf, useLegacyLessonDestination, useTopicLabels, useTopicWords } from "@/hooks/topic"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"

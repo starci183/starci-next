@@ -85,7 +85,12 @@ describe("RelayFeedService manifest", () => {
         expect(signed.body.plan).toEqual({
             milestone: "bf-data-and-cache",
             report: "starci/reports/junit.xml",
-            concepts: ["server-state-cache-lifecycle", "cqrs-read-models", "transactions-and-isolation", "indexing-and-query-plans"],
+            concepts: [
+                "server-state-cache-lifecycle",
+                "cqrs-read-models",
+                "transactions-and-isolation",
+                "indexing-and-query-plans",
+            ],
         })
         expect(signed.payload).toContain('"plan":{"milestone":"bf-data-and-cache"')
     })

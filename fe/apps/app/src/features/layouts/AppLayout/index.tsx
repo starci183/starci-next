@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { getLocale, getTranslations } from "next-intl/server"
 import type { ReactNode, ReactElement } from "react"
-import { SiteShell } from "@starci-next/ui"
+import { WorkspaceShell } from "@starci/grammar/common"
+import { MoreGlyph } from "@starci-next/ui"
 import { AppHeader } from "@/components/blocks/AppHeader"
 import { AppSidebar } from "@/components/blocks/AppSidebar"
 import { SignInModal } from "@/features/overlays/SignInModal"
@@ -23,27 +24,42 @@ export const AppLayout = async (props: AppLayoutProps): Promise<ReactElement> =>
     const t = await getTranslations("app.shell")
     const locale = await getLocale()
     const hrefOf = (href: string): string => appI18n.navigation.getPathname({ href, locale })
-    const homeHref = hrefOf(APP_ROUTES.home)
     const premiumHref = hrefOf(APP_ROUTES.premium)
-    const sidebar = (presentation: "rail" | "drawer"): ReactElement => (
-        <AppSidebar presentation={presentation} />
-    )
+    const sidebar = (presentation: "rail" | "drawer"): ReactElement => <AppSidebar presentation={presentation} />
     return (
-        <SiteShell
-            brand={t("brand")}
-            homeHref={homeHref}
-            header={<AppHeader brand={t("brand")} logoSrc="/brand/starci-logo.png" premiumHref={premiumHref} profileHref={hrefOf(APP_ROUTES.profile)} signInHref={hrefOf(APP_ROUTES.signIn)} />}
-            navigation={{
-                rail: sidebar("rail"),
-                label: t("sidebarLabel"),
-                drawerContent: sidebar("drawer"),
-                drawerTitle: t("menuTitle"),
+        <WorkspaceShell
+            viewport="fixed"
+            align="stretch"
+            primaryLabel={t("brand")}
+            header={
+                <AppHeader
+                    brand={t("brand")}
+                    logoSrc="/brand/starci-logo.png"
+                    premiumHref={premiumHref}
+                    profileHref={hrefOf(APP_ROUTES.profile)}
+                    signInHref={hrefOf(APP_ROUTES.signIn)}
+                />
+            }
+            headerLandmark="slot"
+            navigation={sidebar("rail")}
+            navigationLabel={t("sidebarLabel")}
+            navigationTrack="intrinsic"
+            navigationVisibility="wide"
+            navigationDrawer={{
+                title: t("menuTitle"),
                 openLabel: t("menuOpen"),
                 closeLabel: t("menuClose"),
+                source: MoreGlyph,
+                defaultOpen: false,
+                content: sidebar("drawer"),
+                rowTitle: t("menuOpen"),
             }}
-        >
-            {props.content}
-            <SignInModal />
-        </SiteShell>
+            primary={
+                <>
+                    {props.content}
+                    <SignInModal />
+                </>
+            }
+        />
     )
 }

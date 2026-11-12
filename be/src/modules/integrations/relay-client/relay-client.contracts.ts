@@ -146,7 +146,7 @@ export type ManifestRead =
 export type ManifestFetch =
     { readonly kind: "verified"; readonly manifest: VerifiedManifest } | { readonly kind: "unsigned" } | Refusal
 
-/** The upload mutations of the relay app. */
+/** The upload mutations of the relay feed. */
 export type UploadMutation = "relayCheckStarted" | "relayCheckResult" | "relayLog" | "relayManifestAck"
 
 /** One upload waiting for StarCi to accept it, idempotent on its client event id. */

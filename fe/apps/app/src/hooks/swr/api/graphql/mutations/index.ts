@@ -20,7 +20,10 @@ export { MUTATE_CHECK_REVIEW_CLOZE_SWR_KEY, useMutateCheckReviewClozeSwr } from 
 export { MUTATE_FLIP_REVIEW_CARD_SWR_KEY, useMutateFlipReviewCardSwr } from "./useMutateFlipReviewCardSwr"
 export { MUTATE_GRADE_REVIEW_CARD_SWR_KEY, useMutateGradeReviewCardSwr } from "./useMutateGradeReviewCardSwr"
 export { MUTATE_REMOVE_REVIEW_DECK_SWR_KEY, useMutateRemoveReviewDeckSwr } from "./useMutateRemoveReviewDeckSwr"
-export { MUTATE_SAVE_LESSON_SIMULATION_SWR_KEY, useMutateSaveLessonSimulationSwr } from "./useMutateSaveLessonSimulationSwr"
+export {
+    MUTATE_SAVE_LESSON_SIMULATION_SWR_KEY,
+    useMutateSaveLessonSimulationSwr,
+} from "./useMutateSaveLessonSimulationSwr"
 export { MUTATE_SET_REVIEW_GOAL_SWR_KEY, useMutateSetReviewGoalSwr } from "./useMutateSetReviewGoalSwr"
 export {
     MUTATE_SUBMIT_REVIEW_RETRIEVAL_SWR_KEY,

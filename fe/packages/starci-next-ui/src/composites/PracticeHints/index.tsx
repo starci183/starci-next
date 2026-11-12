@@ -37,12 +37,12 @@ export const PracticeHints = (props: PracticeHintsProps) => {
     const isComplete = props.revealed.length >= props.total
     return (
         <SurfaceCard label={props.labels.title}>
-            <Stack gap="row">
+            <Stack gap="section">
                 <Text size="sm" tone="muted">
                     {props.labels.note}
                 </Text>
                 {props.revealed.map((hint) => (
-                    <Stack key={hint.step} gap="inline">
+                    <Stack key={hint.step} gap="row">
                         <Cluster gap="inline" wrap align="center">
                             <Badge tone="accent">{props.labels.step(hint.step, props.total)}</Badge>
                             <Heading level={3} scale="standard">

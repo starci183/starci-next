@@ -20,7 +20,14 @@ export const BrandLockup = (props: BrandLockupProps) => (
             <Link
                 href={props.homeHref}
                 label={props.brand}
-                media={{ src: props.logoSrc, alt: "", aspect: "square", fit: "contain", loading: "eager", plate: "none" }}
+                media={{
+                    src: props.logoSrc,
+                    alt: "",
+                    aspect: "square",
+                    fit: "contain",
+                    loading: "eager",
+                    plate: "none",
+                }}
             />
         </div>
         <Text isStrong>{props.brand}</Text>

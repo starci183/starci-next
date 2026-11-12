@@ -112,7 +112,7 @@ type QueueBodyProps = { readonly view: ReviewQueueScreenView; readonly base: Rev
 
 /** One row: the item, the learner handle and part, the SLA badge, preview and open. */
 const QueueRow = (props: QueueRowProps) => (
-    <Stack gap="identity">
+    <Stack gap="row">
         <Cluster gap="inline" justify="between" align="center">
             <Text isStrong>{props.row.title}</Text>
             <Badge tone={props.row.slaTone}>{props.row.sla}</Badge>
@@ -128,7 +128,9 @@ const QueueRow = (props: QueueRowProps) => (
             >
                 {props.labels.preview}
             </Button>
-            <Link variant="plain" href={props.row.href}>{props.labels.open}</Link>
+            <Link variant="plain" href={props.row.href}>
+                {props.labels.open}
+            </Link>
         </Cluster>
     </Stack>
 )

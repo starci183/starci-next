@@ -1,1 +1,1 @@
-export { useViewerPlan, type ViewerPlan } from "./useViewerPlan"
+export { useViewerPlan } from "./useViewerPlan"

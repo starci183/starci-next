@@ -29,7 +29,6 @@ export {
     useMutateRemoveReviewDeckSwr,
     useMutateSaveLessonSimulationSwr,
     useMutateSetReviewGoalSwr,
-    useMutateMarkNotificationsReadSwr,
     useMutateChooseOutcomePathSwr,
     useMutateStreakGoalSwr,
     useMutateStartPremiumCheckoutSwr,
@@ -63,7 +62,6 @@ export {
     useQueryInterviewSessionSwr,
     useQueryLearnerHubSwr,
     useQueryOutcomePathsSwr,
-    useQueryMyNotificationsSwr,
     useQueryMyPremiumSwr,
     useQueryRelayDevicesSwr,
     useQueryRelayPairingSwr,
@@ -90,7 +88,6 @@ export {
 } from "./api"
 export type {
     ExperienceReviewersView,
-    MyNotifications,
     MyExperienceView,
     ReviewItemView,
     ReviewQueueView,
@@ -103,7 +100,6 @@ export type {
     InterviewSessionRead,
     LearnerHub,
     OutcomePaths,
-    StreakSummary,
     ProjectMilestoneRead,
     ProjectRead,
     ProjectsRead,

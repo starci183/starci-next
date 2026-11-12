@@ -1,4 +1,10 @@
-import type { ConceptDefinition, LocalizedText, MilestoneDefinition, ProjectKind } from "./project.contracts"
+import type {
+    ConceptDefinition,
+    LocalizedText,
+    MilestoneDefinition,
+    MilestoneLookup,
+    ProjectKind,
+} from "./project.contracts"
 import { PROJECT_COPY } from "./messages/project.messages"
 
 /** The copy of one catalog entry in both locales, read from the message file. */
@@ -346,7 +352,7 @@ export const conceptOf = (id: string): ConceptDefinition | null =>
     PROJECT_CONCEPTS.find((concept) => concept.id === id) ?? null
 
 /** The milestone of the catalog, or null when the id is not one. */
-export const milestoneOf = (id: string): MilestoneDefinition | null =>
+export const milestoneOf = (id: string): MilestoneLookup =>
     PROJECT_MILESTONES.find((milestone) => milestone.id === id) ?? null
 
 /** The milestones a project of this kind lists, in catalog order. */

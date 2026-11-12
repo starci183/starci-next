@@ -85,9 +85,7 @@ const errorNotice = (props: Pick<SlotViewProps<unknown>, "errorDescription" | "l
 )
 
 /** The empty notice of a read that settled with nothing to draw. */
-const emptyNotice = (
-    props: Pick<SlotViewProps<unknown>, "emptyDescription" | "emptyArtwork" | "labels">,
-): ReactNode =>
+const emptyNotice = (props: Pick<SlotViewProps<unknown>, "emptyDescription" | "emptyArtwork" | "labels">): ReactNode =>
     props.emptyArtwork === undefined ? (
         <EmptyNotice message={props.labels.empty} {...descriptionOf(props.emptyDescription)} />
     ) : (

@@ -84,7 +84,9 @@ export const TopicAside = (props: TopicAsideProps) => (
                             <Text size="sm" tone="muted">
                                 {props.upsell.note}
                             </Text>
-                            <Link variant="plain" href={props.upsell.href}>{props.upsell.label}</Link>
+                            <Link variant="plain" href={props.upsell.href}>
+                                {props.upsell.label}
+                            </Link>
                         </>
                     )}
                 </>

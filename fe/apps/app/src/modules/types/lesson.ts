@@ -48,7 +48,12 @@ export type SimulationStateView = {
 }
 
 /** One edge of a simulation: the action taken in a state and the state it leads to. */
-export type SimulationEdgeView = { readonly id: string; readonly fromStateId: string; readonly actionId: string; readonly toStateId: string }
+export type SimulationEdgeView = {
+    readonly id: string
+    readonly fromStateId: string
+    readonly actionId: string
+    readonly toStateId: string
+}
 
 /** The state machine of a simulation, from the public projection. */
 export type SimulationView = {

@@ -1,27 +1,89 @@
 /*
- * StarCi Next brand layer: the StarCi Academy palette on HeroUI's tokens (.starciwork/brand/index.yaml color.tokens), the light theme.
- * The dark theme is Grammar Core's own (@starci/grammar/core/theme.css, imported before this file): no dark token is written here.
+ * starci-next theme from the owner, 2026-11-10 (pasted verbatim in the NIVO UX/UI chat).
+ * Owner law `owner-colors-exact`: use these values exactly, never swap a colour (even for contrast) without asking.
+ * Font: IBM Plex Sans (owner 2026-11-11, one font for the whole app) via next/font/google, subsets ["latin", "vietnamese"],
+ *   variable "--font-sans" (fe/apps/app/src/modules/brand/font.ts).
+ *
+ * HeroUI Theme Customization
+ * Add this to your global.css after importing @heroui/styles
+ * Only includes variables users need to customize
+ * @see https://heroui.com/docs/react/getting-started/theming
  */
-.light {
-    --accent: #7547ff;
-    --accent-foreground: oklch(100% 0 0);
-    --link: #6a3cf2;
-    --background: oklch(97.02% 0.0015 354.13);
-    --foreground: oklch(21.03% 0.0015 354.13);
-    --surface: oklch(100% 0.0008 354.13);
-    --surface-foreground: oklch(21.03% 0.0015 354.13);
-    --surface-secondary: oklch(95.24% 0.0012 354.13);
-    --surface-secondary-foreground: oklch(21.03% 0.0015 354.13);
-    --muted: oklch(55.17% 0.003 354.13);
-    --focus: #7248ff;
-    --border: oklch(90% 0.0015 354.13);
-    --separator: oklch(92% 0.0015 354.13);
-    --success: oklch(73.29% 0.1941 162.85);
-    --success-foreground: oklch(21.03% 0.0059 162.85);
-    --warning: oklch(78.19% 0.159 84.37);
-    --warning-foreground: oklch(21.03% 0.0059 84.37);
-    --danger: oklch(62% 0.2335 37.78);
+
+:root,
+.light,
+[data-theme="light"] {
+    /* Theme Colors (Light Mode) */
+    --accent: oklch(77% 0.13 305);
+    --accent-foreground: oklch(15% 0.026 305);
+    --background: oklch(97.02% 0.0015 305);
+    --border: oklch(90% 0.0015 305);
+    --danger: oklch(65.32% 0.2335 31.88);
     --danger-foreground: oklch(99.11% 0 0);
-    --info: oklch(72% 0.17 250);
-    --info-foreground: oklch(21.03% 0.0059 250);
+    --default: oklch(94% 0.0015 305);
+    --default-foreground: oklch(21.03% 0.0059 305);
+    --field-background: oklch(100% 0.0008 305);
+    --field-border: transparent;
+    --field-foreground: oklch(21.03% 0.0015 305);
+    --field-placeholder: oklch(55.17% 0.003 305);
+    --focus: oklch(77% 0.13 305);
+    --foreground: oklch(21.03% 0.0015 305);
+    --muted: oklch(55.17% 0.003 305);
+    --overlay: oklch(100% 0.0004 305);
+    --overlay-foreground: oklch(21.03% 0.0015 305);
+    --scrollbar: oklch(87.1% 0.0015 305);
+    --segment: oklch(100% 0.0015 305);
+    --segment-foreground: oklch(21.03% 0.0015 305);
+    --separator: oklch(92% 0.0015 305);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0.0059 156.95);
+    --surface: oklch(100% 0.0008 305);
+    --surface-foreground: oklch(21.03% 0.0015 305);
+    --surface-secondary: oklch(95.24% 0.0012 305);
+    --surface-secondary-foreground: oklch(21.03% 0.0015 305);
+    --surface-tertiary: oklch(93.73% 0.0012 305);
+    --surface-tertiary-foreground: oklch(21.03% 0.0015 305);
+    --warning: oklch(78.19% 0.159 78.47);
+    --warning-foreground: oklch(21.03% 0.0059 78.47);
+
+    /* Border Radius */
+    --radius: 0.5rem;
+    --field-radius: 0.75rem;
+}
+
+.dark,
+[data-theme="dark"] {
+    color-scheme: dark;
+    /* Theme Colors (Dark Mode) */
+    --accent: oklch(77% 0.13 305);
+    --accent-foreground: oklch(15% 0.026 305);
+    --background: oklch(12% 0.0015 305);
+    --border: oklch(28% 0.0015 305);
+    --danger: oklch(59.4% 0.1973 30.77);
+    --danger-foreground: oklch(99.11% 0 0);
+    --default: oklch(27.4% 0.0015 305);
+    --default-foreground: oklch(99.11% 0 0);
+    --field-background: oklch(21.03% 0.003 305);
+    --field-border: transparent;
+    --field-foreground: oklch(99.11% 0.0015 305);
+    --field-placeholder: oklch(70.5% 0.003 305);
+    --focus: oklch(77% 0.13 305);
+    --foreground: oklch(99.11% 0.0015 305);
+    --muted: oklch(70.5% 0.003 305);
+    --overlay: oklch(21.03% 0.003 305);
+    --overlay-foreground: oklch(99.11% 0.0015 305);
+    --scrollbar: oklch(70.5% 0.0015 305);
+    --segment: oklch(39.64% 0.0015 305);
+    --segment-foreground: oklch(99.11% 0.0015 305);
+    --separator: oklch(25% 0.0015 305);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0.0059 156.95);
+    --surface: oklch(21.03% 0.003 305);
+    --surface-foreground: oklch(99.11% 0.0015 305);
+    --surface-secondary: oklch(25.7% 0.0023 305);
+    --surface-secondary-foreground: oklch(99.11% 0.0015 305);
+    --surface-tertiary: oklch(27.21% 0.0023 305);
+    --surface-tertiary-foreground: oklch(99.11% 0.0015 305);
+    --warning: oklch(82.03% 0.1392 82.48);
+    --warning-foreground: oklch(21.03% 0.0059 82.48);
 }

@@ -70,7 +70,7 @@ input AnswerInterviewInput {
   isSkipped: Boolean! = false
   position: Int! @inputBounds(min: 0, max: 40)
   revision: Int! @inputBounds(min: 0, max: 10)
-  sessionId: String!
+  sessionId: String! @inputBounds(maxLength: 36)
   text: String! = "" @inputBounds(maxLength: 10000)
 }
 
@@ -193,7 +193,7 @@ input FlipRecallCardInput {
 
 input GradeRecallCardInput {
   clozeCorrect: Boolean
-  grade: String!
+  grade: String! @inputBounds(maxLength: 5)
   itemId: String! @inputBounds(maxLength: 300)
   revision: Int! @inputBounds(min: 1, max: 100000)
 }
@@ -364,7 +364,7 @@ type InterviewGradingType {
 
 input InterviewHintInput {
   position: Int! @inputBounds(min: 0, max: 40)
-  sessionId: String!
+  sessionId: String! @inputBounds(maxLength: 36)
 }
 
 type InterviewHintType {
@@ -477,7 +477,7 @@ type InterviewScorecardType {
 }
 
 input InterviewSessionRefInput {
-  sessionId: String!
+  sessionId: String! @inputBounds(maxLength: 36)
 }
 
 type InterviewSessionType {
@@ -913,6 +913,10 @@ type Mutation {
   interviewHint(input: InterviewHintInput!): InterviewHintType!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
   regradeInterview(input: InterviewSessionRefInput!): InterviewGradingType!
+  relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
+  relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
+  relayLog(input: RelayLogInput!): RelayUploadType!
+  relayManifestAck(input: RelayManifestAckInput!): RelayUploadType!
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
   retryInterviewTurn(input: InterviewSessionRefInput!): InterviewAnswerType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
@@ -924,6 +928,7 @@ type Mutation {
   saveLessonSimulation(input: SaveLessonSimulationInput!): LessonProgressSimulationType!
   setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
   setProjectConcept(input: SetProjectConceptInput!): ProjectConceptType!
+  setProjectRepository(input: SetProjectRepositoryInput!): ProjectRepositoryType!
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
   setStreakGoal(input: SetStreakGoalInput!): StreakGoalType!
   showExperience(input: ShowExperienceInput!): ExperienceItemType!
@@ -1305,6 +1310,17 @@ type ProjectProvedConceptType {
   provedAt: String!
 }
 
+input ProjectRepositoryInput {
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+type ProjectRepositoryType {
+  audience: String!
+  projectId: String!
+  repository: String
+  repositoryId: String
+}
+
 type ProjectSecretType {
   ciSecret: String!
   project: ProjectSummaryType!
@@ -1373,10 +1389,12 @@ type Query {
   project(input: ProjectInput!): ProjectDetailType!
   projectCatalog(input: ProjectCatalogInput!): ProjectCatalogType!
   projectMilestone(input: ProjectMilestoneInput!): ProjectMilestoneType!
+  projectRepository(input: ProjectRepositoryInput!): ProjectRepositoryType!
   projects(input: ProjectsInput!): [ProjectSummaryType!]!
   provedProjectConcepts: [ProjectProvedConceptType!]!
   recallItem(input: RecallItemInput!): RecallItemType!
   relayDevices: [RelayDeviceType!]!
+  relayManifest(input: RelayManifestInput!): RelayManifestType!
   relayPairing(input: RelayUserCodeInput!): RelayPairingType!
   reviewDecks(input: RecallDecksInput!): [RecallDeckType!]!
   reviewItem(input: ReviewItemInput!): ReviewItemType!
@@ -1521,6 +1539,27 @@ type RecallTodayType {
   overdue: Int!
 }
 
+input RelayCheckResultInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  commit: String @inputBounds(maxLength: 40)
+  conceptId: String @inputBounds(maxLength: 100)
+  durationMs: Int! @inputBounds(min: 0, max: 86400000)
+  eventId: String! @inputBounds(maxLength: 36)
+  exitCode: Int! @inputBounds(min: -1, max: 255)
+  passed: Boolean!
+  ref: String @inputBounds(maxLength: 300)
+  runId: String! @inputBounds(maxLength: 100)
+  slot: String @inputBounds(maxLength: 5)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+input RelayCheckStartedInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
 type RelayDeviceType {
   id: ID!
   lastSeenAt: String
@@ -1530,10 +1569,52 @@ type RelayDeviceType {
   platform: String!
 }
 
+input RelayLogInput {
+  checkId: String! @inputBounds(maxLength: 100)
+  eventId: String! @inputBounds(maxLength: 36)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+  text: String! @inputBounds(maxLength: 16384)
+}
+
+input RelayManifestAckInput {
+  eventId: String! @inputBounds(maxLength: 36)
+  manifestId: String! @inputBounds(maxLength: 100)
+  runId: String! @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+}
+
+type RelayManifestCheckType {
+  command: String!
+  cwd: String!
+  id: String!
+  timeoutMs: Int!
+}
+
+input RelayManifestInput {
+  milestone: String @inputBounds(maxLength: 100)
+  taskId: String! @inputBounds(maxLength: 100)
+  testCommand: String @inputBounds(maxLength: 400)
+  testReport: String @inputBounds(maxLength: 200)
+}
+
+type RelayManifestType {
+  checks: [RelayManifestCheckType!]!
+  manifestId: String!
+  payload: String!
+  signature: String!
+  taskId: String!
+}
+
 type RelayPairingType {
   expiresAt: String!
   name: String!
   platform: String!
+}
+
+type RelayUploadType {
+  accepted: Boolean!
+  eventId: String!
 }
 
 input RelayUserCodeInput {
@@ -1669,6 +1750,11 @@ input SetProjectConceptInput {
   location: String = null @inputBounds(maxLength: 300)
   projectId: String! @inputBounds(maxLength: 36)
   sampleBody: String = null @inputBounds(maxLength: 2000)
+}
+
+input SetProjectRepositoryInput {
+  projectId: String! @inputBounds(maxLength: 36)
+  repository: String! @inputBounds(maxLength: 200)
 }
 
 input SetRecallGoalInput {

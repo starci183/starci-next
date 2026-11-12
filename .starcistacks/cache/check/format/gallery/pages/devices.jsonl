@@ -1,0 +1,1 @@
+{"findings":[{"column":0,"line":0,"message":"gallery/pages/devices/list/explain.md is not formatted by prettier; run `npm run format`","path":"gallery/pages/devices/list/explain.md","rule":"HFS_FORMAT"}],"hash":"f0e742b34b211874e58b4a4204161f5e5659f17f2d3c829906a6f6a3ff3fb694","path":"gallery/pages/devices/list/explain.md","step":"prettier"}

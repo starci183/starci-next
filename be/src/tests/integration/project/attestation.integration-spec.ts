@@ -39,7 +39,8 @@ describe("project CI attestation (integration)", () => {
         const timestamp = rows?.[0]?.ms ?? ""
         const rawBody = Buffer.from(JSON.stringify(runOf(runId)))
         const signature = `sha256=${createHmac("sha256", secret).update(timestamp).update(".").update(rawBody).digest("hex")}`
-        return w.ci().recordRun({ projectId, rawBody, timestamp, signature, oidcToken })
+        await w.proof().prove({ project: projectId, timestamp, signature, body: rawBody })
+        return w.ci().recordRun({ rawBody, project: projectId, timestamp, signature, oidcToken })
     }
 
     const attestationsOf = (projectId: string) =>

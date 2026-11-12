@@ -21,6 +21,12 @@ const signed = (secret: string, body: unknown, timestamp: string): SignedDeliver
     return { rawBody, timestamp, signature, oidcToken: worldOidcTokenOf("learner/clinic", "abc1234", "gh-100-1") }
 }
 
+/** The door's two calls: the proof, then the record of the proved run. */
+const deliver = async (w: ProjectWorld, project: string, delivery: SignedDelivery) => {
+    await w.proof().prove({ project, ...delivery, body: delivery.rawBody })
+    return w.ci().recordRun({ project, ...delivery })
+}
+
 const CREATE = {
     name: "Clinic booking",
     kind: "app" as const,
@@ -78,7 +84,7 @@ describe("projects flow (integration)", () => {
         )
 
         const practising = await w.practice().sync(lookup)
-        const first = await w.ci().recordRun({ projectId: project.id, ...signed(ciSecret, RUN, now) })
+        const first = await deliver(w, project.id, signed(ciSecret, RUN, now))
         const afterCi = await w.reads().milestone({ ...lookup, milestoneId: "bf-http-foundation" })
         await w.codeReads().read({
             ...lookup,
@@ -88,7 +94,7 @@ describe("projects flow (integration)", () => {
             explanation: "The guard test fails when the guard accepts. It checks the behaviour, not the call.",
         })
         const done = await w.reads().get(lookup)
-        const replay = await w.ci().recordRun({ projectId: project.id, ...signed(ciSecret, RUN, now) })
+        const replay = await deliver(w, project.id, signed(ciSecret, RUN, now))
         const items = await w.experiences().mine({ learnerId, state: null })
         const inbox = await w.notifications().page(learnerId, {})
         const actions = await storedStreakActionsOf(w.db(), learnerId)
@@ -99,7 +105,7 @@ describe("projects flow (integration)", () => {
         expect(afterCi.concepts.map((concept) => concept.state)).toEqual(["proved", "proved", "practising"])
         expect(done.milestones[0]).toMatchObject({ id: "bf-http-foundation", state: "done", provedCount: 3 })
         expect(done.lastCiRun).toMatchObject({ runId: "gh-100-1", commit: "abc1234", passed: true })
-        expect(replay).toEqual({ duplicate: true, added: 0 })
+        expect(replay).toBeUndefined()
         expect(proved.map((item) => item.conceptId).sort((a, b) => a.localeCompare(b))).toEqual(
             [...WORLD_PROVED].sort((a, b) => a.localeCompare(b)),
         )
@@ -117,9 +123,9 @@ describe("projects flow (integration)", () => {
         const learnerId = ids.next()
         const { project } = await w.projects().create({ learnerId, ...CREATE })
 
-        await expect(
-            w.ci().recordRun({ projectId: project.id, ...signed("b".repeat(64), RUN, now) }),
-        ).rejects.toMatchObject({ code: "PROJECT_CI_SIGNATURE_INVALID" })
+        await expect(deliver(w, project.id, signed("b".repeat(64), RUN, now))).rejects.toMatchObject({
+            code: "PROJECT_CI_SIGNATURE_INVALID",
+        })
         await expect(w.projects().create({ learnerId, ...CREATE })).rejects.toMatchObject({
             code: "PROJECT_PREMIUM_REQUIRED",
         })

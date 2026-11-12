@@ -55,7 +55,10 @@ export const copyKit = (kitDir: string, cwd: string, ciFile: string, force: bool
         path: `starci/${file}`,
     }))
     const workflow = { from: join(kitDir, "ci", ciFile), path: ".github/workflows/starci.yml" }
-    const copied = [...starci, workflow].map((file) => ({ path: file.path, result: copyOne(file.from, cwd, file.path, force) }))
+    const copied = [...starci, workflow].map((file) => ({
+        path: file.path,
+        result: copyOne(file.from, cwd, file.path, force),
+    }))
     return {
         written: copied.filter((file) => file.result === "written").map((file) => file.path),
         kept: copied.filter((file) => file.result === "kept").map((file) => file.path),

@@ -81,6 +81,7 @@ const ChoiceBlock = (props: ChoiceBlockProps) => {
             options={card.options}
             pickedId={card.pickedId}
             status={card.status}
+            isSendFailed={card.isSendFailed}
             isCorrect={card.isCorrect}
             explanations={card.isCheck ? card.explanations : {}}
             labels={env.labels.choice}
@@ -149,6 +150,7 @@ const EvidenceBlock = (props: EvidenceBlockProps) => {
             outputValue={card.outputValue}
             explanationValue={card.explanationValue}
             status={card.draft.status}
+            isSendFailed={card.draft.isSendFailed}
             issue={card.draft.issue}
             {...evidenceResultOf(card.draft)}
             labels={env.labels.evidence}

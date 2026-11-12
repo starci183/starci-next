@@ -1,6 +1,8 @@
 # The app declares its topology before any owner provisions a deployment.
 # All-zero application digests are illustrative and must be replaced by verified release digests.
 schema: starci/application-stacks@1
+# This project has a back end (be) and a front end (fe): sides are declared in hfs.json.
+sides: {be: true, fe: true, packages: false}
 # To render README badges, declare ci.github: {repository: owner/repo, defaultBranch: main}.
 # A GitHub package.json repository URL also enables the managed block.
 sources:
@@ -103,11 +105,10 @@ environments:
     local:
       basePort: 3000
       ports:
-        db: 5432
-        mail: 1025
-        mailui: 8025
+        db: 3090
+        mail: 3091
+        mailui: 3092
         core: 3001
-        relay: 3003
         app: 3000
         landing: 3002
         ingress: 3080
@@ -174,41 +175,15 @@ environments:
             SEPAY_MERCHANT_ID: sandbox-placeholder-sepay-merchant-id
             AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
             ATTEMPT_COACH_DAILY_LIMIT: "100"
+            # The learner relay (decision.relay.placement) is part of the core api: the push-only device socket (/socket.io) and the upload GraphQL (/graphql).
+            # One core replica: the in-process hub (a shared hub is not built yet).
+            REALTIME_HUB: memory
+            # Dev signs task manifests with a key pair made once by `node scripts/dev/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
+            RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
             # Dev only: every agent and walker shares one loopback caller behind the ingress, so the per-address windows are widened here; production keeps the defaults (600 / 30 per minute).
             HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
             HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
           health: {url: "http://localhost:${port.core}/health/live"}
-        # The learner relay (decision.relay.placement): its own app on 3003, the push-only device socket and the upload GraphQL, behind /relay of the ingress.
-        - name: relay
-          argv: [node, dist/apps/relay/src/main.js]
-          cwd: be
-          port: relay
-          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY]
-          env:
-            NODE_ENV: development
-            PORT: "${port.relay}"
-            HTTP_SECURITY_ALLOWED_ORIGINS: "http://localhost:${port.ingress}"
-            IDENTITY_KEYCLOAK_ISSUER: "https://localhost:${port.keycloak}/realms/starci-next-identity"
-            HTTP_TRUSTED_CA_FILE: "${data}/keycloak-tls/ca.crt"
-            IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity-lane
-            IDENTITY_SOCIAL_CALLBACK_URI: "https://localhost:${port.ingress}/sign-in/callback"
-            IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
-            IDENTITY_SESSION_MAX_SECONDS: "0"
-            IDENTITY_CHALLENGE_TTL_SECONDS: "600"
-            IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
-            MAIL_HOST: 127.0.0.1
-            MAIL_PORT: "${port.mail}"
-            MAIL_SECURITY: none
-            MAIL_FROM: no-reply@starci-next.localhost
-            MAIL_FROM_NAME: Starci Next
-            MAIL_DEFAULT_LANGUAGE: en
-            # One relay replica: the in-process hub (a shared hub is not built yet).
-            REALTIME_HUB: memory
-            # Dev signs task manifests with a key pair made once by `node scripts/dev/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
-            RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
-            HTTP_SECURITY_RATE_DEFAULT_LIMIT: "20000"
-            HTTP_SECURITY_RATE_STRICT_LIMIT: "600"
-          health: {url: "http://localhost:${port.relay}/health/live"}
         - name: app
           # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). Behind the ingress the browser's /api/* and
           # /graphql never reach this server; the dev rewrite of next.config.ts (CORE_INTERNAL_ORIGIN, default http://127.0.0.1:3001) only serves a direct visit to this port.
@@ -231,7 +206,6 @@ environments:
       ready:
         - {name: core-live, url: "http://localhost:${port.core}/health/live"}
         - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
-        - {name: relay-live, url: "http://localhost:${port.relay}/health/live"}
         - {name: app-live, url: "http://localhost:${port.app}/health/live"}
         - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
       verify:
@@ -241,14 +215,12 @@ environments:
         - {name: landing-live, url: "http://localhost:${port.landing}/health/live"}
         # The cookie path: the dev entry origin routes /api/* to the core api (a signed-out GET answers its 401 code; the Next app would answer 404).
         - {name: identity-session-door, url: "http://localhost:${port.ingress}/api/identity/session", status: 401, contains: IDENTITY_SESSION_REQUIRED}
-        - {name: relay-live, url: "http://localhost:${port.relay}/health/live"}
-        # The relay path of the ingress: /relay/* is stripped and served by the relay app (its health probe through the ingress).
-        - {name: relay-ingress, url: "http://localhost:${port.ingress}/relay/health/live", status: 200}
+        # The device socket path of the ingress: /socket.io/* reaches the core api, whose socket server takes WebSocket only and refuses a polling handshake (the Next app would answer 404).
+        - {name: device-socket-ingress, url: "http://localhost:${port.ingress}/socket.io/?EIO=4&transport=polling", status: 400, contains: Transport unknown}
       origins:
         - {name: entry, url: "http://localhost:${port.ingress}"}
         - {name: app, url: "http://localhost:${port.app}"}
         - {name: core, url: "http://localhost:${port.core}"}
-        - {name: relay, url: "http://localhost:${port.relay}"}
         - {name: landing, url: "http://localhost:${port.landing}"}
         - {name: mail, url: "http://localhost:${port.mailui}"}
   production:
@@ -366,8 +338,6 @@ environments:
       images:
         core:
           app: core
-        relay:
-          app: relay
         app:
           app: app
           # Public browser configuration; replace the placeholder origin before deployment.
@@ -388,9 +358,11 @@ environments:
             url: "https://api.starci-next.example.invalid/health/live"
             status: 200
             retry: true
-          - name: relay liveness through the app host
-            url: "https://starci-next.example.invalid/relay/health/live"
-            status: 200
+          # The device socket path: the app host's /socket.io/* reaches the core api, whose socket server takes WebSocket only and refuses a polling handshake.
+          - name: device socket through the app host
+            url: "https://starci-next.example.invalid/socket.io/?EIO=4&transport=polling"
+            status: 400
+            contains: Transport unknown
             retry: true
           - name: app liveness
             url: "https://starci-next.example.invalid/health/live"

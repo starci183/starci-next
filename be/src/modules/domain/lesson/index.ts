@@ -11,14 +11,13 @@
  * server before a submit.
  */
 export { LessonContentService } from "./lesson-content.service"
-export { LESSON_ERROR_KINDS, LessonError, LessonErrorCode } from "./errors/lesson.error"
+export { LESSON_ERROR_KINDS } from "./errors/lesson.error"
 export { LESSON_MESSAGES } from "./messages/lesson.messages"
 export { lessonEntities, lessonMigrations } from "./persistence/connection"
 export { LessonImportService } from "./lesson-import.service"
 export { LessonLinkService } from "./lesson-link.service"
 export { LessonModule } from "./lesson.module"
 export { LessonReadService } from "./lesson-read.service"
-export { LESSON_WORKSPACE_LANGUAGES } from "./lesson.contracts"
 export type {
     LessonActivity,
     LessonContent,

@@ -20,11 +20,9 @@ import { readCliEnv } from "../../../apps/cli/src/cli.env"
 import { createCliAppOptions, type CliAppOptions } from "../../../apps/cli/src/cli.options"
 import { readCoreEnv } from "../../../apps/core/src/core.env"
 import type { CoreOptions } from "../../../apps/core/src/core.options"
-import { readRelayEnv } from "../../../apps/relay/src/relay.env"
-import type { RelayAppOptions } from "../../../apps/relay/src/relay.options"
 
 /** The wiring of the world: its api apps and its database connections. */
-export type AppWiring = WorldWiring<"core" | "relay", "primary">
+export type AppWiring = WorldWiring<"core", "primary">
 
 /** The one browser origin the apps of the world accept. */
 export const ALLOWED_ORIGIN = "http://localhost:3000"
@@ -69,13 +67,12 @@ const environmentOf = (w: AppWiring, extra: Readonly<Record<string, string>> = {
         ...extra,
     })
 
-/** The core app, read the way its `main.ts` reads its environment, listening on the port the run reserved for it. */
+/**
+ * The core app (its doors, the device socket and the upload GraphQL), read the way its `main.ts` reads its environment, listening
+ * on the port the run reserved for it; the memory hub, one replica.
+ */
 export const coreOptionsOf = (w: AppWiring): CoreOptions =>
-    readCoreEnv(environmentOf(w, { PORT: String(w.apps.core.port) }))
-
-/** The relay app (device socket and upload GraphQL), read the way its `main.ts` reads its environment; the memory hub, one replica. */
-export const relayOptionsOf = (w: AppWiring): RelayAppOptions =>
-    readRelayEnv(environmentOf(w, { PORT: String(w.apps.relay.port), REALTIME_HUB: "memory" }))
+    readCoreEnv(environmentOf(w, { PORT: String(w.apps.core.port), REALTIME_HUB: "memory" }))
 
 /** The origin allowlist and rate limits of the run, read the way the api apps read them. */
 export const httpSecurityOf = (w: AppWiring): HttpSecurityOptions => parseHttpSecurityConfig(environmentOf(w))

@@ -52,7 +52,12 @@ const rowsOf = (node: CatalogNode) =>
               title: topic.title,
               ...(topic.cover === undefined || topic.cover === ""
                   ? {}
-                  : { leading: { avatar: { name: topic.title, src: topic.cover, shape: "rounded" as const }, size: "md" as const } }),
+                  : {
+                        leading: {
+                            avatar: { name: topic.title, src: topic.cover, shape: "rounded" as const },
+                            size: "md" as const,
+                        },
+                    }),
               ...(topic.source === "" ? {} : { description: topic.source }),
               badges: [{ label: topic.status, tone: "muted" as const }] as const,
               meta: { text: topic.openLabel },

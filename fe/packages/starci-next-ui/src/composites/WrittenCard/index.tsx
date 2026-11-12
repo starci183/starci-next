@@ -23,7 +23,7 @@ export type WrittenCardLabels = {
 }
 
 /** Where the attempt of a written answer stands. */
-type WrittenStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium" | "error"
+type WrittenStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium"
 
 /** One graded criterion of the answer. */
 type WrittenCriterion = {
@@ -38,6 +38,8 @@ type WrittenCriterion = {
 type WrittenDraft = {
     readonly value: string
     readonly status: WrittenStatus
+    /** True when the last send was rejected by the transport. */
+    readonly isSendFailed: boolean
     readonly issue: "none" | "unconfigured" | "limit" | "other"
     readonly criteria: ReadonlyArray<WrittenCriterion>
     readonly scoreLine: string
@@ -106,7 +108,7 @@ const Grade = (props: GradeProps) =>
 /** The label of the submit button from where the attempt stands. */
 const submitLabelOf = (props: Pick<WrittenCardProps, "draft" | "labels">): string => {
     if (props.draft.status === "pending" || props.draft.status === "grading") return props.labels.pending
-    return props.draft.status === "failed" || props.draft.status === "error" ? props.labels.retry : props.labels.submit
+    return props.draft.status === "failed" || props.draft.isSendFailed ? props.labels.retry : props.labels.submit
 }
 
 /** The words of a saved answer whose grading failed, by why it failed. */
@@ -149,7 +151,9 @@ export const WrittenCard = (props: WrittenCardProps) => {
                                     intent="commit"
                                     startGlyph="send"
                                     isPending={isPending}
-                                    isDisabled={props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"}
+                                    isDisabled={
+                                        props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"
+                                    }
                                     onPress={props.onSubmit}
                                 >
                                     {submitLabelOf(props)}
@@ -175,6 +179,7 @@ export const WrittenCard = (props: WrittenCardProps) => {
                     />
                     <AttemptNotice
                         status={props.draft.status}
+                        isSendFailed={props.draft.isSendFailed}
                         saved={props.labels.saved}
                         grading={props.labels.grading}
                         failedSaved={failedWordsOf(props)}

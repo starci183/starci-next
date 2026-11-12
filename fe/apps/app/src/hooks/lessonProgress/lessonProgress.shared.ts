@@ -10,7 +10,10 @@ import type {
 } from "@/modules/types"
 
 /** The activities of the lesson in one phase, in reading order. */
-export const phaseActivitiesOf = (lesson: LessonView, phase: LessonPhase): LessonView["sections"][number]["activities"] =>
+export const phaseActivitiesOf = (
+    lesson: LessonView,
+    phase: LessonPhase,
+): LessonView["sections"][number]["activities"] =>
     lesson.sections.filter((section) => section.phase === phase).flatMap((section) => section.activities)
 
 /** The state the screen shows for an outcome, from the state the server decides: mastered is understood, needs-review is to review. */

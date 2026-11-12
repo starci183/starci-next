@@ -60,11 +60,7 @@ export const LanguageMenu = (props: LanguageMenuProps): ReactElement => {
                     placement="bottom end"
                     entries={entries}
                     trigger={
-                        <Button
-                            intent="dismiss"
-                            size="md"
-                            isDisabled={props.isDisabled}
-                        >
+                        <Button intent="dismiss" size="md" isDisabled={props.isDisabled}>
                             {chosen}
                         </Button>
                     }

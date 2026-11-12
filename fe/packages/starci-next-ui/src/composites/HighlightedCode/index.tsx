@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react"
 import { useShikiHighlighter } from "react-shiki"
 
@@ -60,5 +58,9 @@ export const HighlightedCode = (props: HighlightedCodeProps) => {
         observer.observe(host)
         return () => observer.disconnect()
     }, [isNear])
-    return <div ref={hostRef}>{isNear ? <Highlighted code={props.code} language={props.language} /> : <PlainCode code={props.code} />}</div>
+    return (
+        <div ref={hostRef}>
+            {isNear ? <Highlighted code={props.code} language={props.language} /> : <PlainCode code={props.code} />}
+        </div>
+    )
 }

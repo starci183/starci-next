@@ -85,7 +85,8 @@ export const viewOf = (t: Translate, project: ProjectRead): ProjectDetailView =>
             id: milestone.id,
             title: milestone.title,
             meta: t("detail.milestoneRow", { proved: milestone.provedCount, count: milestone.conceptCount }),
-            percent: milestone.conceptCount === 0 ? 0 : Math.round((milestone.provedCount / milestone.conceptCount) * 100),
+            percent:
+                milestone.conceptCount === 0 ? 0 : Math.round((milestone.provedCount / milestone.conceptCount) * 100),
             chip: milestoneChipOf(t, milestone),
             href: projectMilestonePath(project.id, milestone.id),
         })),

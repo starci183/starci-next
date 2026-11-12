@@ -33,7 +33,10 @@ const dateOf = (iso: string): string => {
 }
 
 /** The words of the aside, the markdown body and the files card. */
-const useLessonAsideLabels = (): Pick<LessonJourneyLabels, "progress" | "markdown" | "filesOpen" | "filesClose" | "filesDownload"> => {
+const useLessonAsideLabels = (): Pick<
+    LessonJourneyLabels,
+    "progress" | "markdown" | "filesOpen" | "filesClose" | "filesDownload"
+> => {
     const t = useTranslations("app.essentials")
     return {
         progress: {
@@ -57,7 +60,11 @@ const useLessonAsideLabels = (): Pick<LessonJourneyLabels, "progress" | "markdow
             saved: t("progress.statusGraded"),
             checksTitle: t("progress.checksTitle"),
             checkRow: (n) => t("progress.checkRow", { n }),
-            checkStatus: { none: t("progress.checkNone"), correct: t("progress.checkCorrect"), wrong: t("progress.checkWrong") },
+            checkStatus: {
+                none: t("progress.checkNone"),
+                correct: t("progress.checkCorrect"),
+                wrong: t("progress.checkWrong"),
+            },
             reviews: t("progress.reviews"),
             reviewsLocked: t("progress.reviewsLocked"),
             reviewAfter: (days) => t("progress.reviewAfter", { days }),

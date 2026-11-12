@@ -3,6 +3,7 @@ import { LessonCatalogClient } from "./lesson-catalog.client"
 import { NoRelayClient } from "./no-relay.client"
 import { PROJECT_CI_ATTESTATION } from "./project-ci-attestation.port"
 import { ProjectCiService } from "./project-ci.service"
+import { ProjectCiProofService } from "./project-ci-proof.service"
 import { ProjectCodeReadService } from "./project-code-read.service"
 import { PROJECT_COACH } from "./project-coach.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
@@ -46,6 +47,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,
+                ProjectCiProofService,
                 ProjectProbeService,
                 ProjectCodeReadService,
                 ProjectPracticeService,
@@ -55,6 +57,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,
+                ProjectCiProofService,
                 ProjectProbeService,
                 ProjectCodeReadService,
                 ProjectPracticeService,

@@ -75,7 +75,18 @@ const Body = (props: BodyProps) => {
 /** The review session: progress, then one item at a time, or the summary. */
 export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
     <Page
-        header={{ title: props.props.labels.pageTitle, titleScale: "standard", meta: props.props.labels.progressText }}
+        header={{
+            title: props.props.labels.pageTitle,
+            titleScale: "standard",
+            meta: props.props.labels.progressText,
+            breadcrumbs: {
+                label: props.props.labels.summaryBack,
+                items: [
+                    { id: "review", label: props.props.labels.summaryBack, href: props.props.todayHref },
+                    { id: "session", label: props.props.labels.pageTitle },
+                ],
+            },
+        }}
         measure="reading"
     >
         <Stack gap="region">

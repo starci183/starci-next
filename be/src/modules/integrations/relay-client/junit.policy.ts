@@ -48,7 +48,10 @@ export const junitCasesOf = (xml: string): ReadonlyArray<JunitCase> =>
  * its tests ran and all that ran passed. Concepts without a running test are left out, so the app never shows a concept the
  * learner has no test for.
  */
-export const conceptRunsOf = (cases: ReadonlyArray<JunitCase>, concepts: ReadonlyArray<string>): ReadonlyArray<ConceptRun> =>
+export const conceptRunsOf = (
+    cases: ReadonlyArray<JunitCase>,
+    concepts: ReadonlyArray<string>,
+): ReadonlyArray<ConceptRun> =>
     concepts.flatMap((conceptId) => {
         const ran = cases.filter(
             (test) => !test.skipped && [...test.name.matchAll(TAG)].some((tag) => tag[1] === conceptId),

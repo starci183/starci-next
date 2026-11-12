@@ -14,7 +14,7 @@ export type LandingPageBaseProps = {
 
 /** Draw the public front door: the welcome, one sentence about the product and the way into the product app. */
 export const LandingPageBase = (props: LandingPageBaseProps) => (
-    <Page header={{ title: props.props.title }}>
+    <Page header={{ title: props.props.title, breadcrumbs: "root" }}>
         <Text tone="muted">{props.props.lede}</Text>
         <Button href={props.props.appHref} intent="commit">
             {props.props.openApp}

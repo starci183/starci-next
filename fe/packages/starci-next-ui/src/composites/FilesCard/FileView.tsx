@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { Button, Dialog, FencedCodeBlock } from "@starci/grammar/common"
 import { HighlightedCode } from "../HighlightedCode"
@@ -18,9 +16,27 @@ export type FileViewProps = {
 
 /** The names a code view shows for a language id. */
 const LANGUAGE_LABELS: Readonly<Record<string, string>> = {
-    bash: "Bash", csharp: "C#", cs: "C#", css: "CSS", go: "Go", html: "HTML", java: "Java", javascript: "JavaScript", js: "JavaScript",
-    json: "JSON", markdown: "Markdown", python: "Python", shell: "Shell", sh: "Bash", sql: "SQL", ts: "TypeScript", tsx: "TSX",
-    typescript: "TypeScript", xml: "XML", yaml: "YAML", yml: "YAML",
+    bash: "Bash",
+    csharp: "C#",
+    cs: "C#",
+    css: "CSS",
+    go: "Go",
+    html: "HTML",
+    java: "Java",
+    javascript: "JavaScript",
+    js: "JavaScript",
+    json: "JSON",
+    markdown: "Markdown",
+    python: "Python",
+    shell: "Shell",
+    sh: "Bash",
+    sql: "SQL",
+    ts: "TypeScript",
+    tsx: "TSX",
+    typescript: "TypeScript",
+    xml: "XML",
+    yaml: "YAML",
+    yml: "YAML",
 }
 
 /** The name of a language for the code view's header; the id itself when it has no name here. */
@@ -68,8 +84,10 @@ export const FileView = (props: FileViewProps) => (
             }
             {...(props.file.language === "" ? {} : { language: languageLabelOf(props.file.language) })}
         >
-            <HighlightedCode code={props.file.content} language={props.file.language === "" ? null : props.file.language} />
+            <HighlightedCode
+                code={props.file.content}
+                language={props.file.language === "" ? null : props.file.language}
+            />
         </FencedCodeBlock>
     </Dialog>
 )
-

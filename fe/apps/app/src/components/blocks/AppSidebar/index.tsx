@@ -27,7 +27,17 @@ type AppSidebarProps = {
 
 /** One destination: its message key, the route it opens and the glyph that stands for it. */
 type Destination = {
-    readonly id: "learn" | "essentials" | "review" | "interview" | "practice" | "incidents" | "projects" | "agents" | "experience" | "profile"
+    readonly id:
+        | "learn"
+        | "essentials"
+        | "review"
+        | "interview"
+        | "practice"
+        | "incidents"
+        | "projects"
+        | "agents"
+        | "experience"
+        | "profile"
     readonly route: string
     readonly source: AppSidebarEntry["source"]
 }

@@ -112,7 +112,7 @@ const Recall = (props: RecallProps) => {
                 onValueChange={props.on.setNote}
             />
             <Notices issue={props.item.issue} labels={props.labels} />
-            <Cluster gap="row" wrap align="center">
+            <Cluster gap="inline" wrap align="center">
                 {isSoon ? (
                     <Button intent="alternative" onPress={props.on.skip}>
                         {props.labels.skip}
@@ -157,7 +157,7 @@ const Back = (props: BackProps) => (
         <Text size="sm" tone="muted">
             {props.labels.rateQuestion}
         </Text>
-        <Cluster gap="row" wrap label={props.labels.rateGroup}>
+        <Cluster gap="inline" wrap label={props.labels.rateGroup}>
             {props.back.grades.map((each) => (
                 <Button
                     key={each.grade}
@@ -210,7 +210,7 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
                 {props.item.question}
             </Heading>
             {props.item.back === undefined ? (
-                <Stack gap="row">
+                <Stack gap="inline">
                     <Cloze item={props.item} labels={props.labels} onPick={props.on.pick} />
                     <Recall item={props.item} labels={props.labels} on={props.on} />
                 </Stack>

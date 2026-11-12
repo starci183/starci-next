@@ -9,8 +9,7 @@ import { oidcIssuerFake } from "./fakes/oidc-issuer/oidc-issuer.client"
 import { openrouterFake } from "./fakes/openrouter/openrouter.client"
 import { payosFake } from "./fakes/payos/payos.client"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
-import { AppModule as RelayApp } from "../../../apps/relay/src/app.module"
-import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase, relayOptionsOf } from "./test-apps.options"
+import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
 
 const world: TestWorldApi = defineTestWorld({
     stack: ".starcistacks/dev",
@@ -21,7 +20,6 @@ const world: TestWorldApi = defineTestWorld({
     fakes: { idp: oidcIssuerFake(), payos: payosFake(), openrouter: openrouterFake(), judge0: judge0Fake() },
     apps: {
         core: { module: CoreApp, options: coreOptionsOf, rawBody: true },
-        relay: { module: RelayApp, options: relayOptionsOf },
     },
     migrate: { module: migrateCli, options: cliOptionsOf },
     modules: { base: platformBase },

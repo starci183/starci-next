@@ -12,6 +12,7 @@ import { careerModules } from "./compose/career"
 import { systemModules } from "./compose/system"
 import { apiModules } from "./compose/api"
 import { webhooksModules } from "./compose/webhooks"
+import { realtimeModules } from "./compose/realtime"
 import type { CoreOptions } from "./core.options"
 
 @Module({})
@@ -31,6 +32,7 @@ export class AppModule {
                 ...systemModules(),
                 ...apiModules(),
                 ...webhooksModules(),
+                ...realtimeModules(),
             ],
             providers: [
                 { provide: APP_FILTER, useClass: ErrorsFilter },

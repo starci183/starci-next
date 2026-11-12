@@ -28,7 +28,7 @@ export type ApplyEvidenceLabels = {
 }
 
 /** Where the attempt stands. */
-export type EvidenceStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium" | "error"
+export type EvidenceStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium"
 
 /** One graded criterion of the evidence. */
 export type EvidenceCriterion = {
@@ -56,6 +56,8 @@ export type ApplyEvidenceProps = {
     readonly outputValue: string
     readonly explanationValue: string
     readonly status: EvidenceStatus
+    /** True when the last send was rejected by the transport. */
+    readonly isSendFailed: boolean
     /** `limit` (the daily grading allowance is used up) disables the submit. */
     readonly issue?: "none" | "unconfigured" | "limit" | "other"
     /** Absent before a grade; the result card is drawn only with it. */

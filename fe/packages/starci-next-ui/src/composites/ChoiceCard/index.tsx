@@ -17,7 +17,7 @@ export type ChoiceCardLabels = {
 }
 
 /** Where the attempt of a choice stands. */
-type ChoiceStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium" | "error"
+type ChoiceStatus = "idle" | "pending" | "saved" | "grading" | "graded" | "failed" | "premium"
 
 /** One choice activity: the question, its options and, after the grade, the verdict with each option's explanation. */
 type ChoiceCardProps = {
@@ -26,6 +26,8 @@ type ChoiceCardProps = {
     /** The option picked; empty before a pick. */
     readonly pickedId: string
     readonly status: ChoiceStatus
+    /** True when the last send was rejected by the transport. */
+    readonly isSendFailed: boolean
     /** Whether the graded pick was right; meaningful once the status is graded. */
     readonly isCorrect: boolean
     /** Why each option is or is not right, by option id; empty until the grade releases it. */
@@ -38,9 +40,9 @@ type ChoiceCardProps = {
 }
 
 /** The label of the submit button from where the attempt stands. */
-const submitLabelOf = (props: Pick<ChoiceCardProps, "status" | "labels">): string => {
+const submitLabelOf = (props: Pick<ChoiceCardProps, "status" | "isSendFailed" | "labels">): string => {
     if (props.status === "pending" || props.status === "grading") return props.labels.pending
-    return props.status === "error" ? props.labels.retry : props.labels.submit
+    return props.isSendFailed ? props.labels.retry : props.labels.submit
 }
 
 /** What the feedback card needs. */
@@ -60,7 +62,7 @@ const Feedback = (props: FeedbackProps) => {
 }
 
 /** What the form footer needs. */
-type FooterProps = Pick<ChoiceCardProps, "status" | "pickedId" | "labels" | "plansHref" | "onSubmit">
+type FooterProps = Pick<ChoiceCardProps, "status" | "isSendFailed" | "pickedId" | "labels" | "plansHref" | "onSubmit">
 
 /** The form footer: the attempt's notice, then the primary submit with its icon. */
 const FormFooter = (props: FooterProps) => {
@@ -70,6 +72,7 @@ const FormFooter = (props: FooterProps) => {
         <Stack gap="row">
             <AttemptNotice
                 status={props.status}
+                isSendFailed={props.isSendFailed}
                 saved={props.labels.saved}
                 grading={props.labels.grading}
                 failedSaved={props.labels.failedSaved}
@@ -136,6 +139,7 @@ export const ChoiceCard = (props: ChoiceCardProps) => {
                         children: (
                             <FormFooter
                                 status={props.status}
+                                isSendFailed={props.isSendFailed}
                                 pickedId={props.pickedId}
                                 labels={props.labels}
                                 plansHref={props.plansHref}

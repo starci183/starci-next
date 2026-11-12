@@ -100,10 +100,20 @@ export const Moves = (props: MovesProps) => {
                                     .replace("{total}", String(branches.length))}
                             </Text>
                             <Cluster gap="inline" wrap>
-                                <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onBack}>
+                                <Button
+                                    intent="neutral"
+                                    size="sm"
+                                    isDisabled={walk.steps.length === 0}
+                                    onPress={props.onBack}
+                                >
                                     {card.labels.back}
                                 </Button>
-                                <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onRestart}>
+                                <Button
+                                    intent="neutral"
+                                    size="sm"
+                                    isDisabled={walk.steps.length === 0}
+                                    onPress={props.onRestart}
+                                >
                                     {card.labels.restart}
                                 </Button>
                             </Cluster>

@@ -2,6 +2,7 @@ import { type EnvSource, parseServerConfig } from "@modules/platform/config"
 import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseHttpConfig } from "@modules/platform/http"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
+import { parseRealtimeConfig } from "@modules/platform/realtime"
 import { parseAgentLabConfig } from "@modules/domain/agent-lab"
 import { parseAttemptConfig } from "@modules/domain/attempt"
 import { parseInterviewConfig } from "@modules/domain/interview"
@@ -53,8 +54,10 @@ export interface CoreEnv {
     readonly agentLab: ReturnType<typeof parseAgentLabConfig>
     /** The project capability: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: ReturnType<typeof parseProjectConfig>
-    /** The relay capability: the pairing code lifetime, the confirm page and the device limits per plan. */
+    /** The relay capability: the pairing code lifetime, the confirm page, the device limits per plan and the manifest key. */
     readonly relay: ReturnType<typeof parseRelayConfig>
+    /** The realtime hub the device socket reads (memory, one replica). */
+    readonly realtime: ReturnType<typeof parseRealtimeConfig>
 }
 
 /** Reads the core environment; missing or invalid values fail boot, and secrets use `_FILE` first. */
@@ -80,5 +83,6 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         agentLab: parseAgentLabConfig(env),
         project: parseProjectConfig(env),
         relay: parseRelayConfig(env, httpSecurity.allowedOrigins[0] ?? ""),
+        realtime: parseRealtimeConfig(env),
     }
 }

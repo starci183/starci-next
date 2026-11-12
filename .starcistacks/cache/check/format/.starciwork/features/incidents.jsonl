@@ -1,0 +1,6 @@
+{"findings":[],"hash":"91eb1744f27e5240c5c5aa04af530e579c356127d52c6fbf93917cd21671f783","path":".starciwork/features/incidents/contract/api/index.yaml","step":"prettier"}
+{"findings":[],"hash":"2362153b06334ffb5dc338b168b6cf751fa84595916471419e54712c3d70e50f","path":".starciwork/features/incidents/fr/list/index.yaml","step":"prettier"}
+{"findings":[],"hash":"0a8147f18269ef9726a80548e04dfe214cabecde68c640d78f2fe69e2c274ed9","path":".starciwork/features/incidents/impl/be/incidents/index.yaml","step":"prettier"}
+{"findings":[],"hash":"b2c54985e1252da013f2659b800dd15fd27d384c8d6d90fccd3453207ab79d6d","path":".starciwork/features/incidents/impl/fe/incidents/index.yaml","step":"prettier"}
+{"findings":[],"hash":"bdea505c1c189680ed801b54d2a9d6f1b82628b127825662a69281ab775c5327","path":".starciwork/features/incidents/index.yaml","step":"prettier"}
+{"findings":[],"hash":"60c9b997e1782ec905ea55b15303f56e872ab328dda7deeb62d3c019b7514b5e","path":".starciwork/features/incidents/ui/list/index.yaml","step":"prettier"}

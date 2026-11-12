@@ -57,19 +57,18 @@ const cardsOf = (input: StudyInput): ReadonlyArray<StudyCardView> => {
     const open = openSectionOf(sections, input.phase, input.workbench)
     if (open === undefined) return []
     const hasLab = input.phase === "apply" && open.id === sections[0]?.id && input.lesson.files.length > 0
-    const workspace: ReadonlyArray<StudyCardView> =
-        hasLab
-            ? [
-                  {
-                      kind: "files",
-                      id: "workspace",
-                      files: input.lesson.files,
-                      ...(input.lesson.workspaces.length === 0
-                          ? singleLabOf(input.lesson)
-                          : { variants: withDownloads(input.lesson.workspaces, input.lesson.id) }),
-                  },
-              ]
-            : []
+    const workspace: ReadonlyArray<StudyCardView> = hasLab
+        ? [
+              {
+                  kind: "files",
+                  id: "workspace",
+                  files: input.lesson.files,
+                  ...(input.lesson.workspaces.length === 0
+                      ? singleLabOf(input.lesson)
+                      : { variants: withDownloads(input.lesson.workspaces, input.lesson.id) }),
+              },
+          ]
+        : []
     const own = sectionCardsOf(open, input.workbench, { words: input.words, lessonId: input.lesson.id, hasLab })
     return own.some((card) => card.kind === "files") ? own : [...workspace, ...own]
 }

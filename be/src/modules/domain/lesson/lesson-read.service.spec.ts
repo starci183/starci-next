@@ -252,6 +252,7 @@ describe("LessonReadService workspaceArchive", () => {
         })
 
         expect(archive.fileName).toBe("demo-lesson-typescript.zip")
+        expect(archive.disposition).toBe('attachment; filename="demo-lesson-typescript.zip"')
         expect(archive.content.subarray(0, 4).toString("hex")).toBe("504b0304")
     })
 

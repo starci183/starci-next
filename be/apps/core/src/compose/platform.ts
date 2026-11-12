@@ -13,7 +13,10 @@ import {
 } from "@modules/platform/http-security"
 import { I18nModule } from "@modules/platform/i18n"
 import { HTTP_ERROR_KINDS, HTTP_MESSAGES, HttpModule } from "@modules/platform/http"
+import { IDEMPOTENCY_ERROR_KINDS, IDEMPOTENCY_MESSAGES } from "@modules/platform/idempotency"
+import { INBOX_ERROR_KINDS, INBOX_MESSAGES, inboxEntities, inboxMigrations } from "@modules/platform/inbox"
 import { LoggingModule } from "@modules/platform/logging"
+import { REALTIME_ERROR_KINDS, RealtimeModule } from "@modules/platform/realtime"
 import { RetryModule } from "@modules/platform/retry"
 import type { CoreOptions } from "../core.options"
 import { careerAreaEntities, careerAreaErrorKinds, careerAreaMessages, careerAreaMigrations } from "./career"
@@ -24,8 +27,9 @@ import { learningAreaEntities, learningAreaErrorKinds, learningAreaMessages, lea
 
 /**
  * The platform area of the core app: every platform capability, registered once and app-wide, over the catalogs the area groups
- * export (their error kinds, message bundles, entities and migrations). A composition group holds one area's module list and
- * nothing else (no logic, no environment read); `app.module.ts` spreads it into its imports.
+ * export (their error kinds, message bundles, entities and migrations), and the realtime hub the device socket reads. A
+ * composition group holds one area's module list and nothing else (no logic, no environment read); `app.module.ts` spreads it
+ * into its imports.
  */
 export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     ClockModule.register({ isGlobal: true }),
@@ -37,6 +41,8 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             HTTP_MESSAGES,
             ERRORS_MESSAGES,
             HTTP_SECURITY_MESSAGES,
+            INBOX_MESSAGES,
+            IDEMPOTENCY_MESSAGES,
             ...identityAreaMessages,
             ...commerceAreaMessages,
             ...learningAreaMessages,
@@ -52,6 +58,9 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
             CONFIG_ERROR_KINDS,
             DATABASE_ERROR_KINDS,
             HTTP_SECURITY_ERROR_KINDS,
+            REALTIME_ERROR_KINDS,
+            INBOX_ERROR_KINDS,
+            IDEMPOTENCY_ERROR_KINDS,
             ...identityAreaErrorKinds,
             ...commerceAreaErrorKinds,
             ...learningAreaErrorKinds,
@@ -60,6 +69,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
         ],
     }),
     CqrsModule.register({ isGlobal: true }),
+    RealtimeModule.register({ isGlobal: true, ...options.realtime }),
     HttpSecurityModule.register({ isGlobal: true, ...options.httpSecurity }),
     DatabaseModule.register({
         isGlobal: true,
@@ -68,6 +78,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
                 ...options.database,
                 entities: [
                     ...httpSecurityEntities,
+                    ...inboxEntities,
                     ...identityAreaEntities,
                     ...commerceAreaEntities,
                     ...learningAreaEntities,
@@ -75,6 +86,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
                 ],
                 migrations: [
                     ...httpSecurityMigrations,
+                    ...inboxMigrations,
                     ...identityAreaMigrations,
                     ...commerceAreaMigrations,
                     ...learningAreaMigrations,

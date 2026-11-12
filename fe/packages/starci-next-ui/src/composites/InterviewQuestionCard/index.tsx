@@ -44,7 +44,7 @@ type ItemProps = { readonly item: ReportItem }
 
 /** One item of a question with its badge, the critical mark and the quote of the answer that earns it. */
 const Item = (props: ItemProps) => (
-    <Stack gap="inline">
+    <Stack gap="row">
         <Cluster gap="inline" wrap align="center">
             <Badge tone={props.item.tone}>{props.item.badge}</Badge>
             {props.item.critical === "" ? null : <Badge tone="danger">{props.item.critical}</Badge>}

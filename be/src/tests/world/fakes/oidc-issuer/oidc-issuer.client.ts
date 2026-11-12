@@ -1,5 +1,5 @@
-import { isRecord, pkceChallenge, randomReference } from "@starci/auth-oidc/server"
-import { FakeOidcIssuer, type FakeTokenClaims, type FakeUser } from "@starci/auth-oidc/testing"
+import { isRecord, pkceChallenge, randomReference } from "@starci/auth/oidc"
+import { FakeOidcIssuer, type FakeTokenClaims, type FakeUser } from "@starci/auth/testing"
 import { TestWorldError, TestWorldErrorCode } from "@starci/test-world"
 import {
     defineHttpFake,

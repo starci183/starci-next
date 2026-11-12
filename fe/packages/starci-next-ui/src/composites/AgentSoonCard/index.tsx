@@ -24,7 +24,7 @@ export const AgentSoonCard = (props: AgentSoonCardProps) => (
                 {props.description}
             </Text>
             {props.action === undefined ? null : (
-                <Cluster gap="row" wrap>
+                <Cluster gap="inline" wrap>
                     <Button intent="commit" href={props.action.href}>
                         {props.action.label}
                     </Button>

@@ -23,6 +23,7 @@ import {
 } from "@modules/platform/database"
 import { HttpModule } from "@modules/platform/http"
 import { httpSecurityEntities, httpSecurityMigrations } from "@modules/platform/http-security"
+import { inboxEntities, inboxMigrations } from "@modules/platform/inbox"
 import { LoggingModule } from "@modules/platform/logging"
 import { RetryModule } from "@modules/platform/retry"
 import type { CliAppOptions } from "../cli.options"
@@ -32,6 +33,7 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
     ...primary,
     entities: [
         ...httpSecurityEntities,
+        ...inboxEntities,
         ...noteEntities,
         ...identityEntities,
         ...entitlementEntities,
@@ -51,6 +53,7 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
     ],
     migrations: [
         ...httpSecurityMigrations,
+        ...inboxMigrations,
         ...noteMigrations,
         ...identityMigrations,
         ...entitlementMigrations,

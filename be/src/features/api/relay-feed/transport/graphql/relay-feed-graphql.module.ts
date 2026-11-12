@@ -17,5 +17,5 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         RelayManifestAckResolver,
     ],
 })
-/** The GraphQL transport of the relay feed, served by the relay app: the signed manifest read and the four upload mutations. */
+/** The GraphQL transport of the relay feed, served by the core app: the signed manifest read and the four upload mutations. */
 export class RelayFeedGraphqlModule extends ConfigurableModuleClass {}

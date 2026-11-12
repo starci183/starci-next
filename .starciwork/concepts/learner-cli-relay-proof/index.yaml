@@ -3,7 +3,9 @@ id: concept.learner-cli-relay-proof
 title: Learner CLI and relay - code tasks run on the learner's machine, proof has two levels
 rule: >-
   All code tasks (Bản chất Áp dụng, Sự cố, Xây app thật, the AI Engineer code and agent steps) run on the learner's machine
-  through a learner CLI, which streams results to a relay. The relay server is its own app, `be/apps/relay`. The learner CLI is its own
+  through a learner CLI, which streams results to a relay. The relay server runs inside the core app, `be/apps/core` (owner ruling 2026-11-12): the
+  realtime hub, the push-only device socket (/socket.io) and the feed (signed manifests and the upload GraphQL, /graphql) are in
+  core's process, and learners still connect with relay-cli. Core runs one replica while the hub is in memory. The learner CLI is its own
   nest-commander app, `be/apps/relay-cli`, published as `@starci/next` with bin `starci-next` (owner ruling 2026-11-10);
   `be/apps/cli` stays the ops CLI (database, imports, dev-grant) and never ships to learners. A relayed result is "Đang luyện" (practice). "Đã chứng minh" (proved) needs a CI run that GitHub vouches
   for (the GitHub Actions OIDC token names the bound repository, the commit and the run id) or a server rerun. "Code first,
@@ -15,13 +17,17 @@ why: >-
 forbids:
   - Running a learner's code on the server as the first-line check.
   - Marking "Đã chứng minh" from a relayed or merely HMAC-signed result with no GitHub attestation and no server rerun.
-  - Treating the relay as part of the api process; it is its own app.
+  - Running the core api on more than one replica while the realtime hub is in memory (a device on another replica gets no frame).
 example: >-
   The learner runs `starci-next` in a project; the checks run locally and the result shows "Đang luyện" in the app. After
   the project's GitHub Action posts a signed run whose OIDC token GitHub attests, the same concept shows "Đã chứng minh".
 livesIn:
-  - path: be/apps/relay
-    holds: the relay app (device auth, the feed, the upload doors, the push-only device socket)
+  - path: be/apps/core/src/compose/{platform,identity,api,realtime}.ts
+    holds: "the relay inside core: the realtime hub (platform), the device token as the credential of the upload doors (identity), the feed's GraphQL transport (api) and the push-only device socket (realtime)"
+  - path: be/src/features/realtime/relay-device
+    holds: the device socket transport
+  - path: be/src/features/api/relay-feed
+    holds: the signed manifest read and the upload mutations
   - path: be/apps/relay-cli
     holds: "the learner CLI app (nest-commander, kind cli): composition root with the clock, ids, timer, HTTP port and logger only; no database"
   - path: be/src/features/cli/{login,logout,status,devices,run}
@@ -38,8 +44,10 @@ livesIn:
     holds: binds UnattestedCiClient by default, which attests nothing
 decided:
   by: owner
-  at: 2026-11-10
+  at: 2026-11-12
   words:
+    - "(2026-11-12:) fold the relay server into the core app"
+    - "(earlier, 2026-11-10:) the three lines below"
     - "nó là cli nest commander nên ở apps/cli"
     - "relay chứ? tên là relay chứ?"
     - "A, relay-cli"
@@ -47,21 +55,26 @@ decided:
     - "(earlier, 2026-11-09:) code trc nhé cấp creds sau"
     - "(earlier, 2026-11-09:) Theo đề xuất"
   source: >-
-    Owner ruling 2026-11-10 (this lane S20): the learner CLI is a nest-commander app, named relay-cli (pairs with the relay
-    server be/apps/relay), published as @starci/next with bin starci-next; be/apps/cli stays the ops CLI. The 2026-11-09 words
+    Owner ruling 2026-11-12: the relay server is folded into the core app; learners still connect with relay-cli; the hub, the
+    device socket and the feed run in core's process. It replaces the 2026-11-09 ruling that the relay is its own app
+    be/apps/relay, which no longer stands. Owner ruling 2026-11-10 (this lane S20): the learner CLI is a nest-commander app, named relay-cli (pairs with the relay
+    server), published as @starci/next with bin starci-next; be/apps/cli stays the ops CLI. The 2026-11-09 words
     (last three) still stand, except that they put the learner CLI in be/apps/cli. Memory learning-program-outcomes: owner 2026-11-08 (via UXUI) learner CLI and relay, 2026-11-09 Q-PJ-1 "yes"
-    with "code trc nhé cấp creds sau", 2026-11-09 "chốt" that the relay is its own app be/apps/relay; memory
+    with "code trc nhé cấp creds sau", 2026-11-09 "chốt" that the relay is its own app be/apps/relay (replaced 2026-11-12); memory
     starci-next-learning-direction (Q-KS-2 "Theo đề xuất": learner-written tests count, proved needs the incident mutation
     score).
 status: partial
 built:
-  - The relay app (be/apps/relay), its device pairing, feed and socket exist (read, not run).
+  - "The relay runs inside core (2026-11-12): RelayModule provides the feed, core composes the realtime hub (REALTIME_HUB, required), the device socket, the feed's GraphQL transport and the device token as the door credential, and reads RELAY_MANIFEST_SIGNING_KEY[_FILE]; be/apps/relay, its image, port 3003, its stack service and the /relay/* ingress route are removed; the ingress sends /api/*, /graphql and /socket.io/* to core; relay-cli calls <origin>/graphql. Lint, typecheck and the unit specs are green; be/contracts/core/schema.graphql carries relayManifest and the upload mutations."
   - The learner CLI app be/apps/relay-cli exists and runs: the commands login, logout, status, devices and run <task> [--yes] keep the names and flags of the old package packages/next-cli (removed). Its specs (pairing, signed-manifest check, run, upload queue, terminal) pass. A built copy answered --help, status, devices, logout and a login against a fake local relay, and loaded no domain, database, typeorm or pg module.
   - The learner commands import no database, entitlement or ops module (feature folders login, logout, status, devices, run under src/features/cli, and the integration src/modules/integrations/relay-client).
   - A relayed or signed-only run is practice; only an attested run is proof (the project CI policy and port say so).
   - "Project runs (2026-11-10): `starci-next init [--from <starci-next-data checkout>] [--project <id>] [--language <l>] [--force]` copies projects/kit/starci and the CI template into the learner's project; `starci-next run <milestone>` in a folder with starci/project.yaml sends the learner's test command and the milestone to the relay (relayManifest with milestone, testCommand, testReport), which signs a manifest carrying the command and the milestone's concepts (ManifestPlan); the CLI verifies it, runs it, reads the JUnit XML for [concept] tags and uploads one practice `test` result per concept. Core binds RelayProjectService as the project relay port (NoRelayClient is only the default), so syncProjectPractice shows the concepts as practising. Dev: the relay signs with RELAY_MANIFEST_SIGNING_KEY_FILE (scripts/dev/relay-manifest-key.mjs); the CLI verifies with STARCI_NEXT_MANIFEST_KEY. Ran end to end on a throwaway project (2 concepts practising). The CLI now sends Origin on the pairing doors (the origin guard refused it before)."
 notBuilt:
   - "The harness rejects the shape: BE_CLI_REQUIRED refuses a second cli app (only be/apps/cli is allowed), module-per-transport wants one cli feature root, and starci app sync would point the root `cli` script at relay-cli. relay-cli passes the specs and eslint of its own files but `starci app check --gate hfs` fails until the harness allows a named learner cli app."
+  - "Not verified after the fold (2026-11-12): the dev stack was not restarted, so the device socket through the ingress (/socket.io/?EIO=4&transport=polling answering 400 'Transport unknown', the dev and production verify probe) and a relay-cli run against core were not exercised; the relay-feed integration spec (world boots core only, REALTIME_HUB memory) was not run."
+  - "Core is pinned to one replica (in-memory hub; a shared hub is not built, BE-REALTIME-7). Its deploy order is start-first, so during a deploy two core tasks overlap and a frame published on one while the device is connected to the other may be dropped; the device resumes after its last frame id on reconnect only for frames its own task held."
+  - "Left from the dropped gateway design, unused: RelayDeviceService.admit, RelayOptions.serviceKey (RELAY_SERVICE_KEY) and RELAY_SERVICE_UNAUTHENTICATED."
   - "init has no relay read door yet: the kit is read from a starci-next-data checkout (--from or STARCI_NEXT_DATA_DIR). Local probes are not run by the CLI: probes run on the server against a deployed baseUrl."
   - "No npm package manifest: the cli app slot allows no package.json, and packages/next-cli is removed, so @starci/next is not publishable yet. The only artifact is the image be/apps/relay-cli/Dockerfile (build proof)."
   - "Nothing was run on a real learner machine against a real relay, and the real fetch to the deployed origin was not exercised (the default origin is still the placeholder https://starci-next.example.invalid)."

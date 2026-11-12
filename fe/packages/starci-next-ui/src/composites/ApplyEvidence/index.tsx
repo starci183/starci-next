@@ -11,9 +11,9 @@ const toneOf = (level: number): "success" | "warning" | "muted" => {
 }
 
 /** The label of the submit button from where the attempt stands. */
-const submitLabelOf = (props: Pick<ApplyEvidenceProps, "status" | "labels">): string => {
+const submitLabelOf = (props: Pick<ApplyEvidenceProps, "status" | "isSendFailed" | "labels">): string => {
     if (props.status === "pending" || props.status === "grading") return props.labels.pending
-    return props.status === "failed" || props.status === "error" ? props.labels.retry : props.labels.submit
+    return props.status === "failed" || props.isSendFailed ? props.labels.retry : props.labels.submit
 }
 
 /** The words the attempt notice needs, from the labels of the card. */
@@ -49,7 +49,9 @@ const ResultCard = (props: ResultCardProps) => (
             id: each.id,
             title: each.criterion,
             ...(each.missing === "" ? {} : { description: `${props.labels.missing}: ${each.missing}` }),
-            badges: [{ label: props.labels.levels[Math.min(2, Math.max(0, each.level))] ?? "", tone: toneOf(each.level) }],
+            badges: [
+                { label: props.labels.levels[Math.min(2, Math.max(0, each.level))] ?? "", tone: toneOf(each.level) },
+            ],
         }))}
     />
 )
@@ -79,7 +81,12 @@ const Fields = (props: FieldsProps) => (
             isDisabled={props.isPending}
             onValueChange={props.onExplanationChange}
         />
-        <AttemptNotice status={props.status} plansHref={props.plansHref} {...noticeWordsOf(props.labels)} />
+        <AttemptNotice
+            status={props.status}
+            isSendFailed={props.isSendFailed}
+            plansHref={props.plansHref}
+            {...noticeWordsOf(props.labels)}
+        />
     </Stack>
 )
 
@@ -132,6 +139,7 @@ export const ApplyEvidence = (props: ApplyEvidenceProps) => {
                     outputValue={props.outputValue}
                     explanationValue={props.explanationValue}
                     status={props.status}
+                    isSendFailed={props.isSendFailed}
                     labels={props.labels}
                     plansHref={props.plansHref}
                     onOutputChange={props.onOutputChange}

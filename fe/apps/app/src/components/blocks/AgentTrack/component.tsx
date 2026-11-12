@@ -104,7 +104,9 @@ const TrackView = (props: TrackViewProps) => {
     const { view, isLoading } = props
     return (
         <Stack gap="region">
-            <Link variant="plain" href={props.base.props.labels.backHref}>{props.base.props.labels.back}</Link>
+            <Link variant="plain" href={props.base.props.labels.backHref}>
+                {props.base.props.labels.back}
+            </Link>
             <CatalogIntro
                 eyebrow={props.base.props.labels.eyebrow}
                 title={view.title}

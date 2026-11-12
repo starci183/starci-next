@@ -14,7 +14,14 @@ import type {
 } from "@/modules/types"
 
 /** The six phases a learner works through, in order. */
-export const STEP_PHASES: ReadonlyArray<LessonPhase> = ["challenge", "predict", "explore", "explain", "apply", "reflect"]
+export const STEP_PHASES: ReadonlyArray<LessonPhase> = [
+    "challenge",
+    "predict",
+    "explore",
+    "explain",
+    "apply",
+    "reflect",
+]
 
 /** The attempts of the learner by activity id. */
 type Attempts = Readonly<Record<string, AttemptState>>
@@ -67,7 +74,10 @@ const checkStatusOf = (isCorrect: boolean | undefined): SectionCheckView["status
 }
 
 /** The quick check of each theory section: not answered, right or wrong. */
-export const sectionChecksOf = (sections: ReadonlyArray<SectionView>, attempts: Attempts): ReadonlyArray<SectionCheckView> =>
+export const sectionChecksOf = (
+    sections: ReadonlyArray<SectionView>,
+    attempts: Attempts,
+): ReadonlyArray<SectionCheckView> =>
     sections.map((section, index) => {
         const result = section.activities.flatMap((activity) => {
             const view = attempts[activity.id]?.view
@@ -89,7 +99,9 @@ export const navOf = (
     const index = PHASE_ORDER.indexOf(phase)
     if (index < 1) return { previous: undefined, next: undefined }
     const phaseTarget = (target: LessonPhase | undefined): NavTarget | undefined =>
-        target === undefined ? undefined : { kind: "phase", phase: target, href: lessonPath(lesson.topic.id, lesson.id, target) }
+        target === undefined
+            ? undefined
+            : { kind: "phase", phase: target, href: lessonPath(lesson.topic.id, lesson.id, target) }
     const previousPhase = phaseTarget(PHASE_ORDER[index - 1])
     const nextName = PHASE_ORDER[index + 1]
     const nextPhase: NavTarget | undefined =
@@ -99,8 +111,14 @@ export const navOf = (
     const before = sections[position - 1]
     const after = sections[position + 1]
     return {
-        previous: before === undefined ? previousPhase : { kind: "section", id: before.id, index: position, title: before.title },
-        next: after === undefined ? nextPhase : { kind: "section", id: after.id, index: position + 2, title: after.title },
+        previous:
+            before === undefined
+                ? previousPhase
+                : { kind: "section", id: before.id, index: position, title: before.title },
+        next:
+            after === undefined
+                ? nextPhase
+                : { kind: "section", id: after.id, index: position + 2, title: after.title },
     }
 }
 

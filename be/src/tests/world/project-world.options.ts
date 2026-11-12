@@ -11,6 +11,7 @@ import {
     type CiAttestationRequest,
     type CiAttestationVerifier,
     ProjectCiService,
+    ProjectCiProofService,
     ProjectCodeReadService,
     ProjectModule,
     ProjectPracticeService,
@@ -22,6 +23,8 @@ import {
     type RelayResultsRequest,
 } from "@modules/domain/project"
 import { StreakModule, StreakService } from "@modules/domain/streak"
+import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
+import { InboxModule } from "@modules/platform/inbox"
 import { PROBE_TRANSPORT, type ProbeReply, type ProbeTransport } from "@modules/integrations/probe"
 
 /** The concepts of the first milestone, which the world's lessons cover; every other concept is still being written. */
@@ -150,6 +153,7 @@ export const projectModules: ReadonlyArray<ModuleFactory> = [
             CareerModule.register({ isGlobal: true }),
             StreakModule.register({ isGlobal: true }),
             NotificationModule.register({ isGlobal: true }),
+            InboxModule.register({ isGlobal: true, connection: PRIMARY_ENTITY_MANAGER }),
             WorldProbeModule,
         ],
     }),
@@ -177,6 +181,8 @@ export interface ProjectWorld {
     reads(): ProjectReadService
     /** The signed CI intake. */
     ci(): ProjectCiService
+    /** The proof of a signed CI delivery, the door's first call. */
+    proof(): ProjectCiProofService
     /** The GitHub repository binding. */
     repositories(): ProjectRepositoryService
     /** The AI code read. */
@@ -204,6 +210,7 @@ export const useProjectWorld = (world: ProjectWorldHandle): ProjectWorld => ({
     projects: () => world.resolve(ProjectService),
     reads: () => world.resolve(ProjectReadService),
     ci: () => world.resolve(ProjectCiService),
+    proof: () => world.resolve(ProjectCiProofService),
     repositories: () => world.resolve(ProjectRepositoryService),
     codeReads: () => world.resolve(ProjectCodeReadService),
     practice: () => world.resolve(ProjectPracticeService),

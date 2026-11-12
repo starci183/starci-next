@@ -1,4 +1,4 @@
-import type { OidcBrokerSession, OidcGrant } from "@starci/auth-oidc/server"
+import type { OidcBrokerSession, OidcGrant } from "@starci/auth/oidc"
 import type { KeycloakTokens } from "./keycloak.options"
 
 /** A grant as the identity port sees it: the verified access token's account, plus its `preferred_username` and `name` claims. */

@@ -47,6 +47,7 @@ export const draftOf = (activityId: string, workbench: LessonWorkbench, words: S
     return {
         value: workbench.answers[activityId] ?? (saved?.text === "" ? saved.debrief : saved?.text) ?? "",
         status: statusOf(attempt),
+        isSendFailed: attempt?.isSendFailed ?? false,
         issue: issueOf(attempt),
         criteria: result?.criteria ?? [],
         scoreLine: isGraded ? words.score(result.score, result.maxScore) : "",
@@ -74,6 +75,7 @@ const choiceCardOf = (activity: ActivityView, phase: LessonPhase, workbench: Les
         options: activity.options,
         pickedId: pickedOf(activity.id, workbench, attempt),
         status: statusOf(attempt),
+        isSendFailed: attempt?.isSendFailed ?? false,
         isCorrect: attempt?.view?.result?.correct === true,
         explanations: explanationsOf(attempt),
         correctId: attempt?.view?.result?.options.find((option) => option.isCorrect)?.optionId ?? "",
@@ -142,12 +144,17 @@ const activityCardsOf = (
                       kind: "files",
                       id: `${activity.id}-files`,
                       files: activity.files,
-                      ...(variants.length === 0 ? {} : { variants: withDownloads(variants, lessonId), selectedVariant: workbench.language }),
+                      ...(variants.length === 0
+                          ? {}
+                          : { variants: withDownloads(variants, lessonId), selectedVariant: workbench.language }),
                   },
               ]
     if (activity.kind === "exercise" && (activity.files.length > 0 || context.hasLab)) {
         const saved = evidenceFieldsOf(workbench.attempts[activity.id]?.view?.answer.text ?? "")
-        const hint = activity.instructions === "" || activity.instructions === activity.prompt ? "" : `\n\n${activity.instructions}`
+        const hint =
+            activity.instructions === "" || activity.instructions === activity.prompt
+                ? ""
+                : `\n\n${activity.instructions}`
         return [
             ...files,
             {

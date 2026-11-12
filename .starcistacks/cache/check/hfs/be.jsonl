@@ -1,6 +1,6 @@
 {"data":{},"findings":[],"hash":"f3dae8d89e8883d083ff12eb4097f41846516d454a40225fcb2f0a7fbb62496a","path":"be/eslint.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fd7c82a9497cf9062f8a2afbd1ad1149bf3d0609ae1092993bf6fc85df92e655","path":"be/jest.config.js","step":"file-rules"}
-{"data":{},"findings":[],"hash":"787b0f84940c8e0c4621ccd041f20110c1688cc79cf70df05a2242a4177abc5b","path":"be/nest-cli.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"51148c6a311d78165e154d7aad2b4632139a0ae312495d2887ee63d50e5cc7c0","path":"be/nest-cli.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a2ce21eab67707cbc5283ba298035f228d415e87f42260081ee46056c581ea19","path":"be/path-int.out","step":"file-rules"}
 {"findings":[{"column":0,"line":0,"message":"be/path-int.out matches no slot; nearest slot repo.side-root-forbidden (.github/), matched . then expected .github","path":"be/path-int.out","rule":"HFS_SLOT_UNDECLARED"},{"column":1,"line":1,"message":"be/path-int.out:1: Root entry be/path-int.out of the be side is not in the slots of the be side.","path":"be/path-int.out","rule":"HFS_ROOT_ENTRY_FORBIDDEN"}],"hash":"4194e758a2157b8c7e90d2c37e2ae523ba7902ee1391a9b55abc7c7318183e55","path":"be/path-int.out","step":"hfs"}
 {"data":{},"findings":[],"hash":"c3d0f80cbeebb7575264b99b524e6a7385f81373bb063c8dc4aebdd88469817c","path":"be/tsconfig.build.json","step":"file-rules"}

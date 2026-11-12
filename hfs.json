@@ -10,10 +10,6 @@
           "kind": "api"
         },
         {
-          "name": "relay",
-          "kind": "api"
-        },
-        {
           "name": "cli",
           "kind": "cli"
         },

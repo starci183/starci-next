@@ -13,7 +13,10 @@ const stateRoot =
     process.platform === "win32"
         ? join(process.env.LOCALAPPDATA ?? join(homedir(), "AppData", "Local"), "starci-harness", "state")
         : join(process.env.XDG_STATE_HOME ?? join(homedir(), ".local", "state"), "starci-harness", "state")
-const dir = flag > 0 && process.argv[flag + 1] ? process.argv[flag + 1] : join(stateRoot, "stack", "starci-next-dev", "dev", "data", "relay-dev")
+const dir =
+    flag > 0 && process.argv[flag + 1]
+        ? process.argv[flag + 1]
+        : join(stateRoot, "stack", "starci-next-dev", "dev", "data", "relay-dev")
 const privatePath = join(dir, "manifest-signing.pem")
 const publicPath = join(dir, "manifest-public.pem")
 

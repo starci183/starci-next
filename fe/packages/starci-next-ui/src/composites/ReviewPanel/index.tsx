@@ -130,7 +130,7 @@ const ReviewItemCard = (props: ReviewCardProps) => (
         <SurfaceCard ariaLabel={props.item.part}>
             <Stack gap="row">
                 <Cluster gap="inline" wrap justify="between" align="center">
-                    <Cluster gap="inline" align="center">
+                    <Cluster gap="identity" align="center">
                         <Badge tone="neutral">{props.item.part}</Badge>
                         <Text size="sm" tone="muted">
                             {props.item.who}

@@ -1,10 +1,7 @@
-export { ART, ArtImage, PHASE_ART, groupArtOf } from "./leaves/Art"
+export { ART, ArtImage } from "./leaves/Art"
 export { ApplyEvidence } from "./composites/ApplyEvidence"
-export type { ApplyEvidenceLabels, EvidenceCriterion, EvidenceResult } from "./composites/ApplyEvidence"
+export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
-export { ArtBeside } from "./frames/ArtBeside"
-export { TitledGrid } from "./frames/TitledGrid"
-export { CaseStudyBlock } from "./composites/CaseStudyBlock"
 export type { CatalogCaseCard } from "./composites/CaseStudyBlock"
 export { CatalogAside } from "./composites/CatalogAside"
 export { CatalogContinue } from "./composites/CatalogContinue"
@@ -28,7 +25,6 @@ export type { InlineNode, MarkdownBlock } from "./composites/MarkdownBody"
 export { NotFoundNotice } from "./composites/NotFoundNotice"
 export { OverviewPanel } from "./composites/OverviewPanel"
 export type { OverviewPanelLabels } from "./composites/OverviewPanel"
-export { ReflectCompare } from "./composites/ReflectCompare"
 export type { ReflectCompareLabels } from "./composites/ReflectCompare"
 export { SimulationCard } from "./composites/SimulationCard"
 export type {
@@ -41,17 +37,12 @@ export type {
 } from "./composites/SimulationCard"
 export { SlotView } from "./composites/SlotView"
 export type { DataSlot, SlotLabels, SlotRead } from "./composites/SlotView"
-export { StudyRail } from "./composites/StudyRail"
-export type { StudyRailLabels } from "./composites/StudyRail"
 export { WrittenCard } from "./composites/WrittenCard"
 export type { WrittenCardLabels } from "./composites/WrittenCard"
-export { BarFill } from "./frames/BarFill"
-export { BarNav } from "./frames/BarNav"
 export { BarWide } from "./frames/BarWide"
 export { SiteShell } from "./frames/SiteShell"
 export {
     AgentsGlyph,
-    BellGlyph,
     CollapseGlyph,
     EssentialsGlyph,
     ExperienceGlyph,
@@ -61,7 +52,6 @@ export {
     LanguageGlyph,
     LearnGlyph,
     LockIcon,
-    MenuGlyph,
     MoonGlyph,
     MoreGlyph,
     PlayGlyph,
@@ -79,7 +69,6 @@ export { AuthSocialButtons } from "./composites/AuthSocialButtons"
 export type { AuthSocialProvider } from "./composites/AuthSocialButtons"
 export { TopicAside } from "./composites/TopicAside"
 export type { TopicAsideEntry } from "./composites/TopicAside"
-export { TopicIntro } from "./composites/TopicIntro"
 export { TopicHero } from "./composites/TopicHero"
 export { TopicPath } from "./composites/TopicPath"
 export type { TopicPathRow } from "./composites/TopicPath"

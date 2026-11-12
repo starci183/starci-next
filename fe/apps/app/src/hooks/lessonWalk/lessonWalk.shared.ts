@@ -2,7 +2,10 @@ import type { SimulationStep } from "@starci-next/ui"
 import type { SimulationProgressView, SimulationView } from "@/modules/types"
 
 /** The steps of a saved walk: the actions pressed from the initial state, each leading where the machine's edges say. */
-export const stepsOfWalk = (simulation: SimulationView, saved: SimulationProgressView | undefined): ReadonlyArray<SimulationStep> => {
+export const stepsOfWalk = (
+    simulation: SimulationView,
+    saved: SimulationProgressView | undefined,
+): ReadonlyArray<SimulationStep> => {
     const steps: Array<SimulationStep> = []
     let stateId = simulation.initialStateId
     for (const actionId of saved?.actionIds ?? []) {
@@ -15,9 +18,14 @@ export const stepsOfWalk = (simulation: SimulationView, saved: SimulationProgres
 }
 
 /** The actions whose transitions the server saw pressed. */
-export const triedActionsOf = (simulation: SimulationView, saved: SimulationProgressView | undefined): ReadonlyArray<string> => [
+export const triedActionsOf = (
+    simulation: SimulationView,
+    saved: SimulationProgressView | undefined,
+): ReadonlyArray<string> => [
     ...new Set(
-        simulation.edges.flatMap((edge) => ((saved?.triedTransitionIds ?? []).includes(edge.id) ? [edge.actionId] : [])),
+        simulation.edges.flatMap((edge) =>
+            (saved?.triedTransitionIds ?? []).includes(edge.id) ? [edge.actionId] : [],
+        ),
     ),
 ]
 

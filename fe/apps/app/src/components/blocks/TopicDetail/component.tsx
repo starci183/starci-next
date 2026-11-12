@@ -1,13 +1,4 @@
-import {
-    Alert,
-    Button,
-    Page,
-    type PageHeaderContent,
-    Pane,
-    PaneGrid,
-    PaneSection,
-    Stack,
-} from "@starci/grammar/common"
+import { Alert, Button, Page, type PageHeaderContent, Pane, PaneGrid, PaneSection, Stack } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { SlotView, TopicAside, TopicHero, TopicPath } from "@starci-next/ui"
 import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modules/types"

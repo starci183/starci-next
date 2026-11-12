@@ -91,9 +91,12 @@ export const projectRowsOf = (projects: ProjectsRead, words: ProjectsWords): Rea
         return {
             id: project.id,
             name: project.name,
-            sub: [repoOf(project.repoUrl), project.stack].filter((part) => part !== undefined && part !== "").join(" · "),
+            sub: [repoOf(project.repoUrl), project.stack]
+                .filter((part) => part !== undefined && part !== "")
+                .join(" · "),
             concepts: words.concepts(project.provedConceptCount, project.conceptCount),
-            percent: project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
+            percent:
+                project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
             stateLabel: isProved ? words.state.proved : words.state.practicing,
             isProved,
             href: projectPath(project.id),

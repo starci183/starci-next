@@ -141,7 +141,7 @@ const Setup = (props: SetupProps) => {
     const { labels, state } = p
     return (
         <SurfaceCard label={labels.setupTitle}>
-            <Stack gap="row">
+            <Stack gap="region">
                 <Grid kind="form">
                     <Choice label={labels.track} options={view.tracks} value={state.track} onChange={props.on.track} />
                     <Choice label={labels.tier} options={view.tiers} value={state.tier} onChange={props.on.tier} />

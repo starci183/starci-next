@@ -102,7 +102,7 @@ export const AuthCodeForm = (props: AuthCodeFormProps) => (
             <Button type="submit" intent="commit" width="fill" isPending={props.isPending}>
                 {props.labels.submit}
             </Button>
-            <Cluster gap="row" justify="between">
+            <Cluster gap="inline" justify="between">
                 <TextAction onPress={props.onResend} isDisabled={props.isPending}>
                     {props.labels.resend}
                 </TextAction>

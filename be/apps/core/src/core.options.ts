@@ -44,6 +44,8 @@ export interface CoreOptions {
     readonly agentLab: CoreEnv["agentLab"]
     /** Parsed project settings: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: CoreEnv["project"]
-    /** Parsed relay settings: the pairing code lifetime, the confirm page and the device limits per plan. */
+    /** Parsed relay settings: the pairing code lifetime, the confirm page, the device limits per plan and the manifest key. */
     readonly relay: CoreEnv["relay"]
+    /** The realtime hub the device socket reads. */
+    readonly realtime: CoreEnv["realtime"]
 }

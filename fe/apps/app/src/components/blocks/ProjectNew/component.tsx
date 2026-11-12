@@ -1,4 +1,14 @@
-import { Alert, Button, Cluster, Grid, Input, Page, Stack, SurfaceCard, type SurfaceCardProps } from "@starci/grammar/common"
+import {
+    Alert,
+    Button,
+    Cluster,
+    Grid,
+    Input,
+    Page,
+    Stack,
+    SurfaceCard,
+    type SurfaceCardProps,
+} from "@starci/grammar/common"
 
 /** One choice of a choice list, with the words that explain it. */
 export type ProjectChoice = { readonly id: string; readonly label: string; readonly hint: string }

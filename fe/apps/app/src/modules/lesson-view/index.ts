@@ -109,7 +109,9 @@ const workspacesOf = (wire: LessonWire["workspaces"]): LessonView["workspaces"] 
     wire.length < 2
         ? []
         : wire
-              .toSorted((a, b) => WORKSPACE_LANGUAGE_ORDER.indexOf(a.language) - WORKSPACE_LANGUAGE_ORDER.indexOf(b.language))
+              .toSorted(
+                  (a, b) => WORKSPACE_LANGUAGE_ORDER.indexOf(a.language) - WORKSPACE_LANGUAGE_ORDER.indexOf(b.language),
+              )
               .map((variant) => ({
                   id: variant.language,
                   label: WORKSPACE_LANGUAGE_LABELS[variant.language] ?? variant.language,
@@ -259,7 +261,9 @@ export const workspaceLanguageLabelOf = (language: string): string => WORKSPACE_
 
 /** The door that serves the lab of a lesson in one language as a zip (Premium only); undefined for a language it does not serve. */
 export const workspaceDownloadOf = (lessonId: string, language: string): string | undefined =>
-    DOWNLOAD_LANGUAGES.has(language) ? `/api/lessons/${encodeURIComponent(lessonId)}/workspace/${language}/download` : undefined
+    DOWNLOAD_LANGUAGES.has(language)
+        ? `/api/lessons/${encodeURIComponent(lessonId)}/workspace/${language}/download`
+        : undefined
 
 /** The language folder a lab path sits in (`workspace/1-java/Source.java` or `1-java/Source.java`), or undefined for a path outside one. */
 const languageFolderOf = (path: string): string | undefined => /^(?:workspace\/)?\d+-([a-z]+)\//u.exec(path)?.[1]

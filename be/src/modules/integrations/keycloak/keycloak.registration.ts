@@ -6,7 +6,7 @@ import {
     OidcModule,
     type OidcBroker,
     type OidcTokenClient,
-} from "@starci/auth-oidc/server"
+} from "@starci/auth/oidc"
 import { CLOCK, type Clock } from "@modules/platform/clock"
 import { HTTP_CLIENT, type HttpClient } from "@modules/platform/http"
 import { KeycloakError, KeycloakErrorCode } from "./errors/keycloak.error"

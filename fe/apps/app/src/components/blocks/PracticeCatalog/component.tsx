@@ -32,7 +32,7 @@ export type PracticeCatalogBaseProps = {
 
 /** Draws Practice code: the intro with what the free plan opens, then the patterns with the progress of the learner in each. */
 export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => (
-    <Page header={{ title: props.props.title, titleScale: "standard" }}>
+    <Page header={{ title: props.props.title, titleScale: "standard", breadcrumbs: "root" }}>
         <PracticeBrowse {...props.props.browse} onRetry={props.on.retry} />
     </Page>
 )

@@ -130,14 +130,12 @@ export const ExperienceCard = (props: ExperienceCardProps) => (
             </Link>
         }
         isLoading={props.isLoading}
-        items={props.rows.map(
-            (row): ListRowData => ({
-                id: row.id,
-                title: row.title,
-                leading: { icon: ExperienceGlyph },
-                meta: { text: String(row.count) },
-            }),
-        )}
+        items={props.rows.map((row): ListRowData => ({
+            id: row.id,
+            title: row.title,
+            leading: { icon: ExperienceGlyph },
+            meta: { text: String(row.count) },
+        }))}
         empty={props.labels.expEmpty}
     />
 )
@@ -158,14 +156,12 @@ export const ProbesCard = (props: ProbesCardProps) =>
             label={props.label}
             count={props.rows.length}
             isLoading={props.isLoading}
-            items={props.rows.map(
-                (probe): ListRowData => ({
-                    id: probe.id,
-                    title: probe.text,
-                    leading: { icon: PracticeGlyph },
-                    badges: [badgeOf(probe.chip)],
-                }),
-            )}
+            items={props.rows.map((probe): ListRowData => ({
+                id: probe.id,
+                title: probe.text,
+                leading: { icon: PracticeGlyph },
+                badges: [badgeOf(probe.chip)],
+            }))}
             empty={props.emptyLabel}
         />
     )

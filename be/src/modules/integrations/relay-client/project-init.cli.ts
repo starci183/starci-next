@@ -22,7 +22,9 @@ export const initProject = (io: CliIo, options: InitOptions, cwd: string): numbe
     }
     const data = options.from ?? io.env.STARCI_NEXT_DATA_DIR
     if (data === undefined) {
-        io.err("Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR): StarCi does not serve the kit yet.")
+        io.err(
+            "Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR): StarCi does not serve the kit yet.",
+        )
         return 1
     }
     const kitDir = join(data, "projects", "kit")

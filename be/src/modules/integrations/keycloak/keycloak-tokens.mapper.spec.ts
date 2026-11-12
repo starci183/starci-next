@@ -1,5 +1,5 @@
 import { Test } from "@nestjs/testing"
-import type { OidcBrokerSession, OidcGrant } from "@starci/auth-oidc/server"
+import type { OidcBrokerSession, OidcGrant } from "@starci/auth/oidc"
 import { toGrantTokens, toSocialTokens } from "./keycloak-tokens.mapper"
 
 const MAPPER: unique symbol = Symbol("keycloak.tokens-mapper")

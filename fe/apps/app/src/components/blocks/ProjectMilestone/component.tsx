@@ -109,7 +109,13 @@ const conceptRowOf = (concept: ConceptCardView, props: ProjectMilestoneBaseProps
     onPress: () => props.on.open(concept.id),
     ...(concept.lessonHref === ""
         ? {}
-        : { detail: <Link variant="plain" href={concept.lessonHref}>{props.props.labels.lessonLink}</Link> }),
+        : {
+              detail: (
+                  <Link variant="plain" href={concept.lessonHref}>
+                      {props.props.labels.lessonLink}
+                  </Link>
+              ),
+          }),
 })
 
 /** The row of one evidence run in the runs table. */
@@ -213,7 +219,13 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
                     description={props.props.isLocked ? labels.lockedText : labels.notFoundText}
                     backLabel={labels.back}
                     backHref={labels.backHref}
-                    action={props.props.isLocked ? <Link variant="plain" href={labels.plansHref}>{labels.plans}</Link> : null}
+                    action={
+                        props.props.isLocked ? (
+                            <Link variant="plain" href={labels.plansHref}>
+                                {labels.plans}
+                            </Link>
+                        ) : null
+                    }
                 />
             </Page>
         )

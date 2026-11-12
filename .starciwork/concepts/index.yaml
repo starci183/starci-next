@@ -24,7 +24,7 @@ concepts:
     description: Dự án has no sample project; a learner brings as many projects as they like, on any topic, and puts the starci/ folder into each; milestones are Bản chất concept lists proved by tests, e2e, probes and an AI code read.
   - id: concept.learner-cli-relay-proof
     directory: learner-cli-relay-proof
-    description: Code tasks run on the learner's machine through the learner CLI and a relay server (be/apps/relay); results are Đang luyện, and Đã chứng minh needs a CI run GitHub attests or a server rerun.
+    description: Code tasks run on the learner's machine through the learner CLI and the relay inside the core app (be/apps/core, one replica while the hub is in memory); results are Đang luyện, and Đã chứng minh needs a CI run GitHub attests or a server rerun.
   - id: concept.ai-model-deepseek-flash
     directory: ai-model-deepseek-flash
     description: Every AI call uses deepseek/deepseek-v4.1-flash through OpenRouter; no v4-pro and no fallback model.

@@ -100,6 +100,9 @@ export interface MilestoneDefinition {
     readonly concepts: ReadonlyArray<string>
 }
 
+/** The answer of a milestone lookup: the milestone, or null when the id is not one of the catalog. */
+export type MilestoneLookup = MilestoneDefinition | null
+
 /** One result of the evidence, the latest per concept, slot, source and ref. */
 export interface EvidenceRow {
     /** The project. */

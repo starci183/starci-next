@@ -36,7 +36,15 @@ const OverviewBody = (props: StudyBodyProps) => {
                     isDone: study.stepper.find((step) => step.phase === phase)?.state === "done",
                 }
             })}
-            scope={study.overview.scope === "" ? undefined : <Markdown source={study.overview.scope} labels={env.labels.markdown} renderCode={renderLessonCode} />}
+            scope={
+                study.overview.scope === "" ? undefined : (
+                    <Markdown
+                        source={study.overview.scope}
+                        labels={env.labels.markdown}
+                        renderCode={renderLessonCode}
+                    />
+                )
+            }
             labels={env.labels.overview}
         />
     )
@@ -50,7 +58,10 @@ const sectionTabsOf = (props: StudyBodyProps): SectionTabs | undefined => {
         label: env.labels.tabs,
         items: study.tabs.map((tab) => ({
             id: tab.id,
-            label: study.sectionChecks.find((check) => check.id === tab.id)?.status === "none" ? tab.label : `✓ ${tab.label}`,
+            label:
+                study.sectionChecks.find((check) => check.id === tab.id)?.status === "none"
+                    ? tab.label
+                    : `✓ ${tab.label}`,
         })),
         selectedKey: study.openTabId,
         onSelect: (key) => env.on.openTab(study.phase, key),
@@ -64,7 +75,12 @@ const PhaseBody = (props: StudyBodyProps) => {
     return (
         <Stack gap="section">
             {study.cards.map((card) => (
-                <StudyCard key={card.id} card={card} env={env} {...(card.kind === "reading" && tabs !== undefined ? { sectionTabs: tabs } : {})} />
+                <StudyCard
+                    key={card.id}
+                    card={card}
+                    env={env}
+                    {...(card.kind === "reading" && tabs !== undefined ? { sectionTabs: tabs } : {})}
+                />
             ))}
             {study.phase === "reflect" ? (
                 <>
@@ -110,4 +126,3 @@ export const StudyBody = (props: StudyBodyProps) => {
     }
     return <PhaseBody study={study} env={env} />
 }
-

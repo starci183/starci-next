@@ -11,12 +11,6 @@
       "entryFile": "main",
       "sourceRoot": "apps/core/src"
     },
-    "relay": {
-      "type": "application",
-      "root": "apps/relay",
-      "entryFile": "main",
-      "sourceRoot": "apps/relay/src"
-    },
     "cli": {
       "type": "application",
       "root": "apps/cli",

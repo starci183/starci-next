@@ -94,8 +94,10 @@ export class LessonReadService {
             throw new LessonError({ code: LessonErrorCode.PremiumRequired })
         const variant = workspaceVariantOf(row, params.language)
         if (variant === null) throw new LessonError({ code: LessonErrorCode.NotFound })
+        const fileName = `${row.lesson_id}-${variant.language}.zip`
         return {
-            fileName: `${row.lesson_id}-${variant.language}.zip`,
+            fileName,
+            disposition: `attachment; filename="${fileName}"`,
             content: zipOf(workspaceEntriesOf(variant)),
         }
     }
