@@ -1,0 +1,37 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: idempotency-parallel
+label:
+  vi: Năm request cùng khoá gửi đồng thời chỉ làm việc một lần
+  en: Five simultaneous requests with one key do the work once
+question:
+  vi: Khi hai request cùng khoá đến cùng lúc, cái gì giữ để chỉ một cái được làm (khoá, ràng buộc unique, bảng khoá)?
+  en: When two requests with one key arrive together, what makes only one of them run (a lock, a unique constraint, a key table)?
+needs: [endpoint, sample]
+steps:
+  - id: race
+    request:
+      method: "{{endpoint.method}}"
+      path: "{{endpoint.path}}"
+      headers: { idempotency-key: "{{run.id}}-race" }
+      body: "{{sample.body}}"
+    fanOut: 5
+    expect:
+      - { that: count 5xx, eq: 0, fail: server-error }
+      - { that: count 2xx, gte: 1, fail: none-succeeded }
+      - { that: distinct body, eq: 1, fail: duplicates-created }
+pass: once
+reasons:
+  once: { vi: Năm request đồng thời cùng khoá nhận cùng một kết quả., en: Five simultaneous requests with one key got one result. }
+  server-error: { vi: Có request trả 5xx khi chạy đồng thời., en: A simultaneous request answered 5xx. }
+  none-succeeded: { vi: Không request nào trả 2xx., en: No request answered 2xx. }
+  duplicates-created: { vi: Các request đồng thời nhận kết quả khác nhau (việc chạy nhiều lần)., en: The simultaneous requests got different results (the work ran more than once). }
+fixtures:
+  endpoint: POST /starci-test/items
+  sample: '{"name":"book"}'
+  good: { authz: open }
+  cheats:
+    - { name: checks the key only after the write, app: { idempotency: sequential }, fails: duplicates-created }
+    - { name: ignores the key, app: { idempotency: none }, fails: duplicates-created }
