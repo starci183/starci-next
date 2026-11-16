@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common"
+import type { EssentialPart } from "@modules/domain/entitlement"
 import { LessonReadService, type LessonLocale, type LessonView } from "@modules/domain/lesson"
 import { RelayDeviceService, RelayFeedService, type LearnerRunEvent } from "@modules/domain/relay"
 import { McpError, McpErrorCode } from "./errors/mcp.error"
@@ -117,13 +118,13 @@ export class McpTutorService {
 
     /** Lines of one file of the lesson repository at its pinned commit. */
     async readFile(learnerId: string, id: string, path: string, from?: number, to?: number): Promise<McpFile> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "2-source")
         return this.source.read(id, path, from, to)
     }
 
     /** A search over the lesson repository: semantic when asked and available, keywords otherwise. */
     async searchCode(learnerId: string, id: string, query: string, semantic: boolean): Promise<McpSearchResult> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "2-source")
         if (semantic && this.vectors.isConfigured) {
             const catalog = await this.source.catalog(id)
             const texts = await this.source.texts(id)
@@ -158,13 +159,13 @@ export class McpTutorService {
 
     /** The public scenarios of the lesson; a hidden scenario is not in the catalog at all. */
     async scenarios(learnerId: string, id: string): Promise<ReadonlyArray<McpScenario>> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "3-scenarios")
         return (await this.source.catalog(id)).scenarios
     }
 
     /** The invariants this learner has revealed: open ones, and those whose scenario they have run. */
     async invariants(learnerId: string, id: string): Promise<ReadonlyArray<McpInvariant>> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "3-scenarios")
         const catalog = await this.source.catalog(id)
         const ran = new Set(
             (await this.feed.runEvents(learnerId, taskOf(id)))
@@ -183,7 +184,7 @@ export class McpTutorService {
 
     /** The learner's own recent runs of the lesson's public scenarios, newest first, with the CLI's log tail. */
     async myRuns(learnerId: string, id: string): Promise<ReadonlyArray<McpRun>> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "3-scenarios")
         const known = new Set((await this.source.catalog(id)).scenarios.map((scenario) => scenario.id))
         const events = (await this.feed.runEvents(learnerId, taskOf(id))).filter((event) => known.has(event.checkId))
         const runs = new Map<string, Array<LearnerRunEvent>>()
@@ -202,7 +203,7 @@ export class McpTutorService {
         scenarioId: string,
         guardsOff: ReadonlyArray<string>,
     ): Promise<McpRunRequested> {
-        await this.requirePremium(learnerId, id)
+        await this.requirePart(learnerId, id, "3-scenarios")
         const scenario = (await this.source.catalog(id)).scenarios.find((item) => item.id === scenarioId)
         if (scenario === undefined || !guardsOff.every((guard) => scenario.guards.includes(guard)))
             throw new McpError({ code: McpErrorCode.ScenarioUnknown })
@@ -225,9 +226,15 @@ export class McpTutorService {
         return this.lessons.find({ id, locale, learnerId })
     }
 
-    private async requirePremium(learnerId: string, id: string): Promise<void> {
-        if (!(await this.view(learnerId, id, "vi")).isPremium)
-            throw new McpError({ code: McpErrorCode.PremiumRequired })
+    /**
+     * Refuses a part the learner may not read. A four-part lesson answers by part (the same entitlement setting the page and the
+     * relay doors read: by default only Bản chất is free); a lesson without the four parts needs Premium as before.
+     */
+    private async requirePart(learnerId: string, id: string, part: EssentialPart): Promise<void> {
+        const view = await this.view(learnerId, id, "vi")
+        const locked = view.essential?.lockedParts
+        const isOpen = locked === undefined ? view.isPremium : !locked.includes(part)
+        if (!isOpen) throw new McpError({ code: McpErrorCode.PremiumRequired })
     }
 
     private keywordHitsOf(sections: ReadonlyArray<{ path: string; text: string }>, query: string): Array<McpSearchHit> {

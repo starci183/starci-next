@@ -57,7 +57,8 @@ export class LessonReadService {
         const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [params.id])
         const row = rows[0]
         if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
-        return toLessonView(row, params.locale, await this.entitlement.isPremium(params.learnerId))
+        const isPremium = await this.entitlement.isPremium(params.learnerId)
+        return toLessonView(row, params.locale, isPremium, this.entitlement.openEssentialParts(isPremium))
     }
 
     /**

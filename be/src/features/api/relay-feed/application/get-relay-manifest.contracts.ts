@@ -16,4 +16,6 @@ export interface GetRelayManifestRequest {
     readonly scenario?: string | undefined
     /** For a lesson task: the challenge tier whose hidden scenarios are asked. */
     readonly challenge?: string | undefined
+    /** For a harness trial task: the tool of the run. */
+    readonly tool?: string | undefined
 }

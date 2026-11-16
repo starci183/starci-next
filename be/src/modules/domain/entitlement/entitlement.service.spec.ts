@@ -226,3 +226,27 @@ describe("EntitlementService devGrant", () => {
         expect(em.query).toHaveBeenCalledWith(GRANT_ENTITLEMENT, [LEARNER_ID, new Date(NOW), new Date(NOW), 12])
     })
 })
+
+describe("EntitlementService essential parts", () => {
+    const premiumRows = (until: string) => [
+        { learner_id: LEARNER_ID, premium_until: new Date(until), updated_at: new Date(NOW) },
+    ]
+
+    it("lets a free learner read Bản chất only and a Premium learner every part", async () => {
+        const service = await build(mockEntityManager({ query: [SELECT_ENTITLEMENT, []] }))
+        await expect(service.mayReadEssentialPart(LEARNER_ID, "1-essential")).resolves.toBe(true)
+        for (const part of ["2-source", "3-scenarios", "4-apply"] as const)
+            await expect(service.mayReadEssentialPart(LEARNER_ID, part)).resolves.toBe(false)
+        const premium = await build(
+            mockEntityManager({ query: [SELECT_ENTITLEMENT, premiumRows("2026-03-01T00:00:00.000Z")] }),
+        )
+        for (const part of ["1-essential", "2-source", "3-scenarios", "4-apply"] as const)
+            await expect(premium.mayReadEssentialPart(LEARNER_ID, part)).resolves.toBe(true)
+    })
+
+    it("lists the open parts by whether the learner holds Premium", async () => {
+        const service = await build(mockEntityManager({ query: [SELECT_ENTITLEMENT, []] }))
+        expect(service.openEssentialParts(false)).toEqual(["1-essential"])
+        expect(service.openEssentialParts(true)).toEqual(["1-essential", "2-source", "3-scenarios", "4-apply"])
+    })
+})

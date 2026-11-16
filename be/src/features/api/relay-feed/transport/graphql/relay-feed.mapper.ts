@@ -3,12 +3,14 @@ import type { SignedManifest, UploadReceipt } from "@modules/domain/relay"
 import type { PublicExecuteParams } from "@modules/platform/cqrs"
 import type { GetRelayManifestRequest } from "../../application/get-relay-manifest.contracts"
 import type { UploadRelayEventRequest } from "../../application/upload-relay-event.contracts"
+import { HARNESS_DOCTOR_TASK, HARNESS_TRIAL_TASK } from "@modules/domain/relay"
 import type {
     RelayCheckResultInput,
     RelayCheckStartedInput,
     RelayLogInput,
     RelayManifestAckInput,
 } from "./dto/relay-event.input"
+import type { RelayHarnessResultInput } from "./dto/relay-harness-result.input"
 import type { RelayManifestInput } from "./dto/relay-manifest.input"
 import type { RelayManifestType } from "./dto/relay-manifest.type"
 import type { RelayUploadType } from "./dto/relay-upload.type"
@@ -26,6 +28,7 @@ export const toGetRelayManifestParams = (
         testReport: input.testReport,
         scenario: input.scenario,
         challenge: input.challenge,
+        tool: input.tool,
     },
 })
 
@@ -50,6 +53,56 @@ export const toCheckResultParams = (
         upload: { kind: "check.result", ...input },
     },
 })
+
+/**
+ * Maps a harness result to a check result of the relay: a trial is task harness:trial with the trap as the check and the tool as
+ * the ref (passed when the verdict is held); a doctor probe is task harness:doctor with the probe as the check and the tool as the
+ * ref. The event id doubles as the run id; the relay refuses any fact the kind does not carry.
+ */
+export const toHarnessResultParams = (
+    credential: CredentialPrincipal,
+    input: RelayHarnessResultInput,
+): PublicExecuteParams<UploadRelayEventRequest> => {
+    const device = { learnerId: credential.workspaceId, deviceId: credential.subject }
+    const base = {
+        kind: "check.result" as const,
+        eventId: input.eventId,
+        runId: input.eventId,
+        tool: input.tool,
+        ref: input.tool,
+    }
+    if (input.kind === "harness-trial") {
+        return {
+            request: {
+                device,
+                upload: {
+                    ...base,
+                    taskId: HARNESS_TRIAL_TASK,
+                    checkId: input.trap,
+                    slot: "harness-trial",
+                    passed: input.verdict === "held",
+                    verdict: input.verdict,
+                    testsGreen: input.testsGreen,
+                    shortcuts: input.shortcuts?.map((shortcut) => ({ kind: shortcut.kind, blocked: shortcut.blocked })),
+                },
+            },
+        }
+    }
+    return {
+        request: {
+            device,
+            upload: {
+                ...base,
+                taskId: HARNESS_DOCTOR_TASK,
+                checkId: input.probe,
+                slot: "harness-doctor",
+                passed: input.status === "passed",
+                status: input.status,
+                reason: input.reason,
+            },
+        },
+    }
+}
 
 /** Maps a log chunk: the device is the one the tool-token credential proved (its learner the workspace, the device the subject). */
 export const toLogParams = (

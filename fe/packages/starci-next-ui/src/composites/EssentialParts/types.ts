@@ -202,6 +202,8 @@ export type EssentialPartsLabels = {
         readonly run: string
         readonly guards: string
         readonly expected: string
+        /** The label of the rule a scenario judges, shown on every scenario that names one. */
+        readonly judged: string
         readonly output: string
         readonly noOutput: string
         readonly why: string
@@ -226,5 +228,15 @@ export type EssentialPartsLabels = {
         readonly locked: string
         readonly empty: string
     }
-    readonly locked: { readonly title: string; readonly description: string; readonly plans: string }
+    /** The locked state of a part: the title and the Subscribe link, with a short description of what each part holds. */
+    readonly locked: {
+        readonly title: string
+        readonly plans: string
+        readonly parts: Readonly<
+            Record<
+                "essence" | "source" | "scenarios" | "apply",
+                { readonly title: string; readonly description: string }
+            >
+        >
+    }
 }

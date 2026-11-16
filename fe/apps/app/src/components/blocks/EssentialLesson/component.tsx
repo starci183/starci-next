@@ -61,10 +61,11 @@ const PartBody = (props: { readonly lesson: EssentialLessonView; readonly screen
     const { labels, plansHref, page } = props.screen.props
     const on = props.screen.on
     if (lesson.isLocked) {
+        const locked = labels.locked.parts[lesson.part]
         return (
             <LockedNotice
-                title={labels.locked.title}
-                description={labels.locked.description}
+                title={locked.title}
+                description={locked.description}
                 plansLabel={labels.locked.plans}
                 plansHref={plansHref}
             />
@@ -124,7 +125,9 @@ const PartBody = (props: { readonly lesson: EssentialLessonView; readonly screen
 /**
  * One Bản chất lesson in four parts, the page tabs of its band (`?part=`): Bản chất (the five-question opener, the article,
  * the same five again), Source (pull, architecture, code walk), Kịch bản (scenarios run on the learner's machine, results over
- * the relay, the fix handed to the learner's AI) and Tự áp dụng (the challenge ladder). The opener is free; the rest needs Premium.
+ * the relay, the fix handed to the learner's AI) and Tự áp dụng (the challenge ladder). Bản chất, the opener and the article, is
+ * free; each other part shows what it holds and a Subscribe link while the learner lacks Premium (the back end names the locked
+ * parts and never sends their payload).
  */
 export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
     const { slot, placeholder, slotLabels, plansHref, labels } = props.props
