@@ -1,0 +1,2 @@
+A copy of starci-next-seed-standard raw/projects at b00cc73 (catalog, probes, e2e flows), the data the check-flow fixture spec runs
+when STARCI_NEXT_DATA_DIR is not set. Refresh it by copying those files; it holds no code.

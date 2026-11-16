@@ -1,0 +1,56 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: error-shape
+label:
+  vi: 404 và 400 cùng một dạng lỗi JSON, không lộ stack hay bí mật
+  en: A 404 and a 400 share one JSON error shape, with no stack or secret
+question:
+  vi: "Lỗi được đổi thành phản hồi ở một chỗ hay rải rác, và chỗ đó che stack trace thế nào?"
+  en: "Are errors turned into responses in one place or scattered, and how does that place hide the stack trace?"
+needs: [endpoint]
+vars:
+  leak: '(\bat \S+ \(|\.(ts|js|java|cs|go|py):\d+|Traceback|Exception in thread|goroutine \d+|[Pp]assword|PRIVATE KEY)'
+steps:
+  - id: missing
+    request: { method: GET, path: "{{endpoint.path}}/starci-missing-{{run.id}}" }
+    capture: { shape: keys }
+    expect:
+      - { that: status, eq: 404, fail: no-404 }
+      - { that: keys, exists: true, fail: not-json }
+      - { that: body, notMatches: "{{leak}}", fail: stack-leaked }
+  - id: broken
+    request: { method: POST, path: "{{endpoint.path}}", body: '{"starci":' }
+    expect:
+      - { that: status, is: 4xx, fail: not-4xx }
+      - { that: keys, eq: "{{shape}}", fail: shape-differs }
+      - { that: body, notMatches: "{{leak}}", fail: stack-leaked }
+pass: one-shape
+reasons:
+  one-shape:
+    vi: "404 và 400 là JSON cùng dạng, không có stack hay bí mật."
+    en: "The 404 and the 400 are JSON of one shape, with no stack or secret."
+  no-404:
+    vi: "Tài nguyên không tồn tại không trả 404."
+    en: "A missing resource did not answer 404."
+  not-json:
+    vi: "Lỗi 404 không phải một object JSON."
+    en: "The 404 is not a JSON object."
+  stack-leaked:
+    vi: "Phản hồi lỗi lộ stack trace, đường dẫn file hoặc bí mật."
+    en: "The error response leaks a stack trace, a file path or a secret."
+  not-4xx:
+    vi: "JSON hỏng không trả 4xx."
+    en: "Broken JSON did not answer 4xx."
+  shape-differs:
+    vi: "Lỗi 400 khác dạng với lỗi 404."
+    en: "The 400 is shaped differently from the 404."
+fixtures:
+  endpoint: POST /starci-test/items
+  sample: '{"name":"book"}'
+  good: { authz: open }
+  cheats:
+    - { name: framework HTML 404, app: { errors: html-404 }, fails: not-json }
+    - { name: stack in the error, app: { errors: stack }, fails: stack-leaked }
+    - { name: two error shapes, app: { errors: mixed }, fails: shape-differs }
