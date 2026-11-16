@@ -128,6 +128,6 @@
 {"data":{},"findings":[],"hash":"2ab5c9362a6558f94e22e612d2c56925b9361e11ae9ff7783f0dedb4f75cc664","path":"fe/packages/starci-next-ui/src/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"913b496599e0db7d2e174fa6ed5a58b55c772b6b163f6ab9336699c48dd497cb","path":"fe/packages/starci-next-ui/src/leaves/Art/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ecd786c3165a406cf04040372591f2a22c2043855a06a7e5c6b31ad3a66260e5","path":"fe/packages/starci-next-ui/src/leaves/AttemptNotice/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bf75f4750bdef7e8e935e9e6f2e4122d5e35e014700b70436ce5fe8f60383fcc","path":"fe/packages/starci-next-ui/src/leaves/Icon/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"16636137fa2ca35783191de023622789e16babe2c9ccd6fda8fe52d8d470ee8a","path":"fe/packages/starci-next-ui/src/leaves/Icon/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f28ba0af1502e4fc2ff8fb674ee3b6b79efe12c7fdb3af9f41cfd3e17bf1f71e","path":"fe/packages/starci-next-ui/tsconfig.build.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f2388b528bf9cddb2e94bd8a76066f56cfc4ce7ad712e76d8ac8f4c0156ceb43","path":"fe/packages/starci-next-ui/tsconfig.json","step":"file-rules"}
