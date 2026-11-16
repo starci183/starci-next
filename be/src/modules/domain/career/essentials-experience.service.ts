@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common"
 import { AttemptReadService } from "@modules/domain/attempt"
 import { LessonReadService } from "@modules/domain/lesson"
 import { InjectClock, type Clock } from "@modules/platform/clock"
-import type { RecordedExperience } from "./career.contracts"
+import type { ProduceExperienceParams, RecordedExperience } from "./career.contracts"
 import { essentialsExperienceOf, type AttachedProject } from "./essentials-evidence.policy"
 import { InjectExperienceProducer, type ExperienceProducer } from "./experience-producer.port"
 
@@ -33,6 +33,19 @@ export class EssentialsExperienceService {
     /** Creates or regrades the item of a lesson attached to a project; answers null, creating nothing, without a project. */
     async record(params: RecordLessonExperienceParams): Promise<RecordedExperience> {
         if (params.project === null) return null
+        return this.producer.produce(await this.paramsOf({ ...params, project: params.project }))
+    }
+
+    /** What the item of a lesson attached to a project would be made from, without creating it: the CV-line preview reads this. */
+    preview(
+        params: RecordLessonExperienceParams & { readonly project: AttachedProject },
+    ): Promise<ProduceExperienceParams> {
+        return this.paramsOf(params)
+    }
+
+    private async paramsOf(
+        params: RecordLessonExperienceParams & { readonly project: AttachedProject },
+    ): Promise<ProduceExperienceParams> {
         const lookup = { id: params.lessonId, learnerId: params.learnerId }
         const [lessonVi, lessonEn, progress] = await Promise.all([
             this.lessons.find({ ...lookup, locale: "vi" }),
@@ -47,6 +60,6 @@ export class EssentialsExperienceService {
             project: params.project,
             at: this.clock.now().toISOString(),
         }
-        return this.producer.produce(essentialsExperienceOf(evidence))
+        return essentialsExperienceOf(evidence)
     }
 }

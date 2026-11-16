@@ -76,7 +76,11 @@ const shortCommit = (commit: string): string => commit.slice(0, 7)
 export const projectKindOf = (row: ProjectRow): ProjectKind => PROJECT_KINDS.find((kind) => kind === row.kind) ?? "app"
 
 /** The project as the list shows it. */
-export const toSummaryView = (row: ProjectRow, standing: ProjectStanding): ProjectSummaryView => ({
+export const toSummaryView = (
+    row: ProjectRow,
+    standing: ProjectStanding,
+    ciRun: CiRunRow | null = null,
+): ProjectSummaryView => ({
     id: row.project_id,
     name: row.name,
     kind: projectKindOf(row),
@@ -91,6 +95,9 @@ export const toSummaryView = (row: ProjectRow, standing: ProjectStanding): Proje
     currentMilestoneId: standing.currentMilestoneId,
     doneMilestoneCount: standing.milestones.filter((milestone) => milestone.state === "done").length,
     milestoneCount: standing.milestones.length,
+    practisingConceptCount: standing.practisingConceptIds.length,
+    latestCiStatus: ciRun === null ? "none" : ciRun.passed ? "passed" : "failed",
+    latestCiAt: ciRun === null ? null : ciRun.received_at.toISOString(),
     createdAt: row.created_at.toISOString(),
 })
 

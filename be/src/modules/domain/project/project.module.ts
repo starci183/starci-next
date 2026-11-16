@@ -7,6 +7,7 @@ import { ProjectCiProofService } from "./project-ci-proof.service"
 import { ProjectCodeReadService } from "./project-code-read.service"
 import { PROJECT_COACH } from "./project-coach.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
+import { ProjectExtrasService } from "./project-extras.service"
 import { PROJECT_LESSONS } from "./project-lesson.port"
 import { ProjectPracticeService } from "./project-practice.service"
 import { ProjectProbeService } from "./project-probe.service"
@@ -53,6 +54,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectCheckSetService,
                 ProjectProbeSinkService,
                 ProjectEvidenceService,
+                ProjectExtrasService,
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,
@@ -63,6 +65,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectRepositoryService,
             ],
             exports: [
+                ProjectExtrasService,
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,

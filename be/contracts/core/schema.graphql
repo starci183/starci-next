@@ -1353,6 +1353,32 @@ type ProjectCiRunType {
   runId: String!
 }
 
+type ProjectCodeReadCriterionType {
+  criterion: String!
+  criterionId: String!
+  evidenceQuote: String!
+  level: Int!
+  verdict: String!
+}
+
+type ProjectCodeReadType {
+  conceptId: String!
+  criteria: [ProjectCodeReadCriterionType!]!
+  excerptHash: String
+  gradedAt: String!
+  location: String!
+  mean: Float!
+  passed: Boolean!
+  projectId: String!
+  question: String
+}
+
+input ProjectConceptInput {
+  conceptId: String! @inputBounds(maxLength: 64)
+  locale: String! = "vi"
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
 type ProjectConceptLessonType {
   id: String!
   title: String!
@@ -1374,6 +1400,29 @@ type ProjectConceptType {
   state: String!
 }
 
+type ProjectCvEvidenceLinkType {
+  at: String!
+  kind: String!
+  proofForm: String!
+  ref: String!
+}
+
+input ProjectCvPreviewInput {
+  conceptId: String @inputBounds(maxLength: 64)
+  locale: String! = "vi"
+  milestoneId: String @inputBounds(maxLength: 64)
+  projectId: String! @inputBounds(maxLength: 36)
+}
+
+type ProjectCvPreviewType {
+  evidence: [ProjectCvEvidenceLinkType!]!
+  projectId: String!
+  proved: Boolean!
+  subjectId: String!
+  subjectKind: String!
+  text: String
+}
+
 type ProjectDeletedType {
   id: String!
 }
@@ -1389,6 +1438,8 @@ type ProjectDetailType {
   language: String!
   lastCiRun: ProjectCiRunType
   lastProbeRun: ProjectProbeRunType
+  latestCiAt: String
+  latestCiStatus: String!
   milestoneCount: Int!
   milestones: [ProjectMilestoneSummaryType!]!
   name: String!
@@ -1496,8 +1547,11 @@ type ProjectSummaryType {
   id: String!
   kind: String!
   language: String!
+  latestCiAt: String
+  latestCiStatus: String!
   milestoneCount: Int!
   name: String!
+  practisingConceptCount: Int!
   provedConceptCount: Int!
   repoUrl: String
   stack: String!
@@ -1543,6 +1597,8 @@ type Query {
   premiumPlans: [PlanType!]!
   project(input: ProjectInput!): ProjectDetailType!
   projectCatalog(input: ProjectCatalogInput!): ProjectCatalogType!
+  projectCodeRead(input: ProjectConceptInput!): ProjectCodeReadType
+  projectCvPreview(input: ProjectCvPreviewInput!): ProjectCvPreviewType!
   projectMilestone(input: ProjectMilestoneInput!): ProjectMilestoneType!
   projectRepository(input: ProjectRepositoryInput!): ProjectRepositoryType!
   projects(input: ProjectsInput!): [ProjectSummaryType!]!

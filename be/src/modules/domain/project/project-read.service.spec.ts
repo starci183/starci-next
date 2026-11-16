@@ -103,7 +103,10 @@ describe("ProjectReadService list", () => {
             provedConceptCount: 1,
             conceptCount: 4,
             currentMilestoneId: "bf-http-foundation",
+            practisingConceptCount: 0,
+            latestCiStatus: "passed",
         })
+        expect(project?.latestCiAt).toBe(ciRunRowOf().received_at.toISOString())
     })
 })
 

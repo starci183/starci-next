@@ -51,6 +51,10 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
    each run is one project-run streak action. A proof is claimed once and is not taken back when a later probe turns red.
 11. The AI code read grades the pasted excerpt and a two-to-three sentence explanation against the rubric of the concept's lesson with the
    one teacher model; the criterion levels with their quoted evidence and the question are stored with the result, the excerpt is not.
+12. The project screen reads two extras, both Premium-only (`PROJECT_PREMIUM_REQUIRED` otherwise): `projectCodeRead` (every rubric criterion with
+   its verdict, the SHA-256 of the excerpt, when it was graded; never the expected evidence) and `projectCvPreview` (the line a proved
+   concept or milestone would give, drafted from StarCi evidence only, with the CI run, probe run or code read under it; it produces
+   nothing). The project list carries `practisingConceptCount` and the newest CI run's status and time, as history readable without Premium.
 
 ## Example
 A learner makes "my-blog-api" and "shop-bot", copies `starci/` into both, runs `starci-next run` and sees "3/8 concept đã chứng minh"
