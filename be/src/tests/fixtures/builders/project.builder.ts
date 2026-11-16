@@ -202,6 +202,9 @@ export const summaryViewOf = (): ProjectSummaryView => ({
     currentMilestoneId: null,
     doneMilestoneCount: 0,
     milestoneCount: 0,
+    practisingConceptCount: 0,
+    latestCiStatus: "none",
+    latestCiAt: null,
     createdAt: "2026-11-01T00:00:00.000Z",
 })
 
@@ -209,7 +212,6 @@ export const summaryViewOf = (): ProjectSummaryView => ({
 export const projectViewOf = (): ProjectView => ({
     ...summaryViewOf(),
     milestones: [],
-    practisingConceptCount: 0,
     lastCiRun: null,
     lastProbeRun: null,
 })

@@ -42,6 +42,7 @@ export { ProjectProbeSinkService } from "./project-probe-sink.service"
 export { ProjectCheckSetService } from "./project-check-set.service"
 export { checkSetOf } from "./project-check-set.policy"
 export type { CheckConcept, CheckMilestone, CheckProbe, CheckSet } from "./project-check-set.contracts"
+export { ProjectExtrasService } from "./project-extras.service"
 export { ProjectReadService } from "./project-read.service"
 export { ProjectRepositoryService } from "./project-repository.service"
 export { ProjectService } from "./project.service"
@@ -58,7 +59,13 @@ export type {
     ProjectSecretView,
     ProjectSummaryView,
     ProjectView,
+    CodeReadCriterionView,
+    CodeReadView,
+    CvEvidenceLinkView,
+    CvPreviewView,
+    CiStatus,
     ProvedConceptView,
 } from "./project-view.contracts"
+export type { CvPreviewParams } from "./project-extras.service"
 export type { RelayResultsRequest } from "./project-params.contracts"
 export type { ProjectKind, ProjectLocale, RelayCheckResult } from "./project.contracts"

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto"
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
@@ -101,6 +102,7 @@ export class ProjectCodeReadService {
                         reason: passed ? "read-passed" : "read-below-bar",
                         facts: { mean: Math.round(codeReadMean(grade) * 100) / 100 },
                         levels: grade.criteria,
+                        excerptHash: createHash("sha256").update(excerpt).digest("hex"),
                         question: grade.question,
                     },
                     at: now,
