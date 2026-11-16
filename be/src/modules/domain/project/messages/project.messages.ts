@@ -27,6 +27,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CI_PAYLOAD_INVALID": "Kết quả CI không đúng định dạng.",
         "errors.PROJECT_COACH_UNCONFIGURED": "Thầy AI chưa được bật nên chưa chấm được phần đọc code.",
         "errors.PROJECT_COACH_UNAVAILABLE": "Thầy AI đang bận; hãy thử lại sau ít phút.",
+        "errors.PROJECT_CHECKS_UNAVAILABLE": "Bộ kiểm tra của Dự án chưa sẵn sàng; hãy thử lại sau.",
         "errors.PROJECT_COACH_INVALID": "Thầy AI trả lời không đúng dạng; hãy thử lại.",
     },
     en: {
@@ -55,6 +56,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CI_PAYLOAD_INVALID": "The CI result is not in the expected format.",
         "errors.PROJECT_COACH_UNCONFIGURED": "The AI teacher is not enabled, so the code read cannot be graded.",
         "errors.PROJECT_COACH_UNAVAILABLE": "The AI teacher is busy; try again in a few minutes.",
+        "errors.PROJECT_CHECKS_UNAVAILABLE": "The project checks are not ready yet; try again later.",
         "errors.PROJECT_COACH_INVALID": "The AI teacher answered in the wrong shape; try again.",
     },
 }

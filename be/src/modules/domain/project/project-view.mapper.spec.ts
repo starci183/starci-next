@@ -198,7 +198,7 @@ describe("toConceptView (part 2)", () => {
         subject = await build()
     })
 
-    it("shows a failing probe with its reason, facts and the fixed question", () => {
+    it("shows a failing probe with its reason, facts and the question its content file names", () => {
         const rows = subject.toEvidenceRows([
             evidenceDbRowOf(),
             evidenceDbRowOf({
@@ -207,7 +207,11 @@ describe("toConceptView (part 2)", () => {
                 passed: false,
                 ref: "repeat-same-key",
                 run_id: "p1",
-                detail: { reason: "second-differs", facts: { first: 201, second: 409 } },
+                detail: {
+                    reason: "second-differs",
+                    facts: { first: 201, second: 409 },
+                    question: { vi: "Lần gọi thứ hai?", en: "Where is the second call recognised?" },
+                },
                 at: new Date("2026-11-08T09:30:00.000Z"),
             }),
         ])
