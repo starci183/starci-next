@@ -27,8 +27,12 @@ export interface LessonOpenerQuestion {
     readonly correctIndex: number
     /** Why the right choice is right; released after the submit. */
     readonly explanation: string
+    /** The explanation of each choice, in the order of the choices; released after the submit (the picked one is shown). */
+    readonly choiceExplanations?: ReadonlyArray<string>
     /** The article section to read closely when the answer is wrong. */
     readonly sectionId?: string
+    /** The heading number inside that section to read closely (`2.2`). */
+    readonly sectionRef?: string
     /** The scenario that shows the answer when it is run. */
     readonly scenarioId?: string
 }

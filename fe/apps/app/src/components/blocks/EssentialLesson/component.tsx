@@ -3,6 +3,7 @@ import {
     EssentialApply,
     EssentialArticle,
     EssentialOpener,
+    EssentialPartIntro,
     EssentialRetake,
     EssentialScenarios,
     EssentialSource,
@@ -90,18 +91,33 @@ const PartBody = (props: { readonly lesson: EssentialLessonView; readonly screen
         )
     }
     if (lesson.isEmpty) return <EmptyNotice message={page.soon} />
-    if (lesson.part === "source") return <EssentialSource source={lesson.source} labels={labels} />
+    const intro = lesson.intro === undefined ? null : <EssentialPartIntro section={lesson.intro} labels={labels} />
+    if (lesson.part === "source")
+        return (
+            <Stack gap="region">
+                <EssentialSource source={lesson.source} labels={labels} />
+                {intro}
+            </Stack>
+        )
     if (lesson.part === "scenarios")
-        return <EssentialScenarios part={lesson.scenarios} labels={labels} onSelect={on.selectScenario} />
+        return (
+            <Stack gap="region">
+                <EssentialScenarios part={lesson.scenarios} labels={labels} onSelect={on.selectScenario} />
+                {intro}
+            </Stack>
+        )
     return (
-        <EssentialApply
-            part={lesson.apply}
-            labels={labels}
-            plansHref={plansHref}
-            onSelect={on.selectChallenge}
-            onPick={on.pick}
-            onSubmit={on.submit}
-        />
+        <Stack gap="region">
+            <EssentialApply
+                part={lesson.apply}
+                labels={labels}
+                plansHref={plansHref}
+                onSelect={on.selectChallenge}
+                onPick={on.pick}
+                onSubmit={on.submit}
+            />
+            {intro}
+        </Stack>
     )
 }
 

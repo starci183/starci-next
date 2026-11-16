@@ -35,7 +35,7 @@ export const partPath = (lesson: LessonView, part: EssentialPart, extra = ""): s
 export type EssentialWords = {
     readonly position: (n: number, total: number) => string
     readonly score: (right: number, total: number) => string
-    readonly readSection: (n: number, title: string) => string
+    readonly readSection: (n: string, title: string) => string
     readonly seeScenario: (title: string) => string
     readonly scenarioStates: Readonly<Record<ScenarioCardView["state"], string>>
     readonly scenariosSummary: (green: number, total: number) => string
@@ -101,7 +101,10 @@ const linksOf = (lesson: LessonView, question: EssentialQuestionView, words: Ess
             : [
                   {
                       id: `section-${section.id}`,
-                      label: words.readSection(index + 1, section.title),
+                      label: words.readSection(
+                          question.sectionRef === "" ? String(index + 1) : question.sectionRef,
+                          section.title,
+                      ),
                       href: partPath(lesson, "essence", `#section-${section.id}`),
                   },
               ]),
@@ -115,6 +118,28 @@ const linksOf = (lesson: LessonView, question: EssentialQuestionView, words: Ess
                   },
               ]),
     ]
+}
+
+/** The phase each part's own section is stored under (the topic-based format: sections/2-source, 3-scenarios, 4-apply). */
+const PART_PHASES: Readonly<Record<Exclude<EssentialPart, "essence">, string>> = {
+    source: "explore",
+    scenarios: "apply",
+    apply: "reflect",
+}
+
+/** The section a part opens with (its prose, owner style), for a lesson that carries the four parts; undefined otherwise. */
+export const partSectionOf = (lesson: LessonView, part: EssentialPart): ArticleSectionView | undefined => {
+    if (part === "essence" || lesson.essential === undefined) return undefined
+    const section = lesson.sections.find((each) => each.phase === PART_PHASES[part])
+    return section === undefined
+        ? undefined
+        : {
+              id: section.id,
+              title: section.title,
+              markdown: section.markdown,
+              isLocked: section.isLocked,
+              isFlagged: false,
+          }
 }
 
 /** The sections the article draws: the theory ones, or every section of a lesson without theory. */

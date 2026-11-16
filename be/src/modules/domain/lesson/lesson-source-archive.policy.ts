@@ -17,13 +17,33 @@ export interface LessonSourceCode {
     readonly content: string
 }
 
-/** The files of the lesson folder under `source/`, sorted, their paths relative to it; nothing outside it (no `hidden/`) and no `.git`. */
-export const sourceCodeOf = (files: ReadonlyArray<LessonSourceFile>): Array<LessonSourceCode> =>
-    files
+/** Folders never part of a lesson's source, whatever its `.gitignore` says. */
+const ALWAYS_SKIPPED: ReadonlyArray<string> = [".git", "node_modules"]
+
+/** The plain folder names the source's own `.gitignore` ignores (`dist/`, `reports/`); patterns with wildcards are not read. */
+const ignoredFoldersOf = (files: ReadonlyArray<LessonSourceFile>): ReadonlyArray<string> => {
+    const ignore = files.find((file) => file.path === `${LESSON_SOURCE_FOLDER}.gitignore`)?.text ?? ""
+    return ignore
+        .split(/\r?\n/u)
+        .map((line) => line.trim().replace(/^\//u, "").replace(/\/$/u, ""))
+        .filter((line) => /^[A-Za-z0-9._-]+$/u.test(line))
+}
+
+/**
+ * The files of the lesson folder under `source/`, sorted, their paths relative to it: nothing outside it (no `hidden/`), no
+ * `.git` or `node_modules`, and none of the folders the source's own `.gitignore` names (the build and report output).
+ */
+export const sourceCodeOf = (files: ReadonlyArray<LessonSourceFile>): Array<LessonSourceCode> => {
+    const skipped = new Set([...ALWAYS_SKIPPED, ...ignoredFoldersOf(files)])
+    return files
         .filter((file) => file.path.startsWith(LESSON_SOURCE_FOLDER) && file.path.length > LESSON_SOURCE_FOLDER.length)
-        .filter((file) => !file.path.split("/").includes(".git"))
         .map((file) => ({ path: file.path.slice(LESSON_SOURCE_FOLDER.length), content: file.text }))
+        .filter(
+            (file) =>
+                !file.path.split("/").some((segment, index, all) => index < all.length - 1 && skipped.has(segment)),
+        )
         .sort((a, b) => a.path.localeCompare(b.path))
+}
 
 /** The size of a tar block. */
 const BLOCK = 512

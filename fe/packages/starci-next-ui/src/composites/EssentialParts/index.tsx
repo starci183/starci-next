@@ -200,6 +200,24 @@ export const EssentialArticle = (props: ArticleProps) => {
     )
 }
 
+/** The prose a part opens with: one section of the teacher's markdown. */
+export const EssentialPartIntro = (props: {
+    readonly section: ArticleSectionView
+    readonly labels: EssentialPartsLabels
+}) => (
+    <Section title={props.section.title} headingLevel={2} id={`section-${props.section.id}`}>
+        {props.section.isLocked ? (
+            <Text tone="muted">{props.labels.article.locked}</Text>
+        ) : (
+            <Markdown
+                source={props.section.markdown}
+                labels={props.labels.markdown}
+                renderCode={(code) => <LessonCode code={code} />}
+            />
+        )}
+    </Section>
+)
+
 /** What the retake needs. */
 type RetakeProps = {
     readonly rows: ReadonlyArray<CompareRowView>

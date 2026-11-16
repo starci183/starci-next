@@ -119,6 +119,8 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                         label
                     }
                     sectionId
+                    sectionRef
+                    sectionRef
                     scenarioId
                 }
                 source {
@@ -178,6 +180,8 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                             label
                         }
                         sectionId
+                        sectionRef
+                        sectionRef
                         scenarioId
                     }
                 }

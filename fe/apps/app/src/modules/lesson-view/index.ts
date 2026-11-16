@@ -215,6 +215,7 @@ const questionOf = (wire: NonNullable<LessonWire["essential"]>["opener"][number]
     prompt: wire.prompt,
     choices: wire.choices,
     sectionId: wire.sectionId ?? "",
+    sectionRef: wire.sectionRef ?? "",
     scenarioId: wire.scenarioId ?? "",
 })
 

@@ -14,6 +14,7 @@ const toQuestionView = (question: LessonOpenerQuestion, activityId: string): Les
     prompt: question.prompt,
     choices: question.choices.map((label, index) => ({ id: choiceOptionId(index), label })),
     sectionId: question.sectionId ?? null,
+    sectionRef: question.sectionRef ?? null,
     scenarioId: question.scenarioId ?? null,
 })
 

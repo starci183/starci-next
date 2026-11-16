@@ -295,7 +295,7 @@ const choiceActivityOf = (id: string, question: LessonOpenerQuestion, isDiagnost
     options: question.choices.map((label, index) => ({
         id: choiceOptionId(index),
         label,
-        explanation: question.explanation,
+        explanation: question.choiceExplanations?.[index] ?? question.explanation,
         isCorrect: index === question.correctIndex,
     })),
 })

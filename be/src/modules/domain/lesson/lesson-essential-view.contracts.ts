@@ -27,6 +27,8 @@ export interface LessonQuestionView {
     readonly choices: ReadonlyArray<LessonChoiceView>
     /** The article section to read closely when wrong, or null. */
     readonly sectionId: string | null
+    /** The heading number inside it (`2.2`), or null. */
+    readonly sectionRef: string | null
     /** The scenario that shows the answer, or null. */
     readonly scenarioId: string | null
 }

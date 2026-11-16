@@ -205,6 +205,7 @@ export {
     EssentialApply,
     EssentialArticle,
     EssentialOpener,
+    EssentialPartIntro,
     EssentialQuestion,
     EssentialRetake,
     EssentialScenarios,

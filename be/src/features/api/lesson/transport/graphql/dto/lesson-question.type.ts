@@ -35,6 +35,10 @@ export class LessonQuestionType {
     @Field(() => String, { nullable: true })
     sectionId!: string | null
 
+    /** The heading number inside that section (`2.2`), or null. */
+    @Field(() => String, { nullable: true })
+    sectionRef!: string | null
+
     /** The scenario that shows the answer, or null. */
     @Field(() => String, { nullable: true })
     scenarioId!: string | null

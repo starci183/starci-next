@@ -33,6 +33,7 @@ import {
     openerOf,
     partOf,
     partPath,
+    partSectionOf,
     scenariosOf,
     sourceOf,
     type EssentialDesk,
@@ -59,6 +60,8 @@ export type EssentialLessonView = {
     readonly isEmpty: boolean
     /** True when the part on screen needs Premium the learner lacks. */
     readonly isLocked: boolean
+    /** The prose a part opens with (its own section), when the lesson has one. */
+    readonly intro: ArticleSectionView | undefined
     readonly opener: OpenerView
     readonly article: ReadonlyArray<ArticleSectionView>
     readonly compare: ReadonlyArray<CompareRowView>
@@ -104,6 +107,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     tabs: ESSENTIAL_PARTS.map((id) => ({ id, label: "xxxxxx", href: "/" })),
     isEmpty: false,
     isLocked: false,
+    intro: undefined,
     opener: {
         questions: [
             {
@@ -207,6 +211,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     tabs: ESSENTIAL_PARTS.map((id) => ({ id, label: page.parts[id], href: partPath(lesson, id) })),
                     isEmpty: lesson.essential === undefined,
                     isLocked: part !== "essence" && view.isLocked,
+                    intro: partSectionOf(lesson, part),
                     opener,
                     article: articleOf(lesson, opener, score),
                     compare: compareOf(view, score),

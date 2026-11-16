@@ -19,6 +19,8 @@ export type EssentialQuestionView = {
     readonly choices: ReadonlyArray<{ readonly id: string; readonly label: string }>
     /** The article section to read closely when the answer is wrong; empty when none. */
     readonly sectionId: string
+    /** The heading number to read closely inside it (`2.2`); empty when none. */
+    readonly sectionRef: string
     /** The scenario that shows the answer; empty when none. */
     readonly scenarioId: string
 }

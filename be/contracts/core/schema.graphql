@@ -821,6 +821,7 @@ type LessonQuestionType {
   prompt: String!
   scenarioId: String
   sectionId: String
+  sectionRef: String
 }
 
 type LessonReferenceType {
