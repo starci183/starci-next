@@ -3,7 +3,6 @@ import type { McpOptions } from "./mcp.options"
 
 const options = (embed: McpOptions["embed"]): McpOptions => ({
     tokenLimit: 5,
-    sourceRoot: null,
     publicUrl: null,
     embed,
 })

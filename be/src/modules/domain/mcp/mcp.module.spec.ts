@@ -1,7 +1,7 @@
 import { Global, Module } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import { FakeClock, mockEntityManager } from "@starci/jest-preset"
-import { LessonReadService } from "@modules/domain/lesson"
+import { LessonReadService, LessonSourceTreeService } from "@modules/domain/lesson"
 import { RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
@@ -14,12 +14,20 @@ import { McpTutorService } from "./mcp-tutor.service"
 @Module({
     providers: [
         { provide: LessonReadService, useValue: {} },
+        { provide: LessonSourceTreeService, useValue: {} },
         { provide: RelayDeviceService, useValue: {} },
         { provide: RelayFeedService, useValue: {} },
         { provide: CLOCK, useValue: new FakeClock("2026-11-17T00:00:00.000Z") },
         { provide: PRIMARY_ENTITY_MANAGER, useValue: mockEntityManager() },
     ],
-    exports: [LessonReadService, RelayDeviceService, RelayFeedService, CLOCK, PRIMARY_ENTITY_MANAGER],
+    exports: [
+        LessonReadService,
+        LessonSourceTreeService,
+        RelayDeviceService,
+        RelayFeedService,
+        CLOCK,
+        PRIMARY_ENTITY_MANAGER,
+    ],
 })
 class NeighboursModule {}
 
@@ -28,7 +36,7 @@ describe("McpModule", () => {
         const moduleRef = await Test.createTestingModule({
             imports: [
                 NeighboursModule,
-                McpModule.register({ isGlobal: true, tokenLimit: 5, sourceRoot: null, publicUrl: null, embed: null }),
+                McpModule.register({ isGlobal: true, tokenLimit: 5, publicUrl: null, embed: null }),
             ],
         }).compile()
 

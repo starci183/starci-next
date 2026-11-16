@@ -11,7 +11,6 @@ const build = (query: jest.Mock, tokenLimit = 2): McpTokenService => {
     const manager = { ...mockEntityManager(), query } as unknown as EntityManager
     return new McpTokenService(manager, new FakeClock(NOW), {
         tokenLimit,
-        sourceRoot: null,
         publicUrl: null,
         embed: null,
     })

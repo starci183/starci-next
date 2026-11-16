@@ -18,6 +18,14 @@ export { LessonImportService } from "./lesson-import.service"
 export { LessonLinkService } from "./lesson-link.service"
 export { LessonModule } from "./lesson.module"
 export { LessonReadService } from "./lesson-read.service"
+export { lessonSourceTreeOf } from "./lesson-source-tree.policy"
+export { LessonSourceTreeService } from "./lesson-source-tree.service"
+export type {
+    LessonSourceTree,
+    LessonSourceTreeFile,
+    LessonSourceTreeInvariant,
+    LessonSourceTreeScenario,
+} from "./lesson-source-tree.contracts"
 export type {
     LessonActivity,
     LessonContent,

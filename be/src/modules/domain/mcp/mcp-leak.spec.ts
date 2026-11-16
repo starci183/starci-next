@@ -1,13 +1,16 @@
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
-import { tmpdir } from "node:os"
-import { join } from "node:path"
 import { Client } from "@modelcontextprotocol/sdk/client/index.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js"
-import type { LessonReadService, LessonView } from "@modules/domain/lesson"
+import {
+    lessonSourceTreeOf,
+    type LessonReadService,
+    type LessonSourceTree,
+    type LessonView,
+} from "@modules/domain/lesson"
 import type { LearnerRunEvent, RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { McpErrorCode } from "./errors/mcp.error"
 import type { McpEmbedder } from "./mcp-embedder.port"
 import { McpServerFactory } from "./mcp-server.factory"
+import type { McpSourceTree } from "./mcp-source-tree.port"
 import { McpSourceService } from "./mcp-source.service"
 import { McpTutorService } from "./mcp-tutor.service"
 import { McpVectorIndex } from "./mcp-vector.index"
@@ -23,6 +26,8 @@ const SECRETS = [
     "ENVSECRET",
     "TEACHERONLYSECRET",
     "OUTSIDESECRET",
+    "DEPENDENCYSECRET",
+    "HINTSECRET",
     "EXPECTEDEVIDENCESECRET",
     "HIDDENSCENARIOSECRET",
     "LOCKEDSECTIONSECRET",
@@ -31,42 +36,94 @@ const SECRETS = [
 const LEARNER = "11111111-1111-4111-8111-111111111111"
 const LESSON = "bank-transfer"
 
-const catalog = {
-    commit: "abc1234",
-    scenarios: [
+/** The content commit the lesson version was imported at: the pin every file is read at. */
+const COMMIT = "abc1234def5678abc1234def5678abc1234def56"
+
+/**
+ * The stored content of one lesson version as the importer leaves it: the files of source/ (a few of them dirty on purpose, as a
+ * seed repository could hold them by mistake), the scenarios, invariants and code walk, and the challenge whose hidden scenario,
+ * hidden test source and rubric must never reach a reader.
+ */
+const content = {
+    sourceCode: [
         {
-            id: "double-spend",
-            title: "Double spend",
-            fault: "a retry applies the transfer twice",
-            invariant: "C2",
-            guards: ["idempotency"],
+            path: "src/ledger.ts",
+            content: "export const ledger = 1 // idempotency key keeps a transfer applied once\n",
         },
-        { id: "lost-update", title: "Lost update", fault: "two writers", invariant: "C3", guards: [] },
-        { id: "insane-hidden", title: "HIDDENSCENARIOSECRET", fault: "HIDDENSCENARIOSECRET", hidden: true },
+        { path: "hidden/transfer.test.ts", content: "HIDDENTESTSECRET idempotency" },
+        { path: "submissions/0/solution.ts", content: "SUBMISSIONSECRET idempotency" },
+        { path: "rubric.json", content: "RUBRICSECRET idempotency" },
+        { path: "src/answers.ts", content: "ANSWERKEYSECRET idempotency" },
+        { path: "mutants/m1.ts", content: "MUTANTSECRET idempotency" },
+        { path: ".env", content: "ENVSECRET idempotency" },
+        { path: "src/transfer.hidden.test.ts", content: "HIDDENTESTSECRET idempotency" },
+        { path: "node_modules/dep/index.ts", content: "DEPENDENCYSECRET idempotency" },
     ],
-    invariants: [
-        {
-            id: "C1",
-            name: "Money is conserved",
-            statement: "The sum of balances never changes",
-            where: "src/ledger.ts:3",
+    locales: {
+        vi: {
+            essential: {
+                invariants: [
+                    { id: "C1", text: "The sum of balances never changes" },
+                    { id: "C2", text: "A transfer applies once" },
+                    { id: "C3", text: "Concurrent writers serialise" },
+                ],
+                codeWalk: [
+                    { id: "w1", invariant: "C2", file: "src/ledger.ts", line: 9, snippet: "x" },
+                    { id: "w2", invariant: "C3", file: "hidden/c3.test.ts", line: 1, snippet: "x" },
+                ],
+                scenarios: [
+                    {
+                        id: "double-spend",
+                        title: "Double spend",
+                        fault: "a retry applies the transfer twice",
+                        command: "npm run double-spend",
+                        expected: "EXPECTEDEVIDENCESECRET",
+                        invariant: "C2",
+                        guards: [{ name: "idempotency", env: "IDEMPOTENCY", off: "off" }],
+                        hint: "HINTSECRET",
+                    },
+                    {
+                        id: "lost-update",
+                        title: "Lost update",
+                        fault: "two writers",
+                        command: "npm run lost-update",
+                        expected: "EXPECTEDEVIDENCESECRET",
+                        invariant: "C3",
+                        guards: [],
+                    },
+                ],
+                challenges: [
+                    {
+                        id: "ch-1",
+                        level: "insane",
+                        title: "Insane",
+                        brief: "TEACHERONLYSECRET",
+                        rubric: [{ id: "r1", criterion: "RUBRICSECRET", points: 40, isCritical: true }],
+                        hidden: [
+                            {
+                                id: "insane-hidden",
+                                title: "HIDDENSCENARIOSECRET",
+                                command: "npm run insane",
+                                files: [
+                                    {
+                                        path: "tests/h1.spec.ts",
+                                        from: "hidden/h1.spec.ts",
+                                        content: "HIDDENTESTSECRET",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            },
         },
-        {
-            id: "C2",
-            name: "Applied once",
-            statement: "A transfer applies once",
-            where: "src/ledger.ts:9",
-            revealedBy: "double-spend",
-        },
-        {
-            id: "C3",
-            name: "No lost update",
-            statement: "Concurrent writers serialise",
-            where: "hidden/c3.test.ts:1",
-            revealedBy: "lost-update",
-        },
-    ],
-    deny: ["teacher-only"],
+    },
+}
+
+const treeOf = (): LessonSourceTree => {
+    const tree = lessonSourceTreeOf(COMMIT, content)
+    if (tree === null) throw new Error("the fixture ships no source")
+    return tree
 }
 
 const view = (isPremium: boolean): LessonView =>
@@ -113,7 +170,6 @@ const event = (partial: Partial<LearnerRunEvent>): LearnerRunEvent => ({
 })
 
 interface Build {
-    readonly root: string
     readonly embeddedTexts: Array<string>
     readonly tutor: McpTutorService
     readonly factory: McpServerFactory
@@ -122,35 +178,9 @@ interface Build {
     readonly lessons: { find: jest.Mock }
 }
 
-const plant = async (root: string): Promise<void> => {
-    const lesson = join(root, LESSON)
-    const repo = join(lesson, "repo")
-    const files: Record<string, string> = {
-        "starci-source.json": JSON.stringify(catalog),
-        "repo/src/ledger.ts": "export const ledger = 1 // idempotency key keeps a transfer applied once\n",
-        "repo/hidden/transfer.test.ts": "HIDDENTESTSECRET idempotency",
-        "repo/submissions/0/solution.ts": "SUBMISSIONSECRET idempotency",
-        "repo/rubric.json": "RUBRICSECRET idempotency",
-        "repo/src/answers.ts": "ANSWERKEYSECRET idempotency",
-        "repo/mutants/m1.ts": "MUTANTSECRET idempotency",
-        "repo/.env": "ENVSECRET idempotency",
-        "repo/teacher-only/notes.md": "TEACHERONLYSECRET idempotency",
-        "repo/expected-evidence/c2.md": "EXPECTEDEVIDENCESECRET idempotency",
-        "repo/src/transfer.hidden.test.ts": "HIDDENTESTSECRET idempotency",
-        "outside.txt": "OUTSIDESECRET idempotency",
-    }
-    for (const [path, text] of Object.entries(files)) {
-        const target = join(lesson, path)
-        await mkdir(join(target, ".."), { recursive: true })
-        await writeFile(target, text)
-    }
-    await symlink(join(lesson, "outside.txt"), join(repo, "src", "link.txt")).catch(() => undefined)
-}
-
-const build = async (isPremium: boolean, embedder: McpEmbedder): Promise<Build> => {
-    const root = await mkdtemp(join(tmpdir(), "mcp-leak-"))
-    await plant(root)
-    const options: McpOptions = { tokenLimit: 5, sourceRoot: root, publicUrl: null, embed: null }
+const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree | null = treeOf()): Build => {
+    const options: McpOptions = { tokenLimit: 5, publicUrl: null, embed: null }
+    const trees: McpSourceTree = { tree: () => Promise.resolve(tree) }
     const embeddedTexts: Array<string> = []
     const recording: McpEmbedder = {
         isConfigured: embedder.isConfigured,
@@ -176,13 +206,13 @@ const build = async (isPremium: boolean, embedder: McpEmbedder): Promise<Build> 
     }
     const tutor = new McpTutorService(
         lessons as unknown as LessonReadService,
-        new McpSourceService(options),
+        new McpSourceService(trees),
         new McpVectorIndex(recording),
         devices as unknown as RelayDeviceService,
         feed as unknown as RelayFeedService,
         options,
     )
-    return { root, embeddedTexts, tutor, factory: new McpServerFactory(tutor), feed, devices, lessons }
+    return { embeddedTexts, tutor, factory: new McpServerFactory(tutor), feed, devices, lessons }
 }
 
 const offline: McpEmbedder = { isConfigured: false, embed: () => Promise.resolve(null) }
@@ -214,15 +244,8 @@ const assertClean = (value: unknown): void => {
 }
 
 describe("the MCP never leaks what a learner AI may not read", () => {
-    const roots: Array<string> = []
-    afterAll(async () => {
-        for (const root of roots) await rm(root, { recursive: true, force: true })
-    })
-    const make = async (isPremium: boolean, embedder: McpEmbedder): Promise<Build> => {
-        const built = await build(isPremium, embedder)
-        roots.push(built.root)
-        return built
-    }
+    const make = (isPremium: boolean, embedder: McpEmbedder): Promise<Build> =>
+        Promise.resolve(build(isPremium, embedder))
 
     it("reads, lists and searches the repository without a hidden test, submission, rubric, key, mutant, env or outside file", async () => {
         const { tutor } = await make(true, offline)
@@ -233,12 +256,9 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             "src/answers.ts",
             "mutants/m1.ts",
             ".env",
-            "teacher-only/notes.md",
             "expected-evidence/c2.md",
             "src/transfer.hidden.test.ts",
             "../outside.txt",
-            "../starci-source.json",
-            "starci-source.json",
         ]
         for (const path of forbidden)
             await expect(tutor.readFile(LEARNER, LESSON, path)).rejects.toMatchObject({
@@ -248,9 +268,15 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         expect(keyword.hits.map((hit) => hit.path)).toEqual(["src/ledger.ts"])
         assertClean(keyword)
         assertClean(await tutor.readFile(LEARNER, LESSON, "src/ledger.ts"))
-        // A symlink inside the repository that points outside it is never followed.
-        await expect(tutor.readFile(LEARNER, LESSON, "src/link.txt")).rejects.toMatchObject({
-            code: McpErrorCode.FileNotFound,
+    })
+
+    it("answers source unavailable for a lesson that ships no source tree", async () => {
+        const noSource = build(true, offline, null)
+        await expect(noSource.tutor.readFile(LEARNER, LESSON, "src/ledger.ts")).rejects.toMatchObject({
+            code: McpErrorCode.SourceUnavailable,
+        })
+        await expect(noSource.tutor.scenarios(LEARNER, LESSON)).rejects.toMatchObject({
+            code: McpErrorCode.SourceUnavailable,
         })
     })
 

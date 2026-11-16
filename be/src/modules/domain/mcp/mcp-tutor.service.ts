@@ -128,7 +128,7 @@ export class McpTutorService {
             const catalog = await this.source.catalog(id)
             const texts = await this.source.texts(id)
             const chunks = texts.flatMap((file) => chunksOf(file.path, file.text))
-            const key = corpusKeyOf(["code", id, catalog.commit, ...catalog.deny, ...texts.map((file) => file.path)])
+            const key = corpusKeyOf(["code", id, catalog.commit, ...texts.map((file) => file.path)])
             const hits = await this.vectors.search(key, chunks, query)
             if (hits !== null) return { mode: "semantic", fellBack: false, hits }
         }
@@ -177,8 +177,7 @@ export class McpTutorService {
                 id: invariantId,
                 name,
                 statement,
-                where:
-                    where !== null && readablePathOf(where.split(":")[0] ?? "", catalog.deny) !== null ? where : null,
+                where: where !== null && readablePathOf(where.split(":")[0] ?? "") !== null ? where : null,
             }))
     }
 
