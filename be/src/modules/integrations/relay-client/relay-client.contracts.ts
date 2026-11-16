@@ -63,6 +63,10 @@ export interface CliIo {
         url: string,
         bearer: string | undefined,
     ) => Promise<{ readonly status: number; readonly bytes: Buffer }>
+    /** True when this process has a terminal the learner can answer in. */
+    readonly isTty: () => boolean
+    /** Opens the push-only device socket; every frame goes to the handlers until the connection ends. */
+    readonly listen: (baseUrl: string, deviceToken: string, handlers: DeviceHandlers) => DeviceConnection
     /** Verifies a signed manifest payload with the StarCi public key (PEM). */
     readonly verify: (payload: string, signature: string, publicKeyPem: string) => ManifestRead
     /** Runs one shown and confirmed command in a folder of the task workspace, stopped after its timeout. */
@@ -192,4 +196,20 @@ export type SignatureRead =
     { readonly kind: "checked"; readonly holds: boolean } | { readonly kind: "rejected"; readonly cause: unknown }
 
 /** The part of the outside world that is this terminal and this operating system. */
-export type TerminalPort = Pick<CliIo, "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand">
+export type TerminalPort = Pick<CliIo, "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand" | "isTty">
+
+/** What a device socket tells its owner. */
+export interface DeviceHandlers {
+    /** One frame the relay pushed, untrusted until read and verified. */
+    readonly onFrame: (frame: unknown) => void
+    /** A line about the connection (connected, cut, retrying). */
+    readonly onStatus: (line: string) => void
+}
+
+/** An open device socket. */
+export interface DeviceConnection {
+    /** Settles with `closed` when the owner closed it, or the line that says why it ended for good (the device was refused). */
+    readonly ended: Promise<string>
+    /** Closes the socket. */
+    readonly close: () => void
+}
