@@ -1,3 +1,4 @@
+import type { EssentialPart } from "@modules/domain/entitlement"
 import type { LessonEssentialView } from "./lesson-essential-view.contracts"
 import type { LessonTopicRef } from "./lesson-topic-view.contracts"
 import type {
@@ -267,6 +268,8 @@ export interface LessonServerActivity {
     readonly phase: LessonPhase | "retrieval"
     /** The teacher's mark that covers the activity (its section's, else the lesson's); absent when the content carries none. */
     readonly isPremium?: boolean | undefined
+    /** The Essentials part the activity belongs to (the opener is Bản chất, a challenge question Tự áp dụng); absent elsewhere. */
+    readonly part?: EssentialPart | undefined
 }
 
 /** The learner and the phase of the content they ask to study; `retrieval` is a review activity. */
@@ -277,6 +280,11 @@ export interface LessonAccessParams {
     readonly phase: LessonPhase | "retrieval"
     /** The teacher's mark that covers the content; absent when the content carries none, and the default decides. */
     readonly isPremium?: boolean | undefined
+    /**
+     * The Essentials part the content belongs to. When it is named the part decides, not the mark or the phase: a part the
+     * entitlement setting leaves free is open to everyone, any other needs Premium.
+     */
+    readonly part?: EssentialPart | undefined
 }
 
 /** One retrieval activity a lesson schedules after completion. */

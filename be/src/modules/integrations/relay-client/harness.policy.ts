@@ -1,5 +1,8 @@
 import type {
     HarnessBuildSection,
+    HarnessDoctorSection,
+    HarnessSource,
+    HarnessTrialSection,
     HarnessKey,
     HarnessPlan,
     HarnessSection,
@@ -59,22 +62,42 @@ const planOf = (value: Record<string, unknown>): HarnessPlan | null => {
     return { buildId, dir, install, e2e, report, keys: keys.filter((key) => key !== null), stages: checked }
 }
 
+const sourceOf = (value: unknown): HarnessSource | null => {
+    if (!isRecord(value)) return null
+    const { url, sha256, commit } = value
+    if (typeof url !== "string" || !SOURCE_URL.test(url) || url.includes("@")) return null
+    if (typeof sha256 !== "string" || !SHA256.test(sha256)) return null
+    if (typeof commit !== "string" || !COMMIT.test(commit)) return null
+    return { url, sha256, commit }
+}
+
+const doctorOf = (value: Record<string, unknown>): HarnessDoctorSection | null => {
+    const source = sourceOf(value.source)
+    const { tool } = value
+    return source !== null && (tool === "claude" || tool === "codex") ? { kind: "doctor", tool, source } : null
+}
+
+const trialOf = (value: Record<string, unknown>): HarnessTrialSection | null => {
+    const source = sourceOf(value.source)
+    const { trap } = value
+    return source !== null && typeof trap === "string" && ID.test(trap) ? { kind: "trial", trap, source } : null
+}
+
 /**
- * The `harness` section of a payload: undefined when absent, null when present but malformed. A kind other than `build` (doctor,
- * trial) is read as `other`, so the build commands refuse it by name instead of the whole manifest being rejected.
+ * The `harness` section of a payload: undefined when absent, null when present but malformed. `build` carries the plan of a build,
+ * `doctor` the tool and the probes tarball, `trial` the trap id and the trap tarball; any other kind is read as `other`, so a command
+ * refuses it by name instead of the whole manifest being rejected.
  */
 export const harnessOf = (value: unknown): HarnessSection | null | undefined => {
     if (value === undefined) return undefined
     if (!isRecord(value) || typeof value.kind !== "string") return null
+    if (value.kind === "doctor") return doctorOf(value)
+    if (value.kind === "trial") return trialOf(value)
     if (value.kind !== "build") return { kind: "other", name: value.kind }
-    if (!isRecord(value.source)) return null
-    const { url, sha256, commit } = value.source
-    if (typeof url !== "string" || !SOURCE_URL.test(url) || url.includes("@")) return null
-    if (typeof sha256 !== "string" || !SHA256.test(sha256)) return null
-    if (typeof commit !== "string" || !COMMIT.test(commit)) return null
-    const plan = planOf(value)
-    if (plan === null) return null
-    const section: HarnessBuildSection = { kind: "build", ...plan, source: { url, sha256, commit } }
+    const source = sourceOf(value.source)
+    const plan = source === null ? null : planOf(value)
+    if (source === null || plan === null) return null
+    const section: HarnessBuildSection = { kind: "build", ...plan, source }
     return section
 }
 

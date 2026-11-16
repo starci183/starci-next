@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     evidenceDbRowOf,
@@ -31,13 +33,13 @@ import {
 const ALL_SUBJECTS: ReadonlyArray<string> = [
     "concept:request-response-lifecycle",
     "concept:health-probe-semantics",
+    "concept:error-contract",
     "concept:unit-testing-behavior",
     "milestone:bf-http-foundation",
-    "milestone:ops-run-a-service",
     "deployed",
 ]
 
-const FOUNDATION = ["request-response-lifecycle", "health-probe-semantics", "unit-testing-behavior"]
+const FOUNDATION = ["request-response-lifecycle", "health-probe-semantics", "error-contract", "unit-testing-behavior"]
 const LESSONS = new Map<string, ConceptLessonRef>(
     FOUNDATION.map((id) => [id, { id, version: "v1", title: id, topicId: "topic" }]),
 )
@@ -57,6 +59,14 @@ const provedRows = () => [
         slot: "probe",
         source: "server-probe",
         ref: "health",
+        run_id: "p1",
+    }),
+    evidenceDbRowOf({ concept_id: "error-contract", slot: "test", ref: "[error] a" }),
+    evidenceDbRowOf({
+        concept_id: "error-contract",
+        slot: "probe",
+        source: "server-probe",
+        ref: "error-shape",
         run_id: "p1",
     }),
     evidenceDbRowOf({ concept_id: "unit-testing-behavior", slot: "test", ref: "[unit] a" }),
@@ -108,6 +118,7 @@ const build = async (world: World = {}) => {
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectEvidenceService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
@@ -144,7 +155,7 @@ describe("ProjectEvidenceService append", () => {
         expect(added).toBe(2)
         expect(em.query).toHaveBeenCalledWith(INSERT_EVIDENCE, [
             PROJECT_ID,
-            "idempotency",
+            "idempotent-retry",
             "test",
             "ci",
             true,
@@ -235,13 +246,13 @@ describe("ProjectEvidenceService settle", () => {
 
         await service.settle(projectRowOf(), ["ci:run-1", "probe:p1"])
 
-        expect(essentials.record).toHaveBeenCalledTimes(3)
+        expect(essentials.record).toHaveBeenCalledTimes(4)
         expect(essentials.record).toHaveBeenCalledWith({
             learnerId: PROJECT_LEARNER,
             lessonId: "request-response-lifecycle",
             project: { projectId: PROJECT_ID, title: "Clinic booking", language: "go" },
         })
-        expect(experiences.produce).toHaveBeenCalledTimes(3)
+        expect(experiences.produce).toHaveBeenCalledTimes(2)
         expect(experiences.produce).toHaveBeenCalledWith(
             expect.objectContaining({ itemType: "projects.milestone", subject: `bf-http-foundation@${PROJECT_ID}` }),
         )

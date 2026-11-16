@@ -1,0 +1,37 @@
+# Doctor probe: permissions.deny keeps Claude from reading .env files.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: env-read-denied
+tool: claude
+order: 4
+title:
+  vi: Chặn Claude đọc file `.env`
+  en: Reading `.env` is denied
+guide: permissions
+check:
+  json:
+    path: [.claude/settings.json, .claude/settings.local.json, ~/.claude/settings.json]
+    at: permissions.deny
+    matchesAll:
+      - "^Read\\([^)]*\\.env"
+fix:
+  vi: Thêm vào `permissions.deny` của `.claude/settings.json` các dòng `Read(./.env)` và `Read(./.env.*)`. Quy tắc deny thắng mọi quy tắc allow.
+  en: Add `Read(./.env)` and `Read(./.env.*)` to `permissions.deny` in `.claude/settings.json`. A deny rule beats every allow rule.
+good:
+  files:
+    .claude/settings.json: |
+      {
+        "permissions": {
+          "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
+        }
+      }
+bad:
+  files:
+    .claude/settings.json: |
+      {
+        "permissions": {
+          "allow": ["Bash(npm test:*)"],
+          "deny": ["Read(./secrets/**)"]
+        }
+      }

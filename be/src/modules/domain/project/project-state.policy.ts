@@ -11,7 +11,12 @@ import {
     type MilestoneState,
     type ProjectKind,
 } from "./project.contracts"
-import { milestonesOfKind, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import {
+    conceptIdsOfKind,
+    isComingSoon,
+    milestonesOfKind,
+    type ProjectCatalog,
+} from "./project-check-set-lookup.policy"
 
 /** The latest run of one source for a slot, reduced to a verdict. */
 export interface SlotResult {
@@ -165,29 +170,36 @@ export interface ProjectStanding {
 
 /**
  * Where a project stands, from the latest evidence of all its concepts. A concept appearing in several milestones is graded once
- * (it counts once for the path); the lessons that exist decide which concepts are still being written.
+ * (it counts once for the path); a concept that needs the AI read and has no live lesson to grade it against is still being written.
  */
 export const projectStandingOf = (
+    catalog: ProjectCatalog,
     kind: ProjectKind,
     rows: ReadonlyArray<EvidenceRow>,
     lessonIds: ReadonlySet<string>,
 ): ProjectStanding => {
-    const listed = milestonesOfKind(kind)
-    const ids = [...new Set(listed.flatMap((milestone) => milestone.concepts))]
+    const listed = milestonesOfKind(catalog, kind)
+    const ids = conceptIdsOfKind(catalog, kind)
     const standings = new Map(
-        PROJECT_CONCEPTS.filter((definition) => ids.includes(definition.id)).map(
-            (definition) =>
-                [
-                    definition.id,
-                    conceptStandingOf(
-                        definition,
-                        rows.filter((row) => row.conceptId === definition.id),
-                        !lessonIds.has(definition.id),
-                    ),
-                ] as const,
-        ),
+        catalog.concepts
+            .filter((definition) => ids.includes(definition.id))
+            .map(
+                (definition) =>
+                    [
+                        definition.id,
+                        conceptStandingOf(
+                            definition,
+                            rows.filter((row) => row.conceptId === definition.id),
+                            isComingSoon(definition, lessonIds),
+                        ),
+                    ] as const,
+            ),
     )
-    const comingSoon = new Set(ids.filter((id) => !lessonIds.has(id)))
+    const comingSoon = new Set(
+        catalog.concepts
+            .filter((definition) => ids.includes(definition.id) && isComingSoon(definition, lessonIds))
+            .map((definition) => definition.id),
+    )
     const milestones = listed.map((definition) => {
         const concepts = [...standings.values()]
             .filter((standing) => definition.concepts.includes(standing.definition.id))

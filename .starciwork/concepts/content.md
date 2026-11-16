@@ -26,7 +26,10 @@ starci-lab/data. The app renders and grades that content; it never owns or rewri
    `--data-dir`) need none.
 
 ## Example
-`cli content sync` pulls both repos at their refs into snapshots, imports the teacher's `concepts/` first, then our `essentials/`; a
+`cli content sync` pulls both repos at their refs into snapshots, imports the teacher's `concepts/` first, then our numbered
+`essentials/` and the topic lessons of `raw/essentials/<topic>/<lesson>` (the topic page comes from `raw/essentials/<topic>/topic.yaml`,
+not from code; the catalog of the code only answers a topic that has no file). Interview overlay and practice sets are read from
+`raw/interview/overlay` and `raw/practice`, falling back to the root `interview/overlay` and `practice` of an older pin. A
 placeholder interview stem appears with its draft mark until the teacher edits the content repo.
 
 ## Don't / Instead

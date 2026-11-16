@@ -7,7 +7,8 @@ import {
     probeRunRowOf,
     projectRowOf,
 } from "@tests/fixtures/builders/project.builder"
-import { conceptOf } from "./project-catalog.policy"
+import { fixtureCheckSet } from "@tests/fixtures/builders/check-set.builder"
+import { conceptIn } from "./project-check-set-lookup.policy"
 import { conceptStandingOf, projectStandingOf } from "./project-state.policy"
 import {
     factsOf,
@@ -20,6 +21,8 @@ import {
     toSummaryView,
 } from "./project-view.mapper"
 
+const SET = fixtureCheckSet()
+const conceptOf = (id: string) => conceptIn(SET, id)
 const POLICY: unique symbol = Symbol("project.project-view-mapper")
 const policies = {
     factsOf,
@@ -39,10 +42,10 @@ const build = async (): Promise<typeof policies> => {
     return moduleRef.get<typeof policies>(POLICY)
 }
 
-const LESSON = { id: "idempotency", version: "v1", title: "Idempotency", topicId: "reliability" }
+const LESSON = { id: "idempotent-retry", version: "v1", title: "Idempotency", topicId: "reliability" }
 
 const standingOf = (rows: ReturnType<typeof toEvidenceRows>, comingSoon = false) => {
-    const definition = conceptOf("idempotency")
+    const definition = conceptOf("idempotent-retry")
     if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
     return conceptStandingOf(definition, rows, comingSoon)
 }
@@ -94,17 +97,17 @@ describe("project views", () => {
         subject = await build()
     })
 
-    const standing = projectStandingOf("app", [], new Set(["idempotency"]))
+    const standing = projectStandingOf(SET, "app", [], new Set(["unit-testing-behavior"]))
 
     it("shows a project in short", () => {
         expect(subject.toSummaryView(projectRowOf({ track: "claude", kind: "agent" }), standing)).toMatchObject({
             kind: "agent",
             track: "claude",
-            conceptCount: 1,
+            conceptCount: 10,
             provedConceptCount: 0,
             currentMilestoneId: "bf-http-foundation",
             doneMilestoneCount: 0,
-            milestoneCount: 11,
+            milestoneCount: 3,
             createdAt: "2026-11-01T00:00:00.000Z",
         })
         expect(subject.projectKindOf(projectRowOf({ kind: "game" }))).toBe("app")
@@ -129,13 +132,13 @@ describe("project views", () => {
     })
 
     it("shows a milestone pill with its locale and lock", () => {
-        const launch = standing.milestones.find((milestone) => milestone.definition.id === "launch")
+        const launch = standing.milestones.find((milestone) => milestone.definition.id === "bf-safe-and-reliable")
         if (launch === undefined) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
 
         expect(subject.toMilestoneSummaryView(launch, "vi", true)).toEqual({
-            id: "launch",
-            title: `Ra m${String.fromCharCode(0x1eaf)}t`,
-            conceptCount: 3,
+            id: "bf-safe-and-reliable",
+            title: `An to${String.fromCharCode(0xe0)}n v${String.fromCharCode(0xe0)} tin c${String.fromCharCode(0x1ead)}y`,
+            conceptCount: 4,
             provedCount: 0,
             state: "todo",
             locked: true,
@@ -180,11 +183,11 @@ describe("toConceptView", () => {
         const view = subject.toConceptView(standingOf([]), conceptRowOf(), LESSON, "en")
 
         expect(view).toMatchObject({
-            id: "idempotency",
-            label: "Idempotency: a repeat changes nothing",
+            id: "idempotent-retry",
+            label: "Safe retries with an Idempotency-Key",
             state: "todo",
             comingSoon: false,
-            lesson: { id: "idempotency", topicId: "reliability", title: "Idempotency" },
+            lesson: { id: "idempotent-retry", topicId: "reliability", title: "Idempotency" },
             location: "internal/booking/repo.go#Reserve",
             endpoint: "POST /bookings",
             failing: null,
@@ -297,10 +300,10 @@ describe("toConceptView (part 3)", () => {
     })
 
     it("shows the newest of practice and proof on a slot, and the question of the last AI read", () => {
-        const definition = conceptOf("saga")
+        const definition = conceptOf("unit-testing-behavior")
         if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
         const read = evidenceDbRowOf({
-            concept_id: "saga",
+            concept_id: "unit-testing-behavior",
             slot: "code-read",
             source: "ai",
             passed: false,
@@ -309,7 +312,7 @@ describe("toConceptView (part 3)", () => {
         const sagaRows = subject.toEvidenceRows([
             read,
             evidenceDbRowOf({
-                concept_id: "saga",
+                concept_id: "unit-testing-behavior",
                 slot: "code-read",
                 source: "relay",
                 run_id: "r",

@@ -63,3 +63,21 @@ export interface RelayResultDetail {
     /** The ledger lines. */
     ledger?: string
 }
+
+/** One newest harness result row. */
+export interface RelayHarnessResultRow {
+    /** The task id. */
+    task_id: string
+    /** The check id: a stage, a probe or a trap. */
+    check_id: string
+    /** The ref: an e2e id or the tool. */
+    ref: string | null
+    /** Whether it passed. */
+    passed: boolean | null
+    /** The commit, or null. */
+    commit_sha: string | null
+    /** When it was stored. */
+    created_at: Date
+    /** The harness facts of the result, or null. */
+    detail: Record<string, unknown> | null
+}

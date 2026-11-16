@@ -1,0 +1,52 @@
+# Doctor probe: a git pre-commit hook refuses the commit while the tests are red. Codex has no hook system of its own, so git is the hard rule.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: git-hook-blocks-red-tests
+tool: codex
+order: 5
+title:
+  vi: Git pre-commit chặn commit khi test đỏ
+  en: A git pre-commit hook blocks red tests
+guide: git-hooks
+check:
+  git:
+    simulate:
+      scenario: red-test
+      expect: reject
+fix:
+  vi: Tạo `.githooks/pre-commit` chạy `npm test`, rồi bật bằng `git config core.hooksPath .githooks`. Test đỏ thì hook thoát khác 0 và git từ chối commit.
+  en: Create `.githooks/pre-commit` that runs `npm test`, then enable it with `git config core.hooksPath .githooks`. When the tests are red the hook exits non-zero and git refuses the commit.
+good:
+  files:
+    package.json: |
+      {
+        "name": "shop-api",
+        "private": true,
+        "scripts": { "test": "node --test" }
+      }
+    .githooks/pre-commit: |
+      #!/bin/sh
+      # Block the commit while the test suite is red.
+      if ! npm test --silent; then
+        echo "pre-commit: tests are red, commit blocked" >&2
+        exit 1
+      fi
+  git:
+    config:
+      core.hooksPath: .githooks
+bad:
+  files:
+    package.json: |
+      {
+        "name": "shop-api",
+        "private": true,
+        "scripts": { "test": "node --test" }
+      }
+    .githooks/pre-commit: |
+      #!/bin/sh
+      # Only prints a reminder. It never fails.
+      echo "pre-commit: remember to run the tests"
+  git:
+    config:
+      core.hooksPath: .githooks

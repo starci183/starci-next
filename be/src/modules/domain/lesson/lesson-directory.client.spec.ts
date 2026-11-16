@@ -124,4 +124,14 @@ describe("lessonDirectory modules", () => {
         await expect(reader.modules(concepts, { course: "missing-course", index: 0 })).resolves.toEqual([])
         await expect(reader.modules(concepts, { course: "demo-course", index: 7 })).resolves.toEqual([])
     })
+
+    it("reads the topic.yaml beside a topic's lessons, and answers null when the topic has none", async () => {
+        const reader = await build()
+        await mkdir(join(root, "api-reliability", "outbox"), { recursive: true })
+        await mkdir(join(root, "caching"), { recursive: true })
+        await writeFile(join(root, "api-reliability", "topic.yaml"), "title: T")
+
+        await expect(reader.topicFile(root, "api-reliability")).resolves.toBe("title: T")
+        await expect(reader.topicFile(root, "caching")).resolves.toBeNull()
+    })
 })

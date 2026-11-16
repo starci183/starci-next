@@ -35,3 +35,15 @@ Grammar: `Section id title` (`frame/Section/index.d.ts`), `Markdown source label
 Vì sao: cuối bài, bảng phẳng mỗi câu một hàng: "Lần đầu" (lần trả lời đầu tiên) và "Lần mới nhất" (đúng/sai/chưa làm), đọc từ `lessonOpenerScores`; nút nhỏ "Làm lại" đưa về câu 1 và mở lại 5 câu (revision mới, lần đầu vẫn giữ).
 Luật: COOK 2026-11-17 ("the same 5 again at the end shows before/after"); Grammar 0.40 "DataTable surface none" (bảng phẳng, không thẻ).
 Grammar: `Section action={<Button intent="neutral" size="sm">}` (`frame/Section/head.d.ts`), `DataTable columns rows renderCell` (`branch/DataTable/index.d.ts`), `Badge tone` (`leaf/Badge/index.d.ts`).
+
+## Phần khóa (Source, Kịch bản, Tự áp dụng khi chưa có Premium)
+
+Vì sao: Bản chất (câu mở bài và bài viết) miễn phí cho mọi người; ba phần còn lại cần Premium. Server không gửi nội dung của phần khóa, chỉ gửi tên phần trong `lockedParts`. Tab của phần khóa mở ra một thẻ nhẹ: một câu mô tả phần đó có gì và nút "Đăng ký Premium" tới trang gói.
+Luật: owner 2026-11-17 (truy cập một phần); concept `premium` rule 2; cài đặt `ENTITLEMENT_ESSENTIAL_FREE_PARTS`.
+Grammar: `SurfaceCard treatment="soft"`, `Text`, `Button intent="commit"` qua `LockedNotice` (`fe/packages/starci-next-ui/src/composites/LockedNotice/index.tsx`).
+
+## Panel kịch bản: luật được chấm và hệ thống đúng sẽ cho
+
+Vì sao: mỗi kịch bản hiện thêm dòng "Luật nó chấm" (mã luật và câu của luật) và khối "Hệ thống đúng sẽ cho" lấy từ `expected` của `scenarios.yaml`; thiếu một trong hai thì dòng đó không vẽ.
+Luật: format nội dung (`invariant`, `expected` theo từng ngôn ngữ).
+Grammar: `Text size="sm"`, `Stack gap="identity"` trong `Section` của `EssentialScenarios`.

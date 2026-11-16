@@ -4,9 +4,11 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
 import { InjectEntitlementOptions } from "./entitlement.decorators"
+import { essentialFreePartsOf, openEssentialPartsOf } from "./entitlement-essential.policy"
 import type { EntitlementOptions } from "./entitlement.options"
 import type {
     DevGrantParams,
+    EssentialPart,
     Entitlement,
     GrantPremiumParams,
     OptionalPremiumUntil,
@@ -42,6 +44,24 @@ export class EntitlementService {
     async isPremium(learnerId: string): Promise<boolean> {
         const premiumUntil = await this.premiumUntil({ learnerId })
         return premiumUntil !== null && new Date(premiumUntil).getTime() > this.clock.now().getTime()
+    }
+
+    /** The parts of an Essentials lesson that need no Premium: the `essentialFreeParts` setting, else Bản chất alone. */
+    essentialFreeParts(): ReadonlyArray<EssentialPart> {
+        return essentialFreePartsOf(this.options)
+    }
+
+    /** The parts of an Essentials lesson a learner may read, given whether they hold Premium (known by the caller already). */
+    openEssentialParts(isPremium: boolean): ReadonlyArray<EssentialPart> {
+        return openEssentialPartsOf(this.essentialFreeParts(), isPremium)
+    }
+
+    /**
+     * Whether the learner may read one part of an Essentials lesson: a free part by anyone, every part with Premium. The one
+     * question the lesson view, the relay doors and the AI tutor ask, so the free and Premium split lives here and nowhere else.
+     */
+    async mayReadEssentialPart(learnerId: string, part: EssentialPart): Promise<boolean> {
+        return this.essentialFreeParts().includes(part) || (await this.isPremium(learnerId))
     }
 
     /** Grants a verified paid term, extending a future end and starting an expired term at confirmation. */

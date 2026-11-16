@@ -52,9 +52,12 @@ export type EssentialChallengeView = {
     readonly questions: ReadonlyArray<EssentialQuestionView>
 }
 
-/** The four parts of a lesson as the page reads them; the parts past the opener are empty while `isLocked`. */
+/** The four parts of a lesson as the page reads them; a part the learner may not read is empty and named in `lockedParts`. */
 export type EssentialView = {
+    /** True when at least one part is locked for the learner. */
     readonly isLocked: boolean
+    /** The parts the learner may not read (by default Source, Kịch bản and Tự áp dụng without Premium); never their payload. */
+    readonly lockedParts: ReadonlyArray<EssentialPart>
     readonly opener: ReadonlyArray<EssentialQuestionView>
     /** The source as the CLI pulls it; undefined when the lesson ships none yet. */
     readonly source:
