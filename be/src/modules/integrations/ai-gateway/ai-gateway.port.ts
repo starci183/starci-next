@@ -9,7 +9,7 @@ export interface AiGatewayRequest {
     /** The deadline of the whole completion in milliseconds, retries and fallbacks included. */
     readonly timeoutMs: number
     /** The routing profile; the coach profile when absent. */
-    readonly profile?: "coach" | "interview"
+    readonly profile?: "coach"
     /** The most tokens this completion may produce; the pool ceiling when absent. */
     readonly maxOutputTokens?: number
 }

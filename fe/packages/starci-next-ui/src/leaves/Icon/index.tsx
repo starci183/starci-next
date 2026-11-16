@@ -6,7 +6,6 @@ import {
     ArrowPathIcon,
     Bars3Icon,
     BellIcon,
-    ChatBubbleLeftRightIcon,
     CheckBadgeIcon,
     CheckIcon,
     ChevronDoubleLeftIcon,
@@ -80,12 +79,6 @@ type ReviewGlyphProps = IconSourceProps
 
 /** The outline glyph of the spaced review; the sidebar draws it. */
 export const ReviewGlyph = (props: ReviewGlyphProps) => <ArrowPathIcon {...props} />
-
-/** What the InterviewGlyph takes from the icon carrier that draws it. */
-type InterviewGlyphProps = IconSourceProps
-
-/** The outline glyph of the mock interview; the sidebar draws it. */
-export const InterviewGlyph = (props: InterviewGlyphProps) => <ChatBubbleLeftRightIcon {...props} />
 
 /** What the PracticeGlyph takes from the icon carrier that draws it. */
 type PracticeGlyphProps = IconSourceProps

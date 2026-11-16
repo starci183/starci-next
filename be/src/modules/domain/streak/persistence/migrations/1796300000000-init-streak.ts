@@ -15,8 +15,8 @@ export class InitStreak1796300000000 implements MigrationInterface {
     day date NOT NULL,
     recorded_at timestamptz NOT NULL,
     CONSTRAINT pk_streak_actions PRIMARY KEY (learner_id, action_id),
-    CONSTRAINT ck_streak_actions_shard CHECK (shard IN ('essentials', 'review', 'practice', 'projects', 'incidents', 'interview')),
-    CONSTRAINT ck_streak_actions_kind CHECK (kind IN ('review-due-done', 'graded-attempt', 'project-run', 'interview-submitted'))
+    CONSTRAINT ck_streak_actions_shard CHECK (shard IN ('essentials', 'review', 'practice', 'projects', 'incidents')),
+    CONSTRAINT ck_streak_actions_kind CHECK (kind IN ('review-due-done', 'graded-attempt', 'project-run'))
 )`)
         await queryRunner.query(`CREATE INDEX ix_streak_actions_day ON streak_actions (learner_id, day)`)
         await queryRunner.query(`CREATE TABLE streak_states (

@@ -5,14 +5,14 @@ It encourages; it never grants experience.
 
 ## Terms
 - **Meaningful action**: one of: every review item due today done; one graded attempt (Bản chất or retrieval graded, a judged practice
-  submission, a graded agent or project explanation); one project run through the learner CLI and relay; one interview submitted.
+  submission, a graded agent or project explanation); one project run through the learner CLI and relay.
 - **Active day**: an `Asia/Ho_Chi_Minh` day with at least one meaningful action.
 - **Freeze**: covers one missed day.
 - **Per-part counter**: each action also counts for its part, so the learner sees which parts are strong.
 
 ## Data
-The producer port takes `(learner, part, kind, actionId?)` with parts essentials, review, practice, projects, incidents, interview and
-kinds review-due-done, graded-attempt, project-run, interview-submitted. An action counts once, when it is stored; a retry or resend of
+The producer port takes `(learner, part, kind, actionId?)` with parts essentials, review, practice, projects and incidents, with
+kinds review-due-done, graded-attempt and project-run. An action counts once, when it is stored; a retry or resend of
 the same action id does not count again.
 
 ## Rules
@@ -25,8 +25,8 @@ the same action id does not count again.
 5. The app never shames a broken streak and sends at most one reminder a day.
 
 ## Example
-A learner who only opened three lessons today does not get the day; one who submitted an interview session does, for the overall
-streak and the interview counter.
+A learner who only opened three lessons today does not get the day; one who submitted a practice solution does, for the overall
+streak and the practice counter.
 
 ## Don't / Instead
 - Don't count a part's own streak; call the one producer port after the action is stored.

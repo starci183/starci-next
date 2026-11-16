@@ -3,7 +3,6 @@ import { AttemptModule } from "@modules/domain/attempt"
 import { CareerModule } from "@modules/domain/career"
 import { ContentModule } from "@modules/domain/content"
 import { EntitlementModule } from "@modules/domain/entitlement"
-import { AiInterviewClient, InterviewModule } from "@modules/domain/interview"
 import { HarnessModule } from "@modules/domain/harness"
 import { LessonModule } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
@@ -26,7 +25,6 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     ProbeModule.register({ isGlobal: true }),
     HarnessModule.register({ isGlobal: true }),
     StreakModule.register({ isGlobal: true }),
-    InterviewModule.register({ isGlobal: true, coach: AiInterviewClient }),
     NotificationModule.register({ isGlobal: true }),
     ReviewModule.register({ isGlobal: true }),
     // The experience engine for `cli career`: its essentials producer reads the attempts, and the development seed is enabled only by CAREER_DEV_SEED.

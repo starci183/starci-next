@@ -39,7 +39,7 @@ export interface HubDayView {
 export interface HubTodayView {
     /** The shard it belongs to. */
     readonly shard: StreakShard
-    /** What it asks: review, lesson, practice, project, incident or interview. */
+    /** What it asks: review, lesson, practice, project or incident. */
     readonly kind: string
     /** The title in the asked locale. */
     readonly title: string
@@ -138,7 +138,7 @@ export interface LearnerHubView {
     readonly today: Array<HubTodayView>
     /** The streak card. */
     readonly streak: HubStreakView
-    /** The six learning shards. */
+    /** The five learning shards. */
     readonly shards: Array<HubShardView>
     /** The three layers. */
     readonly layers: Array<HubLayerView>

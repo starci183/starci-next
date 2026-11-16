@@ -3,9 +3,7 @@ import { noteEntities, noteMigrations } from "@modules/domain/note"
 import { identityEntities, identityMigrations } from "@modules/domain/identity"
 import { entitlementEntities, entitlementMigrations } from "@modules/domain/entitlement"
 import { purchaseEntities, purchaseMigrations } from "@modules/domain/purchase"
-import { agentLabEntities, agentLabMigrations } from "@modules/domain/agent-lab"
 import { attemptEntities, attemptMigrations } from "@modules/domain/attempt"
-import { interviewEntities, interviewMigrations } from "@modules/domain/interview"
 import { careerEntities, careerMigrations } from "@modules/domain/career"
 import { projectEntities, projectMigrations } from "@modules/domain/project"
 import { streakEntities, streakMigrations } from "@modules/domain/streak"
@@ -43,12 +41,10 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...purchaseEntities,
         ...lessonEntities,
         ...attemptEntities,
-        ...interviewEntities,
         ...careerEntities,
         ...projectEntities,
         ...practiceEntities,
         ...reviewEntities,
-        ...agentLabEntities,
         ...streakEntities,
         ...pathEntities,
         ...harnessEntities,
@@ -65,12 +61,10 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...purchaseMigrations,
         ...lessonMigrations,
         ...attemptMigrations,
-        ...interviewMigrations,
         ...careerMigrations,
         ...projectMigrations,
         ...practiceMigrations,
         ...reviewMigrations,
-        ...agentLabMigrations,
         ...streakMigrations,
         ...pathMigrations,
         ...harnessMigrations,

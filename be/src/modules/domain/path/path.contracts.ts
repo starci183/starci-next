@@ -19,13 +19,13 @@ export type PathId = (typeof PATH_IDS)[number]
 export type PathKind = "build" | "agent" | "job"
 
 /** The stages every path strings its steps into, in order. */
-export const PATH_STAGES = ["understand", "remember", "solve", "build", "build-ai", "interview", "prove"] as const
+export const PATH_STAGES = ["understand", "remember", "solve", "build", "build-ai", "prove"] as const
 
 /** The id of a stage. */
 export type PathStageId = (typeof PATH_STAGES)[number]
 
 /** The parts of the app a step sends the learner to. */
-export const PATH_PARTS = ["essentials", "review", "practice", "projects", "interview", "profile"] as const
+export const PATH_PARTS = ["essentials", "review", "practice", "projects", "profile"] as const
 
 /** The id of a part. */
 export type PathPart = (typeof PATH_PARTS)[number]

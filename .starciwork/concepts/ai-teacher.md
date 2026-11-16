@@ -1,11 +1,10 @@
 # ai-teacher
 
-The StarCi AI teacher grades, coaches and interviews over the teacher's own material. It is one model, it judges only against the
+The StarCi AI teacher grades and coaches over the teacher's own material. It is one model, it judges only against the
 lesson's rubric, it is included with Premium under a hidden fair-use cap, and it never sees who the learner is.
 
 ## Terms
 - **Coach**: the grader of written answers and explanations (lessons, retrieval, incidents, project concepts).
-- **Interviewer / grader**: the interview profile of the same pool ([mock-interview](mock-interview.md)).
 - **Fair-use cap**: a server-side limit of AI gradings per learner per UTC day. *Not to confuse with* credits, which do not exist.
 
 ## Rules
@@ -30,9 +29,8 @@ cùng". The 101st grading that UTC day is refused `ATTEMPT_COACH_LIMIT_REACHED` 
 ## Don't / Instead
 - Don't pick a stronger model for one door; give that door a longer deadline.
 - Don't show remaining AI uses; refuse with the stable code when the cap is reached.
-- Don't retrieve lesson text into an interview grade; grade against the authored answer.
 
 ## Where
 `be/src/modules/integrations/ai-gateway/`, `be/src/modules/domain/attempt/`
 
-Related: [premium](premium.md), [essentials](essentials.md), [mock-interview](mock-interview.md), [conventions](conventions.md)
+Related: [premium](premium.md), [essentials](essentials.md), [conventions](conventions.md)

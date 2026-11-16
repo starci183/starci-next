@@ -41,7 +41,6 @@ export type {
     ScenarioRunStatus,
     ScenarioRunView,
 } from "./essential"
-export type { AgentQuotaView, AgentTrackTileView } from "./agents"
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
 export type {
     PracticeHintView,
@@ -139,7 +138,6 @@ export type {
     WrittenDraftView,
 } from "@starci-next/ui"
 export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
-export type { InterviewRoomLabels } from "./interviewRoom"
 export { HARNESS_PARTS, HARNESS_TOOLS } from "./harness"
 export type {
     HarnessBuildRowView,

@@ -3,9 +3,7 @@ import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseHttpConfig } from "@modules/platform/http"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
 import { parseRealtimeConfig } from "@modules/platform/realtime"
-import { parseAgentLabConfig } from "@modules/domain/agent-lab"
 import { parseAttemptConfig } from "@modules/domain/attempt"
-import { parseInterviewConfig } from "@modules/domain/interview"
 import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
 import { parseProfileConfig } from "@modules/domain/profile"
@@ -50,14 +48,10 @@ export interface CoreEnv {
     readonly aiGateway: ReturnType<typeof parseAiGatewayConfig>
     /** The attempt capability: the fair-use limit of coach gradings. */
     readonly attempt: ReturnType<typeof parseAttemptConfig>
-    /** The mock interview capability: the free quota, the session lengths, the fair-use cap and the verdict lines. */
-    readonly interview: ReturnType<typeof parseInterviewConfig>
     /** The Judge0 endpoint code runs through, or null when the environment declares none. */
     readonly judge0: ReturnType<typeof parseJudge0Config>
     /** The practice capability: free problems per pattern, the judge queue and the rate limit. */
     readonly practice: ReturnType<typeof parsePracticeConfig>
-    /** The agent lab capability: the daily cap of model calls on the proxy key. */
-    readonly agentLab: ReturnType<typeof parseAgentLabConfig>
     /** The project capability: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: ReturnType<typeof parseProjectConfig>
     /** The profile capability: the avatar size and type limits, the longest display name and the signed upload lifetime. */
@@ -90,10 +84,8 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         purchase: { returnBaseUrl: httpSecurity.allowedOrigins[0] ?? "" },
         aiGateway: parseAiGatewayConfig(env),
         attempt: parseAttemptConfig(env),
-        interview: parseInterviewConfig(env),
         judge0: parseJudge0Config(env),
         practice: parsePracticeConfig(env),
-        agentLab: parseAgentLabConfig(env),
         project: parseProjectConfig(env),
         profile: parseProfileConfig(env),
         probe: parseProbeConfig(env),

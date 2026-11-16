@@ -13,7 +13,7 @@ const OPTIONS: AiGatewayModuleOptions = {
     gateway: {
         pool: {
             providers: [],
-            profiles: { coach: { model: "m" }, interview: { model: "pro", fallbacks: ["m"] } },
+            profiles: { coach: { model: "m" } },
         },
         maxOutputTokens: 777,
     },
@@ -71,18 +71,18 @@ describe("AiGatewayClient complete", () => {
         )
     })
 
-    it("asks the profile and the output ceiling the request names, and reports a fallback that answered", async () => {
+    it("asks the output ceiling the request names, and reports a fallback that answered", async () => {
         const { client, router } = await build()
-        router.chat.mockResolvedValue(replyOf("{}", "m"))
+        router.chat.mockResolvedValue(replyOf("{}", "fallback"))
 
-        await expect(client.complete({ ...REQUEST, profile: "interview", maxOutputTokens: 6000 })).resolves.toEqual({
+        await expect(client.complete({ ...REQUEST, profile: "coach", maxOutputTokens: 6000 })).resolves.toEqual({
             text: "{}",
-            model: "m",
+            model: "fallback",
             usedFallback: true,
         })
 
         expect(router.chat.mock.calls[0]?.[0]).toMatchObject({ max_tokens: 6000 })
-        expect(router.chat.mock.calls[0]?.[1]).toMatchObject({ profile: "interview" })
+        expect(router.chat.mock.calls[0]?.[1]).toMatchObject({ profile: "coach" })
     })
 
     it("reports no fallback when the pool declares no profile", async () => {

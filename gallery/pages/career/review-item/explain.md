@@ -9,7 +9,7 @@ Route: `/review-queue/[itemId]` (ảnh chụp: tài khoản học viên thườn
 
 ## Liên kết "Về hàng chờ"
 
-Vì sao: trang con của `career/review-queue`, đầu trang là liên kết quay lại, chữ foreground. CHƯA RÕ: liên kết đứng riêng, không có mũi tên và không nằm trong đường dẫn của `Page` như `agents/track`; nên là `Page header.breadcrumbs`.
+Vì sao: trang con của `career/review-queue`, đầu trang là liên kết quay lại, chữ foreground. CHƯA RÕ: liên kết đứng riêng, không có mũi tên và không nằm trong đường dẫn của `Page`; nên là `Page header.breadcrumbs`.
 Luật: `page-header-left-sublabel-xs.md`, `surface-layering` (liên kết điều hướng có mũi tên).
 Grammar: `Link variant="plain"` trong `Stack`; cần `Page header.breadcrumbs`.
 

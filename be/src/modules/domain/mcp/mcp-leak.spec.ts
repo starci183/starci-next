@@ -469,7 +469,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             ].sort(),
         )
         const prompts = (await client.listPrompts()).prompts.map((prompt) => prompt.name).sort()
-        expect(prompts).toEqual(["explain_invariant", "fix_scenario", "review_interview", "why_scenario_red"])
+        expect(prompts).toEqual(["explain_invariant", "fix_scenario", "why_scenario_red"])
 
         const harness = await client.callTool({
             name: "search_harness",

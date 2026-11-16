@@ -5,8 +5,8 @@
  *
  *     StreakService.recordStreakAction(learnerId, shard, kind, ref?) => Promise<{ counted, day }>
  *
- * - `shard`: "essentials" | "review" | "practice" | "projects" | "incidents" | "interview" (`STREAK_SHARDS`, hub order).
- * - `kind`: "review-due-done" | "graded-attempt" | "project-run" | "interview-submitted".
+ * - `shard`: "essentials" | "review" | "practice" | "projects" | "incidents" (`STREAK_SHARDS`, hub order).
+ * - `kind`: "review-due-done" | "graded-attempt" | "project-run".
  * - `ref`: `{ actionId?, sourceRef?, at? }`. Pass the stable id of the stored thing (attempt id, run id, session id, review day)
  *   as `actionId`: a repeat counts once and answers `counted: false`. Without an `actionId` each call is a new action.
  * - Throws STREAK_ACTION_UNKNOWN for a shard or kind it does not know.

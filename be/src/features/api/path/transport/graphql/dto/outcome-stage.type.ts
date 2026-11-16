@@ -2,7 +2,7 @@ import { Field, ObjectType } from "@nestjs/graphql"
 import { OutcomeStepType } from "./outcome-step.type"
 
 @ObjectType()
-/** One stage of an outcome path: understand, remember, solve, build, build-ai, interview or prove. */
+/** One stage of an outcome path: understand, remember, solve, build, build-ai or prove. */
 export class OutcomeStageType {
     /** The stage id. */
     @Field(() => String)

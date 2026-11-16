@@ -101,15 +101,15 @@ describe("StreakService recordStreakAction", () => {
     it("counts an action of a closed day for today and keeps one of the open days", async () => {
         const { service } = await build()
 
-        const late = await service.recordStreakAction(LEARNER, "interview", "interview-submitted", {
+        const late = await service.recordStreakAction(LEARNER, "projects", "project-run", {
             actionId: "a",
             at: new Date("2026-11-05T03:00:00.000Z"),
         })
-        const open = await service.recordStreakAction(LEARNER, "interview", "interview-submitted", {
+        const open = await service.recordStreakAction(LEARNER, "projects", "project-run", {
             actionId: "b",
             at: new Date("2026-11-11T01:00:00.000Z"),
         })
-        const future = await service.recordStreakAction(LEARNER, "interview", "interview-submitted", {
+        const future = await service.recordStreakAction(LEARNER, "projects", "project-run", {
             actionId: "c",
             at: new Date("2026-11-20T01:00:00.000Z"),
         })

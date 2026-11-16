@@ -49,12 +49,6 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
             { id: "build-with-agent", stage: "build", part: "projects", title: copy("founder.step.build-with-agent") },
             { id: "build-product", stage: "build-ai", part: "projects", title: copy("founder.step.build-product") },
             { id: "build-launch", stage: "build-ai", part: "projects", title: copy("founder.step.build-launch") },
-            {
-                id: "interview-pitch",
-                stage: "interview",
-                part: "interview",
-                title: copy("founder.step.interview-pitch"),
-            },
             { id: "prove-profile", stage: "prove", part: "profile", title: copy("founder.step.prove-profile") },
         ],
     },
@@ -89,7 +83,6 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
             { id: "build-labs", stage: "build", part: "projects", title: copy("ai-engineer.step.build-labs") },
             { id: "build-agent", stage: "build-ai", part: "projects", title: copy("ai-engineer.step.build-agent") },
             { id: "build-deploy", stage: "build-ai", part: "projects", title: copy("ai-engineer.step.build-deploy") },
-            { id: "interview-ai", stage: "interview", part: "interview", title: copy("ai-engineer.step.interview-ai") },
             { id: "prove-profile", stage: "prove", part: "profile", title: copy("ai-engineer.step.prove-profile") },
         ],
     },
@@ -102,8 +95,7 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
         checks: [
             verified("backend-fullstack.check.1"),
             verified("backend-fullstack.check.2"),
-            verified("backend-fullstack.check.3"),
-            reported("backend-fullstack.check.4"),
+            reported("backend-fullstack.check.3"),
         ],
         weeks: 20,
         steps: [
@@ -127,12 +119,6 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
             },
             { id: "build-apps", stage: "build", part: "projects", title: copy("backend-fullstack.step.build-apps") },
             { id: "build-ai", stage: "build-ai", part: "projects", title: copy("backend-fullstack.step.build-ai") },
-            {
-                id: "interview-fullstack",
-                stage: "interview",
-                part: "interview",
-                title: copy("backend-fullstack.step.interview-fullstack"),
-            },
             {
                 id: "prove-profile",
                 stage: "prove",
@@ -169,12 +155,6 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
                 title: copy("devops-sre.step.build-containerise"),
             },
             { id: "build-ai", stage: "build-ai", part: "projects", title: copy("devops-sre.step.build-ai") },
-            {
-                id: "interview-devops",
-                stage: "interview",
-                part: "interview",
-                title: copy("devops-sre.step.interview-devops"),
-            },
             { id: "prove-profile", stage: "prove", part: "profile", title: copy("devops-sre.step.prove-profile") },
         ],
     },
@@ -187,8 +167,7 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
         checks: [
             verified("system-design-senior.check.1"),
             verified("system-design-senior.check.2"),
-            verified("system-design-senior.check.3"),
-            reported("system-design-senior.check.4"),
+            reported("system-design-senior.check.3"),
         ],
         weeks: 14,
         steps: [
@@ -211,12 +190,6 @@ export const PATH_DEFINITIONS: ReadonlyArray<PathDefinition> = [
                 title: copy("system-design-senior.step.build-services"),
             },
             { id: "build-ai", stage: "build-ai", part: "projects", title: copy("system-design-senior.step.build-ai") },
-            {
-                id: "interview-senior",
-                stage: "interview",
-                part: "interview",
-                title: copy("system-design-senior.step.interview-senior"),
-            },
             {
                 id: "prove-profile",
                 stage: "prove",

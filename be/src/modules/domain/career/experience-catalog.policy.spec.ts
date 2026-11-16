@@ -30,10 +30,10 @@ describe("the experience catalog", () => {
         expect(subject.catalogItemOf("essentials.concept-proved").requiresProject).toBe(true)
     })
 
-    it("feeds hiring readiness from Coding practice and Mock interview", () => {
+    it("feeds hiring readiness from Coding practice", () => {
         const readiness = EXPERIENCE_CATALOG.filter((i) => i.output === "readiness").map((i) => i.part)
 
-        expect(readiness.sort()).toEqual(["interview", "practice"])
+        expect(readiness.sort()).toEqual(["practice"])
     })
 
     it("carries every slot in both templates, and only the parts that grant items", () => {

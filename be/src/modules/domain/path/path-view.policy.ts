@@ -21,7 +21,6 @@ export const PATH_PART_ROUTES: Readonly<Record<PathPart, string>> = {
     review: "/review",
     practice: "/practice",
     projects: "/projects",
-    interview: "/interview",
     profile: "/profile",
 }
 

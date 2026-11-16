@@ -56,7 +56,7 @@ describe("buildHub", () => {
         subject = await loadSubject()
     })
 
-    it("lists the six shards in hub order with the progress of essentials and review and the counters of the streak", () => {
+    it("lists the five shards in hub order with the progress of essentials and review and the counters of the streak", () => {
         const hub = subject.buildHub(sourcesOf(), text)
 
         expect(hub.shards.map((shard) => [shard.order, shard.shard, shard.label])).toEqual([
@@ -65,7 +65,6 @@ describe("buildHub", () => {
             [3, "practice", "shards.practice"],
             [4, "projects", "shards.projects"],
             [5, "incidents", "shards.incidents"],
-            [6, "interview", "shards.interview"],
         ])
         expect(hub.shards[0]?.progress).toEqual({
             label: 'progress.essentials:{"started":2,"total":7}',
@@ -95,7 +94,6 @@ describe("buildHub", () => {
             ["practice", "/practice"],
             ["projects", "/projects"],
             ["incidents", "/incidents"],
-            ["interview", "/interview"],
         ])
         expect(hub.today[0]?.title).toBe('today.review:{"due":4}')
     })

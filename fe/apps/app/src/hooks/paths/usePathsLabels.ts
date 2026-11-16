@@ -14,7 +14,6 @@ export const usePathsLabels = (): PathsLabelSet => {
             t("stage.solve"),
             t("stage.build"),
             t("stage.buildAi"),
-            t("stage.interview"),
             t("stage.prove"),
         ],
         note: t("note"),

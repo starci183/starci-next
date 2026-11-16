@@ -1,5 +1,5 @@
 /** The learning shards that grant experience items (decision.program.structure); layers grant none. */
-export type ExperiencePart = "essentials" | "projects" | "incidents" | "practice" | "interview" | "harness"
+export type ExperiencePart = "essentials" | "projects" | "incidents" | "practice" | "harness"
 
 /** What a verified item feeds: a CV line, or a hiring-readiness signal that never becomes a CV line. */
 export type ExperienceOutput = "cv-line" | "readiness"
@@ -136,7 +136,7 @@ export interface ExperienceItemView {
     readonly revokedAt: string | null
     /** Whether the learner shows it on the public profile. */
     readonly shownPublicly: boolean
-    /** The interview questions the line must survive. */
+    /** The questions an employer may ask about the line. */
     readonly defenseQuestions: ReadonlyArray<string>
     /** When it last changed. */
     readonly updatedAt: string

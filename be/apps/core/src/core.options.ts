@@ -36,14 +36,10 @@ export interface CoreOptions {
     readonly aiGateway: AiGatewayOptions | null
     /** Parsed attempt settings: the fair-use limit of coach gradings. */
     readonly attempt: CoreEnv["attempt"]
-    /** Parsed interview settings: the free quota, the session lengths, the fair-use cap and the verdict lines. */
-    readonly interview: CoreEnv["interview"]
     /** The Judge0 endpoint code runs through, or null when this instance runs no code and a run ends as an internal error. */
     readonly judge0: Judge0Options | null
     /** Parsed practice settings: free problems per pattern, the judge queue and the rate limit. */
     readonly practice: CoreEnv["practice"]
-    /** Parsed agent lab settings: the daily cap of model calls on the proxy key. */
-    readonly agentLab: CoreEnv["agentLab"]
     /** Parsed project settings: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: CoreEnv["project"]
     /** Parsed profile settings: the avatar limits, the longest display name and the signed upload lifetime. */

@@ -4,7 +4,6 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
 import { HarnessImportService } from "@modules/domain/harness"
-import { InterviewImportService } from "@modules/domain/interview"
 import { LessonImportService } from "@modules/domain/lesson"
 import { PracticeImportService } from "@modules/domain/practice"
 import { ReviewImportService } from "@modules/domain/review"
@@ -27,14 +26,7 @@ import { catalogFilesOf, catalogKindsOf, manifestOf } from "./content-manifest.p
 import { ContentError, ContentErrorCode } from "./errors/content.error"
 
 /** The kinds in the order a sync runs them. */
-export const CONTENT_KINDS: ReadonlyArray<ContentKind> = [
-    "lessons",
-    "interview",
-    "review",
-    "practice",
-    "harness",
-    "catalogs",
-]
+export const CONTENT_KINDS: ReadonlyArray<ContentKind> = ["lessons", "review", "practice", "harness", "catalogs"]
 
 /** The names a caller may pass to run only some kinds. */
 const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
@@ -42,7 +34,7 @@ const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
 /** The length of the sha prefix used as a version label: the label of the dev seeds. */
 const LABEL_LENGTH = 9
 
-/** The folder the authors write in (owner 2026-11-17, the seed standard): `raw/essentials`, `raw/interview`, `raw/practice`. */
+/** The folder the authors write in (owner 2026-11-17, the seed standard): `raw/essentials`, `raw/practice`. */
 const RAW = "raw"
 
 /** One repository ready on disk with the version label its imports use. */
@@ -77,7 +69,6 @@ export class ContentSyncService {
         @InjectClock() private readonly clock: Clock,
         @InjectLogger() private readonly logger: Logger,
         private readonly lessons: LessonImportService,
-        private readonly interviews: InterviewImportService,
         private readonly reviews: ReviewImportService,
         private readonly practice: PracticeImportService,
         private readonly harness: HarnessImportService,
@@ -159,7 +150,6 @@ export class ContentSyncService {
 
     private import(kind: ContentKind, content: Root, data: Root | null): Promise<ContentKindReport> {
         if (kind === "lessons") return this.importLessons(content, data)
-        if (kind === "interview") return this.importInterview(content, data)
         if (kind === "review") return this.importReview(data)
         if (kind === "practice") return this.importPractice(content, data)
         if (kind === "harness") return this.importHarness(content)
@@ -201,36 +191,6 @@ export class ContentSyncService {
             status: "imported",
             version: imported.join("+"),
             detail: `${imported.length} source(s)`,
-        }
-    }
-
-    private async importInterview(content: Root, data: Root | null): Promise<ContentKindReport> {
-        const overlay = await this.layoutOf(
-            content,
-            join("interview", "overlay"),
-            ["interview", "overlay"],
-            ["courses"],
-        )
-        const hasOverlay = (await this.disk.folders(join(overlay, "courses"))).length > 0
-        if (data === null && !hasOverlay) {
-            return { kind: "interview", status: "skipped", version: "", detail: "no data checkout and no overlay" }
-        }
-        if (data === null) {
-            await this.interviews.import({ directory: overlay, ref: content.ref, only: "" })
-            return { kind: "interview", status: "imported", version: content.ref, detail: "overlay only" }
-        }
-        const ref = hasOverlay ? `${data.ref}+${content.ref}` : data.ref
-        await this.interviews.import({
-            directory: data.directory,
-            ref,
-            only: "",
-            ...(hasOverlay ? { overlay } : {}),
-        })
-        return {
-            kind: "interview",
-            status: "imported",
-            version: ref,
-            detail: hasOverlay ? "with overlay" : "data only",
         }
     }
 

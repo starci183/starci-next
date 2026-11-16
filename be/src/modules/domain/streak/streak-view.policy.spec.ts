@@ -70,6 +70,6 @@ describe("viewOf", () => {
         const view = subject.viewOf(state, daysOf([]), "2026-11-11")
 
         expect(view).toMatchObject({ current: 3, todayCounted: false, todayShards: [] })
-        expect(view.shardCounters).toHaveLength(6)
+        expect(view.shardCounters).toHaveLength(5)
     })
 })

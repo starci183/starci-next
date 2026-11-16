@@ -1,79 +1,5 @@
 directive @inputBounds(version: Int = 1, maxLength: Int, maxItems: Int, min: Float, max: Float, itemMaxLength: Int, itemMaxItems: Int, itemMin: Float, itemMax: Float) on INPUT_FIELD_DEFINITION
 
-type AgentLabCellType {
-  conceptId: String!
-  conceptLabel: String!
-  labId: String
-  locked: Boolean!
-  open: Boolean!
-  status: String!
-  steps: [AgentLabStepType!]!
-  title: String
-}
-
-type AgentLabConceptType {
-  evidence: String!
-  free: Boolean!
-  id: String!
-  label: String!
-}
-
-input AgentLabInput {
-  locale: String!
-}
-
-type AgentLabOverviewType {
-  concepts: [AgentLabConceptType!]!
-  tracks: [AgentLabTrackSummaryType!]!
-}
-
-type AgentLabStepType {
-  sourceUrl: String!
-  text: String!
-}
-
-input AgentLabTrackInput {
-  locale: String!
-  trackId: String! @inputBounds(maxLength: 40)
-}
-
-type AgentLabTrackSummaryType {
-  focus: String!
-  id: String!
-  keyMode: String!
-  labCount: Int!
-  label: String!
-  openLabCount: Int!
-  pinnedVersion: String
-}
-
-type AgentLabTrackType {
-  cells: [AgentLabCellType!]!
-  focus: String!
-  id: String!
-  keyMode: String!
-  labCount: Int!
-  label: String!
-  openLabCount: Int!
-  pinnedVersion: String
-}
-
-type AgentQuotaType {
-  exhausted: Boolean!
-  limit: Int!
-  remaining: Int!
-  resetsAt: String!
-  used: Int!
-}
-
-input AnswerInterviewInput {
-  isSkipped: Boolean! = false
-  position: Int! @inputBounds(min: 0, max: 40)
-  revision: Int! @inputBounds(min: 0, max: 10)
-  sessionId: String! @inputBounds(maxLength: 36)
-  text: String! = "" @inputBounds(maxLength: 10000)
-}
-
 input AssignExperienceInput {
   itemId: String! @inputBounds(maxLength: 40)
   reviewerId: String = null @inputBounds(maxLength: 40)
@@ -542,249 +468,6 @@ type IncidentListItemType {
 input IncidentsInput {
   locale: String!
   topic: String = null @inputBounds(maxLength: 100)
-}
-
-type InterviewAbandonType {
-  sessionId: String!
-  status: String!
-}
-
-type InterviewAccessType {
-  freeSessionsLeftThisMonth: Int!
-  isPremium: Boolean!
-  length: Int!
-  resetsAt: String!
-}
-
-type InterviewAnswerType {
-  failureCode: String
-  next: InterviewTurnType
-  saved: InterviewTurnType!
-  status: String!
-}
-
-type InterviewAttributeType {
-  key: String!
-  score: Int!
-}
-
-type InterviewBankOptionType {
-  bankId: String!
-  difficulty: String!
-  family: String!
-  freeQuestionCount: Int!
-  languages: [String!]!
-  questionCount: Int!
-  tiers: [String!]!
-  title: String!
-}
-
-type InterviewChecklistResultType {
-  critical: Boolean!
-  dimension: String!
-  evidenceQuote: String!
-  hit: Boolean!
-  scoreBand: Int!
-  text: String!
-}
-
-type InterviewDimensionResultType {
-  evidenceQuote: String!
-  key: String!
-  level: Int!
-  text: String!
-}
-
-type InterviewEvidenceType {
-  bestScore: Int!
-  family: String!
-  gradedAt: String!
-  sessionId: String!
-  tier: String!
-  track: String!
-  verdict: String!
-}
-
-type InterviewGapType {
-  moduleRefs: [String!]!
-  position: Int!
-  text: String!
-}
-
-type InterviewGradedByType {
-  model: String!
-  profile: String!
-  usedFallback: Boolean!
-}
-
-type InterviewGradingType {
-  failureCode: String
-  sessionId: String!
-  status: String!
-}
-
-input InterviewHintInput {
-  position: Int! @inputBounds(min: 0, max: 40)
-  sessionId: String! @inputBounds(maxLength: 36)
-}
-
-type InterviewHintType {
-  hintsLeft: Int!
-  hintsUsed: Int!
-  text: String!
-  turnId: String!
-}
-
-input InterviewHistoryInput {
-  track: String = null @inputBounds(maxLength: 60)
-}
-
-type InterviewHistoryItemType {
-  overallScore: Int
-  sessionId: String!
-  startedAt: String!
-  status: String!
-  tier: String!
-  track: String!
-  verdict: String
-}
-
-type InterviewHistoryType {
-  items: [InterviewHistoryItemType!]!
-  trend: [InterviewTrendType!]!
-}
-
-type InterviewLessonLinkType {
-  lessonId: String!
-  title: String!
-  topic: String!
-}
-
-type InterviewModuleLessonsType {
-  lessons: [InterviewLessonLinkType!]!
-  moduleRef: String!
-}
-
-input InterviewOptionsInput {
-  locale: String! = "vi"
-  track: String = null @inputBounds(maxLength: 60)
-}
-
-type InterviewOptionsType {
-  access: InterviewAccessType!
-  active: InterviewHistoryItemType
-  banks: [InterviewBankOptionType!]!
-  tracks: [InterviewTrackType!]!
-}
-
-type InterviewPillarType {
-  bestScore: Int!
-  verdict: String!
-}
-
-type InterviewQuestionScoreType {
-  checklist: [InterviewChecklistResultType!]!
-  criticalMissed: [String!]!
-  dimensions: [InterviewDimensionResultType!]!
-  family: String!
-  hintPenalty: Int!
-  hintsUsed: Int!
-  idealAnswer: String!
-  note: String!
-  ownershipWeak: Boolean!
-  position: Int!
-  questionId: String!
-  score: Int!
-  skipped: Boolean!
-}
-
-type InterviewQuestionType {
-  bankTitle: String!
-  bodyLanguage: String!
-  diagram: String
-  family: String!
-  givenCode: String
-  hintCount: Int!
-  kind: String!
-  position: Int!
-  prompt: String!
-  tier: String!
-}
-
-input InterviewReadinessInput {
-  tier: String!
-  track: String! @inputBounds(maxLength: 60)
-}
-
-type InterviewReadinessType {
-  behavioral: InterviewPillarType
-  ready: Boolean!
-  technical: InterviewPillarType
-  tier: String!
-  track: String!
-}
-
-type InterviewScorecardType {
-  attributes: [InterviewAttributeType!]!
-  behavioralScore: Int
-  behavioralVerdict: String
-  gaps: [InterviewGapType!]!
-  overallScore: Int!
-  questions: [InterviewQuestionScoreType!]!
-  strengths: [String!]!
-  technicalScore: Int
-  technicalVerdict: String
-  verdict: String!
-}
-
-input InterviewSessionRefInput {
-  sessionId: String! @inputBounds(maxLength: 36)
-}
-
-type InterviewSessionType {
-  failureCode: String
-  gradedAt: String
-  gradedBy: InterviewGradedByType
-  lessons: [InterviewModuleLessonsType!]!
-  position: Int!
-  previousScore: Int
-  questions: [InterviewQuestionType!]!
-  scorecard: InterviewScorecardType
-  sessionId: String!
-  setup: InterviewSetupType!
-  startedAt: String!
-  status: String!
-  turns: [InterviewTurnType!]!
-}
-
-type InterviewSetupType {
-  access: String!
-  language: String
-  length: Int!
-  locale: String!
-  tier: String!
-  track: String!
-}
-
-type InterviewTrackType {
-  id: String!
-  title: String!
-}
-
-type InterviewTrendType {
-  scores: [Int!]!
-  tier: String!
-  track: String!
-}
-
-type InterviewTurnType {
-  content: String!
-  createdAt: String!
-  kind: String!
-  position: Int!
-  revision: Int
-  role: String!
-  turnId: String!
 }
 
 input LearnerHubInput {
@@ -1320,9 +1003,7 @@ type McpTokenType {
 }
 
 type Mutation {
-  abandonInterview(input: InterviewSessionRefInput!): InterviewAbandonType!
   addReviewDeck(input: RecallDeckInput!): RecallDeckAddedType!
-  answerInterview(input: AnswerInterviewInput!): InterviewAnswerType!
   assignExperience(input: AssignExperienceInput!): ExperienceItemType!
   bindHarnessBuild(input: BindHarnessBuildInput!): HarnessBuildBindingType!
   checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
@@ -1336,9 +1017,7 @@ type Mutation {
   explainProjectConcept(input: ExplainProjectConceptInput!): ProjectConceptType!
   flipReviewCard(input: FlipRecallCardInput!): RecallFlipType!
   gradeReviewCard(input: GradeRecallCardInput!): RecallGradeType!
-  interviewHint(input: InterviewHintInput!): InterviewHintType!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
-  regradeInterview(input: InterviewSessionRefInput!): InterviewGradingType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayHarnessResult(input: RelayHarnessResultInput!): RelayUploadType!
@@ -1347,7 +1026,6 @@ type Mutation {
   removeAvatar(input: ProfileInput!): ProfileType!
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
   requestAvatarUpload(input: RequestAvatarUploadInput!): AvatarUploadType!
-  retryInterviewTurn(input: InterviewSessionRefInput!): InterviewAnswerType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
   revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
   revokeMcpToken(input: RevokeMcpTokenInput!): String!
@@ -1363,10 +1041,8 @@ type Mutation {
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
   setStreakGoal(input: SetStreakGoalInput!): StreakGoalType!
   showExperience(input: ShowExperienceInput!): ExperienceItemType!
-  startInterview(input: StartInterviewInput!): InterviewSessionType!
   startPremiumCheckout(input: StartPremiumCheckoutInput!): StartPremiumCheckoutType!
   submitExperience(input: SubmitExperienceInput!): ExperienceItemType!
-  submitInterview(input: InterviewSessionRefInput!): InterviewGradingType!
   submitLessonAttempt(input: SubmitLessonAttemptInput!): LessonAttemptType!
   submitPractice(input: PracticeSolveInput!): PracticeSubmissionType!
   submitReviewRetrieval(input: SubmitRecallRetrievalInput!): RecallFlipType!
@@ -1979,9 +1655,6 @@ input ProjectsInput {
 }
 
 type Query {
-  agentLab(input: AgentLabInput!): AgentLabOverviewType!
-  agentLabTrack(input: AgentLabTrackInput!): AgentLabTrackType!
-  agentQuota: AgentQuotaType!
   experienceReviewers: [ReviewerType!]!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
   harnessBuilds(input: HarnessLocaleInput!): [HarnessBuildSummaryType!]!
@@ -1993,11 +1666,6 @@ type Query {
   harnessHub(input: HarnessLocaleInput!): HarnessHubType!
   harnessTrials(input: HarnessTrialsInput!): [HarnessTrapType!]!
   incidents(input: IncidentsInput!): [IncidentListItemType!]!
-  interviewEvidence: [InterviewEvidenceType!]!
-  interviewHistory(input: InterviewHistoryInput!): InterviewHistoryType!
-  interviewOptions(input: InterviewOptionsInput!): InterviewOptionsType!
-  interviewReadiness(input: InterviewReadinessInput!): InterviewReadinessType!
-  interviewSession(input: InterviewSessionRefInput!): InterviewSessionType!
   learnerHub(input: LearnerHubInput!): LearnerHubType!
   learnerProgress(input: LearnerProgressInput!): LearnerProgressType!
   lesson(input: LessonInput!): LessonType!
@@ -2451,15 +2119,6 @@ input SetStreakGoalInput {
 input ShowExperienceInput {
   itemId: String! @inputBounds(maxLength: 40)
   shownPublicly: Boolean!
-}
-
-input StartInterviewInput {
-  bankIds: [String!] = null @inputBounds(maxItems: 40, itemMaxLength: 120)
-  clientRequestId: String! @inputBounds(maxLength: 100)
-  language: String = null @inputBounds(maxLength: 32)
-  locale: String! = "vi"
-  tier: String!
-  track: String! @inputBounds(maxLength: 60)
 }
 
 input StartPremiumCheckoutInput {

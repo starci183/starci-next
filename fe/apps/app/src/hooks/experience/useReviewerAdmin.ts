@@ -17,7 +17,7 @@ import { useExperienceWords } from "./useExperienceWords"
 const TEACHER_QUEUE = "teacher"
 
 /** The parts a reviewer may be appointed to. */
-const PARTS: ReadonlyArray<string> = ["essentials", "projects", "incidents", "practice", "interview"]
+const PARTS: ReadonlyArray<string> = ["essentials", "projects", "incidents", "practice"]
 
 /** The capacity the form proposes, the proposed default of Q-CA-3. */
 const DEFAULT_CAPACITY = 30

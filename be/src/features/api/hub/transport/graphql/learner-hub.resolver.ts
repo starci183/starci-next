@@ -8,7 +8,7 @@ import { LearnerHubType } from "./dto/learner-hub.type"
 import { toLearnerHubParams, toLearnerHubType } from "./learner-hub.mapper"
 
 @Resolver()
-/** GraphQL door of the hub: the streak, what is left today and the six learning shards; it needs a session and no Premium. */
+/** GraphQL door of the hub: the streak, what is left today and the five learning shards; it needs a session and no Premium. */
 export class LearnerHubResolver {
     constructor(@InjectQueryBus() private readonly queryBus: QueryBus) {}
 

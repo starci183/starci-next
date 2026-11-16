@@ -14,13 +14,13 @@ export interface CatalogItem {
     readonly requiresProject: boolean
     /** The slots every template carries. */
     readonly slots: ReadonlyArray<string>
-    /** The interview questions the line must survive. */
+    /** The questions an employer may ask about the line. */
     readonly defenseQuestions: ReadonlyArray<string>
 }
 
 /**
  * The experience catalog: CV lines come only from projects (agent projects included), incidents and essentials lessons
- * attached to a project; coding practice and mock interviews feed hiring readiness; review counts toward the streak only; goals,
+ * attached to a project; coding practice feeds hiring readiness; review counts toward the streak only; goals,
  * the profile and CV, and the hiring bridge grant nothing.
  */
 export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
@@ -88,14 +88,6 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         slots: ["count", "pattern", "language"],
         defenseQuestions: [],
     },
-    {
-        itemType: "interview.pass",
-        part: "interview",
-        output: "readiness",
-        requiresProject: false,
-        slots: ["tier", "track"],
-        defenseQuestions: [],
-    },
 ]
 
 /** The parts that grant items, in the order the screens list them. */
@@ -104,7 +96,6 @@ export const EXPERIENCE_PARTS: ReadonlyArray<ExperiencePart> = [
     "projects",
     "incidents",
     "practice",
-    "interview",
     "harness",
 ]
 

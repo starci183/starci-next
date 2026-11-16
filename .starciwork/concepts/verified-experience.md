@@ -28,7 +28,7 @@ appoints, signs each item (owner: "AI chấm, thầy ký từng mục"). Only ve
    unchanged resubmit is refused; after 3 returns the next resubmit goes to the teacher and waits 7 days.
 9. The hiring bridge is a Premium perk, opt-in, sent by hand to one partner (Pegasi), opened by at least 3 verified items. No fee to
    companies, no automatic matching, no placement promise.
-10. The streak, practice counts and interview scores are evidence or readiness, never a CV line by themselves.
+10. The streak, practice counts are evidence or readiness, never a CV line by themselves.
 
 ## Example
 A learner proves a Bản chất concept; the AI drafts "Triển khai CQRS read model trong NestJS" with its evidence; it waits in the

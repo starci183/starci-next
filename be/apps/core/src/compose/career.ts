@@ -6,14 +6,6 @@ import {
     careerEntities,
     careerMigrations,
 } from "@modules/domain/career"
-import {
-    AiInterviewClient,
-    INTERVIEW_ERROR_KINDS,
-    INTERVIEW_MESSAGES,
-    InterviewModule,
-    interviewEntities,
-    interviewMigrations,
-} from "@modules/domain/interview"
 import { NotificationService } from "@modules/domain/notification"
 import {
     AiProjectCoachClient,
@@ -41,13 +33,12 @@ import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
 
 /**
- * The career area: mock interviews, projects with their probes and the device relay (pairing and the feed), and the verified
+ * The career area: projects with their probes and the device relay (pairing and the feed), and the verified
  * experience they produce.
  * The project probes go through the guarded HTTP transport: public addresses only.
  */
 export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
     RelayModule.register({ isGlobal: true, ...options.relay }),
-    InterviewModule.register({ isGlobal: true, ...options.interview, coach: AiInterviewClient }),
     CareerModule.register({ isGlobal: true, notifier: NotificationService }),
     ProjectModule.register({
         isGlobal: true,
@@ -63,7 +54,6 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
 
 /** The error kind tables of the career area. */
 export const careerAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKind>>> = [
-    INTERVIEW_ERROR_KINDS,
     CAREER_ERROR_KINDS,
     PROJECT_ERROR_KINDS,
     PROBE_ERROR_KINDS,
@@ -72,7 +62,6 @@ export const careerAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKi
 
 /** The message bundles of the career area. */
 export const careerAreaMessages: ReadonlyArray<MessageBundle> = [
-    INTERVIEW_MESSAGES,
     CAREER_MESSAGES,
     PROJECT_MESSAGES,
     PROBE_MESSAGES,
@@ -81,7 +70,6 @@ export const careerAreaMessages: ReadonlyArray<MessageBundle> = [
 
 /** The entities the career area keeps in the primary database. */
 export const careerAreaEntities: DatabaseConnectionOptions["entities"] = [
-    ...interviewEntities,
     ...careerEntities,
     ...projectEntities,
     ...relayEntities,
@@ -89,7 +77,6 @@ export const careerAreaEntities: DatabaseConnectionOptions["entities"] = [
 
 /** The migrations of the career area. */
 export const careerAreaMigrations: DatabaseConnectionOptions["migrations"] = [
-    ...interviewMigrations,
     ...careerMigrations,
     ...projectMigrations,
     ...relayMigrations,

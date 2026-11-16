@@ -73,7 +73,7 @@ const ACTION_KIND_NAMES: ReadonlyArray<string> = STREAK_ACTION_KINDS
 @Injectable()
 /**
  * The one streak of the whole app. A day counts only when a part stored a meaningful action that day (an item review
- * session completed, a graded attempt, a project run, an interview session submitted); page views never count. Days and
+ * session completed, a graded attempt or a project run); page views never count. Days and
  * weeks are Asia/Ho_Chi_Minh, weeks start on Monday. Days close lazily on every read and record, so there is no clock job.
  * Nothing here ever creates or verifies an experience item.
  */

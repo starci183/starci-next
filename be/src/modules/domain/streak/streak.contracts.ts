@@ -1,11 +1,11 @@
-/** The ids of the six learning shards that count toward the one streak, in the order of the hub. */
-export const STREAK_SHARD_IDS = ["essentials", "review", "practice", "projects", "incidents", "interview"] as const
+/** The ids of the five learning shards that count toward the one streak, in the order of the hub. */
+export const STREAK_SHARD_IDS = ["essentials", "review", "practice", "projects", "incidents"] as const
 
 /** A learning shard id. */
 export type StreakShard = (typeof STREAK_SHARD_IDS)[number]
 
 /** The kinds of meaningful action a day counts for; a page view is none of them. */
-export const STREAK_ACTION_KINDS = ["review-due-done", "graded-attempt", "project-run", "interview-submitted"] as const
+export const STREAK_ACTION_KINDS = ["review-due-done", "graded-attempt", "project-run"] as const
 
 /** A meaningful action kind. */
 export type StreakActionKind = (typeof STREAK_ACTION_KINDS)[number]

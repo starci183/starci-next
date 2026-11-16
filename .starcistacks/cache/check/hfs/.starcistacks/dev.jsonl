@@ -14,9 +14,7 @@
 {"data":{},"findings":[],"hash":"ea152b1260ac550b7e4b3deb47b2c92e50a4be6b08579e732e87e54422eb91b0","path":".starcistacks/dev/secrets/storage.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/dev/seeds/data/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/dev/seeds/files/.gitkeep","step":"file-rules"}
-{"data":{},"findings":[],"hash":"188601b2e238fbb2cc81d1bcf2382901d71add1ea7bfdf23fd79b57921c6e634","path":".starcistacks/dev/seeds/seeds.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6fb4e3bcb9f95249375b15381ca155927badfe8d9e539d121400733a83106696","path":".starcistacks/dev/seeds/sql/primary-content-interviews.sql","step":"file-rules"}
-{"data":{},"findings":[],"hash":"948403fa13280c5d8519aa894172edfff3f3c88ced7a3a5a33ba0fb73b904608","path":".starcistacks/dev/seeds/sql/primary-interviews.sql","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c469cdcf1972f1297a55b8f6dd44f19bafe0fb57e548fa3316fde5919edbd193","path":".starcistacks/dev/seeds/seeds.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa729a9b7a8939a75360b505dbf15a138a502dff1624ce9bddabd1c83949fb2b","path":".starcistacks/dev/seeds/sql/primary-lessons.sql","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8bc4765916783946a33a552b29f77534c0a9c2bdd22b3d77aa822a6d3bf20505","path":".starcistacks/dev/seeds/sql/primary-notes.sql","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9bb58faf4dad66d2389ce82b6e59211725c6176a0bef53b62ca7308e15ac81a9","path":".starcistacks/dev/seeds/sql/primary-review.sql","step":"file-rules"}

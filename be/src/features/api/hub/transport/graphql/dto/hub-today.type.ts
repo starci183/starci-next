@@ -7,7 +7,7 @@ export class HubTodayType {
     @Field(() => String)
     shard!: string
 
-    /** What it asks: review, lesson, practice, project, incident or interview. */
+    /** What it asks: review, lesson, practice, project or incident. */
     @Field(() => String)
     kind!: string
 

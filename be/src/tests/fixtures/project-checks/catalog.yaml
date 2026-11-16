@@ -103,7 +103,7 @@ concepts:
     requires: [[test], [code-read]]
     probes: []
     learn: []
-  # The agent branch (a project of kind agent, evidence of the agent lab): kept as before, now data too.
+  # The agent branch (a project of kind agent): kept as before, now data too.
   - id: task-spec
     label:
       vi: A clear task spec

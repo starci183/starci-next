@@ -1,12 +1,10 @@
 import type { DynamicModule, Type } from "@nestjs/common"
-import { AgentLabGraphqlModule } from "@features/api/agent-lab"
 import { AttemptGraphqlModule } from "@features/api/attempt"
 import { CareerGraphqlModule } from "@features/api/career"
 import { CommerceGraphqlModule } from "@features/api/commerce"
 import { HubGraphqlModule } from "@features/api/hub"
 import { IdentityHttpModule } from "@features/api/identity"
 import { IncidentGraphqlModule } from "@features/api/incident"
-import { InterviewGraphqlModule } from "@features/api/interview"
 import { LessonGraphqlModule, LessonHttpModule } from "@features/api/lesson"
 import { McpGraphqlModule, McpHttpModule } from "@features/api/mcp"
 import { NotificationGraphqlModule } from "@features/api/notification"
@@ -29,7 +27,6 @@ export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     LessonGraphqlModule.register({}),
     LessonHttpModule.register({}),
     AttemptGraphqlModule.register({}),
-    InterviewGraphqlModule.register({}),
     ReviewGraphqlModule.register({}),
     HubGraphqlModule.register({}),
     ProfileGraphqlModule.register({}),
@@ -37,7 +34,6 @@ export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     PathGraphqlModule.register({}),
     HarnessGraphqlModule.register({}),
     IncidentGraphqlModule.register({}),
-    AgentLabGraphqlModule.register({}),
     PracticeGraphqlModule.register({}),
     CareerGraphqlModule.register({}),
     ProjectGraphqlModule.register({}),

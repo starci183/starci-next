@@ -22,7 +22,6 @@ export const countersOf = (counterOf: (shard: StreakShard) => StreakCounter): Re
     practice: counterOf("practice"),
     projects: counterOf("projects"),
     incidents: counterOf("incidents"),
-    interview: counterOf("interview"),
 })
 
 /** The state of a learner met for the first time today: nothing closed yet, this week's freezes granted. */

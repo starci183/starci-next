@@ -40,7 +40,7 @@ export class SyncContentCli extends CommandRunner {
     /** `--only <kinds>`: a comma-separated list of kinds. */
     @Option({
         flags: "--only <kinds>",
-        description: "Comma-separated kinds to run: lessons, interview, review, practice, catalogs (default: all)",
+        description: "Comma-separated kinds to run: lessons, review, practice, catalogs (default: all)",
         defaultValue: "",
     })
     parseOnly(value: string): string {

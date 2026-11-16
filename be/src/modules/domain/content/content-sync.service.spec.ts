@@ -3,7 +3,6 @@ import { FakeClock, builder, mock, type MockOf } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
 import { CLOCK } from "@modules/platform/clock"
 import { LOGGER, type Logger } from "@modules/platform/logging"
-import { InterviewImportService } from "@modules/domain/interview"
 import { LessonImportService } from "@modules/domain/lesson"
 import { HarnessImportService } from "@modules/domain/harness"
 import { PracticeImportService } from "@modules/domain/practice"
@@ -65,7 +64,6 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
     primeGit(git)
     primeDisk(disk)
     const lessons = mock<LessonImportService>()
-    const interviews = mock<InterviewImportService>()
     const reviews = mock<ReviewImportService>()
     const practice = mock<PracticeImportService>()
     const harness = mock<HarnessImportService>()
@@ -80,7 +78,6 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: LOGGER, useValue: logger },
             { provide: LessonImportService, useValue: lessons },
-            { provide: InterviewImportService, useValue: interviews },
             { provide: ReviewImportService, useValue: reviews },
             { provide: PracticeImportService, useValue: practice },
             { provide: HarnessImportService, useValue: harness },
@@ -91,7 +88,6 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
         git,
         disk,
         lessons,
-        interviews,
         reviews,
         practice,
         harness,
@@ -100,14 +96,13 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
 }
 
 describe("ContentSyncService sync from local directories", () => {
-    it("imports every kind at the fingerprint of the checkouts, merging the overlay into the interview banks", async () => {
-        const { service, lessons, interviews, reviews, practice, git, logger } = await build()
+    it("imports every kind at the fingerprint of the checkouts", async () => {
+        const { service, lessons, reviews, practice, git, logger } = await build()
 
         const reports = await service.sync({ contentDir: "/c", dataDir: "/d", only: "" })
 
         expect(reports.map((report) => [report.kind, report.status])).toEqual([
             ["lessons", "imported"],
-            ["interview", "imported"],
             ["review", "imported"],
             ["practice", "imported"],
             ["harness", "skipped"],
@@ -125,40 +120,28 @@ describe("ContentSyncService sync from local directories", () => {
             ref: "fp-/c",
             only: "",
         })
-        expect(interviews.import).toHaveBeenCalledWith({
-            directory: "/d",
-            ref: "fp-/d+fp-/c",
-            only: "",
-            overlay: join("/c", "raw", "interview", "overlay"),
-        })
         expect(reviews.import).toHaveBeenCalledWith({ directory: "/d", ref: "fp-/d", only: "" })
         expect(practice.import).toHaveBeenCalledTimes(2)
-        expect(reports[5]?.detail).toBe("paths=1")
-        expect(logger.info).toHaveBeenCalledTimes(6)
+        expect(reports[4]?.detail).toBe("paths=1")
+        expect(logger.info).toHaveBeenCalledTimes(5)
     })
 
     it("runs only the kinds asked for and refuses a name it does not know", async () => {
-        const { service, lessons, interviews } = await build()
+        const { service, lessons } = await build()
 
         const reports = await service.sync({ contentDir: "/c", dataDir: "/d", only: "review" })
 
         expect(reports.map((report) => report.kind)).toEqual(["review"])
         expect(lessons.import).not.toHaveBeenCalled()
-        expect(interviews.import).not.toHaveBeenCalled()
         await expect(service.sync({ contentDir: "/c", only: "bogus" })).rejects.toThrow(ContentErrorCode.SyncRejected)
     })
 
-    it("skips what needs a data checkout when only the content directory is given, and imports the overlay as its own banks", async () => {
-        const { service, interviews, reviews } = await build()
+    it("skips what needs a data checkout when only the content directory is given", async () => {
+        const { service, reviews } = await build()
 
         const reports = await service.sync({ contentDir: "/c", only: "" })
 
         expect(reports.find((report) => report.kind === "review")).toMatchObject({ status: "skipped" })
-        expect(interviews.import).toHaveBeenCalledWith({
-            directory: join("/c", "raw", "interview", "overlay"),
-            ref: "fp-/c",
-            only: "",
-        })
         expect(reviews.import).not.toHaveBeenCalled()
     })
 
@@ -185,38 +168,16 @@ describe("ContentSyncService sync of folders that hold nothing", () => {
         expect(lessons.import).not.toHaveBeenCalled()
         expect(practice.import).not.toHaveBeenCalled()
     })
-
-    it("skips the interview banks with no data checkout and no overlay", async () => {
-        const { service, disk, interviews } = await build()
-        disk.folders.mockResolvedValue([])
-
-        const reports = await service.sync({ contentDir: "/c", only: "interview" })
-
-        expect(reports).toEqual([
-            { kind: "interview", status: "skipped", version: "", detail: "no data checkout and no overlay" },
-        ])
-        expect(interviews.import).not.toHaveBeenCalled()
-    })
-
-    it("imports the interview banks of the data checkout alone when there is no overlay", async () => {
-        const { service, disk, interviews } = await build()
-        disk.folders.mockImplementation((directory) => Promise.resolve(directory.includes("overlay") ? [] : ["x"]))
-
-        const reports = await service.sync({ contentDir: "/c", dataDir: "/d", only: "interview" })
-
-        expect(reports).toEqual([{ kind: "interview", status: "imported", version: "fp-/d", detail: "data only" }])
-        expect(interviews.import).toHaveBeenCalledWith({ directory: "/d", ref: "fp-/d", only: "" })
-    })
 })
 
 describe("ContentSyncService sync failures", () => {
     it("keeps going when a kind fails, reports it by code, fails the call at the end and does not record the snapshots", async () => {
-        const { service, lessons, interviews, disk, logger } = await build(GIT_OPTIONS)
+        const { service, lessons, reviews, disk, logger } = await build(GIT_OPTIONS)
         lessons.import.mockRejectedValue(new Error("LESSON_CONTENT_INVALID"))
 
         await expect(service.sync({ only: "" })).rejects.toThrow(ContentErrorCode.SyncFailed)
 
-        expect(interviews.import).toHaveBeenCalled()
+        expect(reviews.import).toHaveBeenCalled()
         expect(logger.error).toHaveBeenCalledWith("content.synced", expect.any(Error), {
             kind: "lessons",
             status: "failed",
@@ -284,15 +245,12 @@ const holding = (disk: MockOf<ContentDiskReader>, has: (directory: string) => bo
 }
 
 describe("ContentSyncService sync of the raw layout", () => {
-    it("reads the interview overlay and the practice sets from raw/ when the pin holds them", async () => {
-        const { service, disk, interviews, practice } = await build()
+    it("reads the practice sets from raw/ when the pin holds them", async () => {
+        const { service, disk, practice } = await build()
         holding(disk, (directory) => directory.includes("raw"))
 
-        await service.sync({ contentDir: "/c", dataDir: "/d", only: "interview,practice" })
+        await service.sync({ contentDir: "/c", dataDir: "/d", only: "practice" })
 
-        expect(interviews.import).toHaveBeenCalledWith(
-            expect.objectContaining({ overlay: join("/c", "raw", "interview", "overlay") }),
-        )
         expect(practice.import).toHaveBeenCalledWith({
             directory: join("/c", "raw", "practice"),
             ref: "fp-/c",
@@ -301,14 +259,11 @@ describe("ContentSyncService sync of the raw layout", () => {
     })
 
     it("falls back to the root folders of an older pin that has no raw/ folder", async () => {
-        const { service, disk, interviews, practice, lessons } = await build()
+        const { service, disk, practice, lessons } = await build()
         holding(disk, (directory) => !directory.includes("raw"))
 
-        await service.sync({ contentDir: "/c", dataDir: "/d", only: "lessons,interview,practice" })
+        await service.sync({ contentDir: "/c", dataDir: "/d", only: "lessons,practice" })
 
-        expect(interviews.import).toHaveBeenCalledWith(
-            expect.objectContaining({ overlay: join("/c", "interview", "overlay") }),
-        )
         expect(practice.import).toHaveBeenCalledWith({ directory: join("/c", "practice"), ref: "fp-/c", only: "" })
         const lessonDirectories = lessons.import.mock.calls.map(([params]) => params.directory)
         expect(lessonDirectories).toContain(join("/c", "essentials"))

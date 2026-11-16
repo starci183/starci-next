@@ -1,14 +1,12 @@
 /** Every internal destination the product app's screens link to, named once. */
 export const APP_ROUTES = {
     home: "/",
-    agents: "/agents",
     connect: "/connect",
     devices: "/devices",
     essentials: "/essentials",
     experience: "/experience",
     harness: "/harness",
     incidents: "/incidents",
-    interview: "/interview",
     premium: "/premium",
     profile: "/profile",
     projects: "/projects",
@@ -61,22 +59,12 @@ export const signInSearch = (query: SignInQuery): string => {
 /** The path of one topic of the Essentials catalog. */
 export const topicPath = (topic: string): string => `${APP_ROUTES.essentials}/${encodeURIComponent(topic)}`
 
-/** The path of one tool track of the agent lab. */
-export const agentTrackPath = (trackId: string): string => `${APP_ROUTES.agents}/tracks/${encodeURIComponent(trackId)}`
-
 /** The path of one pattern of Practice, with its problems. */
 export const practicePatternPath = (patternId: string): string =>
     `${APP_ROUTES.practice}/patterns/${encodeURIComponent(patternId)}`
 
 /** The path of the solve screen of one practice problem. */
 export const practiceProblemPath = (slug: string): string => `${APP_ROUTES.practice}/${encodeURIComponent(slug)}`
-
-/** The path of the room of one interview session. */
-export const interviewRoomPath = (sessionId: string): string =>
-    `${APP_ROUTES.interview}/${encodeURIComponent(sessionId)}`
-
-/** The path of the report of one interview session. */
-export const interviewReportPath = (sessionId: string): string => `${interviewRoomPath(sessionId)}/report`
 
 /** The path of one lesson inside its topic, optionally opened on a phase (`/essentials/{topic}/{lesson}?phase=predict`). */
 export const lessonPath = (topic: string, lesson: string, phase?: string): string => {

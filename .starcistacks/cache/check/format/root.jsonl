@@ -8,6 +8,7 @@
 {"findings":[],"hash":"4af7dc69a3ad5258aa22a7d54f93ce550ad232fc969dd8b4482351eb1a3f7e55","path":".sops.yaml","step":"prettier"}
 {"findings":[],"hash":"03505e1c8fa21cd3cdc3065d1a1b3a8b66a2f8643e975346190350b259143e86","path":"README.md","step":"prettier"}
 {"findings":[],"hash":"a61f585aa1b689db65acb7460462b0f1c1d4862e360d695284e77ee73c10aef9","path":"codecov.yml","step":"prettier"}
+{"findings":[],"hash":"4afd6b7f46c0a00453624270b65428d1e1983f657ad2875435690618c206d248","path":"codecov.yml","step":"prettier"}
 {"findings":[],"hash":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da","path":"eslint.config.mjs","step":"prettier"}
 {"findings":[],"hash":"a03204bc2e41ae8da9f81f0cfdf7ec54a25e95336b1f8473d7bdf7d2e1d65c61","path":"hfs.json","step":"prettier"}
 {"findings":[],"hash":"c02ff3c8dccc6f942558c540425df80942dbf1c9eff6751b9c36a3db6d0e9a06","path":"package.json","step":"prettier"}

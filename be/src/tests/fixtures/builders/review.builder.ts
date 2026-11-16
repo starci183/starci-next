@@ -106,7 +106,7 @@ export const deckTextOf = (locale: string, sortIndex = "0"): string =>
     [
         fieldOf("sortIndex", sortIndex),
         fieldOf("title", `${locale} Module 1`),
-        fieldOf("description", `${locale} Interview questions`),
+        fieldOf("description", `${locale} Deck questions`),
         fieldOf("difficulty", "hard"),
         listOf("moduleRefs", ["0-nestjs-core-and-request-lifecycle"]),
     ].join("")

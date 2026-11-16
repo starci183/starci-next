@@ -14,7 +14,7 @@ Grammar: `WorkspaceShell` {header, navigation, navigationTrack, navigationVisibi
 
 ## Thanh bên (Sidebar)
 
-Vì sao: nút tròn « thu gọn ở góc, nhóm đầu không tiêu đề (Học, Bản chất, Ôn tập, Phỏng vấn thử, Luyện code, Sự cố, Dự án, Agent và AI) với icon outline, đường kẻ, nhãn nhóm 12 mờ "Kinh nghiệm" rồi "Kinh nghiệm đã xác minh", "Kết nối AI", "Hồ sơ". Mục đang xem nền xám với thanh accent 2px ở đầu (accent không tô cả mục). Không có chip đếm và không có chân sidebar: gói hiện ở dòng lockup trên thanh trên và trong menu avatar.
+Vì sao: nút tròn « thu gọn ở góc, nhóm đầu không tiêu đề (Học, Bản chất, Ôn tập, Luyện code, Sự cố, Dự án) với icon outline, đường kẻ, nhãn nhóm 12 mờ "Kinh nghiệm" rồi "Kinh nghiệm đã xác minh", "Kết nối AI", "Hồ sơ". Mục đang xem nền xám với thanh accent 2px ở đầu (accent không tô cả mục). Không có chip đếm và không có chân sidebar: gói hiện ở dòng lockup trên thanh trên và trong menu avatar.
 Luật: `surface-layering`, `theme-and-type` (chọn là xám, thanh accent 2px), `type-scale-14-12.md`; plan in the lockup line and the avatar menu, no sidebar footer (owner 2026-11-10).
 Grammar: `Sidebar` {groups, selectedKey, isCollapsed, onCollapsedChange, header, onAction} (`composite/Sidebar/index.d.ts`); code `fe/apps/app/src/components/blocks/AppSidebar`.
 

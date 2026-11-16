@@ -4,7 +4,7 @@ Dự án: the learner brings their own projects, on any topic, language and stru
 milestone is a list of Bản chất concepts; it passes when each concept has evidence. There is no sample project (owner).
 
 ## Terms
-- **Project**: the learner's own repository, kind `app` or `agent` (an agent project is the proof of the agent lab).
+- **Project**: the learner's own repository, kind `app` or `agent`.
 - **Milestone**: a list of Bản chất concepts from the content repo's project catalog.
 - **Evidence slot**: a tagged test, an e2e flow, a StarCi probe of the deployed address, or the AI code read.
 - **Đang luyện** (practising) versus **Đã chứng minh** (proved); see [learner-cli-relay](learner-cli-relay.md).

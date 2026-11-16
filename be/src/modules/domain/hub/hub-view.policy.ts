@@ -24,7 +24,6 @@ const SHARD_PLAN: Readonly<Record<StreakShard, ShardPlan>> = {
     practice: { route: "/practice", status: "live" },
     projects: { route: "/projects", status: "live" },
     incidents: { route: "/incidents", status: "live" },
-    interview: { route: "/interview", status: "live" },
 }
 
 /** A layer under the shards: its id (its name is in the catalog under `layers.<id>`) and where it lives. */
@@ -45,7 +44,6 @@ const PROMPTS: ReadonlyArray<readonly [StreakShard, string]> = [
     ["practice", "practice"],
     ["projects", "project"],
     ["incidents", "incident"],
-    ["interview", "interview"],
 ]
 
 /** A line of progress with its numbers. */

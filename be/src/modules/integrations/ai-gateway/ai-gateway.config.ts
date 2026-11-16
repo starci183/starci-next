@@ -9,10 +9,6 @@ const DEFAULT_BASE_URL = "https://openrouter.ai/api/v1"
 const DEFAULT_MODEL = "deepseek/deepseek-v4.1-flash"
 const DEFAULT_FALLBACK_MODEL = DEFAULT_MODEL
 
-/** The interview grader uses the same model; its profile only gives it longer deadlines. */
-const DEFAULT_INTERVIEW_MODEL = DEFAULT_MODEL
-const DEFAULT_INTERVIEW_FALLBACK_MODEL = DEFAULT_MODEL
-
 /** The tokens one grading may produce: a level and a quote for each of a handful of criteria. */
 const DEFAULT_MAX_OUTPUT_TOKENS = 2048
 
@@ -20,10 +16,6 @@ const DEFAULT_MAX_OUTPUT_TOKENS = 2048
 const ATTEMPT_TIMEOUT_MS = 30_000
 const CALL_DEADLINE_MS = 60_000
 const MAX_ATTEMPTS = 3
-
-/** The grading of a whole session reads a long transcript, so its attempt and call deadlines are longer. */
-const INTERVIEW_ATTEMPT_TIMEOUT_MS = 90_000
-const INTERVIEW_CALL_DEADLINE_MS = 150_000
 
 /** The environment key of the upstream OpenRouter key, held by this gateway alone (tests seed it through this name). */
 export const AI_GATEWAY_KEY_ENV = "OPENROUTER_API_KEY"
@@ -53,11 +45,6 @@ export const parseAiGatewayConfig = (env: EnvSource): AiGatewayOptions | null =>
     const maxOutputTokens = env.int("AI_GATEWAY_MAX_OUTPUT_TOKENS", DEFAULT_MAX_OUTPUT_TOKENS)
     if (maxOutputTokens <= 0) throw invalid("AI_GATEWAY_MAX_OUTPUT_TOKENS")
     const models = fallback === model ? [model] : [model, fallback]
-    const interviewModel = modelOf(env, "AI_GATEWAY_INTERVIEW_MODEL", DEFAULT_INTERVIEW_MODEL)
-    const interviewFallback = modelOf(env, "AI_GATEWAY_INTERVIEW_FALLBACK_MODEL", DEFAULT_INTERVIEW_FALLBACK_MODEL)
-    const interviewModels =
-        interviewFallback === interviewModel ? [interviewModel] : [interviewModel, interviewFallback]
-    const pooled = [...new Set([...models, ...interviewModels])]
     return {
         maxOutputTokens,
         pool: {
@@ -67,7 +54,7 @@ export const parseAiGatewayConfig = (env: EnvSource): AiGatewayOptions | null =>
                     kind: "openrouter",
                     baseUrl: env.optional("AI_GATEWAY_BASE_URL") ?? DEFAULT_BASE_URL,
                     keys: [{ alias: "openrouter-primary", resolve: () => key.reveal() }],
-                    models: pooled.map((id) => ({ id })),
+                    models: models.map((id) => ({ id })),
                 },
             ],
             profiles: {
@@ -78,14 +65,6 @@ export const parseAiGatewayConfig = (env: EnvSource): AiGatewayOptions | null =>
                     maxAttempts: MAX_ATTEMPTS,
                     timeoutMs: ATTEMPT_TIMEOUT_MS,
                     deadlineMs: CALL_DEADLINE_MS,
-                },
-                interview: {
-                    model: interviewModel,
-                    fallbacks: interviewModels.slice(1),
-                    allowFallback: true,
-                    maxAttempts: MAX_ATTEMPTS,
-                    timeoutMs: INTERVIEW_ATTEMPT_TIMEOUT_MS,
-                    deadlineMs: INTERVIEW_CALL_DEADLINE_MS,
                 },
             },
             telemetry: { includeContent: false },

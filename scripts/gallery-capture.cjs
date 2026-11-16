@@ -35,9 +35,6 @@ const SCREENS = [
     S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
     S("practice", "pattern", "/practice/patterns/arrays"),
     S("incidents", "list", "/incidents"),
-    S("interview", "start", "/interview"),
-    S("interview", "session", { from: "/interview", match: /^\/interview\/[^/]+$/ }),
-    S("interview", "report", { from: "interview/session", append: "/report" }),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
@@ -45,8 +42,6 @@ const SCREENS = [
     S("projects", "concept", { from: "projects/milestone", match: /^\/projects\/[0-9a-f-]{36}\/[^/]+\/[^/]+$/ }),
     // A signed-in reader without Premium (CAPTURE_FREE_STATE) sees the pitch; without the file the shot falls back to the guest context.
     S("projects", "paywall", "/projects", { free: true }),
-    S("agents", "catalog", "/agents"),
-    S("agents", "track", "/agents/tracks/claude"),
     S("career", "experience", "/experience"),
     S("career", "profile", "/profile"),
     S("career", "review-queue", "/review-queue"),

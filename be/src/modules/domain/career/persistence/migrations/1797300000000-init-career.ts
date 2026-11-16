@@ -11,7 +11,7 @@ export class InitCareer1797300000000 implements MigrationInterface {
     verification_code text NOT NULL UNIQUE,
     learner_id uuid NOT NULL,
     item_type text NOT NULL,
-    part text NOT NULL CHECK (part IN ('essentials', 'projects', 'incidents', 'practice', 'interview')),
+    part text NOT NULL CHECK (part IN ('essentials', 'projects', 'incidents', 'practice')),
     subject text NOT NULL CHECK (char_length(subject) BETWEEN 1 AND 300),
     project_id text,
     evidence jsonb NOT NULL CHECK (jsonb_typeof(evidence) = 'array'),

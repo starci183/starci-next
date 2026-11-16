@@ -4,12 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js"
 import { z } from "zod"
 import { DomainError } from "@modules/platform/errors"
 import { McpTutorService } from "./mcp-tutor.service"
-import {
-    explainInvariantPrompt,
-    fixScenarioPrompt,
-    reviewInterviewPrompt,
-    whyScenarioRedPrompt,
-} from "./mcp-prompts.policy"
+import { explainInvariantPrompt, fixScenarioPrompt, whyScenarioRedPrompt } from "./mcp-prompts.policy"
 
 const LESSON_ID = z
     .string()
@@ -285,15 +280,6 @@ export class McpServerFactory {
                 argsSchema: { ...lesson, scenario: SLUG },
             },
             ({ lesson: id, scenario, locale }) => message(whyScenarioRedPrompt(locale ?? "vi", id, scenario)),
-        )
-        server.registerPrompt(
-            "review_interview",
-            {
-                title: "Review the interview questions",
-                description: "Quiz the learner on the lesson's interview questions.",
-                argsSchema: lesson,
-            },
-            ({ lesson: id, locale }) => message(reviewInterviewPrompt(locale ?? "vi", id)),
         )
     }
 }

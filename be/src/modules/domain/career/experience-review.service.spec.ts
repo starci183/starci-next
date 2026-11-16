@@ -157,7 +157,7 @@ describe("ExperienceReviewService decide per item", () => {
     })
 
     it("refuses an item outside a reviewer's scope", async () => {
-        const outside = itemRowOf({ state: "pending-review", part: "interview" })
+        const outside = itemRowOf({ state: "pending-review", part: "practice" })
         const em = mockEntityManager({
             query: [
                 [SELECT_ACTIVE_REVIEWER, [reviewerRowOf()]],

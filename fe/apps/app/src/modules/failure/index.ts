@@ -26,13 +26,6 @@ const TOPIC_NOT_FOUND_CODE = "LESSON_TOPIC_NOT_FOUND"
 export const isTopicNotFound = (error: unknown): boolean =>
     error instanceof ApiFailure && error.code === TOPIC_NOT_FOUND_CODE
 
-/** The stable code a track read answers when the segment names no tool track of the agent lab. */
-const AGENT_TRACK_NOT_FOUND_CODE = "AGENT_LAB_TRACK_NOT_FOUND"
-
-/** True when the failure says the agent lab has no such track. */
-export const isAgentTrackNotFound = (error: unknown): boolean =>
-    error instanceof ApiFailure && error.code === AGENT_TRACK_NOT_FOUND_CODE
-
 /** The stable code of an attempt whose revision already holds another answer. */
 const REVISION_CONFLICT_CODE = "ATTEMPT_REVISION_CONFLICT"
 

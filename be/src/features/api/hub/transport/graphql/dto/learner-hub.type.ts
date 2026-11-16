@@ -20,7 +20,7 @@ export class LearnerHubType {
     @Field(() => HubStreakType)
     streak!: HubStreakType
 
-    /** The six learning shards. */
+    /** The five learning shards. */
     @Field(() => [HubShardType])
     shards!: Array<HubShardType>
 

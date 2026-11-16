@@ -38,7 +38,6 @@ component_management:
     - component_id: core
       name: core
       paths:
-        - "be/src/modules/domain/agent-lab/**"
         - "be/src/modules/domain/attempt/**"
         - "be/src/modules/domain/career/**"
         - "be/src/modules/domain/entitlement/**"
@@ -46,7 +45,6 @@ component_management:
         - "be/src/modules/domain/hub/**"
         - "be/src/modules/domain/identity/**"
         - "be/src/modules/domain/incident/**"
-        - "be/src/modules/domain/interview/**"
         - "be/src/modules/domain/lesson/**"
         - "be/src/modules/domain/liveness/**"
         - "be/src/modules/domain/mcp/**"

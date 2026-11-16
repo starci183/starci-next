@@ -27,7 +27,6 @@ export const aiGatewayOptionsOf = (w: WorldWiring): Parameters<typeof AiGatewayM
             ],
             profiles: {
                 coach: { model: AI_GATEWAY_WORLD_MODEL, maxAttempts: 2, deadlineMs: 10_000 },
-                interview: { model: AI_GATEWAY_WORLD_MODEL, maxAttempts: 2, deadlineMs: 10_000 },
             },
             resilience: {
                 backoff: { baseMs: 1, factor: 1, maxMs: 1 },

@@ -146,7 +146,7 @@ describe("ExperienceReadService item", () => {
     })
 
     it("answers a reviewer an item assigned to them even outside their parts", async () => {
-        const assigned = itemRowOf({ part: "interview", assignee_id: CAREER_REVIEWER })
+        const assigned = itemRowOf({ part: "practice", assignee_id: CAREER_REVIEWER })
         const em = mockEntityManager({
             query: [
                 [SELECT_ACTIVE_REVIEWER, [reviewerRowOf()]],
@@ -171,7 +171,7 @@ describe("ExperienceReadService item", () => {
             mockEntityManager({
                 query: [
                     [SELECT_ACTIVE_REVIEWER, [reviewerRowOf()]],
-                    [SELECT_ITEM, [itemRowOf({ part: "interview" })]],
+                    [SELECT_ITEM, [itemRowOf({ part: "practice" })]],
                 ],
             }),
         )

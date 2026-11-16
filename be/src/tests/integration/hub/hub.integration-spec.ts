@@ -157,7 +157,6 @@ describe("hub and streak doors (integration)", () => {
             [3, "practice", HUB_MESSAGES.vi["shards.practice"], "/practice"],
             [4, "projects", HUB_MESSAGES.vi["shards.projects"], "/projects"],
             [5, "incidents", HUB_MESSAGES.vi["shards.incidents"], "/incidents"],
-            [6, "interview", HUB_MESSAGES.vi["shards.interview"], "/interview"],
         ])
         expect(hub?.shards.every((shard) => shard.experience === null && shard.counter.current === 0)).toBe(true)
         expect(hub?.layers.map((layer) => layer.id)).toEqual(["mission", "profile", "hiring"])

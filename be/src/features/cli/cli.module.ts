@@ -6,7 +6,6 @@ import { ContentCliModule } from "./content/content.module"
 import { McpCliModule } from "./mcp/mcp.module"
 import { MigrateModule } from "./migrate/migrate.module"
 import { SeedModule } from "./seed/seed.module"
-import { InterviewCliModule } from "./interview/interview.module"
 import { LessonCliModule } from "./lesson/lesson.module"
 import { PracticeCliModule } from "./practice/practice.module"
 import { ReviewCliModule } from "./review/review.module"
@@ -15,7 +14,6 @@ import { ReviewCliModule } from "./review/review.module"
     imports: [
         MigrateModule.register({}),
         SeedModule.register({}),
-        InterviewCliModule.register({}),
         LessonCliModule.register({}),
         PracticeCliModule.register({}),
         ReviewCliModule.register({}),

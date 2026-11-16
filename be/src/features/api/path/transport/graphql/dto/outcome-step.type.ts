@@ -7,7 +7,7 @@ export class OutcomeStepType {
     @Field(() => String)
     stepId!: string
 
-    /** The part it sends to: essentials, review, practice, projects, interview or profile. */
+    /** The part it sends to: essentials, review, practice, projects or profile. */
     @Field(() => String)
     part!: string
 

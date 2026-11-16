@@ -1,7 +1,7 @@
 import type { PoolConfig } from "@starci/ai-router"
 
-/** The routing profiles the gateway calls: the coach of lesson answers and the interview grader. */
-export type AiGatewayProfile = "coach" | "interview"
+/** The routing profiles the gateway calls: the coach of lesson answers. */
+export type AiGatewayProfile = "coach"
 
 /** The declared AI pool this instance completes prompts through. */
 export interface AiGatewayOptions {

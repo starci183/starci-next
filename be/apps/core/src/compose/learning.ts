@@ -1,12 +1,5 @@
 import type { DynamicModule } from "@nestjs/common"
 import {
-    AGENT_LAB_ERROR_KINDS,
-    AGENT_LAB_MESSAGES,
-    AgentLabModule,
-    agentLabEntities,
-    agentLabMigrations,
-} from "@modules/domain/agent-lab"
-import {
     ATTEMPT_ERROR_KINDS,
     ATTEMPT_MESSAGES,
     AiCoachClient,
@@ -78,7 +71,7 @@ import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
 
 /**
- * The learning area: the lessons, their MCP companion and their attempts, practice over the judge, review, the agent lab, incidents, the streak, the
+ * The learning area: the lessons, their MCP companion and their attempts, practice over the judge, review, incidents, the streak, the
  * paths, the hub and the notifications. Without a declared Judge0 endpoint the judge still composes and refuses, so a run ends as
  * an internal error.
  */
@@ -103,7 +96,6 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
         coach: AiCoachClient,
     }),
     IncidentModule.register({ isGlobal: true }),
-    AgentLabModule.register({ isGlobal: true, ...options.agentLab }),
     Judge0Module.register({ isGlobal: true, judge0: options.judge0 }),
 ]
 
@@ -120,7 +112,6 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
     NOTIFICATION_ERROR_KINDS,
     JUDGE0_ERROR_KINDS,
     PRACTICE_ERROR_KINDS,
-    AGENT_LAB_ERROR_KINDS,
     PROFILE_ERROR_KINDS,
 ]
 
@@ -138,7 +129,6 @@ export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     NOTIFICATION_MESSAGES,
     JUDGE0_MESSAGES,
     PRACTICE_MESSAGES,
-    AGENT_LAB_MESSAGES,
     PROFILE_MESSAGES,
 ]
 
@@ -149,7 +139,6 @@ export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
     ...attemptEntities,
     ...practiceEntities,
     ...reviewEntities,
-    ...agentLabEntities,
     ...streakEntities,
     ...pathEntities,
     ...harnessEntities,
@@ -164,7 +153,6 @@ export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
     ...attemptMigrations,
     ...practiceMigrations,
     ...reviewMigrations,
-    ...agentLabMigrations,
     ...streakMigrations,
     ...pathMigrations,
     ...harnessMigrations,

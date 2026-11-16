@@ -34,7 +34,6 @@ export const CAREER_MESSAGES: MessageBundle = {
             "Tìm và sửa lỗi **<bugClass>** trong repo sự cố <lesson>, viết test bắt được bug còn sống sót (mutation score **<score>**% do StarCi chạy lại trên server).",
         "lines.practice.pattern-solved":
             "Giải **<count>** bài dạng **<pattern>** đạt Accepted trên bộ test ẩn bằng **<language>**, không dùng lời giải mẫu.",
-        "lines.interview.pass": "Đạt phỏng vấn thử **<tier>** track <track> của StarCi, chấm theo rubric của thầy.",
     },
     en: {
         "errors.CAREER_ITEM_NOT_FOUND": "This experience item was not found.",
@@ -68,7 +67,5 @@ export const CAREER_MESSAGES: MessageBundle = {
             "Found and fixed a **<bugClass>** in the <lesson> incident repo, with tests that catch the surviving bug (mutation score **<score>**%, rerun by StarCi on the server).",
         "lines.practice.pattern-solved":
             "Solved **<count>** **<pattern>** problems, Accepted on hidden tests, in **<language>**, without the reference solution.",
-        "lines.interview.pass":
-            "Passed the StarCi **<tier>** mock interview, track <track>, graded on the teacher's rubric.",
     },
 }

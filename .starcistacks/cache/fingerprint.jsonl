@@ -9,6 +9,7 @@
 {"name":"file:be/tsconfig.build.json","sha256":"543063d065660243055aecc9ba660ec2194c2ffa8aefa9472579db2c1a0100ca"}
 {"name":"file:be/tsconfig.json","sha256":"8c5c1ef6864461d6669857fb111d121b8e75f9ff0525683132573c8352feb941"}
 {"name":"file:codecov.yml","sha256":"a61f585aa1b689db65acb7460462b0f1c1d4862e360d695284e77ee73c10aef9"}
+{"name":"file:codecov.yml","sha256":"4afd6b7f46c0a00453624270b65428d1e1983f657ad2875435690618c206d248"}
 {"name":"file:eslint.config.mjs","sha256":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da"}
 {"name":"file:fe/apps/app/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}
 {"name":"file:fe/apps/landing/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}

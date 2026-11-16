@@ -6,7 +6,6 @@ import {
     EssentialsGlyph,
     ExperienceGlyph,
     IncidentsGlyph,
-    InterviewGlyph,
     LearnGlyph,
     PracticeGlyph,
     ProfileGlyph,
@@ -33,11 +32,9 @@ type Destination = {
         | "progress"
         | "essentials"
         | "review"
-        | "interview"
         | "practice"
         | "incidents"
         | "projects"
-        | "agents"
         | "harness"
         | "experience"
         | "connect"
@@ -51,11 +48,9 @@ const MAIN: ReadonlyArray<Destination> = [
     { id: "progress", route: APP_ROUTES.progress, source: ExperienceGlyph },
     { id: "essentials", route: APP_ROUTES.essentials, source: EssentialsGlyph },
     { id: "review", route: APP_ROUTES.review, source: ReviewGlyph },
-    { id: "interview", route: APP_ROUTES.interview, source: InterviewGlyph },
     { id: "practice", route: APP_ROUTES.practice, source: PracticeGlyph },
     { id: "incidents", route: APP_ROUTES.incidents, source: IncidentsGlyph },
     { id: "projects", route: APP_ROUTES.projects, source: ProjectsGlyph },
-    { id: "agents", route: APP_ROUTES.agents, source: AgentsGlyph },
     { id: "harness", route: APP_ROUTES.harness, source: AgentsGlyph },
 ]
 

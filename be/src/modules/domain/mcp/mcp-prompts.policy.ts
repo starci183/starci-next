@@ -94,19 +94,3 @@ export const whyScenarioRedPrompt = (locale: McpPromptLocale, lesson: string, sc
               "",
               rulesOf(locale),
           ].join("\n")
-
-/** `review_interview`: quiz the learner on the lesson's interview questions from the unlocked sections. */
-export const reviewInterviewPrompt = (locale: McpPromptLocale, lesson: string): string =>
-    locale === "vi"
-        ? [
-              `Ôn 5 câu phỏng vấn của bài "${lesson}".`,
-              "Đọc outline rồi các section đã mở khóa (đặc biệt phần câu hỏi phỏng vấn). Hỏi học viên từng câu một, chờ họ trả lời rồi mới nhận xét dựa trên nội dung bài; chỉ ra phần cần đọc lại. Không đưa đáp án trước khi họ trả lời.",
-              "",
-              rulesOf(locale),
-          ].join("\n")
-        : [
-              `Review the 5 interview questions of the lesson "${lesson}".`,
-              "Read the outline and then the unlocked sections (especially the interview questions). Ask one question at a time, wait for the learner's answer, then comment from the lesson's own text and point at what to re-read. Do not give an answer before they have tried.",
-              "",
-              rulesOf(locale),
-          ].join("\n")

@@ -100,7 +100,7 @@ export class ProgressService {
         const mine = await this.experience.mine({ learnerId, state: "verified" })
         return mine.items.flatMap((item): Array<VerifiedItemSource> => {
             const line = item.line ?? item.draftLine
-            return item.signature === null || item.part === "interview"
+            return item.signature === null
                 ? []
                 : [{ itemId: item.itemId, title: line?.[locale] ?? item.subject, signedAt: item.signature.signedAt }]
         })

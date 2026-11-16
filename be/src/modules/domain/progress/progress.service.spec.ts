@@ -138,7 +138,7 @@ const experienceOf = (part: string, itemId: string): MyExperience["items"][numbe
     itemId,
     verificationCode: `code-${itemId}`,
     itemType: "type",
-    part: part === "interview" ? "interview" : "essentials",
+    part: part === "practice" ? "practice" : "essentials",
     output: "cv-line",
     subject: "subject",
     projectId: null,
@@ -235,11 +235,11 @@ describe("ProgressService read sources", () => {
         expect(logger.error).toHaveBeenCalledWith(ProgressLogEvent.LessonFailed, cause, { lessonId: "l1" })
     })
 
-    it("words a verified item in the asked locale and leaves the interview part out", async () => {
+    it("words a verified item in the asked locale and leaves an unsigned one out", async () => {
         const { service, experience } = await build(false)
         experience.mine.mockResolvedValue({
             hiringMinVerified: 3,
-            items: [experienceOf("essentials", "i1"), experienceOf("interview", "i2")],
+            items: [experienceOf("essentials", "i1"), { ...experienceOf("practice", "i2"), signature: null }],
         })
 
         const view = await service.read(LEARNER, "en")

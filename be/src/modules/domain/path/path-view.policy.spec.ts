@@ -49,7 +49,6 @@ describe("the path view", () => {
             "remember",
             "build",
             "build-ai",
-            "interview",
             "prove",
         ])
         expect(result.stages.flatMap((stage) => stage.steps)).toHaveLength(result.stepCount)
@@ -64,7 +63,6 @@ describe("the path view", () => {
             { part: "essentials", label: "Essentials" },
             { part: "review", label: "Review" },
             { part: "projects", label: "Projects" },
-            { part: "interview", label: "Mock interview" },
             { part: "profile", label: "Profile & CV" },
         ])
         expect(view(definitionFor("backend-fullstack"), "en").parts.map((part) => part.label)).toContain(

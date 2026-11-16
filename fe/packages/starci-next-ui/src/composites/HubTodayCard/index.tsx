@@ -1,12 +1,5 @@
 import { Section, Text, type IconSource } from "@starci/grammar/common"
-import {
-    EssentialsGlyph,
-    IncidentsGlyph,
-    InterviewGlyph,
-    PracticeGlyph,
-    ProjectsGlyph,
-    ReviewGlyph,
-} from "../../leaves/Icon"
+import { EssentialsGlyph, IncidentsGlyph, PracticeGlyph, ProjectsGlyph, ReviewGlyph } from "../../leaves/Icon"
 
 /** One thing left for the streak today. */
 export type HubTodayRow = {
@@ -26,7 +19,6 @@ const SHARD_ICONS: Readonly<Record<string, IconSource>> = {
     practice: PracticeGlyph,
     projects: ProjectsGlyph,
     incidents: IncidentsGlyph,
-    interview: InterviewGlyph,
 }
 
 /** The list of today: what is left to keep the streak, each row one press away. */

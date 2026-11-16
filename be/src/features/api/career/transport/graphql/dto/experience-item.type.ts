@@ -79,7 +79,7 @@ export class ExperienceItemType {
     @Field(() => Boolean)
     shownPublicly!: boolean
 
-    /** The interview questions the line must survive. */
+    /** The questions an employer may ask about the line. */
     @Field(() => [String])
     defenseQuestions!: ReadonlyArray<string>
 
