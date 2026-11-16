@@ -42,4 +42,24 @@ export interface RelayCheckStateRow {
     created_at: Date
     /** The newest log text of the run and check, or null. */
     output: string | null
+    /** What the CLI reported of a lesson scenario result, or null. */
+    detail: RelayResultDetail | null
+}
+
+/** The lesson facts a scenario result stores in `detail` (SCENARIO-CONTRACT v2 §5). */
+export interface RelayResultDetail {
+    /** The lesson slug. */
+    lessonId?: string
+    /** The scenario id. */
+    scenarioId?: string
+    /** The concepts that had a running test. */
+    concepts?: Array<string>
+    /** The guards turned off. */
+    guardsOff?: Array<string>
+    /** The challenge tier of a challenge run. */
+    challengeTier?: string
+    /** The first invariant message. */
+    why?: string
+    /** The ledger lines. */
+    ledger?: string
 }

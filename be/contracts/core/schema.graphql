@@ -838,15 +838,20 @@ type LessonRelatedTopicType {
 
 type LessonScenarioRunType {
   at: String!
+  challengeTier: String
   commit: String
+  concepts: [String!]!
   durationMs: Int
   exitCode: Int
+  guardsOff: [String!]!
+  ledger: String
   output: String
   ref: String
   runId: String!
   scenarioId: String!
   slot: String
   status: String!
+  why: String
 }
 
 input LessonScenarioRunsInput {
@@ -1660,17 +1665,24 @@ type RecallTodayType {
 }
 
 input RelayCheckResultInput {
+  challengeTier: String
   checkId: String! @inputBounds(maxLength: 100)
   commit: String @inputBounds(maxLength: 40)
   conceptId: String @inputBounds(maxLength: 100)
+  concepts: [String!] @inputBounds(maxItems: 50)
   durationMs: Int! @inputBounds(min: 0, max: 86400000)
   eventId: String! @inputBounds(maxLength: 36)
   exitCode: Int! @inputBounds(min: -1, max: 255)
+  guardsOff: [String!] @inputBounds(maxItems: 50)
+  ledger: String @inputBounds(maxLength: 4000)
+  lessonId: String @inputBounds(maxLength: 100)
   passed: Boolean!
   ref: String @inputBounds(maxLength: 300)
   runId: String! @inputBounds(maxLength: 100)
-  slot: String @inputBounds(maxLength: 5)
+  scenarioId: String @inputBounds(maxLength: 100)
+  slot: String @inputBounds(maxLength: 8)
   taskId: String! @inputBounds(maxLength: 100)
+  why: String @inputBounds(maxLength: 300)
 }
 
 input RelayCheckStartedInput {
@@ -1712,7 +1724,9 @@ type RelayManifestCheckType {
 }
 
 input RelayManifestInput {
+  challenge: String
   milestone: String @inputBounds(maxLength: 100)
+  scenario: String @inputBounds(maxLength: 100)
   taskId: String! @inputBounds(maxLength: 100)
   testCommand: String @inputBounds(maxLength: 400)
   testReport: String @inputBounds(maxLength: 200)

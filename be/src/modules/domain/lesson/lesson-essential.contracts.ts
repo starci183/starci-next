@@ -33,19 +33,26 @@ export interface LessonOpenerQuestion {
     readonly scenarioId?: string
 }
 
-/** The source repository the learner pulls and runs. */
+/**
+ * How the learner runs the lesson's source. The code itself is the lesson folder's `source/` (owner 2026-11-17: no per-lesson
+ * repositories), served as a tarball at the content commit; these fields say where things are inside it.
+ */
 export interface LessonSourceRepo {
-    /** The repository, `owner/name`. */
-    readonly repo: string
     /** The languages it ships. */
     readonly langs: ReadonlyArray<LessonSourceLanguage>
     /** The branch, tag or sha the lesson was written against. */
     readonly ref?: string
+    /** The TypeScript project folder inside `source/` (default `.`). */
+    readonly dir?: string
+    /** The folder holding docker-compose.yml (default `<dir>/.docker`). */
+    readonly compose?: string
+    /** The compose project name (default the lesson id). */
+    readonly project?: string
 }
 
-/** One rule the system keeps, which the code walk, the components and the scenarios point at (`C1`, atomic per wallet). */
+/** One rule the system keeps, which the code walk, the components and the scenarios point at (`one-effect`). */
 export interface LessonInvariant {
-    /** The stable id (`C1`). */
+    /** The stable id, `[a-z0-9-]+` (the learner CLI reveals it as `[invariant:<id>]`). */
     readonly id: string
     /** The rule in one line. */
     readonly text: string
@@ -89,9 +96,33 @@ export interface LessonCodeWalkEntry {
     readonly why?: string
 }
 
+/** A switch of a scenario the learner may turn off (`--guard <name>=off`) to see the fault land. */
+export interface LessonScenarioGuard {
+    /** The guard name, `[a-z0-9-]+`. */
+    readonly name: string
+    /** The environment variable the scenario command reads, `[A-Z][A-Z0-9_]*`. */
+    readonly env: string
+    /** The value that turns it off (default `off`). */
+    readonly off?: string
+}
+
+/** How the learner CLI runs one scenario: the signed command, where and for how long (SCENARIO-CONTRACT v2). */
+export interface LessonScenarioRun {
+    /** What the scenario does, with no solution; the CLI's fix prompt quotes it (default the fault). */
+    readonly brief?: string
+    /** The concept ids it proves, `[a-z0-9-]+`. */
+    readonly concepts?: ReadonlyArray<string>
+    /** The folder it runs in, relative to the repository (default the source dir). */
+    readonly cwd?: string
+    /** The JUnit report it writes, relative to the repository (default `<cwd>/reports/junit.xml`). */
+    readonly report?: string
+    /** When it is stopped, in milliseconds (default 300000). */
+    readonly timeoutMs?: number
+}
+
 /** One scenario: a fault the learner runs through the learner CLI and the result the relay brings back. */
-export interface LessonScenario {
-    /** The stable id the CLI and the relay name (`crash-after-debit`). */
+export interface LessonScenario extends LessonScenarioRun {
+    /** The stable id the CLI and the relay name, `[a-z0-9-]+` (`crash-after-debit`). */
     readonly id: string
     /** The title. */
     readonly title: string
@@ -104,7 +135,7 @@ export interface LessonScenario {
     /** The invariant id the scenario judges. */
     readonly invariant: string
     /** The guards the learner may switch off (`--guard <name>=off`) to see the fault land. */
-    readonly guards: ReadonlyArray<string>
+    readonly guards: ReadonlyArray<LessonScenarioGuard>
     /** The hint shown when the run is red. */
     readonly hint?: string
 }
@@ -121,6 +152,28 @@ export interface LessonChallengeCriterion {
     readonly isCritical?: boolean
 }
 
+/** A hidden test source of a challenge: its path in the learner's repository and its file in the lesson folder. */
+export interface LessonHiddenFile {
+    /** Where the CLI writes it for one run, relative to the repository. */
+    readonly path: string
+    /** The file in the lesson folder that holds it. */
+    readonly from: string
+    /** The text, attached by the importer; never leaves the server but in a signed challenge manifest. */
+    readonly content?: string
+}
+
+/** A hidden scenario of a challenge: never shown, signed into a manifest only for its own tier. */
+export interface LessonHiddenScenario extends LessonScenarioRun {
+    /** The id, `[a-z0-9-]+`. */
+    readonly id: string
+    /** The title. */
+    readonly title: string
+    /** The only command that runs it. */
+    readonly command: string
+    /** The hidden test sources. */
+    readonly files?: ReadonlyArray<LessonHiddenFile>
+}
+
 /** One rung of the challenge ladder: built with the learner's AI, judged by hidden scenarios and an essence check. */
 export interface LessonChallenge {
     /** The stable id. */
@@ -133,8 +186,10 @@ export interface LessonChallenge {
     readonly brief: string
     /** The rubric; its points add up to 100. */
     readonly rubric: ReadonlyArray<LessonChallengeCriterion>
-    /** How many hidden scenarios judge it; their ids never leave the server. */
+    /** How many hidden scenarios judge it, when they are not listed in `hidden`. */
     readonly hiddenScenarios?: number
+    /** The hidden scenarios; their ids and files never reach a page. */
+    readonly hidden?: ReadonlyArray<LessonHiddenScenario>
     /** The essence check: multiple-choice and design-decision questions graded on the spot. */
     readonly questions?: ReadonlyArray<LessonOpenerQuestion>
 }

@@ -63,6 +63,10 @@ export class RelayEventEntity {
     @Column({ name: "body", type: "text", nullable: true })
     body!: string | null
 
+    /** What the learner CLI reported of a lesson scenario run, or null. */
+    @Column({ name: "detail", type: "jsonb", nullable: true })
+    detail!: Record<string, unknown> | null
+
     /** When the relay stored it. */
     @Column({ name: "created_at", type: "timestamptz" })
     createdAt!: Date

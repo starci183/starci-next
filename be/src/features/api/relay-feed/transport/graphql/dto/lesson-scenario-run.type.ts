@@ -39,6 +39,26 @@ export class LessonScenarioRunType {
     @Field(() => String, { nullable: true })
     output!: string | null
 
+    /** The challenge tier of a challenge run, or null. */
+    @Field(() => String, { nullable: true })
+    challengeTier!: string | null
+
+    /** The guards turned off for the run. */
+    @Field(() => [String])
+    guardsOff!: ReadonlyArray<string>
+
+    /** The concepts that had a running test. */
+    @Field(() => [String])
+    concepts!: ReadonlyArray<string>
+
+    /** The first invariant message of a red run, or null. */
+    @Field(() => String, { nullable: true })
+    why!: string | null
+
+    /** The ledger lines of the run, or null. */
+    @Field(() => String, { nullable: true })
+    ledger!: string | null
+
     /** When the newest event was stored, ISO 8601. */
     @Field(() => String)
     at!: string

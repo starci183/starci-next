@@ -2,6 +2,8 @@ import type { LessonIssue, LessonParsedLocale } from "./lesson-import.contracts"
 import type { LessonActivity, LessonLocale, LessonPhase, LessonRootFile } from "./lesson.contracts"
 import {
     choiceOptionId,
+    type LessonScenarioGuard,
+    type LessonScenarioRun,
     type LessonChallenge,
     type LessonEssential,
     type LessonOpenerQuestion,
@@ -31,8 +33,30 @@ const hasEssential = (root: LessonRootFile): boolean =>
     root.scenarios !== undefined ||
     root.challenges !== undefined
 
-/** The four-part fields of a root file as stored, or undefined when it carries none (a lesson written before them). */
-export const essentialOf = (root: LessonRootFile): LessonEssential | undefined =>
+/** The text of each file of the lesson folder, by its posix path. */
+export type LessonFileTexts = ReadonlyMap<string, { readonly text: string }>
+
+/** A challenge with the text of its hidden test sources attached from the lesson folder. */
+const withHiddenTexts = (challenge: LessonChallenge, files: LessonFileTexts): LessonChallenge =>
+    challenge.hidden === undefined
+        ? challenge
+        : {
+              ...challenge,
+              hidden: challenge.hidden.map((hidden) =>
+                  hidden.files === undefined
+                      ? hidden
+                      : {
+                            ...hidden,
+                            files: hidden.files.map((file) => ({ ...file, content: files.get(file.from)?.text ?? "" })),
+                        },
+              ),
+          }
+
+/**
+ * The four-part fields of a root file as stored, with the hidden test sources attached; undefined when it carries none (a
+ * lesson written before them).
+ */
+export const essentialOf = (root: LessonRootFile, files: LessonFileTexts = new Map()): LessonEssential | undefined =>
     hasEssential(root)
         ? {
               opener: root.opener ?? [],
@@ -41,13 +65,26 @@ export const essentialOf = (root: LessonRootFile): LessonEssential | undefined =
               architecture: root.architecture ?? null,
               codeWalk: root.codeWalk ?? [],
               scenarios: root.scenarios ?? [],
-              challenges: root.challenges ?? [],
+              challenges: (root.challenges ?? []).map((challenge) => withHiddenTexts(challenge, files)),
           }
         : undefined
 
+/** The issues of hidden test sources the lesson folder does not hold. */
+export const hiddenFileIssues = (root: LessonRootFile, files: LessonFileTexts): Array<LessonIssue> =>
+    (root.challenges ?? []).flatMap((challenge, index) =>
+        (challenge.hidden ?? []).flatMap((hidden, at) =>
+            (hidden.files ?? [])
+                .filter((file) => !files.has(file.from))
+                .map((file) =>
+                    issueOf("vi.md", `challenges[${index}].hidden[${at}].files`, `${file.from} is not in the folder`),
+                ),
+        ),
+    )
+
 /** The ids of a list that appear more than once. */
-const duplicatesOf = (ids: ReadonlyArray<string>): Array<string> =>
-    [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))]
+const duplicatesOf = (ids: ReadonlyArray<string>): Array<string> => [
+    ...new Set(ids.filter((id, index) => ids.indexOf(id) !== index)),
+]
 
 /** The issues of one question: two choices at least, a right index among them, and links that resolve inside the lesson. */
 const questionIssues = (
@@ -81,13 +118,61 @@ const challengeIssues = (challenge: LessonChallenge, at: string, path: string): 
     ]
 }
 
+/** An id the learner CLI accepts (SCENARIO-CONTRACT v2): a scenario, an invariant, a concept, a guard, a compose project. */
+const RUN_ID = /^[a-z0-9-]+$/u
+
+/** An environment variable a guard switches. */
+const GUARD_ENV = /^[A-Z][A-Z0-9_]*$/u
+
+/** A path the CLI takes: relative, no `..`, no drive or backslash. */
+const isRunPath = (value: string): boolean =>
+    /^[A-Za-z0-9._@/-]+$/u.test(value) && !value.startsWith("/") && !value.split("/").includes("..")
+
+/** The issues of how one scenario runs: ids, guards and paths the CLI would refuse. */
+const runIssues = (
+    run: LessonScenarioRun & { readonly id: string; readonly guards?: ReadonlyArray<LessonScenarioGuard> },
+    at: string,
+    path: string,
+): Array<LessonIssue> => [
+    ...(RUN_ID.test(run.id) ? [] : [issueOf(path, `${at}.id`, `${run.id} is not [a-z0-9-]+`)]),
+    ...(run.concepts ?? [])
+        .filter((concept) => !RUN_ID.test(concept))
+        .map((concept) => issueOf(path, `${at}.concepts`, `${concept} is not [a-z0-9-]+`)),
+    ...[run.cwd, run.report]
+        .flatMap((value) => (value === undefined || isRunPath(value) ? [] : [value]))
+        .map((value) => issueOf(path, at, `${value} is not a relative path`)),
+    ...(run.guards ?? []).flatMap((guard, index) =>
+        RUN_ID.test(guard.name) && GUARD_ENV.test(guard.env) && (guard.off === undefined || RUN_ID.test(guard.off))
+            ? []
+            : [issueOf(path, `${at}.guards[${index}]`, "needs a [a-z0-9-]+ name and off value and an [A-Z_] env")],
+    ),
+]
+
+/** The issues of the source repository the CLI pins. */
+const sourceIssues = (root: LessonRootFile, path: string): Array<LessonIssue> => {
+    const source = root.source
+    if (source === undefined) return []
+    return [
+        ...(source.langs.length === 0 ? [issueOf(path, "source.langs", "names no language")] : []),
+        ...[source.dir, source.compose]
+            .flatMap((value) => (value === undefined || isRunPath(value) ? [] : [value]))
+            .map((value) => issueOf(path, "source", `${value} is not a relative path`)),
+        ...(source.project === undefined || RUN_ID.test(source.project)
+            ? []
+            : [issueOf(path, "source.project", "is not [a-z0-9-]+")]),
+    ]
+}
+
 /** The invariant ids the four-part fields point at, with where. */
 const invariantRefsOf = (root: LessonRootFile): Array<{ readonly id: string; readonly at: string }> => [
     ...(root.architecture?.components ?? []).flatMap((component, index) =>
         component.invariants.map((id) => ({ id, at: `architecture.components[${index}].invariants` })),
     ),
     ...(root.codeWalk ?? []).map((entry, index) => ({ id: entry.invariant, at: `codeWalk[${index}].invariant` })),
-    ...(root.scenarios ?? []).map((scenario, index) => ({ id: scenario.invariant, at: `scenarios[${index}].invariant` })),
+    ...(root.scenarios ?? []).map((scenario, index) => ({
+        id: scenario.invariant,
+        at: `scenarios[${index}].invariant`,
+    })),
 ]
 
 /**
@@ -118,9 +203,28 @@ export const essentialIssues = (locale: LessonLocale, parsed: LessonParsedLocale
                 questionIssues(question, `challenges[${index}].questions[${at}]`, path, sections, scenarios),
             ),
         ]),
-        ...(root.source !== undefined && root.source.langs.length === 0
-            ? [issueOf(path, "source.langs", "names no language")]
-            : []),
+        ...sourceIssues(root, path),
+        ...(root.invariants ?? [])
+            .filter((invariant) => !RUN_ID.test(invariant.id))
+            .map((invariant) => issueOf(path, "invariants", `${invariant.id} is not [a-z0-9-]+`)),
+        ...(root.scenarios ?? []).flatMap((scenario, index) => runIssues(scenario, `scenarios[${index}]`, path)),
+        ...challenges.flatMap((challenge, index) =>
+            (challenge.hidden ?? []).flatMap((hidden, at) => [
+                ...runIssues(hidden, `challenges[${index}].hidden[${at}]`, path),
+                ...(hidden.files ?? [])
+                    .filter((file) => !isRunPath(file.path))
+                    .map((file) =>
+                        issueOf(
+                            path,
+                            `challenges[${index}].hidden[${at}].files`,
+                            `${file.path} is not a relative path`,
+                        ),
+                    ),
+            ]),
+        ),
+        ...duplicatesOf(challenges.flatMap((challenge) => (challenge.hidden ?? []).map((hidden) => hidden.id))).map(
+            (id) => issueOf(path, "challenges", `hidden scenario id ${id} appears twice`),
+        ),
         ...invariantRefsOf(root)
             .filter((ref) => !invariants.has(ref.id))
             .map((ref) => issueOf(path, ref.at, `${ref.id} is not an invariant`)),
@@ -162,10 +266,14 @@ export const essentialStructureOf = (root: LessonRootFile): Array<string> => [
     ),
     ...(root.scenarios ?? []).map(
         (scenario) =>
-            `scenario ${scenario.id} ${scenario.invariant} ${JSON.stringify(scenario.command)} ${scenario.guards.join(",")}`,
+            `scenario ${scenario.id} ${scenario.invariant} ${JSON.stringify([scenario.command, scenario.guards, scenario.concepts ?? [], scenario.cwd ?? "", scenario.report ?? "", scenario.timeoutMs ?? 0])}`,
     ),
     ...(root.challenges ?? []).flatMap((challenge) => [
         `challenge ${challenge.id} ${challenge.level} ${challenge.hiddenScenarios ?? 0}`,
+        ...(challenge.hidden ?? []).map(
+            (hidden) =>
+                `hidden ${challenge.id}/${hidden.id} ${JSON.stringify([hidden.command, hidden.concepts ?? [], hidden.cwd ?? "", hidden.report ?? "", hidden.timeoutMs ?? 0, hidden.files ?? []])}`,
+        ),
         ...challenge.rubric.map(
             (criterion) =>
                 `rubric ${challenge.id}/${criterion.id} ${criterion.points} ${String(criterion.isCritical === true)}`,
@@ -227,4 +335,3 @@ export const findEssentialActivity = (
     }
     return null
 }
-

@@ -19,6 +19,11 @@ const query1: TypedDocumentNode<LessonScenarioRunsQuery, LessonScenarioRunsQuery
             durationMs
             commit
             output
+            challengeTier
+            guardsOff
+            concepts
+            why
+            ledger
             at
         }
     }

@@ -46,7 +46,7 @@ export const toEssentialView = (
         source:
             essential.source === null
                 ? null
-                : { repo: essential.source.repo, langs: [...essential.source.langs], ref: essential.source.ref ?? null },
+                : { langs: [...essential.source.langs], ref: essential.source.ref ?? null },
         invariants: essential.invariants.map((invariant) => ({ id: invariant.id, text: invariant.text })),
         architecture:
             essential.architecture === null
@@ -76,7 +76,7 @@ export const toEssentialView = (
             command: scenario.command,
             expected: scenario.expected,
             invariant: scenario.invariant,
-            guards: [...scenario.guards],
+            guards: scenario.guards.map((guard) => guard.name),
             hint: scenario.hint ?? null,
         })),
         challenges: essential.challenges.map((challenge) => ({
@@ -90,7 +90,7 @@ export const toEssentialView = (
                 points: criterion.points,
                 isCritical: criterion.isCritical === true,
             })),
-            hiddenScenarios: challenge.hiddenScenarios ?? 0,
+            hiddenScenarios: challenge.hidden?.length ?? challenge.hiddenScenarios ?? 0,
             questions: (challenge.questions ?? []).map((question) =>
                 toQuestionView(question, challengeActivityId(challenge.id, question.id)),
             ),

@@ -1,4 +1,5 @@
 import type { LessonEssential, LessonEssentialFields } from "./lesson-essential.contracts"
+import type { LessonSourceCode } from "./lesson-source-archive.policy"
 
 /** The locales a lesson is written in; both are required. */
 export type LessonLocale = "vi" | "en"
@@ -332,4 +333,6 @@ export interface LessonContent {
     readonly files: ReadonlyArray<LessonWorkspaceFile>
     /** The workspace per language; absent in a version stored before the languages existed. */
     readonly workspaces?: ReadonlyArray<LessonWorkspaceVariant>
+    /** The files of the lesson folder under `source/` (the code the learner pulls); absent when the folder has none. */
+    readonly sourceCode?: ReadonlyArray<LessonSourceCode>
 }

@@ -1,7 +1,21 @@
 import { Field, InputType, Int } from "@nestjs/graphql"
-import { IsBoolean, IsInt, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Min } from "class-validator"
+import {
+    ArrayMaxSize,
+    IsArray,
+    IsBoolean,
+    IsIn,
+    IsInt,
+    IsOptional,
+    IsString,
+    IsUUID,
+    Matches,
+    Max,
+    MaxLength,
+    Min,
+} from "class-validator"
 
 const SAFE_ID = /^[A-Za-z0-9._:/-]+$/u
+const LESSON_ID = /^[a-z0-9-]+$/u
 
 @InputType()
 /** The facts every upload carries: its client event id, the task and the run. */
@@ -68,11 +82,11 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @Matches(SAFE_ID)
     conceptId?: string
 
-    /** test, e2e or probe, when the project names one. */
+    /** test, e2e or probe, when the project names one; `scenario` for a lesson scenario run. */
     @Field(() => String, { nullable: true })
     @IsOptional()
     @IsString()
-    @MaxLength(5)
+    @MaxLength(8)
     slot?: string
 
     /** The test name, e2e file or probe id. */
@@ -88,6 +102,58 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @IsString()
     @MaxLength(40)
     commit?: string
+
+    /** A lesson scenario run: the lesson slug. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    @Matches(LESSON_ID)
+    lessonId?: string
+
+    /** A lesson scenario run: the scenario id (the same as the check id). */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    @Matches(LESSON_ID)
+    scenarioId?: string
+
+    /** A lesson scenario run: the concepts of the scenario that had a running test. */
+    @Field(() => [String], { nullable: true })
+    @IsOptional()
+    @IsArray()
+    @ArrayMaxSize(50)
+    @Matches(LESSON_ID, { each: true })
+    concepts?: Array<string>
+
+    /** A lesson scenario run: the guards turned off for it. */
+    @Field(() => [String], { nullable: true })
+    @IsOptional()
+    @IsArray()
+    @ArrayMaxSize(50)
+    @Matches(LESSON_ID, { each: true })
+    guardsOff?: Array<string>
+
+    /** A challenge run: the tier. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsIn(["easy", "medium", "hard", "insane"])
+    challengeTier?: string
+
+    /** The first `[invariant:<id>] <hint>` failure message. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(300)
+    why?: string
+
+    /** The ledger lines of the run. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(4000)
+    ledger?: string
 }
 
 @InputType()

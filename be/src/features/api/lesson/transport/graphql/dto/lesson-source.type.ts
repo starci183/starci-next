@@ -1,12 +1,8 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
 
 @ObjectType()
-/** The source repository the learner pulls and runs. */
+/** The lesson's source as `starci-next pull` fetches it (the lesson folder's `source/`, TypeScript). */
 export class LessonSourceType {
-    /** The repository, `owner/name`. */
-    @Field(() => String)
-    repo!: string
-
     /** The languages it ships (TypeScript). */
     @Field(() => [String])
     langs!: ReadonlyArray<string>

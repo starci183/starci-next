@@ -18,6 +18,10 @@ export enum RelayErrorCode {
     PayloadInvalid = "RELAY_PAYLOAD_INVALID",
     /** The relay could not read or write its device state. */
     Unavailable = "RELAY_UNAVAILABLE",
+    /** The lesson is not published, has no source commit or scenarios, or names no such scenario or challenge. */
+    LessonNotRunnable = "RELAY_LESSON_NOT_RUNNABLE",
+    /** The challenge tier is not unlocked yet: the hidden scenarios of the tier below are not all green. */
+    ChallengeLocked = "RELAY_CHALLENGE_LOCKED",
 }
 
 /** How each relay code travels. */
@@ -30,6 +34,8 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.PairingInvalid]: "invalid",
     [RelayErrorCode.PayloadInvalid]: "invalid",
     [RelayErrorCode.Unavailable]: "unavailable",
+    [RelayErrorCode.LessonNotRunnable]: "not-found",
+    [RelayErrorCode.ChallengeLocked]: "forbidden",
 }
 
 /** The one error class of the relay capability. */

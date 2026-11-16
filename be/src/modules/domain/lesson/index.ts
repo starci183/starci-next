@@ -43,7 +43,19 @@ export type {
     LessonScenarioView,
     LessonSourceView,
 } from "./lesson-essential-view.contracts"
-export type { LessonChallengeLevel, LessonInvariant } from "./lesson-essential.contracts"
+export type {
+    LessonChallenge,
+    LessonChallengeLevel,
+    LessonEssential,
+    LessonHiddenScenario,
+    LessonInvariant,
+    LessonScenario,
+    LessonScenarioRun,
+    LessonSourceRepo,
+} from "./lesson-essential.contracts"
+export { LESSON_CHALLENGE_LEVELS } from "./lesson-essential.contracts"
+export type { LessonRunnable } from "./lesson-content.service"
+export type { LessonSourceArchive } from "./lesson-source-archive.policy"
 export { lessonRelayTaskId } from "./lesson-essential.contracts"
 export type { LessonTopicCatalog, LessonTopicStep } from "./lesson-topic.contracts"
 export type { LessonTopicView } from "./lesson-topic-view.contracts"

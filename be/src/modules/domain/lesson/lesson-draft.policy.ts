@@ -3,7 +3,8 @@ import { groupOf } from "./lesson-group.policy"
 import { resolveTopic, sourceKeyOf } from "./lesson-topic.policy"
 import { readLessonSource } from "./lesson-source.policy"
 import { validateLesson } from "./lesson-validation.policy"
-import { essentialOf } from "./lesson-essential.policy"
+import { essentialOf, hiddenFileIssues, type LessonFileTexts } from "./lesson-essential.policy"
+import { sourceCodeOf } from "./lesson-source-archive.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
 import type {
     LessonContent,
@@ -29,19 +30,19 @@ export const contentHashOf = (files: ReadonlyArray<LessonSourceFile>): string =>
         )
         .digest("hex")
 
-const documentOf = (parsed: LessonParsedLocale): LessonLocaleDocument => {
-    const essential = essentialOf(parsed.root)
+const documentOf = (parsed: LessonParsedLocale, files: LessonFileTexts): LessonLocaleDocument => {
+    const essential = essentialOf(parsed.root, files)
     return {
-    title: parsed.root.title,
-    description: parsed.root.description,
-    body: parsed.root.body,
-    ...(parsed.root.isPremium === undefined ? {} : { isPremium: parsed.root.isPremium }),
-    learningOutcomes: parsed.root.learningOutcomes,
-    prerequisites: parsed.root.prerequisites,
-    references: parsed.root.references,
-    retrieval: parsed.root.activities ?? [],
-    sections: parsed.sections,
-    ...(essential === undefined ? {} : { essential }),
+        title: parsed.root.title,
+        description: parsed.root.description,
+        body: parsed.root.body,
+        ...(parsed.root.isPremium === undefined ? {} : { isPremium: parsed.root.isPremium }),
+        learningOutcomes: parsed.root.learningOutcomes,
+        prerequisites: parsed.root.prerequisites,
+        references: parsed.root.references,
+        retrieval: parsed.root.activities ?? [],
+        sections: parsed.sections,
+        ...(essential === undefined ? {} : { essential }),
     }
 }
 
@@ -115,6 +116,7 @@ export const buildLessonDraft = (
         ...validateLesson(source.parsed),
         ...attached.issues,
         ...variants.issues,
+        ...hiddenFileIssues(vi.root, byPath),
         ...(group === null
             ? [
                   {
@@ -128,11 +130,13 @@ export const buildLessonDraft = (
     ]
     if (group === null || placed.topic === null || placed.source === null || issues.length > 0)
         return { draft: null, issues }
+    const sourceCode = sourceCodeOf(files)
     const content: LessonContent = {
-        locales: { vi: documentOf(vi), en: documentOf(en) },
+        locales: { vi: documentOf(vi, byPath), en: documentOf(en, byPath) },
         workspace,
         files: attached.files,
         ...(variants.variants.length === 0 ? {} : { workspaces: variants.variants }),
+        ...(sourceCode.length === 0 ? {} : { sourceCode }),
     }
     return {
         draft: {

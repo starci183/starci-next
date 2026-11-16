@@ -97,15 +97,30 @@ const question: ObjectShape = {
     optional: { sectionId: text, scenarioId: text },
 }
 
+/** How the learner CLI runs a scenario; every member optional, with the defaults the manifest fills. */
+const SCENARIO_RUN: Readonly<Record<string, LessonShape>> = {
+    brief: text,
+    concepts: list(text),
+    cwd: text,
+    report: text,
+    timeoutMs: "positive",
+}
+
 /** The four-part fields of a root file, each optional so a lesson written before them still fits. */
 const ESSENTIAL_FIELDS: Readonly<Record<string, LessonShape>> = {
     opener: list(question),
-    source: { required: { repo: text, langs: list({ oneOf: LESSON_SOURCE_LANGUAGES }) }, optional: { ref: text } },
+    source: {
+        required: { langs: list({ oneOf: LESSON_SOURCE_LANGUAGES }) },
+        optional: { ref: text, dir: text, compose: text, project: text },
+    },
     invariants: list(statement),
     architecture: {
         required: {
             diagram: text,
-            components: list({ required: { name: text, invariants: list(text) }, optional: { port: text, role: text } }),
+            components: list({
+                required: { name: text, invariants: list(text) },
+                optional: { port: text, role: text },
+            }),
         },
     },
     codeWalk: list({
@@ -120,9 +135,9 @@ const ESSENTIAL_FIELDS: Readonly<Record<string, LessonShape>> = {
             command: text,
             expected: text,
             invariant: text,
-            guards: list(text),
+            guards: list({ required: { name: text, env: text }, optional: { off: text } }),
         },
-        optional: { hint: text },
+        optional: { hint: text, ...SCENARIO_RUN },
     }),
     challenges: list({
         required: {
@@ -135,7 +150,14 @@ const ESSENTIAL_FIELDS: Readonly<Record<string, LessonShape>> = {
                 optional: { isCritical: "boolean" },
             }),
         },
-        optional: { hiddenScenarios: "integer", questions: list(question) },
+        optional: {
+            hiddenScenarios: "integer",
+            questions: list(question),
+            hidden: list({
+                required: { id: text, title: text, command: text },
+                optional: { ...SCENARIO_RUN, files: list({ required: { path: text, from: text } }) },
+            }),
+        },
     }),
 }
 

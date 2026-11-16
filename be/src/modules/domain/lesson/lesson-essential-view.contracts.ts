@@ -33,8 +33,6 @@ export interface LessonQuestionView {
 
 /** The source repository as the learner sees it. */
 export interface LessonSourceView {
-    /** The repository, `owner/name`. */
-    readonly repo: string
     /** The languages it ships. */
     readonly langs: ReadonlyArray<LessonSourceLanguage>
     /** The ref, or null. */
@@ -115,8 +113,13 @@ export interface LessonCodeWalkView extends Omit<LessonCodeWalkEntry, "why"> {
     readonly why: string | null
 }
 
-/** A scenario as the learner sees it. */
-export interface LessonScenarioView extends Omit<LessonScenario, "hint"> {
+/** A scenario as the learner sees it: the guards by name, the run details stay in the signed manifest. */
+export interface LessonScenarioView extends Pick<
+    LessonScenario,
+    "id" | "title" | "fault" | "command" | "expected" | "invariant"
+> {
+    /** The guard names the learner may switch off. */
+    readonly guards: ReadonlyArray<string>
     /** The hint shown when the run is red, or null. */
     readonly hint: string | null
 }
