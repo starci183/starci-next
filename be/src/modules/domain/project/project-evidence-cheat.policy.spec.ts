@@ -7,14 +7,28 @@ import {
     type EvidenceSlot,
     type EvidenceSource,
 } from "./project.contracts"
-import { conceptOf, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import { fixtureCheckSet } from "@tests/fixtures/builders/check-set.builder"
+import { conceptIn } from "./project-check-set-lookup.policy"
 import { catalogIssuesOf, requiredGroupsOf } from "./project-catalog-rules.policy"
 import { conceptStandingOf, projectStandingOf } from "./project-state.policy"
 
 const at = (minute: number): Date => new Date(Date.UTC(2026, 10, 8, 9, minute))
 
+const SET = fixtureCheckSet()
+
+/** A behaviour concept with no HTTP surface, which the fixture check set has none of: an e2e flow and the AI code read. */
+const NO_HTTP_CONCEPT: ConceptDefinition = {
+    id: "cli-exit-codes",
+    label: { vi: "Mã thoát của CLI", en: "CLI exit codes" },
+    kind: "behaviour",
+    http: false,
+    requires: [["e2e"], ["code-read"]],
+    probes: [],
+    learn: [],
+}
+
 const definitionOf = (id: string) => {
-    const definition = conceptOf(id)
+    const definition = id === NO_HTTP_CONCEPT.id ? NO_HTTP_CONCEPT : conceptIn(SET, id)
     if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
     return definition
 }
@@ -31,11 +45,11 @@ const stateOf = (conceptId: string, rows: ReadonlyArray<EvidenceRow>) =>
     conceptStandingOf(definitionOf(conceptId), rows, false).state
 
 /** A behaviour concept with an HTTP surface: a test or an e2e flow, and a probe. */
-const BEHAVIOUR = "idempotency"
+const BEHAVIOUR = "idempotent-retry"
 /** A behaviour concept with no HTTP surface: an e2e flow and the code read. */
-const NO_HTTP = "verify"
+const NO_HTTP = "cli-exit-codes"
 /** A structure concept: a test and the code read. */
-const STRUCTURE = "saga"
+const STRUCTURE = "unit-testing-behavior"
 
 describe("a learner who fakes the evidence", () => {
     it("never proves a behaviour concept with green fake tests while the server probe is red", () => {
@@ -142,16 +156,21 @@ describe("a learner who fakes the evidence", () => {
     })
 
     it("does not complete a milestone from a concept whose probe is red", () => {
-        const lessons = new Set(PROJECT_CONCEPTS.map((concept) => concept.id))
-        const fakes = ["request-response-lifecycle", "health-probe-semantics", "unit-testing-behavior"].flatMap((id) =>
+        const lessons = new Set(SET.concepts.map((concept) => concept.id))
+        const fakes = [
+            "request-response-lifecycle",
+            "health-probe-semantics",
+            "error-contract",
+            "unit-testing-behavior",
+        ].flatMap((id) =>
             definitionOf(id).requires.flatMap((group) =>
                 group.slice(0, 1).map((slot) => rowOf(id, slot, SLOT_PROOF_SOURCES[slot][0] ?? "ci")),
             ),
         )
         const redProbes = fakes.map((row) => (row.slot === "probe" ? { ...row, passed: false } : row))
 
-        const green = projectStandingOf("app", fakes, lessons)
-        const red = projectStandingOf("app", redProbes, lessons)
+        const green = projectStandingOf(SET, "app", fakes, lessons)
+        const red = projectStandingOf(SET, "app", redProbes, lessons)
 
         expect(green.milestones[0]?.state).toBe("done")
         expect(red.milestones[0]?.state).toBe("in-progress")
@@ -173,7 +192,7 @@ describe("the proof model is data in the catalog", () => {
     })
 
     it("keeps every concept of the catalog to the rules of the model", () => {
-        expect(catalogIssuesOf(PROJECT_CONCEPTS)).toEqual([])
+        expect(catalogIssuesOf(SET.concepts)).toEqual([])
     })
 
     it("names the requirement a concept's kind and surface give", () => {
