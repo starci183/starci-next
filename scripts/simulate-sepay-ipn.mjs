@@ -3,7 +3,7 @@
 // post (ORDER_PAID, authenticated by the `x-secret-key` header, which the sepay client compares with the IPN secret key) to the
 // core API's webhook door on loopback, so the pending order settles and the learner becomes Premium.
 //
-// Usage (from the repo root):  node scripts/simulate-sepay-ipn.mjs [--order-code <code> | --order-id <uuid>] [--core http://localhost:3001]
+// Usage (from the repo root):  node scripts/simulate-sepay-ipn.mjs [--order-code <code> | --order-id <uuid>] [--core http://localhost:3201]
 // With no order argument it picks the newest pending sepay order in the dev database.
 // Refuses anything but a loopback core, the dev environment's custody and a loopback database. Prints no secret.
 import { spawnSync } from "node:child_process"
@@ -28,7 +28,7 @@ const option = (name) => {
     return at === -1 ? undefined : args[at + 1]
 }
 
-const core = new URL(option("--core") ?? "http://localhost:3001")
+const core = new URL(option("--core") ?? "http://localhost:3201")
 if (core.protocol !== "http:" || !LOOPBACK.has(core.hostname))
     fail(`refusing ${core.origin}: only a loopback http core API is allowed`)
 if (process.env.NODE_ENV === "production") fail("refusing to run with NODE_ENV=production")

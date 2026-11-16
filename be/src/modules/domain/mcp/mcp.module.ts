@@ -1,7 +1,7 @@
 import { Module, type DynamicModule } from "@nestjs/common"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./mcp.module-definition"
 import { MCP_EMBEDDER } from "./mcp-embedder.port"
-import { LessonSourceTreeService } from "@modules/domain/lesson"
+import { LessonSourceService } from "@modules/domain/lesson"
 import { MCP_SOURCE_TREE } from "./mcp-source-tree.port"
 import { McpOllamaEmbedder } from "./mcp-ollama.embedder"
 import { McpServerFactory } from "./mcp-server.factory"
@@ -31,7 +31,7 @@ export class McpModule extends ConfigurableModuleClass {
                 McpTutorService,
                 McpServerFactory,
                 { provide: MCP_EMBEDDER, useClass: McpOllamaEmbedder },
-                { provide: MCP_SOURCE_TREE, useExisting: LessonSourceTreeService },
+                { provide: MCP_SOURCE_TREE, useExisting: LessonSourceService },
             ],
             exports: [McpTokenService, McpTutorService, McpServerFactory],
         }

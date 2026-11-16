@@ -868,10 +868,7 @@
       "topic": {
         "doneLabel": "đã xong",
         "ringsLabel": "Tiến độ sáu pha",
-        "noLanguage": "ngôn ngữ nào cũng được",
-        "factsAgnostic": "{lessons} bài · {minutes} phút",
         "phasesNote": "{done}/{total} pha",
-        "facts": "{lessons} bài · {minutes} phút · {languages} ngôn ngữ",
         "pageTitle": "Bản chất",
         "empty": "Topic này chưa có nội dung.",
         "path": "Bài trong chương",
@@ -884,13 +881,16 @@
         "openFacts": "{open}/{total} bài đã mở",
         "source": "Nguồn: {from}",
         "progress": "{done}/{total} bài đã hiểu",
-        "meta": "{difficulty} · {minutes} phút · {languages}",
         "prerequisites": "Nên biết trước",
         "related": "Topic liên quan",
         "upsellNote": "Mỗi bài vẫn xem được tổng quan và làm câu Bị hỏi.",
         "moved": "Bài này đã chuyển vào một topic. Địa chỉ cũ không còn dùng.",
         "movedOpen": "Mở bài",
-        "progressTitle": "Tiến độ"
+        "progressTitle": "Tiến độ",
+        "opener": "Mở bài {right}/{total}",
+        "openerNone": "Chưa làm mở bài",
+        "metaOpener": "{difficulty} · {minutes} phút · {opener}",
+        "factsLessons": "{lessons} bài · {minutes} phút · TypeScript"
       },
       "attempt": {
         "saved": "Đã lưu câu trả lời của bạn.",
@@ -1006,6 +1006,125 @@
         "open": "Mở mã",
         "close": "Đóng",
         "download": "Tải workspace {language} (.zip)"
+      },
+      "essential": {
+        "pageTitle": "Bản chất",
+        "breadcrumbs": "Đường dẫn",
+        "tabs": "Bốn phần của bài",
+        "parts": {
+          "essence": "Bản chất",
+          "source": "Source",
+          "scenarios": "Kịch bản",
+          "apply": "Tự áp dụng"
+        },
+        "facts": "{minutes} phút đọc · {languages}",
+        "typescript": "TypeScript",
+        "empty": "Bài này chưa có nội dung.",
+        "soon": "Phần này đang soạn.",
+        "opener": {
+          "title": "Mở bài · 5 câu trắc nghiệm phỏng vấn",
+          "progress": "Tiến độ 5 câu mở bài",
+          "position": "Câu {n} / {total}",
+          "score": "Đúng {right}/{total}. Câu nào sai, mục tương ứng được đánh dấu “nên đọc kỹ”.",
+          "next": "Câu tiếp",
+          "previous": "Câu trước",
+          "right": "Đúng",
+          "wrong": "Chưa đúng",
+          "readMore": "Đọc thêm",
+          "readSection": "Đọc kỹ mục {n}: {title}",
+          "seeScenario": "Thấy tận mắt ở kịch bản “{title}”",
+          "empty": "Bài này chưa có câu mở bài."
+        },
+        "article": {
+          "title": "Bài viết",
+          "toc": "Mục lục",
+          "flagged": "Nên đọc kỹ",
+          "locked": "Mục này mở với Premium.",
+          "empty": "Bài này chưa có mục nào."
+        },
+        "retake": {
+          "title": "Làm lại 5 câu",
+          "description": "Trả lời lại 5 câu mở bài sau khi đọc để thấy trước và sau.",
+          "start": "Làm lại",
+          "question": "Câu hỏi",
+          "before": "Lần đầu",
+          "after": "Lần mới nhất",
+          "right": "Đúng",
+          "wrong": "Sai",
+          "none": "Chưa làm"
+        },
+        "source": {
+          "pullTitle": "Tải source và chạy",
+          "pullNote": "Source TypeScript của bài; starci-next up dựng các service bằng docker compose.",
+          "architecture": "Kiến trúc",
+          "diagram": "Sơ đồ kiến trúc",
+          "diagramError": "Không vẽ được sơ đồ",
+          "components": "Thành phần",
+          "component": "Thành phần",
+          "port": "Port",
+          "rules": "Luật nó giữ",
+          "codeWalk": "Đọc code",
+          "why": "Vì sao",
+          "empty": "Chưa có thành phần."
+        },
+        "scenarios": {
+          "list": "Kịch bản",
+          "summary": "{green}/{total} kịch bản xanh",
+          "run": "Lệnh chạy",
+          "guards": "Tắt guard để thấy lỗi xảy ra",
+          "expected": "Hệ thống đúng sẽ cho",
+          "output": "Kết quả gửi về từ máy bạn",
+          "noOutput": "Chưa có lần chạy nào. Chạy lệnh ở trên, kết quả sẽ hiện ở đây.",
+          "why": "Vì sao sai",
+          "invariant": "Luật bị phá",
+          "hint": "Gợi ý",
+          "askAi": "Hỏi AI sửa",
+          "askAiNote": "Dán lời nhắc này vào Claude, ChatGPT hoặc agent trong IDE (đã nối StarCi MCP). Sửa xong, check lại.",
+          "prompt": "Lời nhắc cho AI",
+          "check": "Check lại",
+          "empty": "Bài này chưa có kịch bản.",
+          "states": {
+            "none": "Chưa chạy",
+            "running": "Đang chạy",
+            "passed": "Xanh",
+            "failed": "Đỏ",
+            "guarded": "Đỏ do tắt guard"
+          },
+          "ranAt": "Lần chạy lúc {at}",
+          "fixPrompt": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy gần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard nào, giải thích ngắn vì sao, rồi chạy: starci-next check {lesson} --scenario {scenario}"
+        },
+        "apply": {
+          "ladder": "Thử thách 4 bậc",
+          "brief": "Đề bài",
+          "rubric": "Thang chấm · 100 điểm",
+          "critical": "Trọng yếu",
+          "essence": "Kiểm tra bản chất",
+          "hidden": "Kịch bản ẩn",
+          "run": "Chạy kịch bản ẩn",
+          "proof": "Từ Đang luyện tới Đã chứng minh",
+          "proofSteps": "Chạy trên máy bạn là Đang luyện. Push lên GitHub, CI chạy kịch bản ẩn và GitHub ký OIDC: lên Đã chứng minh và thành dòng CV đã xác minh.",
+          "locked": "Bậc này mở khi mọi kịch bản ẩn của bậc dưới đã xanh.",
+          "empty": "Bài này chưa có thử thách.",
+          "levels": {
+            "easy": "Dễ",
+            "medium": "Vừa",
+            "hard": "Khó",
+            "insane": "Siêu khó"
+          },
+          "points": "{points}đ",
+          "hiddenState": "{green}/{total} kịch bản ẩn xanh",
+          "notRun": "Chưa chạy",
+          "rungStates": {
+            "locked": "Khóa",
+            "open": "Đang luyện",
+            "green": "Đã xanh"
+          }
+        },
+        "locked": {
+          "title": "Phần này mở với Premium",
+          "description": "Câu mở bài miễn phí. Source, kịch bản và thử thách cần Premium.",
+          "plans": "Xem Premium"
+        }
       }
     },
     "interview": {

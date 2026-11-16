@@ -1,7 +1,7 @@
 import { Global, Module } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import { FakeClock, mockEntityManager } from "@starci/jest-preset"
-import { LessonReadService, LessonSourceTreeService } from "@modules/domain/lesson"
+import { LessonReadService, LessonSourceService } from "@modules/domain/lesson"
 import { RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
@@ -14,7 +14,7 @@ import { McpTutorService } from "./mcp-tutor.service"
 @Module({
     providers: [
         { provide: LessonReadService, useValue: {} },
-        { provide: LessonSourceTreeService, useValue: {} },
+        { provide: LessonSourceService, useValue: {} },
         { provide: RelayDeviceService, useValue: {} },
         { provide: RelayFeedService, useValue: {} },
         { provide: CLOCK, useValue: new FakeClock("2026-11-17T00:00:00.000Z") },
@@ -22,7 +22,7 @@ import { McpTutorService } from "./mcp-tutor.service"
     ],
     exports: [
         LessonReadService,
-        LessonSourceTreeService,
+        LessonSourceService,
         RelayDeviceService,
         RelayFeedService,
         CLOCK,

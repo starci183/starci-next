@@ -8,7 +8,7 @@ import { LessonContentService } from "./lesson-content.service"
 import { LessonImportService } from "./lesson-import.service"
 import { LessonLinkService } from "./lesson-link.service"
 import { LessonReadService } from "./lesson-read.service"
-import { LessonSourceTreeService } from "./lesson-source-tree.service"
+import { LessonSourceService } from "./lesson-source.service"
 
 @Module({})
 /** The Lessons content capability: import of concept folders, the public projection and the server-side content port. */
@@ -24,7 +24,7 @@ export class LessonModule extends ConfigurableModuleClass {
                 LessonReadService,
                 LessonContentService,
                 LessonLinkService,
-                LessonSourceTreeService,
+                LessonSourceService,
                 { provide: LESSON_SOURCE, useValue: lessonDirectory },
                 { provide: LESSON_TOPIC_CATALOG, useValue: options.topics ?? DEFAULT_TOPIC_CATALOG },
             ],
@@ -33,7 +33,7 @@ export class LessonModule extends ConfigurableModuleClass {
                 LessonReadService,
                 LessonContentService,
                 LessonLinkService,
-                LessonSourceTreeService,
+                LessonSourceService,
             ],
         }
     }

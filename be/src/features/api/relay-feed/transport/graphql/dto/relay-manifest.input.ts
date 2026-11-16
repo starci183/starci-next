@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql"
-import { IsOptional, IsString, Matches, MaxLength } from "class-validator"
+import { IsIn, IsOptional, IsString, Matches, MaxLength } from "class-validator"
 
 @InputType()
 /** The relayManifest arguments: the task the device asks the checks of. */
@@ -32,4 +32,18 @@ export class RelayManifestInput {
     @IsString()
     @MaxLength(200)
     testReport?: string
+
+    /** For a lesson task (`lesson:<slug>`): the one scenario to run or check. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(100)
+    @Matches(/^[a-z0-9-]+$/u)
+    scenario?: string
+
+    /** For a lesson task: the challenge tier (easy, medium, hard, insane) whose hidden scenarios are asked. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsIn(["easy", "medium", "hard", "insane"])
+    challenge?: string
 }

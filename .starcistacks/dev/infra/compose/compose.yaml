@@ -82,13 +82,16 @@ services:
       retries: 40
       start_period: 40s
     restart: unless-stopped
-  # The dev entry origin http://localhost:3080: /api/* and /graphql to the native core api, everything else to the native app (Caddyfile).
+  # The dev entry origin http://localhost:${STACK_PORT_INGRESS}: /api/* and /graphql to the native core api, everything else to the native app (Caddyfile).
   # The upstreams are the host's processes, reached as host.docker.internal (Docker Desktop resolves it; host-gateway covers a Linux engine).
   ingress:
     image: caddy:2.10.2@sha256:c3d7ee5d2b11f9dc54f947f68a734c84e9c9666c92c88a7f30b9cba5da182adb
     configs:
       - source: ingress-config
         target: /etc/caddy/Caddyfile
+    environment:
+      CORE_PORT: "${STACK_PORT_CORE}"
+      APP_PORT: "${STACK_PORT_APP}"
     ports:
       - "127.0.0.1:${STACK_PORT_INGRESS}:3080"
     extra_hosts:

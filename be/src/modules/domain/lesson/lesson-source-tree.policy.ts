@@ -18,9 +18,9 @@ const scenarioOf = (value: unknown): LessonSourceTreeScenario | null => {
     const title = textOf(value.title)
     const fault = textOf(value.fault)
     const invariant = textOf(value.invariant)
-    if (id === null || title === null || fault === null || invariant === null) return null
+    if (id === null || title === null || fault === null) return null
     const guards = listOf(value.guards).flatMap((guard) => (isRecord(guard) ? (textOf(guard.name) ?? []) : []))
-    return { id, title, fault, invariant, guards }
+    return { id, title, fault, invariant: invariant ?? "", guards }
 }
 
 /**

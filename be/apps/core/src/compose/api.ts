@@ -14,7 +14,7 @@ import { PathGraphqlModule } from "@features/api/path"
 import { PracticeGraphqlModule } from "@features/api/practice"
 import { ProjectGraphqlModule } from "@features/api/project"
 import { RelayGraphqlModule, RelayHttpModule } from "@features/api/relay"
-import { RelayFeedGraphqlModule } from "@features/api/relay-feed"
+import { RelayFeedGraphqlModule, RelayFeedHttpModule } from "@features/api/relay-feed"
 import { ReviewGraphqlModule } from "@features/api/review"
 import { GraphqlModule } from "@modules/platform/graphql"
 
@@ -39,6 +39,7 @@ export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     RelayGraphqlModule.register({}),
     RelayHttpModule.register({}),
     RelayFeedGraphqlModule.register({}),
+    RelayFeedHttpModule.register({}),
     McpGraphqlModule.register({}),
     McpHttpModule.register({}),
 ]

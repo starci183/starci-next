@@ -1,6 +1,14 @@
 {
   "extends": "../../tsconfig.build.json",
-  "compilerOptions": { "outDir": "./dist", "rootDir": "../.." },
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "../..",
+    "baseUrl": "../..",
+    "paths": {
+      "@features/*": ["src/features/*"],
+      "@modules/*": ["src/modules/*"]
+    }
+  },
   "files": ["src/main.ts"],
   "include": []
 }

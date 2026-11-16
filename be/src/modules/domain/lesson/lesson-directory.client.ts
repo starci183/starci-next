@@ -6,6 +6,9 @@ import type { LessonSourceFile } from "./lesson-import.contracts"
 import { parseSeparatorFields } from "./separator.policy"
 import type { LessonTopicModule, LessonTopicStep } from "./lesson-topic.contracts"
 
+/** Folders a lesson never ships: installed packages and git internals (a source/ folder may hold both locally). */
+const SKIPPED: ReadonlySet<string> = new Set(["node_modules", ".git"])
+
 const folders = async (directory: string): Promise<ReadonlyArray<string>> =>
     (await readdir(directory, { withFileTypes: true }))
         .filter((entry) => entry.isDirectory())
@@ -27,6 +30,12 @@ const read = async (directory: string, folder: string): Promise<ReadonlyArray<Le
     const files = await Promise.all(
         entries
             .filter((entry) => entry.isFile())
+            .filter(
+                (entry) =>
+                    !relative(root, entry.parentPath)
+                        .split(sep)
+                        .some((part) => SKIPPED.has(part)),
+            )
             .map((entry) => sourceFileOf(root, join(entry.parentPath, entry.name))),
     )
     return files.sort((a, b) => a.path.localeCompare(b.path))

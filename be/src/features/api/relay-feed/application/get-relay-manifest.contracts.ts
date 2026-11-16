@@ -12,4 +12,8 @@ export interface GetRelayManifestRequest {
     readonly testCommand?: string | undefined
     /** The JUnit report path of the project's `starci/project.yaml`, or undefined. */
     readonly testReport?: string | undefined
+    /** For a lesson task: the one scenario asked. */
+    readonly scenario?: string | undefined
+    /** For a lesson task: the challenge tier whose hidden scenarios are asked. */
+    readonly challenge?: string | undefined
 }

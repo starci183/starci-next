@@ -1,9 +1,9 @@
-{"data":{},"findings":[],"hash":"7244637cbd2fd8d8db28b39db2bf315ab33c003f59543569d91261a0906346fa","path":".starcistacks/dev/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e7c3e38a07d7148a250e8b9e6405f8ccaa11447241291f50f5b070b8f281f94c","path":".starcistacks/dev/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be7d4a045ca8426f88cf5d02d0f8df51ee8cfde57293a74135d98b2b3f955849","path":".starcistacks/dev/environment.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0b9f0e528a31e1810ae7492ffe13edfecf6d06da9909b679088693bd87b531b2","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e8304a5d560d9d86abb7e2544019b88cb5ff6022465283c85df9fd5bd5933bf0","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f94cbb307a4d629bca9ff3aa108fb37acf69b868d7f28bc8a7cd69dac7a00a68","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"067d233eed607ceca0b2c33d43ad137ad3af6ee37c85967ac000fc5120743275","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a4f7e75d4e5e1230ce3cad61355d4607e117642e94577b10cbb889316f8b6cd4","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f9151da5f81dfa83d5e3f78383d59a58125e72283c751bed6644bd0021aba70d","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c32bd444a3bca6c52a8b8c39f24b87919cde66c80dd725f30c8a4c533a8be45a","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"132f7bf7e77d8d707000fa8da0e45a1fdca2b8fbda55a3de268e773598ecfa5e","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dd99d38b8f954873c5febf8107a05bf6aab4865f1ddb5d7215246553fb7f06d7","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4056231a07c2533ff12a32d9045e2c008544ec417f65a2d49512ecd0ed0b58a1","path":".starcistacks/dev/secrets/db.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"53542d9265b4864a57913fdf8ede3f79ebb7d60cc9b215040e3973a72787400b","path":".starcistacks/dev/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}

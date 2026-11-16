@@ -29,6 +29,18 @@ export type {
     SimulationView,
 } from "./lesson"
 export type { TopicLabels, TopicScreenView, TopicWords } from "./topic"
+export { CHALLENGE_LEVELS, ESSENTIAL_PARTS } from "./essential"
+export type {
+    ChallengeLevel,
+    EssentialChallengeView,
+    EssentialPart,
+    EssentialQuestionView,
+    EssentialScenarioView,
+    EssentialView,
+    OpenerScoreView,
+    ScenarioRunStatus,
+    ScenarioRunView,
+} from "./essential"
 export type { AgentQuotaView, AgentTrackTileView } from "./agents"
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
 export type {

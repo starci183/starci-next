@@ -1,55 +1,37 @@
 ---
-title: Bản chất / Bài học (tổng quan)
+title: Bản chất / Bài học · phần 1 Bản chất
 route: /essentials/[topic]/[lesson]
 area: essentials
 ---
 
-Route: `/essentials/[topic]/[lesson]` (không có `?phase=`). Trang tổng quan của một bài: band, giếng giữa với các thẻ, aside phải. Grammar 0.37.12; đường d.ts dưới `node_modules/@starci/grammar/dist/core/`. Khung: `Page chrome="panes"` + `PaneGrid` (giếng `main` + `aside` bề mặt), code `fe/apps/app/src/components/blocks/LessonStudy/`.
+Route: `/essentials/[topic]/[lesson]` (không có `?phase=`; `?part=essence` là mặc định). Một bài có bốn phần (owner, COOK 2026-11-17): Bản chất, Source, Kịch bản, Tự áp dụng. Đây là phần 1: mở bằng 5 câu trắc nghiệm phỏng vấn, rồi bài viết, cuối bài làm lại 5 câu. Mockup: `D:/starci-tmp/claude-20261117/essentials-clusters/mockup/essential-4-parts.html` (artboard 1). Code: `fe/apps/app/src/components/blocks/EssentialLesson/component.tsx`, hook `fe/apps/app/src/hooks/essentialLesson/`, composite `fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx`. Grammar dưới `node_modules/@starci/grammar/dist/core/`. Liên kết `?phase=` cũ vẫn mở trang sáu pha (`LessonStudy`).
 
-## Band (breadcrumbs, tiêu đề, chip, facts, nút chính)
+## Band (breadcrumbs, tiêu đề, chip mức độ, facts, bốn tab phần)
 
-Vì sao: breadcrumbs Bản chất / chủ đề / bài; tiêu đề 18/600 sát trái; chip "Nền tảng" là mức độ; dòng 12 muted "65 phút · TypeScript · 6 pha"; một nút chính duy nhất "Bắt đầu với câu Bị hỏi" có icon play (outline) dẫn vào pha đầu.
-Luật: `page-header-left-sublabel-xs.md`, `type-scale-14-12.md`, `verify-against-visualize.md` (chỉ CTA chính có icon).
-Grammar: `Page header { breadcrumbs, title, status, meta, actions }` (`frame/Page/index.d.ts`, `frame/PageHeader/index.d.ts`), `Button intent="commit" startContent={<Icon source={PlayGlyph} />}` (`leaf/Button/index.d.ts`; `PlayGlyph` ở `fe/packages/starci-next-ui/src/leaves/Icon/index.tsx`), `Badge` (`leaf/Badge/index.d.ts`).
+Vì sao: breadcrumbs Bản chất / topic / bài; tiêu đề; chip mức độ; dòng 12 muted "90 phút đọc · TypeScript" (bài chỉ có TypeScript, không còn chọn ngôn ngữ). Bốn phần là tab trang (underline) trên đường kẻ đáy band, `?part=` giữ phần đang mở để chia sẻ link.
+Luật: COOK 2026-11-17 "Lesson = 4 parts"; owner pivot "REPO H TRÒ VIẾT TS THÔI" (không có language picker); `page-header-left-sublabel-xs.md`.
+Grammar: `Page header { breadcrumbs, title, status, meta, tabs: { kind: "views", items, selectedKey, onSelect } }` (`frame/PageHeader/index.d.ts` `PageHeaderTabs`), `Badge` (`leaf/Badge/index.d.ts`).
 
-## Tổng quan (thẻ chi tiết: "Bài này nói về", "Phạm vi")
+## Mở bài · 5 câu trắc nghiệm phỏng vấn
 
-Vì sao: một thẻ gồm các hàng term/value; câu mô tả là một hàng, không phải một câu lẻ nằm trong thẻ; "Phạm vi của bài" gập lại sau disclosure "Xem phạm vi" vì dài. Disclosure là hàng kích thước đầy đủ có chevron (chữ foreground), không còn dòng `quiet` màu accent: màu accent ở trang này chỉ còn nút chính "Bắt đầu với câu Bị hỏi".
-Luật: `table-heroui-native-section-head.md` (câu lẻ không thành thẻ, thành hàng của thẻ danh sách), `pink-page-surface-rule.md`, `red-budget-links-foreground` (owner 2026-11-10: một khối accent là nút chính).
-Grammar: `SurfaceCard kind="details" label items` (`frame/SurfaceCard/index.d.ts`), `Disclosure` mặc định `kind="row"` (`node_modules/@starci/grammar/dist/core/branch/Disclosure/index.d.ts`; `quiet` là dòng "link-toned", bị bỏ theo luật dưới). Code: `fe/packages/starci-next-ui/src/composites/OverviewPanel/index.tsx`.
+Vì sao: mỗi lần một câu, thanh 5 bước và "Câu n / 5" trên đầu; chọn một đáp án rồi gửi, server chấm ngay (attempt `opener.<id>`, loại choice, không lộ đáp án trước khi gửi). Đúng: hộp affirmative với lời giải thích. Sai: hộp negative với lời giải thích và link "Đọc kỹ mục n" (neo `#section-…`) cùng "Thấy tận mắt ở kịch bản …" (`?part=scenarios&scenario=…`). Không có ô trả lời tự do. Xong 5 câu hiện "Đúng x/5".
+Luật: COOK 2026-11-17 phần 1 (5 câu trắc nghiệm, chấm tất định, sai thì giải thích + "đọc §n / xem kịch bản"); concept `conventions` rule 4 (đáp án không rời server trước khi nộp).
+Grammar: `Section title meta` (`frame/Section/index.d.ts`), `Progress steps` (`leaf/Progress/index.d.ts`), `SurfaceCard kind="select"` qua `ChoiceCard` (`fe/packages/starci-next-ui/src/composites/ChoiceCard/index.tsx`), `Alert tone="affirmative"|"negative"` (`composite/Alert/index.d.ts`), `Link` (`leaf/Link/index.d.ts`), `Button intent="neutral"` (`leaf/Button/index.d.ts`).
 
-## Sáu pha của bài (MỘT thẻ danh sách)
+## Mục lục (chip "Nên đọc kỹ")
 
-Vì sao: bản cũ có hai danh sách pha trùng nhau (rail trái và "Sáu pha"); gộp thành một thẻ. Mỗi hàng: vòng số thứ tự, tên pha, dòng 12 muted, trạng thái (chip "Mở" hoặc khoá outline) và chevron; cả hàng bấm được (`onPress` qua router) nên là hàng điều hướng có chevron, không có mũi tên ↗ trên tiêu đề (với `href`, Grammar vẽ tiêu đề thành link có ↗).
-Luật: `table-heroui-native-section-head.md`, `verify-against-visualize.md`, `type-scale-14-12.md`. Chip "Mở" là chip xám trung tính (`tone="neutral"`): xám là trạng thái thường, màu chỉ dành cho việc đang chờ người học.
-Grammar: `SurfaceCard kind="list"` với `ListRowData { leading: {position}, description (ReactNode, 12 muted), onPress, badges | control }` (`surfaceCardData.d.ts`, `composite/ListRow/index.d.ts`).
+Vì sao: danh sách phẳng các mục của bài viết, mỗi hàng là link neo tới mục; mục mà một câu mở bài trả lời sai trỏ tới mang chip vàng "Nên đọc kỹ". Danh sách nằm thẳng trên mặt trang, không bọc thẻ.
+Luật: COOK 2026-11-17 ("sai câu nào, mục đó được đánh dấu nên đọc kỹ"); white-theme BRIEF "LIMIT CARDS" (danh sách nằm phẳng trên bề mặt).
+Grammar: `Section kind="list" items[{ title, href, badges }]` (`frame/Section/index.d.ts`, `surfaceCardData.d.ts` `ListRowData`).
 
-## Sau bài, bạn sẽ / Cần biết trước (hai thẻ cạnh nhau)
+## Bài viết (các mục lý thuyết)
 
-Vì sao: hai danh sách ngang hàng cùng vai, mỗi thẻ một nhãn đặt trên giếng; hàng là câu khẳng định, không có nút.
-Luật: `pink-page-surface-rule.md`, `table-heroui-native-section-head.md`.
-Grammar: `Grid kind="cards" columns={2}` + `SurfaceCard kind="list"` (`frame/Grid/index.d.ts`).
+Vì sao: mỗi mục lý thuyết là một Section có neo `section-<id>`, thân markdown của thầy (bảng, code, mermaid) vẽ bằng Markdown của Grammar; mục cần Premium chỉ giữ tiêu đề.
+Luật: concept `content` rule 5 (hiển thị đúng chữ của thầy); `grammar-generic-app-themed.md`.
+Grammar: `Section id title` (`frame/Section/index.d.ts`), `Markdown source labels renderCode` (`frame/Markdown/index.d.ts`).
 
-## Aside: Kết quả học tập
+## Làm lại 5 câu (trước và sau)
 
-Vì sao: người chưa có Premium không có tiến độ, nên aside nói rõ bằng một dòng có khoá và link "Xem Premium" (link điều hướng đứng một mình tới trang gói: màu foreground, `Link variant="plain"`, không ↗). Có Premium thì hiện thanh tiến độ cho từng kết quả.
-Luật: `pink-page-surface-rule.md` (aside là bề mặt phẳng, mục = section có đường kẻ, không thẻ nổi), `red-budget-links-foreground` (owner 2026-11-10; link điều hướng đứng một mình = foreground).
-Grammar: `Pane area="aside" surface scroll` (`frame/PaneGrid/index.d.ts`), `PaneSection`, `Section title headingLevel` (`frame/Section/index.d.ts`), `Divider`, `Link variant="plain"` (`node_modules/@starci/grammar/dist/core/leaf/Link/index.d.ts`), `Progress`.
-
-## Aside: Ôn tập (Sau 1/7/21 ngày)
-
-Vì sao: ba hàng có đường kẻ, mỗi hàng tên "Sau n ngày" và trạng thái 12 muted "Mở khi bạn học xong bài" (`meta`). Là `Section kind="list"`: từ Grammar 0.37.14 nó vẽ phẳng trong aside nên không còn cần `DescriptionList`.
-Luật: `pink-page-surface-rule.md`, `type-scale-14-12.md`.
-Grammar: `Section kind="list" items[{ title, meta }]` (`node_modules/@starci/grammar/dist/core/frame/Section/index.d.ts`, 0.37.14); code `fe/packages/starci-next-ui/src/composites/StudyRail`. Đã rõ.
-
-## Aside: Tài liệu tham khảo
-
-Vì sao: link ngoài, mỗi cái một dòng trong danh sách tài liệu ở aside; là link đứng một mình (không trong câu) nên chữ màu foreground, không gạch chân, không ↗ (đã đổi từ accent); vẫn mở tab mới.
-Luật: `red-budget-links-foreground` (owner 2026-11-10).
-Grammar: `Link variant="plain" kind="external"` (`node_modules/@starci/grammar/dist/core/leaf/Link/index.d.ts`).
-
-## Aside dưới lg (điện thoại)
-
-Vì sao: trang bài học chỉ có một cột nội dung chính; dưới lg phần kết quả học tập không chen vào cột đó mà thu vào một ngăn kéo mở bằng nút "Kết quả học tập" ở thanh dưới, để màn hình điện thoại dành chỗ cho bài.
-Luật: `pink-page-surface-rule.md`.
-Grammar: `Pane collapse="drawer" trigger="bar"` (`frame/PaneGrid/index.d.ts`). Code: `fe/apps/app/src/components/blocks/LessonStudy/component.tsx` (`PaneGrid areas={{ base: ["main"], wide: ["main aside"] }}`).
+Vì sao: cuối bài, bảng phẳng mỗi câu một hàng: "Lần đầu" (lần trả lời đầu tiên) và "Lần mới nhất" (đúng/sai/chưa làm), đọc từ `lessonOpenerScores`; nút nhỏ "Làm lại" đưa về câu 1 và mở lại 5 câu (revision mới, lần đầu vẫn giữ).
+Luật: COOK 2026-11-17 ("the same 5 again at the end shows before/after"); Grammar 0.40 "DataTable surface none" (bảng phẳng, không thẻ).
+Grammar: `Section action={<Button intent="neutral" size="sm">}` (`frame/Section/head.d.ts`), `DataTable columns rows renderCell` (`branch/DataTable/index.d.ts`), `Badge tone` (`leaf/Badge/index.d.ts`).

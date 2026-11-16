@@ -108,6 +108,84 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     content
                 }
             }
+            essential {
+                isLocked
+                opener {
+                    id
+                    activityId
+                    prompt
+                    choices {
+                        id
+                        label
+                    }
+                    sectionId
+                    sectionRef
+                    sectionRef
+                    scenarioId
+                }
+                source {
+                    langs
+                    ref
+                }
+                invariants {
+                    id
+                    text
+                }
+                architecture {
+                    diagram
+                    components {
+                        name
+                        port
+                        role
+                        invariants
+                    }
+                }
+                codeWalk {
+                    id
+                    title
+                    invariant
+                    file
+                    line
+                    snippet
+                    why
+                }
+                scenarios {
+                    id
+                    title
+                    fault
+                    command
+                    expected
+                    invariant
+                    guards
+                    hint
+                }
+                challenges {
+                    id
+                    level
+                    title
+                    brief
+                    rubric {
+                        id
+                        criterion
+                        points
+                        isCritical
+                    }
+                    hiddenScenarios
+                    questions {
+                        id
+                        activityId
+                        prompt
+                        choices {
+                            id
+                            label
+                        }
+                        sectionId
+                        sectionRef
+                        sectionRef
+                        scenarioId
+                    }
+                }
+            }
         }
     }
 `

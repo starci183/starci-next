@@ -37,9 +37,9 @@
       "directAccessGrantsEnabled": true,
       "serviceAccountsEnabled": true,
       "implicitFlowEnabled": false,
-      "redirectUris": ["https://localhost:3080/sign-in/callback"],
+      "redirectUris": ["https://localhost:3280/sign-in/callback"],
       "webOrigins": [],
-      "attributes": { "pkce.code.challenge.method": "S256", "post.logout.redirect.uris": "https://localhost:3080/sign-in/callback" },
+      "attributes": { "pkce.code.challenge.method": "S256", "post.logout.redirect.uris": "https://localhost:3280/sign-in/callback" },
       "protocolMappers": [
         {
           "name": "audience-self",

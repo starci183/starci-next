@@ -4,11 +4,12 @@ import { RelayDeviceService } from "./relay-device.service"
 import { RelayFeedService } from "./relay-feed.service"
 import { RelayCredentialAdapter } from "./relay-credential.adapter"
 import { RelayProjectService } from "./relay-project.service"
+import { RelayLessonService } from "./relay-lesson.service"
 
 @Module({})
 /**
  * The relay capability: device pairing, the device list and revoke, device-token authentication, the project practice
- * port and the device feed (signed manifests pushed through the realtime hub and the uploads it acknowledges). The app
+ * port, the lesson scenario runs and the device feed (signed manifests pushed through the realtime hub and the uploads it acknowledges). The app
  * that composes it also composes the realtime hub.
  */
 export class RelayModule extends ConfigurableModuleClass {
@@ -23,8 +24,15 @@ export class RelayModule extends ConfigurableModuleClass {
                 RelayCredentialAdapter,
                 RelayProjectService,
                 RelayFeedService,
+                RelayLessonService,
             ],
-            exports: [RelayDeviceService, RelayCredentialAdapter, RelayProjectService, RelayFeedService],
+            exports: [
+                RelayDeviceService,
+                RelayCredentialAdapter,
+                RelayProjectService,
+                RelayFeedService,
+                RelayLessonService,
+            ],
         }
     }
 }

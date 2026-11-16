@@ -1,6 +1,6 @@
 {"findings":[],"hash":"ccaefe354c72ff7a2391c5e675b19c6844f105e61f7ace749464cfec07087668","path":"be/apps/core/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"2c2feb055e6f914b29ae763805b816fa1ece0d759a213f65056a37045d3e3dc7","path":"be/apps/core/src/app.module.ts","step":"prettier"}
-{"findings":[],"hash":"a448e9eb30876bfca5b59535985a324a12f0748f56ae8e98ad3da92cfd63e361","path":"be/apps/core/src/compose/api.ts","step":"prettier"}
+{"findings":[],"hash":"450ecc01e7a7f8afd1b39452e597b7d81375ba3d95a25d446d51b6f4d3d269b7","path":"be/apps/core/src/compose/api.ts","step":"prettier"}
 {"findings":[],"hash":"760514e861e23429f55819906fc2c0ea9e27a074978045a13b2ecdd62d76133f","path":"be/apps/core/src/compose/career.ts","step":"prettier"}
 {"findings":[],"hash":"095db3a1b81e40b85862f60e7ec1802652b90d24d1547cff5138d2302ffae616","path":"be/apps/core/src/compose/commerce.ts","step":"prettier"}
 {"findings":[],"hash":"93f36dab6882043fc01977207808b98d086f63c4cc914e6dec1ff0b7dbd87867","path":"be/apps/core/src/compose/identity.ts","step":"prettier"}

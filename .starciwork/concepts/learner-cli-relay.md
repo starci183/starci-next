@@ -19,7 +19,10 @@ line never rests on a self-reported result.
 3. Proof needs the GitHub Actions OIDC token of the run to name the bound repository, the commit and the run id; the per-project HMAC
    secret stays only the transport check. Code first, credentials later: the attestation is wired once the owner provides them.
 4. Learner-written tests count as evidence; the proved level of an incident needs its mutation score ([essentials](essentials.md)).
-5. Core runs one replica while the hub is in memory; a device on another replica would miss frames.
+5. A lesson scenario run is tagged task `lesson:<lesson id>` with check id = the scenario id (slot `scenario`); a hidden challenge
+   scenario has slot `challenge` and ref = the challenge id. The lesson page reads the newest run per check through
+   `lessonScenarioRuns` and polls it while a run is in flight.
+6. Core runs one replica while the hub is in memory; a device on another replica would miss frames.
 
 ## Example
 The learner runs `starci-next run bf-http-foundation` in a project; the checks run locally and the concepts show "Đang luyện". After
