@@ -1,10 +1,12 @@
 import { Test } from "@nestjs/testing"
 import { FakeClock, fakeInbox, mock, mockEntityManager } from "@starci/jest-preset"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
 import { PROJECT_LEARNER, PROJECT_NOW } from "@tests/fixtures/builders/project.builder"
 import { EXPERIENCE_PRODUCER, type ExperienceProducer } from "@modules/domain/career"
 import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import {
     PROJECT_CI_ATTESTATION,
+    ProjectCheckSetService,
     ProjectReadService,
     ProjectService,
     type CiAttestationVerifier,
@@ -105,6 +107,7 @@ const build = async () => {
             { provide: PROJECT_CI_ATTESTATION, useValue: attestation },
             { provide: EXPERIENCE_PRODUCER, useValue: experiences },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: ProjectReadService, useValue: mock<ProjectReadService>() },
             { provide: PROBE_TRANSPORT, useValue: mock<ProbeTransport>() },
             { provide: PROJECT_OPTIONS, useValue: {} },
