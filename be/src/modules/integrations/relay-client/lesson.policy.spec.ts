@@ -13,7 +13,11 @@ const SCENARIO = {
 }
 const LESSON = {
     lessonId: "outbox",
-    repo: { url: "https://github.com/starci-next/lesson-outbox.git", commit: "a".repeat(40) },
+    source: {
+        url: "https://files.starci.test/lesson-outbox.tar.gz?sig=abc",
+        sha256: "e".repeat(64),
+        commit: "a".repeat(40),
+    },
     dir: ".",
     compose: ".docker",
     project: "outbox",
@@ -38,12 +42,13 @@ describe("lessonOf", () => {
     })
 
     it.each([
-        ["a non-https repo", { ...LESSON, repo: { ...LESSON.repo, url: "http://x.test/r.git" } }],
-        [
-            "a repo url with shell characters",
-            { ...LESSON, repo: { ...LESSON.repo, url: "https://x.test/r.git;rm -rf" } },
-        ],
-        ["a short commit", { ...LESSON, repo: { ...LESSON.repo, commit: "abc" } }],
+        ["a non-https source url", { ...LESSON, source: { ...LESSON.source, url: "http://x.test/s.tar.gz" } }],
+        ["a source url with credentials", { ...LESSON, source: { ...LESSON.source, url: "https://u:p@x.test/s.tgz" } }],
+        ["a source url with spaces", { ...LESSON, source: { ...LESSON.source, url: "https://x.test/a b.tgz" } }],
+        ["a short sha256", { ...LESSON, source: { ...LESSON.source, sha256: "abc" } }],
+        ["an upper-case sha256", { ...LESSON, source: { ...LESSON.source, sha256: "E".repeat(64) } }],
+        ["a short commit", { ...LESSON, source: { ...LESSON.source, commit: "abc" } }],
+        ["a git clone repo instead of a source", { ...LESSON, source: undefined, repo: LESSON.source }],
         ["a compose folder above the repo", { ...LESSON, compose: "../x" }],
         ["an absolute dir", { ...LESSON, dir: "/etc" }],
         ["a project name with spaces", { ...LESSON, project: "a b" }],
@@ -59,6 +64,12 @@ describe("lessonOf", () => {
         ],
     ])("rejects %s", (_name, payload) => {
         expect(lessonOf(payload)).toBeNull()
+    })
+
+    it("reads a source path on StarCi's own origin", () => {
+        expect(
+            lessonOf({ ...LESSON, source: { ...LESSON.source, url: "/api/relay/lessons/outbox/source.tgz" } }),
+        ).not.toBeNull()
     })
 
     it("reads the hidden scenarios of a challenge tier with their files", () => {

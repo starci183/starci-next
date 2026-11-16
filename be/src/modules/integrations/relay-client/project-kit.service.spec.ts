@@ -90,6 +90,7 @@ const worldOf = async (manifest: FetchAnswer, setup: Setup = {}) => {
             STARCI_NEXT_MANIFEST_KEY: PUBLIC_PEM,
             ...setup.env,
         },
+        download: () => Promise.resolve({ status: 0, bytes: Buffer.alloc(0) }),
         out: (line) => out.push(line),
         err: (line) => err.push(line),
         fetch: (_url: string, init: FetchInit) => {

@@ -1,9 +1,15 @@
 import { join } from "node:path"
-import type { CliIo, PendingUpload } from "./relay-client.contracts"
+import type { CheckRun, CliIo, PendingUpload } from "./relay-client.contracts"
 import type { LastRun, LessonRunOptions, LessonScenario, LessonSection } from "./lesson.contracts"
 import { fixPromptOf } from "./lesson-prompt.policy"
 import {
+    ARCHIVE_NAME,
     collides,
+    dropArchive,
+    excludeFromGit,
+    makeFolder,
+    removeFolder,
+    writeArchive,
     hasFolder,
     lessonRootOf,
     place,
@@ -16,6 +22,7 @@ import {
     writeState,
 } from "./lesson-files.adapter"
 import { isLessonId } from "./lesson.policy"
+import { ARCHIVE_MAX_BYTES, archiveRefusal, hashHolds } from "./source-archive.policy"
 import {
     ledgerLinesOf,
     ledgerTextOf,
@@ -77,7 +84,18 @@ const fetchLesson = async (
     return { kind: "lesson", session, manifestId: fetched.manifest.manifestId, lesson }
 }
 
-/** `starci-next pull <lesson> [--lang typescript]`: clones the lesson repo at the signed commit and marks the folder. */
+/** The URL the tarball is fetched from and whether StarCi's own bearer goes with it: a path is StarCi's own endpoint, an https URL is a signed one. */
+const sourceUrlOf = (
+    url: string,
+    session: RelaySession,
+): { readonly url: string; readonly bearer: string | undefined } =>
+    url.startsWith("/") ? { url: `${session.baseUrl}${url}`, bearer: session.token } : { url, bearer: undefined }
+
+/**
+ * `starci-next pull <lesson> [--lang typescript]`: downloads the tarball of the lesson's `source/` that StarCi signed, checks its
+ * sha256 and its listing (no link, no path above the folder, nothing from `hidden/`), unpacks it into `./<lesson>` and makes it a
+ * git repository with one initial commit, so the learner can push it to their own GitHub for CI proof.
+ */
 export const pullLesson = async (
     io: CliIo,
     lessonId: string,
@@ -89,27 +107,76 @@ export const pullLesson = async (
         return 1
     }
     if (lang !== undefined && lang !== LANGUAGE) {
-        io.err(`Lesson repos are ${LANGUAGE} only; --lang ${lang} is not available.`)
+        io.err(`Lesson sources are ${LANGUAGE} only; --lang ${lang} is not available.`)
         return 1
     }
     const got = await fetchLesson(io, lessonId, {})
     if (got.kind === "failed") return 1
-    const { repo, dir, compose, project } = got.lesson
+    const { source, dir, compose, project } = got.lesson
     const target = join(cwd, lessonId)
-    const git = async (command: string, where: string): Promise<boolean> =>
-        (await io.runCommand(command, where, STEP_TIMEOUT_MS)).exitCode === 0
-    const cloned = hasFolder(target) || (await git(`git clone ${repo.url} ${lessonId}`, cwd))
-    const fetchedAll = !hasFolder(join(target, ".git")) || (await git("git fetch --all --quiet", target))
-    if (!cloned || !fetchedAll || !(await git(`git checkout --detach ${repo.commit}`, target))) {
-        io.err(`Could not get ${repo.url} at ${repo.commit.slice(0, 10)}.`)
+    if (hasFolder(target)) {
+        const had = readState(target)
+        io.out(
+            had?.sha256 === source.sha256
+                ? `Lesson ${lessonId} is already in ./${lessonId} at ${source.commit.slice(0, 10)}.`
+                : `./${lessonId} already exists and is not this source; move it away and pull again.`,
+        )
+        return had?.sha256 === source.sha256 ? 0 : 1
+    }
+    const from = sourceUrlOf(source.url, got.session)
+    const answer = await io.download(from.url, from.bearer)
+    if (answer.status !== 200) {
+        io.err(
+            answer.status === 0
+                ? "StarCi could not be reached."
+                : `The lesson source was refused (HTTP ${answer.status}).`,
+        )
         return 1
     }
-    if (!hasFolder(join(target, dir))) {
-        io.err(`The repo has no folder ${dir}; nothing was selected.`)
+    if (
+        answer.bytes.length === 0 ||
+        answer.bytes.length > ARCHIVE_MAX_BYTES ||
+        !hashHolds(answer.bytes, source.sha256)
+    ) {
+        io.err("The downloaded source does not match the sha256 StarCi signed; nothing was unpacked.")
         return 1
     }
-    writeState(target, { lessonId, commit: repo.commit, dir, compose, project })
-    io.out(`Lesson ${lessonId} is in ./${lessonId} at ${repo.commit.slice(0, 10)}, signed by StarCi.`)
+    makeFolder(target)
+    const failed = async (line: string): Promise<number> => {
+        removeFolder(target)
+        io.err(line)
+        return 1
+    }
+    const step = async (command: string): Promise<CheckRun> =>
+        io.runCommand(command, target, STEP_TIMEOUT_MS, undefined, true)
+    writeArchive(target, answer.bytes)
+    const names = await step(`tar -tzf ${ARCHIVE_NAME}`)
+    const types = await step(`tar -tvzf ${ARCHIVE_NAME}`)
+    const refusal =
+        names.exitCode === 0 && types.exitCode === 0
+            ? archiveRefusal(names.output, types.output)
+            : "tar could not read it"
+    if (refusal !== null) return failed(`Not unpacked: ${refusal}.`)
+    if ((await step(`tar -xzf ${ARCHIVE_NAME}`)).exitCode !== 0)
+        return failed("tar could not unpack the lesson source.")
+    dropArchive(target)
+    if (!hasFolder(join(target, dir))) return failed(`The source has no folder ${dir}; nothing was selected.`)
+    const message = `"Lesson ${lessonId} source at ${source.commit.slice(0, 10)}"`
+    const git = [
+        "git init -q -b main",
+        "git add -A",
+        `git -c user.name=starci-next -c user.email=starci-next@users.noreply.invalid commit -q -m ${message}`,
+    ]
+    const committed = await git.reduce(
+        async (ok, command) => (await ok) && (await step(command)).exitCode === 0,
+        Promise.resolve(true),
+    )
+    if (!committed) return failed("git could not make the first commit; is git installed?")
+    excludeFromGit(target)
+    writeState(target, { lessonId, commit: source.commit, sha256: source.sha256, dir, compose, project })
+    io.out(
+        `Lesson ${lessonId} is in ./${lessonId} (source at ${source.commit.slice(0, 10)}, sha256 verified), one initial commit.`,
+    )
     io.out(`Next: cd ${lessonId} && starci-next up`)
     return 0
 }
@@ -205,7 +272,7 @@ const runScenario = async (
                           passed: result.passed && run.exitCode === 0,
                           exitCode: run.exitCode,
                           durationMs: run.durationMs,
-                          commit: lesson.repo.commit,
+                          commit: lesson.source.commit,
                           lessonId: lesson.lessonId,
                           scenarioId: scenario.id,
                           concepts: result.concepts,

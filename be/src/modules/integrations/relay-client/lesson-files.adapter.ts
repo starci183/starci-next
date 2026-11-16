@@ -1,7 +1,44 @@
-import { existsSync, mkdirSync, readFileSync, rmSync, rmdirSync, statSync, writeFileSync } from "node:fs"
+import {
+    appendFileSync,
+    existsSync,
+    mkdirSync,
+    readFileSync,
+    rmSync,
+    rmdirSync,
+    statSync,
+    writeFileSync,
+} from "node:fs"
 import { dirname, join } from "node:path"
 import type { HiddenFile, LastRun, LessonState } from "./lesson.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
+
+/** The tarball's name inside the folder it is unpacked into; relative, so `tar` never reads a drive letter as a host. */
+export const ARCHIVE_NAME = ".starci-source.tar.gz"
+
+/** Writes the downloaded bytes into the folder, private to this user. */
+export const writeArchive = (folder: string, bytes: Buffer): void => {
+    writeFileSync(join(folder, ARCHIVE_NAME), bytes, { mode: 0o600 })
+}
+
+/** Removes the tarball once it is unpacked. */
+export const dropArchive = (folder: string): void => {
+    rmSync(join(folder, ARCHIVE_NAME), { force: true })
+}
+
+/** Keeps StarCi's own files out of the learner's git history: the lesson marker and the last-run notes. */
+export const excludeFromGit = (folder: string): void => {
+    appendFileSync(join(folder, ".git", "info", "exclude"), `${STATE_FILE}\n${LAST_DIR}/\n`)
+}
+
+/** Makes the folder the lesson is unpacked into. */
+export const makeFolder = (path: string): void => {
+    mkdirSync(path, { recursive: true })
+}
+
+/** Removes a folder the CLI made. */
+export const removeFolder = (path: string): void => {
+    rmSync(path, { recursive: true, force: true })
+}
 
 /** The marker `pull` leaves in the repo folder. */
 export const STATE_FILE = ".starci-lesson.json"
@@ -19,9 +56,9 @@ export const readState = (folder: string): LessonState | null => {
     if (!existsSync(path)) return null
     const read = jsonOf(readFileSync(path, "utf8"))
     if (read.kind !== "read" || !isRecord(read.value)) return null
-    const { lessonId, commit, dir, compose, project } = read.value
-    return [lessonId, commit, dir, compose, project].every((item) => typeof item === "string")
-        ? ({ lessonId, commit, dir, compose, project } as LessonState)
+    const { lessonId, commit, sha256, dir, compose, project } = read.value
+    return [lessonId, commit, sha256, dir, compose, project].every((item) => typeof item === "string")
+        ? ({ lessonId, commit, sha256, dir, compose, project } as LessonState)
         : null
 }
 

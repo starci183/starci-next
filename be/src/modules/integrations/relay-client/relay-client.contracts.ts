@@ -58,6 +58,11 @@ export interface CliIo {
     readonly confirm: (question: string) => Promise<boolean>
     /** Sets the exit code of this process, which ends with it once the command returns. */
     readonly exit: (code: number) => void
+    /** Downloads the bytes behind a signed URL with a GET; the bearer goes only to StarCi's own origin. It never rejects: status 0 means no answer. */
+    readonly download: (
+        url: string,
+        bearer: string | undefined,
+    ) => Promise<{ readonly status: number; readonly bytes: Buffer }>
     /** Verifies a signed manifest payload with the StarCi public key (PEM). */
     readonly verify: (payload: string, signature: string, publicKeyPem: string) => ManifestRead
     /** Runs one shown and confirmed command in a folder of the task workspace, stopped after its timeout. */
@@ -66,6 +71,7 @@ export interface CliIo {
         cwd: string,
         timeoutMs: number,
         env?: Readonly<Record<string, string>>,
+        quiet?: boolean,
     ) => Promise<CheckRun>
 }
 
