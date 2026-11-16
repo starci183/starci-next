@@ -1,3 +1,5 @@
+"use client"
+
 import type { IconSourceProps } from "@starci/grammar/common"
 import {
     AcademicCapIcon,

@@ -6,7 +6,7 @@ export type PracticeCatalogView = PracticeBrowseView
 
 /** The fake catalog with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PRACTICE_CATALOG_PLACEHOLDER: PracticeCatalogView = {
-    lines: ["xxxxxxxxxxxxxx", "xxxxxxxxxxxxxx"],
+    lines: ["xxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxx"],
     rows: [1, 2, 3, 4, 5].map((index) => ({
         id: `placeholder-${index}`,
         title: "xxxxxxxxxx",

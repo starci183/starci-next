@@ -9,8 +9,8 @@ import { VERIFICATION_PLACEHOLDER, VerifyExperienceBase } from "./component"
 /** What the route hands the block: the public code of the address. */
 type VerifyExperienceProps = { readonly code: string }
 
-/** The code a door answers for a code StarCi never verified. */
-const NOT_FOUND = "CAREER_ITEM_NOT_FOUND"
+/** The codes a door answers for a code StarCi never verified: an unknown one, and one that is not three groups of four letters and digits. */
+const NOT_FOUND_CODES: ReadonlySet<string> = new Set(["CAREER_ITEM_NOT_FOUND", "HTTP_SECURITY_REQUEST_INVALID"])
 
 /** The public verification page: reads one code without a session and words the signed line, the role and the date. */
 export const VerifyExperience = (props: VerifyExperienceProps) => {
@@ -18,7 +18,7 @@ export const VerifyExperience = (props: VerifyExperienceProps) => {
     const words = useExperienceWords()
     const code = decodeURIComponent(props.code)
     const read = useQueryVerifyExperienceSwr(code)
-    const isNotFound = read.error !== undefined && failureCodeOf(read.error) === NOT_FOUND
+    const isNotFound = read.error !== undefined && NOT_FOUND_CODES.has(failureCodeOf(read.error))
     return (
         <VerifyExperienceBase
             shape={isNotFound ? "notFound" : "read"}

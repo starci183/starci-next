@@ -27,7 +27,7 @@ export const PATHS_PLACEHOLDER: PathsScreenView = {
         title: "xxxxxxxxxx",
         pitch: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
         done: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        parts: ["xxxxxx", "xxxxxx", "xxxxxx"],
+        parts: ["xxxxxx", "xxxxxxx", "xxxxxxxx"],
         meta: "xxxxxxxxxxxx",
         isCurrent: false,
     })),

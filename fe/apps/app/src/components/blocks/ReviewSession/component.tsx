@@ -16,7 +16,7 @@ export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
     lessonLine: undefined,
     question: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     level: "xxxxxx",
-    tags: ["xxxxxx", "xxxxxx"],
+    tags: ["xxxxxx", "xxxxxxx"],
     cloze: [],
     note: "",
     isFlipping: false,

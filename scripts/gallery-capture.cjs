@@ -11,7 +11,11 @@ const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra 
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
+    S("auth", "sign-in-callback", "/sign-in/callback", { guest: true }),
+    S("auth", "verify", "/verify/ABCD-2345-WXYZ", { guest: true }),
+    S("landing", "home", "/", { guest: true, origin: "http://localhost:3002" }),
     S("learn", "home", "/"),
+    S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
     S("paths", "choose", "/paths/choose"),
     S("essentials", "catalog", "/essentials"),
     S("essentials", "topic", "/essentials/backend-framework"),
@@ -25,42 +29,32 @@ const SCREENS = [
     S("essentials", "topic-databases", "/essentials/databases"),
     S("essentials", "topic-api-reliability", "/essentials/api-reliability"),
     S("essentials", "topic-kubernetes", "/essentials/kubernetes"),
-    S("essentials", "lesson-transactions", "/essentials/databases/transactions-and-isolation"),
-    S("essentials", "lesson-indexing", "/essentials/databases/indexing-and-query-plans"),
-    S("essentials", "lesson-indexing-apply", "/essentials/databases/indexing-and-query-plans?phase=apply"),
-    S("essentials", "lesson-idempotency", "/essentials/api-reliability/idempotency"),
     S("essentials", "lesson-idempotency-apply", "/essentials/api-reliability/idempotency?phase=apply"),
     S("essentials", "lesson-idempotency-challenge", "/essentials/api-reliability/idempotency?phase=challenge"),
     S("essentials", "lesson-idempotency-predict", "/essentials/api-reliability/idempotency?phase=predict"),
     S("essentials", "lesson-idempotency-explore", "/essentials/api-reliability/idempotency?phase=explore"),
     S("essentials", "lesson-idempotency-explain", "/essentials/api-reliability/idempotency?phase=explain"),
     S("essentials", "lesson-idempotency-reflect", "/essentials/api-reliability/idempotency?phase=reflect"),
-    S("essentials", "lesson-idempotency-apply-java", "/essentials/api-reliability/idempotency?phase=apply", {
-        click: "Java",
-    }),
     S("review", "hub", "/review"),
     S("review", "decks", "/review/decks"),
     S("review", "session", "/review/session"),
     S("practice", "list", "/practice"),
-    S("practice", "problem", { from: "/practice", match: /^\/practice\/(?!patterns)[^/]+$/ }),
-    S("practice", "pattern", { from: "/practice", match: /^\/practice\/patterns\/[^/]+$/ }),
+    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S("practice", "pattern", "/practice/patterns/arrays"),
     S("incidents", "list", "/incidents"),
     S("interview", "start", "/interview"),
     S("interview", "session", { from: "/interview", match: /^\/interview\/[^/]+$/ }),
-    S("interview", "report", { from: "/interview", match: /^\/interview\/[^/]+\/report$/ }),
+    S("interview", "report", { from: "interview/session", append: "/report" }),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
-    S("projects", "detail", { from: "/projects", match: /^\/projects\/(?!new)[^/]+$/ }),
-    S("projects", "detail-demo", "/projects/912e8d04-8e15-48bf-9af1-56553e4822ea"),
-    S("projects", "milestone-data-and-cache", "/projects/912e8d04-8e15-48bf-9af1-56553e4822ea/bf-data-and-cache"),
-    S("projects", "milestone-safe-and-reliable", "/projects/912e8d04-8e15-48bf-9af1-56553e4822ea/bf-safe-and-reliable"),
-    S("projects", "milestone", { from: "projects/detail", append: "/bf-http-foundation" }),
+    S("projects", "detail", "/projects/912e8d04-8e15-48bf-9af1-56553e4822ea"),
+    S("projects", "milestone", "/projects/912e8d04-8e15-48bf-9af1-56553e4822ea/bf-data-and-cache"),
     S("agents", "catalog", "/agents"),
-    S("agents", "track", { from: "/agents", match: /^\/agents\/tracks\/[^/]+$/ }),
+    S("agents", "track", "/agents/tracks/claude"),
     S("career", "experience", "/experience"),
     S("career", "profile", "/profile"),
     S("career", "review-queue", "/review-queue"),
-    S("career", "review-item", { from: "/review-queue", match: /^\/review-queue\/[^/]+$/ }),
+    S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
     S("commerce", "premium", "/premium"),
     S("commerce", "premium-result", "/premium/result"),
     S("devices", "list", "/devices"),
@@ -92,6 +86,7 @@ const norm = (href) => {
     const resolved = {},
         report = []
     for (const s of SCREENS) {
+        if (process.env.ONLY_SCREENS && !process.env.ONLY_SCREENS.split(",").includes(s.area + "/" + s.screen)) continue
         if (only && s.area !== only) continue
         if (onlyScreen && !s.screen.startsWith(onlyScreen)) continue
         let route = s.route
@@ -138,8 +133,16 @@ const norm = (href) => {
                     (w === 390 ? 844 : w === 1920 ? 1080 : w === 2560 ? 1440 : 900),
             })
             const res = await p
-                .goto(ENTRY + route, { waitUntil: "load" })
+                .goto((s.origin || ENTRY) + route, { waitUntil: "load" })
                 .catch((e) => ({ status: () => String(e.message).slice(0, 60) }))
+            if (s.clickSel) {
+                await p
+                    .locator(s.clickSel)
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(800)
+            }
             if (s.click) {
                 await p
                     .getByText(s.click, { exact: true })
@@ -148,10 +151,10 @@ const norm = (href) => {
                     .catch(() => {})
                 await p.waitForTimeout(800)
             }
-            await p.waitForTimeout(1200)
-            if (w === 390) {
-                // The shell is one viewport tall and its main area scrolls once (stacked panes grow, Grammar 0.37.14): grow the viewport by what any scroller still holds beyond its box (up to 4 passes, the layout settles between them) so the shot shows the whole page.
-                let height = 844
+            await p.waitForTimeout(Number(process.env.CAPTURE_SETTLE) || 2500)
+            {
+                // The shell is one viewport tall and its panes scroll on their own (stacked panes grow on a phone, Grammar 0.37.14): grow the viewport by what any scroller still holds beyond its box (up to 4 passes, the layout settles between them) so the shot shows the whole page.
+                let height = Number(process.env.CAPTURE_HEIGHT) || (w === 1920 ? 1080 : w === 390 ? 844 : 900)
                 for (let pass = 0; pass < 4; pass++) {
                     // next dev may reload the page (a late compile): wait for it to settle and measure again instead of failing the run.
                     const extra = await p
@@ -173,6 +176,8 @@ const norm = (href) => {
                     await p.waitForTimeout(700)
                 }
             }
+            // The Next dev indicator (the round N badge) is not part of any screen.
+            await p.addStyleTag({ content: "nextjs-portal{display:none!important}" }).catch(() => {})
             await p.screenshot({ path: path.join(dir, `${w}.png`), fullPage: true })
             if (w === 1440) report.push(`${s.area}/${s.screen}: ${route} -> ${res?.status?.()} final ${norm(p.url())}`)
             await p.close()

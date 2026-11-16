@@ -17,7 +17,7 @@ import type { DataSlot, ExperienceCardView, ExperienceListView, SlotLabels } fro
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const EXPERIENCE_PLACEHOLDER: ExperienceListView = {
     facts: ["xxxxxx"],
-    flow: ["xxxxxx", "xxxxxx", "xxxxxx", "xxxxxx"],
+    flow: ["xxxxxx", "xxxxxxx", "xxxxxxxx", "xxxxxxxxx"],
     tabs: [{ id: "all", label: "xxxxxx", count: 0 }],
     cards: [1, 2].map((index) => ({
         itemId: `placeholder-${index}`,
