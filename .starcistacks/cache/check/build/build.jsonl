@@ -1,6 +1,3 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"e5e4e165d95d340fc17c2c9acd7abedfce5de651cc2982905bab39203c2f81df","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"9f2af8206ae125001f5f596a667cdb89a7ca09101c3b211097d8bde8a22ee7ab","path":"build/build fe app","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"64dbdd08c06b91e9f0bf7e3d50316058959feb8fac254db29befb20113815141","path":"build/build fe landing","step":"ci-step"}
 {"data":{"verdict":"green"},"findings":[],"hash":"56778545d38233365e74f3c7910f507a57bb2a33de540ac85a674b65431ac9bd","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"def4186ecadfe00369cc13d6b8705f9787478c5db4bb52362d4fa9c6fd956b38","path":"build/build fe app","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"035d3be5decac1cad33e2d49dc6f656474d8e7ed51ebf8541cf2f62df068b4ff","path":"build/build fe landing","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"bf3db693d302499d0597bef12498c88081c5dd57529ad1be7954418e378bd121","path":"build/build fe app","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"4ab515eeb648c4c07ed1e4f1eb6e3a91034da706fd4114e0c62180bf062bb908","path":"build/build fe landing","step":"ci-step"}
