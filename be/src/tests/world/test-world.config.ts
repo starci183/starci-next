@@ -9,6 +9,7 @@ import { oidcIssuerFake } from "./fakes/oidc-issuer/oidc-issuer.client"
 import { openrouterFake } from "./fakes/openrouter/openrouter.client"
 import { payosFake } from "./fakes/payos/payos.client"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
+import { WORLD_BUCKET } from "./object-storage-world.options"
 import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
 
 const world: TestWorldApi = defineTestWorld({
@@ -16,6 +17,7 @@ const world: TestWorldApi = defineTestWorld({
     stacks: {
         postgresql: { connections: [{ name: "primary" }] },
         mail: {},
+        minio: { buckets: [WORLD_BUCKET] },
     },
     fakes: { idp: oidcIssuerFake(), payos: payosFake(), openrouter: openrouterFake(), judge0: judge0Fake() },
     apps: {
