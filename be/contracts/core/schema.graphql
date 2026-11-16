@@ -706,6 +706,7 @@ type LessonEssentialType {
   codeWalk: [LessonCodeWalkType!]!
   invariants: [LessonStatementType!]!
   isLocked: Boolean!
+  lockedParts: [String!]!
   opener: [LessonQuestionType!]!
   scenarios: [LessonScenarioType!]!
   source: LessonSourceType

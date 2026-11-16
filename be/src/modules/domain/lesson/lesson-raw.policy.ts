@@ -154,15 +154,18 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
     })
 }
 
-/** The scenarios of `scenarios.yaml`, in teaching order; the brief is also the fault the page shows. */
-const scenariosOf = (doc: Record<string, unknown>): Array<LessonScenario> =>
+/**
+ * The scenarios of `scenarios.yaml`, in teaching order; the brief is also the fault the page shows. `expected` (what a correct
+ * system prints, one text or `{ vi, en }`) and `invariant` (the id of the rule the scenario judges) are read when the file has them.
+ */
+const scenariosOf = (doc: Record<string, unknown>, locale: LessonLocale): Array<LessonScenario> =>
     recordsOf(doc.scenarios).map((scenario) => ({
         id: stringOf(scenario.id),
         title: stringOf(scenario.title),
         fault: stringOf(scenario.brief),
         brief: stringOf(scenario.brief),
         command: stringOf(scenario.command),
-        expected: stringOf(scenario.expected),
+        expected: textOf(scenario.expected as Localized, locale),
         invariant: stringOf(scenario.invariant),
         concepts: stringsOf(scenario.concepts),
         ...(typeof scenario.cwd === "string" ? { cwd: scenario.cwd } : {}),
@@ -195,7 +198,8 @@ const hiddenOf = (
             title: textOf(hidden.brief as Localized, locale),
             brief: textOf(hidden.brief as Localized, locale),
             concepts: stringsOf(hidden.concepts),
-            command: `npm test -- --scenario ${id}`,
+            // The command the ladder names (`command` of the hidden scenario) wins; without one it is the runner's own form.
+            command: stringOf(hidden.command) === "" ? `npm test -- --scenario ${id}` : stringOf(hidden.command),
             ...(file === "" || writeTo === "" || index > 0 ? {} : { files: [{ path: writeTo, from: file }] }),
         }
     })
@@ -289,7 +293,7 @@ const essentialOf = (
         invariants: Object.entries(invariants).map(([id, text]) => ({ id, text: stringOf(text) })),
         architecture: null,
         codeWalk: [],
-        scenarios: scenariosOf(scenarios),
+        scenarios: scenariosOf(scenarios, locale),
         challenges:
             ladder === null
                 ? []

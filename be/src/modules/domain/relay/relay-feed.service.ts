@@ -10,7 +10,7 @@ import type { RelayOptions } from "./relay.options"
 import type { DevicePrincipal } from "./relay.contracts"
 import { milestoneOf } from "@modules/domain/project"
 import { LessonContentService, LessonSourceService, type LessonSourcePack } from "@modules/domain/lesson"
-import { RelayLessonService } from "./relay-lesson.service"
+import { RelayLessonService, type LessonScenarioRunView } from "./relay-lesson.service"
 import {
     LESSON_SOURCE_MAX_BYTES,
     lessonIdOfTask,
@@ -112,7 +112,13 @@ export class RelayFeedService {
         }
         if (this.content === undefined || this.lessons === undefined)
             throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
-        await this.content.requireAccess({ learnerId: device.learnerId, phase: "apply", isPremium: undefined })
+        // A challenge run is Tự áp dụng; any other lesson run (the scenarios and the lesson section) is Kịch bản.
+        await this.content.requireAccess({
+            learnerId: device.learnerId,
+            phase: "apply",
+            isPremium: undefined,
+            part: request?.challenge === undefined ? "3-scenarios" : "4-apply",
+        })
         const stored = await this.content.runnable(lessonId)
         if (stored === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
         const below = request?.challenge === undefined ? null : tierBelow(request.challenge)
@@ -148,10 +154,33 @@ export class RelayFeedService {
         if (!/^[a-z0-9-]{1,100}$/u.test(lessonId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
         if (this.content === undefined || this.sources === undefined)
             throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
-        await this.content.requireAccess({ learnerId: device.learnerId, phase: "apply", isPremium: undefined })
+        await this.content.requireAccess({
+            learnerId: device.learnerId,
+            phase: "apply",
+            isPremium: undefined,
+            part: "2-source",
+        })
         const pack = await this.sources.archive(lessonId)
         if (pack === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
         return pack
+    }
+
+    /**
+     * The newest relayed run of each scenario and challenge tier of a lesson, for the learner who asks. Scenario runs are Kịch bản
+     * and challenge runs Tự áp dụng: a learner who may read neither part is refused (never an empty answer that hides the lock),
+     * and one who may read only one part gets only that part's runs.
+     */
+    async lessonRuns(learnerId: string, lessonId: string): Promise<ReadonlyArray<LessonScenarioRunView>> {
+        if (this.content === undefined || this.lessons === undefined)
+            throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
+        const [scenarios, challenges] = await Promise.all([
+            this.content.mayReadPart(learnerId, "3-scenarios"),
+            this.content.mayReadPart(learnerId, "4-apply"),
+        ])
+        if (!scenarios && !challenges)
+            await this.content.requireAccess({ learnerId, phase: "apply", isPremium: undefined, part: "3-scenarios" })
+        const runs = await this.lessons.runs(learnerId, lessonId)
+        return runs.filter((run) => (run.challengeTier === null ? scenarios : challenges))
     }
 
     /**
@@ -161,6 +190,12 @@ export class RelayFeedService {
     async scenarioManifest(device: DevicePrincipal, request: ScenarioRunRequest): Promise<SignedManifest> {
         const check = scenarioCheckOf(request)
         if (check === null) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        await this.content?.requireAccess({
+            learnerId: device.learnerId,
+            phase: "apply",
+            isPremium: undefined,
+            part: "3-scenarios",
+        })
         const issuedAt = this.clock.now().toISOString()
         const signed = signManifest(
             {

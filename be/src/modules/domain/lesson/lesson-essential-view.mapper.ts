@@ -1,3 +1,4 @@
+import { lockedEssentialPartsOf, type EssentialPart } from "@modules/domain/entitlement"
 import {
     challengeActivityId,
     choiceOptionId,
@@ -19,38 +20,36 @@ const toQuestionView = (question: LessonOpenerQuestion, activityId: string): Les
 })
 
 /**
- * The public projection of the four-part fields: an explicit allowlist like the rest of the lesson view. The opener is free;
- * the source, the code walk, the scenarios and the challenges are emptied while the learner lacks Premium. Null for a lesson
+ * The public projection of the four-part fields: an explicit allowlist like the rest of the lesson view. Each part is filled
+ * only when the learner may read it (`open`, from the entitlement setting; by default Bản chất, the opener, is the one free
+ * part). A part the learner may not read is empty and named in `lockedParts`, so its payload is never sent. Null for a lesson
  * written before the four parts.
  */
 export const toEssentialView = (
     essential: LessonEssential | undefined,
-    isPremium: boolean,
+    open: ReadonlyArray<EssentialPart>,
 ): LessonEssentialView | null => {
     if (essential === undefined) return null
-    const opener = essential.opener.map((question) => toQuestionView(question, openerActivityId(question.id)))
-    if (!isPremium) {
-        return {
-            isLocked: true,
-            opener,
-            source: null,
-            invariants: [],
-            architecture: null,
-            codeWalk: [],
-            scenarios: [],
-            challenges: [],
-        }
-    }
+    const has = (part: EssentialPart): boolean => open.includes(part)
+    const lockedParts = lockedEssentialPartsOf(open)
+    const opener = has("1-essential")
+        ? essential.opener.map((question) => toQuestionView(question, openerActivityId(question.id)))
+        : []
+    // The invariants are the rules Source and Kịch bản both name; either part opens them.
+    const showRules = has("2-source") || has("3-scenarios")
     return {
-        isLocked: false,
+        isLocked: lockedParts.length > 0,
+        lockedParts,
         opener,
         source:
-            essential.source === null
+            !has("2-source") || essential.source === null
                 ? null
                 : { langs: [...essential.source.langs], ref: essential.source.ref ?? null },
-        invariants: essential.invariants.map((invariant) => ({ id: invariant.id, text: invariant.text })),
+        invariants: showRules
+            ? essential.invariants.map((invariant) => ({ id: invariant.id, text: invariant.text }))
+            : [],
         architecture:
-            essential.architecture === null
+            !has("2-source") || essential.architecture === null
                 ? null
                 : {
                       diagram: essential.architecture.diagram,
@@ -61,40 +60,46 @@ export const toEssentialView = (
                           invariants: [...component.invariants],
                       })),
                   },
-        codeWalk: essential.codeWalk.map((entry) => ({
-            id: entry.id,
-            title: entry.title,
-            invariant: entry.invariant,
-            file: entry.file,
-            line: entry.line,
-            snippet: entry.snippet,
-            why: entry.why ?? null,
-        })),
-        scenarios: essential.scenarios.map((scenario) => ({
-            id: scenario.id,
-            title: scenario.title,
-            fault: scenario.fault,
-            command: scenario.command,
-            expected: scenario.expected,
-            invariant: scenario.invariant,
-            guards: scenario.guards.map((guard) => guard.name),
-            hint: scenario.hint ?? null,
-        })),
-        challenges: essential.challenges.map((challenge) => ({
-            id: challenge.id,
-            level: challenge.level,
-            title: challenge.title,
-            brief: challenge.brief,
-            rubric: challenge.rubric.map((criterion) => ({
-                id: criterion.id,
-                criterion: criterion.criterion,
-                points: criterion.points,
-                isCritical: criterion.isCritical === true,
-            })),
-            hiddenScenarios: challenge.hidden?.length ?? challenge.hiddenScenarios ?? 0,
-            questions: (challenge.questions ?? []).map((question) =>
-                toQuestionView(question, challengeActivityId(challenge.id, question.id)),
-            ),
-        })),
+        codeWalk: has("2-source")
+            ? essential.codeWalk.map((entry) => ({
+                  id: entry.id,
+                  title: entry.title,
+                  invariant: entry.invariant,
+                  file: entry.file,
+                  line: entry.line,
+                  snippet: entry.snippet,
+                  why: entry.why ?? null,
+              }))
+            : [],
+        scenarios: has("3-scenarios")
+            ? essential.scenarios.map((scenario) => ({
+                  id: scenario.id,
+                  title: scenario.title,
+                  fault: scenario.fault,
+                  command: scenario.command,
+                  expected: scenario.expected,
+                  invariant: scenario.invariant,
+                  guards: scenario.guards.map((guard) => guard.name),
+                  hint: scenario.hint ?? null,
+              }))
+            : [],
+        challenges: has("4-apply")
+            ? essential.challenges.map((challenge) => ({
+                  id: challenge.id,
+                  level: challenge.level,
+                  title: challenge.title,
+                  brief: challenge.brief,
+                  rubric: challenge.rubric.map((criterion) => ({
+                      id: criterion.id,
+                      criterion: criterion.criterion,
+                      points: criterion.points,
+                      isCritical: criterion.isCritical === true,
+                  })),
+                  hiddenScenarios: challenge.hidden?.length ?? challenge.hiddenScenarios ?? 0,
+                  questions: (challenge.questions ?? []).map((question) =>
+                      toQuestionView(question, challengeActivityId(challenge.id, question.id)),
+                  ),
+              }))
+            : [],
     }
 }
