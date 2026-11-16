@@ -1,4 +1,5 @@
 import type { ConfigEnv } from "./relay-client.config"
+import type { LessonSection } from "./lesson.contracts"
 
 /** One request the CLI makes: always a JSON POST to a StarCi door. */
 export interface FetchInit {
@@ -60,7 +61,12 @@ export interface CliIo {
     /** Verifies a signed manifest payload with the StarCi public key (PEM). */
     readonly verify: (payload: string, signature: string, publicKeyPem: string) => ManifestRead
     /** Runs one shown and confirmed command in a folder of the task workspace, stopped after its timeout. */
-    readonly runCommand: (command: string, cwd: string, timeoutMs: number) => Promise<CheckRun>
+    readonly runCommand: (
+        command: string,
+        cwd: string,
+        timeoutMs: number,
+        env?: Readonly<Record<string, string>>,
+    ) => Promise<CheckRun>
 }
 
 /** The machine a pairing is started for. */
@@ -147,6 +153,8 @@ export interface VerifiedManifest {
     readonly checks: ReadonlyArray<ManifestCheck>
     /** The plan of a project run, absent for a plain task. */
     readonly plan?: ManifestPlan
+    /** The lesson of a lesson ask (pull, run, check, prompt), absent for a plain task. */
+    readonly lesson?: LessonSection
 }
 
 /** What verifying a manifest answered: the verified body, or why it was rejected. */
