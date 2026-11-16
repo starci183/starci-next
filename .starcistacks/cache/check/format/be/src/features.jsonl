@@ -994,6 +994,10 @@
 {"findings":[],"hash":"17f8e3f00a85e472cdd8f3c30b42f1ef500248309303a177ab3510e2c180e2a1","path":"be/src/features/client-cli/relay-cli/check/check.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"9aea80d27d0f017428601aab115d2e1e84659e1fc69615d6a17876a9fabcfd82","path":"be/src/features/client-cli/relay-cli/check/check.module.ts","step":"prettier"}
 {"findings":[],"hash":"9cca97d8f5b0125bcfc9a5328c178e83395a12648b3bd647bc6ff76906a6415a","path":"be/src/features/client-cli/relay-cli/check/check.options.ts","step":"prettier"}
+{"findings":[],"hash":"335549b87a52de3dd47f62af8b470030cc3c06076f387423a382809757f8c964","path":"be/src/features/client-cli/relay-cli/ci-report/ci-report.cli.ts","step":"prettier"}
+{"findings":[],"hash":"788f5dfa2f9773fc10370f333b93c47bdde17b4468d019a5ab9b9acf5ce962c3","path":"be/src/features/client-cli/relay-cli/ci-report/ci-report.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"8325b9d9eff0397ab4ef6a27ee018dfcbf109bf9ae01f8e562314055a185ce67","path":"be/src/features/client-cli/relay-cli/ci-report/ci-report.module.ts","step":"prettier"}
+{"findings":[],"hash":"d579e96c83204933810b3bdad67a48a16b964a972a66cb124f1d980c9c398aa1","path":"be/src/features/client-cli/relay-cli/ci-report/ci-report.options.ts","step":"prettier"}
 {"findings":[],"hash":"540e73c40f2a83919f7d8e2bd30768517636e86735c4972ee7c23f9657a90149","path":"be/src/features/client-cli/relay-cli/devices/devices.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"f7cfc054f23befbb758c5a1cb28110e27ced8cedabdae603ff4f9ad8f8d69f48","path":"be/src/features/client-cli/relay-cli/devices/devices.cli.ts","step":"prettier"}
 {"findings":[],"hash":"a9f0b5468ef7e1e52953418320a63be8ff8e33ebf59f06395d5d9df44de60c38","path":"be/src/features/client-cli/relay-cli/devices/devices.module-definition.ts","step":"prettier"}
@@ -1003,9 +1007,17 @@
 {"findings":[],"hash":"279b1ac39bc34ca08a3e98fae2f6c7f47f1c29f0e03bbce8ee7d9b8fdd1add86","path":"be/src/features/client-cli/relay-cli/down/down.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"1f4909c75035a91ae36ebd7b781d7381f426aabed3c9843b06a08ea94ffc5547","path":"be/src/features/client-cli/relay-cli/down/down.module.ts","step":"prettier"}
 {"findings":[],"hash":"ab4b9ee1bf06eef17ee3053326271ed55750621a1c2258e12514381840dcf19d","path":"be/src/features/client-cli/relay-cli/down/down.options.ts","step":"prettier"}
+{"findings":[{"column":0,"line":0,"message":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts is not formatted by prettier; run `npm run format`","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts","rule":"HFS_FORMAT"}],"hash":"f37c627629d486e754a629aa5747b6401ade783a9ed1aaac0afb93c6b29a459d","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts","step":"prettier"}
+{"findings":[],"hash":"cc06fc83008972a46379f5329e3c3cc4da2f5c62beaae16483e519a0a0a4eb93","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.ts","step":"prettier"}
+{"findings":[],"hash":"81f2bb6c2ac1f08f5bf99714547224e2da38513468bdca40eeac2323720934c7","path":"be/src/features/client-cli/relay-cli/harness/harness.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"d1fba61c5b3cae6919004746851411f691925505714428979837dc6199b65722","path":"be/src/features/client-cli/relay-cli/harness/harness.module.ts","step":"prettier"}
+{"findings":[],"hash":"8da4750855fd747e84baa4d5d0937c2e0b15acd972bb470f1462b436678a503a","path":"be/src/features/client-cli/relay-cli/harness/harness.options.ts","step":"prettier"}
+{"findings":[],"hash":"be30b6c6f76180064c874afc25c187c248de9e8abc27c8dc6011f2983437ab14","path":"be/src/features/client-cli/relay-cli/harness/subs/ci-report.cli.ts","step":"prettier"}
+{"findings":[{"column":0,"line":0,"message":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts is not formatted by prettier; run `npm run format`","path":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts","rule":"HFS_FORMAT"}],"hash":"fda9742f08c1f0a69ec32975f8a4dd604ab90906f080b90eeeb32b309c0df3ee","path":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts","step":"prettier"}
+{"findings":[],"hash":"804ad4888ca26621ac803bf42d5b16242fa1a74655eb8ac60df74390f5af898e","path":"be/src/features/client-cli/relay-cli/harness/subs/pull.cli.ts","step":"prettier"}
 {"findings":[],"hash":"d8aa65c60e81f62e9e2c50a0b30148fe31b6441b13eb0852630a214a56024927","path":"be/src/features/client-cli/relay-cli/index.ts","step":"prettier"}
-{"findings":[],"hash":"b17ec39d2dc0005f4fbae47e028a4ca4f39b5a433cc9feb3c2e8fc552a184ac3","path":"be/src/features/client-cli/relay-cli/init/init.cli.spec.ts","step":"prettier"}
-{"findings":[],"hash":"691b9c3a0149f0b40db6c5ed6dcce0a00b74ea47902588c25c9ddd44c68d42ab","path":"be/src/features/client-cli/relay-cli/init/init.cli.ts","step":"prettier"}
+{"findings":[],"hash":"652460485722b82e6b3f70e26334820ca9967e26a58897051375c243c20f4821","path":"be/src/features/client-cli/relay-cli/init/init.cli.spec.ts","step":"prettier"}
+{"findings":[],"hash":"6cd4838542b31a6feaeae726b6bf9e1f9d55afd98790a357a0a7b493c4abff6b","path":"be/src/features/client-cli/relay-cli/init/init.cli.ts","step":"prettier"}
 {"findings":[],"hash":"1ece36f22faae75dc9435f5e57ecaab5a41725ac05082c23fac4183fad9a930d","path":"be/src/features/client-cli/relay-cli/init/init.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"b55a2c677a1f19debb1a62b07104ebf47999c7470c10f40f690c7a6495de73a8","path":"be/src/features/client-cli/relay-cli/init/init.module.ts","step":"prettier"}
 {"findings":[],"hash":"8b56789cf5a5e00ae27369e72bedd8cd60d16ccb785308dee666a1e1e68f50ba","path":"be/src/features/client-cli/relay-cli/init/init.options.ts","step":"prettier"}
@@ -1033,7 +1045,7 @@
 {"findings":[],"hash":"600323fb64fc13a0a1d2a004485debddeaba182446f2203e5f4bed75684e5837","path":"be/src/features/client-cli/relay-cli/pull/pull.module.ts","step":"prettier"}
 {"findings":[],"hash":"1aa415a8f4e56c306f7580f495752aaa6991b308f7cd9a2a36b8b56d50bad510","path":"be/src/features/client-cli/relay-cli/pull/pull.options.ts","step":"prettier"}
 {"findings":[],"hash":"ecd67397970f11f077a8ecc3552231c6ae8c3421c411a246bfc373358b8a7619","path":"be/src/features/client-cli/relay-cli/relay-cli.module-definition.ts","step":"prettier"}
-{"findings":[],"hash":"43fb4c06f4a4de9103fec22ea0b7cc8392337e5fb28f5454ea6adda38b4c2f16","path":"be/src/features/client-cli/relay-cli/relay-cli.module.ts","step":"prettier"}
+{"findings":[],"hash":"3f77b149abce49b217a0592601d4164b014cc5df5ba41360dbb2e9acc2ca7d57","path":"be/src/features/client-cli/relay-cli/relay-cli.module.ts","step":"prettier"}
 {"findings":[],"hash":"39c1be5019a9563551cb256e13af8a6284a983fab885ec9e8d764560a70c6b5a","path":"be/src/features/client-cli/relay-cli/relay-cli.options.ts","step":"prettier"}
 {"findings":[],"hash":"120f2ec2c9c8210ce6f7744905d9476cf2e57f81587c7db126241c43a2301341","path":"be/src/features/client-cli/relay-cli/run/run.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"e0d770bb11d497563bc79a07c4af9e66f22aaa0cfdd47cbbfd0f12f52cae5832","path":"be/src/features/client-cli/relay-cli/run/run.cli.ts","step":"prettier"}
@@ -1061,6 +1073,11 @@
 {"findings":[],"hash":"6f9e34f8250b16408d349fd618db07cfc7e9bb3d28642ea38f6aca65bdd261f3","path":"be/src/features/webhooks/payos/transport/http/payos-http.options.ts","step":"prettier"}
 {"findings":[],"hash":"27af2196f35c71938926ef7ce5db1c57176219344239ba359fe639a0402cc82e","path":"be/src/features/webhooks/payos/transport/http/payos.webhook.spec.ts","step":"prettier"}
 {"findings":[],"hash":"ae478441b1af174b53cdf01a272e589eadfc8731590dc9411a72c722cc4a644f","path":"be/src/features/webhooks/payos/transport/http/payos.webhook.ts","step":"prettier"}
+{"findings":[],"hash":"066ad17ef83e15b3dbc537410fe8724d0da21b3f003967bcbd4005dd89e39d29","path":"be/src/features/webhooks/probe-sink/index.ts","step":"prettier"}
+{"findings":[],"hash":"f80d9710392e3185f4b95d23f67f49489d8c3d0080c409fd2cfbadc62697d09f","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"271dc272982ba1c92e07fb9c76daac605414980390ddc51e8d15759910c0ed24","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.module.ts","step":"prettier"}
+{"findings":[],"hash":"487998096b19c0b1631620017a042c817840d6634688ee5dc685563cdff0e02e","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.options.ts","step":"prettier"}
+{"findings":[],"hash":"738f7c7ed3c0d6cd90fbe14f036636e800eb7c18c015271294acb3b10b723b0d","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink.webhook.ts","step":"prettier"}
 {"findings":[],"hash":"bf6f5148281224b8bd434225377e0ff48477d41e88759f8911b1c946a2ca6abe","path":"be/src/features/webhooks/project-ci/index.ts","step":"prettier"}
 {"findings":[],"hash":"61fdbf2c4f86642c8910aa1cd39ef81e02b3f727f3ce625a8d2700306a6bab88","path":"be/src/features/webhooks/project-ci/transport/http/project-ci-http.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"13f3126b9aeecbfdca821315eb79c993f70c0ec42449cfad8df215d0269d5937","path":"be/src/features/webhooks/project-ci/transport/http/project-ci-http.module.ts","step":"prettier"}
