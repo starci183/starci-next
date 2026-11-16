@@ -16,7 +16,8 @@
         "agents": "Agents & AI",
         "experience": "Verified experience",
         "profile": "Profile",
-        "connect": "Connect AI"
+        "connect": "Connect AI",
+        "harness": "Harness"
       },
       "sidebarLabel": "Main navigation",
       "experienceGroup": "Experience",
@@ -1893,6 +1894,170 @@
           "title": "Use it in a chat",
           "note": "Start a new chat, switch on the StarCi Next connector and name the lesson you study, for example: explain why the double-spend scenario is red on my machine."
         }
+      }
+    },
+    "harness": {
+      "pageTitle": "Harness",
+      "breadcrumbs": "Breadcrumb",
+      "tabs": {
+        "label": "Parts of the Harness",
+        "overview": "Overview",
+        "build": "Build",
+        "use": "Use",
+        "docs": "Deep dive"
+      },
+      "tools": {
+        "label": "Your tool",
+        "claude": "Claude Code",
+        "codex": "Codex"
+      },
+      "outcomes": {
+        "green": "Green",
+        "red": "Red",
+        "untested": "Not run",
+        "running": "Running"
+      },
+      "probes": {
+        "pass": "Passed",
+        "fail": "Failed",
+        "skipped": "Not run"
+      },
+      "verdicts": {
+        "clean": "Clean",
+        "shortcut": "Took shortcuts",
+        "untested": "Not tried"
+      },
+      "minutes": "{minutes} min read",
+      "copy": {
+        "copy": "Copy",
+        "copied": "Copied",
+        "error": "Could not copy"
+      },
+      "markdown": {
+        "diagram": "Diagram",
+        "diagramError": "The diagram could not be drawn",
+        "table": "Table"
+      },
+      "hub": {
+        "title": "Build an AI agent, use agents right, understand them to the bottom",
+        "description": "A separate area that goes from how Claude Code and Codex work to using the StarCi harness. Part 1 is hands-on with tests; parts 2 and 3 are guides and explainers.",
+        "figuresLabel": "Your progress in the Harness",
+        "partsTitle": "Three parts",
+        "toolTitle": "The tool you use",
+        "toolDescription": "The guides, the checks and the trial traps of the Use part follow this tool. Your pick is remembered for you.",
+        "empty": "There is no Harness content yet.",
+        "open": "Open",
+        "figures": {
+          "builds": "Builds done",
+          "buildsMeta": "every stage green",
+          "stages": "Green stages",
+          "stagesMeta": "across all builds",
+          "checks": "Machine checks",
+          "trials": "Clean trials"
+        },
+        "parts": {
+          "build": {
+            "title": "Build · pull a starter, take it from rough to pro",
+            "description": "A rough starter, e2e scripts and a guide for every stage. It runs on your own AI key, and the key never leaves your machine.",
+            "topics": "AI agent · MCP server · Support chatbot · Lead agent",
+            "progress": "{green} / {total} builds green"
+          },
+          "use": {
+            "title": "Use · guides with commands you can run",
+            "description": "Copy and run: install Claude Code or Codex, write CLAUDE.md and AGENTS.md, hooks, permissions, MCP. It has a command that checks your machine and traps that test an agent.",
+            "topics": "Claude Code · Codex · harness doctor · trial traps",
+            "progress": "{passed} / {total} checks passed"
+          },
+          "docs": {
+            "title": "Deep dive · long explainers",
+            "description": "LLMs, tokens, the context window, tool calling, why agents cut corners, what a harness is and how the StarCi harness stacks its layers.",
+            "topics": "How LLMs work · The agent loop · Context · Harness design",
+            "progress": "{count} articles"
+          }
+        }
+      },
+      "builds": {
+        "title": "Build",
+        "description": "Pull a rough starter, follow it stage by stage and watch the e2e turn green.",
+        "listTitle": "Builds",
+        "empty": "There are no builds yet.",
+        "e2e": "e2e {passed} / {total}",
+        "stages": "{green} / {total} stages"
+      },
+      "build": {
+        "title": "Build",
+        "missing": "This build was not found.",
+        "e2e": "e2e {passed} / {total}",
+        "count": "{passed} / {total}",
+        "position": "Stage {n} of {total}",
+        "stagesTitle": "Stages",
+        "pullLabel": "Pull the starter source",
+        "pullDescription": "Run it in an empty folder. Your AI key stays in .env on your machine and is never sent to StarCi.",
+        "casesTitle": "e2e cases of the stage",
+        "caseColumn": "Case",
+        "outcomeColumn": "Result",
+        "detailColumn": "Why",
+        "onlyOpenLabel": "Open cases only",
+        "onlyOpenDescription": "Hide the green cases so the work left stands out",
+        "casesEmpty": "This stage has no cases yet.",
+        "logTitle": "Newest e2e run",
+        "stepsTitle": "Step by step",
+        "lockedTitle": "This stage is locked",
+        "lockedText": "Turn the stage before it fully green and the guide of this one opens."
+      },
+      "use": {
+        "title": "Use",
+        "description": "Markdown guides with commands you can run, a command that checks your machine and traps that test an agent.",
+        "empty": "There are no guides for this tool yet.",
+        "probesSummary": "{passed} / {ran} passed",
+        "fix": "See how to fix it",
+        "noShortcuts": "None",
+        "never": "Not run",
+        "shortcutMany": "{label} ({count} times)",
+        "toolDescription": "Pick the tool you use. The lists below follow it.",
+        "guidesTitle": "Guides",
+        "guidesEmpty": "There are no guides yet.",
+        "doctorTitle": "Machine check with harness doctor",
+        "doctorCommandLabel": "Check command",
+        "doctorCommandDescription": "Run it in your repo. It reads the setup on your machine and the result comes back here over the relay.",
+        "doctorEmpty": "There are no conditions to show.",
+        "onlyFailingLabel": "Failed conditions only",
+        "onlyFailingDescription": "Hide the conditions that passed",
+        "trialsTitle": "Agent trap trials",
+        "trialsEmpty": "There are no traps for this tool yet.",
+        "trapColumn": "Trap",
+        "shortcutsColumn": "Shortcuts seen",
+        "verdictColumn": "Verdict",
+        "costColumn": "Estimated cost",
+        "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs."
+      },
+      "guide": {
+        "title": "Guide",
+        "missing": "This guide was not found.",
+        "probesSummary": "{passed} / {ran} passed",
+        "fix": "See how to fix it",
+        "never": "Not run",
+        "outlineTitle": "In this guide",
+        "outlineEmpty": "This guide has no sections yet.",
+        "toolDescription": "Switch the tool to jump to the matching guide.",
+        "doctorTitle": "harness doctor result",
+        "doctorCommandLabel": "Check command",
+        "doctorCommandDescription": "Run it in your repo and the result comes back here.",
+        "doctorEmpty": "There are no conditions to show.",
+        "onlyFailingLabel": "Failed conditions only",
+        "onlyFailingDescription": "Hide the conditions that passed"
+      },
+      "docs": {
+        "title": "Deep dive",
+        "description": "Long explainers with diagrams and no tests. Read them to see how an agent really runs.",
+        "listTitle": "Articles",
+        "empty": "There are no articles yet."
+      },
+      "doc": {
+        "title": "Article",
+        "missing": "This article was not found.",
+        "outlineTitle": "In this article",
+        "outlineEmpty": "This article has no sections yet."
       }
     }
   }

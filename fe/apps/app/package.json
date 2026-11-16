@@ -18,7 +18,7 @@
     "@starci-next/i18n": "*",
     "@starci-next/ui": "*",
     "@starci/auth": "0.7.1",
-    "@starci/grammar": "0.39.4",
+    "@starci/grammar": "0.40.1",
     "@starci/heroicons": "0.4.0",
     "@starci/next-data": "0.1.0",
     "@starci/next-i18n": "0.1.0",

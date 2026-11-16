@@ -19,5 +19,14 @@
     "essentials/lesson-source",
     "essentials/lesson-scenarios",
     "essentials/lesson-ladder"
+  ],
+  "Harness": [
+    "harness/hub",
+    "harness/builds",
+    "harness/build",
+    "harness/use",
+    "harness/guide",
+    "harness/docs",
+    "harness/doc"
   ]
 }

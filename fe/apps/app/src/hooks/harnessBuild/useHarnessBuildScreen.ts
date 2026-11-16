@@ -1,0 +1,111 @@
+"use client"
+
+import type { PageHeaderContent } from "@starci/grammar/common"
+import { useFormatter, useLocale, useTranslations } from "next-intl"
+import { useState } from "react"
+import { harnessHeaderOf, useHarnessCommonLabels, type HarnessCommonLabels } from "@/hooks/harness"
+import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { useGetHarnessBuildSwr } from "@/hooks/swr"
+import { useDocumentTitle } from "@/hooks/title"
+import { HARNESS_ROUTES } from "@/modules/routes"
+import type { DataSlot, SlotLabels } from "@/modules/types"
+import { buildViewOf, HARNESS_BUILD_PLACEHOLDER, type HarnessBuildScreenView } from "./harnessBuild.shared"
+
+/** The words of the build page. */
+export type HarnessBuildLabels = {
+    readonly stagesTitle: string
+    readonly pullLabel: string
+    readonly pullDescription: string
+    readonly casesTitle: string
+    readonly caseColumn: string
+    readonly outcomeColumn: string
+    readonly detailColumn: string
+    readonly onlyOpenLabel: string
+    readonly onlyOpenDescription: string
+    readonly casesEmpty: string
+    readonly logTitle: string
+    readonly stepsTitle: string
+    readonly lockedTitle: string
+    readonly lockedText: string
+}
+
+/** The build page: the stages with their e2e status, the stage on screen and its step guide. */
+export type HarnessBuildScreen = {
+    readonly props: {
+        readonly header: PageHeaderContent
+        readonly slot: DataSlot<HarnessBuildScreenView>
+        readonly placeholder: HarnessBuildScreenView
+        readonly slotLabels: SlotLabels
+        readonly labels: HarnessBuildLabels
+        readonly common: HarnessCommonLabels
+        readonly isOnlyOpen: boolean
+    }
+    readonly on: {
+        readonly retry: () => void
+        readonly setOnlyOpen: (isOnlyOpen: boolean) => void
+    }
+}
+
+/** What the route hands the build page: the build in the address and the raw `stage` query. */
+type BuildRoute = { readonly buildId: string; readonly stage: string | undefined }
+
+/**
+ * The connected build page: reads the build (again every two seconds while a stage is running, else every ten, so the e2e results
+ * the learner's machine sends over the relay show up live), words the stages and the stage on screen, and holds the "only open
+ * cases" switch.
+ */
+export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => {
+    const locale = useLocale()
+    const t = useTranslations("app.harness.build")
+    const format = useFormatter()
+    const common = useHarnessCommonLabels()
+    const slotLabels = useSlotLabels()
+    const read = useGetHarnessBuildSwr(route.buildId, locale)
+    const [isOnlyOpen, setOnlyOpen] = useState(false)
+    useDocumentTitle(read.data?.title)
+    const words = {
+        common,
+        count: (passed: number, total: number): string => t("count", { passed, total }),
+        position: (n: number, total: number): string => t("position", { n, total }),
+        when: (iso: string): string => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
+    }
+    const stages = read.data?.stages ?? []
+    const passed = stages.reduce((sum, stage) => sum + stage.passed, 0)
+    const total = stages.reduce((sum, stage) => sum + stage.total, 0)
+    return {
+        props: {
+            header: harnessHeaderOf(common, {
+                active: "build",
+                title: read.data?.title ?? t("title"),
+                ...(read.data === undefined
+                    ? {}
+                    : { description: read.data.summary, meta: t("e2e", { passed, total }) }),
+                trail: [[common.tabs.build, HARNESS_ROUTES.build]],
+            }),
+            slot: mapSlot(slotOfSwr(read), (build) =>
+                build === undefined ? HARNESS_BUILD_PLACEHOLDER : buildViewOf(build, route.stage, words),
+            ),
+            placeholder: HARNESS_BUILD_PLACEHOLDER,
+            slotLabels: slotLabels(t("missing")),
+            labels: {
+                stagesTitle: t("stagesTitle"),
+                pullLabel: t("pullLabel"),
+                pullDescription: t("pullDescription"),
+                casesTitle: t("casesTitle"),
+                caseColumn: t("caseColumn"),
+                outcomeColumn: t("outcomeColumn"),
+                detailColumn: t("detailColumn"),
+                onlyOpenLabel: t("onlyOpenLabel"),
+                onlyOpenDescription: t("onlyOpenDescription"),
+                casesEmpty: t("casesEmpty"),
+                logTitle: t("logTitle"),
+                stepsTitle: t("stepsTitle"),
+                lockedTitle: t("lockedTitle"),
+                lockedText: t("lockedText"),
+            },
+            common,
+            isOnlyOpen,
+        },
+        on: { retry: () => void read.mutate(), setOnlyOpen },
+    }
+}
