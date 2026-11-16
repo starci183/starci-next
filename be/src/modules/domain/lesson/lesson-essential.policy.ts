@@ -1,3 +1,4 @@
+import type { EssentialPart } from "@modules/domain/entitlement"
 import type { LessonIssue, LessonParsedLocale } from "./lesson-import.contracts"
 import type { LessonActivity, LessonLocale, LessonPhase, LessonRootFile } from "./lesson.contracts"
 import {
@@ -308,6 +309,8 @@ export interface EssentialActivity {
     readonly phase: LessonPhase
     /** The mark: the opener is always free; a challenge question needs Premium. */
     readonly isPremium: boolean
+    /** The part it belongs to; the entitlement setting says whether that part is free. */
+    readonly part: EssentialPart
 }
 
 /**
@@ -323,7 +326,12 @@ export const findEssentialActivity = (
         const question = essential.opener.find((each) => `${OPENER_PREFIX}${each.id}` === activityId)
         return question === undefined
             ? null
-            : { activity: choiceActivityOf(activityId, question, true), phase: "challenge", isPremium: false }
+            : {
+                  activity: choiceActivityOf(activityId, question, true),
+                  phase: "challenge",
+                  isPremium: false,
+                  part: "1-essential",
+              }
     }
     if (!activityId.startsWith(CHALLENGE_PREFIX)) return null
     for (const challenge of essential.challenges) {
@@ -331,7 +339,12 @@ export const findEssentialActivity = (
             (each) => `${CHALLENGE_PREFIX}${challenge.id}.${each.id}` === activityId,
         )
         if (question !== undefined)
-            return { activity: choiceActivityOf(activityId, question, false), phase: "apply", isPremium: true }
+            return {
+                activity: choiceActivityOf(activityId, question, false),
+                phase: "apply",
+                isPremium: true,
+                part: "4-apply",
+            }
     }
     return null
 }

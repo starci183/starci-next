@@ -16,6 +16,8 @@ export interface LessonSourceReader {
      * folder, with their titles; a module the checkout does not hold answers no row.
      */
     modules(directory: string, source: LessonTopicModule): Promise<ReadonlyArray<LessonTopicStep>>
+    /** The text of `<directory>/<topic>/topic.yaml` (the topic metadata of the topic-based format), or null when there is none. */
+    topicFile(directory: string, topic: string): Promise<string | null>
 }
 
 /** Token of the port that reads concept folders. */

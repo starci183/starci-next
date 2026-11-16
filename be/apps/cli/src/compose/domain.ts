@@ -4,6 +4,7 @@ import { CareerModule } from "@modules/domain/career"
 import { ContentModule } from "@modules/domain/content"
 import { EntitlementModule } from "@modules/domain/entitlement"
 import { AiInterviewClient, InterviewModule } from "@modules/domain/interview"
+import { HarnessModule } from "@modules/domain/harness"
 import { LessonModule } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
 import { NotificationModule } from "@modules/domain/notification"
@@ -18,6 +19,7 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     EntitlementModule.register({ isGlobal: true, devGrant: options.entitlement.devGrant }),
     LessonModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true }),
+    HarnessModule.register({ isGlobal: true }),
     StreakModule.register({ isGlobal: true }),
     InterviewModule.register({ isGlobal: true, coach: AiInterviewClient }),
     NotificationModule.register({ isGlobal: true }),

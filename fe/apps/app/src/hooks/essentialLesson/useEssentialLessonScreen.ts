@@ -58,7 +58,7 @@ export type EssentialLessonView = {
     readonly tabs: ReadonlyArray<{ readonly id: EssentialPart; readonly label: string; readonly href: string }>
     /** True when the lesson carries none of the four parts yet. */
     readonly isEmpty: boolean
-    /** True when the part on screen needs Premium the learner lacks. */
+    /** True when the part on screen needs Premium the learner lacks: only its words and the Subscribe link are shown. */
     readonly isLocked: boolean
     /** The prose a part opens with (its own section), when the lesson has one. */
     readonly intro: ArticleSectionView | undefined
@@ -158,7 +158,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
     const part = partOf(route.part)
     const runs = useQueryLessonScenarioRunsSwr(
         route.lessonId,
-        essential !== undefined && !essential.isLocked && (part === "scenarios" || part === "apply"),
+        essential !== undefined && !essential.lockedParts.includes(part) && (part === "scenarios" || part === "apply"),
     )
     const { page, parts, words } = useEssentialLessonLabels()
     const slotLabels = useSlotLabels()
@@ -192,6 +192,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
             slot: mapSlot(slotOfSwr(read), (lesson): EssentialLessonView => {
                 const view = lesson.essential ?? {
                     isLocked: !lesson.isPremium,
+                    lockedParts: [],
                     opener: [],
                     source: undefined,
                     invariants: [],
@@ -210,7 +211,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     part,
                     tabs: ESSENTIAL_PARTS.map((id) => ({ id, label: page.parts[id], href: partPath(lesson, id) })),
                     isEmpty: lesson.essential === undefined,
-                    isLocked: part !== "essence" && view.isLocked,
+                    isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
                     intro: partSectionOf(lesson, part),
                     opener,
                     article: articleOf(lesson, opener, score),

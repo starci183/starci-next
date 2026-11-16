@@ -1,5 +1,5 @@
 /** The learning shards that grant experience items (decision.program.structure); layers grant none. */
-export type ExperiencePart = "essentials" | "projects" | "incidents" | "practice" | "interview"
+export type ExperiencePart = "essentials" | "projects" | "incidents" | "practice" | "interview" | "harness"
 
 /** What a verified item feeds: a CV line, or a hiring-readiness signal that never becomes a CV line. */
 export type ExperienceOutput = "cv-line" | "readiness"

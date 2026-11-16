@@ -5,6 +5,7 @@ One lesson is one concept in the teacher's concepts V2 format: learned by doing 
 real code.
 
 ## The four parts (owner, binding 2026-11-17)
+Access is partial: Part 1 is free for everyone, Parts 2 to 4 need Premium (setting `ENTITLEMENT_ESSENTIAL_FREE_PARTS`, see [premium](premium.md)).
 A lesson page has four parts, the tabs of `/essentials/[topic]/[lesson]?part=`; the six phases below stay as the article and the
 legacy `?phase=` pages. We teach the essence, not coding: learners vibe-code with their AI, and code is evidence to read, run and
 break.

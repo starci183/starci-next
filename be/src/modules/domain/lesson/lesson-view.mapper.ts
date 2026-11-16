@@ -1,3 +1,9 @@
+import {
+    DEFAULT_ESSENTIAL_FREE_PARTS,
+    ESSENTIAL_PARTS,
+    openEssentialPartsOf,
+    type EssentialPart,
+} from "@modules/domain/entitlement"
 import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
 import type { LessonActivity, LessonLocale, LessonLocaleDocument, LessonSection } from "./lesson.contracts"
 import { needsPremium, premiumMarkOf } from "./lesson-access.policy"
@@ -85,12 +91,22 @@ const toActivityView = (activity: LessonActivity): LessonActivityView => ({
         : null,
 })
 
+/** The Essentials part a section of a four-part lesson is, or undefined for any other section. */
+const essentialPartOf = (section: LessonSection, document: LessonLocaleDocument): EssentialPart | undefined =>
+    document.essential === undefined ? undefined : ESSENTIAL_PARTS.find((part) => part === section.id)
+
 const toSectionView = (
     section: LessonSection,
     document: LessonLocaleDocument,
     isPremium: boolean,
+    open: ReadonlyArray<EssentialPart>,
 ): LessonSectionView => {
-    const locked = needsPremium(section.phase, premiumMarkOf(section, document)) && !isPremium
+    // A four-part lesson locks its part sections by the entitlement setting of free parts, not by the teacher's mark.
+    const part = essentialPartOf(section, document)
+    const locked =
+        part === undefined
+            ? needsPremium(section.phase, premiumMarkOf(section, document)) && !isPremium
+            : !open.includes(part)
     return {
         id: section.id,
         sortIndex: section.sortIndex,
@@ -124,9 +140,15 @@ const toWorkspaceVariants = (row: VersionRow, isPremium: boolean): ReadonlyArray
 
 /**
  * The public projection of a stored lesson version: an explicit allowlist, so a field added to the stored content stays
- * private until it is listed here. A section outside the free phase keeps only its title while the learner lacks Premium.
+ * private until it is listed here. A section outside the free phase keeps only its title while the learner lacks Premium. A
+ * four-part lesson opens by part: `open` lists the parts the learner may read (default: all with Premium, Bản chất without).
  */
-export const toLessonView = (row: VersionRow, locale: LessonLocale, isPremium: boolean): LessonView => {
+export const toLessonView = (
+    row: VersionRow,
+    locale: LessonLocale,
+    isPremium: boolean,
+    open: ReadonlyArray<EssentialPart> = openEssentialPartsOf(DEFAULT_ESSENTIAL_FREE_PARTS, isPremium),
+): LessonView => {
     const document = row.content.locales[locale]
     return {
         id: row.lesson_id,
@@ -150,9 +172,9 @@ export const toLessonView = (row: VersionRow, locale: LessonLocale, isPremium: b
             citation: reference.citation,
         })),
         isPremium,
-        sections: document.sections.map((section) => toSectionView(section, document, isPremium)),
+        sections: document.sections.map((section) => toSectionView(section, document, isPremium, open)),
         workspace: toWorkspaceView(row, isPremium),
         workspaces: toWorkspaceVariants(row, isPremium),
-        essential: toEssentialView(document.essential, isPremium),
+        essential: toEssentialView(document.essential, open),
     }
 }

@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto"
 import { isRecord } from "@modules/platform/primitives"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
 import { EVIDENCE_SLOTS, type EvidenceSlot } from "./project.contracts"
+import type { CiHarnessResult } from "./project-harness.port"
 
 /** The prefix of the signature header, as the other webhooks of the app write it. */
 export const CI_SIGNATURE_PREFIX = "sha256="
@@ -28,6 +29,8 @@ export interface CiResult {
 
 /** The signed result document a StarCi GitHub Action posts. */
 export interface CiRun {
+    /** The harness build stage results of the run, empty for a project run. */
+    readonly harness: ReadonlyArray<CiHarnessResult>
     /** The CI run id; a repeat of the same id counts once. */
     readonly runId: string
     /** The commit the run tested. */
@@ -82,6 +85,30 @@ const resultOf = (raw: unknown): CiResult => {
     return { concept, slot, ref, passed: raw["passed"] }
 }
 
+const HARNESS_ID = /^[a-z0-9][a-z0-9-]{0,63}$/u
+
+/** The optional harness array of the document: each entry names a build, stage and e2e id and whether it passed. */
+const harnessOf = (value: unknown): ReadonlyArray<CiHarnessResult> => {
+    if (value === undefined) return []
+    if (!Array.isArray(value) || value.length > CI_RESULTS_MAX) throw invalid()
+    return value.map((raw: unknown) => {
+        if (!isRecord(raw)) throw invalid()
+        const { build, stage, e2e, passed } = raw
+        if (
+            typeof build !== "string" ||
+            !HARNESS_ID.test(build) ||
+            typeof stage !== "string" ||
+            !HARNESS_ID.test(stage) ||
+            typeof e2e !== "string" ||
+            !HARNESS_ID.test(e2e) ||
+            typeof passed !== "boolean"
+        ) {
+            throw invalid()
+        }
+        return { build, stage, e2e, passed }
+    })
+}
+
 /** Reads the raw body of a delivery into the signed result document; anything else is PROJECT_CI_PAYLOAD_INVALID. */
 export const ciRunOf = (rawBody: Buffer | undefined): CiRun => {
     let body: unknown
@@ -110,5 +137,6 @@ export const ciRunOf = (rawBody: Buffer | undefined): CiRun => {
         commit: commit.toLowerCase(),
         passed: body["passed"],
         results: results.map((result) => resultOf(result)),
+        harness: harnessOf(body["harness"]),
     }
 }

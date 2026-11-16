@@ -8,10 +8,15 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
-import { AGENT_TRACKS, type EvidenceInput, type EvidenceRow } from "./project.contracts"
+import type { EvidenceInput, EvidenceRow } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
 import type { CiReceipt, CiRunRecord } from "./project-params.contracts"
-import { deployedExperienceOf, milestoneExperienceOf, type ExperienceSubject } from "./project-experience.policy"
+import {
+    deployedExperienceOf,
+    experienceSubjectOf,
+    milestoneExperienceOf,
+    type ExperienceSubject,
+} from "./project-experience.policy"
 import { InjectProjectLessons, type ProjectLessonPort } from "./project-lesson.port"
 import { projectStandingOf, type ProjectStanding } from "./project-state.policy"
 import { projectKindOf, toEvidenceRows } from "./project-view.mapper"
@@ -149,15 +154,7 @@ export class ProjectEvidenceService {
     /** The proofs the project stands on now, each with what to do the first time it is claimed. */
     private effectsOf(context: ProofContext): ReadonlyArray<ProofEffect> {
         const { project, standing, rows, probeRun } = context
-        const subject: ExperienceSubject = {
-            learnerId: project.learner_id,
-            projectId: project.project_id,
-            name: project.name,
-            stack: project.stack,
-            kind: projectKindOf(project),
-            track: AGENT_TRACKS.find((track) => track === project.track) ?? null,
-            deployedUrl: project.deployed_url,
-        }
+        const subject: ExperienceSubject = experienceSubjectOf(project)
         const concepts = standing.provedConceptIds.map((id): ProofEffect => ({
             subject: `${CONCEPT_PREFIX}${id}`,
             run: async () => {

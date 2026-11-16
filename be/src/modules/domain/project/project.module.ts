@@ -1,5 +1,6 @@
 import { Module, type DynamicModule, type Provider } from "@nestjs/common"
 import { LessonCatalogClient } from "./lesson-catalog.client"
+import { NoHarnessClient } from "./no-harness.client"
 import { NoRelayClient } from "./no-relay.client"
 import { PROJECT_CI_ATTESTATION } from "./project-ci-attestation.port"
 import { ProjectCiService } from "./project-ci.service"
@@ -7,6 +8,8 @@ import { ProjectCiProofService } from "./project-ci-proof.service"
 import { ProjectCodeReadService } from "./project-code-read.service"
 import { PROJECT_COACH } from "./project-coach.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
+import { PROJECT_HARNESS } from "./project-harness.port"
+import { ProjectExtrasService } from "./project-extras.service"
 import { PROJECT_LESSONS } from "./project-lesson.port"
 import { ProjectPracticeService } from "./project-practice.service"
 import { ProjectProbeService } from "./project-probe.service"
@@ -31,6 +34,7 @@ export class ProjectModule extends ConfigurableModuleClass {
         const relayClass = options.relay ?? NoRelayClient
         const coachClass = options.coach ?? UnconfiguredProjectCoach
         const lessonsClass = options.lessons ?? LessonCatalogClient
+        const harnessClass = options.harness ?? NoHarnessClient
         const attestationClass = options.attestation ?? UnattestedCiClient
         const checkSourceClass = options.checkSource ?? ProjectCheckSetDiskAdapter
         const bindings: Array<Provider> = [
@@ -38,6 +42,7 @@ export class ProjectModule extends ConfigurableModuleClass {
             { provide: PROJECT_COACH, useExisting: coachClass },
             { provide: PROJECT_LESSONS, useExisting: lessonsClass },
             { provide: PROJECT_CI_ATTESTATION, useExisting: attestationClass },
+            { provide: PROJECT_HARNESS, useExisting: harnessClass },
             { provide: PROJECT_CHECK_SOURCE, useExisting: checkSourceClass },
         ]
         return {
@@ -48,11 +53,13 @@ export class ProjectModule extends ConfigurableModuleClass {
                 coachClass,
                 lessonsClass,
                 attestationClass,
+                harnessClass,
                 checkSourceClass,
                 ...bindings,
                 ProjectCheckSetService,
                 ProjectProbeSinkService,
                 ProjectEvidenceService,
+                ProjectExtrasService,
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,
@@ -63,6 +70,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectRepositoryService,
             ],
             exports: [
+                ProjectExtrasService,
                 ProjectReadService,
                 ProjectService,
                 ProjectCiService,
