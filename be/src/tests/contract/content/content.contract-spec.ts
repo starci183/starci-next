@@ -13,7 +13,7 @@ describe("content environment contract", () => {
         const config = parseContentConfig(
             new EnvSource({
                 CONTENT_DATASOURCES_DIR: "/srv/datasources",
-                CONTENT_GIT_URL: "https://github.com/starci183/starci-next-data.git",
+                CONTENT_GIT_URL: "https://github.com/starci183/starci-next-seed-standard.git",
                 CONTENT_GIT_REF: "abc1234",
                 CONTENT_GIT_TOKEN: "token-value",
                 CONTENT_DATA_GIT_URL: "https://github.com/starci-lab/data.git",

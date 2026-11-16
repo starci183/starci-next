@@ -5,7 +5,8 @@ starci-lab/data. The app renders and grades that content; it never owns or rewri
 
 ## Terms
 - **Teacher's data**: `starci-lab/data` (concepts V2 lessons, interview banks, flashcard decks, coding problems, V1 courses).
-- **Content repo**: the private `starci183/starci-next-data`: our own Bản chất lessons under `essentials/`, the interview overlay and
+- **Content repo**: the private `starci183/starci-next-seed-standard` (renamed from `starci-next-data` on 2026-11-17; GitHub
+  redirects the old address and the manifest reader takes both `schema` names): our own Bản chất lessons under `essentials/`, the interview overlay and
   the catalogs (projects, agent lab, incidents, experience, outcome paths).
 - **Snapshot**: one pulled commit under `<CONTENT_DATASOURCES_DIR>/<sha>/` with a `manifest.json`; every importer runs at that version.
 - **Placeholder**: content we wrote while the teacher has not, marked status `draft` and author `ai-placeholder`.
@@ -20,7 +21,8 @@ starci-lab/data. The app renders and grades that content; it never owns or rewri
 5. The app shows the teacher's text and rubrics as written. A missing piece shows as missing ("đang soạn", "Sắp có"), never invented.
 6. Content that would give the answer away is not shown: an interview stem that still repeats 18 or more consecutive words of its
    ideal answer or checklist is left out of the import until the teacher writes a stem.
-7. Pull credentials come from sealed custody (`CONTENT_GIT_TOKEN`, `CONTENT_DATA_GIT_TOKEN`); local checkouts (`--dir`,
+7. Lessons are written by topic, and a lesson's source code is TypeScript only (owner 2026-11-17).
+8. Pull credentials come from sealed custody (`CONTENT_GIT_TOKEN`, `CONTENT_DATA_GIT_TOKEN`); local checkouts (`--dir`,
    `--data-dir`) need none.
 
 ## Example

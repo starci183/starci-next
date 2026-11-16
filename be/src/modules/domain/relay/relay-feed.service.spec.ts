@@ -151,6 +151,7 @@ describe("RelayFeedService upload", () => {
             null,
             null,
             new Date(NOW),
+            null,
         ])
     })
 

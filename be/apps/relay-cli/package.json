@@ -23,6 +23,7 @@
     "nest-commander": "3.21.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
+    "socket.io-client": "4.8.3",
     "tslib": "2.9.1",
     "undici": "6.29.1"
   }

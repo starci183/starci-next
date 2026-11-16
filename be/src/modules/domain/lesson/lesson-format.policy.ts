@@ -1,5 +1,6 @@
 import { shapeIssues, type ObjectShape, type ShapeIssue, type LessonShape } from "./shape.policy"
 import { LESSON_WORKSPACE_LANGUAGES, type LessonRootFile, type LessonSectionFile } from "./lesson.contracts"
+import { LESSON_CHALLENGE_LEVELS, LESSON_SOURCE_LANGUAGES } from "./lesson-essential.contracts"
 
 /** The categories the content format knows. */
 export const LESSON_CATEGORIES: ReadonlyArray<string> = [
@@ -91,6 +92,78 @@ const workspaceVariant: ObjectShape = {
     },
 }
 
+const question: ObjectShape = {
+    required: { id: text, prompt: text, choices: list(text), correctIndex: "integer", explanation: text },
+    optional: { sectionId: text, scenarioId: text },
+}
+
+/** How the learner CLI runs a scenario; every member optional, with the defaults the manifest fills. */
+const SCENARIO_RUN: Readonly<Record<string, LessonShape>> = {
+    brief: text,
+    concepts: list(text),
+    cwd: text,
+    report: text,
+    timeoutMs: "positive",
+}
+
+/** The four-part fields of a root file, each optional so a lesson written before them still fits. */
+const ESSENTIAL_FIELDS: Readonly<Record<string, LessonShape>> = {
+    opener: list(question),
+    source: {
+        required: { langs: list({ oneOf: LESSON_SOURCE_LANGUAGES }) },
+        optional: { ref: text, dir: text, compose: text, project: text },
+    },
+    invariants: list(statement),
+    architecture: {
+        required: {
+            diagram: text,
+            components: list({
+                required: { name: text, invariants: list(text) },
+                optional: { port: text, role: text },
+            }),
+        },
+    },
+    codeWalk: list({
+        required: { id: text, title: text, invariant: text, file: text, line: "positive", snippet: text },
+        optional: { why: text },
+    }),
+    scenarios: list({
+        required: {
+            id: text,
+            title: text,
+            fault: text,
+            command: text,
+            expected: text,
+            invariant: text,
+            guards: list({ required: { name: text, env: text }, optional: { off: text } }),
+        },
+        optional: { hint: text, ...SCENARIO_RUN },
+    }),
+    challenges: list({
+        required: {
+            id: text,
+            level: { oneOf: LESSON_CHALLENGE_LEVELS },
+            title: text,
+            brief: text,
+            rubric: list({
+                required: { id: text, criterion: text, points: "positive" },
+                optional: { isCritical: "boolean" },
+            }),
+        },
+        optional: {
+            hiddenScenarios: "integer",
+            questions: list(question),
+            hidden: list({
+                required: { id: text, title: text, command: text },
+                optional: { ...SCENARIO_RUN, files: list({ required: { path: text, from: text } }) },
+            }),
+        },
+    }),
+}
+
+/** The names of the four-part fields of a root file, each a json field. */
+export const ESSENTIAL_FIELD_NAMES: ReadonlyArray<string> = Object.keys(ESSENTIAL_FIELDS)
+
 /** The shape of a root file once its json and number fields are decoded. */
 export const ROOT_SHAPE: ObjectShape = {
     required: {
@@ -106,7 +179,13 @@ export const ROOT_SHAPE: ObjectShape = {
         prerequisites: list(statement),
         references: list(reference),
     },
-    optional: { activities: list(activity), workspace, workspaces: list(workspaceVariant), isPremium: "boolean" },
+    optional: {
+        activities: list(activity),
+        workspace,
+        workspaces: list(workspaceVariant),
+        isPremium: "boolean",
+        ...ESSENTIAL_FIELDS,
+    },
 }
 
 /** The shape of a section file once its json and number fields are decoded. */

@@ -7,10 +7,11 @@ and every lesson has it without a line of its own because every tool reads by `l
 ## Terms
 - **Access token**: a personal token (`scmcp_…`) the learner creates on `/connect`, shown once and kept only as a digest; the AI client
   sends it as `Authorization: Bearer`. It acts for exactly one learner. *Not to confuse with* a device token of the relay.
-- **Lesson checkout**: `<MCP_SOURCE_ROOT>/<lessonId>/` with `repo/` (the teacher's source, TypeScript only, at the pinned commit) and
-  `starci-source.json` beside it (commit, scenarios, invariants, extra denied prefixes), never inside `repo/`.
-- **Public catalog**: the part of `starci-source.json` the AI may read, projected field by field: a hidden scenario is dropped when the
-  file is read, and an unnamed field (expected output, answer, mutant) is never copied.
+- **Source tree**: the files of `essentials/<topic>/<lesson>/source/` of the seed repository (TypeScript only) as the live lesson version holds them, at the
+  content commit it was imported at, read through `LessonSourceTreeService` (the port `McpSourceTree`). `hidden/` sits beside `source/`
+  in the seed and is not part of the tree: it travels only as signed challenge manifests.
+- **Public catalog**: the scenarios, invariants and code walk locations of the tree, projected field by field from the lesson content: a hidden
+  scenario, a challenge, a rubric, an expected output or a hint is never copied.
 
 ## Rules
 1. Lesson text comes only from `LessonReadService.find`, the projection and gating the app serves: a locked section has no body, and no
@@ -41,7 +42,7 @@ on their machine and `my_runs` shows green.
 - Don't read a lesson or a scenario outside the services; the MCP never reaches the lesson table or a repository directly.
 
 ## Where
-`be/src/modules/domain/mcp/`, `be/src/features/api/mcp/`, `be/src/modules/domain/relay/` (the scenario manifest and the learner's run
+`be/src/modules/domain/mcp/`, `be/src/features/api/mcp/`, `be/src/modules/domain/lesson/` (`lesson-source-tree.*`), `be/src/modules/domain/relay/` (the scenario manifest and the learner's run
 events), `fe/apps/app/src/components/blocks/ConnectAi/`
 
 Related: [essentials](essentials.md), [learner-cli-relay](learner-cli-relay.md), [premium](premium.md), [identity](identity.md)

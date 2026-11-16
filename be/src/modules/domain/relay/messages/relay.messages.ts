@@ -12,6 +12,9 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_PAIRING_INVALID": "Tên thiết bị hoặc hệ điều hành không hợp lệ.",
         "errors.RELAY_PAYLOAD_INVALID": "Dữ liệu gửi lên từ máy không hợp lệ hoặc quá lớn.",
         "errors.RELAY_UNAVAILABLE": "Chưa kết nối được tới máy chủ relay; hãy thử lại.",
+        "errors.RELAY_LESSON_NOT_RUNNABLE":
+            "Bài này chưa có kịch bản chạy được, hoặc không có kịch bản hay bậc thử thách đó.",
+        "errors.RELAY_CHALLENGE_LOCKED": "Bậc thử thách này chưa mở: hãy làm xanh hết kịch bản ẩn của bậc dưới trước.",
     },
     en: {
         "errors.RELAY_CODE_NOT_FOUND": "The pairing code is wrong or has expired. Run starci-next login again.",
@@ -22,5 +25,9 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_PAIRING_INVALID": "The device name or platform is not valid.",
         "errors.RELAY_PAYLOAD_INVALID": "What the machine sent is not valid or is too large.",
         "errors.RELAY_UNAVAILABLE": "The relay could not be reached; please try again.",
+        "errors.RELAY_LESSON_NOT_RUNNABLE":
+            "This lesson has no runnable scenarios yet, or no such scenario or challenge tier.",
+        "errors.RELAY_CHALLENGE_LOCKED":
+            "This challenge tier is locked: turn every hidden scenario of the tier below green first.",
     },
 }

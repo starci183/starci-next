@@ -10,7 +10,7 @@ const withNextIntl = createNextIntlPlugin("./src/modules/i18n/request.ts")
 const WORKSPACE_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "..")
 
 /** The core api on a developer host (its compose port): the origin `next dev` proxies to when `CORE_INTERNAL_ORIGIN` is not set. */
-const DEV_CORE_ORIGIN = "http://127.0.0.1:3001"
+const DEV_CORE_ORIGIN = "http://127.0.0.1:3201"
 
 /**
  * The browser calls the back end's doors on the app's own origin (`/api/*` and `/graphql`), so the session cookie is host-only. In production

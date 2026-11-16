@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common"
 import { RelayFeedApiModule } from "../../relay-feed.module"
 import { GetRelayManifestResolver } from "./get-relay-manifest.resolver"
+import { LessonScenarioRunsResolver } from "./lesson-scenario-runs.resolver"
 import { RelayCheckStartedResolver } from "./relay-check-started.resolver"
 import { RelayCheckResultResolver } from "./relay-check-result.resolver"
 import { RelayLogResolver } from "./relay-log.resolver"
@@ -15,6 +16,7 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         RelayCheckResultResolver,
         RelayLogResolver,
         RelayManifestAckResolver,
+        LessonScenarioRunsResolver,
     ],
 })
 /** The GraphQL transport of the relay feed, served by the core app: the signed manifest read and the four upload mutations. */

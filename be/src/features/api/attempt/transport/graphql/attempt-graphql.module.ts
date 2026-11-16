@@ -3,6 +3,7 @@ import { AttemptApiModule } from "../../attempt.module"
 import { ConfigurableModuleClass } from "./attempt-graphql.module-definition"
 import { LessonAttemptResolver } from "./lesson-attempt.resolver"
 import { LessonProgressResolver } from "./lesson-progress.resolver"
+import { LessonOpenerScoresResolver } from "./lesson-opener-scores.resolver"
 import { SaveLessonSimulationResolver } from "./save-lesson-simulation.resolver"
 import { SubmitLessonAttemptResolver } from "./submit-lesson-attempt.resolver"
 
@@ -12,6 +13,7 @@ import { SubmitLessonAttemptResolver } from "./submit-lesson-attempt.resolver"
         SubmitLessonAttemptResolver,
         LessonAttemptResolver,
         LessonProgressResolver,
+        LessonOpenerScoresResolver,
         SaveLessonSimulationResolver,
     ],
 })

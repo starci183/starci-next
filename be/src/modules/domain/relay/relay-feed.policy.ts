@@ -2,6 +2,8 @@ import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sig
 import type { RealtimeTopic } from "@modules/platform/realtime"
 import type {
     ManifestBody,
+    ManifestLesson,
+    ManifestLessonScenario,
     ManifestCheck,
     ManifestPlan,
     ProjectRunRequest,
@@ -14,7 +16,12 @@ import type {
 /** The longest log text an upload carries. */
 export const LOG_TEXT_MAX = 16_384
 const ID_MAX = 100
-const SLOTS: ReadonlySet<string> = new Set(["test", "e2e", "probe"])
+const SLOTS: ReadonlySet<string> = new Set(["test", "e2e", "probe", "scenario", "challenge"])
+const LESSON_ID = /^[a-z0-9-]{1,100}$/u
+const TIERS: ReadonlySet<string> = new Set(["easy", "medium", "hard", "insane"])
+const LIST_MAX = 50
+const WHY_MAX = 300
+const LEDGER_MAX = 4000
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu
 const SAFE_ID = /^[A-Za-z0-9._:/-]{1,100}$/u
 
@@ -62,6 +69,41 @@ export const relayDeviceTopic = (learnerId: string, deviceId: string): RealtimeT
     name: `relay:${learnerId}:${deviceId}`,
 })
 
+/** One lesson scenario in the canonical key order. */
+const scenarioPayloadOf = (scenario: ManifestLessonScenario): Record<string, unknown> => ({
+    id: scenario.id,
+    title: scenario.title,
+    brief: scenario.brief,
+    concepts: [...scenario.concepts],
+    command: scenario.command,
+    cwd: scenario.cwd,
+    report: scenario.report,
+    timeoutMs: scenario.timeoutMs,
+    guards: scenario.guards.map((guard) => ({ name: guard.name, env: guard.env, off: guard.off })),
+    ...(scenario.files === undefined
+        ? {}
+        : { files: scenario.files.map((file) => ({ path: file.path, contentBase64: file.contentBase64 })) }),
+})
+
+/** The lesson section in the canonical key order (SCENARIO-CONTRACT v3 §2). */
+const lessonPayloadOf = (lesson: ManifestLesson): Record<string, unknown> => ({
+    lessonId: lesson.lessonId,
+    source: { url: lesson.source.url, sha256: lesson.source.sha256, commit: lesson.source.commit },
+    dir: lesson.dir,
+    compose: lesson.compose,
+    project: lesson.project,
+    invariants: { ...lesson.invariants },
+    scenarios: lesson.scenarios.map((scenario) => scenarioPayloadOf(scenario)),
+    ...(lesson.challenge === undefined
+        ? {}
+        : {
+              challenge: {
+                  tier: lesson.challenge.tier,
+                  scenarios: lesson.challenge.scenarios.map((scenario) => scenarioPayloadOf(scenario)),
+              },
+          }),
+})
+
 /** The canonical JSON of a manifest body: keys in a fixed order, so the CLI verifies the exact signed text. */
 export const manifestPayloadOf = (body: ManifestBody): string =>
     JSON.stringify({
@@ -81,6 +123,7 @@ export const manifestPayloadOf = (body: ManifestBody): string =>
             : {
                   plan: { milestone: body.plan.milestone, report: body.plan.report, concepts: [...body.plan.concepts] },
               }),
+        ...(body.lesson === undefined ? {} : { lesson: lessonPayloadOf(body.lesson) }),
     })
 
 /** Signs a manifest body with the relay's Ed25519 key. */
@@ -104,8 +147,37 @@ const safeOptional = (value: string | undefined): boolean => value === undefined
 const boundedOptional = (value: number | undefined): boolean =>
     value === undefined || (Number.isSafeInteger(value) && value >= -1 && value <= 86_400_000)
 
+/** True when an optional list is absent or a short list of lesson ids. */
+const idListOptional = (value: ReadonlyArray<string> | undefined): boolean =>
+    value === undefined || (value.length <= LIST_MAX && value.every((item) => LESSON_ID.test(item)))
+
+/** True when the lesson facts of a scenario result are absent or bounded (SCENARIO-CONTRACT v2 §5). */
+const lessonFacts = (upload: RelayUpload): boolean =>
+    (upload.lessonId === undefined || LESSON_ID.test(upload.lessonId)) &&
+    (upload.scenarioId === undefined || LESSON_ID.test(upload.scenarioId)) &&
+    idListOptional(upload.concepts) &&
+    idListOptional(upload.guardsOff) &&
+    (upload.challengeTier === undefined || TIERS.has(upload.challengeTier)) &&
+    (upload.why === undefined || upload.why.length <= WHY_MAX) &&
+    (upload.ledger === undefined || upload.ledger.length <= LEDGER_MAX)
+
+/** The lesson facts of a scenario result as stored in `detail`, or null for any other result. */
+export const resultDetailOf = (upload: RelayUpload): Record<string, unknown> | null => {
+    const detail = {
+        ...(upload.lessonId === undefined ? {} : { lessonId: upload.lessonId }),
+        ...(upload.scenarioId === undefined ? {} : { scenarioId: upload.scenarioId }),
+        ...(upload.concepts === undefined ? {} : { concepts: [...upload.concepts] }),
+        ...(upload.guardsOff === undefined ? {} : { guardsOff: [...upload.guardsOff] }),
+        ...(upload.challengeTier === undefined ? {} : { challengeTier: upload.challengeTier }),
+        ...(upload.why === undefined ? {} : { why: upload.why }),
+        ...(upload.ledger === undefined ? {} : { ledger: upload.ledger }),
+    }
+    return upload.kind === "check.result" && Object.keys(detail).length > 0 ? detail : null
+}
+
 /** True when the facts a result needs are present and bounded. */
 const resultFacts = (upload: RelayUpload): boolean =>
+    lessonFacts(upload) &&
     upload.checkId !== undefined &&
     upload.passed !== undefined &&
     (upload.slot === undefined || SLOTS.has(upload.slot)) &&

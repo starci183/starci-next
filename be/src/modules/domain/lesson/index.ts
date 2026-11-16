@@ -18,6 +18,20 @@ export { LessonImportService } from "./lesson-import.service"
 export { LessonLinkService } from "./lesson-link.service"
 export { LessonModule } from "./lesson.module"
 export { LessonReadService } from "./lesson-read.service"
+/**
+ * `LessonSourceService`: the one read of a lesson's source tree (`source/` of the lesson folder at the live version's content
+ * commit): `tree`, `read`, `search` and `archive` (the tarball). The relay's `source.tgz` door and the MCP share it; the
+ * caller checks access with `LessonContentService.requireAccess`.
+ */
+export { LessonSourceService } from "./lesson-source.service"
+export type { LessonSourceMatch, LessonSourcePack, LessonSourceRead } from "./lesson-source.service"
+export { lessonSourceTreeOf } from "./lesson-source-tree.policy"
+export type {
+    LessonSourceTree,
+    LessonSourceTreeFile,
+    LessonSourceTreeInvariant,
+    LessonSourceTreeScenario,
+} from "./lesson-source-tree.contracts"
 export type {
     LessonActivity,
     LessonContent,
@@ -31,6 +45,32 @@ export type {
     LessonWorkspaceFile,
 } from "./lesson.contracts"
 export type { LessonSourceFile } from "./lesson-import.contracts"
+export type {
+    LessonArchitectureComponentView,
+    LessonArchitectureView,
+    LessonChallengeCriterionView,
+    LessonChallengeView,
+    LessonChoiceView,
+    LessonCodeWalkView,
+    LessonEssentialView,
+    LessonQuestionView,
+    LessonScenarioView,
+    LessonSourceView,
+} from "./lesson-essential-view.contracts"
+export type {
+    LessonChallenge,
+    LessonChallengeLevel,
+    LessonEssential,
+    LessonHiddenScenario,
+    LessonInvariant,
+    LessonScenario,
+    LessonScenarioRun,
+    LessonSourceRepo,
+} from "./lesson-essential.contracts"
+export { LESSON_CHALLENGE_LEVELS } from "./lesson-essential.contracts"
+export type { LessonRunnable } from "./lesson-content.service"
+export type { LessonSourceArchive } from "./lesson-source-archive.policy"
+export { lessonRelayTaskId } from "./lesson-essential.contracts"
 export type { LessonTopicCatalog, LessonTopicStep } from "./lesson-topic.contracts"
 export type { LessonTopicView } from "./lesson-topic-view.contracts"
 export type {

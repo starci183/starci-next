@@ -1,10 +1,23 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, Optional } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
-import { SELECT_VERSION } from "./persistence/lesson.sql"
+import { SELECT_PUBLISHED, SELECT_VERSION } from "./persistence/lesson.sql"
+import type { LessonEssential } from "./lesson-essential.contracts"
+import type { LessonSourceArchive } from "./lesson-source-archive.policy"
+import { LessonSourceService } from "./lesson-source.service"
+
+/** The live version of a lesson as the relay signs it: its four-part fields and its source tarball, when it ships one. */
+export interface LessonRunnable {
+    /** The live version: the content commit it was imported at. */
+    readonly version: string
+    /** The four-part fields, whole. */
+    readonly essential: LessonEssential
+    /** The tarball of its `source/` folder, or null. */
+    readonly source: LessonSourceArchive | null
+}
 import { needsPremium } from "./lesson-access.policy"
 import type {
     LessonAccessParams,
@@ -26,6 +39,7 @@ export class LessonContentService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
+        @Optional() private readonly sources?: LessonSourceService,
     ) {}
 
     /**
@@ -74,6 +88,30 @@ export class LessonContentService {
         const row = rows[0]
         if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
         return outlineOf(row.content.locales[locale])
+    }
+
+    /**
+     * The four-part fields of the live version of a lesson, whole (scenario commands, guards, hidden challenge scenarios and
+     * their test sources): what the relay signs into a learner CLI manifest. Null when the lesson is not live or carries none.
+     * Nothing it returns may reach a browser.
+     */
+    async runnable(lessonId: string): Promise<LessonRunnable | null> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [lessonId])
+        const row = rows[0]
+        const essential = row?.content.locales.vi.essential
+        if (row === undefined || essential === undefined) return null
+        return { version: row.version, essential, source: this.sources?.archiveOf(row) ?? null }
+    }
+
+    /**
+     * The tarball of the `source/` folder of one stored lesson version (live or superseded), every entry under `source/` and
+     * nothing of `hidden/`. Not found when the version does not exist or ships no source.
+     */
+    async sourceArchive(lessonId: string, version: string): Promise<LessonSourceArchive> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_VERSION, [lessonId, version])
+        const archive = rows[0] === undefined ? null : (this.sources?.archiveOf(rows[0]) ?? null)
+        if (archive === null) throw new LessonError({ code: LessonErrorCode.NotFound })
+        return archive
     }
 
     /**

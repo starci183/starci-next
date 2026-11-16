@@ -6,6 +6,7 @@ import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import { contentHashOf, buildLessonDraft, lessonIdOf } from "./lesson-draft.policy"
+import { convertRawLesson, isRawLesson } from "./lesson-raw.policy"
 import { InjectLessonSource, type LessonSourceReader } from "./lesson-source.port"
 import { InjectLessonTopicCatalog } from "./lesson.decorators"
 import { joinPaths } from "./lesson-topic.policy"
@@ -63,16 +64,18 @@ export class LessonImportService {
         if (params.directory.trim() === "" || params.ref.trim() === "") {
             throw new LessonError({ code: LessonErrorCode.ImportRejected })
         }
-        const present = await this.source.folders(params.directory)
+        const present = await this.foldersOf(params.directory)
         const wanted = params.only.split(",").filter((name) => name !== "")
-        const missing = wanted.filter((name) => !present.includes(name))
+        const matches = (folder: string, name: string): boolean => folder === name || folder.endsWith(`/${name}`)
+        const missing = wanted.filter((name) => !present.some((folder) => matches(folder, name)))
         if (missing.length > 0) {
             throw new LessonError({
                 code: LessonErrorCode.ImportRejected,
                 params: { folders: missing.join(", ") },
             })
         }
-        const chosen = wanted.length === 0 ? present : present.filter((name) => wanted.includes(name))
+        const chosen =
+            wanted.length === 0 ? present : present.filter((folder) => wanted.some((name) => matches(folder, name)))
         const reports: Array<LessonImportReport> = []
         await eachInOrder(chosen, async (folder) => {
             const report = await this.importFolder(params, folder)
@@ -90,12 +93,31 @@ export class LessonImportService {
         throw new LessonError({ code, params: { folders } })
     }
 
+    /**
+     * The lesson folders of a directory: a concepts folder (`9-idempotency`, numbered) is one lesson; any other folder is a topic
+     * of the topic-based format (`raw/essentials/<topic>/<lesson>`), answered as `<topic>/<lesson>` for each lesson in it.
+     */
+    private async foldersOf(directory: string): Promise<Array<string>> {
+        const nested = await Promise.all(
+            (await this.source.folders(directory)).map(async (folder) =>
+                /^\d+-/u.test(folder)
+                    ? [folder]
+                    : (await this.source.folders(`${directory}/${folder}`)).map((lesson) => `${folder}/${lesson}`),
+            ),
+        )
+        return nested.flat()
+    }
+
     private async importFolder(params: ImportLessonsParams, folder: string): Promise<LessonImportReport> {
         const files = await this.source.read(params.directory, folder)
-        const { draft, issues } = buildLessonDraft(folder, files, this.catalog)
+        const [topic, lesson] = folder.includes("/") ? folder.split("/") : [undefined, folder]
+        const { draft, issues } =
+            topic !== undefined && lesson !== undefined && isRawLesson(files)
+                ? convertRawLesson({ topic, folder: lesson, files }, this.catalog)
+                : buildLessonDraft(folder, files, this.catalog)
         const base = {
             folder,
-            id: lessonIdOf(folder),
+            id: lessonIdOf(lesson ?? folder),
             version: params.ref,
             contentHash: contentHashOf(files),
             files: files.length,

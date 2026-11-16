@@ -66,6 +66,8 @@ export {
     useQueryOutcomePathsSwr,
     useQueryMyPremiumSwr,
     useQueryRelayDevicesSwr,
+    useQueryLessonOpenerScoresSwr,
+    useQueryLessonScenarioRunsSwr,
     useQueryMcpTokensSwr,
     useQueryRelayPairingSwr,
     useQueryPracticePatternsSwr,

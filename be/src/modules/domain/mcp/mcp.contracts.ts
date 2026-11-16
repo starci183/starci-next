@@ -60,16 +60,14 @@ export interface McpCatalogInvariant extends McpInvariant {
     readonly revealedBy: string | null
 }
 
-/** The public catalog of one lesson's source checkout, read from its `starci-source.json`. */
+/** The public catalog of one lesson, projected from its source tree. */
 export interface McpCatalog {
     /** The commit the checkout is pinned to. */
     readonly commit: string
-    /** The scenarios the learner may run; a hidden scenario is dropped when the file is read. */
+    /** The scenarios the learner may run; a hidden scenario is not in the source tree at all. */
     readonly scenarios: ReadonlyArray<McpScenario>
     /** Every invariant with the scenario that reveals it. */
     readonly invariants: ReadonlyArray<McpCatalogInvariant>
-    /** The extra path prefixes the teacher keeps out of the AI's reach. */
-    readonly deny: ReadonlyArray<string>
 }
 
 /** A file read from the lesson repository. */

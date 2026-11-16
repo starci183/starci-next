@@ -86,3 +86,17 @@ export interface SimulationProgressRow {
     /** When it last changed. */
     updated_at: Date
 }
+
+/** The first and the newest graded answer of one opener question. */
+export interface OpenerScoreRow {
+    /** The lesson. */
+    lesson_id: string
+    /** The activity, `opener.<question id>`. */
+    activity_id: string
+    /** Whether the first graded answer was right. */
+    first_correct: boolean | null
+    /** Whether the newest graded answer is right. */
+    latest_correct: boolean | null
+    /** The graded answers given. */
+    attempts: number
+}

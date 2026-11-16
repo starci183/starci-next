@@ -1,4 +1,5 @@
-import type { McpCatalog, McpCatalogInvariant, McpFile, McpScenario } from "./mcp.contracts"
+import type { LessonSourceTree } from "@modules/domain/lesson"
+import type { McpCatalog, McpFile } from "./mcp.contracts"
 
 /** The folder or file names (a whole path segment, lower case) that hold what a learner's AI never reads. */
 const DENIED_SEGMENTS: ReadonlySet<string> = new Set([
@@ -44,9 +45,9 @@ export const HIT_TEXT_MAX = 240
 
 /**
  * The repository-relative path a learner's AI may read, or null when it is outside the repository or names something kept
- * back: an absolute path, a `..` segment, a backslash, a NUL, a denied folder or file name, or a prefix the teacher denied.
+ * back: an absolute path, a `..` segment, a backslash, a NUL, or a denied folder or file name.
  */
-export const readablePathOf = (path: string, deny: ReadonlyArray<string>): string | null => {
+export const readablePathOf = (path: string): string | null => {
     if (
         path.length === 0 ||
         path.length > 300 ||
@@ -59,14 +60,6 @@ export const readablePathOf = (path: string, deny: ReadonlyArray<string>): strin
     if (segments.length === 0 || segments.some((segment) => segment === ".." || /\p{Cc}/u.test(segment))) return null
     if (segments.some((segment) => DENIED_SEGMENTS.has(segment.toLowerCase()) || DENIED_NAME.test(segment))) return null
     const normal = segments.join("/")
-    const lower = normal.toLowerCase()
-    if (
-        deny.some((prefix) => {
-            const denied = prefix.toLowerCase().replace(/^\/+|\/+$/gu, "")
-            return denied.length > 0 && (lower === denied || lower.startsWith(`${denied}/`))
-        })
-    )
-        return null
     return normal
 }
 
@@ -91,76 +84,29 @@ export const hitTextOf = (text: string): string => {
     return trimmed.length > HIT_TEXT_MAX ? `${trimmed.slice(0, HIT_TEXT_MAX)}…` : trimmed
 }
 
-const SLUG = /^[a-z0-9][a-z0-9-]{0,63}$/u
-const INVARIANT_ID = /^[A-Za-z0-9][A-Za-z0-9._-]{0,31}$/u
-
-const textOf = (value: unknown, max: number): string | null =>
-    typeof value === "string" && value.length > 0 && value.length <= max ? value : null
-
-const slugsOf = (value: unknown): Array<string> | null => {
-    if (value === undefined) return []
-    if (!Array.isArray(value) || !value.every((item) => typeof item === "string" && SLUG.test(item))) return null
-    return value as Array<string>
-}
-
-const scenarioOf = (lessonId: string, value: unknown): McpScenario | null | "hidden" => {
-    if (typeof value !== "object" || value === null) return null
-    const raw = value as Record<string, unknown>
-    // A hidden scenario is dropped before anything else of it is read: it is not part of the public catalog at all.
-    if (raw.hidden === true) return "hidden"
-    const id = textOf(raw.id, 64)
-    const title = textOf(raw.title, 200)
-    const fault = textOf(raw.fault, 600)
-    const guards = slugsOf(raw.guards)
-    if (id === null || !SLUG.test(id) || title === null || fault === null || guards === null) return null
-    const invariant = raw.invariant === undefined ? null : textOf(raw.invariant, 32)
-    const guardArgs = guards.length === 0 ? "" : ` [--guard ${guards[0] ?? ""}=off]`
-    return {
-        id,
-        title,
-        fault,
-        invariant,
-        guards,
-        command: `starci-next run ${lessonId} --scenario ${id}${guardArgs}`,
-    }
-}
-
-const invariantOf = (value: unknown): McpCatalogInvariant | null => {
-    if (typeof value !== "object" || value === null) return null
-    const raw = value as Record<string, unknown>
-    const id = textOf(raw.id, 32)
-    const name = textOf(raw.name, 200)
-    const statement = textOf(raw.statement, 600)
-    if (id === null || !INVARIANT_ID.test(id) || name === null || statement === null) return null
-    return {
-        id,
-        name,
-        statement,
-        where: raw.where === undefined ? null : textOf(raw.where, 200),
-        revealedBy: raw.revealedBy === undefined ? null : textOf(raw.revealedBy, 64),
-    }
-}
-
 /**
- * The public catalog of a lesson checkout, projected field by field from its `starci-source.json`: the pinned commit, the
- * scenarios that are not hidden, the invariants and the extra denied prefixes. Any field not named here (a hidden scenario,
- * an expected output, an answer, a mutant) is never copied. Null when the file is not a catalog.
+ * The public catalog of a lesson, projected from its source tree: the pinned commit, the scenarios (each with the command the
+ * learner runs) and the invariants, each revealed by the first scenario that judges it. The tree carries no hidden scenario, expected
+ * output or hint, and only the invariant location that points at a readable path is kept.
  */
-export const catalogOf = (lessonId: string, raw: unknown): McpCatalog | null => {
-    if (typeof raw !== "object" || raw === null) return null
-    const document = raw as Record<string, unknown>
-    const commit = textOf(document.commit, 64)
-    if (commit === null || !/^[0-9a-f]{7,64}$/u.test(commit)) return null
-    const scenarios: Array<McpScenario> = []
-    for (const item of Array.isArray(document.scenarios) ? (document.scenarios as Array<unknown>) : []) {
-        const scenario = scenarioOf(lessonId, item)
-        if (scenario !== null && scenario !== "hidden") scenarios.push(scenario)
-    }
-    const invariants = (Array.isArray(document.invariants) ? (document.invariants as Array<unknown>) : []).flatMap(
-        (item) => invariantOf(item) ?? [],
-    )
-    const deny = (Array.isArray(document.deny) ? (document.deny as Array<unknown>) : []).flatMap((item) =>
-        typeof item === "string" && item.length > 0 && item.length <= 200 ? [item.replace(/^\/+|\/+$/gu, "")] : [],
-    )
-    return { commit, scenarios, invariants, deny }
-}
+export const catalogOf = (lessonId: string, tree: LessonSourceTree): McpCatalog => ({
+    commit: tree.commit,
+    scenarios: tree.scenarios.map((scenario) => ({
+        id: scenario.id,
+        title: scenario.title,
+        fault: scenario.fault,
+        invariant: scenario.invariant,
+        guards: scenario.guards,
+        command: `starci-next run ${lessonId} --scenario ${scenario.id}${scenario.guards[0] === undefined ? "" : ` [--guard ${scenario.guards[0]}=off]`}`,
+    })),
+    invariants: tree.invariants.map((invariant) => ({
+        id: invariant.id,
+        name: invariant.id,
+        statement: invariant.text,
+        where:
+            invariant.where !== null && readablePathOf(invariant.where.split(":")[0] ?? "") !== null
+                ? invariant.where
+                : null,
+        revealedBy: tree.scenarios.find((scenario) => scenario.invariant === invariant.id)?.id ?? null,
+    })),
+})

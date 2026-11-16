@@ -3,8 +3,8 @@ import { ContentErrorCode } from "./errors/content.error"
 import { catalogFilesOf, catalogKindsOf, manifestOf } from "./content-manifest.policy"
 
 const TEXT = `
-schema: starci-next-data/manifest@1
-name: starci-next-data
+schema: starci-next-seed-standard/manifest@1
+name: starci-next-seed-standard
 contentVersion: 1
 kinds:
   - {id: concepts, folder: concepts, format: concept-v2, source: starci-lab/data}

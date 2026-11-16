@@ -171,3 +171,17 @@ RETURNING mutation_score::int AS mutation_score`
 export const RAISE_PROVED: ReturnType<typeof sql> = sql`UPDATE lesson_outcome_levels
 SET proved = $3::smallint, updated_at = $4::timestamptz
 WHERE learner_id = $1::uuid AND lesson_id = $2::text AND understood = 2 AND proved < $3::smallint`
+
+/**
+ * The first and the newest graded answer of every opener question of some lessons, per lesson and question: what the topic
+ * page and the before-and-after of the opener show ($1 learner, $2 lessons, $3 row bound).
+ */
+export const SELECT_OPENER_SCORES: ReturnType<typeof sql> = sql`SELECT lesson_id, activity_id,
+    (array_agg((result ->> 'correct')::boolean ORDER BY submitted_at, revision))[1] AS first_correct,
+    (array_agg((result ->> 'correct')::boolean ORDER BY submitted_at DESC, revision DESC))[1] AS latest_correct,
+    count(*)::int AS attempts
+FROM lesson_attempts
+WHERE learner_id = $1::uuid AND lesson_id = ANY($2::text[]) AND activity_id LIKE 'opener.%' AND status = 'graded'
+GROUP BY lesson_id, activity_id
+ORDER BY lesson_id, activity_id
+LIMIT $3::int`

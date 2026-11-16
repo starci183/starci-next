@@ -16,6 +16,8 @@ import type { RelayClientModuleOptions } from "./relay-client.options"
 import type { InitOptions, RelayClientPort } from "./relay-client.port"
 import { ProjectKitService } from "./project-kit.service"
 import { runTask } from "./task-run.cli"
+import { openDeviceSocket } from "./device-socket.client"
+import { listenCommand, type ListenOptions } from "./listen.cli"
 import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
 
@@ -51,6 +53,8 @@ export class RelayClientService implements RelayClientPort {
             platform: () => terminal.platform(),
             exit: (code) => terminal.exit(code),
             confirm: (question) => terminal.confirm(question),
+            isTty: () => terminal.isTty(),
+            listen: (baseUrl, token, handlers) => openDeviceSocket(baseUrl, token, handlers),
             runCommand: (command, cwd, timeoutMs, env, quiet) =>
                 terminal.runCommand(command, cwd, timeoutMs, env, quiet),
             verify: (payload, signature, key) => manifests.verified(payload, signature, key),
@@ -108,6 +112,11 @@ export class RelayClientService implements RelayClientPort {
     /** Runs (or checks) the signed scenarios of a lesson. */
     async lessonRun(lesson: string, options: LessonRunOptions, isCheck: boolean): Promise<void> {
         this.io.exit(await runLesson(this.io, lesson, options, isCheck, this.cwd))
+    }
+
+    /** Listens for the run requests StarCi pushes and runs them after the learner agrees. */
+    async listen(options: ListenOptions): Promise<void> {
+        this.io.exit(await listenCommand(this.io, options, this.cwd))
     }
 
     /** Prints the fix prompt of a scenario. */

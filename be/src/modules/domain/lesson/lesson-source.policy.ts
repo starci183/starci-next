@@ -1,5 +1,5 @@
 import { parseSeparatorFields } from "./separator.policy"
-import { isRootFile, isSectionFile, rootIssues, sectionIssues } from "./lesson-format.policy"
+import { ESSENTIAL_FIELD_NAMES, isRootFile, isSectionFile, rootIssues, sectionIssues } from "./lesson-format.policy"
 import type { ShapeIssue } from "./shape.policy"
 import type {
     LessonIssue,
@@ -17,6 +17,7 @@ const JSON_FIELDS: ReadonlySet<string> = new Set([
     "activities",
     "workspace",
     "workspaces",
+    ...ESSENTIAL_FIELD_NAMES,
 ])
 const NUMBER_FIELDS: ReadonlySet<string> = new Set(["minutesRead", "sortIndex"])
 const BOOLEAN_FIELDS: ReadonlySet<string> = new Set(["isPremium"])

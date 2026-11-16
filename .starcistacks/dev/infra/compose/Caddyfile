@@ -6,12 +6,13 @@
 # The dev entry origin, the same routing as the production app host: the identity doors (/api/*), GraphQL (/graphql, the learner device
 # uploads included) and the MCP endpoint (/mcp) and the learner device socket (/socket.io/*, WebSocket upgrade passed through) go to the core api,
 # everything else to the Next app, so the host-only session cookie reaches the doors. Plain http on localhost (a secure context for Chrome).
+# The container listens on 3080; the host port and the two upstream ports come from environments.dev.local.ports (compose.yaml).
 :3080 {
     @core path /api/* /graphql /mcp /socket.io/*
     handle @core {
-        reverse_proxy host.docker.internal:3001
+        reverse_proxy host.docker.internal:{$CORE_PORT}
     }
     handle {
-        reverse_proxy host.docker.internal:3000
+        reverse_proxy host.docker.internal:{$APP_PORT}
     }
 }

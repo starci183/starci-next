@@ -22,10 +22,16 @@ export interface ContentManifestKind {
     readonly importer?: string | undefined
 }
 
+/**
+ * The manifest formats the reader takes: the content repository is starci183/starci-next-seed-standard (renamed from
+ * starci-next-data, owner 2026-11-17); a snapshot taken before the rename still names the old format.
+ */
+export const CONTENT_MANIFEST_SCHEMAS = ["starci-next-seed-standard/manifest@1", "starci-next-data/manifest@1"] as const
+
 /** The manifest of the content repository: which kinds it holds, where, and in which format. */
 export interface ContentManifest {
     /** The format of the manifest. */
-    readonly schema: "starci-next-data/manifest@1"
+    readonly schema: (typeof CONTENT_MANIFEST_SCHEMAS)[number]
     /** The name of the repository. */
     readonly name: string
     /** The version of its content. */
@@ -47,7 +53,7 @@ const kindSchema = z.object({
 
 /** The shape of `manifest.yaml`. */
 export const manifestSchema: z.ZodType<ContentManifest> = z.object({
-    schema: z.literal("starci-next-data/manifest@1"),
+    schema: z.enum(CONTENT_MANIFEST_SCHEMAS),
     name: z.string().min(1).max(TEXT_MAX),
     contentVersion: z.number().int().min(1),
     kinds: z.array(kindSchema).min(1).max(KINDS_MAX),

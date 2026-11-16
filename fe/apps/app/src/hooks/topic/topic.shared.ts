@@ -1,7 +1,17 @@
 import { lessonStatusOf } from "@/hooks/catalog"
 import { topicCoverOf } from "@/hooks/catalogTopics"
 import { lessonPath, topicPath } from "@/modules/routes"
-import type { CatalogLessonView, ProgressView, TopicScreenView, TopicView, TopicWords } from "@/modules/types"
+import type {
+    CatalogLessonView,
+    OpenerScoreView,
+    ProgressView,
+    TopicScreenView,
+    TopicView,
+    TopicWords,
+} from "@/modules/types"
+
+/** How many questions a lesson opener asks. */
+const OPENER_SIZE = 5
 
 /** What the topic screen needs besides the topic: the catalog, which names the lessons and the related topics. */
 type TopicInput = {
@@ -9,8 +19,17 @@ type TopicInput = {
     readonly catalog: ReadonlyArray<CatalogLessonView>
     readonly progress: Readonly<Record<string, ProgressView>>
     readonly words: TopicWords
-    /** The languages each lesson's lab ships, by lesson id (read from the lesson); the catalog's own list stands in until it arrives. */
-    readonly languages: Readonly<Record<string, ReadonlyArray<string>>>
+    /** The five-question opener score of each lesson, by lesson id; a lesson missing here is not taken yet. */
+    readonly openers: Readonly<Record<string, OpenerScoreView>>
+}
+
+/** The opener score of a lesson in words: right now out of five, or "not taken". */
+const openerOf = (input: TopicInput, lessonId: string): string => {
+    const score = input.openers[lessonId]
+    return input.words.opener(
+        score === undefined || score.answered === 0 ? undefined : score.latestCorrect,
+        Math.max(OPENER_SIZE, score?.answered ?? 0),
+    )
 }
 
 /** Where the learner stands on a published lesson, or the free line for a reader without Premium. */
@@ -20,19 +39,6 @@ const statusOf = (input: TopicInput, lessonId: string): string =>
 /** The button words of a published lesson: start, continue or view, by where the learner stands (always view without Premium). */
 const ctaOf = (input: TopicInput, lessonId: string): string =>
     input.words.ctas[input.words.isPremium ? lessonStatusOf(input.progress[lessonId]) : "free"]
-
-/** The languages of a lesson in words, in the order the lesson lists them. */
-const languageIdsOf = (input: TopicInput, lesson: CatalogLessonView): ReadonlyArray<string> => {
-    const shipped = input.languages[lesson.id] ?? []
-    return shipped.length > 0 ? shipped : lesson.languages
-}
-
-/** The languages of a lesson in words; several are short ("TS · Java · C# · Go"), one is the full name. */
-const languagesOf = (input: TopicInput, lesson: CatalogLessonView): string => {
-    const ids = languageIdsOf(input, lesson)
-    const names = ids.length > 1 ? input.words.shortLanguageNames : input.words.languageNames
-    return ids.map((each) => names[each] ?? input.words.languageNames[each] ?? each).join(" · ")
-}
 
 /** The state of a ring: done when the server says so, current for the first phase not done, later for the rest. */
 const phaseStateOf = (state: "open" | "done", isFirstOpen: boolean): "done" | "current" | "later" => {
@@ -67,7 +73,7 @@ const rowsOf = (input: TopicInput): TopicScreenView["rows"] =>
                     ? input.words.meta(
                           input.words.difficulty[lesson.difficulty] ?? lesson.difficulty,
                           lesson.minutes,
-                          languagesOf(input, lesson),
+                          openerOf(input, row.lessonId),
                       )
                     : input.words.pending,
             status: isOpen ? statusOf(input, row.lessonId) : input.words.soon,
@@ -107,13 +113,12 @@ const nextOf = (input: TopicInput, rows: TopicScreenView["rows"]): TopicScreenVi
         : { label: `${row.cta}: ${row.title.split(" — ")[0] ?? row.title}`, href: row.href }
 }
 
-/** The facts of the band: lessons, minutes and languages across the lessons the chapter has open. */
+/** The facts of the band: lessons and minutes across the lessons the chapter has open (all TypeScript). */
 const factsOf = (input: TopicInput): string => {
     const lessons = input.topic.path.flatMap((row) => input.catalog.find((each) => each.id === row.lessonId) ?? [])
     return input.words.facts(
         lessons.length,
         lessons.reduce((sum, lesson) => sum + lesson.minutes, 0),
-        new Set(lessons.flatMap((lesson) => languageIdsOf(input, lesson))).size,
     )
 }
 

@@ -37,10 +37,10 @@ environments:
     runtime: docker-compose
     composeFiles: [infra/compose/compose.yaml]
     components:
-      core: { port: 3001 }
-      app: { port: 3000 }
-      landing: { port: 3002 }
-      ingress: { port: 3080 }
+      core: { port: 3201 }
+      app: { port: 3200 }
+      landing: { port: 3202 }
+      ingress: { port: 3280 }
       postgres: { port: 5432 }
       keycloak: { port: 8089 }
     runbook: README.md
@@ -103,15 +103,16 @@ environments:
     # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (postgres, the mail sink, the
     # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:
-      basePort: 3000
+      # 3200..3299: the hundred of this app (3000..3099 is nivo-lite's, STACK_LOCAL_BASE_PORT_TAKEN; coordinator 2026-11-17).
+      basePort: 3200
       ports:
-        db: 3090
-        mail: 3091
-        mailui: 3092
-        core: 3001
-        app: 3000
-        landing: 3002
-        ingress: 3080
+        db: 3290
+        mail: 3291
+        mailui: 3292
+        core: 3201
+        app: 3200
+        landing: 3202
+        ingress: 3280
         keycloak: 8089
       dirs: [keycloak-tls, relay-dev]
       services:
@@ -186,7 +187,7 @@ environments:
           health: {url: "http://localhost:${port.core}/health/live"}
         - name: app
           # next dev directly in the app folder (turbo strips undeclared env such as PORT from its tasks). Behind the ingress the browser's /api/* and
-          # /graphql never reach this server; the dev rewrite of next.config.ts (CORE_INTERNAL_ORIGIN, default http://127.0.0.1:3001) only serves a direct visit to this port.
+          # /graphql never reach this server; the dev rewrite of next.config.ts (CORE_INTERNAL_ORIGIN, set below from the core port) only serves a direct visit to this port.
           argv: [npx, next, dev]
           cwd: fe/apps/app
           port: app

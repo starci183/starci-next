@@ -24,6 +24,8 @@ export const toGetRelayManifestParams = (
         milestone: input.milestone,
         testCommand: input.testCommand,
         testReport: input.testReport,
+        scenario: input.scenario,
+        challenge: input.challenge,
     },
 })
 
