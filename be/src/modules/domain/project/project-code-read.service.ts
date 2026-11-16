@@ -4,6 +4,7 @@ import { InjectEntitlementService, type EntitlementService } from "@modules/doma
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { assertSubscriber } from "./project-access.policy"
 import type { ConceptView } from "./project-view.contracts"
 import type { ExplainConceptParams } from "./project-params.contracts"
 import type { ProjectSettings } from "./project.contracts"
@@ -50,6 +51,7 @@ export class ProjectCodeReadService {
      * failing result with the teacher's question. A concept whose lesson or rubric is not written yet is PROJECT_CONCEPT_NOT_READY.
      */
     async read(params: ExplainConceptParams): Promise<ConceptView> {
+        await assertSubscriber(this.entitlement, params.learnerId)
         const rows: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT, [
             params.learnerId,
             params.projectId,
@@ -61,8 +63,6 @@ export class ProjectCodeReadService {
             milestone.concepts.includes(params.conceptId),
         )
         if (definition === null || !listed) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
-        if (!(await this.entitlement.isPremium(params.learnerId)))
-            throw new ProjectError({ code: ProjectErrorCode.PremiumRequired })
         const location = locationOf(params.location)
         const excerpt = excerptOf(params.excerpt)
         const explanation = explanationOf(params.explanation)

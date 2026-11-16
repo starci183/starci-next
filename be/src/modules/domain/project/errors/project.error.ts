@@ -44,6 +44,8 @@ export enum ProjectErrorCode {
     CoachUnavailable = "PROJECT_COACH_UNAVAILABLE",
     /** The AI answered something that is not a grade. */
     CoachInvalid = "PROJECT_COACH_INVALID",
+    /** The check set (catalog and probe flows) of the content snapshot cannot be read or does not pass its schema. */
+    ChecksUnavailable = "PROJECT_CHECKS_UNAVAILABLE",
 }
 
 /** How each project code travels. */
@@ -69,6 +71,7 @@ export const PROJECT_ERROR_KINDS: Record<ProjectErrorCode, ErrorKind> = {
     [ProjectErrorCode.CoachUnconfigured]: "unavailable",
     [ProjectErrorCode.CoachUnavailable]: "unavailable",
     [ProjectErrorCode.CoachInvalid]: "internal",
+    [ProjectErrorCode.ChecksUnavailable]: "unavailable",
 }
 
 /** The one error class of the project capability. */

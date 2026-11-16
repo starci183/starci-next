@@ -1,6 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { FakeClock, fakeInbox, mock, mockEntityManager } from "@starci/jest-preset"
 import { PROJECT_ID, PROJECT_NOW, projectRowOf } from "@tests/fixtures/builders/project.builder"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { INBOX } from "@modules/platform/inbox"
@@ -39,6 +40,8 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
     const evidence = mock<ProjectEvidenceService>()
     evidence.recordCiRun.mockResolvedValue({ duplicate: false, added: 1 })
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectCiService,
@@ -46,11 +49,12 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
             { provide: INBOX, useValue: inbox },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: ProjectEvidenceService, useValue: evidence },
             { provide: PROJECT_CI_ATTESTATION, useValue: attestation },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox }
+    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox, entitlement }
 }
 
 const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
@@ -66,6 +70,19 @@ const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
 }
 
 const record = (service: ProjectCiService, oidcToken?: string) => service.recordRun(deliveryOf(oidcToken))
+
+describe("ProjectCiService subscription-only", () => {
+    it("refuses a CI delivery for the project of a learner without Premium, records nothing and gives the claim back", async () => {
+        const { service, evidence, attestation, inbox, entitlement } = await build()
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(record(service, "oidc-token")).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+
+        expect(attestation.attest).not.toHaveBeenCalled()
+        expect(evidence.recordCiRun).not.toHaveBeenCalled()
+        expect(inbox.released).toEqual([{ source: "project-ci", eventId: "gh-1" }])
+    })
+})
 
 describe("ProjectCiService recordRun", () => {
     it("claims the run id first, records the unattested run's results as signed-only practice and settles it", async () => {

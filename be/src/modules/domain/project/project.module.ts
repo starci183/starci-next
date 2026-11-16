@@ -10,6 +10,10 @@ import { ProjectEvidenceService } from "./project-evidence.service"
 import { PROJECT_LESSONS } from "./project-lesson.port"
 import { ProjectPracticeService } from "./project-practice.service"
 import { ProjectProbeService } from "./project-probe.service"
+import { ProjectProbeSinkService } from "./project-probe-sink.service"
+import { ProjectCheckSetDiskAdapter } from "./project-check-set-disk.adapter"
+import { PROJECT_CHECK_SOURCE } from "./project-check-set.port"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { ProjectReadService } from "./project-read.service"
 import { PROJECT_RELAY } from "./project-relay.port"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./project.module-definition"
@@ -28,11 +32,13 @@ export class ProjectModule extends ConfigurableModuleClass {
         const coachClass = options.coach ?? UnconfiguredProjectCoach
         const lessonsClass = options.lessons ?? LessonCatalogClient
         const attestationClass = options.attestation ?? UnattestedCiClient
+        const checkSourceClass = options.checkSource ?? ProjectCheckSetDiskAdapter
         const bindings: Array<Provider> = [
             { provide: PROJECT_RELAY, useExisting: relayClass },
             { provide: PROJECT_COACH, useExisting: coachClass },
             { provide: PROJECT_LESSONS, useExisting: lessonsClass },
             { provide: PROJECT_CI_ATTESTATION, useExisting: attestationClass },
+            { provide: PROJECT_CHECK_SOURCE, useExisting: checkSourceClass },
         ]
         return {
             ...base,
@@ -42,7 +48,10 @@ export class ProjectModule extends ConfigurableModuleClass {
                 coachClass,
                 lessonsClass,
                 attestationClass,
+                checkSourceClass,
                 ...bindings,
+                ProjectCheckSetService,
+                ProjectProbeSinkService,
                 ProjectEvidenceService,
                 ProjectReadService,
                 ProjectService,
@@ -62,6 +71,8 @@ export class ProjectModule extends ConfigurableModuleClass {
                 ProjectCodeReadService,
                 ProjectPracticeService,
                 ProjectRepositoryService,
+                ProjectCheckSetService,
+                ProjectProbeSinkService,
             ],
         }
     }

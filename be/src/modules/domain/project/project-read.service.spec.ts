@@ -40,7 +40,7 @@ interface World {
     readonly premium?: boolean
 }
 
-const build = async (world: World = {}, options: ProjectOptions = {}) => {
+const build = async (world: World = {}, options: ProjectOptions = { freeMilestones: ["bf-http-foundation"] }) => {
     const projects = world.projects ?? [projectRowOf()]
     const em = mockEntityManager({
         query: [
@@ -167,12 +167,12 @@ describe("ProjectReadService milestone", () => {
         expect(view.concepts[1]).toMatchObject({ endpoint: null })
     })
 
-    it("needs Premium past the free milestones, and knows only the milestones of the project's kind", async () => {
+    it("shows a milestone past the free ones read-only without Premium, and knows only the milestones of the project's kind", async () => {
         const free = await build()
         const premium = await build({ premium: true })
 
-        await expect(free.service.milestone({ ...LOOKUP, milestoneId: "bf-data-and-cache" })).rejects.toMatchObject({
-            code: "PROJECT_PREMIUM_REQUIRED",
+        await expect(free.service.milestone({ ...LOOKUP, milestoneId: "bf-data-and-cache" })).resolves.toMatchObject({
+            milestone: { locked: true },
         })
         await expect(premium.service.milestone({ ...LOOKUP, milestoneId: "bf-data-and-cache" })).resolves.toMatchObject(
             {

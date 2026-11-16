@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { EssentialsExperienceService, InjectExperienceProducer, type ExperienceProducer } from "@modules/domain/career"
 import { InjectNotificationProducer, type NotificationProducerPort } from "@modules/domain/notification"
 import { StreakService } from "@modules/domain/streak"
@@ -65,6 +66,7 @@ export class ProjectEvidenceService {
         private readonly essentials: EssentialsExperienceService,
         @InjectNotificationProducer() private readonly notifications: NotificationProducerPort,
         private readonly streak: StreakService,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
     ) {}
 
     /** Appends results in the caller's transaction; a result the same run already reported adds nothing. Answers how many were new. */
@@ -110,6 +112,8 @@ export class ProjectEvidenceService {
      * appended the results has committed. `streakActionIds` are the runs that count as a meaningful `project-run` action.
      */
     async settle(project: ProjectRow, streakActionIds: ReadonlyArray<string>): Promise<void> {
+        // Defence in depth: a learner without Premium never has a proof claimed, an experience line made or a streak action counted.
+        if (!(await this.entitlement.isPremium(project.learner_id))) return
         const evidence: Array<EvidenceDbRow> = await this.entityManager.query(SELECT_EVIDENCE, [
             [project.project_id],
             LIST_ROWS_MAX,

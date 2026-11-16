@@ -22,7 +22,6 @@ import {
     type ProjectSummaryView,
     type SlotView,
 } from "./project-view.contracts"
-import { probeQuestionOf } from "./project-probe.policy"
 import type {
     MilestoneStanding,
     ConceptStanding,
@@ -133,9 +132,17 @@ const toSlotView = (standing: SlotStanding, required: boolean): SlotView => {
     }
 }
 
-/** The question the AI teacher asks about a failed result: a probe has a fixed one, a code read carries its own. */
+/** The localized text a result's detail carries under a key (`question`: `{vi, en}`), or "". */
+const detailLocalized = (detail: Readonly<Record<string, unknown>>, key: string, locale: ProjectLocale): string => {
+    const value = detail[key]
+    if (typeof value !== "object" || value === null) return ""
+    const text: unknown = (value as Readonly<Record<string, unknown>>)[locale]
+    return typeof text === "string" ? text : ""
+}
+
+/** The question the AI teacher asks about a failed result: a probe's comes from its content file, a code read carries its own. */
 const questionOf = (slot: EvidenceSlot, shown: SlotResult, locale: ProjectLocale): string => {
-    if (slot === "probe") return probeQuestionOf(shown.ref, locale)
+    if (slot === "probe") return detailLocalized(shown.detail, "question", locale)
     return slot === "code-read" ? detailText(shown.detail, "question") : ""
 }
 

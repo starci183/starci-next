@@ -1,5 +1,6 @@
 import type { Type } from "@nestjs/common"
 import type { CiAttestationVerifier } from "./project-ci-attestation.port"
+import type { ProjectCheckSource } from "./project-check-set.port"
 import type { ProjectCoach } from "./project-coach.port"
 import type { ProjectLessonPort } from "./project-lesson.port"
 import type { ProjectRelayPort } from "./project-relay.port"
@@ -18,9 +19,9 @@ export interface ProjectOptions {
     readonly attestation?: Type<CiAttestationVerifier>
     /** The audience a run's GitHub Actions OIDC token must name; absent, `starci-next`. */
     readonly ciOidcAudience?: string
-    /** Projects a learner without Premium may own; absent, 1. */
+    /** Projects a learner without Premium may own; absent, 0 (Projects is subscription-only). */
     readonly freeProjects?: number
-    /** Milestone ids a learner without Premium may open; absent, the first milestone, `bf-http-foundation`. */
+    /** Milestone ids a learner without Premium may open; absent, none. */
     readonly freeMilestones?: ReadonlyArray<string>
     /** Probe runs one project may start per hour; absent, 6. */
     readonly probeRunsPerHour?: number
@@ -36,4 +37,12 @@ export interface ProjectOptions {
     readonly ciToleranceMs?: number
     /** Milliseconds the AI teacher has for one code read; absent, 60000. */
     readonly codeReadTimeoutMs?: number
+    /** Where the check set is read; absent, `ProjectCheckSetDiskAdapter` (PROJECT_CHECKS_DIR or the active content snapshot). */
+    readonly checkSource?: Type<ProjectCheckSource>
+    /** A content checkout whose raw/projects is the check set (development); absent, the active content snapshot. */
+    readonly checksDir?: string
+    /** The directory of the content snapshots and their active.json; absent with no checksDir, there is no check set. */
+    readonly datasourcesDir?: string
+    /** The public base address of the probe sink (`<base>/probe-sink/<id>`); absent, a probe with a sink step is skipped. */
+    readonly probeSinkBaseUrl?: string
 }

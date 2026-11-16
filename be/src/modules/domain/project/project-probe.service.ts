@@ -1,17 +1,21 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectProbeTransport, type ProbeReply, type ProbeTransport } from "@modules/integrations/probe"
+import { InjectProbeTransport, type ProbeTransport } from "@modules/integrations/probe"
 import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
+import { CheckFlowRunner, type FlowPorts, type FlowVerdict } from "@modules/platform/check-flow"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
+import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import type { EvidenceInput, ProbeId, ProjectSettings } from "./project.contracts"
+import type { EvidenceInput, ProjectSettings } from "./project.contracts"
 import { InjectProjectOptions } from "./project.decorators"
+import { assertSubscriber } from "./project-access.policy"
 import type { ProjectOptions } from "./project.options"
-import { milestonesOfKind, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import type { CheckProbe, CheckSet } from "./project-check-set.contracts"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { ProjectEvidenceService } from "./project-evidence.service"
-import { judgeProbe, planOf, type ProbePlan, type ProbeVerdict } from "./project-probe.policy"
+import { ProjectProbeSinkService } from "./project-probe-sink.service"
 import { projectSettingsOf } from "./project-settings.policy"
 import { publicTargetOf } from "./project-target.policy"
 import type { ProbeRunView } from "./project-view.contracts"
@@ -24,23 +28,30 @@ const MAX_PROBES = 24
 const BATCH = 3
 const HOUR_MS = 3_600_000
 
+/** The probe a run always sends to the deployment itself when no concept carries it. */
+export const DEPLOYMENT_PROBE = "health"
+
 /** One probe of a run: aimed at a concept's endpoint, or the deployment itself. */
 interface ProbeTask {
     /** The concept it proves for, or null for the deployment probe. */
     readonly conceptId: string | null
-    /** The probe. */
-    readonly probeId: ProbeId
+    /** The probe id. */
+    readonly probeId: string
 }
 
-/** A probe task with what it concluded and whether it ran at all. */
+/** A probe task with what its flow concluded. */
 interface ProbeOutcome {
     /** The task. */
     readonly task: ProbeTask
-    /** The verdict. */
-    readonly verdict: ProbeVerdict
-    /** False when the probe did not run: it could not be planned (an endpoint the learner has not declared) or a request got no response (refused address, network, deadline); it proves nothing either way. */
-    readonly executed: boolean
+    /** The verdict of the flow. */
+    readonly verdict: FlowVerdict
+    /** The probe's texts, for the evidence. */
+    readonly probe: CheckProbe
 }
+
+/** Whether a verdict judged the project: passed or failed. Skipped and unanswered prove nothing either way. */
+const isJudged = (outcome: ProbeOutcome): boolean =>
+    outcome.verdict.status === "passed" || outcome.verdict.status === "failed"
 
 const evidenceOf = (outcomes: ReadonlyArray<ProbeOutcome>, runId: string, at: Date): ReadonlyArray<EvidenceInput> =>
     outcomes.flatMap((outcome) =>
@@ -51,11 +62,16 @@ const evidenceOf = (outcomes: ReadonlyArray<ProbeOutcome>, runId: string, at: Da
                       conceptId: outcome.task.conceptId,
                       slot: "probe" as const,
                       source: "server-probe" as const,
-                      passed: outcome.verdict.passed,
+                      passed: outcome.verdict.status === "passed",
                       ref: outcome.task.probeId,
                       runId,
                       commitSha: null,
-                      detail: { reason: outcome.verdict.reason, facts: outcome.verdict.facts },
+                      detail: {
+                          reason: outcome.verdict.reason,
+                          facts: outcome.verdict.facts,
+                          text: outcome.probe.reasons[outcome.verdict.reason] ?? null,
+                          question: outcome.probe.question,
+                      },
                       at,
                   },
               ],
@@ -63,11 +79,11 @@ const evidenceOf = (outcomes: ReadonlyArray<ProbeOutcome>, runId: string, at: Da
 
 @Injectable()
 /**
- * The server probe runner (proof): it calls the deployed address of a project with the generic StarCi probes, aimed at the
- * endpoints the learner declared for each concept. Every request goes through the guarded client (public http or https only,
- * address checked at connection, no redirect, a deadline and a byte cap), a project may be probed only a few times an hour, and a
- * learner without Premium is probed only for the free milestones. A probe that needs an endpoint the learner has not declared is
- * reported as such and proves nothing.
+ * The server probe runner (proof). Every probe is data, a check-flow file of the content repository, run by the one interpreter the
+ * CLI also uses; this service only picks the probes of the project's milestones and binds the guarded transport (public http or
+ * https only, the address checked at connection, no redirect, a deadline and a byte cap) and the public sink. Projects are for
+ * subscribers only: a learner without Premium is refused with PROJECT_PREMIUM_REQUIRED before anything is sent, and a project may be
+ * probed only a few times an hour. A probe skipped for a missing declaration or left unanswered moves no concept.
  */
 export class ProjectProbeService {
     private readonly settings: ProjectSettings
@@ -75,16 +91,20 @@ export class ProjectProbeService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
+        @InjectTimer() private readonly timer: Timer,
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProjectOptions() options: ProjectOptions,
         @InjectProbeTransport() private readonly http: ProbeTransport,
         private readonly evidence: ProjectEvidenceService,
+        private readonly checks: ProjectCheckSetService,
+        private readonly sink: ProjectProbeSinkService,
     ) {
         this.settings = projectSettingsOf(options)
     }
 
     /** Probes the project's deployed address, records the run and its evidence, settles the project and answers the run. */
     async run(learnerId: string, projectId: string): Promise<ProbeRunView> {
+        await assertSubscriber(this.entitlement, learnerId)
         const found: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT, [learnerId, projectId])
         const [project] = found
         if (project === undefined) throw new ProjectError({ code: ProjectErrorCode.NotFound })
@@ -98,19 +118,19 @@ export class ProjectProbeService {
         if ((counted[0]?.total ?? 0) >= this.settings.probeRunsPerHour) {
             throw new ProjectError({ code: ProjectErrorCode.ProbeRateLimited })
         }
+        const set = await this.checks.current()
         const pointerRows: Array<ConceptRow> = await this.entityManager.query(SELECT_CONCEPTS, [
             [project.project_id],
             LIST_ROWS_MAX,
         ])
         const pointers = new Map(pointerRows.map((pointer) => [pointer.concept_id, pointer]))
-        const tasks = await this.tasksOf(learnerId, project)
-        const outcomes = await this.execute(tasks, base, pointers, now)
-        const executed = outcomes.filter((outcome) => outcome.executed)
-        const passed = executed.length > 0 && executed.every((outcome) => outcome.verdict.passed)
+        const outcomes = await this.execute(set, this.tasksOf(set, project), base, pointers, now)
+        const judged = outcomes.filter(isJudged)
+        const passed = judged.length > 0 && judged.every((outcome) => outcome.verdict.status === "passed")
         const results = outcomes.map((outcome) => ({
             probeId: outcome.task.probeId,
             conceptId: outcome.task.conceptId,
-            passed: outcome.verdict.passed,
+            passed: outcome.verdict.status === "passed",
             reason: outcome.verdict.reason,
             facts: outcome.verdict.facts,
         }))
@@ -123,42 +143,57 @@ export class ProjectProbeService {
                 now,
             ])
             const id = String(inserted[0]?.run_id)
-            await this.evidence.append(manager, project.project_id, evidenceOf(executed, id, now))
+            await this.evidence.append(manager, project.project_id, evidenceOf(judged, id, now))
             return id
         })
         await this.evidence.settle(project, [`probe:${runId}`])
         return toProbeRunView({ project_id: project.project_id, run_id: runId, url: base, passed, results, at: now })
     }
 
-    /** The probes of a run: those of every concept the learner may open, then the deployment's health probe when no concept carries it. */
-    private async tasksOf(learnerId: string, project: ProjectRow): Promise<ReadonlyArray<ProbeTask>> {
-        const premium = await this.entitlement.isPremium(learnerId)
-        const open = milestonesOfKind(projectKindOf(project)).filter(
-            (milestone) => premium || this.settings.freeMilestones.includes(milestone.id),
+    /** The probes of the concepts of every milestone the project's kind lists, then the deployment probe when no concept carries it. */
+    private tasksOf(set: CheckSet, project: ProjectRow): ReadonlyArray<ProbeTask> {
+        const listed = set.kinds[projectKindOf(project)]
+        const conceptIds = new Set(
+            set.milestones
+                .filter((milestone) => listed.includes(milestone.id))
+                .flatMap((milestone) => milestone.concepts),
         )
-        const conceptIds = new Set(open.flatMap((milestone) => milestone.concepts))
-        const fromConcepts = PROJECT_CONCEPTS.filter((concept) => conceptIds.has(concept.id)).flatMap((concept) =>
-            concept.probes.map((probeId): ProbeTask => ({ conceptId: concept.id, probeId })),
-        )
-        const health: ProbeTask = { conceptId: null, probeId: "health" }
-        const tasks = fromConcepts.some((task) => task.probeId === "health") ? fromConcepts : [health, ...fromConcepts]
+        const fromConcepts = set.concepts
+            .filter((concept) => conceptIds.has(concept.id))
+            .flatMap((concept) => concept.probes.map((probeId): ProbeTask => ({ conceptId: concept.id, probeId })))
+        const carried =
+            fromConcepts.some((task) => task.probeId === DEPLOYMENT_PROBE) || !set.probes.has(DEPLOYMENT_PROBE)
+        const tasks = carried ? fromConcepts : [{ conceptId: null, probeId: DEPLOYMENT_PROBE }, ...fromConcepts]
         return tasks.slice(0, MAX_PROBES)
     }
 
     /** Runs the tasks a few at a time, one batch after the other. */
     private async execute(
+        set: CheckSet,
         tasks: ReadonlyArray<ProbeTask>,
         base: string,
         pointers: ReadonlyMap<string, ConceptRow>,
         now: Date,
     ): Promise<ReadonlyArray<ProbeOutcome>> {
         const outcomes: Array<ProbeOutcome> = []
+        const runner = new CheckFlowRunner(this.ports())
         const starts = tasks.filter((_task, index) => index % BATCH === 0).map((_task, batch) => batch * BATCH)
         await eachInOrder(starts, async (start) => {
             const batch = await Promise.all(
-                tasks.slice(start, start + BATCH).map((task, offset) => {
+                tasks.slice(start, start + BATCH).flatMap((task, offset) => {
+                    const probe = set.probes.get(task.probeId)
+                    if (probe === undefined) return []
                     const pointer = task.conceptId === null ? undefined : pointers.get(task.conceptId)
-                    return this.probe(task, base, pointer, `probe-${now.getTime()}-${start + offset}`)
+                    return [
+                        runner
+                            .run(probe.flow, {
+                                base,
+                                endpoint: pointer?.endpoint ?? null,
+                                sample: pointer?.sample_body ?? null,
+                                runId: `probe-${now.getTime()}-${start + offset}`,
+                            })
+                            .then((verdict): ProbeOutcome => ({ task, verdict, probe })),
+                    ]
                 }),
             )
             outcomes.push(...batch)
@@ -166,40 +201,19 @@ export class ProjectProbeService {
         return outcomes
     }
 
-    private async probe(
-        task: ProbeTask,
-        base: string,
-        pointer: ConceptRow | undefined,
-        requestId: string,
-    ): Promise<ProbeOutcome> {
-        const planning = planOf(task.probeId, {
-            base,
-            endpoint: pointer?.endpoint ?? null,
-            sampleBody: pointer?.sample_body ?? null,
-            parallel: this.settings.probeParallel,
-            requestId,
-        })
-        if (planning.kind === "skipped") {
-            return { task, executed: false, verdict: { passed: false, reason: planning.reason, facts: {} } }
-        }
-        const replies = await this.send(planning.plan)
-        const unanswered = replies.find((reply) => !reply.ok)
-        if (unanswered !== undefined && !unanswered.ok) {
-            // A request that got no response says nothing about the project (the address was refused, the network broke, the deadline passed): the probe did not run, so it moves no concept.
-            return { task, executed: false, verdict: { passed: false, reason: unanswered.error, facts: {} } }
-        }
-        return { task, executed: true, verdict: judgeProbe(task.probeId, replies) }
-    }
-
-    private async send(plan: ProbePlan): Promise<ReadonlyArray<ProbeReply>> {
+    /** The ports of the server's runs: the guarded transport with the caps, the public sink when declared, the timer. */
+    private ports(): FlowPorts {
         const limits = { timeoutMs: this.settings.probeTimeoutMs, maxBytes: this.settings.probeMaxBytes }
-        if (plan.mode === "parallel") {
-            return Promise.all(plan.requests.map((request) => this.http.send({ ...request, ...limits })))
+        return {
+            transport: { send: (request) => this.http.send({ ...request, ...limits }) },
+            sink: this.sink.available ? this.sink : null,
+            clock: {
+                now: () => performance.now(),
+                sleep: (ms) =>
+                    new Promise<void>((resolve) => {
+                        this.timer.schedule(resolve, ms)
+                    }),
+            },
         }
-        const replies: Array<ProbeReply> = []
-        await eachInOrder(plan.requests, async (request) => {
-            replies.push(await this.http.send({ ...request, ...limits }))
-        })
-        return replies
     }
 }
