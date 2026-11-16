@@ -298,7 +298,11 @@ describe("toConceptView (part 3)", () => {
 
         const view = subject.toConceptView(conceptStandingOf(definition, sagaRows, false), undefined, LESSON, "en")
 
-        expect(view.slots[0]).toMatchObject({ state: "fail", source: "ai", at: "2026-11-08T09:00:00.000Z" })
+        expect(view.slots.find((slot) => slot.slot === "code-read")).toMatchObject({
+            state: "fail",
+            source: "ai",
+            at: "2026-11-08T09:00:00.000Z",
+        })
         expect(view.failing).toMatchObject({ reason: "code-read-below-bar", question: "Where does it compensate?" })
         expect(view.aiQuestion).toBe("Where does it compensate?")
 

@@ -1,6 +1,6 @@
 import type { ExperienceEvidence, ExperienceGrade, ProduceExperienceParams, SlotValues } from "@modules/domain/career"
 import {
-    PROOF_SOURCES,
+    SLOT_PROOF_SOURCES,
     type AgentTrack,
     type EvidenceRow,
     type MilestoneDefinition,
@@ -74,7 +74,7 @@ const bothLocales = (valueOf: (locale: "vi" | "en") => Readonly<Record<string, s
 })
 
 const evidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceEvidence> => {
-    const proof = rows.filter((row) => row.passed && PROOF_SOURCES.includes(row.source))
+    const proof = rows.filter((row) => row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source))
     const runs = new Map(
         proof.flatMap((row) =>
             row.source === "ai"
@@ -117,7 +117,9 @@ export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceE
     const tool = TRACK_LABELS[subject.track ?? "claude"]
     const criteria = milestone.concepts.map((id) => {
         const definition = conceptOf(id)
-        const proof = rows.find((row) => row.conceptId === id && row.passed && PROOF_SOURCES.includes(row.source))
+        const proof = rows.find(
+            (row) => row.conceptId === id && row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source),
+        )
         return {
             criterion: definition?.label.vi ?? id,
             level: proof === undefined ? 0 : 2,

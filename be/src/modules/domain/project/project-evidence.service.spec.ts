@@ -10,6 +10,7 @@ import {
     projectRowOf,
 } from "@tests/fixtures/builders/project.builder"
 import { EssentialsExperienceService, EXPERIENCE_PRODUCER, type ExperienceProducer } from "@modules/domain/career"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { NOTIFICATION_PRODUCER, type NotificationProducerPort } from "@modules/domain/notification"
 import { StreakService } from "@modules/domain/streak"
 import { CLOCK } from "@modules/platform/clock"
@@ -102,6 +103,8 @@ const build = async (world: World = {}) => {
     const notifications = mock<NotificationProducerPort>()
     const streak = mock<StreakService>()
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectEvidenceService,
@@ -113,6 +116,7 @@ const build = async (world: World = {}) => {
             { provide: NOTIFICATION_PRODUCER, useValue: notifications },
             { provide: StreakService, useValue: streak },
             { provide: EXPERIENCE_PRODUCER, useValue: experiences },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
         ],
     }).compile()
     return {
@@ -124,6 +128,7 @@ const build = async (world: World = {}) => {
         notifications,
         streak,
         logger,
+        entitlement,
     }
 }
 
@@ -188,6 +193,25 @@ describe("ProjectEvidenceService recordCiRun", () => {
         em.query.mockImplementation(() => Promise.resolve([]))
 
         await expect(service.recordCiRun(RUN)).resolves.toEqual({ duplicate: true, added: 0 })
+    })
+})
+
+describe("ProjectEvidenceService settle for a learner without Premium", () => {
+    it("claims no proof, makes no experience line and counts no streak action, even when every result is green", async () => {
+        const { service, em, essentials, experiences, notifications, streak, entitlement } = await build({
+            evidence: provedRows(),
+            probeRuns: [probeRunRowOf()],
+            claimed: "all",
+        })
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await service.settle(projectRowOf(), ["ci:run-1"])
+
+        expect(em.query).not.toHaveBeenCalledWith(INSERT_PROOFS, expect.anything())
+        expect(essentials.record).not.toHaveBeenCalled()
+        expect(experiences.produce).not.toHaveBeenCalled()
+        expect(notifications.notify).not.toHaveBeenCalled()
+        expect(streak.recordStreakAction).not.toHaveBeenCalled()
     })
 })
 

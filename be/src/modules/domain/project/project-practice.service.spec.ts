@@ -8,6 +8,7 @@ import {
     relayResultOf,
 } from "@tests/fixtures/builders/project.builder"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { LOGGER, type Logger } from "@modules/platform/logging"
 import type { RelayCheckResult } from "./project.contracts"
 import { ProjectEvidenceService } from "./project-evidence.service"
@@ -34,17 +35,20 @@ const build = async (options: { missing?: boolean; cursor?: Date | null; added?:
     const reads = mock<ProjectReadService>()
     reads.get.mockResolvedValue(VIEW)
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectPracticeService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: LOGGER, useValue: logger },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: PROJECT_RELAY, useValue: relay },
             { provide: ProjectEvidenceService, useValue: evidence },
             { provide: ProjectReadService, useValue: reads },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectPracticeService), relay, evidence, reads, logger, tx }
+    return { service: moduleRef.get(ProjectPracticeService), relay, evidence, reads, logger, tx, entitlement }
 }
 
 const results = (): ReadonlyArray<RelayCheckResult> => [
@@ -54,6 +58,19 @@ const results = (): ReadonlyArray<RelayCheckResult> => [
     relayResultOf({ eventId: "evt-4", conceptId: "agent-harness-control-loop" }),
     relayResultOf({ eventId: "evt-5", slot: "code-read" }),
 ]
+
+describe("ProjectPracticeService subscription-only", () => {
+    it("refuses a learner without Premium before it asks the relay, so an old free project takes no new runs", async () => {
+        const { service, relay, evidence, entitlement } = await build()
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(service.sync(LOOKUP)).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+
+        expect(relay.checkResults).not.toHaveBeenCalled()
+        expect(evidence.append).not.toHaveBeenCalled()
+        expect(evidence.settle).not.toHaveBeenCalled()
+    })
+})
 
 describe("ProjectPracticeService sync", () => {
     it("appends the new relay results of the project's concepts as practice, counts each run for the streak and answers the project", async () => {

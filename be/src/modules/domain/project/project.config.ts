@@ -1,11 +1,11 @@
 import type { EnvSource } from "@modules/platform/config"
 import type { ProjectOptions } from "./project.options"
 
-/** Projects a learner without Premium may own unless the environment names another number. */
-export const DEFAULT_FREE_PROJECTS = 1
+/** Projects a learner without Premium may own unless the environment names another number: none, Projects is subscription-only. */
+export const DEFAULT_FREE_PROJECTS = 0
 
-/** The milestone a learner without Premium may open: the first one of every path. */
-export const DEFAULT_FREE_MILESTONES: ReadonlyArray<string> = ["bf-http-foundation"]
+/** The milestones a learner without Premium may open: none, Projects is subscription-only. */
+export const DEFAULT_FREE_MILESTONES: ReadonlyArray<string> = []
 
 /** Probe runs one project may start per hour. */
 export const DEFAULT_PROBE_RUNS_PER_HOUR = 6
@@ -45,7 +45,7 @@ export type ProjectEnvSettings = Required<
 >
 
 /**
- * Reads the project settings from an environment source: `PROJECT_FREE_PROJECTS`, `PROJECT_FREE_MILESTONES` (comma-separated ids),
+ * Reads the project settings from an environment source: `PROJECT_FREE_PROJECTS`, `PROJECT_FREE_MILESTONES` (comma-separated ids; `0` or empty means none),
  * `PROJECT_PROBE_RUNS_PER_HOUR`, `PROJECT_CODE_READS_PER_DAY`, `PROJECT_PROBE_TIMEOUT`, `PROJECT_PROBE_MAX_BYTES`,
  * `PROJECT_PROBE_PARALLEL`, `PROJECT_CI_TOLERANCE` and `PROJECT_CODE_READ_TIMEOUT`. All have defaults.
  */
@@ -56,7 +56,7 @@ export const parseProjectConfig = (env: EnvSource): ProjectEnvSettings => ({
             .optional("PROJECT_FREE_MILESTONES")
             ?.split(",")
             .map((id) => id.trim())
-            .filter((id) => id !== "") ?? DEFAULT_FREE_MILESTONES,
+            .filter((id) => id !== "" && id !== "0") ?? DEFAULT_FREE_MILESTONES,
     probeRunsPerHour: env.int("PROJECT_PROBE_RUNS_PER_HOUR", DEFAULT_PROBE_RUNS_PER_HOUR),
     codeReadsPerDay: env.int("PROJECT_CODE_READS_PER_DAY", DEFAULT_CODE_READS_PER_DAY),
     probeTimeoutMs: env.duration("PROJECT_PROBE_TIMEOUT", DEFAULT_PROBE_TIMEOUT_MS),

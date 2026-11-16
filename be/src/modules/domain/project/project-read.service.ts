@@ -123,13 +123,15 @@ export class ProjectReadService {
         }
     }
 
-    /** One milestone of a project with its concept checklist; a milestone past the free ones needs Premium. */
+    /**
+     * One milestone of a project with its concept checklist. Reading is never refused: a project made before Projects became
+     * subscription-only keeps its history. `locked` tells the screen the learner cannot run or send evidence for it (no Premium).
+     */
     async milestone(params: MilestoneLookupParams): Promise<MilestoneView> {
         const context = await this.contextOf(params)
         const found = context.standing.milestones.find((candidate) => candidate.definition.id === params.milestoneId)
         if (found === undefined) throw new ProjectError({ code: ProjectErrorCode.MilestoneNotFound })
         const locked = this.isLocked(params.milestoneId, await this.entitlement.isPremium(params.learnerId))
-        if (locked) throw new ProjectError({ code: ProjectErrorCode.PremiumRequired })
         return {
             project: toSummaryView(context.row, context.standing),
             milestone: toMilestoneSummaryView(found, params.locale, locked),

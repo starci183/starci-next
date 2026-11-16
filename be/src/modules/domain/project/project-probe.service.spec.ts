@@ -17,6 +17,8 @@ import { ProjectEvidenceService } from "./project-evidence.service"
 import { ProjectProbeService } from "./project-probe.service"
 import { COUNT_PROBE_RUNS, INSERT_PROBE_RUN, SELECT_CONCEPTS, SELECT_PROJECT } from "./persistence/project.sql"
 
+const FOUNDATION = ["request-response-lifecycle", "health-probe-semantics"]
+const DECLARED = FOUNDATION
 const RUN_ID = "50000000-0000-4000-8000-000000000009"
 
 const ok = (status: number, body = "", headers: Record<string, string> = {}): ProbeReply => ({
@@ -45,7 +47,7 @@ const build = async (world: World = {}, options: ProjectOptions = {}) => {
     })
     const tx = fakeTransaction(em)
     const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(world.premium ?? false)
+    entitlement.isPremium.mockResolvedValue(world.premium ?? true)
     const http = mock<ProbeTransport>()
     http.send.mockResolvedValue(ok(200, "", { "x-request-id": "r" }))
     const evidence = mock<ProjectEvidenceService>()
@@ -60,11 +62,11 @@ const build = async (world: World = {}, options: ProjectOptions = {}) => {
             { provide: PROBE_TRANSPORT, useValue: http },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectProbeService), em, tx, http, evidence }
+    return { service: moduleRef.get(ProjectProbeService), em, tx, http, evidence, entitlement }
 }
 
 describe("ProjectProbeService run", () => {
-    it("probes the free milestone, records the run with the evidence of the concepts and settles the project", async () => {
+    it("probes every concept of the project's milestones, records the run with the evidence of the concepts and settles the project", async () => {
         const { service, http, evidence, tx } = await build()
 
         const run = await service.run(PROJECT_LEARNER, PROJECT_ID)
@@ -84,7 +86,9 @@ describe("ProjectProbeService run", () => {
         )
         expect(evidence.append).toHaveBeenCalledTimes(1)
         expect(
-            evidence.append.mock.calls[0]?.[2].map((input) => [input.conceptId, input.ref, input.passed, input.source]),
+            evidence.append.mock.calls[0]?.[2]
+                .filter((input) => FOUNDATION.includes(input.conceptId))
+                .map((input) => [input.conceptId, input.ref, input.passed, input.source]),
         ).toEqual([
             ["request-response-lifecycle", "invalid-input", false, "server-probe"],
             ["request-response-lifecycle", "request-id", true, "server-probe"],
@@ -109,7 +113,11 @@ describe("ProjectProbeService run", () => {
 
         const run = await service.run(PROJECT_LEARNER, PROJECT_ID)
 
-        expect(run.passed).toBe(true)
+        const declared = run.results.filter(
+            (result) => DECLARED.includes(result.conceptId ?? "") && !result.reason.startsWith("needs-"),
+        )
+        expect(declared.length).toBeGreaterThan(0)
+        expect(declared.every((result) => result.passed)).toBe(true)
         expect(http.send).toHaveBeenCalledWith(
             expect.objectContaining({ method: "POST", url: "https://dat-lich.example.com/orders" }),
         )
@@ -130,13 +138,29 @@ describe("ProjectProbeService run", () => {
     })
 })
 
+describe("ProjectProbeService subscription-only", () => {
+    it("refuses a learner without Premium before it reads the project, counts a run or sends one request", async () => {
+        const { service, http, evidence, em } = await build({ premium: false })
+
+        await expect(service.run(PROJECT_LEARNER, PROJECT_ID)).rejects.toMatchObject({
+            code: "PROJECT_PREMIUM_REQUIRED",
+        })
+
+        expect(http.send).not.toHaveBeenCalled()
+        expect(evidence.append).not.toHaveBeenCalled()
+        expect(em.query).not.toHaveBeenCalled()
+    })
+})
+
 describe("ProjectProbeService run (part 2)", () => {
-    it("runs the deployment health probe alone when no open concept carries it, and sends a parallel plan at once", async () => {
-        const { service, http } = await build({}, { freeMilestones: ["sd-reliable-messaging"] })
+    it("runs the health probe of the concept that carries it, and sends a parallel plan at once", async () => {
+        const { service, http } = await build()
 
         const run = await service.run(PROJECT_LEARNER, PROJECT_ID)
 
-        expect(run.results[0]).toMatchObject({ probeId: "health", conceptId: null })
+        expect(run.results.find((result) => result.probeId === "health")).toMatchObject({
+            conceptId: "health-probe-semantics",
+        })
         expect(http.send).toHaveBeenCalled()
     })
 
@@ -147,7 +171,11 @@ describe("ProjectProbeService run (part 2)", () => {
         const run = await service.run(PROJECT_LEARNER, PROJECT_ID)
 
         expect(run.passed).toBe(false)
-        expect(run.results.every((result) => result.reason === "timeout")).toBe(true)
+        expect(
+            run.results
+                .filter((result) => !result.reason.startsWith("needs-"))
+                .every((result) => result.reason === "timeout"),
+        ).toBe(true)
         expect(evidence.append).toHaveBeenCalledWith(expect.anything(), PROJECT_ID, [])
     })
 
