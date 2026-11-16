@@ -11,8 +11,7 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
 
 ## Rules
 1. There is no StarCi Shop sample, no sample steps, hints or solution, and no template a project starts from.
-2. A learner may own many projects. The free tier holds `PROJECT_FREE_PROJECTS` projects and `PROJECT_FREE_MILESTONES` milestones
-   (default 1 and the first milestone); Premium lifts both and adds the AI read.
+2. Projects are subscription only (owner 2026-11-17): `PROJECT_FREE_PROJECTS` and `PROJECT_FREE_MILESTONES` default 0, so a free learner sees the pitch and the paywall. A subscriber may own many projects and gets the AI read.
 3. A behaviour concept needs a tagged test or e2e flow plus probes; a structure concept needs the AI code read. A project with no HTTP
    surface (CLI, library) is proved by its tests and the AI read, with no probe.
 4. The StarCi harness is never forced on a learner's project: no spec records, no architecture lint, no mutation score.

@@ -43,3 +43,16 @@ export const SELECT_LEARNER_RUN_EVENTS: ReturnType<typeof sql> =
 FROM relay_events
 WHERE learner_id = $1::uuid AND task_id = $2::text AND kind IN ('check.result', 'log') AND check_id IS NOT NULL
 ORDER BY created_at DESC, event_id LIMIT $3::int`
+
+/**
+ * The newest result of every check and ref of the learner's harness results of one slot, under tasks that start with a prefix
+ * ($1 learner, $2 slot, $3 task prefix, $4 bound): a build task has a stage per check and an e2e id per ref, the doctor task a probe
+ * per check and the tool as ref, the trial task a trap per check and the tool as ref.
+ */
+export const SELECT_HARNESS_RESULTS: ReturnType<typeof sql> =
+    sql`SELECT DISTINCT ON (e.task_id, e.check_id, e.ref) e.task_id, e.check_id, e.ref, e.passed, e.commit_sha, e.created_at, e.detail
+FROM relay_events e
+WHERE e.learner_id = $1::uuid AND e.kind = 'check.result' AND e.slot = $2::text AND e.check_id IS NOT NULL
+    AND left(e.task_id, length($3::text)) = $3::text
+ORDER BY e.task_id, e.check_id, e.ref, e.created_at DESC, e.event_id DESC
+LIMIT $4::int`

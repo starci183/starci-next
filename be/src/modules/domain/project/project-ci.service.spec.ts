@@ -8,6 +8,7 @@ import { LOGGER, type Logger } from "@modules/platform/logging"
 import { ciSignatureOf } from "./project-ci.policy"
 import { PROJECT_CI_ATTESTATION, type CiAttestationVerifier } from "./project-ci-attestation.port"
 import { ProjectCiService } from "./project-ci.service"
+import { PROJECT_HARNESS, type ProjectHarnessPort } from "./project-harness.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
 import type { CiDelivery } from "./project-params.contracts"
 import type { RepositoryRow } from "./persistence/project.rows"
@@ -36,6 +37,8 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
     const attestation = mock<CiAttestationVerifier>()
     attestation.attest.mockResolvedValue({ kind: "attested", repositoryId: "42" })
     const inbox = fakeInbox()
+    const harness = mock<ProjectHarnessPort>()
+    harness.recordRun.mockResolvedValue(undefined)
     const evidence = mock<ProjectEvidenceService>()
     evidence.recordCiRun.mockResolvedValue({ duplicate: false, added: 1 })
     const logger = mock<Logger>()
@@ -48,9 +51,10 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
             { provide: INBOX, useValue: inbox },
             { provide: ProjectEvidenceService, useValue: evidence },
             { provide: PROJECT_CI_ATTESTATION, useValue: attestation },
+            { provide: PROJECT_HARNESS, useValue: harness },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox }
+    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox, harness }
 }
 
 const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
@@ -98,6 +102,40 @@ describe("ProjectCiService recordRun", () => {
             `ci:${PROJECT_ID}:gh-1`,
         ])
         expect(attestation.attest).not.toHaveBeenCalled()
+    })
+
+    it("hands the harness results of a recorded run to the harness with whether GitHub attested it", async () => {
+        const harnessBody = {
+            ...BODY,
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const { service, harness } = await build()
+
+        await service.recordRun(deliveryOf("gh-token", harnessBody))
+
+        expect(harness.recordRun).toHaveBeenCalledWith({
+            projectId: PROJECT_ID,
+            learnerId: expect.any(String),
+            runId: "gh-1",
+            commit: "abc1234",
+            attested: true,
+            results: harnessBody.harness,
+        })
+    })
+
+    it("tells the harness a signed-only run was not attested and hands over nothing for a run with no harness results", async () => {
+        const harnessBody = {
+            ...BODY,
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const unattested = await build()
+        const plain = await build()
+
+        await unattested.service.recordRun(deliveryOf(undefined, harnessBody))
+        await plain.service.recordRun(deliveryOf("gh-token"))
+
+        expect(unattested.harness.recordRun).toHaveBeenCalledWith(expect.objectContaining({ attested: false }))
+        expect(plain.harness.recordRun).not.toHaveBeenCalled()
     })
 
     it("refuses a body that is not the result document before claiming anything", async () => {

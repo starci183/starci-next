@@ -1,6 +1,7 @@
 import type { Type } from "@nestjs/common"
 import type { CiAttestationVerifier } from "./project-ci-attestation.port"
 import type { ProjectCoach } from "./project-coach.port"
+import type { ProjectHarnessPort } from "./project-harness.port"
 import type { ProjectLessonPort } from "./project-lesson.port"
 import type { ProjectRelayPort } from "./project-relay.port"
 
@@ -16,6 +17,8 @@ export interface ProjectOptions {
     readonly lessons?: Type<ProjectLessonPort>
     /** The GitHub attestation of CI runs; absent, `UnattestedCiClient`, which attests nothing, so every run stays signed-only practice. */
     readonly attestation?: Type<CiAttestationVerifier>
+    /** The harness that takes the e2e results of attested CI runs for its builds; absent, `NoHarnessClient`, which ignores them. */
+    readonly harness?: Type<ProjectHarnessPort>
     /** The audience a run's GitHub Actions OIDC token must name; absent, `starci-next`. */
     readonly ciOidcAudience?: string
     /** Projects a learner without Premium may own; absent, 1. */

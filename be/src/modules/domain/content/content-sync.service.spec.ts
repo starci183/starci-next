@@ -5,6 +5,7 @@ import { CLOCK } from "@modules/platform/clock"
 import { LOGGER, type Logger } from "@modules/platform/logging"
 import { InterviewImportService } from "@modules/domain/interview"
 import { LessonImportService } from "@modules/domain/lesson"
+import { HarnessImportService } from "@modules/domain/harness"
 import { PracticeImportService } from "@modules/domain/practice"
 import { ReviewImportService } from "@modules/domain/review"
 import type { ContentOptions } from "./content.options"
@@ -67,6 +68,8 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
     const interviews = mock<InterviewImportService>()
     const reviews = mock<ReviewImportService>()
     const practice = mock<PracticeImportService>()
+    const harness = mock<HarnessImportService>()
+    harness.has.mockResolvedValue(false)
     const logger = mock<Logger>()
     const moduleRef = await Test.createTestingModule({
         providers: [
@@ -80,9 +83,20 @@ const build = async (overrides: Partial<ContentOptions> = {}) => {
             { provide: InterviewImportService, useValue: interviews },
             { provide: ReviewImportService, useValue: reviews },
             { provide: PracticeImportService, useValue: practice },
+            { provide: HarnessImportService, useValue: harness },
         ],
     }).compile()
-    return { service: moduleRef.get(ContentSyncService), git, disk, lessons, interviews, reviews, practice, logger }
+    return {
+        service: moduleRef.get(ContentSyncService),
+        git,
+        disk,
+        lessons,
+        interviews,
+        reviews,
+        practice,
+        harness,
+        logger,
+    }
 }
 
 describe("ContentSyncService sync from local directories", () => {
@@ -96,6 +110,7 @@ describe("ContentSyncService sync from local directories", () => {
             ["interview", "imported"],
             ["review", "imported"],
             ["practice", "imported"],
+            ["harness", "skipped"],
             ["catalogs", "imported"],
         ])
         expect(git.materialize).not.toHaveBeenCalled()
@@ -113,8 +128,8 @@ describe("ContentSyncService sync from local directories", () => {
         })
         expect(reviews.import).toHaveBeenCalledWith({ directory: "/d", ref: "fp-/d", only: "" })
         expect(practice.import).toHaveBeenCalledTimes(2)
-        expect(reports[4]?.detail).toBe("paths=1")
-        expect(logger.info).toHaveBeenCalledTimes(5)
+        expect(reports[5]?.detail).toBe("paths=1")
+        expect(logger.info).toHaveBeenCalledTimes(6)
     })
 
     it("runs only the kinds asked for and refuses a name it does not know", async () => {
