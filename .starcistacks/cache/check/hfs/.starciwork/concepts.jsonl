@@ -17,3 +17,20 @@
 {"data":{},"findings":[],"hash":"fce8e9722321ac1ef696d524a086ee8806ffec23b812e3ec2a8b0e3d081503e6","path":".starciwork/concepts/surface-layering.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"04378288321eff5f54cca0c9e421b157b761cb1ebbef1fcd5bb99b9b6253a7a2","path":".starciwork/concepts/theme-and-type.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be0c91baa9b29d1ff1f39b01aef0474484ce77a51abb5d24d6a5ce00c1ee75d0","path":".starciwork/concepts/verified-experience.md","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":".starciwork/concepts/README.md has no catalog row linking conventions.md; add `| [conventions](conventions.md) | <the folders it governs> | <one line> |` so every reader opens it first","path":".starciwork/concepts/README.md","rule":"HFS_CONCEPT_CONVENTIONS_MISSING"}],"hash":"absent","path":".starciwork/concepts/README.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"f25739afb25021fdc9287caa3d599a15aedb81e600b69da17668331eda040963","path":".starciwork/concepts/ai-model-deepseek-flash/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c568bf57dc0d2403233f486fd0bfa8926038664bcb60b13c86ee6d1c59b26a83","path":".starciwork/concepts/app-shell-nivo-parity/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cdb0c13955c1a3a47525d21ec2a91735d44354a87873b32910d08ae12ae6b655","path":".starciwork/concepts/content-repo/index.yaml","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":".starciwork/concepts/conventions.md is not tracked; every app keeps a conventions concept (its naming, keys, foreign key names, error classes and proof), read before its code: write it under the concept headings of PROJECT-WORK-7","path":".starciwork/concepts/conventions.md","rule":"HFS_CONCEPT_CONVENTIONS_MISSING"}],"hash":"absent","path":".starciwork/concepts/conventions.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"3422d614ad34feb77cc73e009cd825b01973643b90e9686414cccc5551fda5be","path":".starciwork/concepts/dev-only-test-grants/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e4e6e37fe2adcc87a69bdeb2f3f111aa97806b24d362206c1061f2468ce2bc30","path":".starciwork/concepts/essentials-lessons/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e5df362d0e5cdbd56be1e03952fbbd98e092f4da14a3fce7ccfa26b6faddd679","path":".starciwork/concepts/gallery-explained-screens/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5a9ab24760b5110b6db037d06275938415aea6962af738236e487a68ebf63cdf","path":".starciwork/concepts/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4398ce94a3b9fcfe912cafd686a3b20f4b271b5c3d234115c35d60c1fb11cf16","path":".starciwork/concepts/learner-cli-relay-proof/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9f2be3bd487fd35327e9fbe0c9ca0c86aad90b43e1cd4a60e0365c88d72c9640","path":".starciwork/concepts/learning-program/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"64e5d8839c8cff00d9317b543535c23471aa284aa702da65a6b55047d2b8c97f","path":".starciwork/concepts/premium-placement/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"de4db0322cba4c852d6520e875b1e6bbecbaaaf958da52d5440ae801b8ff88fd","path":".starciwork/concepts/premium-unlocks-all/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7ee5da808391e4996b23a87dfff92c0bf8a61f94864c50ebf52d969e58d4c5f8","path":".starciwork/concepts/projects-bring-your-own/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2af7eb7a5495e41217d860855b0dca3431e609d78c8576e8f3588100953bd698","path":".starciwork/concepts/surface-layering/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"466e06b214180d2e0aea286baa37c391742f669dd477431d5e5e3c1491af6f17","path":".starciwork/concepts/theme-and-type/index.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7e5148fab629df57f3dd117ccae0797576237988382fa1a9af4ff69a0349f578","path":".starciwork/concepts/verified-experience/index.yaml","step":"file-rules"}

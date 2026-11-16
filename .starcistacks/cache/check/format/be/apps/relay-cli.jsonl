@@ -1,4 +1,4 @@
-{"findings":[],"hash":"1004961b95bbb06a50b7bb6d0f9098ce8ad28fcda1d64793bb485c34ac71dba1","path":"be/apps/relay-cli/package.json","step":"prettier"}
+{"findings":[],"hash":"b53591a5819f94095502388db31c2ec85253a99a9c681ecfaa8cac5d721fbac0","path":"be/apps/relay-cli/package.json","step":"prettier"}
 {"findings":[],"hash":"ba51b648a62ed29e493c7daec5af12849d61b29bfe2ef72f8cf00ccbed1bc8c6","path":"be/apps/relay-cli/src/app.module.ts","step":"prettier"}
 {"findings":[],"hash":"b4e9afcba5d403ad5f1c2773446ab3757dd8c298646e877f27be06fd27bbfbe3","path":"be/apps/relay-cli/src/compose/cli.ts","step":"prettier"}
 {"findings":[],"hash":"592b74caa315942b5b0e4a676be8fe6c3a71fe78ef3987445011a14ab5a77889","path":"be/apps/relay-cli/src/compose/platform.ts","step":"prettier"}

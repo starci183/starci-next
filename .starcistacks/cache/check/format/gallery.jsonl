@@ -2,4 +2,4 @@
 {"findings":[],"hash":"187fbbe5ef6b9f7e285d92540a13419b4510e69382434e60e3b6656a5e84d7fb","path":"gallery/flows.json","step":"prettier"}
 {"findings":[],"hash":"5876a3040ebcb2efb2dc7ed2bdaa2fa17a2ce4a3edeb2d72b62e6d91072c6f76","path":"gallery/index.html","step":"prettier"}
 {"findings":[],"hash":"49bdbcdf0314f1d371f5c875b700d7c01d6774ebe296550ef545bf55c43e0c00","path":"gallery/package.json","step":"prettier"}
-{"findings":[],"hash":"0ae822594b666cd6644636f33ea247f67827a96b3df7861ee57283251f1e534a","path":"gallery/vite.config.js","step":"prettier"}
+{"findings":[],"hash":"40092558f9aac5eee0070888aa98a3ef1ed69002c092bc7fb5f5be2b6b0ee125","path":"gallery/vite.config.js","step":"prettier"}

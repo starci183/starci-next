@@ -69,6 +69,7 @@ component_management:
       paths:
         - "be/src/modules/domain/content/**"
         - "be/src/modules/integrations/relay-client/**"
+        - "be/src/modules/integrations/seed/**"
         - "be/src/modules/platform/*/**"
         - "be/src/modules/projections/*/**"
 ignore:

@@ -3,4 +3,4 @@
 {"data":{},"findings":[],"hash":"9e7d12da09e8fc33cdac3c2105ed1722111ed465e59748119b3e66ae1da87144","path":"gallery/index.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f44a42792239f586d6feecd3458ca06623f17de9f6e8e6e0a2a1dbfc335a1c2","path":"gallery/package-lock.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f2d3af4fe20b2eb3251a771b9b1c7d5f72083cd97f37fa697471793c32e339a2","path":"gallery/package.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bc54ee2d4162ad9e4712500ed82663abb0afc17b34855785b49511b76d8b4d06","path":"gallery/vite.config.js","step":"file-rules"}
+{"data":{},"findings":[],"hash":"eca831f77c3728a623301f19aad1834b9a048d9a53608a12df7448c4b78798af","path":"gallery/vite.config.js","step":"file-rules"}
