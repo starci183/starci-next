@@ -21,7 +21,7 @@
     "@nestjs/typeorm": "11.0.3",
     "@nestjs/websockets": "11.2.5",
     "@socket.io/postgres-adapter": "0.5.0",
-    "@starci/ai-router": "0.8.0",
+    "@starci/ai-router": "0.10.0",
     "@starci/auth": "0.7.1",
     "@starci/common": "1.0.1",
     "@starci/mail": "0.3.0",

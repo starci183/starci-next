@@ -55,6 +55,7 @@ import {
 } from "@modules/domain/streak"
 import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule, mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { JUDGE0_ERROR_KINDS, JUDGE0_MESSAGES, Judge0Module } from "@modules/integrations/judge0"
+import { QDRANT_ERROR_KINDS, QDRANT_MESSAGES } from "@modules/integrations/qdrant"
 import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
@@ -88,6 +89,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
 export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKind>>> = [
     LESSON_ERROR_KINDS,
     MCP_ERROR_KINDS,
+    QDRANT_ERROR_KINDS,
     ATTEMPT_ERROR_KINDS,
     REVIEW_ERROR_KINDS,
     STREAK_ERROR_KINDS,
@@ -102,6 +104,7 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
 export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     LESSON_MESSAGES,
     MCP_MESSAGES,
+    QDRANT_MESSAGES,
     ATTEMPT_MESSAGES,
     REVIEW_MESSAGES,
     STREAK_MESSAGES,

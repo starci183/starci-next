@@ -11,12 +11,12 @@ import type {
     McpRun,
     McpRunRequested,
     McpScenario,
-    McpSearchHit,
     McpSearchResult,
 } from "./mcp.contracts"
-import { chunksOf, corpusKeyOf } from "./mcp-embedding.policy"
-import { HITS_MAX, hitTextOf, readablePathOf } from "./mcp-source.policy"
+import { chunksOf } from "./mcp-embedding.policy"
+import { keywordHitsOf, readablePathOf } from "./mcp-source.policy"
 import { McpSourceService } from "./mcp-source.service"
+import { McpHarnessService } from "./mcp-harness.service"
 import { McpVectorIndex } from "./mcp-vector.index"
 
 /** The most characters of log one run shows: its tail, where the failure is. */
@@ -77,6 +77,7 @@ export class McpTutorService {
         private readonly lessons: LessonReadService,
         private readonly source: McpSourceService,
         private readonly vectors: McpVectorIndex,
+        private readonly harness: McpHarnessService,
         private readonly devices: RelayDeviceService,
         private readonly feed: RelayFeedService,
         @InjectMcpOptions() private readonly options: McpOptions,
@@ -125,11 +126,13 @@ export class McpTutorService {
     async searchCode(learnerId: string, id: string, query: string, semantic: boolean): Promise<McpSearchResult> {
         await this.requirePremium(learnerId, id)
         if (semantic && this.vectors.isConfigured) {
-            const catalog = await this.source.catalog(id)
             const texts = await this.source.texts(id)
             const chunks = texts.flatMap((file) => chunksOf(file.path, file.text))
-            const key = corpusKeyOf(["code", id, catalog.commit, ...texts.map((file) => file.path)])
-            const hits = await this.vectors.search(key, chunks, query)
+            const hits = await this.vectors.search(
+                { scope: { kind: "code", sourceId: id, locale: "und" }, access: "premium", readable: ["premium"] },
+                chunks,
+                query,
+            )
             if (hits !== null) return { mode: "semantic", fellBack: false, hits }
         }
         return { mode: "keyword", fellBack: semantic, hits: await this.source.keywordSearch(id, query) }
@@ -149,11 +152,23 @@ export class McpTutorService {
         )
         if (semantic && this.vectors.isConfigured) {
             const chunks = unlocked.flatMap((section) => chunksOf(section.path, section.text))
-            const key = corpusKeyOf(["lesson", id, view.version, locale, ...unlocked.flatMap((s) => [s.path, s.text])])
-            const hits = await this.vectors.search(key, chunks, query)
+            const hits = await this.vectors.search(
+                {
+                    scope: { kind: "lesson", sourceId: id, locale },
+                    access: view.isPremium ? "premium" : "free",
+                    readable: view.isPremium ? ["free", "premium"] : ["free"],
+                },
+                chunks,
+                query,
+            )
             if (hits !== null) return { mode: "semantic", fellBack: false, hits }
         }
-        return { mode: "keyword", fellBack: semantic, hits: this.keywordHitsOf(unlocked, query) }
+        return { mode: "keyword", fellBack: semantic, hits: keywordHitsOf(unlocked, query) }
+    }
+
+    /** A search over the harness guides and docs: free to every learner with a token, no entitlement asked. */
+    searchHarness(locale: LessonLocale, query: string, semantic: boolean): Promise<McpSearchResult> {
+        return this.harness.search(locale, query, semantic)
     }
 
     /** The public scenarios of the lesson; a hidden scenario is not in the catalog at all. */
@@ -228,25 +243,6 @@ export class McpTutorService {
     private async requirePremium(learnerId: string, id: string): Promise<void> {
         if (!(await this.view(learnerId, id, "vi")).isPremium)
             throw new McpError({ code: McpErrorCode.PremiumRequired })
-    }
-
-    private keywordHitsOf(sections: ReadonlyArray<{ path: string; text: string }>, query: string): Array<McpSearchHit> {
-        const terms = query
-            .toLowerCase()
-            .split(/\s+/u)
-            .filter((term) => term.length > 0)
-            .slice(0, 8)
-        const hits: Array<McpSearchHit> = []
-        if (terms.length === 0) return hits
-        for (const section of sections) {
-            const lines = section.text.split(/\r?\n/u)
-            for (let index = 0; index < lines.length && hits.length < HITS_MAX; index += 1) {
-                const lower = (lines[index] ?? "").toLowerCase()
-                if (terms.every((term) => lower.includes(term)))
-                    hits.push({ path: section.path, line: index + 1, text: hitTextOf(lines[index] ?? "") })
-            }
-        }
-        return hits
     }
 
     private runOf(runId: string, newestFirst: ReadonlyArray<LearnerRunEvent>): McpRun {
