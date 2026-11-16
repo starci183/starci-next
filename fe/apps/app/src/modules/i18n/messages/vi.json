@@ -1961,20 +1961,14 @@
         },
         "parts": {
           "build": {
-            "title": "Build · tải source mẫu, nâng từ sơ sài lên pro",
-            "description": "Source sơ sài, kịch bản e2e và hướng dẫn từng chặng. Chạy bằng key AI của chính bạn, key không rời máy.",
             "topics": "AI agent · MCP server · Chatbot CSKH · Agent tìm lead",
             "progress": "{done} / {total} build xong"
           },
           "use": {
-            "title": "Xài · hướng dẫn kèm lệnh chạy được",
-            "description": "Copy là chạy: cài Claude Code hoặc Codex, viết CLAUDE.md và AGENTS.md, hook, quyền, MCP. Có lệnh kiểm tra máy và bẫy thử agent.",
             "topics": "Claude Code · Codex · harness doctor · bẫy thử",
             "progress": "{done} / {total} kiểm tra đạt"
           },
           "docs": {
-            "title": "Hiểu sâu · bài giải thích dài",
-            "description": "LLM, token, context window, tool calling, vì sao agent làm bậy, harness là gì và StarCi harness xếp các lớp ra sao.",
             "topics": "Bản chất LLM · Vòng lặp agent · Context · Thiết kế harness",
             "progress": "{count} bài"
           }

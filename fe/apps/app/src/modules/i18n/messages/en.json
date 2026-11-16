@@ -1961,20 +1961,14 @@
         },
         "parts": {
           "build": {
-            "title": "Build · pull a starter, take it from rough to pro",
-            "description": "A rough starter, e2e scripts and a guide for every stage. It runs on your own AI key, and the key never leaves your machine.",
             "topics": "AI agent · MCP server · Support chatbot · Lead agent",
             "progress": "{done} / {total} builds done"
           },
           "use": {
-            "title": "Use · guides with commands you can run",
-            "description": "Copy and run: install Claude Code or Codex, write CLAUDE.md and AGENTS.md, hooks, permissions, MCP. It has a command that checks your machine and traps that test an agent.",
             "topics": "Claude Code · Codex · harness doctor · trial traps",
             "progress": "{done} / {total} checks passed"
           },
           "docs": {
-            "title": "Deep dive · long explainers",
-            "description": "LLMs, tokens, the context window, tool calling, why agents cut corners, what a harness is and how the StarCi harness stacks its layers.",
             "topics": "How LLMs work · The agent loop · Context · Harness design",
             "progress": "{count} articles"
           }
