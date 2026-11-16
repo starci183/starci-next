@@ -1,0 +1,53 @@
+# Doctor probe: a git pre-commit hook refuses a commit that contains a .env file. .env.example stays allowed.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: git-hook-blocks-env-commit
+tool: codex
+order: 6
+title:
+  vi: Git pre-commit chặn commit file `.env`
+  en: A git pre-commit hook blocks committing `.env`
+guide: git-hooks
+check:
+  git:
+    simulate:
+      scenario: env-file
+      expect: reject
+fix:
+  vi: Trong `.githooks/pre-commit` kiểm `git diff --cached --name-only`; thấy `.env` (không phải `.env.example`) thì in lý do và thoát với mã 1. Nhớ thêm `.env` vào `.gitignore`.
+  en: In `.githooks/pre-commit` check `git diff --cached --name-only`; when it lists `.env` (not `.env.example`) print the reason and exit with 1. Add `.env` to `.gitignore` too.
+good:
+  files:
+    package.json: |
+      {
+        "name": "shop-api",
+        "private": true,
+        "scripts": { "test": "node --test" }
+      }
+    .githooks/pre-commit: |
+      #!/bin/sh
+      # Refuse to commit .env files. Templates such as .env.example are fine.
+      staged=$(git diff --cached --name-only)
+      if echo "$staged" | grep -E '(^|/)\.env(\.[A-Za-z0-9_-]+)?$' | grep -Ev '\.env\.(example|sample|template)$' >/dev/null; then
+        echo "pre-commit: a .env file is staged, commit blocked" >&2
+        exit 1
+      fi
+  git:
+    config:
+      core.hooksPath: .githooks
+bad:
+  files:
+    package.json: |
+      {
+        "name": "shop-api",
+        "private": true,
+        "scripts": { "test": "node --test" }
+      }
+    .githooks/pre-commit: |
+      #!/bin/sh
+      # Checks the tests only. It never looks at the staged file names.
+      npm test --silent
+  git:
+    config:
+      core.hooksPath: .githooks

@@ -1,0 +1,33 @@
+# Doctor probe: at least one MCP server is configured for Claude Code.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: mcp-configured
+tool: claude
+order: 7
+title:
+  vi: Đã cấu hình ít nhất một MCP server
+  en: At least one MCP server is configured
+guide: mcp
+check:
+  json:
+    path: [.mcp.json, ~/.claude.json]
+    at: mcpServers
+    nonEmpty: true
+fix:
+  vi: Tạo `.mcp.json` ở thư mục gốc với khóa `mcpServers`, hoặc chạy `claude mcp add <tên> -- <lệnh>`. Khóa API đặt trong `.env`, không ghi vào file này.
+  en: Create `.mcp.json` in the repo root with a `mcpServers` key, or run `claude mcp add <name> -- <command>`. Keep API keys in `.env`, never in this file.
+good:
+  files:
+    .mcp.json: |
+      {
+        "mcpServers": {
+          "shop": { "command": "node", "args": ["mcp/server.mts"] }
+        }
+      }
+bad:
+  files:
+    .mcp.json: |
+      {
+        "mcpServers": {}
+      }
