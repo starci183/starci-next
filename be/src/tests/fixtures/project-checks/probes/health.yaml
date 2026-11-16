@@ -1,0 +1,28 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: health
+label:
+  vi: "Health: dịch vụ báo sống, nhanh"
+  en: "Health: the service says it is alive, fast"
+question:
+  vi: Health của bạn trả 200 khi nào, và nó có kiểm tra phụ thuộc quan trọng không?
+  en: When does your health endpoint answer 200, and does it check a critical dependency?
+needs: []
+steps:
+  - id: alive
+    request: { method: GET, path: "{{endpoint.path ?? /health}}" }
+    expect:
+      - { that: status, eq: 200, fail: not-200 }
+      - { that: ms, lte: 2000, fail: slow }
+pass: ok
+reasons:
+  ok: { vi: Health trả 200 trong 2 giây., en: Health answered 200 within 2 seconds. }
+  not-200: { vi: Health không trả 200., en: Health did not answer 200. }
+  slow: { vi: Health trả lời chậm hơn 2 giây., en: Health took longer than 2 seconds. }
+fixtures:
+  endpoint: GET /health
+  cheats:
+    - { name: health reports down, app: { health: down }, fails: not-200 }
+    - { name: no health route, app: { health: missing }, fails: not-200 }

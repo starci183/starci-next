@@ -8,6 +8,7 @@ import type {
     VerifiedManifest,
 } from "./relay-client.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
+import { harnessOf } from "./harness.policy"
 import { lessonOf } from "./lesson.policy"
 
 /** One check of a payload, or null when it is not one (a cwd above the task workspace is not one). */
@@ -39,12 +40,15 @@ const manifestOf = (value: unknown): VerifiedManifest | null => {
     if (plan === null) return null
     const lesson = lessonOf(value.lesson)
     if (lesson === null) return null
+    const harness = harnessOf(value.harness)
+    if (harness === null) return null
     return {
         manifestId: value.manifestId,
         taskId: value.taskId,
         checks: checks.filter((check) => check !== null),
         ...(plan === undefined ? {} : { plan }),
         ...(lesson === undefined ? {} : { lesson }),
+        ...(harness === undefined ? {} : { harness }),
     }
 }
 

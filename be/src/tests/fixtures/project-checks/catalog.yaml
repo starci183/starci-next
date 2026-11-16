@@ -1,0 +1,207 @@
+# Danh mục kiểm tra của Dự án (bộ chốt 2026-11-17: 10 concept cho dự án app, cộng nhánh agent giữ nguyên).
+# Thêm một concept hay một probe là thêm DỮ LIỆU: một mục ở đây, probes/<id>.yaml, starci/e2e/<concept>.md. Không viết code app.
+# `npm run validate` kiểm mọi luật của mô hình chứng minh (xem docs/check-flow.md, mục "Luật của danh mục").
+schema: starci-next-data/project-catalog@2
+status: draft
+author: ai-placeholder
+concepts:
+  - id: request-response-lifecycle
+    label:
+      vi: Vòng đời request và response
+      en: Request-response lifecycle
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [invalid-input, request-id]
+    learn: []
+  - id: health-probe-semantics
+    label:
+      vi: Health và readiness probe
+      en: Health and readiness probes
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [health, readiness]
+    learn: []
+  - id: idempotent-retry
+    label:
+      vi: Gửi lại an toàn với Idempotency-Key
+      en: Safe retries with an Idempotency-Key
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [idempotency-replay, idempotency-parallel]
+    learn:
+      - lesson: outbox-idempotency
+        pending: true
+      - lesson: idempotency
+  - id: transactional-outbox
+    label:
+      vi: Transactional outbox, giao sự kiện đúng một lần
+      en: Transactional outbox, one delivery per event
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [outbox-delivery]
+    learn:
+      - lesson: outbox-idempotency
+        pending: true
+  - id: cache-freshness
+    label:
+      vi: Cache không trả dữ liệu cũ sau khi ghi
+      en: A cache never serves stale data after a write
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [cache-write-then-read]
+    learn:
+      - lesson: distributed-cache
+        pending: true
+  - id: rate-limiting
+    label:
+      vi: Giới hạn tốc độ
+      en: Rate limiting
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [burst]
+    learn: []
+  - id: cursor-pagination
+    label:
+      vi: Phân trang bằng cursor, ổn định khi có bản ghi mới
+      en: Cursor pagination that holds under inserts
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [stable-pages]
+    learn:
+      - lesson: indexing-and-query-plans
+  - id: authz-no-idor
+    label:
+      vi: Phân quyền, không lộ tài nguyên của người khác (IDOR)
+      en: Authorization with no IDOR
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [owner-only]
+    learn: []
+  - id: error-contract
+    label:
+      vi: Hợp đồng lỗi nhất quán, không lộ stack hay bí mật
+      en: One error contract, no stack or secret leaks
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [error-shape]
+    learn: []
+  - id: unit-testing-behavior
+    label:
+      vi: Unit test theo hành vi
+      en: Behavioural unit testing
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  # Nhánh agent (dự án kind agent, bằng chứng của Agent lab): giữ như trước, nay cũng là dữ liệu.
+  - id: task-spec
+    label:
+      vi: Giao việc rõ
+      en: A clear task spec
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  - id: context
+    label:
+      vi: Đưa đúng ngữ cảnh
+      en: The right context
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  - id: tools-permissions
+    label:
+      vi: Công cụ và quyền tối thiểu
+      en: Tools and least privilege
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe], [code-read]]
+    probes: [prompt-injection, permission]
+    learn: []
+  - id: verify
+    label:
+      vi: Kiểm chứng trước khi tin
+      en: Verify before you trust
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  - id: decompose
+    label:
+      vi: Chia việc
+      en: Decomposing the work
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  - id: cost-limits
+    label:
+      vi: Chi phí và giới hạn
+      en: Cost and limits
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+  - id: operate
+    label:
+      vi: Vận hành
+      en: Operating the agent
+    kind: behaviour
+    http: true
+    requires: [[test, e2e], [probe]]
+    probes: [failure-path]
+    learn: []
+  - id: agent-harness-control-loop
+    label:
+      vi: Vòng điều khiển agent
+      en: The agent control loop
+    kind: structure
+    http: false
+    requires: [[test], [code-read]]
+    probes: []
+    learn: []
+milestones:
+  - id: bf-http-foundation
+    title:
+      vi: Nền tảng HTTP
+      en: HTTP foundation
+    concepts: [request-response-lifecycle, health-probe-semantics, error-contract, unit-testing-behavior]
+  - id: bf-data-and-cache
+    title:
+      vi: Dữ liệu và cache
+      en: Data and cache
+    concepts: [cache-freshness, cursor-pagination]
+  - id: bf-safe-and-reliable
+    title:
+      vi: An toàn và tin cậy
+      en: Safe and reliable
+    concepts: [authz-no-idor, rate-limiting, idempotent-retry, transactional-outbox]
+  - id: agent-mindset
+    title:
+      vi: Tư duy agent chuẩn
+      en: The standard agent mindset
+    concepts: [task-spec, context, tools-permissions, verify, decompose, cost-limits, operate]
+  - id: agent-theory
+    title:
+      vi: Vòng điều khiển agent
+      en: The agent control loop
+    concepts: [agent-harness-control-loop]
+kinds:
+  app: [bf-http-foundation, bf-data-and-cache, bf-safe-and-reliable]
+  agent: [bf-http-foundation, agent-mindset, agent-theory]
