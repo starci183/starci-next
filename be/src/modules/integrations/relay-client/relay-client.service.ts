@@ -20,6 +20,8 @@ import { openDeviceSocket } from "./device-socket.client"
 import { listenCommand, type ListenOptions } from "./listen.cli"
 import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
+import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
+import { ciReportBuild, e2eBuild, pullBuild } from "./harness.cli"
 
 /** How long one call to StarCi may take before it counts as unreachable. */
 const REQUEST_TIMEOUT_MS = 30_000
@@ -55,6 +57,8 @@ export class RelayClientService implements RelayClientPort {
             confirm: (question) => terminal.confirm(question),
             isTty: () => terminal.isTty(),
             listen: (baseUrl, token, handlers) => openDeviceSocket(baseUrl, token, handlers),
+            hasEnv: (name) => terminal.hasEnv?.(name) === true,
+            ciEnv: (name) => terminal.ciEnv?.(name),
             runCommand: (command, cwd, timeoutMs, env, quiet) =>
                 terminal.runCommand(command, cwd, timeoutMs, env, quiet),
             verify: (payload, signature, key) => manifests.verified(payload, signature, key),
@@ -122,6 +126,21 @@ export class RelayClientService implements RelayClientPort {
     /** Prints the fix prompt of a scenario. */
     async prompt(lesson: string, scenario: string | undefined): Promise<void> {
         this.io.exit(await promptLesson(this.io, lesson, scenario, this.cwd))
+    }
+
+    /** Gets a harness build's source at the signed commit. */
+    async harnessPull(build: string): Promise<void> {
+        this.io.exit(await pullBuild(this.io, build, this.cwd))
+    }
+
+    /** Runs the signed e2e command of a build and sends the stage results. */
+    async harnessE2e(build: string | undefined, options: HarnessE2eOptions): Promise<void> {
+        this.io.exit(await e2eBuild(this.io, build, options, this.cwd))
+    }
+
+    /** Posts the harness lines of a CI run to the project-ci door. */
+    async harnessCiReport(options: HarnessCiReportOptions): Promise<void> {
+        this.io.exit(await ciReportBuild(this.io, options, this.cwd))
     }
 
     /** Copies the project kit into the project in the current folder. */
