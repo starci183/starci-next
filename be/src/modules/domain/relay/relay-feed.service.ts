@@ -2,7 +2,7 @@ import { Injectable, Optional } from "@nestjs/common"
 import type { KeyObject } from "node:crypto"
 import type { EntityManager } from "typeorm"
 import { InjectClock, type Clock } from "@modules/platform/clock"
-import { InjectPrimaryEntityManager, type sql } from "@modules/platform/database"
+import { InjectPrimaryEntityManager, LIST_ROWS_MAX, type sql } from "@modules/platform/database"
 import { InjectRealtimeHub, type RealtimeHub } from "@modules/platform/realtime"
 import { RelayError, RelayErrorCode } from "./errors/relay.error"
 import { InjectRelayOptions } from "./relay.decorators"
@@ -19,9 +19,11 @@ import {
     tierBelow,
 } from "./relay-lesson-manifest.policy"
 import type {
+    LearnerRunEvent,
     ManifestLesson,
     ManifestRequest,
     RelayUpload,
+    ScenarioRunRequest,
     SignedManifest,
     UploadReceipt,
 } from "./relay-feed.contracts"
@@ -31,11 +33,12 @@ import {
     projectRunOf,
     relayDeviceTopic,
     resultDetailOf,
+    scenarioCheckOf,
     signManifest,
     signingKeyOf,
     uploadValid,
 } from "./relay-feed.policy"
-import { INSERT_EVENT } from "./persistence/relay-events.sql"
+import { INSERT_EVENT, SELECT_LEARNER_RUN_EVENTS } from "./persistence/relay-events.sql"
 
 /** One SQL constant of the relay persistence. */
 type SqlText = ReturnType<typeof sql>
@@ -149,6 +152,57 @@ export class RelayFeedService {
         const pack = await this.sources.archive(lessonId)
         if (pack === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
         return pack
+    }
+
+    /**
+     * Issues the signed manifest of one scenario run to the device and pushes it to the device's topic. The manifest carries the
+     * one allowlisted `starci-next run` command; the CLI shows it and asks the learner before it runs anything.
+     */
+    async scenarioManifest(device: DevicePrincipal, request: ScenarioRunRequest): Promise<SignedManifest> {
+        const check = scenarioCheckOf(request)
+        if (check === null) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        const issuedAt = this.clock.now().toISOString()
+        const signed = signManifest(
+            {
+                manifestId: manifestIdOf(device.deviceId, `lesson:${request.lessonId}:${check.command}`, issuedAt),
+                taskId: `lesson:${request.lessonId}`,
+                learnerId: device.learnerId,
+                deviceId: device.deviceId,
+                issuedAt,
+                checks: [check],
+            },
+            this.key,
+        )
+        await this.hub.publish(relayDeviceTopic(device.learnerId, device.deviceId), {
+            id: `manifest:${signed.body.manifestId}`,
+            type: "manifest",
+            manifest: signed,
+        })
+        return signed
+    }
+
+    /** The learner's own stored results and logs of one task, newest first; another learner's events are never read. */
+    async runEvents(learnerId: string, taskId: string): Promise<ReadonlyArray<LearnerRunEvent>> {
+        const rows: Array<{
+            run_id: string
+            kind: "check.result" | "log"
+            check_id: string
+            passed: boolean | null
+            exit_code: number | null
+            commit_sha: string | null
+            body: string | null
+            created_at: Date
+        }> = await this.entityManager.query(SELECT_LEARNER_RUN_EVENTS, [learnerId, taskId, LIST_ROWS_MAX])
+        return rows.map((row) => ({
+            runId: row.run_id,
+            kind: row.kind,
+            checkId: row.check_id,
+            passed: row.passed,
+            exitCode: row.exit_code,
+            commit: row.commit_sha,
+            text: row.kind === "log" ? row.body : null,
+            at: row.created_at.toISOString(),
+        }))
     }
 
     /**

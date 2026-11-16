@@ -30,7 +30,7 @@
         }
       ],
       "patterns": ["webhooks", "realtime"],
-      "optionalSlots": ["be.contract.graphql"]
+      "optionalSlots": ["be.contract.graphql", "be.contract.mcp-tools"]
     },
     "fe": {
       "apps": [

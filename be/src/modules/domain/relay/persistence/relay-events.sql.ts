@@ -37,3 +37,9 @@ FROM relay_events e
 WHERE e.learner_id = $1::uuid AND e.task_id = $2::text AND e.kind IN ('check.started', 'check.result') AND e.check_id IS NOT NULL
 ORDER BY e.check_id, e.created_at DESC, e.event_id DESC
 LIMIT $3::int`
+/** The results and logs of one task of the learner, newest first ($1 learner, $2 task, $3 bound). */
+export const SELECT_LEARNER_RUN_EVENTS: ReturnType<typeof sql> =
+    sql`SELECT run_id, kind, check_id, passed, exit_code, commit_sha, body, created_at
+FROM relay_events
+WHERE learner_id = $1::uuid AND task_id = $2::text AND kind IN ('check.result', 'log') AND check_id IS NOT NULL
+ORDER BY created_at DESC, event_id LIMIT $3::int`

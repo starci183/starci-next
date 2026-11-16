@@ -1,4 +1,5 @@
 import type { LessonRunOptions } from "./lesson.contracts"
+import type { ListenOptions } from "./listen.cli"
 
 /** What `starci-next init` is given. */
 export interface InitOptions {
@@ -30,6 +31,8 @@ export interface RelayClientPort {
     compose(action: "up" | "down"): Promise<void>
     /** Runs the signed scenarios of a lesson (check: all when none is named). */
     lessonRun(lesson: string, options: LessonRunOptions, isCheck: boolean): Promise<void>
+    /** Listens on the device socket for run requests (the MCP's request_run) and runs them after the learner agrees. */
+    listen(options: ListenOptions): Promise<void>
     /** Prints the ready-to-paste fix prompt of a scenario. */
     prompt(lesson: string, scenario: string | undefined): Promise<void>
     /** Copies the project kit (`starci/` and a CI workflow) into the project in the current folder. */

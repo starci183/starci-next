@@ -1,6 +1,6 @@
 {"data":{},"findings":[],"hash":"ad64b8a12b892bfff729f39a21e4cd24a962c18c6f62d6bfb92a9bf12d63fa3f","path":".starcistacks/production/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"36442c7c2aa6bb83bbb5b8a0541e3ad7c59afcfa565bfff26fa8b26690a91dd1","path":".starcistacks/production/environment.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"241de16858580663f3943c31823efd506aa7a0e7a49f6235161fce6fa8c89405","path":".starcistacks/production/infra/swarm/Caddyfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0d58707b4f21260c8f7c31415d4b33316bfa68d4eaa2da06257f76945f787336","path":".starcistacks/production/infra/swarm/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"156927e2e194228821129c2027356d973b6681bb67f81c5a1e72bc45b7185478","path":".starcistacks/production/infra/swarm/owner-actions.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5c529b816e5219be1359f40e3702ba34a336c34e609b2fb9d2dbf1f770660a75","path":".starcistacks/production/infra/swarm/recovery/restore-proof.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4c1447aa8d4173f06169646b3a523065619c1a295666b75953090a151102bcd1","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"file-rules"}

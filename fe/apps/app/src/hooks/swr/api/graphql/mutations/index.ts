@@ -79,3 +79,6 @@ export {
     useMutateSetExperienceReviewerSwr,
 } from "./useMutateSetExperienceReviewerSwr"
 export { MUTATE_ASSIGN_EXPERIENCE_SWR_KEY, useMutateAssignExperienceSwr } from "./useMutateAssignExperienceSwr"
+export { MUTATE_CREATE_MCP_TOKEN_SWR_KEY, useMutateCreateMcpTokenSwr } from "./useMutateCreateMcpTokenSwr"
+export type { CreatedMcpToken } from "./useMutateCreateMcpTokenSwr"
+export { MUTATE_REVOKE_MCP_TOKEN_SWR_KEY, useMutateRevokeMcpTokenSwr } from "./useMutateRevokeMcpTokenSwr"

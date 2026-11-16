@@ -38,6 +38,7 @@ type Destination = {
         | "projects"
         | "agents"
         | "experience"
+        | "connect"
         | "profile"
     readonly route: string
     readonly source: AppSidebarEntry["source"]
@@ -56,6 +57,7 @@ const MAIN: ReadonlyArray<Destination> = [
 
 const EXPERIENCE: ReadonlyArray<Destination> = [
     { id: "experience", route: APP_ROUTES.experience, source: ExperienceGlyph },
+    { id: "connect", route: APP_ROUTES.connect, source: AgentsGlyph },
     { id: "profile", route: APP_ROUTES.profile, source: ProfileGlyph },
 ]
 

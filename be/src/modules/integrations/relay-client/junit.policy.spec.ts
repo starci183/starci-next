@@ -86,4 +86,17 @@ describe("conceptRunsOf", () => {
             subject.conceptRunsOf([{ name: "[idempotency] ok", passed: true, skipped: false }], ["idempotency"]),
         ).toEqual([{ conceptId: "idempotency", passed: true, names: ["[idempotency] ok"] }])
     })
+
+    it("counts a [concept:<id>] tag like the bare form", async () => {
+        const subject = await build()
+        const cases = [
+            { name: "[concept:idempotency] a", passed: true, skipped: false },
+            { name: "[outbox] b", passed: true, skipped: false },
+        ]
+
+        expect(subject.conceptRunsOf(cases, ["idempotency", "outbox"]).map((run) => run.conceptId)).toEqual([
+            "idempotency",
+            "outbox",
+        ])
+    })
 })

@@ -1,4 +1,4 @@
-{"data":{},"findings":[],"hash":"8584013fe2e0a8d174365a9159212db9b69fbdaa055f1247ad2726814a2ef3d0","path":".starciwork/concepts/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bc529948d94a4f87df637cdbed69cfb7dc363d38320293daadc03723b87e32aa","path":".starciwork/concepts/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f88e7e84af0e45017d79dfe42627ad17598bb75874b23d95a8f068fee22b48c0","path":".starciwork/concepts/ai-teacher.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"da8ac90e3b103697bcb9c68b73666a0a1b82f563d3b91519d684437f06b7efe6","path":".starciwork/concepts/app-shell.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fb8c5c7cc5c1aa34468eb2babe09693a71fffa2a82818b786d1e294ecc69694f","path":".starciwork/concepts/content.md","step":"file-rules"}
@@ -8,6 +8,7 @@
 {"data":{},"findings":[],"hash":"6731174c3a48b8bae5fff83498849d58748d894141f2d4021d4c2484202d5915","path":".starciwork/concepts/identity.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b10835f95264fd1dc3ba1bea3cec31e1e1e650f4b224c4a0c2454c9b11ebaa8","path":".starciwork/concepts/learner-cli-relay.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"736adf0349978432d8997b1f968cca987490336c6d9e2f1aa93d893a144bbd47","path":".starciwork/concepts/learning-program.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7a77a15ac06f68c9ba5e60cbddde3c4964c95299e85835d538f323483268806d","path":".starciwork/concepts/mcp.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"52e9f943ff6e34b7eecce0c63ccfd7e3dc3dfe3c925f38ee1cb7a8ff643a3cbd","path":".starciwork/concepts/mock-interview.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b9163cd519614ddf8c278eb23c561a2e4daf6e55f1ec3c7c1a15bbef8e98c16","path":".starciwork/concepts/practice.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a74432a8a1e515193dfb7411b3e0b1dcda2896025afd4ecfa50a3590d3f8f1a7","path":".starciwork/concepts/premium.md","step":"file-rules"}

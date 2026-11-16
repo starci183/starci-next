@@ -1,1 +1,2 @@
-{"findings":[],"hash":"5c81a784d2ea77736afa9a8ab50a547f4539f12fd3e974e3ef7a80cd5fd15265","path":"be/contracts/core/schema.graphql","step":"prettier"}
+{"findings":[],"hash":"eee53a6a7aa66d1574a86eda2d4d4b430ede7cc355015342d4a362ab1e5c7f4b","path":"be/contracts/core/schema.graphql","step":"prettier"}
+{"findings":[],"hash":"4a0fa3fd7de35c7c3b96e03b046d82fead33778a1dec43706897af8aa9c8d88a","path":"be/contracts/core/starci-next@1.tools.json","step":"prettier"}

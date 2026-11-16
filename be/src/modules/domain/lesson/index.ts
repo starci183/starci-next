@@ -24,13 +24,14 @@ export { LessonReadService } from "./lesson-read.service"
  * caller checks access with `LessonContentService.requireAccess`.
  */
 export { LessonSourceService } from "./lesson-source.service"
+export type { LessonSourceMatch, LessonSourcePack, LessonSourceRead } from "./lesson-source.service"
+export { lessonSourceTreeOf } from "./lesson-source-tree.policy"
 export type {
-    LessonSourceEntry,
-    LessonSourceMatch,
-    LessonSourcePack,
-    LessonSourceRead,
     LessonSourceTree,
-} from "./lesson-source.service"
+    LessonSourceTreeFile,
+    LessonSourceTreeInvariant,
+    LessonSourceTreeScenario,
+} from "./lesson-source-tree.contracts"
 export type {
     LessonActivity,
     LessonContent,

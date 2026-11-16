@@ -34,6 +34,8 @@ export {
     useMutateStartPremiumCheckoutSwr,
     useMutateConfirmRelayDeviceSwr,
     useMutateRevokeRelayDeviceSwr,
+    useMutateCreateMcpTokenSwr,
+    useMutateRevokeMcpTokenSwr,
     useMutateStartInterviewSwr,
     useMutateSubmitInterviewSwr,
     useMutateSubmitReviewRetrievalSwr,
@@ -66,6 +68,7 @@ export {
     useQueryRelayDevicesSwr,
     useQueryLessonOpenerScoresSwr,
     useQueryLessonScenarioRunsSwr,
+    useQueryMcpTokensSwr,
     useQueryRelayPairingSwr,
     useQueryPracticePatternsSwr,
     useQueryRecallItemSwr,
@@ -109,5 +112,7 @@ export type {
     RunProjectProbesResult,
     RelayDevices,
     RelayPairing,
+    McpConnection,
+    CreatedMcpToken,
 } from "./api"
 export type { GraphQLResponse, IdentityChallenge, SocialProvider } from "@/modules/api"

@@ -210,3 +210,33 @@ export interface UploadReceipt {
     /** Always true once stored; a resend answers true too. */
     readonly accepted: boolean
 }
+
+/** What a scenario run asks the relay for: the lesson (the task), the scenario of its catalog and the guards switched off. */
+export interface ScenarioRunRequest {
+    /** The lesson id; the task id the results come back under is `lesson:<lessonId>`. */
+    readonly lessonId: string
+    /** The scenario id, which is the check id the results come back under. */
+    readonly scenarioId: string
+    /** The ids of the guards the run switches off (`--guard <id>=off`); empty for the plain run. */
+    readonly guardsOff: ReadonlyArray<string>
+}
+
+/** One stored event of a learner's own run of a lesson, as the learner's AI may read it. */
+export interface LearnerRunEvent {
+    /** The run the event belongs to. */
+    readonly runId: string
+    /** `check.result` or `log`. */
+    readonly kind: "check.result" | "log"
+    /** The check (the scenario id) it belongs to. */
+    readonly checkId: string
+    /** Whether the check passed, for a result. */
+    readonly passed: boolean | null
+    /** The exit code, for a result. */
+    readonly exitCode: number | null
+    /** The commit it ran on, for a result. */
+    readonly commit: string | null
+    /** The log text, for a log. */
+    readonly text: string | null
+    /** The UTC instant it was stored. */
+    readonly at: string
+}

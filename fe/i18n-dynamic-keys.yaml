@@ -128,3 +128,89 @@ namespaces:
       reason: read by the callback page metadata and body through its translator
     - key: status
       reason: read by the callback page metadata and body through its translator
+  app.connectAi:
+    - key: pageHeading
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: pageSub
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: endpointTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: endpointHint
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: tokensTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: tokensEmpty
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: tokensLimit
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: nameLabel
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: namePlaceholder
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: create
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: creating
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: revoke
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: createdTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: createdHint
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: dismiss
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: canTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: canText
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: cannotTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: cannotText
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: oauthNote
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: guidesTitle
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.error:
+    - key: limit
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: name
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: other
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.claude.open:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.claude.add:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: command
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.claude.code:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: command
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.chatgpt.enable:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.chatgpt.add:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: command
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.connectAi.chatgpt.use:
+    - key: title
+      reason: read through the translator that the ConnectAi block maps over its label and step keys
+    - key: note
+      reason: read through the translator that the ConnectAi block maps over its label and step keys

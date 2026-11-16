@@ -1,0 +1,337 @@
+{
+  "contract": "starci-next@1",
+  "server": {
+    "name": "starci-next",
+    "version": "1.0.0"
+  },
+  "tools": [
+    {
+      "name": "lesson",
+      "title": "Lesson outline",
+      "description": "The outline of a lesson: sections (locked ones listed without text) and learning outcomes.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "locale": {
+            "default": "vi",
+            "description": "The language of the lesson text",
+            "type": "string",
+            "enum": [
+              "vi",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "lesson_section",
+      "title": "Lesson section",
+      "description": "The text of one unlocked section by its 1-based number from the outline.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "n": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200
+          },
+          "locale": {
+            "default": "vi",
+            "description": "The language of the lesson text",
+            "type": "string",
+            "enum": [
+              "vi",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "n"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "search_lesson",
+      "title": "Search the lesson",
+      "description": "Search the sections of the lesson the learner may read. Semantic by default when available, keywords otherwise.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "mode": {
+            "default": "semantic",
+            "type": "string",
+            "enum": [
+              "semantic",
+              "keyword"
+            ]
+          },
+          "locale": {
+            "default": "vi",
+            "description": "The language of the lesson text",
+            "type": "string",
+            "enum": [
+              "vi",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "read_file",
+      "title": "Read a source file",
+      "description": "Lines of a file of the lesson repository at its pinned commit (at most 400 lines per call).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "to": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "search_code",
+      "title": "Search the source",
+      "description": "Search the lesson repository at its pinned commit. Semantic by default when available, keywords otherwise.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "mode": {
+            "default": "semantic",
+            "type": "string",
+            "enum": [
+              "semantic",
+              "keyword"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_scenarios",
+      "title": "List scenarios",
+      "description": "The scenarios of the lesson: the injected fault, the guards that can be switched off and the command to run.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "my_runs",
+      "title": "My runs",
+      "description": "The learner's own recent scenario runs of the lesson with the result and the log tail, to explain why one is red.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "invariants",
+      "title": "Invariants",
+      "description": "The invariants the learner has revealed so far, with where the code keeps each.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "request_run",
+      "title": "Request a scenario run",
+      "description": "Ask the learner's own machine to run one scenario. The StarCi CLI shows the exact command and asks the learner to confirm; read the result with my_runs. If delivered is false, no device is listening: tell the learner to run the returned command in their terminal.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$",
+            "description": "The lesson id, a slug such as request-response-lifecycle"
+          },
+          "scenario": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+          },
+          "guards_off": {
+            "default": [],
+            "description": "Guard ids to switch off for this run",
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "scenario"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ]
+}

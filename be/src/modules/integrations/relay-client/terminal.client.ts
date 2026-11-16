@@ -35,6 +35,11 @@ export class TerminalClient implements TerminalPort {
         process.exitCode = code
     }
 
+    /** True when both standard streams are a terminal, so a question can be answered. */
+    isTty(): boolean {
+        return process.stdin.isTTY && process.stdout.isTTY
+    }
+
     /** Asks a yes/no question on the terminal; only y or yes is a yes. */
     async confirm(question: string): Promise<boolean> {
         const reader = createInterface({ input: process.stdin, output: process.stdout })

@@ -9,6 +9,7 @@ import type {
     ProjectRunRequest,
     RelayFrame,
     RelayUpload,
+    ScenarioRunRequest,
     SignedManifest,
 } from "./relay-feed.contracts"
 
@@ -197,5 +198,25 @@ export const uploadValid = (upload: RelayUpload): boolean => {
             return upload.checkId !== undefined && upload.text !== undefined && upload.text.length <= LOG_TEXT_MAX
         case "manifest.ack":
             return upload.manifestId !== undefined && upload.manifestId.length <= ID_MAX
+    }
+}
+
+const SCENARIO_ID = /^[a-z0-9][a-z0-9-]{0,63}$/u
+const SCENARIO_TIMEOUT_MS = 600_000
+
+/**
+ * The one allowlisted check of a scenario run: `starci-next run <lesson> --scenario <id>` with a `--guard <id>=off` per
+ * guard switched off. Null when a lesson, scenario or guard id could not be one (they are slugs, never free text).
+ */
+export const scenarioCheckOf = (request: ScenarioRunRequest): ManifestCheck | null => {
+    const { lessonId, scenarioId, guardsOff } = request
+    if (!SAFE_ID.test(lessonId) || !SCENARIO_ID.test(scenarioId)) return null
+    if (!guardsOff.every((guard) => SCENARIO_ID.test(guard)) || guardsOff.length > 8) return null
+    const guards = guardsOff.map((guard) => ` --guard ${guard}=off`).join("")
+    return {
+        id: scenarioId,
+        command: `starci-next run ${lessonId} --scenario ${scenarioId}${guards}`,
+        cwd: ".",
+        timeoutMs: SCENARIO_TIMEOUT_MS,
     }
 }

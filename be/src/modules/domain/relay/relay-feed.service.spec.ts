@@ -194,3 +194,38 @@ describe("RelayFeedService upload", () => {
         ).rejects.toMatchObject({ code: RelayErrorCode.Unavailable })
     })
 })
+
+describe("RelayFeedService scenarioManifest", () => {
+    it("signs one scenario run under the lesson task and pushes it to the device", async () => {
+        const { feed, hub } = await build(mockEntityManager())
+
+        const signed = await feed.scenarioManifest(DEVICE, {
+            lessonId: "bank-transfer",
+            scenarioId: "double-spend",
+            guardsOff: ["idempotency"],
+        })
+
+        expect(signed.body).toMatchObject({
+            taskId: "lesson:bank-transfer",
+            ...DEVICE,
+            issuedAt: NOW,
+            checks: [
+                {
+                    id: "double-spend",
+                    command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+                    cwd: ".",
+                },
+            ],
+        })
+        expect(hub.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it("refuses an id that is not a slug", async () => {
+        const { feed, hub } = await build(mockEntityManager())
+
+        await expect(
+            feed.scenarioManifest(DEVICE, { lessonId: "bank-transfer", scenarioId: "a; rm -rf /", guardsOff: [] }),
+        ).rejects.toMatchObject({ code: RelayErrorCode.PayloadInvalid })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+})

@@ -48,6 +48,7 @@ component_management:
         - "be/src/modules/domain/interview/**"
         - "be/src/modules/domain/lesson/**"
         - "be/src/modules/domain/liveness/**"
+        - "be/src/modules/domain/mcp/**"
         - "be/src/modules/domain/note/**"
         - "be/src/modules/domain/notification/**"
         - "be/src/modules/domain/path/**"

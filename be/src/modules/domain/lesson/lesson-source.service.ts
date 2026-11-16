@@ -5,30 +5,14 @@ import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
 import { SELECT_PUBLISHED } from "./persistence/lesson.sql"
 import { sourceArchiveOf, type LessonSourceArchive, type LessonSourceCode } from "./lesson-source-archive.policy"
+import type { LessonSourceTree } from "./lesson-source-tree.contracts"
+import { lessonSourceTreeOf } from "./lesson-source-tree.policy"
 
 /** How many tarballs stay cached in one process (a lesson version's source is a few hundred KiB). */
 const ARCHIVE_CACHE_MAX = 64
 
 /** The most matches one search answers. */
 const SEARCH_MAX = 200
-
-/** One file of a lesson's source tree. */
-export interface LessonSourceEntry {
-    /** The path relative to the source root (`typescript/src/outbox.ts`). */
-    readonly path: string
-    /** Its size in bytes (UTF-8). */
-    readonly bytes: number
-}
-
-/** The source tree of the live version of a lesson, at the content commit it was imported at. */
-export interface LessonSourceTree {
-    /** The lesson slug. */
-    readonly lessonId: string
-    /** The pinned content commit (the version). */
-    readonly commit: string
-    /** Every file, sorted by path. */
-    readonly files: ReadonlyArray<LessonSourceEntry>
-}
 
 /** One file read from a lesson's source tree. */
 export interface LessonSourceRead {
@@ -55,8 +39,8 @@ export interface LessonSourcePack extends LessonSourceArchive {
 @Injectable()
 /**
  * The one read of a lesson's source tree (the lesson folder's `source/` in the content repository, at the content commit the
- * live version was imported at): the file list, one file, a text search and the deterministic tarball. The relay's
- * `source.tgz` door and the MCP read through it, so both see the same bytes. It holds only `source/`: `hidden/` is never
+ * live version was imported at): the tree (the MCP's `McpSourceTree` adapter), one file, a text search and the deterministic
+ * tarball. The relay's `source.tgz` door and the MCP read through it, so both see the same bytes. It holds only `source/`: `hidden/` is never
  * stored in it. Who may read is the caller's question (Premium, through `LessonContentService.requireAccess`); a lesson that is
  * not live or ships no source is not found. No path or commit the learner supplies selects anything but a file of this tree.
  */
@@ -66,14 +50,15 @@ export class LessonSourceService {
 
     constructor(@InjectPrimaryEntityManager() private readonly entityManager: EntityManager) {}
 
-    /** The file list of the lesson's source. */
-    async tree(lessonId: string): Promise<LessonSourceTree> {
-        const { row, code } = await this.live(lessonId)
-        return {
-            lessonId,
-            commit: row.version,
-            files: code.map((file) => ({ path: file.path, bytes: Buffer.byteLength(file.content) })),
-        }
+    /**
+     * The source tree of the live version for the MCP (`McpSourceTree`): the files with their text, the scenarios (id, title,
+     * fault, invariant, guard names) and the invariants with where the code walk places them, at the content commit; null when
+     * the lesson is not live or ships no source. No hidden scenario, challenge, rubric, expected output or hint is in it.
+     */
+    async tree(lessonId: string): Promise<LessonSourceTree | null> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [lessonId])
+        const row = rows[0]
+        return row === undefined ? null : lessonSourceTreeOf(row.version, row.content)
     }
 
     /** One file of the lesson's source, by its path in the tree; not found for any other path. */

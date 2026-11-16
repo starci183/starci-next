@@ -34,6 +34,8 @@ export type {
     MyPremiumQuery,
     ConfirmRelayDeviceMutation,
     RelayDevicesQuery,
+    McpTokensQuery,
+    CreateMcpTokenMutation,
     RelayPairingQuery,
     RevokeRelayDeviceMutation,
     PracticeProblemQuery,

@@ -2,6 +2,7 @@
 export const APP_ROUTES = {
     home: "/",
     agents: "/agents",
+    connect: "/connect",
     devices: "/devices",
     essentials: "/essentials",
     experience: "/experience",
