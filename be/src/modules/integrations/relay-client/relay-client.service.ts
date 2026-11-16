@@ -16,6 +16,8 @@ import type { RelayClientModuleOptions } from "./relay-client.options"
 import type { InitOptions, RelayClientPort } from "./relay-client.port"
 import { ProjectKitService } from "./project-kit.service"
 import { runTask } from "./task-run.cli"
+import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
+import type { LessonRunOptions } from "./lesson.contracts"
 
 /** How long one call to StarCi may take before it counts as unreachable. */
 const REQUEST_TIMEOUT_MS = 30_000
@@ -46,7 +48,7 @@ export class RelayClientService implements RelayClientPort {
             platform: () => terminal.platform(),
             exit: (code) => terminal.exit(code),
             confirm: (question) => terminal.confirm(question),
-            runCommand: (command, cwd, timeoutMs) => terminal.runCommand(command, cwd, timeoutMs),
+            runCommand: (command, cwd, timeoutMs, env) => terminal.runCommand(command, cwd, timeoutMs, env),
             verify: (payload, signature, key) => manifests.verified(payload, signature, key),
             fetch: (url, init) => this.door(url, init),
             sleep: (ms) => new Promise((resolve) => timer.schedule(() => resolve(undefined), ms)),
@@ -86,6 +88,26 @@ export class RelayClientService implements RelayClientPort {
                 ? await this.kit.run(this.io, taskId, yes, this.cwd)
                 : await runTask(this.io, taskId, yes),
         )
+    }
+
+    /** Gets a lesson repo at the signed commit. */
+    async pull(lesson: string, lang: string | undefined): Promise<void> {
+        this.io.exit(await pullLesson(this.io, lesson, lang, this.cwd))
+    }
+
+    /** Starts or stops the lesson containers. */
+    async compose(action: "up" | "down"): Promise<void> {
+        this.io.exit(await composeLesson(this.io, action, this.cwd))
+    }
+
+    /** Runs (or checks) the signed scenarios of a lesson. */
+    async lessonRun(lesson: string, options: LessonRunOptions, isCheck: boolean): Promise<void> {
+        this.io.exit(await runLesson(this.io, lesson, options, isCheck, this.cwd))
+    }
+
+    /** Prints the fix prompt of a scenario. */
+    async prompt(lesson: string, scenario: string | undefined): Promise<void> {
+        this.io.exit(await promptLesson(this.io, lesson, scenario, this.cwd))
     }
 
     /** Copies the project kit into the project in the current folder. */

@@ -8,6 +8,7 @@ import type {
     VerifiedManifest,
 } from "./relay-client.contracts"
 import { isRecord, jsonOf } from "./json.mapper"
+import { lessonOf } from "./lesson.policy"
 
 /** One check of a payload, or null when it is not one (a cwd above the task workspace is not one). */
 const checkOf = (value: unknown): ManifestCheck | null => {
@@ -36,11 +37,14 @@ const manifestOf = (value: unknown): VerifiedManifest | null => {
     if (checks.includes(null)) return null
     const plan = planOf(value.plan)
     if (plan === null) return null
+    const lesson = lessonOf(value.lesson)
+    if (lesson === null) return null
     return {
         manifestId: value.manifestId,
         taskId: value.taskId,
         checks: checks.filter((check) => check !== null),
         ...(plan === undefined ? {} : { plan }),
+        ...(lesson === undefined ? {} : { lesson }),
     }
 }
 
