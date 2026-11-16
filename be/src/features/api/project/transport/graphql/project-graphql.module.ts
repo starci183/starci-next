@@ -16,6 +16,8 @@ import { RotateProjectCiSecretResolver } from "./rotate-project-ci-secret.resolv
 import { SyncProjectPracticeResolver } from "./sync-project-practice.resolver"
 import { GetProjectRepositoryResolver } from "./get-project-repository.resolver"
 import { SetProjectRepositoryResolver } from "./set-project-repository.resolver"
+import { GetProjectCodeReadResolver } from "./get-project-code-read.resolver"
+import { GetProjectCvPreviewResolver } from "./get-project-cv-preview.resolver"
 
 @Module({
     imports: [ProjectApiModule.register({})],
@@ -35,6 +37,8 @@ import { SetProjectRepositoryResolver } from "./set-project-repository.resolver"
         SyncProjectPracticeResolver,
         GetProjectRepositoryResolver,
         SetProjectRepositoryResolver,
+        GetProjectCodeReadResolver,
+        GetProjectCvPreviewResolver,
     ],
 })
 /** The GraphQL transport of the project feature. */

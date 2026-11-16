@@ -26,7 +26,7 @@ describe("the experience catalog", () => {
     it("grants CV lines only from Projects, Incidents and Essentials attached to a project", () => {
         const cvParts = new Set(EXPERIENCE_CATALOG.filter((i) => i.output === "cv-line").map((i) => i.part))
 
-        expect([...cvParts].sort()).toEqual(["essentials", "incidents", "projects"])
+        expect([...cvParts].sort()).toEqual(["essentials", "harness", "incidents", "projects"])
         expect(subject.catalogItemOf("essentials.concept-proved").requiresProject).toBe(true)
     })
 

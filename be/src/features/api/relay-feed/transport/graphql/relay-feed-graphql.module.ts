@@ -4,6 +4,7 @@ import { GetRelayManifestResolver } from "./get-relay-manifest.resolver"
 import { LessonScenarioRunsResolver } from "./lesson-scenario-runs.resolver"
 import { RelayCheckStartedResolver } from "./relay-check-started.resolver"
 import { RelayCheckResultResolver } from "./relay-check-result.resolver"
+import { RelayHarnessResultResolver } from "./relay-harness-result.resolver"
 import { RelayLogResolver } from "./relay-log.resolver"
 import { RelayManifestAckResolver } from "./relay-manifest-ack.resolver"
 import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
@@ -14,6 +15,7 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         GetRelayManifestResolver,
         RelayCheckStartedResolver,
         RelayCheckResultResolver,
+        RelayHarnessResultResolver,
         RelayLogResolver,
         RelayManifestAckResolver,
         LessonScenarioRunsResolver,

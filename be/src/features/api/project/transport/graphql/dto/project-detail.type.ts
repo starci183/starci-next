@@ -62,6 +62,18 @@ export class ProjectDetailType {
     @Field(() => Int)
     milestoneCount!: number
 
+    /** How many concepts show results from the machine or unattested CI only. */
+    @Field(() => Int)
+    practisingConceptCount!: number
+
+    /** How the newest signed CI run ended: passed, failed or none. */
+    @Field(() => String)
+    latestCiStatus!: string
+
+    /** When the newest signed CI run was received, as an ISO 8601 instant. */
+    @Field(() => String, { nullable: true })
+    latestCiAt!: string | null
+
     /** When it was created, as an ISO 8601 instant. */
     @Field(() => String)
     createdAt!: string
@@ -69,10 +81,6 @@ export class ProjectDetailType {
     /** The milestones in order. */
     @Field(() => [ProjectMilestoneSummaryType])
     milestones!: ReadonlyArray<ProjectMilestoneSummaryType>
-
-    /** How many concepts show results from the machine only. */
-    @Field(() => Int)
-    practisingConceptCount!: number
 
     /** The last signed CI run. */
     @Field(() => ProjectCiRunType, { nullable: true })

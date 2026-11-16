@@ -48,7 +48,7 @@ export interface SnapshotManifest {
 }
 
 /** The kinds of content the sync imports or records, in the order it runs them. */
-export type ContentKind = "lessons" | "interview" | "review" | "practice" | "catalogs"
+export type ContentKind = "lessons" | "interview" | "review" | "practice" | "harness" | "catalogs"
 
 /** How one kind went. */
 export type ContentKindStatus = "imported" | "skipped" | "failed"

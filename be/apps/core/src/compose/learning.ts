@@ -53,6 +53,13 @@ import {
     streakEntities,
     streakMigrations,
 } from "@modules/domain/streak"
+import {
+    HARNESS_ERROR_KINDS,
+    HARNESS_MESSAGES,
+    HarnessModule,
+    harnessEntities,
+    harnessMigrations,
+} from "@modules/domain/harness"
 import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule, mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { JUDGE0_ERROR_KINDS, JUDGE0_MESSAGES, Judge0Module } from "@modules/integrations/judge0"
 import type { DatabaseConnectionOptions } from "@modules/platform/database"
@@ -70,6 +77,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
     McpModule.register({ isGlobal: true, ...options.mcp }),
     StreakModule.register({ isGlobal: true }),
     PathModule.register({ isGlobal: true }),
+    HarnessModule.register({ isGlobal: true }),
     HubModule.register({ isGlobal: true }),
     NotificationModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true, ...options.practice, streak: StreakServiceClient }),
@@ -92,6 +100,7 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
     REVIEW_ERROR_KINDS,
     STREAK_ERROR_KINDS,
     PATH_ERROR_KINDS,
+    HARNESS_ERROR_KINDS,
     NOTIFICATION_ERROR_KINDS,
     JUDGE0_ERROR_KINDS,
     PRACTICE_ERROR_KINDS,
@@ -106,6 +115,7 @@ export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     REVIEW_MESSAGES,
     STREAK_MESSAGES,
     PATH_MESSAGES,
+    HARNESS_MESSAGES,
     HUB_MESSAGES,
     NOTIFICATION_MESSAGES,
     JUDGE0_MESSAGES,
@@ -123,6 +133,7 @@ export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
     ...agentLabEntities,
     ...streakEntities,
     ...pathEntities,
+    ...harnessEntities,
     ...notificationEntities,
 ]
 
@@ -136,5 +147,6 @@ export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
     ...agentLabMigrations,
     ...streakMigrations,
     ...pathMigrations,
+    ...harnessMigrations,
     ...notificationMigrations,
 ]

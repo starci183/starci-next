@@ -1,5 +1,7 @@
 import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
+import type { CiReportOptions } from "./project-ci-report.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
+import type { DoctorOptions, TrialOptions } from "./harness-trial.contracts"
 import type { ListenOptions } from "./listen.cli"
 
 /** What `starci-next init` is given. */
@@ -46,4 +48,10 @@ export interface RelayClientPort {
     harnessCiReport(options: HarnessCiReportOptions): Promise<void>
     /** Copies the project kit (`starci/` and a CI workflow) into the project in the current folder. */
     init(options: InitOptions): Promise<void>
+    /** Runs the doctor probes of the content against this machine and the project in the current folder. */
+    harnessDoctor(options: DoctorOptions): Promise<void>
+    /** Runs the learner's own agent headless on a trap repo and prints a verdict; uploads only the verdict and the shortcut list. */
+    harnessTrial(trap: string, options: TrialOptions): Promise<void>
+    /** `ci-report`: sends the CI run's JUnit results and e2e flows to StarCi with the GitHub OIDC token. */
+    ciReport(options: CiReportOptions): Promise<void>
 }

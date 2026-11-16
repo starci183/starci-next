@@ -1,4 +1,6 @@
+import { homedir } from "node:os"
 import { Injectable } from "@nestjs/common"
+import { NodeProcessPort } from "@modules/platform/check-flow-local"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import type { HttpClient } from "@modules/platform/http"
 import { InjectIds, type Ids } from "@modules/platform/ids"
@@ -16,12 +18,16 @@ import type { RelayClientModuleOptions } from "./relay-client.options"
 import type { InitOptions, RelayClientPort } from "./relay-client.port"
 import { ProjectKitService } from "./project-kit.service"
 import { runTask } from "./task-run.cli"
+import { projectCiReport, type CiReportOptions } from "./project-ci-report.cli"
 import { openDeviceSocket } from "./device-socket.client"
 import { listenCommand, type ListenOptions } from "./listen.cli"
 import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
 import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
 import { ciReportBuild, e2eBuild, pullBuild } from "./harness.cli"
+import type { DoctorOptions, HarnessIo, TrialOptions } from "./harness-trial.contracts"
+import { doctorCommand } from "./harness-doctor.cli"
+import { trialCommand } from "./harness-trial.cli"
 
 /** How long one call to StarCi may take before it counts as unreachable. */
 const REQUEST_TIMEOUT_MS = 30_000
@@ -144,9 +150,37 @@ export class RelayClientService implements RelayClientPort {
     }
 
     /** Copies the project kit into the project in the current folder. */
+    async ciReport(options: CiReportOptions): Promise<void> {
+        this.io.exit(await projectCiReport(this.io, options, this.cwd))
+    }
+
     init(options: InitOptions): Promise<void> {
         this.io.exit(this.kit.init(this.io, options, this.cwd))
         return Promise.resolve()
+    }
+
+    /** Runs the doctor probes of the content against this machine and the project in the current folder. */
+    async harnessDoctor(options: DoctorOptions): Promise<void> {
+        this.io.exit(await doctorCommand(this.harnessIo(), options, this.cwd))
+    }
+
+    /** Runs the learner's own agent on a trap repo and prints the verdict. */
+    async harnessTrial(trap: string, options: TrialOptions): Promise<void> {
+        this.io.exit(await trialCommand(this.harnessIo(), trap, options, this.cwd))
+    }
+
+    /** The learner CLI's terminal and ports, plus what the harness commands add: processes, the home folder, the agent programs. */
+    private harnessIo(): HarnessIo {
+        return {
+            ...this.io,
+            proc: new NodeProcessPort(),
+            home: homedir(),
+            bins: {
+                claude: this.io.env.STARCI_NEXT_CLAUDE_BIN ?? "claude",
+                codex: this.io.env.STARCI_NEXT_CODEX_BIN ?? "codex",
+            },
+            processEnv: process.env,
+        }
     }
 
     /** GETs the bytes behind a signed URL; no answer (refused, timed out, cut) answers status 0 with no bytes. */

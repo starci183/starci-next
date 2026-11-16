@@ -160,7 +160,7 @@ describe("harness pull", () => {
     })
 
     it("refuses a manifest that is a doctor section, not a build, and a bad build id", async () => {
-        const made = harnessWorld({ kind: "doctor", tool: "claude", probes: [] })
+        const made = harnessWorld({ kind: "doctor", tool: "claude", source: { url: "/x.tgz", sha256: "e".repeat(64), commit: "a".repeat(40) } })
         expect(await pullBuild(made.io, "agent-cli", made.world.cwd)).toBe(1)
         expect(made.world.err.join("\n")).toContain("no build")
         expect(await pullBuild(made.io, "Agent CLI", made.world.cwd)).toBe(1)
@@ -331,7 +331,7 @@ describe("harness ci-report", () => {
         expect(await ciReportBuild(io, {}, root)).toBe(0)
 
         expect(downloads).toEqual([
-            { url: "https://actions.test/token?api=1&audience=https%3A%2F%2Fstarci.test", bearer: "request-bearer" },
+            { url: "https://actions.test/token?api=1&audience=starci-next", bearer: "request-bearer" },
         ])
         expect(posts).toHaveLength(1)
         const [{ url, init }] = posts as [(typeof posts)[number]]

@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing"
 import { ESSENTIALS_DRAFT, ESSENTIALS_SLOTS } from "@tests/fixtures/builders/career.builder"
-import { acceptLine, draftLineOf, sameLine } from "./cv-line.policy"
+import { acceptLine, draftLineOf, previewLineOf, sameLine } from "./cv-line.policy"
 import { CareerErrorCode } from "./errors/career.error"
 import { catalogItemOf } from "./experience-catalog.policy"
 
@@ -81,6 +81,22 @@ describe("acceptLine", () => {
         expect(() => subject.acceptLine(line, ESSENTIALS_DRAFT, ESSENTIALS_SLOTS)).toThrow(
             CareerErrorCode.LineSlotChanged,
         )
+    })
+})
+
+describe("previewLineOf", () => {
+    it("drafts the line of an item type from the evidence values, in both locales", () => {
+        expect(previewLineOf("essentials.concept-proved", ESSENTIALS_SLOTS)).toEqual(ESSENTIALS_DRAFT)
+    })
+
+    it("answers null for an item type the catalog does not hold and for a slot the evidence left empty, never a half-filled line", () => {
+        expect(previewLineOf("nope.item", ESSENTIALS_SLOTS)).toBeNull()
+        expect(
+            previewLineOf("essentials.concept-proved", {
+                vi: { ...ESSENTIALS_SLOTS.vi, project: " " },
+                en: ESSENTIALS_SLOTS.en,
+            }),
+        ).toBeNull()
     })
 })
 

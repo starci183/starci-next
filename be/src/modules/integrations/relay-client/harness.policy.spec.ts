@@ -21,10 +21,29 @@ const build = (extra: Record<string, unknown> = {}) => ({
 })
 
 describe("harness policy", () => {
-    it("reads a signed build section and ignores a doctor or trial section by name", () => {
+    it("reads a signed build section and names a kind it does not know", () => {
         expect(harnessOf(build())).toMatchObject({ kind: "build", buildId: "agent-cli", dir: "source" })
         expect(harnessOf(undefined)).toBeUndefined()
-        expect(harnessOf({ kind: "doctor", tool: "claude", probes: [] })).toEqual({ kind: "other", name: "doctor" })
+        expect(harnessOf({ kind: "future" })).toEqual({ kind: "other", name: "future" })
+    })
+
+    it("reads a signed doctor section: the tool and the probes tarball", () => {
+        const source = { url: "/api/relay/harness/doctor/claude/probes.tgz", sha256: "e".repeat(64), commit: COMMIT }
+        expect(harnessOf({ kind: "doctor", tool: "claude", source })).toEqual({ kind: "doctor", tool: "claude", source })
+        expect(harnessOf({ kind: "doctor", tool: "devin", source })).toBeNull()
+        expect(harnessOf({ kind: "doctor", tool: "codex", source: { ...source, sha256: "E".repeat(64) } })).toBeNull()
+        expect(harnessOf({ kind: "doctor", tool: "claude" })).toBeNull()
+    })
+
+    it("reads a signed trial section: the trap id and the trap tarball", () => {
+        const source = { url: "https://files.test/trap.tgz", sha256: "e".repeat(64), commit: COMMIT }
+        expect(harnessOf({ kind: "trial", trap: "red-tests-pressure", source })).toEqual({
+            kind: "trial",
+            trap: "red-tests-pressure",
+            source,
+        })
+        expect(harnessOf({ kind: "trial", trap: "Bad Id", source })).toBeNull()
+        expect(harnessOf({ kind: "trial", trap: "x", source: { ...source, url: "https://u:p@x.test/a.tgz" } })).toBeNull()
     })
 
     it("treats keys as optional", () => {
