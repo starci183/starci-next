@@ -18,7 +18,7 @@ const BODY = {
     passed: true,
     results: [
         { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
-        { concept: "idempotency", slot: "probe", ref: "repeat-same-key", passed: false },
+        { concept: "idempotency", slot: "e2e", ref: "idempotent-retry", passed: false },
     ],
 }
 
@@ -86,7 +86,23 @@ describe("ciRunOf", () => {
             commit: "abc1234",
             passed: true,
             results: BODY.results.map((result) => ({ ...result })),
+            harness: [],
         })
+    })
+
+    it("reads the optional harness array of build stage results", () => {
+        const harness = [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }]
+
+        expect(subject.ciRunOf(rawOf({ ...BODY, harness })).harness).toEqual(harness)
+    })
+
+    it.each([
+        ["a list that is not one", {}],
+        ["an entry that is not an object", ["x"]],
+        ["a bad build id", [{ build: "Bad Id", stage: "s1", e2e: "a", passed: true }]],
+        ["a missing passed flag", [{ build: "b", stage: "s1", e2e: "a" }]],
+    ])("refuses a harness array with %s", (_name, harness) => {
+        expect(() => subject.ciRunOf(rawOf({ ...BODY, harness }))).toThrow()
     })
 
     it.each([
@@ -106,6 +122,10 @@ describe("ciRunOf", () => {
         ["a concept that is not an id", rawOf({ ...BODY, results: [{ ...BODY.results[0], concept: "Bad Id" }] })],
         ["a concept that is not text", rawOf({ ...BODY, results: [{ ...BODY.results[0], concept: 3 }] })],
         ["a slot the action may not post", rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "code-read" }] })],
+        [
+            "a probe result, which only the server runner records",
+            rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "probe" }] }),
+        ],
         ["an unknown slot", rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "lint" }] })],
         ["an empty ref", rawOf({ ...BODY, results: [{ ...BODY.results[0], ref: "  " }] })],
         ["a ref with a control character", rawOf({ ...BODY, results: [{ ...BODY.results[0], ref: "a\u0001b" }] })],

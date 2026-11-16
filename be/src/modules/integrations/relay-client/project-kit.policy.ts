@@ -67,3 +67,72 @@ export const withIdentity = (text: string, projectId: string | null, language: s
     const withLanguage = text.replace(/^language:.*$/mu, `language: ${language}`)
     return projectId === null ? withLanguage : withLanguage.replace(/^project:.*$/mu, `project: "${projectId}"`)
 }
+
+/** The language a project folder is written in, from the names of its top-level files; null when none says. */
+export const languageOfFiles = (names: ReadonlyArray<string>): string | null => {
+    const has = (test: (name: string) => boolean): boolean => names.some(test)
+    if (has((name) => name === "go.mod")) return "go"
+    if (has((name) => name === "pom.xml" || name === "build.gradle" || name === "build.gradle.kts")) return "java"
+    if (has((name) => name.endsWith(".csproj") || name.endsWith(".sln") || name.endsWith(".slnx"))) return "csharp"
+    if (has((name) => name === "package.json" || name === "tsconfig.json")) return "typescript"
+    return null
+}
+
+/** The ids of a YAML list written inline (`[a, b]`). */
+const inlineListOf = (text: string): ReadonlyArray<string> =>
+    text
+        .replace(/^\s*\[/u, "")
+        .replace(/\].*$/u, "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item !== "")
+
+/** The ids a key lists, written inline or as a block list, starting at the line after `from`. */
+const listAfter = (lines: ReadonlyArray<string>, from: number, inline: string): ReadonlyArray<string> => {
+    if (inline.includes("[")) return inlineListOf(inline)
+    const items: Array<string> = []
+    for (const line of lines.slice(from + 1)) {
+        const item = /^\s+-\s+(\S+)\s*$/u.exec(line)
+        if (item?.[1] === undefined) break
+        items.push(item[1])
+    }
+    return items
+}
+
+/** The milestone `init` copies the e2e flows of, with its concepts. */
+export interface KitMilestone {
+    /** The milestone id. */
+    readonly id: string
+    /** The concept ids it lists, in order. */
+    readonly concepts: ReadonlyArray<string>
+}
+
+/**
+ * Reads one milestone of the project catalog (`projects/catalog.yaml`): the one named, else the first milestone of the app kind
+ * (`kinds.app`), else the first milestone listed. Null when the catalog lists none or not the one named. The catalog is read
+ * line by line, only for the ids it holds, in both the block and the inline list spelling.
+ */
+export const milestoneOfCatalog = (text: string, wanted: string | null): KitMilestone | null => {
+    const lines = text.split(/\r?\n/u)
+    const block = blockOf(lines, "milestones")
+    const starts = block.flatMap((line, index) => (/^\s*-\s+id:/u.test(line) ? [index] : []))
+    const entries = starts.map((start, position) => {
+        const own = block.slice(start, starts[position + 1] ?? block.length)
+        const id = scalarOf((own[0] ?? "").replace(/^\s*-\s+id:/u, ""))
+        const at = own.findIndex((line) => /^\s+concepts:/u.test(line))
+        const concepts = at < 0 ? [] : listAfter(own, at, (own[at] ?? "").replace(/^\s+concepts:/u, ""))
+        return { id: id ?? "", concepts }
+    })
+    const kinds = blockOf(lines, "kinds")
+    const appLine = kinds.findIndex((line) => /^\s+app:/u.test(line))
+    const appIds = appLine < 0 ? [] : listAfter(kinds, appLine, (kinds[appLine] ?? "").replace(/^\s+app:/u, ""))
+    const id = wanted ?? appIds[0] ?? entries[0]?.id ?? null
+    return entries.find((entry) => entry.id === id) ?? null
+}
+
+/** Whether a kit file is the e2e flow of a concept outside the milestone, which `init` leaves out. */
+export const isOtherConceptFlow = (path: string, concepts: ReadonlySet<string> | null): boolean => {
+    if (concepts === null) return false
+    const flow = /^starci\/e2e\/(.+)\.md$/u.exec(path)
+    return flow?.[1] !== undefined && !concepts.has(flow[1])
+}

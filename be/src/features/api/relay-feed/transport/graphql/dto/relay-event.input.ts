@@ -86,7 +86,7 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @Field(() => String, { nullable: true })
     @IsOptional()
     @IsString()
-    @MaxLength(9)
+    @MaxLength(16)
     slot?: string
 
     /** The test name, e2e file or probe id. */
@@ -154,6 +154,30 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @IsString()
     @MaxLength(4000)
     ledger?: string
+
+    /** A harness-stage result: the build id (the task is harness:build:<id>). */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(64)
+    @Matches(LESSON_ID)
+    buildId?: string
+
+    /** A harness-stage result: the stage id (the check id). */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(64)
+    @Matches(LESSON_ID)
+    stageId?: string
+
+    /** A harness-stage result: the NAMES (never the values) of the key variables present on the learner machine, 16 at most. */
+    @Field(() => [String], { nullable: true })
+    @IsOptional()
+    @IsArray()
+    @ArrayMaxSize(16)
+    @Matches(/^[A-Z][A-Z0-9_]{0,63}$/u, { each: true })
+    envPresent?: Array<string>
 }
 
 @InputType()

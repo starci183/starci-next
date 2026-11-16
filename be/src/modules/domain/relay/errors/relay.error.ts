@@ -22,6 +22,8 @@ export enum RelayErrorCode {
     LessonNotRunnable = "RELAY_LESSON_NOT_RUNNABLE",
     /** The challenge tier is not unlocked yet: the hidden scenarios of the tier below are not all green. */
     ChallengeLocked = "RELAY_CHALLENGE_LOCKED",
+    /** A project run, manifest or upload from a learner without Premium: Projects are subscription-only. */
+    ProjectPremiumRequired = "RELAY_PROJECT_PREMIUM_REQUIRED",
 }
 
 /** How each relay code travels. */
@@ -36,6 +38,7 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.Unavailable]: "unavailable",
     [RelayErrorCode.LessonNotRunnable]: "not-found",
     [RelayErrorCode.ChallengeLocked]: "forbidden",
+    [RelayErrorCode.ProjectPremiumRequired]: "forbidden",
 }
 
 /** The one error class of the relay capability. */

@@ -28,6 +28,8 @@ export const CAREER_MESSAGES: MessageBundle = {
             "Xây agent <project> trên **<tool>** với allowlist công cụ, giới hạn chi phí và eval chạy trong CI; agent vượt kiểm tra prompt injection và phân quyền của StarCi.",
         "lines.projects.ai-coding-mindset":
             "Phát triển <project> cùng coding agent **<tool>**: viết tiêu chí chấp nhận trước khi giao việc, giới hạn quyền công cụ, chia việc cho subagent và chỉ merge khi test trong CI pass.",
+        "lines.harness.build-proved":
+            "Xây **<build>** bằng TypeScript qua **<stages>** chặng, mỗi chặng có e2e chạy trong CI GitHub đã được xác thực <ci> (StarCi Harness).",
         "lines.incidents.fixed":
             "Tìm và sửa lỗi **<bugClass>** trong repo sự cố <lesson>, viết test bắt được bug còn sống sót (mutation score **<score>**% do StarCi chạy lại trên server).",
         "lines.practice.pattern-solved":
@@ -60,6 +62,8 @@ export const CAREER_MESSAGES: MessageBundle = {
             "Built the <project> agent on **<tool>** with a tool allowlist, cost limits and evals in CI; it passed StarCi's prompt-injection and permission probes.",
         "lines.projects.ai-coding-mindset":
             "Developed <project> with the **<tool>** coding agent: acceptance criteria before each task, least-privilege tool permissions, subagents on separate scopes, and merges only on green CI tests.",
+        "lines.harness.build-proved":
+            "Built **<build>** in TypeScript across **<stages>** stages, each with e2e tests run in attested GitHub CI <ci> (StarCi Harness).",
         "lines.incidents.fixed":
             "Found and fixed a **<bugClass>** in the <lesson> incident repo, with tests that catch the surviving bug (mutation score **<score>**%, rerun by StarCi on the server).",
         "lines.practice.pattern-solved":

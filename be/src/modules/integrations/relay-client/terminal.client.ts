@@ -30,6 +30,16 @@ export class TerminalClient implements TerminalPort {
         return platform()
     }
 
+    /** True when the variable NAME is set and not empty in this process; the value is never returned. */
+    hasEnv(name: string): boolean {
+        return (process.env[name] ?? "") !== ""
+    }
+
+    /** One CI variable by name; the caller passes only the fixed names of the CI report. */
+    ciEnv(name: string): string | undefined {
+        return process.env[name]
+    }
+
     /** Sets the exit code of this process, which ends with it once the command returns. */
     exit(code: number): void {
         process.exitCode = code

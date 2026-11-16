@@ -1,14 +1,17 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { InjectInbox, type Inbox } from "@modules/platform/inbox"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { assertSubscriber } from "./project-access.policy"
 import type { EvidenceInput } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
 import { milestonesOfKind } from "./project-catalog.policy"
 import { ciRunOf, type CiRun } from "./project-ci.policy"
+import { InjectProjectHarness, type ProjectHarnessPort } from "./project-harness.port"
 import { InjectCiAttestation, type CiAttestationVerifier } from "./project-ci-attestation.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
 import type { CiAttestation, CiDelivery, CiReceipt, CiRunReceipt } from "./project-params.contracts"
@@ -31,8 +34,10 @@ export class ProjectCiService {
         @InjectClock() private readonly clock: Clock,
         @InjectLogger() private readonly logger: Logger,
         @InjectInbox() private readonly inbox: Inbox,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         private readonly evidence: ProjectEvidenceService,
         @InjectCiAttestation() private readonly attestation: CiAttestationVerifier,
+        @InjectProjectHarness() private readonly harness: ProjectHarnessPort,
     ) {}
 
     /**
@@ -46,13 +51,32 @@ export class ProjectCiService {
         if (!(await this.inbox.claim(CI_INBOX_SOURCE, run.runId))) return
         try {
             const project = await this.projectOf(delivery.project)
-            const receipt = await this.apply(project, run, await this.attest(project, run, delivery.oidcToken))
-            if (!receipt.duplicate) await this.evidence.settle(project, [`ci:${project.project_id}:${run.runId}`])
+            if (run.results.length > 0 || run.harness.length === 0) {
+                await assertSubscriber(this.entitlement, project.learner_id)
+            }
+            const attestation = await this.attest(project, run, delivery.oidcToken)
+            const receipt = await this.apply(project, run, attestation)
+            if (!receipt.duplicate) {
+                await this.evidence.settle(project, [`ci:${project.project_id}:${run.runId}`])
+                if (run.harness.length > 0) await this.handOverToHarness(project, run, attestation.kind === "attested")
+            }
             return receipt
         } catch (cause) {
             await this.inbox.release(CI_INBOX_SOURCE, run.runId)
             throw cause
         }
+    }
+
+    /** Hands the harness build results of a recorded run to the harness, which counts them as proof only when GitHub attested the run. */
+    private handOverToHarness(project: ProjectRow, run: CiRun, attested: boolean): Promise<void> {
+        return this.harness.recordRun({
+            projectId: project.project_id,
+            learnerId: project.learner_id,
+            runId: run.runId,
+            commit: run.commit,
+            attested,
+            results: run.harness,
+        })
     }
 
     /** The project a proved delivery names. */

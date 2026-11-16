@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
+import { HarnessImportService } from "@modules/domain/harness"
 import { InterviewImportService } from "@modules/domain/interview"
 import { LessonImportService } from "@modules/domain/lesson"
 import { PracticeImportService } from "@modules/domain/practice"
@@ -26,7 +27,14 @@ import { catalogFilesOf, catalogKindsOf, manifestOf } from "./content-manifest.p
 import { ContentError, ContentErrorCode } from "./errors/content.error"
 
 /** The kinds in the order a sync runs them. */
-export const CONTENT_KINDS: ReadonlyArray<ContentKind> = ["lessons", "interview", "review", "practice", "catalogs"]
+export const CONTENT_KINDS: ReadonlyArray<ContentKind> = [
+    "lessons",
+    "interview",
+    "review",
+    "practice",
+    "harness",
+    "catalogs",
+]
 
 /** The names a caller may pass to run only some kinds. */
 const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
@@ -41,6 +49,8 @@ const RAW = "raw"
 interface Root {
     readonly directory: string
     readonly ref: string
+    /** The full content commit, the version a build manifest pins (40 hex when the checkout has one). */
+    readonly fullRef: string
     readonly snapshot: ContentSnapshot | null
 }
 
@@ -70,6 +80,7 @@ export class ContentSyncService {
         private readonly interviews: InterviewImportService,
         private readonly reviews: ReviewImportService,
         private readonly practice: PracticeImportService,
+        private readonly harness: HarnessImportService,
     ) {}
 
     /** Runs the sync and returns one report per kind it ran. */
@@ -111,7 +122,8 @@ export class ContentSyncService {
             if (!(await this.disk.exists(local))) {
                 throw new ContentError({ code: ContentErrorCode.SyncRejected, params: { source, directory: local } })
             }
-            return { directory: local, ref: await this.git.fingerprint(local), snapshot: null }
+            const fingerprint = await this.git.fingerprint(local)
+            return { directory: local, ref: fingerprint, fullRef: fingerprint, snapshot: null }
         }
         const git = this.options.git
         const config = git === null ? null : sourceConfigOf(git, source)
@@ -130,6 +142,7 @@ export class ContentSyncService {
         return {
             directory: pulled.snapshot.directory,
             ref: pulled.snapshot.sha.slice(0, LABEL_LENGTH),
+            fullRef: pulled.snapshot.sha,
             snapshot: pulled.snapshot,
         }
     }
@@ -149,6 +162,7 @@ export class ContentSyncService {
         if (kind === "interview") return this.importInterview(content, data)
         if (kind === "review") return this.importReview(data)
         if (kind === "practice") return this.importPractice(content, data)
+        if (kind === "harness") return this.importHarness(content)
         return this.recordCatalogs(content)
     }
 
@@ -243,6 +257,21 @@ export class ContentSyncService {
             status: "imported",
             version: imported.join("+"),
             detail: `${imported.length} source(s)`,
+        }
+    }
+
+    /** The harness: builds, guides, docs, doctor probes and trial traps of `raw/harness`; skipped when the checkout has none. */
+    private async importHarness(content: Root): Promise<ContentKindReport> {
+        if (!(await this.harness.has(content.directory))) {
+            return { kind: "harness", status: "skipped", version: "", detail: "no raw/harness folder" }
+        }
+        const reports = await this.harness.import({ directory: content.directory, ref: content.fullRef })
+        const created = reports.filter((report) => report.status === "created").length
+        return {
+            kind: "harness",
+            status: "imported",
+            version: content.ref,
+            detail: `${String(reports.length)} item(s), ${String(created)} new`,
         }
     }
 

@@ -1,6 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { evidenceOf } from "@tests/fixtures/builders/project.builder"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { SLOT_PROOF_SOURCES, type EvidenceSlot } from "./project.contracts"
 import { conceptOf, PROJECT_CONCEPTS } from "./project-catalog.policy"
 import { slotStandingOf, conceptStandingOf, milestoneStateOf, projectStandingOf } from "./project-state.policy"
 
@@ -16,6 +17,24 @@ const build = async (): Promise<typeof policies> => {
 
 const IDEMPOTENCY = conceptOf("idempotency")
 const SAGA = conceptOf("saga")
+
+/** One passing proof row per group of what a concept requires, from the first slot of the group and the one source that may prove it. */
+const proofRowsOf = (conceptId: string, hour = 9, runId = "proof") => {
+    const definition = conceptOf(conceptId)
+    if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
+    return definition.requires.map((group) => {
+        const slot: EvidenceSlot = group[0] ?? "test"
+        const source = SLOT_PROOF_SOURCES[slot][0] ?? "ci"
+        return evidenceOf({
+            conceptId,
+            slot,
+            source,
+            runId: `${runId}-${slot}`,
+            ref: `${conceptId}-${slot}`,
+            at: at(hour),
+        })
+    })
+}
 const at = (hour: number): Date => new Date(`2026-11-08T${String(hour).padStart(2, "0")}:00:00.000Z`)
 
 const idempotency = () => {
@@ -44,14 +63,14 @@ describe("slotStandingOf", () => {
             evidenceOf({ source: "relay", runId: "r2", ref: "a", passed: true, at: at(9) }),
             evidenceOf({ source: "relay", runId: "r2", ref: "b", passed: false, at: at(9) }),
             evidenceOf({ source: "ci", runId: "c1", at: at(7) }),
-            evidenceOf({ source: "server-probe", runId: "s1", at: at(10), ref: "x" }),
+            evidenceOf({ source: "ci", runId: "c2", at: at(10), ref: "x" }),
             evidenceOf({ slot: "probe", source: "ci", runId: "other-slot" }),
         ]
 
         const standing = subject.slotStandingOf("test", rows)
 
         expect(standing.practice).toMatchObject({ passed: false, runId: "r2", ref: "b", source: "relay" })
-        expect(standing.proof).toMatchObject({ passed: true, runId: "s1", source: "server-probe" })
+        expect(standing.proof).toMatchObject({ passed: true, runId: "c2", source: "ci" })
     })
 
     it("counts a signed-only CI run as practice, never as proof", () => {
@@ -119,11 +138,14 @@ describe("conceptStandingOf", () => {
         expect(standing.slots.map((slot) => slot.slot)).toEqual(["test", "e2e", "probe"])
     })
 
-    it("is proved for a structure concept by the AI read alone", () => {
-        const read = evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai", ref: "src/saga.go" })
+    it("is proved for a structure concept by a test and the AI read, and by neither alone", () => {
+        const [test, read] = proofRowsOf("saga")
+        if (test === undefined || read === undefined) throw new Error("saga has two groups")
 
-        expect(subject.conceptStandingOf(saga(), [read], false).state).toBe("proved")
-        expect(subject.conceptStandingOf(saga(), [{ ...read, passed: false }], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [test, read], false).state).toBe("proved")
+        expect(subject.conceptStandingOf(saga(), [test], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [read], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [test, { ...read, passed: false }], false).state).toBe("practising")
     })
 })
 
@@ -135,11 +157,7 @@ describe("milestoneStateOf", () => {
     })
 
     const standingsOf = () => ({
-        proved: subject.conceptStandingOf(
-            saga(),
-            [evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai" })],
-            false,
-        ),
+        proved: subject.conceptStandingOf(saga(), proofRowsOf("saga"), false),
         untouched: subject.conceptStandingOf(idempotency(), [], false),
         started: subject.conceptStandingOf(idempotency(), [evidenceOf({ passed: false })], false),
     })
@@ -181,10 +199,7 @@ describe("projectStandingOf", () => {
     })
 
     it("proves a concept once however many milestones list it, and reports practice", () => {
-        const rows = [
-            evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai" }),
-            evidenceOf({ conceptId: "request-response-lifecycle", source: "relay" }),
-        ]
+        const rows = [...proofRowsOf("saga"), evidenceOf({ conceptId: "request-response-lifecycle", source: "relay" })]
 
         const standing = subject.projectStandingOf("app", rows, allLessons)
 
@@ -196,16 +211,7 @@ describe("projectStandingOf", () => {
     })
 
     it("has no current milestone when every milestone is done", () => {
-        const rows = PROJECT_CONCEPTS.flatMap((concept) =>
-            concept.requires.map((group) =>
-                evidenceOf({
-                    conceptId: concept.id,
-                    slot: group[0] ?? "test",
-                    source: group[0] === "code-read" ? "ai" : "ci",
-                    ref: `${concept.id}-${String(group[0])}`,
-                }),
-            ),
-        )
+        const rows = PROJECT_CONCEPTS.flatMap((concept) => proofRowsOf(concept.id))
 
         const standing = subject.projectStandingOf(
             "agent",
