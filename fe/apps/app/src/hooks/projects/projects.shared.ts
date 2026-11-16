@@ -57,13 +57,15 @@ export const isProjectPremiumRequired = (error: unknown): boolean =>
 
 /** The words a list of projects is built with, resolved by the block. */
 export type ProjectsWords = {
-    readonly state: { readonly practicing: string; readonly proved: string }
-    readonly concepts: (proved: number, count: number) => string
+    readonly kind: Readonly<Record<"app" | "agent", string>>
+    readonly noMilestone: string
+    readonly noDeploy: string
+    readonly progress: (proved: number, count: number) => string
 }
 
 /** The repository as a short path ("owner/name"), or the address itself when it is not a plain URL. */
-const repoOf = (url: string | null): string | undefined => {
-    if (url === null || url === "") return undefined
+const repoOf = (url: string | null): string => {
+    if (url === null || url === "") return ""
     try {
         const path = new URL(url).pathname.replaceAll(/^\/|\/$/g, "")
         return path === "" ? new URL(url).host : path
@@ -72,32 +74,73 @@ const repoOf = (url: string | null): string | undefined => {
     }
 }
 
-/** One project as the list draws it. */
-type ProjectListRow = {
+/** The host of a deployed address, or the address itself when it is not a plain URL. */
+const hostOf = (url: string | null): string => {
+    if (url === null || url === "") return ""
+    try {
+        return new URL(url).host
+    } catch {
+        return url
+    }
+}
+
+/** One project as the list table draws it, already in words. */
+export type ProjectListRow = {
     readonly id: string
     readonly name: string
-    readonly sub: string
-    readonly concepts: string
+    readonly repo: string
+    readonly kindLabel: string
+    readonly isAgent: boolean
+    readonly milestone: string
     readonly percent: number
-    readonly stateLabel: string
+    readonly progress: string
+    readonly deploy: string
     readonly isProved: boolean
     readonly href: string
 }
 
-/** The projects as rows of the list: proved when every concept of the project is proved. */
-export const projectRowsOf = (projects: ProjectsRead, words: ProjectsWords): ReadonlyArray<ProjectListRow> =>
+/** The four figures of the ribbon over the list, summed over the projects. */
+export type ProjectsFigures = {
+    readonly proved: number
+    readonly remaining: number
+    readonly milestonesDone: number
+    readonly milestonesTotal: number
+    /** The verified CV lines: one for each milestone proved (the career producer reads proved milestones). */
+    readonly cvLines: number
+}
+
+/** The ribbon figures of a list of projects. */
+export const projectsFiguresOf = (projects: ProjectsRead): ProjectsFigures => ({
+    proved: projects.reduce((sum, project) => sum + project.provedConceptCount, 0),
+    remaining: projects.reduce(
+        (sum, project) => sum + Math.max(0, project.conceptCount - project.provedConceptCount),
+        0,
+    ),
+    milestonesDone: projects.reduce((sum, project) => sum + project.doneMilestoneCount, 0),
+    milestonesTotal: projects.reduce((sum, project) => sum + project.milestoneCount, 0),
+    cvLines: projects.reduce((sum, project) => sum + project.doneMilestoneCount, 0),
+})
+
+/** The projects as rows of the table: proved when every concept of the project is proved; the current milestone by its catalog title. */
+export const projectRowsOf = (
+    projects: ProjectsRead,
+    titles: Readonly<Record<string, string>>,
+    words: ProjectsWords,
+): ReadonlyArray<ProjectListRow> =>
     projects.map((project) => {
         const isProved = project.conceptCount > 0 && project.provedConceptCount >= project.conceptCount
+        const milestoneId = project.currentMilestoneId
         return {
             id: project.id,
             name: project.name,
-            sub: [repoOf(project.repoUrl), project.stack]
-                .filter((part) => part !== undefined && part !== "")
-                .join(" · "),
-            concepts: words.concepts(project.provedConceptCount, project.conceptCount),
+            repo: repoOf(project.repoUrl),
+            kindLabel: project.kind === "agent" ? words.kind.agent : words.kind.app,
+            isAgent: project.kind === "agent",
+            milestone: milestoneId === null ? words.noMilestone : (titles[milestoneId] ?? milestoneId),
             percent:
                 project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
-            stateLabel: isProved ? words.state.proved : words.state.practicing,
+            progress: words.progress(project.provedConceptCount, project.conceptCount),
+            deploy: hostOf(project.deployedUrl) === "" ? words.noDeploy : hostOf(project.deployedUrl),
             isProved,
             href: projectPath(project.id),
         }

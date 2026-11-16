@@ -8,30 +8,32 @@ import {
     RadioGroup,
     Section,
     Stack,
-    type SectionProps,
+    Terminal,
+    Text,
 } from "@starci/grammar/common"
 
 /** One choice of a choice list, with the words that explain it. */
-export type ProjectChoice = { readonly id: string; readonly label: string; readonly hint: string }
+export type ProjectChoice = { readonly id: string; readonly label: string }
 
 /** The fixed words of the new-project screen. */
 export type ProjectNewLabels = {
     readonly breadcrumbs: string
     readonly projects: string
     readonly title: string
+    readonly description: string
     readonly infoLabel: string
     readonly kindLabel: string
     readonly trackLabel: string
-    readonly howLabel: string
-    readonly howEmpty: string
     readonly name: string
-    readonly topic: string
-    readonly language: string
-    readonly stack: string
     readonly repo: string
+    readonly deployed: string
+    readonly deployedHint: string
     readonly submit: string
     readonly submitting: string
     readonly cancel: string
+    readonly initTitle: string
+    readonly initNote: string
+    readonly initLog: ReadonlyArray<string>
     readonly createdTitle: string
     readonly createdText: string
     readonly secretLabel: string
@@ -49,13 +51,11 @@ export type ProjectNewState = {
     readonly stack: string
     readonly track: string
     readonly repoUrl: string
+    readonly deployedUrl: string
 }
 
 /** The project just created, already in words: the secret shown once and where the project opens. */
 export type ProjectCreatedView = { readonly secret: string; readonly href: string }
-
-/** One numbered step of the how-to list. */
-export type ProjectStep = { readonly id: string; readonly title: string; readonly text: string }
 
 /** Props for {@link ProjectNewBase}. */
 export type ProjectNewBaseProps = {
@@ -64,7 +64,6 @@ export type ProjectNewBaseProps = {
         readonly projectsHref: string
         readonly kinds: ReadonlyArray<ProjectChoice>
         readonly tracks: ReadonlyArray<ProjectChoice>
-        readonly steps: ReadonlyArray<ProjectStep>
         readonly state: ProjectNewState
         readonly isCreating: boolean
         /** The words of the refusal of the last create; empty for none. */
@@ -74,9 +73,11 @@ export type ProjectNewBaseProps = {
     readonly on: { readonly set: (key: keyof ProjectNewState, value: string) => void; readonly submit: () => void }
 }
 
+/** What a text field of the form needs. */
 type FieldProps = {
     readonly id: keyof ProjectNewState
     readonly label: string
+    readonly description?: string
     readonly props: ProjectNewBaseProps["props"]
     readonly on: ProjectNewBaseProps["on"]
 }
@@ -91,9 +92,11 @@ const TextField = (props: FieldProps) => (
         value={props.props.state[props.id]}
         isDisabled={props.props.isCreating}
         onValueChange={(value) => props.on.set(props.id, value)}
+        {...(props.description === undefined ? {} : { description: props.description })}
     />
 )
 
+/** What a choice of the form needs. */
 type ChoiceProps = {
     readonly id: keyof ProjectNewState
     readonly label: string
@@ -102,39 +105,78 @@ type ChoiceProps = {
     readonly on: ProjectNewBaseProps["on"]
 }
 
-/** One choice list of the form: the rows of one radio group, one checked. */
-const ChoiceCard = (props: ChoiceProps) => (
+/** One short choice of the form as a radio group: one is always chosen. */
+const Choice = (props: ChoiceProps) => (
     <RadioGroup
         label={props.label}
-        appearance="rows"
-        options={props.options.map((each) => ({
-            value: each.id,
-            label: each.label,
-            ...(each.hint === "" ? {} : { description: each.hint }),
-        }))}
+        orientation="horizontal"
+        options={props.options.map((each) => ({ value: each.id, label: each.label }))}
         value={props.props.state[props.id]}
         onValueChange={(next) => props.on.set(props.id, next)}
+        isDisabled={props.props.isCreating}
     />
 )
 
-/** The numbered how-to rows as a flat list section. */
-const stepsList = (props: ProjectNewBaseProps["props"]): SectionProps => ({
-    title: props.labels.howLabel,
-    headingLevel: 2,
-    kind: "list",
-    items: props.steps.map((step, index) => ({
-        id: step.id,
-        title: step.title,
-        description: step.text,
-        leading: { position: index + 1 },
-    })),
-    empty: props.labels.howEmpty,
-})
+/** What the form needs: the page props and its commands. */
+type FormProps = Pick<ProjectNewBaseProps, "props" | "on">
 
-/** What the created card needs: the words and the project just created. */
+/** The init panel needs: its words and the project name typed so far. */
+type InitPanelProps = { readonly labels: ProjectNewLabels; readonly name: string }
+
+/** The form: name, kind (and the agent tool of an agent), the repo, the deploy address, and the create action. */
+const Form = (props: FormProps) => {
+    const { labels, state } = props.props
+    return (
+        <Section title={labels.infoLabel} headingLevel={2}>
+            <Stack gap="row">
+                <TextField id="name" label={labels.name} {...props} />
+                <Choice id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
+                {state.kind === "agent" ? (
+                    <Choice id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
+                ) : null}
+                <TextField id="repoUrl" label={labels.repo} {...props} />
+                <TextField id="deployedUrl" label={labels.deployed} description={labels.deployedHint} {...props} />
+                {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
+                <Cluster gap="inline" wrap>
+                    <Button
+                        intent="commit"
+                        startGlyph="plus"
+                        isPending={props.props.isCreating}
+                        isDisabled={state.name.trim() === "" || props.props.isCreating}
+                        onPress={props.on.submit}
+                    >
+                        {props.props.isCreating ? labels.submitting : labels.submit}
+                    </Button>
+                    <Button intent="neutral" href={props.props.projectsHref}>
+                        {labels.cancel}
+                    </Button>
+                </Cluster>
+            </Stack>
+        </Section>
+    )
+}
+
+/** The init panel: the commands to run in the learner's own repository, as a terminal, and the line that says what StarCi does and does not touch. */
+const InitPanel = (props: InitPanelProps) => (
+    <Section title={props.labels.initTitle} headingLevel={2}>
+        <Stack gap="row">
+            <Terminal
+                label={props.labels.initTitle}
+                lines={props.labels.initLog.map((line) =>
+                    line.replaceAll("{name}", props.name.trim() === "" ? "my-project" : props.name.trim()),
+                )}
+            />
+            <Text size="sm" tone="muted">
+                {props.labels.initNote}
+            </Text>
+        </Stack>
+    </Section>
+)
+
+/** What the created section needs: the words and the project just created. */
 type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: ProjectCreatedView }
 
-/** The card shown after the create: the secret once, and the way into the project. */
+/** The section shown after the create: the secret once, and the way into the project. */
 const Created = (props: CreatedProps) => (
     <Section title={props.labels.createdTitle} headingLevel={2}>
         <Stack gap="row">
@@ -159,13 +201,14 @@ const Created = (props: CreatedProps) => (
     </Section>
 )
 
-/** Draws the new-project page: the kind choice, the details form with its commands, and the how-to list. */
+/** Draws the new-project page: the form on one side, the init panel with the commands of the learner's repository on the other. */
 export const ProjectNewBase = (props: ProjectNewBaseProps) => {
     const { labels, state } = props.props
     return (
         <Page
             header={{
                 title: labels.title,
+                description: labels.description,
                 breadcrumbs: {
                     label: labels.breadcrumbs,
                     items: [
@@ -175,47 +218,17 @@ export const ProjectNewBase = (props: ProjectNewBaseProps) => {
                 },
             }}
         >
-            <Stack gap="region">
-                {props.props.created === undefined ? (
-                    <>
-                        <ChoiceCard id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
-                        {state.kind === "agent" ? (
-                            <ChoiceCard id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
-                        ) : null}
-                        <Section title={labels.infoLabel} headingLevel={2}>
-                            <Stack gap="region">
-                                <Grid kind="form">
-                                    <TextField id="name" label={labels.name} {...props} />
-                                    <TextField id="repoUrl" label={labels.repo} {...props} />
-                                    <TextField id="stack" label={labels.stack} {...props} />
-                                    <TextField id="topic" label={labels.topic} {...props} />
-                                    <TextField id="language" label={labels.language} {...props} />
-                                </Grid>
-                                {props.props.issueWords === "" ? null : (
-                                    <Alert tone="negative" title={props.props.issueWords} />
-                                )}
-                                <Cluster gap="inline" wrap justify="end">
-                                    <Button intent="neutral" href={props.props.projectsHref}>
-                                        {labels.cancel}
-                                    </Button>
-                                    <Button
-                                        intent="commit"
-                                        startGlyph="plus"
-                                        isPending={props.props.isCreating}
-                                        isDisabled={state.name.trim() === "" || props.props.isCreating}
-                                        onPress={props.on.submit}
-                                    >
-                                        {props.props.isCreating ? labels.submitting : labels.submit}
-                                    </Button>
-                                </Cluster>
-                            </Stack>
-                        </Section>
-                    </>
-                ) : (
-                    <Created labels={labels} created={props.props.created} />
-                )}
-                <Section {...stepsList(props.props)} />
-            </Stack>
+            <Grid
+                kind="pair"
+                leading={
+                    props.props.created === undefined ? (
+                        <Form props={props.props} on={props.on} />
+                    ) : (
+                        <Created labels={labels} created={props.props.created} />
+                    )
+                }
+                trailing={<InitPanel labels={labels} name={state.name} />}
+            />
         </Page>
     )
 }

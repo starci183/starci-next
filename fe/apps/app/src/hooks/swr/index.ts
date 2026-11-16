@@ -80,6 +80,7 @@ export {
     useQueryReviewDecksSwr,
     useQueryReviewTodaySwr,
     useQueryStreakSwr,
+    useQueryProjectCatalogSwr,
     useQueryProjectMilestoneSwr,
     useQueryProjectSwr,
     useQueryProjectsSwr,

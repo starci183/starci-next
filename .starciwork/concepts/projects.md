@@ -11,8 +11,9 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
 
 ## Rules
 1. There is no StarCi Shop sample, no sample steps, hints or solution, and no template a project starts from.
-2. A learner may own many projects. The free tier holds `PROJECT_FREE_PROJECTS` projects and `PROJECT_FREE_MILESTONES` milestones
-   (default 1 and the first milestone); Premium lifts both and adds the AI read.
+2. A learner may own many projects. Projects are subscription only (Premium): `PROJECT_FREE_PROJECTS` and `PROJECT_FREE_MILESTONES`
+   default to 0, the back end refuses every door without Premium, and a reader without Premium sees the pitch with the subscribe
+   action (`fe/apps/app/src/features/layouts/ProjectsLayout`), never a reduced tool or a free counter.
 3. A behaviour concept needs a tagged test or e2e flow plus probes; a structure concept needs the AI code read. A project with no HTTP
    surface (CLI, library) is proved by its tests and the AI read, with no probe.
 4. The StarCi harness is never forced on a learner's project: no spec records, no architecture lint, no mutation score.
@@ -31,7 +32,7 @@ on each after their GitHub Action runs; neither started from a template.
 
 ## Where
 `be/src/modules/domain/project/`, `be/src/features/api/project/`, `fe/apps/app/src/app/[locale]/(app)/projects/`,
-`fe/apps/app/src/components/blocks/ProjectsList/`
+`fe/apps/app/src/components/blocks/ProjectsList/`, `ProjectsPitch/`, `ProjectNew/`, `ProjectMilestone/`, `ProjectConcept/`
 
 Related: [learner-cli-relay](learner-cli-relay.md), [essentials](essentials.md), [verified-experience](verified-experience.md),
 [learning-program](learning-program.md), [content](content.md)

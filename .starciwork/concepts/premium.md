@@ -14,8 +14,8 @@ One Premium subscription, monthly or yearly, unlocks every part and the AI. Noth
 1. Premium is the single gate for content and the AI; every capability asks the entitlement question, none keeps its own.
 2. The free tier: every lesson overview and its challenge phase (or exactly what the teacher's `isPremium` marks free; a section mark
    wins over the lesson mark, and `isPremium: true` locks even the challenge); review cards marked `isPremium: false`; one 3-question
-   interview a month from free questions; the first problem of each practice pattern; the free project quota and its first milestone;
-   one summary CV review. Everything else, the AI, the public profile and the hiring bridge need Premium.
+   interview a month from free questions; the first problem of each practice pattern; one summary CV review. Projects are subscription only: no free
+   project and no free milestone, and a reader without Premium sees the pitch and the subscribe action, never a reduced tool. Everything else, the AI, the public profile and the hiring bridge need Premium.
 3. A refused learner causes no AI provider call.
 4. The price lives only in the server's offer; the client sends a plan, never an amount. Prices display with Vietnamese thousands
    separators (229.000 ₫, 2.290.000 ₫).

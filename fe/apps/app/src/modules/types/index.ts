@@ -140,3 +140,12 @@ export type {
 } from "@starci-next/ui"
 export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
 export type { InterviewRoomLabels } from "./interviewRoom"
+export type {
+    CiRunView,
+    CodeReadRubricRow,
+    CvPreviewView,
+    ConceptProbeLine,
+    ProjectConceptLabels,
+    ProjectConceptView,
+    RubricVerdict,
+} from "./projectConcept"
