@@ -68,34 +68,36 @@ export const ProfileExperienceBase = (props: ProfileExperienceBaseProps) => (
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
             render={(view, isLoading) => (
-                <Stack gap="row">
-                    <Cluster gap="inline" justify="between" wrap>
-                        <Text size="sm" tone="muted">
-                            {props.props.labels.publicNote}
-                        </Text>
-                        <Link variant="plain" href={props.props.labels.seeAllHref}>
-                            {props.props.labels.seeAll}
-                        </Link>
-                    </Cluster>
-                    <Text isStrong>{view.gate}</Text>
-                    <Section
-                        kind="list"
-                        title={props.props.labels.listTitle}
-                        headingLevel={2}
-                        isLoading={isLoading}
-                        caption={props.props.labels.cvLater}
-                        items={view.rows.map((row) => ({
-                            id: row.itemId,
-                            title: row.title,
-                            description: row.evidence,
-                            badges: [
-                                { label: row.part, tone: "neutral" as const },
-                                { label: row.state, tone: row.stateTone, isDot: true },
-                            ] as const,
-                        }))}
-                        empty={null}
-                    />
-                </Stack>
+                <Section
+                    kind="list"
+                    title={props.props.labels.listTitle}
+                    headingLevel={2}
+                    isLoading={isLoading}
+                    caption={props.props.labels.cvLater}
+                    filter={
+                        <Stack gap="row">
+                            <Cluster gap="inline" justify="between" wrap>
+                                <Text size="sm" tone="muted">
+                                    {props.props.labels.publicNote}
+                                </Text>
+                                <Link variant="plain" href={props.props.labels.seeAllHref}>
+                                    {props.props.labels.seeAll}
+                                </Link>
+                            </Cluster>
+                            <Text isStrong>{view.gate}</Text>
+                        </Stack>
+                    }
+                    items={view.rows.map((row) => ({
+                        id: row.itemId,
+                        title: row.title,
+                        description: row.evidence,
+                        badges: [
+                            { label: row.part, tone: "neutral" as const },
+                            { label: row.state, tone: row.stateTone, isDot: true },
+                        ] as const,
+                    }))}
+                    empty={null}
+                />
             )}
         />
     </Page>

@@ -610,7 +610,7 @@
       "conceptsLabel": "The 7 concepts of the standard mindset",
       "conceptsEmpty": "There are no concepts yet.",
       "conceptFree": "Free taste",
-      "keyByo": "Uses your own Anthropic account",
+      "keyByo": "Your own account",
       "keyProxy": "StarCi pays, capped",
       "pinned": "Version {version}",
       "pinnedNone": "Version pinned per lab",

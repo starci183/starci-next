@@ -9,17 +9,17 @@ Route: `/review/session` (ảnh chụp: không có thẻ đến hạn nên phiê
 ## Dải đầu trang: đường dẫn, tiêu đề "Phiên ôn tập" và bộ đếm "0/0"
 
 Vì sao: dải trắng phẳng, viền dưới, sát trái: đường dẫn "Về Ôn tập / Phiên ôn tập" (mục đầu về `review/hub`), tiêu đề 18/600 và dưới nó bộ đếm nhỏ "0/0" (thẻ đã ôn trên tổng). Bộ đếm nằm ở dải để không chiếm chỗ thân trang.
-Luật: `page-header-left-sublabel-xs.md`, `type-scale-14-12.md`.
+Luật: `surface-layering`, `theme-and-type`.
 Grammar: `Page header={{ breadcrumbs, title, description }}` (`frame/Page/index.d.ts`).
 
 ## Thanh tiến độ
 
-Vì sao: một thanh mảnh đặt giữa thân trang, rộng bằng cột nội dung (khoảng 540px), đầy dần theo số thẻ đã ôn; ở 0/0 nó trống.
-Luật: `verify-against-visualize.md`.
+Vì sao: một thanh mảnh xám nhạt đặt đầu thân trang, rộng bằng cột nội dung (khoảng 540px), đầy dần theo số thẻ đã ôn; ở 0/0 nó trống. Ở 390 nó chiếm trọn chiều rộng.
+Luật: `theme-and-type` (tím chỉ là tín hiệu, thanh trống là xám).
 Grammar: `Progress` (`composite/Progress`).
 
 ## Trạng thái "Không có mục nào để ôn" và nút "Về Ôn tập"
 
-Vì sao: khi phiên không có thẻ, thân trang là ô icon hộp thư và một câu, kèm một nút trung tính "Về Ôn tập" (không phải nút chính vì việc duy nhất ở đây là quay lại). Khi có thẻ, vùng này là `ReviewItemCard` (câu hỏi, thẻ nhãn, ô tự chấm) rồi `ReviewSummaryCard` ở cuối phiên. CHƯA RÕ: ảnh chụp thiếu trạng thái có thẻ vì dữ liệu chụp không có thẻ đến hạn; nút "Về Ôn tập" lệch trái so với cột chữ căn giữa phía trên.
-Luật: `grammar-slot-interface`, `verify-against-visualize.md`.
-Grammar: `SlotView`, `EmptyNotice` (`composite/EmptyNotice`), `Button intent="neutral" href` (`leaf/Button`), `ReviewItemCard` và `ReviewSummaryCard` (`fe/packages/starci-next-ui/src/composites`).
+Vì sao: khi phiên không có thẻ, thân trang phẳng, không thẻ: ô icon hộp thư và một câu, kèm nút pill trung tính "Về Ôn tập" (không phải nút chính vì việc duy nhất ở đây là quay lại). Khi có thẻ, vùng này là `ReviewItemCard` (câu hỏi, ô tự chấm; thẻ vì là một câu hỏi thật) rồi `ReviewSummaryCard` ở cuối phiên. CHƯA RÕ: ảnh chụp thiếu trạng thái có thẻ vì dữ liệu chụp không có thẻ đến hạn; nút "Về Ôn tập" căn trái dưới ô icon và câu căn giữa, lệch trục.
+Luật: `surface-layering` (trạng thái rỗng nằm trong vùng, một lệnh quay lại trung tính), `grammar-slot-interface`.
+Grammar: `SlotView`, `Alert tone="informative"`, `Button intent="neutral" href` (`leaf/Button`), `ReviewItemCard` và `ReviewSummaryCard` (`fe/packages/starci-next-ui/src/composites`).

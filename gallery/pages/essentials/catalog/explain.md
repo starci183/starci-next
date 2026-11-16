@@ -4,88 +4,40 @@ route: /essentials
 area: essentials
 ---
 
-Route: `/essentials`. Danh mục Bản chất: 16 nhóm kiến thức, mỗi nhóm một thẻ danh sách các topic, kèm tiếp tục học, tìm kiếm và bộ lọc. Đường dẫn Grammar nằm dưới `node_modules/@starci/grammar/dist/core/` (0.37.12). Khung (sidebar, thanh trên) thuộc lane S1; ảnh chụp chỉ thấy phần viewport vì trang cuộn trong từng pane. Vòng tròn "N" và "1 Issue" là lớp phủ của Next dev, không phải UI của app.
+Route: `/essentials`. Danh mục Bản chất cho học viên Premium: 16 nhóm kiến thức, mỗi nhóm một danh sách topic, kèm tìm kiếm, bộ lọc độ khó và aside điều hướng nhóm. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác, trang cuộn trong từng pane nên ảnh dài. Vòng tròn "N" ở góc là lớp phủ của Next dev, không phải UI. Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, composite `CatalogToolbar`, `CatalogSection`, `CatalogAside` trong `fe/packages/starci-next-ui/src/composites/`.
 
 ## Dải tiêu đề (title, chip số liệu, dòng phụ)
 
-Vì sao: dải trắng sát lề trái, không có breadcrumb vì đây là trang gốc của mục. Tiêu đề 18/600, các số liệu của danh mục (số bài đã mở, số nhóm, số bài nguồn đang chuyển) là chip xám 12 cạnh tiêu đề thay cho một thẻ giới thiệu; dòng 12 muted là loại kiến thức. Không còn thẻ mô tả một câu. CHƯA RÕ: chữ "KIẾN THỨC NGÀNH · HỌC TƯƠNG TÁC" nằm in hoa ngay trong file thông điệp (`app.essentials.catalog.eyebrow`, ngoài phạm vi lane), cần đổi thành chữ thường.
-Luật: `page-header-left-sublabel-xs.md`, `type-scale-14-12.md`, `pink-page-surface-rule.md`.
-Grammar: `Page chrome="panes" header={{ breadcrumbs: "root", title, meta, status }}` (`frame/Page/index.d.ts`, `frame/PageHeader/index.d.ts`), `Badge tone="neutral"` (`leaf/Badge/index.d.ts`). Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx` (`bandOf`, `FactChips`).
+Vì sao: dải trắng sát lề trái, ngăn với thân trang bằng một đường kẻ 1px, không breadcrumb vì đây là trang gốc của mục. Tiêu đề 18/600; ba số liệu (bài đã mở, số nhóm, số bài nguồn đang chuyển) là chip xám 12 cạnh tiêu đề; dòng 12 muted dưới tiêu đề là loại kiến thức. Ở 390 các chip xuống dòng dưới tiêu đề. CHƯA RÕ: dòng phụ "KIẾN THỨC NGÀNH · HỌC TƯƠNG TÁC" vẫn in hoa vì nằm in hoa trong file thông điệp (`app.essentials.catalog.eyebrow`, ngoài phạm vi lane), cần đổi sang chữ thường.
+Luật: `surface-layering` (luật 5: dải đầu sát trái, tiêu đề 18/600, mô tả 12 muted), `theme-and-type` (cỡ chữ 14 và 12, chip xám).
+Grammar: `Page chrome="panes" header={{ breadcrumbs: "root", title, meta, status }}` (`frame/Page/index.d.ts`, `frame/PageHeader/index.d.ts`), `Badge tone="neutral"` (`leaf/Badge/index.d.ts`). Code: `EssentialsCatalog/component.tsx` (`bandOf`, `FactChips`).
 
-## Lệnh chính "Tiếp tục học" (chỉ khi học viên Premium đang học dở)
+## Khung tìm kiếm và bộ lọc
 
-Vì sao: nút chính duy nhất của trang, nằm bên phải dải, có biểu tượng đứng đầu. Không hiện khi chưa có bài dang dở, và không dùng nút nâng cấp Premium ở đây (đường vào Premium đã có ở sidebar và aside). Icon đứng đầu là `PlayGlyph` (Tabler outline "player-play", định nghĩa ở leaf Icon của starci-next-ui như các glyph khác); không còn mũi tên cuối.
-Luật: `verify-against-visualize.md` (chỉ nút chính `commit` md/lg có icon), `page-header-left-sublabel-xs.md`.
-Grammar: `Button intent="commit" startContent={<Icon source={PlayGlyph} />} href` (`leaf/Button/index.d.ts`, `startContent` chỉ cho nút chính md). Code: `fe/packages/starci-next-ui/src/leaves/Icon/index.tsx` (`PlayGlyph`), `fe/packages/starci-next-ui/src/composites/CatalogContinue/index.tsx` (`variant="command"`).
-
-## Thẻ "Tiếp tục học" trên well (chỉ khi có bài dang dở)
-
-Vì sao: bài đang học là một hàng của thẻ danh sách (tên bài, dòng 12 muted chỉ pha đã tới), cả hàng là đích bấm. Không phải thẻ một câu lẻ. Nhãn nằm trên well, phía trên thẻ.
-Luật: `table-heroui-native-section-head.md` (một câu lẻ không phải là thẻ; làm thành hàng của thẻ danh sách), `pink-page-surface-rule.md` (nhãn khối nằm trên well, trên thẻ).
-Grammar: `SurfaceCard kind="list" label items[{ title, description, onPress }]` (`frame/SurfaceCard/index.d.ts`). Code: `CatalogContinue/index.tsx` (`variant="card"`).
-
-## Thẻ tìm kiếm và bộ lọc
-
-Vì sao: một thẻ làm một việc là lọc, chỉ gồm hai vùng header và không có thân: vùng `filter` (tab độ khó "Tất cả / Nền tảng / Trung cấp / Nâng cao") rồi vùng `search` (ô tìm kiếm, kèm hai ô chọn Ngôn ngữ và Cloud ở mép cuối cùng hàng, đúng `filters` của vùng). Lọc xong, danh sách chuyển từ hàng topic sang hàng bài học. Thẻ không còn thân thừa; Grammar vẽ một đường kẻ duy nhất giữa hai vùng.
-Luật: `surfacecard-zones-api.md` (filter, search, toolbar là vùng header của thẻ), `pink-page-surface-rule.md` (thẻ nổi trắng, bóng, không viền, trên well).
-Grammar: `SurfaceCard kind="list" items={[]} headers=[{ kind: "filter", … }, { kind: "search", …, filters: SelectZoneField[] }]` (`frame/SurfaceCard/index.d.ts`, `surfaceCardData.d.ts` `HeaderZone`, `SearchZoneFields`, `SelectZoneField`). Code: `fe/packages/starci-next-ui/src/composites/CatalogToolbar/index.tsx`.
-
-## Nhãn nhóm trên well + chip đếm ("Backend nền tảng 1 topic")
-
-Vì sao: mỗi trong 16 nhóm có nhãn 14/500 và chip xám 12 ở bên trái, nằm trên well ngay phía trên thẻ của nó, đúng luật "nhãn khối nằm trên well". Mỗi nhóm một thẻ riêng, không thẻ trong thẻ. Nhóm không có bài nào khớp bộ lọc thì không hiện.
-Luật: `table-heroui-native-section-head.md` (nhãn 14/500 + chip đếm trái, không có mô tả dưới nhãn), `pink-page-surface-rule.md`.
-Grammar: `SurfaceCard kind="list" label fact` (`frame/SurfaceCard/index.d.ts` `CardHead.fact`). Code: `fe/packages/starci-next-ui/src/composites/CatalogSection/index.tsx`.
-
-## Hàng topic (tên topic, nguồn, "1/5 bài đã mở", chip trạng thái, mũi tên)
-
-Vì sao: một topic là một hàng: tên danh từ (500), dòng muted là nguồn bài, số bài đã mở ở cuối hàng, chip muted là trạng thái (Miễn phí: tổng quan + Bị hỏi cho học viên chưa Premium), mũi tên dẫn vào topic. Hàng là `<a>` thật (`href`; mở tab mới, sao chép liên kết được) và từ Grammar 0.37.14 vẽ chevron, không ↗ ở tên. Hàng thay cho thẻ topic cũ có ba dòng xem trước lặp lại.
-Luật: `table-heroui-native-section-head.md` (một nội dung mỗi thẻ: danh sách), `type-scale-14-12.md`, memory `verify-against-visualize.md` (không ↗ cho mục điều hướng).
-Grammar: `ListRowData { title, description, badges, meta, href }` (Grammar 0.37.14 (`node_modules/@starci/grammar/dist/core/surfaceCardData.d.ts` ListRowDestination, `node_modules/@starci/grammar/dist/core/leaf/Link/index.d.ts` variant="plain")). Đã rõ. Code: `CatalogSection/index.tsx` (`rowsOf`); điều hướng client đi qua `RouterProvider` ở `components/providers/AppProviders`. SAI ở 390: nhãn nhóm ("Backend nền tảng") co chiều cao về 0, chỉ còn chip đếm.
-
-## Ghi chú dưới thẻ ("Còn 12 bài nguồn trong nhóm này đang được chuyển...")
-
-Vì sao: thông tin phụ của nhóm (còn bao nhiêu bài đang chuyển sang dạng tương tác) là dòng 12 muted dưới thẻ, không phải thẻ riêng.
-Luật: `type-scale-14-12.md`, `table-heroui-native-section-head.md`.
-Grammar: `SurfaceCard note` (`frame/SurfaceCard/index.d.ts`). Code: `CatalogSection/index.tsx`.
+Vì sao: một khung viền hairline làm một việc là lọc, gồm hai vùng ngăn nhau bằng một đường kẻ: tab độ khó "Tất cả / Nền tảng / Trung cấp / Nâng cao" (tab đang chọn có gạch chân màu chữ, không phải màu tím), rồi ô tìm kiếm (trắng, viền 1px, icon kính lúp) cùng hai ô chọn "Ngôn ngữ" và "Cloud" ở cuối hàng. Không có nút chính ở trang này. Lọc xong, danh sách đổi từ hàng topic sang hàng bài học. Ở 390 ô tìm kiếm chiếm cả hàng, hai ô chọn xuống dòng dưới.
+Luật: `theme-and-type` (luật 2: tab underline là màu foreground; luật 3: ô trắng viền 1px), `surface-layering` (luật 1: không thẻ trong thẻ; khung lọc là một vùng, không có thân).
+Grammar: `SurfaceCard kind="list" items={[]} headers=[{ kind: "filter", … }, { kind: "search", …, filters: SelectZoneField[] }]` (`frame/SurfaceCard/index.d.ts`, `surfaceCardData.d.ts` `HeaderZone`, `SearchZoneFields`). Code: `CatalogToolbar/index.tsx`.
 
 ## Nhóm "Bài toán thực chiến" (4 bài toán, chưa mở)
 
-Vì sao: bộ sưu tập bài toán ghép nhiều bài là một nhóm như các nhóm khác: nhãn trên well, một thẻ danh sách, mỗi hàng là một bài toán (tên, dòng "Cần trước: ...", chip "BÀI TOÁN" và "Sắp có"). Hàng chưa mở nên không có đích bấm. Thay thế khối thẻ lưới CaseStudyBlock cũ.
-Luật: `table-heroui-native-section-head.md`, `pink-page-surface-rule.md`.
-Grammar: `SurfaceCard kind="list"` như trên. Code: `EssentialsCatalog/component.tsx` (`casesNodeOf`).
+Vì sao: head của Section nằm trên mặt trắng: nhãn 14/500 "Bài toán thực chiến" kèm mô tả "Bộ sưu tập · mỗi bài toán ghép từ nhiều bài" cùng dòng. Thân là danh sách bốn hàng, mỗi hàng một bài toán (tên 500, dòng muted "Cần trước: ..."), cuối hàng chip "BÀI TOÁN" và chữ "Sắp có"; hàng chưa mở nên không có đích bấm và không chevron. Dòng 12 muted dưới danh sách ghi còn 12 bài toán từ khoá System Design. Ở 390 nhãn bị cắt thành "Bài toán thực c..." và mô tả xuống hai dòng (xem lỗi hình). Danh sách vẫn nằm trong khung viền hairline bo góc, không bóng.
+Luật: `surface-layering` (luật 1 và 3: danh sách là thân của Section, block label là head trên mặt trắng).
+Grammar: `SurfaceCard kind="list" label items[{ title, description, badges }]` (`frame/SurfaceCard/index.d.ts`). Code: `EssentialsCatalog/component.tsx` (`casesNodeOf`).
 
-## Trạng thái rỗng khi không có kết quả
+## Nhóm kiến thức: head + chip đếm ("Backend nền tảng 3 topic") và danh sách topic
 
-Vì sao: bộ lọc không khớp gì thì một thẻ danh sách rỗng chứa EmptyNotice với nút trung tính "Xóa bộ lọc" (chữ, không icon), không để trống well.
-Luật: ghi chú brief (trạng thái rỗng sống TRONG thẻ), `verify-against-visualize.md`.
-Grammar: `SurfaceCard kind="list" empty={<EmptyNotice actionIntent="neutral">}` (`composite/EmptyNotice/index.d.ts`). Code: `component.tsx` (`NoResult`).
+Vì sao: mỗi nhóm có nhãn 14/500 kèm đếm "n topic" 12 muted ngay trên mặt trắng, rồi một danh sách topic; nhóm không có bài nào khớp bộ lọc thì không hiện. Hàng topic là `<a>` thật (mở tab mới, sao chép liên kết được): ảnh bìa 3D vuông bo mềm (khoảng 40px, trang trí, không chữ thay thế) làm ảnh nhỏ đầu hàng, tên topic (500), dòng muted "Nguồn: ...", cuối hàng "1/5 bài đã mở" và "0/5 đã hiểu" (chữ 12, số đã hiểu đậm hơn), chevron dẫn vào topic. Hàng ngăn nhau bằng hairline; hàng được chọn không có nền màu. Danh sách nằm trong khung viền hairline bo góc, không bóng. Dưới danh sách là dòng 12 muted "Còn N bài nguồn trong nhóm này đang được chuyển...". Ở 390 hàng xuống dòng: số bài và số hiểu nằm dưới tên, chevron cuối hàng. CHƯA RÕ: ảnh nhỏ nên chi tiết 3D khó đọc; cần Grammar một `leading.image` lớn hơn nếu chủ muốn.
+Luật: `surface-layering` (luật 1: danh sách trên mặt trắng; luật 8: link điều hướng kết thúc bằng mũi tên/chevron, không ↗), `theme-and-type` (cỡ 14/12, hairline thay nền tô).
+Grammar: `SurfaceCard kind="list" label fact note items[ListRowData { title, description, badges, meta, href, leading.avatar { src, shape: "rounded" } }]` (`surfaceCardData.d.ts`). Code: `CatalogSection/index.tsx` (`rowsOf`).
 
-## Trạng thái lỗi và đang tải
+## Aside phải "Nhóm kiến thức" (Tất cả 11, 16 nhóm với số bài đã mở)
 
-Vì sao: lần đọc đầu các thẻ vẽ khung xương ngay trong thẻ; khi đọc lỗi, trạng thái đi qua đúng một công thức `SlotView` (`fe/packages/starci-next-ui/src/composites/SlotView/index.tsx`), vẽ một `Alert` có nút "Thử lại" thay cho vùng dữ liệu. Không khối nào tự viết nhánh lỗi riêng (lint `slot-status-through-slotview`), nên mọi trang có cùng một cách báo lỗi.
-Luật: ghi chú brief (trạng thái rỗng, đang tải, lỗi sống TRONG thẻ với EmptyNotice).
-Grammar: `SurfaceCard error={{ message, actionLabel, onAction }}` (`frame/SurfaceCard/index.d.ts`, `loadingState.d.ts`).
+Vì sao: aside trắng, ngăn với thân bằng đường kẻ trái, là điều hướng nhóm: head "Nhóm kiến thức" rồi mục "Tất cả" và 16 nhóm, mỗi mục một hàng ngăn hairline, số bài đã mở bằng chữ 12 muted và chevron ở cuối; chọn một nhóm thì thân chỉ còn nhóm đó. Cuộn riêng khi dài (ở 1440 một số tên nhóm xuống hai dòng, ở 1920 vừa một dòng). Dưới lg aside xuống thành khối đầu tiên của trang, trước khung lọc (ở 390 sidebar thu thành nút "Mở menu"). Trong ảnh không mục nào được đánh dấu chọn (chưa có nhóm đang lọc); khi chọn sẽ là nền xám, không tím. Khung của danh sách này là khung viền hairline bo góc, khác các aside phẳng thuần: CHƯA RÕ, cần xem lại với luật "aside không làm bằng thẻ".
+Luật: `surface-layering` (luật 4: aside là section và hàng có divider; dưới lg các khối aside là khối đầu trang), `theme-and-type` (luật 2: mục chọn là xám, không tím).
+Grammar: `Pane area="aside" surface scroll` + `PaneGrid areas={{ base: ["aside","main"], wide: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Section kind="list" items[{ meta, state, onPress }]` (`frame/Section/index.d.ts`). Code: `CatalogAside/index.tsx`.
 
-## Aside phải: "Nhóm kiến thức" (Tất cả 7, 16 nhóm với số bài đã mở)
+## Thân giữa (trắng, tối đa 80rem)
 
-Vì sao: aside trắng, viền trái, toàn chiều cao, là điều hướng nhóm: một mục "Tất cả" rồi 16 nhóm mỗi nhóm kèm số bài đã mở bằng chữ 12 muted; nhóm đang chọn được đánh dấu; chọn một nhóm thì well chỉ còn nhóm đó. Cuộn riêng khi dài. Dưới lg aside xuống thành khối đầu tiên của well (grid đổi sang một cột, aside trước). Đã rõ: Grammar 0.37.14: `Section kind="list"` trong `Pane surface` vẽ phẳng trên mặt trắng, không viền, không prop (`node_modules/@starci/grammar/dist/core/frame/Section/index.d.ts`); ảnh 1440 xác nhận.
-Luật: `pink-page-surface-rule.md` (aside = section và hàng có divider, không thẻ nổi), `nivo-surface-layering.md`, `type-scale-14-12.md`.
-Grammar: `Pane area="aside" surface scroll` + `PaneGrid areas={{ base: ["aside","main"], wide: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Section kind="list" items[{ meta, state, onPress }]` (`frame/Section/index.d.ts`). Code: `fe/packages/starci-next-ui/src/composites/CatalogAside/index.tsx`.
-
-## Aside phải: hàng Premium (chỉ học viên chưa Premium, nằm dưới danh sách nhóm)
-
-Vì sao: lời mời Premium ("Mở hết với Premium" cùng dòng ghi chú) là một hàng của section "Premium" dưới đường kẻ, thay cho hàng nâng cấp trong thẻ giới thiệu cũ. Hàng là `<a href>` tới trang gói (chevron, không ↗). Tên "Premium" là tên gói, cố định trong mã.
-Luật: `pink-page-surface-rule.md` (aside = section có divider), `table-heroui-native-section-head.md` (một câu lẻ là một hàng của danh sách).
-Grammar: `Divider` (`leaf/Divider/index.d.ts`), `Section kind="list"`. Code: `CatalogAside/index.tsx`.
-
-## Well giữa (nền hồng, thẻ trắng nổi, tối đa 80rem)
-
-Vì sao: chỉ phần giữa có `--background`, mọi nhóm là thẻ riêng cách nhau 24, nội dung cuộn trong pane và bị chặn ở 80rem, căn giữa.
-Luật: `pink-page-surface-rule.md`, `nivo-surface-layering.md`, `page-header-left-sublabel-xs.md`.
-Grammar: `Pane area="main" scroll content="cards"` (`frame/PaneGrid/index.d.ts`), `Stack gap="region"`. Code: `EssentialsCatalog/component.tsx`.
-
-## Thẻ chương: ảnh bìa 3D thu nhỏ
-
-Vì sao: mỗi dòng chương trong nhóm có ảnh bìa 3D của chương (`public/art/topics/<topicId>.webp`) làm ảnh nhỏ đầu dòng, trang trí (không chữ thay thế), cùng ảnh với hero trang chương. Ảnh bo vuông mềm, kích cỡ md.
-Luật: `verify-against-visualize.md`, `pink-page-surface-rule.md`.
-Grammar: `ListRowData.leading.avatar { src, shape: "rounded" }`, `size: "md"` (`surfaceCardData.d.ts` ItemLeading, AvatarData). Vì sao: CHƯA RÕ: ảnh nhỏ (khoảng 40px) nên chi tiết 3D khó đọc; cần Grammar một `leading.image` lớn hơn cho dòng danh sách nếu chủ muốn.
+Vì sao: thân là mặt trắng của trang, nội dung cuộn trong pane và bị chặn ở 80rem, căn trái; các nhóm cách nhau một khoảng đều, ngăn bằng khoảng trắng chứ không bằng nền tô. Ở 1920 thân giãn rộng hơn 1440 nhưng danh sách vẫn là các hàng cùng cấu trúc, aside giữ nguyên bề rộng.
+Luật: `surface-layering` (Terms: Surface trắng, nội dung capped ở `--grammar-content-max`), `theme-and-type` (luật 1: mọi bề mặt trắng).
+Grammar: `Pane area="main" scroll` (`frame/PaneGrid/index.d.ts`), `Stack gap="region"`. Code: `EssentialsCatalog/component.tsx`.

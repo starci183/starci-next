@@ -36,6 +36,7 @@ export const InterviewComposer = (props: InterviewComposerProps) => (
         <Stack gap="row">
             <Textarea
                 label={props.labels.answer}
+                isLabelHidden
                 name="interview-answer"
                 rows={6}
                 placeholder={props.labels.placeholder}

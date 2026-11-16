@@ -4,22 +4,22 @@ route: /premium/result
 area: commerce
 ---
 
-Route: `/premium/result` (ảnh chụp: mở trang không kèm mã đơn hợp lệ nên thấy trạng thái "không tìm thấy đơn"; cổng thanh toán đưa học viên về đây kèm mã đơn). Mã: `fe/apps/app/src/components/blocks/CheckoutResult/component.tsx`. Khung chung giải thích ở `learn/home`.
+Route: `/premium/result` (ảnh chụp: đơn đã trả, Premium được kích hoạt; cổng thanh toán đưa học viên về đây kèm mã đơn). Mã: `fe/apps/app/src/components/blocks/CheckoutResult/component.tsx`. Trang trắng, không đầu trang; kết quả là một bảng điều khiển hẹp (panel kết quả) giữa vùng nội dung, một trong ít chỗ còn dùng thẻ.
 
-## Thẻ kết quả, đặt giữa trang
+## Panel kết quả, đặt giữa trang
 
-Vì sao: một thẻ trắng nổi hẹp (khoảng 450px) đặt giữa vùng nội dung, không có dải tiêu đề: trang chỉ nói một việc, kết quả của một đơn. Tiêu đề thẻ ở đây là "Không tìm thấy đơn thanh toán". Các trạng thái khác dùng cùng khuôn với tiêu đề và thông báo khác: đang chờ cổng xác nhận, đã trả và Premium đã bật, thất bại hoặc quá hạn.
-Luật: `pink-page-surface-rule.md` (một thẻ một việc), `type-scale-14-12.md`.
-Grammar: `SurfaceCard` với `Heading` (`frame/SurfaceCard`, `leaf/Heading`); trạng thái theo `PresentationState` của Grammar; khung xương qua `SlotView`.
+Vì sao: một thẻ hairline hẹp (khoảng 450px, bo lớn, không bóng) đặt giữa phần trên của trang: trang chỉ nói một việc, kết quả của một đơn. Tiêu đề thẻ là "Premium đã được kích hoạt" (18/600). Các trạng thái khác dùng cùng khuôn: đang chờ cổng xác nhận, thất bại hoặc quá hạn, không tìm thấy đơn. Ở 390 thẻ rộng gần hết màn hình.
+Luật: `surface-layering` (thẻ cho sign-in/result panel), `type-scale-14-12.md`.
+Grammar: `SurfaceCard measure="formCompact"` với `Heading` (`frame/SurfaceCard`, `leaf/Heading`); khung xương qua `SlotView`.
 
-## Thông báo "Không có đơn"
+## Thông báo "Đã thanh toán"
 
-Vì sao: một `Alert` tông cảnh báo (vàng nhạt, icon tam giác) nói bằng lời: không tìm thấy đơn này trong tài khoản của bạn và hãy quay lại trang gói tạo đơn mới. Thông báo ở trong thẻ chứ không nổi ngoài, để học viên đọc cùng nút bên dưới.
-Luật: `verify-against-visualize.md`, `grammar-slot-interface`.
-Grammar: `Alert` có tông theo câu trả lời của máy chủ (`toneOf`), ở đây là tông cảnh báo (`composite/Alert`).
+Vì sao: một `Alert` tông thành công (nền xanh lá nhạt, icon dấu tích tròn): "Đã thanh toán", "Bạn là Premium đến 17 thg 11, 2028. Cảm ơn bạn đã ủng hộ StarCi Next." Tông trạng thái là soft pair của màu, nên đây là chỗ hợp lệ duy nhất dùng nền tô màu. Đơn thất bại hoặc không có đơn đổi tông và lời.
+Luật: `theme-and-type` (trạng thái là cặp soft background và soft foreground), `verify-against-visualize.md`.
+Grammar: `Alert` có tông theo câu trả lời của máy chủ (`toneOf`) (`composite/Alert`).
 
-## Nút "Về trang gói"
+## Nút "Tiếp tục học" và "Về trang gói"
 
-Vì sao: một nút chính toàn chiều rộng của thẻ, là việc duy nhất học viên làm tiếp được. Với đơn khác (đã trả, đang chờ, thất bại) thẻ thêm các dòng thông tin đơn (`DescriptionList`) và nút phụ trung tính; đích của nút do máy chủ trả lời, không suy từ địa chỉ trả về.
-Luật: `verify-against-visualize.md` (một nút chính mỗi vùng).
-Grammar: `Button intent="commit" href` (`leaf/Button`).
+Vì sao: hai nút rộng hết thẻ, xếp dọc: "Tiếp tục học" là nút chính duy nhất (accent), "Về trang gói" là nút pill trung tính trắng viền 1px. Đích do máy chủ trả lời, không suy từ địa chỉ trả về. Với đơn khác, thẻ thêm các dòng thông tin đơn và đổi nút chính cho hợp trạng thái (ví dụ "Về trang gói" khi không có đơn).
+Luật: `surface-layering` (một nút chính mỗi màn hình).
+Grammar: `Button intent="commit" width="fill" href` và `Button intent="neutral" width="fill" href` (`leaf/Button`).
