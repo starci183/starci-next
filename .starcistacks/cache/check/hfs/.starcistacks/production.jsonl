@@ -6,7 +6,7 @@
 {"data":{},"findings":[],"hash":"4c1447aa8d4173f06169646b3a523065619c1a295666b75953090a151102bcd1","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9b1b833e13d6c06ce99033ddb5a169f184fc1cf35d7bc4e064904eaa2f2c8452","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"82544386730812f191e1689b2b48038afb8e71c9c8058b91946fc1ed610dff1a","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"268bce43f0437ca0b8331ac101785e6fe9e32c9bfdd3004938db3e16f4235d8e","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a8af488ccd8e48820be27ca1bdd7f935e06c0ecdde897a4a763902ba87193a52","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b1d3722fa64f908f7687aa8c1d18385fe4e78e5ed8bbf93b64203d8e12dd4747","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1a6018c4e2d40501f580e80cfc77ed06081275853998f50cecbbae4d89551828","path":".starcistacks/production/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"95783af680e9c2b47548d5ebabb7200a3b95bd6d86b3a274f4d37f6acf93652f","path":".starcistacks/production/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
@@ -16,6 +16,7 @@
 {"data":{},"findings":[],"hash":"e04541c4630490f38ae710ff479f185a83cc5ada8a49918a1aa6e3c0061c24e7","path":".starcistacks/production/secrets/primary-db-url.enc","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ebb020fa872abb79ab93dffc86d98db3d0b48bd8a37e685ab38bd80372d8a6be","path":".starcistacks/production/secrets/relay.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2be2ccff4a4444796a1cfa3fc08a474581f7d57585d8ddb4a5fb23692c45700c","path":".starcistacks/production/secrets/sepay.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8a014c5ae68abed27fe395a799ba6024a623f101e4dc1c2eb0d26b02c6e4ec57","path":".starcistacks/production/secrets/storage.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/data/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c4982f1128245d6f3cd98a185158c2ccfb0e43ab08adb0b9fc51461377658d9d","path":".starcistacks/production/seeds/files/.gitkeep","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3e6fafc2f2b5e9244dc38747c50b91c38894d547e8ce0de17e9181e1b608b76e","path":".starcistacks/production/seeds/seeds.yaml","step":"file-rules"}

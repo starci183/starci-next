@@ -16,6 +16,19 @@ What runs is the `local` block of `environments.dev` in `.starcistacks/applicati
 
 Keep real sealed members under `.starcistacks/dev/secrets/*.enc`, add them to the manifest after sealing and inventory their key names in the environment record. The scaffold creates no fake secret or successful proof.
 
+## Public hosts (the dev tunnel)
+
+`environments.dev.local.tunnel` publishes the stack on the machine's `nivo-dev` Cloudflare tunnel; `up --execute` writes the ingress rules into `~/.cloudflared/nivo-dev.yml` and makes the DNS records. If it says the connector must be restarted, restart it (`nivo-dev.cmd`).
+
+| Host | Reaches |
+| --- | --- |
+| `https://starci-next-app-dev.starci.org` | the ingress (`:3280`): `/api/*`, `/graphql`, `/mcp`, `/socket.io/*` to the core api, the rest to the app; the one origin of the browser and its host-only session cookie |
+| `https://starci-next-api-dev.starci.org` | the core api (`:3201`): the MCP endpoint `/mcp` shown on `/connect` and the learner CLI (`STARCI_NEXT_URL`) |
+| `https://starci-next-dev.starci.org` | the landing (`:3202`) |
+| `https://starci-next-gallery-dev.starci.org` | the screenshot gallery (`:3250`) |
+
+Keycloak has no public host: the core api reaches it on loopback and no browser follows it. The realm file lists the public app host among the client's redirect URIs and web origins, but `--import-realm` skips a realm that already exists, so an existing dev Keycloak keeps its old client until its volume is recreated.
+
 ## Signing in (the dev Keycloak)
 
 Compose also runs a dev Keycloak (`keycloak`, a digest-pinned image) with the realm `starci-next-identity` imported from `.starcistacks/dev/infra/compose/realm-starci-next-identity.json`: the confidential client `starci-next-identity-lane` has Direct Access Grants and a service account holding the realm-management roles `manage-users` and `view-users`, which is what the core api's OIDC broker needs for the password grant and the sign-up and reset calls. The client secret is the sealed `IDENTITY_KEYCLOAK_CLIENT_SECRET` (member `keycloak-client-secret`), mounted into the container through the least grant `keycloak`. The core api requires an https issuer, so Keycloak serves `https://localhost:8089` with a self-signed certificate it makes on its first start; its public part is written to the data directory named `keycloak-tls` and the core api trusts it through `HTTP_TRUSTED_CA_FILE`. Social sign-in (Facebook, GitHub) is not configured. The master-realm admin has a random password nobody keeps: change the realm in the file and recreate the container instead.
@@ -31,6 +44,7 @@ The learner CLI runs a project's tests on the learner's own machine and relays t
 
 1. Once per machine: `node scripts/relay-manifest-key.mjs` (writes `manifest-signing.pem` and `manifest-public.pem` into `<stack data>/relay-dev/`; never overwrites). Then `starci app stack up --env dev --execute` (or restart the core api) so it reads `RELAY_MANIFEST_SIGNING_KEY_FILE`.
 2. In the learner's shell: `export STARCI_NEXT_URL=http://localhost:3280 STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"`.
+   To reach the stack from another machine, point the CLI at the tunnel instead: `export STARCI_NEXT_URL=https://starci-next-api-dev.starci.org` (or `npx @starci/next` with that variable set); the pairing page is then `https://starci-next-app-dev.starci.org/devices`. The manifest key is the same file.
 3. `starci-next login` pairs the machine (confirm the code at `/devices`), `starci-next init --from <starci-next-seed-standard checkout> --project <project id>` copies the kit, `starci-next run <milestone>` runs `test.command` of the project file in the kit's own `starci` folder, reads the JUnit XML for tests tagged `[concept]` and posts one result per concept. Open the project page to see "Đang luyện".
 
 ## Thử Premium

@@ -26,6 +26,7 @@
     "@starci/common": "1.0.1",
     "@starci/mail": "0.3.0",
     "@starci/nest-kit": "0.2.2",
+    "@starci/object-storage": "0.3.1",
     "@starci/seed": "0.1.0",
     "bullmq": "6.3.11",
     "class-transformer": "0.5.1",

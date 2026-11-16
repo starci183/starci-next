@@ -121,6 +121,6 @@
 {"findings":[],"hash":"2450867aa4a183cbc0ae7533b47e595bbb9e4f3374e264f257071b77ea659409","path":"be/src/tests/world/relay-device-stream.client.ts","step":"prettier"}
 {"findings":[],"hash":"371785d604fed389b17647c5def1c7ebf1b8531eee74fe3f97f9fe0479eb6eaf","path":"be/src/tests/world/sepay-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"9c8c4b4dede3c8a69fd21a30a74872e94e1a686a3a180e2e912f9149eb0c999c","path":"be/src/tests/world/streak-world.options.ts","step":"prettier"}
-{"findings":[],"hash":"b159f9f08c2ae62f662d03f37f69cc1389f0ec1fe7c14973414335b3d4c23838","path":"be/src/tests/world/test-apps.options.ts","step":"prettier"}
+{"findings":[],"hash":"23b83f1cf9a009eb6ae57d7a363e51b10c1d4591f98f3d7a4b8e5c52dc532c13","path":"be/src/tests/world/test-apps.options.ts","step":"prettier"}
 {"findings":[],"hash":"ccb9ee193d913dff10de32a6965569980149a7ddc4f919833eac81153bbc5522","path":"be/src/tests/world/test-world.config.ts","step":"prettier"}
 {"findings":[],"hash":"e5a1d6768edeaf6be7b8702f30171cabe6c5d188a09ad85dbcdc9690689366bd","path":"be/src/tests/world/use-test-world.ts","step":"prettier"}

@@ -12,6 +12,8 @@ const WORKSPACE_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..",
 /** Next config of the landing: the standalone output its image ships, next-intl wired to the request config, root params on (the locale is read from the route). */
 const nextConfig: NextConfig = {
     output: "standalone",
+    // `next dev` refuses its dev resources and HMR socket to a host other than localhost; the tunnel hosts of the dev stack are named by `NEXT_DEV_ALLOWED_ORIGINS` (comma separated), unset elsewhere.
+    allowedDevOrigins: (process.env.NEXT_DEV_ALLOWED_ORIGINS ?? "").split(",").filter((host) => host !== ""),
     reactStrictMode: true,
     experimental: { rootParams: true },
     outputFileTracingRoot: WORKSPACE_ROOT,

@@ -7,7 +7,7 @@ import { defineConfig } from "vite"
 export default defineConfig({
     server: {
         host: "127.0.0.1",
-        allowedHosts: [],
+        allowedHosts: ["starci-next-gallery-dev.starci.org"],
         watch: {
             ignored: ["**/*.png", "**/node_modules/**"],
             awaitWriteFinish: { stabilityThreshold: 200, pollInterval: 50 },

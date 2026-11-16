@@ -35,6 +35,13 @@ services:
       AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
       ATTEMPT_COACH_DAILY_LIMIT: "100"
       REALTIME_HUB: memory
+      # Owner-provisioned S3-compatible object storage (profile avatars, learner uploads); the public origin is what links and presigned requests are built on.
+      STORAGE_ENDPOINT: https://s3.starci-next.example.invalid
+      STORAGE_PUBLIC_URL: https://files.starci-next.example.invalid
+      STORAGE_REGION: replace-with-s3-region
+      STORAGE_BUCKET: starci-next-production
+      STORAGE_ACCESS_KEY_ID_FILE: /run/secrets/storage-access-key-id
+      STORAGE_SECRET_ACCESS_KEY_FILE: /run/secrets/storage-secret-access-key
       RELAY_MANIFEST_SIGNING_KEY_FILE: /run/secrets/relay-manifest-signing-key
     secrets:
       - source: primary-db-url
@@ -57,6 +64,10 @@ services:
         target: mail-password
       - source: relay-manifest-signing-key
         target: relay-manifest-signing-key
+      - source: storage-access-key-id
+        target: storage-access-key-id
+      - source: storage-secret-access-key
+        target: storage-secret-access-key
     networks: [app]
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
@@ -204,6 +215,12 @@ secrets:
   relay-manifest-signing-key:
     external: true
     name: "starci-next-production-relay-manifest-signing-key-v1"
+  storage-access-key-id:
+    external: true
+    name: "starci-next-production-storage-access-key-id-v1"
+  storage-secret-access-key:
+    external: true
+    name: "starci-next-production-storage-secret-access-key-v1"
 configs:
   ingress-config:
     file: ./Caddyfile

@@ -17,6 +17,7 @@ import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseJudge0Config } from "@modules/integrations/judge0"
 import { parseKeycloakConfig } from "@modules/integrations/keycloak"
 import { parseMailConfig } from "@modules/integrations/mail"
+import { parseObjectStorageConfig } from "@modules/integrations/object-storage"
 import { parseSepayConfig } from "@modules/integrations/sepay"
 import { parsePayosConfig } from "@modules/integrations/payos"
 
@@ -40,6 +41,8 @@ export interface CoreEnv {
     readonly keycloak: ReturnType<typeof parseKeycloakConfig>
     /** Outgoing mail: the SMTP server and the sender. */
     readonly mail: ReturnType<typeof parseMailConfig>
+    /** S3-compatible object storage: the endpoint, the public origin links are built on, the bucket and the keys. */
+    readonly objectStorage: ReturnType<typeof parseObjectStorageConfig>
     /** The purchase capability: where a provider sends the buyer back to. */
     readonly purchase: PurchaseOptions
     /** The AI pool of the coach, or null when the environment declares no OpenRouter key. */
@@ -79,6 +82,7 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         identity: parseIdentityConfig(env),
         keycloak: parseKeycloakConfig(env),
         mail: parseMailConfig(env),
+        objectStorage: parseObjectStorageConfig(env),
         // The learner's web app is the first allowed browser origin: the one place a provider returns the buyer to.
         purchase: { returnBaseUrl: httpSecurity.allowedOrigins[0] ?? "" },
         aiGateway: parseAiGatewayConfig(env),

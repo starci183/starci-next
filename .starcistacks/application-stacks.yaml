@@ -88,6 +88,18 @@ environments:
         where: "secrets/ai"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "storage-access-key-id"
+        member: "storage"
+        key: "STORAGE_ACCESS_KEY_ID"
+        where: "secrets/storage"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "storage-secret-access-key"
+        member: "storage"
+        key: "STORAGE_SECRET_ACCESS_KEY"
+        where: "secrets/storage"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
       - name: "postgres-password"
         member: "db"
         key: "POSTGRES_PASSWORD"
@@ -109,20 +121,38 @@ environments:
         db: 3290
         mail: 3291
         mailui: 3292
+        # The S3 port of the dev object store and its admin console (base+93, base+94); only the S3 port is published, on the tunnel.
+        storage: 3293
+        storage-console: 3294
         core: 3201
         app: 3200
         landing: 3202
         ingress: 3280
         keycloak: 8089
       dirs: [keycloak-tls, relay-dev]
+      # The dev tunnel (PROJECT-STACKS-15): the product is opened on public hosts of the machine's `nivo-dev` tunnel (the hosts nivo-lite routes there stay untouched).
+      # `app` is the ingress, not the Next server: the browser calls `/api/*`, `/graphql`, `/mcp` and `/socket.io/*` on the app's own origin (the host-only session
+      # cookie), and only the ingress (Caddyfile) sends those paths to the core api. `api` is the core api itself: the MCP endpoint of /connect and the learner CLI.
+      # Keycloak has no host: the core api reaches it on loopback and no browser follows it (social sign-in is not configured).
+      # `stack up --execute` adds the ingress rules to ~/.cloudflared/nivo-dev.yml and the DNS records.
+      tunnel:
+        name: nivo-dev
+        routes:
+          - {name: api, host: starci-next-api-dev.starci.org, port: core}
+          - {name: app, host: starci-next-app-dev.starci.org, port: ingress}
+          - {name: landing, host: starci-next-dev.starci.org, port: landing}
+          - {name: storage, host: starci-next-minio-dev.starci.org, port: storage}
+          - {name: gallery, host: starci-next-gallery-dev.starci.org, port: gallery}
       services:
         - {name: postgres, wait: healthy}
         - {name: mail, wait: healthy}
         - {name: ingress, wait: healthy}
         - {name: keycloak, wait: healthy}
+        - {name: storage, wait: healthy, port: storage, kind: object-store, console: storage-console}
       grants:
         - {name: db, keys: [POSTGRES_PASSWORD]}
         - {name: keycloak, keys: [IDENTITY_KEYCLOAK_CLIENT_SECRET]}
+        - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY]}
       database:
         service: postgres
         port: db
@@ -132,6 +162,8 @@ environments:
       custody:
         - {member: db, key: POSTGRES_PASSWORD, kind: password}
         - {member: db, key: DB_OWNER_PASSWORD, kind: password}
+        - {member: storage, key: STORAGE_ACCESS_KEY_ID, kind: hex, bytes: 12}
+        - {member: storage, key: STORAGE_SECRET_ACCESS_KEY, kind: hex}
       setup:
         - {name: install, argv: [npm, ci], heavy: install, skipIfExists: node_modules}
         - {name: codegen, argv: [npm, run, codegen, --silent], heavy: build}
@@ -150,18 +182,26 @@ environments:
           argv: [node, dist/apps/core/src/main.js]
           cwd: be
           port: core
-          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY]
+          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY]
           env:
             NODE_ENV: development
             PORT: "${port.core}"
-            HTTP_SECURITY_ALLOWED_ORIGINS: "http://localhost:${port.ingress}"
+            # The first origin is the learner web origin: the relay's pairing page is `<it>/devices`.
+            HTTP_SECURITY_ALLOWED_ORIGINS: "https://starci-next-app-dev.starci.org,https://starci-next-dev.starci.org,http://localhost:${port.ingress}"
+            # The address learners paste into Claude or ChatGPT on /connect.
+            MCP_PUBLIC_URL: "https://starci-next-api-dev.starci.org/mcp"
             # The dev Keycloak of the compose project (realm file realm-starci-next-identity.json): https with a self-signed certificate whose public part the core trusts.
             IDENTITY_KEYCLOAK_ISSUER: "https://localhost:${port.keycloak}/realms/starci-next-identity"
             HTTP_TRUSTED_CA_FILE: "${data}/keycloak-tls/ca.crt"
             IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity-lane
-            # The OIDC package admits https addresses only (the app never sets allowInsecureHttp), so the registered callback is https on the ingress host;
+            # The OIDC package admits https addresses only (the app never sets allowInsecureHttp), so the registered callback is https on the public app host (the ingress, through the tunnel);
             # the dev Keycloak registers it on its client and no social provider is configured, so no browser ever follows it.
-            IDENTITY_SOCIAL_CALLBACK_URI: "https://localhost:${port.ingress}/sign-in/callback"
+            IDENTITY_SOCIAL_CALLBACK_URI: "https://starci-next-app-dev.starci.org/sign-in/callback"
+            # Profile avatars and learner uploads: the internal endpoint is for the core's own reads and writes, the public origin is what links and presigned requests are built on.
+            STORAGE_ENDPOINT: "http://127.0.0.1:${port.storage}"
+            STORAGE_PUBLIC_URL: "https://starci-next-minio-dev.starci.org"
+            STORAGE_REGION: us-east-1
+            STORAGE_BUCKET: starci-next-dev
             IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
             IDENTITY_SESSION_MAX_SECONDS: "0"
             IDENTITY_CHALLENGE_TTL_SECONDS: "600"
@@ -193,8 +233,10 @@ environments:
           port: app
           env:
             PORT: "${port.app}"
-            NEXT_PUBLIC_SITE_URL: "http://localhost:${port.ingress}"
+            NEXT_PUBLIC_SITE_URL: "https://starci-next-app-dev.starci.org"
             CORE_INTERNAL_ORIGIN: "http://127.0.0.1:${port.core}"
+            # The hosts `next dev` serves its dev resources and HMR socket to besides localhost (allowedDevOrigins of next.config.ts).
+            NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
           health: {url: "http://localhost:${port.app}/health/live"}
         - name: landing
           argv: [npx, next, dev]
@@ -202,9 +244,11 @@ environments:
           port: landing
           env:
             PORT: "${port.landing}"
-            NEXT_PUBLIC_APP_URL: "http://localhost:${port.ingress}"
+            NEXT_PUBLIC_APP_URL: "https://starci-next-app-dev.starci.org"
+            NEXT_DEV_ALLOWED_ORIGINS: "starci-next-dev.starci.org"
           health: {url: "http://localhost:${port.landing}/health/live"}
       ready:
+        - {name: storage-live, url: "http://localhost:${port.storage}/minio/health/live"}
         - {name: core-live, url: "http://localhost:${port.core}/health/live"}
         - {name: core-ready, url: "http://localhost:${port.core}/health/ready"}
         - {name: app-live, url: "http://localhost:${port.app}/health/live"}
@@ -220,10 +264,12 @@ environments:
         - {name: device-socket-ingress, url: "http://localhost:${port.ingress}/socket.io/?EIO=4&transport=polling", status: 400, contains: Transport unknown}
       origins:
         - {name: entry, url: "http://localhost:${port.ingress}"}
-        - {name: app, url: "http://localhost:${port.app}"}
-        - {name: core, url: "http://localhost:${port.core}"}
-        - {name: landing, url: "http://localhost:${port.landing}"}
+        - {name: app, url: "https://starci-next-app-dev.starci.org"}
+        - {name: core, url: "https://starci-next-api-dev.starci.org"}
+        - {name: landing, url: "https://starci-next-dev.starci.org"}
+        - {name: gallery, url: "https://starci-next-gallery-dev.starci.org"}
         - {name: mail, url: "http://localhost:${port.mailui}"}
+        - {name: storage, url: "http://localhost:${port.storage-console}"}
   production:
     status: supported
     runtime: docker-swarm
@@ -325,6 +371,20 @@ environments:
         version: 1
         where: secrets/ai
         key: OPENROUTER_API_KEY
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: storage-access-key-id
+        runtimeName: "starci-next-production-storage-access-key-id-v1"
+        version: 1
+        where: secrets/storage
+        key: STORAGE_ACCESS_KEY_ID
+        recipientPolicy: This app's own age recipient configured in .sops.yaml
+        keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
+      - name: storage-secret-access-key
+        runtimeName: "starci-next-production-storage-secret-access-key-v1"
+        version: 1
+        where: secrets/storage
+        key: STORAGE_SECRET_ACCESS_KEY
         recipientPolicy: This app's own age recipient configured in .sops.yaml
         keyCustody: SOPS_AGE_KEY in the host's untracked .claude/secret.env
       - name: relay-manifest-signing-key

@@ -28,6 +28,8 @@ export interface CoreOptions {
     readonly keycloak: CoreEnv["keycloak"]
     /** Parsed outgoing mail settings. */
     readonly mail: CoreEnv["mail"]
+    /** Parsed object storage settings: the store, its public origin and the bucket of the app's objects. */
+    readonly objectStorage: CoreEnv["objectStorage"]
     /** Parsed purchase settings: the provider return base. */
     readonly purchase: CoreEnv["purchase"]
     /** The AI pool of the coach, or null when this instance has none and written answers are saved but not graded. */

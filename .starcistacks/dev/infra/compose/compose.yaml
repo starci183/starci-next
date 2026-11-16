@@ -1,5 +1,5 @@
 # The dev environment's dependencies, run by `starci app stack up --env dev --execute` (PROJECT-STACKS-3, PROJECT-STACKS-6); nobody runs docker by hand.
-# Only infrastructure runs here: the database, the mail sink and the dev ingress. The core api, the product app and the landing run natively
+# Only infrastructure runs here: the database, the mail sink, the object store and the dev ingress. The core api, the product app and the landing run natively
 # on the host (environments.dev.local.processes). Host ports come from environments.dev.local.ports through STACK_PORT_<NAME>; the superuser
 # password is read from a file through the least grant STACK_GRANT_DB (a directory holding only POSTGRES_PASSWORD), never from the environment.
 name: starci-next-dev
@@ -82,6 +82,29 @@ services:
       retries: 40
       start_period: 40s
     restart: unless-stopped
+  # The dev object store (the StarCi source-built MinIO, pinned by digest): its root credentials are the dev `storage` member's keys, the same keys the core api
+  # signs with, read from the least grant `storage`; the core api creates its bucket at boot. Only the S3 port is published on the tunnel, never the console.
+  storage:
+    image: ghcr.io/starci183/minio:RELEASE.2025-10-15T17-29-55Z-starci.1@sha256:ec6dfba54eaa8e0d77bed9e7c6d86df90ad341f914ecfd3d613f0f811155f40f
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER_FILE: /run/secrets/STORAGE_ACCESS_KEY_ID
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/STORAGE_SECRET_ACCESS_KEY
+      # Presigned uploads are PUT from the app's public origin straight to the store's public host (the dev tunnel).
+      MINIO_API_CORS_ALLOW_ORIGIN: "https://starci-next-app-dev.starci.org,http://localhost:3280"
+    ports:
+      - "127.0.0.1:${STACK_PORT_STORAGE}:9000"
+      - "127.0.0.1:${STACK_PORT_STORAGE_CONSOLE}:9001"
+    volumes:
+      - storage-data:/data
+      - ${STACK_GRANT_STORAGE}:/run/secrets:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    restart: unless-stopped
   # The dev entry origin http://localhost:${STACK_PORT_INGRESS}: /api/* and /graphql to the native core api, everything else to the native app (Caddyfile).
   # The upstreams are the host's processes, reached as host.docker.internal (Docker Desktop resolves it; host-gateway covers a Linux engine).
   ingress:
@@ -109,3 +132,4 @@ volumes:
   postgres-data: {}
   keycloak-tls: {}
   keycloak-data: {}
+  storage-data: {}

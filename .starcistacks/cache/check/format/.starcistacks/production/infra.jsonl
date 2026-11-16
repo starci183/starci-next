@@ -4,4 +4,4 @@
 {"findings":[],"hash":"fed30f24a5297412e66855225c361fba1bb751f6f8480217fe9327e88129e1e0","path":".starcistacks/production/infra/swarm/releases/current.yaml","step":"prettier"}
 {"findings":[],"hash":"d01708493a7da89cd5bd0a5ed97a9bdf19a61fe379be27bff8fbd81015f282ab","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"prettier"}
 {"findings":[],"hash":"1b7ecc8291c0be03b0bb515e55531cce72204df759bd01cf75606cc7a118791b","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"prettier"}
-{"findings":[],"hash":"e56de6c37bc21797c3cd7c5d34a28a7382dfba5312ca98f9f519b0f13693eab7","path":".starcistacks/production/infra/swarm/stack.yaml","step":"prettier"}
+{"findings":[],"hash":"9802a831c57e2f78a273b0fb6dd715dfbef14783c94321ee35b1ca63a8b5a8b5","path":".starcistacks/production/infra/swarm/stack.yaml","step":"prettier"}

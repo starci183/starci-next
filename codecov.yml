@@ -62,6 +62,7 @@ component_management:
         - "be/src/modules/integrations/judge0/**"
         - "be/src/modules/integrations/keycloak/**"
         - "be/src/modules/integrations/mail/**"
+        - "be/src/modules/integrations/object-storage/**"
         - "be/src/modules/integrations/payos/**"
         - "be/src/modules/integrations/probe/**"
         - "be/src/modules/integrations/sepay/**"

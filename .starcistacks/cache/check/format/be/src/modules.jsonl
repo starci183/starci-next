@@ -815,6 +815,14 @@
 {"findings":[],"hash":"f3c749f9bb461b1236b3a0482b4b9a55dc63f39250d8a129e6695c87c59696c2","path":"be/src/modules/integrations/mail/mail.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"28c3e2c2d3989541ff6ac39680c3693db53755f2683dd8b61b1ada6033d4afc9","path":"be/src/modules/integrations/mail/mail.module.ts","step":"prettier"}
 {"findings":[],"hash":"95ecbfcde5a8106efbc484a45d545d6c3e0c05edc685c24228cae637081bd3e5","path":"be/src/modules/integrations/mail/mail.options.ts","step":"prettier"}
+{"findings":[],"hash":"98b43743fd73813f954b23eb7fb4cec34c196479652050cc0eaceea34082593f","path":"be/src/modules/integrations/object-storage/index.ts","step":"prettier"}
+{"findings":[],"hash":"19266c9405efebb4142aa3b27c6926dfa4efa38af280669c6a3504318e0f4809","path":"be/src/modules/integrations/object-storage/object-storage-bucket.service.ts","step":"prettier"}
+{"findings":[],"hash":"eaecc91e2c3b250dc54c8c328eb5ea19b89382e584511b757b08ce32e0b1606e","path":"be/src/modules/integrations/object-storage/object-storage.config.ts","step":"prettier"}
+{"findings":[],"hash":"28072cf1b1daf7b07df07a6f2f727e15b6c683c48732a8ad4e3b8ea75560e1e6","path":"be/src/modules/integrations/object-storage/object-storage.decorators.ts","step":"prettier"}
+{"findings":[],"hash":"bfd8ba9db30cd75116aa75b4a17fd7a55a1785344746797470902d2bee16664e","path":"be/src/modules/integrations/object-storage/object-storage.log-events.ts","step":"prettier"}
+{"findings":[],"hash":"18087389b3dbacc0586f7418153ddc4e465a89426e20f1a33bd23d694999e002","path":"be/src/modules/integrations/object-storage/object-storage.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"9ce53a360dc24156a983127d937042d25b666b660c6ea0cefb4a24f822785acd","path":"be/src/modules/integrations/object-storage/object-storage.module.ts","step":"prettier"}
+{"findings":[],"hash":"38231ff07ed8d798b53a9eb71b99077407e8b413e6fc82e5a829bf834a8e6903","path":"be/src/modules/integrations/object-storage/object-storage.options.ts","step":"prettier"}
 {"findings":[],"hash":"887d92be2d78dcd5de4c65beed776e15371cf6f0c2192e1b9da27c31b8d70f74","path":"be/src/modules/integrations/payos/errors/payos.error.ts","step":"prettier"}
 {"findings":[],"hash":"06db0428c505b92da0747e41ab62296ca1822e7953b9c881104760c36b55fc75","path":"be/src/modules/integrations/payos/index.ts","step":"prettier"}
 {"findings":[],"hash":"b891a3d849788390e745fac28407a631f167b2ba89e570093fab79c2fe5c0f52","path":"be/src/modules/integrations/payos/messages/payos.messages.ts","step":"prettier"}

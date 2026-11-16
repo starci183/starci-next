@@ -53,6 +53,12 @@ const environmentOf = (w: AppWiring, extra: Readonly<Record<string, string>> = {
         IDENTITY_KEYCLOAK_CLIENT_SECRET: w.fake.idp?.values.clientSecret ?? "",
         IDENTITY_SOCIAL_CALLBACK_URI: SOCIAL_CALLBACK_URI,
         IDENTITY_SESSION_ENCRYPTION_KEY: IDENTITY_TEST_ENCRYPTION_KEY,
+        // No object store runs in a world: this address answers nobody, so the bucket check at boot only logs.
+        STORAGE_ENDPOINT: "http://127.0.0.1:1",
+        STORAGE_REGION: "us-east-1",
+        STORAGE_BUCKET: "starci-next-test",
+        STORAGE_ACCESS_KEY_ID: randomBytes(12).toString("hex"),
+        STORAGE_SECRET_ACCESS_KEY: randomBytes(24).toString("hex"),
         SEPAY_IPN_SECRET_KEY: SEPAY_IPN_SECRET,
         SEPAY_MERCHANT_ID: "SP-E2E-MERCHANT",
         SEPAY_SIGNING_SECRET_KEY: randomBytes(24).toString("base64url"),

@@ -5,7 +5,9 @@ This roster declares names only. Store credential values in sealed custody and m
 | Key | Consumer |
 | --- | --- |
 | `PORT` | API listener |
-| `HTTP_SECURITY_ALLOWED_ORIGINS` | API origin allowlist |
+| `HTTP_SECURITY_ALLOWED_ORIGINS` | API origin allowlist; the first entry is the learner web origin, the base of the relay pairing page `/devices` |
+| `MCP_PUBLIC_URL` | Core API: the MCP endpoint address `/connect` shows learners (dev: the tunnel api host plus `/mcp`); unset shows the page-relative `/mcp` |
+| `NEXT_DEV_ALLOWED_ORIGINS` | Product front-end and landing native `next dev` only: comma-separated hosts the dev server serves its dev resources and HMR socket to besides localhost (`allowedDevOrigins`); unset in every image |
 | `PRIMARY_DB_URL` | API and CLI primary database connection; in dev `up` hands the native processes `PRIMARY_DB_URL_FILE`, a host-local file holding the loopback URL of the environment's own role |
 | `NEXT_PUBLIC_SITE_URL` | Product front-end site URL |
 | `CORE_INTERNAL_ORIGIN` | Product front-end native `next dev` only (the dev ingress already routes those paths before they reach it; this serves a direct visit to its port): server-side origin of the core API its `/api/*` and `/graphql` rewrites proxy to, the dev stack sets it to the native core API; unset in every image, where the ingress routes those paths |
@@ -24,7 +26,7 @@ This roster declares names only. Store credential values in sealed custody and m
 | `RELAY_MANIFEST_SIGNING_KEY` | Core API Ed25519 PEM (pkcs8) the task manifests of the learner relay are signed with; the core reads `RELAY_MANIFEST_SIGNING_KEY_FILE`; in dev the stack points it at `<stack data>/relay-dev/manifest-signing.pem`, made by `node scripts/relay-manifest-key.mjs`; any other mode refuses to boot without it |
 | `RELAY_MANIFEST_SIGNING_KEY_FILE` | Host-local path of the manifest signing key file |
 | `STARCI_NEXT_MANIFEST_KEY` | Learner CLI (`starci-next`) only: the SPKI PEM of the public half, which it verifies manifests with; in dev `export STARCI_NEXT_MANIFEST_KEY="$(cat <stack data>/relay-dev/manifest-public.pem)"` |
-| `STARCI_NEXT_URL` | Learner CLI only: the StarCi origin (dev: `http://localhost:3280`, the ingress, which routes `/api`, `/graphql` and `/socket.io` to the core api) |
+| `STARCI_NEXT_URL` | Learner CLI only: the StarCi origin (dev: `https://starci-next-api-dev.starci.org`, the core api on the tunnel, or `http://localhost:3280`, the ingress, which routes `/api`, `/graphql` and `/socket.io` to the core api) |
 | `STARCI_NEXT_DATA_DIR` | Learner CLI only: a starci-next-seed-standard checkout `starci-next init` reads the kit from when `--from` is not given |
 | `CAREER_DEV_SEED` | CLI `career seed` only: `true` lets the development seed create sample experience items; never declared in production, where the seed is refused `CAREER_DEV_SEED_DISABLED` |
 | `ENTITLEMENT_DEV_GRANT` | CLI `entitlement dev-grant` only: `true` lets the development command grant Premium to a learner with no purchase; set on the dev cli run by hand, never declared in production or on a core process, where the command is refused `ENTITLEMENT_DEV_GRANT_DISABLED` |

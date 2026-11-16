@@ -1,5 +1,6 @@
 import type { DynamicModule } from "@nestjs/common"
 import { AI_GATEWAY_ERROR_KINDS, AI_GATEWAY_MESSAGES, AiGatewayModule } from "@modules/integrations/ai-gateway"
+import { ObjectStorageModule } from "@modules/integrations/object-storage"
 import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
@@ -10,6 +11,7 @@ import type { CoreOptions } from "../core.options"
  */
 export const integrationsModules = (options: CoreOptions): Array<DynamicModule> => [
     AiGatewayModule.register({ isGlobal: true, gateway: options.aiGateway }),
+    ObjectStorageModule.register({ ...options.objectStorage, isGlobal: true }),
 ]
 
 /** The error kind tables of the shared integrations. */
