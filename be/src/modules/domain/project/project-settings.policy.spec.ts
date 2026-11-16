@@ -21,8 +21,8 @@ describe("projectSettingsOf", () => {
 
     it("falls back to the proposed defaults", () => {
         expect(subject.projectSettingsOf({})).toEqual({
-            freeProjects: 1,
-            freeMilestones: ["bf-http-foundation"],
+            freeProjects: 0,
+            freeMilestones: [],
             probeRunsPerHour: 6,
             codeReadsPerDay: 20,
             probeTimeoutMs: 6000,

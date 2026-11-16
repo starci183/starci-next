@@ -2,6 +2,7 @@ import { generateKeyPairSync, verify } from "node:crypto"
 import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { REALTIME_HUB, type RealtimeHub } from "@modules/platform/realtime"
@@ -22,7 +23,9 @@ const OPTIONS = {
     manifestSigningKey: null,
 }
 
-const build = async (em: MockEntityManager, signingKeyPem: string | null = null) => {
+const build = async (em: MockEntityManager, signingKeyPem: string | null = null, premium = true) => {
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(premium)
     const hub = mock<RealtimeHub>()
     hub.publish.mockResolvedValue()
     const relayOptions = {
@@ -35,11 +38,55 @@ const build = async (em: MockEntityManager, signingKeyPem: string | null = null)
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: REALTIME_HUB, useValue: hub },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: RELAY_OPTIONS, useValue: relayOptions },
         ],
     }).compile()
-    return { feed: moduleRef.get(RelayFeedService), hub }
+    return { feed: moduleRef.get(RelayFeedService), hub, entitlement }
 }
+
+describe("RelayFeedService projects are subscription-only", () => {
+    const UPLOAD = {
+        eventId: EVENT,
+        kind: "check.result" as const,
+        taskId: "p-1",
+        runId: "r-1",
+        checkId: "test",
+        passed: true,
+        exitCode: 0,
+        durationMs: 5,
+    }
+
+    it("refuses a project manifest and a project run request from a learner without Premium, and pushes nothing", async () => {
+        const em = mockEntityManager()
+        const { feed, hub } = await build(em, null, false)
+
+        await expect(feed.manifest(DEVICE, "project-1")).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        await expect(feed.manifest(DEVICE, "project-1", { milestone: "bf-http-foundation" })).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
+    it("refuses a project upload from a learner without Premium: nothing is stored and nothing is acknowledged", async () => {
+        const em = mockEntityManager()
+        const { feed, hub } = await build(em, null, false)
+
+        await expect(feed.upload(DEVICE, UPLOAD)).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        expect(em.query).not.toHaveBeenCalledWith(INSERT_EVENT, expect.anything())
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
+    it("accepts the same upload from a subscriber", async () => {
+        const { feed } = await build(mockEntityManager({ query: [INSERT_EVENT, [{ event_id: EVENT }]] }), null, true)
+
+        await expect(feed.upload(DEVICE, UPLOAD)).resolves.toMatchObject({ accepted: true })
+    })
+})
 
 describe("RelayFeedService manifest", () => {
     it("issues a signed manifest of the project checks and pushes it to the device", async () => {

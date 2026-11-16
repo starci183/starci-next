@@ -1,0 +1,42 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: request-id
+label:
+  vi: Request id được trả lại đúng và mỗi request có id riêng
+  en: The request id is echoed, and each request gets its own
+question:
+  vi: Một request id đi từ đâu đến log, và bạn nhìn thấy nó ở đâu khi cần truy vết?
+  en: Where does a request id enter and reach the logs, and where do you look when you trace a failure?
+needs: [endpoint]
+steps:
+  - id: echoed
+    request:
+      method: GET
+      path: "{{endpoint.path}}"
+      headers: { x-request-id: "{{run.id}}-trace" }
+    expect:
+      - { that: header x-request-id, eq: "{{run.id}}-trace", fail: not-echoed }
+  - id: minted
+    request: { method: GET, path: "{{endpoint.path}}" }
+    capture: { minted: header x-request-id }
+    expect:
+      - { that: header x-request-id, exists: true, fail: not-minted }
+  - id: minted-again
+    request: { method: GET, path: "{{endpoint.path}}" }
+    expect:
+      - { that: header x-request-id, ne: "{{minted}}", fail: constant-id }
+pass: echoed
+reasons:
+  echoed: { vi: "Id gửi lên được trả lại, id tự sinh khác nhau mỗi request.", en: "The sent id came back and minted ids differ per request." }
+  not-echoed: { vi: Phản hồi không trả lại đúng x-request-id đã gửi., en: The response did not echo the x-request-id that was sent. }
+  not-minted: { vi: Request không có id thì phản hồi cũng không có x-request-id., en: A request without an id got no x-request-id back. }
+  constant-id: { vi: Hai request khác nhau nhận cùng một id., en: Two different requests got the same id. }
+fixtures:
+  endpoint: POST /starci-test/items
+  sample: '{"name":"book"}'
+  cheats:
+    - { name: no request id, app: { requestId: none }, fails: not-echoed }
+    - { name: one constant id, app: { requestId: constant }, fails: not-echoed }
+    - { name: ignores the incoming id, app: { requestId: ignore-incoming }, fails: not-echoed }

@@ -60,7 +60,7 @@ const build = async (
     })
     const tx = fakeTransaction(em)
     const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(options.premium ?? false)
+    entitlement.isPremium.mockResolvedValue(options.premium ?? true)
     const reads = mock<ProjectReadService>()
     reads.summary.mockResolvedValue(SUMMARY)
     reads.concept.mockResolvedValue(CONCEPT)
@@ -137,15 +137,26 @@ describe("ProjectService create (part 2)", () => {
         ])
     })
 
-    it("needs Premium for a project past the free ones, and lets Premium and a raised limit through", async () => {
-        const free = await build({ owned: 1 })
-        const premium = await build({ owned: 5, premium: true })
-        const raised = await build({ owned: 1 }, { freeProjects: 2 })
+    it("refuses a learner without Premium before it reads the input or writes, whatever the free limit says", async () => {
+        const free = await build({ premium: false })
+        const raised = await build({ premium: false }, { freeProjects: 5 })
+        const bad = await build({ premium: false })
 
-        await expect(free.service.create(CREATE)).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
-        expect(free.tx.rollbacks).toBe(1)
+        await expect(free.service.create(CREATE)).rejects.toMatchObject({
+            code: "PROJECT_PREMIUM_REQUIRED",
+        })
+        await expect(raised.service.create(CREATE)).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+        await expect(bad.service.create({ ...CREATE, name: "" })).rejects.toMatchObject({
+            code: "PROJECT_PREMIUM_REQUIRED",
+        })
+        expect(free.em.query).not.toHaveBeenCalledWith(INSERT_PROJECT, expect.anything())
+        expect(free.tx.commits).toBe(0)
+    })
+
+    it("lets Premium create any number of projects", async () => {
+        const premium = await build({ owned: 5, premium: true })
+
         await expect(premium.service.create(CREATE)).resolves.toBeDefined()
-        await expect(raised.service.create(CREATE)).resolves.toBeDefined()
     })
 })
 
@@ -304,6 +315,25 @@ describe("ProjectService remove and rotateSecret", () => {
             PROJECT_NOW,
         ])
         await expect(absent.service.rotateSecret(lookup)).rejects.toMatchObject({ code: "PROJECT_NOT_FOUND" })
+    })
+})
+
+describe("ProjectService subscription-only", () => {
+    it("refuses a pointer change from a learner without Premium, before it looks at the project", async () => {
+        const { service, em } = await build({ premium: false })
+
+        const set = {
+            learnerId: PROJECT_LEARNER,
+            projectId: PROJECT_ID,
+            conceptId: "idempotency",
+            location: null,
+            endpoint: null,
+            sampleBody: null,
+            locale: "en",
+        } as const
+
+        await expect(service.setConcept(set)).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+        expect(em.query).not.toHaveBeenCalledWith(UPSERT_CONCEPT, expect.anything())
     })
 })
 

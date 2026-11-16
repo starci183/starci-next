@@ -55,6 +55,7 @@ export interface World {
 export const worldOf = (
     lesson: unknown,
     onRun: (cwd: string) => { report?: string; exitCode?: number } = () => ({}),
+    sectionKey: "lesson" | "harness" = "lesson",
 ): World => {
     const home = mkdtempSync(join(tmpdir(), "starci-next-home-"))
     const cwd = mkdtempSync(join(tmpdir(), "starci-next-work-"))
@@ -78,7 +79,7 @@ export const worldOf = (
                     manifestId: "m-1",
                     taskId: (body.variables.input as { taskId: string }).taskId,
                     checks: [],
-                    lesson,
+                    [sectionKey]: lesson,
                 })
                 const signature = sign(null, Buffer.from(payload, "utf8"), KEYS.privateKey).toString("base64")
                 return Promise.resolve({

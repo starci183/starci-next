@@ -27,7 +27,12 @@ export const dropArchive = (folder: string): void => {
 
 /** Keeps StarCi's own files out of the learner's git history: the lesson marker and the last-run notes. */
 export const excludeFromGit = (folder: string): void => {
-    appendFileSync(join(folder, ".git", "info", "exclude"), `${STATE_FILE}\n${LAST_DIR}/\n`)
+    excludeLines(folder, [STATE_FILE, `${LAST_DIR}/`])
+}
+
+/** Adds lines to the repository's private exclude file, so they stay out of git without touching the learner's `.gitignore`. */
+export const excludeLines = (folder: string, lines: ReadonlyArray<string>): void => {
+    appendFileSync(join(folder, ".git", "info", "exclude"), lines.map((line) => `${line}\n`).join(""))
 }
 
 /** Makes the folder the lesson is unpacked into. */

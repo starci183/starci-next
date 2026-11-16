@@ -1,0 +1,71 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# Quy ước của kit: trên đường test, header X-StarCi-Probe-User mang danh tính người dùng test (không có header là ẩn danh);
+# POST <path> tạo tài nguyên và trả {"id":...}; GET <path>/<id> đọc nó.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: owner-only
+label:
+  vi: Chỉ chủ sở hữu đọc được tài nguyên; ẩn danh bị 401, người khác bị 403/404
+  en: Only the owner reads a resource; anonymous gets 401, another user 403/404
+question:
+  vi: "Chỗ nào trong code so người gọi với chủ của tài nguyên, và route nào chỉ kiểm tra đã đăng nhập?"
+  en: "Where does the code compare the caller with the resource owner, and which route only checks that someone signed in?"
+needs: [endpoint, sample]
+steps:
+  - id: anonymous-write
+    request: { method: POST, path: "{{endpoint.path}}", body: "{{sample.body}}" }
+    expect:
+      - { that: status, eq: 401, fail: open-without-credentials }
+  - id: create
+    request:
+      method: POST
+      path: "{{endpoint.path}}"
+      headers: { x-starci-probe-user: "{{run.id}}-alice" }
+      body: "{{sample.body}}"
+    capture: { id: json $.id }
+    expect:
+      - { that: status, is: 2xx, fail: create-failed }
+      - { that: json $.id, exists: true, fail: create-failed }
+  - id: owner-read
+    request:
+      method: GET
+      path: "{{endpoint.path}}/{{id}}"
+      headers: { x-starci-probe-user: "{{run.id}}-alice" }
+    expect:
+      - { that: status, is: 2xx, fail: owner-refused }
+  - id: other-read
+    request:
+      method: GET
+      path: "{{endpoint.path}}/{{id}}"
+      headers: { x-starci-probe-user: "{{run.id}}-bob" }
+    expect:
+      - { that: status, in: [403, 404], fail: other-user-allowed }
+  - id: anonymous-read
+    request: { method: GET, path: "{{endpoint.path}}/{{id}}" }
+    expect:
+      - { that: status, eq: 401, fail: open-without-credentials }
+pass: owner-only
+reasons:
+  owner-only:
+    vi: "Chủ đọc được; người khác bị 403/404; ẩn danh bị 401."
+    en: "The owner can read; another user gets 403/404; anonymous gets 401."
+  open-without-credentials:
+    vi: "Gọi không có danh tính mà không bị 401."
+    en: "A call with no identity was not refused with 401."
+  create-failed:
+    vi: "Người dùng test không tạo được tài nguyên (2xx với id)."
+    en: "The test user could not create a resource (2xx with an id)."
+  owner-refused:
+    vi: "Chủ sở hữu không đọc được tài nguyên của chính mình."
+    en: "The owner could not read their own resource."
+  other-user-allowed:
+    vi: "Người dùng khác đọc được tài nguyên không phải của mình (IDOR)."
+    en: "Another user read a resource that is not theirs (IDOR)."
+fixtures:
+  endpoint: POST /starci-test/items
+  sample: '{"name":"book"}'
+  cheats:
+    - { name: "checks sign-in, not ownership", app: { authz: authn-only }, fails: other-user-allowed }
+    - { name: refuses everyone, app: { authz: deny-all }, fails: owner-refused }
+    - { name: no authentication, app: { authz: open }, fails: open-without-credentials }

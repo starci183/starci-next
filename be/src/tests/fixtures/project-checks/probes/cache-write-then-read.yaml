@@ -1,0 +1,48 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# Body mẫu của học viên phải chứa {{value}} ở chỗ giá trị đổi, ví dụ {"name":"{{value}}"}; probe điền một giá trị mới mỗi lần.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: cache-write-then-read
+label:
+  vi: Đọc ngay sau khi ghi thấy giá trị mới, đọc lặp ổn định
+  en: A read right after a write sees the new value, and repeats are stable
+question:
+  vi: Lần ghi xoá hay cập nhật cache ở đâu, và chuyện gì xảy ra nếu bước đó lỗi?
+  en: Where does the write invalidate or update the cache, and what happens when that step fails?
+needs: [endpoint, sample, sample.value]
+vars:
+  value: "{{run.id}}"
+steps:
+  - id: warm
+    request: { method: GET, path: "{{endpoint.path}}" }
+    expect:
+      - { that: status, is: 2xx, fail: read-failed }
+  - id: write
+    request:
+      method: "{{endpoint.method}}"
+      path: "{{endpoint.path}}"
+      body: "{{sample.body}}"
+    expect:
+      - { that: status, is: 2xx, fail: write-failed }
+  - id: read
+    request: { method: GET, path: "{{endpoint.path}}" }
+    capture: { fresh: body }
+    expect:
+      - { that: body, contains: "{{run.id}}", fail: stale-read }
+  - id: again
+    request: { method: GET, path: "{{endpoint.path}}" }
+    expect:
+      - { that: body, eq: "{{fresh}}", fail: unstable }
+pass: fresh
+reasons:
+  fresh: { vi: "Đọc sau khi ghi thấy giá trị mới, và đọc lặp cho cùng kết quả.", en: "The read after the write saw the new value, and the repeat matched." }
+  read-failed: { vi: GET không trả 2xx., en: The GET did not answer 2xx. }
+  write-failed: { vi: Lần ghi không trả 2xx., en: The write did not answer 2xx. }
+  stale-read: { vi: Đọc ngay sau khi ghi vẫn thấy giá trị cũ (cache cũ)., en: The read right after the write still saw the old value (a stale cache). }
+  unstable: { vi: Hai lần đọc liên tiếp khác nhau., en: Two reads in a row differed. }
+fixtures:
+  endpoint: PUT /starci-test/profile
+  sample: '{"name":"{{value}}"}'
+  cheats:
+    - { name: write does not clear the cache, app: { cache: stale }, fails: stale-read }

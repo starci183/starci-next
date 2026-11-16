@@ -1,0 +1,67 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# Quy ước của kit: GET <path>?limit=<n>&cursor=<c> trả {"items":[{"id":...}],"nextCursor":...}, mới nhất trước;
+# POST <path> với body mẫu tạo một item.
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: stable-pages
+label:
+  vi: Trang sau không lặp item của trang trước dù có item mới chen vào
+  en: The next page repeats no item of the first even when new items arrive
+question:
+  vi: "Cursor của bạn mã hoá gì (id, thời điểm, cả hai), và vì sao offset lặp item khi có bản ghi mới?"
+  en: "What does your cursor encode (an id, a time, both), and why does an offset repeat items when rows arrive?"
+needs: [endpoint, sample]
+steps:
+  - id: seed
+    request: { method: POST, path: "{{endpoint.path}}", body: "{{sample.body}}" }
+    fanOut: 3
+    expect:
+      - { that: count 2xx, eq: 3, fail: seed-failed }
+  - id: first-page
+    request: { method: GET, path: "{{endpoint.path}}?limit=2" }
+    capture: { ids: "json $.items[*].id", cursor: json $.nextCursor }
+    expect:
+      - { that: status, is: 2xx, fail: read-failed }
+      - { that: json $.items.length, eq: 2, fail: limit-ignored }
+      - { that: json $.nextCursor, exists: true, fail: no-cursor }
+  - id: insert
+    request: { method: POST, path: "{{endpoint.path}}", body: "{{sample.body}}" }
+    fanOut: 2
+    expect:
+      - { that: count 2xx, eq: 2, fail: seed-failed }
+  - id: next-page
+    request: { method: GET, path: "{{endpoint.path}}?limit=2&cursor={{cursor}}" }
+    expect:
+      - { that: status, is: 2xx, fail: read-failed }
+      - { that: json $.items.length, gte: 1, fail: empty-page }
+      - { that: "json $.items[*].id", disjoint: "{{ids}}", fail: repeated-items }
+pass: stable
+reasons:
+  stable:
+    vi: "Trang sau không lặp item nào của trang đầu dù có 2 item mới."
+    en: "The next page repeated no item of the first page despite 2 new items."
+  seed-failed:
+    vi: "Tạo item không trả 2xx."
+    en: "Creating an item did not answer 2xx."
+  read-failed:
+    vi: "Đọc danh sách không trả 2xx."
+    en: "Reading the list did not answer 2xx."
+  limit-ignored:
+    vi: "limit=2 không cho đúng 2 item."
+    en: "limit=2 did not give 2 items."
+  no-cursor:
+    vi: "Trang đầu không có nextCursor."
+    en: "The first page has no nextCursor."
+  empty-page:
+    vi: "Trang sau rỗng dù còn item."
+    en: "The next page is empty although items remain."
+  repeated-items:
+    vi: "Trang sau lặp item của trang đầu (phân trang theo offset)."
+    en: "The next page repeated items of the first (offset paging)."
+fixtures:
+  endpoint: GET /starci-test/items
+  sample: '{"name":"book"}'
+  good: { authz: open }
+  cheats:
+    - { name: offset dressed as a cursor, app: { pagination: offset }, fails: repeated-items }
