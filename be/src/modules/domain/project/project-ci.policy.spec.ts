@@ -17,8 +17,8 @@ const BODY = {
     commit: "ABC1234",
     passed: true,
     results: [
-        { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
-        { concept: "idempotency", slot: "e2e", ref: "idempotent-retry", passed: false },
+        { concept: "idempotent-retry", slot: "test", ref: "[idempotency] twice", passed: true },
+        { concept: "idempotent-retry", slot: "e2e", ref: "idempotent-retry", passed: false },
     ],
 }
 

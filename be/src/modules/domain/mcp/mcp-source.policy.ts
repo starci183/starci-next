@@ -1,5 +1,5 @@
 import type { LessonSourceTree } from "@modules/domain/lesson"
-import type { McpCatalog, McpFile } from "./mcp.contracts"
+import type { McpCatalog, McpFile, McpSearchHit } from "./mcp.contracts"
 
 /** The folder or file names (a whole path segment, lower case) that hold what a learner's AI never reads. */
 const DENIED_SEGMENTS: ReadonlySet<string> = new Set([
@@ -110,3 +110,27 @@ export const catalogOf = (lessonId: string, tree: LessonSourceTree): McpCatalog 
         revealedBy: tree.scenarios.find((scenario) => scenario.invariant === invariant.id)?.id ?? null,
     })),
 })
+
+/** A literal, case-insensitive keyword search over texts: every term (at most 8) must appear on the line; hits in text order. */
+export const keywordHitsOf = (
+    texts: ReadonlyArray<{ readonly path: string; readonly text: string }>,
+    query: string,
+): Array<McpSearchHit> => {
+    const terms = query
+        .toLowerCase()
+        .split(/\s+/u)
+        .filter((term) => term.length > 0)
+        .slice(0, 8)
+    const hits: Array<McpSearchHit> = []
+    if (terms.length === 0) return hits
+    for (const item of texts) {
+        const lines = item.text.split(/\r?\n/u)
+        for (let index = 0; index < lines.length && hits.length < HITS_MAX; index += 1) {
+            const line = lines[index] ?? ""
+            const lower = line.toLowerCase()
+            if (terms.every((term) => lower.includes(term))) hits.push({ path: item.path, line: index + 1, text: hitTextOf(line) })
+        }
+        if (hits.length >= HITS_MAX) break
+    }
+    return hits
+}

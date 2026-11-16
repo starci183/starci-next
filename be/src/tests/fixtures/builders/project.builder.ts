@@ -115,7 +115,7 @@ export const projectRowOf = (patch: Partial<ProjectRowFixture> = {}): ProjectRow
 /** A concept pointer. */
 export const conceptRowOf = (patch: Partial<ConceptRowFixture> = {}): ConceptRowFixture => ({
     project_id: PROJECT_ID,
-    concept_id: "idempotency",
+    concept_id: "idempotent-retry",
     location: "internal/booking/repo.go#Reserve",
     endpoint: "POST /bookings",
     sample_body: '{"slot":"09:00"}',
@@ -125,7 +125,7 @@ export const conceptRowOf = (patch: Partial<ConceptRowFixture> = {}): ConceptRow
 /** A result of the evidence as the domain reads it; a passing signed-CI test unless the patch says otherwise. */
 export const evidenceOf = (patch: Partial<EvidenceFixture> = {}): EvidenceFixture => ({
     projectId: PROJECT_ID,
-    conceptId: "idempotency",
+    conceptId: "idempotent-retry",
     slot: "test",
     source: "ci",
     passed: true,
@@ -140,7 +140,7 @@ export const evidenceOf = (patch: Partial<EvidenceFixture> = {}): EvidenceFixtur
 /** A result as the database answers it. */
 export const evidenceDbRowOf = (patch: Partial<EvidenceDbRowFixture> = {}): EvidenceDbRowFixture => ({
     project_id: PROJECT_ID,
-    concept_id: "idempotency",
+    concept_id: "idempotent-retry",
     slot: "test",
     source: "ci",
     passed: true,
@@ -177,7 +177,7 @@ export const probeRunRowOf = (patch: Partial<ProbeRunRowFixture> = {}): ProbeRun
 export const relayResultOf = (patch: Partial<RelayResultFixture> = {}): RelayResultFixture => ({
     eventId: "evt-1",
     runId: "relay-run-1",
-    conceptId: "idempotency",
+    conceptId: "idempotent-retry",
     slot: "test",
     ref: "[idempotency] booking twice with the same key",
     passed: true,
@@ -218,7 +218,7 @@ export const projectViewOf = (): ProjectView => ({
 
 /** A concept of a milestone, as the views answer it. */
 export const conceptViewOf = (): ConceptView => ({
-    id: "idempotency",
+    id: "idempotent-retry",
     label: "Idempotency",
     kind: "behaviour",
     state: "todo",

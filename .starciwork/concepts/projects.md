@@ -36,6 +36,10 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
    exists only for primitives (an HTTP step, fan-out, a wait, the sink, an assertion operator, a fake-app flag). The content validator
    enforces rule 3 for every concept mechanically and checks every probe, e2e flow, fixture and learn link; the app runs every
    fixture, so a new probe proves on a good app and stays unproved on each cheat before it ships.
+   Every read of the Projects shard (a project's standing, the CI and practice listings, the AI read, the CV preview, the relay's milestone
+   plan, the CV lines) takes concepts and milestones from `ProjectCheckSetService`, and the service refuses a whole set whose concept
+   breaks rule 3 (`catalogIssuesOf`). A concept that needs the AI read is graded against the first live lesson of its `learn` links, else
+   the lesson that carries its own id; with none, it is being written and stays out of done.
 6. A probe is black-box, safe and read-mostly: every request stays on the learner's address and carries `X-StarCi-Probe: <run id>`;
    a write goes only to the endpoint path the learner declared for the concept (or below it); a flow holds at most 40 requests, 12
    writes, a fan-out of 20 and 15 s of waits; the server sends through the guarded client (public addresses only, DNS resolved and

@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, fakeInbox, mock, mockEntityManager } from "@starci/jest-preset"
 import { PROJECT_ID, PROJECT_NOW, projectRowOf } from "@tests/fixtures/builders/project.builder"
 import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
@@ -19,7 +21,7 @@ const BODY = {
     commit: "ABC1234",
     passed: true,
     results: [
-        { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
+        { concept: "idempotent-retry", slot: "test", ref: "[idempotency] twice", passed: true },
         { concept: "agent-harness-control-loop", slot: "test", ref: "[loop] a", passed: true },
     ],
 }
@@ -45,6 +47,7 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectCiService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
@@ -99,7 +102,7 @@ describe("ProjectCiService recordRun", () => {
             attestation: "signed-only",
             results: [
                 {
-                    conceptId: "idempotency",
+                    conceptId: "idempotent-retry",
                     slot: "test",
                     source: "ci-signed",
                     passed: true,

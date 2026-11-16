@@ -120,11 +120,16 @@ describe("ContentSyncService sync from local directories", () => {
             ref: "fp-/c",
             only: "",
         })
+        expect(lessons.import).toHaveBeenNthCalledWith(3, {
+            directory: join("/c", "raw", "essentials"),
+            ref: "fp-/c",
+            only: "",
+        })
         expect(interviews.import).toHaveBeenCalledWith({
             directory: "/d",
             ref: "fp-/d+fp-/c",
             only: "",
-            overlay: join("/c", "interview", "overlay"),
+            overlay: join("/c", "raw", "interview", "overlay"),
         })
         expect(reviews.import).toHaveBeenCalledWith({ directory: "/d", ref: "fp-/d", only: "" })
         expect(practice.import).toHaveBeenCalledTimes(2)
@@ -150,7 +155,7 @@ describe("ContentSyncService sync from local directories", () => {
 
         expect(reports.find((report) => report.kind === "review")).toMatchObject({ status: "skipped" })
         expect(interviews.import).toHaveBeenCalledWith({
-            directory: join("/c", "interview", "overlay"),
+            directory: join("/c", "raw", "interview", "overlay"),
             ref: "fp-/c",
             only: "",
         })
@@ -270,5 +275,56 @@ describe("ContentSyncService sync from the git mount", () => {
 
         expect(git.materialize).toHaveBeenCalledTimes(1)
         expect(git.materialize).toHaveBeenCalledWith(expect.objectContaining({ source: "content" }))
+    })
+})
+
+/** A checkout that holds folders only where the predicate says so (paths are joined with the platform separator). */
+const holding = (disk: MockOf<ContentDiskReader>, has: (directory: string) => boolean): void => {
+    disk.folders.mockImplementation((directory) => Promise.resolve(has(directory) ? ["x"] : []))
+}
+
+describe("ContentSyncService sync of the raw layout", () => {
+    it("reads the interview overlay and the practice sets from raw/ when the pin holds them", async () => {
+        const { service, disk, interviews, practice } = await build()
+        holding(disk, (directory) => directory.includes("raw"))
+
+        await service.sync({ contentDir: "/c", dataDir: "/d", only: "interview,practice" })
+
+        expect(interviews.import).toHaveBeenCalledWith(
+            expect.objectContaining({ overlay: join("/c", "raw", "interview", "overlay") }),
+        )
+        expect(practice.import).toHaveBeenCalledWith({
+            directory: join("/c", "raw", "practice"),
+            ref: "fp-/c",
+            only: "",
+        })
+    })
+
+    it("falls back to the root folders of an older pin that has no raw/ folder", async () => {
+        const { service, disk, interviews, practice, lessons } = await build()
+        holding(disk, (directory) => !directory.includes("raw"))
+
+        await service.sync({ contentDir: "/c", dataDir: "/d", only: "lessons,interview,practice" })
+
+        expect(interviews.import).toHaveBeenCalledWith(
+            expect.objectContaining({ overlay: join("/c", "interview", "overlay") }),
+        )
+        expect(practice.import).toHaveBeenCalledWith({ directory: join("/c", "practice"), ref: "fp-/c", only: "" })
+        const lessonDirectories = lessons.import.mock.calls.map(([params]) => params.directory)
+        expect(lessonDirectories).toContain(join("/c", "essentials"))
+        expect(lessonDirectories).not.toContain(join("/c", "raw", "essentials"))
+    })
+
+    it("imports the topic lessons of raw/essentials beside the numbered lessons of the root essentials", async () => {
+        const { service, disk, lessons } = await build()
+        holding(disk, (directory) => directory.endsWith("essentials"))
+
+        const reports = await service.sync({ contentDir: "/c", only: "lessons" })
+
+        expect(lessons.import.mock.calls.map(([params]) => params.directory)).toEqual([
+            join("/c", "essentials"),
+            join("/c", "raw", "essentials"),
+        ])
+        expect(reports[0]).toMatchObject({ kind: "lessons", status: "imported", detail: "2 source(s)" })
     })
 })

@@ -21,6 +21,11 @@ One Premium subscription, monthly or yearly, unlocks every part and the AI. Noth
    | Projects | Subscription only: `PROJECT_FREE_PROJECTS` and `PROJECT_FREE_MILESTONES` default 0; a free learner sees the pitch and the paywall, not a crippled tool. |
    | Essentials | Partial: free is Part 1 Bản chất (the five-question opener and the article) of every lesson; Premium is Part 2 Source, Part 3 Kịch bản, Part 4 Tự áp dụng, `source.tgz`, relay runs and challenges. The MCP follows the same gating. |
    | Other parts | Review cards marked `isPremium: false`; one 3-question interview a month from free questions; the first problem of each practice pattern; one summary CV review. The AI, the public profile and the hiring bridge need Premium. |
+
+   The Essentials split is a setting of the entitlement module, `ENTITLEMENT_ESSENTIAL_FREE_PARTS` (comma-separated
+   `1-essential,2-source,3-scenarios,4-apply` or `none`; default `1-essential`), asked in one place by part
+   (`EntitlementService.mayReadEssentialPart`). The back end refuses a locked part with `LESSON_PREMIUM_REQUIRED` and never sends
+   its payload (the view names it in `lockedParts`); the page shows each locked part with a short description and a Subscribe link.
 3. A refused learner causes no AI provider call.
 4. The price lives only in the server's offer; the client sends a plan, never an amount. Prices display with Vietnamese thousands
    separators (229.000 ₫, 2.290.000 ₫).

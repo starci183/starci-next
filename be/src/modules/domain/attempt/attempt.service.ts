@@ -92,7 +92,12 @@ export class AttemptService {
         })
         const kind = attemptKindOf(found.activity)
         const phase = attemptPhaseOf(found)
-        await this.content.requireAccess({ learnerId: params.learnerId, phase, isPremium: found.isPremium })
+        await this.content.requireAccess({
+            learnerId: params.learnerId,
+            phase,
+            isPremium: found.isPremium,
+            part: found.part,
+        })
         const answer = normalizeAnswer(found.activity, kind, params.answer)
         const stored = await this.store(params, found.activity, kind, answer, phase)
         const row = stored ?? (await this.replay(params, answer))

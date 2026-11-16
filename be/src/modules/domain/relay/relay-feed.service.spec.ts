@@ -1,4 +1,6 @@
 import { generateKeyPairSync, verify } from "node:crypto"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
@@ -41,6 +43,7 @@ const build = async (
     const moduleRef = await Test.createTestingModule({
         providers: [
             RelayFeedService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: REALTIME_HUB, useValue: hub },
@@ -252,12 +255,7 @@ describe("RelayFeedService manifest", () => {
         expect(signed.body.plan).toEqual({
             milestone: "bf-data-and-cache",
             report: "starci/reports/junit.xml",
-            concepts: [
-                "server-state-cache-lifecycle",
-                "cqrs-read-models",
-                "transactions-and-isolation",
-                "indexing-and-query-plans",
-            ],
+            concepts: ["cache-freshness", "cursor-pagination"],
         })
         expect(signed.payload).toContain('"plan":{"milestone":"bf-data-and-cache"')
     })

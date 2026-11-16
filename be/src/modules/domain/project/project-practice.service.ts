@@ -9,7 +9,8 @@ import type { EvidenceInput } from "./project.contracts"
 import type { ProjectLookupParams } from "./project-params.contracts"
 import type { ProjectView } from "./project-view.contracts"
 import { ProjectLogEvent } from "./project.log-events"
-import { milestonesOfKind } from "./project-catalog.policy"
+import { conceptIdsOfKind } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { ProjectEvidenceService } from "./project-evidence.service"
 import { InjectProjectRelay, type ProjectRelayPort } from "./project-relay.port"
 import { ProjectReadService } from "./project-read.service"
@@ -31,6 +32,7 @@ export class ProjectPracticeService {
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProjectRelay() private readonly relay: ProjectRelayPort,
         private readonly evidence: ProjectEvidenceService,
+        private readonly checkSet: ProjectCheckSetService,
         private readonly reads: ProjectReadService,
     ) {}
 
@@ -50,7 +52,7 @@ export class ProjectPracticeService {
                 })
                 return []
             })
-        const listed = new Set(milestonesOfKind(projectKindOf(project)).flatMap((milestone) => milestone.concepts))
+        const listed = new Set(conceptIdsOfKind(await this.checkSet.current(), projectKindOf(project)))
         const inputs: ReadonlyArray<EvidenceInput> = results
             .filter((result) => listed.has(result.conceptId) && result.slot !== "code-read")
             .map((result) => ({

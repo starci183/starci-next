@@ -8,6 +8,7 @@ const INPUT_TYPES: Readonly<Record<UploadMutation, string>> = {
     relayCheckResult: "RelayCheckResultInput",
     relayLog: "RelayLogInput",
     relayManifestAck: "RelayManifestAckInput",
+    relayHarnessResult: "RelayHarnessResultInput",
 }
 
 /** The manifest query of a task. */

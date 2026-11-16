@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { builder, FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     conceptViewOf,
@@ -69,6 +71,7 @@ const build = async (
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
@@ -325,7 +328,7 @@ describe("ProjectService subscription-only", () => {
         const set = {
             learnerId: PROJECT_LEARNER,
             projectId: PROJECT_ID,
-            conceptId: "idempotency",
+            conceptId: "idempotent-retry",
             location: null,
             endpoint: null,
             sampleBody: null,
@@ -341,7 +344,7 @@ describe("ProjectService setConcept", () => {
     const SET = {
         learnerId: PROJECT_LEARNER,
         projectId: PROJECT_ID,
-        conceptId: "idempotency",
+        conceptId: "idempotent-retry",
         location: "internal/booking/repo.go#Reserve",
         endpoint: "POST /bookings",
         sampleBody: '{"slot":"09:00"}',
@@ -355,7 +358,7 @@ describe("ProjectService setConcept", () => {
 
         expect(em.query).toHaveBeenCalledWith(UPSERT_CONCEPT, [
             PROJECT_ID,
-            "idempotency",
+            "idempotent-retry",
             "internal/booking/repo.go#Reserve",
             "POST /bookings",
             '{"slot":"09:00"}',
@@ -371,7 +374,7 @@ describe("ProjectService setConcept", () => {
 
         expect(em.query).toHaveBeenCalledWith(UPSERT_CONCEPT, [
             PROJECT_ID,
-            "idempotency",
+            "idempotent-retry",
             null,
             null,
             null,

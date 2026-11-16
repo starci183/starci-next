@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     evidenceDbRowOf,
@@ -16,13 +18,13 @@ import { ProjectExtrasService } from "./project-extras.service"
 import { PROJECT_LESSONS, type ProjectLessonPort } from "./project-lesson.port"
 import { SELECT_EVIDENCE, SELECT_PROJECT } from "./persistence/project.sql"
 
-const SAGA_LESSON: ConceptLessonRef = { id: "saga", version: "v1", title: "Saga", topicId: "t" }
-const TEST_LESSON: ConceptLessonRef = { id: "idempotency", version: "v1", title: "Idempotency", topicId: "t" }
+const SAGA_LESSON: ConceptLessonRef = { id: "unit-testing-behavior", version: "v1", title: "Saga", topicId: "t" }
+const TEST_LESSON: ConceptLessonRef = { id: "idempotent-retry", version: "v1", title: "Idempotency", topicId: "t" }
 const HASH = "a".repeat(64)
 
 const readRow = (patch: Partial<ReturnType<typeof evidenceDbRowOf>> = {}) =>
     evidenceDbRowOf({
-        concept_id: "saga",
+        concept_id: "unit-testing-behavior",
         slot: "code-read",
         source: "ai",
         run_id: "read-1",
@@ -74,8 +76,8 @@ const build = async (world: World = {}) => {
         projectId: PROJECT_ID,
         evidence: [],
         slotValues: {
-            vi: { concept: "Idempotency", project: "Clinic booking", language: "go", lesson: "idempotency" },
-            en: { concept: "Idempotency", project: "Clinic booking", language: "go", lesson: "idempotency" },
+            vi: { concept: "Idempotency", project: "Clinic booking", language: "go", lesson: "idempotent-retry" },
+            en: { concept: "Idempotency", project: "Clinic booking", language: "go", lesson: "idempotent-retry" },
         },
         grade: { result: "pass", criteria: [] },
     }
@@ -83,6 +85,7 @@ const build = async (world: World = {}) => {
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectExtrasService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
@@ -93,7 +96,12 @@ const build = async (world: World = {}) => {
     return { service: moduleRef.get(ProjectExtrasService), em, essentials, lessons }
 }
 
-const READ = { learnerId: PROJECT_LEARNER, projectId: PROJECT_ID, conceptId: "saga", locale: "en" } as const
+const READ = {
+    learnerId: PROJECT_LEARNER,
+    projectId: PROJECT_ID,
+    conceptId: "unit-testing-behavior",
+    locale: "en",
+} as const
 const PREVIEW = {
     learnerId: PROJECT_LEARNER,
     projectId: PROJECT_ID,
@@ -107,7 +115,7 @@ describe("ProjectExtrasService is subscription-only", () => {
         const { service, em, essentials } = await build({ premium: false, evidence: [readRow()] })
 
         await expect(service.codeRead(READ)).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
-        await expect(service.cvPreview({ ...PREVIEW, conceptId: "idempotency" })).rejects.toMatchObject({
+        await expect(service.cvPreview({ ...PREVIEW, conceptId: "idempotent-retry" })).rejects.toMatchObject({
             code: "PROJECT_PREMIUM_REQUIRED",
         })
         await expect(service.cvPreview({ ...PREVIEW, milestoneId: "bf-http-foundation" })).rejects.toMatchObject({
@@ -127,7 +135,7 @@ describe("ProjectExtrasService codeRead", () => {
 
         expect(read).toMatchObject({
             projectId: PROJECT_ID,
-            conceptId: "saga",
+            conceptId: "unit-testing-behavior",
             location: "internal/saga.go",
             excerptHash: HASH,
             gradedAt: "2026-11-08T09:00:00.000Z",
@@ -181,26 +189,26 @@ describe("ProjectExtrasService codeRead", () => {
 describe("ProjectExtrasService cvPreview", () => {
     it("drafts the line of a concept from the evidence only and lists the proof under it", async () => {
         const evidence = [
-            evidenceDbRowOf({ concept_id: "idempotency", slot: "test", source: "ci", run_id: "gh-9" }),
+            evidenceDbRowOf({ concept_id: "idempotent-retry", slot: "test", source: "ci", run_id: "gh-9" }),
             evidenceDbRowOf({
-                concept_id: "idempotency",
+                concept_id: "idempotent-retry",
                 slot: "probe",
                 source: "server-probe",
                 run_id: "p-1",
                 ref: "idempotency-replay",
             }),
-            evidenceDbRowOf({ concept_id: "idempotency", slot: "e2e", source: "relay", run_id: "r-1" }),
+            evidenceDbRowOf({ concept_id: "idempotent-retry", slot: "e2e", source: "relay", run_id: "r-1" }),
         ]
         const { service, essentials } = await build({ evidence })
 
-        const view = await service.cvPreview({ ...PREVIEW, conceptId: "idempotency" })
+        const view = await service.cvPreview({ ...PREVIEW, conceptId: "idempotent-retry" })
 
         expect(essentials.preview).toHaveBeenCalledWith({
             learnerId: PROJECT_LEARNER,
-            lessonId: "idempotency",
+            lessonId: "idempotent-retry",
             project: expect.objectContaining({ projectId: PROJECT_ID }),
         })
-        expect(view).toMatchObject({ subjectKind: "concept", subjectId: "idempotency", proved: true })
+        expect(view).toMatchObject({ subjectKind: "concept", subjectId: "idempotent-retry", proved: true })
         expect(view.text).toContain("Idempotency")
         expect(view.evidence.map((item) => [item.kind, item.ref, item.proofForm])).toEqual([
             ["ci-run", "gh-9", "signed-ci"],
@@ -209,15 +217,15 @@ describe("ProjectExtrasService cvPreview", () => {
     })
 
     it("marks a concept that is only practised as not proved, and shows no text when its lesson is not written", async () => {
-        const practised = [evidenceDbRowOf({ concept_id: "idempotency", slot: "test", source: "relay" })]
+        const practised = [evidenceDbRowOf({ concept_id: "idempotent-retry", slot: "test", source: "relay" })]
         const { service } = await build({ evidence: practised })
         const noLesson = await build({ lessons: [] })
 
-        await expect(service.cvPreview({ ...PREVIEW, conceptId: "idempotency" })).resolves.toMatchObject({
+        await expect(service.cvPreview({ ...PREVIEW, conceptId: "idempotent-retry" })).resolves.toMatchObject({
             proved: false,
             evidence: [],
         })
-        await expect(noLesson.service.cvPreview({ ...PREVIEW, conceptId: "idempotency" })).resolves.toMatchObject({
+        await expect(noLesson.service.cvPreview({ ...PREVIEW, conceptId: "idempotent-retry" })).resolves.toMatchObject({
             text: null,
         })
         expect(noLesson.essentials.preview).not.toHaveBeenCalled()
@@ -247,7 +255,7 @@ describe("ProjectExtrasService cvPreview", () => {
 
         await expect(service.cvPreview(PREVIEW)).rejects.toMatchObject({ code: "PROJECT_INPUT_INVALID" })
         await expect(
-            service.cvPreview({ ...PREVIEW, conceptId: "idempotency", milestoneId: "bf-http-foundation" }),
+            service.cvPreview({ ...PREVIEW, conceptId: "idempotent-retry", milestoneId: "bf-http-foundation" }),
         ).rejects.toMatchObject({ code: "PROJECT_INPUT_INVALID" })
         await expect(service.cvPreview({ ...PREVIEW, milestoneId: "agent-mindset" })).rejects.toMatchObject({
             code: "PROJECT_MILESTONE_NOT_FOUND",

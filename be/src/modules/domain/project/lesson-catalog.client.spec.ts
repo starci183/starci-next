@@ -8,7 +8,7 @@ import {
 } from "@modules/domain/lesson"
 import { LessonCatalogClient } from "./lesson-catalog.client"
 
-const LESSON = { id: "idempotency", version: "v1", title: "Idempotency", topicId: "reliability" }
+const LESSON = { id: "idempotent-retry", version: "v1", title: "Idempotency", topicId: "reliability" }
 
 type ServerActivity = Awaited<ReturnType<LessonContentService["activity"]>>
 
@@ -34,7 +34,7 @@ describe("LessonCatalogClient lessons", () => {
     it("lists the live lessons by id with their topic and title in the locale", async () => {
         const { client, catalog } = await build()
         const item: LessonCatalogItemView = {
-            id: "idempotency",
+            id: "idempotent-retry",
             version: "v1",
             title: "Idempotency",
             description: "d",
@@ -50,7 +50,7 @@ describe("LessonCatalogClient lessons", () => {
 
         const lessons = await client.lessons({ locale: "en" })
 
-        expect(lessons.get("idempotency")).toEqual(LESSON)
+        expect(lessons.get("idempotent-retry")).toEqual(LESSON)
         expect(catalog.catalog).toHaveBeenCalledWith(expect.objectContaining({ locale: "en", group: null, q: null }))
     })
 })
@@ -79,7 +79,7 @@ describe("LessonCatalogClient rubricOf", () => {
             criteria: [{ id: "c1", criterion: "Names the key", expectedEvidence: "a key", misconception: "none" }],
         })
         expect(content.activity).toHaveBeenCalledWith({
-            lessonId: "idempotency",
+            lessonId: "idempotent-retry",
             version: "v1",
             activityId: "b",
             locale: "en",

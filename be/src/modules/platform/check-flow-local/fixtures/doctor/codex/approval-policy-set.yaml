@@ -1,0 +1,29 @@
+# Doctor probe: config.toml keeps a human in the loop for risky commands.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: approval-policy-set
+tool: codex
+order: 3
+title:
+  vi: approval_policy không để chạy tự do
+  en: approval_policy does not run unattended
+guide: config-approval
+check:
+  toml:
+    path: [.codex/config.toml, ~/.codex/config.toml]
+    at: approval_policy
+    oneOf: [untrusted, on-request, on-failure]
+fix:
+  vi: Trong `~/.codex/config.toml` đặt `approval_policy = "on-request"` (hoặc `"untrusted"`). Giá trị `never` cho Codex chạy mọi lệnh mà không hỏi.
+  en: In `~/.codex/config.toml` set `approval_policy = "on-request"` (or `"untrusted"`). The value `never` lets Codex run every command without asking.
+good:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+      approval_policy = "on-request"
+bad:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+      approval_policy = "never"
