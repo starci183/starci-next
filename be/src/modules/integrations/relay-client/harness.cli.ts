@@ -16,7 +16,7 @@ import {
 import { isHarnessId, keyCheckOf, keyNamesOf, stagesAsked, type KeyCheck } from "./harness.policy"
 import { stageOutcomesOf, stageTableOf } from "./harness-report.policy"
 import { excludeLines, hasFolder, readText, removeFile } from "./lesson-files.adapter"
-import { postCiReport } from "./ci-report.cli"
+import { postHarnessCiReport } from "./ci-report.cli"
 import type { CliIo, PendingUpload } from "./relay-client.contracts"
 import { refusalLine } from "./relay-api.client"
 import { scenarioCasesOf } from "./scenario-report.policy"
@@ -137,7 +137,7 @@ export const pullBuild = async (io: CliIo, buildId: string, cwd: string): Promis
 /** The build folder an e2e run is for: the named build's folder, or the current folder (or its parent) when it holds a build marker. */
 const buildRootOf = (cwd: string, buildId: string | undefined): string | null =>
     buildId === undefined
-        ? [cwd, join(cwd, "..")].find((folder) => readHarnessState(folder) !== null) ?? null
+        ? ([cwd, join(cwd, "..")].find((folder) => readHarnessState(folder) !== null) ?? null)
         : harnessRootOf(cwd, buildId)
 
 /** The uploads of one run: per stage `check.started` and a counts-only log, per e2e id one `harness-stage` result (contract §2.1). */
@@ -201,9 +201,7 @@ export const e2eBuild = async (
     const root = buildRootOf(cwd, buildId)
     const state = root === null ? null : readHarnessState(root)
     if (root === null || state === null) {
-        io.err(
-            `No build here. Run starci-next harness pull ${buildId ?? "<build>"} and cd into it.`,
-        )
+        io.err(`No build here. Run starci-next harness pull ${buildId ?? "<build>"} and cd into it.`)
         return 1
     }
     const got = await fetchBuild(io, state.buildId)
@@ -211,19 +209,27 @@ export const e2eBuild = async (
     const { build } = got
     const asked = stagesAsked(build, options.stage)
     if (asked === null) {
-        io.err(`Build ${build.buildId} has no stage ${options.stage ?? ""}; use 1 to ${build.stages.length} or a stage id.`)
+        io.err(
+            `Build ${build.buildId} has no stage ${options.stage ?? ""}; use 1 to ${build.stages.length} or a stage id.`,
+        )
         return 1
     }
     if (build.source.commit !== state.commit)
-        io.out(`Note: StarCi now signs source ${build.source.commit.slice(0, 10)}; this folder is ${state.commit.slice(0, 10)}.`)
+        io.out(
+            `Note: StarCi now signs source ${build.source.commit.slice(0, 10)}; this folder is ${state.commit.slice(0, 10)}.`,
+        )
     const keys = keyCheckOfRoot(io, root, build)
     keys.missing.forEach((key) =>
-        io.out(`Key ${key.id}: none of ${key.anyOf.join(", ")} is set (put one in ${state.buildId}/.env); stages that call the model will fail.`),
+        io.out(
+            `Key ${key.id}: none of ${key.anyOf.join(", ")} is set (put one in ${state.buildId}/.env); stages that call the model will fail.`,
+        ),
     )
     const stageIds = asked.map((item) => item.stage.id)
     io.out(`Build ${build.buildId}: ${asked.length} stage(s), signed by StarCi.`)
     if (options.install) io.out(`  install: ${build.install}   (in ${build.dir})`)
-    io.out(`  e2e: ${build.e2e}   (in ${build.dir}, at most ${E2E_TIMEOUT_MS / 60_000} min, STARCI_STAGE=${stageIds.join(",")})`)
+    io.out(
+        `  e2e: ${build.e2e}   (in ${build.dir}, at most ${E2E_TIMEOUT_MS / 60_000} min, STARCI_STAGE=${stageIds.join(",")})`,
+    )
     if (!options.yes && !(await io.confirm("Run these commands on this machine?"))) {
         io.out("Nothing was run.")
         return 0
@@ -250,11 +256,7 @@ export const e2eBuild = async (
     if (report === null) io.err(`No JUnit report at ${build.report}: the e2e command must write it.`)
     const stages = stageOutcomesOf(report === null ? [] : scenarioCasesOf(report), asked)
     stageTableOf(stages).forEach((line) => io.out(line))
-    io.out(
-        keys.present.length === 0
-            ? "Keys present: none."
-            : `Keys present (names only): ${keys.present.join(", ")}.`,
-    )
+    io.out(keys.present.length === 0 ? "Keys present: none." : `Keys present (names only): ${keys.present.join(", ")}.`)
     const left = await flush(io, got.session, [
         ...acked,
         ...uploadsOf(io, base, build.buildId, state.commit, run.exitCode, keys.present, stages),
@@ -267,7 +269,7 @@ export const e2eBuild = async (
 /**
  * `starci-next harness ci-report [--report path] [--stage n]`: for a GitHub Actions run with `permissions: id-token: write`. It reads the
  * plan from `.starci-harness.json` (no device, no network to learn it), reads the JUnit report the workflow's e2e step wrote, prints
- * the stage table and posts one signed, OIDC-attested delivery through the shared `postCiReport` (the project-ci door).
+ * the stage table and posts one OIDC-attested delivery to the harness-ci door (`postHarnessCiReport`; no Project, no Premium, no secret).
  */
 export const ciReportBuild = async (io: CliIo, options: HarnessCiReportOptions, cwd: string): Promise<number> => {
     const state = readHarnessState(cwd)
@@ -287,11 +289,10 @@ export const ciReportBuild = async (io: CliIo, options: HarnessCiReportOptions, 
     }
     const stages = stageOutcomesOf(scenarioCasesOf(report), asked)
     stageTableOf(stages).forEach((line) => io.out(line))
-    return postCiReport(io, {
-        passed: stages.every((stage) => stage.passed),
-        results: [],
-        harness: stages.flatMap((stage) =>
+    return postHarnessCiReport(
+        io,
+        stages.flatMap((stage) =>
             stage.e2e.map((item) => ({ build: state.buildId, stage: stage.id, e2e: item.id, passed: item.passed })),
         ),
-    })
+    )
 }

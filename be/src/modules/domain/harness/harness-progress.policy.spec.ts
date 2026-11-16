@@ -20,6 +20,8 @@ const build = async (): Promise<typeof policies> => {
     return moduleRef.get<typeof policies>(POLICY)
 }
 
+const BOUND = { repository: "learner/agent", bindingId: "b1" }
+
 const BUILD: StoredBuild = {
     id: "agent-cli",
     order: 1,
@@ -72,12 +74,12 @@ describe("buildViewOf", () => {
     it("is none for a learner with no result", async () => {
         const { buildViewOf: view } = await build()
 
-        const result = view(BUILD, "vi", [], [], null)
+        const result = view(BUILD, "vi", [], [], null, "starci-next")
 
         expect(result.state).toBe("none")
         expect(result.title).toBe("Agent dong lenh")
         expect(result.stages.map((stage) => stage.state)).toEqual(["none", "none"])
-        expect(result.repository).toEqual({ bound: false, projectId: null })
+        expect(result.repository).toEqual({ bound: false, repository: null, bindingId: null, audience: "starci-next" })
     })
 
     it("is practising for a passed relayed run and keeps the newest failure line of a stage", async () => {
@@ -88,7 +90,8 @@ describe("buildViewOf", () => {
             "en",
             [run("s1", "a", true), run("s1", "b", false, "2026-11-17T03:00:00.000Z", "failed")],
             [],
-            "p1",
+            BOUND,
+            "starci-next",
         )
 
         expect(result.stages[0]).toMatchObject({
@@ -101,14 +104,26 @@ describe("buildViewOf", () => {
             ["b", "none"],
         ])
         expect(result).toMatchObject({ state: "practising", practisingStages: 1, provedStages: 0, title: "Agent CLI" })
-        expect(result.repository).toEqual({ bound: true, projectId: "p1" })
+        expect(result.repository).toEqual({
+            bound: true,
+            repository: "learner/agent",
+            bindingId: "b1",
+            audience: "starci-next",
+        })
     })
 
     it("is proved only when every e2e of every stage has an attested passed result, and a later red relay does not lower it", async () => {
         const { buildViewOf: view } = await build()
         const proofs = [proof("s1", "a"), proof("s1", "b"), proof("s2", "c")]
 
-        const result = view(BUILD, "vi", [run("s1", "a", false, "2026-11-17T09:00:00.000Z")], proofs, "p1")
+        const result = view(
+            BUILD,
+            "vi",
+            [run("s1", "a", false, "2026-11-17T09:00:00.000Z")],
+            proofs,
+            BOUND,
+            "starci-next",
+        )
 
         expect(result.state).toBe("proved")
         expect(result.stages.map((stage) => stage.state)).toEqual(["proved", "proved"])
@@ -118,7 +133,7 @@ describe("buildViewOf", () => {
     it("is practising while one stage is still unproved", async () => {
         const { buildViewOf: view } = await build()
 
-        const result = view(BUILD, "vi", [], [proof("s1", "a"), proof("s1", "b")], "p1")
+        const result = view(BUILD, "vi", [], [proof("s1", "a"), proof("s1", "b")], BOUND, "starci-next")
 
         expect(result.stages.map((stage) => stage.state)).toEqual(["proved", "none"])
         expect(result.state).toBe("practising")
@@ -127,7 +142,14 @@ describe("buildViewOf", () => {
     it("does not count a failed attested result or another build as proof", async () => {
         const { buildViewOf: view } = await build()
 
-        const result = view(BUILD, "vi", [], [proof("s1", "a", false), { ...proof("s1", "b"), buildId: "other" }], null)
+        const result = view(
+            BUILD,
+            "vi",
+            [],
+            [proof("s1", "a", false), { ...proof("s1", "b"), buildId: "other" }],
+            null,
+            "starci-next",
+        )
 
         expect(result.state).toBe("none")
     })
@@ -135,7 +157,7 @@ describe("buildViewOf", () => {
     it("never carries a pack path in its view", async () => {
         const { buildViewOf: view } = await build()
 
-        const text = JSON.stringify(view({ ...BUILD, packPaths: ["source/a.ts"] }, "vi", [], [], null))
+        const text = JSON.stringify(view({ ...BUILD, packPaths: ["source/a.ts"] }, "vi", [], [], null, "starci-next"))
 
         expect(text).not.toContain("source/a.ts")
     })
@@ -152,14 +174,16 @@ describe("rolledState", () => {
     })
 })
 
+const TRAP = { id: "trap", shortcuts: [{ id: "env-read", title: { vi: "Doc env", en: "Reads the env file" } }] }
+
 describe("probes, trials and the hub", () => {
     const probe = {
         id: "p",
         tool: "claude" as const,
         order: 1,
-        label: { vi: "Nhan", en: "Label" },
-        needs: [],
-        reasons: { missing: { vi: "Tao file", en: "Create file" } },
+        title: { vi: "Nhan", en: "Label" },
+        guide: "g",
+        fix: { vi: "Tao file", en: "Create file" },
         yaml: "",
     }
     const doctorRow = (passed: boolean, detail: Record<string, unknown> | null): HarnessRunRow => ({
@@ -199,20 +223,20 @@ describe("probes, trials and the hub", () => {
             at: "2026-11-17T01:00:00.000Z",
         }
 
-        expect(trial({ id: "trap" }, null, [row])).toEqual({
+        expect(trial(TRAP, null, [row], "en")).toEqual({
             tool: "codex",
             verdict: "breached",
             testsGreen: true,
-            shortcuts: [{ kind: "env-read", blocked: false }],
+            shortcuts: [{ kind: "env-read", title: "Reads the env file", blocked: false }],
             at: "2026-11-17T01:00:00.000Z",
         })
-        expect(trial({ id: "trap" }, "claude", [row])).toBeNull()
-        expect(trial({ id: "other" }, null, [row])).toBeNull()
+        expect(trial(TRAP, "claude", [row], "en")).toBeNull()
+        expect(trial({ ...TRAP, id: "other" }, null, [row], "en")).toBeNull()
     })
 
     it("counts the three parts of the hub and names the next build and guide", async () => {
         const { hubOf: hub, buildViewOf: view } = await build()
-        const builds = [view(BUILD, "vi", [run("s1", "a", true)], [], null)]
+        const builds = [view(BUILD, "vi", [run("s1", "a", true)], [], null, "starci-next")]
 
         const parts = hub({
             builds,
@@ -223,6 +247,7 @@ describe("probes, trials and the hub", () => {
                     order: 1,
                     title: { vi: "a", en: "a" },
                     summary: { vi: "", en: "" },
+                    minutes: null,
                     probes: ["p"],
                     sections: [],
                     contentHash: "h",
@@ -236,6 +261,7 @@ describe("probes, trials and the hub", () => {
                     order: 1,
                     title: { vi: "a", en: "a" },
                     summary: { vi: "", en: "" },
+                    minutes: null,
                     sections: [],
                     contentHash: "h",
                 },

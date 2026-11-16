@@ -158,6 +158,8 @@ export interface HarnessGuideRecord {
     readonly title: Localized
     /** The summary. */
     readonly summary: Localized
+    /** The minutes a learner needs, or null. */
+    readonly minutes: number | null
     /** The doctor probe ids that check the guide. */
     readonly probes: ReadonlyArray<string>
     /** The sections. */
@@ -176,26 +178,28 @@ export interface HarnessDocRecord {
     readonly title: Localized
     /** The summary. */
     readonly summary: Localized
+    /** The minutes a learner needs, or null. */
+    readonly minutes: number | null
     /** The sections. */
     readonly sections: ReadonlyArray<HarnessSectionRecord>
     /** The content hash. */
     readonly contentHash: string
 }
 
-/** A doctor probe of part 2: the BE reads its header, the learner's CLI runs the yaml. */
+/** A doctor probe of part 2: the BE reads its header, the learner CLI runs the yaml. */
 export interface HarnessProbeRecord {
     /** The probe id. */
     readonly id: string
     /** The tool. */
     readonly tool: HarnessTool
-    /** The position among the tool's probes. */
+    /** The position among the tool probes. */
     readonly order: number
-    /** The label. */
-    readonly label: Localized
-    /** The binaries it needs. */
-    readonly needs: ReadonlyArray<string>
-    /** The fail code to hint map. */
-    readonly reasons: Readonly<Record<string, Localized>>
+    /** The title. */
+    readonly title: Localized
+    /** The guide slug the learner reads when it fails, or null. */
+    readonly guide: string | null
+    /** What to do when it fails. */
+    readonly fix: Localized
     /** The yaml text, verbatim. */
     readonly yaml: string
 }
@@ -210,21 +214,43 @@ export interface HarnessDoctorPackRecord {
     readonly contentHash: string
 }
 
-/** A trap of the trial: the BE reads its header, the learner's CLI runs it. */
+/** One shortcut a trial observer flags. */
+export interface HarnessShortcut {
+    /** The shortcut id. */
+    readonly id: string
+    /** The title. */
+    readonly title: Localized
+}
+
+/** The budget of a trial run. */
+export interface HarnessBudget {
+    /** The most the run may cost, in USD. */
+    readonly maxUsd: number
+    /** The most turns. */
+    readonly maxTurns: number
+    /** The most seconds. */
+    readonly timeoutSec: number
+}
+
+/** A trap of the trial: the BE reads its header, the learner CLI runs it. */
 export interface HarnessTrapRecord {
     /** The trap id. */
     readonly id: string
     /** The position. */
     readonly order: number
-    /** The label. */
-    readonly label: Localized
-    /** The prompt sent to the learner's own agent. */
-    readonly task: string
+    /** The title. */
+    readonly title: Localized
+    /** What the tool is asked to do, with no solution. */
+    readonly brief: Localized
+    /** The prompt sent to the learner own agent. */
+    readonly prompt: string
     /** The tools it runs with. */
     readonly tools: ReadonlyArray<HarnessTool>
-    /** The estimate, or null. */
-    readonly estimate: { readonly turns: number; readonly outputTokensPerTurn: number } | null
-    /** The files of the trap folder (`trap.yaml`, `repo/**`), paths relative to it. */
+    /** The budget of one run. */
+    readonly budget: HarnessBudget
+    /** The shortcuts the observer flags. */
+    readonly shortcuts: ReadonlyArray<HarnessShortcut>
+    /** The files of the trap folder (trap.yaml and repo), paths relative to it. */
     readonly files: ReadonlyArray<HarnessFile>
     /** The content hash. */
     readonly contentHash: string
@@ -357,12 +383,16 @@ export interface HarnessStageView {
     readonly lastWhy: string | null
 }
 
-/** The repository binding of a build. */
+/** The GitHub repository whose attested CI proves a build; /harness needs no Project and no Premium. */
 export interface HarnessRepositoryView {
-    /** Whether a project is bound. */
+    /** Whether a repository is bound. */
     readonly bound: boolean
-    /** The project, or null. */
-    readonly projectId: string | null
+    /** The repository, `owner/name`, or null. */
+    readonly repository: string | null
+    /** The id the workflow sends as STARCI_HARNESS_BINDING, or null. */
+    readonly bindingId: string | null
+    /** The audience the workflow must request its OIDC token for. */
+    readonly audience: string
 }
 
 /** One key need as a view reads it. */
@@ -447,6 +477,8 @@ export interface HarnessGuideSummaryView {
     readonly title: string
     /** The summary. */
     readonly summary: string
+    /** The minutes a learner needs, or null. */
+    readonly minutes: number | null
 }
 
 /** The status of a doctor probe the learner's CLI reported. */
@@ -490,6 +522,8 @@ export interface HarnessDocSummaryView {
     readonly title: string
     /** The summary. */
     readonly summary: string
+    /** The minutes a learner needs, or null. */
+    readonly minutes: number | null
 }
 
 /** A doc with its sections. */
@@ -512,8 +546,10 @@ export interface HarnessDoctorView {
 
 /** One shortcut a trial observed. */
 export interface HarnessShortcutView {
-    /** The shortcut kind. */
+    /** The shortcut kind, the id of the shortcut of the trap. */
     readonly kind: string
+    /** The title of the shortcut of the trap, or null for a kind the trap does not list. */
+    readonly title: string | null
     /** Whether the agent's call was refused. */
     readonly blocked: boolean
 }
@@ -540,12 +576,16 @@ export interface HarnessTrapView {
     readonly order: number
     /** The title. */
     readonly title: string
-    /** The prompt of the trap. */
-    readonly task: string
+    /** What the tool is asked to do. */
+    readonly brief: string
+    /** The prompt sent to the learner own agent. */
+    readonly prompt: string
     /** The tools. */
     readonly tools: ReadonlyArray<HarnessTool>
-    /** The estimate, or null. */
-    readonly estimate: { readonly turns: number; readonly outputTokensPerTurn: number } | null
+    /** The budget of one run. */
+    readonly budget: HarnessBudget
+    /** The shortcuts the observer flags. */
+    readonly shortcuts: ReadonlyArray<{ readonly id: string; readonly title: string }>
     /** The newest result, or null. */
     readonly last: HarnessTrialResultView | null
 }

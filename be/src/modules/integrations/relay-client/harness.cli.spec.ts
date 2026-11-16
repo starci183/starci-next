@@ -1,4 +1,4 @@
-import { createHash, createHmac } from "node:crypto"
+import { createHash } from "node:crypto"
 import { execSync } from "node:child_process"
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
@@ -79,10 +79,7 @@ const pulledBuild = (world: World, plan: Record<string, unknown> = buildBody()):
     const root = join(world.cwd, "agent-cli")
     mkdirSync(join(root, "source"), { recursive: true })
     const { kind: _kind, source: _source, ...rest } = plan
-    writeFileSync(
-        join(root, HARNESS_STATE_FILE),
-        JSON.stringify({ ...rest, commit: COMMIT, sha256: "d".repeat(64) }),
-    )
+    writeFileSync(join(root, HARNESS_STATE_FILE), JSON.stringify({ ...rest, commit: COMMIT, sha256: "d".repeat(64) }))
     writeFileSync(join(root, ".env"), `ANTHROPIC_API_KEY=${SECRET_VALUE}\nOTHER=1\n`)
     return root
 }
@@ -90,9 +87,16 @@ const pulledBuild = (world: World, plan: Record<string, unknown> = buildBody()):
 const everythingSeen = (world: World): string => JSON.stringify([world.out, world.err, world.sent])
 
 describe("harness pull", () => {
-    const source = packed({ "source/package.json": "{}", "source/src/a.ts": "x", "e2e/loop.e2e.ts": "y", ".gitignore": "node_modules\n" })
+    const source = packed({
+        "source/package.json": "{}",
+        "source/src/a.ts": "x",
+        "e2e/loop.e2e.ts": "y",
+        ".gitignore": "node_modules\n",
+    })
     const pullWorld = (bytes: Buffer, sha256 = createHash("sha256").update(bytes).digest("hex")) => {
-        const made = harnessWorld(buildBody({ source: { url: "/relay/harness/build/agent-cli/source.tgz", sha256, commit: COMMIT } }))
+        const made = harnessWorld(
+            buildBody({ source: { url: "/relay/harness/build/agent-cli/source.tgz", sha256, commit: COMMIT } }),
+        )
         const downloads: Array<{ url: string; bearer: string | undefined }> = []
         const io: CliIo = {
             ...made.io,
@@ -203,7 +207,10 @@ describe("harness e2e", () => {
         expect(uploads(world).filter((item) => item.query.includes("relayCheckStarted"))).toHaveLength(2)
         expect(world.sent.filter((body) => body.query.includes("relayManifestAck"))).toHaveLength(1)
         const logs = uploads(world).filter((item) => item.query.includes("relayLog"))
-        expect(logs.map((item) => item.input.text)).toEqual(["2/2 e2e passed in stage s1-loop", "0/1 e2e passed in stage s2-tools"])
+        expect(logs.map((item) => item.input.text)).toEqual([
+            "2/2 e2e passed in stage s1-loop",
+            "0/1 e2e passed in stage s2-tools",
+        ])
     })
 
     it("never lets a key value or a test message reach an upload, a printed line or an error", async () => {
@@ -238,7 +245,9 @@ describe("harness e2e", () => {
     })
 
     it("names a missing key by variable name and still runs; an e2e with no tagged test is reported not run", async () => {
-        const { world, io } = harnessWorld(buildBody(), () => ({ report: `<testsuites><testcase name="[s1-loop:loop-stops] ok"/></testsuites>` }))
+        const { world, io } = harnessWorld(buildBody(), () => ({
+            report: `<testsuites><testcase name="[s1-loop:loop-stops] ok"/></testsuites>`,
+        }))
         const root = pulledBuild(world)
         writeFileSync(join(root, ".env"), "UNRELATED=1\n")
 
@@ -258,10 +267,17 @@ describe("harness e2e", () => {
         const root = pulledBuild(world)
         writeFileSync(join(root, ".env"), "")
 
-        await e2eBuild({ ...io, hasEnv: (name) => name === "OPENAI_API_KEY" }, "agent-cli", { install: true, yes: true }, world.cwd)
+        await e2eBuild(
+            { ...io, hasEnv: (name) => name === "OPENAI_API_KEY" },
+            "agent-cli",
+            { install: true, yes: true },
+            world.cwd,
+        )
 
         expect(ran.map((item) => item.command)).toEqual(["npm ci", "npm run e2e"])
-        expect(uploads(world).find((item) => item.query.includes("relayCheckResult"))?.input.envPresent).toEqual(["OPENAI_API_KEY"])
+        expect(uploads(world).find((item) => item.query.includes("relayCheckResult"))?.input.envPresent).toEqual([
+            "OPENAI_API_KEY",
+        ])
     })
 
     it("stops without a run when the install fails, and runs nothing when the learner says no", async () => {
@@ -289,16 +305,21 @@ describe("harness e2e", () => {
         expect(await e2eBuild(empty.io, undefined, { install: false, yes: true }, empty.world.cwd)).toBe(1)
         expect(empty.world.err.join("\n")).toContain("harness pull")
         expect(
-            await e2eBuild({ ...empty.io, verify: () => ({ kind: "rejected", cause: "signature" }) }, "agent-cli", { install: false, yes: true }, empty.world.cwd),
+            await e2eBuild(
+                { ...empty.io, verify: () => ({ kind: "rejected", cause: "signature" }) },
+                "agent-cli",
+                { install: false, yes: true },
+                empty.world.cwd,
+            ),
         ).toBe(1)
     })
 })
 
 describe("harness ci-report", () => {
+    const BINDING = "11111111-2222-4333-8444-555555555555"
     const CI = {
         STARCI_API_URL: "https://starci.test/",
-        STARCI_PROJECT_ID: "11111111-2222-3333-4444-555555555555",
-        STARCI_CI_SECRET: "project-secret-value",
+        STARCI_HARNESS_BINDING: BINDING,
         GITHUB_RUN_ID: "9001",
         GITHUB_RUN_ATTEMPT: "2",
         GITHUB_SHA: "ABCDEF0123456789ABCDEF0123456789ABCDEF01",
@@ -319,13 +340,16 @@ describe("harness ci-report", () => {
             fetch: (url, init) => (posts.push({ url, init }), Promise.resolve({ status, text: '{"received":true}' })),
             download: (url, bearer) => {
                 downloads.push({ url, bearer })
-                return Promise.resolve({ status: oidcStatus, bytes: Buffer.from(JSON.stringify({ value: "oidc.jwt.token" })) })
+                return Promise.resolve({
+                    status: oidcStatus,
+                    bytes: Buffer.from(JSON.stringify({ value: "oidc.jwt.token" })),
+                })
             },
         }
         return { world: made.world, io, root, posts, downloads }
     }
 
-    it("posts the harness lines to the project-ci door, HMAC-signed with the project secret and attested with the OIDC token", async () => {
+    it("posts the harness lines to the harness-ci door with the binding id and the OIDC token, no project and no secret", async () => {
         const { world, io, root, posts, downloads } = ciWorld()
 
         expect(await ciReportBuild(io, {}, root)).toBe(0)
@@ -335,7 +359,7 @@ describe("harness ci-report", () => {
         ])
         expect(posts).toHaveLength(1)
         const [{ url, init }] = posts as [(typeof posts)[number]]
-        expect(url).toBe("https://starci.test/webhooks/project-ci")
+        expect(url).toBe("https://starci.test/webhooks/harness-ci")
         expect(JSON.parse(init.body)).toEqual({
             runId: "9001-2",
             commit: "abcdef0123456789abcdef0123456789abcdef01",
@@ -347,50 +371,70 @@ describe("harness ci-report", () => {
                 { build: "agent-cli", stage: "s2-tools", e2e: "tool-schema", passed: false },
             ],
         })
-        const timestamp = init.headers["x-starci-timestamp"] ?? ""
-        expect(init.headers).toMatchObject({
-            "x-starci-project": CI.STARCI_PROJECT_ID,
+        expect(init.headers).toEqual({
+            "content-type": "application/json",
+            "x-starci-binding": BINDING,
             "x-starci-oidc": "oidc.jwt.token",
-            "x-starci-signature": `sha256=${createHmac("sha256", "project-secret-value").update(timestamp).update(".").update(init.body).digest("hex")}`,
         })
-        expect(world.out.join("\n")).toContain("signed and attested by GitHub OIDC")
-        expect(everythingSeen(world)).not.toContain("project-secret-value")
+        expect(world.out.join("\n")).toContain("attested by GitHub OIDC")
         expect(everythingSeen(world)).not.toContain("oidc.jwt.token")
         expect(init.body).not.toContain(SECRET_VALUE)
         expect(init.body).not.toContain("leaked")
     })
 
-    it("reports one stage only, and says signed only when the workflow has no OIDC token", async () => {
-        const { world, io, root, posts } = ciWorld({ ...CI, ACTIONS_ID_TOKEN_REQUEST_URL: undefined })
+    it("asks GitHub for the one fixed audience starci-next, and for another only when STARCI_OIDC_AUDIENCE names it", async () => {
+        const fixed = ciWorld()
+        const custom = ciWorld({ ...CI, STARCI_OIDC_AUDIENCE: "https://api.example.test" })
+
+        await ciReportBuild(fixed.io, {}, fixed.root)
+        await ciReportBuild(custom.io, {}, custom.root)
+
+        expect(fixed.downloads[0]?.url).toContain("audience=starci-next")
+        expect(custom.downloads[0]?.url).toContain("audience=" + encodeURIComponent("https://api.example.test"))
+    })
+
+    it("reports one stage only", async () => {
+        const { io, root, posts } = ciWorld()
 
         expect(await ciReportBuild(io, { stage: "s1-loop" }, root)).toBe(0)
 
         const [{ init }] = posts as [(typeof posts)[number]]
-        expect(init.headers["x-starci-oidc"]).toBeUndefined()
         expect(JSON.parse(init.body).harness).toHaveLength(2)
         expect(JSON.parse(init.body).passed).toBe(true)
-        expect(world.out.join("\n")).toContain("signed only")
     })
 
-    it("sends no OIDC header when GitHub does not answer, and fails when StarCi refuses the delivery", async () => {
-        const noToken = ciWorld(CI, 200, 403)
-        await ciReportBuild(noToken.io, {}, noToken.root)
-        expect(noToken.posts[0]?.init.headers["x-starci-oidc"]).toBeUndefined()
+    it("sends nothing and says why when the workflow has no OIDC token or GitHub does not answer", async () => {
+        const none = ciWorld({ ...CI, ACTIONS_ID_TOKEN_REQUEST_URL: undefined })
+        const silent = ciWorld(CI, 200, 403)
 
-        const refused = ciWorld(CI, 401)
+        expect(await ciReportBuild(none.io, {}, none.root)).toBe(1)
+        expect(await ciReportBuild(silent.io, {}, silent.root)).toBe(1)
+
+        expect(none.posts).toHaveLength(0)
+        expect(silent.posts).toHaveLength(0)
+        expect(none.world.err.join("\n")).toContain("id-token: write")
+    })
+
+    it("fails when StarCi refuses the delivery", async () => {
+        const refused = ciWorld(CI, 403)
+
         expect(await ciReportBuild(refused.io, {}, refused.root)).toBe(1)
-        expect(refused.world.out.join("\n")).toContain("refused (HTTP 401)")
+        expect(refused.world.out.join("\n")).toContain("refused (HTTP 403)")
     })
 
-    it("names the missing CI variables, never a value, and sends nothing; http to a remote host is refused", async () => {
-        const missing = ciWorld({ ...CI, STARCI_CI_SECRET: undefined, GITHUB_SHA: "" })
+    it("names the missing CI variables, never a value, and sends nothing; http to a remote host and a bad binding id are refused", async () => {
+        const missing = ciWorld({ ...CI, STARCI_HARNESS_BINDING: undefined, GITHUB_SHA: "" })
         expect(await ciReportBuild(missing.io, {}, missing.root)).toBe(1)
-        expect(missing.world.err.join("\n")).toContain("STARCI_CI_SECRET, GITHUB_SHA")
+        expect(missing.world.err.join("\n")).toContain("STARCI_HARNESS_BINDING, GITHUB_SHA")
         expect(missing.posts).toHaveLength(0)
 
         const plain = ciWorld({ ...CI, STARCI_API_URL: "http://evil.test" })
         expect(await ciReportBuild(plain.io, {}, plain.root)).toBe(1)
         expect(plain.posts).toHaveLength(0)
+
+        const bad = ciWorld({ ...CI, STARCI_HARNESS_BINDING: "not-a-uuid" })
+        expect(await ciReportBuild(bad.io, {}, bad.root)).toBe(1)
+        expect(bad.posts).toHaveLength(0)
     })
 
     it("needs the build marker and the report", async () => {

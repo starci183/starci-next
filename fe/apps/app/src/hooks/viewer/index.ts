@@ -1,1 +1,0 @@
-export { useViewerId } from "./useViewerId"

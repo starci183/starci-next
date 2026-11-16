@@ -48,9 +48,9 @@ export { ProjectRepositoryService } from "./project-repository.service"
 export { ProjectService } from "./project.service"
 export { projectEntities, projectMigrations } from "./persistence/connection"
 export type { ProjectRelayPort } from "./project-relay.port"
-export type { CiHarnessResult, HarnessCiRun, ProjectHarnessPort } from "./project-harness.port"
-export { NoHarnessClient } from "./no-harness.client"
 export type { CiAttestationVerifier } from "./project-ci-attestation.port"
+export { InjectCiAttestation, PROJECT_CI_ATTESTATION } from "./project-ci-attestation.port"
+export { DEFAULT_CI_OIDC_AUDIENCE } from "./project-repository.service"
 export type { CiAttestation, CiAttestationRequest, ProjectRepositoryView } from "./project-params.contracts"
 export type {
     ConceptView,

@@ -113,7 +113,8 @@ export const buildViewOf = (
     locale: HarnessLocale,
     runRows: ReadonlyArray<HarnessRunRow>,
     proofRows: ReadonlyArray<HarnessProofRow>,
-    projectId: string | null,
+    binding: { readonly repository: string; readonly bindingId: string } | null,
+    audience: string,
 ): HarnessBuildView => {
     const runs = new Map(
         runRows.filter((row) => row.ref !== null).map((row) => [keyOf(row.checkId, row.ref ?? ""), row] as const),
@@ -133,7 +134,12 @@ export const buildViewOf = (
         provedStages: stages.filter((stage) => stage.state === "proved").length,
         state: rolledState(stages.map((stage) => stage.state)),
         runtime: build.runtime,
-        repository: { bound: projectId !== null, projectId },
+        repository: {
+            bound: binding !== null,
+            repository: binding?.repository ?? null,
+            bindingId: binding?.bindingId ?? null,
+            audience,
+        },
         stages,
     }
 }
@@ -171,14 +177,12 @@ export const probeResultOf = (
     const status: HarnessProbeStatus =
         row === undefined ? "not-run" : (STATUSES.find((each) => each === stated) ?? (row.passed ? "passed" : "failed"))
     const reason = detailText(row, "reason") ?? row?.why ?? null
-    const hint = reason === null ? undefined : probe.reasons[reason]
-    const first = Object.values(probe.reasons)[0]
     return {
         id: probe.id,
         order: probe.order,
-        title: probe.label[locale],
+        title: probe.title[locale],
         guide,
-        fix: (hint ?? first)?.[locale] ?? null,
+        fix: probe.fix[locale],
         status,
         reason: status === "passed" ? null : reason,
         at: row?.at ?? null,
@@ -201,6 +205,7 @@ export const guideViewOf = (
     order: guide.order,
     title: guide.title[locale],
     summary: guide.summary[locale],
+    minutes: guide.minutes,
     sections: guide.sections.map((section) => textOf(section, locale)),
     probes: probes
         .filter((probe) => guide.probes.includes(probe.id))
@@ -213,23 +218,35 @@ export const docViewOf = (doc: HarnessDocRecord, locale: HarnessLocale): Harness
     order: doc.order,
     title: doc.title[locale],
     summary: doc.summary[locale],
+    minutes: doc.minutes,
     sections: doc.sections.map((section) => textOf(section, locale)),
 })
 
-const shortcutsOf = (value: unknown): ReadonlyArray<HarnessShortcutView> =>
+const shortcutsOf = (
+    value: unknown,
+    known: ReadonlyArray<{ readonly id: string; readonly title: { readonly vi: string; readonly en: string } }>,
+    locale: HarnessLocale,
+): ReadonlyArray<HarnessShortcutView> =>
     Array.isArray(value)
         ? value.flatMap((item): Array<HarnessShortcutView> =>
               isRecord(item) && typeof item["kind"] === "string"
-                  ? [{ kind: item["kind"], blocked: item["blocked"] === true }]
+                  ? [
+                        {
+                            kind: item["kind"],
+                            title: known.find((each) => each.id === item["kind"])?.title[locale] ?? null,
+                            blocked: item["blocked"] === true,
+                        },
+                    ]
                   : [],
           )
         : []
 
 /** The newest trial result of a trap for one tool (or any tool when none is named), or null. */
 export const trialResultOf = (
-    trap: Pick<StoredTrap, "id">,
+    trap: Pick<StoredTrap, "id" | "shortcuts">,
     tool: HarnessTool | null,
     rows: ReadonlyArray<HarnessRunRow>,
+    locale: HarnessLocale,
 ): HarnessTrialResultView | null => {
     const row = rows
         .filter((each) => each.checkId === trap.id && (tool === null || each.ref === tool))
@@ -240,7 +257,7 @@ export const trialResultOf = (
         tool: known,
         verdict: detailText(row, "verdict") ?? (row.passed ? "held" : "breached"),
         testsGreen: row.detail?.["testsGreen"] === true,
-        shortcuts: shortcutsOf(row.detail?.["shortcuts"]),
+        shortcuts: shortcutsOf(row.detail?.["shortcuts"], trap.shortcuts, locale),
         at: row.at,
     }
 }
@@ -254,11 +271,13 @@ export const trapViewOf = (
 ): HarnessTrapView => ({
     id: trap.id,
     order: trap.order,
-    title: trap.label[locale],
-    task: trap.task,
+    title: trap.title[locale],
+    brief: trap.brief[locale],
+    prompt: trap.prompt,
     tools: trap.tools,
-    estimate: trap.estimate,
-    last: trialResultOf(trap, tool, rows),
+    budget: trap.budget,
+    shortcuts: trap.shortcuts.map((shortcut) => ({ id: shortcut.id, title: shortcut.title[locale] })),
+    last: trialResultOf(trap, tool, rows, locale),
 })
 
 /** Inputs of the hub of /harness. */

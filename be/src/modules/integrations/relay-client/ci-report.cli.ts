@@ -40,6 +40,7 @@ export interface CiFindings {
 const CI_ENV = {
     apiUrl: "STARCI_API_URL",
     project: "STARCI_PROJECT_ID",
+    binding: "STARCI_HARNESS_BINDING",
     secret: "STARCI_CI_SECRET",
     runId: "GITHUB_RUN_ID",
     attempt: "GITHUB_RUN_ATTEMPT",
@@ -52,6 +53,7 @@ const CI_ENV = {
 const COMMIT = /^[0-9a-f]{7,64}$/iu
 const RUN_ID = /^[\w.:-]{1,100}$/u
 const PROJECT_ID = /^[A-Za-z0-9._-]{1,100}$/u
+const BINDING_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu
 
 /** The signature of the signed webhook: HMAC-SHA256 over `<timestamp>.<body>` with the project secret, as `sha256=<hex>`. */
 export const ciSignature = (secret: string, timestamp: string, body: string): string =>
@@ -129,6 +131,62 @@ export const postCiReport = async (io: CliIo, findings: CiFindings): Promise<num
         answer.status === 200
             ? `StarCi CI: ${counted} result(s) sent for run ${runId}, ${oidc === undefined ? "signed only (no OIDC token: add permissions id-token: write)" : "signed and attested by GitHub OIDC"}.`
             : `StarCi CI: the delivery was refused (HTTP ${answer.status}).`,
+    )
+    return answer.status === 200 ? 0 : 1
+}
+
+/**
+ * The CI report of a /harness build (owner 2026-11-17: free for everyone, no Project, no signing secret). The GitHub Actions OIDC token
+ * is the proof: StarCi attests the bound repository, the commit and the run from it, so a run with no token is not sent (it could
+ * only be refused). It posts the harness lines to `POST /webhooks/harness-ci` with the binding id `bindHarnessBuild` answered
+ * (`STARCI_HARNESS_BINDING`) and the token, and asks GitHub for the audience `starci-next` unless `STARCI_OIDC_AUDIENCE` names
+ * another (the same value the server verifies). It prints counts, never a token. Answers 0 when StarCi recorded the delivery.
+ */
+export const postHarnessCiReport = async (io: CliIo, lines: ReadonlyArray<CiHarnessLine>): Promise<number> => {
+    const read = (name: string): string | undefined => {
+        const value = io.ciEnv?.(name)
+        return value === undefined || value === "" ? undefined : value
+    }
+    const missing = [CI_ENV.apiUrl, CI_ENV.binding, CI_ENV.runId, CI_ENV.sha].filter((name) => read(name) === undefined)
+    if (missing.length > 0) {
+        io.err(`harness ci-report needs these environment variables (names only): ${missing.join(", ")}.`)
+        return 1
+    }
+    const apiUrl = (read(CI_ENV.apiUrl) ?? "").replace(/\/$/u, "")
+    const binding = read(CI_ENV.binding) ?? ""
+    const runId = `${read(CI_ENV.runId) ?? ""}-${read(CI_ENV.attempt) ?? "1"}`
+    const commit = (read(CI_ENV.sha) ?? "").toLowerCase()
+    if (!apiUrl.startsWith("https://") && !/^http:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?$/u.test(apiUrl)) {
+        io.err("STARCI_API_URL must be an https:// URL.")
+        return 1
+    }
+    if (!BINDING_ID.test(binding) || !RUN_ID.test(runId) || !COMMIT.test(commit)) {
+        io.err("The harness binding id, run id or commit is not well formed; nothing was sent.")
+        return 1
+    }
+    const oidc = await oidcTokenOf(io, read(CI_ENV.audience) ?? DEFAULT_OIDC_AUDIENCE)
+    if (oidc === undefined) {
+        io.err(
+            "harness ci-report needs the GitHub OIDC token: add permissions id-token: write to the workflow. Nothing was sent.",
+        )
+        return 1
+    }
+    const body = JSON.stringify({
+        runId,
+        commit,
+        passed: lines.every((line) => line.passed),
+        results: [],
+        harness: lines,
+    })
+    const answer = await io.fetch(`${apiUrl}/webhooks/harness-ci`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-starci-binding": binding, "x-starci-oidc": oidc },
+        body,
+    })
+    io.out(
+        answer.status === 200
+            ? `StarCi CI: ${lines.length} result(s) sent for run ${runId}, attested by GitHub OIDC.`
+            : `StarCi CI: the delivery was refused (HTTP ${answer.status}); the run must come from the bound repository with id-token: write.`,
     )
     return answer.status === 200 ? 0 : 1
 }

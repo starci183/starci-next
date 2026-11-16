@@ -1,5 +1,6 @@
 import { Module, type DynamicModule } from "@nestjs/common"
 import { harnessDirectory } from "./harness-directory.client"
+import { HarnessCiService } from "./harness-ci.service"
 import { HarnessImportService } from "./harness-import.service"
 import { HarnessProofService } from "./harness-proof.service"
 import { HarnessReadService } from "./harness-read.service"
@@ -19,9 +20,10 @@ export class HarnessModule extends ConfigurableModuleClass {
                 HarnessImportService,
                 HarnessReadService,
                 HarnessProofService,
+                HarnessCiService,
                 { provide: HARNESS_SOURCE, useValue: harnessDirectory },
             ],
-            exports: [HarnessImportService, HarnessReadService, HarnessProofService],
+            exports: [HarnessImportService, HarnessReadService, HarnessProofService, HarnessCiService],
         }
     }
 }
