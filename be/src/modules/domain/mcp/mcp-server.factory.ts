@@ -222,7 +222,7 @@ export class McpServerFactory {
             {
                 title: "Request a scenario run",
                 description:
-                    "Ask the learner's own machine to run one scenario. The StarCi CLI shows the exact command and asks the learner to confirm; read the result with my_runs.",
+                    "Ask the learner's own machine to run one scenario. The StarCi CLI shows the exact command and asks the learner to confirm; read the result with my_runs. If delivered is false, no device is listening: tell the learner to run the returned command in their terminal.",
                 inputSchema: {
                     id: LESSON_ID,
                     scenario: SLUG,

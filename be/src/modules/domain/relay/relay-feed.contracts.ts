@@ -127,7 +127,7 @@ export interface UploadReceipt {
 
 /** What a scenario run asks the relay for: the lesson (the task), the scenario of its catalog and the guards switched off. */
 export interface ScenarioRunRequest {
-    /** The lesson id, which is the task id the results come back under. */
+    /** The lesson id; the task id the results come back under is `lesson:<lessonId>`. */
     readonly lessonId: string
     /** The scenario id, which is the check id the results come back under. */
     readonly scenarioId: string

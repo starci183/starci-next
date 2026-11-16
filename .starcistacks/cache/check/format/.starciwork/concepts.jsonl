@@ -1,4 +1,4 @@
-{"findings":[],"hash":"dc3255adc66cecbe15e3f5e550f1f932607ada7c0b251a01e1fa790530d0a2c6","path":".starciwork/concepts/README.md","step":"prettier"}
+{"findings":[],"hash":"1a3eed9ab3a405d7eb4613313cd43d50e1bc90dda392aebfc04a2405e69caa21","path":".starciwork/concepts/README.md","step":"prettier"}
 {"findings":[],"hash":"566c83ced9b87ac16cdee7865788a2f912d0c7c96e190a55046ec206a9dd3598","path":".starciwork/concepts/ai-teacher.md","step":"prettier"}
 {"findings":[],"hash":"fa3aefdaca2df0a03ede43b264b2c70c2033c1acc4d022609e2ac6f35d333dbf","path":".starciwork/concepts/app-shell.md","step":"prettier"}
 {"findings":[],"hash":"3003bba34a17a1b544aed1f0181c81624390a7f19bdb036e18042e60dd7a0396","path":".starciwork/concepts/content.md","step":"prettier"}
@@ -8,6 +8,7 @@
 {"findings":[],"hash":"381541bc51c0b30f8460fdce78371edd54c0c93395e7a2494f04107e0406d8e5","path":".starciwork/concepts/identity.md","step":"prettier"}
 {"findings":[],"hash":"62caaee1b06d3641f0bf044cf28e3beaab27ce1afaf7f93f3514d28070d8506d","path":".starciwork/concepts/learner-cli-relay.md","step":"prettier"}
 {"findings":[],"hash":"410f2a4cd05af02d3d1299739f7e00fe54315d04c777625a6f31d6c6fbe51368","path":".starciwork/concepts/learning-program.md","step":"prettier"}
+{"findings":[],"hash":"9eccc71ef6681017fc4c1bb8d4e179b30b0ae406f41297c8992d4b26fd2fa4a8","path":".starciwork/concepts/mcp.md","step":"prettier"}
 {"findings":[],"hash":"b97cbe37525de596a26bf40c2578e3223ff51e85db0cae58486e3bad3c08642a","path":".starciwork/concepts/mock-interview.md","step":"prettier"}
 {"findings":[],"hash":"44a5ed06a8f79131f8fad87282ded95555835c5f451763fe6f6c3c3718fdeb3f","path":".starciwork/concepts/practice.md","step":"prettier"}
 {"findings":[],"hash":"6796fce9ede37cddba0e146cdcf39386e0bbdd802ae5195d0a73052a86f02d2b","path":".starciwork/concepts/premium.md","step":"prettier"}

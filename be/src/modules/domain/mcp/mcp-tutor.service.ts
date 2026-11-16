@@ -21,6 +21,11 @@ import { McpVectorIndex } from "./mcp-vector.index"
 
 /** The most characters of log one run shows: its tail, where the failure is. */
 const LOG_TAIL_MAX = 4000
+/** The task id the learner CLI uploads a lesson's results under. */
+const taskOf = (lessonId: string): string => `lesson:${lessonId}`
+/** The command a learner runs for a scenario with guards off, the one the signed manifest carries. */
+const scenarioCommandOf = (lessonId: string, scenarioId: string, guardsOff: ReadonlyArray<string>): string =>
+    `starci-next run ${lessonId} --scenario ${scenarioId}${guardsOff.map((guard) => ` --guard ${guard}=off`).join("")}`
 /** The most runs `my_runs` answers. */
 const RUNS_MAX = 20
 
@@ -162,7 +167,7 @@ export class McpTutorService {
         await this.requirePremium(learnerId, id)
         const catalog = await this.source.catalog(id)
         const ran = new Set(
-            (await this.feed.runEvents(learnerId, id))
+            (await this.feed.runEvents(learnerId, taskOf(id)))
                 .filter((event) => event.kind === "check.result")
                 .map((event) => event.checkId),
         )
@@ -181,7 +186,7 @@ export class McpTutorService {
     async myRuns(learnerId: string, id: string): Promise<ReadonlyArray<McpRun>> {
         await this.requirePremium(learnerId, id)
         const known = new Set((await this.source.catalog(id)).scenarios.map((scenario) => scenario.id))
-        const events = (await this.feed.runEvents(learnerId, id)).filter((event) => known.has(event.checkId))
+        const events = (await this.feed.runEvents(learnerId, taskOf(id))).filter((event) => known.has(event.checkId))
         const runs = new Map<string, Array<LearnerRunEvent>>()
         for (const event of events) runs.set(event.runId, [...(runs.get(event.runId) ?? []), event])
         return [...runs.entries()].slice(0, RUNS_MAX).map(([runId, items]) => this.runOf(runId, items))
@@ -189,7 +194,8 @@ export class McpTutorService {
 
     /**
      * Sends a manifest for one public scenario to the learner's online device. The CLI shows the command and asks the learner
-     * before it runs; the result comes back through `my_runs`.
+     * before it runs; the result comes back through `my_runs`. With no device listening nothing is sent and the answer carries the
+     * exact command for the learner to run in their own terminal, which asks the same confirmation.
      */
     async requestRun(
         learnerId: string,
@@ -201,15 +207,17 @@ export class McpTutorService {
         const scenario = (await this.source.catalog(id)).scenarios.find((item) => item.id === scenarioId)
         if (scenario === undefined || !guardsOff.every((guard) => scenario.guards.includes(guard)))
             throw new McpError({ code: McpErrorCode.ScenarioUnknown })
+        const command = scenarioCommandOf(id, scenarioId, guardsOff)
         const device = (await this.devices.devices(learnerId)).find((item) => item.online)
-        if (device === undefined) throw new McpError({ code: McpErrorCode.DeviceOffline })
+        if (device === undefined) return { delivered: false, device: null, command, manifestId: null }
         const manifest = await this.feed.scenarioManifest(
             { learnerId, deviceId: device.id },
             { lessonId: id, scenarioId, guardsOff },
         )
         return {
+            delivered: true,
             device: device.name,
-            command: manifest.body.checks[0]?.command ?? "",
+            command: manifest.body.checks[0]?.command ?? command,
             manifestId: manifest.body.manifestId,
         }
     }

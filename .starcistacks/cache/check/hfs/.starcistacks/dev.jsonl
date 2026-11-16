@@ -1,6 +1,6 @@
 {"data":{},"findings":[],"hash":"7244637cbd2fd8d8db28b39db2bf315ab33c003f59543569d91261a0906346fa","path":".starcistacks/dev/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be7d4a045ca8426f88cf5d02d0f8df51ee8cfde57293a74135d98b2b3f955849","path":".starcistacks/dev/environment.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"025a292552d5ada8c543fe838b9acf736dffa32a4008286bd311daef575ff0f8","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0b9f0e528a31e1810ae7492ffe13edfecf6d06da9909b679088693bd87b531b2","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e8304a5d560d9d86abb7e2544019b88cb5ff6022465283c85df9fd5bd5933bf0","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f94cbb307a4d629bca9ff3aa108fb37acf69b868d7f28bc8a7cd69dac7a00a68","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"067d233eed607ceca0b2c33d43ad137ad3af6ee37c85967ac000fc5120743275","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}

@@ -31,6 +31,8 @@
 {"data":{},"findings":[],"hash":"8436bf55420a39a53b01e711d0e01073cd64a5e9d7a6506fe12c350a1bae47fb","path":"fe/apps/app/public/brand/starci-logo.png","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2d560ce50c4b2c09d5da7f8a889ca7a69916583ee58edcc03f5b286b740690f4","path":"fe/apps/app/src/app/[locale]/(app)/agents/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f901dd83df2a2323f17b558661f768490cd1aec7e02ffeb36069a50d589bd26b","path":"fe/apps/app/src/app/[locale]/(app)/agents/tracks/[trackId]/page.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3e12e0d47ae293eace137890ace32a8d32ec9b54f5369effc1966ca7f91b56a4","path":"fe/apps/app/src/app/[locale]/(app)/connect/page.tsx","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"the route /connect of app has no screen in gallery/pages/: add gallery/pages/<area>/<screen>/explain.md whose front matter `route` is /connect, or declare the route in gallery/routes.json with a reason (a developer-only route); a warning in --env local, an error in --env prod (PROJECT-GALLERY-4)","path":"fe/apps/app/src/app/[locale]/(app)/connect/page.tsx","rule":"HFS_APP_GALLERY_ROUTE_MISSING"}],"hash":"f6c137abda17a6912d7e278a538e29d9e26156017486461989ee41d15c35e303","path":"fe/apps/app/src/app/[locale]/(app)/connect/page.tsx","step":"hfs"}
 {"data":{},"findings":[],"hash":"78f88ef54bfa5c1df38f6a6fe90bfda365a1c7a61d4d36d96816457626157bdb","path":"fe/apps/app/src/app/[locale]/(app)/devices/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"953051c7b84375a92be7ade75bc72b83493b1789c6e0afa876a9513ac2558f1c","path":"fe/apps/app/src/app/[locale]/(app)/essentials/[topic]/[lesson]/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b74a3d6697bc9adf2b069977fcee49e787c1dda8e12e34d9ab85f3e6e745b634","path":"fe/apps/app/src/app/[locale]/(app)/essentials/[topic]/page.tsx","step":"file-rules"}
@@ -76,11 +78,13 @@
 {"data":{},"findings":[],"hash":"a6f7257df0825a61752c114eafd588fbb7330c0120520d23ad9e856903926405","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b50d24c653fcda173c1477b5ae75a52808b57cc20b6f85963306e93beff676c","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2829fbc9e1085f544a5b0f2f3a4587050317a4489652ad3b6be7cfdb4f5b869f","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a4222a2d26442e009eff6bb208e3fccc89e91e25446a4dd67008612fc4814213","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9e99de1214bad0724d01086167300a167021202e2f9782f7bac2637b6a58a3f6","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f54c116e13edf8d30f6c65a8c3db4a690d4c6acf1f71c09cd0e71f78c706d5b9","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ba8dd3d7541e64ad1afd5d4fb753d5d2b782182ad360ce59776b070464e4e749","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"43e49f2d60c0281ff4282ba6cfcbc1bb29a93afbce3f82dd82938c2e4f6f9e8b","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3ccf6a90d26c6471174a90b6071bacaf022f6e55f1ba121ee1c3d01f7c0b0e04","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6651386b453cacb6a0eed8678c620989b4313e671f5050a352bc7ed4f5e0e049","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bc8a99017d9a60c92816373eee6651180ddab6b013abef1b2a67fa002d3f8b31","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"85a03213c0efc551e1321355d388c81dcd55d1869adbe77aa09473c4e4d1cd30","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9dcb4603df870eb1b073f80565ee1aa4080b6b9f49a29358cc7355e9b65780d6","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c00a7395a5427d3d033e89247722beb16798f84df3de1f1fb111712adde2699","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx","step":"file-rules"}
@@ -154,6 +158,7 @@
 {"data":{},"findings":[],"hash":"d9cd3a85a3dd64d196ba9c826ae826e6e4be7653d36c16015bf40697dae9329b","path":"fe/apps/app/src/features/pages/CheckoutResultPage/classNames.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b7f32b62f4b7b09fb6b0e511a40ad33f6958b183c4b404c24e227d5a6af5711","path":"fe/apps/app/src/features/pages/CheckoutResultPage/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b3ad05f23067bfa0d4f5ead38b94c617c235b0977d044265b502cc35c3ecd23d","path":"fe/apps/app/src/features/pages/CheckoutResultPage/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"61a7f767b0b197e9bf46bc2d6439c8e51dae7d4b84a8bb594104fd3c0225b9cc","path":"fe/apps/app/src/features/pages/ConnectPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7a492c6307ccc9110318c3978c0f1114a98ceb39d5f64e13e614bc2c739be2ab","path":"fe/apps/app/src/features/pages/DevicesPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f0027a7b7b2f25ef5400bd0b2af015897697a7954cf435d12d0ef739f5c2f0c4","path":"fe/apps/app/src/features/pages/EssentialsCatalogPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bb2cfb38026e9338bc9df12a4c1c1abf87933b06992bb69b595f5ca7b24665d2","path":"fe/apps/app/src/features/pages/ExperiencePage/index.tsx","step":"file-rules"}
@@ -272,6 +277,8 @@
 {"data":{},"findings":[],"hash":"57c5e2a3e4d22c20781bfcdd7626cf1eca3b9ee346470cfaf0c8fe7a31c2075f","path":"fe/apps/app/src/hooks/locale/useGrammarRouting.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b7fd733899215d37df95480cae57df1209f456ca6314ffadb702d8e77c7f44b9","path":"fe/apps/app/src/hooks/locale/useLocaleSwitch.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cae5076676dd62ecb064bfcce64547e4d55804cfd14c52438355172da89d004f","path":"fe/apps/app/src/hooks/locale/useLocalizedPathname.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5c1a8af73d068d8dad8d1687b79c9006e2a3ffa00a3eb65fd0f0d56e6c99d191","path":"fe/apps/app/src/hooks/mcpConnect/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9378313254f91107feaf76a728189a0ed719c2485d59887d2c345a6bbb997f7f","path":"fe/apps/app/src/hooks/mcpConnect/useMcpConnect.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d2cb3ad5462e7845ed35c8457c5c5673e674235d3d5394f5deae8384623ed5d3","path":"fe/apps/app/src/hooks/paths/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f394c1b1fd8c98d4f75c37405a4e4dff9269e15b5981c6822f1281606c2ea7fd","path":"fe/apps/app/src/hooks/paths/paths.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f350bc366baeefedd2bad1747aae53fec3cdd79739f14682bb138bf37a0cf293","path":"fe/apps/app/src/hooks/paths/usePathChoice.ts","step":"file-rules"}
@@ -320,7 +327,7 @@
 {"data":{},"findings":[],"hash":"bc0f7aed75c6f2b3bc408df60e778ef08ca16ac3afad3b11f8e3fcbbc9291b6e","path":"fe/apps/app/src/hooks/slot/useSlotLabels.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"615cf80bba6b1798593d4b18082cabd52064dd849839ef75b9fc9dad0ebd6e83","path":"fe/apps/app/src/hooks/swr/SwrSideEffects.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9eb100b06a3e5a39cb7e446d5f7116d0db8fca9e65477683ec73fb0d500d43d","path":"fe/apps/app/src/hooks/swr/api/graphql/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0bbd3708e38c99a4fc31a017e3f3c495ecf09f8e71886aba167460215adf87de","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bd0e50e0a8530642d41c0f27cb2dc39210154f6f20447ee6a4054bbafc98b756","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fbb6e1a0ca86e65d3def04ebc8203c5f65091142be77930504ae28f8d79aaf72","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateAbandonInterviewSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"123d6b522e8d52ff5c42ca76d73f2a0f74b207577e5394c3cefe96863eeee1ec","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateAddReviewDeckSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bb7fbb176d95d8d6e0dc80823c4aee7fde6a8291645b507ce4aafe6ad2e033ff","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateAnswerInterviewSwr.ts","step":"file-rules"}
@@ -328,6 +335,7 @@
 {"data":{},"findings":[],"hash":"32f18643ca8e6a16b41436e6fda1f1e236e5575d921f838f8048789fa0e59bc8","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateCheckReviewClozeSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cb0f284e9c16e7b1d743130664e8d8f46160eb2bff491a510e00d7d7cd7a7cec","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateChooseOutcomePathSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e30f5dbd898733287cff761711e7f57883797902cfa9edc593b54e2cabab47c","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateConfirmRelayDeviceSwr.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"759118454ca9ad88f3ae497966724aaaec7806a72fadee59cafbeb034a4d2761","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateCreateMcpTokenSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"583004551fc45e964143a4f416650e9fff3b55f308dcff8718aa66e6204f59a1","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateCreateProjectSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ef5788aaf18b5512c51e119b732f00762d25b84f4fc8e2841271b1457aa6feaa","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateDecideExperienceSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"eb9b5e9c5e842d172bfea5ce36bd36accf903543c348a5985077ffa0966b0012","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateExplainProjectConceptSwr.ts","step":"file-rules"}
@@ -342,6 +350,7 @@
 {"data":{},"findings":[],"hash":"18cb442c2c30880ff7daf63ed1523d6c17f89fe53a1ea3617ff9cc6398c6d340","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRemoveReviewDeckSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"73f641a9e895f41ccfa5f7137bf80bedb320a8ec469a96389f294acad5fd9597","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRetryInterviewTurnSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"816a443ba51a5ad77980b08841df1492ee8771c2e2d6623caec633b2cf09d40a","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRevokeExperienceSwr.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f1a3116dd168feff331cc14a0b8215e8c1104e0129010abb3231506f84255882","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRevokeMcpTokenSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3c823287bfd25e5de64c5d53d0ae7705225921375547c5606e3705d5c3e635b9","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRevokeRelayDeviceSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fe3720a8400b40c7a9c1436e2cea58291575fbcab7cbbf3e64de4847a2e5570d","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRotateProjectCiSecretSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d151efae587cc20838f75155d64bb36e11f8f0e57afe90f7d85f08e4e397efdc","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateRunProjectProbesSwr.ts","step":"file-rules"}
@@ -358,7 +367,7 @@
 {"data":{},"findings":[],"hash":"f3cb25fb13c9f719ca1558900779d1bb64a87cb838e7a45c0dd3706eee85e2d8","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSubmitReviewRetrievalSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9a2f9cb36e72c10523fdcad2e532d60b58be9e701da4bd3b127449e16b1f8b45","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSyncProjectPracticeSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"909d23f00a5e9a46c562d8fb1e0bdc3d2a94a16853a1be2ea75e9a7e2755b78a","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateUpdateProjectSwr.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"883c1582f76a977f6f4eba9058a8fbea78313fc3f7f025a013181e466cd781b7","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"54669d04acfd1261301f7ef30e334b5f8822df628e9bf6ab3c7f0cccc0527454","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6bf3f506afe0db64728b0fa23845256062d06ecf4d58316e2d68bc1db04015a1","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f38eab83bf747be389e337ee65ebb887df23d5ab501384dcec873f06bc919f55","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabTrackSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c1ea183bafdfe6c452f3eb79fd0c450ee0fe5d870b4723a78b51195f28a7b650","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentQuotaSwr.ts","step":"file-rules"}
@@ -368,6 +377,7 @@
 {"data":{},"findings":[],"hash":"8cceff32ca04c4a43c213c25c60bed7b2110088776449f783667d1b79d7afc5d","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryInterviewOptionsSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f3b12b173dbf037260bacaec3244e32a74913416b2759cb094f2e7260c80c260","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryInterviewSessionSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"29db9e9404959640ea5b6c26ca04c81f2df01c7766ea772d9a812cda90787765","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryLearnerHubSwr.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"92ef0672d97d759f2b94f3fe06afa7ba226150ebd2de88a45ebcb1806a35742d","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryMcpTokensSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"03aad5caeaac5738dcfa9c85d1ab6c871e57177dc05432ec68d1500c065a94bf","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryMyExperienceSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8e6efa08e03802382f4d880997ec7b11f9401b70b53be2dfe6166f78b460a281","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryMyNotificationsSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cf81df2405643b07046801c42a7d3f4301fdbdec3d2cd7f3357f730b0c3960b1","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryMyPremiumSwr.ts","step":"file-rules"}
@@ -414,7 +424,7 @@
 {"data":{},"findings":[],"hash":"2e29e2631140390b27d7944eb401ac2b32960321bc3193f1e620dc5c0b99653a","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f1a36c78e78e34b9e75f1c63f1dfcfcb713aa73e9385b6f36fb71c75b479abae","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e288066642e1defac2444c311a949b261c4649515d65716aa07b448167a9b91","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicsSwr.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0c2fd4cf1ddc287e4ef1a9254b1cd8ea95052928335a9d49bd458b43b4f51278","path":"fe/apps/app/src/hooks/swr/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"40bc17f08aa4affffec924db9caa4d72bfcbd79e388cb6f28b057017c6f177ec","path":"fe/apps/app/src/hooks/swr/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fafe16d36e3d20ecea8dbc7178747e4476c2b6b32312c4ab2f47ce7cb03f41fa","path":"fe/apps/app/src/hooks/theme/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7342d55c88e11f38e41c8a7ca51b12eb0d5151a1370d4e4dfa09da3352053747","path":"fe/apps/app/src/hooks/theme/useThemeSwitch.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"253e998f7af03ec54c5c5f45ea6a6296c6ae6bbb4adb1c59a70741f90a474f79","path":"fe/apps/app/src/hooks/title/index.ts","step":"file-rules"}
@@ -445,6 +455,7 @@
 {"data":{},"findings":[],"hash":"03700eeebc834a26593be7a3a91c89f35a14d80f1a580c8da89d8db9f32f4171","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-check-review-cloze.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"19af25c2972bc1aabedc417107f0d138c4b0fa0c57dfecfc9995046be73af850","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-choose-outcome-path.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"22a451f58eb2be9c3008eddadf3d4b40fac83ec8a3199ac6c61d80dccc22565f","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-confirm-relay-device.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0edf9f4f6f74f2f7647fd2deb57f84563ffa23a849cf739399a31a68e1676c89","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-create-mcp-token.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5ce84a983cf98b480c7627430e869c6b5c3c0466903f204d06a90ed0889976f1","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-create-project.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2efa885ad02ee71e7c1b5f9ddc304bf91af80149c578c2068d0b8f6b61a44fed","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-decide-experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3fd2fd5b7ebb05ec10ba3fa50d751f20a88d5d5b66330def9b5ab666350916c4","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-explain-project-concept.ts","step":"file-rules"}
@@ -457,6 +468,7 @@
 {"data":{},"findings":[],"hash":"59ade9dd186890e598f4021eb8449f6363abc69136a2253ea057c6f08d93d1c4","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-retry-interview-turn.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"464e3c49e86f639f8786656d5ba468f7198c4a282c6048200052a9c9b8122966","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-reveal-practice-hint.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f4bed8c26912dae7cec7f123eb0e96d2a1485ba3009d498725f5932d2ed71dc1","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-revoke-experience.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f4f5516c57bcfd73b6db86664a99375d02e7c215945aca171dc32d94cf7c5488","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-revoke-mcp-token.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6e858b7b59a3ac5b4342be7756a95db54875b6486c2bbc726e591a07de3add32","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-revoke-relay-device.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b8affeeea46655727a8d4a3e85c50edd4b0591221e5237010557bf3880b6c88c","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-rotate-project-ci-secret.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8b5dd0acdfad6c7daba67dc58b352040c46e3cde43ab46de11f4b84960292ed9","path":"fe/apps/app/src/modules/api/graphql/mutations/mutation-run-practice.ts","step":"file-rules"}
@@ -490,6 +502,7 @@
 {"data":{},"findings":[],"hash":"65b2fdcbe02389efab7b589440a762e29650c38c2cfb137943b73d1ab44d61c2","path":"fe/apps/app/src/modules/api/graphql/queries/query-lesson-topic.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ef20a2f69d49164ba0c37f7d24caa990a9a4897d93aaf97900a4eac162924d65","path":"fe/apps/app/src/modules/api/graphql/queries/query-lesson.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"13b97623edd7a8a406d90eb4109ecc60bb31cc7250c45c3b6dd5deed9fe229ae","path":"fe/apps/app/src/modules/api/graphql/queries/query-lessons.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"63e7bf12c97663e53bc4d7bdca1e89ab368c94c8f6cfc69783f66b41f4839d40","path":"fe/apps/app/src/modules/api/graphql/queries/query-mcp-tokens.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0a11cce72d5956dda88cad7073bdc6c29914c6479210cc3a846ef5b2188bb969","path":"fe/apps/app/src/modules/api/graphql/queries/query-my-experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c2824a49aff4482d36557195b1e1ce6b5c7db62012537490225f3ded3bb8e90","path":"fe/apps/app/src/modules/api/graphql/queries/query-my-notifications.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7a0339b51b467f958ed52dbe81cf0682a8f821e271a78191ad9d57e630bd7354","path":"fe/apps/app/src/modules/api/graphql/queries/query-my-premium.ts","step":"file-rules"}
@@ -514,7 +527,7 @@
 {"data":{},"findings":[],"hash":"3a8a3cfd4c7f9e054037ad2e1bfacc769ba271cd092a594c71b797a8d8f49750","path":"fe/apps/app/src/modules/api/graphql/queries/query-streak.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67d8bb911b75ec152bf01d75cbdca1c1af64824309f05e11a05d16d2e7372747","path":"fe/apps/app/src/modules/api/graphql/queries/query-verify-experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3b87559acf4831a9e3704cb490b03a45e515befef7ce02f8aaf7a434155cd45b","path":"fe/apps/app/src/modules/api/graphql/types.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"199b9f88026a0420bbcd2b81a5512f820eca63a9fe1896628ad29ddc7a78bf7d","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b64a04294c65715941bb20c957444ba0235b05eef4e61f486447aad6c8f9d759","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e85cd2cb7319cb3be6ce50ba042e588bfad59f0c0c3e7eed11bd6c2824fee59","path":"fe/apps/app/src/modules/api/rest/identity/credentials.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0d90f9fa639fc427e7bcb464b2aa51eea481e3e5d11b51e9fbf3a7054f907b1c","path":"fe/apps/app/src/modules/api/rest/identity/door.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b1114cff5f61d02258aba711818a8aef05a2fe1121f4ee48de33a6446001ec9f","path":"fe/apps/app/src/modules/api/rest/identity/session.ts","step":"file-rules"}
@@ -533,8 +546,8 @@
 {"data":{},"findings":[],"hash":"776b025d94939ea35249f6923762458c5710b18525ac1baa3ef25ad0567e6295","path":"fe/apps/app/src/modules/config/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0ed825d8ef6be749123fcafb218954b3c95fbf9e2db573dc33cba9995acb8cf2","path":"fe/apps/app/src/modules/failure/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"452158ac063ca66ce6eb138dc9c18cd098a421ba7d48b99e8afbc888ecfb59bc","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"66b82f07d23bc72ce669b794fc6cc84de5f6d8a5ebafa0a1b9853cf368de2942","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"495fe2cb15db02549cbb5bf8b4f2a7662c8dc8732f50954c231bdf5da1c6a72f","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3df72e68a1e91eef41d75d69f42ec77f14a08cb01769264c792575ee5e2d7c98","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4813ef4dfb83808ab26adc29ac58c93abe774d977abb8aca125a5740f34c2312","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c2790b1ae91ffdffb9c70e255f1b8d4e171afc4dac9c47913284f990361e150","path":"fe/apps/app/src/modules/markdown/index.ts","step":"file-rules"}
@@ -542,7 +555,7 @@
 {"data":{},"findings":[],"hash":"5bcf66f9e662f54f7d07bafd2f17d5ad7089c6288b059de1326dba7a6e83b7a8","path":"fe/apps/app/src/modules/practice-result/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d1f3297b21e332ecd6718d9a95c0b894ce164f5f2da7ee222192d3c4de614705","path":"fe/apps/app/src/modules/practice-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d62f9d274bf7754e8c54320be4b2e487af64ffe9503d13d269b65fe22c276f25","path":"fe/apps/app/src/modules/rail/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e9fedb8f9b670276099ee43046e41705ec493683cf6c65556830b7c8ad2da904","path":"fe/apps/app/src/modules/routes/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3a22faf31b0f39f3af0e2662fec4c2ac0f8e52e8a6bb80fd8399152a5c3094c1","path":"fe/apps/app/src/modules/routes/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d0543061630444415cd6648db5210edd51665ebc34d74725d27b855200988dbe","path":"fe/apps/app/src/modules/social-state/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9099a9f2944a59e37439662024ff6e2a6e890d47b6349f731440ee15f18c9f86","path":"fe/apps/app/src/modules/toast/api.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"72627089b089f43cb84fc0d8df33dbae0d75232e0aca259f0010b676df705f0d","path":"fe/apps/app/src/modules/toast/hooks.ts","step":"file-rules"}

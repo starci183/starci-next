@@ -475,6 +475,17 @@
 {"findings":[],"hash":"c7d2794bab0f7f4cf394e1810e7085c69fda8014a81c89c137b30c715382ded8","path":"be/src/features/api/lesson/transport/http/lesson-http.options.ts","step":"prettier"}
 {"findings":[],"hash":"10578edcb498bd7476e88c92029fd1b292955d02551c59198844b4adff5ae382","path":"be/src/features/api/lesson/transport/http/lesson-workspace-archive.controller.ts","step":"prettier"}
 {"findings":[],"hash":"55c345b7917a410d1997cec71f004ec625494b1244d4cb742cc250cab16a365b","path":"be/src/features/api/lesson/transport/http/lesson-workspace-archive.mapper.ts","step":"prettier"}
+{"findings":[],"hash":"854964d2863f67232252534682fa95803ad94c3686c4d8649aa73f8775ee7da8","path":"be/src/features/api/mcp/index.ts","step":"prettier"}
+{"findings":[],"hash":"767aa81ce888c34359c2c40c47614cbe08d54ea4d5fc2b87e1594ab61dffd0c5","path":"be/src/features/api/mcp/transport/graphql/dto/mcp-token.input.ts","step":"prettier"}
+{"findings":[],"hash":"e3047786a48f585af0a3c941e1959aaba2182cd8003d668954a57ed4c868e5bd","path":"be/src/features/api/mcp/transport/graphql/dto/mcp-token.type.ts","step":"prettier"}
+{"findings":[],"hash":"f0aa065175cf6f6457b80c314805bea602efd522de5f6358930a81702d954b9e","path":"be/src/features/api/mcp/transport/graphql/mcp-graphql.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"3383b6479a04f5eebfaddd2893fe1fcdf930ebef6edae3a3cbe4cb866ec307dc","path":"be/src/features/api/mcp/transport/graphql/mcp-graphql.module.ts","step":"prettier"}
+{"findings":[],"hash":"fa7503015f66f068b96a66d1e67e7dc857b7e2fb244ca97c8733b06cd30f58c7","path":"be/src/features/api/mcp/transport/graphql/mcp-graphql.options.ts","step":"prettier"}
+{"findings":[],"hash":"aa79a1b10b568c165d059cf5c924bc6cf33b233de9ab3b5558cbb2d8a6af382f","path":"be/src/features/api/mcp/transport/graphql/mcp-token.resolver.ts","step":"prettier"}
+{"findings":[],"hash":"92243d9a8772775edd65106880d42508d94a90126f318236859db1af2239470c","path":"be/src/features/api/mcp/transport/http/mcp-http.module-definition.ts","step":"prettier"}
+{"findings":[],"hash":"b78385d98fd17ddcdb72fef6db9093af2478cc5ad64bbd589e6aab542271defc","path":"be/src/features/api/mcp/transport/http/mcp-http.module.ts","step":"prettier"}
+{"findings":[],"hash":"1d09b23d5b51628f117356301a384265386d770a8b987e84b23479dda85d9359","path":"be/src/features/api/mcp/transport/http/mcp-http.options.ts","step":"prettier"}
+{"findings":[],"hash":"837a50c8f9dd1164a46ef53c17de3e8a387870c4db138029d1f2d21d2eb59e95","path":"be/src/features/api/mcp/transport/http/mcp.controller.ts","step":"prettier"}
 {"findings":[],"hash":"3806b3dea752b49776220963a6c959f581d9fbeb347d8441aea74d437dbb1838","path":"be/src/features/api/notification/application/get-my-notifications.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"72367602b71a0e0e6449d56336b355a4fa2fdc03817f41323485e29aeba03263","path":"be/src/features/api/notification/application/get-my-notifications.handler.ts","step":"prettier"}
 {"findings":[],"hash":"2d322cf51c669367447e07b6a4fb2d636737f6746dc563e062370e1c562e4719","path":"be/src/features/api/notification/application/get-my-notifications.query.ts","step":"prettier"}

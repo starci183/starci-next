@@ -130,10 +130,12 @@ export interface McpRun {
 
 /** What a requested run answers: where it went and what the learner must do. */
 export interface McpRunRequested {
-    /** The device the manifest was sent to. */
-    readonly device: string
-    /** The exact command the CLI shows and asks the learner to confirm. */
+    /** True when a signed manifest was sent to an online device; false when no device is listening and the learner runs the command. */
+    readonly delivered: boolean
+    /** The device the manifest was sent to, or null. */
+    readonly device: string | null
+    /** The exact command the CLI shows and asks the learner to confirm (or the learner types, when nothing was delivered). */
     readonly command: string
-    /** The manifest id. */
-    readonly manifestId: string
+    /** The manifest id, or null when nothing was delivered. */
+    readonly manifestId: string | null
 }

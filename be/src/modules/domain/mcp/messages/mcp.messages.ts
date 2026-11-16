@@ -14,7 +14,6 @@ export const MCP_MESSAGES: MessageBundle = {
         "errors.MCP_PATH_FORBIDDEN": "Đường dẫn này nằm ngoài source của bài hoặc không được mở cho AI đọc.",
         "errors.MCP_FILE_NOT_FOUND": "Không có tệp này trong source của bài.",
         "errors.MCP_SCENARIO_UNKNOWN": "Kịch bản hoặc công tắc guard này không có trong bài.",
-        "errors.MCP_DEVICE_OFFLINE": "Chưa có máy nào đang kết nối. Hãy mở starci-next trên máy của bạn rồi thử lại.",
     },
     en: {
         "errors.MCP_TOKEN_INVALID":
@@ -28,6 +27,5 @@ export const MCP_MESSAGES: MessageBundle = {
         "errors.MCP_PATH_FORBIDDEN": "This path is outside the lesson source or is not open to the AI.",
         "errors.MCP_FILE_NOT_FOUND": "The lesson source has no such file.",
         "errors.MCP_SCENARIO_UNKNOWN": "This scenario or guard switch is not part of the lesson.",
-        "errors.MCP_DEVICE_OFFLINE": "No device is connected. Open starci-next on your machine and try again.",
     },
 }

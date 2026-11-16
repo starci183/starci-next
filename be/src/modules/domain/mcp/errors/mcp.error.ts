@@ -20,8 +20,6 @@ export enum McpErrorCode {
     FileNotFound = "MCP_FILE_NOT_FOUND",
     /** The scenario is not in the lesson's public catalog, or a guard is not one of its guards. */
     ScenarioUnknown = "MCP_SCENARIO_UNKNOWN",
-    /** The learner has no paired device with an open relay socket to send the run to. */
-    DeviceOffline = "MCP_DEVICE_OFFLINE",
 }
 
 /** How each mcp code travels. */
@@ -35,7 +33,6 @@ export const MCP_ERROR_KINDS: Record<McpErrorCode, ErrorKind> = {
     [McpErrorCode.PathForbidden]: "forbidden",
     [McpErrorCode.FileNotFound]: "not-found",
     [McpErrorCode.ScenarioUnknown]: "not-found",
-    [McpErrorCode.DeviceOffline]: "conflict",
 }
 
 /** The one error class of the mcp capability. */

@@ -326,7 +326,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             exitCode: 1,
             log: "FAIL balance 100 -> 150",
         })
-        expect(built.feed.runEvents).toHaveBeenCalledWith(LEARNER, LESSON)
+        expect(built.feed.runEvents).toHaveBeenCalledWith(LEARNER, `lesson:${LESSON}`)
         assertClean(runs)
     })
 
@@ -363,16 +363,21 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         expect(built.feed.scenarioManifest).not.toHaveBeenCalled()
 
         const sent = await built.tutor.requestRun(LEARNER, LESSON, "double-spend", ["idempotency"])
-        expect(sent).toMatchObject({ device: "laptop", manifestId: "m1" })
+        expect(sent).toMatchObject({ delivered: true, device: "laptop", manifestId: "m1" })
         expect(built.feed.scenarioManifest).toHaveBeenCalledWith(
             { learnerId: LEARNER, deviceId: "d1" },
             { lessonId: LESSON, scenarioId: "double-spend", guardsOff: ["idempotency"] },
         )
 
         built.devices.devices.mockResolvedValue([{ id: "d1", name: "laptop", online: false }])
-        await expect(built.tutor.requestRun(LEARNER, LESSON, "double-spend", [])).rejects.toMatchObject({
-            code: McpErrorCode.DeviceOffline,
+        built.feed.scenarioManifest.mockClear()
+        expect(await built.tutor.requestRun(LEARNER, LESSON, "double-spend", ["idempotency"])).toEqual({
+            delivered: false,
+            device: null,
+            command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+            manifestId: null,
         })
+        expect(built.feed.scenarioManifest).not.toHaveBeenCalled()
     })
 
     it("offers exactly the planned tools, resources and prompts over the protocol, and refuses a hidden path through them", async () => {

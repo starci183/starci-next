@@ -90,8 +90,8 @@ export class RelayFeedService {
         const issuedAt = this.clock.now().toISOString()
         const signed = signManifest(
             {
-                manifestId: manifestIdOf(device.deviceId, `${request.lessonId}:${check.command}`, issuedAt),
-                taskId: request.lessonId,
+                manifestId: manifestIdOf(device.deviceId, `lesson:${request.lessonId}:${check.command}`, issuedAt),
+                taskId: `lesson:${request.lessonId}`,
                 learnerId: device.learnerId,
                 deviceId: device.deviceId,
                 issuedAt,
