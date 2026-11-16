@@ -1,8 +1,9 @@
 import { Injectable, type OnModuleInit } from "@nestjs/common"
 import type { ObjectStorage } from "@starci/object-storage"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
-import { ObjectStorageLogEvent } from "./object-storage.log-events"
+import { ObjectStorageErrorCode } from "./errors/object-storage.error"
 import { InjectObjectStorage, InjectObjectStorageBucket } from "./object-storage.decorators"
+import { ObjectStorageLogEvent } from "./object-storage.log-events"
 
 @Injectable()
 /** Makes sure the app's bucket exists when a fresh store starts empty; an unreachable store is logged, never a reason to stop the boot. */
@@ -13,11 +14,12 @@ export class ObjectStorageBucketService implements OnModuleInit {
         @InjectObjectStorageBucket() private readonly bucket: string,
     ) {}
 
-    /** Creates the bucket when the store lacks it. */
+    /** Creates the bucket when the store lacks it; any failure other than an unreachable store (a bucket name the store refuses) stops the boot. */
     async onModuleInit(): Promise<void> {
         try {
             await this.storage.ensureBucket(this.bucket)
         } catch (cause) {
+            if ((cause as { code?: string }).code !== (ObjectStorageErrorCode.Unavailable as string)) throw cause
             this.logger.error(ObjectStorageLogEvent.BucketUnconfirmed, cause, { bucket: this.bucket })
         }
     }

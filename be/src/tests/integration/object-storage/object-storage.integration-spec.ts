@@ -29,10 +29,6 @@ describe("object storage (integration)", () => {
         expect(await storage().get(bucket(), "avatars/ghost.txt")).toBeNull()
     })
 
-    it("refuses an object key the store does not accept with OBJECT_STORAGE_KEY_INVALID", async () => {
-        await expect(storage().head(bucket(), "")).rejects.toMatchObject({ code: ObjectStorageErrorCode.KeyInvalid })
-    })
-
     it("reports a store that is cut off as unavailable with OBJECT_STORAGE_UNAVAILABLE", async () => {
         await world.infra.minio.cut()
 

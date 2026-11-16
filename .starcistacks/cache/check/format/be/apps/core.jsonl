@@ -4,7 +4,7 @@
 {"findings":[],"hash":"7615b0f8c93f801775b49a17341b5326f79190d931b918b894c28805c03c6ad9","path":"be/apps/core/src/compose/career.ts","step":"prettier"}
 {"findings":[],"hash":"095db3a1b81e40b85862f60e7ec1802652b90d24d1547cff5138d2302ffae616","path":"be/apps/core/src/compose/commerce.ts","step":"prettier"}
 {"findings":[],"hash":"93f36dab6882043fc01977207808b98d086f63c4cc914e6dec1ff0b7dbd87867","path":"be/apps/core/src/compose/identity.ts","step":"prettier"}
-{"findings":[],"hash":"91dc5a414c329ceb696e3a54bbbd3c2c629b05db27c29c7830694af31169ea7f","path":"be/apps/core/src/compose/integrations.ts","step":"prettier"}
+{"findings":[],"hash":"f0039ef254386031c53d13d4b15aebdf43d80a74aba44b3f81cf1386165f1316","path":"be/apps/core/src/compose/integrations.ts","step":"prettier"}
 {"findings":[],"hash":"14812ab9d4b152b37057bfff517ee54750a6d0f419796cbd42a4b4e9e2cdfb1f","path":"be/apps/core/src/compose/learning.ts","step":"prettier"}
 {"findings":[],"hash":"059105485eee282d87f44ec9003d1d0e1ec3f5d30e7c1a58f57d6e8c590abea1","path":"be/apps/core/src/compose/platform.ts","step":"prettier"}
 {"findings":[],"hash":"ff607cd3eea8fe1ea7248cd8d253e9af5e976ad3c4dff62886f7c350e8385a90","path":"be/apps/core/src/compose/realtime.ts","step":"prettier"}

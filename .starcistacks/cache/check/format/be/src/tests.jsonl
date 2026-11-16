@@ -22,7 +22,7 @@
 {"findings":[],"hash":"378435fdcbf3b20000ae479b16151af390387e7bbc48601a79c2e3a470e6ca1b","path":"be/src/tests/fixtures/builders/path.builder.ts","step":"prettier"}
 {"findings":[],"hash":"c4c053c8640070f4c17f096d65393b2bdaa5e711f33c216b69ad3954add87c13","path":"be/src/tests/fixtures/builders/practice.builder.ts","step":"prettier"}
 {"findings":[],"hash":"c6c0913ab8f43b33af5a0683fbd3529fa925faef9235c427ca8c8682c245dc1b","path":"be/src/tests/fixtures/builders/premium.builder.ts","step":"prettier"}
-{"findings":[],"hash":"447775e1d469e6ff7b32deba00a3c3ea594f0dfdf17ebe7cb4e0768201af46f6","path":"be/src/tests/fixtures/builders/project.builder.ts","step":"prettier"}
+{"findings":[],"hash":"d359d7d5eb52ce016d6692fad64d2d3dbae42cb4167a895376e462368adf9b88","path":"be/src/tests/fixtures/builders/project.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a99513b12bc731a56bd67dd58d2291d7190ad4543d180ebf60580fa578b7024f","path":"be/src/tests/fixtures/builders/purchase.builder.ts","step":"prettier"}
 {"findings":[],"hash":"2ae9013ee9cfa5035a13b64e1ab52e856fa215abda40699979730fc6a7e06f81","path":"be/src/tests/fixtures/builders/review.builder.ts","step":"prettier"}
 {"findings":[],"hash":"df0fb48c474e58c20c4cc107d67aa2a8f98e3a86a6f7e268ecf42e36e17e7339","path":"be/src/tests/fixtures/builders/seed.builder.ts","step":"prettier"}
