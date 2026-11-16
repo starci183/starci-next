@@ -15,6 +15,5 @@ export const toGetLessonOpenerScoresParams = (
 })
 
 /** Maps the scores to their GraphQL type. */
-export const toLessonOpenerScoreTypes = (
-    views: ReadonlyArray<OpenerScoreView>,
-): ReadonlyArray<LessonOpenerScoreType> => views
+export const toLessonOpenerScoreTypes = (views: ReadonlyArray<OpenerScoreView>): ReadonlyArray<LessonOpenerScoreType> =>
+    views

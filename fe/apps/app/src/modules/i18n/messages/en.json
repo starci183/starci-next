@@ -868,10 +868,7 @@
       "topic": {
         "doneLabel": "done",
         "ringsLabel": "Progress across six phases",
-        "noLanguage": "any language",
-        "factsAgnostic": "{lessons} lessons · {minutes} min",
         "phasesNote": "{done}/{total} phases",
-        "facts": "{lessons} lessons · {minutes} min · {languages} languages",
         "pageTitle": "Essentials",
         "empty": "This topic has no content yet.",
         "path": "Lessons in this chapter",
@@ -884,7 +881,6 @@
         "openFacts": "{open}/{total} lessons open",
         "source": "Source: {from}",
         "progress": "{done}/{total} lessons understood",
-        "meta": "{difficulty} · {minutes} min · {languages}",
         "prerequisites": "Know first",
         "related": "Related topics",
         "upsellNote": "Every lesson still shows its overview and the Asked question.",

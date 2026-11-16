@@ -868,10 +868,7 @@
       "topic": {
         "doneLabel": "đã xong",
         "ringsLabel": "Tiến độ sáu pha",
-        "noLanguage": "ngôn ngữ nào cũng được",
-        "factsAgnostic": "{lessons} bài · {minutes} phút",
         "phasesNote": "{done}/{total} pha",
-        "facts": "{lessons} bài · {minutes} phút · {languages} ngôn ngữ",
         "pageTitle": "Bản chất",
         "empty": "Topic này chưa có nội dung.",
         "path": "Bài trong chương",
@@ -884,7 +881,6 @@
         "openFacts": "{open}/{total} bài đã mở",
         "source": "Nguồn: {from}",
         "progress": "{done}/{total} bài đã hiểu",
-        "meta": "{difficulty} · {minutes} phút · {languages}",
         "prerequisites": "Nên biết trước",
         "related": "Topic liên quan",
         "upsellNote": "Mỗi bài vẫn xem được tổng quan và làm câu Bị hỏi.",
