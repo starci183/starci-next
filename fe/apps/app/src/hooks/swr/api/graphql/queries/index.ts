@@ -52,3 +52,5 @@ export { QUERY_PROJECT_MILESTONE_SWR_KEY, useQueryProjectMilestoneSwr } from "./
 export type { ProjectMilestoneRead } from "./useQueryProjectMilestoneSwr"
 export { QUERY_PROJECT_CATALOG_SWR_KEY, useQueryProjectCatalogSwr } from "./useQueryProjectCatalogSwr"
 export type { ProjectCatalogRead } from "./useQueryProjectCatalogSwr"
+export { QUERY_MCP_TOKENS_SWR_KEY, useQueryMcpTokensSwr } from "./useQueryMcpTokensSwr"
+export type { McpConnection } from "./useQueryMcpTokensSwr"

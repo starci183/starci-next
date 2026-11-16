@@ -50,4 +50,6 @@ export interface CoreOptions {
     readonly relay: CoreEnv["relay"]
     /** The realtime hub the device socket reads. */
     readonly realtime: CoreEnv["realtime"]
+    /** Parsed mcp settings: the token limit, the lesson checkouts, the public endpoint and the local embedder. */
+    readonly mcp: CoreEnv["mcp"]
 }

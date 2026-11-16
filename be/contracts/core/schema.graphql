@@ -106,6 +106,10 @@ type ChosenOutcomePathType {
   chosenAt: String!
 }
 
+input CreateMcpTokenInput {
+  name: String! @inputBounds(maxLength: 60)
+}
+
 input CreateProjectInput {
   kind: String!
   language: String! = "" @inputBounds(maxLength: 40)
@@ -896,6 +900,28 @@ input MarkNotificationsReadInput {
   ids: [ID!] = null @inputBounds(maxItems: 100)
 }
 
+type McpConnectInfoType {
+  endpoint: String!
+  tokenLimit: Int!
+}
+
+type McpTokenIssuedType {
+  createdAt: String!
+  hint: String!
+  id: ID!
+  lastUsedAt: String
+  name: String!
+  secret: String!
+}
+
+type McpTokenType {
+  createdAt: String!
+  hint: String!
+  id: ID!
+  lastUsedAt: String
+  name: String!
+}
+
 type Mutation {
   abandonInterview(input: InterviewSessionRefInput!): InterviewAbandonType!
   addReviewDeck(input: RecallDeckInput!): RecallDeckAddedType!
@@ -904,6 +930,7 @@ type Mutation {
   checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
   chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
   confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
+  createMcpToken(input: CreateMcpTokenInput!): McpTokenIssuedType!
   createProject(input: CreateProjectInput!): ProjectSecretType!
   decideExperience(input: DecideExperienceInput!): [DecisionResultType!]!
   deleteProject(input: DeleteProjectInput!): ProjectDeletedType!
@@ -921,6 +948,7 @@ type Mutation {
   retryInterviewTurn(input: InterviewSessionRefInput!): InterviewAnswerType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
   revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
+  revokeMcpToken(input: RevokeMcpTokenInput!): String!
   revokeRelayDevice(input: RevokeRelayDeviceInput!): RevokeRelayDeviceType!
   rotateProjectCiSecret(input: RotateProjectCiSecretInput!): ProjectSecretType!
   runPractice(input: PracticeSolveInput!): PracticeSubmissionType!
@@ -1375,6 +1403,8 @@ type Query {
   lessonProgress(input: LessonProgressInput!): LessonProgressType!
   lessonTopic(input: LessonTopicInput!): LessonTopicType!
   lessons(input: LessonsInput!): [LessonCatalogItemType!]!
+  mcpConnectInfo: McpConnectInfoType!
+  mcpTokens: [McpTokenType!]!
   myExperience(input: MyExperienceInput!): MyExperienceType!
   myNotifications(input: MyNotificationsInput = {}): NotificationPage!
   myPremium: MyPremiumType!
@@ -1707,6 +1737,10 @@ type ReviewerType {
 input RevokeExperienceInput {
   itemId: String! @inputBounds(maxLength: 40)
   reason: String! @inputBounds(maxLength: 2000)
+}
+
+input RevokeMcpTokenInput {
+  id: ID! @inputBounds(maxLength: 36)
 }
 
 input RevokeRelayDeviceInput {

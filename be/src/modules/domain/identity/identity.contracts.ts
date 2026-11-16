@@ -21,6 +21,8 @@ export enum PublicReason {
     SignedWebhook = "signed-webhook",
     /** A declared public catalog read. */
     CatalogRead = "catalog-read",
+    /** A protocol door that proves its own caller: it verifies the learner's bearer access token before any read or act (the MCP endpoint). */
+    ProtocolBearer = "protocol-bearer",
 }
 
 /** The metadata `@Public` attaches to a door. */

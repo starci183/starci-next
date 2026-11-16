@@ -9,6 +9,7 @@ import { parseInterviewConfig } from "@modules/domain/interview"
 import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
 import { parseProjectConfig } from "@modules/domain/project"
+import { parseMcpConfig } from "@modules/domain/mcp"
 import { parseRelayConfig } from "@modules/domain/relay"
 import { parseProbeConfig } from "@modules/integrations/probe"
 import type { PurchaseOptions } from "@modules/domain/purchase"
@@ -61,6 +62,8 @@ export interface CoreEnv {
     readonly relay: ReturnType<typeof parseRelayConfig>
     /** The realtime hub the device socket reads (memory, one replica). */
     readonly realtime: ReturnType<typeof parseRealtimeConfig>
+    /** The mcp capability: the token limit, the lesson checkouts, the public endpoint and the local embedder. */
+    readonly mcp: ReturnType<typeof parseMcpConfig>
 }
 
 /** Reads the core environment; missing or invalid values fail boot, and secrets use `_FILE` first. */
@@ -88,5 +91,6 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         probe: parseProbeConfig(env),
         relay: parseRelayConfig(env, httpSecurity.allowedOrigins[0] ?? ""),
         realtime: parseRealtimeConfig(env),
+        mcp: parseMcpConfig(env),
     }
 }

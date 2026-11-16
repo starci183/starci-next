@@ -15,7 +15,8 @@
         "projects": "Projects",
         "agents": "Agents & AI",
         "experience": "Verified experience",
-        "profile": "Profile"
+        "profile": "Profile",
+        "connect": "Connect AI"
       },
       "sidebarLabel": "Main navigation",
       "experienceGroup": "Experience",
@@ -1708,6 +1709,71 @@
         "codeNotFound": "The code is wrong or has expired. Run starci-next login again.",
         "deviceLimit": "You have connected as many devices as your plan allows. Revoke one and try again.",
         "other": "That did not go through; please try again."
+      }
+    },
+    "connectAi": {
+      "pageTitle": "Connect Claude / ChatGPT",
+      "pageHeading": "Connect Claude / ChatGPT",
+      "pageSub": "Study with your own AI: it reads the lesson and the source, sees your run results and asks your machine to re-run a scenario.",
+      "endpointTitle": "StarCi MCP address",
+      "endpointHint": "Paste this address into Claude or ChatGPT, then create an access token below so the AI signs in as you.",
+      "tokensTitle": "Your access tokens",
+      "tokensEmpty": "You have no token yet. Name one (for example Claude) and press Create token.",
+      "tokensLimit": "You can hold up to 5 tokens at once. Revoking a token stops it at once.",
+      "tokensError": "The tokens could not be loaded.",
+      "nameLabel": "Token name",
+      "namePlaceholder": "Claude",
+      "create": "Create token",
+      "creating": "Creating…",
+      "revoke": "Revoke",
+      "createdTitle": "New token. Copy it now, it is shown only once.",
+      "createdHint": "Whoever holds this token can read your lessons and run results, so share it with no one. If you lose it, revoke it and create another.",
+      "dismiss": "I saved the token",
+      "neverUsed": "Ends …{hint} · never used",
+      "lastUsed": "Ends …{hint} · used {when}",
+      "canTitle": "What the AI can read and do",
+      "canText": "Read the unlocked parts of a lesson, read and search the source at the lesson's pinned commit, see the scenarios, your own run results and the laws you have opened. Ask your machine to re-run one scenario: the command shows on your machine and runs only when you confirm. Source, scenarios and re-runs need Premium like the lesson workspace.",
+      "cannotTitle": "What the AI never sees",
+      "cannotText": "Hidden tests, sample submissions, rubric answers, expected evidence and the faults injected in incidents. Letting the AI help fix your own code is fine; Proved still comes only from CI with GitHub OIDC.",
+      "oauthNote": "For now you connect with a personal access token (Bearer), which works at once with Claude Code and apps that let you add a header. OAuth sign-in for Claude web and ChatGPT comes in a later step.",
+      "guidesTitle": "How to add the connector",
+      "error": {
+        "limit": "You already created 5 tokens. Revoke one and try again.",
+        "name": "The token name is not valid (1 to 60 characters).",
+        "other": "That did not work. Please try again later."
+      },
+      "claude": {
+        "title": "Claude (custom connector)",
+        "open": {
+          "title": "Open Connectors",
+          "note": "In Claude: Settings, Connectors, Add custom connector."
+        },
+        "add": {
+          "title": "Paste the MCP address",
+          "command": "{endpoint}",
+          "note": "Name it StarCi Next and paste the address above. Claude web needs OAuth sign-in, which comes in a later step; meanwhile use Claude Code below."
+        },
+        "code": {
+          "title": "Or add it to Claude Code",
+          "command": "claude mcp add --transport http starci-next {endpoint} --header \"Authorization: Bearer YOUR_TOKEN\"",
+          "note": "Replace YOUR_TOKEN with the token you just created. Then type /mcp to check, and ask it to use the fix_scenario prompt for your lesson."
+        }
+      },
+      "chatgpt": {
+        "title": "ChatGPT (connectors, developer mode)",
+        "enable": {
+          "title": "Turn on developer mode",
+          "note": "In ChatGPT: Settings, Connectors (or Apps), Advanced, turn on Developer mode. Menu names can change between versions."
+        },
+        "add": {
+          "title": "Create a connector from the MCP address",
+          "command": "{endpoint}",
+          "note": "Choose Create, paste the address above and pick the sign-in method ChatGPT allows. OAuth sign-in comes in a later step."
+        },
+        "use": {
+          "title": "Use it in a chat",
+          "note": "Start a new chat, switch on the StarCi Next connector and name the lesson you study, for example: explain why the double-spend scenario is red on my machine."
+        }
       }
     }
   }

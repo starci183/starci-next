@@ -15,7 +15,8 @@
         "projects": "Dự án",
         "agents": "Agent và AI",
         "experience": "Kinh nghiệm đã xác minh",
-        "profile": "Hồ sơ"
+        "profile": "Hồ sơ",
+        "connect": "Kết nối AI"
       },
       "sidebarLabel": "Điều hướng chính",
       "experienceGroup": "Kinh nghiệm",
@@ -1708,6 +1709,71 @@
         "codeNotFound": "Mã không đúng hoặc đã hết hạn. Hãy chạy lại starci-next login.",
         "deviceLimit": "Bạn đã nối đủ số máy cho phép. Hãy thu hồi một máy rồi thử lại.",
         "other": "Chưa xác nhận được; hãy thử lại."
+      }
+    },
+    "connectAi": {
+      "pageTitle": "Kết nối Claude / ChatGPT",
+      "pageHeading": "Kết nối Claude / ChatGPT",
+      "pageSub": "Học bài cùng AI của bạn: AI đọc bài, đọc source, xem kết quả chạy của bạn và nhờ máy bạn chạy lại kịch bản.",
+      "endpointTitle": "Địa chỉ MCP của StarCi",
+      "endpointHint": "Dán địa chỉ này vào Claude hoặc ChatGPT, rồi tạo một mã truy cập bên dưới để AI đăng nhập thay bạn.",
+      "tokensTitle": "Mã truy cập của bạn",
+      "tokensEmpty": "Bạn chưa có mã nào. Đặt tên cho mã (ví dụ Claude) rồi bấm Tạo mã.",
+      "tokensLimit": "Mỗi người giữ tối đa 5 mã cùng lúc. Thu hồi một mã là nó ngừng chạy ngay.",
+      "tokensError": "Chưa tải được danh sách mã.",
+      "nameLabel": "Tên mã",
+      "namePlaceholder": "Claude",
+      "create": "Tạo mã",
+      "creating": "Đang tạo…",
+      "revoke": "Thu hồi",
+      "createdTitle": "Mã mới. Sao chép ngay, mã chỉ hiện một lần.",
+      "createdHint": "Ai giữ mã này đọc được bài và kết quả chạy của bạn, nên đừng gửi cho ai. Mất mã thì thu hồi và tạo mã khác.",
+      "dismiss": "Tôi đã lưu mã",
+      "neverUsed": "Đuôi …{hint} · chưa dùng",
+      "lastUsed": "Đuôi …{hint} · dùng {when}",
+      "canTitle": "AI đọc và làm được gì",
+      "canText": "Đọc các phần bài đã mở khóa, đọc và tìm trong source ở đúng commit của bài, xem kịch bản, kết quả chạy của chính bạn và các luật bạn đã mở. Nhờ máy bạn chạy lại một kịch bản: lệnh hiện trên máy và bạn xác nhận mới chạy. Source, kịch bản và chạy lại cần Premium như workspace của bài.",
+      "cannotTitle": "AI không bao giờ thấy",
+      "cannotText": "Bài test ẩn, bài nộp mẫu, đáp án của rubric, bằng chứng mong đợi và các lỗi bơm của Sự cố. AI giúp bạn sửa code của chính bạn là được; trạng thái Đã chứng minh vẫn chỉ đến từ CI có GitHub OIDC.",
+      "oauthNote": "Hiện kết nối bằng mã truy cập cá nhân (Bearer), dùng được ngay với Claude Code và các ứng dụng cho phép thêm tiêu đề. Đăng nhập OAuth cho Claude web và ChatGPT sẽ đến ở bước sau.",
+      "guidesTitle": "Cách thêm connector",
+      "error": {
+        "limit": "Bạn đã tạo đủ 5 mã. Thu hồi một mã rồi tạo lại.",
+        "name": "Tên mã không hợp lệ (1 đến 60 ký tự).",
+        "other": "Chưa xử lý được. Hãy thử lại sau."
+      },
+      "claude": {
+        "title": "Claude (connector tùy chỉnh)",
+        "open": {
+          "title": "Mở phần Connectors",
+          "note": "Trong Claude: Settings, Connectors, Add custom connector."
+        },
+        "add": {
+          "title": "Dán địa chỉ MCP",
+          "command": "{endpoint}",
+          "note": "Đặt tên StarCi Next rồi dán địa chỉ trên. Claude web cần đăng nhập OAuth, sẽ có ở bước sau; trong lúc chờ hãy dùng Claude Code bên dưới."
+        },
+        "code": {
+          "title": "Hoặc thêm vào Claude Code",
+          "command": "claude mcp add --transport http starci-next {endpoint} --header \"Authorization: Bearer YOUR_TOKEN\"",
+          "note": "Thay YOUR_TOKEN bằng mã vừa tạo. Sau đó gõ /mcp để kiểm tra, rồi hỏi: dùng prompt fix_scenario cho bài đang học."
+        }
+      },
+      "chatgpt": {
+        "title": "ChatGPT (connectors, chế độ nhà phát triển)",
+        "enable": {
+          "title": "Bật chế độ nhà phát triển",
+          "note": "Trong ChatGPT: Settings, Connectors (hoặc Apps), Advanced, bật Developer mode. Tên mục có thể đổi theo phiên bản."
+        },
+        "add": {
+          "title": "Tạo connector từ địa chỉ MCP",
+          "command": "{endpoint}",
+          "note": "Chọn Create, dán địa chỉ trên, chọn cách xác thực mà ChatGPT cho phép. Đăng nhập OAuth sẽ có ở bước sau."
+        },
+        "use": {
+          "title": "Dùng trong cuộc trò chuyện",
+          "note": "Mở cuộc trò chuyện mới, bật connector StarCi Next và nói tên bài bạn đang học, ví dụ: giải thích vì sao kịch bản double-spend đỏ trên máy tôi."
+        }
       }
     }
   }

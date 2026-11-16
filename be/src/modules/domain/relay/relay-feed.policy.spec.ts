@@ -3,6 +3,7 @@ import { Test } from "@nestjs/testing"
 import type { RelayUpload } from "./relay-feed.contracts"
 import {
     PROJECT_CHECKS,
+    scenarioCheckOf,
     manifestPayloadOf,
     projectRunOf,
     publicKeyPemOf,
@@ -167,5 +168,27 @@ describe("relay feed policy uploads", () => {
         const { uploadValid: valid } = await build()
 
         expect(valid(upload)).toBe(false)
+    })
+})
+
+describe("scenarioCheckOf", () => {
+    it("builds the one allowlisted run command with a guard switch per guard", () => {
+        expect(
+            scenarioCheckOf({ lessonId: "bank-transfer", scenarioId: "double-spend", guardsOff: ["idempotency"] }),
+        ).toEqual({
+            id: "double-spend",
+            command: "starci-next run bank-transfer --scenario double-spend --guard idempotency=off",
+            cwd: ".",
+            timeoutMs: 600_000,
+        })
+    })
+
+    it("refuses an id that could carry a shell fragment", () => {
+        for (const request of [
+            { lessonId: "bank-transfer; rm -rf", scenarioId: "a", guardsOff: [] },
+            { lessonId: "bank-transfer", scenarioId: "a && b", guardsOff: [] },
+            { lessonId: "bank-transfer", scenarioId: "a", guardsOff: ["x y"] },
+        ])
+            expect(scenarioCheckOf(request)).toBeNull()
     })
 })

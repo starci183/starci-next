@@ -22,7 +22,7 @@ export const PUBLIC_KEY = "domain.identity.public"
  * signed webhook proves its caller by its signature, so it owes no browser origin.
  */
 export const Public = (metadata: PublicMetadata): DoorDecorator =>
-    metadata.reason === PublicReason.SignedWebhook
+    metadata.reason === PublicReason.SignedWebhook || metadata.reason === PublicReason.ProtocolBearer
         ? applyDecorators(SetMetadata(PUBLIC_KEY, metadata), ServerToServer())
         : applyDecorators(SetMetadata(PUBLIC_KEY, metadata))
 

@@ -53,6 +53,7 @@ import {
     streakEntities,
     streakMigrations,
 } from "@modules/domain/streak"
+import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule, mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { JUDGE0_ERROR_KINDS, JUDGE0_MESSAGES, Judge0Module } from "@modules/integrations/judge0"
 import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
@@ -60,12 +61,13 @@ import type { MessageBundle } from "@modules/platform/i18n"
 import type { CoreOptions } from "../core.options"
 
 /**
- * The learning area: the lessons and their attempts, practice over the judge, review, the agent lab, incidents, the streak, the
+ * The learning area: the lessons, their MCP companion and their attempts, practice over the judge, review, the agent lab, incidents, the streak, the
  * paths, the hub and the notifications. Without a declared Judge0 endpoint the judge still composes and refuses, so a run ends as
  * an internal error.
  */
 export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
     LessonModule.register({ isGlobal: true }),
+    McpModule.register({ isGlobal: true, ...options.mcp }),
     StreakModule.register({ isGlobal: true }),
     PathModule.register({ isGlobal: true }),
     HubModule.register({ isGlobal: true }),
@@ -85,6 +87,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
 /** The error kind tables of the learning area. */
 export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKind>>> = [
     LESSON_ERROR_KINDS,
+    MCP_ERROR_KINDS,
     ATTEMPT_ERROR_KINDS,
     REVIEW_ERROR_KINDS,
     STREAK_ERROR_KINDS,
@@ -98,6 +101,7 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
 /** The message bundles of the learning area. */
 export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     LESSON_MESSAGES,
+    MCP_MESSAGES,
     ATTEMPT_MESSAGES,
     REVIEW_MESSAGES,
     STREAK_MESSAGES,
@@ -112,6 +116,7 @@ export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
 /** The entities the learning area keeps in the primary database. */
 export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
     ...lessonEntities,
+    ...mcpEntities,
     ...attemptEntities,
     ...practiceEntities,
     ...reviewEntities,
@@ -124,6 +129,7 @@ export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
 /** The migrations of the learning area. */
 export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
     ...lessonMigrations,
+    ...mcpMigrations,
     ...attemptMigrations,
     ...practiceMigrations,
     ...reviewMigrations,
