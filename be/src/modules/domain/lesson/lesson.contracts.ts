@@ -1,3 +1,5 @@
+import type { LessonEssential, LessonEssentialFields } from "./lesson-essential.contracts"
+
 /** The locales a lesson is written in; both are required. */
 export type LessonLocale = "vi" | "en"
 
@@ -263,7 +265,7 @@ export interface LessonSection extends LessonSectionFile {
 }
 
 /** The fields of the root file (`<locale>.md`) once decoded. */
-export interface LessonRootFile {
+export interface LessonRootFile extends LessonEssentialFields {
     /** The title. */
     readonly title: string
     /** The one-sentence description. */
@@ -316,6 +318,8 @@ export interface LessonLocaleDocument {
     readonly retrieval: ReadonlyArray<LessonActivity>
     /** The sections in order. */
     readonly sections: ReadonlyArray<LessonSection>
+    /** The four-part fields; absent in a version stored before they existed and in a lesson that carries none. */
+    readonly essential?: LessonEssential
 }
 
 /** The whole content of a lesson version as stored: every locale, whole, plus the workspace. */

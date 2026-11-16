@@ -20,3 +20,19 @@ FROM relay_events
 WHERE learner_id = $1::uuid AND task_id = $2::text AND kind = 'check.result' AND concept_id IS NOT NULL AND slot IS NOT NULL
     AND ($3::timestamptz IS NULL OR created_at > $3::timestamptz)
 ORDER BY created_at, event_id LIMIT $4::int`
+
+/**
+ * The newest state of every check of one task of the learner: the latest started or result event per check id, with the
+ * newest log line of that run and check ($1 learner, $2 task, $3 bound). A started event newer than every result is a run in
+ * flight.
+ */
+export const SELECT_TASK_CHECKS: ReturnType<typeof sql> = sql`SELECT DISTINCT ON (e.check_id) e.check_id, e.kind, e.run_id,
+    e.slot, e.ref, e.passed, e.exit_code, e.duration_ms, e.commit_sha, e.created_at,
+    (SELECT l.body FROM relay_events l
+        WHERE l.learner_id = e.learner_id AND l.task_id = e.task_id AND l.run_id = e.run_id AND l.check_id = e.check_id
+            AND l.kind = 'log'
+        ORDER BY l.created_at DESC, l.event_id DESC LIMIT 1) AS output
+FROM relay_events e
+WHERE e.learner_id = $1::uuid AND e.task_id = $2::text AND e.kind IN ('check.started', 'check.result') AND e.check_id IS NOT NULL
+ORDER BY e.check_id, e.created_at DESC, e.event_id DESC
+LIMIT $3::int`

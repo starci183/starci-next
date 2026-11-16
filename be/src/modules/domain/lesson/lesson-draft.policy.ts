@@ -3,6 +3,7 @@ import { groupOf } from "./lesson-group.policy"
 import { resolveTopic, sourceKeyOf } from "./lesson-topic.policy"
 import { readLessonSource } from "./lesson-source.policy"
 import { validateLesson } from "./lesson-validation.policy"
+import { essentialOf } from "./lesson-essential.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
 import type {
     LessonContent,
@@ -28,7 +29,9 @@ export const contentHashOf = (files: ReadonlyArray<LessonSourceFile>): string =>
         )
         .digest("hex")
 
-const documentOf = (parsed: LessonParsedLocale): LessonLocaleDocument => ({
+const documentOf = (parsed: LessonParsedLocale): LessonLocaleDocument => {
+    const essential = essentialOf(parsed.root)
+    return {
     title: parsed.root.title,
     description: parsed.root.description,
     body: parsed.root.body,
@@ -38,7 +41,9 @@ const documentOf = (parsed: LessonParsedLocale): LessonLocaleDocument => ({
     references: parsed.root.references,
     retrieval: parsed.root.activities ?? [],
     sections: parsed.sections,
-})
+    ...(essential === undefined ? {} : { essential }),
+    }
+}
 
 /** The workspace files found in the folder and the issues for those the concept declares but the folder lacks. */
 interface WorkspaceAttachment {

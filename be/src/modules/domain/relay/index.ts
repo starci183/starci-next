@@ -2,6 +2,8 @@ export type { DevicePairing, DevicePrincipal, DeviceToken, PairingPreview, Relay
 export type { RelayFrame, RelayUpload, SignedManifest, UploadReceipt } from "./relay-feed.contracts"
 export { relayDeviceTopic } from "./relay-feed.policy"
 export { RelayProjectService } from "./relay-project.service"
+export { RelayLessonService } from "./relay-lesson.service"
+export type { LessonRunStatus, LessonScenarioRunView } from "./relay-lesson.service"
 export { RelayFeedService } from "./relay-feed.service"
 export { RelayCredentialAdapter } from "./relay-credential.adapter"
 export { RELAY_ERROR_KINDS, RelayError, RelayErrorCode } from "./errors/relay.error"

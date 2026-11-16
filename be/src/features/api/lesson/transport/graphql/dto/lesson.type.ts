@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
 import { LessonTopicRefType } from "./lesson-topic-ref.type"
+import { LessonEssentialType } from "./lesson-essential.type"
 import { LessonReferenceType } from "./lesson-reference.type"
 import { LessonSectionType } from "./lesson-section.type"
 import { LessonStatementType } from "./lesson-statement.type"
@@ -84,4 +85,8 @@ export class LessonType {
     /** The workspace per language, empty without Premium or when the lesson ships one language only. */
     @Field(() => [LessonWorkspaceVariantType])
     workspaces!: ReadonlyArray<LessonWorkspaceVariantType>
+
+    /** The four parts (opener, source, scenarios, challenges), or null for a lesson written before them. */
+    @Field(() => LessonEssentialType, { nullable: true })
+    essential!: LessonEssentialType | null
 }

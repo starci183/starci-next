@@ -552,6 +552,18 @@ type LessonActivityType {
   simulation: LessonSimulationType
 }
 
+type LessonArchitectureComponentType {
+  invariants: [String!]!
+  name: String!
+  port: String
+  role: String
+}
+
+type LessonArchitectureType {
+  components: [LessonArchitectureComponentType!]!
+  diagram: String!
+}
+
 input LessonAttemptAnswerInput {
   actionIds: [String!] = null @inputBounds(maxItems: 200, itemMaxLength: 200)
   debrief: String = null @inputBounds(maxLength: 5000)
@@ -641,6 +653,38 @@ type LessonCatalogItemType {
   version: String!
 }
 
+type LessonChallengeCriterionType {
+  criterion: String!
+  id: String!
+  isCritical: Boolean!
+  points: Int!
+}
+
+type LessonChallengeType {
+  brief: String!
+  hiddenScenarios: Int!
+  id: String!
+  level: String!
+  questions: [LessonQuestionType!]!
+  rubric: [LessonChallengeCriterionType!]!
+  title: String!
+}
+
+type LessonChoiceType {
+  id: String!
+  label: String!
+}
+
+type LessonCodeWalkType {
+  file: String!
+  id: String!
+  invariant: String!
+  line: Int!
+  snippet: String!
+  title: String!
+  why: String
+}
+
 type LessonCommandsType {
   unix: String
   windows: String
@@ -650,6 +694,17 @@ type LessonCriterionType {
   criterion: String!
   id: String!
   maxScore: Int!
+}
+
+type LessonEssentialType {
+  architecture: LessonArchitectureType
+  challenges: [LessonChallengeType!]!
+  codeWalk: [LessonCodeWalkType!]!
+  invariants: [LessonStatementType!]!
+  isLocked: Boolean!
+  opener: [LessonQuestionType!]!
+  scenarios: [LessonScenarioType!]!
+  source: LessonSourceType
 }
 
 type LessonExerciseFileType {
@@ -667,6 +722,25 @@ type LessonExerciseType {
 input LessonInput {
   id: String! @inputBounds(maxLength: 100)
   locale: String!
+}
+
+type LessonOpenerQuestionScoreType {
+  activityId: String!
+  attempts: Int!
+  firstCorrect: Boolean!
+  latestCorrect: Boolean!
+}
+
+type LessonOpenerScoreType {
+  answered: Int!
+  firstCorrect: Int!
+  latestCorrect: Int!
+  lessonId: String!
+  questions: [LessonOpenerQuestionScoreType!]!
+}
+
+input LessonOpenerScoresInput {
+  lessonIds: [String!]! @inputBounds(maxItems: 50, itemMaxLength: 100)
 }
 
 type LessonOptionType {
@@ -740,6 +814,15 @@ type LessonProgressType {
   version: String
 }
 
+type LessonQuestionType {
+  activityId: String!
+  choices: [LessonChoiceType!]!
+  id: String!
+  prompt: String!
+  scenarioId: String
+  sectionId: String
+}
+
 type LessonReferenceType {
   citation: String!
   id: String!
@@ -750,6 +833,34 @@ type LessonReferenceType {
 type LessonRelatedTopicType {
   id: String!
   listed: Boolean!
+  title: String!
+}
+
+type LessonScenarioRunType {
+  at: String!
+  commit: String
+  durationMs: Int
+  exitCode: Int
+  output: String
+  ref: String
+  runId: String!
+  scenarioId: String!
+  slot: String
+  status: String!
+}
+
+input LessonScenarioRunsInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+}
+
+type LessonScenarioType {
+  command: String!
+  expected: String!
+  fault: String!
+  guards: [String!]!
+  hint: String
+  id: String!
+  invariant: String!
   title: String!
 }
 
@@ -797,6 +908,12 @@ type LessonSimulationType {
   transitions: [LessonSimulationTransitionType!]!
 }
 
+type LessonSourceType {
+  langs: [String!]!
+  ref: String
+  repo: String!
+}
+
 type LessonStatementType {
   id: String!
   text: String!
@@ -833,6 +950,7 @@ type LessonType {
   category: String!
   description: String!
   difficulty: String!
+  essential: LessonEssentialType
   group: String!
   id: String!
   implementation: String!
@@ -1372,7 +1490,9 @@ type Query {
   learnerHub(input: LearnerHubInput!): LearnerHubType!
   lesson(input: LessonInput!): LessonType!
   lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
+  lessonOpenerScores(input: LessonOpenerScoresInput!): [LessonOpenerScoreType!]!
   lessonProgress(input: LessonProgressInput!): LessonProgressType!
+  lessonScenarioRuns(input: LessonScenarioRunsInput!): [LessonScenarioRunType!]!
   lessonTopic(input: LessonTopicInput!): LessonTopicType!
   lessons(input: LessonsInput!): [LessonCatalogItemType!]!
   myExperience(input: MyExperienceInput!): MyExperienceType!

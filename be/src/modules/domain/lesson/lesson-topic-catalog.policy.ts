@@ -136,7 +136,7 @@ const LESSON_TOPICS: Readonly<Record<string, LessonTopicSource>> = {
     },
     databases: {
         title: "C\u01a1 s\u1edf d\u1eef li\u1ec7u",
-        from: "starci-next-data essentials",
+        from: "starci-next-seed-standard essentials",
         modules: [],
         details: {
             description:
@@ -147,7 +147,7 @@ const LESSON_TOPICS: Readonly<Record<string, LessonTopicSource>> = {
     },
     "api-reliability": {
         title: "\u0110\u1ed9 tin c\u1eady c\u1ee7a API",
-        from: "starci-next-data essentials",
+        from: "starci-next-seed-standard essentials",
         modules: [],
         details: {
             description:

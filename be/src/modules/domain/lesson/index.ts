@@ -31,6 +31,20 @@ export type {
     LessonWorkspaceFile,
 } from "./lesson.contracts"
 export type { LessonSourceFile } from "./lesson-import.contracts"
+export type {
+    LessonArchitectureComponentView,
+    LessonArchitectureView,
+    LessonChallengeCriterionView,
+    LessonChallengeView,
+    LessonChoiceView,
+    LessonCodeWalkView,
+    LessonEssentialView,
+    LessonQuestionView,
+    LessonScenarioView,
+    LessonSourceView,
+} from "./lesson-essential-view.contracts"
+export type { LessonChallengeLevel, LessonInvariant } from "./lesson-essential.contracts"
+export { lessonRelayTaskId } from "./lesson-essential.contracts"
 export type { LessonTopicCatalog, LessonTopicStep } from "./lesson-topic.contracts"
 export type { LessonTopicView } from "./lesson-topic-view.contracts"
 export type {

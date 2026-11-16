@@ -1,3 +1,4 @@
+import type { LessonEssentialView } from "./lesson-essential-view.contracts"
 import type { LessonTopicRef } from "./lesson-topic-view.contracts"
 import type {
     LessonLocale,
@@ -232,6 +233,8 @@ export interface LessonView {
     readonly workspace: LessonWorkspaceView | null
     /** The workspace per language, empty without Premium or when the lesson ships one language only. */
     readonly workspaces: ReadonlyArray<LessonWorkspaceVariantView>
+    /** The four parts (opener, source, scenarios, challenges), or null for a lesson written before them. */
+    readonly essential: LessonEssentialView | null
 }
 
 /** A lesson to read: its id and the locale of the text. */

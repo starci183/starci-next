@@ -3,6 +3,7 @@ import { ATTEMPT_COACH } from "./attempt-coach.port"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./attempt.module-definition"
 import { AttemptCompletionService } from "./attempt-completion.service"
 import { AttemptFairUseService } from "./attempt-fair-use.service"
+import { AttemptOpenerService } from "./attempt-opener.service"
 import { AttemptProofService } from "./attempt-proof.service"
 import { AttemptReadService } from "./attempt-read.service"
 import { AttemptService } from "./attempt.service"
@@ -29,8 +30,10 @@ export class AttemptModule extends ConfigurableModuleClass {
                 AttemptFairUseService,
                 AttemptProofService,
                 AttemptSimulationService,
+                AttemptOpenerService,
             ],
             exports: [
+                AttemptOpenerService,
                 AttemptService,
                 AttemptReadService,
                 AttemptFairUseService,

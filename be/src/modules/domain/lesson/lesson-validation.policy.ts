@@ -1,5 +1,6 @@
 import { LESSON_LOCALES, type LessonActivity, type LessonLocale, type LessonSimulation } from "./lesson.contracts"
 import type { LessonIssue, LessonParsedLocale, LessonParsedSource } from "./lesson-import.contracts"
+import { essentialIssues, essentialStructureOf } from "./lesson-essential.policy"
 
 const issueOf = (path: string, field: string, message: string): LessonIssue => ({ path, field, message })
 
@@ -99,7 +100,7 @@ const localeIssues = (locale: LessonLocale, parsed: LessonParsedLocale): Array<L
         seen.add(activity.id)
         issues.push(...activityIssues(activity, outcomes, path, at))
     })
-    return issues
+    return [...issues, ...essentialIssues(locale, parsed)]
 }
 
 const activityLines = (activity: LessonActivity): Array<string> => [
@@ -131,6 +132,7 @@ const structureOf = (parsed: LessonParsedLocale): Array<string> => [
         `section ${section.id} ${section.phase} ${section.sortIndex} ${String(section.isPremium ?? "default")}`,
         ...(section.activities ?? []).flatMap((activity) => activityLines(activity)),
     ]),
+    ...essentialStructureOf(parsed.root),
 ]
 
 const parityIssues = (parsed: LessonParsedSource): Array<LessonIssue> => {

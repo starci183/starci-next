@@ -1,6 +1,7 @@
 import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
 import type { LessonActivity, LessonLocale, LessonLocaleDocument, LessonSection } from "./lesson.contracts"
 import { needsPremium, premiumMarkOf } from "./lesson-access.policy"
+import { toEssentialView } from "./lesson-essential-view.mapper"
 import type {
     LessonActivityView,
     LessonCatalogItemView,
@@ -152,5 +153,6 @@ export const toLessonView = (row: VersionRow, locale: LessonLocale, isPremium: b
         sections: document.sections.map((section) => toSectionView(section, document, isPremium)),
         workspace: toWorkspaceView(row, isPremium),
         workspaces: toWorkspaceVariants(row, isPremium),
+        essential: toEssentialView(document.essential, isPremium),
     }
 }
