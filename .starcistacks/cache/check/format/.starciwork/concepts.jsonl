@@ -1,4 +1,4 @@
-{"findings":[],"hash":"1a3eed9ab3a405d7eb4613313cd43d50e1bc90dda392aebfc04a2405e69caa21","path":".starciwork/concepts/README.md","step":"prettier"}
+{"findings":[],"hash":"168c12a1f2fd0d34f88c89d4209111b26717f33328f7aeee28195a5412062e64","path":".starciwork/concepts/README.md","step":"prettier"}
 {"findings":[],"hash":"566c83ced9b87ac16cdee7865788a2f912d0c7c96e190a55046ec206a9dd3598","path":".starciwork/concepts/ai-teacher.md","step":"prettier"}
 {"findings":[],"hash":"fa3aefdaca2df0a03ede43b264b2c70c2033c1acc4d022609e2ac6f35d333dbf","path":".starciwork/concepts/app-shell.md","step":"prettier"}
 {"findings":[],"hash":"65d02c63ad5ab73903978a1d15e50a66d801baa2d44ccdbe6750a8e4c281c887","path":".starciwork/concepts/content.md","step":"prettier"}
@@ -12,9 +12,9 @@
 {"findings":[],"hash":"b97cbe37525de596a26bf40c2578e3223ff51e85db0cae58486e3bad3c08642a","path":".starciwork/concepts/mock-interview.md","step":"prettier"}
 {"findings":[],"hash":"44a5ed06a8f79131f8fad87282ded95555835c5f451763fe6f6c3c3718fdeb3f","path":".starciwork/concepts/practice.md","step":"prettier"}
 {"findings":[],"hash":"6796fce9ede37cddba0e146cdcf39386e0bbdd802ae5195d0a73052a86f02d2b","path":".starciwork/concepts/premium.md","step":"prettier"}
-{"findings":[],"hash":"842265c288de9d376fab3478596ed95ed916a65361d658ada54a0cef279d6280","path":".starciwork/concepts/projects.md","step":"prettier"}
+{"findings":[],"hash":"51e557acbf7a462f767228c430fa4a379a45723fb3ce007b88060e88bc995948","path":".starciwork/concepts/projects.md","step":"prettier"}
 {"findings":[],"hash":"a87dc17e6566280dc5717d0c055dd0c553947485341bdb4d20b65489d1a69b69","path":".starciwork/concepts/review.md","step":"prettier"}
 {"findings":[],"hash":"5af2f101ac411fe9f5a364c8f7a91415cfd638e5e71f92530f8a44903fde8bb4","path":".starciwork/concepts/streak.md","step":"prettier"}
-{"findings":[],"hash":"c6137b48261f03670cb65ba513c6dab5cafe0fd75fff93d38d00500cab3cbdce","path":".starciwork/concepts/surface-layering.md","step":"prettier"}
-{"findings":[],"hash":"3dd254d4670afa9dd5812f92c5568d4f00882eab499a48bbcf1ae817f2be1c34","path":".starciwork/concepts/theme-and-type.md","step":"prettier"}
+{"findings":[],"hash":"3745d375a60980f100ae55b7e726364176e59e593a695bd824afe4b1043c51ce","path":".starciwork/concepts/surface-layering.md","step":"prettier"}
+{"findings":[],"hash":"b3fe8f3cbbf6d7aa58fa9cec51bada2e9db1731853acdada332ce11e4304385c","path":".starciwork/concepts/theme-and-type.md","step":"prettier"}
 {"findings":[],"hash":"20972bb43e13575c994b51f5f4e6cc1136a66df4e38b843457c3be648d385de7","path":".starciwork/concepts/verified-experience.md","step":"prettier"}
