@@ -22,6 +22,14 @@ const REPORT = `<testsuites>
 <testcase name="[transactions-and-isolation] last item sells once" classname="t"/>
 <testcase name="[idempotency] outside the milestone" classname="t"/>
 </testsuites>`
+const CATALOG = `milestones:
+  - id: now
+    concepts: [idempotency]
+  - id: later
+    concepts: [saga]
+kinds:
+  app: [now, later]
+`
 const KIT_YAML = 'project: "<project-id>"\nlanguage: typescript\ntest:\n  command: node --test\n'
 
 /** A signed manifest answer of the relay. */
@@ -278,6 +286,53 @@ describe("ProjectKitService init", () => {
 
         expect(world.kit.init(world.io, { force: false }, cwd)).toBe(0)
         expect(existsSync(join(cwd, "starci", "project.yaml"))).toBe(true)
+    })
+
+    it("detects the language of the folder, copies the e2e flows of the current milestone only and reads the kit under raw/", async () => {
+        const root = mkdtempSync(join(tmpdir(), "starci-data-"))
+        const kit = join(root, "raw", "projects", "kit")
+        mkdirSync(join(kit, "starci", "e2e"), { recursive: true })
+        mkdirSync(join(kit, "ci"), { recursive: true })
+        writeFileSync(join(kit, "starci", "project.yaml"), KIT_YAML)
+        ;["idempotency", "saga"].forEach((id) => writeFileSync(join(kit, "starci", "e2e", `${id}.md`), `# ${id}\n`))
+        ;["0-typescript", "1-java", "2-csharp", "3-go"].forEach((name) =>
+            writeFileSync(join(kit, "ci", `${name}.yml`), `name: ${name}\n`),
+        )
+        writeFileSync(join(root, "raw", "projects", "catalog.yaml"), CATALOG)
+        const cwd = mkdtempSync(join(tmpdir(), "starci-learner-"))
+        writeFileSync(join(cwd, "pom.xml"), "<project/>")
+        const world = await worldOf(manifestAnswer(PLAN))
+
+        expect(world.kit.init(world.io, { from: root, project: "p-3", force: false }, cwd)).toBe(0)
+
+        expect(readFileSync(join(cwd, "starci", "project.yaml"), "utf8")).toContain("language: java")
+        expect(readFileSync(join(cwd, ".github", "workflows", "starci.yml"), "utf8")).toBe("name: 1-java\n")
+        expect(existsSync(join(cwd, "starci", "e2e", "idempotency.md"))).toBe(true)
+        expect(existsSync(join(cwd, "starci", "e2e", "saga.md"))).toBe(false)
+        expect(world.out[0]).toBe("Language java, milestone now.")
+
+        const later = mkdtempSync(join(tmpdir(), "starci-learner-"))
+        expect(world.kit.init(world.io, { from: root, milestone: "later", language: "go", force: false }, later)).toBe(
+            0,
+        )
+        expect(existsSync(join(later, "starci", "e2e", "saga.md"))).toBe(true)
+        expect(existsSync(join(later, "starci", "e2e", "idempotency.md"))).toBe(false)
+        expect(readFileSync(join(later, ".github", "workflows", "starci.yml"), "utf8")).toBe("name: 3-go\n")
+    })
+
+    it("refuses a milestone the catalog does not list", async () => {
+        const root = dataCheckout()
+        writeFileSync(join(root, "projects", "catalog.yaml"), CATALOG)
+        const world = await worldOf(manifestAnswer(PLAN))
+
+        const code = world.kit.init(
+            world.io,
+            { from: root, milestone: "nope", force: false },
+            mkdtempSync(join(tmpdir(), "starci-learner-")),
+        )
+
+        expect(code).toBe(1)
+        expect(world.err[0]).toContain("No milestone nope")
     })
 
     it.each([

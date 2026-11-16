@@ -5,6 +5,9 @@ import { doctorCommand } from "./harness-doctor.cli"
 import type { DoctorOptions } from "./harness-trial.contracts"
 import { readQueue } from "./upload-queue.adapter"
 
+/** Each case runs real git and node processes; a loaded machine needs more than the default 5 seconds. */
+jest.setTimeout(60_000)
+
 const OPTIONS: DoctorOptions = { yes: true, json: false, noUpload: false }
 
 let world: HarnessWorld

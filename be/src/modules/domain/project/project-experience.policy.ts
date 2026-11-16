@@ -1,12 +1,15 @@
 import type { ExperienceEvidence, ExperienceGrade, ProduceExperienceParams, SlotValues } from "@modules/domain/career"
 import {
-    PROOF_SOURCES,
+    AGENT_TRACKS,
+    SLOT_PROOF_SOURCES,
     type AgentTrack,
     type EvidenceRow,
     type MilestoneDefinition,
     type ProjectKind,
 } from "./project.contracts"
 import { conceptOf } from "./project-catalog.policy"
+import { projectKindOf } from "./project-view.mapper"
+import type { ProjectRow } from "./persistence/project.rows"
 
 /** The tool each agent track names in a CV line. */
 export const TRACK_LABELS: Readonly<Record<AgentTrack, string>> = {
@@ -73,8 +76,8 @@ const bothLocales = (valueOf: (locale: "vi" | "en") => Readonly<Record<string, s
     en: valueOf("en"),
 })
 
-const evidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceEvidence> => {
-    const proof = rows.filter((row) => row.passed && PROOF_SOURCES.includes(row.source))
+export const proofEvidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceEvidence> => {
+    const proof = rows.filter((row) => row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source))
     const runs = new Map(
         proof.flatMap((row) =>
             row.source === "ai"
@@ -112,12 +115,14 @@ const evidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceE
 export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceExperienceParams => {
     const { subject, milestone, rows } = input
     const itemType = itemTypeOfMilestone(milestone.id, subject.kind)
-    const evidence = evidenceOf(rows)
+    const evidence = proofEvidenceOf(rows)
     const ciRow = rows.find((row) => row.passed && row.source === "ci")
     const tool = TRACK_LABELS[subject.track ?? "claude"]
     const criteria = milestone.concepts.map((id) => {
         const definition = conceptOf(id)
-        const proof = rows.find((row) => row.conceptId === id && row.passed && PROOF_SOURCES.includes(row.source))
+        const proof = rows.find(
+            (row) => row.conceptId === id && row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source),
+        )
         return {
             criterion: definition?.label.vi ?? id,
             level: proof === undefined ? 0 : 2,
@@ -158,4 +163,15 @@ export const deployedExperienceOf = (input: DeployedExperienceInput): ProduceExp
         result: "pass",
         criteria: [{ criterion: "health and readiness", level: 2, evidenceQuote: input.url.slice(0, 300) }],
     },
+})
+
+/** The facts of a project a CV line is drafted from, read from its row. */
+export const experienceSubjectOf = (project: ProjectRow): ExperienceSubject => ({
+    learnerId: project.learner_id,
+    projectId: project.project_id,
+    name: project.name,
+    stack: project.stack,
+    kind: projectKindOf(project),
+    track: AGENT_TRACKS.find((track) => track === project.track) ?? null,
+    deployedUrl: project.deployed_url,
 })

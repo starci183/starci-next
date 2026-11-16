@@ -1,4 +1,5 @@
 import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
+import type { CiReportOptions } from "./project-ci-report.cli"
 import type { LessonRunOptions } from "./lesson.contracts"
 import type { DoctorOptions, TrialOptions } from "./harness-trial.contracts"
 import type { ListenOptions } from "./listen.cli"
@@ -9,8 +10,10 @@ export interface InitOptions {
     readonly from?: string | undefined
     /** The StarCi project id to write into `starci/project.yaml`, or undefined to leave the placeholder. */
     readonly project?: string | undefined
-    /** typescript, java, csharp or go; typescript when undefined. */
+    /** typescript, java, csharp or go; detected from the project folder when undefined, else typescript. */
     readonly language?: string | undefined
+    /** The milestone whose e2e flows are copied; the first milestone of the app kind when undefined. */
+    readonly milestone?: string | undefined
     /** Whether files that already exist are replaced. */
     readonly force: boolean
 }
@@ -49,4 +52,6 @@ export interface RelayClientPort {
     harnessDoctor(options: DoctorOptions): Promise<void>
     /** Runs the learner's own agent headless on a trap repo and prints a verdict; uploads only the verdict and the shortcut list. */
     harnessTrial(trap: string, options: TrialOptions): Promise<void>
+    /** `ci-report`: sends the CI run's JUnit results and e2e flows to StarCi with the GitHub OIDC token. */
+    ciReport(options: CiReportOptions): Promise<void>
 }

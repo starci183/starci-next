@@ -18,6 +18,7 @@ import type { RelayClientModuleOptions } from "./relay-client.options"
 import type { InitOptions, RelayClientPort } from "./relay-client.port"
 import { ProjectKitService } from "./project-kit.service"
 import { runTask } from "./task-run.cli"
+import { projectCiReport, type CiReportOptions } from "./project-ci-report.cli"
 import { openDeviceSocket } from "./device-socket.client"
 import { listenCommand, type ListenOptions } from "./listen.cli"
 import { composeLesson, promptLesson, pullLesson, runLesson } from "./lesson.cli"
@@ -149,6 +150,10 @@ export class RelayClientService implements RelayClientPort {
     }
 
     /** Copies the project kit into the project in the current folder. */
+    async ciReport(options: CiReportOptions): Promise<void> {
+        this.io.exit(await projectCiReport(this.io, options, this.cwd))
+    }
+
     init(options: InitOptions): Promise<void> {
         this.io.exit(this.kit.init(this.io, options, this.cwd))
         return Promise.resolve()

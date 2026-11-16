@@ -1,5 +1,6 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs"
 import { dirname, join } from "node:path"
+import { isOtherConceptFlow } from "./project-kit.policy"
 
 /** The files a kit copy wrote and the ones it left alone because they already exist. */
 export interface KitCopy {
@@ -39,6 +40,12 @@ export const ensureFolderOf = (cwd: string, path: string): void => {
 /** True when a folder exists. */
 export const folderExists = (path: string): boolean => existsSync(path) && statSync(path).isDirectory()
 
+/** The names of the top-level entries of the project folder. */
+export const namesIn = (cwd: string): ReadonlyArray<string> => (existsSync(cwd) ? readdirSync(cwd) : [])
+
+/** The text of a file outside the project folder (the kit's catalog), or null when it is missing. */
+export const readFileOrNull = (path: string): string | null => (existsSync(path) ? readFileSync(path, "utf8") : null)
+
 /** Copies one file of the kit into the project folder; an existing file stays unless `force` says to replace it. */
 const copyOne = (from: string, cwd: string, path: string, force: boolean): "written" | "kept" => {
     const target = join(cwd, path)
@@ -49,11 +56,16 @@ const copyOne = (from: string, cwd: string, path: string, force: boolean): "writ
 }
 
 /** Copies the kit's `starci/` folder and one CI template into the project folder. */
-export const copyKit = (kitDir: string, cwd: string, ciFile: string, force: boolean): KitCopy => {
-    const starci = filesUnder(join(kitDir, "starci")).map((file) => ({
-        from: join(kitDir, "starci", file),
-        path: `starci/${file}`,
-    }))
+export const copyKit = (
+    kitDir: string,
+    cwd: string,
+    ciFile: string,
+    force: boolean,
+    concepts: ReadonlySet<string> | null = null,
+): KitCopy => {
+    const starci = filesUnder(join(kitDir, "starci"))
+        .map((file) => ({ from: join(kitDir, "starci", file), path: `starci/${file}` }))
+        .filter((file) => !isOtherConceptFlow(file.path, concepts))
     const workflow = { from: join(kitDir, "ci", ciFile), path: ".github/workflows/starci.yml" }
     const copied = [...starci, workflow].map((file) => ({
         path: file.path,

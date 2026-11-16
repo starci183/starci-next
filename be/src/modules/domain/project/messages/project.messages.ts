@@ -9,7 +9,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CONCEPT_NOT_FOUND": "Không có concept này trong danh mục milestone.",
         "errors.PROJECT_CONCEPT_NOT_READY": "Concept này thầy đang soạn bài Bản chất, chưa thể chấm.",
         "errors.PROJECT_PREMIUM_REQUIRED":
-            "Dự án thứ hai, milestone sau milestone đầu và thầy AI đọc code cần Premium.",
+            "Dự án cần Premium: tạo dự án, chạy kiểm tra, nộp bằng chứng và nhờ thầy AI đọc code đều cần gói đang hiệu lực. Dự án cũ vẫn xem được, chỉ không chạy thêm.",
         "errors.PROJECT_INPUT_INVALID": "Thông tin dự án chưa hợp lệ.",
         "errors.PROJECT_LOCATION_INVALID":
             "Vị trí code phải là đường dẫn tương đối trong repo, không phải file bí mật.",
@@ -27,6 +27,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CI_PAYLOAD_INVALID": "Kết quả CI không đúng định dạng.",
         "errors.PROJECT_COACH_UNCONFIGURED": "Thầy AI chưa được bật nên chưa chấm được phần đọc code.",
         "errors.PROJECT_COACH_UNAVAILABLE": "Thầy AI đang bận; hãy thử lại sau ít phút.",
+        "errors.PROJECT_CHECKS_UNAVAILABLE": "Bộ kiểm tra của Dự án chưa sẵn sàng; hãy thử lại sau.",
         "errors.PROJECT_COACH_INVALID": "Thầy AI trả lời không đúng dạng; hãy thử lại.",
     },
     en: {
@@ -36,7 +37,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CONCEPT_NOT_READY":
             "The teacher is still writing this concept's Essentials lesson, so it cannot be graded yet.",
         "errors.PROJECT_PREMIUM_REQUIRED":
-            "A second project, milestones after the first and the AI code read need Premium.",
+            "Projects need Premium: creating a project, running checks, sending evidence and the AI code read all need an active plan. An older project stays readable but takes no new runs.",
         "errors.PROJECT_INPUT_INVALID": "The project details are not valid.",
         "errors.PROJECT_LOCATION_INVALID":
             "The code location must be a relative path inside the repo and not a secret file.",
@@ -55,6 +56,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CI_PAYLOAD_INVALID": "The CI result is not in the expected format.",
         "errors.PROJECT_COACH_UNCONFIGURED": "The AI teacher is not enabled, so the code read cannot be graded.",
         "errors.PROJECT_COACH_UNAVAILABLE": "The AI teacher is busy; try again in a few minutes.",
+        "errors.PROJECT_CHECKS_UNAVAILABLE": "The project checks are not ready yet; try again later.",
         "errors.PROJECT_COACH_INVALID": "The AI teacher answered in the wrong shape; try again.",
     },
 }

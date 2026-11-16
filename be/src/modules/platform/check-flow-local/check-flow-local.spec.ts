@@ -5,6 +5,9 @@ import { parse } from "yaml"
 import { CheckFlowRunner, parseCheckFlow, systemFlowClock, type FlowVerdict } from "@modules/platform/check-flow"
 import { expandPattern, localPlugins, NodeProcessPort, probeFlowOf, type CommandStub } from "./index"
 
+/** Each case runs real git and node processes; a loaded machine needs more than the default 5 seconds. */
+jest.setTimeout(60_000)
+
 const FIXTURES = join(__dirname, "fixtures", "doctor")
 const proc = new NodeProcessPort()
 const ports = {

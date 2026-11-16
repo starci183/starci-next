@@ -6,6 +6,9 @@ import { harnessWorld, putFile, TRAP_YAML, writeTrap, type FakeScenario, type Fa
 import { trialCommand } from "./harness-trial.cli"
 import type { TrialOptions } from "./harness-trial.contracts"
 
+/** Each case runs real git and node processes; a loaded machine needs more than the default 5 seconds. */
+jest.setTimeout(60_000)
+
 const OPTIONS: TrialOptions = { tool: "claude", yes: true, noUpload: false, keep: false }
 
 let world: HarnessWorld

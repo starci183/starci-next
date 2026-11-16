@@ -173,16 +173,23 @@ export interface ProjectSummaryView {
     readonly doneMilestoneCount: number
     /** How many milestones the project lists. */
     readonly milestoneCount: number
+    /** How many concepts show results from the machine or unattested CI only. */
+    readonly practisingConceptCount: number
+    /** How the newest signed CI run ended: passed, failed, or none when the project has had no run. */
+    readonly latestCiStatus: CiStatus
+    /** When the newest signed CI run was received, or null. */
+    readonly latestCiAt: string | null
     /** When it was created. */
     readonly createdAt: string
 }
+
+/** How the newest CI run of a project ended. */
+export type CiStatus = "passed" | "failed" | "none"
 
 /** One project with its milestones, practice and proof. */
 export interface ProjectView extends ProjectSummaryView {
     /** The milestones in order. */
     readonly milestones: ReadonlyArray<MilestoneSummaryView>
-    /** How many concepts show results from the machine only. */
-    readonly practisingConceptCount: number
     /** The last signed CI run, or null. */
     readonly lastCiRun: CiRunView | null
     /** The last probe run, or null. */
@@ -259,4 +266,68 @@ export interface ProvedConceptView {
 export interface ProjectDeletedView {
     /** The id of the project that was deleted. */
     readonly id: string
+}
+
+/** One rubric criterion of an AI code read with the teacher's verdict on the learner's own text. */
+export interface CodeReadCriterionView {
+    /** The criterion id. */
+    readonly criterionId: string
+    /** The criterion as the learner reads it, or its id when the rubric is no longer there. */
+    readonly criterion: string
+    /** The level 0, 1 or 2. */
+    readonly level: number
+    /** The level in words: missing (0), partial (1) or met (2). */
+    readonly verdict: "missing" | "partial" | "met"
+    /** The words of the learner's explanation or code the level rests on; empty at level 0. */
+    readonly evidenceQuote: string
+}
+
+/** The newest AI read of the code of a concept. */
+export interface CodeReadView {
+    /** The project. */
+    readonly projectId: string
+    /** The concept. */
+    readonly conceptId: string
+    /** Whether the read passed the bar. */
+    readonly passed: boolean
+    /** The mean level of the criteria. */
+    readonly mean: number
+    /** The criteria in rubric order. */
+    readonly criteria: ReadonlyArray<CodeReadCriterionView>
+    /** The Socratic question of the teacher, or null. */
+    readonly question: string | null
+    /** The code location the learner pointed to. */
+    readonly location: string
+    /** The SHA-256 of the excerpt that was read (the excerpt itself is not kept), or null for a read made before it was recorded. */
+    readonly excerptHash: string | null
+    /** When it was graded. */
+    readonly gradedAt: string
+}
+
+/** One piece of proof under a CV line. */
+export interface CvEvidenceLinkView {
+    /** ci-run, probe-run or code-read. */
+    readonly kind: string
+    /** The run id, or the concept for a code read. */
+    readonly ref: string
+    /** signed-ci, server-probe or graded-session. */
+    readonly proofForm: string
+    /** When the proof was produced. */
+    readonly at: string
+}
+
+/** The CV line a proved concept or milestone would give, shown before anything is produced. */
+export interface CvPreviewView {
+    /** The project. */
+    readonly projectId: string
+    /** concept or milestone. */
+    readonly subjectKind: "concept" | "milestone"
+    /** The concept or milestone id. */
+    readonly subjectId: string
+    /** Whether the concept or milestone is proved now; a line shown for one that is not is a draft, never on the CV. */
+    readonly proved: boolean
+    /** The line in the asked locale, or null when the evidence leaves a slot empty. */
+    readonly text: string | null
+    /** The proof the line stands on. */
+    readonly evidence: ReadonlyArray<CvEvidenceLinkView>
 }
