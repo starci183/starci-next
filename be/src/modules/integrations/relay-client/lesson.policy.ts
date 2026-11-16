@@ -4,7 +4,8 @@ import { isRecord } from "./json.mapper"
 const ID = /^[a-z0-9-]+$/u
 const ENV = /^[A-Z][A-Z0-9_]*$/u
 const COMMIT = /^[0-9a-f]{40}$/u
-const REPO_URL = /^https:\/\/[A-Za-z0-9._\-/:@]+$/u
+const SOURCE_URL = /^(?:https:\/\/[^\s"'<>\\]+|\/[^\s"'<>\\]*)$/u
+const SHA256 = /^[0-9a-f]{64}$/u
 const SAFE_PATH = /^[A-Za-z0-9._@/-]+$/u
 const MAX_FILES = 64
 const MAX_FILE_BYTES = 1_048_576
@@ -85,17 +86,18 @@ const invariantsOf = (value: unknown): Readonly<Record<string, string>> | null =
 /** The lesson section of a payload: undefined when absent, null when present but malformed. */
 export const lessonOf = (value: unknown): LessonSection | null | undefined => {
     if (value === undefined) return undefined
-    if (!isRecord(value) || !isRecord(value.repo)) return null
+    if (!isRecord(value) || !isRecord(value.source)) return null
     const { lessonId, dir, compose, project } = value
-    const { url, commit } = value.repo
+    const { url, commit, sha256 } = value.source
     if (typeof lessonId !== "string" || !ID.test(lessonId)) return null
-    if (typeof url !== "string" || !REPO_URL.test(url)) return null
+    if (typeof url !== "string" || !SOURCE_URL.test(url) || url.includes("@")) return null
+    if (typeof sha256 !== "string" || !SHA256.test(sha256)) return null
     if (typeof commit !== "string" || !COMMIT.test(commit)) return null
     if (!isSafePath(dir) || !isSafePath(compose) || typeof project !== "string" || !ID.test(project)) return null
     const scenarios = scenariosOf(value.scenarios)
     const invariants = invariantsOf(value.invariants)
     if (scenarios === null || invariants === null) return null
-    const base = { lessonId, repo: { url, commit }, dir, compose, project, invariants, scenarios }
+    const base = { lessonId, source: { url, sha256, commit }, dir, compose, project, invariants, scenarios }
     if (value.challenge === undefined) return base
     if (!isRecord(value.challenge) || typeof value.challenge.tier !== "string" || !ID.test(value.challenge.tier))
         return null

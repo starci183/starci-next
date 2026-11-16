@@ -44,7 +44,13 @@ export class TerminalClient implements TerminalPort {
     }
 
     /** Runs one confirmed command through the shell, echoing its output, stopped after its timeout. */
-    runCommand(command: string, cwd: string, timeoutMs: number, env?: Readonly<Record<string, string>>): Promise<CheckRun> {
+    runCommand(
+        command: string,
+        cwd: string,
+        timeoutMs: number,
+        env?: Readonly<Record<string, string>>,
+        quiet = false,
+    ): Promise<CheckRun> {
         return new Promise((resolve) => {
             const started = this.clock.now().getTime()
             let output = ""
@@ -53,11 +59,11 @@ export class TerminalClient implements TerminalPort {
             const child = spawn(command, { cwd, shell: true, timeout: timeoutMs, env: { ...process.env, ...env } })
             child.stdout.on("data", (chunk: Buffer) => {
                 output += chunk.toString("utf8")
-                process.stdout.write(chunk)
+                if (!quiet) process.stdout.write(chunk)
             })
             child.stderr.on("data", (chunk: Buffer) => {
                 output += chunk.toString("utf8")
-                process.stderr.write(chunk)
+                if (!quiet) process.stderr.write(chunk)
             })
             child.on("close", (code) => finish(code ?? -1))
             child.on("error", () => finish(-1))
