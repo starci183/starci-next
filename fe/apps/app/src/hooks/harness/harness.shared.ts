@@ -5,6 +5,7 @@ import type {
     HarnessOutlineEntry,
     HarnessPart,
     HarnessProbeView,
+    HarnessStageView,
     HarnessSectionView,
     HarnessTool,
     HarnessVerdict,
@@ -22,9 +23,9 @@ export type HarnessCommonLabels = {
     readonly tools: Readonly<Record<HarnessTool, string>>
     readonly toolLabel: string
     readonly outcomes: Readonly<Record<HarnessE2eOutcome, string>>
+    readonly proofs: Readonly<Record<HarnessStageView["proof"], string>>
     readonly probes: Readonly<Record<HarnessProbeView["outcome"], string>>
     readonly verdicts: Readonly<Record<HarnessVerdict, string>>
-    readonly minutes: (minutes: number) => string
     readonly copy: { readonly copy: string; readonly copied: string; readonly copyError: string }
     readonly markdown: {
         readonly copy: string
@@ -83,47 +84,6 @@ export const harnessHeaderOf = (labels: HarnessCommonLabels, input: HeaderInput)
     },
 })
 
-/** The anchor of a section: its position and its title without diacritics, so the same title twice stays unique. */
-const anchorOf = (index: number, title: string): string => {
-    const words = title
-        .normalize("NFD")
-        .replace(/\p{M}/gu, "")
-        .replace(/đ/gu, "d")
-        .replace(/Đ/gu, "d")
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/gu, "-")
-        .replace(/^-+|-+$/gu, "")
-    return `section-${index + 1}${words === "" ? "" : `-${words}`}`
-}
-
-/** True for a line that opens or closes a fenced code block. */
-const isFence = (line: string): boolean => line.trimStart().startsWith("```")
-
-/** The title of a second-level heading line, or undefined for any other line. */
-const headingOf = (line: string): string | undefined => (line.startsWith("## ") ? line.slice(3).trim() : undefined)
-
-/**
- * Cuts a markdown document at its second-level headings (outside code fences): each section is its title and the markdown under it.
- * Text before the first heading becomes a section titled `leadTitle`. A document with no heading is one section.
- */
-export const sectionsOf = (markdown: string, leadTitle: string): ReadonlyArray<HarnessSectionView> => {
-    const drafts: Array<{ title: string; lines: Array<string> }> = []
-    let inFence = false
-    for (const line of markdown.split("\n")) {
-        if (isFence(line)) inFence = !inFence
-        const title = inFence ? undefined : headingOf(line)
-        if (title !== undefined) drafts.push({ title, lines: [] })
-        else {
-            if (drafts.length === 0) drafts.push({ title: leadTitle, lines: [] })
-            drafts[drafts.length - 1]?.lines.push(line)
-        }
-    }
-    return drafts
-        .map((draft) => ({ title: draft.title, body: draft.lines.join("\n").trim() }))
-        .filter((draft) => draft.body !== "" || draft.title !== leadTitle)
-        .map((draft, index) => ({ id: anchorOf(index, draft.title), title: draft.title, markdown: draft.body }))
-}
-
 /** The outline of a document: one line per section, each jumping to its anchor. */
 export const outlineOf = (sections: ReadonlyArray<HarnessSectionView>): ReadonlyArray<HarnessOutlineEntry> =>
     sections.map((section) => ({ id: section.id, label: section.title, href: `#${section.id}` }))
@@ -147,5 +107,6 @@ export const PROBE_TONES = {
 export const VERDICT_TONES = {
     clean: "success",
     shortcut: "danger",
+    incomplete: "warning",
     untested: "muted",
 } as const satisfies Readonly<Record<HarnessVerdict, string>>

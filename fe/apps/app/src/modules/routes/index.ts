@@ -119,8 +119,9 @@ export const harnessBuildPath = (buildId: string, stageId?: string): string => {
     return stageId === undefined ? base : `${base}?stage=${encodeURIComponent(stageId)}`
 }
 
-/** The path of one guide of part 2. */
-export const harnessGuidePath = (slug: string): string => `${HARNESS_ROUTES.use}/${encodeURIComponent(slug)}`
+/** The path of one guide of part 2 (`/harness/use/{tool}/{guide}`). */
+export const harnessGuidePath = (tool: string, slug: string): string =>
+    `${HARNESS_ROUTES.use}/${encodeURIComponent(tool)}/${encodeURIComponent(slug)}`
 
 /** The path of one article of part 3. */
 export const harnessDocPath = (slug: string): string => `${HARNESS_ROUTES.docs}/${encodeURIComponent(slug)}`

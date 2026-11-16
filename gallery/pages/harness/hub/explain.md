@@ -4,7 +4,7 @@ route: /harness
 area: harness
 ---
 
-Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts`. Nội dung đang là fixture có kiểu (`fe/apps/app/src/modules/harness-source`) cho tới khi API của harness-be có.
+Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts`. Dữ liệu đọc từ API harness của harness-be (`harnessHub`), ánh xạ ở `fe/apps/app/src/modules/harness-view`.
 
 ## Băng đầu trang (tiêu đề, dòng phụ, bốn tab)
 
@@ -14,7 +14,7 @@ Grammar: `Page header={{ breadcrumbs: "root", title, description, tabs: { kind: 
 
 ## Dải số liệu tiến độ
 
-Vì sao: bốn con số (build xong, chặng xanh, kiểm tra máy, bẫy thử sạch) đứng thành một dải full-width giữa hai đường kẻ mảnh, không thẻ, không nền. Học viên thấy mình đang ở đâu trong một cái liếc, không phải mở từng phần.
+Vì sao: bốn con số (build xong, chặng đang luyện, chặng đã chứng minh, kiểm tra máy đạt) đứng thành một dải full-width giữa hai đường kẻ mảnh, không thẻ, không nền. Học viên thấy mình đang ở đâu trong một cái liếc, không phải mở từng phần.
 Luật: `FE-ERROR-1` (dải là một vùng đọc dữ liệu, loading vẽ lại đúng khung), `FE-UI-1` (ribbon thay cho thẻ số liệu).
 Grammar: `Section kind="figures" ribbon ariaLabel` (`frame/Section/index.d.ts`, `ribbon` từ 0.40.0).
 

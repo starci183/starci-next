@@ -1,10 +1,10 @@
 ---
 title: Harness, một hướng dẫn
-route: /harness/use/[guide]
+route: /harness/use/[tool]/[guide]
 area: harness
 ---
 
-Route: `/harness/use/{guide}`. Mã: `fe/apps/app/src/components/blocks/HarnessGuide/`, dữ liệu qua `fe/apps/app/src/hooks/harnessUse/useHarnessGuideScreen.ts`. Markdown được cắt thành các mục theo tiêu đề cấp hai (`sectionsOf` trong `fe/apps/app/src/hooks/harness/harness.shared.ts`), mỗi mục có neo riêng để mục lục nhảy tới.
+Route: `/harness/use/{tool}/{guide}`. Mã: `fe/apps/app/src/components/blocks/HarnessGuide/`, dữ liệu qua `fe/apps/app/src/hooks/harnessUse/useHarnessGuideScreen.ts`. Markdown được cắt thành các mục theo tiêu đề cấp hai (`sectionsOf` trong `fe/apps/app/src/hooks/harness/harness.shared.ts`), mỗi mục có neo riêng để mục lục nhảy tới.
 
 ## Băng đầu trang (tên bài, dòng phụ, số phút đọc)
 

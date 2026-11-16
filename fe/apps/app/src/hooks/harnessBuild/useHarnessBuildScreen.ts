@@ -27,6 +27,11 @@ export type HarnessBuildLabels = {
     readonly stepsTitle: string
     readonly lockedTitle: string
     readonly lockedText: string
+    readonly keysLabel: string
+    readonly repoTitle: string
+    readonly repoText: string
+    readonly repoBound: string
+    readonly repoUnbound: string
 }
 
 /** The build page: the stages with their e2e status, the stage on screen and its step guide. */
@@ -102,6 +107,11 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
                 stepsTitle: t("stepsTitle"),
                 lockedTitle: t("lockedTitle"),
                 lockedText: t("lockedText"),
+                keysLabel: t("keysLabel"),
+                repoTitle: t("repoTitle"),
+                repoText: t("repoText"),
+                repoBound: t("repoBound"),
+                repoUnbound: t("repoUnbound"),
             },
             common,
             isOnlyOpen,

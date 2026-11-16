@@ -3,13 +3,7 @@
 import type { PageHeaderContent } from "@starci/grammar/common"
 import type { OutlineEntry } from "@starci-next/ui"
 import { useLocale, useTranslations } from "next-intl"
-import {
-    harnessHeaderOf,
-    outlineOf,
-    sectionsOf,
-    useHarnessCommonLabels,
-    type HarnessCommonLabels,
-} from "@/hooks/harness"
+import { harnessHeaderOf, outlineOf, useHarnessCommonLabels, type HarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryHarnessDocSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
@@ -71,15 +65,15 @@ export const useHarnessDocScreen = (route: DocRoute): HarnessDocScreen => {
             header: harnessHeaderOf(common, {
                 active: "docs",
                 title: read.data?.title ?? t("title"),
-                ...(read.data === undefined
-                    ? {}
-                    : { description: read.data.summary, meta: common.minutes(read.data.minutes) }),
+                ...(read.data === undefined ? {} : { description: read.data.summary }),
                 trail: [[common.tabs.docs, HARNESS_ROUTES.docs]],
             }),
-            slot: mapSlot(slotOfSwr(read), (doc): HarnessDocPageView => {
-                const sections = sectionsOf(doc?.markdown ?? "", doc?.title ?? "")
-                return { title: doc?.title ?? "", summary: doc?.summary ?? "", sections, outline: outlineOf(sections) }
-            }),
+            slot: mapSlot(slotOfSwr(read), (doc): HarnessDocPageView => ({
+                title: doc?.title ?? "",
+                summary: doc?.summary ?? "",
+                sections: doc?.sections ?? [],
+                outline: outlineOf(doc?.sections ?? []),
+            })),
             placeholder: HARNESS_DOC_PLACEHOLDER,
             slotLabels: slotLabels(t("missing")),
             labels: { outlineTitle: t("outlineTitle"), outlineEmpty: t("outlineEmpty") },

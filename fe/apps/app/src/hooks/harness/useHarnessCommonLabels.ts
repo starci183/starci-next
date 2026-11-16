@@ -24,9 +24,14 @@ export const useHarnessCommonLabels = (): HarnessCommonLabels => {
             untested: t("outcomes.untested"),
             running: t("outcomes.running"),
         },
+        proofs: { NONE: t("proofs.none"), PRACTISING: t("proofs.practising"), PROVED: t("proofs.proved") },
         probes: { pass: t("probes.pass"), fail: t("probes.fail"), skipped: t("probes.skipped") },
-        verdicts: { clean: t("verdicts.clean"), shortcut: t("verdicts.shortcut"), untested: t("verdicts.untested") },
-        minutes: (minutes) => t("minutes", { minutes }),
+        verdicts: {
+            clean: t("verdicts.clean"),
+            shortcut: t("verdicts.shortcut"),
+            incomplete: t("verdicts.incomplete"),
+            untested: t("verdicts.untested"),
+        },
         copy: { copy: t("copy.copy"), copied: t("copy.copied"), copyError: t("copy.error") },
         markdown: {
             copy: t("copy.copy"),

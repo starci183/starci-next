@@ -14,10 +14,10 @@ const rowOf = (build: HarnessBuildItemView): ListRowData => ({
     title: build.title,
     description: build.summary,
     badges: [
-        { label: build.e2e, tone: build.isDone ? "success" : "muted" },
-        { label: build.stages, tone: "muted" },
+        { label: build.proved, tone: build.isDone ? "success" : "muted" },
+        { label: build.practising, tone: "muted" },
     ],
-    meta: { text: build.stack },
+    meta: { text: build.keys },
     href: build.href,
 })
 

@@ -1931,9 +1931,9 @@
       "verdicts": {
         "clean": "Clean",
         "shortcut": "Took shortcuts",
-        "untested": "Not tried"
+        "untested": "Not tried",
+        "incomplete": "Incomplete"
       },
-      "minutes": "{minutes} min read",
       "copy": {
         "copy": "Copy",
         "copied": "Copied",
@@ -1955,24 +1955,22 @@
         "open": "Open",
         "figures": {
           "builds": "Builds done",
-          "buildsMeta": "every stage green",
-          "stages": "Green stages",
-          "stagesMeta": "across all builds",
-          "checks": "Machine checks",
-          "trials": "Clean trials"
+          "practising": "Stages practising",
+          "proved": "Stages proved",
+          "checks": "Machine checks passed"
         },
         "parts": {
           "build": {
             "title": "Build · pull a starter, take it from rough to pro",
             "description": "A rough starter, e2e scripts and a guide for every stage. It runs on your own AI key, and the key never leaves your machine.",
             "topics": "AI agent · MCP server · Support chatbot · Lead agent",
-            "progress": "{green} / {total} builds green"
+            "progress": "{done} / {total} builds done"
           },
           "use": {
             "title": "Use · guides with commands you can run",
             "description": "Copy and run: install Claude Code or Codex, write CLAUDE.md and AGENTS.md, hooks, permissions, MCP. It has a command that checks your machine and traps that test an agent.",
             "topics": "Claude Code · Codex · harness doctor · trial traps",
-            "progress": "{passed} / {total} checks passed"
+            "progress": "{done} / {total} checks passed"
           },
           "docs": {
             "title": "Deep dive · long explainers",
@@ -1987,8 +1985,8 @@
         "description": "Pull a rough starter, follow it stage by stage and watch the e2e turn green.",
         "listTitle": "Builds",
         "empty": "There are no builds yet.",
-        "e2e": "e2e {passed} / {total}",
-        "stages": "{green} / {total} stages"
+        "practising": "{n} / {total} stages run",
+        "proved": "{n} / {total} stages proved"
       },
       "build": {
         "title": "Build",
@@ -2009,7 +2007,12 @@
         "logTitle": "Newest e2e run",
         "stepsTitle": "Step by step",
         "lockedTitle": "This stage is locked",
-        "lockedText": "Turn the stage before it fully green and the guide of this one opens."
+        "lockedText": "Turn the stage before it fully green and the guide of this one opens.",
+        "keysLabel": "Keys needed in .env",
+        "repoTitle": "Connect a repo to prove it",
+        "repoText": "A run on your machine only counts as practising. To be proved, the build must run in a signed CI of your GitHub repo.",
+        "repoBound": "Connected",
+        "repoUnbound": "Not connected"
       },
       "use": {
         "title": "Use",
@@ -2019,7 +2022,6 @@
         "fix": "See how to fix it",
         "noShortcuts": "None",
         "never": "Not run",
-        "shortcutMany": "{label} ({count} times)",
         "toolDescription": "Pick the tool you use. The lists below follow it.",
         "guidesTitle": "Guides",
         "guidesEmpty": "There are no guides yet.",
@@ -2035,7 +2037,9 @@
         "shortcutsColumn": "Shortcuts seen",
         "verdictColumn": "Verdict",
         "costColumn": "Estimated cost",
-        "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs."
+        "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs.",
+        "shortcutBlocked": "{label} (blocked)",
+        "tokens": "~ {tokens} tokens"
       },
       "guide": {
         "title": "Guide",
@@ -2064,6 +2068,11 @@
         "missing": "This article was not found.",
         "outlineTitle": "In this article",
         "outlineEmpty": "This article has no sections yet."
+      },
+      "proofs": {
+        "none": "Not practised",
+        "practising": "Practising",
+        "proved": "Proved"
       }
     }
   }

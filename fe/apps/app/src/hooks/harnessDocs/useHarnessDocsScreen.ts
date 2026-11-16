@@ -4,7 +4,7 @@ import type { PageHeaderContent } from "@starci/grammar/common"
 import { useLocale, useTranslations } from "next-intl"
 import { harnessHeaderOf, useHarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessDocsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { harnessDocPath } from "@/modules/routes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
@@ -14,7 +14,6 @@ export type HarnessDocItemView = {
     readonly slug: string
     readonly title: string
     readonly summary: string
-    readonly meta: string
     readonly href: string
 }
 
@@ -41,7 +40,6 @@ export const HARNESS_DOCS_PLACEHOLDER: ReadonlyArray<HarnessDocItemView> = [1, 2
     slug: `d${n}`,
     title: "xxxxxxxxxxxxxxxx",
     summary: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    meta: "xx xxx",
     href: `/${n}`,
 }))
 
@@ -51,7 +49,7 @@ export const useHarnessDocsScreen = (): HarnessDocsScreen => {
     const t = useTranslations("app.harness.docs")
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useQueryHarnessCatalogSwr(locale)
+    const read = useQueryHarnessDocsSwr(locale)
     useDocumentTitle(t("title"))
     return {
         props: {
@@ -61,12 +59,11 @@ export const useHarnessDocsScreen = (): HarnessDocsScreen => {
                 description: t("description"),
                 trail: [],
             }),
-            slot: mapSlot(slotOfSwr(read), (catalog) =>
-                catalog.docs.map((doc): HarnessDocItemView => ({
+            slot: mapSlot(slotOfSwr(read), (docs) =>
+                docs.map((doc): HarnessDocItemView => ({
                     slug: doc.slug,
                     title: doc.title,
                     summary: doc.summary,
-                    meta: common.minutes(doc.minutes),
                     href: harnessDocPath(doc.slug),
                 })),
             ),

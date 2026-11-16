@@ -3,24 +3,30 @@
 import { viewerKey } from "@starci/next-data"
 import useSWR, { type SWRResponse } from "swr"
 import { useViewerId } from "@/hooks/viewer"
-import { readHarnessBuild } from "@/modules/harness-source"
+import { failing } from "@/modules/api"
+import { queryHarnessBuild } from "@/modules/api/graphql/queries/query-harness-build"
+import { buildOf } from "@/modules/harness-view"
 import type { HarnessBuildView } from "@/modules/types"
 
-/** Cache identity of one build; the viewer, the build and the language are part of the key. */
-export const QUERY_HARNESS_BUILD_SWR_KEY = "QUERY_HARNESS_BUILD_SWR"
+/** Cache identity of this read; the viewer and every argument are part of the key. */
+export const QUERY_HARNESS_BUILD_SWR_KEY = "QUERY_HARNESS_BUILD_SWR_KEY"
 
-/** How often the build is read again while a stage is running: the stage list follows the learner's machine live. */
+/** How often the build is read again while a stage is running: the stage list follows the learner machine live. */
 const RUNNING_POLL_MS = 2000
 
-/** How often the build is read again otherwise, so an e2e run from the terminal shows up without a reload. */
+/** How often a read is made again otherwise, so an e2e run from the terminal shows up without a reload. */
 const IDLE_POLL_MS = 10_000
 
-/** Reads one build with the newest e2e result of each stage; the read answers undefined for a build that does not exist. */
-export const useQueryHarnessBuildSwr = (buildId: string, locale: string): SWRResponse<HarnessBuildView | undefined> => {
+/** Reads one build with the newest e2e result of each stage. */
+export const useQueryHarnessBuildSwr = (buildId: string, locale: string): SWRResponse<HarnessBuildView> => {
     const viewer = viewerKey(QUERY_HARNESS_BUILD_SWR_KEY, useViewerId())
-    return useSWR<HarnessBuildView | undefined>(
+    return useSWR<HarnessBuildView>(
         viewer === null ? null : [...viewer, buildId, locale],
-        () => readHarnessBuild(buildId, locale),
+        async () => {
+            const { data } = await failing(() => queryHarnessBuild({ request: { id: buildId, locale } }))
+            if (data === undefined) throw new Error("harnessBuild answered no data")
+            return buildOf(data.harnessBuild)
+        },
         {
             refreshInterval: (build) =>
                 (build?.stages ?? []).some((stage) => stage.outcome === "running") ? RUNNING_POLL_MS : IDLE_POLL_MS,

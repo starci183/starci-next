@@ -8,14 +8,14 @@ import { useState } from "react"
 import {
     harnessHeaderOf,
     outlineOf,
-    sectionsOf,
     useHarnessCommonLabels,
     useHarnessTool,
     type HarnessCommonLabels,
 } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessGuideSwr, useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessGuideSwr, useQueryHarnessGuidesSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { doctorCommandOf } from "@/modules/harness-view"
 import { HARNESS_ROUTES, harnessGuidePath } from "@/modules/routes"
 import {
     HARNESS_TOOLS,
@@ -25,6 +25,7 @@ import {
     type SlotLabels,
 } from "@/modules/types"
 import { doctorPanelOf, type HarnessDoctorPanelView, type HarnessUseWords } from "./harnessUse.shared"
+import { HARNESS_DOCTOR_PLACEHOLDER } from "./useHarnessUseScreen"
 
 /** One guide as drawn: its sections, its outline and the tool it is written for. */
 export type HarnessGuidePageView = {
@@ -83,25 +84,8 @@ export const HARNESS_GUIDE_PLACEHOLDER: HarnessGuidePageView = {
     outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "xxxxxxxxxxxxxxxx", href: `#o${n}` })),
 }
 
-/** The same-shape doctor panel the skeleton draws while the first read runs. */
-export const HARNESS_DOCTOR_PLACEHOLDER: HarnessDoctorPanelView = {
-    command: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    ranAt: "xxxxxxxxxx",
-    summary: "x / x",
-    probes: [1, 2, 3].map((n) => ({
-        id: `p${n}`,
-        title: "xxxxxxxxxxxxxxxxxxxx",
-        detail: "xxxxxxxxxx",
-        outcome: "xxxx",
-        tone: "muted",
-        isFailing: false,
-        fixLabel: "",
-        fixHref: "",
-    })),
-}
-
-/** What the route hands the guide page: the guide in the address. */
-type GuideRoute = { readonly slug: string }
+/** What the route hands the guide page: the tool and the guide in the address. */
+type GuideRoute = { readonly tool: string; readonly slug: string }
 
 /** The tool a picker value names; anything else is the first tool. */
 const toolOf = (value: string): HarnessTool => HARNESS_TOOLS.find((each) => each === value) ?? "claude"
@@ -118,8 +102,11 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
     const router = navigation.useRouter()
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const guide = useQueryHarnessGuideSwr(route.slug, locale)
-    const catalog = useQueryHarnessCatalogSwr(locale)
+    const tool = toolOf(route.tool)
+    const other: HarnessTool = tool === "claude" ? "codex" : "claude"
+    const guide = useQueryHarnessGuideSwr(tool, route.slug, locale)
+    const own = useQueryHarnessGuidesSwr(tool, locale)
+    const twins = useQueryHarnessGuidesSwr(other, locale)
     const { choose } = useHarnessTool()
     const [isOnlyFailing, setOnlyFailing] = useState(false)
     useDocumentTitle(guide.data?.title)
@@ -130,6 +117,7 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         noShortcuts: "",
         never: t("never"),
         shortcut: (label) => label,
+        tokens: () => "",
         when: (iso) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
     }
     return {
@@ -137,27 +125,23 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
             header: harnessHeaderOf(common, {
                 active: "use",
                 title: guide.data?.title ?? t("title"),
-                ...(guide.data === undefined
-                    ? {}
-                    : { description: guide.data.summary, meta: common.minutes(guide.data.minutes) }),
+                ...(guide.data === undefined ? {} : { description: guide.data.summary }),
                 trail: [[common.tabs.use, HARNESS_ROUTES.use]],
             }),
-            guide: mapSlot(slotOfSwr(guide), (each): HarnessGuidePageView => {
-                const sections = sectionsOf(each?.markdown ?? "", each?.title ?? "")
-                return {
-                    title: each?.title ?? "",
-                    summary: each?.summary ?? "",
-                    tool: each?.tool ?? "claude",
-                    sections,
-                    outline: outlineOf(sections),
-                }
-            }),
+            guide: mapSlot(slotOfSwr(guide), (each): HarnessGuidePageView => ({
+                title: each?.title ?? "",
+                summary: each?.summary ?? "",
+                tool: each?.tool ?? tool,
+                sections: each?.sections ?? [],
+                outline: outlineOf(each?.sections ?? []),
+            })),
             guidePlaceholder: HARNESS_GUIDE_PLACEHOLDER,
-            doctor: mapSlot(slotOfSwr(catalog), (all): HarnessDoctorPanelView => {
-                const doctor = all.doctors.find((each) => each.tool === guide.data?.tool)
-                return doctor === undefined ? HARNESS_DOCTOR_PLACEHOLDER : doctorPanelOf(doctor, words, route.slug)
-            }),
             doctorPlaceholder: HARNESS_DOCTOR_PLACEHOLDER,
+            doctor: mapSlot(slotOfSwr(guide), (each): HarnessDoctorPanelView => {
+                const probes = each?.probes ?? []
+                const ranAt = probes.reduce((newest, probe) => (probe.at > newest ? probe.at : newest), "")
+                return doctorPanelOf({ tool, command: doctorCommandOf(tool), ranAt, probes }, words)
+            }),
             slotLabels: slotLabels(t("missing")),
             labels: {
                 outlineTitle: t("outlineTitle"),
@@ -176,18 +160,14 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         },
         on: {
             retryGuide: () => void guide.mutate(),
-            retryDoctor: () => void catalog.mutate(),
+            retryDoctor: () => void guide.mutate(),
             chooseTool: (value) => {
                 const next = toolOf(value)
                 choose(next)
-                const guides = catalog.data?.guides ?? []
-                const here = guides.find((each) => each.slug === route.slug)
-                if (here === undefined || here.tool === next) return
-                const index = guides
-                    .filter((each) => each.tool === here.tool)
-                    .findIndex((each) => each.slug === here.slug)
-                const twin = guides.filter((each) => each.tool === next)[index]
-                router.push(twin === undefined ? HARNESS_ROUTES.use : harnessGuidePath(twin.slug))
+                if (next === tool) return
+                const index = (own.data ?? []).findIndex((each) => each.slug === route.slug)
+                const twin = (twins.data ?? [])[index]
+                router.push(twin === undefined ? HARNESS_ROUTES.use : harnessGuidePath(next, twin.slug))
             },
             setOnlyFailing,
         },

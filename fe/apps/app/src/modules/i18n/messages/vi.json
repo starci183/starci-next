@@ -1931,9 +1931,9 @@
       "verdicts": {
         "clean": "Sạch",
         "shortcut": "Đi đường tắt",
-        "untested": "Chưa thử"
+        "untested": "Chưa thử",
+        "incomplete": "Chưa xong"
       },
-      "minutes": "{minutes} phút đọc",
       "copy": {
         "copy": "Sao chép",
         "copied": "Đã sao chép",
@@ -1955,24 +1955,22 @@
         "open": "Mở",
         "figures": {
           "builds": "Build xong",
-          "buildsMeta": "mọi chặng xanh",
-          "stages": "Chặng xanh",
-          "stagesMeta": "trong mọi build",
-          "checks": "Kiểm tra máy",
-          "trials": "Bẫy thử sạch"
+          "practising": "Chặng đang luyện",
+          "proved": "Chặng đã chứng minh",
+          "checks": "Kiểm tra máy đạt"
         },
         "parts": {
           "build": {
             "title": "Build · tải source mẫu, nâng từ sơ sài lên pro",
             "description": "Source sơ sài, kịch bản e2e và hướng dẫn từng chặng. Chạy bằng key AI của chính bạn, key không rời máy.",
             "topics": "AI agent · MCP server · Chatbot CSKH · Agent tìm lead",
-            "progress": "{green} / {total} build xanh"
+            "progress": "{done} / {total} build xong"
           },
           "use": {
             "title": "Xài · hướng dẫn kèm lệnh chạy được",
             "description": "Copy là chạy: cài Claude Code hoặc Codex, viết CLAUDE.md và AGENTS.md, hook, quyền, MCP. Có lệnh kiểm tra máy và bẫy thử agent.",
             "topics": "Claude Code · Codex · harness doctor · bẫy thử",
-            "progress": "{passed} / {total} kiểm tra đạt"
+            "progress": "{done} / {total} kiểm tra đạt"
           },
           "docs": {
             "title": "Hiểu sâu · bài giải thích dài",
@@ -1987,8 +1985,8 @@
         "description": "Tải source mẫu sơ sài, làm theo từng chặng và xem e2e chuyển xanh dần.",
         "listTitle": "Các build",
         "empty": "Chưa có build nào.",
-        "e2e": "e2e {passed} / {total}",
-        "stages": "{green} / {total} chặng"
+        "practising": "{n} / {total} chặng đã chạy",
+        "proved": "{n} / {total} chặng đã chứng minh"
       },
       "build": {
         "title": "Build",
@@ -2009,7 +2007,12 @@
         "logTitle": "Lần chạy e2e gần nhất",
         "stepsTitle": "Hướng dẫn từng bước",
         "lockedTitle": "Chặng này đang khóa",
-        "lockedText": "Làm cho chặng trước xanh hết thì hướng dẫn của chặng này mở ra."
+        "lockedText": "Làm cho chặng trước xanh hết thì hướng dẫn của chặng này mở ra.",
+        "keysLabel": "Key cần có trong .env",
+        "repoTitle": "Kết nối repo để chứng minh",
+        "repoText": "Kết quả chạy trên máy bạn chỉ tính là đang luyện. Muốn được chứng minh, build cần chạy trong CI có chữ ký của repo GitHub của bạn.",
+        "repoBound": "Đã kết nối",
+        "repoUnbound": "Chưa kết nối"
       },
       "use": {
         "title": "Xài",
@@ -2019,7 +2022,6 @@
         "fix": "Xem cách sửa",
         "noShortcuts": "Không có",
         "never": "Chưa chạy",
-        "shortcutMany": "{label} ({count} lần)",
         "toolDescription": "Chọn công cụ bạn dùng. Danh sách bên dưới đổi theo.",
         "guidesTitle": "Hướng dẫn",
         "guidesEmpty": "Chưa có hướng dẫn.",
@@ -2035,7 +2037,9 @@
         "shortcutsColumn": "Đường tắt đã thấy",
         "verdictColumn": "Kết luận",
         "costColumn": "Chi phí ước tính",
-        "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy."
+        "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
+        "shortcutBlocked": "{label} (bị chặn)",
+        "tokens": "~ {tokens} token"
       },
       "guide": {
         "title": "Hướng dẫn",
@@ -2064,6 +2068,11 @@
         "missing": "Không tìm thấy bài này.",
         "outlineTitle": "Trong bài này",
         "outlineEmpty": "Bài chưa có mục nào."
+      },
+      "proofs": {
+        "none": "Chưa luyện",
+        "practising": "Đang luyện",
+        "proved": "Đã chứng minh"
       }
     }
   }

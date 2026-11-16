@@ -3,13 +3,14 @@
 import type { PageHeaderContent } from "@starci/grammar/common"
 import { useLocale, useTranslations } from "next-intl"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessHubSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_ROUTES } from "@/modules/routes"
 import {
     HARNESS_PARTS,
     HARNESS_TOOLS,
     type DataSlot,
+    type HarnessHubPartView,
     type HarnessPart,
     type HarnessTool,
     type SlotLabels,
@@ -36,7 +37,6 @@ export type HarnessFigureView = {
     readonly id: string
     readonly term: string
     readonly value: string
-    readonly meta: string
 }
 
 /** The hub as drawn: the ribbon of figures and the three parts. */
@@ -75,7 +75,7 @@ export type HarnessHubScreen = {
 
 /** The same-shape hub the skeleton draws while the first read runs. */
 export const HARNESS_HUB_PLACEHOLDER: HarnessHubView = {
-    figures: [1, 2, 3, 4].map((n) => ({ id: `f${n}`, term: "xxxxxxxx", value: "xx", meta: "xxxxxxxx" })),
+    figures: [1, 2, 3, 4].map((n) => ({ id: `f${n}`, term: "xxxxxxxx", value: "xx" })),
     parts: HARNESS_PARTS.map((id, index) => ({
         id,
         title: "xxxxxxxxxxxxxxxx",
@@ -96,70 +96,38 @@ export const useHarnessHubScreen = (): HarnessHubScreen => {
     const t = useTranslations("app.harness.hub")
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useQueryHarnessCatalogSwr(locale)
+    const read = useQueryHarnessHubSwr(locale)
     const { tool, choose } = useHarnessTool()
     useDocumentTitle(common.pageTitle)
-    const slot = mapSlot(slotOfSwr(read), (catalog): HarnessHubView => {
-        const green = catalog.builds.filter((build) => build.stagesGreen === build.stagesTotal).length
-        const stages = catalog.builds.reduce((sum, build) => sum + build.stagesGreen, 0)
-        const stagesTotal = catalog.builds.reduce((sum, build) => sum + build.stagesTotal, 0)
-        const probes = (catalog.doctors.find((doctor) => doctor.tool === tool)?.probes ?? []).filter(
-            (probe) => probe.outcome !== "skipped",
-        )
-        const passed = probes.filter((probe) => probe.outcome === "pass").length
-        const clean = catalog.trials.filter((trial) => trial.tool === tool && trial.verdict === "clean").length
-        const trials = catalog.trials.filter((trial) => trial.tool === tool).length
+    const slot = mapSlot(slotOfSwr(read), (hub): HarnessHubView => {
+        const part = (key: HarnessPart): HarnessHubPartView | undefined => hub.find((each) => each.key === key)
+        const build = part("build")
+        const use = part("use")
+        const rowOf = (each: HarnessHubPartView, progress: string, topics: string): HarnessPartRowView => ({
+            id: each.key,
+            title: each.title,
+            description: each.summary,
+            topics,
+            progress,
+            isDone: each.total > 0 && each.done === each.total,
+            href: HARNESS_ROUTES[each.key],
+        })
         return {
             figures: [
-                {
-                    id: "builds",
-                    term: t("figures.builds"),
-                    value: `${green} / ${catalog.builds.length}`,
-                    meta: t("figures.buildsMeta"),
-                },
-                {
-                    id: "stages",
-                    term: t("figures.stages"),
-                    value: `${stages} / ${stagesTotal}`,
-                    meta: t("figures.stagesMeta"),
-                },
-                {
-                    id: "checks",
-                    term: t("figures.checks"),
-                    value: `${passed} / ${probes.length}`,
-                    meta: common.tools[tool],
-                },
-                { id: "trials", term: t("figures.trials"), value: `${clean} / ${trials}`, meta: common.tools[tool] },
+                { id: "builds", term: t("figures.builds"), value: `${build?.done ?? 0} / ${build?.total ?? 0}` },
+                { id: "practising", term: t("figures.practising"), value: String(build?.practising ?? 0) },
+                { id: "proved", term: t("figures.proved"), value: String(build?.proved ?? 0) },
+                { id: "checks", term: t("figures.checks"), value: `${use?.done ?? 0} / ${use?.total ?? 0}` },
             ],
-            parts: [
-                {
-                    id: "build",
-                    title: t("parts.build.title"),
-                    description: t("parts.build.description"),
-                    topics: t("parts.build.topics"),
-                    progress: t("parts.build.progress", { green, total: catalog.builds.length }),
-                    isDone: green === catalog.builds.length && green > 0,
-                    href: HARNESS_ROUTES.build,
-                },
-                {
-                    id: "use",
-                    title: t("parts.use.title"),
-                    description: t("parts.use.description"),
-                    topics: t("parts.use.topics"),
-                    progress: t("parts.use.progress", { passed, total: probes.length }),
-                    isDone: probes.length > 0 && passed === probes.length,
-                    href: HARNESS_ROUTES.use,
-                },
-                {
-                    id: "docs",
-                    title: t("parts.docs.title"),
-                    description: t("parts.docs.description"),
-                    topics: t("parts.docs.topics"),
-                    progress: t("parts.docs.progress", { count: catalog.docs.length }),
-                    isDone: false,
-                    href: HARNESS_ROUTES.docs,
-                },
-            ],
+            parts: hub.map((each) =>
+                rowOf(
+                    each,
+                    each.key === "docs"
+                        ? t("parts.docs.progress", { count: each.total })
+                        : t(`parts.${each.key}.progress`, { done: each.done, total: each.total }),
+                    t(`parts.${each.key}.topics`),
+                ),
+            ),
         }
     })
     return {

@@ -35,7 +35,6 @@ const HubBody = (props: {
                 id: figure.id,
                 term: figure.term,
                 value: figure.value,
-                meta: figure.meta,
             }))}
         />
         <Section

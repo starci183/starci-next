@@ -14,6 +14,6 @@ Grammar: `Page header` với `tabs kind="views"` (`frame/PageHeader/index.d.ts`)
 
 ## Danh sách các build
 
-Vì sao: mỗi build là một hàng phẳng: tên, một câu nói build làm ra gì, stack (TypeScript, Claude, OpenAI) làm dòng meta, hai chip ("e2e 9 / 20" và "2 / 5 chặng"). Cả hàng dẫn tới trang build. Không thẻ vì build chỉ là một mục của danh sách.
+Vì sao: mỗi build là một hàng phẳng: tên, một câu nói build làm ra gì, key AI cần có trong `.env` làm dòng meta, hai chip ("3 / 5 chặng đã chứng minh" và "4 / 5 chặng đã chạy"). Cả hàng dẫn tới trang build. Không thẻ vì build chỉ là một mục của danh sách.
 Luật: `FE-ERROR-1` (loading, lỗi, rỗng nằm trong chính vùng danh sách), `FE-UI-1`.
 Grammar: `Section kind="list"` (`frame/Section/index.d.ts`), `SlotView` của `@starci-next/ui`.

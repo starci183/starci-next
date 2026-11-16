@@ -1,16 +1,21 @@
 import { PROBE_TONES, VERDICT_TONES, type HarnessCommonLabels } from "@/hooks/harness"
 import { harnessGuidePath } from "@/modules/routes"
-import type { HarnessDoctorView, HarnessGuideRowView, HarnessProbeView, HarnessTrialView } from "@/modules/types"
+import type {
+    HarnessDoctorView,
+    HarnessGuideRowView,
+    HarnessProbeView,
+    HarnessTool,
+    HarnessTrialView,
+} from "@/modules/types"
 
 /** The tone of a badge, as the grammar names it. */
-export type HarnessUseTone = "success" | "danger" | "muted" | "accent"
+export type HarnessUseTone = "success" | "danger" | "muted" | "accent" | "warning"
 
 /** One guide of part 2 as a list row. */
 export type HarnessGuideItemView = {
     readonly slug: string
     readonly title: string
     readonly summary: string
-    readonly meta: string
     readonly href: string
 }
 
@@ -55,21 +60,21 @@ export type HarnessUseWords = {
     readonly fix: string
     readonly noShortcuts: string
     readonly never: string
-    readonly shortcut: (label: string, count: number) => string
+    readonly shortcut: (label: string, isBlocked: boolean) => string
+    readonly tokens: (tokens: number) => string
     readonly when: (iso: string) => string
 }
 
 /** The row of one guide. */
-export const guideItemOf = (guide: HarnessGuideRowView, words: HarnessUseWords): HarnessGuideItemView => ({
+export const guideItemOf = (guide: HarnessGuideRowView): HarnessGuideItemView => ({
     slug: guide.slug,
     title: guide.title,
     summary: guide.summary,
-    meta: words.common.minutes(guide.minutes),
-    href: harnessGuidePath(guide.slug),
+    href: harnessGuidePath(guide.tool, guide.slug),
 })
 
 /** The row of one probe. */
-const probeItemOf = (probe: HarnessProbeView, words: HarnessUseWords): HarnessProbeItemView => ({
+const probeItemOf = (probe: HarnessProbeView, tool: HarnessTool, words: HarnessUseWords): HarnessProbeItemView => ({
     id: probe.id,
     title: probe.title,
     detail: probe.detail,
@@ -77,23 +82,17 @@ const probeItemOf = (probe: HarnessProbeView, words: HarnessUseWords): HarnessPr
     tone: PROBE_TONES[probe.outcome],
     isFailing: probe.outcome === "fail",
     fixLabel: probe.outcome === "fail" && probe.guideSlug !== "" ? words.fix : "",
-    fixHref: probe.outcome === "fail" && probe.guideSlug !== "" ? harnessGuidePath(probe.guideSlug) : "",
+    fixHref: probe.outcome === "fail" && probe.guideSlug !== "" ? harnessGuidePath(tool, probe.guideSlug) : "",
 })
 
-/** The doctor panel of one tool; `only` limits it to the probes a guide fixes, when that guide fixes any. */
-export const doctorPanelOf = (
-    doctor: HarnessDoctorView,
-    words: HarnessUseWords,
-    only?: string,
-): HarnessDoctorPanelView => {
-    const own = only === undefined ? [] : doctor.probes.filter((probe) => probe.guideSlug === only)
-    const probes = own.length > 0 ? own : doctor.probes
-    const ran = probes.filter((probe) => probe.outcome !== "skipped")
+/** The doctor panel of one tool: the command, when the newest result arrived and one row per probe. */
+export const doctorPanelOf = (doctor: HarnessDoctorView, words: HarnessUseWords): HarnessDoctorPanelView => {
+    const ran = doctor.probes.filter((probe) => probe.outcome !== "skipped")
     return {
         command: doctor.command,
         ranAt: doctor.ranAt === "" ? words.never : words.when(doctor.ranAt),
         summary: words.probesSummary(ran.filter((probe) => probe.outcome === "pass").length, ran.length),
-        probes: probes.map((probe) => probeItemOf(probe, words)),
+        probes: doctor.probes.map((probe) => probeItemOf(probe, doctor.tool, words)),
     }
 }
 
@@ -107,9 +106,9 @@ export const trialItemOf = (trial: HarnessTrialView, words: HarnessUseWords): Ha
             ? words.never
             : trial.shortcuts.length === 0
               ? words.noShortcuts
-              : trial.shortcuts.map((each) => words.shortcut(each.label, each.count)).join(" · "),
+              : trial.shortcuts.map((each) => words.shortcut(each.label, each.isBlocked)).join(" · "),
     verdict: words.common.verdicts[trial.verdict],
     tone: VERDICT_TONES[trial.verdict],
-    cost: trial.cost,
+    cost: trial.tokens > 0 ? words.tokens(trial.tokens) : "",
     command: trial.command,
 })

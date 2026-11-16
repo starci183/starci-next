@@ -13,7 +13,6 @@ const rowOf = (doc: HarnessDocItemView): ListRowData => ({
     id: doc.slug,
     title: doc.title,
     description: doc.summary,
-    meta: { text: doc.meta },
     href: doc.href,
 })
 

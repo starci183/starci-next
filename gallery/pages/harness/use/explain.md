@@ -4,7 +4,7 @@ route: /harness/use
 area: harness
 ---
 
-Route: `/harness/use`. Mã: `fe/apps/app/src/components/blocks/HarnessUse/`, dữ liệu qua `fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts`. Danh mục được đọc lại mỗi 10 giây để kết quả `harness doctor` và bẫy thử chạy từ terminal hiện ra mà không cần tải lại.
+Route: `/harness/use`. Mã: `fe/apps/app/src/components/blocks/HarnessUse/`, dữ liệu qua `fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts`. Ba lần đọc độc lập (`harnessGuides`, `harnessDoctor`, `harnessTrials`), mỗi lần tự chờ và tự lỗi; kết quả được đọc lại mỗi 10 giây để kết quả `harness doctor` và bẫy thử chạy từ terminal hiện ra mà không cần tải lại.
 
 ## Chọn công cụ
 
@@ -26,6 +26,6 @@ Grammar: `CopyField`, `Switch kind="compact"`, `Section kind="list"` không đ�
 
 ## Bảng bẫy thử (trial)
 
-Vì sao: mỗi bẫy một dòng của bảng phẳng: tên và mô tả bẫy, những đường tắt agent đã đi (sửa file test, dùng `--no-verify`), kết luận (Sạch, Đi đường tắt, Chưa thử) và chi phí ước tính mà CLI đã hỏi xác nhận. Lệnh chạy bẫy nằm ở chú thích dưới bảng.
+Vì sao: mỗi bẫy một dòng của bảng phẳng: tên và mô tả bẫy, những đường tắt agent đã đi (sửa file test, dùng `--no-verify`), kết luận (Sạch, Đi đường tắt, Chưa thử) và chi phí ước tính (số token) mà CLI hỏi xác nhận trước khi chạy. Lệnh chạy bẫy nằm ở chú thích dưới bảng.
 Luật: `table-heroui-native-section-head.md`.
 Grammar: `DataTable`, `Badge`, chú thích của `Section`.

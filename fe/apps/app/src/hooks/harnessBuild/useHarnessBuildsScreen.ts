@@ -3,7 +3,7 @@
 import type { PageHeaderContent } from "@starci/grammar/common"
 import { useLocale, useTranslations } from "next-intl"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessBuildsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { harnessBuildPath } from "@/modules/routes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
@@ -14,9 +14,9 @@ export type HarnessBuildItemView = {
     readonly id: string
     readonly title: string
     readonly summary: string
-    readonly stack: string
-    readonly e2e: string
-    readonly stages: string
+    readonly keys: string
+    readonly practising: string
+    readonly proved: string
     readonly isDone: boolean
     readonly href: string
 }
@@ -44,9 +44,9 @@ export const HARNESS_BUILDS_PLACEHOLDER: ReadonlyArray<HarnessBuildItemView> = [
     id: `placeholder-${n}`,
     title: "xxxxxxxxxxxxxxxx",
     summary: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    stack: "xxxxxx",
-    e2e: "x / x",
-    stages: "xxxxxx",
+    keys: "xxxxxx",
+    practising: "x / x",
+    proved: "xxxxxx",
     isDone: false,
     href: `/${n}`,
 }))
@@ -57,7 +57,7 @@ export const useHarnessBuildsScreen = (): HarnessBuildsScreen => {
     const t = useTranslations("app.harness.builds")
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useQueryHarnessCatalogSwr(locale)
+    const read = useQueryHarnessBuildsSwr(locale)
     useDocumentTitle(t("title"))
     return {
         props: {
@@ -67,15 +67,15 @@ export const useHarnessBuildsScreen = (): HarnessBuildsScreen => {
                 description: t("description"),
                 trail: [],
             }),
-            slot: mapSlot(slotOfSwr(read), (catalog) =>
-                catalog.builds.map((build): HarnessBuildItemView => ({
+            slot: mapSlot(slotOfSwr(read), (builds) =>
+                builds.map((build): HarnessBuildItemView => ({
                     id: build.id,
                     title: build.title,
                     summary: build.summary,
-                    stack: build.stack.join(" · "),
-                    e2e: t("e2e", { passed: build.passed, total: build.total }),
-                    stages: t("stages", { green: build.stagesGreen, total: build.stagesTotal }),
-                    isDone: build.total > 0 && build.passed === build.total,
+                    keys: build.keys.join(" · "),
+                    practising: t("practising", { n: build.practisingStages, total: build.stageCount }),
+                    proved: t("proved", { n: build.provedStages, total: build.stageCount }),
+                    isDone: build.stageCount > 0 && build.provedStages === build.stageCount,
                     href: harnessBuildPath(build.id),
                 })),
             ),

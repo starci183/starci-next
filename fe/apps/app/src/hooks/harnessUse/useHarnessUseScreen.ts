@@ -5,7 +5,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { harnessHeaderOf, useHarnessCommonLabels, useHarnessTool, type HarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessDoctorSwr, useQueryHarnessGuidesSwr, useQueryHarnessTrialsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_TOOLS, type DataSlot, type HarnessTool, type SlotLabels } from "@/modules/types"
 import {
@@ -17,13 +17,6 @@ import {
     type HarnessTrialItemView,
     type HarnessUseWords,
 } from "./harnessUse.shared"
-
-/** Part 2 as drawn for one tool: its guides, the newest doctor result and the trials. */
-export type HarnessUseView = {
-    readonly guides: ReadonlyArray<HarnessGuideItemView>
-    readonly doctor: HarnessDoctorPanelView
-    readonly trials: ReadonlyArray<HarnessTrialItemView>
-}
 
 /** The words of part 2. */
 export type HarnessUseLabels = {
@@ -45,12 +38,16 @@ export type HarnessUseLabels = {
     readonly toolDescription: string
 }
 
-/** Part 2 of the harness area. */
+/** Part 2 of the harness area: three reads that wait and fail on their own. */
 export type HarnessUseScreen = {
     readonly props: {
         readonly header: PageHeaderContent
-        readonly slot: DataSlot<HarnessUseView>
-        readonly placeholder: HarnessUseView
+        readonly guides: DataSlot<ReadonlyArray<HarnessGuideItemView>>
+        readonly guidesPlaceholder: ReadonlyArray<HarnessGuideItemView>
+        readonly doctor: DataSlot<HarnessDoctorPanelView>
+        readonly doctorPlaceholder: HarnessDoctorPanelView
+        readonly trials: DataSlot<ReadonlyArray<HarnessTrialItemView>>
+        readonly trialsPlaceholder: ReadonlyArray<HarnessTrialItemView>
         readonly slotLabels: SlotLabels
         readonly labels: HarnessUseLabels
         readonly common: HarnessCommonLabels
@@ -59,55 +56,57 @@ export type HarnessUseScreen = {
         readonly isOnlyFailing: boolean
     }
     readonly on: {
-        readonly retry: () => void
+        readonly retryGuides: () => void
+        readonly retryDoctor: () => void
+        readonly retryTrials: () => void
         readonly chooseTool: (value: string) => void
         readonly setOnlyFailing: (isOnlyFailing: boolean) => void
     }
 }
 
-/** The same-shape part the skeleton draws while the first read runs. */
-export const HARNESS_USE_PLACEHOLDER: HarnessUseView = {
-    guides: [1, 2, 3].map((n) => ({
-        slug: `g${n}`,
-        title: "xxxxxxxxxxxxxxxx",
-        summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        meta: "xx xxx",
-        href: "/",
-    })),
-    doctor: {
-        command: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        ranAt: "xxxxxxxxxx",
-        summary: "x / x",
-        probes: [1, 2, 3].map((n) => ({
-            id: `p${n}`,
-            title: "xxxxxxxxxxxxxxxxxxxx",
-            detail: "xxxxxxxxxx",
-            outcome: "xxxx",
-            tone: "muted",
-            isFailing: false,
-            fixLabel: "",
-            fixHref: "",
-        })),
-    },
-    trials: [1, 2].map((n) => ({
-        id: `t${n}`,
-        title: "xxxxxxxxxxxxxxxx",
-        summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        shortcuts: "xxxxxxxxxx",
-        verdict: "xxxxxx",
+/** The same-shape guide list the skeleton draws while the first read runs. */
+export const HARNESS_GUIDES_PLACEHOLDER: ReadonlyArray<HarnessGuideItemView> = [1, 2, 3].map((n) => ({
+    slug: `g${n}`,
+    title: "xxxxxxxxxxxxxxxx",
+    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    href: "/",
+}))
+
+/** The same-shape doctor panel the skeleton draws while the first read runs. */
+export const HARNESS_DOCTOR_PLACEHOLDER: HarnessDoctorPanelView = {
+    command: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    ranAt: "xxxxxxxxxx",
+    summary: "x / x",
+    probes: [1, 2, 3].map((n) => ({
+        id: `p${n}`,
+        title: "xxxxxxxxxxxxxxxxxxxx",
+        detail: "xxxxxxxxxx",
+        outcome: "xxxx",
         tone: "muted",
-        cost: "~ $x",
-        command: "xxxxxxxxxxxxxxxxxxxxxxxx",
+        isFailing: false,
+        fixLabel: "",
+        fixHref: "",
     })),
 }
+
+/** The same-shape trial table the skeleton draws while the first read runs. */
+export const HARNESS_TRIALS_PLACEHOLDER: ReadonlyArray<HarnessTrialItemView> = [1, 2].map((n) => ({
+    id: `t${n}`,
+    title: "xxxxxxxxxxxxxxxx",
+    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    shortcuts: "xxxxxxxxxx",
+    verdict: "xxxxxx",
+    tone: "muted",
+    cost: "~ x",
+    command: "xxxxxxxxxxxxxxxxxxxxxxxx",
+}))
 
 /** The tool a picker value names; anything else is the first tool. */
 const toolOf = (value: string): HarnessTool => HARNESS_TOOLS.find((each) => each === value) ?? "claude"
 
 /**
- * The connected part 2: the guides of the tool the learner picked, the newest `harness doctor` result of that tool and the trials
- * with the shortcuts the headless runs observed. The catalog is read again every few seconds, so a doctor or a trial run in the
- * terminal shows up here without a reload.
+ * The connected part 2: the guides, the newest `harness doctor` result and the trials of the tool the learner picked, three reads
+ * that the CLI's relayed results refresh every few seconds without a reload.
  */
 export const useHarnessUseScreen = (): HarnessUseScreen => {
     const locale = useLocale()
@@ -115,8 +114,10 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
     const format = useFormatter()
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useQueryHarnessCatalogSwr(locale)
     const { tool, choose } = useHarnessTool()
+    const guides = useQueryHarnessGuidesSwr(tool, locale)
+    const doctor = useQueryHarnessDoctorSwr(tool, locale)
+    const trials = useQueryHarnessTrialsSwr(tool, locale)
     const [isOnlyFailing, setOnlyFailing] = useState(false)
     useDocumentTitle(t("title"))
     const words: HarnessUseWords = {
@@ -125,7 +126,8 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
         fix: t("fix"),
         noShortcuts: t("noShortcuts"),
         never: t("never"),
-        shortcut: (label, count) => (count > 1 ? t("shortcutMany", { label, count }) : label),
+        shortcut: (label, isBlocked) => (isBlocked ? t("shortcutBlocked", { label }) : label),
+        tokens: (tokens) => t("tokens", { tokens: format.number(tokens) }),
         when: (iso) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
     }
     return {
@@ -136,15 +138,12 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
                 description: t("description"),
                 trail: [],
             }),
-            slot: mapSlot(slotOfSwr(read), (catalog): HarnessUseView => {
-                const doctor = catalog.doctors.find((each) => each.tool === tool)
-                return {
-                    guides: catalog.guides.filter((each) => each.tool === tool).map((each) => guideItemOf(each, words)),
-                    doctor: doctor === undefined ? HARNESS_USE_PLACEHOLDER.doctor : doctorPanelOf(doctor, words),
-                    trials: catalog.trials.filter((each) => each.tool === tool).map((each) => trialItemOf(each, words)),
-                }
-            }),
-            placeholder: HARNESS_USE_PLACEHOLDER,
+            guides: mapSlot(slotOfSwr(guides), (rows) => rows.map((each) => guideItemOf(each))),
+            guidesPlaceholder: HARNESS_GUIDES_PLACEHOLDER,
+            doctor: mapSlot(slotOfSwr(doctor), (each) => doctorPanelOf(each, words)),
+            doctorPlaceholder: HARNESS_DOCTOR_PLACEHOLDER,
+            trials: mapSlot(slotOfSwr(trials), (rows) => rows.map((each) => trialItemOf(each, words))),
+            trialsPlaceholder: HARNESS_TRIALS_PLACEHOLDER,
             slotLabels: slotLabels(t("empty")),
             labels: {
                 guidesTitle: t("guidesTitle"),
@@ -170,7 +169,9 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
             isOnlyFailing,
         },
         on: {
-            retry: () => void read.mutate(),
+            retryGuides: () => void guides.mutate(),
+            retryDoctor: () => void doctor.mutate(),
+            retryTrials: () => void trials.mutate(),
             chooseTool: (value) => choose(toolOf(value)),
             setOnlyFailing,
         },

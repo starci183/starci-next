@@ -1046,7 +1046,221 @@ type McpTokenType {
   name: String!
 }
 
+input BindHarnessBuildInput {
+  buildId: String!
+  projectId: String!
+}
+
+type HarnessBuildBindingType {
+  buildId: String!
+  projectId: String!
+}
+
+input HarnessBuildInput {
+  id: String!
+  locale: String! = "vi"
+}
+
+type HarnessBuildSummaryType {
+  id: String!
+  keys: [HarnessKeyNeedType!]!
+  order: Int!
+  practisingStages: Int!
+  provedStages: Int!
+  stageCount: Int!
+  state: String!
+  summary: String!
+  title: String!
+}
+
+type HarnessBuildType {
+  id: String!
+  keys: [HarnessKeyNeedType!]!
+  order: Int!
+  practisingStages: Int!
+  provedStages: Int!
+  repository: HarnessRepositoryType!
+  runtime: HarnessRuntimeType!
+  stageCount: Int!
+  stages: [HarnessStageType!]!
+  state: String!
+  summary: String!
+  title: String!
+}
+
+type HarnessDocSummaryType {
+  order: Int!
+  slug: String!
+  summary: String!
+  title: String!
+}
+
+input HarnessDocInput {
+  locale: String! = "vi"
+  slug: String!
+}
+
+type HarnessDocType {
+  order: Int!
+  sections: [HarnessTextType!]!
+  slug: String!
+  summary: String!
+  title: String!
+}
+
+input HarnessDoctorInput {
+  locale: String! = "vi"
+  tool: String!
+}
+
+type HarnessDoctorType {
+  passed: Int!
+  probes: [HarnessProbeResultType!]!
+  tool: String!
+  total: Int!
+}
+
+type HarnessE2eType {
+  at: String
+  commit: String
+  id: String!
+  passed: Boolean
+  state: String!
+}
+
+type HarnessEstimateType {
+  outputTokensPerTurn: Int!
+  turns: Int!
+}
+
+type HarnessGuideSummaryType {
+  order: Int!
+  slug: String!
+  summary: String!
+  title: String!
+  tool: String!
+}
+
+input HarnessGuideInput {
+  locale: String! = "vi"
+  slug: String!
+  tool: String!
+}
+
+type HarnessGuideType {
+  order: Int!
+  probes: [HarnessProbeResultType!]!
+  sections: [HarnessTextType!]!
+  slug: String!
+  summary: String!
+  title: String!
+  tool: String!
+}
+
+input HarnessGuidesInput {
+  locale: String! = "vi"
+  tool: String!
+}
+
+type HarnessHubType {
+  parts: [HarnessPartType!]!
+}
+
+type HarnessKeyNeedType {
+  anyOf: [String!]!
+  id: String!
+  note: String
+}
+
+input HarnessLocaleInput {
+  locale: String! = "vi"
+}
+
+type HarnessPartType {
+  done: Int!
+  key: String!
+  nextId: String
+  order: Int!
+  practising: Int!
+  proved: Int!
+  summary: String!
+  title: String!
+  total: Int!
+}
+
+type HarnessProbeResultType {
+  at: String
+  fix: String
+  guide: String
+  id: String!
+  order: Int!
+  reason: String
+  status: String!
+  title: String!
+}
+
+type HarnessRepositoryType {
+  bound: Boolean!
+  projectId: String
+}
+
+type HarnessRuntimeType {
+  dir: String!
+  e2e: String!
+  install: String!
+  report: String!
+}
+
+type HarnessShortcutType {
+  blocked: Boolean!
+  kind: String!
+}
+
+type HarnessStageType {
+  e2e: [HarnessE2eType!]!
+  id: String!
+  lastRunAt: String
+  lastWhy: String
+  order: Int!
+  state: String!
+  steps: [HarnessTextType!]!
+  summary: String!
+  title: String!
+}
+
+type HarnessTextType {
+  body: String!
+  id: String!
+  order: Int!
+  run: [String!]!
+  title: String!
+}
+
+type HarnessTrapType {
+  estimate: HarnessEstimateType
+  id: String!
+  last: HarnessTrialResultType
+  order: Int!
+  task: String!
+  title: String!
+  tools: [String!]!
+}
+
+type HarnessTrialResultType {
+  at: String!
+  shortcuts: [HarnessShortcutType!]!
+  testsGreen: Boolean!
+  tool: String!
+  verdict: String!
+}
+
+input HarnessTrialsInput {
+  locale: String! = "vi"
+  tool: String
+}
+
 type Mutation {
+  bindHarnessBuild(input: BindHarnessBuildInput!): HarnessBuildBindingType!
   abandonInterview(input: InterviewSessionRefInput!): InterviewAbandonType!
   addReviewDeck(input: RecallDeckInput!): RecallDeckAddedType!
   answerInterview(input: AnswerInterviewInput!): InterviewAnswerType!
@@ -1565,6 +1779,15 @@ input ProjectsInput {
 }
 
 type Query {
+  harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
+  harnessBuilds(input: HarnessLocaleInput!): [HarnessBuildSummaryType!]!
+  harnessDoc(input: HarnessDocInput!): HarnessDocType!
+  harnessDoctor(input: HarnessDoctorInput!): HarnessDoctorType!
+  harnessDocs(input: HarnessLocaleInput!): [HarnessDocSummaryType!]!
+  harnessGuide(input: HarnessGuideInput!): HarnessGuideType!
+  harnessGuides(input: HarnessGuidesInput!): [HarnessGuideSummaryType!]!
+  harnessHub(input: HarnessLocaleInput!): HarnessHubType!
+  harnessTrials(input: HarnessTrialsInput!): [HarnessTrapType!]!
   agentLab(input: AgentLabInput!): AgentLabOverviewType!
   agentLabTrack(input: AgentLabTrackInput!): AgentLabTrackType!
   agentQuota: AgentQuotaType!

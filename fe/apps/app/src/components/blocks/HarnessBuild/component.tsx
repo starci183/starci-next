@@ -146,6 +146,17 @@ const MainRegion = (props: RegionProps) => {
                 isLoading={props.isLoading}
             />
             <Section
+                title={labels.repoTitle}
+                headingLevel={2}
+                fact={props.view.isBound ? labels.repoBound : labels.repoUnbound}
+                caption={labels.repoText}
+                isLoading={props.isLoading}
+            >
+                <Text size="sm" tone="muted">
+                    {labels.keysLabel}: {props.view.keys}
+                </Text>
+            </Section>
+            <Section
                 title={props.view.selected.title}
                 headingLevel={2}
                 fact={props.view.selected.outcome}

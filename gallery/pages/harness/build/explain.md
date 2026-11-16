@@ -18,6 +18,12 @@ Vì sao: các chặng nằm đầu trang, mỗi chặng một hàng phẳng vớ
 Luật: `FE-ERROR-1`, `FE-UI-1`.
 Grammar: `Section kind="list"` với `ListRowData.state="informative"` cho hàng đang mở.
 
+## Kết nối repo để chứng minh
+
+Vì sao: kết quả chạy trên máy học viên chỉ là "đang luyện"; muốn "đã chứng minh" thì build phải chạy trong CI có chữ ký của repo GitHub của họ. Mục này nói rõ điều đó, cho thấy repo đã kết nối chưa và liệt kê key cần có trong `.env`. Luồng kết nối repo (không cần Project) sẽ nối vào đây khi BE có.
+Luật: `FE-ERROR-1`, `FE-UI-1`.
+Grammar: `Section` với `fact` (chip trạng thái) và `caption`.
+
 ## Lệnh tải source mẫu
 
 Vì sao: một lệnh một dòng, sao chép được, kèm dòng nhắc key AI nằm trong `.env` trên máy học viên và không gửi lên StarCi.

@@ -144,7 +144,6 @@ export { HARNESS_PARTS, HARNESS_TOOLS } from "./harness"
 export type {
     HarnessBuildRowView,
     HarnessBuildView,
-    HarnessCatalogView,
     HarnessDocRowView,
     HarnessDocView,
     HarnessDoctorView,
@@ -152,7 +151,7 @@ export type {
     HarnessE2eOutcome,
     HarnessGuideRowView,
     HarnessGuideView,
-    HarnessLocale,
+    HarnessHubPartView,
     HarnessOutlineEntry,
     HarnessPart,
     HarnessProbeView,

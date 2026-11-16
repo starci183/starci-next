@@ -3,8 +3,8 @@
 import { useHarnessGuideScreen } from "@/hooks/harnessUse"
 import { HarnessGuideBase } from "./component"
 
-/** What the route hands the guide block: the guide in the address, an atom. */
-type HarnessGuideProps = { readonly slug: string }
+/** What the route hands the guide block: the tool and the guide in the address, atoms. */
+type HarnessGuideProps = { readonly tool: string; readonly slug: string }
 
 /**
  * The connected guide page: reads the guide and the newest `harness doctor` result of its tool, and hands the resolved screen to
