@@ -75,4 +75,16 @@ describe("scenarioResultOf", () => {
         expect(lines.some((line) => line.includes("ledger    debit 100 key=k1"))).toBe(true)
         expect(ledgerTextOf(result)).toContain("t+12 submit again")
     })
+
+    it("counts [concept:<id>] and the bare [<id>] as concepts, never a scenario or invariant tag", () => {
+        const tagged = scenarioCasesOf(
+            '<testcase name="[scenario:dup-submit] [concept:idempotency] a" time="1"/>' +
+                '<testcase name="[scenario:dup-submit] [outbox] b" time="1"/>' +
+                '<testcase name="[scenario:dup-submit] [invariant:x] c" time="1"/>',
+        )
+        const result = scenarioResultOf(tagged, { ...SCENARIO, concepts: ["idempotency", "outbox", "x", "scenario"] })
+
+        expect(result.concepts).toEqual(["idempotency", "outbox"])
+        expect(result.passed).toBe(true)
+    })
 })

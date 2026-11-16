@@ -20,7 +20,7 @@ export interface ConceptRun {
 
 const CASE = /<testcase\b([^>]*?)(?:\/>|>([\s\S]*?)<\/testcase>)/gu
 const NAME = /\bname="([^"]*)"/u
-const TAG = /\[([a-z0-9-]+)\]/gu
+const TAG = /\[(?:concept:)?([a-z0-9-]+)\]/gu
 
 /** Decodes the five XML entities of an attribute value. */
 const decoded = (text: string): string =>

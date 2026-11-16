@@ -40,7 +40,7 @@ const CASE = /<testcase\b([^>]*?)(?:\/>|>([\s\S]*?)<\/testcase>)/gu
 const ATTR = (name: string): RegExp => new RegExp(`\\b${name}="([^"]*)"`, "u")
 const FAILURE = /<(?:failure|error)\b([^>]*?)(?:\/>|>([\s\S]*?)<\/(?:failure|error)>)/u
 const SYSTEM_OUT = /<system-out>([\s\S]*?)<\/system-out>/u
-const TAG = /\[([a-z0-9-]+)\]/gu
+const TAG = /\[(?:concept:)?([a-z0-9-]+)\]/gu
 const SCENARIO_TAG = /\[scenario:([a-z0-9-]+)\]/gu
 const INVARIANT = /\[invariant:([a-z0-9-]+)\]/u
 const WHY_MAX = 300
