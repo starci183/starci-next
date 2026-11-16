@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
+import { HarnessImportService } from "@modules/domain/harness"
 import { InterviewImportService } from "@modules/domain/interview"
 import { LessonImportService } from "@modules/domain/lesson"
 import { PracticeImportService } from "@modules/domain/practice"
@@ -26,7 +27,14 @@ import { catalogFilesOf, catalogKindsOf, manifestOf } from "./content-manifest.p
 import { ContentError, ContentErrorCode } from "./errors/content.error"
 
 /** The kinds in the order a sync runs them. */
-export const CONTENT_KINDS: ReadonlyArray<ContentKind> = ["lessons", "interview", "review", "practice", "catalogs"]
+export const CONTENT_KINDS: ReadonlyArray<ContentKind> = [
+    "lessons",
+    "interview",
+    "review",
+    "practice",
+    "harness",
+    "catalogs",
+]
 
 /** The names a caller may pass to run only some kinds. */
 const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
@@ -34,10 +42,15 @@ const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
 /** The length of the sha prefix used as a version label: the label of the dev seeds. */
 const LABEL_LENGTH = 9
 
+/** The folder the authors write in (owner 2026-11-17, the seed standard): `raw/essentials`, `raw/interview`, `raw/practice`. */
+const RAW = "raw"
+
 /** One repository ready on disk with the version label its imports use. */
 interface Root {
     readonly directory: string
     readonly ref: string
+    /** The full content commit, the version a build manifest pins (40 hex when the checkout has one). */
+    readonly fullRef: string
     readonly snapshot: ContentSnapshot | null
 }
 
@@ -67,6 +80,7 @@ export class ContentSyncService {
         private readonly interviews: InterviewImportService,
         private readonly reviews: ReviewImportService,
         private readonly practice: PracticeImportService,
+        private readonly harness: HarnessImportService,
     ) {}
 
     /** Runs the sync and returns one report per kind it ran. */
@@ -108,7 +122,8 @@ export class ContentSyncService {
             if (!(await this.disk.exists(local))) {
                 throw new ContentError({ code: ContentErrorCode.SyncRejected, params: { source, directory: local } })
             }
-            return { directory: local, ref: await this.git.fingerprint(local), snapshot: null }
+            const fingerprint = await this.git.fingerprint(local)
+            return { directory: local, ref: fingerprint, fullRef: fingerprint, snapshot: null }
         }
         const git = this.options.git
         const config = git === null ? null : sourceConfigOf(git, source)
@@ -127,6 +142,7 @@ export class ContentSyncService {
         return {
             directory: pulled.snapshot.directory,
             ref: pulled.snapshot.sha.slice(0, LABEL_LENGTH),
+            fullRef: pulled.snapshot.sha,
             snapshot: pulled.snapshot,
         }
     }
@@ -146,13 +162,31 @@ export class ContentSyncService {
         if (kind === "interview") return this.importInterview(content, data)
         if (kind === "review") return this.importReview(data)
         if (kind === "practice") return this.importPractice(content, data)
+        if (kind === "harness") return this.importHarness(content)
         return this.recordCatalogs(content)
     }
 
+    /**
+     * The folder of a content kind in the `raw/` layout when it holds the probe folder, else the root folder an older pin keeps:
+     * a pin from before the layout move still imports, a pin after it reads `raw/`.
+     */
+    private async layoutOf(
+        content: Root,
+        kind: string,
+        legacy: ReadonlyArray<string>,
+        probe: ReadonlyArray<string>,
+    ): Promise<string> {
+        const raw = join(content.directory, RAW, kind)
+        return (await this.disk.folders(join(raw, ...probe))).length > 0 ? raw : join(content.directory, ...legacy)
+    }
+
     private async importLessons(content: Root, data: Root | null): Promise<ContentKindReport> {
+        // The numbered lessons of the root `essentials/` and the topic lessons of `raw/essentials/<topic>/<lesson>` (with the
+        // topic metadata in `<topic>/topic.yaml`) are two formats in two folders; a pin may hold either or both.
         const roots = [
             ...(data === null ? [] : [{ directory: join(data.directory, "concepts"), ref: data.ref }]),
             { directory: join(content.directory, "essentials"), ref: content.ref },
+            { directory: join(content.directory, RAW, "essentials"), ref: content.ref },
         ]
         const imported: Array<string> = []
         await eachInOrder(roots, async (root) => {
@@ -171,7 +205,12 @@ export class ContentSyncService {
     }
 
     private async importInterview(content: Root, data: Root | null): Promise<ContentKindReport> {
-        const overlay = join(content.directory, "interview", "overlay")
+        const overlay = await this.layoutOf(
+            content,
+            join("interview", "overlay"),
+            ["interview", "overlay"],
+            ["courses"],
+        )
         const hasOverlay = (await this.disk.folders(join(overlay, "courses"))).length > 0
         if (data === null && !hasOverlay) {
             return { kind: "interview", status: "skipped", version: "", detail: "no data checkout and no overlay" }
@@ -204,7 +243,7 @@ export class ContentSyncService {
     private async importPractice(content: Root, data: Root | null): Promise<ContentKindReport> {
         const roots = [
             ...(data === null ? [] : [{ directory: join(data.directory, "coding-problems"), ref: data.ref }]),
-            { directory: join(content.directory, "practice"), ref: content.ref },
+            { directory: await this.layoutOf(content, "practice", ["practice"], ["sets"]), ref: content.ref },
         ]
         const imported: Array<string> = []
         await eachInOrder(roots, async (root) => {
@@ -218,6 +257,21 @@ export class ContentSyncService {
             status: "imported",
             version: imported.join("+"),
             detail: `${imported.length} source(s)`,
+        }
+    }
+
+    /** The harness: builds, guides, docs, doctor probes and trial traps of `raw/harness`; skipped when the checkout has none. */
+    private async importHarness(content: Root): Promise<ContentKindReport> {
+        if (!(await this.harness.has(content.directory))) {
+            return { kind: "harness", status: "skipped", version: "", detail: "no raw/harness folder" }
+        }
+        const reports = await this.harness.import({ directory: content.directory, ref: content.fullRef })
+        const created = reports.filter((report) => report.status === "created").length
+        return {
+            kind: "harness",
+            status: "imported",
+            version: content.ref,
+            detail: `${String(reports.length)} item(s), ${String(created)} new`,
         }
     }
 

@@ -53,3 +53,12 @@ export interface DevGrantParams {
     /** The term granted. */
     readonly term: PremiumTerm
 }
+
+/** The four parts of an Essentials lesson in learning order; the ids of its content folders and of its lesson sections. */
+export const ESSENTIAL_PARTS = ["1-essential", "2-source", "3-scenarios", "4-apply"] as const
+
+/** One part of an Essentials lesson: Bản chất, Source, Kịch bản or Tự áp dụng. */
+export type EssentialPart = (typeof ESSENTIAL_PARTS)[number]
+
+/** The parts of an Essentials lesson everyone may read unless the environment names others: Bản chất, its opener and its article. */
+export const DEFAULT_ESSENTIAL_FREE_PARTS: ReadonlyArray<EssentialPart> = ["1-essential"]

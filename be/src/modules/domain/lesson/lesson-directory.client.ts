@@ -79,5 +79,15 @@ const modules = async (directory: string, source: LessonTopicModule): Promise<Re
     )
 }
 
+const topicFile = async (directory: string, topic: string): Promise<string | null> => {
+    const file = join(directory, topic, "topic.yaml")
+    return (await access(file).then(
+        () => true,
+        () => false,
+    ))
+        ? readFile(file, "utf8")
+        : null
+}
+
 /** Reads concept folders from the local disk: the folder list, and every file with the SHA-256 of its raw bytes. */
-export const lessonDirectory: LessonSourceReader = { folders, read, modules }
+export const lessonDirectory: LessonSourceReader = { folders, read, modules, topicFile }

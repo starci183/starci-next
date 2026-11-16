@@ -5,6 +5,7 @@ import { RelayFeedService } from "./relay-feed.service"
 import { RelayCredentialAdapter } from "./relay-credential.adapter"
 import { RelayProjectService } from "./relay-project.service"
 import { RelayLessonService } from "./relay-lesson.service"
+import { RelayHarnessService } from "./relay-harness.service"
 
 @Module({})
 /**
@@ -25,6 +26,7 @@ export class RelayModule extends ConfigurableModuleClass {
                 RelayProjectService,
                 RelayFeedService,
                 RelayLessonService,
+                RelayHarnessService,
             ],
             exports: [
                 RelayDeviceService,
@@ -32,6 +34,7 @@ export class RelayModule extends ConfigurableModuleClass {
                 RelayProjectService,
                 RelayFeedService,
                 RelayLessonService,
+                RelayHarnessService,
             ],
         }
     }
