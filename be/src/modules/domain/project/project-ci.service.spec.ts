@@ -1,6 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { FakeClock, fakeInbox, mock, mockEntityManager } from "@starci/jest-preset"
 import { PROJECT_ID, PROJECT_NOW, projectRowOf } from "@tests/fixtures/builders/project.builder"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { INBOX } from "@modules/platform/inbox"
@@ -42,6 +43,8 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
     const evidence = mock<ProjectEvidenceService>()
     evidence.recordCiRun.mockResolvedValue({ duplicate: false, added: 1 })
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectCiService,
@@ -49,12 +52,13 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
             { provide: INBOX, useValue: inbox },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: ProjectEvidenceService, useValue: evidence },
             { provide: PROJECT_CI_ATTESTATION, useValue: attestation },
             { provide: PROJECT_HARNESS, useValue: harness },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox, harness }
+    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox, entitlement, harness }
 }
 
 const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
@@ -70,6 +74,19 @@ const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
 }
 
 const record = (service: ProjectCiService, oidcToken?: string) => service.recordRun(deliveryOf(oidcToken))
+
+describe("ProjectCiService subscription-only", () => {
+    it("refuses a CI delivery for the project of a learner without Premium, records nothing and gives the claim back", async () => {
+        const { service, evidence, attestation, inbox, entitlement } = await build()
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(record(service, "oidc-token")).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+
+        expect(attestation.attest).not.toHaveBeenCalled()
+        expect(evidence.recordCiRun).not.toHaveBeenCalled()
+        expect(inbox.released).toEqual([{ source: "project-ci", eventId: "gh-1" }])
+    })
+})
 
 describe("ProjectCiService recordRun", () => {
     it("claims the run id first, records the unattested run's results as signed-only practice and settles it", async () => {
@@ -121,6 +138,25 @@ describe("ProjectCiService recordRun", () => {
             attested: true,
             results: harnessBody.harness,
         })
+    })
+
+    it("takes a harness-only run from a learner without Premium, since /harness is free, but refuses it with project results", async () => {
+        const harnessOnly = {
+            ...BODY,
+            results: [],
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const mixed = { ...harnessOnly, results: BODY.results }
+        const free = await build()
+        free.entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(free.service.recordRun(deliveryOf("gh-token", harnessOnly))).resolves.toBeDefined()
+        expect(free.harness.recordRun).toHaveBeenCalledTimes(1)
+
+        const mixedFree = await build()
+        mixedFree.entitlement.isPremium.mockResolvedValue(false)
+        await expect(mixedFree.service.recordRun(deliveryOf("gh-token", mixed))).rejects.toBeDefined()
+        expect(mixedFree.harness.recordRun).not.toHaveBeenCalled()
     })
 
     it("tells the harness a signed-only run was not attested and hands over nothing for a run with no harness results", async () => {

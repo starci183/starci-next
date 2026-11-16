@@ -18,7 +18,7 @@ const BODY = {
     passed: true,
     results: [
         { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
-        { concept: "idempotency", slot: "probe", ref: "repeat-same-key", passed: false },
+        { concept: "idempotency", slot: "e2e", ref: "idempotent-retry", passed: false },
     ],
 }
 
@@ -122,6 +122,10 @@ describe("ciRunOf", () => {
         ["a concept that is not an id", rawOf({ ...BODY, results: [{ ...BODY.results[0], concept: "Bad Id" }] })],
         ["a concept that is not text", rawOf({ ...BODY, results: [{ ...BODY.results[0], concept: 3 }] })],
         ["a slot the action may not post", rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "code-read" }] })],
+        [
+            "a probe result, which only the server runner records",
+            rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "probe" }] }),
+        ],
         ["an unknown slot", rawOf({ ...BODY, results: [{ ...BODY.results[0], slot: "lint" }] })],
         ["an empty ref", rawOf({ ...BODY, results: [{ ...BODY.results[0], ref: "  " }] })],
         ["a ref with a control character", rawOf({ ...BODY, results: [{ ...BODY.results[0], ref: "a\u0001b" }] })],

@@ -23,6 +23,8 @@ export enum PublicReason {
     CatalogRead = "catalog-read",
     /** A protocol door that proves its own caller: it verifies the learner's bearer access token before any read or act (the MCP endpoint). */
     ProtocolBearer = "protocol-bearer",
+    /** The sink of a server probe: its unguessable per-run id is the capability, open only while that run waits. */
+    ProbeSink = "probe-sink",
 }
 
 /** The metadata `@Public` attaches to a door. */

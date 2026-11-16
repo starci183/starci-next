@@ -9,6 +9,9 @@ export const HARNESS_DOCTOR_TASK = "harness:doctor"
 /** The task id of trial results. */
 export const HARNESS_TRIAL_TASK = "harness:trial"
 
+/** Whether a task id belongs to /harness: a build, the doctor or the trial. */
+export const isHarnessTask = (taskId: string): boolean => taskId.startsWith("harness:")
+
 const SLUG = /^[a-z0-9][a-z0-9-]{0,63}$/u
 const TOOLS: ReadonlySet<string> = new Set(["claude", "codex"])
 const VERDICTS: ReadonlySet<string> = new Set(["held", "breached", "incomplete"])

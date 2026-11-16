@@ -62,6 +62,8 @@ interface ProjectContext {
     readonly pointers: ReadonlyMap<string, ConceptRow>
     /** The live lessons by id. */
     readonly lessons: ReadonlyMap<string, ConceptLessonRef>
+    /** The newest signed CI run, or null. */
+    readonly ciRun: CiRunRow | null
 }
 
 @Injectable()
@@ -93,45 +95,49 @@ export class ProjectReadService {
             rows.map((row) => row.project_id),
             LIST_ROWS_MAX,
         ])
+        const ciRuns: Array<CiRunRow> = await this.entityManager.query(SELECT_LAST_CI_RUNS, [
+            rows.map((row) => row.project_id),
+            LIST_ROWS_MAX,
+        ])
         const lessons = await this.lessons.lessons({ locale: params.locale })
         const all = toEvidenceRows(evidence)
         return rows.map((row) => {
             const own = all.filter((item) => item.projectId === row.project_id)
-            return toSummaryView(row, projectStandingOf(projectKindOf(row), own, new Set(lessons.keys())))
+            const ciRun = ciRuns.find((run) => run.project_id === row.project_id) ?? null
+            return toSummaryView(row, projectStandingOf(projectKindOf(row), own, new Set(lessons.keys())), ciRun)
         })
     }
 
     /** One project with its milestones, the last signed CI run, and the last probe run. */
     async get(params: ProjectLookupParams): Promise<ProjectView> {
-        const { row, standing } = await this.contextOf(params)
+        const { row, standing, ciRun } = await this.contextOf(params)
         const premium = await this.entitlement.isPremium(params.learnerId)
-        const ciRuns: Array<CiRunRow> = await this.entityManager.query(SELECT_LAST_CI_RUNS, [[row.project_id], 1])
         const probeRuns: Array<ProbeRunRow> = await this.entityManager.query(SELECT_LAST_PROBE_RUNS, [
             [row.project_id],
             1,
         ])
-        const [ciRun] = ciRuns
         const [probeRun] = probeRuns
         return {
-            ...toSummaryView(row, standing),
+            ...toSummaryView(row, standing, ciRun),
             milestones: standing.milestones.map((milestone) =>
                 toMilestoneSummaryView(milestone, params.locale, this.isLocked(milestone.definition.id, premium)),
             ),
-            practisingConceptCount: standing.practisingConceptIds.length,
-            lastCiRun: ciRun === undefined ? null : toCiRunView(ciRun),
+            lastCiRun: ciRun === null ? null : toCiRunView(ciRun),
             lastProbeRun: probeRun === undefined ? null : toProbeRunView(probeRun),
         }
     }
 
-    /** One milestone of a project with its concept checklist; a milestone past the free ones needs Premium. */
+    /**
+     * One milestone of a project with its concept checklist. Reading is never refused: a project made before Projects became
+     * subscription-only keeps its history. `locked` tells the screen the learner cannot run or send evidence for it (no Premium).
+     */
     async milestone(params: MilestoneLookupParams): Promise<MilestoneView> {
         const context = await this.contextOf(params)
         const found = context.standing.milestones.find((candidate) => candidate.definition.id === params.milestoneId)
         if (found === undefined) throw new ProjectError({ code: ProjectErrorCode.MilestoneNotFound })
         const locked = this.isLocked(params.milestoneId, await this.entitlement.isPremium(params.learnerId))
-        if (locked) throw new ProjectError({ code: ProjectErrorCode.PremiumRequired })
         return {
-            project: toSummaryView(context.row, context.standing),
+            project: toSummaryView(context.row, context.standing, context.ciRun),
             milestone: toMilestoneSummaryView(found, params.locale, locked),
             concepts: found.concepts.map((standing) =>
                 toConceptView(
@@ -162,7 +168,7 @@ export class ProjectReadService {
     /** The project in short, for an answer to a change. */
     async summary(params: ProjectLookupParams): Promise<ProjectSummaryView> {
         const context = await this.contextOf(params)
-        return toSummaryView(context.row, context.standing)
+        return toSummaryView(context.row, context.standing, context.ciRun)
     }
 
     /** The milestone and concept catalog, for the new-project screen. */
@@ -217,9 +223,11 @@ export class ProjectReadService {
             [row.project_id],
             LIST_ROWS_MAX,
         ])
+        const ciRuns: Array<CiRunRow> = await this.entityManager.query(SELECT_LAST_CI_RUNS, [[row.project_id], 1])
         const lessons = await this.lessons.lessons({ locale: params.locale })
         const standing = projectStandingOf(projectKindOf(row), toEvidenceRows(evidence), new Set(lessons.keys()))
         return {
+            ciRun: ciRuns[0] ?? null,
             row,
             standing,
             pointers: new Map(pointerRows.map((pointer) => [pointer.concept_id, pointer])),

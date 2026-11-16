@@ -19,7 +19,7 @@ const REF_MAX = 300
 export interface CiResult {
     /** The concept id. */
     readonly concept: string
-    /** `test`, `e2e` or `probe`; the AI read is never posted by CI. */
+    /** `test` or `e2e`: a probe result comes only from the server runner and the AI read only from the teacher, never from CI. */
     readonly slot: EvidenceSlot
     /** The test name, e2e file or probe id. */
     readonly ref: string
@@ -76,6 +76,7 @@ const resultOf = (raw: unknown): CiResult => {
         !CONCEPT_ID.test(concept) ||
         slot === undefined ||
         slot === "code-read" ||
+        slot === "probe" ||
         ref === null
     ) {
         throw invalid()

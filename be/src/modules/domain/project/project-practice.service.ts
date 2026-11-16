@@ -1,8 +1,10 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { assertSubscriber } from "./project-access.policy"
 import type { EvidenceInput } from "./project.contracts"
 import type { ProjectLookupParams } from "./project-params.contracts"
 import type { ProjectView } from "./project-view.contracts"
@@ -26,6 +28,7 @@ export class ProjectPracticeService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectLogger() private readonly logger: Logger,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProjectRelay() private readonly relay: ProjectRelayPort,
         private readonly evidence: ProjectEvidenceService,
         private readonly reads: ProjectReadService,
@@ -34,6 +37,7 @@ export class ProjectPracticeService {
     /** Pulls the new relay results of a project and answers the project as it now stands. A relay that fails leaves the project as it was. */
     async sync(params: ProjectLookupParams): Promise<ProjectView> {
         const { learnerId, projectId } = params
+        await assertSubscriber(this.entitlement, learnerId)
         const rows: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT, [learnerId, projectId])
         const [project] = rows
         if (project === undefined) throw new ProjectError({ code: ProjectErrorCode.NotFound })

@@ -1,6 +1,7 @@
 import { Injectable, Optional } from "@nestjs/common"
 import type { KeyObject } from "node:crypto"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX, type sql } from "@modules/platform/database"
 import { InjectRealtimeHub, type RealtimeHub } from "@modules/platform/realtime"
@@ -12,6 +13,7 @@ import { HarnessError, HarnessErrorCode, HarnessReadService } from "@modules/dom
 import { milestoneOf } from "@modules/domain/project"
 import { LessonContentService, LessonSourceService, type LessonSourcePack } from "@modules/domain/lesson"
 import { RelayLessonService } from "./relay-lesson.service"
+import { isHarnessTask } from "./relay-harness.policy"
 import { harnessBuildIdOfTask, harnessBuildManifestOf } from "./relay-harness-manifest.policy"
 import {
     LESSON_SOURCE_MAX_BYTES,
@@ -58,6 +60,7 @@ export class RelayFeedService {
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
         @InjectRealtimeHub() private readonly hub: RealtimeHub,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectRelayOptions() options: RelayOptions,
         @Optional() private readonly lessons?: RelayLessonService,
         @Optional() private readonly content?: LessonContentService,
@@ -75,6 +78,7 @@ export class RelayFeedService {
      */
     async manifest(device: DevicePrincipal, taskId: string, request?: ManifestRequest): Promise<SignedManifest> {
         if (!/^[A-Za-z0-9._:/-]{1,100}$/u.test(taskId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        await this.requireSubscriberForProject(device.learnerId, taskId)
         const milestone = request?.milestone === undefined ? null : milestoneOf(request.milestone)
         const run = milestone === null ? null : projectRunOf({ ...request, milestone })
         if (request?.milestone !== undefined && run === null)
@@ -237,6 +241,7 @@ export class RelayFeedService {
      */
     async upload(device: DevicePrincipal, upload: RelayUpload): Promise<UploadReceipt> {
         if (!uploadValid(upload)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        await this.requireSubscriberForProject(device.learnerId, upload.taskId)
         const resultDetail = resultDetailOf(upload)
         await this.write(INSERT_EVENT, [
             device.deviceId,
@@ -263,6 +268,16 @@ export class RelayFeedService {
             eventId: upload.eventId,
         })
         return { eventId: upload.eventId, accepted: true }
+    }
+
+    /**
+     * Projects are subscription-only: a manifest or an upload of any task that is not a lesson is a project run, and a learner without
+     * Premium is refused before anything is signed, stored or pushed. A lesson task keeps its own access rules, and a harness task is free for everyone (owner 2026-11-17).
+     */
+    private async requireSubscriberForProject(learnerId: string, taskId: string): Promise<void> {
+        if (lessonIdOfTask(taskId) !== null || isHarnessTask(taskId)) return
+        if (!(await this.entitlement.isPremium(learnerId)))
+            throw new RelayError({ code: RelayErrorCode.ProjectPremiumRequired })
     }
 
     /** Runs one write; a failed write answers the relay unavailable. */

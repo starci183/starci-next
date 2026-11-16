@@ -15,6 +15,8 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_LESSON_NOT_RUNNABLE":
             "Bài này chưa có kịch bản chạy được, hoặc không có kịch bản hay bậc thử thách đó.",
         "errors.RELAY_CHALLENGE_LOCKED": "Bậc thử thách này chưa mở: hãy làm xanh hết kịch bản ẩn của bậc dưới trước.",
+        "errors.RELAY_PROJECT_PREMIUM_REQUIRED":
+            "Chạy dự án cần Premium. Dự án cũ vẫn xem được, chỉ không nhận thêm lần chạy.",
     },
     en: {
         "errors.RELAY_CODE_NOT_FOUND": "The pairing code is wrong or has expired. Run starci-next login again.",
@@ -29,5 +31,7 @@ export const RELAY_MESSAGES: MessageBundle = {
             "This lesson has no runnable scenarios yet, or no such scenario or challenge tier.",
         "errors.RELAY_CHALLENGE_LOCKED":
             "This challenge tier is locked: turn every hidden scenario of the tier below green first.",
+        "errors.RELAY_PROJECT_PREMIUM_REQUIRED":
+            "Running a project needs Premium. An older project stays readable but takes no new runs.",
     },
 }

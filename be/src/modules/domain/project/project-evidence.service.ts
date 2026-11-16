@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { EssentialsExperienceService, InjectExperienceProducer, type ExperienceProducer } from "@modules/domain/career"
 import { InjectNotificationProducer, type NotificationProducerPort } from "@modules/domain/notification"
 import { StreakService } from "@modules/domain/streak"
@@ -7,10 +8,15 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
-import { AGENT_TRACKS, type EvidenceInput, type EvidenceRow } from "./project.contracts"
+import type { EvidenceInput, EvidenceRow } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
 import type { CiReceipt, CiRunRecord } from "./project-params.contracts"
-import { deployedExperienceOf, milestoneExperienceOf, type ExperienceSubject } from "./project-experience.policy"
+import {
+    deployedExperienceOf,
+    experienceSubjectOf,
+    milestoneExperienceOf,
+    type ExperienceSubject,
+} from "./project-experience.policy"
 import { InjectProjectLessons, type ProjectLessonPort } from "./project-lesson.port"
 import { projectStandingOf, type ProjectStanding } from "./project-state.policy"
 import { projectKindOf, toEvidenceRows } from "./project-view.mapper"
@@ -65,6 +71,7 @@ export class ProjectEvidenceService {
         private readonly essentials: EssentialsExperienceService,
         @InjectNotificationProducer() private readonly notifications: NotificationProducerPort,
         private readonly streak: StreakService,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
     ) {}
 
     /** Appends results in the caller's transaction; a result the same run already reported adds nothing. Answers how many were new. */
@@ -110,6 +117,8 @@ export class ProjectEvidenceService {
      * appended the results has committed. `streakActionIds` are the runs that count as a meaningful `project-run` action.
      */
     async settle(project: ProjectRow, streakActionIds: ReadonlyArray<string>): Promise<void> {
+        // Defence in depth: a learner without Premium never has a proof claimed, an experience line made or a streak action counted.
+        if (!(await this.entitlement.isPremium(project.learner_id))) return
         const evidence: Array<EvidenceDbRow> = await this.entityManager.query(SELECT_EVIDENCE, [
             [project.project_id],
             LIST_ROWS_MAX,
@@ -145,15 +154,7 @@ export class ProjectEvidenceService {
     /** The proofs the project stands on now, each with what to do the first time it is claimed. */
     private effectsOf(context: ProofContext): ReadonlyArray<ProofEffect> {
         const { project, standing, rows, probeRun } = context
-        const subject: ExperienceSubject = {
-            learnerId: project.learner_id,
-            projectId: project.project_id,
-            name: project.name,
-            stack: project.stack,
-            kind: projectKindOf(project),
-            track: AGENT_TRACKS.find((track) => track === project.track) ?? null,
-            deployedUrl: project.deployed_url,
-        }
+        const subject: ExperienceSubject = experienceSubjectOf(project)
         const concepts = standing.provedConceptIds.map((id): ProofEffect => ({
             subject: `${CONCEPT_PREFIX}${id}`,
             run: async () => {

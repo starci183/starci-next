@@ -42,6 +42,19 @@ const build = async () => {
     return { service: moduleRef.get(EssentialsExperienceService), producer, lessons }
 }
 
+describe("EssentialsExperienceService preview", () => {
+    it("reads what the item would be made from and produces nothing", async () => {
+        const { service, producer } = await build()
+        const project = { projectId: "p-1", title: "Shop", language: "go" }
+
+        const params = await service.preview({ learnerId: CAREER_LEARNER, lessonId: "request-lifecycle", project })
+
+        expect(params).toMatchObject({ subject: "request-lifecycle@p-1", projectId: "p-1" })
+        expect(params.slotValues.vi["project"]).toBe("Shop")
+        expect(producer.produce).not.toHaveBeenCalled()
+    })
+})
+
 describe("EssentialsExperienceService record", () => {
     it("creates nothing for a lesson attached to no project", async () => {
         const { service, producer, lessons } = await build()

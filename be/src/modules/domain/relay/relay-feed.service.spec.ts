@@ -2,6 +2,8 @@ import { generateKeyPairSync, verify } from "node:crypto"
 import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
+import { HarnessErrorCode, HarnessReadService } from "@modules/domain/harness"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { REALTIME_HUB, type RealtimeHub } from "@modules/platform/realtime"
@@ -22,7 +24,14 @@ const OPTIONS = {
     manifestSigningKey: null,
 }
 
-const build = async (em: MockEntityManager, signingKeyPem: string | null = null) => {
+const build = async (
+    em: MockEntityManager,
+    signingKeyPem: string | null = null,
+    premium = true,
+    harness: HarnessReadService = mock<HarnessReadService>(),
+) => {
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(premium)
     const hub = mock<RealtimeHub>()
     hub.publish.mockResolvedValue()
     const relayOptions = {
@@ -35,11 +44,147 @@ const build = async (em: MockEntityManager, signingKeyPem: string | null = null)
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: REALTIME_HUB, useValue: hub },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: RELAY_OPTIONS, useValue: relayOptions },
+            { provide: HarnessReadService, useValue: harness },
         ],
     }).compile()
-    return { feed: moduleRef.get(RelayFeedService), hub }
+    return { feed: moduleRef.get(RelayFeedService), hub, entitlement }
 }
+
+describe("RelayFeedService projects are subscription-only", () => {
+    const UPLOAD = {
+        eventId: EVENT,
+        kind: "check.result" as const,
+        taskId: "p-1",
+        runId: "r-1",
+        checkId: "test",
+        passed: true,
+        exitCode: 0,
+        durationMs: 5,
+    }
+
+    it("refuses a project manifest and a project run request from a learner without Premium, and pushes nothing", async () => {
+        const em = mockEntityManager()
+        const { feed, hub } = await build(em, null, false)
+
+        await expect(feed.manifest(DEVICE, "project-1")).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        await expect(feed.manifest(DEVICE, "project-1", { milestone: "bf-http-foundation" })).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
+    it("refuses a project upload from a learner without Premium: nothing is stored and nothing is acknowledged", async () => {
+        const em = mockEntityManager()
+        const { feed, hub } = await build(em, null, false)
+
+        await expect(feed.upload(DEVICE, UPLOAD)).rejects.toMatchObject({
+            code: RelayErrorCode.ProjectPremiumRequired,
+        })
+        expect(em.query).not.toHaveBeenCalledWith(INSERT_EVENT, expect.anything())
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+
+    it("accepts the same upload from a subscriber", async () => {
+        const { feed } = await build(mockEntityManager({ query: [INSERT_EVENT, [{ event_id: EVENT }]] }), null, true)
+
+        await expect(feed.upload(DEVICE, UPLOAD)).resolves.toMatchObject({ accepted: true })
+    })
+})
+
+describe("RelayFeedService /harness is free", () => {
+    const STAGE = {
+        eventId: EVENT,
+        kind: "check.result" as const,
+        taskId: "harness:build:agent-cli",
+        runId: "r-1",
+        checkId: "s1-loop",
+        slot: "harness-stage",
+        ref: "loop-calls-tool",
+        buildId: "agent-cli",
+        stageId: "s1-loop",
+        passed: true,
+        envPresent: ["ANTHROPIC_API_KEY"],
+    }
+
+    it("stores a harness stage result from a learner without Premium and keeps the key names in detail", async () => {
+        const em = mockEntityManager({ query: [INSERT_EVENT, [{ event_id: EVENT }]] })
+        const { feed } = await build(em, null, false)
+
+        await expect(feed.upload(DEVICE, STAGE)).resolves.toMatchObject({ accepted: true })
+
+        const [, params] = em.query.mock.calls.find(([text]) => text === INSERT_EVENT) ?? []
+        expect(params).toEqual(expect.arrayContaining(["harness-stage", "loop-calls-tool"]))
+        expect(JSON.parse(String((params as ReadonlyArray<unknown>)[16]))).toMatchObject({
+            envPresent: ["ANTHROPIC_API_KEY"],
+        })
+    })
+
+    it("refuses a stage result whose task names another build", async () => {
+        const { feed } = await build(mockEntityManager(), null, false)
+
+        await expect(feed.upload(DEVICE, { ...STAGE, taskId: "harness:build:other" })).rejects.toMatchObject({
+            code: RelayErrorCode.PayloadInvalid,
+        })
+    })
+
+    it("signs the harness section of a build manifest for a learner without Premium", async () => {
+        const harness = mock<HarnessReadService>()
+        harness.storedBuilds.mockResolvedValue([
+            {
+                id: "agent-cli",
+                order: 1,
+                title: { vi: "a", en: "a" },
+                summary: { vi: "", en: "" },
+                keys: [{ id: "llm", anyOf: ["ANTHROPIC_API_KEY"], note: null }],
+                runtime: { dir: "source", install: "npm ci", e2e: "npm run e2e", report: "e2e/reports/junit.xml" },
+                stages: [
+                    {
+                        id: "s1-loop",
+                        order: 1,
+                        title: { vi: "a", en: "a" },
+                        summary: { vi: "", en: "" },
+                        e2e: ["x"],
+                        steps: [],
+                    },
+                ],
+                packPaths: [],
+            },
+        ])
+        harness.pack.mockResolvedValue({ content: Buffer.from("tgz"), sha256: "a".repeat(64), commit: "b".repeat(40) })
+        const { feed, hub } = await build(mockEntityManager(), null, false, harness)
+
+        const signed = await feed.manifest(DEVICE, "harness:build:agent-cli")
+
+        expect(signed.body.checks).toEqual([])
+        expect(signed.body.harness).toMatchObject({
+            kind: "build",
+            buildId: "agent-cli",
+            source: {
+                url: "/api/relay/harness/build/agent-cli/source.tgz",
+                sha256: "a".repeat(64),
+                commit: "b".repeat(40),
+            },
+            stages: [{ id: "s1-loop", e2e: ["x"] }],
+        })
+        expect(JSON.parse(signed.payload)).toHaveProperty("harness.keys", [{ id: "llm", anyOf: ["ANTHROPIC_API_KEY"] }])
+        expect(hub.publish).toHaveBeenCalledTimes(1)
+    })
+
+    it("refuses the manifest of a build the catalog does not have", async () => {
+        const harness = mock<HarnessReadService>()
+        harness.storedBuilds.mockResolvedValue([])
+        const { feed, hub } = await build(mockEntityManager(), null, true, harness)
+
+        await expect(feed.manifest(DEVICE, "harness:build:ghost")).rejects.toMatchObject({
+            code: HarnessErrorCode.NotFound,
+        })
+        expect(hub.publish).not.toHaveBeenCalled()
+    })
+})
 
 describe("RelayFeedService manifest", () => {
     it("issues a signed manifest of the project checks and pushes it to the device", async () => {
