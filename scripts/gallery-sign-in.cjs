@@ -2,7 +2,7 @@
 // usage: node scripts/gallery-sign-in.cjs <credentials.json> <state.json>
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "D:/starci-tmp/pw-tool/node_modules/playwright")
 const fs = require("fs")
-const ENTRY = "http://localhost:3080"
+const ENTRY = process.env.CAPTURE_ENTRY || "http://localhost:3280"
 const MAIL = "http://localhost:8025"
 const [, , credFile, stateFile] = process.argv
 const cred = JSON.parse(fs.readFileSync(credFile, "utf8"))

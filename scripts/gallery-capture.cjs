@@ -3,7 +3,9 @@
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "D:/starci-tmp/pw-tool/node_modules/playwright")
 const fs = require("fs"),
     path = require("path")
-const ENTRY = "http://localhost:3080"
+// The dev entry origin and the landing of the stack (environments.dev.local.ports: ingress 3280, landing 3202); override with CAPTURE_ENTRY / CAPTURE_LANDING.
+const ENTRY = process.env.CAPTURE_ENTRY || "http://localhost:3280"
+const LANDING = process.env.CAPTURE_LANDING || "http://localhost:3202"
 const [, , stateFile, only, onlyScreen] = process.argv
 const PAGES = path.join(__dirname, "..", "gallery", "pages")
 const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(",").map(Number) : [1440, 1920, 390]
@@ -13,7 +15,7 @@ const SCREENS = [
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
     S("auth", "sign-in-callback", "/sign-in/callback", { guest: true }),
     S("auth", "verify", "/verify/ABCD-2345-WXYZ", { guest: true }),
-    S("landing", "home", "/", { guest: true, origin: "http://localhost:3002" }),
+    S("landing", "home", "/", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
     S("paths", "choose", "/paths/choose"),
