@@ -1,7 +1,7 @@
 import {
     EVIDENCE_SLOTS,
-    PRACTICE_SOURCES,
-    PROOF_SOURCES,
+    SLOT_PRACTICE_SOURCES,
+    SLOT_PROOF_SOURCES,
     type ConceptDefinition,
     type ConceptState,
     type EvidenceRow,
@@ -80,13 +80,19 @@ export const slotStandingOf = (slot: EvidenceSlot, rows: ReadonlyArray<EvidenceR
     const own = rows.filter((row) => row.slot === slot)
     return {
         slot,
-        practice: newestOf(PRACTICE_SOURCES.map((source) => latestRunOf(own, source))),
-        proof: newestOf(PROOF_SOURCES.map((source) => latestRunOf(own, source))),
+        practice: newestOf(SLOT_PRACTICE_SOURCES[slot].map((source) => latestRunOf(own, source))),
+        proof: newestOf(SLOT_PROOF_SOURCES[slot].map((source) => latestRunOf(own, source))),
     }
 }
 
-/** Whether a slot has a passing proof. */
-const isProved = (standing: SlotStanding): boolean => standing.proof?.passed === true
+/**
+ * Whether one group of a requirement is met: some slot of the group has a passing proof, and no slot of it has a failing one. A red
+ * proof is never hidden by a green sibling, so a learner cannot pair a passing test with a failing e2e flow of the same concept.
+ */
+const groupMet = (standings: ReadonlyArray<SlotStanding | undefined>): boolean => {
+    const proofs = standings.map((standing) => standing?.proof ?? null)
+    return proofs.some((proof) => proof?.passed === true) && !proofs.some((proof) => proof?.passed === false)
+}
 
 /** What decides where a concept stands. */
 interface ConceptFacts {
@@ -118,12 +124,7 @@ export const conceptStandingOf = (
     const slots = shown.map((slot) => slotStandingOf(slot, rows))
     const standingOf = (slot: EvidenceSlot): SlotStanding | undefined =>
         slots.find((candidate) => candidate.slot === slot)
-    const proved = definition.requires.every((group) =>
-        group.some((slot) => {
-            const standing = standingOf(slot)
-            return standing !== undefined && isProved(standing)
-        }),
-    )
+    const proved = definition.requires.every((group) => groupMet(group.map((slot) => standingOf(slot))))
     const started = slots.some((standing) => standing.practice !== null || standing.proof !== null)
     return { definition, state: conceptStateOf({ comingSoon, proved, started }), slots }
 }

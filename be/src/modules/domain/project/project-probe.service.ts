@@ -6,6 +6,7 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { assertSubscriber } from "./project-access.policy"
 import type { EvidenceInput, ProbeId, ProjectSettings } from "./project.contracts"
 import { InjectProjectOptions } from "./project.decorators"
 import type { ProjectOptions } from "./project.options"
@@ -66,7 +67,7 @@ const evidenceOf = (outcomes: ReadonlyArray<ProbeOutcome>, runId: string, at: Da
  * The server probe runner (proof): it calls the deployed address of a project with the generic StarCi probes, aimed at the
  * endpoints the learner declared for each concept. Every request goes through the guarded client (public http or https only,
  * address checked at connection, no redirect, a deadline and a byte cap), a project may be probed only a few times an hour, and a
- * learner without Premium is probed only for the free milestones. A probe that needs an endpoint the learner has not declared is
+ * learner without Premium is refused (`PROJECT_PREMIUM_REQUIRED`) before anything is called. A probe that needs an endpoint the learner has not declared is
  * reported as such and proves nothing.
  */
 export class ProjectProbeService {
@@ -85,6 +86,7 @@ export class ProjectProbeService {
 
     /** Probes the project's deployed address, records the run and its evidence, settles the project and answers the run. */
     async run(learnerId: string, projectId: string): Promise<ProbeRunView> {
+        await assertSubscriber(this.entitlement, learnerId)
         const found: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT, [learnerId, projectId])
         const [project] = found
         if (project === undefined) throw new ProjectError({ code: ProjectErrorCode.NotFound })
@@ -103,7 +105,7 @@ export class ProjectProbeService {
             LIST_ROWS_MAX,
         ])
         const pointers = new Map(pointerRows.map((pointer) => [pointer.concept_id, pointer]))
-        const tasks = await this.tasksOf(learnerId, project)
+        const tasks = this.tasksOf(project)
         const outcomes = await this.execute(tasks, base, pointers, now)
         const executed = outcomes.filter((outcome) => outcome.executed)
         const passed = executed.length > 0 && executed.every((outcome) => outcome.verdict.passed)
@@ -130,12 +132,9 @@ export class ProjectProbeService {
         return toProbeRunView({ project_id: project.project_id, run_id: runId, url: base, passed, results, at: now })
     }
 
-    /** The probes of a run: those of every concept the learner may open, then the deployment's health probe when no concept carries it. */
-    private async tasksOf(learnerId: string, project: ProjectRow): Promise<ReadonlyArray<ProbeTask>> {
-        const premium = await this.entitlement.isPremium(learnerId)
-        const open = milestonesOfKind(projectKindOf(project)).filter(
-            (milestone) => premium || this.settings.freeMilestones.includes(milestone.id),
-        )
+    /** The probes of a run: those of every concept of the project's milestones, then the deployment's health probe when no concept carries it. */
+    private tasksOf(project: ProjectRow): ReadonlyArray<ProbeTask> {
+        const open = milestonesOfKind(projectKindOf(project))
         const conceptIds = new Set(open.flatMap((milestone) => milestone.concepts))
         const fromConcepts = PROJECT_CONCEPTS.filter((concept) => conceptIds.has(concept.id)).flatMap((concept) =>
             concept.probes.map((probeId): ProbeTask => ({ conceptId: concept.id, probeId })),

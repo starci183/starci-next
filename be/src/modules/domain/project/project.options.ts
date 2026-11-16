@@ -18,9 +18,9 @@ export interface ProjectOptions {
     readonly attestation?: Type<CiAttestationVerifier>
     /** The audience a run's GitHub Actions OIDC token must name; absent, `starci-next`. */
     readonly ciOidcAudience?: string
-    /** Projects a learner without Premium may own; absent, 1. */
+    /** Projects a learner without Premium may own; absent, 0 (Projects is subscription-only). */
     readonly freeProjects?: number
-    /** Milestone ids a learner without Premium may open; absent, the first milestone, `bf-http-foundation`. */
+    /** Milestone ids a learner without Premium may open; absent, none. */
     readonly freeMilestones?: ReadonlyArray<string>
     /** Probe runs one project may start per hour; absent, 6. */
     readonly probeRunsPerHour?: number

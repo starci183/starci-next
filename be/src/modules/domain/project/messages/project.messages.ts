@@ -9,7 +9,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CONCEPT_NOT_FOUND": "Không có concept này trong danh mục milestone.",
         "errors.PROJECT_CONCEPT_NOT_READY": "Concept này thầy đang soạn bài Bản chất, chưa thể chấm.",
         "errors.PROJECT_PREMIUM_REQUIRED":
-            "Dự án thứ hai, milestone sau milestone đầu và thầy AI đọc code cần Premium.",
+            "Dự án cần Premium: tạo dự án, chạy kiểm tra, nộp bằng chứng và nhờ thầy AI đọc code đều cần gói đang hiệu lực. Dự án cũ vẫn xem được, chỉ không chạy thêm.",
         "errors.PROJECT_INPUT_INVALID": "Thông tin dự án chưa hợp lệ.",
         "errors.PROJECT_LOCATION_INVALID":
             "Vị trí code phải là đường dẫn tương đối trong repo, không phải file bí mật.",
@@ -36,7 +36,7 @@ export const PROJECT_MESSAGES: MessageBundle = {
         "errors.PROJECT_CONCEPT_NOT_READY":
             "The teacher is still writing this concept's Essentials lesson, so it cannot be graded yet.",
         "errors.PROJECT_PREMIUM_REQUIRED":
-            "A second project, milestones after the first and the AI code read need Premium.",
+            "Projects need Premium: creating a project, running checks, sending evidence and the AI code read all need an active plan. An older project stays readable but takes no new runs.",
         "errors.PROJECT_INPUT_INVALID": "The project details are not valid.",
         "errors.PROJECT_LOCATION_INVALID":
             "The code location must be a relative path inside the repo and not a secret file.",

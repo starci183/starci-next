@@ -8,8 +8,10 @@ export interface InitOptions {
     readonly from?: string | undefined
     /** The StarCi project id to write into `starci/project.yaml`, or undefined to leave the placeholder. */
     readonly project?: string | undefined
-    /** typescript, java, csharp or go; typescript when undefined. */
+    /** typescript, java, csharp or go; detected from the project folder when undefined, else typescript. */
     readonly language?: string | undefined
+    /** The milestone whose e2e flows are copied; the first milestone of the app kind when undefined. */
+    readonly milestone?: string | undefined
     /** Whether files that already exist are replaced. */
     readonly force: boolean
 }
