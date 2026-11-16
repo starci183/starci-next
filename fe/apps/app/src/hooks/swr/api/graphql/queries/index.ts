@@ -52,3 +52,5 @@ export { QUERY_PROJECT_MILESTONE_SWR_KEY, useQueryProjectMilestoneSwr } from "./
 export type { ProjectMilestoneRead } from "./useQueryProjectMilestoneSwr"
 export { QUERY_PROJECT_CATALOG_SWR_KEY, useQueryProjectCatalogSwr } from "./useQueryProjectCatalogSwr"
 export type { ProjectCatalogRead } from "./useQueryProjectCatalogSwr"
+export { QUERY_LESSON_OPENER_SCORES_SWR_KEY, useQueryLessonOpenerScoresSwr } from "./useQueryLessonOpenerScoresSwr"
+export { QUERY_LESSON_SCENARIO_RUNS_SWR_KEY, useQueryLessonScenarioRunsSwr } from "./useQueryLessonScenarioRunsSwr"

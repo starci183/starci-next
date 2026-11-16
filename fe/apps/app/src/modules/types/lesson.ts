@@ -1,3 +1,4 @@
+import type { EssentialView } from "./essential"
 import type {
     ExerciseFileView,
     LessonDifficulty,
@@ -101,6 +102,8 @@ export type LessonView = {
     readonly files: ReadonlyArray<ExerciseFileView>
     /** The lab in each language the lesson ships (typescript, java, csharp, go), empty when it ships one only. */
     readonly workspaces: ReadonlyArray<WorkspaceVariantView>
+    /** The four parts (opener, source, scenarios, challenges); undefined for a lesson written before them. */
+    readonly essential: EssentialView | undefined
 }
 
 /** The graded result of an attempt: a choice, a simulation or a written answer fills its own fields. */

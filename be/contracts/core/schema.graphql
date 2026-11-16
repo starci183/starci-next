@@ -916,7 +916,6 @@ type LessonSimulationType {
 type LessonSourceType {
   langs: [String!]!
   ref: String
-  repo: String!
 }
 
 type LessonStatementType {
@@ -1680,7 +1679,7 @@ input RelayCheckResultInput {
   ref: String @inputBounds(maxLength: 300)
   runId: String! @inputBounds(maxLength: 100)
   scenarioId: String @inputBounds(maxLength: 100)
-  slot: String @inputBounds(maxLength: 8)
+  slot: String @inputBounds(maxLength: 9)
   taskId: String! @inputBounds(maxLength: 100)
   why: String @inputBounds(maxLength: 300)
 }

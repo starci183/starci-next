@@ -15,7 +15,7 @@ import type {
 /** The longest log text an upload carries. */
 export const LOG_TEXT_MAX = 16_384
 const ID_MAX = 100
-const SLOTS: ReadonlySet<string> = new Set(["test", "e2e", "probe", "scenario"])
+const SLOTS: ReadonlySet<string> = new Set(["test", "e2e", "probe", "scenario", "challenge"])
 const LESSON_ID = /^[a-z0-9-]{1,100}$/u
 const TIERS: ReadonlySet<string> = new Set(["easy", "medium", "hard", "insane"])
 const LIST_MAX = 50

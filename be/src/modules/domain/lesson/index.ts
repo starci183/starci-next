@@ -18,6 +18,19 @@ export { LessonImportService } from "./lesson-import.service"
 export { LessonLinkService } from "./lesson-link.service"
 export { LessonModule } from "./lesson.module"
 export { LessonReadService } from "./lesson-read.service"
+/**
+ * `LessonSourceService`: the one read of a lesson's source tree (`source/` of the lesson folder at the live version's content
+ * commit): `tree`, `read`, `search` and `archive` (the tarball). The relay's `source.tgz` door and the MCP share it; the
+ * caller checks access with `LessonContentService.requireAccess`.
+ */
+export { LessonSourceService } from "./lesson-source.service"
+export type {
+    LessonSourceEntry,
+    LessonSourceMatch,
+    LessonSourcePack,
+    LessonSourceRead,
+    LessonSourceTree,
+} from "./lesson-source.service"
 export type {
     LessonActivity,
     LessonContent,

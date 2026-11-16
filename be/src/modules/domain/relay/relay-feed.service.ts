@@ -9,7 +9,7 @@ import { InjectRelayOptions } from "./relay.decorators"
 import type { RelayOptions } from "./relay.options"
 import type { DevicePrincipal } from "./relay.contracts"
 import { milestoneOf } from "@modules/domain/project"
-import { LessonContentService, type LessonSourceArchive } from "@modules/domain/lesson"
+import { LessonContentService, LessonSourceService, type LessonSourcePack } from "@modules/domain/lesson"
 import { RelayLessonService } from "./relay-lesson.service"
 import {
     LESSON_SOURCE_MAX_BYTES,
@@ -55,6 +55,7 @@ export class RelayFeedService {
         @InjectRelayOptions() options: RelayOptions,
         @Optional() private readonly lessons?: RelayLessonService,
         @Optional() private readonly content?: LessonContentService,
+        @Optional() private readonly sources?: LessonSourceService,
     ) {
         this.key = signingKeyOf(options.manifestSigningKey?.reveal() ?? null)
     }
@@ -140,13 +141,14 @@ export class RelayFeedService {
      * same bytes the manifest signed the sha256 of (cached by lesson and content commit). It holds the contents of `source/`
      * only, never `hidden/`; no learner-supplied path or commit is read.
      */
-    async sourceDownload(device: DevicePrincipal, lessonId: string): Promise<LessonSourceArchive> {
+    async sourceDownload(device: DevicePrincipal, lessonId: string): Promise<LessonSourcePack> {
         if (!/^[a-z0-9-]{1,100}$/u.test(lessonId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
-        if (this.content === undefined) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
+        if (this.content === undefined || this.sources === undefined)
+            throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
         await this.content.requireAccess({ learnerId: device.learnerId, phase: "apply", isPremium: undefined })
-        const stored = await this.content.runnable(lessonId)
-        if (stored?.source == null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
-        return stored.source
+        const pack = await this.sources.archive(lessonId)
+        if (pack === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
+        return pack
     }
 
     /**

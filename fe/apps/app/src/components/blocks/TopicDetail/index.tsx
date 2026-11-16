@@ -4,9 +4,9 @@ import { useLocale, useTranslations } from "next-intl"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import {
     useGetEssentialsSwr,
-    useGetLessonLanguagesSwr,
     useGetLessonProgressSwr,
     useGetLessonTopicSwr,
+    useQueryLessonOpenerScoresSwr,
 } from "@/hooks/swr"
 import { topicScreenOf, useLegacyLessonDestination, useTopicLabels, useTopicWords } from "@/hooks/topic"
 import { useDocumentTitle } from "@/hooks/title"
@@ -16,7 +16,10 @@ import { TOPIC_PLACEHOLDER, TopicDetailBase } from "./component"
 /** What the route hands the topic block: the segment of the address. */
 type TopicDetailProps = { readonly topicId: string }
 
-/** The connected topic screen: reads the topic and the catalog (which titles the lessons and the related topics) and words every row. */
+/**
+ * The connected topic screen: reads the topic, the catalog (which titles the lessons and the related topics) and the
+ * five-question opener score of each lesson, and words every row; the lessons stand in the teacher's order.
+ */
 export const TopicDetail = (props: TopicDetailProps) => {
     const t = useTranslations("app.essentials.topic")
     const locale = useLocale()
@@ -27,7 +30,7 @@ export const TopicDetail = (props: TopicDetailProps) => {
         useGetLessonProgressSwr((read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId])))
             .data ?? {}
     const lessonIds = (read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId]))
-    const languages = useGetLessonLanguagesSwr(lessonIds, locale).data ?? {}
+    const openers = useQueryLessonOpenerScoresSwr(lessonIds).data ?? {}
     const movedTo = useLegacyLessonDestination(props.topicId, read.error)
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.title} · ${t("pageTitle")}`)
     return (
@@ -36,7 +39,7 @@ export const TopicDetail = (props: TopicDetailProps) => {
                 slot:
                     movedTo === ""
                         ? mapSlot(slotOfSwr(read), (topic) =>
-                              topicScreenOf({ topic, catalog: catalog.data ?? [], progress, words, languages }),
+                              topicScreenOf({ topic, catalog: catalog.data ?? [], progress, words, openers }),
                           )
                         : loadingSlot(),
                 placeholder: TOPIC_PLACEHOLDER,

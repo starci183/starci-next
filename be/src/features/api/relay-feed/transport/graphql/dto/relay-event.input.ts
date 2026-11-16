@@ -82,11 +82,11 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @Matches(SAFE_ID)
     conceptId?: string
 
-    /** test, e2e or probe, when the project names one; `scenario` for a lesson scenario run. */
+    /** test, e2e or probe, when the project names one; `scenario` or `challenge` for a lesson run. */
     @Field(() => String, { nullable: true })
     @IsOptional()
     @IsString()
-    @MaxLength(8)
+    @MaxLength(9)
     slot?: string
 
     /** The test name, e2e file or probe id. */

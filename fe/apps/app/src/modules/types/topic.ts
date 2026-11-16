@@ -52,9 +52,12 @@ export type TopicWords = {
     readonly openFacts: (open: number, total: number) => string
     readonly source: (from: string) => string
     readonly progress: (done: number, total: number) => string
-    readonly meta: (difficulty: string, minutes: number, languages: string) => string
-    /** The facts of the band: lessons, minutes and languages of the chapter. */
-    readonly facts: (lessons: number, minutes: number, languages: number) => string
+    /** The line under a lesson row: its level, its minutes and its five-question opener score. */
+    readonly meta: (difficulty: string, minutes: number, opener: string) => string
+    /** The facts of the band: lessons and minutes of the chapter (TypeScript, the one language). */
+    readonly facts: (lessons: number, minutes: number) => string
+    /** The opener score of a lesson ("Mở bài 3/5"), or the line of a lesson whose opener is not taken yet. */
+    readonly opener: (right: number | undefined, total: number) => string
     /** The phase count of a lesson row ("3/6 pha"). */
     readonly phasesNote: (done: number, total: number) => string
     /** The title of each phase, by phase id. */

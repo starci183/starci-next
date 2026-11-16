@@ -111,18 +111,17 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
             essential {
                 isLocked
                 opener {
-                id
-                activityId
-                prompt
-                choices {
                     id
-                    label
-                }
-                sectionId
-                scenarioId
+                    activityId
+                    prompt
+                    choices {
+                        id
+                        label
+                    }
+                    sectionId
+                    scenarioId
                 }
                 source {
-                    repo
                     langs
                     ref
                 }
@@ -171,15 +170,15 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     }
                     hiddenScenarios
                     questions {
-                    id
-                    activityId
-                    prompt
-                    choices {
                         id
-                        label
-                    }
-                    sectionId
-                    scenarioId
+                        activityId
+                        prompt
+                        choices {
+                            id
+                            label
+                        }
+                        sectionId
+                        scenarioId
                     }
                 }
             }

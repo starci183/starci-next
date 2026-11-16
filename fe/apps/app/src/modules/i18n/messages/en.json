@@ -889,7 +889,11 @@
         "upsellNote": "Every lesson still shows its overview and the Asked question.",
         "moved": "This lesson moved into a topic. The old address is no longer used.",
         "movedOpen": "Open lesson",
-        "progressTitle": "Progress"
+        "progressTitle": "Progress",
+        "opener": "Opener {right}/{total}",
+        "openerNone": "Opener not taken",
+        "metaOpener": "{difficulty} · {minutes} min · {opener}",
+        "factsLessons": "{lessons} lessons · {minutes} min · TypeScript"
       },
       "attempt": {
         "saved": "Your answer was saved.",
@@ -1005,6 +1009,125 @@
         "open": "Open code",
         "close": "Close",
         "download": "Download workspace {language} (.zip)"
+      },
+      "essential": {
+        "pageTitle": "Essentials",
+        "breadcrumbs": "Breadcrumbs",
+        "tabs": "The four parts of the lesson",
+        "parts": {
+          "essence": "Essence",
+          "source": "Source",
+          "scenarios": "Scenarios",
+          "apply": "Apply it"
+        },
+        "facts": "{minutes} min read · {languages}",
+        "typescript": "TypeScript",
+        "empty": "This lesson has no content yet.",
+        "soon": "This part is being written.",
+        "opener": {
+          "title": "Opener · 5 multiple-choice interview questions",
+          "progress": "Progress of the five opener questions",
+          "position": "Question {n} / {total}",
+          "score": "{right}/{total} right. Each wrong answer marks its section “read closely”.",
+          "next": "Next question",
+          "previous": "Previous question",
+          "right": "Right",
+          "wrong": "Not quite",
+          "readMore": "Read more",
+          "readSection": "Read section {n} closely: {title}",
+          "seeScenario": "See it happen in the scenario “{title}”",
+          "empty": "This lesson has no opener questions yet."
+        },
+        "article": {
+          "title": "Article",
+          "toc": "Contents",
+          "flagged": "Read closely",
+          "locked": "This section opens with Premium.",
+          "empty": "This lesson has no sections yet."
+        },
+        "retake": {
+          "title": "Take the 5 again",
+          "description": "Answer the five opener questions again after reading to see before and after.",
+          "start": "Take again",
+          "question": "Question",
+          "before": "First",
+          "after": "Latest",
+          "right": "Right",
+          "wrong": "Wrong",
+          "none": "Not yet"
+        },
+        "source": {
+          "pullTitle": "Pull the source and run it",
+          "pullNote": "The lesson's TypeScript source; starci-next up starts the services with docker compose.",
+          "architecture": "Architecture",
+          "diagram": "Architecture diagram",
+          "diagramError": "The diagram could not be drawn",
+          "components": "Components",
+          "component": "Component",
+          "port": "Port",
+          "rules": "Rule it keeps",
+          "codeWalk": "Code walk",
+          "why": "Why",
+          "empty": "No components yet."
+        },
+        "scenarios": {
+          "list": "Scenarios",
+          "summary": "{green}/{total} scenarios green",
+          "run": "Run command",
+          "guards": "Turn a guard off to see the fault land",
+          "expected": "A correct system shows",
+          "output": "Result relayed from your machine",
+          "noOutput": "No run yet. Run the command above and the result shows here.",
+          "why": "Why it is red",
+          "invariant": "Rule broken",
+          "hint": "Hint",
+          "askAi": "Ask your AI to fix it",
+          "askAiNote": "Paste this prompt into Claude, ChatGPT or your IDE agent (with the StarCi MCP connected). Then check again.",
+          "prompt": "Prompt for your AI",
+          "check": "Check again",
+          "empty": "This lesson has no scenarios yet.",
+          "states": {
+            "none": "Not run",
+            "running": "Running",
+            "passed": "Green",
+            "failed": "Red",
+            "guarded": "Red, guard off"
+          },
+          "ranAt": "Run at {at}",
+          "fixPrompt": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to read the latest run and the code involved. Fix the code so the scenario is green without turning any guard off, explain why in short, then run: starci-next check {lesson} --scenario {scenario}"
+        },
+        "apply": {
+          "ladder": "Challenge ladder",
+          "brief": "Brief",
+          "rubric": "Rubric · 100 points",
+          "critical": "Critical",
+          "essence": "Essence check",
+          "hidden": "Hidden scenarios",
+          "run": "Run the hidden scenarios",
+          "proof": "From practising to proved",
+          "proofSteps": "A run on your machine is practice. Push to GitHub, CI runs the hidden scenarios and GitHub signs it with OIDC: it becomes proved and a verified CV line.",
+          "locked": "This rung opens once every hidden scenario of the rung below is green.",
+          "empty": "This lesson has no challenges yet.",
+          "levels": {
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard",
+            "insane": "Insane"
+          },
+          "points": "{points} pts",
+          "hiddenState": "{green}/{total} hidden scenarios green",
+          "notRun": "Not run",
+          "rungStates": {
+            "locked": "Locked",
+            "open": "Practising",
+            "green": "Green"
+          }
+        },
+        "locked": {
+          "title": "This part opens with Premium",
+          "description": "The opener is free. The source, the scenarios and the challenges need Premium.",
+          "plans": "See Premium"
+        }
       }
     },
     "interview": {

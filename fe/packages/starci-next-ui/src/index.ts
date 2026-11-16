@@ -201,3 +201,26 @@ export type {
     WrittenDraftView,
 } from "./composites/StudyBody/types"
 export { FREE_PHASES, LESSON_PHASES } from "./composites/StudyBody/lesson"
+export {
+    EssentialApply,
+    EssentialArticle,
+    EssentialOpener,
+    EssentialQuestion,
+    EssentialRetake,
+    EssentialScenarios,
+    EssentialSource,
+} from "./composites/EssentialParts"
+export type {
+    ApplyPartView,
+    ArticleSectionView,
+    CompareRowView,
+    EssentialPartsLabels,
+    OpenerView,
+    QuestionCardView,
+    QuestionLink,
+    QuestionStatus,
+    ScenarioCardView,
+    ScenarioState,
+    ScenariosPartView,
+    SourcePartView,
+} from "./composites/EssentialParts"

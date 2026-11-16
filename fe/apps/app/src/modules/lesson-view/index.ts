@@ -1,6 +1,10 @@
 import { parseMarkdown } from "@/modules/markdown"
 import {
+    CHALLENGE_LEVELS,
     LESSON_PHASES,
+    type EssentialView,
+    type OpenerScoreView,
+    type ScenarioRunView,
     type ActivityView,
     type AttemptView,
     type CatalogLessonView,
@@ -13,8 +17,10 @@ import {
     type WorkspaceVariantView,
 } from "@/modules/types"
 import type {
+    LessonOpenerScoresQuery,
     LessonProgressQuery,
     LessonQuery,
+    LessonScenarioRunsQuery,
     LessonsQuery,
     LessonTopicQuery,
     SubmitLessonAttemptMutation,
@@ -153,7 +159,87 @@ export const lessonOf = (wire: LessonWire): LessonView => ({
         content: file.content,
     })),
     workspaces: workspacesOf(wire.workspaces),
+    essential: wire.essential === null ? undefined : essentialOf(wire.essential),
 })
+
+/** The four parts of the answer; the back end already left out the right answers and the hidden scenarios. */
+const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView => ({
+    isLocked: wire.isLocked,
+    opener: wire.opener.map((question) => questionOf(question)),
+    source: wire.source === null ? undefined : { langs: wire.source.langs },
+    invariants: wire.invariants,
+    architecture:
+        wire.architecture === null
+            ? undefined
+            : {
+                  diagram: wire.architecture.diagram,
+                  components: wire.architecture.components.map((component) => ({
+                      name: component.name,
+                      port: component.port ?? "",
+                      role: component.role ?? "",
+                      invariants: component.invariants,
+                  })),
+              },
+    codeWalk: wire.codeWalk.map((entry) => ({ ...entry, why: entry.why ?? "" })),
+    scenarios: wire.scenarios.map((scenario) => ({
+        id: scenario.id,
+        title: scenario.title,
+        fault: scenario.fault,
+        expected: scenario.expected,
+        invariant: scenario.invariant,
+        guards: scenario.guards,
+        hint: scenario.hint ?? "",
+    })),
+    challenges: wire.challenges.flatMap((challenge) => {
+        const level = CHALLENGE_LEVELS.find((each) => each === challenge.level)
+        return level === undefined
+            ? []
+            : [
+                  {
+                      id: challenge.id,
+                      level,
+                      title: challenge.title,
+                      brief: challenge.brief,
+                      rubric: challenge.rubric,
+                      hiddenScenarios: challenge.hiddenScenarios,
+                      questions: challenge.questions.map((question) => questionOf(question)),
+                  },
+              ]
+    }),
+})
+
+/** A question of the answer: its choices, and its links as empty texts when it has none. */
+const questionOf = (wire: NonNullable<LessonWire["essential"]>["opener"][number]): EssentialView["opener"][number] => ({
+    id: wire.id,
+    activityId: wire.activityId,
+    prompt: wire.prompt,
+    choices: wire.choices,
+    sectionId: wire.sectionId ?? "",
+    scenarioId: wire.scenarioId ?? "",
+})
+
+/** The opener scores of the answer, by lesson id. */
+export const openerScoresOf = (wire: LessonOpenerScoresQuery): Readonly<Record<string, OpenerScoreView>> =>
+    Object.fromEntries(wire.lessonOpenerScores.map((score) => [score.lessonId, score]))
+
+/** The status of a run the back end names; anything else is a contract break and stops here. */
+const runStatusOf = (raw: string): ScenarioRunView["status"] => {
+    if (raw === "running" || raw === "passed" || raw === "failed") return raw
+    throw new Error(`unknown run status ${raw}`)
+}
+
+/** The newest run of each scenario of the answer. */
+export const scenarioRunsOf = (wire: LessonScenarioRunsQuery): ReadonlyArray<ScenarioRunView> =>
+    wire.lessonScenarioRuns.map((run) => ({
+        scenarioId: run.scenarioId,
+        status: runStatusOf(run.status),
+        output: run.output ?? "",
+        why: run.why ?? "",
+        ledger: run.ledger ?? "",
+        guardsOff: run.guardsOff,
+        challengeTier: run.challengeTier ?? "",
+        at: run.at,
+    }))
 
 /** The lessons of the catalog answer, in the shape the catalog filters. */
 export const catalogLessonsOf = (wire: LessonsQuery): ReadonlyArray<CatalogLessonView> =>
