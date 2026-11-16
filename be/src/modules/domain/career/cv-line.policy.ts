@@ -1,6 +1,6 @@
 import type { ExperienceLocale, LocalizedLine, SlotValues } from "./career.contracts"
 import { CareerError, CareerErrorCode } from "./errors/career.error"
-import { templateOf, type CatalogItem } from "./experience-catalog.policy"
+import { catalogItemOf, templateOf, type CatalogItem } from "./experience-catalog.policy"
 
 /** The locales every line carries. */
 const LOCALES: ReadonlyArray<ExperienceLocale> = ["vi", "en"]
@@ -20,6 +20,19 @@ const fill = (template: string, slots: ReadonlyArray<string>, values: Readonly<R
 export const draftLineOf = (item: CatalogItem, values: SlotValues): LocalizedLine => {
     const template = templateOf(item.itemType)
     return { vi: fill(template.vi, item.slots, values.vi), en: fill(template.en, item.slots, values.en) }
+}
+
+/**
+ * The line a producer's evidence would draft, for a screen that shows it before anything is produced; null when the item type is not
+ * in the catalog or the evidence leaves a slot empty, so a preview never shows a half-filled line.
+ */
+export const previewLineOf = (itemType: string, values: SlotValues): LocalizedLine | null => {
+    try {
+        return draftLineOf(catalogItemOf(itemType), values)
+    } catch (cause) {
+        if (cause instanceof CareerError) return null
+        throw cause
+    }
 }
 
 /** The figures of a text. */

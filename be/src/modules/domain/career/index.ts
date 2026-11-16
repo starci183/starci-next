@@ -27,6 +27,7 @@
  */
 export { CAREER_ERROR_KINDS } from "./errors/career.error"
 export { CAREER_MESSAGES } from "./messages/career.messages"
+export { previewLineOf } from "./cv-line.policy"
 export { EXPERIENCE_PARTS } from "./experience-catalog.policy"
 export { EXPERIENCE_PRODUCER, InjectExperienceProducer } from "./experience-producer.port"
 export { EssentialsExperienceService } from "./essentials-experience.service"

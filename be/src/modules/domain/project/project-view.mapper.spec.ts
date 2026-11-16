@@ -108,6 +108,23 @@ describe("project views", () => {
             createdAt: "2026-11-01T00:00:00.000Z",
         })
         expect(subject.projectKindOf(projectRowOf({ kind: "game" }))).toBe("app")
+        expect(subject.toSummaryView(projectRowOf(), standing)).toMatchObject({
+            practisingConceptCount: 0,
+            latestCiStatus: "none",
+            latestCiAt: null,
+        })
+        const run = {
+            project_id: "p",
+            run_id: "r",
+            commit_sha: "abc",
+            passed: false,
+            received_at: new Date("2026-11-08T08:00:00.000Z"),
+        }
+        expect(subject.toSummaryView(projectRowOf(), standing, run)).toMatchObject({
+            latestCiStatus: "failed",
+            latestCiAt: "2026-11-08T08:00:00.000Z",
+        })
+        expect(subject.toSummaryView(projectRowOf(), standing, { ...run, passed: true }).latestCiStatus).toBe("passed")
         expect(subject.toSummaryView(projectRowOf({ track: "gpt" }), standing).track).toBeNull()
     })
 
@@ -198,7 +215,7 @@ describe("toConceptView (part 2)", () => {
         subject = await build()
     })
 
-    it("shows a failing probe with its reason, facts and the fixed question", () => {
+    it("shows a failing probe with its reason, facts and the question its content file names", () => {
         const rows = subject.toEvidenceRows([
             evidenceDbRowOf(),
             evidenceDbRowOf({
@@ -207,7 +224,11 @@ describe("toConceptView (part 2)", () => {
                 passed: false,
                 ref: "repeat-same-key",
                 run_id: "p1",
-                detail: { reason: "second-differs", facts: { first: 201, second: 409 } },
+                detail: {
+                    reason: "second-differs",
+                    facts: { first: 201, second: 409 },
+                    question: { vi: "Lần gọi thứ hai?", en: "Where is the second call recognised?" },
+                },
                 at: new Date("2026-11-08T09:30:00.000Z"),
             }),
         ])
@@ -298,7 +319,11 @@ describe("toConceptView (part 3)", () => {
 
         const view = subject.toConceptView(conceptStandingOf(definition, sagaRows, false), undefined, LESSON, "en")
 
-        expect(view.slots[0]).toMatchObject({ state: "fail", source: "ai", at: "2026-11-08T09:00:00.000Z" })
+        expect(view.slots.find((slot) => slot.slot === "code-read")).toMatchObject({
+            state: "fail",
+            source: "ai",
+            at: "2026-11-08T09:00:00.000Z",
+        })
         expect(view.failing).toMatchObject({ reason: "code-read-below-bar", question: "Where does it compensate?" })
         expect(view.aiQuestion).toBe("Where does it compensate?")
 

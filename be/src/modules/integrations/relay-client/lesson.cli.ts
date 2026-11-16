@@ -1,15 +1,10 @@
 import { join } from "node:path"
-import type { CheckRun, CliIo, PendingUpload } from "./relay-client.contracts"
+import type { CliIo, PendingUpload } from "./relay-client.contracts"
 import type { LastRun, LessonRunOptions, LessonScenario, LessonSection } from "./lesson.contracts"
 import { fixPromptOf } from "./lesson-prompt.policy"
 import {
-    ARCHIVE_NAME,
     collides,
-    dropArchive,
     excludeFromGit,
-    makeFolder,
-    removeFolder,
-    writeArchive,
     hasFolder,
     lessonRootOf,
     place,
@@ -22,7 +17,7 @@ import {
     writeState,
 } from "./lesson-files.adapter"
 import { isLessonId } from "./lesson.policy"
-import { ARCHIVE_MAX_BYTES, archiveRefusal, hashHolds } from "./source-archive.policy"
+import { unpackSource } from "./source-pull.cli"
 import {
     ledgerLinesOf,
     ledgerTextOf,
@@ -84,13 +79,6 @@ const fetchLesson = async (
     return { kind: "lesson", session, manifestId: fetched.manifest.manifestId, lesson }
 }
 
-/** The URL the tarball is fetched from and whether StarCi's own bearer goes with it: a path is StarCi's own endpoint, an https URL is a signed one. */
-const sourceUrlOf = (
-    url: string,
-    session: RelaySession,
-): { readonly url: string; readonly bearer: string | undefined } =>
-    url.startsWith("/") ? { url: `${session.baseUrl}${url}`, bearer: session.token } : { url, bearer: undefined }
-
 /**
  * `starci-next pull <lesson> [--lang typescript]`: downloads the tarball of the lesson's `source/` that StarCi signed, checks its
  * sha256 and its listing (no link, no path above the folder, nothing from `hidden/`), unpacks it into `./<lesson>` and makes it a
@@ -123,57 +111,18 @@ export const pullLesson = async (
         )
         return had?.sha256 === source.sha256 ? 0 : 1
     }
-    const from = sourceUrlOf(source.url, got.session)
-    const answer = await io.download(from.url, from.bearer)
-    if (answer.status !== 200) {
-        io.err(
-            answer.status === 0
-                ? "StarCi could not be reached."
-                : `The lesson source was refused (HTTP ${answer.status}).`,
-        )
-        return 1
-    }
-    if (
-        answer.bytes.length === 0 ||
-        answer.bytes.length > ARCHIVE_MAX_BYTES ||
-        !hashHolds(answer.bytes, source.sha256)
-    ) {
-        io.err("The downloaded source does not match the sha256 StarCi signed; nothing was unpacked.")
-        return 1
-    }
-    makeFolder(target)
-    const failed = async (line: string): Promise<number> => {
-        removeFolder(target)
-        io.err(line)
-        return 1
-    }
-    const step = async (command: string): Promise<CheckRun> =>
-        io.runCommand(command, target, STEP_TIMEOUT_MS, undefined, true)
-    writeArchive(target, answer.bytes)
-    const names = await step(`tar -tzf ${ARCHIVE_NAME}`)
-    const types = await step(`tar -tvzf ${ARCHIVE_NAME}`)
-    const refusal =
-        names.exitCode === 0 && types.exitCode === 0
-            ? archiveRefusal(names.output, types.output)
-            : "tar could not read it"
-    if (refusal !== null) return failed(`Not unpacked: ${refusal}.`)
-    if ((await step(`tar -xzf ${ARCHIVE_NAME}`)).exitCode !== 0)
-        return failed("tar could not unpack the lesson source.")
-    dropArchive(target)
-    if (!hasFolder(join(target, dir))) return failed(`The source has no folder ${dir}; nothing was selected.`)
-    const message = `"Lesson ${lessonId} source at ${source.commit.slice(0, 10)}"`
-    const git = [
-        "git init -q -b main",
-        "git add -A",
-        `git -c user.name=starci-next -c user.email=starci-next@users.noreply.invalid commit -q -m ${message}`,
-    ]
-    const committed = await git.reduce(
-        async (ok, command) => (await ok) && (await step(command)).exitCode === 0,
-        Promise.resolve(true),
-    )
-    if (!committed) return failed("git could not make the first commit; is git installed?")
-    excludeFromGit(target)
-    writeState(target, { lessonId, commit: source.commit, sha256: source.sha256, dir, compose, project })
+    const unpacked = await unpackSource(io, got.session, {
+        noun: "lesson",
+        source,
+        target,
+        dir,
+        message: `"Lesson ${lessonId} source at ${source.commit.slice(0, 10)}"`,
+        finish: (folder) => {
+            excludeFromGit(folder)
+            writeState(folder, { lessonId, commit: source.commit, sha256: source.sha256, dir, compose, project })
+        },
+    })
+    if (!unpacked) return 1
     io.out(
         `Lesson ${lessonId} is in ./${lessonId} (source at ${source.commit.slice(0, 10)}, sha256 verified), one initial commit.`,
     )

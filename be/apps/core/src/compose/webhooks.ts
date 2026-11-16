@@ -2,6 +2,7 @@ import type { DynamicModule, Type } from "@nestjs/common"
 import { SepayHttpModule } from "@features/webhooks/sepay"
 import { PayosHttpModule } from "@features/webhooks/payos"
 import { ProjectCiHttpModule } from "@features/webhooks/project-ci"
+import { ProbeSinkHttpModule } from "@features/webhooks/probe-sink"
 import { InboxModule } from "@modules/platform/inbox"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 
@@ -11,4 +12,5 @@ export const webhooksModules = (): Array<Type<unknown> | DynamicModule> => [
     SepayHttpModule.register({}),
     PayosHttpModule.register({}),
     ProjectCiHttpModule.register({}),
+    ProbeSinkHttpModule.register({}),
 ]

@@ -22,7 +22,6 @@ import {
     type ProjectSummaryView,
     type SlotView,
 } from "./project-view.contracts"
-import { probeQuestionOf } from "./project-probe.policy"
 import type {
     MilestoneStanding,
     ConceptStanding,
@@ -77,7 +76,11 @@ const shortCommit = (commit: string): string => commit.slice(0, 7)
 export const projectKindOf = (row: ProjectRow): ProjectKind => PROJECT_KINDS.find((kind) => kind === row.kind) ?? "app"
 
 /** The project as the list shows it. */
-export const toSummaryView = (row: ProjectRow, standing: ProjectStanding): ProjectSummaryView => ({
+export const toSummaryView = (
+    row: ProjectRow,
+    standing: ProjectStanding,
+    ciRun: CiRunRow | null = null,
+): ProjectSummaryView => ({
     id: row.project_id,
     name: row.name,
     kind: projectKindOf(row),
@@ -92,6 +95,9 @@ export const toSummaryView = (row: ProjectRow, standing: ProjectStanding): Proje
     currentMilestoneId: standing.currentMilestoneId,
     doneMilestoneCount: standing.milestones.filter((milestone) => milestone.state === "done").length,
     milestoneCount: standing.milestones.length,
+    practisingConceptCount: standing.practisingConceptIds.length,
+    latestCiStatus: ciRun === null ? "none" : ciRun.passed ? "passed" : "failed",
+    latestCiAt: ciRun === null ? null : ciRun.received_at.toISOString(),
     createdAt: row.created_at.toISOString(),
 })
 
@@ -133,9 +139,17 @@ const toSlotView = (standing: SlotStanding, required: boolean): SlotView => {
     }
 }
 
-/** The question the AI teacher asks about a failed result: a probe has a fixed one, a code read carries its own. */
+/** The localized text a result's detail carries under a key (`question`: `{vi, en}`), or "". */
+const detailLocalized = (detail: Readonly<Record<string, unknown>>, key: string, locale: ProjectLocale): string => {
+    const value = detail[key]
+    if (typeof value !== "object" || value === null) return ""
+    const text: unknown = (value as Readonly<Record<string, unknown>>)[locale]
+    return typeof text === "string" ? text : ""
+}
+
+/** The question the AI teacher asks about a failed result: a probe's comes from its content file, a code read carries its own. */
 const questionOf = (slot: EvidenceSlot, shown: SlotResult, locale: ProjectLocale): string => {
-    if (slot === "probe") return probeQuestionOf(shown.ref, locale)
+    if (slot === "probe") return detailLocalized(shown.detail, "question", locale)
     return slot === "code-read" ? detailText(shown.detail, "question") : ""
 }
 

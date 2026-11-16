@@ -1,5 +1,13 @@
 import { Test } from "@nestjs/testing"
-import { ciTemplateOf, kitConfigOf, projectIdValid, withIdentity } from "./project-kit.policy"
+import {
+    ciTemplateOf,
+    isOtherConceptFlow,
+    kitConfigOf,
+    languageOfFiles,
+    milestoneOfCatalog,
+    projectIdValid,
+    withIdentity,
+} from "./project-kit.policy"
 
 const POLICY: unique symbol = Symbol("spec.project-kit-policy")
 const policy = { ciTemplateOf, kitConfigOf, projectIdValid, withIdentity }
@@ -80,5 +88,80 @@ describe("kit names", () => {
         const subject = await build()
         expect(subject.projectIdValid("<project-id>")).toBe(false)
         expect(subject.projectIdValid("abc-123")).toBe(true)
+    })
+})
+
+const CATALOG_INLINE = `milestones:
+  - id: bf-http-foundation
+    title:
+      en: HTTP foundation
+    concepts: [request-response-lifecycle, health-probe-semantics]
+  - id: bf-data-and-cache
+    concepts: [cache-freshness]
+kinds:
+  app: [bf-data-and-cache, bf-http-foundation]
+  agent: [bf-http-foundation]
+`
+
+const CATALOG_BLOCK = `milestones:
+  - id: first
+    concepts:
+      - one
+      - two
+  - id: second
+    concepts:
+      - three
+`
+
+describe("languageOfFiles", () => {
+    it.each([
+        [["go.mod", "main.go"], "go"],
+        [["pom.xml", "src"], "java"],
+        [["build.gradle.kts"], "java"],
+        [["Shop.csproj"], "csharp"],
+        [["Shop.sln"], "csharp"],
+        [["package.json", "tsconfig.json"], "typescript"],
+        [["README.md"], null],
+        [[], null],
+    ])("reads %j as %s", (names, expected) => {
+        expect(languageOfFiles(names)).toBe(expected)
+    })
+
+    it("prefers the compiled language of a mixed folder over its tooling package.json", () => {
+        expect(languageOfFiles(["package.json", "go.mod"])).toBe("go")
+    })
+})
+
+describe("milestoneOfCatalog", () => {
+    it("reads the inline spelling and the first milestone of the app kind by default", () => {
+        expect(milestoneOfCatalog(CATALOG_INLINE, null)).toEqual({
+            id: "bf-data-and-cache",
+            concepts: ["cache-freshness"],
+        })
+    })
+
+    it("reads the milestone it is asked for, and the block spelling", () => {
+        expect(milestoneOfCatalog(CATALOG_INLINE, "bf-http-foundation")?.concepts).toEqual([
+            "request-response-lifecycle",
+            "health-probe-semantics",
+        ])
+        expect(milestoneOfCatalog(CATALOG_BLOCK, null)).toEqual({ id: "first", concepts: ["one", "two"] })
+        expect(milestoneOfCatalog(CATALOG_BLOCK, "second")?.concepts).toEqual(["three"])
+    })
+
+    it("answers null for a milestone the catalog does not list, and for a catalog with none", () => {
+        expect(milestoneOfCatalog(CATALOG_INLINE, "nope")).toBeNull()
+        expect(milestoneOfCatalog("concepts: []\n", null)).toBeNull()
+    })
+})
+
+describe("isOtherConceptFlow", () => {
+    it("leaves out the e2e flow of a concept outside the milestone only", () => {
+        const concepts = new Set(["idempotency"])
+
+        expect(isOtherConceptFlow("starci/e2e/idempotency.md", concepts)).toBe(false)
+        expect(isOtherConceptFlow("starci/e2e/saga.md", concepts)).toBe(true)
+        expect(isOtherConceptFlow("starci/project.yaml", concepts)).toBe(false)
+        expect(isOtherConceptFlow("starci/e2e/saga.md", null)).toBe(false)
     })
 })
