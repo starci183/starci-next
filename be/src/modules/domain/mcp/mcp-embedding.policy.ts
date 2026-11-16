@@ -56,3 +56,10 @@ export const chunksOf = (path: string, text: string): Array<Chunk> => {
 /** A stable key of a corpus: the same ordered paths and texts always name the same key. */
 export const corpusKeyOf = (parts: ReadonlyArray<string>): string =>
     createHash("sha256").update(parts.join("\u0000")).digest("hex").slice(0, 32)
+
+/**
+ * The content hash of a chunk: the model identity and the exact text. The same text under the same model always has the same
+ * hash, so a chunk already embedded is never embedded twice, and a changed text or a changed model is a new hash.
+ */
+export const chunkHashOf = (model: string, text: string): string =>
+    createHash("sha256").update(model).update("\u0000").update(text).digest("hex")

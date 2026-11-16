@@ -2,6 +2,7 @@ import { parseMarkdown } from "@/modules/markdown"
 import {
     CHALLENGE_LEVELS,
     LESSON_PHASES,
+    type EssentialPart,
     type EssentialView,
     type OpenerScoreView,
     type ScenarioRunView,
@@ -28,6 +29,14 @@ import type {
 
 /** The lesson of the answer as the study screen reads it. */
 type LessonWire = LessonQuery["lesson"]
+
+/** The page part of each part id the back end names (the folders of the lesson's four parts). */
+const PART_OF_WIRE: Readonly<Record<string, EssentialPart | undefined>> = {
+    "1-essential": "essence",
+    "2-source": "source",
+    "3-scenarios": "scenarios",
+    "4-apply": "apply",
+}
 
 /** The difficulty the back end names; anything else is a contract break and stops here. */
 const difficultyOf = (raw: string): LessonDifficulty => {
@@ -165,6 +174,10 @@ export const lessonOf = (wire: LessonWire): LessonView => ({
 /** The four parts of the answer; the back end already left out the right answers and the hidden scenarios. */
 const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView => ({
     isLocked: wire.isLocked,
+    lockedParts: wire.lockedParts.flatMap((id) => {
+        const part = PART_OF_WIRE[id]
+        return part === undefined ? [] : [part]
+    }),
     opener: wire.opener.map((question) => questionOf(question)),
     source: wire.source === null ? undefined : { langs: wire.source.langs },
     invariants: wire.invariants,

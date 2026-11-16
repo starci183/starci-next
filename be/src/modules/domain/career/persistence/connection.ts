@@ -2,6 +2,7 @@ import { CareerExperienceItemEntity } from "./entities/career-experience-item.en
 import { CareerReviewDecisionEntity } from "./entities/career-review-decision.entity"
 import { CareerReviewerEntity } from "./entities/career-reviewer.entity"
 import { InitCareer1797300000000 } from "./migrations/1797300000000-init-career"
+import { CareerHarnessPart1798400000001 } from "./migrations/1798400000001-career-harness-part"
 
 /** The entities of the career capability, for the connection that holds them. */
 export const careerEntities: Array<
@@ -9,4 +10,7 @@ export const careerEntities: Array<
 > = [CareerExperienceItemEntity, CareerReviewDecisionEntity, CareerReviewerEntity]
 
 /** The migrations of the career capability, in the order they run. */
-export const careerMigrations: Array<typeof InitCareer1797300000000> = [InitCareer1797300000000]
+export const careerMigrations: Array<typeof InitCareer1797300000000 | typeof CareerHarnessPart1798400000001> = [
+    InitCareer1797300000000,
+    CareerHarnessPart1798400000001,
+]

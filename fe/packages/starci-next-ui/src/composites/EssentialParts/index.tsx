@@ -357,7 +357,15 @@ const ScenarioDetail = (props: { readonly scenario: ScenarioCardView; readonly l
                     language="bash"
                     label={labels.run}
                 />
-                <Text tone="muted" size="sm">{`${labels.expected}: ${scenario.expected}`}</Text>
+                {scenario.invariant === "" ? null : <Text size="sm">{`${labels.judged}: ${scenario.invariant}`}</Text>}
+                {scenario.expected === "" ? null : (
+                    <Stack gap="identity">
+                        <Text size="sm" tone="muted">
+                            {labels.expected}
+                        </Text>
+                        <Text>{scenario.expected}</Text>
+                    </Stack>
+                )}
                 <Terminal
                     title={labels.output}
                     lines={scenario.output.length === 0 ? [labels.noOutput] : scenario.output}

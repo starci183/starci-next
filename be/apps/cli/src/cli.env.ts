@@ -3,6 +3,7 @@ import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseCareerConfig } from "@modules/domain/career"
 import { parseEntitlementConfig } from "@modules/domain/entitlement"
 import { parseContentConfig } from "@modules/domain/content"
+import { parseMcpConfig } from "@modules/domain/mcp"
 import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseSepayConfig } from "@modules/integrations/sepay"
 import { parsePayosConfig } from "@modules/integrations/payos"
@@ -23,6 +24,8 @@ export interface CliEnv {
     readonly entitlement: ReturnType<typeof parseEntitlementConfig>
     /** The git mount of the content repositories, or null when the environment declares none. */
     readonly content: ReturnType<typeof parseContentConfig>
+    /** The mcp settings the semantic index reads: the local embedder and the harness content checkout. */
+    readonly mcp: ReturnType<typeof parseMcpConfig>
 }
 
 /** Reads the required cli environment before composition; its secrets use `_FILE` first and have no default. */
@@ -34,4 +37,5 @@ export const readCliEnv = (env: EnvSource): CliEnv => ({
     career: parseCareerConfig(env),
     entitlement: parseEntitlementConfig(env),
     content: parseContentConfig(env),
+    mcp: parseMcpConfig(env),
 })

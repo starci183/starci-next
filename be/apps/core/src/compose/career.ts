@@ -14,6 +14,7 @@ import {
     interviewEntities,
     interviewMigrations,
 } from "@modules/domain/interview"
+import { HarnessProofService } from "@modules/domain/harness"
 import { NotificationService } from "@modules/domain/notification"
 import {
     AiProjectCoachClient,
@@ -57,6 +58,7 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         lessons: LessonCatalogClient,
         attestation: GithubOidcClient,
         checkSource: ProjectCheckSetDiskAdapter,
+        harness: HarnessProofService,
     }),
     ProbeModule.register({ isGlobal: true, ...options.probe }),
 ]

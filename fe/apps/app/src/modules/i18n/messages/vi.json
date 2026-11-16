@@ -1073,6 +1073,7 @@
           "run": "Lệnh chạy",
           "guards": "Tắt guard để thấy lỗi xảy ra",
           "expected": "Hệ thống đúng sẽ cho",
+          "judged": "Luật nó chấm",
           "output": "Kết quả gửi về từ máy bạn",
           "noOutput": "Chưa có lần chạy nào. Chạy lệnh ở trên, kết quả sẽ hiện ở đây.",
           "why": "Vì sao sai",
@@ -1122,8 +1123,13 @@
         },
         "locked": {
           "title": "Phần này mở với Premium",
-          "description": "Câu mở bài miễn phí. Source, kịch bản và thử thách cần Premium.",
-          "plans": "Xem Premium"
+          "plans": "Đăng ký Premium",
+          "parts": {
+            "essence": "Năm câu hỏi mở bài và bài viết của phần Bản chất. Premium mở phần này.",
+            "source": "Kéo repo TypeScript và Express thật về máy, chạy nó và đọc chỗ từng luật nằm trong code. Câu mở bài và bài viết của bài này vẫn miễn phí.",
+            "scenarios": "Chạy từng lỗi ngay trên máy bạn, tắt một guard và xem luật nào vỡ, vỡ vì sao. Câu mở bài và bài viết của bài này vẫn miễn phí.",
+            "apply": "Thang thử thách bốn bậc, chấm bằng kịch bản ẩn và câu hỏi bản chất, kết quả gửi về từ máy bạn. Câu mở bài và bài viết của bài này vẫn miễn phí."
+          }
         }
       }
     },

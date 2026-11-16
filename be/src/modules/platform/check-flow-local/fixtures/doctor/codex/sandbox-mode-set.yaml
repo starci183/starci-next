@@ -1,0 +1,29 @@
+# Doctor probe: config.toml sets a sandbox that keeps writes inside the workspace.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: sandbox-mode-set
+tool: codex
+order: 2
+title:
+  vi: sandbox_mode giới hạn quyền ghi
+  en: sandbox_mode limits writes
+guide: config-sandbox
+check:
+  toml:
+    path: [.codex/config.toml, ~/.codex/config.toml]
+    at: sandbox_mode
+    oneOf: [read-only, workspace-write]
+fix:
+  vi: Trong `~/.codex/config.toml` đặt `sandbox_mode = "workspace-write"` (hoặc `"read-only"` khi chỉ cần đọc). Tránh `danger-full-access`.
+  en: In `~/.codex/config.toml` set `sandbox_mode = "workspace-write"` (or `"read-only"` when it only needs to read). Avoid `danger-full-access`.
+good:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+      sandbox_mode = "workspace-write"
+bad:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+      sandbox_mode = "danger-full-access"

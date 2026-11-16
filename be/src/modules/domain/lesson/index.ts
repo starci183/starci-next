@@ -70,6 +70,8 @@ export type {
 export { LESSON_CHALLENGE_LEVELS } from "./lesson-essential.contracts"
 export type { LessonRunnable } from "./lesson-content.service"
 export type { LessonSourceArchive } from "./lesson-source-archive.policy"
+export { sourceArchiveOf } from "./lesson-source-archive.policy"
+export type { LessonSourceCode } from "./lesson-source-archive.policy"
 export { lessonRelayTaskId } from "./lesson-essential.contracts"
 export type { LessonTopicCatalog, LessonTopicStep } from "./lesson-topic.contracts"
 export type { LessonTopicView } from "./lesson-topic-view.contracts"

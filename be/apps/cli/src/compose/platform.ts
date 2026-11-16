@@ -9,12 +9,14 @@ import { interviewEntities, interviewMigrations } from "@modules/domain/intervie
 import { careerEntities, careerMigrations } from "@modules/domain/career"
 import { projectEntities, projectMigrations } from "@modules/domain/project"
 import { streakEntities, streakMigrations } from "@modules/domain/streak"
+import { harnessEntities, harnessMigrations } from "@modules/domain/harness"
 import { pathEntities, pathMigrations } from "@modules/domain/path"
 import { notificationEntities, notificationMigrations } from "@modules/domain/notification"
 import { lessonEntities, lessonMigrations } from "@modules/domain/lesson"
 import { practiceEntities, practiceMigrations } from "@modules/domain/practice"
 import { reviewEntities, reviewMigrations } from "@modules/domain/review"
 import { relayEntities, relayMigrations } from "@modules/domain/relay"
+import { mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { ClockModule } from "@modules/platform/clock"
 import {
     DatabaseModule,
@@ -48,8 +50,10 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...agentLabEntities,
         ...streakEntities,
         ...pathEntities,
+        ...harnessEntities,
         ...notificationEntities,
         ...relayEntities,
+        ...mcpEntities,
     ],
     migrations: [
         ...httpSecurityMigrations,
@@ -68,8 +72,10 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...agentLabMigrations,
         ...streakMigrations,
         ...pathMigrations,
+        ...harnessMigrations,
         ...notificationMigrations,
         ...relayMigrations,
+        ...mcpMigrations,
     ],
 })
 

@@ -73,6 +73,14 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         defenseQuestions: [],
     },
     {
+        itemType: "harness.build-proved",
+        part: "harness",
+        output: "cv-line",
+        requiresProject: true,
+        slots: ["build", "stages", "ci"],
+        defenseQuestions: [],
+    },
+    {
         itemType: "practice.pattern-solved",
         part: "practice",
         output: "readiness",
@@ -97,6 +105,7 @@ export const EXPERIENCE_PARTS: ReadonlyArray<ExperiencePart> = [
     "incidents",
     "practice",
     "interview",
+    "harness",
 ]
 
 /**
