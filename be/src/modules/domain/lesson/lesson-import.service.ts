@@ -113,7 +113,15 @@ export class LessonImportService {
         const [topic, lesson] = folder.includes("/") ? folder.split("/") : [undefined, folder]
         const { draft, issues } =
             topic !== undefined && lesson !== undefined && isRawLesson(files)
-                ? convertRawLesson({ topic, folder: lesson, files }, this.catalog)
+                ? convertRawLesson(
+                      {
+                          topic,
+                          folder: lesson,
+                          files,
+                          topicFile: (await this.source.topicFile(params.directory, topic)) ?? null,
+                      },
+                      this.catalog,
+                  )
                 : buildLessonDraft(folder, files, this.catalog)
         const base = {
             folder,

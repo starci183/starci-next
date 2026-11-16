@@ -4,6 +4,7 @@ import { contentHashOf } from "./lesson-draft.policy"
 import { groupOf } from "./lesson-group.policy"
 import { parseSeparatorFields } from "./separator.policy"
 import { sourceCodeOf } from "./lesson-source-archive.policy"
+import { topicSourceOf } from "./lesson-topic-file.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
 import type { LessonDraftResult, LessonIssue, LessonSourceFile } from "./lesson-import.contracts"
 import {
@@ -51,6 +52,8 @@ export interface RawLessonInput {
     readonly folder: string
     /** Every file of the lesson folder. */
     readonly files: ReadonlyArray<LessonSourceFile>
+    /** The text of the topic's `topic.yaml`, when the topic folder has one; it wins over the catalog entry of the topic. */
+    readonly topicFile?: string | null
 }
 
 /** True when a lesson folder is in the topic-based format: it holds `scenarios.yaml` and `sections/1-essential`. */
@@ -397,8 +400,11 @@ export const convertRawLesson = (input: RawLessonInput, catalog: LessonTopicCata
     const scenarioDoc = yamlOf(new Map(byPath), "scenarios.yaml", new Issues())
     if (scenarioDoc !== null && scenarioDoc.lessonId !== undefined && scenarioDoc.lessonId !== input.folder)
         issues.add("scenarios.yaml", "lessonId", `is ${String(scenarioDoc.lessonId)}, the folder is ${input.folder}`)
-    const topicSource = catalog.topics[input.topic]
-    if (topicSource === undefined) issues.add("", "topic", `topic ${input.topic} is not defined`)
+    // The topic is content: `<topic>/topic.yaml` first, the catalog of the code for a topic that has no file.
+    const topicFile = input.topicFile === undefined || input.topicFile === null ? null : topicSourceOf(input.topicFile)
+    if (topicFile?.issue !== undefined && topicFile.issue !== null) issues.add("topic.yaml", "", topicFile.issue)
+    const topicSource = topicFile?.source ?? catalog.topics[input.topic]
+    if (topicSource === undefined && topicFile === null) issues.add("", "topic", `topic ${input.topic} is not defined`)
     const viLines = structureOf(docs.vi.essential, docs.vi.sections)
     const enLines = new Set(structureOf(docs.en.essential, docs.en.sections))
     viLines

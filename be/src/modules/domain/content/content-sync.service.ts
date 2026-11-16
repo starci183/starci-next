@@ -34,6 +34,9 @@ const KIND_NAMES: ReadonlyArray<string> = CONTENT_KINDS
 /** The length of the sha prefix used as a version label: the label of the dev seeds. */
 const LABEL_LENGTH = 9
 
+/** The folder the authors write in (owner 2026-11-17, the seed standard): `raw/essentials`, `raw/interview`, `raw/practice`. */
+const RAW = "raw"
+
 /** One repository ready on disk with the version label its imports use. */
 interface Root {
     readonly directory: string
@@ -149,10 +152,27 @@ export class ContentSyncService {
         return this.recordCatalogs(content)
     }
 
+    /**
+     * The folder of a content kind in the `raw/` layout when it holds the probe folder, else the root folder an older pin keeps:
+     * a pin from before the layout move still imports, a pin after it reads `raw/`.
+     */
+    private async layoutOf(
+        content: Root,
+        kind: string,
+        legacy: ReadonlyArray<string>,
+        probe: ReadonlyArray<string>,
+    ): Promise<string> {
+        const raw = join(content.directory, RAW, kind)
+        return (await this.disk.folders(join(raw, ...probe))).length > 0 ? raw : join(content.directory, ...legacy)
+    }
+
     private async importLessons(content: Root, data: Root | null): Promise<ContentKindReport> {
+        // The numbered lessons of the root `essentials/` and the topic lessons of `raw/essentials/<topic>/<lesson>` (with the
+        // topic metadata in `<topic>/topic.yaml`) are two formats in two folders; a pin may hold either or both.
         const roots = [
             ...(data === null ? [] : [{ directory: join(data.directory, "concepts"), ref: data.ref }]),
             { directory: join(content.directory, "essentials"), ref: content.ref },
+            { directory: join(content.directory, RAW, "essentials"), ref: content.ref },
         ]
         const imported: Array<string> = []
         await eachInOrder(roots, async (root) => {
@@ -171,7 +191,12 @@ export class ContentSyncService {
     }
 
     private async importInterview(content: Root, data: Root | null): Promise<ContentKindReport> {
-        const overlay = join(content.directory, "interview", "overlay")
+        const overlay = await this.layoutOf(
+            content,
+            join("interview", "overlay"),
+            ["interview", "overlay"],
+            ["courses"],
+        )
         const hasOverlay = (await this.disk.folders(join(overlay, "courses"))).length > 0
         if (data === null && !hasOverlay) {
             return { kind: "interview", status: "skipped", version: "", detail: "no data checkout and no overlay" }
@@ -204,7 +229,7 @@ export class ContentSyncService {
     private async importPractice(content: Root, data: Root | null): Promise<ContentKindReport> {
         const roots = [
             ...(data === null ? [] : [{ directory: join(data.directory, "coding-problems"), ref: data.ref }]),
-            { directory: join(content.directory, "practice"), ref: content.ref },
+            { directory: await this.layoutOf(content, "practice", ["practice"], ["sets"]), ref: content.ref },
         ]
         const imported: Array<string> = []
         await eachInOrder(roots, async (root) => {

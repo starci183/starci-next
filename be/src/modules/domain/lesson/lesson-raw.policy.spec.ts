@@ -1,95 +1,7 @@
+import { CHALLENGES, SCENARIOS, field, lessonFiles } from "@tests/fixtures/builders/raw-lesson.builder"
 import type { LessonSourceFile } from "./lesson-import.contracts"
 import { convertRawLesson } from "./lesson-raw.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
-
-const SEP = "<!-- @starci/seperator -->"
-const fileOf = (path: string, text: string): LessonSourceFile => ({ path, text, sha256: `sha-${path}` })
-const field = (name: string, value: string): string => `# ${name}\n${SEP}\n${value}\n${SEP}\n`
-
-const root = (extra: string): string =>
-    [
-        field("sortIndex", "1"),
-        field("title", "T"),
-        field("description", "D"),
-        field("minutesRead", "40"),
-        extra,
-        field("status", "draft"),
-        field("author", "x"),
-    ].join("")
-
-const section = (title: string): string =>
-    field("title", title) + field("status", "draft") + field("author", "x") + field("body", `## 1. ${title}`)
-
-const quizOf = (): string => `
-questions:
-${[1, 2, 3, 4, 5]
-    .map(
-        (n) => `  - id: q${n}
-    readSection: "1"
-    scenario: happy-path
-    prompt: { vi: "Q${n}", en: "Q${n}" }
-    options:
-      - { id: a, correct: true, text: { vi: "A", en: "A" }, explanation: { vi: "E", en: "E" } }
-      - { id: b, correct: false, text: { vi: "B", en: "B" }, explanation: { vi: "E", en: "E" } }`,
-    )
-    .join("\n")}
-`
-
-const SCENARIOS = `
-lessonId: outbox
-invariants:
-  effect-once: "One effect"
-scenarios:
-  - id: happy-path
-    title: "Happy"
-    brief: "Do it"
-    invariant: effect-once
-    expected:
-      vi: "Sổ in verdict OK"
-      en: "The ledger prints verdict OK"
-    concepts: [c]
-    command: "npm test -- --scenario happy-path"
-    guards: []
-`
-
-const CHALLENGES = `
-tiers:
-  - tier: easy
-    title: { vi: "Dễ", en: "Easy" }
-    hiddenScenarios:
-      - id: h-easy
-        command: "npm test -- --scenario h-easy"
-        brief: { vi: "Ẩn", en: "Hidden" }
-        concepts: [c]
-    rubric:
-      - { id: r1, critical: true, score: 40, criterion: { vi: "R", en: "R" } }
-      - { id: r2, score: 60, criterion: { vi: "R", en: "R" } }
-    essence: []
-`
-
-const PLAN = `
-tiers:
-  - { tier: easy, file: hidden/tests/easy.test.ts, writeTo: scenarios/hidden/easy.test.ts, solution: hidden/solutions/easy, scenarios: [h-easy] }
-`
-
-const lessonFiles = (
-    rootExtra: string,
-    scenarios = SCENARIOS,
-    challenges = CHALLENGES,
-): ReadonlyArray<LessonSourceFile> => [
-    fileOf("vi.md", root(rootExtra)),
-    fileOf("en.md", root(rootExtra)),
-    ...["1-essential", "2-source", "3-scenarios", "4-apply"].flatMap((part) => [
-        fileOf(`sections/${part}/vi.md`, section(part)),
-        fileOf(`sections/${part}/en.md`, section(part)),
-    ]),
-    fileOf("sections/1-essential/quiz.yaml", quizOf()),
-    fileOf("scenarios.yaml", scenarios),
-    fileOf("sections/4-apply/challenges.yaml", challenges),
-    fileOf("hidden/challenge-scenarios.yaml", PLAN),
-    fileOf("hidden/essence-answers.yaml", "answers: {}"),
-    fileOf("hidden/tests/easy.test.ts", "// hidden test"),
-]
 
 const CATALOG: LessonTopicCatalog = {
     byLesson: {},
@@ -140,5 +52,52 @@ describe("convertRawLesson reads the scenario and root fields when the lesson ha
         expect(hiddenOf(lessonFiles("", SCENARIOS, derived))?.command).toBe("npm test -- --scenario h-easy")
         const custom = CHALLENGES.replace("npm test -- --scenario h-easy", "npm run hidden -- h-easy")
         expect(hiddenOf(lessonFiles("", SCENARIOS, custom))?.command).toBe("npm run hidden -- h-easy")
+    })
+})
+
+describe("convertRawLesson reads the topic from topic.yaml", () => {
+    const TOPIC_FILE =
+        "title: Độ tin cậy\nfrom: seed standard\nmodules: []\ndetails:\n  description: D\n  prerequisites: []\n  related: [caching]\n"
+    const withoutTopic: LessonTopicCatalog = { byLesson: {}, sources: {}, topics: {} }
+
+    it("takes the topic of a lesson from the file when the catalog of the code does not know it", () => {
+        const files = lessonFiles("")
+        const { draft, issues } = convertRawLesson(
+            { topic: "api-reliability", folder: "outbox", files, topicFile: TOPIC_FILE },
+            withoutTopic,
+        )
+        expect(issues).toEqual([])
+        expect(draft?.topicSource).toMatchObject({ title: "Độ tin cậy", details: { related: ["caching"] } })
+    })
+
+    it("lets the file win over the catalog entry of the same topic", () => {
+        const { draft } = convertRawLesson(
+            { topic: "api-reliability", folder: "outbox", files: lessonFiles(""), topicFile: TOPIC_FILE },
+            CATALOG,
+        )
+        expect(draft?.topicSource.title).toBe("Độ tin cậy")
+    })
+
+    it("falls back to the catalog without a file and refuses a topic that neither knows", () => {
+        expect(convert(lessonFiles("")).draft?.topicSource.title).toBe("API reliability")
+        const none = convertRawLesson(
+            { topic: "api-reliability", folder: "outbox", files: lessonFiles("") },
+            withoutTopic,
+        )
+        expect(none.draft).toBeNull()
+        expect(none.issues).toContainEqual({
+            path: "",
+            field: "topic",
+            message: "topic api-reliability is not defined",
+        })
+    })
+
+    it("reports a topic.yaml that cannot be used instead of silently using the catalog", () => {
+        const { draft, issues } = convertRawLesson(
+            { topic: "api-reliability", folder: "outbox", files: lessonFiles(""), topicFile: "title: T" },
+            CATALOG,
+        )
+        expect(draft).toBeNull()
+        expect(issues).toContainEqual({ path: "topic.yaml", field: "", message: "has no from" })
     })
 })
