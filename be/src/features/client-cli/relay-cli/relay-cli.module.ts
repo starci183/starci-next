@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common"
 import { CheckCliModule } from "./check/check.module"
+import { CiReportCliModule } from "./ci-report/ci-report.module"
 import { DevicesCliModule } from "./devices/devices.module"
 import { InitProjectCliModule } from "./init/init.module"
 import { HarnessCliModule } from "./harness/harness.module"
@@ -22,6 +23,7 @@ import { UpCliModule } from "./up/up.module"
         DevicesCliModule.register({}),
         RunTaskCliModule.register({}),
         InitProjectCliModule.register({}),
+        CiReportCliModule.register({}),
         PullCliModule.register({}),
         UpCliModule.register({}),
         DownCliModule.register({}),
@@ -32,7 +34,7 @@ import { UpCliModule } from "./up/up.module"
     ],
 })
 /**
- * The command root of the learner CLI: login, logout, status, devices, run, init and the lesson commands pull, up, down, check and prompt, the harness build group (pull, e2e, ci-report), compiled only into apps/relay-cli. It holds
+ * The command root of the learner CLI: login, logout, status, devices, run, init, ci-report (a project's CI proof) and the lesson commands pull, up, down, check and prompt, the harness build group (pull, e2e, ci-report), compiled only into apps/relay-cli. It holds
  * no ops command group, so the package a learner installs carries no database, entitlement or ops module.
  */
 export class RelayCliModule extends ConfigurableModuleClass {}

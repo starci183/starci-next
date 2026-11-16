@@ -331,7 +331,7 @@ describe("harness ci-report", () => {
         expect(await ciReportBuild(io, {}, root)).toBe(0)
 
         expect(downloads).toEqual([
-            { url: "https://actions.test/token?api=1&audience=https%3A%2F%2Fstarci.test", bearer: "request-bearer" },
+            { url: "https://actions.test/token?api=1&audience=starci-next", bearer: "request-bearer" },
         ])
         expect(posts).toHaveLength(1)
         const [{ url, init }] = posts as [(typeof posts)[number]]

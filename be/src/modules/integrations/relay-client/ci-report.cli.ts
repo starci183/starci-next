@@ -46,6 +46,7 @@ const CI_ENV = {
     sha: "GITHUB_SHA",
     oidcUrl: "ACTIONS_ID_TOKEN_REQUEST_URL",
     oidcToken: "ACTIONS_ID_TOKEN_REQUEST_TOKEN",
+    audience: "STARCI_OIDC_AUDIENCE",
 } as const
 
 const COMMIT = /^[0-9a-f]{7,64}$/iu
@@ -56,7 +57,10 @@ const PROJECT_ID = /^[A-Za-z0-9._-]{1,100}$/u
 export const ciSignature = (secret: string, timestamp: string, body: string): string =>
     `sha256=${createHmac("sha256", secret).update(timestamp).update(".").update(body).digest("hex")}`
 
-/** Asks GitHub for the run's OIDC token (audience = the StarCi URL); undefined when the workflow has no `id-token: write` or GitHub did not answer. */
+/** The audience StarCi verifies a run token for (the project capability's `ciOidcAudience`, `starci-next` by default) unless STARCI_OIDC_AUDIENCE names another. */
+export const DEFAULT_OIDC_AUDIENCE = "starci-next"
+
+/** Asks GitHub for the run's OIDC token for that audience; undefined when the workflow has no `id-token: write` or GitHub did not answer. */
 const oidcTokenOf = async (io: CliIo, audience: string): Promise<string | undefined> => {
     const url = io.ciEnv?.(CI_ENV.oidcUrl)
     const bearer = io.ciEnv?.(CI_ENV.oidcToken)
@@ -108,7 +112,7 @@ export const postCiReport = async (io: CliIo, findings: CiFindings): Promise<num
         ...(findings.harness === undefined ? {} : { harness: findings.harness }),
     })
     const timestamp = String(io.now())
-    const oidc = await oidcTokenOf(io, apiUrl)
+    const oidc = await oidcTokenOf(io, read(CI_ENV.audience) ?? DEFAULT_OIDC_AUDIENCE)
     const answer = await io.fetch(`${apiUrl}/webhooks/project-ci`, {
         method: "POST",
         headers: {
