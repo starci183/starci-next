@@ -1,3 +1,4 @@
+import type { HarnessCiReportOptions, HarnessE2eOptions } from "./harness.contracts"
 import type { LessonRunOptions } from "./lesson.contracts"
 import type { ListenOptions } from "./listen.cli"
 
@@ -35,6 +36,12 @@ export interface RelayClientPort {
     listen(options: ListenOptions): Promise<void>
     /** Prints the ready-to-paste fix prompt of a scenario. */
     prompt(lesson: string, scenario: string | undefined): Promise<void>
+    /** Gets a harness build's source tarball at the commit StarCi signed (the same flow as the lesson pull). */
+    harnessPull(build: string): Promise<void>
+    /** Runs the signed e2e command of a build here, prints the stage table and sends one harness-stage result per e2e id. */
+    harnessE2e(build: string | undefined, options: HarnessE2eOptions): Promise<void>
+    /** For GitHub CI with OIDC: reads the e2e report and posts the signed, attested harness lines to the project-ci door. */
+    harnessCiReport(options: HarnessCiReportOptions): Promise<void>
     /** Copies the project kit (`starci/` and a CI workflow) into the project in the current folder. */
     init(options: InitOptions): Promise<void>
 }
