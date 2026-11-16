@@ -1,0 +1,40 @@
+# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# App của học viên gửi sự kiện của lần ghi tới địa chỉ trong header X-StarCi-Sink (sink công khai của StarCi).
+schema: starci-next-data/check-flow@1
+status: draft
+author: ai-placeholder
+id: outbox-delivery
+label:
+  vi: Lần ghi giao đúng một sự kiện tới sink của StarCi
+  en: A write delivers exactly one event to the StarCi sink
+question:
+  vi: Sự kiện được ghi cùng transaction với dữ liệu ở đâu, và relay làm sao để không gửi một sự kiện hai lần?
+  en: Where is the event written in the same transaction as the data, and how does the relay avoid sending it twice?
+needs: [endpoint, sample]
+steps:
+  - id: write
+    request:
+      method: "{{endpoint.method}}"
+      path: "{{endpoint.path}}"
+      headers: { x-starci-sink: "{{sink.url}}" }
+      body: "{{sample.body}}"
+    expect:
+      - { that: status, is: 2xx, fail: write-failed }
+  - id: events
+    sink: { within: 8000 }
+    expect:
+      - { that: count, gte: 1, fail: not-delivered }
+      - { that: count, lte: 1, fail: delivered-twice }
+pass: delivered-once
+reasons:
+  delivered-once: { vi: Sink nhận đúng một sự kiện trong 8 giây., en: The sink got exactly one event within 8 seconds. }
+  write-failed: { vi: Lần ghi không trả 2xx., en: The write did not answer 2xx. }
+  not-delivered: { vi: Sink không nhận sự kiện nào trong 8 giây., en: The sink got no event within 8 seconds. }
+  delivered-twice: { vi: Sink nhận cùng sự kiện hơn một lần., en: The sink got the event more than once. }
+fixtures:
+  endpoint: POST /starci-test/items
+  sample: '{"name":"book"}'
+  good: { authz: open }
+  cheats:
+    - { name: never publishes, app: { outbox: never }, fails: not-delivered }
+    - { name: publishes twice, app: { outbox: twice }, fails: delivered-twice }

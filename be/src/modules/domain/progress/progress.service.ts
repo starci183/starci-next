@@ -8,6 +8,7 @@ import { ReviewQueueService } from "@modules/domain/review"
 import { StreakService } from "@modules/domain/streak"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { InjectProgressHarness, type ProgressHarnessPort } from "./progress-harness.port"
+import { essentialsPartOf } from "./progress-essentials.policy"
 import { buildProgress } from "./progress-view.policy"
 import type {
     EssentialsLessonSource,
@@ -68,6 +69,7 @@ export class ProgressService {
         ])
         return buildProgress({
             plan: isPremium ? "premium" : "free",
+            openParts: this.entitlement.openEssentialParts(isPremium).flatMap((part) => essentialsPartOf(part) ?? []),
             streak,
             review,
             lessons,
@@ -112,20 +114,15 @@ export class ProgressService {
             this.projects.list({ learnerId, locale }),
             this.projects.provedConcepts(learnerId),
         ])
-        const list = await Promise.all(
-            summaries.map(async (summary): Promise<ProjectSource> => {
-                const detail = await this.projects.get({ learnerId, locale, projectId: summary.id })
-                return {
-                    id: summary.id,
-                    name: summary.name,
-                    provedConcepts: summary.provedConceptCount,
-                    practisingConcepts: detail.practisingConceptCount,
-                    totalConcepts: summary.conceptCount,
-                    doneMilestones: summary.doneMilestoneCount,
-                    totalMilestones: summary.milestoneCount,
-                }
-            }),
-        )
+        const list = summaries.map((summary): ProjectSource => ({
+            id: summary.id,
+            name: summary.name,
+            provedConcepts: summary.provedConceptCount,
+            practisingConcepts: summary.practisingConceptCount,
+            totalConcepts: summary.conceptCount,
+            doneMilestones: summary.doneMilestoneCount,
+            totalMilestones: summary.milestoneCount,
+        }))
         return { list, proved }
     }
 

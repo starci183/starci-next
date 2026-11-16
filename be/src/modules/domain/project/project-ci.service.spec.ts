@@ -1,6 +1,9 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, fakeInbox, mock, mockEntityManager } from "@starci/jest-preset"
 import { PROJECT_ID, PROJECT_NOW, projectRowOf } from "@tests/fixtures/builders/project.builder"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { INBOX } from "@modules/platform/inbox"
@@ -8,6 +11,7 @@ import { LOGGER, type Logger } from "@modules/platform/logging"
 import { ciSignatureOf } from "./project-ci.policy"
 import { PROJECT_CI_ATTESTATION, type CiAttestationVerifier } from "./project-ci-attestation.port"
 import { ProjectCiService } from "./project-ci.service"
+import { PROJECT_HARNESS, type ProjectHarnessPort } from "./project-harness.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
 import type { CiDelivery } from "./project-params.contracts"
 import type { RepositoryRow } from "./persistence/project.rows"
@@ -18,7 +22,7 @@ const BODY = {
     commit: "ABC1234",
     passed: true,
     results: [
-        { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
+        { concept: "idempotent-retry", slot: "test", ref: "[idempotency] twice", passed: true },
         { concept: "agent-harness-control-loop", slot: "test", ref: "[loop] a", passed: true },
     ],
 }
@@ -36,21 +40,28 @@ const build = async (binding: ReadonlyArray<RepositoryRow> = [BOUND], found = tr
     const attestation = mock<CiAttestationVerifier>()
     attestation.attest.mockResolvedValue({ kind: "attested", repositoryId: "42" })
     const inbox = fakeInbox()
+    const harness = mock<ProjectHarnessPort>()
+    harness.recordRun.mockResolvedValue(undefined)
     const evidence = mock<ProjectEvidenceService>()
     evidence.recordCiRun.mockResolvedValue({ duplicate: false, added: 1 })
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectCiService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
             { provide: INBOX, useValue: inbox },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: ProjectEvidenceService, useValue: evidence },
             { provide: PROJECT_CI_ATTESTATION, useValue: attestation },
+            { provide: PROJECT_HARNESS, useValue: harness },
         ],
     }).compile()
-    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox }
+    return { service: moduleRef.get(ProjectCiService), evidence, logger, em, attestation, inbox, entitlement, harness }
 }
 
 const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
@@ -67,6 +78,19 @@ const deliveryOf = (oidcToken?: string, body: unknown = BODY): CiDelivery => {
 
 const record = (service: ProjectCiService, oidcToken?: string) => service.recordRun(deliveryOf(oidcToken))
 
+describe("ProjectCiService subscription-only", () => {
+    it("refuses a CI delivery for the project of a learner without Premium, records nothing and gives the claim back", async () => {
+        const { service, evidence, attestation, inbox, entitlement } = await build()
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(record(service, "oidc-token")).rejects.toMatchObject({ code: "PROJECT_PREMIUM_REQUIRED" })
+
+        expect(attestation.attest).not.toHaveBeenCalled()
+        expect(evidence.recordCiRun).not.toHaveBeenCalled()
+        expect(inbox.released).toEqual([{ source: "project-ci", eventId: "gh-1" }])
+    })
+})
+
 describe("ProjectCiService recordRun", () => {
     it("claims the run id first, records the unattested run's results as signed-only practice and settles it", async () => {
         const { service, evidence, attestation, inbox } = await build()
@@ -82,7 +106,7 @@ describe("ProjectCiService recordRun", () => {
             attestation: "signed-only",
             results: [
                 {
-                    conceptId: "idempotency",
+                    conceptId: "idempotent-retry",
                     slot: "test",
                     source: "ci-signed",
                     passed: true,
@@ -98,6 +122,59 @@ describe("ProjectCiService recordRun", () => {
             `ci:${PROJECT_ID}:gh-1`,
         ])
         expect(attestation.attest).not.toHaveBeenCalled()
+    })
+
+    it("hands the harness results of a recorded run to the harness with whether GitHub attested it", async () => {
+        const harnessBody = {
+            ...BODY,
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const { service, harness } = await build()
+
+        await service.recordRun(deliveryOf("gh-token", harnessBody))
+
+        expect(harness.recordRun).toHaveBeenCalledWith({
+            projectId: PROJECT_ID,
+            learnerId: expect.any(String),
+            runId: "gh-1",
+            commit: "abc1234",
+            attested: true,
+            results: harnessBody.harness,
+        })
+    })
+
+    it("takes a harness-only run from a learner without Premium, since /harness is free, but refuses it with project results", async () => {
+        const harnessOnly = {
+            ...BODY,
+            results: [],
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const mixed = { ...harnessOnly, results: BODY.results }
+        const free = await build()
+        free.entitlement.isPremium.mockResolvedValue(false)
+
+        await expect(free.service.recordRun(deliveryOf("gh-token", harnessOnly))).resolves.toBeDefined()
+        expect(free.harness.recordRun).toHaveBeenCalledTimes(1)
+
+        const mixedFree = await build()
+        mixedFree.entitlement.isPremium.mockResolvedValue(false)
+        await expect(mixedFree.service.recordRun(deliveryOf("gh-token", mixed))).rejects.toBeDefined()
+        expect(mixedFree.harness.recordRun).not.toHaveBeenCalled()
+    })
+
+    it("tells the harness a signed-only run was not attested and hands over nothing for a run with no harness results", async () => {
+        const harnessBody = {
+            ...BODY,
+            harness: [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }],
+        }
+        const unattested = await build()
+        const plain = await build()
+
+        await unattested.service.recordRun(deliveryOf(undefined, harnessBody))
+        await plain.service.recordRun(deliveryOf("gh-token"))
+
+        expect(unattested.harness.recordRun).toHaveBeenCalledWith(expect.objectContaining({ attested: false }))
+        expect(plain.harness.recordRun).not.toHaveBeenCalled()
     })
 
     it("refuses a body that is not the result document before claiming anything", async () => {

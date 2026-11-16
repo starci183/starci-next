@@ -1,7 +1,7 @@
 import {
     EVIDENCE_SLOTS,
-    PRACTICE_SOURCES,
-    PROOF_SOURCES,
+    SLOT_PRACTICE_SOURCES,
+    SLOT_PROOF_SOURCES,
     type ConceptDefinition,
     type ConceptState,
     type EvidenceRow,
@@ -11,7 +11,12 @@ import {
     type MilestoneState,
     type ProjectKind,
 } from "./project.contracts"
-import { milestonesOfKind, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import {
+    conceptIdsOfKind,
+    isComingSoon,
+    milestonesOfKind,
+    type ProjectCatalog,
+} from "./project-check-set-lookup.policy"
 
 /** The latest run of one source for a slot, reduced to a verdict. */
 export interface SlotResult {
@@ -80,13 +85,19 @@ export const slotStandingOf = (slot: EvidenceSlot, rows: ReadonlyArray<EvidenceR
     const own = rows.filter((row) => row.slot === slot)
     return {
         slot,
-        practice: newestOf(PRACTICE_SOURCES.map((source) => latestRunOf(own, source))),
-        proof: newestOf(PROOF_SOURCES.map((source) => latestRunOf(own, source))),
+        practice: newestOf(SLOT_PRACTICE_SOURCES[slot].map((source) => latestRunOf(own, source))),
+        proof: newestOf(SLOT_PROOF_SOURCES[slot].map((source) => latestRunOf(own, source))),
     }
 }
 
-/** Whether a slot has a passing proof. */
-const isProved = (standing: SlotStanding): boolean => standing.proof?.passed === true
+/**
+ * Whether one group of a requirement is met: some slot of the group has a passing proof, and no slot of it has a failing one. A red
+ * proof is never hidden by a green sibling, so a learner cannot pair a passing test with a failing e2e flow of the same concept.
+ */
+const groupMet = (standings: ReadonlyArray<SlotStanding | undefined>): boolean => {
+    const proofs = standings.map((standing) => standing?.proof ?? null)
+    return proofs.some((proof) => proof?.passed === true) && !proofs.some((proof) => proof?.passed === false)
+}
 
 /** What decides where a concept stands. */
 interface ConceptFacts {
@@ -118,12 +129,7 @@ export const conceptStandingOf = (
     const slots = shown.map((slot) => slotStandingOf(slot, rows))
     const standingOf = (slot: EvidenceSlot): SlotStanding | undefined =>
         slots.find((candidate) => candidate.slot === slot)
-    const proved = definition.requires.every((group) =>
-        group.some((slot) => {
-            const standing = standingOf(slot)
-            return standing !== undefined && isProved(standing)
-        }),
-    )
+    const proved = definition.requires.every((group) => groupMet(group.map((slot) => standingOf(slot))))
     const started = slots.some((standing) => standing.practice !== null || standing.proof !== null)
     return { definition, state: conceptStateOf({ comingSoon, proved, started }), slots }
 }
@@ -164,29 +170,36 @@ export interface ProjectStanding {
 
 /**
  * Where a project stands, from the latest evidence of all its concepts. A concept appearing in several milestones is graded once
- * (it counts once for the path); the lessons that exist decide which concepts are still being written.
+ * (it counts once for the path); a concept that needs the AI read and has no live lesson to grade it against is still being written.
  */
 export const projectStandingOf = (
+    catalog: ProjectCatalog,
     kind: ProjectKind,
     rows: ReadonlyArray<EvidenceRow>,
     lessonIds: ReadonlySet<string>,
 ): ProjectStanding => {
-    const listed = milestonesOfKind(kind)
-    const ids = [...new Set(listed.flatMap((milestone) => milestone.concepts))]
+    const listed = milestonesOfKind(catalog, kind)
+    const ids = conceptIdsOfKind(catalog, kind)
     const standings = new Map(
-        PROJECT_CONCEPTS.filter((definition) => ids.includes(definition.id)).map(
-            (definition) =>
-                [
-                    definition.id,
-                    conceptStandingOf(
-                        definition,
-                        rows.filter((row) => row.conceptId === definition.id),
-                        !lessonIds.has(definition.id),
-                    ),
-                ] as const,
-        ),
+        catalog.concepts
+            .filter((definition) => ids.includes(definition.id))
+            .map(
+                (definition) =>
+                    [
+                        definition.id,
+                        conceptStandingOf(
+                            definition,
+                            rows.filter((row) => row.conceptId === definition.id),
+                            isComingSoon(definition, lessonIds),
+                        ),
+                    ] as const,
+            ),
     )
-    const comingSoon = new Set(ids.filter((id) => !lessonIds.has(id)))
+    const comingSoon = new Set(
+        catalog.concepts
+            .filter((definition) => ids.includes(definition.id) && isComingSoon(definition, lessonIds))
+            .map((definition) => definition.id),
+    )
     const milestones = listed.map((definition) => {
         const concepts = [...standings.values()]
             .filter((standing) => definition.concepts.includes(standing.definition.id))

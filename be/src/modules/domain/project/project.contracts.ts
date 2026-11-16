@@ -39,12 +39,6 @@ export const EVIDENCE_SOURCES = ["relay", "ci", "ci-signed", "server-probe", "ai
 /** One source of evidence. */
 export type EvidenceSource = (typeof EVIDENCE_SOURCES)[number]
 
-/** The sources whose passing result is proof: a GitHub-attested CI run, a server probe, the AI teacher's own read. */
-export const PROOF_SOURCES: ReadonlyArray<EvidenceSource> = ["ci", "server-probe", "ai"]
-
-/** The sources whose result is practice: the learner machine over the relay, and a CI run GitHub did not attest. */
-export const PRACTICE_SOURCES: ReadonlyArray<EvidenceSource> = ["relay", "ci-signed"]
-
 /** Whether a concept is shown by behaviour (tests and probes) or by structure (the AI reads the code). */
 export type ConceptKind = "behaviour" | "structure"
 
@@ -57,37 +51,42 @@ export type MilestoneState = "todo" | "in-progress" | "done"
 /** What one evidence slot shows: its latest result passed, failed, or there is none. */
 export type SlotState = "pass" | "fail" | "pending"
 
-/** The StarCi generic probes, which the learner cannot edit. */
-export const PROBE_IDS = [
-    "health",
-    "readiness",
-    "invalid-input",
-    "request-id",
-    "repeat-same-key",
-    "parallel-last-item",
-    "repeat-get",
-    "auth-required",
-    "burst",
-    "prompt-injection",
-    "permission",
-    "failure-path",
-] as const
+/**
+ * The only sources that can prove a slot (a passing result from any other source is practice or nothing): a test or an e2e flow
+ * from a CI run GitHub attested, a probe from the StarCi server runner, and a code read from the AI teacher. A slot never takes
+ * proof from a source that merely reports it, so a result written to the wrong slot cannot prove anything.
+ */
+export const SLOT_PROOF_SOURCES: Readonly<Record<EvidenceSlot, ReadonlyArray<EvidenceSource>>> = {
+    test: ["ci"],
+    e2e: ["ci"],
+    probe: ["server-probe"],
+    "code-read": ["ai"],
+}
 
-/** One generic probe. */
-export type ProbeId = (typeof PROBE_IDS)[number]
+/** The sources whose results on a slot only show the learner where they stand: the learner machine, and CI GitHub did not attest. */
+export const SLOT_PRACTICE_SOURCES: Readonly<Record<EvidenceSlot, ReadonlyArray<EvidenceSource>>> = {
+    test: ["relay", "ci-signed"],
+    e2e: ["relay", "ci-signed"],
+    probe: ["relay", "ci-signed", "ci"],
+    "code-read": [],
+}
 
-/** One concept of the catalog: a Essentials lesson id with the evidence it needs. */
+/** One concept of the check set: what a project must show, as data read from the content repository. */
 export interface ConceptDefinition {
-    /** The concept id, equal to its Essentials lesson id. */
+    /** The concept id. */
     readonly id: string
     /** The label per locale. */
     readonly label: LocalizedText
     /** Behaviour or structure. */
     readonly kind: ConceptKind
+    /** Whether the concept shows on an HTTP surface a probe can call; a concept with none is proved by its e2e flow and the AI read. */
+    readonly http: boolean
     /** The evidence it needs: every group is needed, and a group is met by any one of its slots. */
     readonly requires: ReadonlyArray<ReadonlyArray<EvidenceSlot>>
     /** The generic probes aimed at the endpoint the learner declares for the concept. */
-    readonly probes: ReadonlyArray<ProbeId>
+    readonly probes: ReadonlyArray<string>
+    /** The lessons that teach it, the first live one gives the rubric of the AI read and the CV line. */
+    readonly learn: ReadonlyArray<{ readonly lesson: string; readonly pending: boolean }>
 }
 
 /** One milestone of the catalog: a list of concepts a path asks for. */

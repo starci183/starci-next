@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     evidenceDbRowOf,
@@ -10,6 +12,7 @@ import {
     projectRowOf,
 } from "@tests/fixtures/builders/project.builder"
 import { EssentialsExperienceService, EXPERIENCE_PRODUCER, type ExperienceProducer } from "@modules/domain/career"
+import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { NOTIFICATION_PRODUCER, type NotificationProducerPort } from "@modules/domain/notification"
 import { StreakService } from "@modules/domain/streak"
 import { CLOCK } from "@modules/platform/clock"
@@ -30,13 +33,13 @@ import {
 const ALL_SUBJECTS: ReadonlyArray<string> = [
     "concept:request-response-lifecycle",
     "concept:health-probe-semantics",
+    "concept:error-contract",
     "concept:unit-testing-behavior",
     "milestone:bf-http-foundation",
-    "milestone:ops-run-a-service",
     "deployed",
 ]
 
-const FOUNDATION = ["request-response-lifecycle", "health-probe-semantics", "unit-testing-behavior"]
+const FOUNDATION = ["request-response-lifecycle", "health-probe-semantics", "error-contract", "unit-testing-behavior"]
 const LESSONS = new Map<string, ConceptLessonRef>(
     FOUNDATION.map((id) => [id, { id, version: "v1", title: id, topicId: "topic" }]),
 )
@@ -56,6 +59,14 @@ const provedRows = () => [
         slot: "probe",
         source: "server-probe",
         ref: "health",
+        run_id: "p1",
+    }),
+    evidenceDbRowOf({ concept_id: "error-contract", slot: "test", ref: "[error] a" }),
+    evidenceDbRowOf({
+        concept_id: "error-contract",
+        slot: "probe",
+        source: "server-probe",
+        ref: "error-shape",
         run_id: "p1",
     }),
     evidenceDbRowOf({ concept_id: "unit-testing-behavior", slot: "test", ref: "[unit] a" }),
@@ -102,9 +113,12 @@ const build = async (world: World = {}) => {
     const notifications = mock<NotificationProducerPort>()
     const streak = mock<StreakService>()
     const logger = mock<Logger>()
+    const entitlement = mock<EntitlementService>()
+    entitlement.isPremium.mockResolvedValue(true)
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectEvidenceService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: LOGGER, useValue: logger },
@@ -113,6 +127,7 @@ const build = async (world: World = {}) => {
             { provide: NOTIFICATION_PRODUCER, useValue: notifications },
             { provide: StreakService, useValue: streak },
             { provide: EXPERIENCE_PRODUCER, useValue: experiences },
+            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
         ],
     }).compile()
     return {
@@ -124,6 +139,7 @@ const build = async (world: World = {}) => {
         notifications,
         streak,
         logger,
+        entitlement,
     }
 }
 
@@ -139,7 +155,7 @@ describe("ProjectEvidenceService append", () => {
         expect(added).toBe(2)
         expect(em.query).toHaveBeenCalledWith(INSERT_EVIDENCE, [
             PROJECT_ID,
-            "idempotency",
+            "idempotent-retry",
             "test",
             "ci",
             true,
@@ -191,6 +207,25 @@ describe("ProjectEvidenceService recordCiRun", () => {
     })
 })
 
+describe("ProjectEvidenceService settle for a learner without Premium", () => {
+    it("claims no proof, makes no experience line and counts no streak action, even when every result is green", async () => {
+        const { service, em, essentials, experiences, notifications, streak, entitlement } = await build({
+            evidence: provedRows(),
+            probeRuns: [probeRunRowOf()],
+            claimed: "all",
+        })
+        entitlement.isPremium.mockResolvedValue(false)
+
+        await service.settle(projectRowOf(), ["ci:run-1"])
+
+        expect(em.query).not.toHaveBeenCalledWith(INSERT_PROOFS, expect.anything())
+        expect(essentials.record).not.toHaveBeenCalled()
+        expect(experiences.produce).not.toHaveBeenCalled()
+        expect(notifications.notify).not.toHaveBeenCalled()
+        expect(streak.recordStreakAction).not.toHaveBeenCalled()
+    })
+})
+
 describe("ProjectEvidenceService settle", () => {
     it("claims nothing and does nothing for a project with no proof", async () => {
         const { service, em, essentials, streak } = await build()
@@ -211,13 +246,13 @@ describe("ProjectEvidenceService settle", () => {
 
         await service.settle(projectRowOf(), ["ci:run-1", "probe:p1"])
 
-        expect(essentials.record).toHaveBeenCalledTimes(3)
+        expect(essentials.record).toHaveBeenCalledTimes(4)
         expect(essentials.record).toHaveBeenCalledWith({
             learnerId: PROJECT_LEARNER,
             lessonId: "request-response-lifecycle",
             project: { projectId: PROJECT_ID, title: "Clinic booking", language: "go" },
         })
-        expect(experiences.produce).toHaveBeenCalledTimes(3)
+        expect(experiences.produce).toHaveBeenCalledTimes(2)
         expect(experiences.produce).toHaveBeenCalledWith(
             expect.objectContaining({ itemType: "projects.milestone", subject: `bf-http-foundation@${PROJECT_ID}` }),
         )

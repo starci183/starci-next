@@ -1,15 +1,18 @@
+import { createHash } from "node:crypto"
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
+import { assertSubscriber } from "./project-access.policy"
 import type { ConceptView } from "./project-view.contracts"
 import type { ExplainConceptParams } from "./project-params.contracts"
 import type { ProjectSettings } from "./project.contracts"
 import { InjectProjectOptions } from "./project.decorators"
 import type { ProjectOptions } from "./project.options"
-import { conceptOf, milestonesOfKind } from "./project-catalog.policy"
+import { conceptIn, isListed, learnLessonOf } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { InjectProjectCoach, type ProjectCoach } from "./project-coach.port"
 import { codeReadMean, codeReadPassed } from "./project-coach.policy"
 import { ProjectEvidenceService } from "./project-evidence.service"
@@ -40,6 +43,7 @@ export class ProjectCodeReadService {
         @InjectProjectCoach() private readonly coach: ProjectCoach,
         private readonly evidence: ProjectEvidenceService,
         private readonly reads: ProjectReadService,
+        private readonly checkSet: ProjectCheckSetService,
     ) {
         this.settings = projectSettingsOf(options)
     }
@@ -50,23 +54,23 @@ export class ProjectCodeReadService {
      * failing result with the teacher's question. A concept whose lesson or rubric is not written yet is PROJECT_CONCEPT_NOT_READY.
      */
     async read(params: ExplainConceptParams): Promise<ConceptView> {
+        await assertSubscriber(this.entitlement, params.learnerId)
         const rows: Array<ProjectRow> = await this.entityManager.query(SELECT_PROJECT, [
             params.learnerId,
             params.projectId,
         ])
         const [project] = rows
         if (project === undefined) throw new ProjectError({ code: ProjectErrorCode.NotFound })
-        const definition = conceptOf(params.conceptId)
-        const listed = milestonesOfKind(projectKindOf(project)).some((milestone) =>
-            milestone.concepts.includes(params.conceptId),
-        )
+        const set = await this.checkSet.current()
+        const definition = conceptIn(set, params.conceptId)
+        const listed = isListed(set, projectKindOf(project), params.conceptId)
         if (definition === null || !listed) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
-        if (!(await this.entitlement.isPremium(params.learnerId)))
-            throw new ProjectError({ code: ProjectErrorCode.PremiumRequired })
         const location = locationOf(params.location)
         const excerpt = excerptOf(params.excerpt)
         const explanation = explanationOf(params.explanation)
-        const lesson = (await this.lessons.lessons({ locale: params.locale })).get(params.conceptId)
+        const live = await this.lessons.lessons({ locale: params.locale })
+        const lessonId = learnLessonOf(definition, new Set(live.keys()))
+        const lesson = lessonId === null ? undefined : live.get(lessonId)
         const rubric =
             lesson === undefined ? [] : (await this.lessons.rubricOf({ lesson, locale: params.locale })).criteria
         if (rubric.length === 0) throw new ProjectError({ code: ProjectErrorCode.ConceptNotReady })
@@ -101,6 +105,7 @@ export class ProjectCodeReadService {
                         reason: passed ? "read-passed" : "read-below-bar",
                         facts: { mean: Math.round(codeReadMean(grade) * 100) / 100 },
                         levels: grade.criteria,
+                        excerptHash: createHash("sha256").update(excerpt).digest("hex"),
                         question: grade.question,
                     },
                     at: now,

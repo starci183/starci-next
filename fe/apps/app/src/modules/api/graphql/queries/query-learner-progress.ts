@@ -47,7 +47,6 @@ const query1: TypedDocumentNode<LearnerProgressQuery, LearnerProgressQueryVariab
                 }
             }
             harness {
-                origin
                 buildsDone
                 buildsTotal
                 builds {

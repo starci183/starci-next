@@ -17,7 +17,6 @@ const loadSubject = async (): Promise<typeof SUBJECT> => {
 }
 
 const SOURCE: HarnessSource = {
-    origin: "fixture",
     builds: [
         {
             id: "agent-cli",
@@ -77,7 +76,7 @@ describe("buildHarness", () => {
 
         const view = build(SOURCE)
 
-        expect(view).toMatchObject({ origin: "fixture", buildsDone: 1, buildsTotal: 3 })
+        expect(view).toMatchObject({ buildsDone: 1, buildsTotal: 3 })
         expect(view.builds[1]).toMatchObject({
             state: "practising",
             stagesProved: 0,

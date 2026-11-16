@@ -1,4 +1,5 @@
 import type { ConfigEnv } from "./relay-client.config"
+import type { HarnessSection } from "./harness.contracts"
 import type { LessonSection } from "./lesson.contracts"
 
 /** One request the CLI makes: always a JSON POST to a StarCi door. */
@@ -69,6 +70,10 @@ export interface CliIo {
     readonly listen: (baseUrl: string, deviceToken: string, handlers: DeviceHandlers) => DeviceConnection
     /** Verifies a signed manifest payload with the StarCi public key (PEM). */
     readonly verify: (payload: string, signature: string, publicKeyPem: string) => ManifestRead
+    /** True when the environment variable NAME is set in this process; the value is never returned. Absent in a fake that has none. */
+    readonly hasEnv?: (name: string) => boolean
+    /** One CI variable by name (the GitHub Actions OIDC request, the run and the StarCi project settings); the caller reads only a fixed list of names. */
+    readonly ciEnv?: (name: string) => string | undefined
     /** Runs one shown and confirmed command in a folder of the task workspace, stopped after its timeout. */
     readonly runCommand: (
         command: string,
@@ -165,6 +170,8 @@ export interface VerifiedManifest {
     readonly plan?: ManifestPlan
     /** The lesson of a lesson ask (pull, run, check, prompt), absent for a plain task. */
     readonly lesson?: LessonSection
+    /** The harness section of a `harness:` ask (build, doctor or trial), absent otherwise. */
+    readonly harness?: HarnessSection
 }
 
 /** What verifying a manifest answered: the verified body, or why it was rejected. */
@@ -177,7 +184,12 @@ export type ManifestFetch =
     { readonly kind: "verified"; readonly manifest: VerifiedManifest } | { readonly kind: "unsigned" } | Refusal
 
 /** The upload mutations of the relay feed. */
-export type UploadMutation = "relayCheckStarted" | "relayCheckResult" | "relayLog" | "relayManifestAck"
+export type UploadMutation =
+    | "relayCheckStarted"
+    | "relayCheckResult"
+    | "relayLog"
+    | "relayManifestAck"
+    | "relayHarnessResult"
 
 /** One upload waiting for StarCi to accept it, idempotent on its client event id. */
 export interface PendingUpload {
@@ -198,7 +210,7 @@ export type SignatureRead =
 /** The part of the outside world that is this terminal and this operating system. */
 export type TerminalPort = Pick<
     CliIo,
-    "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand" | "isTty"
+    "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand" | "isTty" | "hasEnv" | "ciEnv"
 >
 
 /** What a device socket tells its owner. */

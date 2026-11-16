@@ -14,6 +14,7 @@ import {
     interviewEntities,
     interviewMigrations,
 } from "@modules/domain/interview"
+import { HarnessProofService } from "@modules/domain/harness"
 import { NotificationService } from "@modules/domain/notification"
 import {
     AiProjectCoachClient,
@@ -23,7 +24,8 @@ import {
     ProjectModule,
     projectEntities,
     projectMigrations,
-    UnattestedCiClient,
+    GithubOidcClient,
+    ProjectCheckSetDiskAdapter,
 } from "@modules/domain/project"
 import {
     RELAY_ERROR_KINDS,
@@ -54,7 +56,9 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         coach: AiProjectCoachClient,
         relay: RelayProjectService,
         lessons: LessonCatalogClient,
-        attestation: UnattestedCiClient,
+        attestation: GithubOidcClient,
+        checkSource: ProjectCheckSetDiskAdapter,
+        harness: HarnessProofService,
     }),
     ProbeModule.register({ isGlobal: true, ...options.probe }),
 ]

@@ -6,10 +6,9 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectProbeTransport, type ProbeTransport } from "@modules/integrations/probe"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import type { ProjectSettings } from "./project.contracts"
-import { InjectProjectOptions } from "./project.decorators"
-import type { ProjectOptions } from "./project.options"
-import { milestonesOfKind } from "./project-catalog.policy"
+import { assertSubscriber } from "./project-access.policy"
+import { isListed } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import {
     endpointOf,
     INPUT_LIMITS,
@@ -28,16 +27,13 @@ import type {
     UpdateProjectParams,
 } from "./project-params.contracts"
 import { ProjectReadService } from "./project-read.service"
-import { projectSettingsOf } from "./project-settings.policy"
 import { publicTargetOf } from "./project-target.policy"
 import type { ConceptView, ProjectDeletedView, ProjectSecretView, ProjectSummaryView } from "./project-view.contracts"
 import { projectKindOf } from "./project-view.mapper"
-import type { ProjectRow, TotalRow } from "./persistence/project.rows"
+import type { ProjectRow } from "./persistence/project.rows"
 import {
-    COUNT_PROJECTS,
     DELETE_PROJECT,
     INSERT_PROJECT,
-    LOCK_LEARNER,
     ROTATE_SECRET,
     SELECT_PROJECT,
     UPDATE_PROJECT,
@@ -55,29 +51,27 @@ const deployedUrlOf = (given: string | null, current: string | null): string | n
 
 @Injectable()
 /**
- * The writes of the projects capability: a learner owns many projects (a learner without Premium owns `freeProjects`), each of any
+ * The writes of the projects capability: a subscriber owns many projects, each of any
  * topic, language and structure and of kind app or agent. This service is the only writer of the project and concept-pointer tables,
  * and the only place a CI secret is made: it is shown once, when the project is created or the secret rotated.
  */
 export class ProjectService {
-    private readonly settings: ProjectSettings
-
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
-        @InjectProjectOptions() options: ProjectOptions,
         @InjectProbeTransport() private readonly probe: ProbeTransport,
         private readonly reads: ProjectReadService,
-    ) {
-        this.settings = projectSettingsOf(options)
-    }
+        private readonly checkSet: ProjectCheckSetService,
+    ) {}
 
     /**
-     * Creates a project and answers it with its CI secret, shown this once. The second
-     * project needs Premium (the count is taken under a per-learner lock, so two creates cannot both pass).
+     * Creates a project and answers it with its CI secret, shown this once. Projects are subscription-only: a learner without
+     * Premium is refused `PROJECT_PREMIUM_REQUIRED` before anything is written, whatever `freeProjects` says (the setting is what the
+     * catalog shows, 0 by default).
      */
     async create(params: CreateProjectParams): Promise<ProjectSecretView> {
+        await assertSubscriber(this.entitlement, params.learnerId)
         const kind = kindOf(params.kind)
         const values = [
             textOf(params.name, "name", NAME_MAX),
@@ -88,14 +82,8 @@ export class ProjectService {
             trackOf(params.track, kind),
             repoUrlOf(params.repoUrl),
         ]
-        const premium = await this.entitlement.isPremium(params.learnerId)
         const secret = newCiSecret()
         const projectId = await this.entityManager.transaction(async (manager) => {
-            await manager.query(LOCK_LEARNER, [params.learnerId])
-            const totals: Array<TotalRow> = await manager.query(COUNT_PROJECTS, [params.learnerId])
-            if ((totals[0]?.total ?? 0) >= this.settings.freeProjects && !premium) {
-                throw new ProjectError({ code: ProjectErrorCode.PremiumRequired })
-            }
             const created: Array<{ project_id: string }> = await manager.query(INSERT_PROJECT, [
                 params.learnerId,
                 ...values,
@@ -160,10 +148,9 @@ export class ProjectService {
 
     /** Points a concept of a project at code and at the endpoint the StarCi probes aim at; a field left null stays as it is. */
     async setConcept(params: SetConceptParams): Promise<ConceptView> {
+        await assertSubscriber(this.entitlement, params.learnerId)
         const row = await this.ownedProject(params.learnerId, params.projectId)
-        const listed = milestonesOfKind(projectKindOf(row)).some((milestone) =>
-            milestone.concepts.includes(params.conceptId),
-        )
+        const listed = isListed(await this.checkSet.current(), projectKindOf(row), params.conceptId)
         if (!listed) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
         await this.entityManager.query(UPSERT_CONCEPT, [
             row.project_id,

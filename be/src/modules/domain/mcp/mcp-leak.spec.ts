@@ -8,7 +8,11 @@ import {
 } from "@modules/domain/lesson"
 import type { LearnerRunEvent, RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { McpErrorCode } from "./errors/mcp.error"
+import { FakeClock } from "@starci/jest-preset"
 import type { McpEmbedder } from "./mcp-embedder.port"
+import type { McpHarnessFile } from "./mcp-harness.policy"
+import { McpHarnessService } from "./mcp-harness.service"
+import { McpMemoryVectorStore } from "./mcp-memory.vector-store"
 import { McpServerFactory } from "./mcp-server.factory"
 import type { McpSourceTree } from "./mcp-source-tree.port"
 import { McpSourceService } from "./mcp-source.service"
@@ -31,6 +35,21 @@ const SECRETS = [
     "EXPECTEDEVIDENCESECRET",
     "HIDDENSCENARIOSECRET",
     "LOCKEDSECTIONSECRET",
+    "HARNESSBUILDSECRET",
+    "HARNESSTRAPSECRET",
+    "HARNESSDOCTORSECRET",
+]
+
+/** The harness content checkout: the free guides and docs among the parts that must never be indexed. */
+const HARNESS_FILES: ReadonlyArray<McpHarnessFile> = [
+    { path: "raw/harness/guides/claude/hooks/vi.md", text: "Hook chay truoc moi tool HARNESSFREETEXT guide" },
+    { path: "raw/harness/docs/overview/vi.md", text: "Tong quan harness HARNESSFREETEXT doc" },
+    { path: "raw/harness/build/agent-cli/hidden/e2e.md", text: "HARNESSBUILDSECRET HARNESSFREETEXT" },
+    { path: "raw/harness/build/agent-cli/source/README.md", text: "HARNESSBUILDSECRET HARNESSFREETEXT" },
+    { path: "raw/harness/trials/trap-1/repo/vi.md", text: "HARNESSTRAPSECRET HARNESSFREETEXT" },
+    { path: "raw/harness/doctor/claude/probe.md", text: "HARNESSDOCTORSECRET HARNESSFREETEXT" },
+    { path: "raw/harness/guides/claude/hooks/answers/vi.md", text: "ANSWERKEYSECRET HARNESSFREETEXT" },
+    { path: "raw/harness/guides/claude/hidden/vi.md", text: "HIDDENTESTSECRET HARNESSFREETEXT" },
 ]
 
 const LEARNER = "11111111-1111-4111-8111-111111111111"
@@ -179,11 +198,12 @@ interface Build {
 }
 
 const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree | null = treeOf()): Build => {
-    const options: McpOptions = { tokenLimit: 5, publicUrl: null, embed: null }
+    const options: McpOptions = { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null }
     const trees: McpSourceTree = { tree: () => Promise.resolve(tree) }
     const embeddedTexts: Array<string> = []
     const recording: McpEmbedder = {
         isConfigured: embedder.isConfigured,
+        model: embedder.model,
         embed: async (texts) => {
             embeddedTexts.push(...texts)
             return embedder.embed(texts)
@@ -204,10 +224,16 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
             ),
         runEvents: jest.fn().mockResolvedValue([]),
     }
+    const vectors = new McpVectorIndex(recording, new McpMemoryVectorStore())
     const tutor = new McpTutorService(
         lessons as unknown as LessonReadService,
         new McpSourceService(trees),
-        new McpVectorIndex(recording),
+        vectors,
+        new McpHarnessService(
+            { files: () => Promise.resolve(HARNESS_FILES) },
+            vectors,
+            new FakeClock("2026-11-17T00:00:00.000Z"),
+        ),
         devices as unknown as RelayDeviceService,
         feed as unknown as RelayFeedService,
         options,
@@ -215,10 +241,11 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
     return { embeddedTexts, tutor, factory: new McpServerFactory(tutor), feed, devices, lessons }
 }
 
-const offline: McpEmbedder = { isConfigured: false, embed: () => Promise.resolve(null) }
+const offline: McpEmbedder = { isConfigured: false, model: "off", embed: () => Promise.resolve(null) }
 /** A deterministic fake model: one dimension per letter, so texts sharing words are close. */
 const letters: McpEmbedder = {
     isConfigured: true,
+    model: "letters/1024",
     embed: (texts) =>
         Promise.resolve(
             texts.map((text) => {
@@ -302,7 +329,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             mode: "keyword",
             fellBack: true,
         })
-        const down = await make(true, { isConfigured: true, embed: () => Promise.resolve(null) })
+        const down = await make(true, { isConfigured: true, model: "down", embed: () => Promise.resolve(null) })
         expect(await down.tutor.searchLesson(LEARNER, LESSON, "vi", "Chuyen tien", true)).toMatchObject({
             mode: "keyword",
             fellBack: true,
@@ -406,6 +433,22 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         expect(built.feed.scenarioManifest).not.toHaveBeenCalled()
     })
 
+    it("searches the harness guides and docs for any learner, free, and never lists, searches or embeds a build kit, trap, probe, answer or hidden part", async () => {
+        const free = await make(false, letters)
+        const keyword = await free.tutor.searchHarness("vi", "HARNESSFREETEXT", false)
+        expect(keyword.hits.map((hit) => hit.path).sort()).toEqual(["docs/overview", "guides/claude/hooks"])
+        assertClean(keyword)
+        const semantic = await free.tutor.searchHarness("vi", "hook chay truoc tool", true)
+        expect(semantic.mode).toBe("semantic")
+        expect(semantic.hits.length).toBeGreaterThan(0)
+        assertClean(semantic)
+        assertClean(free.embeddedTexts)
+        expect(free.embeddedTexts.join("\n")).toContain("HARNESSFREETEXT")
+        expect(free.lessons.find).not.toHaveBeenCalled()
+        const off = await make(false, offline)
+        expect(await off.tutor.searchHarness("vi", "hook", true)).toMatchObject({ mode: "keyword", fellBack: true })
+    })
+
     it("offers exactly the planned tools, resources and prompts over the protocol, and refuses a hidden path through them", async () => {
         const built = await make(true, offline)
         const client = await connect(built.factory)
@@ -421,12 +464,16 @@ describe("the MCP never leaks what a learner AI may not read", () => {
                 "read_file",
                 "request_run",
                 "search_code",
+                "search_harness",
                 "search_lesson",
             ].sort(),
         )
         const prompts = (await client.listPrompts()).prompts.map((prompt) => prompt.name).sort()
         expect(prompts).toEqual(["explain_invariant", "fix_scenario", "review_interview", "why_scenario_red"])
 
+        const harness = await client.callTool({ name: "search_harness", arguments: { query: "HARNESSFREETEXT", mode: "keyword" } })
+        expect(harness.isError).toBeFalsy()
+        assertClean(harness)
         const hidden = await client.callTool({
             name: "read_file",
             arguments: { id: LESSON, path: "hidden/transfer.test.ts" },

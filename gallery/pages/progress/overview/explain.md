@@ -26,8 +26,8 @@ Grammar: `Section kind="list" fact caption action`, `ListRowData { badges, actio
 
 ## Harness
 
-Vì sao: miễn phí cho mọi người nên luôn hiện. Danh sách bản dựng ghi "3/5 giai đoạn đã chứng minh, 1 đang luyện" với chip Đã chứng minh, Đang luyện hoặc Chưa bắt đầu; dưới đó Doctor theo công cụ (Claude Code, Codex) và Thử bẫy theo bẫy với phán quyết Giữ vững, Bị phá, Chưa xong hoặc Chưa thử. Khi capability Harness chưa nối, chú thích "Số liệu mẫu cho tới khi Harness nối vào" nói thẳng đó là dữ liệu mẫu.
-Luật: COOK 2026-11-17 (Harness miễn phí, đang luyện không phải bằng chứng), `unhandled-case-tells-customer.md`.
+Vì sao: miễn phí cho mọi người nên luôn hiện. Danh sách bản dựng ghi "3/5 giai đoạn đã chứng minh, 1 đang luyện" với chip Đã chứng minh, Đang luyện hoặc Chưa bắt đầu; dưới đó Doctor theo công cụ (Claude Code, Codex) và Thử bẫy theo bẫy với phán quyết Giữ vững, Bị phá, Chưa xong hoặc Chưa thử.
+Luật: COOK 2026-11-17 (Harness miễn phí, đang luyện không phải bằng chứng).
 Grammar: `Section kind="list"` ba danh sách, `Badge isDot`.
 
 ## Dự án

@@ -1,6 +1,7 @@
 import type { CliIo, ManifestCheck, PendingUpload, VerifiedManifest } from "./relay-client.contracts"
 import { conceptRunsOf, junitCasesOf, type ConceptRun } from "./junit.policy"
 import { kitConfigOf } from "./project-kit.policy"
+import { e2eLineOf, runE2eFlows, type E2eRun } from "./project-e2e.cli"
 import { ensureFolderOf, readProjectFile } from "./project-kit.adapter"
 import { readQueue, writeQueue } from "./upload-queue.adapter"
 import { refusalLine } from "./relay-api.client"
@@ -49,7 +50,30 @@ const resultOf = (
     },
 })
 
-/** Runs the project's test command once, reads its JUnit report, then uploads the log and a result per tagged concept. */
+/** The upload of one concept's e2e flow: an `e2e` slot result under the check; skipped and unanswered flows prove nothing and are not sent. */
+const e2eResultOf = (
+    io: CliIo,
+    base: Readonly<Record<string, string>>,
+    check: ManifestCheck,
+    run: E2eRun,
+    facts: RunFacts,
+): PendingUpload => ({
+    mutation: "relayCheckResult",
+    input: {
+        eventId: io.ids(),
+        ...base,
+        checkId: check.id,
+        conceptId: run.conceptId,
+        slot: "e2e",
+        ref: run.file,
+        passed: run.verdict.status === "passed",
+        exitCode: facts.exitCode,
+        durationMs: facts.durationMs,
+        ...(facts.commit === undefined ? {} : { commit: facts.commit }),
+    },
+})
+
+/** Runs the project's test command once, reads its JUnit report, runs the StarCi e2e flows, then uploads the log and a result per concept. */
 const runProjectCheck = async (
     io: CliIo,
     session: RelaySession,
@@ -81,6 +105,8 @@ const runProjectCheck = async (
         durationMs: run?.durationMs ?? 0,
         commit: await commitOf(io, cwd),
     }
+    const e2e = await runE2eFlows(io, cwd, plan.concepts)
+    const judged = e2e.filter((flow) => flow.verdict.status === "passed" || flow.verdict.status === "failed")
     const checkBase = { ...base, checkId: check.id }
     const uploads: ReadonlyArray<PendingUpload> = [
         { mutation: "relayCheckStarted", input: { eventId: io.ids(), ...checkBase } },
@@ -89,12 +115,14 @@ const runProjectCheck = async (
             input: { eventId: io.ids(), ...checkBase, text: (run?.output ?? "").slice(-LOG_TAIL_MAX) },
         },
         ...runs.map((concept) => resultOf(io, base, check, concept, facts)),
+        ...judged.map((flow) => e2eResultOf(io, base, check, flow, facts)),
     ]
     const left = await flush(io, session, [...acked, ...uploads])
     writeQueue(io.env, left)
     runs.forEach((concept) =>
         io.out(`  ${concept.conceptId}: ${concept.passed ? "passed" : "failed"} (${concept.names.length} test(s))`),
     )
+    e2e.forEach((flow) => io.out(e2eLineOf(flow)))
     io.out(left.length === 0 ? "Results sent to StarCi (practice)." : `${left.length} upload(s) wait for the next run.`)
     return facts.exitCode === 0 && report !== null && runs.every((concept) => concept.passed) ? 0 : 1
 }

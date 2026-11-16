@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { EssentialsExperienceService, InjectExperienceProducer, type ExperienceProducer } from "@modules/domain/career"
 import { InjectNotificationProducer, type NotificationProducerPort } from "@modules/domain/notification"
 import { StreakService } from "@modules/domain/streak"
@@ -7,11 +8,18 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
-import { AGENT_TRACKS, type EvidenceInput, type EvidenceRow } from "./project.contracts"
+import type { EvidenceInput, EvidenceRow } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
 import type { CiReceipt, CiRunRecord } from "./project-params.contracts"
-import { deployedExperienceOf, milestoneExperienceOf, type ExperienceSubject } from "./project-experience.policy"
+import {
+    deployedExperienceOf,
+    experienceSubjectOf,
+    milestoneExperienceOf,
+    type ExperienceSubject,
+} from "./project-experience.policy"
 import { InjectProjectLessons, type ProjectLessonPort } from "./project-lesson.port"
+import { ProjectCheckSetService } from "./project-check-set.service"
+import { conceptIn, learnLessonOf, type ProjectCatalog } from "./project-check-set-lookup.policy"
 import { projectStandingOf, type ProjectStanding } from "./project-state.policy"
 import { projectKindOf, toEvidenceRows } from "./project-view.mapper"
 import type { EvidenceDbRow, ProbeRunRow, ProjectRow, SubjectRow } from "./persistence/project.rows"
@@ -41,6 +49,10 @@ interface ProofContext {
     readonly rows: ReadonlyArray<EvidenceRow>
     /** The newest probe run, or null. */
     readonly probeRun: ProbeRunRow | null
+    /** The check set the standing was computed from. */
+    readonly set: ProjectCatalog
+    /** The ids of the live lessons. */
+    readonly lessonIds: ReadonlySet<string>
 }
 
 const CONCEPT_PREFIX = "concept:"
@@ -65,6 +77,8 @@ export class ProjectEvidenceService {
         private readonly essentials: EssentialsExperienceService,
         @InjectNotificationProducer() private readonly notifications: NotificationProducerPort,
         private readonly streak: StreakService,
+        @InjectEntitlementService() private readonly entitlement: EntitlementService,
+        private readonly checkSet: ProjectCheckSetService,
     ) {}
 
     /** Appends results in the caller's transaction; a result the same run already reported adds nothing. Answers how many were new. */
@@ -110,6 +124,8 @@ export class ProjectEvidenceService {
      * appended the results has committed. `streakActionIds` are the runs that count as a meaningful `project-run` action.
      */
     async settle(project: ProjectRow, streakActionIds: ReadonlyArray<string>): Promise<void> {
+        // Defence in depth: a learner without Premium never has a proof claimed, an experience line made or a streak action counted.
+        if (!(await this.entitlement.isPremium(project.learner_id))) return
         const evidence: Array<EvidenceDbRow> = await this.entityManager.query(SELECT_EVIDENCE, [
             [project.project_id],
             LIST_ROWS_MAX,
@@ -120,8 +136,10 @@ export class ProjectEvidenceService {
         ])
         const lessons = await this.lessons.lessons({ locale: "vi" })
         const rows = toEvidenceRows(evidence)
-        const standing = projectStandingOf(projectKindOf(project), rows, new Set(lessons.keys()))
-        const candidates = this.effectsOf({ project, standing, rows, probeRun: probeRuns[0] ?? null })
+        const set = await this.checkSet.current()
+        const lessonIds = new Set(lessons.keys())
+        const standing = projectStandingOf(set, projectKindOf(project), rows, lessonIds)
+        const candidates = this.effectsOf({ project, standing, rows, probeRun: probeRuns[0] ?? null, set, lessonIds })
         const claimed: Array<SubjectRow> =
             candidates.length === 0
                 ? []
@@ -144,22 +162,19 @@ export class ProjectEvidenceService {
 
     /** The proofs the project stands on now, each with what to do the first time it is claimed. */
     private effectsOf(context: ProofContext): ReadonlyArray<ProofEffect> {
-        const { project, standing, rows, probeRun } = context
-        const subject: ExperienceSubject = {
-            learnerId: project.learner_id,
-            projectId: project.project_id,
-            name: project.name,
-            stack: project.stack,
-            kind: projectKindOf(project),
-            track: AGENT_TRACKS.find((track) => track === project.track) ?? null,
-            deployedUrl: project.deployed_url,
-        }
-        const concepts = standing.provedConceptIds.map((id): ProofEffect => ({
+        const { project, standing, rows, probeRun, set, lessonIds } = context
+        const subject: ExperienceSubject = experienceSubjectOf(project)
+        const taught = standing.provedConceptIds.flatMap((id) => {
+            const definition = conceptIn(set, id)
+            const lessonId = definition === null ? null : learnLessonOf(definition, lessonIds)
+            return lessonId === null ? [] : [{ id, lessonId }]
+        })
+        const concepts = taught.map(({ id, lessonId }): ProofEffect => ({
             subject: `${CONCEPT_PREFIX}${id}`,
             run: async () => {
                 await this.essentials.record({
                     learnerId: project.learner_id,
-                    lessonId: id,
+                    lessonId,
                     project: { projectId: project.project_id, title: project.name, language: project.language },
                 })
             },
@@ -171,7 +186,13 @@ export class ProjectEvidenceService {
                 run: async () => {
                     const own = rows.filter((row) => definition.concepts.includes(row.conceptId))
                     await this.experiences.produce(
-                        milestoneExperienceOf({ subject, milestone: definition, rows: own, at: this.clock.now() }),
+                        milestoneExperienceOf({
+                            subject,
+                            milestone: definition,
+                            rows: own,
+                            concepts: set.concepts,
+                            at: this.clock.now(),
+                        }),
                     )
                     await this.notifications.notify(
                         project.learner_id,

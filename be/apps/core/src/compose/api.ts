@@ -10,6 +10,7 @@ import { InterviewGraphqlModule } from "@features/api/interview"
 import { LessonGraphqlModule, LessonHttpModule } from "@features/api/lesson"
 import { McpGraphqlModule, McpHttpModule } from "@features/api/mcp"
 import { NotificationGraphqlModule } from "@features/api/notification"
+import { HarnessGraphqlModule } from "@features/api/harness"
 import { PathGraphqlModule } from "@features/api/path"
 import { ProfileGraphqlModule } from "@features/api/profile"
 import { ProgressGraphqlModule } from "@features/api/progress"
@@ -34,6 +35,7 @@ export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     ProfileGraphqlModule.register({}),
     ProgressGraphqlModule.register({}),
     PathGraphqlModule.register({}),
+    HarnessGraphqlModule.register({}),
     IncidentGraphqlModule.register({}),
     AgentLabGraphqlModule.register({}),
     PracticeGraphqlModule.register({}),

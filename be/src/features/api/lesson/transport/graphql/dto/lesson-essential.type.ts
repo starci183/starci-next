@@ -5,11 +5,18 @@ import { LessonChallengeType, LessonScenarioType } from "./lesson-scenario.type"
 import { LessonStatementType } from "./lesson-statement.type"
 
 @ObjectType()
-/** The four parts of a lesson: the opener (free), the source, the scenarios and the challenges (Premium; empty without it). */
+/**
+ * The four parts of a lesson. A part the entitlement setting leaves free is filled for everyone (by default the opener and the
+ * article of Bản chất); the others are empty without Premium and named in `lockedParts`.
+ */
 export class LessonEssentialType {
-    /** True when the learner lacks Premium and only the opener is filled. */
+    /** True when at least one part is locked for the learner. */
     @Field(() => Boolean)
     isLocked!: boolean
+
+    /** The ids of the parts the learner may not read: `1-essential`, `2-source`, `3-scenarios`, `4-apply`. */
+    @Field(() => [String])
+    lockedParts!: ReadonlyArray<string>
 
     /** The five-question opener. */
     @Field(() => [LessonQuestionType])

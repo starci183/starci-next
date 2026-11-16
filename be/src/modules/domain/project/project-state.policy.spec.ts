@@ -1,9 +1,13 @@
 import { Test } from "@nestjs/testing"
 import { evidenceOf } from "@tests/fixtures/builders/project.builder"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import { conceptOf, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import { SLOT_PROOF_SOURCES, type EvidenceSlot } from "./project.contracts"
+import { fixtureCheckSet } from "@tests/fixtures/builders/check-set.builder"
+import { conceptIn } from "./project-check-set-lookup.policy"
 import { slotStandingOf, conceptStandingOf, milestoneStateOf, projectStandingOf } from "./project-state.policy"
 
+const SET = fixtureCheckSet()
+const conceptOf = (id: string) => conceptIn(SET, id)
 const POLICY: unique symbol = Symbol("project.project-state-policy")
 const policies = { slotStandingOf, conceptStandingOf, milestoneStateOf, projectStandingOf }
 
@@ -14,8 +18,26 @@ const build = async (): Promise<typeof policies> => {
     return moduleRef.get<typeof policies>(POLICY)
 }
 
-const IDEMPOTENCY = conceptOf("idempotency")
-const SAGA = conceptOf("saga")
+const IDEMPOTENCY = conceptOf("idempotent-retry")
+const SAGA = conceptOf("unit-testing-behavior")
+
+/** One passing proof row per group of what a concept requires, from the first slot of the group and the one source that may prove it. */
+const proofRowsOf = (conceptId: string, hour = 9, runId = "proof") => {
+    const definition = conceptOf(conceptId)
+    if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
+    return definition.requires.map((group: ReadonlyArray<EvidenceSlot>) => {
+        const slot: EvidenceSlot = group[0] ?? "test"
+        const source = SLOT_PROOF_SOURCES[slot][0] ?? "ci"
+        return evidenceOf({
+            conceptId,
+            slot,
+            source,
+            runId: `${runId}-${slot}`,
+            ref: `${conceptId}-${slot}`,
+            at: at(hour),
+        })
+    })
+}
 const at = (hour: number): Date => new Date(`2026-11-08T${String(hour).padStart(2, "0")}:00:00.000Z`)
 
 const idempotency = () => {
@@ -44,14 +66,14 @@ describe("slotStandingOf", () => {
             evidenceOf({ source: "relay", runId: "r2", ref: "a", passed: true, at: at(9) }),
             evidenceOf({ source: "relay", runId: "r2", ref: "b", passed: false, at: at(9) }),
             evidenceOf({ source: "ci", runId: "c1", at: at(7) }),
-            evidenceOf({ source: "server-probe", runId: "s1", at: at(10), ref: "x" }),
+            evidenceOf({ source: "ci", runId: "c2", at: at(10), ref: "x" }),
             evidenceOf({ slot: "probe", source: "ci", runId: "other-slot" }),
         ]
 
         const standing = subject.slotStandingOf("test", rows)
 
         expect(standing.practice).toMatchObject({ passed: false, runId: "r2", ref: "b", source: "relay" })
-        expect(standing.proof).toMatchObject({ passed: true, runId: "s1", source: "server-probe" })
+        expect(standing.proof).toMatchObject({ passed: true, runId: "c2", source: "ci" })
     })
 
     it("counts a signed-only CI run as practice, never as proof", () => {
@@ -119,11 +141,14 @@ describe("conceptStandingOf", () => {
         expect(standing.slots.map((slot) => slot.slot)).toEqual(["test", "e2e", "probe"])
     })
 
-    it("is proved for a structure concept by the AI read alone", () => {
-        const read = evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai", ref: "src/saga.go" })
+    it("is proved for a structure concept by a test and the AI read, and by neither alone", () => {
+        const [test, read] = proofRowsOf("unit-testing-behavior")
+        if (test === undefined || read === undefined) throw new Error("saga has two groups")
 
-        expect(subject.conceptStandingOf(saga(), [read], false).state).toBe("proved")
-        expect(subject.conceptStandingOf(saga(), [{ ...read, passed: false }], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [test, read], false).state).toBe("proved")
+        expect(subject.conceptStandingOf(saga(), [test], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [read], false).state).toBe("practising")
+        expect(subject.conceptStandingOf(saga(), [test, { ...read, passed: false }], false).state).toBe("practising")
     })
 })
 
@@ -135,11 +160,7 @@ describe("milestoneStateOf", () => {
     })
 
     const standingsOf = () => ({
-        proved: subject.conceptStandingOf(
-            saga(),
-            [evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai" })],
-            false,
-        ),
+        proved: subject.conceptStandingOf(saga(), proofRowsOf("unit-testing-behavior"), false),
         untouched: subject.conceptStandingOf(idempotency(), [], false),
         started: subject.conceptStandingOf(idempotency(), [evidenceOf({ passed: false })], false),
     })
@@ -148,7 +169,7 @@ describe("milestoneStateOf", () => {
         const { proved, untouched } = standingsOf()
 
         expect(subject.milestoneStateOf([proved], new Set())).toBe("done")
-        expect(subject.milestoneStateOf([proved, untouched], new Set(["idempotency"]))).toBe("done")
+        expect(subject.milestoneStateOf([proved, untouched], new Set(["idempotent-retry"]))).toBe("done")
     })
 
     it("is in progress once a concept has results, and todo before", () => {
@@ -158,7 +179,7 @@ describe("milestoneStateOf", () => {
         expect(subject.milestoneStateOf([started], new Set())).toBe("in-progress")
         expect(subject.milestoneStateOf([untouched], new Set())).toBe("todo")
         expect(subject.milestoneStateOf([], new Set())).toBe("todo")
-        expect(subject.milestoneStateOf([untouched], new Set(["idempotency"]))).toBe("todo")
+        expect(subject.milestoneStateOf([untouched], new Set(["idempotent-retry"]))).toBe("todo")
     })
 })
 
@@ -169,48 +190,49 @@ describe("projectStandingOf", () => {
         subject = await build()
     })
 
-    const allLessons = new Set(["saga", "idempotency", "request-response-lifecycle"])
+    const allLessons = new Set(["unit-testing-behavior", "idempotent-retry", "request-response-lifecycle"])
 
     it("lists the milestones of the kind, counts a shared concept once and finds the current milestone", () => {
-        const standing = subject.projectStandingOf("app", [], allLessons)
+        const standing = subject.projectStandingOf(SET, "app", [], allLessons)
 
         expect(standing.milestones.map((milestone) => milestone.definition.id)[0]).toBe("bf-http-foundation")
-        expect(standing.conceptCount).toBe(3)
+        expect(standing.conceptCount).toBe(10)
         expect(standing.provedConceptIds).toEqual([])
         expect(standing.currentMilestoneId).toBe("bf-http-foundation")
     })
 
+    it("leaves a concept that needs the AI read out of the count while no lesson can grade it", () => {
+        const standing = subject.projectStandingOf(SET, "app", [], new Set())
+
+        expect(standing.conceptCount).toBe(9)
+        expect(standing.milestones[0]?.concepts.find((c) => c.definition.id === "unit-testing-behavior")?.state).toBe(
+            "todo",
+        )
+    })
+
     it("proves a concept once however many milestones list it, and reports practice", () => {
         const rows = [
-            evidenceOf({ conceptId: "saga", slot: "code-read", source: "ai" }),
+            ...proofRowsOf("unit-testing-behavior"),
             evidenceOf({ conceptId: "request-response-lifecycle", source: "relay" }),
         ]
 
-        const standing = subject.projectStandingOf("app", rows, allLessons)
+        const standing = subject.projectStandingOf(SET, "app", rows, allLessons)
 
-        expect(standing.provedConceptIds).toEqual(["saga"])
+        expect(standing.provedConceptIds).toEqual(["unit-testing-behavior"])
         expect(standing.practisingConceptIds).toEqual(["request-response-lifecycle"])
-        expect(
-            standing.milestones.find((milestone) => milestone.definition.id === "sd-reliable-messaging")?.state,
-        ).toBe("in-progress")
+        expect(standing.milestones.find((milestone) => milestone.definition.id === "bf-http-foundation")?.state).toBe(
+            "in-progress",
+        )
     })
 
     it("has no current milestone when every milestone is done", () => {
-        const rows = PROJECT_CONCEPTS.flatMap((concept) =>
-            concept.requires.map((group) =>
-                evidenceOf({
-                    conceptId: concept.id,
-                    slot: group[0] ?? "test",
-                    source: group[0] === "code-read" ? "ai" : "ci",
-                    ref: `${concept.id}-${String(group[0])}`,
-                }),
-            ),
-        )
+        const rows = SET.concepts.flatMap((concept) => proofRowsOf(concept.id))
 
         const standing = subject.projectStandingOf(
+            SET,
             "agent",
             rows,
-            new Set(PROJECT_CONCEPTS.map((concept) => concept.id)),
+            new Set(SET.concepts.map((concept) => concept.id)),
         )
 
         expect(standing.milestones.every((milestone) => milestone.state === "done")).toBe(true)

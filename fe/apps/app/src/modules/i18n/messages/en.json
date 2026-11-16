@@ -1074,6 +1074,7 @@
           "run": "Run command",
           "guards": "Turn a guard off to see the fault land",
           "expected": "A correct system shows",
+          "judged": "Rule it judges",
           "output": "Result relayed from your machine",
           "noOutput": "No run yet. Run the command above and the result shows here.",
           "why": "Why it is red",
@@ -1123,8 +1124,13 @@
         },
         "locked": {
           "title": "This part opens with Premium",
-          "description": "The opener is free. The source, the scenarios and the challenges need Premium.",
-          "plans": "See Premium"
+          "plans": "Subscribe to Premium",
+          "parts": {
+            "essence": "The five-question opener and the article of this lesson. Premium opens them.",
+            "source": "Pull the real TypeScript and Express repository, run it, and read where each rule lives in the code. The opener and the article of this lesson stay free.",
+            "scenarios": "Run each fault on your own machine, switch one guard off and see which rule breaks and why. The opener and the article of this lesson stay free.",
+            "apply": "The four-rung challenge ladder, judged by hidden scenarios and an essence check, with your result sent back from your machine. The opener and the article of this lesson stay free."
+          }
         }
       }
     },
@@ -2018,7 +2024,6 @@
         "title": "Harness",
         "fact": "{done}/{total} builds",
         "open": "Open Harness",
-        "sample": "Sample numbers until Harness is connected.",
         "buildsTitle": "Builds",
         "build": "{proved}/{total} stages proved, {practising} practising",
         "proved": "Proved",

@@ -18,6 +18,7 @@ const loadSubject = async (): Promise<typeof SUBJECT> => {
 
 const sourcesOf = (overrides: Partial<ProgressSources> = {}): ProgressSources => ({
     plan: "premium",
+    openParts: ["essence", "source", "script", "apply"],
     streak: { current: 4, longest: 9, todayCounted: true },
     review: { due: 6, overdue: 2, doneToday: 3, goalDaily: 10 },
     lessons: [
@@ -32,7 +33,6 @@ const sourcesOf = (overrides: Partial<ProgressSources> = {}): ProgressSources =>
         },
     ],
     harness: {
-        origin: "live",
         builds: [{ id: "b1", title: "Agent", stages: [{ id: "s1", title: "Loop", state: "proved" }] }],
         doctor: [],
         trials: [],
@@ -85,7 +85,7 @@ describe("buildProgress", () => {
     it("shows no projects and says they are locked for a learner without a subscription", async () => {
         const { buildProgress: build } = await loadSubject()
 
-        const view = build(sourcesOf({ plan: "free", proved: [] }))
+        const view = build(sourcesOf({ plan: "free", openParts: ["essence"], proved: [] }))
 
         expect(view.projects).toBeNull()
         expect(view.projectsLocked).toBe(true)

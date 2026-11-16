@@ -9,9 +9,9 @@ import { ProjectReadService } from "@modules/domain/project"
 import { ReviewQueueService } from "@modules/domain/review"
 import { STREAK_SHARD_IDS, StreakService, type StreakSummary } from "@modules/domain/streak"
 import { LOGGER, type Logger } from "@modules/platform/logging"
-import { ProgressHarnessFixtureClient } from "./progress-harness-fixture.client"
 import { PROGRESS_HARNESS, type ProgressHarnessPort } from "./progress-harness.port"
 import { ProgressLogEvent } from "./progress.log-events"
+import type { HarnessSource } from "./progress.contracts"
 import { ProgressService } from "./progress.service"
 
 const LEARNER = "20000000-0000-4000-8000-000000000009"
@@ -30,6 +30,13 @@ const STREAK: StreakSummary = {
     reminder: null,
 }
 
+const HARNESS: HarnessSource = {
+    builds: [{ id: "agent-cli", title: "Agent", stages: [{ id: "s1", title: "Loop", state: "proved" }] }],
+    doctor: [{ tool: "claude", passed: 3, total: 4, failed: 1 }],
+    trials: [],
+    events: [],
+}
+
 type Doubles = {
     readonly harness: jest.Mocked<ProgressHarnessPort>
     readonly streaks: jest.Mocked<StreakService>
@@ -42,8 +49,8 @@ type Doubles = {
 }
 
 /** The answers of every capability for a learner who finished one of two lessons. */
-const answer = async (d: Doubles): Promise<void> => {
-    d.harness.read.mockResolvedValue(await new ProgressHarnessFixtureClient().read())
+const answer = (d: Doubles): void => {
+    d.harness.read.mockResolvedValue(HARNESS)
     d.streaks.summary.mockResolvedValue(STREAK)
     d.reviews.summary.mockResolvedValue({
         date: "2026-11-17",
@@ -71,6 +78,9 @@ const answer = async (d: Doubles): Promise<void> => {
 
 const build = async (isPremium: boolean) => {
     const entitlement = mock<EntitlementService>()
+    entitlement.openEssentialParts.mockReturnValue(
+        isPremium ? ["1-essential", "2-source", "3-scenarios", "4-apply"] : ["1-essential"],
+    )
     const harness = mock<ProgressHarnessPort>()
     const streaks = mock<StreakService>()
     const reviews = mock<ReviewQueueService>()
@@ -81,7 +91,7 @@ const build = async (isPremium: boolean) => {
     const experience = mock<ExperienceReadService>()
     const logger = mock<Logger>()
     entitlement.isPremium.mockResolvedValue(isPremium)
-    await answer({ harness, streaks, reviews, lessons, openers, attempts, projects, experience })
+    answer({ harness, streaks, reviews, lessons, openers, attempts, projects, experience })
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProgressService,
@@ -101,7 +111,6 @@ const build = async (isPremium: boolean) => {
 }
 
 type ProjectList = Awaited<ReturnType<ProjectReadService["list"]>>
-type ProjectDetail = Awaited<ReturnType<ProjectReadService["get"]>>
 type MyExperience = Awaited<ReturnType<ExperienceReadService["mine"]>>
 
 const summaryOf = (id: string): ProjectList[number] => ({
@@ -115,19 +124,14 @@ const summaryOf = (id: string): ProjectList[number] => ({
     repoUrl: null,
     deployedUrl: null,
     provedConceptCount: 2,
+    practisingConceptCount: 3,
+    latestCiStatus: "none",
+    latestCiAt: null,
     conceptCount: 6,
     currentMilestoneId: null,
     doneMilestoneCount: 1,
     milestoneCount: 3,
     createdAt: "2026-11-01T00:00:00.000Z",
-})
-
-const detailOf = (id: string, practising: number): ProjectDetail => ({
-    ...summaryOf(id),
-    milestones: [],
-    practisingConceptCount: practising,
-    lastCiRun: null,
-    lastProbeRun: null,
 })
 
 const experienceOf = (part: string, itemId: string): MyExperience["items"][number] => ({
@@ -169,7 +173,7 @@ describe("ProgressService read", () => {
             afterCorrect: 4,
         })
         expect(view.review).toMatchObject({ due: 4, overdue: 1, streak: 5 })
-        expect(view.harness?.origin).toBe("fixture")
+        expect(view.harness).toMatchObject({ buildsDone: 1, buildsTotal: 1 })
         expect(view.unavailable).toEqual([])
     })
 
@@ -186,7 +190,6 @@ describe("ProgressService read", () => {
     it("reads each project of a subscriber with its practising concepts and the concepts proved", async () => {
         const { service, projects } = await build(true)
         projects.list.mockResolvedValue([summaryOf("p1")])
-        projects.get.mockResolvedValue(detailOf("p1", 3))
         projects.provedConcepts.mockResolvedValue([
             { projectId: "p1", conceptId: "idempotency", provedAt: "2026-11-17T00:00:00.000Z" },
         ])
@@ -202,7 +205,9 @@ describe("ProgressService read", () => {
         expect(view.ribbon.provedConcepts).toBe(1)
         expect(view.activity[0]).toMatchObject({ kind: "concept-proved" })
     })
+})
 
+describe("ProgressService read sources", () => {
     it("lists a source that failed, logs it and still answers with the rest", async () => {
         const { service, reviews, harness, logger } = await build(false)
         const cause = new Error("review down")

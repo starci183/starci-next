@@ -14,8 +14,8 @@ come, across the whole app). Neither owns learning state; both read it from the 
   (concepts proved and practising, milestones), Review (due cards, streak) and a recent-activity timeline.
 - **Opener before and after**: of a lesson's five opener questions, how many were right the first time (before) and are right now
   (after); read from the attempt capability.
-- **Fixture harness**: while the harness capability is not composed, the progress reads its builds, doctor and trials through
-  `ProgressHarnessPort` and the app binds `ProgressHarnessFixtureClient`; its answer says `origin: fixture` and the page says so.
+- **Harness read**: the builds with their stages, the doctor of each tool and the newest trial of each trap, read through
+  `ProgressHarnessPort`; the app binds `ProgressHarnessClient`, which asks the harness capability and the results the learner relayed.
 
 ## Rules
 1. The progress stores nothing and owns no table. Every number is a read; a source that fails is logged, listed in `unavailable` and

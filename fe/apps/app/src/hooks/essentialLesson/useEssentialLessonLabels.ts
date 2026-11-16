@@ -99,6 +99,7 @@ export const useEssentialLessonLabels = (): {
                 run: t("scenarios.run"),
                 guards: t("scenarios.guards"),
                 expected: t("scenarios.expected"),
+                judged: t("scenarios.judged"),
                 output: t("scenarios.output"),
                 noOutput: t("scenarios.noOutput"),
                 why: t("scenarios.why"),
@@ -123,7 +124,16 @@ export const useEssentialLessonLabels = (): {
                 locked: t("apply.locked"),
                 empty: t("apply.empty"),
             },
-            locked: { title: t("locked.title"), description: t("locked.description"), plans: t("locked.plans") },
+            locked: {
+                title: t("locked.title"),
+                plans: t("locked.plans"),
+                parts: {
+                    essence: { title: t("locked.title"), description: t("locked.parts.essence") },
+                    source: { title: t("locked.title"), description: t("locked.parts.source") },
+                    scenarios: { title: t("locked.title"), description: t("locked.parts.scenarios") },
+                    apply: { title: t("locked.title"), description: t("locked.parts.apply") },
+                },
+            },
         },
         words: {
             position: (n, total) => t("opener.position", { n, total }),

@@ -85,7 +85,6 @@ export const harnessOf = (
                 id: "harness-builds",
                 title: t("harness.title"),
                 fact: t("harness.fact", { done: data.buildsDone, total: data.buildsTotal }),
-                ...(data.origin === "fixture" ? { caption: t("harness.sample") } : {}),
                 link: { label: t("harness.open"), href: HARNESS_ROUTE },
                 rows: buildRowsOf(t, data.builds),
                 empty: t("harness.empty"),

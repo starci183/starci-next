@@ -2,7 +2,7 @@
  * The project capability (the Projects shard, decision.projects.model).
  *
  * A learner owns many projects of any topic, language and structure, of kind `app` or `agent`; StarCi Shop is the sample for learners
- * without an idea. A milestone is a list of concepts taken from Essentials lessons (`project-catalog.policy.ts`), and a concept needs
+ * without an idea. A milestone is a list of concepts taken from Essentials lessons (the check set read from content, `ProjectCheckSetService`), and a concept needs
  * evidence: the learner's tagged tests (`[concept]` in the test name), e2e flows (`starci/e2e/<concept>.md`), the generic StarCi probes
  * the learner cannot edit, and the AI teacher reading the code the learner points to. Behaviour concepts need a test or e2e flow and the
  * probes; structure concepts need the AI code read; a concept whose lesson is not written yet shows being written by the teacher.
@@ -28,20 +28,29 @@ export { PROJECT_ERROR_KINDS } from "./errors/project.error"
 export { PROJECT_MESSAGES } from "./messages/project.messages"
 export { AiProjectCoachClient } from "./ai-project-coach.client"
 export { LessonCatalogClient } from "./lesson-catalog.client"
-export { milestoneOf } from "./project-catalog.policy"
+export { milestoneIn } from "./project-check-set-lookup.policy"
+export { ProjectCheckSetDiskAdapter } from "./project-check-set-disk.adapter"
 export { parseProjectConfig } from "./project.config"
 export { ProjectCiService } from "./project-ci.service"
 export { ProjectCiProofService } from "./project-ci-proof.service"
 export { ProjectCodeReadService } from "./project-code-read.service"
 export { ProjectModule } from "./project.module"
 export { UnattestedCiClient } from "./unattested-ci.client"
+export { GithubOidcClient } from "./github-oidc.client"
 export { ProjectPracticeService } from "./project-practice.service"
 export { ProjectProbeService } from "./project-probe.service"
+export { ProjectProbeSinkService } from "./project-probe-sink.service"
+export { ProjectCheckSetService } from "./project-check-set.service"
+export { checkSetOf } from "./project-check-set.policy"
+export type { CheckConcept, CheckMilestone, CheckProbe, CheckSet } from "./project-check-set.contracts"
+export { ProjectExtrasService } from "./project-extras.service"
 export { ProjectReadService } from "./project-read.service"
 export { ProjectRepositoryService } from "./project-repository.service"
 export { ProjectService } from "./project.service"
 export { projectEntities, projectMigrations } from "./persistence/connection"
 export type { ProjectRelayPort } from "./project-relay.port"
+export type { CiHarnessResult, HarnessCiRun, ProjectHarnessPort } from "./project-harness.port"
+export { NoHarnessClient } from "./no-harness.client"
 export type { CiAttestationVerifier } from "./project-ci-attestation.port"
 export type { CiAttestation, CiAttestationRequest, ProjectRepositoryView } from "./project-params.contracts"
 export type {
@@ -53,7 +62,13 @@ export type {
     ProjectSecretView,
     ProjectSummaryView,
     ProjectView,
+    CodeReadCriterionView,
+    CodeReadView,
+    CvEvidenceLinkView,
+    CvPreviewView,
+    CiStatus,
     ProvedConceptView,
 } from "./project-view.contracts"
+export type { CvPreviewParams } from "./project-extras.service"
 export type { RelayResultsRequest } from "./project-params.contracts"
 export type { ProjectKind, ProjectLocale, RelayCheckResult } from "./project.contracts"

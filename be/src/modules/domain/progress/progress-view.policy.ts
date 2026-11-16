@@ -99,7 +99,7 @@ export const buildProgress = (sources: ProgressSources): LearnerProgressView => 
     return {
         plan: sources.plan,
         ribbon: buildRibbon(sources, harness?.buildsDone ?? 0),
-        essentials: sources.lessons === null ? null : buildEssentials(sources.lessons, sources.plan),
+        essentials: sources.lessons === null ? null : buildEssentials(sources.lessons, sources.openParts),
         harness,
         projects: isPremium && sources.projects !== null ? buildProjects(sources.projects) : null,
         projectsLocked: !isPremium,

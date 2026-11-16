@@ -1,9 +1,9 @@
 import { Test } from "@nestjs/testing"
-import { buildEssentials, partsOf, topicsOf } from "./progress-essentials.policy"
+import { buildEssentials, essentialsPartOf, partsOf, topicsOf } from "./progress-essentials.policy"
 import type { EssentialsLessonSource } from "./progress.contracts"
 
 /** The functions under test, provided the way Nest provides them so the spec builds its subject from a testing module. */
-const SUBJECT = { buildEssentials, partsOf, topicsOf }
+const SUBJECT = { buildEssentials, essentialsPartOf, partsOf, topicsOf }
 
 /** The token the testing module provides the functions under. */
 const SUBJECT_TOKEN: unique symbol = Symbol("progress.essentials-policy")
@@ -32,10 +32,10 @@ const lessonOf = (
 })
 
 describe("partsOf", () => {
-    it("opens only the first part for a free learner", async () => {
+    it("opens only the parts the setting names, in order", async () => {
         const { partsOf: parts } = await loadSubject()
 
-        expect(parts("free").map((part) => [part.part, part.access])).toEqual([
+        expect(parts(["essence"]).map((part) => [part.part, part.access])).toEqual([
             ["essence", "unlocked"],
             ["source", "locked"],
             ["script", "locked"],
@@ -43,10 +43,10 @@ describe("partsOf", () => {
         ])
     })
 
-    it("opens every part for a subscriber and numbers them from 1", async () => {
+    it("opens every part it is given and numbers them from 1", async () => {
         const { partsOf: parts } = await loadSubject()
 
-        const premium = parts("premium")
+        const premium = parts(["essence", "source", "script", "apply"])
 
         expect(premium.every((part) => part.access === "unlocked")).toBe(true)
         expect(premium.map((part) => part.order)).toEqual([1, 2, 3, 4])
@@ -96,7 +96,7 @@ describe("buildEssentials", () => {
                 }),
                 lessonOf("a3", "a"),
             ],
-            "free",
+            ["essence"],
         )
 
         expect(view).toMatchObject({
@@ -108,5 +108,19 @@ describe("buildEssentials", () => {
             answered: 8,
         })
         expect(view.parts[1]?.access).toBe("locked")
+    })
+})
+
+describe("essentialsPartOf", () => {
+    it("names the four content parts of the entitlement setting and nothing else", async () => {
+        const { essentialsPartOf: partOf } = await loadSubject()
+
+        expect(["1-essential", "2-source", "3-scenarios", "4-apply"].map((part) => partOf(part))).toEqual([
+            "essence",
+            "source",
+            "script",
+            "apply",
+        ])
+        expect(partOf("5-extra")).toBeUndefined()
     })
 })

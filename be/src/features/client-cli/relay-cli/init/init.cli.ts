@@ -9,13 +9,17 @@ export interface InitProjectOptions {
     readonly project?: string
     /** typescript, java, csharp or go. */
     readonly language?: string
+    /** The milestone whose e2e flows are copied; the first milestone of the app kind when absent. */
+    readonly milestone?: string
     /** Whether existing files are replaced. */
     readonly force: boolean
 }
 
 @Command({
     name: "init",
-    description: "Copy the StarCi kit (starci/ and a CI workflow) into the project in this folder",
+    arguments: "[project]",
+    description:
+        "Copy the StarCi kit (starci/, the e2e flows of the current milestone and the CI workflow of the detected language) into the project in this folder",
 })
 /** `starci-next init`: delegates to the learner's relay client once. */
 export class InitProjectCli extends CommandRunner {
@@ -35,8 +39,14 @@ export class InitProjectCli extends CommandRunner {
         return value
     }
 
+    /** `--milestone <id>`: the milestone whose e2e flows are copied. */
+    @Option({ flags: "--milestone <id>", description: "The milestone to copy the e2e flows of (default: the first)" })
+    parseMilestone(value: string): string {
+        return value
+    }
+
     /** `--language <name>`: the language of the project. */
-    @Option({ flags: "--language <name>", description: "typescript (default), java, csharp or go" })
+    @Option({ flags: "--language <name>", description: "typescript, java, csharp or go (default: detected)" })
     parseLanguage(value: string): string {
         return value
     }
@@ -48,11 +58,12 @@ export class InitProjectCli extends CommandRunner {
     }
 
     /** Copies the kit into the project of the current folder. */
-    async run(_passed: Array<string>, options: InitProjectOptions): Promise<void> {
+    async run(passed: Array<string>, options: InitProjectOptions): Promise<void> {
         await this.relay.init({
             from: options.from,
-            project: options.project,
+            project: options.project ?? passed[0],
             language: options.language,
+            milestone: options.milestone,
             force: options.force,
         })
     }

@@ -6,10 +6,6 @@ import { ProgressTrialType } from "./progress-trial.type"
 @ObjectType()
 /** The Harness section of the progress page; free for everyone. */
 export class ProgressHarnessType {
-    /** live, or fixture while the harness capability is not composed. */
-    @Field(() => String)
-    origin!: string
-
     /** Builds with every stage proved. */
     @Field(() => Int)
     buildsDone!: number

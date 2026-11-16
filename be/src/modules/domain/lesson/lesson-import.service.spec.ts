@@ -25,6 +25,7 @@ import type { LessonTopicCatalog } from "./lesson-topic.contracts"
 import { LESSON_TOPIC_CATALOG } from "./lesson.decorators"
 import { LESSON_SOURCE, type LessonSourceReader } from "./lesson-source.port"
 import type { LessonSourceFile } from "./lesson-import.contracts"
+import { field, lessonFiles } from "@tests/fixtures/builders/raw-lesson.builder"
 
 const NOW = "2026-11-08T10:00:00.000Z"
 const DIRECTORY = "concepts"
@@ -320,5 +321,58 @@ describe("LessonImportService import arguments", () => {
 
         expect(transaction.rollbacks).toBe(1)
         expect(transaction.committedWrites).toEqual([])
+    })
+})
+
+describe("LessonImportService import of the topic-based format", () => {
+    const TOPIC_FILE =
+        "title: Độ tin cậy của API\nfrom: seed standard\nmodules: []\ndetails:\n  description: D\n  prerequisites: [P]\n  related: [caching]\n"
+
+    it("reads the topic page from topic.yaml beside the lessons, though the catalog of the code does not know the topic", async () => {
+        const em = mockEntityManager({
+            query: [
+                [SELECT_VERSION_HASH, []],
+                [SUPERSEDE_PUBLISHED, []],
+                [INSERT_VERSION, [{ lesson_id: "outbox" }]],
+                [UPSERT_TOPIC, [{ topic: "api-reliability" }]],
+            ],
+        })
+        const files = lessonFiles(field("category", "backend"))
+        const source = mock<LessonSourceReader>()
+        source.folders.mockImplementation((directory) =>
+            Promise.resolve(directory === "raw-essentials" ? ["api-reliability"] : ["outbox"]),
+        )
+        source.read.mockResolvedValue(files)
+        source.topicFile.mockResolvedValue(TOPIC_FILE)
+        source.modules.mockResolvedValue([])
+        const moduleRef = await Test.createTestingModule({
+            providers: [
+                LessonImportService,
+                { provide: PRIMARY_ENTITY_MANAGER, useValue: fakeTransaction(em).em },
+                { provide: CLOCK, useValue: new FakeClock(NOW) },
+                { provide: LESSON_SOURCE, useValue: source },
+                { provide: LESSON_TOPIC_CATALOG, useValue: mock<LessonTopicCatalog>(demoTopicCatalogOf()) },
+                { provide: LOGGER, useValue: mock<Logger>() },
+            ],
+        }).compile()
+
+        const reports = await moduleRef
+            .get(LessonImportService)
+            .import({ directory: "raw-essentials", ref: REF, only: "" })
+
+        expect(reports[0]).toMatchObject({ folder: "api-reliability/outbox", id: "outbox", status: "created" })
+        expect(source.topicFile).toHaveBeenCalledWith("raw-essentials", "api-reliability")
+        const upsert = em.query.mock.calls.find((call) => call[0] === UPSERT_TOPIC)
+        expect(upsert?.[1]).toEqual([
+            "api-reliability",
+            "Độ tin cậy của API",
+            "seed standard",
+            "D",
+            '["P"]',
+            '["caching"]',
+            "[]",
+            REF,
+            new Date(NOW),
+        ])
     })
 })

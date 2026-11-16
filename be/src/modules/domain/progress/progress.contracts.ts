@@ -97,8 +97,6 @@ export interface HarnessEventSource {
 
 /** What the harness capability tells about one learner. */
 export interface HarnessSource {
-    /** `live` when read from the harness capability, `fixture` while it is not composed yet. */
-    readonly origin: "live" | "fixture"
     /** The builds. */
     readonly builds: ReadonlyArray<HarnessBuildSource>
     /** The doctor runs. */
@@ -173,6 +171,8 @@ export interface StreakSource {
 export interface ProgressSources {
     /** The plan of the learner. */
     readonly plan: ProgressPlan
+    /** The parts of an Essentials lesson the entitlement setting opens for this learner. */
+    readonly openParts: ReadonlyArray<EssentialsPartId>
     /** The streak. */
     readonly streak: StreakSource | null
     /** The review day. */
@@ -323,8 +323,6 @@ export interface ProgressTrialView {
 
 /** The Harness section. It is free for everyone. */
 export interface ProgressHarnessView {
-    /** `live` or `fixture`: the numbers come from sample data while the harness capability is not composed. */
-    readonly origin: "live" | "fixture"
     /** Builds with every stage proved. */
     readonly buildsDone: number
     /** Builds. */

@@ -33,6 +33,7 @@ export const admit = (
         case PublicReason.SignedWebhook:
         case PublicReason.CatalogRead:
         case PublicReason.ProtocolBearer:
+        case PublicReason.ProbeSink:
             return ok(metadata.reason)
         case undefined:
         default:

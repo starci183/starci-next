@@ -1,6 +1,6 @@
 import { Injectable, Optional } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
+import { InjectEntitlementService, type EntitlementService, type EssentialPart } from "@modules/domain/entitlement"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
@@ -116,11 +116,21 @@ export class LessonContentService {
 
     /**
      * Lets free content through for any learner and refuses the rest without Premium. Content is free when the teacher marked it
-     * `isPremium: false`; with no mark only the free phase is free, and review is not.
+     * `isPremium: false`; with no mark only the free phase is free, and review is not. Content of an Essentials part (`part`)
+     * follows the entitlement setting of free parts instead (default: Bản chất free, Source, Kịch bản and Tự áp dụng Premium).
      */
     async requireAccess(params: LessonAccessParams): Promise<void> {
+        if (params.part !== undefined) {
+            if (await this.entitlement.mayReadEssentialPart(params.learnerId, params.part)) return
+            throw new LessonError({ code: LessonErrorCode.PremiumRequired })
+        }
         if (!needsPremium(params.phase, params.isPremium) || (await this.entitlement.isPremium(params.learnerId)))
             return
         throw new LessonError({ code: LessonErrorCode.PremiumRequired })
+    }
+
+    /** Whether the learner may read one part of an Essentials lesson: the same question `requireAccess` asks, answered as a flag. */
+    mayReadPart(learnerId: string, part: EssentialPart): Promise<boolean> {
+        return this.entitlement.mayReadEssentialPart(learnerId, part)
     }
 }

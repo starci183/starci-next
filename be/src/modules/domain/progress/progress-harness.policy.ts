@@ -52,7 +52,6 @@ const trialOf = (trial: HarnessTrialSource): ProgressTrialView => ({
 export const buildHarness = (source: HarnessSource): ProgressHarnessView => {
     const builds = source.builds.map((build) => buildOf(build))
     return {
-        origin: source.origin,
         buildsDone: builds.filter((build) => build.state === "proved").length,
         buildsTotal: builds.length,
         builds,
