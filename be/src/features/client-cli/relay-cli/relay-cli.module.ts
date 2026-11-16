@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common"
 import { CheckCliModule } from "./check/check.module"
 import { DevicesCliModule } from "./devices/devices.module"
 import { InitProjectCliModule } from "./init/init.module"
+import { ListenCliModule } from "./listen/listen.module"
 import { LoginCliModule } from "./login/login.module"
 import { LogoutCliModule } from "./logout/logout.module"
 import { ConfigurableModuleClass } from "./relay-cli.module-definition"
@@ -25,6 +26,7 @@ import { UpCliModule } from "./up/up.module"
         DownCliModule.register({}),
         CheckCliModule.register({}),
         PromptCliModule.register({}),
+        ListenCliModule.register({}),
     ],
 })
 /**
