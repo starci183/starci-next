@@ -44,7 +44,7 @@
 {"findings":[],"hash":"16c6ed3a613c58daa41e1a19660f1358a98e4f9f4a68a52f72f6b7a191b4f7d4","path":"be/apps/core/src/core.options.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"7054df0d0c2fd5d217a121d5f00143c0d3a2ef99b89a9870084d6df1f36e3390","path":"be/apps/core/src/main.ts","step":"file-rules"}
 {"findings":[],"hash":"9da33b34e4d2184857275d08a45c9bb0b151a565fa2b9c53047986074e26e9b1","path":"be/apps/core/src/main.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"ab8905ce2ab02682b7fcd9997f2e44e521086900413c7aba5ee8a480df4c2ba6","path":"be/apps/relay-cli/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8bc03f15d0684612bbe50f2a913ac273d635eab473b3854af6965acd47dfe2f7","path":"be/apps/relay-cli/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"06e3e2a919151540c6aa0312b0f9cecd3c61436a42af5ef3ed807f9715629ed1","path":"be/apps/relay-cli/src/app.module.ts","step":"file-rules"}
 {"findings":[],"hash":"333307beec7257d5cb1690caf191c5fd910ef755f769133e02ab822d2710d19d","path":"be/apps/relay-cli/src/app.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"30b634a598f91f9dcf42218edea436e294a179eb17b283bd236185460fb95f8e","path":"be/apps/relay-cli/src/compose/cli.ts","step":"file-rules"}

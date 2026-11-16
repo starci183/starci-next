@@ -196,7 +196,10 @@ export type SignatureRead =
     { readonly kind: "checked"; readonly holds: boolean } | { readonly kind: "rejected"; readonly cause: unknown }
 
 /** The part of the outside world that is this terminal and this operating system. */
-export type TerminalPort = Pick<CliIo, "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand" | "isTty">
+export type TerminalPort = Pick<
+    CliIo,
+    "out" | "err" | "hostName" | "platform" | "exit" | "confirm" | "runCommand" | "isTty"
+>
 
 /** What a device socket tells its owner. */
 export interface DeviceHandlers {

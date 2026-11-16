@@ -45,7 +45,7 @@
 {"name":"pkg:@starci/stylelint-canon","sha256":"fa9f26fd77c7c4adafbbdfbfa3c8aa8f5c3acb7daf302180d5c76c252f6e2a9f"}
 {"name":"pkg:@starci/test-world","sha256":"010b9852c83793b758149ef0cf1849968dc29aa63c79738c7c59e588a9f93db3"}
 {"name":"pkg:@starci/tsconfig","sha256":"1b90ae7e9de8f30d099a9aec149038ac08455e5c11114db795412e1175955f0d"}
-{"name":"shape:be/apps/relay-cli/package.json","sha256":"4bf509a0be121fb4abb7a72ce622b1685587fdc2241d6e25836c70621da5fbe1"}
+{"name":"shape:be/apps/relay-cli/package.json","sha256":"3439a5326cbf6069031343a2eb877b7a10405160e4866e7a71ece4c6e5093bf2"}
 {"name":"shape:fe/apps/app/package.json","sha256":"cd007b0adf3e55735737abea259853031066531201677c857bd1c256ed47c502"}
 {"name":"shape:fe/apps/landing/package.json","sha256":"522d555a84edec20673d520c0d76102deab7cd98b75c05aec3ce7ce9e1f16605"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
