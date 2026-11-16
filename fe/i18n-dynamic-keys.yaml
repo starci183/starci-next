@@ -171,39 +171,46 @@ namespaces:
       reason: read through the translator that the ConnectAi block maps over its label and step keys
     - key: guidesTitle
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: error.limit
+  app.connectAi.error:
+    - key: limit
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: error.name
+    - key: name
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: error.other
+    - key: other
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.open.title
+  app.connectAi.claude.open:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.open.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.add.title
+  app.connectAi.claude.add:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.add.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.add.command
+    - key: command
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.code.title
+  app.connectAi.claude.code:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.code.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: claude.code.command
+    - key: command
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.enable.title
+  app.connectAi.chatgpt.enable:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.enable.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.add.title
+  app.connectAi.chatgpt.add:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.add.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.add.command
+    - key: command
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.use.title
+  app.connectAi.chatgpt.use:
+    - key: title
       reason: read through the translator that the ConnectAi block maps over its label and step keys
-    - key: chatgpt.use.note
+    - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys

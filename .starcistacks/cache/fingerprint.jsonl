@@ -19,7 +19,7 @@
 {"name":"file:fe/packages/starci-next-ui/tsconfig.json","sha256":"73109e2a7ccde906d948dca16e015cf3bd6f6c99b3aff7fcd5ab2fd12fde5069"}
 {"name":"file:fe/stylelint.config.mjs","sha256":"492a27a38a841d1c7b556ba9599bcdb24a395ae86e2472028977173f8f63fcd7"}
 {"name":"file:fe/tsconfig.json","sha256":"b8e1cb6f05a72d5e193b5a55718f11a148e7e39eb0015a759aa9d525492579d3"}
-{"name":"file:hfs.json","sha256":"42c617fb467761d062ec7055e8f9e3df9917d5b6343d88431eee382597d7adb6"}
+{"name":"file:hfs.json","sha256":"9974b09c65b6a940e3a6bccf2601739f6d1a53f629e8702c98d8f8c55103beb8"}
 {"name":"file:sonar-project.properties","sha256":"89faf9a45ee0bf580517de9051ace86b758a0262ddfa39098e47d4302c58f947"}
 {"name":"hfs","sha256":"d6abda11233115152de9c588b3127785a874b7b1b40596c8afde763364323c2f"}
 {"name":"lock:format","sha256":"275d51588fe77bd48bc71d50a0fee3ba59de74b5b462fb49d464a1569040b0ba"}
