@@ -1,4 +1,5 @@
-import { generateKeyPairSync, sign } from "node:crypto"
+import { createHash, generateKeyPairSync, sign } from "node:crypto"
+import { execSync } from "node:child_process"
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
@@ -33,7 +34,7 @@ const scenario = (extra: Record<string, unknown> = {}) => ({
 
 const lessonBody = (extra: Record<string, unknown> = {}) => ({
     lessonId: "outbox",
-    repo: { url: "https://x.test/lesson-outbox.git", commit: COMMIT },
+    source: { url: "https://files.test/outbox.tgz", sha256: "d".repeat(64), commit: COMMIT },
     dir: ".",
     compose: ".docker",
     project: "outbox",
@@ -91,6 +92,7 @@ const worldOf = (
                 text: JSON.stringify({ data: { ok: { eventId: "e", accepted: true } } }),
             })
         },
+        download: () => Promise.resolve({ status: 0, bytes: Buffer.alloc(0) }),
         sleep: () => Promise.resolve(),
         now: () => 0,
         ids: () => `00000000-0000-4000-8000-${String((n += 1)).padStart(12, "0")}`,
@@ -118,7 +120,14 @@ const pulled = (world: World): string => {
     mkdirSync(join(root, ".git"), { recursive: true })
     writeFileSync(
         join(root, ".starci-lesson.json"),
-        JSON.stringify({ lessonId: "outbox", commit: COMMIT, dir: ".", compose: ".docker", project: "outbox" }),
+        JSON.stringify({
+            lessonId: "outbox",
+            commit: COMMIT,
+            sha256: "d".repeat(64),
+            dir: ".",
+            compose: ".docker",
+            project: "outbox",
+        }),
     )
     return root
 }
@@ -137,22 +146,127 @@ describe("pullLesson", () => {
         expect(world.sent).toHaveLength(0)
     })
 
-    it("clones at the signed commit and writes the marker", async () => {
-        const world = worldOf(lessonBody(), (where) => {
-            if (!existsSync(join(where, "outbox"))) mkdirSync(join(where, "outbox", ".git"), { recursive: true })
-            return {}
+    /** A source folder packed the way the server packs it: `tar -czf` of the contents of `source/`, relative names. */
+    const packed = (files: Record<string, string>): Buffer => {
+        const folder = mkdtempSync(join(tmpdir(), "starci-next-src-"))
+        Object.entries(files).forEach(([path, text]) => {
+            mkdirSync(join(folder, path, ".."), { recursive: true })
+            writeFileSync(join(folder, path), text)
         })
+        execSync("tar -czf ../pack.tgz .", { cwd: folder })
+        return readFileSync(join(folder, "..", "pack.tgz"))
+    }
 
-        expect(await pullLesson(world.io, "outbox", "typescript", world.cwd)).toBe(0)
+    /** The world of a pull: a real shell for tar and git, and a download that answers `bytes` whatever the url. */
+    const pullWorld = (bytes: Buffer, sha256 = createHash("sha256").update(bytes).digest("hex")) => {
+        const world = worldOf(
+            lessonBody({ source: { url: "https://files.test/outbox.tgz", sha256, commit: COMMIT }, dir: "typescript" }),
+        )
+        const downloads: Array<{ url: string; bearer: string | undefined }> = []
+        const io: CliIo = {
+            ...world.io,
+            download: (url, bearer) => {
+                downloads.push({ url, bearer })
+                return Promise.resolve({ status: 200, bytes })
+            },
+            runCommand: (command, where) => {
+                try {
+                    const output = execSync(command, {
+                        cwd: where,
+                        encoding: "utf8",
+                        stdio: ["ignore", "pipe", "pipe"],
+                    })
+                    return Promise.resolve({ exitCode: 0, output, durationMs: 1 })
+                } catch (error) {
+                    return Promise.resolve({ exitCode: 1, output: String(error), durationMs: 1 })
+                }
+            },
+        }
+        return { world, io, downloads }
+    }
 
-        expect(world.commands.map((run) => run.command)).toEqual([
-            "git clone https://x.test/lesson-outbox.git outbox",
-            "git fetch --all --quiet",
-            `git checkout --detach ${COMMIT}`,
-        ])
-        expect(JSON.parse(readFileSync(join(world.cwd, "outbox", ".starci-lesson.json"), "utf8"))).toMatchObject({
-            commit: COMMIT,
-        })
+    it("downloads the tarball, verifies it, unpacks it and makes one initial commit with the marker kept out of git", async () => {
+        const { world, io, downloads } = pullWorld(
+            packed({ "typescript/package.json": "{}", "typescript/src/a.ts": "x" }),
+        )
+
+        expect(await pullLesson(io, "outbox", "typescript", world.cwd)).toBe(0)
+
+        const target = join(world.cwd, "outbox")
+        expect(downloads).toEqual([{ url: "https://files.test/outbox.tgz", bearer: undefined }])
+        expect(existsSync(join(target, "typescript", "src", "a.ts"))).toBe(true)
+        expect(existsSync(join(target, ".starci-source.tar.gz"))).toBe(false)
+        expect(execSync("git rev-list --count HEAD", { cwd: target, encoding: "utf8" }).trim()).toBe("1")
+        expect(execSync("git status --porcelain", { cwd: target, encoding: "utf8" }).trim()).toBe("")
+        expect(execSync("git ls-files", { cwd: target, encoding: "utf8" })).not.toContain(".starci-lesson.json")
+        expect(JSON.parse(readFileSync(join(target, ".starci-lesson.json"), "utf8"))).toMatchObject({ commit: COMMIT })
+    })
+
+    it("is a no-op for a source already pulled and refuses a different one in the way", async () => {
+        const first = pullWorld(packed({ "typescript/a.ts": "x" }))
+        await pullLesson(first.io, "outbox", "typescript", first.world.cwd)
+
+        expect(await pullLesson(first.io, "outbox", "typescript", first.world.cwd)).toBe(0)
+        expect(first.downloads).toHaveLength(1)
+
+        const other = pullWorld(packed({ "typescript/b.ts": "y" }))
+        mkdirSync(join(other.world.cwd, "outbox"))
+        expect(await pullLesson(other.io, "outbox", "typescript", other.world.cwd)).toBe(1)
+        expect(other.downloads).toHaveLength(0)
+    })
+
+    it("sends StarCi's bearer only when the source is a path on StarCi's own origin", async () => {
+        const { world, io, downloads } = pullWorld(packed({ "typescript/a.ts": "x" }))
+        const bytes = packed({ "typescript/a.ts": "x" })
+        const own = worldOf(
+            lessonBody({
+                source: {
+                    url: "/api/relay/lessons/outbox/source.tgz",
+                    sha256: createHash("sha256").update(bytes).digest("hex"),
+                    commit: COMMIT,
+                },
+                dir: "typescript",
+            }),
+        )
+        const seen: Array<{ url: string; bearer: string | undefined }> = []
+        await pullLesson(
+            {
+                ...io,
+                ...own.io,
+                download: (url, bearer) => (seen.push({ url, bearer }), Promise.resolve({ status: 200, bytes })),
+                runCommand: io.runCommand,
+            },
+            "outbox",
+            undefined,
+            own.cwd,
+        )
+
+        expect(seen).toEqual([{ url: "https://app.test/api/relay/lessons/outbox/source.tgz", bearer: "t".repeat(43) }])
+        expect(downloads).toHaveLength(0)
+        expect(world.cwd).not.toBe(own.cwd)
+    })
+
+    it("refuses bytes that do not match the signed sha256 and leaves nothing behind", async () => {
+        const { world, io } = pullWorld(packed({ "typescript/a.ts": "x" }), "0".repeat(64))
+
+        expect(await pullLesson(io, "outbox", "typescript", world.cwd)).toBe(1)
+        expect(world.err.join("\n")).toContain("sha256")
+        expect(existsSync(join(world.cwd, "outbox"))).toBe(false)
+    })
+
+    it("refuses a tarball carrying hidden/ even when its hash is signed, and removes the folder", async () => {
+        const { world, io } = pullWorld(packed({ "typescript/a.ts": "x", "hidden/h1.spec.ts": "secret" }))
+
+        expect(await pullLesson(io, "outbox", "typescript", world.cwd)).toBe(1)
+        expect(world.err.join("\n")).toContain("not allowed")
+        expect(existsSync(join(world.cwd, "outbox"))).toBe(false)
+    })
+
+    it("refuses a source without the signed project folder", async () => {
+        const { world, io } = pullWorld(packed({ "other/a.ts": "x" }))
+
+        expect(await pullLesson(io, "outbox", "typescript", world.cwd)).toBe(1)
+        expect(existsSync(join(world.cwd, "outbox"))).toBe(false)
     })
 })
 

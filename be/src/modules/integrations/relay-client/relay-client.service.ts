@@ -22,6 +22,9 @@ import type { LessonRunOptions } from "./lesson.contracts"
 /** How long one call to StarCi may take before it counts as unreachable. */
 const REQUEST_TIMEOUT_MS = 30_000
 
+/** How long the lesson tarball may take to download. */
+const DOWNLOAD_TIMEOUT_MS = 120_000
+
 @Injectable()
 /** The learner commands over this process: the outbound HTTP port, the clock, the timer, the ids, the terminal and the config folder. */
 export class RelayClientService implements RelayClientPort {
@@ -48,9 +51,11 @@ export class RelayClientService implements RelayClientPort {
             platform: () => terminal.platform(),
             exit: (code) => terminal.exit(code),
             confirm: (question) => terminal.confirm(question),
-            runCommand: (command, cwd, timeoutMs, env) => terminal.runCommand(command, cwd, timeoutMs, env),
+            runCommand: (command, cwd, timeoutMs, env, quiet) =>
+                terminal.runCommand(command, cwd, timeoutMs, env, quiet),
             verify: (payload, signature, key) => manifests.verified(payload, signature, key),
             fetch: (url, init) => this.door(url, init),
+            download: (url, bearer) => this.fetchBytes(url, bearer),
             sleep: (ms) => new Promise((resolve) => timer.schedule(() => resolve(undefined), ms)),
             now: () => clock.now().getTime(),
             ids: () => ids.next(),
@@ -114,6 +119,26 @@ export class RelayClientService implements RelayClientPort {
     init(options: InitOptions): Promise<void> {
         this.io.exit(this.kit.init(this.io, options, this.cwd))
         return Promise.resolve()
+    }
+
+    /** GETs the bytes behind a signed URL; no answer (refused, timed out, cut) answers status 0 with no bytes. */
+    private async fetchBytes(
+        url: string,
+        bearer: string | undefined,
+    ): Promise<{ readonly status: number; readonly bytes: Buffer }> {
+        try {
+            const answer = await this.http.request({
+                correlationId: this.correlationId,
+                method: "GET",
+                url,
+                headers: bearer === undefined ? {} : { authorization: `Bearer ${bearer}` },
+                read: "bytes",
+                timeoutMs: DOWNLOAD_TIMEOUT_MS,
+            })
+            return { status: answer.status, bytes: Buffer.isBuffer(answer.body) ? answer.body : Buffer.alloc(0) }
+        } catch {
+            return { status: 0, bytes: Buffer.alloc(0) }
+        }
     }
 
     /** Calls a StarCi door through the HTTP port; no answer (refused, timed out, cut) answers status 0 with the cause. */

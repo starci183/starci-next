@@ -3,7 +3,7 @@ import { fixPromptOf } from "./lesson-prompt.policy"
 
 const LESSON: LessonSection = {
     lessonId: "outbox",
-    repo: { url: "https://x.test/r.git", commit: "a".repeat(40) },
+    source: { url: "https://x.test/s.tar.gz", sha256: "d".repeat(64), commit: "a".repeat(40) },
     dir: ".",
     compose: ".docker",
     project: "outbox",

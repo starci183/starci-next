@@ -44,9 +44,9 @@ export interface LessonScenario {
 export interface LessonSection {
     /** The lesson slug. */
     readonly lessonId: string
-    /** The source repo and the commit it is pinned to. */
-    readonly repo: { readonly url: string; readonly commit: string }
-    /** The TypeScript project folder inside the repo. */
+    /** The tarball of the lesson `source/` folder: where to get it, its sha256 and the content commit it was cut at. */
+    readonly source: { readonly url: string; readonly sha256: string; readonly commit: string }
+    /** The TypeScript project folder inside the unpacked source. */
     readonly dir: string
     /** The folder with docker-compose.yml, relative to the repo root. */
     readonly compose: string
@@ -64,8 +64,10 @@ export interface LessonSection {
 export interface LessonState {
     /** The lesson slug. */
     readonly lessonId: string
-    /** The pinned commit. */
+    /** The content commit the tarball was cut at. */
     readonly commit: string
+    /** The sha256 of the tarball that was unpacked. */
+    readonly sha256: string
     /** The TypeScript project folder. */
     readonly dir: string
     /** The compose folder. */
