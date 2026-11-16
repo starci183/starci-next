@@ -107,6 +107,12 @@ environments:
         where: "secrets/db"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
+      - name: "local-ai-api-key"
+        member: "ai"
+        key: "LOCAL_AI_API_KEY"
+        where: "secrets/ai"
+        recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
+        keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
     # `starci app stack up --env dev --execute` reads this block (PROJECT-STACKS-6): compose runs only the infrastructure (postgres, the mail sink, the
     # dev ingress of infra/compose/compose.yaml); the core api, the product app and the landing run natively, built or served by the steps and processes below.
     local:
@@ -159,7 +165,7 @@ environments:
           argv: [node, dist/apps/core/src/main.js]
           cwd: be
           port: core
-          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY]
+          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, LOCAL_AI_API_KEY]
           env:
             NODE_ENV: development
             PORT: "${port.core}"
@@ -191,6 +197,8 @@ environments:
             # The vector index of the MCP semantic search: Qdrant of the compose project, vectors of 1024 dimensions (qwen3-embedding:8b cut by MRL). With no MCP_EMBED_URL the search answers by keywords.
             QDRANT_URL: "http://127.0.0.1:${port.qdrant}"
             QDRANT_VECTOR_SIZE: "1024"
+            # The shared host embeddings service (ai-router kind local, qwen3-embedding:8b cut to 1024 by MRL); its token is the sealed LOCAL_AI_API_KEY. The gateway checks the token and caps the body at 1 MB.
+            MCP_EMBED_URL: "https://embed.starci.org/v1"
             # Dev signs task manifests with a key pair made once by `node scripts/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
             RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
             # Dev only: every agent and walker shares one loopback caller behind the ingress, so the per-address windows are widened here; production keeps the defaults (600 / 30 per minute).

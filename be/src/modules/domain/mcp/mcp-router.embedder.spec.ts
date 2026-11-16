@@ -1,4 +1,5 @@
 import { createRouter } from "@starci/ai-router/gateway"
+import { Secret } from "@modules/platform/config"
 import type { McpIndexOptions } from "./mcp-index.options"
 import { McpRouterEmbedder, localBaseUrlOf } from "./mcp-router.embedder"
 
@@ -8,7 +9,8 @@ jest.mock("@starci/ai-router/gateway", () => ({
 }))
 
 const options = (embed: McpIndexOptions["embed"]): McpIndexOptions => ({ embed, harnessDir: null, qdrant: null })
-const LOCAL = { url: "http://localhost:11434", model: "qwen3-embedding:8b" }
+const LOCAL = { url: "http://localhost:11434", apiKey: null, model: "qwen3-embedding:8b" }
+const HOST = { url: "https://embed.starci.org/v1", apiKey: new Secret("host-token"), model: "qwen3-embedding:8b" }
 
 const routerAnswering = (embeddings: jest.Mock): void => {
     ;(createRouter as jest.Mock).mockReturnValue({ embeddings })
@@ -51,6 +53,16 @@ describe("McpRouterEmbedder", () => {
         expect(vectors).toHaveLength(2)
         expect(vectors?.[0]).toHaveLength(1024)
         expect(Math.hypot(...(vectors?.[0] ?? []))).toBeCloseTo(1, 10)
+    })
+
+    it("reads the token of the shared host service from the sealed secret at each attempt", async () => {
+        routerAnswering(jest.fn())
+        new McpRouterEmbedder(options(HOST))
+        const config = (createRouter as jest.Mock).mock.calls[0]?.[0]
+        expect(config.providers[0].baseUrl).toBe("https://embed.starci.org/v1")
+        expect(config.providers[0].keys).toHaveLength(1)
+        expect(config.providers[0].keys[0].resolve()).toBe("host-token")
+        expect(JSON.stringify(config)).not.toContain("host-token")
     })
 
     it("sends at most 16 texts per call", async () => {

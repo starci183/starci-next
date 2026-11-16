@@ -1,9 +1,12 @@
+import type { Secret } from "@modules/platform/config"
 import type { QdrantConfig } from "@modules/integrations/qdrant"
 
-/** The local embedder semantic search asks: the address of an Ollama server and its model. */
+/** The embedder semantic search asks: the OpenAI-compatible address of a `local` ai-router provider, its token and its model. */
 export interface McpEmbedOptions {
-    /** The Ollama base address, for example `http://localhost:11434`. */
+    /** The base address, `https://embed.starci.org/v1` for the shared host service or `http://localhost:11434/v1` for an own Ollama. */
     readonly url: string
+    /** The token of the service (`LOCAL_AI_API_KEY`, sealed), or null for a keyless server. */
+    readonly apiKey: Secret | null
     /** The embedding model, `qwen3-embedding:8b` unless the environment names another. */
     readonly model: string
 }

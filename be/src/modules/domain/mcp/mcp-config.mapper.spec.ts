@@ -21,7 +21,7 @@ describe("parseMcpConfig", () => {
                 QDRANT_VECTOR_SIZE: "1024",
             }),
         )
-        expect(config.embed).toEqual({ url: "http://localhost:11434", model: "qwen3-embedding:8b" })
+        expect(config.embed).toEqual({ url: "http://localhost:11434", apiKey: null, model: "qwen3-embedding:8b" })
         expect(config.harnessDir).toBe("D:/content")
         expect(config.qdrant).toMatchObject({
             url: "http://127.0.0.1:3293",
@@ -30,6 +30,15 @@ describe("parseMcpConfig", () => {
             dimensions: 1024,
             timeoutMs: 5000,
         })
+    })
+
+    it("reads the token of the shared host embeddings service as a sealed secret", () => {
+        const config = parseMcpConfig(
+            new EnvSource({ MCP_EMBED_URL: "https://embed.starci.org/v1", LOCAL_AI_API_KEY: "host-token" }),
+        )
+        expect(config.embed?.url).toBe("https://embed.starci.org/v1")
+        expect(config.embed?.apiKey?.reveal()).toBe("host-token")
+        expect(JSON.stringify(config)).not.toContain("host-token")
     })
 
     it("requires the vector size once a Qdrant address is declared", () => {
