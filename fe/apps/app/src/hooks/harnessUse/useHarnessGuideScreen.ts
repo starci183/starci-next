@@ -14,7 +14,7 @@ import {
     type HarnessCommonLabels,
 } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useGetHarnessGuideSwr, useQueryHarnessCatalogSwr } from "@/hooks/swr"
+import { useQueryHarnessGuideSwr, useQueryHarnessCatalogSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_ROUTES, harnessGuidePath } from "@/modules/routes"
 import {
@@ -118,7 +118,7 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
     const router = navigation.useRouter()
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const guide = useGetHarnessGuideSwr(route.slug, locale)
+    const guide = useQueryHarnessGuideSwr(route.slug, locale)
     const catalog = useQueryHarnessCatalogSwr(locale)
     const { choose } = useHarnessTool()
     const [isOnlyFailing, setOnlyFailing] = useState(false)

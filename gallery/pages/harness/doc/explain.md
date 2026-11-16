@@ -1,10 +1,10 @@
 ---
 title: Harness, một bài giải thích
-route: /harness/docs/why-agents-cut-corners
+route: /harness/docs/[doc]
 area: harness
 ---
 
-Route: `/harness/docs/{doc}`. Mã: `fe/apps/app/src/components/blocks/HarnessDoc/`, dữ liệu qua `hooks/harnessDocs/useHarnessDocScreen.ts`.
+Route: `/harness/docs/{doc}`. Mã: `fe/apps/app/src/components/blocks/HarnessDoc/`, dữ liệu qua `fe/apps/app/src/hooks/harnessDocs/useHarnessDocScreen.ts`.
 
 ## Thân bài dài (markdown, bảng, sơ đồ)
 

@@ -1,10 +1,10 @@
 ---
 title: Harness, một build
-route: /harness/build/agent-cli
+route: /harness/build/[build]
 area: harness
 ---
 
-Route: `/harness/build/{build}?stage={stage}`. Mã: `fe/apps/app/src/components/blocks/HarnessBuild/`, dữ liệu qua `hooks/harnessBuild/useHarnessBuildScreen.ts` (`harnessBuild.shared.ts` dựng view). Kết quả e2e được đọc lại mỗi 2 giây khi có chặng đang chạy và mỗi 10 giây trong lúc còn lại (`hooks/swr/api/graphql/queries/useGetHarnessBuildSwr.ts`), cùng cách trang bài học đọc kết quả relay.
+Route: `/harness/build/{build}?stage={stage}`. Mã: `fe/apps/app/src/components/blocks/HarnessBuild/`, dữ liệu qua `fe/apps/app/src/hooks/harnessBuild/useHarnessBuildScreen.ts` (`harnessBuild.shared.ts` dựng view). Kết quả e2e được đọc lại mỗi 2 giây khi có chặng đang chạy và mỗi 10 giây trong lúc còn lại (`fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryHarnessBuildSwr.ts`), cùng cách trang bài học đọc kết quả relay.
 
 ## Băng đầu trang (tên build, mô tả, chip e2e)
 
@@ -15,7 +15,7 @@ Grammar: `Page header` (`breadcrumbs`, `meta`, `tabs`).
 ## Danh sách các chặng
 
 Vì sao: các chặng nằm đầu trang, mỗi chặng một hàng phẳng với chip kết quả (Xanh, Đỏ, Chưa chạy) và số ca đạt làm meta. Hàng chặng đang mở được tô nhẹ. Chọn chặng là một liên kết (`?stage=`), nên mở thẳng được từ lệnh của CLI.
-Luật: `FE-ERROR-1`, `surface-layering.md`.
+Luật: `FE-ERROR-1`, `FE-UI-1`.
 Grammar: `Section kind="list"` với `ListRowData.state="informative"` cho hàng đang mở.
 
 ## Lệnh tải source mẫu

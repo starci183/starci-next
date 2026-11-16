@@ -4,7 +4,7 @@ route: /harness/use
 area: harness
 ---
 
-Route: `/harness/use`. Mã: `fe/apps/app/src/components/blocks/HarnessUse/`, dữ liệu qua `hooks/harnessUse/useHarnessUseScreen.ts`. Danh mục được đọc lại mỗi 10 giây để kết quả `harness doctor` và bẫy thử chạy từ terminal hiện ra mà không cần tải lại.
+Route: `/harness/use`. Mã: `fe/apps/app/src/components/blocks/HarnessUse/`, dữ liệu qua `fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts`. Danh mục được đọc lại mỗi 10 giây để kết quả `harness doctor` và bẫy thử chạy từ terminal hiện ra mà không cần tải lại.
 
 ## Chọn công cụ
 

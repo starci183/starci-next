@@ -7,11 +7,11 @@ import { readHarnessGuide } from "@/modules/harness-source"
 import type { HarnessGuideView } from "@/modules/types"
 
 /** Cache identity of one guide; the viewer, the guide and the language are part of the key. */
-export const GET_HARNESS_GUIDE_SWR_KEY = "GET_HARNESS_GUIDE_SWR"
+export const QUERY_HARNESS_GUIDE_SWR_KEY = "QUERY_HARNESS_GUIDE_SWR"
 
 /** Reads one guide of part 2 with its markdown; the read answers undefined for a guide that does not exist. */
-export const useGetHarnessGuideSwr = (slug: string, locale: string): SWRResponse<HarnessGuideView | undefined> => {
-    const viewer = viewerKey(GET_HARNESS_GUIDE_SWR_KEY, useViewerId())
+export const useQueryHarnessGuideSwr = (slug: string, locale: string): SWRResponse<HarnessGuideView | undefined> => {
+    const viewer = viewerKey(QUERY_HARNESS_GUIDE_SWR_KEY, useViewerId())
     return useSWR<HarnessGuideView | undefined>(viewer === null ? null : [...viewer, slug, locale], () =>
         readHarnessGuide(slug, locale),
     )

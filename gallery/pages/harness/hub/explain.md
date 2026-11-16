@@ -4,7 +4,7 @@ route: /harness
 area: harness
 ---
 
-Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `hooks/harness/useHarnessHubScreen.ts`. Nội dung đang là fixture có kiểu (`modules/harness-source`) cho tới khi API của harness-be có.
+Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts`. Nội dung đang là fixture có kiểu (`fe/apps/app/src/modules/harness-source`) cho tới khi API của harness-be có.
 
 ## Băng đầu trang (tiêu đề, dòng phụ, bốn tab)
 
@@ -15,7 +15,7 @@ Grammar: `Page header={{ breadcrumbs: "root", title, description, tabs: { kind: 
 ## Dải số liệu tiến độ
 
 Vì sao: bốn con số (build xong, chặng xanh, kiểm tra máy, bẫy thử sạch) đứng thành một dải full-width giữa hai đường kẻ mảnh, không thẻ, không nền. Học viên thấy mình đang ở đâu trong một cái liếc, không phải mở từng phần.
-Luật: `FE-ERROR-1` (dải là một vùng đọc dữ liệu, loading vẽ lại đúng khung), `surface-layering.md` (ribbon thay cho thẻ số liệu).
+Luật: `FE-ERROR-1` (dải là một vùng đọc dữ liệu, loading vẽ lại đúng khung), `FE-UI-1` (ribbon thay cho thẻ số liệu).
 Grammar: `Section kind="figures" ribbon ariaLabel` (`frame/Section/index.d.ts`, `ribbon` từ 0.40.0).
 
 ## Danh sách ba phần
@@ -26,6 +26,6 @@ Grammar: `Section kind="list" items` với `ListRowData` (`leading.position`, `b
 
 ## Chọn công cụ (Claude Code hoặc Codex)
 
-Vì sao: chọn công cụ là chọn một giá trị cho cả khu (hướng dẫn, kiểm tra máy và bẫy thử đều theo nó), nên dùng nhóm chip chọn một, không phải tab chuyển màn hình. Lựa chọn được nhớ riêng cho từng học viên trong trình duyệt (`modules/harness-tool`).
+Vì sao: chọn công cụ là chọn một giá trị cho cả khu (hướng dẫn, kiểm tra máy và bẫy thử đều theo nó), nên dùng nhóm chip chọn một, không phải tab chuyển màn hình. Lựa chọn được nhớ riêng cho từng học viên trong trình duyệt (`fe/apps/app/src/modules/harness-tool`).
 Luật: `FE-STORAGE` (chỉ module chạm localStorage), `FE-STATE-1`.
 Grammar: `ChoiceChips` (`composite/ChoiceChips/index.d.ts`), đặt trong `Section` có chú thích dưới.

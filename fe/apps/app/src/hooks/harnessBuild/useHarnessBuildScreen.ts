@@ -5,7 +5,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { harnessHeaderOf, useHarnessCommonLabels, type HarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useGetHarnessBuildSwr } from "@/hooks/swr"
+import { useQueryHarnessBuildSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_ROUTES } from "@/modules/routes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
@@ -60,7 +60,7 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
     const format = useFormatter()
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useGetHarnessBuildSwr(route.buildId, locale)
+    const read = useQueryHarnessBuildSwr(route.buildId, locale)
     const [isOnlyOpen, setOnlyOpen] = useState(false)
     useDocumentTitle(read.data?.title)
     const words = {

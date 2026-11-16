@@ -7,7 +7,7 @@ import { readHarnessBuild } from "@/modules/harness-source"
 import type { HarnessBuildView } from "@/modules/types"
 
 /** Cache identity of one build; the viewer, the build and the language are part of the key. */
-export const GET_HARNESS_BUILD_SWR_KEY = "GET_HARNESS_BUILD_SWR"
+export const QUERY_HARNESS_BUILD_SWR_KEY = "QUERY_HARNESS_BUILD_SWR"
 
 /** How often the build is read again while a stage is running: the stage list follows the learner's machine live. */
 const RUNNING_POLL_MS = 2000
@@ -16,8 +16,8 @@ const RUNNING_POLL_MS = 2000
 const IDLE_POLL_MS = 10_000
 
 /** Reads one build with the newest e2e result of each stage; the read answers undefined for a build that does not exist. */
-export const useGetHarnessBuildSwr = (buildId: string, locale: string): SWRResponse<HarnessBuildView | undefined> => {
-    const viewer = viewerKey(GET_HARNESS_BUILD_SWR_KEY, useViewerId())
+export const useQueryHarnessBuildSwr = (buildId: string, locale: string): SWRResponse<HarnessBuildView | undefined> => {
+    const viewer = viewerKey(QUERY_HARNESS_BUILD_SWR_KEY, useViewerId())
     return useSWR<HarnessBuildView | undefined>(
         viewer === null ? null : [...viewer, buildId, locale],
         () => readHarnessBuild(buildId, locale),

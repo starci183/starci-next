@@ -11,7 +11,7 @@ import {
     type HarnessCommonLabels,
 } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useGetHarnessDocSwr } from "@/hooks/swr"
+import { useQueryHarnessDocSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_ROUTES } from "@/modules/routes"
 import type { DataSlot, HarnessSectionView, SlotLabels } from "@/modules/types"
@@ -64,7 +64,7 @@ export const useHarnessDocScreen = (route: DocRoute): HarnessDocScreen => {
     const t = useTranslations("app.harness.doc")
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
-    const read = useGetHarnessDocSwr(route.slug, locale)
+    const read = useQueryHarnessDocSwr(route.slug, locale)
     useDocumentTitle(read.data?.title)
     return {
         props: {
