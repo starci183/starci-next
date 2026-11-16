@@ -1,4 +1,4 @@
-import { Badge, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Cluster, Heading, Stack, Text } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { ArtBeside } from "../../frames/ArtBeside"
 import { UpsellRow, type UpsellRowProps } from "../UpsellRow"
@@ -19,27 +19,25 @@ type CatalogIntroProps = {
 
 /** The intro of the catalog: what it is, how much is open and, for a reader without Premium, the one way to Premium. */
 export const CatalogIntro = (props: CatalogIntroProps) => (
-    <SurfaceCard ariaLabel={props.title}>
-        <ArtBeside art={props.art}>
-            <Stack gap="row">
-                <Stack gap="identity">
-                    <Text size="sm" tone="muted">
-                        {props.eyebrow}
-                    </Text>
-                    <Heading level={1} scale="title">
-                        {props.title}
-                    </Heading>
-                </Stack>
-                <Text as="p">{props.description}</Text>
-                <Cluster gap="inline" wrap>
-                    {props.facts.map((fact) => (
-                        <Badge key={fact} tone="neutral">
-                            {fact}
-                        </Badge>
-                    ))}
-                </Cluster>
-                {props.upsell === undefined ? null : <UpsellRow {...props.upsell} />}
+    <ArtBeside art={props.art}>
+        <Stack gap="row">
+            <Stack gap="identity">
+                <Text size="sm" tone="muted">
+                    {props.eyebrow}
+                </Text>
+                <Heading level={1} scale="standard">
+                    {props.title}
+                </Heading>
             </Stack>
-        </ArtBeside>
-    </SurfaceCard>
+            <Text as="p">{props.description}</Text>
+            <Cluster gap="inline" wrap>
+                {props.facts.map((fact) => (
+                    <Badge key={fact} tone="neutral">
+                        {fact}
+                    </Badge>
+                ))}
+            </Cluster>
+            {props.upsell === undefined ? null : <UpsellRow {...props.upsell} />}
+        </Stack>
+    </ArtBeside>
 )

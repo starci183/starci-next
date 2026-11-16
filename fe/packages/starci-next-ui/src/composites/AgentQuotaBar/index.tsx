@@ -1,4 +1,4 @@
-import { Progress, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Progress, Section, Stack, Text } from "@starci/grammar/common"
 
 /** The state of the model-call line: a bar to count down, the own account of the learner, or the hard stop. */
 export type AgentQuotaBarTone = "remaining" | "ownAccount" | "stopped"
@@ -20,25 +20,26 @@ type AgentQuotaBarProps = {
 }
 
 /** The quota bar: the calls left today with a bar, the hard-stop state at zero, or the note that the learner pays on their own account. */
-export const AgentQuotaBar = (props: AgentQuotaBarProps) => (
-    <SurfaceCard
-        ariaLabel={props.title}
-        state={props.tone === "stopped" ? "negative" : "neutral"}
-        {...(props.isLoading === true ? { isLoading: true } : {})}
-    >
-        <Stack gap="row">
-            <Text as="p" size="md">
-                {props.title}
-            </Text>
-            {props.percentLeft === undefined ? null : (
-                <Progress
-                    label={props.barLabel}
-                    value={props.percentLeft}
-                    valueText={props.valueText}
-                    tone={props.tone === "stopped" ? "danger" : "accent"}
-                />
-            )}
-            <Text tone="muted">{props.description}</Text>
-        </Stack>
-    </SurfaceCard>
-)
+export const AgentQuotaBar = (props: AgentQuotaBarProps) =>
+    props.tone === "stopped" ? (
+        <Alert
+            tone="negative"
+            title={props.title}
+            description={props.description}
+            {...(props.isLoading === true ? { isLoading: true } : {})}
+        />
+    ) : (
+        <Section title={props.title} headingLevel={2} {...(props.isLoading === true ? { isLoading: true } : {})}>
+            <Stack gap="row">
+                {props.percentLeft === undefined ? null : (
+                    <Progress
+                        label={props.barLabel}
+                        value={props.percentLeft}
+                        valueText={props.valueText}
+                        tone="accent"
+                    />
+                )}
+                <Text tone="muted">{props.description}</Text>
+            </Stack>
+        </Section>
+    )

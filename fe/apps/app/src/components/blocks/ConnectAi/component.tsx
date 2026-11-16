@@ -10,7 +10,6 @@ import {
     PaneSection,
     Section,
     Stack,
-    SurfaceCard,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -108,20 +107,21 @@ const TokensCard = (props: ConnectAiBaseProps) => {
             onRetry={props.on.retry}
             render={(tokens, isLoading) =>
                 tokens.length === 0 ? (
-                    <SurfaceCard label={view.labels.tokensTitle} count={0} isLoading={isLoading}>
+                    <Section title={view.labels.tokensTitle} headingLevel={2} count={0} isLoading={isLoading}>
                         <Text size="sm" tone="muted">
                             {view.labels.tokensEmpty}
                         </Text>
-                    </SurfaceCard>
+                    </Section>
                 ) : (
-                    <SurfaceCard
+                    <Section
                         kind="list"
-                        label={view.labels.tokensTitle}
+                        title={view.labels.tokensTitle}
+                        headingLevel={2}
                         count={tokens.length}
                         isLoading={isLoading}
                         items={tokens.map((token) => tokenRowOf(token, props))}
                         empty={null}
-                        note={view.labels.tokensLimit}
+                        caption={view.labels.tokensLimit}
                     />
                 )
             }
@@ -133,7 +133,7 @@ const TokensCard = (props: ConnectAiBaseProps) => {
 const CreateCard = (props: ConnectAiBaseProps) => {
     const view = props.props
     return (
-        <SurfaceCard label={view.labels.endpointTitle}>
+        <Section title={view.labels.endpointTitle} headingLevel={2}>
             <Stack gap="row">
                 <Text size="sm" tone="muted">
                     {view.labels.endpointHint}
@@ -170,7 +170,7 @@ const CreateCard = (props: ConnectAiBaseProps) => {
                     </Stack>
                 )}
             </Stack>
-        </SurfaceCard>
+        </Section>
     )
 }
 

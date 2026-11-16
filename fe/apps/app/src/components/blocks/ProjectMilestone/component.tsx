@@ -1,5 +1,6 @@
 import {
     Badge,
+    DataTable,
     Divider,
     Link,
     Page,
@@ -8,7 +9,6 @@ import {
     PaneSection,
     Section,
     Stack,
-    SurfaceCard,
     Text,
     type ListRowData,
     type TableRowData,
@@ -130,43 +130,45 @@ const runRowOf = (run: EvidenceRunView): TableRowData => ({
     },
 })
 
-/** The well: the concept list card and the runs table card, separate floating cards. */
+/** The well: the concept list and the runs table, flat on the surface under their section heads. */
 const Well = (props: WellProps) => {
     const { view, isLoading } = props
     const { labels } = props.props
     const open = view.concepts.find((concept) => concept.id === props.props.openId)
     return (
         <Stack gap="region">
-            <SurfaceCard
-                label={labels.conceptsLabel}
+            <Section
+                title={labels.conceptsLabel}
+                headingLevel={2}
                 count={view.concepts.length}
                 isLoading={isLoading}
                 kind="list"
                 items={view.concepts.map((concept) => conceptRowOf(concept, props))}
                 empty={<Text tone="muted">{labels.runsEmpty}</Text>}
             />
-            <SurfaceCard
-                label={labels.runsLabel}
-                count={view.runs.length}
-                isLoading={isLoading}
-                kind="table"
-                columns={[
-                    { id: "concept", label: labels.columns.concept },
-                    { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
-                    { id: "result", label: labels.columns.result, width: "fit" },
-                    { id: "level", label: labels.columns.level, hideBelow: "tablet" },
-                    { id: "when", label: labels.columns.when, width: "fit" },
-                ]}
-                rows={view.runs.map((run) => runRowOf(run))}
-                empty={
-                    <Stack gap="identity">
-                        <Text isStrong>{labels.runsEmpty}</Text>
-                        <Text size="sm" tone="muted">
-                            {labels.runsEmptyText}
-                        </Text>
-                    </Stack>
-                }
-            />
+            <Section title={labels.runsLabel} headingLevel={2} count={view.runs.length} isLoading={isLoading}>
+                <DataTable
+                    label={labels.runsLabel}
+                    isLoading={isLoading}
+                    columns={[
+                        { id: "concept", label: labels.columns.concept },
+                        { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
+                        { id: "result", label: labels.columns.result, width: "fit" },
+                        { id: "level", label: labels.columns.level, hideBelow: "tablet" },
+                        { id: "when", label: labels.columns.when, width: "fit" },
+                    ]}
+                    rows={view.runs.map((run) => runRowOf(run))}
+                    renderCell={(row, columnId) => row.cells[columnId]}
+                    emptyContent={
+                        <Stack gap="identity">
+                            <Text isStrong>{labels.runsEmpty}</Text>
+                            <Text size="sm" tone="muted">
+                                {labels.runsEmptyText}
+                            </Text>
+                        </Stack>
+                    }
+                />
+            </Section>
             {open === undefined ? null : (
                 <ConceptDrawer
                     concept={open}
@@ -200,8 +202,8 @@ const Aside = (props: AsideProps) => (
                 <Text size="sm" tone="muted">
                     {props.labels.ciText}
                 </Text>
-                <Link href={props.labels.ciHref} variant="head">
-                    {props.labels.ciLink}
+                <Link href={props.labels.ciHref} variant="plain">
+                    {`${props.labels.ciLink} →`}
                 </Link>
             </Stack>
         </Section>

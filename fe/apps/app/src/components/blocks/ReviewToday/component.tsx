@@ -5,12 +5,11 @@ import {
     Cluster,
     EmptyNotice,
     Grid,
-    Heading,
     Link,
     Page,
     ProgressCircle,
+    Section,
     Stack,
-    SurfaceCard,
     Text,
 } from "@starci/grammar/common"
 import { ART, SlotView, UpsellRow } from "@starci-next/ui"
@@ -65,7 +64,7 @@ type PieceProps = {
 
 /** The state of the day when there is something to review: counts, the split and the way in. */
 const Summary = (props: PieceProps) => (
-    <SurfaceCard label={props.base.labels.dueTitle} isLoading={props.isLoading}>
+    <Section title={props.base.labels.dueTitle} headingLevel={2} isLoading={props.isLoading}>
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <ProgressCircle label={props.base.labels.goalLabel} value={props.screen.goalPercent} size="lg" />
@@ -91,13 +90,14 @@ const Summary = (props: PieceProps) => (
                 </Button>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The card shown when nothing is left: either the goal is met or nothing is due. */
 const Rest = (props: PieceProps) => (
-    <SurfaceCard
-        label={props.screen.state === "done" ? props.base.labels.doneTitle : props.base.labels.emptyTitle}
+    <Section
+        title={props.screen.state === "done" ? props.base.labels.doneTitle : props.base.labels.emptyTitle}
+        headingLevel={2}
         isLoading={props.isLoading}
     >
         <Stack gap="row">
@@ -119,12 +119,12 @@ const Rest = (props: PieceProps) => (
                 </Button>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The queue of the day: every row with where it comes from; locked rows say so. */
 const Queue = (props: PieceProps) => (
-    <SurfaceCard label={props.base.labels.queueTitle} isLoading={props.isLoading}>
+    <Section title={props.base.labels.queueTitle} headingLevel={2} isLoading={props.isLoading}>
         <Stack gap="row">
             {props.screen.rows.map((row) => (
                 <Cluster key={row.id} gap="inline" wrap align="center" justify="between">
@@ -140,7 +140,7 @@ const Queue = (props: PieceProps) => (
                 </Cluster>
             ))}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The well: the summary or the rest card, the queue and the Premium notice. */
@@ -164,17 +164,14 @@ const Primary = (props: PieceProps) => (
 /** The aside: where the items come from, and the link to the streak on the Learn page. */
 const Rail = (props: PieceProps) => (
     <Stack gap="region">
-        <SurfaceCard label={props.base.labels.sourcesTitle} isLoading={props.isLoading}>
+        <Section title={props.base.labels.sourcesTitle} headingLevel={2} isLoading={props.isLoading}>
             <Stack gap="row">
                 <Text>{props.screen.sourceDeck}</Text>
                 <Text>{props.screen.sourceLesson}</Text>
             </Stack>
-        </SurfaceCard>
-        <SurfaceCard ariaLabel={props.base.labels.hubLink} isLoading={props.isLoading}>
+        </Section>
+        <Section title={props.base.labels.hubLink} headingLevel={2} isLoading={props.isLoading}>
             <Stack gap="row">
-                <Heading level={3} scale="standard">
-                    {props.base.labels.hubLink}
-                </Heading>
                 <Text size="sm" tone="muted">
                     {props.base.labels.streakNote}
                 </Text>
@@ -182,7 +179,7 @@ const Rail = (props: PieceProps) => (
                     {props.base.labels.hubLink}
                 </Link>
             </Stack>
-        </SurfaceCard>
+        </Section>
     </Stack>
 )
 

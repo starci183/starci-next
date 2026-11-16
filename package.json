@@ -49,10 +49,10 @@
     "@nestjs/testing": "11.2.5",
     "@starci/eslint-canon-be": "3.27.0",
     "@starci/eslint-canon-fe": "9.20.0",
-    "@starci/eslint-grammar-core": "0.39.4",
+    "@starci/eslint-grammar-core": "0.40.1",
     "@starci/jest-preset": "2.11.0",
     "@starci/prettier-config": "1.1.0",
-    "@starci/stylelint-canon": "2.8.0",
+    "@starci/stylelint-canon": "2.9.0",
     "@starci/test-world": "2.2.0",
     "@starci/tsconfig": "2.1.1",
     "@tailwindcss/postcss": "4.3.3",
@@ -86,7 +86,7 @@
     "dayjs": "1.11.21",
     "zod": "4.6.7",
     "zustand": "5.0.12",
-    "@starci/hfs": "6.13.14",
+    "@starci/hfs": "6.13.16",
     "@starci/common": "1.0.1"
   },
   "scripts": {

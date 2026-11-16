@@ -5,9 +5,10 @@ import {
     Grid,
     Input,
     Page,
+    RadioGroup,
+    Section,
     Stack,
-    SurfaceCard,
-    type SurfaceCardProps,
+    type SectionProps,
 } from "@starci/grammar/common"
 
 /** One choice of a choice list, with the words that explain it. */
@@ -101,25 +102,25 @@ type ChoiceProps = {
     readonly on: ProjectNewBaseProps["on"]
 }
 
-/** One choice list of the form: a select card with one checked row. */
+/** One choice list of the form: the rows of one radio group, one checked. */
 const ChoiceCard = (props: ChoiceProps) => (
-    <SurfaceCard
+    <RadioGroup
         label={props.label}
-        kind="select"
-        selectionMode="single"
-        items={props.options.map((each) => ({
-            id: each.id,
-            title: each.label,
-            ...(each.hint === "" ? {} : { subtitle: each.hint }),
+        appearance="rows"
+        options={props.options.map((each) => ({
+            value: each.id,
+            label: each.label,
+            ...(each.hint === "" ? {} : { description: each.hint }),
         }))}
         value={props.props.state[props.id]}
-        onChange={(next) => props.on.set(props.id, next)}
+        onValueChange={(next) => props.on.set(props.id, next)}
     />
 )
 
-/** The numbered how-to rows as a list card. */
-const stepsCard = (props: ProjectNewBaseProps["props"]): SurfaceCardProps => ({
-    label: props.labels.howLabel,
+/** The numbered how-to rows as a flat list section. */
+const stepsList = (props: ProjectNewBaseProps["props"]): SectionProps => ({
+    title: props.labels.howLabel,
+    headingLevel: 2,
     kind: "list",
     items: props.steps.map((step, index) => ({
         id: step.id,
@@ -135,7 +136,7 @@ type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: Proje
 
 /** The card shown after the create: the secret once, and the way into the project. */
 const Created = (props: CreatedProps) => (
-    <SurfaceCard label={props.labels.createdTitle}>
+    <Section title={props.labels.createdTitle} headingLevel={2}>
         <Stack gap="row">
             <Alert tone="informative" title={props.labels.createdText} />
             <Input
@@ -155,7 +156,7 @@ const Created = (props: CreatedProps) => (
                 </Button>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** Draws the new-project page: the kind choice, the details form with its commands, and the how-to list. */
@@ -181,30 +182,7 @@ export const ProjectNewBase = (props: ProjectNewBaseProps) => {
                         {state.kind === "agent" ? (
                             <ChoiceCard id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
                         ) : null}
-                        <SurfaceCard
-                            label={labels.infoLabel}
-                            footers={[
-                                {
-                                    kind: "custom",
-                                    children: (
-                                        <Cluster gap="inline" wrap justify="end">
-                                            <Button intent="neutral" href={props.props.projectsHref}>
-                                                {labels.cancel}
-                                            </Button>
-                                            <Button
-                                                intent="commit"
-                                                startGlyph="plus"
-                                                isPending={props.props.isCreating}
-                                                isDisabled={state.name.trim() === "" || props.props.isCreating}
-                                                onPress={props.on.submit}
-                                            >
-                                                {props.props.isCreating ? labels.submitting : labels.submit}
-                                            </Button>
-                                        </Cluster>
-                                    ),
-                                },
-                            ]}
-                        >
+                        <Section title={labels.infoLabel} headingLevel={2}>
                             <Stack gap="region">
                                 <Grid kind="form">
                                     <TextField id="name" label={labels.name} {...props} />
@@ -216,13 +194,27 @@ export const ProjectNewBase = (props: ProjectNewBaseProps) => {
                                 {props.props.issueWords === "" ? null : (
                                     <Alert tone="negative" title={props.props.issueWords} />
                                 )}
+                                <Cluster gap="inline" wrap justify="end">
+                                    <Button intent="neutral" href={props.props.projectsHref}>
+                                        {labels.cancel}
+                                    </Button>
+                                    <Button
+                                        intent="commit"
+                                        startGlyph="plus"
+                                        isPending={props.props.isCreating}
+                                        isDisabled={state.name.trim() === "" || props.props.isCreating}
+                                        onPress={props.on.submit}
+                                    >
+                                        {props.props.isCreating ? labels.submitting : labels.submit}
+                                    </Button>
+                                </Cluster>
                             </Stack>
-                        </SurfaceCard>
+                        </Section>
                     </>
                 ) : (
                     <Created labels={labels} created={props.props.created} />
                 )}
-                <SurfaceCard {...stepsCard(props.props)} />
+                <Section {...stepsList(props.props)} />
             </Stack>
         </Page>
     )

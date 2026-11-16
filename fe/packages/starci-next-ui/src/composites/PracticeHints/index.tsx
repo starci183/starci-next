@@ -1,4 +1,4 @@
-import { Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Button, Cluster, Heading, Section, Stack, Text } from "@starci/grammar/common"
 import { MarkdownBody, type MarkdownBlock } from "../MarkdownBody"
 
 /** One revealed hint of the ladder. */
@@ -36,7 +36,7 @@ type PracticeHintsProps = {
 export const PracticeHints = (props: PracticeHintsProps) => {
     const isComplete = props.revealed.length >= props.total
     return (
-        <SurfaceCard label={props.labels.title}>
+        <Section title={props.labels.title} headingLevel={2}>
             <Stack gap="section">
                 <Text size="sm" tone="muted">
                     {props.labels.note}
@@ -73,6 +73,6 @@ export const PracticeHints = (props: PracticeHintsProps) => {
                     </Cluster>
                 )}
             </Stack>
-        </SurfaceCard>
+        </Section>
     )
 }

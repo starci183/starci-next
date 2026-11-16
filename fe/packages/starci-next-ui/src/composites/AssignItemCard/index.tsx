@@ -1,4 +1,4 @@
-import { Button, Cluster, Select, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, Section, Select, Stack, Text } from "@starci/grammar/common"
 import type { ReviewerChoice } from "../AppointReviewerCard"
 
 /** The words of the reassign form. */
@@ -23,7 +23,7 @@ export type AssignItemCardProps = {
 
 /** The teacher's reassign form under a pending item: the teacher's queue or one active reviewer. */
 export const AssignItemCard = (props: AssignItemCardProps) => (
-    <SurfaceCard label={props.labels.title}>
+    <Section title={props.labels.title} headingLevel={2}>
         <Stack gap="row">
             <Select
                 label={props.labels.reviewerLabel}
@@ -41,5 +41,5 @@ export const AssignItemCard = (props: AssignItemCardProps) => (
                 </Text>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

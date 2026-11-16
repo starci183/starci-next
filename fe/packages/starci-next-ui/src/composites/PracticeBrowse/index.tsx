@@ -1,4 +1,4 @@
-import { Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Section, Stack, Text } from "@starci/grammar/common"
 import { PracticeList, type PracticeRow } from "../PracticeList"
 import { SlotView, type DataSlot, type SlotLabels } from "../SlotView"
 import { UpsellRow } from "../UpsellRow"
@@ -36,7 +36,7 @@ export const PracticeBrowse = (props: PracticeBrowseProps) => (
         onRetry={props.onRetry}
         render={(view, isLoading) => (
             <Stack gap="region">
-                <SurfaceCard treatment="soft" label={props.cardLabel} isLoading={isLoading}>
+                <Section title={props.cardLabel} isLoading={isLoading} headingLevel={2}>
                     <Stack gap="row">
                         {props.intro === "" ? null : <Text as="p">{props.intro}</Text>}
                         {view.lines.map((line) => (
@@ -46,7 +46,7 @@ export const PracticeBrowse = (props: PracticeBrowseProps) => (
                         ))}
                         {props.upsell === undefined ? null : <UpsellRow {...props.upsell} />}
                     </Stack>
-                </SurfaceCard>
+                </Section>
                 <PracticeList
                     label={props.listLabel}
                     emptyLabel={props.emptyLabel}

@@ -1,4 +1,4 @@
-import { SurfaceCard, type ListRowData } from "@starci/grammar/common"
+import { Section, type ListRowData } from "@starci/grammar/common"
 import { ProjectsGlyph } from "../../leaves/Icon"
 import { RowProgress } from "../RowProgress"
 import type { MilestoneRowView } from "../ProjectAside/types"
@@ -24,12 +24,13 @@ type MilestonesCardProps = {
 
 /** The milestones: ONE list card, each row a real link to its milestone. */
 export const MilestonesCard = (props: MilestonesCardProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.label}
+        title={props.label}
         count={props.rows.length}
         isLoading={props.isLoading}
         items={props.rows.map((row) => milestoneRowOf(row, props.label))}
         empty={props.emptyLabel}
+        headingLevel={2}
     />
 )

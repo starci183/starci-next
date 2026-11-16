@@ -1,4 +1,4 @@
-import { Button, Cluster, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, Stack, Text, Textarea } from "@starci/grammar/common"
 
 /** The words of the decision cards. */
 export type ReviewDecisionLabels = {
@@ -37,45 +37,41 @@ type ReviewActionProps = {
 
 /** Verify and Return with a note, for an item that waits for a decision. */
 const DecideAction = (props: ReviewActionProps) => (
-    <SurfaceCard ariaLabel={props.labels.noteLabel}>
-        <Stack gap="row">
-            <Textarea
-                label={props.labels.noteLabel}
-                placeholder={props.labels.notePlaceholder}
-                value={props.decision.note}
-                rows={3}
-                onValueChange={props.on.editNote}
-            />
-            <Cluster gap="inline" wrap align="center">
-                <Button intent="commit" isPending={props.decision.isWorking} onPress={props.on.approve}>
-                    {props.labels.approve}
-                </Button>
-                <Button intent="alternative" isPending={props.decision.isWorking} onPress={props.on.giveBack}>
-                    {props.labels.giveBack}
-                </Button>
-            </Cluster>
-            <Text size="sm" tone="muted">
-                {props.labels.rules}
-            </Text>
-        </Stack>
-    </SurfaceCard>
+    <Stack gap="row">
+        <Textarea
+            label={props.labels.noteLabel}
+            placeholder={props.labels.notePlaceholder}
+            value={props.decision.note}
+            rows={3}
+            onValueChange={props.on.editNote}
+        />
+        <Cluster gap="inline" wrap align="center">
+            <Button intent="commit" isPending={props.decision.isWorking} onPress={props.on.approve}>
+                {props.labels.approve}
+            </Button>
+            <Button intent="alternative" isPending={props.decision.isWorking} onPress={props.on.giveBack}>
+                {props.labels.giveBack}
+            </Button>
+        </Cluster>
+        <Text size="sm" tone="muted">
+            {props.labels.rules}
+        </Text>
+    </Stack>
 )
 
 /** Revoke with its reason, for the teacher on a verified item. */
 const RevokeAction = (props: ReviewActionProps) => (
-    <SurfaceCard ariaLabel={props.labels.revokeLabel}>
-        <Stack gap="row">
-            <Textarea
-                label={props.labels.revokeLabel}
-                value={props.decision.note}
-                rows={3}
-                onValueChange={props.on.editNote}
-            />
-            <Button intent="destructive" isPending={props.decision.isWorking} onPress={props.on.revoke}>
-                {props.labels.revoke}
-            </Button>
-        </Stack>
-    </SurfaceCard>
+    <Stack gap="row">
+        <Textarea
+            label={props.labels.revokeLabel}
+            value={props.decision.note}
+            rows={3}
+            onValueChange={props.on.editNote}
+        />
+        <Button intent="destructive" isPending={props.decision.isWorking} onPress={props.on.revoke}>
+            {props.labels.revoke}
+        </Button>
+    </Stack>
 )
 
 /** Props for {@link ReviewDecisionCard}. */

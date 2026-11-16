@@ -1,4 +1,4 @@
-import { Cluster, Progress, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Cluster, Progress, Section, Stack, Text } from "@starci/grammar/common"
 
 /** One dimension of the report, already in words. */
 export type InterviewAttribute = {
@@ -22,7 +22,7 @@ const barToneOf = (score: number): "success" | "warning" | "danger" => {
 /** The score of each dimension of an interview as a bar with its number. */
 export const InterviewAttributeBars = (props: InterviewAttributeBarsProps) =>
     props.attributes.length === 0 ? null : (
-        <SurfaceCard label={props.title}>
+        <Section title={props.title} headingLevel={2}>
             <Stack gap="section">
                 {props.attributes.map((each) => (
                     <Stack key={each.id} gap="row">
@@ -41,5 +41,5 @@ export const InterviewAttributeBars = (props: InterviewAttributeBarsProps) =>
                     </Stack>
                 ))}
             </Stack>
-        </SurfaceCard>
+        </Section>
     )

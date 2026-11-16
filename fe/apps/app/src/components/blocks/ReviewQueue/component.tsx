@@ -1,16 +1,4 @@
-import {
-    Badge,
-    Button,
-    Cluster,
-    Grid,
-    Heading,
-    Link,
-    Page,
-    Stack,
-    SurfaceCard,
-    Tabs,
-    Text,
-} from "@starci/grammar/common"
+import { Badge, Button, Cluster, Grid, Heading, Link, Page, Section, Stack, Tabs, Text } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -137,19 +125,19 @@ const QueueRow = (props: QueueRowProps) => (
 
 /** The rail: the rows of the tab. */
 const QueueList = (props: QueueListProps) => (
-    <SurfaceCard label={props.labels.listLabel} note={props.view.count}>
+    <Section title={props.labels.listLabel} headingLevel={2} fact={props.view.count}>
         <Stack gap="row">
             {props.view.rows.length === 0 ? <Text tone="muted">{props.labels.empty}</Text> : null}
             {props.view.rows.map((row) => (
                 <QueueRow key={row.itemId} row={row} labels={props.labels} on={props.on} />
             ))}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The reviewer appointments the teacher sees on the Reviewers tab. */
 const ReviewerList = (props: ReviewerListProps) => (
-    <SurfaceCard label={props.labels.reviewersLabel}>
+    <Section title={props.labels.reviewersLabel} headingLevel={2}>
         <Stack gap="row">
             {props.rows.length === 0 ? <Text tone="muted">{props.labels.reviewersEmpty}</Text> : null}
             {props.rows.map((row) => (
@@ -166,7 +154,7 @@ const ReviewerList = (props: ReviewerListProps) => (
                 </Cluster>
             ))}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The rail of rows beside the review panel of the chosen row. */
