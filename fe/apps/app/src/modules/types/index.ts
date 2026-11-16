@@ -140,3 +140,23 @@ export type {
 } from "@starci-next/ui"
 export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
 export type { InterviewRoomLabels } from "./interviewRoom"
+export type {
+    ProfileCvLine,
+    ProfileCvView,
+    ProfileDeviceView,
+    ProfileHubLabels,
+    ProfileHubViews,
+    ProfileIdentityView,
+    ProfilePlanView,
+    ProfileTokenView,
+    ProfileVerifyLink,
+} from "./profile"
+export type {
+    ProgressActivityEntry,
+    ProgressBlockView,
+    ProgressFigureView,
+    ProgressLabels,
+    ProgressLinkView,
+    ProgressListView,
+    ProgressPageView,
+} from "./progress"

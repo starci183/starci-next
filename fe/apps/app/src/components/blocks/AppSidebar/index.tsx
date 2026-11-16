@@ -30,6 +30,7 @@ type AppSidebarProps = {
 type Destination = {
     readonly id:
         | "learn"
+        | "progress"
         | "essentials"
         | "review"
         | "interview"
@@ -46,6 +47,7 @@ type Destination = {
 
 const MAIN: ReadonlyArray<Destination> = [
     { id: "learn", route: APP_ROUTES.home, source: LearnGlyph },
+    { id: "progress", route: APP_ROUTES.progress, source: ExperienceGlyph },
     { id: "essentials", route: APP_ROUTES.essentials, source: EssentialsGlyph },
     { id: "review", route: APP_ROUTES.review, source: ReviewGlyph },
     { id: "interview", route: APP_ROUTES.interview, source: InterviewGlyph },

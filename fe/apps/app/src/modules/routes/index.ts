@@ -14,6 +14,7 @@ export const APP_ROUTES = {
     projectsNew: "/projects/new",
     practice: "/practice",
     premiumResult: "/premium/result",
+    progress: "/progress",
     pathsChoose: "/paths/choose",
     review: "/review",
     reviewDecks: "/review/decks",

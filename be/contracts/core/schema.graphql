@@ -79,6 +79,26 @@ input AssignExperienceInput {
   reviewerId: String = null @inputBounds(maxLength: 40)
 }
 
+type AvatarLimitsType {
+  contentTypes: [String!]!
+  maxBytes: Int!
+  nameMax: Int!
+}
+
+type AvatarUploadHeaderType {
+  name: String!
+  value: String!
+}
+
+type AvatarUploadType {
+  expiresAt: String!
+  headers: [AvatarUploadHeaderType!]!
+  key: String!
+  limits: AvatarLimitsType!
+  method: String!
+  url: String!
+}
+
 input CheckRecallClozeInput {
   choice: String! @inputBounds(maxLength: 300)
   itemId: String! @inputBounds(maxLength: 300)
@@ -104,6 +124,13 @@ input ChooseOutcomePathInput {
 type ChosenOutcomePathType {
   activePathId: String!
   chosenAt: String!
+}
+
+input ConfirmAvatarUploadInput {
+  contentType: String! @inputBounds(maxLength: 100)
+  key: String! @inputBounds(maxLength: 200)
+  locale: String! = "vi"
+  size: Int! @inputBounds(min: 1, max: 2147483647)
 }
 
 input CreateMcpTokenInput {
@@ -540,6 +567,22 @@ type LearnerHubType {
   shards: [HubShardType!]!
   streak: HubStreakType!
   today: [HubTodayType!]!
+}
+
+input LearnerProgressInput {
+  locale: String! = "vi"
+}
+
+type LearnerProgressType {
+  activity: [ProgressActivityType!]!
+  essentials: ProgressEssentialsType
+  harness: ProgressHarnessType
+  plan: String!
+  projects: ProgressProjectsType
+  projectsLocked: Boolean!
+  review: ProgressReviewType
+  ribbon: ProgressRibbonType!
+  unavailable: [String!]!
 }
 
 type LessonActivityType {
@@ -1052,6 +1095,7 @@ type Mutation {
   assignExperience(input: AssignExperienceInput!): ExperienceItemType!
   checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
   chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
+  confirmAvatarUpload(input: ConfirmAvatarUploadInput!): ProfileType!
   confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
   createMcpToken(input: CreateMcpTokenInput!): McpTokenIssuedType!
   createProject(input: CreateProjectInput!): ProjectSecretType!
@@ -1067,7 +1111,9 @@ type Mutation {
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayLog(input: RelayLogInput!): RelayUploadType!
   relayManifestAck(input: RelayManifestAckInput!): RelayUploadType!
+  removeAvatar(input: ProfileInput!): ProfileType!
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
+  requestAvatarUpload(input: RequestAvatarUploadInput!): AvatarUploadType!
   retryInterviewTurn(input: InterviewSessionRefInput!): InterviewAnswerType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
   revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
@@ -1078,6 +1124,7 @@ type Mutation {
   runProjectProbes(input: RunProjectProbesInput!): ProjectProbeRunType!
   saveLessonSimulation(input: SaveLessonSimulationInput!): LessonProgressSimulationType!
   setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
+  setProfileName(input: SetProfileNameInput!): ProfileType!
   setProjectConcept(input: SetProjectConceptInput!): ProjectConceptType!
   setProjectRepository(input: SetProjectRepositoryInput!): ProjectRepositoryType!
   setReviewGoal(input: SetRecallGoalInput!): RecallGoalSetType!
@@ -1320,6 +1367,142 @@ type PremiumOrderType {
   status: String!
 }
 
+type ProfileGoalType {
+  pathId: String!
+  title: String!
+}
+
+input ProfileInput {
+  locale: String! = "vi"
+}
+
+type ProfileType {
+  avatarUpdatedAt: String
+  avatarUrl: String
+  displayName: String
+  goal: ProfileGoalType
+  limits: AvatarLimitsType!
+}
+
+type ProgressActivityType {
+  at: String!
+  id: String!
+  kind: String!
+  title: String!
+}
+
+type ProgressBuildType {
+  buildId: String!
+  stages: [ProgressStageType!]!
+  stagesPractising: Int!
+  stagesProved: Int!
+  stagesTotal: Int!
+  state: String!
+  title: String!
+}
+
+type ProgressDoctorType {
+  passed: Int!
+  tool: String!
+  total: Int!
+  verdict: String!
+}
+
+type ProgressEssentialsType {
+  afterCorrect: Int!
+  answered: Int!
+  beforeCorrect: Int!
+  lessonsDone: Int!
+  lessonsStarted: Int!
+  lessonsTotal: Int!
+  parts: [ProgressPartType!]!
+  topics: [ProgressTopicType!]!
+}
+
+type ProgressHarnessType {
+  builds: [ProgressBuildType!]!
+  buildsDone: Int!
+  buildsTotal: Int!
+  doctor: [ProgressDoctorType!]!
+  origin: String!
+  trials: [ProgressTrialType!]!
+}
+
+type ProgressLessonType {
+  after: Int
+  before: Int
+  done: Boolean!
+  lessonId: String!
+  openerAnswered: Int!
+  openerTotal: Int!
+  started: Boolean!
+  title: String!
+}
+
+type ProgressPartType {
+  access: String!
+  order: Int!
+  part: String!
+}
+
+type ProgressProjectType {
+  milestonesDone: Int!
+  milestonesTotal: Int!
+  name: String!
+  practising: Int!
+  projectId: String!
+  proved: Int!
+  total: Int!
+}
+
+type ProgressProjectsType {
+  conceptsPractising: Int!
+  conceptsProved: Int!
+  conceptsTotal: Int!
+  milestonesDone: Int!
+  milestonesTotal: Int!
+  projects: [ProgressProjectType!]!
+}
+
+type ProgressReviewType {
+  doneToday: Int!
+  due: Int!
+  goalDaily: Int!
+  longestStreak: Int!
+  overdue: Int!
+  streak: Int!
+  todayCounted: Boolean!
+}
+
+type ProgressRibbonType {
+  buildsDone: Int!
+  lessonsDone: Int!
+  provedConcepts: Int!
+  streak: Int!
+}
+
+type ProgressStageType {
+  stageId: String!
+  state: String!
+  title: String!
+}
+
+type ProgressTopicType {
+  lessons: [ProgressLessonType!]!
+  lessonsDone: Int!
+  lessonsTotal: Int!
+  title: String!
+  topicId: String!
+}
+
+type ProgressTrialType {
+  at: String
+  title: String!
+  tool: String
+  trap: String!
+  verdict: String
+}
+
 type ProjectCatalogConceptType {
   comingSoon: Boolean!
   id: String!
@@ -1521,6 +1704,7 @@ type Query {
   interviewReadiness(input: InterviewReadinessInput!): InterviewReadinessType!
   interviewSession(input: InterviewSessionRefInput!): InterviewSessionType!
   learnerHub(input: LearnerHubInput!): LearnerHubType!
+  learnerProgress(input: LearnerProgressInput!): LearnerProgressType!
   lesson(input: LessonInput!): LessonType!
   lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
   lessonOpenerScores(input: LessonOpenerScoresInput!): [LessonOpenerScoreType!]!
@@ -1533,6 +1717,7 @@ type Query {
   myExperience(input: MyExperienceInput!): MyExperienceType!
   myNotifications(input: MyNotificationsInput = {}): NotificationPage!
   myPremium: MyPremiumType!
+  myProfile(input: ProfileInput!): ProfileType!
   outcomePaths(input: OutcomePathsInput!): OutcomePathsType!
   practicePatterns(input: PracticePatternsInput!): [PracticePatternType!]!
   practiceProblem(input: PracticeProblemInput!): PracticeProblemType!
@@ -1785,6 +1970,11 @@ input RelayUserCodeInput {
   userCode: String! @inputBounds(maxLength: 12)
 }
 
+input RequestAvatarUploadInput {
+  contentType: String! @inputBounds(maxLength: 100)
+  size: Int! @inputBounds(min: 1, max: 2147483647)
+}
+
 input RevealPracticeHintInput {
   locale: String! = "vi"
   slug: String! @inputBounds(maxLength: 100)
@@ -1909,6 +2099,11 @@ input SetExperienceReviewerInput {
   end: Boolean! = false
   parts: [String!]! @inputBounds(maxItems: 10)
   reviewerId: String! @inputBounds(maxLength: 40)
+}
+
+input SetProfileNameInput {
+  displayName: String @inputBounds(maxLength: 200)
+  locale: String! = "vi"
 }
 
 input SetProjectConceptInput {

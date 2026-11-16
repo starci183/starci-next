@@ -16,7 +16,8 @@
         "agents": "Agent và AI",
         "experience": "Kinh nghiệm đã xác minh",
         "profile": "Hồ sơ",
-        "connect": "Kết nối AI"
+        "connect": "Kết nối AI",
+        "progress": "Tiến độ"
       },
       "sidebarLabel": "Điều hướng chính",
       "experienceGroup": "Kinh nghiệm",
@@ -1760,17 +1761,6 @@
         "code": "Mã xác minh",
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
       },
-      "profile": {
-        "pageTitle": "Hồ sơ",
-        "title": "Hồ sơ của bạn",
-        "description": "Mọi mục dưới đây do StarCi chấm, không tự khai.",
-        "listTitle": "Kinh nghiệm",
-        "seeAll": "Xem tất cả",
-        "publicNote": "Hồ sơ công khai và CV chỉ hiện mục Đã xác minh; mục khác chỉ bạn thấy.",
-        "empty": "Chưa có mục kinh nghiệm nào.",
-        "gate": "{count}/{min} mục Đã xác minh để được giới thiệu việc làm",
-        "cvLater": "Xuất CV từ các mục đã xác minh sẽ có trong đợt sau."
-      },
       "lineCaption": "Dòng CV"
     },
     "devices": {
@@ -1893,6 +1883,196 @@
           "title": "Dùng trong cuộc trò chuyện",
           "note": "Mở cuộc trò chuyện mới, bật connector StarCi Next và nói tên bài bạn đang học, ví dụ: giải thích vì sao kịch bản double-spend đỏ trên máy tôi."
         }
+      }
+    },
+    "profile": {
+      "pageTitle": "Hồ sơ",
+      "title": "Hồ sơ của bạn",
+      "description": "Mọi mục dưới đây do StarCi chấm, không tự khai.",
+      "identity": {
+        "title": "Danh tính",
+        "avatarLabel": "Ảnh đại diện",
+        "upload": "Tải ảnh lên",
+        "uploading": "Đang tải ảnh lên",
+        "remove": "Xoá ảnh",
+        "removing": "Đang xoá",
+        "avatarHint": "PNG, JPEG hoặc WebP, tối đa {size}.",
+        "nameLabel": "Tên hiển thị",
+        "namePlaceholder": "Tên bạn muốn hiện",
+        "nameHint": "Để trống thì hiện tên tài khoản.",
+        "save": "Lưu tên",
+        "saving": "Đang lưu",
+        "saved": "Đã lưu tên.",
+        "error": {
+          "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
+          "size": "Ảnh quá lớn, tối đa {size}.",
+          "failed": "Chưa tải được ảnh, bạn thử lại nhé.",
+          "unavailable": "Kho ảnh chưa sẵn sàng, bạn thử lại sau.",
+          "name": "Tên phải có từ 1 đến {max} ký tự.",
+          "other": "Chưa lưu được, bạn thử lại nhé."
+        }
+      },
+      "goal": {
+        "title": "Lộ trình mục tiêu",
+        "none": "Chưa chọn lộ trình",
+        "choose": "Chọn lộ trình",
+        "change": "Đổi lộ trình"
+      },
+      "cv": {
+        "title": "Dòng CV đã xác minh",
+        "caption": "Chỉ mục Đã xác minh mới vào CV. Mục chưa được ký vẫn nằm ở Kinh nghiệm.",
+        "gate": "{count}/{min} mục Đã xác minh để được giới thiệu việc làm",
+        "pending": "{count} mục đang chờ duyệt",
+        "seeAll": "Kinh nghiệm",
+        "proof": "Bằng chứng",
+        "signed": "Ký bởi {role} ngày {date}",
+        "empty": "Chưa có dòng CV nào được xác minh. Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên.",
+        "part": {
+          "essentials": "Bản chất",
+          "projects": "Dự án",
+          "harness": "Harness"
+        }
+      },
+      "account": {
+        "devices": {
+          "title": "Máy đã nối",
+          "manage": "Quản lý",
+          "empty": "Chưa nối máy nào.",
+          "online": "Đang kết nối",
+          "offline": "Ngoại tuyến",
+          "seen": "{platform}, thấy {when}",
+          "platform": {
+            "windows": "Windows",
+            "macos": "macOS",
+            "linux": "Linux"
+          }
+        },
+        "tokens": {
+          "title": "MCP token",
+          "manage": "Mở Kết nối",
+          "empty": "Chưa có token nào.",
+          "hint": "Kết thúc bằng {hint}",
+          "used": "dùng {when}",
+          "neverUsed": "chưa dùng"
+        },
+        "plan": {
+          "title": "Gói của bạn",
+          "premium": "Premium",
+          "free": "Miễn phí",
+          "until": "Premium đến {date}",
+          "freeNote": "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí.",
+          "manage": "Quản lý gói",
+          "upgrade": "Xem Premium",
+          "premiumNote": "Mọi phần của Bản chất, Dự án và Harness đều đã mở."
+        }
+      },
+      "verify": {
+        "title": "Liên kết xác minh công khai",
+        "caption": "Người tuyển dụng mở liên kết để xem dòng đã ký, không thấy điểm số hay tên người duyệt.",
+        "copy": "Sao chép liên kết",
+        "copied": "Đã sao chép",
+        "public": "Công khai",
+        "private": "Riêng tư",
+        "empty": "Liên kết xuất hiện khi một mục được xác minh."
+      }
+    },
+    "progress": {
+      "pageTitle": "Tiến độ",
+      "title": "Tiến độ của bạn",
+      "description": "Mọi con số được đọc thẳng từ Bản chất, Harness, Dự án và Ôn tập, không lưu bản sao.",
+      "unavailable": "Chưa tải được phần này.",
+      "ribbon": {
+        "label": "Tóm tắt tiến độ",
+        "proved": "Khái niệm đã chứng minh",
+        "streak": "Chuỗi ngày",
+        "lessons": "Bài đã học",
+        "builds": "Bản dựng đã xong",
+        "days": "ngày"
+      },
+      "essentials": {
+        "title": "Bản chất",
+        "fact": "{done}/{total} bài",
+        "open": "Mở Bản chất",
+        "opener": "Câu mở bài: đúng {before}/{answered} lúc đầu, đúng {after}/{answered} sau khi học.",
+        "openerNone": "Chưa trả lời câu mở bài nào.",
+        "partsTitle": "Các phần của bài",
+        "partsCaption": "Phần 1 miễn phí. Các phần còn lại mở bằng Premium.",
+        "unlocked": "Đã mở",
+        "locked": "Cần Premium",
+        "upgrade": "Xem Premium",
+        "part": {
+          "essence": "Phần 1 · Bản chất",
+          "source": "Phần 2 · Source",
+          "script": "Phần 3 · Kịch bản",
+          "apply": "Phần 4 · Tự áp dụng"
+        },
+        "topicFact": "{done}/{total} bài",
+        "lessonOpener": "Câu mở bài: trước {before}/{total}, sau {after}/{total}",
+        "lessonNoOpener": "Chưa trả lời câu mở bài",
+        "done": "Đã học",
+        "started": "Đang học",
+        "todo": "Chưa học",
+        "empty": "Chưa có bài nào trong danh mục."
+      },
+      "harness": {
+        "title": "Harness",
+        "fact": "{done}/{total} bản dựng",
+        "open": "Mở Harness",
+        "sample": "Số liệu mẫu cho tới khi Harness nối vào.",
+        "buildsTitle": "Bản dựng",
+        "build": "{proved}/{total} giai đoạn đã chứng minh, {practising} đang luyện",
+        "proved": "Đã chứng minh",
+        "practising": "Đang luyện",
+        "none": "Chưa bắt đầu",
+        "doctorTitle": "Doctor",
+        "doctorPassed": "Đạt {passed}/{total} phép thử",
+        "doctorFailed": "Lỗi, đạt {passed}/{total} phép thử",
+        "doctorNotRun": "Chưa chạy",
+        "tool": {
+          "claude": "Claude Code",
+          "codex": "Codex"
+        },
+        "trialsTitle": "Thử bẫy",
+        "held": "Giữ vững",
+        "breached": "Bị phá",
+        "incomplete": "Chưa xong",
+        "never": "Chưa thử",
+        "trialLine": "{tool}, {when}",
+        "empty": "Chưa có bản dựng nào.",
+        "doctorFailedBadge": "Có lỗi"
+      },
+      "projects": {
+        "title": "Dự án",
+        "open": "Mở Dự án",
+        "proved": "Khái niệm đã chứng minh",
+        "practising": "Khái niệm đang luyện",
+        "milestones": "Cột mốc xong",
+        "project": "{proved}/{total} khái niệm, {done}/{milestones} cột mốc",
+        "empty": "Chưa có dự án nào.",
+        "pitchTitle": "Dự án dành cho gói Premium",
+        "pitchBody": "Dự án chấm bài làm thật của bạn bằng CI có chữ ký. Khái niệm nào qua CI mới được tính là đã chứng minh, và thành dòng CV khi thầy ký.",
+        "pitchCta": "Xem Premium"
+      },
+      "review": {
+        "title": "Ôn tập",
+        "open": "Mở Ôn tập",
+        "due": "Thẻ đến hạn",
+        "overdue": "Quá hạn",
+        "doneToday": "Đã ôn hôm nay",
+        "goal": "Mục tiêu ngày",
+        "streak": "Chuỗi hiện tại",
+        "longest": "Chuỗi dài nhất",
+        "today": "Hôm nay đã tính vào chuỗi",
+        "notToday": "Hôm nay chưa tính vào chuỗi"
+      },
+      "activity": {
+        "title": "Hoạt động gần đây",
+        "label": "Dòng thời gian hoạt động",
+        "empty": "Chưa có hoạt động nào.",
+        "lesson": "Học xong bài {title}",
+        "concept": "Chứng minh khái niệm {title}",
+        "verified": "Được xác minh: {title}",
+        "harness": "Giai đoạn Harness: {title}"
       }
     }
   }

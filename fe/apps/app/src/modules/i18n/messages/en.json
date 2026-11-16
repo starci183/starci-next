@@ -16,7 +16,8 @@
         "agents": "Agents & AI",
         "experience": "Verified experience",
         "profile": "Profile",
-        "connect": "Connect AI"
+        "connect": "Connect AI",
+        "progress": "Progress"
       },
       "sidebarLabel": "Main navigation",
       "experienceGroup": "Experience",
@@ -1760,17 +1761,6 @@
         "code": "Verification code",
         "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
       },
-      "profile": {
-        "pageTitle": "Profile",
-        "title": "Your profile",
-        "description": "Every item below was graded by StarCi, never self-reported.",
-        "listTitle": "Experience",
-        "seeAll": "See all",
-        "publicNote": "The public profile and the CV show only verified items; the others are visible to you alone.",
-        "empty": "No experience item yet.",
-        "gate": "{count}/{min} verified items for a job introduction",
-        "cvLater": "CV export from verified items comes in a later round."
-      },
       "lineCaption": "CV line"
     },
     "devices": {
@@ -1893,6 +1883,196 @@
           "title": "Use it in a chat",
           "note": "Start a new chat, switch on the StarCi Next connector and name the lesson you study, for example: explain why the double-spend scenario is red on my machine."
         }
+      }
+    },
+    "profile": {
+      "pageTitle": "Profile",
+      "title": "Your profile",
+      "description": "Everything below was graded by StarCi, never self-reported.",
+      "identity": {
+        "title": "Identity",
+        "avatarLabel": "Avatar",
+        "upload": "Upload photo",
+        "uploading": "Uploading photo",
+        "remove": "Remove photo",
+        "removing": "Removing",
+        "avatarHint": "PNG, JPEG or WebP, up to {size}.",
+        "nameLabel": "Display name",
+        "namePlaceholder": "The name to show",
+        "nameHint": "Leave it empty to show your account name.",
+        "save": "Save name",
+        "saving": "Saving",
+        "saved": "Name saved.",
+        "error": {
+          "type": "Only PNG, JPEG or WebP images.",
+          "size": "The image is too large, up to {size}.",
+          "failed": "The photo did not upload, please try again.",
+          "unavailable": "The image store is not ready, please try again later.",
+          "name": "The name must be 1 to {max} characters.",
+          "other": "Could not save, please try again."
+        }
+      },
+      "goal": {
+        "title": "Goal path",
+        "none": "No path chosen",
+        "choose": "Choose a path",
+        "change": "Change path"
+      },
+      "cv": {
+        "title": "Verified CV lines",
+        "caption": "Only Verified items reach the CV. Items not signed yet stay in Experience.",
+        "gate": "{count}/{min} verified items for a job introduction",
+        "pending": "{count} items waiting for review",
+        "seeAll": "Experience",
+        "proof": "Proof",
+        "signed": "Signed by {role} on {date}",
+        "empty": "No verified CV line yet. Finish a Harness build, a project or an Essentials lesson to earn the first one.",
+        "part": {
+          "essentials": "Essentials",
+          "projects": "Projects",
+          "harness": "Harness"
+        }
+      },
+      "account": {
+        "devices": {
+          "title": "Connected devices",
+          "manage": "Manage",
+          "empty": "No device connected.",
+          "online": "Online",
+          "offline": "Offline",
+          "seen": "{platform}, seen {when}",
+          "platform": {
+            "windows": "Windows",
+            "macos": "macOS",
+            "linux": "Linux"
+          }
+        },
+        "tokens": {
+          "title": "MCP tokens",
+          "manage": "Open Connect",
+          "empty": "No token yet.",
+          "hint": "Ends with {hint}",
+          "used": "used {when}",
+          "neverUsed": "never used"
+        },
+        "plan": {
+          "title": "Your plan",
+          "premium": "Premium",
+          "free": "Free",
+          "until": "Premium until {date}",
+          "freeNote": "Part 1 of every Essentials lesson and all of Harness are free.",
+          "manage": "Manage plan",
+          "upgrade": "See Premium",
+          "premiumNote": "Every part of Essentials, Projects and Harness is open."
+        }
+      },
+      "verify": {
+        "title": "Public verify link",
+        "caption": "A recruiter opens the link to see the signed line, never a score or a reviewer name.",
+        "copy": "Copy link",
+        "copied": "Copied",
+        "public": "Public",
+        "private": "Private",
+        "empty": "A link appears when an item is verified."
+      }
+    },
+    "progress": {
+      "pageTitle": "Progress",
+      "title": "Your progress",
+      "description": "Every number is read straight from Essentials, Harness, Projects and Review, never copied.",
+      "unavailable": "This part could not be loaded.",
+      "ribbon": {
+        "label": "Progress summary",
+        "proved": "Concepts proved",
+        "streak": "Streak",
+        "lessons": "Lessons done",
+        "builds": "Builds done",
+        "days": "days"
+      },
+      "essentials": {
+        "title": "Essentials",
+        "fact": "{done}/{total} lessons",
+        "open": "Open Essentials",
+        "opener": "Opener: {before}/{answered} right at first, {after}/{answered} right after studying.",
+        "openerNone": "No opener question answered yet.",
+        "partsTitle": "Parts of a lesson",
+        "partsCaption": "Part 1 is free. The other parts open with Premium.",
+        "unlocked": "Open",
+        "locked": "Needs Premium",
+        "upgrade": "See Premium",
+        "part": {
+          "essence": "Part 1 · Essence",
+          "source": "Part 2 · Source",
+          "script": "Part 3 · Script",
+          "apply": "Part 4 · Apply"
+        },
+        "topicFact": "{done}/{total} lessons",
+        "lessonOpener": "Opener: before {before}/{total}, after {after}/{total}",
+        "lessonNoOpener": "Opener not answered",
+        "done": "Done",
+        "started": "In progress",
+        "todo": "Not started",
+        "empty": "No lesson in the catalog yet."
+      },
+      "harness": {
+        "title": "Harness",
+        "fact": "{done}/{total} builds",
+        "open": "Open Harness",
+        "sample": "Sample numbers until Harness is connected.",
+        "buildsTitle": "Builds",
+        "build": "{proved}/{total} stages proved, {practising} practising",
+        "proved": "Proved",
+        "practising": "Practising",
+        "none": "Not started",
+        "doctorTitle": "Doctor",
+        "doctorPassed": "Passed {passed}/{total} probes",
+        "doctorFailed": "Failing, passed {passed}/{total} probes",
+        "doctorNotRun": "Not run",
+        "tool": {
+          "claude": "Claude Code",
+          "codex": "Codex"
+        },
+        "trialsTitle": "Trap trials",
+        "held": "Held",
+        "breached": "Breached",
+        "incomplete": "Incomplete",
+        "never": "Never tried",
+        "trialLine": "{tool}, {when}",
+        "empty": "No build yet.",
+        "doctorFailedBadge": "Failing"
+      },
+      "projects": {
+        "title": "Projects",
+        "open": "Open Projects",
+        "proved": "Concepts proved",
+        "practising": "Concepts practising",
+        "milestones": "Milestones done",
+        "project": "{proved}/{total} concepts, {done}/{milestones} milestones",
+        "empty": "No project yet.",
+        "pitchTitle": "Projects come with Premium",
+        "pitchBody": "Projects grade your real work with signed CI. A concept counts as proved only when CI passes it, and becomes a CV line once the teacher signs.",
+        "pitchCta": "See Premium"
+      },
+      "review": {
+        "title": "Review",
+        "open": "Open Review",
+        "due": "Cards due",
+        "overdue": "Overdue",
+        "doneToday": "Reviewed today",
+        "goal": "Daily goal",
+        "streak": "Current streak",
+        "longest": "Longest streak",
+        "today": "Today counts toward the streak",
+        "notToday": "Today does not count yet"
+      },
+      "activity": {
+        "title": "Recent activity",
+        "label": "Activity timeline",
+        "empty": "No activity yet.",
+        "lesson": "Finished the lesson {title}",
+        "concept": "Proved the concept {title}",
+        "verified": "Verified: {title}",
+        "harness": "Harness stage: {title}"
       }
     }
   }
