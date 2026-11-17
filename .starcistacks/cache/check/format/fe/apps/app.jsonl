@@ -369,13 +369,13 @@
 {"findings":[],"hash":"0981040e40268fd427019c63b433cdc126718895ab0f8ec0f484aebd5f5e8da5","path":"fe/apps/app/src/hooks/progressEssentials/index.ts","step":"prettier"}
 {"findings":[],"hash":"70319d3c13f056c2acdd0ab93c5db96dfb5a6478bcc7a6d76797fb48115d06e4","path":"fe/apps/app/src/hooks/progressEssentials/progressEssentials.shared.ts","step":"prettier"}
 {"findings":[],"hash":"5ef122d843959de27385ddb15e53b56e0395db0d86558ba47cb8f17be1a754ad","path":"fe/apps/app/src/hooks/progressHarness/index.ts","step":"prettier"}
-{"findings":[],"hash":"ff4179c8f19b060c50fb16bfdbde58fc89b8cfb8ed9289a558c2f078cfd640ee","path":"fe/apps/app/src/hooks/progressHarness/progressHarness.shared.ts","step":"prettier"}
+{"findings":[],"hash":"7db1cc4fa6bc852f93fdca55a15825b42f80bd023e826a01857d06624c01e63e","path":"fe/apps/app/src/hooks/progressHarness/progressHarness.shared.ts","step":"prettier"}
 {"findings":[],"hash":"468e4341c5fbecdaf0fbb2ca9cf334461327d2e2ca47f6936701c1a7b8036392","path":"fe/apps/app/src/hooks/progressProjects/index.ts","step":"prettier"}
 {"findings":[],"hash":"c9919336d2237f1841af0ee7a019a87d026e8707fc84c7d66f0944b49dffc06e","path":"fe/apps/app/src/hooks/progressProjects/progressProjects.shared.ts","step":"prettier"}
 {"findings":[],"hash":"474d929502c1192f15fbb44ccad5c726274a8ba141de472e643cddda4f355ebb","path":"fe/apps/app/src/hooks/progressReview/index.ts","step":"prettier"}
 {"findings":[],"hash":"e8f08524ded862e62b745cfd7bbf33adfe05cd39de049252a886cfaccf9c6c9a","path":"fe/apps/app/src/hooks/progressReview/progressReview.shared.ts","step":"prettier"}
-{"findings":[],"hash":"0f10dc48be6797650f9571493b0dfc905cc3c5968c428d9453ba318cf5ce44b7","path":"fe/apps/app/src/hooks/progressWords/index.ts","step":"prettier"}
-{"findings":[],"hash":"b1139061bc945d67b0aae6e7f55b088eb64b5bb56074bcbe524a2303082ce89f","path":"fe/apps/app/src/hooks/progressWords/progressWords.shared.ts","step":"prettier"}
+{"findings":[],"hash":"a09d37d8d11a89bb7622e03224c584fa33e2aad75d2bcea13b6f220c6dcf34f1","path":"fe/apps/app/src/hooks/progressWords/index.ts","step":"prettier"}
+{"findings":[],"hash":"0910b9b6dd44ef54d975d37b6f3b05def060044f2b414ae7c250dc461edb75cd","path":"fe/apps/app/src/hooks/progressWords/progressWords.shared.ts","step":"prettier"}
 {"findings":[],"hash":"23572e181c97823ec46097f54dd9ad4d01a2082d546cf7943714bc0e7613f276","path":"fe/apps/app/src/hooks/projectConcept/index.ts","step":"prettier"}
 {"findings":[],"hash":"e77d130054f72a6c3329f393a90a160996a12fa659f5f7405fd87b50826369b2","path":"fe/apps/app/src/hooks/projectConcept/projectConcept.shared.ts","step":"prettier"}
 {"findings":[],"hash":"5e182cd80dfde0a566112af56d5ca0dfd7e6d96139d9f4c61e5fb18fc523beca","path":"fe/apps/app/src/hooks/projectConcept/useConceptEvidenceExtras.ts","step":"prettier"}

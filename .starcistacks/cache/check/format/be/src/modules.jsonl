@@ -628,8 +628,10 @@
 {"findings":[],"hash":"b076224c40ccaeae9abfcb5418701160149180ee0fe777925d03656d57be024e","path":"be/src/modules/domain/practice/practice.module.ts","step":"prettier"}
 {"findings":[],"hash":"2766edc2820a4c02b3a86402cc3bfb7ddb32b255aafd6e152b18d3973b96f9f6","path":"be/src/modules/domain/practice/practice.options.ts","step":"prettier"}
 {"findings":[],"hash":"21ef2067e5e2e20bb8533bd84f124d61923080accff7718f64d0bc193c80c572","path":"be/src/modules/domain/profile/errors/profile.error.ts","step":"prettier"}
-{"findings":[],"hash":"c43720279fc7049f9c859e8e5a6689718c86c785620ad93ea3cd2450d8c329eb","path":"be/src/modules/domain/profile/index.ts","step":"prettier"}
+{"findings":[],"hash":"4f1df967d5ca2294c47a4a4873b88da16777b237601f346e49ea1e02e6481f24","path":"be/src/modules/domain/profile/index.ts","step":"prettier"}
 {"findings":[],"hash":"5b123cce13239ce39752631d8b99ce80bfaa33637564b5bac52b81cf2109d76b","path":"be/src/modules/domain/profile/messages/profile.messages.ts","step":"prettier"}
+{"findings":[],"hash":"8589cecce4c022fd4b727c399fb1b37d9e7283dd13e983fd6ad71ef0e2cb65c2","path":"be/src/modules/domain/profile/object-storage-avatar.client.spec.ts","step":"prettier"}
+{"findings":[],"hash":"b9548086c2d9cf8faf48cd7bd7354d309dbed889f2d41339e0eb72ee0398fc1e","path":"be/src/modules/domain/profile/object-storage-avatar.client.ts","step":"prettier"}
 {"findings":[],"hash":"6092241592736b85727b3655f3e7cddddaf6e9a0f3a6defcca95cbdededec2a6","path":"be/src/modules/domain/profile/persistence/connection.ts","step":"prettier"}
 {"findings":[],"hash":"b9db60dd54a873355ffb0f22fb018397a64fad5ed6e11f0bab84d92997309dfa","path":"be/src/modules/domain/profile/persistence/entities/profile-learner.entity.ts","step":"prettier"}
 {"findings":[],"hash":"506793ed57eab85d6067ba10b46d0f74413d68bcbf4fa6976819e47c379b5059","path":"be/src/modules/domain/profile/persistence/migrations/1798400000000-init-profile.ts","step":"prettier"}
@@ -946,7 +948,7 @@
 {"findings":[],"hash":"28c3e2c2d3989541ff6ac39680c3693db53755f2683dd8b61b1ada6033d4afc9","path":"be/src/modules/integrations/mail/mail.module.ts","step":"prettier"}
 {"findings":[],"hash":"95ecbfcde5a8106efbc484a45d545d6c3e0c05edc685c24228cae637081bd3e5","path":"be/src/modules/integrations/mail/mail.options.ts","step":"prettier"}
 {"findings":[],"hash":"3a8af048d6f35cf5df528313253420e1a72ac584114927a827ead6380c929d0c","path":"be/src/modules/integrations/object-storage/errors/object-storage.error.ts","step":"prettier"}
-{"findings":[],"hash":"68cf2878f92279d741595a13e81187294762e441d24543a2654153e7a0338093","path":"be/src/modules/integrations/object-storage/index.ts","step":"prettier"}
+{"findings":[],"hash":"bf78e40cf33cec62c8569ac3f1b2f7f8fdc43f32da96cbd7efd84fcf1bfc3322","path":"be/src/modules/integrations/object-storage/index.ts","step":"prettier"}
 {"findings":[],"hash":"872cc0bbddf484ebe12c9fd748d41898ba2e3665d63eb852a645923dcce16a6f","path":"be/src/modules/integrations/object-storage/object-storage-bucket.service.ts","step":"prettier"}
 {"findings":[],"hash":"eaecc91e2c3b250dc54c8c328eb5ea19b89382e584511b757b08ce32e0b1606e","path":"be/src/modules/integrations/object-storage/object-storage.config.ts","step":"prettier"}
 {"findings":[],"hash":"28072cf1b1daf7b07df07a6f2f727e15b6c683c48732a8ad4e3b8ea75560e1e6","path":"be/src/modules/integrations/object-storage/object-storage.decorators.ts","step":"prettier"}

@@ -3575,10 +3575,13 @@
 {"findings":[],"hash":"ff44863dd2597d54be0728d73c85626961c8abae3f71d7f4264fb9b5d12d4d4e","path":"be/src/modules/domain/practice/practice.options.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"55fbc837b4a60412ff8e6402c733095b69d9846e4312b2eadef0633d1ebadcbf","path":"be/src/modules/domain/profile/errors/profile.error.ts","step":"file-rules"}
 {"findings":[],"hash":"243c445b01b8d4332a29d9efba2b32211a7863b457386175cc19b48860188b5c","path":"be/src/modules/domain/profile/errors/profile.error.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"81b674c0982affbdaef3d4e842ce428a50b6c8ecdd4be6f21544166a34fb9415","path":"be/src/modules/domain/profile/index.ts","step":"file-rules"}
-{"findings":[],"hash":"e1dc49395f75ec27eda4cc8a6017df10f78dd809723ef623f4ac0a4ee136488a","path":"be/src/modules/domain/profile/index.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"b3f9eecd2ba1fb2c88717f7cfbee2fe31d27c9badc831858939945745063593b","path":"be/src/modules/domain/profile/index.ts","step":"file-rules"}
+{"findings":[],"hash":"5bd26a3799f29f36219d7b231eb28b9269a1f150b60bbe8f66872d493c48825c","path":"be/src/modules/domain/profile/index.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"1f8ba2a8010fbe1821de7a063844dbda965c38cfbacbbad8be5c4c1bcb03ca71","path":"be/src/modules/domain/profile/messages/profile.messages.ts","step":"file-rules"}
 {"findings":[],"hash":"4e1c3c47a21e9499cb2ccd26ac261c1fd6e4b8ce6dbd13ffc0f1810753c761a3","path":"be/src/modules/domain/profile/messages/profile.messages.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"a50aff5abeb1eb42fe444f346b9f5444ff6f0e9300a1de033bd71dd2514be951","path":"be/src/modules/domain/profile/object-storage-avatar.client.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d96d19346a49f632e02237f61abe6ccf7fb39817e518c263d27d9dca523c6d42","path":"be/src/modules/domain/profile/object-storage-avatar.client.ts","step":"file-rules"}
+{"findings":[],"hash":"975d35b9d7cceb25f6fa98eece27205252bdd2f89eb1c7ae47600229efd2f451","path":"be/src/modules/domain/profile/object-storage-avatar.client.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"843a227588ac1c40b951e5d45f1dfb83d9bccb170dabd98627a5b6d921058c54","path":"be/src/modules/domain/profile/persistence/connection.ts","step":"file-rules"}
 {"findings":[],"hash":"77226c1fc227c873a0cd1e1cd45d2170e7e11a9db0cf77225527d32ae2f1ea96","path":"be/src/modules/domain/profile/persistence/connection.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"cfdb457c730e90f93ce10eb02e36469bb1433a6ed0c889a7f0c259e4aba50bf6","path":"be/src/modules/domain/profile/persistence/entities/profile-learner.entity.ts","step":"file-rules"}
@@ -4135,8 +4138,8 @@
 {"findings":[],"hash":"dbac715aac8fc175548703b0fd20b98d31bd3667ed12c70ea153262bb6c30824","path":"be/src/modules/integrations/mail/mail.options.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"b8c51205a649e53e6c82b2231d1f528e633f3411922cbe623634852a8dc336b9","path":"be/src/modules/integrations/object-storage/errors/object-storage.error.ts","step":"file-rules"}
 {"findings":[],"hash":"81c860265d2175fe88c78a649967ef925c35740642bae5f9700eca9d070a1662","path":"be/src/modules/integrations/object-storage/errors/object-storage.error.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"0481669727743be61941fc3c201a4182e9e11ca10cd5e6e7b9a3079e2a03a736","path":"be/src/modules/integrations/object-storage/index.ts","step":"file-rules"}
-{"findings":[],"hash":"1c3e51f135a05e37ff3116b92852b8d7f58f6a5e01562cae7461685dbf9ea7b9","path":"be/src/modules/integrations/object-storage/index.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"84288d41c45b2cff285b6711c1a8aef743d020b944fca2e850f3837efa52aaf7","path":"be/src/modules/integrations/object-storage/index.ts","step":"file-rules"}
+{"findings":[],"hash":"a0feacfd3d9919ba3ec45dfb4c3b1f56eb32e3561e101c0daa20a97d764b9b31","path":"be/src/modules/integrations/object-storage/index.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"44c3350164705f13a8ee58623b75c5baafeab4535a6ed809c8d45dee2c3586d0","path":"be/src/modules/integrations/object-storage/object-storage-bucket.service.ts","step":"file-rules"}
 {"findings":[],"hash":"3167a4360f2d84e42c09e6b0a7ffd179c3678cf287f4439151416871fc7ffd8e","path":"be/src/modules/integrations/object-storage/object-storage-bucket.service.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"778c2236150a14755216083e121f97d8298b3162f4c9228e653f6cbcced5c3b4","path":"be/src/modules/integrations/object-storage/object-storage.config.ts","step":"file-rules"}

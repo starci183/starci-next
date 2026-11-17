@@ -369,13 +369,13 @@
 {"data":{},"findings":[],"hash":"5d61f505f9228cb64c3097850e5d5ee9eac9ff93711c0ef519309f9bdb0981a5","path":"fe/apps/app/src/hooks/progressEssentials/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8d416dea7ec2e82d078265bff53b1e6b95ef7dccdf99893e5520f071976c699f","path":"fe/apps/app/src/hooks/progressEssentials/progressEssentials.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"39eae54be3b195c5b77ae10d1a21737cf86a7f43ffcd362084d25af26e3bc546","path":"fe/apps/app/src/hooks/progressHarness/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"27a6d12d0f0117d70be71104e0b7151da9d5ac405ac26a98920320eca3598107","path":"fe/apps/app/src/hooks/progressHarness/progressHarness.shared.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"163959e8dd7ce3dd56c22696b9b0c3eff59947e412293348e8df56e21952ae25","path":"fe/apps/app/src/hooks/progressHarness/progressHarness.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c2a241e82482c4011d3467a44ef166f20a75e4191bb7062351b92208cb725823","path":"fe/apps/app/src/hooks/progressProjects/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"75dda5a6b328a6e43009105cb7332f0b16298ae223ae4735ebb18e5d565e5a5a","path":"fe/apps/app/src/hooks/progressProjects/progressProjects.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7a65cc1d4b7c21ef95d499d7a1a7f13d9ee9ccf5cf48ebf34e6eedaced5061d9","path":"fe/apps/app/src/hooks/progressReview/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8d59bae65e801264768d5e125d787f39dae42bf1719f31d0217256c8471d2833","path":"fe/apps/app/src/hooks/progressReview/progressReview.shared.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6e892be0bfdee39ddce101da242757463997f79deb5be4cec26022ba285b280c","path":"fe/apps/app/src/hooks/progressWords/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"1a7e810e9baef80be144d723839cb28a5f852a4f2bfb8b0b3e0e4b5dd03bc743","path":"fe/apps/app/src/hooks/progressWords/progressWords.shared.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cad93b7747702f0efaee981de30af8c16cd080ca61326ac46d3f279f4ec9fffe","path":"fe/apps/app/src/hooks/progressWords/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ad53cfa059bb44c0c0a94fc404d444c4fa5efe19bac3c9dab62e8eca84da4059","path":"fe/apps/app/src/hooks/progressWords/progressWords.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"23257f74762e5268f0f764a130dab7b68a2f2577d43cf8d391dd643656d3ae5a","path":"fe/apps/app/src/hooks/projectConcept/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5868086b7d1c8d2b67db00feed38b30047d00044cac1ed2af71f66372d11f963","path":"fe/apps/app/src/hooks/projectConcept/projectConcept.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bcc23fb3491e627e51a56fe50758a55fd36bc7848fa8eaea9129ed4edecc09fe","path":"fe/apps/app/src/hooks/projectConcept/useConceptEvidenceExtras.ts","step":"file-rules"}
