@@ -10,7 +10,7 @@
   "Luyện code": ["practice/list", "practice/pattern", "practice/problem"],
   "Ôn tập": ["review/hub", "review/decks", "review/session"],
   "Phỏng vấn thử": ["interview/start", "interview/session", "interview/report"],
-  "Dự án": ["projects/list", "projects/new", "projects/detail", "projects/milestone"],
+  "Dự án": ["projects/paywall", "projects/list", "projects/new", "projects/milestone", "projects/concept"],
   "Premium": ["commerce/premium", "commerce/premium-result"],
   "Kinh nghiệm": ["profile/overview", "career/experience", "auth/verify"],
   "Hồ sơ và tiến độ": ["progress/overview", "profile/overview", "auth/verify"],

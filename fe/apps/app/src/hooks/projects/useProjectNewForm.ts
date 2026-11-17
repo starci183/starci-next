@@ -2,7 +2,7 @@
 
 import { useLocale } from "next-intl"
 import { useState } from "react"
-import { useMutateCreateProjectSwr, type CreateProjectResult } from "@/hooks/swr"
+import { useMutateCreateProjectSwr, useMutateUpdateProjectSwr, type CreateProjectResult } from "@/hooks/swr"
 import { NO_TRACK, projectIssueOf, type ProjectIssue } from "./projects.shared"
 
 /** The fields of the new-project form, as the learner typed them. */
@@ -14,6 +14,7 @@ export type ProjectNewValues = {
     readonly stack: string
     readonly track: string
     readonly repoUrl: string
+    readonly deployedUrl: string
 }
 
 const EMPTY: ProjectNewValues = {
@@ -24,6 +25,7 @@ const EMPTY: ProjectNewValues = {
     stack: "",
     track: NO_TRACK,
     repoUrl: "",
+    deployedUrl: "",
 }
 
 /** What the new-project form holds and does. */
@@ -41,6 +43,7 @@ export type ProjectNewForm = {
 export const useProjectNewForm = (): ProjectNewForm => {
     const locale = useLocale()
     const create = useMutateCreateProjectSwr()
+    const update = useMutateUpdateProjectSwr()
     const [values, setValues] = useState<ProjectNewValues>(EMPTY)
     const [issue, setIssue] = useState<ProjectIssue>("none")
     const [created, setCreated] = useState<CreateProjectResult | undefined>(undefined)
@@ -57,14 +60,32 @@ export const useProjectNewForm = (): ProjectNewForm => {
                 repoUrl: values.repoUrl.trim() === "" ? null : values.repoUrl,
                 locale,
             })
-            .then(setCreated)
+            .then(async (result) => {
+                // The create door takes no deploy address: the address the learner typed is saved on the project just created.
+                if (values.deployedUrl.trim() !== "") {
+                    // A refused address never loses the project or its secret: it is saved again from the project page.
+                    await update
+                        .trigger({
+                            projectId: result.project.id,
+                            name: null,
+                            topic: null,
+                            language: null,
+                            stack: null,
+                            repoUrl: null,
+                            deployedUrl: values.deployedUrl.trim(),
+                            locale,
+                        })
+                        .catch(() => setIssue("deployedMissing"))
+                }
+                setCreated(result)
+            })
             .catch((error: unknown) => setIssue(projectIssueOf(error)))
     }
     return {
         values,
         set: (key, value) => setValues((current) => ({ ...current, [key]: value })),
         submit,
-        isPending: create.isMutating,
+        isPending: create.isMutating || update.isMutating,
         issue,
         created,
     }

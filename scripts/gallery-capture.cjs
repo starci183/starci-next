@@ -42,6 +42,9 @@ const SCREENS = [
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
     S("projects", "milestone", { from: "projects/detail", match: /^\/projects\/[0-9a-f-]{36}\/[^/]+$/ }),
+    S("projects", "concept", { from: "projects/milestone", match: /^\/projects\/[0-9a-f-]{36}\/[^/]+\/[^/]+$/ }),
+    // A signed-in reader without Premium (CAPTURE_FREE_STATE) sees the pitch; without the file the shot falls back to the guest context.
+    S("projects", "paywall", "/projects", { free: true }),
     S("agents", "catalog", "/agents"),
     S("agents", "track", "/agents/tracks/claude"),
     S("career", "experience", "/experience"),
@@ -65,6 +68,9 @@ const norm = (href) => {
     const b = await chromium.launch()
     const user = await b.newContext({ storageState: stateFile })
     const guest = await b.newContext()
+    const free = process.env.CAPTURE_FREE_STATE
+        ? await b.newContext({ storageState: process.env.CAPTURE_FREE_STATE })
+        : undefined
     // next dev's HMR socket answers every new page with a rebuild + restart (a full reload, again and again), so a shot taken during it shows the loading state.
     // Pass the socket through but drop its rebuild messages: the page loads once and stays.
     const hmrQuiet = (ws) => {
@@ -77,6 +83,7 @@ const norm = (href) => {
     }
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
+    await free?.routeWebSocket(/_next\/hmr/, hmrQuiet)
     const resolved = {},
         report = []
     for (const s of SCREENS) {
@@ -119,7 +126,7 @@ const norm = (href) => {
         const dir = path.join(PAGES, s.area, s.screen)
         fs.mkdirSync(dir, { recursive: true })
         for (const w of WIDTHS) {
-            const p = await (s.guest ? guest : user).newPage()
+            const p = await (s.free ? (free ?? guest) : s.guest ? guest : user).newPage()
             await p.setViewportSize({
                 width: w,
                 height:
