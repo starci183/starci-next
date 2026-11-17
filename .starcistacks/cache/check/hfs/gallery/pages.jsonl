@@ -3,7 +3,6 @@
 {"data":{},"findings":[],"hash":"c3bfb87d9fc43a35fed8aa69d7b9de557d1046a1fd27d00cb9f49960cf82d921","path":"gallery/pages/auth/sign-up/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7db1e12248e4b7fc80768cb5c7cd9e2dbb969950b9c56c6121d2357b6ab5efeb","path":"gallery/pages/auth/verify/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e01d31203572f75368a7ce94d6b0c2fe49049920a37a2e3d19e253110efc59f4","path":"gallery/pages/career/experience/explain.md","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":"the screen career/profile has 3 shots and no explain.md: write gallery/pages/career/profile/explain.md with a front matter (title, route, area) and one \"## <region name>\" per region, each with the lines \"Vì sao:\", \"Luật:\" and \"Grammar:\" (PROJECT-GALLERY-2)","path":"gallery/pages/career/profile/explain.md","rule":"HFS_APP_GALLERY_EXPLAIN_MISSING"}],"hash":"absent","path":"gallery/pages/career/profile/explain.md","step":"hfs"}
 {"data":{},"findings":[],"hash":"2c40c387fe3f9a57d748e45fb7fd427ca7a0cf0672c17130d7503cf48f4d3789","path":"gallery/pages/career/review-item/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e409b5e64a1a52f484bd3a4a84463801ad2ca9d08f1258edb016e7f3a2995eea","path":"gallery/pages/career/review-queue/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1f50a60ec052ebb8a6cf3b195c4c0b36cd168340f5916b082d52c5b4b28afdb6","path":"gallery/pages/commerce/premium-result/explain.md","step":"file-rules"}
