@@ -1,55 +1,33 @@
 ---
-title: Tiến độ (người đăng ký)
+title: Hồ sơ · tiến độ
 route: /progress
 area: progress
 ---
 
-Route: `/progress` (ảnh chụp: học viên Premium, đã học vài bài, một bản dựng đã chứng minh, hai dự án, có thẻ đến hạn). Mã: `fe/apps/app/src/components/blocks/ProgressOverview/` (`component.tsx` vẽ, `index.tsx` nối dữ liệu và lời). Dữ liệu đến từ một truy vấn `learnerProgress` đọc thẳng các capability, không lưu bản sao.
+Route: `/progress` (ảnh chụp: học viên Premium, đã làm cả năm khu vực). Mã: `fe/apps/app/src/components/blocks/ProgressOverview/` (`component.tsx` vẽ, `index.tsx` nối dữ liệu). Mọi vùng là một `Section` phẳng, không thẻ nổi. Các trạng thái khác nằm ở `progress/free` (chưa Premium), `progress/first` (lần đầu), `progress/partial` (một nguồn lỗi), `progress/error` và `progress/loading`.
 
-## Đầu trang (Tiến độ của bạn)
+## Mục tiêu và đường vào
 
-Vì sao: tiêu đề 18/600 sát trái, một dòng muted nói mọi con số đọc từ Bản chất, Harness, Dự án và Ôn tập. Trang chỉ để xem nên không có lệnh chính.
-Luật: `COOK.md` theme trắng, `theme-and-type.md` điều 3.
-Grammar: `Page header={{ title, titleScale: "standard", description }}`.
+Vì sao: một chỗ xem mình tới đâu ở mọi khu vực và nhảy vào khu vực đó. Trang không có mục riêng ở thanh bên: vào từ Hồ sơ ("Xem tiến độ", đường dẫn "Hồ sơ / Tiến độ") và từ Học. Trang chỉ để xem nên không có nút chính.
+Luật: `verified-experience.md` (chuỗi ngày không bao giờ vào dòng CV, chỉ check đã chứng minh qua CI mới tính).
+Grammar: `Page chrome="panes"` + `PaneGrid`, `Page header breadcrumbs`.
 
-## Dải số liệu trên cùng
+## Hàng số liệu
 
-Vì sao: bốn con số một hàng, không thẻ: khái niệm đã chứng minh, chuỗi ngày, bài đã học, bản dựng đã xong. Chọn đúng bốn thứ đo bằng bằng chứng (chuỗi ngày là chuyên cần, không thành dòng CV).
-Luật: `verified-experience.md` điều 10, `streak.md` (chuỗi chỉ đếm hành động có nghĩa).
-Grammar: `Section kind="figures" ribbon ariaLabel items` (`frame/Section/index.d.ts`, `Figure { term, value, unit }`).
+Vì sao: một hàng năm con số kẻ mảnh: khái niệm đã chứng minh, chuỗi ngày, bài đã học, bản dựng đã xong, bài Accepted. Con số của một nguồn không đọc được thì bỏ khỏi hàng, không hiện 0 giả.
+Grammar: `Section kind="figures" ribbon`.
 
-## Bản chất
+## Năm vùng: Essentials, Harness, Dự án, Luyện code, Ôn tập
 
-Vì sao: bốn phần của một bài hiện thành bốn hàng với chip Đã mở hoặc Cần Premium (hàng khoá có liên kết "Xem Premium"), dòng chú thích dưới danh sách nói câu mở bài: đúng bao nhiêu câu lúc đầu và sau khi học. Dưới đó mỗi chủ đề là một danh sách bài, chủ đề học viên đã chạm tới xếp trước; hàng bài có "Câu mở bài: trước 2/5, sau 5/5" và chip Đã học, Đang học hoặc Chưa học.
-Luật: `premium.md` và COOK 2026-11-17 access (phần 1 miễn phí, phần 2 đến 4 Premium), `essentials.md` (câu mở bài trước và sau).
-Grammar: `Section kind="list" fact caption action`, `ListRowData { badges, action }`, `Link variant="head"`.
-
-## Harness
-
-Vì sao: miễn phí cho mọi người nên luôn hiện. Danh sách bản dựng ghi "3/5 giai đoạn đã chứng minh, 1 đang luyện" với chip Đã chứng minh, Đang luyện hoặc Chưa bắt đầu; dưới đó Doctor theo công cụ (Claude Code, Codex) và Thử bẫy theo bẫy với phán quyết Giữ vững, Bị phá, Chưa xong hoặc Chưa thử.
-Luật: COOK 2026-11-17 (Harness miễn phí, đang luyện không phải bằng chứng).
-Grammar: `Section kind="list"` ba danh sách, `Badge isDot`.
-
-## Dự án
-
-Vì sao: người đăng ký thấy ba số (khái niệm đã chứng minh, đang luyện, cột mốc xong) rồi danh sách dự án với "6/12 khái niệm, 2/4 cột mốc" và liên kết mở dự án. Đã chứng minh là qua CI có chữ ký, đang luyện là kết quả chạy trên máy.
-Luật: `projects.md` (đang luyện khác đã chứng minh), COOK 2026-11-17 (Dự án chỉ cho người đăng ký).
-Grammar: `Section kind="figures"` rồi `Section kind="list"`.
-
-## Ôn tập
-
-Vì sao: thẻ đến hạn (kèm số quá hạn), đã ôn hôm nay trên mục tiêu ngày, chuỗi hiện tại (kèm hôm nay đã tính hay chưa) và chuỗi dài nhất; liên kết "Mở Ôn tập" ở cuối hàng đầu.
-Luật: `review.md`, `streak.md`, `conventions.md` điều 2 (ngày tính theo Asia/Ho_Chi_Minh).
-Grammar: `Section kind="figures" title action items`.
+Vì sao: mỗi vùng có liên kết "Mở …" ở cuối dòng tiêu đề và các hàng chi tiết. Essentials liệt kê bốn phần (Đã mở hoặc Cần Premium kèm "Xem Premium") rồi mỗi chủ đề một hàng có thanh tiến độ đen trên xám. Harness gộp bản dựng và Doctor trong một danh sách. Dự án là số liệu và hàng từng dự án, hoặc một hàng lời mời khi chưa Premium. Luyện code đọc `learnerProgress.practice` (bài Accepted trên tổng, pattern đang làm, pattern đã xong, tiến độ từng pattern). Ôn tập là số thẻ đến hạn kèm số quá hạn, đã ôn hôm nay, chuỗi hiện tại và dài nhất. Một vùng lỗi nói "Chưa tải được phần này" kèm nút Thử lại, không làm hỏng cả trang.
+Grammar: `Section kind="figures"`, `Section kind="list"` + `ListRow` (`detail` là `Meter size="sm"`), `Alert`.
 
 ## Hoạt động gần đây
 
-Vì sao: một dòng thời gian gộp bài đã học, khái niệm đã chứng minh, mục được xác minh và giai đoạn Harness, mới nhất trước, tối đa 12 dòng, mỗi dòng có thời điểm tương đối. Chỉ đọc từ các capability sở hữu; không có bảng hoạt động riêng.
-Luật: `conventions.md` (mọi thứ đọc, không sao chép trạng thái).
-Grammar: `Timeline label items { title, dateTime, timeLabel }` (`composite/Timeline/index.d.ts`).
+Vì sao: cột phải ở 1440 (cuối trang ở 390), mới nhất trước, tối đa 12 dòng.
+Grammar: `Pane area="aside"`, `Timeline`.
 
-## Một nguồn lỗi
+## Lần đầu
 
-Vì sao: nếu một nguồn không đọc được (ví dụ Ôn tập), phần đó nói "Chưa tải được phần này." còn các phần khác vẫn hiện; chỉ khi cả truy vấn lỗi mới có nút Thử lại.
-Luật: `conventions.md` điều 5, `grammar-slot-interface.md`.
-Grammar: `SlotView`, `Section` với văn bản muted.
+Vì sao: học viên chưa có gì để đo được nói một lần ("Chưa có gì để đo, và đó là bình thường"), rồi ba lối vào: Essentials, Luyện code, Ôn tập.
+Grammar: `Alert tone="informative"`, `Section kind="list"`.

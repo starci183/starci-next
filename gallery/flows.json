@@ -12,7 +12,7 @@
   "Dự án": ["projects/paywall", "projects/list", "projects/new", "projects/milestone", "projects/concept"],
   "Premium": ["commerce/premium", "commerce/premium-result"],
   "Kinh nghiệm": ["profile/overview", "career/experience", "auth/verify"],
-  "Hồ sơ và tiến độ": ["progress/overview", "profile/overview", "auth/verify"],
+  "Hồ sơ và tiến độ": ["progress/overview", "profile/overview", "profile/edit", "cv/public", "auth/verify"],
   "Bài Bản chất 4 phần": [
     "essentials/topic",
     "essentials/lesson",
