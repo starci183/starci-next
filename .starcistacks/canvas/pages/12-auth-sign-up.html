@@ -1,0 +1,59 @@
+<section class="page" id="auth-sign-up" data-pid="auth/sign-up" data-route="/sign-in" data-title="Đăng ký">
+  <h2>Đăng ký</h2>
+  <div class="pid">gallery: auth/sign-up</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng ký · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Tạo tài khoản</h1><div class="sb">Miễn phí. Harness và phần 1 của Essentials mở ngay.</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Tên hiển thị</span></label><div class="input "><span class="ph">Nguyễn Minh Nam</span></div><div class="ft ">Từ 3 đến 100 ký tự</div></div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span class="ph">ban@email.com</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span></label><div class="input "><span class="ph">Ít nhất 6 ký tự</span></div><div class="ft ">Ít nhất 6 ký tự</div></div>
+<span class="btn primary block lg">Tạo tài khoản</span>
+<div class="ft" style="text-align:center">Tạo tài khoản nghĩa là bạn đồng ý với <a class="u">Điều khoản</a> và <a class="u">Chính sách riêng tư</a>.</div>
+<div class="sw">Đã có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng nhập</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Đăng ký · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Tạo tài khoản</h1><div class="sb">Miễn phí. Harness và phần 1 của Essentials mở ngay.</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Tên hiển thị</span></label><div class="input "><span class="ph">Nguyễn Minh Nam</span></div><div class="ft ">Từ 3 đến 100 ký tự</div></div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span class="ph">ban@email.com</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span></label><div class="input "><span class="ph">Ít nhất 6 ký tự</span></div><div class="ft ">Ít nhất 6 ký tự</div></div>
+<span class="btn primary block lg">Tạo tài khoản</span>
+<div class="ft" style="text-align:center">Tạo tài khoản nghĩa là bạn đồng ý với <a class="u">Điều khoản</a> và <a class="u">Chính sách riêng tư</a>.</div>
+<div class="sw">Đã có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng nhập</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng ký · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng ký.</b> Mục tiêu: tạo tài khoản miễn phí và nói ngay được dùng gì. Thao tác: REST sign-up (tên hiển thị 3–100 ký tự, email, mật khẩu 6–256 ký tự) rồi sign-up/verify với mã email; nút xã hội dùng social/start và social/exchange. cần API: provider google (như Đăng nhập). Bố cục: như Đăng nhập, thêm ô tên hiển thị; gợi ý dưới ô, lỗi thay gợi ý bằng chữ đỏ. Dòng điều khoản là chữ có liên kết gạch chân, không có ô tích. Nút chính: "Tạo tài khoản". Lọc: không có. Khác bản hiện tại: câu phụ nói rõ phần miễn phí: Harness, Luyện code, Ôn tập và phần 1 của mỗi bài Essentials. Lưu ý xung đột: như Đăng nhập: Google chưa có ở backend. Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng này phục vụ mục tiêu của trang: tạo tài khoản miễn phí và nói ngay được dùng gì.</p>
+      <p>Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>Section</code></p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sign-up-validation-error" data-pid="auth/sign-up-validation-error" data-route="/sign-in" data-title="Đăng ký, có lỗi">
+  <h2>Đăng ký, có lỗi</h2>
+  <div class="pid">gallery: auth/sign-up-validation-error</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng ký, có lỗi · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Tạo tài khoản</h1><div class="sb">Miễn phí. Harness và phần 1 của Essentials mở ngay.</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Tên hiển thị</span></label><div class="input "><span>Minh Nam</span></div><div class="ft ">Từ 3 đến 100 ký tự</div></div>
+<div class="fld"><label><span>Email</span></label><div class="input err"><span>nam@vidu.vn</span></div><div class="ft err">Email này đã có tài khoản. Đăng nhập hoặc đặt lại mật khẩu.</div></div>
+<div class="fld"><label><span>Mật khẩu</span></label><div class="input err"><span>•••</span></div><div class="ft err">Mật khẩu cần ít nhất 6 ký tự.</div></div>
+<span class="btn primary block lg">Tạo tài khoản</span>
+<div class="ft" style="text-align:center">Tạo tài khoản nghĩa là bạn đồng ý với <a class="u">Điều khoản</a> và <a class="u">Chính sách riêng tư</a>.</div>
+<div class="sw">Đã có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng nhập</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng ký, có lỗi · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng ký, có lỗi.</b> Trạng thái của màn này: có lỗi. Mục tiêu: tạo tài khoản miễn phí và nói ngay được dùng gì. Thao tác: REST sign-up (tên hiển thị 3–100 ký tự, email, mật khẩu 6–256 ký tự) rồi sign-up/verify với mã email; nút xã hội dùng social/start và social/exchange. cần API: provider google (như Đăng nhập). Bố cục: như Đăng nhập, thêm ô tên hiển thị; gợi ý dưới ô, lỗi thay gợi ý bằng chữ đỏ. Dòng điều khoản là chữ có liên kết gạch chân, không có ô tích. Nút chính: "Tạo tài khoản". Lọc: không có. Khác bản hiện tại: câu phụ nói rõ phần miễn phí: Harness, Luyện code, Ôn tập và phần 1 của mỗi bài Essentials. Lưu ý xung đột: như Đăng nhập: Google chưa có ở backend. Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+    </div>
+  </div>
+</section>

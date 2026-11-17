@@ -1,0 +1,998 @@
+{
+  "areas": [
+    "learn",
+    "auth",
+    "commerce",
+    "devices",
+    "essentials",
+    "projects",
+    "harness",
+    "practice",
+    "review",
+    "profile",
+    "career",
+    "progress"
+  ],
+  "pages": {
+    "learn/home": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-one-area-failed": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-has-premium": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-nav-open": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "learn/home-avatar-menu": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-in": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-in-wrong-password": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-in-sending-code": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-in-github-confirming": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-in-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-up": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/sign-up-validation-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/verify": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/verify-code-filled": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/verify-wrong-code": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/verify-expired": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/verify-resent": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/forgot": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/forgot-new-password": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "auth/forgot-sign-in-after-reset": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-qr-payment": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-qr-expired": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-checkout-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-has-premium": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-result": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-result-unlocked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-result-failed": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "commerce/premium-result-expired": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-enter-code-dialog": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-preview-device-dialog": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-code-invalid-dialog": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-limit-reached": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-offline-device": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-mcp-tokens": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-mcp-token-created": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-mcp-no-token": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "devices/list-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog-no-match": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/catalog-free-account": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/topic": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/topic-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/topic-free-account": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/topic-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-question-1-unanswered": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-five-question-result": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-reading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-free-end-of-part-1": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-source": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-source-no-device": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-source-up-command-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios-not-run-hints-locked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios-running": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios-green": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios-ask-claude": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-scenarios-no-online-device": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-ladder": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-ladder-hard-locked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-locked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-locked-part-3": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "essentials/lesson-locked-part-4": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/list": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/list-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/list-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/list-no-match": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/list-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/new": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/new-ready": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/new-creating": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/new-repo-invalid": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/new-create-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/detail": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/detail-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/detail-repo-not-connected": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/detail-sixty-checks-collapsed": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/detail-probe-error-over-limit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/milestone": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/milestone-editing": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/milestone-no-endpoint": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/milestone-done": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-ai-code-read-form": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-graded-passed": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-unproven": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-waiting-ci": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-ai-limit-reached": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/concept-secret-in-code": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/connect": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/connect-repo-invalid": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/connect-first-run-received": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/connect-confirm-regenerate-secret": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/connect-change-repo-with-runs": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/cv": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/cv-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/cv-english": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/cv-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/paywall": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/paywall-direct-new-link": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "projects/paywall-expired-read-only": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/hub": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/hub-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/hub-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/hub-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/builds": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/builds-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/builds-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-connect-not-linked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-connect-waiting-ci": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-connect-bad-url": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-not-linked": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/build-waiting-ci": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/use": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/use-codex-no-doctor": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/use-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/use-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/guide": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/guide-not-found": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/docs": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/docs-no-match": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/docs-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/doc": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "harness/doc-not-found": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/list": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/list-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/list-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/list-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/list-no-match": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/pattern": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/pattern-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/pattern-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/pattern-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/pattern-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem-grading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem-accepted": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem-compile-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem-confirm-view-solution": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "practice/problem-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-done-today": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-change-goal": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/hub-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/decks": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/decks-deck-added": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/decks-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/decks-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/decks-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/deck": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/deck-added": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/deck-adding": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/deck-not-found": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-answer-and-grade": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-fill-blank": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-summary": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-empty": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-grading-conflict": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "review/session-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-editing": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-photo-uploading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-photo-too-large": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-photo-changed": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-confirm-delete-photo": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-new-learner": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-partial-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "profile/overview-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience-empty-tab": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience-confirm-send-teacher": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "career/experience-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview-free": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview-first-visit": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview-one-source-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview-page-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    },
+    "progress/overview-loading": {
+      "status": "approved",
+      "approvedAt": "2026-11-17T00:00:00+07:00",
+      "board": "https://claude.ai/artifact/SqgJ4TNzpQw7p3qDdbXnBp"
+    }
+  }
+}

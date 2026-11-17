@@ -1,0 +1,116 @@
+<section class="page" id="auth-verify" data-pid="auth/verify" data-route="/verify/[code]" data-title="Mã xác nhận">
+  <h2>Mã xác nhận</h2>
+  <div class="pid">gallery: auth/verify</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Mã xác nhận · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+
+<div class="otp "><i class="">4</i><i class="">8</i><i class="">2</i><i class="cur"></i><i class=""></i><i class=""></i></div>
+
+<div><span class="btn dis block lg">Xác nhận</span><div class="why" style="margin-top:6px;text-align:center">Nhập đủ 6 số để tiếp tục</div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Gửi lại mã sau 42 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Mã xác nhận · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+
+<div class="otp "><i class="">4</i><i class="">8</i><i class="">2</i><i class="cur"></i><i class=""></i><i class=""></i></div>
+
+<div><span class="btn dis block lg">Xác nhận</span><div class="why" style="margin-top:6px;text-align:center">Nhập đủ 6 số để tiếp tục</div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Gửi lại mã sau 42 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Mã xác nhận · route: /verify/[code] · area: auth</div>
+      <p class="intro"><b>Concept: Mã xác nhận.</b> Mục tiêu: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu. Thao tác: REST sign-in/verify, sign-up/verify, password-reset/verify, challenge/resend; mã sống 10 phút (challengeTtlSeconds 600); email hiện dạng che n***@vidu.vn. Bố cục: một thẻ, sáu ô số, nút Xác nhận, hàng dưới có "Gửi lại mã sau 42 giây" (hết đếm thì thành liên kết) và "Đổi email". Cùng một thẻ cho ba luồng, chỉ đổi tiêu đề. Nút chính: "Xác nhận", xám kèm lý do tới khi đủ 6 số; hết hạn thì thành "Gửi mã mới". Lọc: không có. Khác bản hiện tại: màn riêng có id riêng (auth/verify) để đối chiếu; sai mã thì sáu ô viền đỏ và một dòng lỗi. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, OtpInput, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng này phục vụ mục tiêu của trang: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu.</p>
+      <p>Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>Section</code></p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-verify-code-filled" data-pid="auth/verify-code-filled" data-route="/verify/[code]" data-title="Mã xác nhận, đã nhập đủ 6 số">
+  <h2>Mã xác nhận, đã nhập đủ 6 số</h2>
+  <div class="pid">gallery: auth/verify-code-filled</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Mã xác nhận, đã nhập đủ 6 số · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+
+<div class="otp "><i class="">4</i><i class="">8</i><i class="">2</i><i class="">1</i><i class="">9</i><i class="">7</i></div>
+
+<span class="btn primary block lg">Xác nhận</span>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Gửi lại mã sau 42 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Mã xác nhận, đã nhập đủ 6 số · route: /verify/[code] · area: auth</div>
+      <p class="intro"><b>Concept: Mã xác nhận, đã nhập đủ 6 số.</b> Trạng thái của màn này: đã nhập đủ 6 số. Mục tiêu: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu. Thao tác: REST sign-in/verify, sign-up/verify, password-reset/verify, challenge/resend; mã sống 10 phút (challengeTtlSeconds 600); email hiện dạng che n***@vidu.vn. Bố cục: một thẻ, sáu ô số, nút Xác nhận, hàng dưới có "Gửi lại mã sau 42 giây" (hết đếm thì thành liên kết) và "Đổi email". Cùng một thẻ cho ba luồng, chỉ đổi tiêu đề. Nút chính: "Xác nhận", xám kèm lý do tới khi đủ 6 số; hết hạn thì thành "Gửi mã mới". Lọc: không có. Khác bản hiện tại: màn riêng có id riêng (auth/verify) để đối chiếu; sai mã thì sáu ô viền đỏ và một dòng lỗi. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, OtpInput, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code></p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-verify-wrong-code" data-pid="auth/verify-wrong-code" data-route="/verify/[code]" data-title="Mã xác nhận, sai">
+  <h2>Mã xác nhận, sai</h2>
+  <div class="pid">gallery: auth/verify-wrong-code</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Mã xác nhận, sai · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+
+<div class="otp err"><i class="">4</i><i class="">8</i><i class="">2</i><i class="">1</i><i class="">9</i><i class="">7</i></div>
+<div class="ft err" style="margin-top:-8px">Mã chưa đúng. Kiểm tra lại hoặc gửi mã mới.</div>
+<span class="btn primary block lg">Xác nhận</span>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Gửi lại mã sau 42 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Mã xác nhận, sai · route: /verify/[code] · area: auth</div>
+      <p class="intro"><b>Concept: Mã xác nhận, sai.</b> Trạng thái của màn này: sai. Mục tiêu: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu. Thao tác: REST sign-in/verify, sign-up/verify, password-reset/verify, challenge/resend; mã sống 10 phút (challengeTtlSeconds 600); email hiện dạng che n***@vidu.vn. Bố cục: một thẻ, sáu ô số, nút Xác nhận, hàng dưới có "Gửi lại mã sau 42 giây" (hết đếm thì thành liên kết) và "Đổi email". Cùng một thẻ cho ba luồng, chỉ đổi tiêu đề. Nút chính: "Xác nhận", xám kèm lý do tới khi đủ 6 số; hết hạn thì thành "Gửi mã mới". Lọc: không có. Khác bản hiện tại: màn riêng có id riêng (auth/verify) để đối chiếu; sai mã thì sáu ô viền đỏ và một dòng lỗi. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, OtpInput, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code></p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-verify-expired" data-pid="auth/verify-expired" data-route="/verify/[code]" data-title="Mã xác nhận, hết hạn">
+  <h2>Mã xác nhận, hết hạn</h2>
+  <div class="pid">gallery: auth/verify-expired</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Mã xác nhận, hết hạn · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+<div class="al w"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg><div><b>Mã đã hết hạn</b>Gửi mã mới để tiếp tục.</div></div>
+<div class="otp "><i class="cur"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+
+<span class="btn primary block lg">Gửi mã mới</span>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Có thể gửi mã mới ngay</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Mã xác nhận, hết hạn · route: /verify/[code] · area: auth</div>
+      <p class="intro"><b>Concept: Mã xác nhận, hết hạn.</b> Trạng thái của màn này: hết hạn. Mục tiêu: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu. Thao tác: REST sign-in/verify, sign-up/verify, password-reset/verify, challenge/resend; mã sống 10 phút (challengeTtlSeconds 600); email hiện dạng che n***@vidu.vn. Bố cục: một thẻ, sáu ô số, nút Xác nhận, hàng dưới có "Gửi lại mã sau 42 giây" (hết đếm thì thành liên kết) và "Đổi email". Cùng một thẻ cho ba luồng, chỉ đổi tiêu đề. Nút chính: "Xác nhận", xám kèm lý do tới khi đủ 6 số; hết hạn thì thành "Gửi mã mới". Lọc: không có. Khác bản hiện tại: màn riêng có id riêng (auth/verify) để đối chiếu; sai mã thì sáu ô viền đỏ và một dòng lỗi. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, OtpInput, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code></p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-verify-resent" data-pid="auth/verify-resent" data-route="/verify/[code]" data-title="Mã xác nhận, vừa gửi lại">
+  <h2>Mã xác nhận, vừa gửi lại</h2>
+  <div class="pid">gallery: auth/verify-resent</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Mã xác nhận, vừa gửi lại · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Nhập mã xác nhận</h1><div class="sb">Mã 6 số đã gửi tới <b class="f2">n***@vidu.vn</b>. Mã có hiệu lực trong 10 phút.</div></div>
+<div class="al o"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><path d="M5 12.5l4.5 4.5L19 7"/></svg><div><b>Đã gửi mã mới</b>Kiểm tra hộp thư, kể cả thư rác.</div></div>
+<div class="otp "><i class="cur"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+
+<div><span class="btn dis block lg">Xác nhận</span><div class="why" style="margin-top:6px;text-align:center">Nhập đủ 6 số để tiếp tục</div></div>
+<div style="display:flex;justify-content:space-between;font-size:13px"><span class="mut">Gửi lại mã sau 42 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Mã xác nhận, vừa gửi lại · route: /verify/[code] · area: auth</div>
+      <p class="intro"><b>Concept: Mã xác nhận, vừa gửi lại.</b> Trạng thái của màn này: vừa gửi lại. Mục tiêu: xác nhận email bằng mã 6 số sau Đăng nhập, Đăng ký hoặc Quên mật khẩu. Thao tác: REST sign-in/verify, sign-up/verify, password-reset/verify, challenge/resend; mã sống 10 phút (challengeTtlSeconds 600); email hiện dạng che n***@vidu.vn. Bố cục: một thẻ, sáu ô số, nút Xác nhận, hàng dưới có "Gửi lại mã sau 42 giây" (hết đếm thì thành liên kết) và "Đổi email". Cùng một thẻ cho ba luồng, chỉ đổi tiêu đề. Nút chính: "Xác nhận", xám kèm lý do tới khi đủ 6 số; hết hạn thì thành "Gửi mã mới". Lọc: không có. Khác bản hiện tại: màn riêng có id riêng (auth/verify) để đối chiếu; sai mã thì sáu ô viền đỏ và một dòng lỗi. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, OtpInput, Button, Alert, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code></p>
+    </div>
+  </div>
+</section>
