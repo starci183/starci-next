@@ -1,0 +1,9 @@
+{"findings":[],"hash":"459b819c527bcc4048378e2b873f1ab5d21256272f6f00d86e2d3ceff06e976f","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
+{"findings":[],"hash":"e6a1bb368b7e47445924aeb836611046a51e70fcdda1a2703f051bbe747ca53c","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"prettier"}
+{"findings":[],"hash":"2aee45177562a52ceeb125847671be84b6f8f64298f15be19c02a59c859d1e75","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"prettier"}
+{"findings":[],"hash":"2c99b239ce50d25e2dd9bf9891adec910152d21cd596833275e80b5b787bfe5a","path":"gallery/pages/essentials/lesson-source/explain.md","step":"prettier"}
+{"findings":[],"hash":"74b271117badd7efa44430e7fd0eab55455de44f22a711cf6f5ce96fe697dbde","path":"gallery/pages/essentials/lesson/explain.md","step":"prettier"}
+{"findings":[],"hash":"0d9f4071d06e5320c6da4efddbc0d7fef1ca3eabdf5741db4fde64ccad434a40","path":"gallery/pages/essentials/topic-api-reliability/explain.md","step":"prettier"}
+{"findings":[],"hash":"a205bafc40a1f2f60b41935c6c38fd0c26b9fa8b38bd631dc27e8e2c23b96b48","path":"gallery/pages/essentials/topic-databases/explain.md","step":"prettier"}
+{"findings":[],"hash":"324fe4622e0745d5ee2ab5a3134b2e068f7a2949697d69a44eb4985f950b2438","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"prettier"}
+{"findings":[],"hash":"b602ef6962266313a4ef4cf70fc8fb40b8337f26e896c9c9bf685c70a751512e","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}
