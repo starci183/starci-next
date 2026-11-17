@@ -484,7 +484,7 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: bfac23b62111bcb2425162d9f774e0f231dd7a17
+      commit: db57c9ba9e64c28b44a12aaa287739a8e05a55a6
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
   sonar: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
