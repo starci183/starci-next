@@ -8,8 +8,7 @@
 {"name":"file:be/src/tests/tsconfig.json","sha256":"051c09d2e086e6b75e867e9ee0e7a7afb745527529adea21204701fea3305291"}
 {"name":"file:be/tsconfig.build.json","sha256":"543063d065660243055aecc9ba660ec2194c2ffa8aefa9472579db2c1a0100ca"}
 {"name":"file:be/tsconfig.json","sha256":"8c5c1ef6864461d6669857fb111d121b8e75f9ff0525683132573c8352feb941"}
-{"name":"file:codecov.yml","sha256":"9e1e61dadeaa684c74c587590595ed97363ad1e71b6e0ea4aa3eea8d3503600c"}
-{"name":"file:codecov.yml","sha256":"e23caf675b3aa78fc3110ac5c059efc25f2159a2f1b87e241bdc56f907ab22cd"}
+{"name":"file:codecov.yml","sha256":"4a36c4243bb522df3de8b70c0669d3f006755485406f14d0bf0179808a8828f6"}
 {"name":"file:eslint.config.mjs","sha256":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da"}
 {"name":"file:fe/apps/app/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}
 {"name":"file:fe/apps/landing/tsconfig.json","sha256":"6c97e59edafbb1451ffdac941931ec9b319b3b184f1a7f252941dec3c9ae637c"}
@@ -40,9 +39,8 @@
 {"name":"pkg:@starci/mail","sha256":"5666c5e806b6c880878822f17d4c476e96474930c762aa6cdc059d11aeb4bb6f"}
 {"name":"pkg:@starci/nest-kit","sha256":"680f5362ce42f3899707c94bd3a3ac120328246fd70f7784a3363b5e22b62a75"}
 {"name":"pkg:@starci/next-data","sha256":"a37bf997c9b3f6ec0ebbc9371ffff9f193c0fc5da78c7cf50a8909594cd784a0"}
-{"name":"pkg:@starci/next-i18n","sha256":"de1cb4a6c4171dadc59aa0a052bd7acd7d42e4007feb0988763f8735f71d299b"}
-{"name":"pkg:@starci/object-storage","sha256":"76db469ac225a02d191a1be970cd7f608c36530a4228bc6aaa0eebc925d4a2ec"}
 {"name":"pkg:@starci/next-i18n","sha256":"d2536021dd0631bcab65db4dd14624a30a10d5d51b450d48eabcfe72ae0dc14a"}
+{"name":"pkg:@starci/object-storage","sha256":"76db469ac225a02d191a1be970cd7f608c36530a4228bc6aaa0eebc925d4a2ec"}
 {"name":"pkg:@starci/prettier-config","sha256":"f03ea046c6e44ee950df7a1fefbc34a5fa22321686f6d1af8cb040b937c8a672"}
 {"name":"pkg:@starci/seed","sha256":"914592c396f6dc31d2135cfdaf678acc21e6f4e65800605ed80d22df7f3c6d55"}
 {"name":"pkg:@starci/stylelint-canon","sha256":"bde79e55415960fb9ad47e140c8456f6f19a75af0a709826fbad90a24e959d82"}
@@ -54,5 +52,4 @@
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
 {"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4159ce5bb5eb43ac94370a9ed4414017e9895decc12bb2d40f7bb80dd8724ea5"}
 {"name":"shape:gallery/package.json","sha256":"1309a4386c0b102ce341426bea8c23a1068543f30cefbf2de00ac93eaf36b462"}
-{"name":"shape:package.json","sha256":"98a83086ab9bdb5d70f7e9a660a1750b4c493d3212d4a69619bc83b59ab67c6d"}
-{"name":"shape:package.json","sha256":"4e96eea570663a8240090f3927de1c373ff4d459a1a8daaebdacdbd03fd38dde"}
+{"name":"shape:package.json","sha256":"bde1a4a9687f00c647df3d51ded59e2e63e287bda6f2ac4e664f7a1420727b86"}

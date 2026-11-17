@@ -204,8 +204,6 @@
 {"findings":[],"hash":"84175c97a8baa41ee193703e5d70e60764aaaa4e2f50657f7b0752ed75bd8256","path":"be/src/features/api/commerce/transport/graphql/list-plans.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"7673af660bd1c739549f5662e7fa7bd509f07f1d8f243b6018f83f3ca2eb37ba","path":"be/src/features/api/commerce/transport/graphql/start-premium-checkout.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"0b34aa732fdb48742b00d5b72e526ee0ce4c255b6fc556d1eeabd80f3bf29f71","path":"be/src/features/api/commerce/transport/graphql/start-premium-checkout.resolver.ts","step":"prettier"}
-{"findings":[],"hash":"49fb65cc8e2ed8fcdc8cd2cf21afbaf6d5c75e060a5624573fd928498413e753","path":"be/src/features/api/harness/application/bind-harness-build.command.ts","step":"prettier"}
-{"findings":[],"hash":"1d76e4311584946755609aff419ead6dbd9d4bf48f2e1dda3392c3b68478676b","path":"be/src/features/api/harness/application/bind-harness-build.handler.ts","step":"prettier"}
 {"findings":[],"hash":"e0153aae360eb437da7eb65d5b85a6164de28a4350973a5d5570ab1925f9fb24","path":"be/src/features/api/harness/application/bind-harness-build.command.ts","step":"prettier"}
 {"findings":[],"hash":"bad463b88334ebdb7bc15cacc6425b28dd9c46adbb29d392269cfda7f0e1e992","path":"be/src/features/api/harness/application/bind-harness-build.handler.ts","step":"prettier"}
 {"findings":[],"hash":"14b37648d46cc2e5fb82c23ca98209108ebce864d607259765a4d0bc8a6ae8dd","path":"be/src/features/api/harness/application/get-harness-build.handler.ts","step":"prettier"}
@@ -226,28 +224,12 @@
 {"findings":[],"hash":"252c5d45b26a9b8cde6b661f24b5801c4371cb51e763e7c3863c0ecd2fd45d86","path":"be/src/features/api/harness/application/get-harness-hub.query.ts","step":"prettier"}
 {"findings":[],"hash":"61df850f6e1c8269b871bb62325110d5f8a1d400906547437f79f1e051f9fd72","path":"be/src/features/api/harness/application/get-harness-trials.handler.ts","step":"prettier"}
 {"findings":[],"hash":"a1ab70bb68b05efc0234beae91eddb14b16eb82ef4ab6f8167a57d27e766b24d","path":"be/src/features/api/harness/application/get-harness-trials.query.ts","step":"prettier"}
-{"findings":[],"hash":"88c2b05982640f9d55875a1cf99f5ce48018b67af6b3b19db14b237e57036bc4","path":"be/src/features/api/harness/application/harness.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"813f34266777df9f792ce52d32b5f2cb29288defe6b2b699c101ed3e9d1421d2","path":"be/src/features/api/harness/application/harness.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"17952acfb3c2a22020364b5aaf3110532baa0ae52fd78f7d6ce35f553c5f2c86","path":"be/src/features/api/harness/harness.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"a35e4b148eb7114c5ec6f3bf4d58c7f075e92a5c74c80bd455a409072e617060","path":"be/src/features/api/harness/harness.module.ts","step":"prettier"}
 {"findings":[],"hash":"ecfd349187faec2c8cfd7fc6137b6622903836f1374716cd4fd8b0cacddfc67d","path":"be/src/features/api/harness/harness.options.ts","step":"prettier"}
 {"findings":[],"hash":"5cd315869fba5007e590ef087eae6897e758ecdad712a48913fbf38e363372fb","path":"be/src/features/api/harness/index.ts","step":"prettier"}
 {"findings":[],"hash":"6b8b56ec7ee73498b6bef9145fe7f8dd18336cd7f885a38f3bb838e0a207664f","path":"be/src/features/api/harness/transport/graphql/bind-harness-build.resolver.ts","step":"prettier"}
-{"findings":[],"hash":"0dfdfa960f136957e6fed24f1271e87681fbf505f2b8c62a08a0076b347a5f84","path":"be/src/features/api/harness/transport/graphql/dto/bind-harness-build.input.ts","step":"prettier"}
-{"findings":[],"hash":"3143a2b137bd408c92283bbbcc1c9cbfc0730b6c3d8c386b8afd79e083cdfaf5","path":"be/src/features/api/harness/transport/graphql/dto/harness-build-binding.type.ts","step":"prettier"}
-{"findings":[],"hash":"98f8945abbbc0dcddb7c04e0509a2d6407544cc85aaa7125eed010e1d2f66489","path":"be/src/features/api/harness/transport/graphql/dto/harness-build-summary.type.ts","step":"prettier"}
-{"findings":[],"hash":"2292ba89cbf637194a3de623c07779ec8c13a0b0dc336be621e7bcc26182c08c","path":"be/src/features/api/harness/transport/graphql/dto/harness-build.input.ts","step":"prettier"}
-{"findings":[],"hash":"cb6665efcfe78f811ed594e767303dd8524806203209d60e7d5aba7ca15a2c6a","path":"be/src/features/api/harness/transport/graphql/dto/harness-build.type.ts","step":"prettier"}
-{"findings":[],"hash":"a3253f563fc21bd841bad00e07bf6663a9f718c4cc88503fabed5255caedc920","path":"be/src/features/api/harness/transport/graphql/dto/harness-doc-summary.type.ts","step":"prettier"}
-{"findings":[],"hash":"74ce5e4d006f0e4479c4a4b955046a80cd8c7d395e86294cd3751b8d6f9a861d","path":"be/src/features/api/harness/transport/graphql/dto/harness-doc.input.ts","step":"prettier"}
-{"findings":[],"hash":"51662a81af76a40446d5a72aa5acc017689a0c8aaad5befa8e0bb7350e2db356","path":"be/src/features/api/harness/transport/graphql/dto/harness-doc.type.ts","step":"prettier"}
-{"findings":[],"hash":"5b24b131fb7d7a17cf3bbe7daab33d83f1ba7619c4950af7e20379622b7e19fe","path":"be/src/features/api/harness/transport/graphql/dto/harness-doctor.input.ts","step":"prettier"}
-{"findings":[],"hash":"73609513f1e27638d760844f8dd0f90c452c1fbae391854be3e02dcbb84de029","path":"be/src/features/api/harness/transport/graphql/dto/harness-doctor.type.ts","step":"prettier"}
-{"findings":[],"hash":"4e1a47970beddefc462f25bbae3686b1433127e58c0b23d31d4c6366c3babe74","path":"be/src/features/api/harness/transport/graphql/dto/harness-e2e.type.ts","step":"prettier"}
-{"findings":[],"hash":"af2aabb41f124465aba665be678bf90dda570ad301bbe0334243c4913da1f088","path":"be/src/features/api/harness/transport/graphql/dto/harness-estimate.type.ts","step":"prettier"}
-{"findings":[],"hash":"f438f88d7116386058a50cfaa98b57d2502faf8ba73c4240321ac3e9f6820dca","path":"be/src/features/api/harness/transport/graphql/dto/harness-guide-summary.type.ts","step":"prettier"}
-{"findings":[],"hash":"711adf67ce6c195d48ac1ec3b1b6d8d505dbf59ab08b6d6d45de1dd3d756883c","path":"be/src/features/api/harness/transport/graphql/dto/harness-guide.input.ts","step":"prettier"}
-{"findings":[],"hash":"785768fe3ff54a768d86251b2eaee7f72b03b6872aa4ae1085b47599263b9709","path":"be/src/features/api/harness/transport/graphql/dto/harness-guide.type.ts","step":"prettier"}
 {"findings":[],"hash":"034075f126d29df0f46e2b7715e2af3ad2d26f760ae1b79b2e96bcdb6c233e80","path":"be/src/features/api/harness/transport/graphql/dto/bind-harness-build.input.ts","step":"prettier"}
 {"findings":[],"hash":"fb5889b64a5ca13ac856af03961e30ce0df599a801910a023ff00d84984942b7","path":"be/src/features/api/harness/transport/graphql/dto/harness-budget.type.ts","step":"prettier"}
 {"findings":[],"hash":"2ecb55745b0b412546426a133172f0e372b6c3407e41e48fb4309ef79ed5e531","path":"be/src/features/api/harness/transport/graphql/dto/harness-build-binding.type.ts","step":"prettier"}
@@ -269,12 +251,6 @@
 {"findings":[],"hash":"04cb03db0ed26d824c848e0f0b925680277c0d0b0aaffa54c313ae9d5c60cbac","path":"be/src/features/api/harness/transport/graphql/dto/harness-locale.input.ts","step":"prettier"}
 {"findings":[],"hash":"c954b2fe5b301b6c87843bd6b1e530bcf43d2b930985193fd924952c7671001c","path":"be/src/features/api/harness/transport/graphql/dto/harness-part.type.ts","step":"prettier"}
 {"findings":[],"hash":"9a172c4f6a21ab344506bb002c0defe594556e1c6187ea2cdd947bc7741b6ba8","path":"be/src/features/api/harness/transport/graphql/dto/harness-probe-result.type.ts","step":"prettier"}
-{"findings":[],"hash":"9d97aff1a9df877a2488baf9c6666ea95a52c41cdc1b05f1d2ab2c1decb08d8c","path":"be/src/features/api/harness/transport/graphql/dto/harness-repository.type.ts","step":"prettier"}
-{"findings":[],"hash":"1cb7b90cd981780187565f1266b72a4feb4f969b25c8846355e9ed48beab41fa","path":"be/src/features/api/harness/transport/graphql/dto/harness-runtime.type.ts","step":"prettier"}
-{"findings":[],"hash":"a856a3c139e1f4f30b5b130fdfba29ea152f9d96aedb6f75e03fd3a4a051322d","path":"be/src/features/api/harness/transport/graphql/dto/harness-shortcut.type.ts","step":"prettier"}
-{"findings":[],"hash":"c8bd90132777e44cdb70043b2dbcfe65484b1c9429109087f2ccae384eb44c6d","path":"be/src/features/api/harness/transport/graphql/dto/harness-stage.type.ts","step":"prettier"}
-{"findings":[],"hash":"517cf421172abc64607bf3bb0ca12cbd7642eef186c4146dd040d858918f8702","path":"be/src/features/api/harness/transport/graphql/dto/harness-text.type.ts","step":"prettier"}
-{"findings":[],"hash":"38264b46a7e6c11c904ec1bc842083ece4927d5aa0cdd1accb9062db8dcbe9b6","path":"be/src/features/api/harness/transport/graphql/dto/harness-trap.type.ts","step":"prettier"}
 {"findings":[],"hash":"743c618b5c6083b66e5b06839242b5c51125f53bc1672817cecd77a2bcdec324","path":"be/src/features/api/harness/transport/graphql/dto/harness-repository.type.ts","step":"prettier"}
 {"findings":[],"hash":"1cb7b90cd981780187565f1266b72a4feb4f969b25c8846355e9ed48beab41fa","path":"be/src/features/api/harness/transport/graphql/dto/harness-runtime.type.ts","step":"prettier"}
 {"findings":[],"hash":"1dbbf527c27af2a727f1757bf2b984073c610f5746313f59c9f6d09074a11942","path":"be/src/features/api/harness/transport/graphql/dto/harness-shortcut.type.ts","step":"prettier"}
@@ -296,7 +272,6 @@
 {"findings":[],"hash":"884a1c13083ffbca09298df4248ad9344f11c11a9c5d7b4c9c0112b2efbd05c0","path":"be/src/features/api/harness/transport/graphql/harness-graphql.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"2595e8ed0026425948f2af9f3db4fb48300f8c902c821b390f4665437c563f12","path":"be/src/features/api/harness/transport/graphql/harness-graphql.module.ts","step":"prettier"}
 {"findings":[],"hash":"cd21ce32800814fd43f9beda1d93ac47abdc92ded6ed91ac157cf39fd13ab54e","path":"be/src/features/api/harness/transport/graphql/harness-graphql.options.ts","step":"prettier"}
-{"findings":[],"hash":"7be71a41c3398155594b958b1a0967e10e9f8fb51ee3070b8ab7d813f9f82cc5","path":"be/src/features/api/harness/transport/graphql/harness.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"3b1b2a4849311100b1ad8f52022c6b115e5a6df1c2a8436c058d35d057d0fb49","path":"be/src/features/api/harness/transport/graphql/harness.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"1cda808427f8fb1c25fc3c8bd2df14e4c76d7a81d55036a95f61d67a321a67ae","path":"be/src/features/api/hub/application/get-learner-hub.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"6406b28f5e2f301d0661b4804289aa05441ee49acdc1b3d3966807d3dd59ca09","path":"be/src/features/api/hub/application/get-learner-hub.handler.ts","step":"prettier"}
@@ -1128,14 +1103,6 @@
 {"findings":[],"hash":"279b1ac39bc34ca08a3e98fae2f6c7f47f1c29f0e03bbce8ee7d9b8fdd1add86","path":"be/src/features/client-cli/relay-cli/down/down.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"1f4909c75035a91ae36ebd7b781d7381f426aabed3c9843b06a08ea94ffc5547","path":"be/src/features/client-cli/relay-cli/down/down.module.ts","step":"prettier"}
 {"findings":[],"hash":"ab4b9ee1bf06eef17ee3053326271ed55750621a1c2258e12514381840dcf19d","path":"be/src/features/client-cli/relay-cli/down/down.options.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts is not formatted by prettier; run `npm run format`","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts","rule":"HFS_FORMAT"}],"hash":"f37c627629d486e754a629aa5747b6401ade783a9ed1aaac0afb93c6b29a459d","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts","step":"prettier"}
-{"findings":[],"hash":"cc06fc83008972a46379f5329e3c3cc4da2f5c62beaae16483e519a0a0a4eb93","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.ts","step":"prettier"}
-{"findings":[],"hash":"81f2bb6c2ac1f08f5bf99714547224e2da38513468bdca40eeac2323720934c7","path":"be/src/features/client-cli/relay-cli/harness/harness.module-definition.ts","step":"prettier"}
-{"findings":[],"hash":"d1fba61c5b3cae6919004746851411f691925505714428979837dc6199b65722","path":"be/src/features/client-cli/relay-cli/harness/harness.module.ts","step":"prettier"}
-{"findings":[],"hash":"8da4750855fd747e84baa4d5d0937c2e0b15acd972bb470f1462b436678a503a","path":"be/src/features/client-cli/relay-cli/harness/harness.options.ts","step":"prettier"}
-{"findings":[],"hash":"be30b6c6f76180064c874afc25c187c248de9e8abc27c8dc6011f2983437ab14","path":"be/src/features/client-cli/relay-cli/harness/subs/ci-report.cli.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts is not formatted by prettier; run `npm run format`","path":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts","rule":"HFS_FORMAT"}],"hash":"fda9742f08c1f0a69ec32975f8a4dd604ab90906f080b90eeeb32b309c0df3ee","path":"be/src/features/client-cli/relay-cli/harness/subs/e2e.cli.ts","step":"prettier"}
-{"findings":[],"hash":"804ad4888ca26621ac803bf42d5b16242fa1a74655eb8ac60df74390f5af898e","path":"be/src/features/client-cli/relay-cli/harness/subs/pull.cli.ts","step":"prettier"}
 {"findings":[],"hash":"6d430364d88f1ac43b318f2d85071ef1fc35c74cce36dc0bae44834f4e42f20f","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"db8f126dea75e0085597aad31669ffab1f35fe352966c033904f52c4436d7462","path":"be/src/features/client-cli/relay-cli/harness/harness.cli.ts","step":"prettier"}
 {"findings":[],"hash":"81f2bb6c2ac1f08f5bf99714547224e2da38513468bdca40eeac2323720934c7","path":"be/src/features/client-cli/relay-cli/harness/harness.module-definition.ts","step":"prettier"}

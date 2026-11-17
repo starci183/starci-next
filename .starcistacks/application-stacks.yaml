@@ -134,9 +134,9 @@ environments:
         db: 3290
         mail: 3291
         mailui: 3292
-        # The S3 port of the dev object store and its admin console (base+93, base+94); only the S3 port is published, on the tunnel.
-        storage: 3293
-        storage-console: 3294
+        # The S3 port of the dev object store and its admin console (base+95, base+96; dev's qdrant holds base+93); only the S3 port is published, on the tunnel.
+        storage: 3295
+        storage-console: 3296
         core: 3201
         app: 3200
         landing: 3202
