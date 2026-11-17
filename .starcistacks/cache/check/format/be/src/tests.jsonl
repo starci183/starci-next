@@ -12,6 +12,7 @@
 {"findings":[],"hash":"565b6b5f71296576ffda84e2f1e8c4fa2614890b630159c2d60f730da227c3bb","path":"be/src/tests/fixtures/builders/career.builder.ts","step":"prettier"}
 {"findings":[],"hash":"e409ada4178ae5d3dbfa3ab59a09d00437d6027fe92d000a8a7f9dc8af062188","path":"be/src/tests/fixtures/builders/commerce-ledger.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a72114f8ef21444201b4599e27c20e82da9222f2f95dbcc0a1e43f9aebc3c09c","path":"be/src/tests/fixtures/builders/commerce.builder.ts","step":"prettier"}
+{"findings":[],"hash":"2b8a90962dbc1843e0eff207569bf13622301606797ef3c36f836b849b9fa509","path":"be/src/tests/fixtures/builders/harness.builder.ts","step":"prettier"}
 {"findings":[],"hash":"b31d6cf4b49ed6ffe392f41a16d526727787e95f7a9ca0a3f92d0b5fe449fd05","path":"be/src/tests/fixtures/builders/identity.builder.ts","step":"prettier"}
 {"findings":[],"hash":"51bf9456cd8cc43392a868d583918b8d9116bd483938f65e290afd63b133361f","path":"be/src/tests/fixtures/builders/interview-doors.builder.ts","step":"prettier"}
 {"findings":[],"hash":"dd42a8e5dd2ed370f5e6d2d9ff1711790b85536b953aca9b3baeb37e24df3cf0","path":"be/src/tests/fixtures/builders/interview-stub.builder.ts","step":"prettier"}
@@ -24,6 +25,7 @@
 {"findings":[],"hash":"c6c0913ab8f43b33af5a0683fbd3529fa925faef9235c427ca8c8682c245dc1b","path":"be/src/tests/fixtures/builders/premium.builder.ts","step":"prettier"}
 {"findings":[],"hash":"d359d7d5eb52ce016d6692fad64d2d3dbae42cb4167a895376e462368adf9b88","path":"be/src/tests/fixtures/builders/project.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a99513b12bc731a56bd67dd58d2291d7190ad4543d180ebf60580fa578b7024f","path":"be/src/tests/fixtures/builders/purchase.builder.ts","step":"prettier"}
+{"findings":[],"hash":"bd0785ba4e63cb582b7628f5388232cde47d15cf495b8932213898cd3296ce58","path":"be/src/tests/fixtures/builders/raw-lesson.builder.ts","step":"prettier"}
 {"findings":[],"hash":"2ae9013ee9cfa5035a13b64e1ab52e856fa215abda40699979730fc6a7e06f81","path":"be/src/tests/fixtures/builders/review.builder.ts","step":"prettier"}
 {"findings":[],"hash":"df0fb48c474e58c20c4cc107d67aa2a8f98e3a86a6f7e268ecf42e36e17e7339","path":"be/src/tests/fixtures/builders/seed.builder.ts","step":"prettier"}
 {"findings":[],"hash":"79a0155def737f13caf5dc0442444f2899af1ccebd18d425175ce4da816bdfdc","path":"be/src/tests/fixtures/builders/webhook.builder.ts","step":"prettier"}
@@ -104,7 +106,7 @@
 {"findings":[],"hash":"9e3c2030530961e80b35061e5180111202b843dca86af6c11fa1746d1972a915","path":"be/src/tests/integration/lesson/import.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"edbdabf290f1e6fc1e6286aa4c0694710b48cb5784e24cdfc95ead765330510d","path":"be/src/tests/integration/mail/mail.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f42a21577617fe2c8d6b65f7fb9ede029b20dc55ff5dfbe3e2352e73acaf8b66","path":"be/src/tests/integration/notification/notification.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"0400243b66572eec8a085583ae81937ad2713fbe39d0a78225e0749b40b2c95e","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"2709d0ddfaac2f5102429ed387eb36ed46a2566fc91cd37eb0f8e041975547f4","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"69afbf32e70fec81e2836486b40463e44709a7133c6fb2f9101e4ed46a527d7b","path":"be/src/tests/integration/path/path.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"77f97552fa13683f782b8a5e7769f054fcd769000f5eccbf0f83bd50f37637d9","path":"be/src/tests/integration/payos/payos.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"2da43cc565c46a1ef5fcc5037b710f8846ca600571d0436d346f656476e9e460","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
