@@ -638,7 +638,7 @@
 {"findings":[],"hash":"ef22ad8a12f7649aa8ab033ebda0525b3da3f339c5ec5a89e08c060023294e24","path":"be/src/modules/domain/profile/profile-avatar.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"fcb19c2406cf4f3aa08b4594f3297c71501f8f41ba9566851a6ca74c38c557eb","path":"be/src/modules/domain/profile/profile-avatar.policy.ts","step":"prettier"}
 {"findings":[],"hash":"197a26e52e2e1a437a56ec3da546893e038b4f6f8e9a6673e13c0239da0b95e0","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"prettier"}
-{"findings":[],"hash":"c5837b464a559d7208fa9540bf29d0b2651ae911793b3de4ba480b9b28259d7b","path":"be/src/modules/domain/profile/profile.config.ts","step":"prettier"}
+{"findings":[],"hash":"eea5e68d0ee15a1ed304eedbd5b71fdabc6e259be5493da2a70e191f11f4ce6f","path":"be/src/modules/domain/profile/profile.config.ts","step":"prettier"}
 {"findings":[],"hash":"638ec58fb0422cd8bf60b2ebaedc727c716baae156b2ff0ba90ad2e999bf77c9","path":"be/src/modules/domain/profile/profile.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"d0d669677e3c225489d60a3ed5f8d24580baa14b325c6e6c997c261962b4d9d1","path":"be/src/modules/domain/profile/profile.decorators.ts","step":"prettier"}
 {"findings":[],"hash":"8614d3a1abce7bb001d23efaeb4804ccb601bb77f851c535576fe479e829fb95","path":"be/src/modules/domain/profile/profile.log-events.ts","step":"prettier"}

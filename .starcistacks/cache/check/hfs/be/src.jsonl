@@ -3594,9 +3594,8 @@
 {"findings":[],"hash":"4c8afef4c207c9a42ad4abcf1b1418d35b76139d8891d45f4ebf3d4f3fe9aecf","path":"be/src/modules/domain/profile/profile-avatar.policy.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"db0a9c6c327f6fcdd22c5a3de315468d43e4ba6829b1eeb7d90b30009ae0175f","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"file-rules"}
 {"findings":[],"hash":"27128eeaf1ad4d9ab32f76485e9ae37d9bbb97dbb5369fd9c83ab2575db2d8e0","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"d1e935d44cadc94d2eeb994f2f21abc52f10808826df473b1c4a78c8f211df5b","path":"be/src/modules/domain/profile/profile.config.ts","step":"file-rules"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/domain/profile/profile.config.ts reads required PROFILE_AVATAR_TYPES, which is neither sealed under .starcistacks/<env>/secrets/*.enc nor declared by the stack or KEYS.md","path":"be/src/modules/domain/profile/profile.config.ts","rule":"ENV_REQUIRED_UNSET"}],"hash":"c5837b464a559d7208fa9540bf29d0b2651ae911793b3de4ba480b9b28259d7b","path":"be/src/modules/domain/profile/profile.config.ts","step":"hfs"}
-{"findings":[],"hash":"1d0e00d91039c229bbc87b7bc37f32c6986e365751e2ee31cc5cf54f989f1b0d","path":"be/src/modules/domain/profile/profile.config.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"2bef214c30afd8b82e9564d316738ec46577e31aca322005ea6a1ac3c6b8cf4e","path":"be/src/modules/domain/profile/profile.config.ts","step":"file-rules"}
+{"findings":[],"hash":"65e86ecaa5b88ba8c003ea846a0a24203fc944b99c90176d597e6a2da1c45737","path":"be/src/modules/domain/profile/profile.config.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"3c93fcb9bd98082003bcadccfe9ebb0619d4ba696ba00674eb967b1eb5662f13","path":"be/src/modules/domain/profile/profile.contracts.ts","step":"file-rules"}
 {"findings":[],"hash":"a8f0c88f7bdc0a3fe67e7f2789ec079618ffda5003ae88344a0851a4938359a6","path":"be/src/modules/domain/profile/profile.contracts.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"440cf1800cf96bca9b88a186314062f8bb363518fec506d48bbd5033d88d3149","path":"be/src/modules/domain/profile/profile.decorators.ts","step":"file-rules"}
