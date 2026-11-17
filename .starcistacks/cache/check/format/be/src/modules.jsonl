@@ -632,8 +632,8 @@
 {"findings":[],"hash":"ec1ac1656530893559d92ad0f4bfb67f781b25f199fe2e62b5bcc2bdf6a04503","path":"be/src/modules/domain/project/project-read.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"9e23444e4eb2059717bb6b35ad6b47465908630827971d302b85b65b2731b300","path":"be/src/modules/domain/project/project-read.service.ts","step":"prettier"}
 {"findings":[],"hash":"6b9f62a4bdc9e4cad3cb7fb331eee712c2dde860085c3095e097227d6098bfc2","path":"be/src/modules/domain/project/project-relay.port.ts","step":"prettier"}
-{"findings":[],"hash":"745dcfec752b387e36903f7d1546fc48f92c1c526c5af15d95b69c44cfcb1456","path":"be/src/modules/domain/project/project-repository.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"90f2abe0584ff3d15b16133780774a8d2388874b0a450fdc8a5340d6757dbddc","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"prettier"}
+{"findings":[],"hash":"c8324f62660754179058b15c3e91279dcfa827816ddbce0a192beb8da7a649e2","path":"be/src/modules/domain/project/project-repository.policy.spec.ts","step":"prettier"}
+{"findings":[],"hash":"faaefa6f3f70deeb9bf08032b8a339370107102fb16bc3444422565c74ad8d50","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"prettier"}
 {"findings":[],"hash":"4de4e5c77ad22b2ea2d0dd82b4d6412ac47cd78facb6b4f5e826f2677b916303","path":"be/src/modules/domain/project/project-repository.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"8aff11e5ae68cf29f68b7cf2df59f19875fd27ea2586793ebe64f43487f36e57","path":"be/src/modules/domain/project/project-repository.service.ts","step":"prettier"}
 {"findings":[],"hash":"6d96666b7707abd708ec9ef265846fd9777062e41cd7065462fbda8fb25aa5b4","path":"be/src/modules/domain/project/project-settings.policy.spec.ts","step":"prettier"}
@@ -653,8 +653,8 @@
 {"findings":[],"hash":"e75fdf96f5a779ca93fe672b16c5e9abc07193361dcf9ee07ff3f07d178a2f66","path":"be/src/modules/domain/project/project.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"d8437ad469a0828ba006ee718adc93caed39cf4d244072805d8b3d3027fe15ea","path":"be/src/modules/domain/project/project.module.ts","step":"prettier"}
 {"findings":[],"hash":"7a5fe6a1de25b4dbec6508394d1b51d0595eceebe5b2f5a1bccb1dd092cedcfc","path":"be/src/modules/domain/project/project.options.ts","step":"prettier"}
-{"findings":[],"hash":"a10096621e0431e5575047356d30269da5e371206ed2d1ba7a127756666b6536","path":"be/src/modules/domain/project/project.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"849c16ec12167c74f940ae18f0d5c9a590080345ce13133b98a70cda8d6b42e0","path":"be/src/modules/domain/project/project.service.ts","step":"prettier"}
+{"findings":[],"hash":"bf60d44c6822d3e888b750ee2184eba26ce4751aa9fbc7df0143e93dcdd0dc51","path":"be/src/modules/domain/project/project.service.spec.ts","step":"prettier"}
+{"findings":[],"hash":"5de7f93a5ff534a9b9ec5f9e1178561e6446e06a184f2b3d6a0684cbe1924132","path":"be/src/modules/domain/project/project.service.ts","step":"prettier"}
 {"findings":[],"hash":"3cd5ffe462355399e0112800c26947cfb90d765dce142659e7d14f0cf80ebfbf","path":"be/src/modules/domain/project/unattested-ci.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"2d565e0234478e479671936714ba15e9e8fe20926560aa6021806ef1af7bffbc","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"prettier"}
 {"findings":[],"hash":"918ff3d7fa74c1fdccdb2815f5cff25d039acb03b7da8278335726c15975179c","path":"be/src/modules/domain/project/unconfigured-project-coach.client.spec.ts","step":"prettier"}

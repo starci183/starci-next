@@ -3304,9 +3304,9 @@
 {"findings":[],"hash":"fd23236809dbe88383a2b2a79fc6c32cd6fbe996593919ae392e6420ee9f7d27","path":"be/src/modules/domain/project/project-read.service.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"654bb9887dd68dcf061813a685ecc89c7b4bea2395648eeb42e3a2d9c4bfede0","path":"be/src/modules/domain/project/project-relay.port.ts","step":"file-rules"}
 {"findings":[],"hash":"407697b34bcc27c2537b70785f8b1d067abe2cd7a4608e9b0bd45e880bf6a6a2","path":"be/src/modules/domain/project/project-relay.port.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"8b8782a0a3249a2f572808b2ac8c8a453e3ae7375d9dd9d7577dd9d475b4030a","path":"be/src/modules/domain/project/project-repository.policy.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"c3620ccba17f76ca176cbe85613af313e467e545c55262fbc165eb2ce993ed74","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"file-rules"}
-{"findings":[],"hash":"56e9969e82f9bedcbb71f0f764f098a7f77bdd083755f5311946b94948b8007d","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"2dee938879a3be345b63edc4d3d47478113ffa56a2da6335d5e5705cc5b7dc58","path":"be/src/modules/domain/project/project-repository.policy.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"43677330b9fbebff18b481ea4eae2e08c2c1cf84be40a9a608957719ec5885e4","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"file-rules"}
+{"findings":[],"hash":"817bb5a7e7bd0c0740d60c159593a081c6e5bd184dfb3467faf9928e95d52c71","path":"be/src/modules/domain/project/project-repository.policy.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"6ad9a34a665b75c00ae46e61411f0cd57d0462d2ee52b45567c72d72734f9bba","path":"be/src/modules/domain/project/project-repository.service.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"50f16ae70d66007c307c27737332575f19d91afe9eb20134f22e60e9a5e59ef5","path":"be/src/modules/domain/project/project-repository.service.ts","step":"file-rules"}
 {"findings":[],"hash":"24d1ea7af3249fbaf983af0d75574935e06b69b8c725253b118b3c73151daafd","path":"be/src/modules/domain/project/project-repository.service.ts","step":"unit:recurring-observations"}
@@ -3339,9 +3339,9 @@
 {"findings":[],"hash":"79bbd240b3ef77537464120bebb030b6ea65ae09216ca2957bd3269efb651729","path":"be/src/modules/domain/project/project.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"d2f29357c01f21535a2b6c93f76b18d80ce21f309f59145975058cfa7639dd47","path":"be/src/modules/domain/project/project.options.ts","step":"file-rules"}
 {"findings":[],"hash":"47a4a493a3cd4b310414e8eb5b3e1b875f96cf064037ca0ede066f8c4b6162d6","path":"be/src/modules/domain/project/project.options.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"5d28f871d80a8b9081c87d9d04f4fbb64eb154713cbde99f25a51ade62d6962c","path":"be/src/modules/domain/project/project.service.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d9827a9ce1e8a8092ec1920440ddc12d8f85b29422ac2f41e8e514dae41027e2","path":"be/src/modules/domain/project/project.service.ts","step":"file-rules"}
-{"findings":[],"hash":"d83b6ea5c9e9aeccafee1987bfe6749458a129a8f2a8b6d43e0146548825ac99","path":"be/src/modules/domain/project/project.service.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"67c603bcccfe7025f6897047ff7a202d8caee39c1ffaf63a9d86c99942d80ba0","path":"be/src/modules/domain/project/project.service.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ebd8eb91755dbcbe7ce79b16263844c2596f7659061d4662e2dd73e85ef27644","path":"be/src/modules/domain/project/project.service.ts","step":"file-rules"}
+{"findings":[],"hash":"eda6fd62df2db4972ebb436fd869aa3556334e667f1892a8ad4c7c64f2d5f754","path":"be/src/modules/domain/project/project.service.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"4e70625df9a732fb9dd16e57d1c220183727c133a969395c03d54f92d35de801","path":"be/src/modules/domain/project/unattested-ci.client.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c0100b309967f5e1962ec981fa8400ee7f3f7fa839c0c90cd34f8e65f2c81c5b","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"file-rules"}
 {"findings":[],"hash":"d49b95d20eb6b8896bc976e45cb056393312f77c01bbebc67f8ba149f0f746d1","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"unit:recurring-observations"}
