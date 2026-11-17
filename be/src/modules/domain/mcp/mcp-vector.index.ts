@@ -11,7 +11,22 @@ const QUERY_PREFIX =
 const CHUNKS_MAX = 2000
 /** The most chunks one semantic search answers, and the most characters of a chunk it shows (the path and lines say where the rest is). */
 const SEMANTIC_HITS_MAX = 10
+/** How many nearest chunks are fetched before the literal boost cuts them to `SEMANTIC_HITS_MAX`. */
+const CANDIDATES_MAX = 300
+/** What a chunk that holds every word of a short query gains, so a word such as a command name finds the text that says it. */
+const LITERAL_BOOST = 0.25
+/** The longest query, in words, that is also matched literally. */
+const LITERAL_WORDS_MAX = 3
 const SEMANTIC_TEXT_MAX = 2000
+
+/** The words of a short query (at most `LITERAL_WORDS_MAX`, three characters or more), or none for a long question. */
+const literalWordsOf = (query: string): Array<string> => {
+    const words = query
+        .toLowerCase()
+        .split(/\s+/u)
+        .filter((word) => word !== "")
+    return words.length > LITERAL_WORDS_MAX ? [] : words.filter((word) => word.length >= 3)
+}
 
 /**
  * One corpus a caller indexes or searches: where it lives, the access class its chunks are written with and the classes the
@@ -85,25 +100,29 @@ export class McpVectorIndex {
             const near = await this.store.nearest(
                 corpus.scope,
                 vector,
-                SEMANTIC_HITS_MAX,
+                CANDIDATES_MAX,
                 corpus.readable,
                 reach === "scope" ? null : [...embedded.byHash.keys()],
             )
-            return near.flatMap(({ hash, score }) => {
+            const words = literalWordsOf(query)
+            const ranked = near.flatMap(({ hash, score }) => {
                 const chunk = embedded.byHash.get(hash)
-                return chunk === undefined
-                    ? []
-                    : [
-                          {
-                              path: chunk.path,
-                              line: chunk.line,
-                              ...(chunk.lineEnd === undefined ? {} : { endLine: chunk.lineEnd }),
-                              ...(chunk.title === undefined || chunk.title === null ? {} : { title: chunk.title }),
-                              text: chunk.text.trim().slice(0, SEMANTIC_TEXT_MAX),
-                              score: Math.round(score * 1000) / 1000,
-                          },
-                      ]
+                if (chunk === undefined) return []
+                const text = chunk.text.toLowerCase()
+                const literal = words.length > 0 && words.every((word) => text.includes(word))
+                return [{ chunk, score: score + (literal ? LITERAL_BOOST : 0) }]
             })
+            return ranked
+                .sort((a, b) => b.score - a.score)
+                .slice(0, SEMANTIC_HITS_MAX)
+                .map(({ chunk, score }) => ({
+                    path: chunk.path,
+                    line: chunk.line,
+                    ...(chunk.lineEnd === undefined ? {} : { endLine: chunk.lineEnd }),
+                    ...(chunk.title === undefined || chunk.title === null ? {} : { title: chunk.title }),
+                    text: chunk.text.trim().slice(0, SEMANTIC_TEXT_MAX),
+                    score: Math.round(score * 1000) / 1000,
+                }))
         } catch {
             return null
         }

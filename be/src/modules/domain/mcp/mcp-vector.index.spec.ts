@@ -157,3 +157,26 @@ describe("McpVectorIndex per-chunk access", () => {
         expect(hits?.[0]).toMatchObject({ line: 1, endLine: 3, title: "Open" })
     })
 })
+
+describe("McpVectorIndex literal boost", () => {
+    const scoreOf = async (query: string, path: string): Promise<number> => {
+        const index = new McpVectorIndex(embedderOf().embedder, new McpMemoryVectorStore())
+        const chunks = [
+            chunk("a", "the quick brown fox jumps over a lazy dog"),
+            chunk("c", "zzzzzz wwwwww doctor qqqqqq"),
+        ]
+        const hits = await index.search(corpus(), chunks, query)
+        return hits?.find((hit) => hit.path === path)?.score ?? Number.NaN
+    }
+
+    it("adds a fixed bonus to a chunk that says every word of a short query, and none to a long question or a partial match", async () => {
+        const literal = await scoreOf("doctor", "c")
+        const near = await scoreOf("doctor.", "c")
+        expect(literal - near).toBeGreaterThan(0.2)
+        expect(literal - near).toBeLessThan(0.3)
+        // Four words are a question, not a name: nothing is boosted.
+        const questionA = await scoreOf("the doctor says no", "c")
+        const questionB = await scoreOf("the doctor says no.", "c")
+        expect(Math.abs(questionA - questionB)).toBeLessThan(0.05)
+    })
+})
