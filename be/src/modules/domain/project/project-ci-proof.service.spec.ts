@@ -18,7 +18,7 @@ const BODY = {
     runId: "gh-1",
     commit: "ABC1234",
     passed: true,
-    results: [{ concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true }],
+    results: [{ concept: "idempotent-retry", slot: "test", ref: "[idempotency] twice", passed: true }],
 }
 
 const build = async (found = true) => {

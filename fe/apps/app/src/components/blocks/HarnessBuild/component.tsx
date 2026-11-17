@@ -1,7 +1,9 @@
 import {
     Badge,
+    Button,
     CopyField,
     DataTable,
+    Input,
     Markdown,
     Page,
     Section,
@@ -131,6 +133,62 @@ const GuideRegion = (props: RegionProps) => {
     )
 }
 
+/** The repository that proves the build: its status, then the repository and the audience when bound, else the field that binds one. */
+const RepoRegion = (props: RegionProps) => {
+    const { labels, common, repository, isBinding, isBindFailed } = props.screen.props
+    const { repository: bound } = props.view
+    return (
+        <Section
+            title={labels.repoTitle}
+            headingLevel={2}
+            fact={bound.isBound ? labels.repoBound : labels.repoUnbound}
+            caption={labels.repoText}
+            isLoading={props.isLoading}
+        >
+            <Stack gap="row">
+                <Text size="sm" tone="muted">
+                    {labels.keysLabel}: {props.view.keys}
+                </Text>
+                {bound.isBound ? (
+                    <>
+                        <Text isStrong>{bound.name}</Text>
+                        <CopyField
+                            label={labels.repoAudienceLabel}
+                            description={labels.repoAudienceDescription}
+                            value={bound.audience}
+                            copyLabel={common.copy.copy}
+                            copiedLabel={common.copy.copied}
+                            copyErrorLabel={common.copy.copyError}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <Input
+                            id="harness-repository"
+                            name="repository"
+                            label={labels.repoField}
+                            placeholder={labels.repoPlaceholder}
+                            value={repository}
+                            onValueChange={props.screen.on.changeRepository}
+                            isInvalid={isBindFailed}
+                            {...(isBindFailed ? { errorMessage: labels.repoFailed } : {})}
+                            isLoading={props.isLoading}
+                        />
+                        <Button
+                            intent="neutral"
+                            isPending={isBinding}
+                            isDisabled={repository.trim() === ""}
+                            onPress={props.screen.on.bind}
+                        >
+                            {labels.repoBind}
+                        </Button>
+                    </>
+                )}
+            </Stack>
+        </Section>
+    )
+}
+
 /** The main pane: the command that pulls the starter source, the stage on screen with its cases, its log and its step guide. */
 const MainRegion = (props: RegionProps) => {
     const { labels, common } = props.screen.props
@@ -145,17 +203,7 @@ const MainRegion = (props: RegionProps) => {
                 copyErrorLabel={common.copy.copyError}
                 isLoading={props.isLoading}
             />
-            <Section
-                title={labels.repoTitle}
-                headingLevel={2}
-                fact={props.view.isBound ? labels.repoBound : labels.repoUnbound}
-                caption={labels.repoText}
-                isLoading={props.isLoading}
-            >
-                <Text size="sm" tone="muted">
-                    {labels.keysLabel}: {props.view.keys}
-                </Text>
-            </Section>
+            <RepoRegion {...props} />
             <Section
                 title={props.view.selected.title}
                 headingLevel={2}

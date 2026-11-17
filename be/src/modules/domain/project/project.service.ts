@@ -7,7 +7,8 @@ import { InjectProbeTransport, type ProbeTransport } from "@modules/integrations
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
 import { assertSubscriber } from "./project-access.policy"
-import { milestonesOfKind } from "./project-catalog.policy"
+import { isListed } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import {
     endpointOf,
     INPUT_LIMITS,
@@ -61,6 +62,7 @@ export class ProjectService {
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProbeTransport() private readonly probe: ProbeTransport,
         private readonly reads: ProjectReadService,
+        private readonly checkSet: ProjectCheckSetService,
     ) {}
 
     /**
@@ -148,9 +150,7 @@ export class ProjectService {
     async setConcept(params: SetConceptParams): Promise<ConceptView> {
         await assertSubscriber(this.entitlement, params.learnerId)
         const row = await this.ownedProject(params.learnerId, params.projectId)
-        const listed = milestonesOfKind(projectKindOf(row)).some((milestone) =>
-            milestone.concepts.includes(params.conceptId),
-        )
+        const listed = isListed(await this.checkSet.current(), projectKindOf(row), params.conceptId)
         if (!listed) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
         await this.entityManager.query(UPSERT_CONCEPT, [
             row.project_id,

@@ -127,7 +127,7 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
         noShortcuts: t("noShortcuts"),
         never: t("never"),
         shortcut: (label, isBlocked) => (isBlocked ? t("shortcutBlocked", { label }) : label),
-        tokens: (tokens) => t("tokens", { tokens: format.number(tokens) }),
+        budget: (usd) => t("budget", { usd: format.number(usd, { style: "currency", currency: "USD" }) }),
         when: (iso) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
     }
     return {

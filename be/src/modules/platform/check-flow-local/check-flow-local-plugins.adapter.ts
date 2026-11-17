@@ -5,7 +5,14 @@ import type { CheckAnswer, CheckKey, LocalFlowEnv, LocalFlowPlugin } from "./che
 import type { ProcessPort } from "./check-flow-local.port"
 import { isPathSpec } from "./check-flow-local-path.policy"
 import { gitCheck, hookCheck, hookCommandsOf } from "./check-flow-local-repo.adapter"
-import { COMMAND_PROGRAMS, commandCheck, envCheck, fileCheck, jsonCheck, tomlCheck } from "./check-flow-local-values.adapter"
+import {
+    COMMAND_PROGRAMS,
+    commandCheck,
+    envCheck,
+    fileCheck,
+    jsonCheck,
+    tomlCheck,
+} from "./check-flow-local-values.adapter"
 
 /** The binaries a probe may list in `needs`; the `command` check answers them. */
 export const LOCAL_NEEDS: ReadonlyArray<string> = ["git", "node", "npm", "claude", "codex"]
@@ -39,21 +46,34 @@ const parsers: Readonly<Record<CheckKey, (spec: Record<string, unknown>, at: str
         needsText(spec, "at", at, issue)
     },
     env: (spec, at, issue) => {
-        if (typeof spec["name"] !== "string" || !/^[A-Z][A-Z0-9_]*$/u.test(spec["name"])) issue(`${at}.name`, "must be an upper-case variable name")
+        if (typeof spec["name"] !== "string" || !/^[A-Z][A-Z0-9_]*$/u.test(spec["name"]))
+            issue(`${at}.name`, "must be an upper-case variable name")
         if (typeof spec["set"] !== "boolean") issue(`${at}.set`, "must be true or false")
     },
     command: (spec, at, issue) => {
         needsText(spec, "run", at, issue)
-        const program = String(spec["run"] ?? "").trim().split(/\s+/u)[0] ?? ""
+        const program =
+            String(spec["run"] ?? "")
+                .trim()
+                .split(/\s+/u)[0] ?? ""
         if (typeof spec["run"] === "string" && !COMMAND_PROGRAMS.includes(program)) {
             issue(`${at}.run`, `the program must be one of ${COMMAND_PROGRAMS.join(", ")}`)
         }
     },
     hook: (spec, at, issue) => {
         if (!isPathSpec(spec["config"])) issue(`${at}.config`, "must be a path or a list of paths")
-        if (isRecord(spec["simulate"]) === isRecord(spec["inspect"])) issue(at, "needs exactly one of simulate, inspect")
+        if (isRecord(spec["simulate"]) === isRecord(spec["inspect"]))
+            issue(at, "needs exactly one of simulate, inspect")
         const simulate = spec["simulate"]
-        if (isRecord(simulate) && !(Array.isArray(simulate["cases"]) && simulate["cases"].length > 0 && typeof simulate["event"] === "string" && typeof simulate["tool"] === "string")) {
+        if (
+            isRecord(simulate) &&
+            !(
+                Array.isArray(simulate["cases"]) &&
+                simulate["cases"].length > 0 &&
+                typeof simulate["event"] === "string" &&
+                typeof simulate["tool"] === "string"
+            )
+        ) {
             issue(`${at}.simulate`, "needs an event, a tool and at least one case")
         }
         const inspect = spec["inspect"]
@@ -92,7 +112,17 @@ export const checkPlugins = (proc: ProcessPort, env: LocalFlowEnv, sink: WhySink
     }
     const plugin = (key: CheckKey): LocalFlowPlugin => ({
         key,
-        ...(key === "command" ? { needs: LOCAL_NEEDS, meets: (need: string) => spawnSync(need, ["--version"], { shell: process.platform === "win32", windowsHide: true, timeout: 15_000 }).status === 0 } : {}),
+        ...(key === "command"
+            ? {
+                  needs: LOCAL_NEEDS,
+                  meets: (need: string) =>
+                      spawnSync(need, ["--version"], {
+                          shell: process.platform === "win32",
+                          windowsHide: true,
+                          timeout: 15_000,
+                      }).status === 0,
+              }
+            : {}),
         parse: (raw, at, issue) => {
             if (!isRecord(raw)) {
                 issue(at, "must be a map")

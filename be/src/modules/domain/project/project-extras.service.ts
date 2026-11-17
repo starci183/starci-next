@@ -6,9 +6,10 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { isRecord } from "@modules/platform/primitives"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import type { EvidenceRow, ProjectLocale } from "./project.contracts"
+import type { ConceptDefinition, EvidenceRow, ProjectLocale } from "./project.contracts"
 import { assertSubscriber } from "./project-access.policy"
-import { conceptOf, milestonesOfKind } from "./project-catalog.policy"
+import { conceptIn, isListed, learnLessonOf, type ProjectCatalog } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { codeReadMean, codeReadPassed } from "./project-coach.policy"
 import { experienceSubjectOf, milestoneExperienceOf, proofEvidenceOf } from "./project-experience.policy"
 import { InjectProjectLessons, type ProjectLessonPort } from "./project-lesson.port"
@@ -65,19 +66,23 @@ export class ProjectExtrasService {
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProjectLessons() private readonly lessons: ProjectLessonPort,
         private readonly essentials: EssentialsExperienceService,
+        private readonly checkSet: ProjectCheckSetService,
     ) {}
 
     /** The newest AI read of a concept of the learner's project, or null when it has none yet. */
     async codeRead(params: ConceptLookupParams): Promise<CodeReadView | null> {
         await assertSubscriber(this.entitlement, params.learnerId)
         const project = await this.projectOf(params.learnerId, params.projectId)
-        this.requireListed(project, params.conceptId)
+        const set = await this.checkSet.current()
+        const concept = this.requireListed(set, project, params.conceptId)
         const rows = await this.rowsOf(project)
         const read = newestOf(
             rows.filter((row) => row.conceptId === params.conceptId && row.slot === "code-read" && row.source === "ai"),
         )
         if (read === null) return null
-        const lesson = (await this.lessons.lessons({ locale: params.locale })).get(params.conceptId)
+        const live = await this.lessons.lessons({ locale: params.locale })
+        const lessonId = learnLessonOf(concept, new Set(live.keys()))
+        const lesson = lessonId === null ? undefined : live.get(lessonId)
         const rubric =
             lesson === undefined ? [] : (await this.lessons.rubricOf({ lesson, locale: params.locale })).criteria
         const texts = new Map(rubric.map((criterion) => [criterion.id, criterion.criterion]))
@@ -120,9 +125,12 @@ export class ProjectExtrasService {
         const project = await this.projectOf(params.learnerId, params.projectId)
         const rows = await this.rowsOf(project)
         const lessons = await this.lessons.lessons({ locale: params.locale })
-        const standing = projectStandingOf(projectKindOf(project), rows, new Set(lessons.keys()))
-        if (params.conceptId !== null) return this.conceptPreview(project, params, rows, standing, params.conceptId)
-        return this.milestonePreview(project, params, rows, standing, params.milestoneId ?? "")
+        const set = await this.checkSet.current()
+        const lessonIds = new Set(lessons.keys())
+        const standing = projectStandingOf(set, projectKindOf(project), rows, lessonIds)
+        if (params.conceptId !== null)
+            return this.conceptPreview(project, params, rows, standing, { set, lessonIds, conceptId: params.conceptId })
+        return this.milestonePreview(project, params, rows, standing, set, params.milestoneId ?? "")
     }
 
     private async conceptPreview(
@@ -130,16 +138,17 @@ export class ProjectExtrasService {
         params: CvPreviewParams,
         rows: ReadonlyArray<EvidenceRow>,
         standing: ReturnType<typeof projectStandingOf>,
-        conceptId: string,
+        scope: { readonly set: ProjectCatalog; readonly lessonIds: ReadonlySet<string>; readonly conceptId: string },
     ): Promise<CvPreviewView> {
-        this.requireListed(project, conceptId)
-        const lessons = await this.lessons.lessons({ locale: params.locale })
+        const { set, lessonIds, conceptId } = scope
+        const concept = this.requireListed(set, project, conceptId)
         const own = rows.filter((row) => row.conceptId === conceptId)
+        const lessonId = learnLessonOf(concept, lessonIds)
         const draft =
-            lessons.has(conceptId) && conceptOf(conceptId) !== null
+            lessonId !== null
                 ? await this.essentials.preview({
                       learnerId: params.learnerId,
-                      lessonId: conceptId,
+                      lessonId,
                       project: { projectId: project.project_id, title: project.name, language: project.language },
                   })
                 : null
@@ -158,6 +167,7 @@ export class ProjectExtrasService {
         params: CvPreviewParams,
         rows: ReadonlyArray<EvidenceRow>,
         standing: ReturnType<typeof projectStandingOf>,
+        set: ProjectCatalog,
         milestoneId: string,
     ): CvPreviewView {
         const found = standing.milestones.find((milestone) => milestone.definition.id === milestoneId)
@@ -167,6 +177,7 @@ export class ProjectExtrasService {
             subject: experienceSubjectOf(project),
             milestone: found.definition,
             rows: own,
+            concepts: set.concepts,
             at: this.clock.now(),
         })
         return {
@@ -192,11 +203,11 @@ export class ProjectExtrasService {
         return project
     }
 
-    private requireListed(project: ProjectRow, conceptId: string): void {
-        const listed = milestonesOfKind(projectKindOf(project)).some((milestone) =>
-            milestone.concepts.includes(conceptId),
-        )
-        if (!listed) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
+    private requireListed(set: ProjectCatalog, project: ProjectRow, conceptId: string): ConceptDefinition {
+        const concept = conceptIn(set, conceptId)
+        if (concept === null || !isListed(set, projectKindOf(project), conceptId))
+            throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
+        return concept
     }
 
     private async rowsOf(project: ProjectRow): Promise<ReadonlyArray<EvidenceRow>> {

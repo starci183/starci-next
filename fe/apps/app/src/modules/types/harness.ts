@@ -56,8 +56,13 @@ export type HarnessBuildView = {
     readonly pullCommand: string
     /** When the newest e2e result arrived (ISO time); empty when none did. */
     readonly ranAt: string
-    /** Whether a repository is bound to the build for proof. */
-    readonly isBound: boolean
+    /** The repository bound to the build for proof, and the OIDC audience its workflow must ask for. */
+    readonly repository: {
+        readonly isBound: boolean
+        readonly name: string
+        readonly bindingId: string
+        readonly audience: string
+    }
     readonly stages: ReadonlyArray<HarnessStageView>
 }
 
@@ -141,8 +146,8 @@ export type HarnessTrialView = {
     readonly summary: string
     /** The command that runs the trial on the learner's machine. */
     readonly command: string
-    /** The expected output tokens of a run (turns times tokens per turn); 0 when the back end gives no estimate. */
-    readonly tokens: number
+    /** The most a run may cost, in US dollars, as the trap's budget says. */
+    readonly maxUsd: number
     readonly verdict: HarnessVerdict
     readonly shortcuts: ReadonlyArray<HarnessShortcutView>
 }

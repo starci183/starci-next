@@ -2006,7 +2006,13 @@
         "repoTitle": "Connect a repo to prove it",
         "repoText": "A run on your machine only counts as practising. To be proved, the build must run in a signed CI of your GitHub repo.",
         "repoBound": "Connected",
-        "repoUnbound": "Not connected"
+        "repoUnbound": "Not connected",
+        "repoField": "GitHub repo",
+        "repoPlaceholder": "owner/repo-name",
+        "repoBind": "Connect repo",
+        "repoFailed": "Could not connect this repo. Check the name looks like owner/repo.",
+        "repoAudienceLabel": "Workflow audience",
+        "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience."
       },
       "use": {
         "title": "Use",
@@ -2033,7 +2039,7 @@
         "costColumn": "Estimated cost",
         "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs.",
         "shortcutBlocked": "{label} (blocked)",
-        "tokens": "~ {tokens} tokens"
+        "budget": "Up to {usd}"
       },
       "guide": {
         "title": "Guide",

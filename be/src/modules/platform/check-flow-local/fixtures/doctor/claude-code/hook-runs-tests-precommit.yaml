@@ -6,7 +6,7 @@ id: hook-runs-tests-precommit
 tool: claude
 order: 3
 title:
-  vi: Hook chạy test trước khi commit
+  vi: A hook runs the tests before a commit
   en: A hook runs the tests before a commit
 guide: hooks
 check:
@@ -17,7 +17,7 @@ check:
       tool: Bash
       matches: "(npm|pnpm|yarn|bun)\\s+(run\\s+)?test|vitest|jest|node\\s+--test|go\\s+test|dotnet\\s+test|mvn\\s+test|gradle\\w*\\s+test"
 fix:
-  vi: Thêm hook PreToolUse (matcher `Bash`). Khi lệnh chứa `git commit`, script chạy `npm test`; test đỏ thì thoát với mã 2 để Claude không commit được.
+  vi: Add a PreToolUse hook (matcher `Bash`). When the command contains `git commit`, the script runs `npm test`; if the tests are red it exits with code 2 so Claude cannot commit.
   en: Add a PreToolUse hook (matcher `Bash`). When the command contains `git commit`, the script runs `npm test`; if the tests are red it exits with code 2 so Claude cannot commit.
 good:
   files:

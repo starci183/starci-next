@@ -20,9 +20,9 @@ Grammar: `Section kind="list"` với `ListRowData.state="informative"` cho hàng
 
 ## Kết nối repo để chứng minh
 
-Vì sao: kết quả chạy trên máy học viên chỉ là "đang luyện"; muốn "đã chứng minh" thì build phải chạy trong CI có chữ ký của repo GitHub của họ. Mục này nói rõ điều đó, cho thấy repo đã kết nối chưa và liệt kê key cần có trong `.env`. Luồng kết nối repo (không cần Project) sẽ nối vào đây khi BE có.
-Luật: `FE-ERROR-1`, `FE-UI-1`.
-Grammar: `Section` với `fact` (chip trạng thái) và `caption`.
+Vì sao: kết quả chạy trên máy học viên chỉ là "đang luyện"; muốn "đã chứng minh" thì build phải chạy trong CI có chữ ký của repo GitHub của họ. Chưa kết nối: một ô nhập `owner/repo` và nút "Kết nối repo" (không cần Project). Đã kết nối: tên repo và audience mà workflow phải xin trong token OIDC, có nút sao chép. Mục cũng liệt kê key cần có trong `.env`.
+Luật: `FE-ERROR-1`, `FE-DATA-COMMAND` (ghi qua hook lệnh, đọc lại build sau khi ghi).
+Grammar: `Section` với `fact` và `caption`, `Input`, `Button intent="neutral"`, `CopyField`.
 
 ## Lệnh tải source mẫu
 

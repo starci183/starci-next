@@ -185,11 +185,7 @@ export type ManifestFetch =
 
 /** The upload mutations of the relay feed. */
 export type UploadMutation =
-    | "relayCheckStarted"
-    | "relayCheckResult"
-    | "relayLog"
-    | "relayManifestAck"
-    | "relayHarnessResult"
+    "relayCheckStarted" | "relayCheckResult" | "relayLog" | "relayManifestAck" | "relayHarnessResult"
 
 /** One upload waiting for StarCi to accept it, idempotent on its client event id. */
 export interface PendingUpload {

@@ -30,20 +30,37 @@ FROM harness_contents WHERE kind = $1::text AND content_key = $2::text AND statu
 export const SELECT_PACK: ReturnType<typeof sql> = sql`SELECT version, pack, pack_sha256 FROM harness_contents
 WHERE kind = $1::text AND content_key = $2::text AND status = 'published' AND pack IS NOT NULL`
 
-/** Binds a build to a project of the learner, replacing an earlier binding ($1 learner, $2 build, $3 project, $4 now). */
+/**
+ * Binds a build to a GitHub repository of the learner ($1 learner, $2 build, $3 repository, $4 now). Binding another repository
+ * keeps the binding id and forgets the repository id of the old one; the same repository again changes nothing.
+ */
 export const UPSERT_BINDING: ReturnType<typeof sql> =
-    sql`INSERT INTO harness_build_bindings (learner_id, build_id, project_id, bound_at)
-VALUES ($1::uuid, $2::text, $3::uuid, $4::timestamptz)
-ON CONFLICT (learner_id, build_id) DO UPDATE SET project_id = EXCLUDED.project_id, bound_at = EXCLUDED.bound_at
-RETURNING build_id, project_id`
+    sql`INSERT INTO harness_build_bindings (learner_id, build_id, repository, bound_at)
+VALUES ($1::uuid, $2::text, $3::text, $4::timestamptz)
+ON CONFLICT (learner_id, build_id) DO UPDATE SET
+    repository = EXCLUDED.repository,
+    repository_id = CASE WHEN harness_build_bindings.repository = EXCLUDED.repository THEN harness_build_bindings.repository_id ELSE NULL END,
+    bound_at = CASE WHEN harness_build_bindings.repository = EXCLUDED.repository THEN harness_build_bindings.bound_at ELSE EXCLUDED.bound_at END
+RETURNING learner_id, build_id, binding_id, repository, repository_id`
 
 /** The bindings of a learner ($1 learner). */
-export const SELECT_BINDINGS: ReturnType<typeof sql> = sql`SELECT build_id, project_id FROM harness_build_bindings
-WHERE learner_id = $1::uuid`
+export const SELECT_BINDINGS: ReturnType<typeof sql> =
+    sql`SELECT learner_id, build_id, binding_id, repository, repository_id
+FROM harness_build_bindings WHERE learner_id = $1::uuid`
 
-/** Stores one attested result once per run ($1 learner, $2 build, $3 stage, $4 e2e, $5 run, $6 passed, $7 commit, $8 project, $9 now). */
+/** One binding by the id a workflow sends ($1 binding). */
+export const SELECT_BINDING_BY_ID: ReturnType<typeof sql> =
+    sql`SELECT learner_id, build_id, binding_id, repository, repository_id
+FROM harness_build_bindings WHERE binding_id = $1::uuid`
+
+/** Remembers the repository id GitHub named in the first attested run ($1 binding, $2 repository id). */
+export const SET_BINDING_REPOSITORY_ID: ReturnType<typeof sql> =
+    sql`UPDATE harness_build_bindings SET repository_id = $2::text
+WHERE binding_id = $1::uuid AND repository_id IS NULL`
+
+/** Stores one attested result once per run ($1 learner, $2 build, $3 stage, $4 e2e, $5 run, $6 passed, $7 commit, $8 binding, $9 now). */
 export const INSERT_PROOF: ReturnType<typeof sql> = sql`INSERT INTO harness_stage_proofs
-    (learner_id, build_id, stage_id, e2e_id, run_id, passed, commit_sha, project_id, recorded_at)
+    (learner_id, build_id, stage_id, e2e_id, run_id, passed, commit_sha, binding_id, recorded_at)
 VALUES ($1::uuid, $2::text, $3::text, $4::text, $5::text, $6::boolean, $7::text, $8::uuid, $9::timestamptz)
 ON CONFLICT DO NOTHING
 RETURNING e2e_id`

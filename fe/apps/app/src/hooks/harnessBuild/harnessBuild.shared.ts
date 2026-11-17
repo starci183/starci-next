@@ -54,7 +54,7 @@ export type HarnessBuildScreenView = {
     readonly title: string
     readonly summary: string
     readonly keys: string
-    readonly isBound: boolean
+    readonly repository: { readonly isBound: boolean; readonly name: string; readonly audience: string }
     readonly pullCommand: string
     readonly ranAt: string
     readonly stages: ReadonlyArray<HarnessStageItemView>
@@ -75,7 +75,7 @@ export const HARNESS_BUILD_PLACEHOLDER: HarnessBuildScreenView = {
     title: "xxxxxxxxxxxxxxxx",
     summary: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     keys: "xxxxxxxxxxxxxxxx",
-    isBound: false,
+    repository: { isBound: false, name: "xxxxxxxx", audience: "xxxxxxxx" },
     pullCommand: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     ranAt: "xxxxxxxxxx",
     stages: [1, 2, 3].map((n) => ({
@@ -188,7 +188,11 @@ export const buildViewOf = (
         title: build.title,
         summary: build.summary,
         keys: build.keys.join(" · "),
-        isBound: build.isBound,
+        repository: {
+            isBound: build.repository.isBound,
+            name: build.repository.name,
+            audience: build.repository.audience,
+        },
         pullCommand: build.pullCommand,
         ranAt: build.ranAt === "" ? "" : words.when(build.ranAt),
         stages: stageRowsOf(build, stage?.id ?? "", words),

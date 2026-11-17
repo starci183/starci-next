@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { builder, FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     conceptViewOf,
@@ -21,7 +23,7 @@ import type { ExplainConceptParams } from "./project-params.contracts"
 import { ProjectReadService } from "./project-read.service"
 import { COUNT_CODE_READS, SELECT_PROJECT, UPSERT_CONCEPT } from "./persistence/project.sql"
 
-const LESSON: ConceptLessonRef = { id: "cqrs-read-models", version: "v1", title: "CQRS", topicId: "data" }
+const LESSON: ConceptLessonRef = { id: "unit-testing-behavior", version: "v1", title: "CQRS", topicId: "data" }
 const RUBRIC = [
     { id: "c1", criterion: "Splits reads from writes", expectedEvidence: "a read model", misconception: "one model" },
     { id: "c2", criterion: "Keeps them in sync", expectedEvidence: "an update path", misconception: "none" },
@@ -31,7 +33,7 @@ const VIEW = conceptViewOf()
 const PARAMS: ExplainConceptParams = {
     learnerId: PROJECT_LEARNER,
     projectId: PROJECT_ID,
-    conceptId: "cqrs-read-models",
+    conceptId: "unit-testing-behavior",
     location: "internal/orders/read_model.go#Project",
     excerpt: "func Project(event Event) { readModel.Apply(event) }",
     explanation: "Writes go through the command side. The read model is rebuilt from the events.",
@@ -74,6 +76,7 @@ const build = async (world: World = {}, options: ProjectOptions = {}) => {
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectCodeReadService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(PROJECT_NOW) },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
@@ -96,7 +99,7 @@ describe("ProjectCodeReadService read", () => {
         expect(coach.read).toHaveBeenCalledWith({
             requestId: `read-${PROJECT_NOW.getTime()}`,
             locale: "en",
-            concept: "CQRS and read models",
+            concept: "Behavioural unit testing",
             rubric: RUBRIC,
             location: PARAMS.location,
             excerpt: PARAMS.excerpt,
@@ -104,7 +107,7 @@ describe("ProjectCodeReadService read", () => {
             timeoutMs: 60_000,
         })
         expect(evidence.append.mock.calls[0]?.[2][0]).toMatchObject({
-            conceptId: "cqrs-read-models",
+            conceptId: "unit-testing-behavior",
             slot: "code-read",
             source: "ai",
             passed: true,
@@ -114,7 +117,7 @@ describe("ProjectCodeReadService read", () => {
         })
         expect(em.query).toHaveBeenCalledWith(UPSERT_CONCEPT, [
             PROJECT_ID,
-            "cqrs-read-models",
+            "unit-testing-behavior",
             PARAMS.location,
             null,
             null,

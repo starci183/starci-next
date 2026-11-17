@@ -65,6 +65,7 @@ component_management:
         - "be/src/modules/integrations/mail/**"
         - "be/src/modules/integrations/payos/**"
         - "be/src/modules/integrations/probe/**"
+        - "be/src/modules/integrations/qdrant/**"
         - "be/src/modules/integrations/sepay/**"
     - component_id: platform
       name: platform

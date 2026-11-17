@@ -61,7 +61,7 @@ export type HarnessUseWords = {
     readonly noShortcuts: string
     readonly never: string
     readonly shortcut: (label: string, isBlocked: boolean) => string
-    readonly tokens: (tokens: number) => string
+    readonly budget: (usd: number) => string
     readonly when: (iso: string) => string
 }
 
@@ -109,6 +109,6 @@ export const trialItemOf = (trial: HarnessTrialView, words: HarnessUseWords): Ha
               : trial.shortcuts.map((each) => words.shortcut(each.label, each.isBlocked)).join(" · "),
     verdict: words.common.verdicts[trial.verdict],
     tone: VERDICT_TONES[trial.verdict],
-    cost: trial.tokens > 0 ? words.tokens(trial.tokens) : "",
+    cost: trial.maxUsd > 0 ? words.budget(trial.maxUsd) : "",
     command: trial.command,
 })

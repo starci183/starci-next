@@ -10,8 +10,10 @@
 {"findings":[],"hash":"0d54d9564e2294f62dc05085d46dcfc49633c5fb487414768d88eb92003d3b23","path":"be/src/tests/fixtures/builders/attempt-stub.builder.ts","step":"prettier"}
 {"findings":[],"hash":"99a2458863eb15e80ef4ab41a00795a904c81bf15819a5a826875dc1ad27415a","path":"be/src/tests/fixtures/builders/attempt.builder.ts","step":"prettier"}
 {"findings":[],"hash":"565b6b5f71296576ffda84e2f1e8c4fa2614890b630159c2d60f730da227c3bb","path":"be/src/tests/fixtures/builders/career.builder.ts","step":"prettier"}
+{"findings":[],"hash":"25dec7a7a3e96c655385a151f9194d5df21b888040288d22ac4c1b87454cb1fe","path":"be/src/tests/fixtures/builders/check-set.builder.ts","step":"prettier"}
 {"findings":[],"hash":"e409ada4178ae5d3dbfa3ab59a09d00437d6027fe92d000a8a7f9dc8af062188","path":"be/src/tests/fixtures/builders/commerce-ledger.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a72114f8ef21444201b4599e27c20e82da9222f2f95dbcc0a1e43f9aebc3c09c","path":"be/src/tests/fixtures/builders/commerce.builder.ts","step":"prettier"}
+{"findings":[],"hash":"7d4673bb61be4153656f8c0c1d05f8bfa1da95f5973033f0b67f3d98509dd693","path":"be/src/tests/fixtures/builders/harness.builder.ts","step":"prettier"}
 {"findings":[],"hash":"b31d6cf4b49ed6ffe392f41a16d526727787e95f7a9ca0a3f92d0b5fe449fd05","path":"be/src/tests/fixtures/builders/identity.builder.ts","step":"prettier"}
 {"findings":[],"hash":"51bf9456cd8cc43392a868d583918b8d9116bd483938f65e290afd63b133361f","path":"be/src/tests/fixtures/builders/interview-doors.builder.ts","step":"prettier"}
 {"findings":[],"hash":"dd42a8e5dd2ed370f5e6d2d9ff1711790b85536b953aca9b3baeb37e24df3cf0","path":"be/src/tests/fixtures/builders/interview-stub.builder.ts","step":"prettier"}
@@ -22,7 +24,9 @@
 {"findings":[],"hash":"378435fdcbf3b20000ae479b16151af390387e7bbc48601a79c2e3a470e6ca1b","path":"be/src/tests/fixtures/builders/path.builder.ts","step":"prettier"}
 {"findings":[],"hash":"c4c053c8640070f4c17f096d65393b2bdaa5e711f33c216b69ad3954add87c13","path":"be/src/tests/fixtures/builders/practice.builder.ts","step":"prettier"}
 {"findings":[],"hash":"c6c0913ab8f43b33af5a0683fbd3529fa925faef9235c427ca8c8682c245dc1b","path":"be/src/tests/fixtures/builders/premium.builder.ts","step":"prettier"}
+{"findings":[],"hash":"f6f40d89b0c8c0dea6dd531d3ea7fbe56d6e0693f70d3040246d4b3fa3b1e561","path":"be/src/tests/fixtures/builders/project.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a99513b12bc731a56bd67dd58d2291d7190ad4543d180ebf60580fa578b7024f","path":"be/src/tests/fixtures/builders/purchase.builder.ts","step":"prettier"}
+{"findings":[],"hash":"bd0785ba4e63cb582b7628f5388232cde47d15cf495b8932213898cd3296ce58","path":"be/src/tests/fixtures/builders/raw-lesson.builder.ts","step":"prettier"}
 {"findings":[],"hash":"2ae9013ee9cfa5035a13b64e1ab52e856fa215abda40699979730fc6a7e06f81","path":"be/src/tests/fixtures/builders/review.builder.ts","step":"prettier"}
 {"findings":[],"hash":"df0fb48c474e58c20c4cc107d67aa2a8f98e3a86a6f7e268ecf42e36e17e7339","path":"be/src/tests/fixtures/builders/seed.builder.ts","step":"prettier"}
 {"findings":[],"hash":"79a0155def737f13caf5dc0442444f2899af1ccebd18d425175ce4da816bdfdc","path":"be/src/tests/fixtures/builders/webhook.builder.ts","step":"prettier"}
@@ -35,32 +39,32 @@
 {"findings":[],"hash":"a2dc599363215e480763de5437f670d543affdb66ed54c71bdaf32debe361a7c","path":"be/src/tests/fixtures/persistence/project.sql.ts","step":"prettier"}
 {"findings":[],"hash":"4e0b78d92614a7b27dc75ad17e3ce51f3ff871dc9063413de686a936fb5b3d6c","path":"be/src/tests/fixtures/persistence/relay.sql.ts","step":"prettier"}
 {"findings":[],"hash":"84414d2508e650e2c6900421190ce02fde1362a897548a847473d5c469bc137c","path":"be/src/tests/fixtures/persistence/streak.sql.ts","step":"prettier"}
-{"findings":[],"hash":"d81580883fd69f13cd30b6d53b3dfa7ce062df1afe51ba7cce0ace5a37ce83d8","path":"be/src/tests/fixtures/project-checks/SOURCE.txt","step":"prettier"}
-{"findings":[],"hash":"4930467711d39bcfe0a43296e086dd1e80e4592e4fa194b2faa99df8f57d1a78","path":"be/src/tests/fixtures/project-checks/catalog.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/authz-no-idor.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/authz-no-idor.md","rule":"HFS_FORMAT"}],"hash":"4c4c3e4a1ef49660ec06c42507b90958f2f1270d8b25e309d80f1404fe00b1f9","path":"be/src/tests/fixtures/project-checks/e2e/authz-no-idor.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/cache-freshness.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/cache-freshness.md","rule":"HFS_FORMAT"}],"hash":"28c5270ef39411e94657ad560c3360cf1e70b386db69611047ce8b269bda1aa3","path":"be/src/tests/fixtures/project-checks/e2e/cache-freshness.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/cursor-pagination.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/cursor-pagination.md","rule":"HFS_FORMAT"}],"hash":"42f99eb64f541e2906a22da6030a5e92efbad49178eed187c4a060e46924723d","path":"be/src/tests/fixtures/project-checks/e2e/cursor-pagination.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/error-contract.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/error-contract.md","rule":"HFS_FORMAT"}],"hash":"0bbedda762b4ef6721abdd74e482262a20ba1a59f8015b9ed113269b25521a2e","path":"be/src/tests/fixtures/project-checks/e2e/error-contract.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/health-probe-semantics.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/health-probe-semantics.md","rule":"HFS_FORMAT"}],"hash":"9177e1db79017912d9fb1f4ed1f84e535ae97d4721780b6cc27e9538f45080e9","path":"be/src/tests/fixtures/project-checks/e2e/health-probe-semantics.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/idempotent-retry.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/idempotent-retry.md","rule":"HFS_FORMAT"}],"hash":"676f71478b4c580aeab3b57a4bd1d2ec4157760789821b50efea65be252cc066","path":"be/src/tests/fixtures/project-checks/e2e/idempotent-retry.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/rate-limiting.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/rate-limiting.md","rule":"HFS_FORMAT"}],"hash":"59f22467abbe853702daaababcf9b32c9dea41561f7b42e955b91d61d896bf81","path":"be/src/tests/fixtures/project-checks/e2e/rate-limiting.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/request-response-lifecycle.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/request-response-lifecycle.md","rule":"HFS_FORMAT"}],"hash":"c0e36c8d236135937363bf56a6016c02fdeeb2f2fd78de05c541a158044d209d","path":"be/src/tests/fixtures/project-checks/e2e/request-response-lifecycle.md","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/e2e/transactional-outbox.md is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/e2e/transactional-outbox.md","rule":"HFS_FORMAT"}],"hash":"572bc7e7ae0eedb5881741a155a00664e473e03865d134120428ffd80b56f4db","path":"be/src/tests/fixtures/project-checks/e2e/transactional-outbox.md","step":"prettier"}
-{"findings":[],"hash":"8367c99882fe3ab6e17a7eaeec353f0a91dc4f7770344c762077cd9b5c892765","path":"be/src/tests/fixtures/project-checks/probes/burst.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/probes/cache-write-then-read.yaml is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/probes/cache-write-then-read.yaml","rule":"HFS_FORMAT"}],"hash":"db9f4ae9e64ee43232e0cfb26c8ed1b3f3eb988f1529cbd6b125da2a423e1d9a","path":"be/src/tests/fixtures/project-checks/probes/cache-write-then-read.yaml","step":"prettier"}
-{"findings":[],"hash":"7d844725331d8117072795b8ec02a4e0e65b8a0cb523d3f0d67948f4a1cef5f9","path":"be/src/tests/fixtures/project-checks/probes/error-shape.yaml","step":"prettier"}
-{"findings":[],"hash":"acc2c7ba492029ebfe75c13f9bd7d93c4745db7c7000a32576fc8a8353c20106","path":"be/src/tests/fixtures/project-checks/probes/failure-path.yaml","step":"prettier"}
-{"findings":[],"hash":"75cd2803084219f1801b27cb4518e94e8fba91fd26c1f848fbc5e34e0e82fc93","path":"be/src/tests/fixtures/project-checks/probes/health.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/probes/idempotency-parallel.yaml is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/probes/idempotency-parallel.yaml","rule":"HFS_FORMAT"}],"hash":"938c784d861c876b8ebe42c88d34f103e65ba34ff0afd4ecc39d885b01a9876b","path":"be/src/tests/fixtures/project-checks/probes/idempotency-parallel.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/probes/idempotency-replay.yaml is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/probes/idempotency-replay.yaml","rule":"HFS_FORMAT"}],"hash":"621152885a6f53d3b4a93553b709906efaf05e4b2a273d806633d9b5d108d0a2","path":"be/src/tests/fixtures/project-checks/probes/idempotency-replay.yaml","step":"prettier"}
-{"findings":[],"hash":"85ae10d1bcbb31ecf455e65c7157afbf5a633f27cfb5c8b14939f8940771a0e5","path":"be/src/tests/fixtures/project-checks/probes/invalid-input.yaml","step":"prettier"}
-{"findings":[],"hash":"3a83eefbac3824995b41724b850afb98a4e161b9b2b0436829f0b3e6521e641b","path":"be/src/tests/fixtures/project-checks/probes/outbox-delivery.yaml","step":"prettier"}
-{"findings":[],"hash":"f7f54f3e47232453060672bd280f4a226aee57353c7fdf3bba3c607bbed1994b","path":"be/src/tests/fixtures/project-checks/probes/owner-only.yaml","step":"prettier"}
-{"findings":[],"hash":"589444f45b6a0ddf84ced7cc465f889c4c4b9083452eb83e83364b4d8ed3d6ca","path":"be/src/tests/fixtures/project-checks/probes/permission.yaml","step":"prettier"}
-{"findings":[],"hash":"4e9e1cce85ba2a6f2f3fc7c7281a8ad12b7f0010438887d6a2b95cf32c1e036e","path":"be/src/tests/fixtures/project-checks/probes/prompt-injection.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/probes/readiness.yaml is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/probes/readiness.yaml","rule":"HFS_FORMAT"}],"hash":"8579bd0199ade2c663add430672fd2dd466415c0b0e01bfca4d20399db606d62","path":"be/src/tests/fixtures/project-checks/probes/readiness.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/tests/fixtures/project-checks/probes/request-id.yaml is not formatted by prettier; run `npm run format`","path":"be/src/tests/fixtures/project-checks/probes/request-id.yaml","rule":"HFS_FORMAT"}],"hash":"7c4c139403d66052edf72b1498b1dcd3b9824473cd70c93f3df807f9863ab568","path":"be/src/tests/fixtures/project-checks/probes/request-id.yaml","step":"prettier"}
-{"findings":[],"hash":"489ab4d92a7a600e76dc7e680e0a6c3ba51101f114ca96d2546d6d42ef01500c","path":"be/src/tests/fixtures/project-checks/probes/stable-pages.yaml","step":"prettier"}
+{"findings":[],"hash":"68ec58206c23811ff9e60ee9938cafb43de5919ee4cba0d78005f3f9d18f1c21","path":"be/src/tests/fixtures/project-checks/SOURCE.txt","step":"prettier"}
+{"findings":[],"hash":"00f0b5bd8fa4c5f13f395fa59cbeae387107868f9567adf486a27216e3a217e0","path":"be/src/tests/fixtures/project-checks/catalog.yaml","step":"prettier"}
+{"findings":[],"hash":"a0d0ad04e8d57a1164582354258d09dc3bcbc20b8e1cc2596bd90b2446dbb5bb","path":"be/src/tests/fixtures/project-checks/e2e/authz-no-idor.md","step":"prettier"}
+{"findings":[],"hash":"d3299934d95818248316c2458ae343df04b9b138a3113a296b9593a74b12b5eb","path":"be/src/tests/fixtures/project-checks/e2e/cache-freshness.md","step":"prettier"}
+{"findings":[],"hash":"95d56d28a83dca4543bbb0894d7f67fe753dd83900283de623994a4db2df8d42","path":"be/src/tests/fixtures/project-checks/e2e/cursor-pagination.md","step":"prettier"}
+{"findings":[],"hash":"e0c9ebee338aec9f3fd4d314d9365ec1e49e15d224c1405c93a4189cd9f44f75","path":"be/src/tests/fixtures/project-checks/e2e/error-contract.md","step":"prettier"}
+{"findings":[],"hash":"78ad6e8aaca4122a403a112a83f2994e04c6492bd2b4205585ef19e59aaa7aef","path":"be/src/tests/fixtures/project-checks/e2e/health-probe-semantics.md","step":"prettier"}
+{"findings":[],"hash":"3bf87b51ac0d3d1eada5bfc3788e4c2b5f3f844ebee5a70c9d6c29abca09de89","path":"be/src/tests/fixtures/project-checks/e2e/idempotent-retry.md","step":"prettier"}
+{"findings":[],"hash":"f96c176e573462ed57e262ac34916a74773a1e43ff6de08e10a934bc7f5be6dd","path":"be/src/tests/fixtures/project-checks/e2e/rate-limiting.md","step":"prettier"}
+{"findings":[],"hash":"8c1cf3fdd5ba249ed8882e3557a24681f8649c6acf85afdd8189aa6da793575c","path":"be/src/tests/fixtures/project-checks/e2e/request-response-lifecycle.md","step":"prettier"}
+{"findings":[],"hash":"c89974770c622aa7b8e7357368d016e94022e9779d6413440c23442c9871bb60","path":"be/src/tests/fixtures/project-checks/e2e/transactional-outbox.md","step":"prettier"}
+{"findings":[],"hash":"5de8d29fde981c41336152dc40dbe8c126614854990d78f115064d6a9b56962e","path":"be/src/tests/fixtures/project-checks/probes/burst.yaml","step":"prettier"}
+{"findings":[],"hash":"fe24ec188f9e59b517fe9c65190e65d2b3093de2fa6808966663ec51ecc93028","path":"be/src/tests/fixtures/project-checks/probes/cache-write-then-read.yaml","step":"prettier"}
+{"findings":[],"hash":"47171a8e0047b2ce0ab8dc8a5f42f11d071a3525b5f3d760999d1499993c6789","path":"be/src/tests/fixtures/project-checks/probes/error-shape.yaml","step":"prettier"}
+{"findings":[],"hash":"66a2df332aa7c4902bc0a2c67a4ab925ebc05cec6aa2f79cda3ea52be545c536","path":"be/src/tests/fixtures/project-checks/probes/failure-path.yaml","step":"prettier"}
+{"findings":[],"hash":"da87f7818c3d0b37e77e7b25a46afc4483f47e6ef0f1e3cb8a0335753a1c3aff","path":"be/src/tests/fixtures/project-checks/probes/health.yaml","step":"prettier"}
+{"findings":[],"hash":"fa1b889f288ac1261cecf75ad2948da9313fc58deff24461acb9bcc060a04ea5","path":"be/src/tests/fixtures/project-checks/probes/idempotency-parallel.yaml","step":"prettier"}
+{"findings":[],"hash":"597bb720862423952ce2e94625f54dd0efde765f8b2ec4aaea68d7fe4f76013a","path":"be/src/tests/fixtures/project-checks/probes/idempotency-replay.yaml","step":"prettier"}
+{"findings":[],"hash":"8fb8dc55d0b565b212d48310211beb95e3c8d2d50033f00816da5942923d0e68","path":"be/src/tests/fixtures/project-checks/probes/invalid-input.yaml","step":"prettier"}
+{"findings":[],"hash":"955f7d84e0e8aed2af506288ba3da32fcffe854f992422fcd7022c7fcef603d4","path":"be/src/tests/fixtures/project-checks/probes/outbox-delivery.yaml","step":"prettier"}
+{"findings":[],"hash":"e977a41240310db65d793ac2a5aeaa09d4b56d2acf8d092f5e785f321b433665","path":"be/src/tests/fixtures/project-checks/probes/owner-only.yaml","step":"prettier"}
+{"findings":[],"hash":"26a17c9da1d5287237e2d5d3b5eba908a988fc1966a5a8243afeca83b5b1c54b","path":"be/src/tests/fixtures/project-checks/probes/permission.yaml","step":"prettier"}
+{"findings":[],"hash":"dcf1792af5e554ff06a9df1444b6096a7927edc29e64ce4df7465418acaa3817","path":"be/src/tests/fixtures/project-checks/probes/prompt-injection.yaml","step":"prettier"}
+{"findings":[],"hash":"f333ef953c23ebf9d49d05fc809195378818ebe07ab12002894fd8a748cadad7","path":"be/src/tests/fixtures/project-checks/probes/readiness.yaml","step":"prettier"}
+{"findings":[],"hash":"05f515e938f9d69e950439457350919015eba1f7478e5a67bc013e263b38427a","path":"be/src/tests/fixtures/project-checks/probes/request-id.yaml","step":"prettier"}
+{"findings":[],"hash":"415b3dffcbf454734458118d767bbe2be7236e640cba61a5f2e42b589f698013","path":"be/src/tests/fixtures/project-checks/probes/stable-pages.yaml","step":"prettier"}
 {"findings":[],"hash":"3f9e68ce7d878c7ba0f1c76b1a05e23a9a8696d4988248cbcc20eb5cfbd264f2","path":"be/src/tests/integration/agent-lab/doors.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"98006a1a5532a6b2ad059dbc6dedc520b9f67ae574969055c6caae8e866f1061","path":"be/src/tests/integration/agent-lab/quota.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"2f7f912fdc75e4faa421924175a9522f63c860da42afed261e6a7d6e9e586ef1","path":"be/src/tests/integration/ai-gateway/ai-gateway.integration-spec.ts","step":"prettier"}
@@ -110,6 +114,7 @@
 {"findings":[],"hash":"141784b6e7dee3c43a0969f72e5a8dec40b220e68ee0b84d4b729c6fbf515c15","path":"be/src/tests/integration/project/attestation.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"60c8b83bf11755fdd143dbae31824139ee268ea275e914b6efdd0adb9c52c74f","path":"be/src/tests/integration/project/fixes.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"a25d11a61252f12c8e2c101d700121bcd786278fbcb7ca29d8b335f2157e294b","path":"be/src/tests/integration/project/flow.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"fe3cb4bfed852cf50e678ec720f9d857fe10e8d378abe2640e9a57e065a26da4","path":"be/src/tests/integration/qdrant/qdrant.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"a482379fe8b42a3b8693d83fb22574e51949bd7524a7d0d17a4b08873fdede44","path":"be/src/tests/integration/readiness/readiness.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"b22c0bf62453783c7f54df2cb617b6e91a5150e87d9873e8db6a63f1dbc23d10","path":"be/src/tests/integration/relay-client/relay-client.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"ceb81c3983974e439b6b48d02d8edd4f97b4ff94f066d4b4549a77c7e2de0492","path":"be/src/tests/integration/relay/relay-devices.integration-spec.ts","step":"prettier"}
@@ -129,6 +134,7 @@
 {"findings":[],"hash":"b81fb8b1a44df53a1a6220e54b969fbad6ec7b2b7f35dabe84b7b3dac888bc47","path":"be/src/tests/world/fakes/oidc-issuer/oidc-issuer.client.ts","step":"prettier"}
 {"findings":[],"hash":"41a917d8152478a9c1ce7ecf6d7d4b74ffda79ccf38f0d92447406a29e0bc00e","path":"be/src/tests/world/fakes/openrouter/openrouter.client.ts","step":"prettier"}
 {"findings":[],"hash":"ac04543f1b5b97122d851f6ba254eeb60807ab9fb5f9c309591a03c4a92114d9","path":"be/src/tests/world/fakes/payos/payos.client.ts","step":"prettier"}
+{"findings":[],"hash":"289c2cf5025c1ceeb3b8bdea7c39fcfaf8bbb9c89003394bca42053c33d9ecbb","path":"be/src/tests/world/fakes/qdrant/qdrant.client.ts","step":"prettier"}
 {"findings":[],"hash":"7b16540317043a92c6d0dc4acca9b930f0f6315ad5b681ef1d396fe55af2cba0","path":"be/src/tests/world/global-setup.ts","step":"prettier"}
 {"findings":[],"hash":"faa9971d9777c4a91e46f77d548114cf1b088ca720ca7c07050d295984841c65","path":"be/src/tests/world/global-teardown.ts","step":"prettier"}
 {"findings":[],"hash":"719b1072648089dbc5795e7658d97a84d24fc1450b619a34cf9a20d7c0cb4a39","path":"be/src/tests/world/identity-doors.client.ts","step":"prettier"}
@@ -142,10 +148,11 @@
 {"findings":[],"hash":"1372d6df57d40eab34b09f4887cfd0a1ce95bec5ed2e0ed457242bdec0584145","path":"be/src/tests/world/premium-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"d89b77f3aafcaa4295656891d62f33c6894ecda07c24b4fd7316b8e308cecd32","path":"be/src/tests/world/probe-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"69975dc3fac777f521290386227cb95ac72280edfd0726057143ab1a2cd71700","path":"be/src/tests/world/project-world.options.ts","step":"prettier"}
+{"findings":[],"hash":"d32672aadd7c865459cb3bf86d7d4a6257a85c3869ea55629dc890369aab9e69","path":"be/src/tests/world/qdrant-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"096be0ecb1887f7ca85d0749ed02204c55484f1bdfac8a2e7243fa753a5bfc3f","path":"be/src/tests/world/relay-client-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"2450867aa4a183cbc0ae7533b47e595bbb9e4f3374e264f257071b77ea659409","path":"be/src/tests/world/relay-device-stream.client.ts","step":"prettier"}
 {"findings":[],"hash":"371785d604fed389b17647c5def1c7ebf1b8531eee74fe3f97f9fe0479eb6eaf","path":"be/src/tests/world/sepay-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"9c8c4b4dede3c8a69fd21a30a74872e94e1a686a3a180e2e912f9149eb0c999c","path":"be/src/tests/world/streak-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"b159f9f08c2ae62f662d03f37f69cc1389f0ec1fe7c14973414335b3d4c23838","path":"be/src/tests/world/test-apps.options.ts","step":"prettier"}
-{"findings":[],"hash":"ccb9ee193d913dff10de32a6965569980149a7ddc4f919833eac81153bbc5522","path":"be/src/tests/world/test-world.config.ts","step":"prettier"}
+{"findings":[],"hash":"6a994d44f90bd7f086c48e540b31e23f56413a5f130f7944c52a1b88d9d4b9e4","path":"be/src/tests/world/test-world.config.ts","step":"prettier"}
 {"findings":[],"hash":"e5a1d6768edeaf6be7b8702f30171cabe6c5d188a09ad85dbcdc9690689366bd","path":"be/src/tests/world/use-test-world.ts","step":"prettier"}

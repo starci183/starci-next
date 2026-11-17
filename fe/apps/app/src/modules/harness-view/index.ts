@@ -141,7 +141,12 @@ export const buildOf = (build: HarnessBuildQuery["harnessBuild"]): HarnessBuildV
         keys: keysOf(build.keys),
         pullCommand: pullCommandOf(build.id),
         ranAt: newestOf(build.stages.map((stage) => stage.lastRunAt)),
-        isBound: build.repository.bound,
+        repository: {
+            isBound: build.repository.bound,
+            name: build.repository.repository ?? "",
+            bindingId: build.repository.bindingId ?? "",
+            audience: build.repository.audience,
+        },
         stages,
     }
 }
@@ -203,7 +208,7 @@ const verdictOf = (raw: string | undefined): HarnessVerdict => {
     return raw === "incomplete" ? "incomplete" : "untested"
 }
 
-/** The traps of the trial panel for one tool, each with the newest result and the size of its estimate. */
+/** The traps of the trial panel for one tool, each with the newest result and its budget. */
 export const trialsOf = (
     tool: HarnessTool,
     traps: HarnessTrialsQuery["harnessTrials"],
@@ -212,9 +217,9 @@ export const trialsOf = (
         id: trap.id,
         tool,
         title: trap.title,
-        summary: trap.task,
+        summary: trap.brief,
         command: trialCommandOf(trap.id, tool),
-        tokens: trap.estimate === null ? 0 : trap.estimate.turns * trap.estimate.outputTokensPerTurn,
+        maxUsd: trap.budget.maxUsd,
         verdict: verdictOf(trap.last?.verdict),
         shortcuts: (trap.last?.shortcuts ?? []).map((each) => ({
             id: each.kind,

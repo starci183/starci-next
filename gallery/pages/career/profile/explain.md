@@ -2,6 +2,7 @@
 title: Hồ sơ của bạn
 route: /profile
 area: career
+reviewed: 2026-11-17
 ---
 
 Route: `/profile` (ảnh chụp: học viên mới, chưa có mục Đã xác minh). Mã: `fe/apps/app/src/components/blocks/ProfileExperience/component.tsx`. Khung chung giải thích ở `learn/home`.

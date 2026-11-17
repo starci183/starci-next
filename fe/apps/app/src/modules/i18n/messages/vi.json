@@ -2006,7 +2006,13 @@
         "repoTitle": "Kết nối repo để chứng minh",
         "repoText": "Kết quả chạy trên máy bạn chỉ tính là đang luyện. Muốn được chứng minh, build cần chạy trong CI có chữ ký của repo GitHub của bạn.",
         "repoBound": "Đã kết nối",
-        "repoUnbound": "Chưa kết nối"
+        "repoUnbound": "Chưa kết nối",
+        "repoField": "Repo GitHub",
+        "repoPlaceholder": "owner/ten-repo",
+        "repoBind": "Kết nối repo",
+        "repoFailed": "Không kết nối được repo này. Kiểm tra tên có dạng owner/repo.",
+        "repoAudienceLabel": "Audience của workflow",
+        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này."
       },
       "use": {
         "title": "Xài",
@@ -2033,7 +2039,7 @@
         "costColumn": "Chi phí ước tính",
         "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
         "shortcutBlocked": "{label} (bị chặn)",
-        "tokens": "~ {tokens} token"
+        "budget": "Tối đa {usd}"
       },
       "guide": {
         "title": "Hướng dẫn",

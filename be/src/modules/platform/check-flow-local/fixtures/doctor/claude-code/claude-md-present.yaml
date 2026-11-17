@@ -6,7 +6,7 @@ id: claude-md-present
 tool: claude
 order: 1
 title:
-  vi: Dự án có CLAUDE.md với nội dung thật
+  vi: The project has a real CLAUDE.md
   en: The project has a real CLAUDE.md
 guide: claude-md
 check:
@@ -16,7 +16,7 @@ check:
     contains: "## "
     minBytes: 200
 fix:
-  vi: Tạo CLAUDE.md ở thư mục gốc, ít nhất 200 byte, chia thành các mục `##`. Ghi lệnh build và test, quy ước code và những việc Claude không được làm.
+  vi: Create CLAUDE.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Claude must not do.
   en: Create CLAUDE.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Claude must not do.
 good:
   files:

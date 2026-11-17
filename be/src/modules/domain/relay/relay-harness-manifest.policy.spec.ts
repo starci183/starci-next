@@ -8,11 +8,22 @@ import {
     harnessBuildIdOfTask,
     harnessBuildManifestOf,
     harnessBuildPackPathOf,
+    harnessDoctorManifestOf,
+    harnessTargetOfTask,
+    harnessTrialManifestOf,
 } from "./relay-harness-manifest.policy"
 
 const POLICY = Symbol("relay-harness-manifest-policy")
 
-const policies = { commitOf, harnessBuildIdOfTask, harnessBuildManifestOf, harnessBuildPackPathOf }
+const policies = {
+    commitOf,
+    harnessBuildIdOfTask,
+    harnessBuildManifestOf,
+    harnessBuildPackPathOf,
+    harnessDoctorManifestOf,
+    harnessTargetOfTask,
+    harnessTrialManifestOf,
+}
 
 const build = async (): Promise<typeof policies> => {
     const moduleRef = await Test.createTestingModule({
@@ -127,5 +138,66 @@ describe("a signed harness manifest", () => {
         expect(
             verify(null, Buffer.from(signed.payload, "utf8"), pair.publicKey, Buffer.from(signed.signature, "base64")),
         ).toBe(true)
+    })
+})
+
+describe("doctor and trial manifest sections", () => {
+    it("names the target of a harness task: a build, the doctor of a tool or a trial trap, and nothing else", async () => {
+        const { harnessTargetOfTask: target } = await build()
+
+        expect(target("harness:build:agent-cli")).toEqual({ kind: "build", key: "agent-cli" })
+        expect(target("harness:doctor:codex")).toEqual({ kind: "doctor", key: "codex" })
+        expect(target("harness:trial:red-test")).toEqual({ kind: "trial", key: "red-test" })
+        expect(target("harness:doctor:cursor")).toBeNull()
+        expect(target("harness:doctor")).toBeNull()
+        expect(target("harness:trial:Bad Id")).toBeNull()
+        expect(target("harness:build:a:b")).toBeNull()
+        expect(target("lesson:x")).toBeNull()
+    })
+
+    it("pins the probe tarball of a tool and the folder tarball of a trap like the build tarball", async () => {
+        const { harnessDoctorManifestOf: doctor, harnessTrialManifestOf: trial } = await build()
+
+        expect(doctor("claude", { sha256: SHA, commit: COMMIT, size: 10 })).toEqual({
+            kind: "doctor",
+            tool: "claude",
+            source: { url: "/api/relay/harness/doctor/claude/probes.tgz", sha256: SHA, commit: COMMIT },
+        })
+        expect(trial("red-test", { sha256: SHA, commit: "local-label", size: 10 })).toMatchObject({
+            kind: "trial",
+            trap: "red-test",
+            source: { url: "/api/relay/harness/trial/red-test/trap.tgz", sha256: SHA },
+        })
+        expect(trial("red-test", { sha256: SHA, commit: "local-label", size: 10 })?.source.commit).toMatch(
+            /^[0-9a-f]{40}$/u,
+        )
+        expect(doctor("codex", { sha256: SHA, commit: COMMIT, size: 0 })).toBeNull()
+        expect(trial("red-test", { sha256: SHA, commit: COMMIT, size: HARNESS_PACK_MAX_BYTES + 1 })).toBeNull()
+    })
+
+    it("signs the sections with the keys in the order the CLI reads", async () => {
+        const { harnessDoctorManifestOf: doctor, harnessTrialManifestOf: trial } = await build()
+        const base = {
+            manifestId: "m",
+            taskId: "t",
+            learnerId: "l",
+            deviceId: "d",
+            issuedAt: "2026-11-17T00:00:00.000Z",
+            checks: [],
+        }
+        const d = doctor("claude", { sha256: SHA, commit: COMMIT, size: 10 })
+        const r = trial("red-test", { sha256: SHA, commit: COMMIT, size: 10 })
+        if (d === null || r === null) throw new Error("no section")
+
+        const doctorPayload: { harness: Record<string, unknown> } = JSON.parse(
+            manifestPayloadOf({ ...base, harness: d }),
+        )
+        const trialPayload: { harness: Record<string, unknown> } = JSON.parse(
+            manifestPayloadOf({ ...base, harness: r }),
+        )
+
+        expect(Object.keys(doctorPayload.harness)).toEqual(["kind", "tool", "source"])
+        expect(Object.keys(trialPayload.harness)).toEqual(["kind", "trap", "source"])
+        expect(Object.keys(trialPayload.harness["source"] as object)).toEqual(["url", "sha256", "commit"])
     })
 })

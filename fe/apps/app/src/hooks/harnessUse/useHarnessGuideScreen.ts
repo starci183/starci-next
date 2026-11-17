@@ -117,7 +117,7 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         noShortcuts: "",
         never: t("never"),
         shortcut: (label) => label,
-        tokens: () => "",
+        budget: () => "",
         when: (iso) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
     }
     return {

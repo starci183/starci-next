@@ -1,4 +1,4 @@
-{"findings":[],"hash":"db00bdd4631c3d64730ff52f53c9e57ea9ef541bf2ecfdcaa2bd9f412fc00c96","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
+{"findings":[],"hash":"996c2d6a1a60c07222374a2d707d2c7090f191c4f49bb332581bcb6200e4bf3b","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
 {"findings":[],"hash":"cb8d877a035119e41415302ff662f892eac9039c3acdec2fc64b3999f6f9e3a6","path":"gallery/pages/essentials/lesson-apply/explain.md","step":"prettier"}
 {"findings":[],"hash":"a490f70682500208603da513b2c138ade4848662f2b7ead9c81bc04f5d29a3b7","path":"gallery/pages/essentials/lesson-challenge/explain.md","step":"prettier"}
 {"findings":[],"hash":"341682a79d8064732f8c0c63796346c180a5f5f9efaf46f421a43be941d3315b","path":"gallery/pages/essentials/lesson-explain/explain.md","step":"prettier"}
@@ -14,7 +14,8 @@
 {"findings":[],"hash":"935efe55e88b8a2bfa6ba3219704a5574be5ccc72a8a230afaa9ec6e271c0d52","path":"gallery/pages/essentials/lesson-reflect/explain.md","step":"prettier"}
 {"findings":[],"hash":"a40412638177bb6471e83334e36d8a3e2a23d5ee5067e56c75c3f17db4109bb3","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"prettier"}
 {"findings":[],"hash":"a9b060f011d3bef286f45dc7211f4c90f0446d8c4d8cfa4df28ef2ca30c86529","path":"gallery/pages/essentials/lesson-source/explain.md","step":"prettier"}
+{"findings":[],"hash":"e700571c0f58d459111c2b4c2d42a4b53dd72b156263577b68e430d89b2c89bb","path":"gallery/pages/essentials/lesson/explain.md","step":"prettier"}
 {"findings":[],"hash":"0c4123793aa0c1f3946dfd042f27ecd060a2ed3565f5122b64839d87e6a604db","path":"gallery/pages/essentials/topic-api-reliability/explain.md","step":"prettier"}
 {"findings":[],"hash":"51b69df5ea0ee4e732aeef8fecad183653428b71534ba7796ad7dc0acb37ac4e","path":"gallery/pages/essentials/topic-databases/explain.md","step":"prettier"}
 {"findings":[],"hash":"917e7c927a906dd1ea4ebeb059c6834e8c440d116674b80a86dae3247e3e825e","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"prettier"}
-{"findings":[],"hash":"99738fa59d691169ad4398f91932f82851daba8c971fa2998a4e8b12851c4641","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}
+{"findings":[],"hash":"edd11ee0308f7596a1ed94a6be3cc00c2b9146e0be50c2bcec810c85f0b6afb3","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}

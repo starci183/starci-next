@@ -71,28 +71,9 @@ export const SLOT_PRACTICE_SOURCES: Readonly<Record<EvidenceSlot, ReadonlyArray<
     "code-read": [],
 }
 
-/** The StarCi generic probes, which the learner cannot edit. */
-export const PROBE_IDS = [
-    "health",
-    "readiness",
-    "invalid-input",
-    "request-id",
-    "repeat-same-key",
-    "parallel-last-item",
-    "repeat-get",
-    "auth-required",
-    "burst",
-    "prompt-injection",
-    "permission",
-    "failure-path",
-] as const
-
-/** One generic probe. */
-export type ProbeId = (typeof PROBE_IDS)[number]
-
-/** One concept of the catalog: a Essentials lesson id with the evidence it needs. */
+/** One concept of the check set: what a project must show, as data read from the content repository. */
 export interface ConceptDefinition {
-    /** The concept id, equal to its Essentials lesson id. */
+    /** The concept id. */
     readonly id: string
     /** The label per locale. */
     readonly label: LocalizedText
@@ -103,7 +84,9 @@ export interface ConceptDefinition {
     /** The evidence it needs: every group is needed, and a group is met by any one of its slots. */
     readonly requires: ReadonlyArray<ReadonlyArray<EvidenceSlot>>
     /** The generic probes aimed at the endpoint the learner declares for the concept. */
-    readonly probes: ReadonlyArray<ProbeId>
+    readonly probes: ReadonlyArray<string>
+    /** The lessons that teach it, the first live one gives the rubric of the AI read and the CV line. */
+    readonly learn: ReadonlyArray<{ readonly lesson: string; readonly pending: boolean }>
 }
 
 /** One milestone of the catalog: a list of concepts a path asks for. */

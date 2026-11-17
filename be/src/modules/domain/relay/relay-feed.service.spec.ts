@@ -1,4 +1,6 @@
 import { generateKeyPairSync, verify } from "node:crypto"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
@@ -41,6 +43,7 @@ const build = async (
     const moduleRef = await Test.createTestingModule({
         providers: [
             RelayFeedService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: REALTIME_HUB, useValue: hub },
@@ -174,6 +177,29 @@ describe("RelayFeedService /harness is free", () => {
         expect(hub.publish).toHaveBeenCalledTimes(1)
     })
 
+    it("signs the doctor section of a tool and the trial section of a trap from their packs", async () => {
+        const harness = mock<HarnessReadService>()
+        harness.pack.mockResolvedValue({ content: Buffer.from("tgz"), sha256: "c".repeat(64), commit: "d".repeat(40) })
+        const { feed } = await build(mockEntityManager(), null, false, harness)
+
+        const doctor = await feed.manifest(DEVICE, "harness:doctor:codex")
+        const trial = await feed.manifest(DEVICE, "harness:trial:red-test")
+
+        expect(doctor.body.harness).toEqual({
+            kind: "doctor",
+            tool: "codex",
+            source: {
+                url: "/api/relay/harness/doctor/codex/probes.tgz",
+                sha256: "c".repeat(64),
+                commit: "d".repeat(40),
+            },
+        })
+        expect(trial.body.harness).toMatchObject({ kind: "trial", trap: "red-test" })
+        expect(harness.pack).toHaveBeenCalledWith("doctor-pack", "codex")
+        expect(harness.pack).toHaveBeenCalledWith("trap", "red-test")
+        expect(doctor.body.checks).toEqual([])
+    })
+
     it("refuses the manifest of a build the catalog does not have", async () => {
         const harness = mock<HarnessReadService>()
         harness.storedBuilds.mockResolvedValue([])
@@ -229,12 +255,7 @@ describe("RelayFeedService manifest", () => {
         expect(signed.body.plan).toEqual({
             milestone: "bf-data-and-cache",
             report: "starci/reports/junit.xml",
-            concepts: [
-                "server-state-cache-lifecycle",
-                "cqrs-read-models",
-                "transactions-and-isolation",
-                "indexing-and-query-plans",
-            ],
+            concepts: ["cache-freshness", "cursor-pagination"],
         })
         expect(signed.payload).toContain('"plan":{"milestone":"bf-data-and-cache"')
     })

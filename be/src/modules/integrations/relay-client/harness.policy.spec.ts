@@ -29,7 +29,11 @@ describe("harness policy", () => {
 
     it("reads a signed doctor section: the tool and the probes tarball", () => {
         const source = { url: "/api/relay/harness/doctor/claude/probes.tgz", sha256: "e".repeat(64), commit: COMMIT }
-        expect(harnessOf({ kind: "doctor", tool: "claude", source })).toEqual({ kind: "doctor", tool: "claude", source })
+        expect(harnessOf({ kind: "doctor", tool: "claude", source })).toEqual({
+            kind: "doctor",
+            tool: "claude",
+            source,
+        })
         expect(harnessOf({ kind: "doctor", tool: "devin", source })).toBeNull()
         expect(harnessOf({ kind: "doctor", tool: "codex", source: { ...source, sha256: "E".repeat(64) } })).toBeNull()
         expect(harnessOf({ kind: "doctor", tool: "claude" })).toBeNull()
@@ -43,7 +47,9 @@ describe("harness policy", () => {
             source,
         })
         expect(harnessOf({ kind: "trial", trap: "Bad Id", source })).toBeNull()
-        expect(harnessOf({ kind: "trial", trap: "x", source: { ...source, url: "https://u:p@x.test/a.tgz" } })).toBeNull()
+        expect(
+            harnessOf({ kind: "trial", trap: "x", source: { ...source, url: "https://u:p@x.test/a.tgz" } }),
+        ).toBeNull()
     })
 
     it("treats keys as optional", () => {
@@ -52,14 +58,25 @@ describe("harness policy", () => {
     })
 
     it.each([
-        ["a url with credentials", build({ source: { url: "https://u:p@x.test/a.tgz", sha256: "e".repeat(64), commit: COMMIT } })],
+        [
+            "a url with credentials",
+            build({ source: { url: "https://u:p@x.test/a.tgz", sha256: "e".repeat(64), commit: COMMIT } }),
+        ],
         ["a short commit", build({ source: { url: "/a.tgz", sha256: "e".repeat(64), commit: "abc" } })],
         ["an uppercase sha256", build({ source: { url: "/a.tgz", sha256: "E".repeat(64), commit: COMMIT } })],
         ["a dir above the root", build({ dir: "../x" })],
         ["a report that is absolute", build({ report: "/etc/x.xml" })],
         ["a multi-line command", build({ e2e: "npm run e2e\nrm -rf /" })],
         ["no stage", build({ stages: [] })],
-        ["a duplicated stage id", build({ stages: [{ id: "a", e2e: ["x"] }, { id: "a", e2e: ["y"] }] })],
+        [
+            "a duplicated stage id",
+            build({
+                stages: [
+                    { id: "a", e2e: ["x"] },
+                    { id: "a", e2e: ["y"] },
+                ],
+            }),
+        ],
         ["a duplicated e2e id", build({ stages: [{ id: "a", e2e: ["x", "x"] }] })],
         ["a key name that is not a variable name", build({ keys: [{ id: "llm", anyOf: ["anthropic key"] }] })],
         ["a bad build id", build({ buildId: "Agent CLI" })],
@@ -69,7 +86,9 @@ describe("harness policy", () => {
 
     it("reads the state file `pull` writes and nothing without a commit and sha256", () => {
         const { kind: _kind, source: _source, ...plan } = build()
-        expect(harnessStateOf({ ...plan, commit: COMMIT, sha256: "e".repeat(64) })).toMatchObject({ buildId: "agent-cli" })
+        expect(harnessStateOf({ ...plan, commit: COMMIT, sha256: "e".repeat(64) })).toMatchObject({
+            buildId: "agent-cli",
+        })
         expect(harnessStateOf(plan)).toBeNull()
         expect(harnessStateOf("x")).toBeNull()
     })

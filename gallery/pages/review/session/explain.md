@@ -2,6 +2,7 @@
 title: Phiên ôn tập
 route: /review/session
 area: review
+reviewed: 2026-11-17
 ---
 
 Route: `/review/session` (ảnh chụp: không có thẻ đến hạn nên phiên rỗng; khi có thẻ, mỗi thẻ hiện câu hỏi, ô tự chấm và nút chấm). Mã: `fe/apps/app/src/components/blocks/ReviewSession/component.tsx`. Khung chung giải thích ở `learn/home`.

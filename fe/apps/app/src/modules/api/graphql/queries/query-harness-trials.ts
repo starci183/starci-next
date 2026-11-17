@@ -9,11 +9,12 @@ const query1: TypedDocumentNode<HarnessTrialsQuery, HarnessTrialsQueryVariables>
             id
             order
             title
-            task
+            brief
             tools
-            estimate {
-                turns
-                outputTokensPerTurn
+            budget {
+                maxUsd
+                maxTurns
+                timeoutSec
             }
             last {
                 tool

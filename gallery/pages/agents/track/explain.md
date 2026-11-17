@@ -2,6 +2,7 @@
 title: Một công cụ agent (lab theo concept)
 route: /agents/tracks/[trackId]
 area: agents
+reviewed: 2026-11-17
 ---
 
 Route: `/agents/tracks/[trackId]` (ảnh chụp: `claude`, học viên chưa có Premium). Mã: `fe/apps/app/src/components/blocks/AgentTrack/component.tsx`. Khung chung giải thích ở `learn/home`.

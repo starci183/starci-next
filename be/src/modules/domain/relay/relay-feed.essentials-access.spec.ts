@@ -1,4 +1,6 @@
 import { FakeClock, mock } from "@starci/jest-preset"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { Test } from "@nestjs/testing"
 import {
     ENTITLEMENT_OPTIONS,
@@ -41,19 +43,17 @@ const runOf = (scenarioId: string, challengeTier: string | null): LessonScenario
 const build = async (options: EntitlementOptions, isPremium: boolean) => {
     // The only query these doors make before the gate is the learner's entitlement row.
     const em = {
-        query: jest
-            .fn()
-            .mockResolvedValue(
-                isPremium
-                    ? [
-                          {
-                              learner_id: LEARNER,
-                              premium_until: new Date("2027-01-01T00:00:00.000Z"),
-                              updated_at: new Date(NOW),
-                          },
-                      ]
-                    : [],
-            ),
+        query: jest.fn().mockResolvedValue(
+            isPremium
+                ? [
+                      {
+                          learner_id: LEARNER,
+                          premium_until: new Date("2027-01-01T00:00:00.000Z"),
+                          updated_at: new Date(NOW),
+                      },
+                  ]
+                : [],
+        ),
     }
     const hub = mock<RealtimeHub>()
     hub.publish.mockResolvedValue()
@@ -64,6 +64,7 @@ const build = async (options: EntitlementOptions, isPremium: boolean) => {
     const moduleRef = await Test.createTestingModule({
         providers: [
             RelayFeedService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             LessonContentService,
             EntitlementService,
             { provide: ENTITLEMENT_SERVICE, useExisting: EntitlementService },

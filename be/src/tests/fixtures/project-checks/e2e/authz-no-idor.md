@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: authz-no-idor
 
-Quy ước của đường test: header `X-StarCi-Probe-User` mang danh tính người dùng test, không có header là ẩn danh. `POST <path>` tạo tài
-nguyên và trả `{"id":...}`; `GET <path>/<id>` đọc nó. Chủ đọc được; người khác bị 403 hoặc 404; ẩn danh bị 401.
+Test path convention: the `X-StarCi-Probe-User` header carries the test user's identity, and no header means anonymous. `POST <path>` creates a
+resource and returns `{"id":...}`; `GET <path>/<id>` reads it. The owner can read it; another user gets 403 or 404; anonymous gets 401.
 
-Bạn khai: `endpoints.authz-no-idor.endpoint` (ví dụ `POST /starci-test/notes`) và `body`.
+You declare: `endpoints.authz-no-idor.endpoint` (for example `POST /starci-test/notes`) and `body`.
 
 ```yaml starci-flow
 id: authz-no-idor

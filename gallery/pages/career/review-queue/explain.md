@@ -2,6 +2,7 @@
 title: Hàng chờ duyệt (chỉ thầy và người duyệt)
 route: /review-queue
 area: career
+reviewed: 2026-11-17
 ---
 
 Route: `/review-queue` (ảnh chụp: tài khoản học viên thường, nên thấy trạng thái bị từ chối; thầy và người duyệt thấy danh sách các mục chờ ký). Mã: `fe/apps/app/src/components/blocks/ReviewQueue/component.tsx`. Khung chung giải thích ở `learn/home`.

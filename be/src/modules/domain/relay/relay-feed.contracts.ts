@@ -142,6 +142,39 @@ export interface ManifestHarnessBuild {
     readonly stages: ReadonlyArray<{ readonly id: string; readonly e2e: ReadonlyArray<string> }>
 }
 
+/** The pinned tarball a doctor or trial manifest names: the same link rules as a build (path or https URL, SHA-256, 40 hex commit). */
+export interface ManifestHarnessSource {
+    /** The path of the tarball on the StarCi origin. */
+    readonly url: string
+    /** The SHA-256 of the tarball bytes. */
+    readonly sha256: string
+    /** The 40 hex content commit the tarball was cut at. */
+    readonly commit: string
+}
+
+/** The harness section of a doctor manifest (task `harness:doctor:<tool>`): the probe files of one tool. */
+export interface ManifestHarnessDoctor {
+    /** Always `doctor`. */
+    readonly kind: "doctor"
+    /** `claude` or `codex`. */
+    readonly tool: string
+    /** The tarball of `doctor/<folder>/` with the fixtures. */
+    readonly source: ManifestHarnessSource
+}
+
+/** The harness section of a trial manifest (task `harness:trial:<trap>`): the trap folder. */
+export interface ManifestHarnessTrial {
+    /** Always `trial`. */
+    readonly kind: "trial"
+    /** The trap id. */
+    readonly trap: string
+    /** The tarball of `trap.yaml` and `repo/`. */
+    readonly source: ManifestHarnessSource
+}
+
+/** Any harness section of a manifest. */
+export type ManifestHarness = ManifestHarnessBuild | ManifestHarnessDoctor | ManifestHarnessTrial
+
 /** The manifest body StarCi signs: the task, who may run it, when it was issued and its allowlisted checks. */
 export interface ManifestBody {
     /** The manifest id the ack names. */
@@ -161,7 +194,7 @@ export interface ManifestBody {
     /** The lesson section of a `lesson:<id>` task, absent otherwise. */
     readonly lesson?: ManifestLesson
     /** The harness section of a `harness:build:<id>` task, absent otherwise. */
-    readonly harness?: ManifestHarnessBuild
+    readonly harness?: ManifestHarness
 }
 
 /** A signed manifest: the body, its canonical text and the base64 Ed25519 signature of that text. */

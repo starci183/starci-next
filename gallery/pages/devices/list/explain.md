@@ -2,6 +2,7 @@
 title: Máy của bạn
 route: /devices
 area: devices
+reviewed: 2026-11-17
 ---
 
 Route: `/devices` (ảnh chụp: học viên chưa nối máy nào, nên trạng thái rỗng hiện trong thẻ). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/DevicesPair/` (`component.tsx` trang, `connect.tsx` ngăn kéo nối máy, `steps.tsx` các bước).

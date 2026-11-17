@@ -2,6 +2,7 @@
 title: Kết nối Claude / ChatGPT
 route: /connect
 area: connect
+reviewed: 2026-11-17
 ---
 
 Route: `/connect` (chưa có ảnh chụp 1440, 1920, 390: màn hình mới, chưa chụp với stack chạy). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ConnectAi/` (`component.tsx` trang, `index.tsx` nối dữ liệu), dữ liệu từ `fe/apps/app/src/hooks/mcpConnect/`.

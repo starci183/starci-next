@@ -20,7 +20,10 @@ const e2eOutcomeOf = (cases: ReadonlyArray<ScenarioCase>, stageId: string, id: s
 /** The outcomes of the asked stages, in order, read from the test cases of one report. Only the pairs the plan lists count. */
 export const stageOutcomesOf = (
     cases: ReadonlyArray<ScenarioCase>,
-    asked: ReadonlyArray<{ readonly n: number; readonly stage: { readonly id: string; readonly e2e: ReadonlyArray<string> } }>,
+    asked: ReadonlyArray<{
+        readonly n: number
+        readonly stage: { readonly id: string; readonly e2e: ReadonlyArray<string> }
+    }>,
 ): ReadonlyArray<StageOutcome> =>
     asked.map(({ n, stage }) => {
         const e2e = stage.e2e.map((id) => e2eOutcomeOf(cases, stage.id, id))
@@ -52,7 +55,10 @@ export const stageTableOf = (stages: ReadonlyArray<StageOutcome>): ReadonlyArray
     const table = [["#", "Stage", "E2E", "Passed", "Failed", "Time", "Result"], ...rows]
     const widths = table[0]?.map((_, column) => Math.max(...table.map((row) => row[column]?.length ?? 0))) ?? []
     const line = (row: ReadonlyArray<string>): string =>
-        row.map((cell, column) => cell.padEnd(widths[column] ?? 0)).join("  ").trimEnd()
+        row
+            .map((cell, column) => cell.padEnd(widths[column] ?? 0))
+            .join("  ")
+            .trimEnd()
     const done = stages.filter((stage) => stage.passed).length
     return [...table.map((row) => line(row)), `${done}/${stages.length} stage(s) passed`]
 }

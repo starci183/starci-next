@@ -30,12 +30,18 @@ export interface HashRow {
     content_hash: string
 }
 
-/** The project bound to a build. */
+/** The repository a learner bound to a build. */
 export interface BindingRow {
     /** The build. */
     build_id: string
-    /** The project. */
-    project_id: string
+    /** The learner. */
+    learner_id: string
+    /** The binding id the workflow sends. */
+    binding_id: string
+    /** The repository, `owner/name`. */
+    repository: string
+    /** GitHub id of the repository once an attested run named it, or null. */
+    repository_id: string | null
 }
 
 /** One attested result as the database answers it. */

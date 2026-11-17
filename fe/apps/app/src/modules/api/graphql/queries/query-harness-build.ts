@@ -27,7 +27,9 @@ const query1: TypedDocumentNode<HarnessBuildQuery, HarnessBuildQueryVariables> =
             }
             repository {
                 bound
-                projectId
+                repository
+                bindingId
+                audience
             }
             stages {
                 id

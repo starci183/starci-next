@@ -34,6 +34,7 @@ export {
     useMutateStartPremiumCheckoutSwr,
     useMutateConfirmRelayDeviceSwr,
     useMutateRevokeRelayDeviceSwr,
+    useMutateBindHarnessBuildSwr,
     useMutateCreateMcpTokenSwr,
     useMutateRevokeMcpTokenSwr,
     useMutateStartInterviewSwr,

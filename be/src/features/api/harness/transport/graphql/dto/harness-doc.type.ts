@@ -23,4 +23,8 @@ export class HarnessDocType {
     /** The sections. */
     @Field(() => [HarnessTextType])
     sections!: Array<HarnessTextType>
+
+    /** The minutes a learner needs, or null. */
+    @Field(() => Int, { nullable: true })
+    minutes!: number | null
 }

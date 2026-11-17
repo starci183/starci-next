@@ -2,6 +2,7 @@
 title: Kinh nghiệm đã xác minh
 route: /experience
 area: career
+reviewed: 2026-11-17
 ---
 
 Route: `/experience` (ảnh chụp: học viên mới, chưa có mục nào). Mã: `fe/apps/app/src/components/blocks/ExperienceList/component.tsx` (vẽ), `index.tsx` (đọc, sửa dòng CV, gửi duyệt). Khung chung giải thích ở `learn/home`.

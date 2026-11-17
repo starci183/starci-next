@@ -79,11 +79,7 @@ export interface HarnessOtherSection {
 }
 
 /** The `harness` section of a verified manifest. */
-export type HarnessSection =
-    | HarnessBuildSection
-    | HarnessDoctorSection
-    | HarnessTrialSection
-    | HarnessOtherSection
+export type HarnessSection = HarnessBuildSection | HarnessDoctorSection | HarnessTrialSection | HarnessOtherSection
 
 /** What `harness pull` leaves in the build folder (tracked in git, so CI can run `harness ci-report` without a device). */
 export interface HarnessState extends HarnessPlan {

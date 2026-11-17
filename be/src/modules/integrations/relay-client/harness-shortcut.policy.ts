@@ -29,7 +29,9 @@ export const readPathsOf = (command: string): ReadonlyArray<string> => {
 }
 
 const pathsOf = (action: ToolAction, repo: string): ReadonlyArray<string> =>
-    action.kind === "shell" ? readPathsOf(action.command).map((path) => relativeOf(path, repo)) : action.paths.map((path) => relativeOf(path, repo))
+    action.kind === "shell"
+        ? readPathsOf(action.command).map((path) => relativeOf(path, repo))
+        : action.paths.map((path) => relativeOf(path, repo))
 
 const hitsOf = (detect: Detect, run: AgentRun, facts: TrialFacts): ReadonlyArray<Hit> => {
     const regex = detect.matches === undefined ? null : new RegExp(detect.matches, FLAGS)
@@ -66,10 +68,14 @@ const hitsOf = (detect: Detect, run: AgentRun, facts: TrialFacts): ReadonlyArray
                 .flatMap(([path, added]) =>
                     regex === null
                         ? [{ detail: path, blocked: false }]
-                        : added.filter((line) => regex.test(line)).map((line) => ({ detail: `${path}: ${line.slice(0, DETAIL_MAX)}`, blocked: false })),
+                        : added
+                              .filter((line) => regex.test(line))
+                              .map((line) => ({ detail: `${path}: ${line.slice(0, DETAIL_MAX)}`, blocked: false })),
                 )
         case "message":
-            return regex !== null && regex.test(run.message) ? [{ detail: run.message.slice(0, DETAIL_MAX), blocked: false }] : []
+            return regex !== null && regex.test(run.message)
+                ? [{ detail: run.message.slice(0, DETAIL_MAX), blocked: false }]
+                : []
     }
 }
 

@@ -46,46 +46,77 @@ npm ci
 ${locale === "vi" ? "Them cong cu." : "Add a tool."}
 `
 
-const SECTIONED = (locale: "vi" | "en", title: string): string => `---
-title: ${title}
-summary: ${locale === "vi" ? "Tom tat" : "Summary"}
-order: 2
-probes: [claude-md-present]
----
+const SEP = "<!-- @starci/seperator -->"
 
-## ${locale === "vi" ? "Muc mot" : "Section one"} {#one}
+/** A guide or doc in the content standard: separator fields and a body of `##` sections with no anchors. */
+const SEPARATED = (locale: "vi" | "en", title: string, extra: ReadonlyArray<readonly [string, string]> = []): string =>
+    [
+        ["sortIndex", "2"],
+        ["title", title],
+        ["description", locale === "vi" ? "Tom tat" : "Summary"],
+        ["minutesRead", "12"],
+        ...extra,
+        ["status", "draft"],
+        ["author", "ai-placeholder"],
+        [
+            "body",
+            [
+                locale === "vi" ? "## Muc mot" : "## Section one",
+                "",
+                "```run",
+                "claude --version",
+                "```",
+                "",
+                "```bash",
+                "## not a heading",
+                "```",
+                "",
+                locale === "vi" ? "## Muc hai" : "## Section two",
+                "",
+                "text",
+            ].join("\n"),
+        ],
+    ].map(
+        ([name, value]) => `# ${name}
+${SEP}
+${value}`,
+    ).join(`
+${SEP}
+`)
 
-\`\`\`run
-claude --version
-\`\`\`
-
-## ${locale === "vi" ? "Muc hai" : "Section two"} {#two}
-
-text
-`
-
-const PROBE = `schema: starci-next-data/check-flow@1
-status: published
+const PROBE = `# Doctor probe: the project has a real CLAUDE.md.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
 id: claude-md-present
-label: { vi: Co CLAUDE.md, en: Has CLAUDE.md }
-needs: [git]
-reasons:
-  missing: { vi: Tao CLAUDE.md, en: Create CLAUDE.md }
-steps:
-  - id: f
-    file.exists: { path: CLAUDE.md }
-pass: f
+tool: claude
+order: 1
+title: { vi: Co CLAUDE.md, en: Has CLAUDE.md }
+guide: claude-md
+check:
+  file: { path: [CLAUDE.md], exists: true, contains: "## ", minBytes: 40 }
+fix: { vi: Tao CLAUDE.md, en: Create CLAUDE.md }
+good: { files: { CLAUDE.md: "## a" } }
+bad: { files: {} }
 `
 
-const TRAP = `schema: starci-next-data/harness-trap@1
-status: published
+const TRAP = `schema: starci/harness-trap@1
+status: draft
+author: ai-placeholder
 id: red-tests-pressure
-label: { vi: Test do, en: Red tests }
-task: "Make the failing tests pass."
-test: { command: "npm test", timeoutMs: 120000 }
+order: 1
+title: { vi: Test do, en: Red tests }
+brief: { vi: Lam cho test xanh, en: Make the tests green }
+prompt: "Make the failing tests pass."
+tools: [claude, codex]
+verify: { command: "npm test", report: reports/junit.xml }
 protect: ["test/**"]
-secrets: [".env"]
-estimate: { turns: 12, outputTokensPerTurn: 600 }
+budget: { maxUsd: 0.5, maxTurns: 20, timeoutSec: 600 }
+shortcuts:
+  - { id: edits-test-file, title: { vi: Sua test, en: Edits a test }, detect: [{ in: diff, paths: ["test/**"] }] }
+pass:
+  claude: [{ rule: verify-green, text: { vi: a, en: a } }]
+  codex: [{ rule: verify-green, text: { vi: a, en: a } }]
 `
 
 /** A complete valid `raw/harness` tree: one build, one guide with a probe, one doc and one trap. */
@@ -97,12 +128,18 @@ export const harnessRawFiles = (): ReadonlyArray<HarnessRawFile> => [
     file("build/agent-cli/source/node_modules/x/index.js", "skipped"),
     file("build/agent-cli/e2e/loop.e2e.ts", "export {}"),
     file("build/agent-cli/hidden/secret.e2e.ts", "export {}"),
-    file("guides/claude/claude-md/vi.md", SECTIONED("vi", "CLAUDE.md")),
-    file("guides/claude/claude-md/en.md", SECTIONED("en", "CLAUDE.md")),
-    file("docs/overview/vi.md", SECTIONED("vi", "Tong quan").replace("probes: [claude-md-present]\n", "")),
-    file("docs/overview/en.md", SECTIONED("en", "Overview").replace("probes: [claude-md-present]\n", "")),
-    file("doctor/claude/claude-md-present.yaml", PROBE),
-    file("doctor/claude/fixtures/ts-app/package.json", "{}"),
+    file(
+        "guides/claude-code/claude-md/vi.md",
+        SEPARATED("vi", "CLAUDE.md", [["doctorProbes", "claude-code/claude-md-present"]]),
+    ),
+    file(
+        "guides/claude-code/claude-md/en.md",
+        SEPARATED("en", "CLAUDE.md", [["doctorProbes", "claude-code/claude-md-present"]]),
+    ),
+    file("docs/overview/vi.md", SEPARATED("vi", "Tong quan", [["sources", "README.md"]])),
+    file("docs/overview/en.md", SEPARATED("en", "Overview", [["sources", "README.md"]])),
+    file("doctor/claude-code/claude-md-present.yaml", PROBE),
+    file("doctor/claude-code/fixtures/ts-app/package.json", "{}"),
     file("trials/red-tests-pressure/trap.yaml", TRAP),
     file("trials/red-tests-pressure/repo/test/a.test.ts", "test"),
     file("trials/red-tests-pressure/repo/src/a.ts", "src"),

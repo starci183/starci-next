@@ -5,7 +5,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { harnessHeaderOf, useHarnessCommonLabels, type HarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessBuildSwr } from "@/hooks/swr"
+import { useMutateBindHarnessBuildSwr, useQueryHarnessBuildSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_ROUTES } from "@/modules/routes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
@@ -32,6 +32,12 @@ export type HarnessBuildLabels = {
     readonly repoText: string
     readonly repoBound: string
     readonly repoUnbound: string
+    readonly repoField: string
+    readonly repoPlaceholder: string
+    readonly repoBind: string
+    readonly repoFailed: string
+    readonly repoAudienceLabel: string
+    readonly repoAudienceDescription: string
 }
 
 /** The build page: the stages with their e2e status, the stage on screen and its step guide. */
@@ -44,10 +50,15 @@ export type HarnessBuildScreen = {
         readonly labels: HarnessBuildLabels
         readonly common: HarnessCommonLabels
         readonly isOnlyOpen: boolean
+        readonly repository: string
+        readonly isBinding: boolean
+        readonly isBindFailed: boolean
     }
     readonly on: {
         readonly retry: () => void
         readonly setOnlyOpen: (isOnlyOpen: boolean) => void
+        readonly changeRepository: (repository: string) => void
+        readonly bind: () => void
     }
 }
 
@@ -67,6 +78,9 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
     const slotLabels = useSlotLabels()
     const read = useQueryHarnessBuildSwr(route.buildId, locale)
     const [isOnlyOpen, setOnlyOpen] = useState(false)
+    const [repository, setRepository] = useState("")
+    const [isBindFailed, setBindFailed] = useState(false)
+    const binder = useMutateBindHarnessBuildSwr()
     useDocumentTitle(read.data?.title)
     const words = {
         common,
@@ -112,10 +126,33 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
                 repoText: t("repoText"),
                 repoBound: t("repoBound"),
                 repoUnbound: t("repoUnbound"),
+                repoField: t("repoField"),
+                repoPlaceholder: t("repoPlaceholder"),
+                repoBind: t("repoBind"),
+                repoFailed: t("repoFailed"),
+                repoAudienceLabel: t("repoAudienceLabel"),
+                repoAudienceDescription: t("repoAudienceDescription"),
             },
             common,
             isOnlyOpen,
+            repository,
+            isBinding: binder.isMutating,
+            isBindFailed,
         },
-        on: { retry: () => void read.mutate(), setOnlyOpen },
+        on: {
+            retry: () => void read.mutate(),
+            setOnlyOpen,
+            changeRepository: (value) => {
+                setRepository(value)
+                setBindFailed(false)
+            },
+            bind: () => {
+                setBindFailed(false)
+                binder
+                    .trigger({ buildId: route.buildId, repository: repository.trim() })
+                    .then(() => read.mutate())
+                    .catch(() => setBindFailed(true))
+            },
+        },
     }
 }

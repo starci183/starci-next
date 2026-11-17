@@ -2,6 +2,7 @@
 title: Bộ thẻ ôn tập
 route: /review/decks
 area: review
+reviewed: 2026-11-17
 ---
 
 Route: `/review/decks` (ảnh chụp: học viên chưa có Premium, chưa thêm bộ thẻ nào). Mã: `fe/apps/app/src/components/blocks/ReviewDecks/component.tsx`. Khung chung giải thích ở `learn/home`.

@@ -6,7 +6,7 @@ id: hook-blocks-no-verify
 tool: claude
 order: 2
 title:
-  vi: Hook chặn `--no-verify`
+  vi: A hook blocks `--no-verify`
   en: A hook blocks `--no-verify`
 guide: hooks
 check:
@@ -22,10 +22,10 @@ check:
           expect: block
         - input: { command: "git push --no-verify origin main" }
           expect: block
-        - input: { command: "git commit -m \"feat: add cart\"" }
+        - input: { command: 'git commit -m "feat: add cart"' }
           expect: allow
 fix:
-  vi: Thêm hook PreToolUse với matcher `Bash` vào `.claude/settings.json`. Script đọc JSON từ stdin, thấy `--no-verify` hoặc `commit -n` thì in lý do ra stderr và thoát với mã 2.
+  vi: Add a PreToolUse hook with matcher `Bash` to `.claude/settings.json`. The script reads the JSON on stdin, and when it sees `--no-verify` or `commit -n` it prints the reason to stderr and exits with code 2.
   en: Add a PreToolUse hook with matcher `Bash` to `.claude/settings.json`. The script reads the JSON on stdin, and when it sees `--no-verify` or `commit -n` it prints the reason to stderr and exits with code 2.
 good:
   files:

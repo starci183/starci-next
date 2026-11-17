@@ -66,5 +66,6 @@ This inventory declares names, consumers and mounted file paths. Scaffolding sea
 | `PRACTICE_MAX_SOURCE_BYTES` | Core API largest source a learner may send (non-secret, default 65536) |
 | `PRACTICE_WAIT` | Core API most time a run or submit waits for its verdict before answering still judging (non-secret, default 25s) |
 | `ATTEMPT_COACH_DAILY_LIMIT` | Core API fair-use cap of AI gradings per learner per UTC day (default 100); no credits are shown to the learner |
+| `QDRANT_API_KEY` | Core API and CLI vector index client (optional: absent on a private network); the secret of the owner-provisioned Qdrant |
 
 Public front-end configuration is supplied at build time and stays outside sealed custody. Replace the generated private placeholder only in `.starcistacks/production/secrets/primary-db-url.enc`, already declared by the manifest. The versioned external database secret is `starci-next-production-primary-db-url-v1`.
