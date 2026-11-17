@@ -32,7 +32,7 @@ export type ReviewSessionState = {
 
 /** The items of today that a free or premium learner can review now, due first, then new. */
 const openIdsOf = (today: ReviewTodayView | undefined): ReadonlyArray<string> | undefined =>
-    today?.items.filter((item) => !item.locked).map((item) => item.itemId)
+    today?.items.map((item) => item.itemId)
 
 /** The session of the review of today; the read is frozen, so a grade never reshuffles the queue. */
 export const useReviewSession = (): ReviewSessionState => {

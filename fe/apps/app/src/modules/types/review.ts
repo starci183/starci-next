@@ -10,8 +10,6 @@ export type ReviewQueueItemView = {
     readonly deckTitle: string | null
     readonly lessonTitle: string | null
     readonly level: string | null
-    /** True when the item needs Premium and the reader holds none. */
-    readonly locked: boolean
     readonly dueOn: string
 }
 
@@ -21,7 +19,6 @@ export type ReviewTodayView = {
     readonly due: number
     readonly overdue: number
     readonly newAvailable: number
-    readonly lockedCount: number
     readonly goal: { readonly daily: number; readonly done: number }
     readonly items: ReadonlyArray<ReviewQueueItemView>
 }
@@ -77,7 +74,6 @@ export type ReviewDeckView = {
     readonly description: string
     readonly difficulty: string
     readonly cardCount: number
-    readonly freeCardCount: number
     readonly added: boolean
     readonly track: ReadonlyArray<string>
 }

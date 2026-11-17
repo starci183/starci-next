@@ -10,7 +10,6 @@ const query1: TypedDocumentNode<ReviewTodayQuery, ReviewTodayQueryVariables> = g
             due
             overdue
             newAvailable
-            lockedCount
             goal {
                 daily
                 done
@@ -22,7 +21,6 @@ const query1: TypedDocumentNode<ReviewTodayQuery, ReviewTodayQueryVariables> = g
                 deckTitle
                 lessonTitle
                 level
-                locked
                 dueOn
             }
         }

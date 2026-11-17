@@ -9,40 +9,41 @@ export type PracticeEditorLabels = {
     readonly language: string
     readonly code: string
     readonly judgeNote: string
-    readonly run: string
-    readonly submit: string
     readonly reset: string
-    readonly working: string
-    readonly draftSaved: string
 }
 
-/** The code editor of a problem and its actions. */
+/** The code editor of a problem. The commands that run or submit it stand in the page header, not here. */
 type PracticeEditorProps = {
     readonly labels: PracticeEditorLabels
     readonly languages: ReadonlyArray<PracticeLanguageOption>
     readonly language: string
     readonly value: string
-    /** True while a run or a submission is in flight: the actions wait, the code stays editable. */
-    readonly isBusy: boolean
-    /** True when the reader may not run (the problem is locked, or the code is empty). */
-    readonly isDisabled: boolean
     readonly onLanguage: (language: string) => void
     readonly onChange: (value: string) => void
     readonly onReset: () => void
-    readonly onRun: () => void
-    readonly onSubmit: () => void
+    readonly isLoading?: boolean
 }
 
 /**
- * A plain editor: the language select, a code field (the Grammar textarea; Tab keeps moving focus, so the editor is never a
- * keyboard trap) and the run (example only) and submit (all tests) actions. No editor package is installed.
+ * A plain editor: a head with a reset command, the language select with the judge note, and a code field (the Grammar textarea; Tab keeps
+ * moving focus, so the editor is never a keyboard trap). No editor package is installed, so there is no syntax colour or line numbering yet.
  */
 export const PracticeEditor = (props: PracticeEditorProps) => (
-    <Section title={props.labels.title} headingLevel={2}>
+    <Section
+        title={props.labels.title}
+        headingLevel={2}
+        isLoading={props.isLoading === true}
+        action={
+            <Button intent="dismiss" size="sm" onPress={props.onReset}>
+                {props.labels.reset}
+            </Button>
+        }
+    >
         <Stack gap="row">
-            <Cluster gap="inline" wrap align="end" justify="between">
+            <Cluster gap="inline" wrap align="center">
                 <Select
                     label={props.labels.language}
+                    isLabelHidden
                     name="practice-language"
                     options={props.languages.map((each) => ({ id: each.id, label: each.label }))}
                     value={props.language}
@@ -56,30 +57,12 @@ export const PracticeEditor = (props: PracticeEditorProps) => (
             </Cluster>
             <Textarea
                 label={props.labels.code}
+                isLabelHidden
                 name="practice-code"
-                rows={18}
+                rows={16}
                 value={props.value}
                 onValueChange={props.onChange}
             />
-            <Cluster gap="inline" wrap align="center">
-                <Button intent="neutral" isDisabled={props.isDisabled || props.isBusy} onPress={props.onRun}>
-                    {props.labels.run}
-                </Button>
-                <Button
-                    intent="commit"
-                    isPending={props.isBusy}
-                    isDisabled={props.isDisabled || props.isBusy}
-                    onPress={props.onSubmit}
-                >
-                    {props.isBusy ? props.labels.working : props.labels.submit}
-                </Button>
-                <Button intent="dismiss" isDisabled={props.isBusy} onPress={props.onReset}>
-                    {props.labels.reset}
-                </Button>
-                <Text size="sm" tone="muted">
-                    {props.labels.draftSaved}
-                </Text>
-            </Cluster>
         </Stack>
     </Section>
 )

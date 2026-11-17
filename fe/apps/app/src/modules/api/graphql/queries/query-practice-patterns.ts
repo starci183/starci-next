@@ -14,8 +14,7 @@ const query1: TypedDocumentNode<PracticePatternsQuery, PracticePatternsQueryVari
             title
             problemCount
             acceptedCount
-            freeCount
-            locked
+            intro
         }
     }
 `

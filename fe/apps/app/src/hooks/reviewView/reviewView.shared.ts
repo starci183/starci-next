@@ -30,7 +30,7 @@ const rowOf = (item: ReviewQueueItemView, today: ReviewTodayView, words: ReviewW
         id: item.itemId,
         title: (isRetrieval ? item.lessonTitle : item.deckTitle) ?? item.itemId,
         meta,
-        isLocked: item.locked,
+        isLocked: false,
     }
     if (item.status === "new") return { ...base, badge: t("today.newBadge"), badgeTone: "accent" }
     const isOverdue = item.dueOn < today.date
@@ -43,14 +43,14 @@ const rowOf = (item: ReviewQueueItemView, today: ReviewTodayView, words: ReviewW
 
 /** Which state the day is in: items to review, nothing at all, or the goal met with nothing left. */
 const stateOf = (today: ReviewTodayView): ReviewTodayScreen["state"] => {
-    if (today.items.some((item) => !item.locked)) return "ready"
+    if (today.items.length > 0) return "ready"
     return today.goal.done > 0 && today.goal.done >= today.goal.daily ? "done" : "empty"
 }
 
 /** Today's review as it is drawn. */
 export const todayScreenOf = (today: ReviewTodayView, words: ReviewWords): ReviewTodayScreen => {
     const t = words.t
-    const open = today.items.filter((item) => !item.locked)
+    const open = today.items
     const cards = open.filter((item) => item.source !== "retrieval").length
     const lessons = open.length - cards
     return {
@@ -62,7 +62,7 @@ export const todayScreenOf = (today: ReviewTodayView, words: ReviewWords): Revie
         splitCards: `${t("today.splitCards")} · ${cards}`,
         splitRetrieval: `${t("today.splitRetrieval")} · ${lessons}`,
         doneBody: t("today.doneBody", { daily: today.goal.daily }),
-        lockedBody: today.lockedCount > 0 ? t("today.lockedBody", { count: today.lockedCount }) : undefined,
+        lockedBody: undefined,
         canStartNew: open.length > 0 && open.every((item) => item.status === "new"),
         rows: today.items.map((item) => rowOf(item, today, words)),
         sourceDeck: `${t("today.sourceDeck")} · ${cards}`,

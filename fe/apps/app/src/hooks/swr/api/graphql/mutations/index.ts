@@ -84,3 +84,4 @@ export { MUTATE_REMOVE_AVATAR_SWR_KEY, useMutateRemoveAvatarSwr } from "./useMut
 export type { RemoveAvatarArgument, RemoveAvatarResult } from "./useMutateRemoveAvatarSwr"
 export { MUTATE_BIND_HARNESS_BUILD_SWR_KEY, useMutateBindHarnessBuildSwr } from "./useMutateBindHarnessBuildSwr"
 export type { HarnessBuildBinding } from "./useMutateBindHarnessBuildSwr"
+export { MUTATE_PRACTICE_SOLUTION_SWR_KEY, useMutatePracticeSolutionSwr } from "./useMutatePracticeSolutionSwr"

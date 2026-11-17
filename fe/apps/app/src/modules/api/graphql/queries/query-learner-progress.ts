@@ -93,6 +93,18 @@ const query1: TypedDocumentNode<LearnerProgressQuery, LearnerProgressQueryVariab
                 }
             }
             projectsLocked
+            practice {
+                acceptedCount
+                problemCount
+                patternsInProgress
+                patternsDone
+                patterns {
+                    patternId
+                    title
+                    acceptedCount
+                    problemCount
+                }
+            }
             review {
                 due
                 overdue

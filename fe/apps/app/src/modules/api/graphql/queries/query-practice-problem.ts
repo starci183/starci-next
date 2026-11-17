@@ -19,7 +19,8 @@ const query1: TypedDocumentNode<PracticeProblemQuery, PracticeProblemQueryVariab
             statementMarkdown
             timeLimitMs
             memoryLimitKb
-            locked
+            solutionRevealed
+            solutionViewedBeforeAccepted
             starterCodes {
                 language
                 content

@@ -15,7 +15,8 @@ const query1: TypedDocumentNode<PracticeProblemsQuery, PracticeProblemsQueryVari
             difficulty
             tags
             status
-            locked
+            solutionRevealed
+            solutionViewedBeforeAccepted
             orderIndex
         }
     }

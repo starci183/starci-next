@@ -12,7 +12,6 @@ const query1: TypedDocumentNode<ReviewDecksQuery, ReviewDecksQueryVariables> = g
             description
             difficulty
             cardCount
-            freeCardCount
             added
             track
         }

@@ -2,7 +2,6 @@
 
 import { useLocale } from "next-intl"
 import { useState } from "react"
-import { useViewerPremium } from "@/hooks/catalog"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryReviewDecksSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
@@ -77,19 +76,14 @@ const noteOf = (result: ReviewDeckResult | undefined, t: ReviewWords["t"]): Revi
 }
 
 /** The words of one deck card. */
-const cardOf = (
-    deck: ReviewDeckView,
-    pendingId: string | undefined,
-    t: ReviewWords["t"],
-    isPremium: boolean,
-): ReviewDeckCard => ({
+const cardOf = (deck: ReviewDeckView, pendingId: string | undefined, t: ReviewWords["t"]): ReviewDeckCard => ({
     id: deck.deckId,
     title: deck.title,
     description: deck.description,
     difficulty: deck.difficulty,
     cards: t("decks.cards", { count: deck.cardCount }),
-    free: isPremium ? "" : t("decks.free", { count: deck.freeCardCount }),
-    isPartlyLocked: !isPremium && deck.freeCardCount < deck.cardCount,
+    free: "",
+    isPartlyLocked: false,
     isAdded: deck.added,
     isPending: pendingId === deck.deckId,
 })
@@ -99,7 +93,6 @@ export const useReviewDecksView = (): ReviewDecksViewState => {
     const words = useReviewWords()
     const t = words.t
     const read = useQueryReviewDecksSwr(useLocale())
-    const isPremium = useViewerPremium()
     const actions = useReviewDeckActions()
     const goal = useReviewGoal()
     const [track, setTrack] = useState("all")
@@ -112,7 +105,7 @@ export const useReviewDecksView = (): ReviewDecksViewState => {
     const trackLabel = (value: string): string => (t.has(`decks.tracks.${value}`) ? t(`decks.tracks.${value}`) : value)
     return {
         slot: mapSlot(slotOfSwr(read), (decks) =>
-            decks.filter((each) => matches(each)).map((deck) => cardOf(deck, actions.pendingId, t, isPremium)),
+            decks.filter((each) => matches(each)).map((deck) => cardOf(deck, actions.pendingId, t)),
         ),
         slotLabels,
         labels: labelsOf(t),

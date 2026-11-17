@@ -1,4 +1,4 @@
-import { Badge, Button, Cluster, Heading, Section, Stack, Text } from "@starci/grammar/common"
+import { Section, type ListRowData } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 
 /** One revealed hint of the ladder. */
@@ -14,9 +14,8 @@ export type PracticeHintsLabels = {
     /** "AI only hints, never writes your code". */
     readonly note: string
     readonly reveal: string
-    readonly revealing: string
-    readonly done: string
-    readonly step: (step: number, total: number) => string
+    readonly open: string
+    readonly step: (step: number) => string
     readonly diagram: string
     readonly diagramError: string
 }
@@ -27,49 +26,53 @@ type PracticeHintsProps = {
     readonly total: number
     readonly revealed: ReadonlyArray<PracticeHintItem>
     readonly isRevealing: boolean
-    /** True when the reader may not ask for a hint (locked problem). */
+    /** True while the problem has not arrived. */
     readonly isDisabled: boolean
     readonly onReveal: () => void
+    readonly isLoading?: boolean
 }
 
-/** The hint ladder: revealed hints in order, the button for the next one, and the promise that no code is written for the learner. */
+/** The hint ladder as one flat list: each step is a row, an opened one carries its text, the next one the command that opens it, the rest wait. */
 export const PracticeHints = (props: PracticeHintsProps) => {
-    const isComplete = props.revealed.length >= props.total
     const markdownLabels = { diagram: props.labels.diagram, diagramError: props.labels.diagramError }
+    const rows: ReadonlyArray<ListRowData> = Array.from({ length: props.total }, (_, index): ListRowData => {
+        const step = index + 1
+        const opened = props.revealed.find((hint) => hint.step === step)
+        if (opened !== undefined) {
+            return {
+                id: `hint-${step}`,
+                title: props.labels.step(step),
+                badges: [{ label: props.labels.open, tone: "success" }],
+                detail: <RichMarkdown source={opened.markdown} labels={markdownLabels} />,
+            }
+        }
+        const isNext = step === props.revealed.length + 1
+        return {
+            id: `hint-${step}`,
+            title: props.labels.step(step),
+            ...(isNext
+                ? {
+                      action: {
+                          label: props.labels.reveal,
+                          intent: "neutral" as const,
+                          isPending: props.isRevealing,
+                          isDisabled: props.isDisabled || props.isRevealing,
+                          press: props.onReveal,
+                      },
+                      actionPlacement: "end" as const,
+                  }
+                : {}),
+        }
+    })
     return (
-        <Section title={props.labels.title} headingLevel={2}>
-            <Stack gap="section">
-                <Text size="sm" tone="muted">
-                    {props.labels.note}
-                </Text>
-                {props.revealed.map((hint) => (
-                    <Stack key={hint.step} gap="row">
-                        <Cluster gap="inline" wrap align="center">
-                            <Badge tone="accent">{props.labels.step(hint.step, props.total)}</Badge>
-                            <Heading level={3} scale="standard">
-                                {hint.title}
-                            </Heading>
-                        </Cluster>
-                        <RichMarkdown source={hint.markdown} labels={markdownLabels} />
-                    </Stack>
-                ))}
-                {isComplete ? (
-                    <Text size="sm" tone="muted">
-                        {props.labels.done}
-                    </Text>
-                ) : (
-                    <Cluster gap="inline">
-                        <Button
-                            intent="alternative"
-                            isPending={props.isRevealing}
-                            isDisabled={props.isDisabled || props.isRevealing}
-                            onPress={props.onReveal}
-                        >
-                            {props.isRevealing ? props.labels.revealing : props.labels.reveal}
-                        </Button>
-                    </Cluster>
-                )}
-            </Stack>
-        </Section>
+        <Section
+            kind="list"
+            title={props.labels.title}
+            headingLevel={2}
+            description={props.labels.note}
+            isLoading={props.isLoading === true}
+            items={rows}
+            empty={props.labels.note}
+        />
     )
 }

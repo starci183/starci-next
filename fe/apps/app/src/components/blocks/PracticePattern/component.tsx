@@ -1,58 +1,160 @@
-import { Page } from "@starci/grammar/common"
-import { PracticeBrowse, type PracticeBrowseProps, type PracticeBrowseView } from "@starci-next/ui"
+import {
+    Badge,
+    Button,
+    Cluster,
+    EmptyNotice,
+    Grid,
+    Page,
+    Progress,
+    Section,
+    Stack,
+    Text,
+    type ListRowData,
+} from "@starci/grammar/common"
+import { SlotView } from "@starci-next/ui"
+import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
 
-/** The problems of one pattern as they are drawn: every word is already resolved. */
-export type PracticePatternView = PracticeBrowseView
-
-/** The fake pattern with the geometry of a settled one, drawn as a skeleton while the first read runs. */
-export const PRACTICE_PATTERN_PLACEHOLDER: PracticePatternView = {
-    lines: ["xxxxxxxxxxxxxx"],
-    rows: [1, 2, 3, 4].map((index) => ({
-        id: `placeholder-${index}`,
-        title: "xxxxxxxxxx",
-        description: "xxxxxxxx",
-        badge: "xxxxxx",
-        badgeTone: "muted",
-        href: "/",
-        cta: "xxxx",
-        isCurrent: false,
-    })),
-}
-
-/** The fixed words of the pattern header. */
-export type PracticePatternLabels = {
-    /** The title of the pattern; the page title until the first read names it. */
-    readonly title: string
-    readonly breadcrumbs: string
-    readonly catalog: string
-}
-
-/** Props for {@link PracticePatternBase}. */
+/** Props for {@link PracticePatternBase}: the resolved screen of one pattern. */
 export type PracticePatternBaseProps = {
-    readonly props: {
-        readonly labels: PracticePatternLabels
-        readonly catalogHref: string
-        /** The card and the list, with the status of the read. */
-        readonly browse: Omit<PracticeBrowseProps, "onRetry">
-    }
-    readonly on: { readonly retry: () => void }
+    readonly props: PracticePatternScreen["props"]
+    readonly on: PracticePatternScreen["on"]
 }
 
-/** Draws one pattern: its progress and its problems in the order of the teacher, each with where the learner stands. */
-export const PracticePatternBase = (props: PracticePatternBaseProps) => (
-    <Page
-        header={{
-            title: props.props.labels.title,
-            titleScale: "standard",
-            breadcrumbs: {
-                label: props.props.labels.breadcrumbs,
-                items: [
-                    { id: "practice", label: props.props.labels.catalog, href: props.props.catalogHref },
-                    { id: "pattern", label: props.props.labels.title },
-                ],
-            },
-        }}
-    >
-        <PracticeBrowse {...props.props.browse} onRetry={props.on.retry} />
-    </Page>
+/** One problem as a row: its number, its name, the difficulty dot with the technique tags, the status badge; the row is the link. */
+const rowOf = (item: PracticeProblemItem): ListRowData => ({
+    id: item.id,
+    title: item.title,
+    leading: { position: item.position },
+    href: item.href,
+    badges: [{ label: item.status, tone: item.statusTone }],
+    description: (
+        <Cluster gap="inline" wrap align="center">
+            <Badge isDot tone={item.difficultyTone}>
+                {item.difficulty}
+            </Badge>
+            {item.tags.map((tag) => (
+                <Text key={tag} size="xs" tone="muted">
+                    {tag}
+                </Text>
+            ))}
+        </Cluster>
+    ),
+})
+
+/** The problems of the pattern as one flat list; a pattern with none says so and points back to the catalog. */
+const ProblemList = (props: {
+    readonly rows: ReadonlyArray<PracticeProblemItem>
+    readonly labels: PracticePatternBaseProps["props"]["labels"]
+    readonly isLoading: boolean
+}) => (
+    <Section
+        kind="list"
+        title={props.labels.listTitle}
+        headingLevel={2}
+        count={props.rows.length}
+        isLoading={props.isLoading}
+        items={props.rows.map(rowOf)}
+        empty={
+            <EmptyNotice
+                message={props.labels.emptyTitle}
+                description={props.labels.emptyText}
+                actionLabel={props.labels.emptyAction}
+                actionHref={props.labels.catalogHref}
+                frame="frameless"
+            />
+        }
+    />
 )
+
+/** The right column: the pattern progress and the pattern that follows. */
+const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; readonly isLoading: boolean }) => {
+    const { labels, progress, nextPattern } = props.screen
+    return (
+        <Stack gap="region">
+            <Section title={labels.progressTitle} headingLevel={2} isLoading={props.isLoading}>
+                <Stack gap="row">
+                    <Progress label={labels.progressLabel} value={progress.percent} valueText={progress.text} />
+                    <Text size="sm" tone="muted">
+                        {progress.text}
+                    </Text>
+                </Stack>
+            </Section>
+            {nextPattern === null ? null : (
+                <Section
+                    kind="list"
+                    title={labels.nextTitle}
+                    headingLevel={2}
+                    isLoading={props.isLoading}
+                    items={[
+                        {
+                            id: "next-pattern",
+                            title: nextPattern.title,
+                            description: nextPattern.description,
+                            leading: { position: nextPattern.position },
+                            href: nextPattern.href,
+                        },
+                    ]}
+                    empty={nextPattern.title}
+                />
+            )}
+        </Stack>
+    )
+}
+
+/**
+ * Draws one pattern: the header with the number of problems accepted and the one primary command, the short "when to use it"
+ * paragraph, the problems as a flat list with where the learner stands in each, and the pattern progress beside them.
+ */
+export const PracticePatternBase = (props: PracticePatternBaseProps) => {
+    const { header, labels, intro } = props.props
+    return (
+        <Page
+            isLoading={"isLoading" in props.props.slot}
+            header={{
+                title: header.title,
+                titleScale: "standard",
+                meta: header.meta,
+                breadcrumbs: {
+                    label: labels.breadcrumbs,
+                    items: [
+                        { id: "practice", label: header.crumb, href: labels.catalogHref },
+                        { id: "pattern", label: header.title },
+                    ],
+                },
+                ...(header.action === null
+                    ? {}
+                    : {
+                          actions: (
+                              <Button intent="commit" href={header.action.href}>
+                                  {header.action.label}
+                              </Button>
+                          ),
+                      }),
+            }}
+        >
+            <SlotView
+                slot={props.props.slot}
+                placeholder={props.props.placeholder}
+                labels={props.props.slotLabels}
+                errorDescription={props.props.errorDescription}
+                onRetry={props.on.retry}
+                render={(rows, isLoading) => (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                {intro === "" ? null : (
+                                    <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
+                                        <Text as="p">{intro}</Text>
+                                    </Section>
+                                )}
+                                <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
+                            </Stack>
+                        }
+                        rail={<Rail screen={props.props} isLoading={isLoading} />}
+                    />
+                )}
+            />
+        </Page>
+    )
+}

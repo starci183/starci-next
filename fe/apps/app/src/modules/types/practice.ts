@@ -33,10 +33,8 @@ export type PracticePatternRow = {
     readonly title: string
     readonly problemCount: number
     readonly acceptedCount: number
-    /** How many of its problems a reader without Premium may solve. */
-    readonly freeCount: number
-    /** True when the reader's plan opens none of its problems. */
-    readonly locked: boolean
+    /** The short paragraph on when to use the pattern; empty when the content has none. */
+    readonly intro: string
 }
 
 /** One row of a pattern's problem list. */
@@ -46,7 +44,8 @@ export type PracticeProblemItemView = {
     readonly difficulty: string
     readonly tags: ReadonlyArray<string>
     readonly status: PracticeProgress
-    readonly locked: boolean
+    readonly solutionRevealed: boolean
+    readonly solutionViewedBeforeAccepted: boolean
     readonly orderIndex: number
 }
 
@@ -67,7 +66,8 @@ export type PracticeProblemView = {
     readonly statementMarkdown: string
     readonly timeLimitMs: number
     readonly memoryLimitKb: number
-    readonly locked: boolean
+    readonly solutionRevealed: boolean
+    readonly solutionViewedBeforeAccepted: boolean
     readonly starterCodes: ReadonlyArray<PracticeStarterView>
     readonly examples: ReadonlyArray<{ readonly input: string; readonly output: string }>
     readonly hintsTotal: number
@@ -105,4 +105,33 @@ export type PracticeSubmissionView = {
     readonly totalCount: number
     readonly timeMs: number | null
     readonly memoryKb: number | null
+}
+
+/** The problem to do next and the one left unfinished; each is null when there is none. */
+export type PracticeNextView = {
+    readonly next: {
+        readonly slug: string
+        readonly title: string
+        readonly patternId: string
+        readonly patternTitle: string
+        readonly position: number
+        readonly patternProblemCount: number
+    } | null
+    readonly resume: {
+        readonly slug: string
+        readonly title: string
+        readonly patternId: string
+        readonly patternTitle: string
+        readonly attempts: number
+        readonly lastVerdict: string
+        readonly failedTestIndex: number | null
+    } | null
+}
+
+/** The reference solution of a problem the learner chose to see. */
+export type PracticeSolutionView = {
+    readonly slug: string
+    readonly solution: string
+    readonly revealedAt: string
+    readonly countedForExperience: boolean
 }

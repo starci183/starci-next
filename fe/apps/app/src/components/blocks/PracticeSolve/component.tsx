@@ -1,259 +1,301 @@
-import { Alert, Grid, Page, Stack } from "@starci/grammar/common"
 import {
-    LockedNotice,
+    Alert,
+    AlertDialog,
+    Badge,
+    Button,
+    Cluster,
+    Grid,
+    Page,
+    Section,
+    Stack,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
+import {
     PracticeEditor,
     PracticeHints,
-    PracticeList,
     PracticeProblemPanel,
     PracticeResult,
+    RichMarkdown,
     SlotView,
-    type PracticeEditorLabels,
-    type PracticeExample,
-    type PracticeHintsLabels,
-    type PracticeHintItem,
-    type PracticeLanguageOption,
-    type PracticeProblemLabels,
-    type PracticeResultLabels,
-    type PracticeResultState,
-    type PracticeRow,
 } from "@starci-next/ui"
-import type { DataSlot, SlotLabels } from "@/modules/types"
+import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
-/** Why the last run, submission or hint did not go through; `none` when it did. */
-export type PracticeSolveIssue = "none" | "locked" | "rateLimited" | "other"
-
-/** The solve screen as it is drawn: every word is already resolved. */
-export type PracticeSolveView = {
-    readonly title: string
-    readonly patternTitle: string
-    readonly patternHref: string
-    readonly eyebrow: string
-    readonly difficulty: string
-    readonly difficultyTone: "success" | "warning" | "danger" | "neutral"
-    readonly facts: ReadonlyArray<string>
-    readonly markdown: string
-    readonly examples: ReadonlyArray<PracticeExample>
-    readonly isLocked: boolean
-    readonly hintsTotal: number
-    /** The other problems of the pattern, the current one marked. */
-    readonly rail: ReadonlyArray<PracticeRow>
-}
-
-/** The fake problem with the geometry of a settled one, drawn as a skeleton while the first read runs. */
-export const PRACTICE_SOLVE_PLACEHOLDER: PracticeSolveView = {
-    title: "xxxxxxxxxx",
-    patternTitle: "xxxxxx",
-    patternHref: "/",
-    eyebrow: "xxxxxx",
-    difficulty: "xxxxxx",
-    difficultyTone: "neutral",
-    facts: ["xxxxxx", "xxxxxxxx"],
-    markdown: "",
-    examples: [],
-    isLocked: false,
-    hintsTotal: 3,
-    rail: [1, 2, 3].map((index) => ({
-        id: `placeholder-${index}`,
-        title: "xxxxxxxxxx",
-        description: "xxxxxxxx",
-        badge: "xxxxxx",
-        badgeTone: "muted",
-        href: "/",
-        cta: "xxxx",
-        isCurrent: false,
-    })),
-}
-
-/** The fixed words of the solve screen. */
-export type PracticeSolveLabels = {
-    readonly breadcrumbs: string
-    readonly catalog: string
-    readonly rail: string
-    readonly railEmpty: string
-    readonly problem: PracticeProblemLabels
-    readonly editor: PracticeEditorLabels
-    readonly hints: PracticeHintsLabels
-    readonly result: PracticeResultLabels
-    readonly locked: { readonly title: string; readonly description: string; readonly plans: string }
-    readonly rateLimited: string
-    readonly failed: string
-    readonly hintLocked: string
-    readonly hintFailed: string
-}
-
-/** What the learner holds and the last judge answer, ready to draw. */
-export type PracticeSolveState = {
-    readonly languages: ReadonlyArray<PracticeLanguageOption>
-    readonly language: string
-    readonly code: string
-    readonly issue: PracticeSolveIssue
-    readonly result: PracticeResultState
-    readonly hints: ReadonlyArray<PracticeHintItem>
-    readonly hintIssue: PracticeSolveIssue
-}
-
-/** What the learner does on the screen. */
-type PracticeSolveActions = {
-    readonly retry: () => void
-    readonly language: (language: string) => void
-    readonly write: (code: string) => void
-    readonly reset: () => void
-    readonly run: () => void
-    readonly submit: () => void
-    readonly reveal: () => void
-}
-
-/** Props for {@link PracticeSolveBase}. */
+/** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
 export type PracticeSolveBaseProps = {
-    readonly props: {
-        readonly slot: DataSlot<PracticeSolveView>
-        readonly placeholder: PracticeSolveView
-        readonly slotLabels: SlotLabels
-        readonly labels: PracticeSolveLabels
-        readonly state: PracticeSolveState
-        /** True while a run or a submission is in flight. */
-        readonly isBusy: boolean
-        /** True while a hint is being opened. */
-        readonly isRevealing: boolean
-        readonly catalogHref: string
-        readonly plansHref: string
-    }
-    readonly on: PracticeSolveActions
+    readonly props: PracticeSolveScreen["props"]
+    readonly on: PracticeSolveScreen["on"]
 }
 
-/** What a body part needs of the screen. */
-type BodyProps = {
+/** What a piece of the page needs: the screen, the problem and whether it is a skeleton. */
+type PieceProps = {
+    readonly screen: PracticeSolveBaseProps
     readonly view: PracticeSolveView
     readonly isLoading: boolean
-    readonly props: PracticeSolveBaseProps["props"]
-    readonly on: PracticeSolveActions
 }
 
-/** What a notice needs: the issue and the words. */
-type NoticeProps = { readonly issue: PracticeSolveIssue; readonly labels: PracticeSolveLabels }
-
-/** The notice of a run or submission the door refused: a wait for the rate limit, else a plain failure; nothing when it went through. */
-const IssueNotice = (props: NoticeProps) => {
-    if (props.issue === "none" || props.issue === "locked") return null
+/** The commands of the header: run on the examples (neutral) and the one primary command, which follows where the learner stands. */
+const HeaderActions = (props: { readonly screen: PracticeSolveBaseProps; readonly view: PracticeSolveView }) => {
+    const { labels, state } = props.screen.props
+    const { on } = props.screen
+    if (props.view.isAccepted && props.view.nextHref !== null && !state.isBusy) {
+        return (
+            <Button intent="commit" href={props.view.nextHref}>
+                {labels.next}
+            </Button>
+        )
+    }
     return (
+        <Cluster gap="inline" wrap>
+            <Button intent="neutral" isDisabled={state.isBusy || state.code.trim() === ""} onPress={on.run}>
+                {labels.run}
+            </Button>
+            <Button
+                intent="commit"
+                isPending={state.isBusy}
+                isDisabled={state.isBusy || state.code.trim() === ""}
+                {...(state.isBusy ? { disabledReason: labels.judging } : {})}
+                onPress={on.submit}
+            >
+                {state.isBusy ? labels.judging : labels.submit}
+            </Button>
+        </Cluster>
+    )
+}
+
+/** The page header: the trail, the title, the facts line, the commands and the three tabs. */
+const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageHeaderContent => {
+    const { labels, state, catalogHref } = props.props
+    return {
+        title: view.title,
+        titleScale: "standard",
+        meta: view.meta,
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "practice", label: labels.catalog, href: catalogHref },
+                { id: "pattern", label: view.patternTitle, href: view.patternHref },
+                { id: "problem", label: view.title },
+            ],
+        },
+        actions: <HeaderActions screen={props} view={view} />,
+        tabs: {
+            label: labels.tabsLabel,
+            selectedKey: state.tab,
+            onSelect: props.on.selectTab,
+            items: [
+                { id: "problem", label: labels.tabs.problem },
+                {
+                    id: "submissions",
+                    label: labels.tabs.submissions,
+                    ...(state.submissions.length === 0 ? {} : { count: state.submissions.length }),
+                },
+                { id: "solution", label: labels.tabs.solution },
+            ],
+        },
+    }
+}
+
+/** The notice of a run or hint the door refused: a wait for the rate limit, else a plain failure; nothing when it went through. */
+const IssueNotice = (props: {
+    readonly issue: "none" | "rateLimited" | "other"
+    readonly wait: string
+    readonly failed: string
+}) =>
+    props.issue === "none" ? null : (
         <Alert
             tone={props.issue === "rateLimited" ? "cautionary" : "negative"}
-            title={props.issue === "rateLimited" ? props.labels.rateLimited : props.labels.failed}
+            title={props.issue === "rateLimited" ? props.wait : props.failed}
         />
     )
-}
 
-/** The notice of a hint the door refused. */
-const HintNotice = (props: NoticeProps) => {
-    if (props.issue === "none") return null
-    return (
-        <Alert
-            tone={props.issue === "other" ? "negative" : "cautionary"}
-            title={props.issue === "other" ? props.labels.hintFailed : props.labels.hintLocked}
-        />
-    )
-}
-
-/** The primary column: the statement, then either the Premium upsell or the editor, the hint ladder and the result. */
-const SolveMain = (props: BodyProps) => {
-    const { view, props: p } = props
-    const isLocked = view.isLocked || p.state.issue === "locked"
+/** The right column of the problem tab: the editor, the result of the last run and the hint ladder. */
+const Work = (props: PieceProps) => {
+    const { labels, state } = props.screen.props
+    const { on } = props.screen
     return (
         <Stack gap="region">
-            <PracticeProblemPanel
-                eyebrow={view.eyebrow}
-                title={view.title}
-                difficulty={view.difficulty}
-                difficultyTone={view.difficultyTone}
-                facts={view.facts}
-                markdown={view.markdown}
-                examples={view.examples}
-                labels={p.labels.problem}
+            <PracticeEditor
+                labels={{
+                    title: labels.editorTitle,
+                    language: labels.language,
+                    code: labels.code,
+                    judgeNote: labels.judgeNote,
+                    reset: labels.reset,
+                }}
+                languages={state.languages}
+                language={state.language}
+                value={state.code}
+                onLanguage={on.language}
+                onChange={on.write}
+                onReset={on.reset}
                 isLoading={props.isLoading}
             />
-            {isLocked ? (
-                <LockedNotice
-                    title={p.labels.locked.title}
-                    description={p.labels.locked.description}
-                    plansLabel={p.labels.locked.plans}
-                    plansHref={p.plansHref}
-                />
-            ) : (
-                <>
-                    <PracticeEditor
-                        labels={p.labels.editor}
-                        languages={p.state.languages}
-                        language={p.state.language}
-                        value={p.state.code}
-                        isBusy={p.isBusy}
-                        isDisabled={p.state.code.trim() === "" || props.isLoading}
-                        onLanguage={props.on.language}
-                        onChange={props.on.write}
-                        onReset={props.on.reset}
-                        onRun={props.on.run}
-                        onSubmit={props.on.submit}
-                    />
-                    <IssueNotice issue={p.state.issue} labels={p.labels} />
-                    <PracticeResult state={p.state.result} labels={p.labels.result} />
-                    <PracticeHints
-                        labels={p.labels.hints}
-                        total={view.hintsTotal}
-                        revealed={p.state.hints}
-                        isRevealing={p.isRevealing}
-                        isDisabled={props.isLoading}
-                        onReveal={props.on.reveal}
-                    />
-                    <HintNotice issue={p.state.hintIssue} labels={p.labels} />
-                </>
-            )}
+            <IssueNotice issue={state.issue} wait={labels.rateLimited} failed={labels.failed} />
+            <PracticeResult
+                state={state.result}
+                onSolution={on.openSolution}
+                labels={{
+                    title: labels.resultTitle,
+                    compileOutput: labels.compileOutput,
+                    input: labels.input,
+                    expected: labels.expected,
+                    actual: labels.actual,
+                    tests: labels.tests,
+                    testsEmpty: labels.testsEmpty,
+                    solutionTitle: labels.solutionResultTitle,
+                    solutionText: labels.solutionResultText,
+                    solutionAction: labels.solutionResultAction,
+                }}
+            />
+            <PracticeHints
+                labels={{
+                    title: labels.hintsTitle,
+                    note: labels.hintsNote,
+                    reveal: labels.hintsReveal,
+                    open: labels.hintsOpen,
+                    step: labels.hintStep,
+                    diagram: labels.diagram,
+                    diagramError: labels.diagramError,
+                }}
+                total={props.view.hintsTotal}
+                revealed={state.hints}
+                isRevealing={state.isRevealingHint}
+                isDisabled={props.isLoading}
+                onReveal={on.reveal}
+                isLoading={props.isLoading}
+            />
+            <IssueNotice issue={state.hintIssue} wait={labels.hintFailed} failed={labels.hintFailed} />
         </Stack>
     )
 }
 
-/** Draws the solve screen the way the canvas does: statement, editor, hints and result in the middle, the pattern's problems beside. */
-export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
-    const { slot, placeholder, labels } = props.props
-    const view = "items" in slot ? slot.items : placeholder
-    const hasHeader = "items" in slot || "isLoading" in slot
+/** The statement beside the work: two columns at the desktop width, stacked in the order statement, code, result, hints on a phone. */
+const ProblemTab = (props: PieceProps) => {
+    const { labels } = props.screen.props
     return (
-        <Page
-            {...(hasHeader
-                ? {
-                      header: {
-                          title: view.title,
-                          titleScale: "standard" as const,
-                          breadcrumbs: {
-                              label: labels.breadcrumbs,
-                              items: [
-                                  { id: "practice", label: labels.catalog, href: props.props.catalogHref },
-                                  { id: "pattern", label: view.patternTitle, href: view.patternHref },
-                                  { id: "problem", label: view.title },
-                              ],
-                          },
-                      },
-                  }
-                : {})}
-        >
+        <Grid
+            kind="pair"
+            leading={
+                <PracticeProblemPanel
+                    markdown={props.view.markdown}
+                    examples={props.view.examples}
+                    isLoading={props.isLoading}
+                    labels={{
+                        title: labels.problemTitle,
+                        examples: labels.examples,
+                        input: labels.input,
+                        output: labels.output,
+                        diagram: labels.diagram,
+                        diagramError: labels.diagramError,
+                    }}
+                />
+            }
+            trailing={<Work {...props} />}
+        />
+    )
+}
+
+/** The submissions of this visit as one flat list. */
+const SubmissionsTab = (props: PieceProps) => {
+    const { labels, state } = props.screen.props
+    return (
+        <Section
+            kind="list"
+            title={labels.submissionsTitle}
+            headingLevel={2}
+            isLoading={props.isLoading}
+            items={state.submissions.map((row) => ({
+                id: row.id,
+                title: row.title,
+                description: row.meta,
+                badges: [{ label: row.meta, tone: row.isAccepted ? ("success" as const) : ("danger" as const) }],
+            }))}
+            empty={labels.submissionsEmpty}
+        />
+    )
+}
+
+/** The reference solution: offered with a plain command, or written out once the learner asked for it. */
+const SolutionTab = (props: PieceProps) => {
+    const { labels, state } = props.screen.props
+    return (
+        <Section title={labels.solutionTitle} headingLevel={2} isLoading={props.isLoading}>
+            <Stack gap="row">
+                {state.solution === null ? (
+                    <>
+                        <Alert tone="neutral" title={labels.solutionText} />
+                        <Cluster gap="inline">
+                            <Button
+                                intent="neutral"
+                                isPending={state.isSolutionPending}
+                                onPress={props.screen.on.openSolution}
+                            >
+                                {labels.solutionAction}
+                            </Button>
+                        </Cluster>
+                    </>
+                ) : (
+                    <>
+                        <Badge tone="muted">{labels.solutionSeenNote}</Badge>
+                        <RichMarkdown
+                            source={state.solution}
+                            labels={{ diagram: labels.diagram, diagramError: labels.diagramError }}
+                        />
+                    </>
+                )}
+                {state.isSolutionFailed ? <Alert tone="negative" title={labels.solutionFailed} /> : null}
+            </Stack>
+        </Section>
+    )
+}
+
+/**
+ * Draws the solve page: the header with the trail, the facts, the run and submit commands and the three tabs; the problem tab holds the
+ * statement beside the editor, the result and the hint ladder. Viewing the solution before an accepted answer asks first.
+ */
+export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
+    const { slot, placeholder, labels, state } = props.props
+    const view = "items" in slot ? slot.items : placeholder
+    const hasView = "items" in slot || "isLoading" in slot
+    const header: PageHeaderContent = hasView
+        ? headerOf(props, view)
+        : {
+              title: labels.catalog,
+              titleScale: "standard",
+              breadcrumbs: {
+                  label: labels.breadcrumbs,
+                  items: [
+                      { id: "practice", label: labels.catalog, href: props.props.catalogHref },
+                      { id: "problem", label: labels.loadFailedCrumb },
+                  ],
+              },
+          }
+    return (
+        <Page header={header} isLoading={"isLoading" in slot}>
             <SlotView
                 slot={slot}
                 placeholder={placeholder}
                 labels={props.props.slotLabels}
+                errorDescription={labels.loadFailedNote}
                 onRetry={props.on.retry}
-                render={(each, isLoading) => (
-                    <Grid
-                        kind="main-rail"
-                        railPosition="trailing"
-                        primary={<SolveMain view={each} isLoading={isLoading} props={props.props} on={props.on} />}
-                        rail={
-                            <PracticeList
-                                label={labels.rail}
-                                emptyLabel={labels.railEmpty}
-                                rows={each.rail}
-                                isLoading={isLoading}
-                            />
-                        }
-                    />
-                )}
+                render={(each, isLoading) => {
+                    const piece: PieceProps = { screen: props, view: each, isLoading }
+                    if (state.tab === "submissions") return <SubmissionsTab {...piece} />
+                    return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />
+                }}
+            />
+            <AlertDialog
+                title={labels.confirmTitle}
+                description={state.confirmText}
+                tone="cautionary"
+                confirmLabel={labels.confirmAction}
+                cancelLabel={labels.confirmCancel}
+                isOpen={state.isConfirmOpen}
+                onOpenChange={(isOpen) => {
+                    if (!isOpen) props.on.cancelSolution()
+                }}
+                onConfirm={props.on.confirmSolution}
+                onCancel={props.on.cancelSolution}
             />
         </Page>
     )

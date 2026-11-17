@@ -1,7 +1,7 @@
-import { Alert, Badge, Cluster, FencedCodeBlock, Section, Stack, Text } from "@starci/grammar/common"
+import { Alert, FencedCodeBlock, Section, Stack, type ListRowData } from "@starci/grammar/common"
 
-/** The tone of a verdict badge. */
-export type PracticeVerdictTone = "success" | "danger" | "warning" | "neutral"
+/** The state a verdict is drawn in. */
+export type PracticeVerdictTone = "informative" | "affirmative" | "negative" | "cautionary"
 
 /** What an example test shows: its input, the expected output and what the code printed. Hidden tests never carry one. */
 export type PracticeExampleRun = {
@@ -15,59 +15,59 @@ export type PracticeTestRow = {
     readonly id: string
     /** "Example 1" or "Hidden test 3". */
     readonly title: string
-    readonly status: string
+    /** `done` has a result, `running` is the test the judge works on, `waiting` was not reached. */
+    readonly status: "done" | "running" | "waiting"
     readonly isPassed: boolean
-    /** Time and memory ("25 ms · 3.5 MB"); empty when the judge did not report them. */
+    /** Time and memory ("25 ms · 3.5 MB"), or "not run yet" / "running" for a test without a result. */
     readonly meta: string
     /** Only an example test shows its data. */
     readonly example: PracticeExampleRun | undefined
 }
 
-/** The words of the result card, resolved by its block. */
+/** The words of the result, resolved by its block. */
 export type PracticeResultLabels = {
     readonly title: string
-    readonly queued: string
-    readonly running: string
     readonly compileOutput: string
     readonly input: string
     readonly expected: string
     readonly actual: string
     readonly tests: string
     readonly testsEmpty: string
-    readonly passed: string
-    readonly failed: string
+    readonly solutionTitle: string
+    readonly solutionText: string
+    readonly solutionAction: string
 }
 
 /** Where a run or submission stands. */
 export type PracticeResultState =
     | { readonly kind: "idle" }
-    | { readonly kind: "pending"; readonly isQueued: boolean }
+    | {
+          readonly kind: "pending"
+          readonly title: string
+          readonly description: string
+          readonly rows: ReadonlyArray<PracticeTestRow>
+      }
     | {
           readonly kind: "settled"
-          readonly verdict: string
           readonly tone: PracticeVerdictTone
-          /** "15/15 tests · 64 ms · 41 MB". */
-          readonly summary: string
+          readonly title: string
+          readonly description: string
           readonly compileOutput: string
           readonly rows: ReadonlyArray<PracticeTestRow>
-          /** The line under an accepted submission (what it counted for, the next problem); empty otherwise. */
-          readonly followUp: string
+          /** True for an accepted submission: the reference solution is offered under it. */
+          readonly isAccepted: boolean
       }
 
-/** The result card of a run or a submission. */
+/** The result of the last run or submission. */
 type PracticeResultProps = {
     readonly state: PracticeResultState
     readonly labels: PracticeResultLabels
-}
-
-/** What the detail of an example test needs. */
-type ExampleDetailProps = {
-    readonly example: PracticeExampleRun
-    readonly labels: PracticeResultLabels
+    /** Opens the reference solution; offered under an accepted submission. */
+    readonly onSolution: () => void
 }
 
 /** The detail of an example test: what went in, what was expected and what came out. */
-const ExampleDetail = (props: ExampleDetailProps) => (
+const ExampleDetail = (props: { readonly example: PracticeExampleRun; readonly labels: PracticeResultLabels }) => (
     <Stack gap="inline">
         <FencedCodeBlock label={props.labels.input} code={props.example.input} />
         <FencedCodeBlock label={props.labels.expected} code={props.example.expected} />
@@ -75,59 +75,48 @@ const ExampleDetail = (props: ExampleDetailProps) => (
     </Stack>
 )
 
-/** What the per-test list needs. */
-type TestsProps = {
-    readonly rows: ReadonlyArray<PracticeTestRow>
-    readonly labels: PracticeResultLabels
-}
+/** One test as a row: pass or fail by direction and meta text, never by colour alone. */
+const rowOf = (row: PracticeTestRow, labels: PracticeResultLabels): ListRowData => ({
+    id: row.id,
+    title: row.title,
+    meta: { text: row.meta, ...(row.status === "done" && !row.isPassed ? { tone: "danger" as const } : {}) },
+    ...(row.status === "done" ? { verdict: row.isPassed ? ("success" as const) : ("danger" as const) } : {}),
+    ...(row.example === undefined || row.isPassed
+        ? {}
+        : { detail: <ExampleDetail example={row.example} labels={labels} /> }),
+})
 
-/** The per-test summary of a settled run: pass or fail with time and memory; only example tests open their data. */
-const Tests = (props: TestsProps) => (
+/** The per-test list of a run. */
+const Tests = (props: { readonly rows: ReadonlyArray<PracticeTestRow>; readonly labels: PracticeResultLabels }) => (
     <Section
         kind="list"
-        title={props.labels.tests}
+        ariaLabel={props.labels.tests}
         empty={props.labels.testsEmpty}
-        items={props.rows.map((row) => ({
-            id: row.id,
-            title: row.title,
-            ...(row.meta === "" ? {} : { description: row.meta }),
-            badges: [
-                {
-                    label: row.isPassed ? props.labels.passed : props.labels.failed,
-                    tone: row.isPassed ? "success" : "danger",
-                },
-            ] as const,
-            verdict: row.isPassed ? ("success" as const) : ("danger" as const),
-            meta: { text: row.status },
-            ...(row.example === undefined
-                ? {}
-                : { detail: <ExampleDetail example={row.example} labels={props.labels} /> }),
-        }))}
-        headingLevel={2}
+        items={props.rows.map((row) => rowOf(row, props.labels))}
     />
 )
 
-/** The result of the last run or submission: waiting, or the verdict with its summary, compile output and per-test rows. */
+/** The result of the last run or submission: the verdict line with its sentence, the compiler output, the test rows, and the reference solution after an accepted one. */
 export const PracticeResult = (props: PracticeResultProps) => {
     const { state, labels } = props
     if (state.kind === "idle") return null
-    if (state.kind === "pending") {
-        return <Alert tone="informative" title={state.isQueued ? labels.queued : labels.running} />
-    }
+    const tone = state.kind === "pending" ? "informative" : state.tone
     return (
         <Section title={labels.title} headingLevel={2}>
             <Stack gap="row">
-                <Cluster gap="inline" wrap align="center">
-                    <Badge tone={state.tone}>{state.verdict}</Badge>
-                    <Text size="sm" tone="muted">
-                        {state.summary}
-                    </Text>
-                </Cluster>
-                {state.followUp === "" ? null : <Text as="p">{state.followUp}</Text>}
-                {state.compileOutput === "" ? null : (
+                <Alert tone={tone} title={state.title} description={state.description} />
+                {state.kind === "settled" && state.compileOutput !== "" ? (
                     <FencedCodeBlock label={labels.compileOutput} code={state.compileOutput} />
-                )}
+                ) : null}
                 {state.rows.length === 0 ? null : <Tests rows={state.rows} labels={labels} />}
+                {state.kind === "settled" && state.isAccepted ? (
+                    <Alert
+                        tone="neutral"
+                        title={labels.solutionTitle}
+                        description={labels.solutionText}
+                        action={{ label: labels.solutionAction, onAction: props.onSolution }}
+                    />
+                ) : null}
             </Stack>
         </Section>
     )

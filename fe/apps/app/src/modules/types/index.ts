@@ -42,6 +42,8 @@ export type {
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
 export type {
     PracticeHintView,
+    PracticeNextView,
+    PracticeSolutionView,
     PracticeLanguageId,
     PracticePatternRow,
     PracticeProblemItemView,
