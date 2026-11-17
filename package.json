@@ -50,7 +50,7 @@
     "@graphql-codegen/client-preset": "6.2.3",
     "@nestjs/testing": "11.2.5",
     "@starci/eslint-canon-be": "3.27.0",
-    "@starci/eslint-canon-fe": "9.20.0",
+    "@starci/eslint-canon-fe": "9.20.1",
     "@starci/eslint-grammar-core": "0.43.1",
     "@starci/jest-preset": "2.11.0",
     "@starci/prettier-config": "1.1.0",
