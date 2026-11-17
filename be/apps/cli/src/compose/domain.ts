@@ -9,6 +9,8 @@ import { LessonModule } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
 import { NotificationModule } from "@modules/domain/notification"
 import { PracticeModule } from "@modules/domain/practice"
+import { ProjectModule } from "@modules/domain/project"
+import { ProbeModule } from "@modules/integrations/probe"
 import { ReviewModule } from "@modules/domain/review"
 import { StreakModule } from "@modules/domain/streak"
 import type { CliAppOptions } from "../cli.options"
@@ -19,6 +21,9 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     EntitlementModule.register({ isGlobal: true, devGrant: options.entitlement.devGrant }),
     LessonModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true }),
+    // The harness CI service verifies a run through the project capability's attestation port (defaults: no attestation, no relay).
+    ProjectModule.register({ isGlobal: true }),
+    ProbeModule.register({ isGlobal: true }),
     HarnessModule.register({ isGlobal: true }),
     StreakModule.register({ isGlobal: true }),
     InterviewModule.register({ isGlobal: true, coach: AiInterviewClient }),
