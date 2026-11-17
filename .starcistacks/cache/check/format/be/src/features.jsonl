@@ -957,8 +957,8 @@
 {"findings":[],"hash":"71cf91d5c8db244566d2eeb0c5aed5a0852be21e7b9e0e3fb54ab2a042355561","path":"be/src/features/cli/data/data.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"1668a68a594c9f20898a3b871724352dfe9022e529411e42f5233a52d38b6cdc","path":"be/src/features/cli/data/data.module.ts","step":"prettier"}
 {"findings":[],"hash":"47dc3d74722b689649f4ff7f27085b5bf8992c92119206cbe8fe5f72ab09151a","path":"be/src/features/cli/data/data.options.ts","step":"prettier"}
-{"findings":[],"hash":"01767ed4da580796159dcca5115ac0dadbbf32d995184d39434fbc9878bf2c05","path":"be/src/features/cli/data/subs/database.cli.spec.ts","step":"prettier"}
-{"findings":[],"hash":"f59eaca96ad96043508769dcd1f4c8820249122956cb8eed3cf62ce81980c3bc","path":"be/src/features/cli/data/subs/database.cli.ts","step":"prettier"}
+{"findings":[],"hash":"e9e4b0b508dd4b9a7b7255dc01a07d492bbc840850b0cd7ab278f63a97eab9fe","path":"be/src/features/cli/data/subs/database.cli.spec.ts","step":"prettier"}
+{"findings":[],"hash":"b24d2287acdeec7834f82169664abcafd036c89e469c374a19fe55c8a06246ea","path":"be/src/features/cli/data/subs/database.cli.ts","step":"prettier"}
 {"findings":[],"hash":"b73d145a40a0ad8e1b7db08e125a30a77443e4bd492c00e11cdbdfc67b0203e1","path":"be/src/features/cli/entitlement/entitlement.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"569cadbc55052fe43bb8300b806f5b9273593679d0950afd6b428e47caf3fdd2","path":"be/src/features/cli/entitlement/entitlement.cli.ts","step":"prettier"}
 {"findings":[],"hash":"678bfa0e7c9c9ea6c15074472f1e1b7c2efc9139b66b74bc90c0b3d81309dec8","path":"be/src/features/cli/entitlement/entitlement.module-definition.ts","step":"prettier"}
@@ -974,12 +974,12 @@
 {"findings":[],"hash":"f43dace48cbb6c961338e95a9d6bc9dd36c9b5bd59ff4efa493f996c1a4197fe","path":"be/src/features/cli/lesson/lesson.options.ts","step":"prettier"}
 {"findings":[],"hash":"550b1c114bc8808c7b915996d8bef138d4ec04d17e5af2ee92478d6b5f602ad4","path":"be/src/features/cli/lesson/subs/import.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"9d8fc550cec49b3d9aec3f91927b5ce8378c6243eb337e0eb5a18140ad2a138a","path":"be/src/features/cli/lesson/subs/import.cli.ts","step":"prettier"}
-{"findings":[],"hash":"326b9082df598c543a08d43b4ec4ff54263a8da9710d2c8ce8fd5237c260e4b0","path":"be/src/features/cli/mcp/mcp.cli.spec.ts","step":"prettier"}
+{"findings":[],"hash":"02519940ad306c2e3c3b12c0726d0ae117a4b329e60c955933c30aadca91bb6b","path":"be/src/features/cli/mcp/mcp.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"ec0c834131e83dceab0583e74d213bd5640577adb8054a2e31db0d432feeab02","path":"be/src/features/cli/mcp/mcp.cli.ts","step":"prettier"}
 {"findings":[],"hash":"e698f35eb591b3a55e8c5f9aef9a7406ed65a9af37da21db4a5dec6c554e0c7a","path":"be/src/features/cli/mcp/mcp.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"3ef911a011933b29ec274ef8041b1bd2883362f3fe6bc69f588b3d0f2d2c7453","path":"be/src/features/cli/mcp/mcp.module.ts","step":"prettier"}
 {"findings":[],"hash":"6ed6fb78e0030dda5dc15b973670f8c749df52df2f9c6b7fe1fa6b15e433b568","path":"be/src/features/cli/mcp/mcp.options.ts","step":"prettier"}
-{"findings":[],"hash":"a2ed27d715f5adf5528ce315a55ad6cf7d7e792409a54be618487d0f5e71ac68","path":"be/src/features/cli/mcp/subs/reindex.cli.ts","step":"prettier"}
+{"findings":[],"hash":"b69878061699a8b6820bd3a018d9617f989e9147ab844b9f2904e30849838494","path":"be/src/features/cli/mcp/subs/reindex.cli.ts","step":"prettier"}
 {"findings":[],"hash":"dac61546d6dff5c2f8beb5a057b5de693453880ca5fd77515b7f59643d74f543","path":"be/src/features/cli/migrate/migrate.cli.spec.ts","step":"prettier"}
 {"findings":[],"hash":"fd62660bb01134d5d987c12e23595fac33623c0810a9f672799359c3c30677f9","path":"be/src/features/cli/migrate/migrate.cli.ts","step":"prettier"}
 {"findings":[],"hash":"17ddf00415b8afdffd8b362cc6b4d87a1a48802dff134aadf9cd83db9cada666","path":"be/src/features/cli/migrate/migrate.module-definition.ts","step":"prettier"}

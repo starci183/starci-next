@@ -4,6 +4,7 @@
 {"findings":[],"hash":"5de831f69bec8d5eeb9a1156cdb0670946ad90dc43d7972f77b5e8828538b1d1","path":"be/src/tests/e2e/commerce/entitlement.e2e-spec.ts","step":"prettier"}
 {"findings":[],"hash":"bdd35ea56b61ef3b999372d10862c5138440fb5af7433a96dfac524f20d88f65","path":"be/src/tests/e2e/commerce/payment-rails.e2e-spec.ts","step":"prettier"}
 {"findings":[],"hash":"411b058613625392f44d87e6a17023ef33665a5c98a9af24548867b1e7123762","path":"be/src/tests/e2e/learner-journey/main-journey.e2e-spec.ts","step":"prettier"}
+{"findings":[],"hash":"731b33b1bcf90c8b3d1835305cb2f1c90f842d7d13f407c64f1174a7c8b3890c","path":"be/src/tests/e2e/mcp/mcp-companion.e2e-spec.ts","step":"prettier"}
 {"findings":[],"hash":"5c6d10530e0322f7c5de924babc80741f34c1a3c9421dfe219641432956e9b3a","path":"be/src/tests/e2e/system-health/core-serves-once-migrated.e2e-spec.ts","step":"prettier"}
 {"findings":[],"hash":"0d54d9564e2294f62dc05085d46dcfc49633c5fb487414768d88eb92003d3b23","path":"be/src/tests/fixtures/builders/attempt-stub.builder.ts","step":"prettier"}
 {"findings":[],"hash":"99a2458863eb15e80ef4ab41a00795a904c81bf15819a5a826875dc1ad27415a","path":"be/src/tests/fixtures/builders/attempt.builder.ts","step":"prettier"}

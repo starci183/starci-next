@@ -3,7 +3,7 @@
 {"findings":[],"hash":"a7139d59d214397ab9021d5524081e41fd8e072459923a69d0c8a2530f462566","path":"be/apps/cli/src/cli.env.ts","step":"prettier"}
 {"findings":[],"hash":"d95cb8a518d4dd8737f022925919a22a27ce1e2d2df44eaa0391d08d380ff198","path":"be/apps/cli/src/cli.options.ts","step":"prettier"}
 {"findings":[],"hash":"a2868b43cd5eac362c4f0525fe3d1f23c7d67b20cf9f1684a65e77651a87b680","path":"be/apps/cli/src/compose/cli.ts","step":"prettier"}
-{"findings":[],"hash":"42f08a37e3a2e2f564c43af7063d6a4dd96d6c561685021e1d3e4952eff54dcb","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
+{"findings":[],"hash":"3dc1a74a6a3f384e4fa88f61f8a079e80e16b9bcfa866c7f3715b42c122f06ce","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
 {"findings":[],"hash":"5ea25163140ad7e940f758cccd5e8047af53f641ecf0153ec7ffb47312b4d906","path":"be/apps/cli/src/compose/integrations.ts","step":"prettier"}
 {"findings":[],"hash":"d08105706b9138edeee969fb07c9f4679f5337352bda26c8e227b461c094d7a5","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
 {"findings":[],"hash":"c113fab44282bdc7bf0cbb0fefa3bb12ab90524d27c42e51bbe1e4c18a41256e","path":"be/apps/cli/src/main.ts","step":"prettier"}
