@@ -79,6 +79,10 @@ export const textOf = (raw: string, field: string, max: number): string => {
     return text
 }
 
+/** An optional line of a project (topic, language, stack): empty is allowed and stored empty; otherwise as {@link textOf}. */
+export const optionalTextOf = (raw: string, field: string, max: number): string =>
+    raw.trim() === "" ? "" : textOf(raw, field, max)
+
 /** The kind of a project, or the field is invalid. */
 export const kindOf = (raw: string): ProjectKind => {
     const kind = PROJECT_KINDS.find((candidate) => candidate === raw)

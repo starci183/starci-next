@@ -4,12 +4,12 @@ Dự án: the learner brings their own projects, on any topic, language and stru
 milestone is a list of Bản chất concepts; it passes when each concept has evidence. There is no sample project (owner).
 
 ## Terms
-- **Project**: the learner's own repository, kind `app` or `agent`.
+- **Project**: the learner's own repository, kind `app` or `agent`. Its topic, language and stack lines are optional (the create form asks for none; an empty line is stored empty).
 - **Milestone**: a list of Bản chất concepts from the content repo's project catalog.
 - **Evidence slot**: a tagged test, an e2e flow, a StarCi probe of the deployed address, or the AI code read.
 - **Đang luyện** (practising) versus **Đã chứng minh** (proved); see [learner-cli-relay](learner-cli-relay.md).
 - **Check set**: the catalog (concepts, milestones, the milestones of each project kind) and every probe, data in the content repo's
-  `raw/projects/` (`catalog.yaml`, `probes/<id>.yaml`, `kit/starci/e2e/<concept>.md`), read by `ProjectCheckSetService`.
+  `raw/projects/` (`catalog.yaml`, `probes/<id>.yaml`, `kit/starci/e2e/<concept>.md`), read by `ProjectCheckSetService` from the database (`project_check_documents`, written by the seed door), never from a folder: the core binds `ProjectCheckSetStoreAdapter` and names no other source.
 - **check-flow**: the one declarative language of probes and e2e flows (HTTP steps with templates, fan-out, waits, a sink, captures,
   assertions on status, headers, JSON paths, counts and timing) and its one interpreter, `be/src/modules/platform/check-flow`, which the
   server runner and the CLI both run. Reference: the content repo's `docs/check-flow.md`.

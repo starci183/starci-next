@@ -9,9 +9,6 @@ import { NO_TRACK, projectIssueOf, type ProjectIssue } from "./projects.shared"
 export type ProjectNewValues = {
     readonly name: string
     readonly kind: string
-    readonly topic: string
-    readonly language: string
-    readonly stack: string
     readonly track: string
     readonly repoUrl: string
     readonly deployedUrl: string
@@ -20,9 +17,6 @@ export type ProjectNewValues = {
 const EMPTY: ProjectNewValues = {
     name: "",
     kind: "app",
-    topic: "",
-    language: "",
-    stack: "",
     track: NO_TRACK,
     repoUrl: "",
     deployedUrl: "",
@@ -53,9 +47,10 @@ export const useProjectNewForm = (): ProjectNewForm => {
             .trigger({
                 name: values.name,
                 kind: values.kind === "agent" ? "agent" : "app",
-                topic: values.topic,
-                language: values.language,
-                stack: values.stack,
+                // The check set is fixed by the content, so the form asks for no topic, language or stack; the door stores them empty.
+                topic: "",
+                language: "",
+                stack: "",
                 track: values.track === NO_TRACK ? null : values.track,
                 repoUrl: values.repoUrl.trim() === "" ? null : values.repoUrl,
                 locale,

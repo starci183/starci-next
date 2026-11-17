@@ -15,6 +15,7 @@ import {
     kindOf,
     locationOf,
     NAME_MAX,
+    optionalTextOf,
     repoUrlOf,
     sampleBodyOf,
     textOf,
@@ -76,9 +77,9 @@ export class ProjectService {
         const values = [
             textOf(params.name, "name", NAME_MAX),
             kind,
-            textOf(params.topic, "topic", INPUT_LIMITS.topic),
-            textOf(params.language, "language", INPUT_LIMITS.language),
-            textOf(params.stack, "stack", INPUT_LIMITS.stack),
+            optionalTextOf(params.topic, "topic", INPUT_LIMITS.topic),
+            optionalTextOf(params.language, "language", INPUT_LIMITS.language),
+            optionalTextOf(params.stack, "stack", INPUT_LIMITS.stack),
             trackOf(params.track, kind),
             repoUrlOf(params.repoUrl),
         ]
@@ -103,9 +104,11 @@ export class ProjectService {
             row.project_id,
             row.learner_id,
             params.name === null ? row.name : textOf(params.name, "name", NAME_MAX),
-            params.topic === null ? row.topic : textOf(params.topic, "topic", INPUT_LIMITS.topic),
-            params.language === null ? row.language : textOf(params.language, "language", INPUT_LIMITS.language),
-            params.stack === null ? row.stack : textOf(params.stack, "stack", INPUT_LIMITS.stack),
+            params.topic === null ? row.topic : optionalTextOf(params.topic, "topic", INPUT_LIMITS.topic),
+            params.language === null
+                ? row.language
+                : optionalTextOf(params.language, "language", INPUT_LIMITS.language),
+            params.stack === null ? row.stack : optionalTextOf(params.stack, "stack", INPUT_LIMITS.stack),
             params.repoUrl === null ? row.repo_url : repoUrlOf(params.repoUrl),
             await this.deployedUrlChecked(params.deployedUrl, row.deployed_url),
             this.clock.now(),

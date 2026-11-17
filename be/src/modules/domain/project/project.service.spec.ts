@@ -121,6 +121,25 @@ describe("ProjectService create", () => {
 })
 
 describe("ProjectService create (part 2)", () => {
+    it("creates a project with no topic, language or stack, as the form sends it", async () => {
+        const { service, em } = await build()
+
+        const created = await service.create({ ...CREATE, topic: "", language: "", stack: "" })
+
+        expect(em.query).toHaveBeenCalledWith(INSERT_PROJECT, [
+            PROJECT_LEARNER,
+            "Clinic booking",
+            "app",
+            "",
+            "",
+            "",
+            null,
+            "https://github.com/learner/clinic",
+            created.ciSecret,
+            PROJECT_NOW,
+        ])
+    })
+
     it("keeps a track for an agent", async () => {
         const { service, em } = await build()
 

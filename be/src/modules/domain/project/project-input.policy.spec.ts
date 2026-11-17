@@ -1,6 +1,7 @@
 import { Test } from "@nestjs/testing"
 
 import {
+    optionalTextOf,
     textOf,
     kindOf,
     trackOf,
@@ -15,6 +16,7 @@ import {
 
 const POLICY: unique symbol = Symbol("project.project-input-policy")
 const policies = {
+    optionalTextOf,
     textOf,
     kindOf,
     trackOf,
@@ -49,6 +51,20 @@ describe("textOf", () => {
         expect(() => subject.textOf("   ", "name", 20)).toThrow("PROJECT_INPUT_INVALID")
         expect(() => subject.textOf("x".repeat(21), "name", 20)).toThrow("PROJECT_INPUT_INVALID")
         expect(() => subject.textOf("a\u0000b", "name", 20)).toThrow("PROJECT_INPUT_INVALID")
+    })
+})
+
+describe("optionalTextOf", () => {
+    let subject: typeof policies
+
+    beforeEach(async () => {
+        subject = await build()
+    })
+
+    it("accepts an empty line and stores it empty, and bounds a given one like textOf", () => {
+        expect(subject.optionalTextOf("   ", "topic", 20)).toBe("")
+        expect(subject.optionalTextOf(" Booking ", "topic", 20)).toBe("Booking")
+        expect(() => subject.optionalTextOf("x".repeat(21), "topic", 20)).toThrow("PROJECT_INPUT_INVALID")
     })
 })
 

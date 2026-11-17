@@ -46,9 +46,6 @@ export type ProjectNewLabels = {
 export type ProjectNewState = {
     readonly name: string
     readonly kind: string
-    readonly topic: string
-    readonly language: string
-    readonly stack: string
     readonly track: string
     readonly repoUrl: string
     readonly deployedUrl: string
