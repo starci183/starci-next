@@ -62,6 +62,7 @@ export const ProjectNew = () => {
                     initLog: linesOf(t.raw("new.initLog")),
                     submit: t("new.submit"),
                     submitting: t("new.submitting"),
+                    submitNeedsName: t("new.submitNeedsName"),
                     cancel: t("new.cancel"),
                     createdTitle: t("new.createdTitle"),
                     createdText: t("new.createdText"),

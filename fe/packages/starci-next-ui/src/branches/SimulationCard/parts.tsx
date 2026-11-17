@@ -1,4 +1,4 @@
-import { Button, Cluster, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import type { SimulationCardProps, SimulationState, Walk } from "./types"
 import { branchesOf, clockOf, isOpenIn, stateIdAfter, statusOf } from "./walk"
 
@@ -71,24 +71,7 @@ export const Moves = (props: MovesProps) => {
     const triedCount = branches.filter((action) => walk.tried.includes(action.id)).length
     return (
         <SurfaceCard
-            kind="list"
             label={card.labels.moves}
-            empty={card.labels.noMoves}
-            items={card.actions.map((action) => ({
-                id: action.id,
-                title: action.label,
-                description: statusOf(card, walk, action.id),
-                control: (
-                    <Button
-                        intent="neutral"
-                        size="sm"
-                        isDisabled={!isOpenIn(card, walk, action.id)}
-                        onPress={() => props.onPress(action.id)}
-                    >
-                        {action.label}
-                    </Button>
-                ),
-            }))}
             footers={[
                 {
                     kind: "custom",
@@ -121,7 +104,28 @@ export const Moves = (props: MovesProps) => {
                     ),
                 },
             ]}
-        />
+        >
+            <Section
+                kind="list"
+                ariaLabel={card.labels.moves}
+                empty={card.labels.noMoves}
+                items={card.actions.map((action) => ({
+                    id: action.id,
+                    title: action.label,
+                    description: statusOf(card, walk, action.id),
+                    control: (
+                        <Button
+                            intent="neutral"
+                            size="sm"
+                            isDisabled={!isOpenIn(card, walk, action.id)}
+                            onPress={() => props.onPress(action.id)}
+                        >
+                            {action.label}
+                        </Button>
+                    ),
+                }))}
+            />
+        </SurfaceCard>
     )
 }
 
@@ -131,9 +135,9 @@ export const EventLog = (props: EventLogProps) => {
     const labelOfState = (id: string): string => card.states.find((state) => state.id === id)?.label ?? id
     const labelOfAction = (id: string): string => card.actions.find((action) => action.id === id)?.label ?? id
     return (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={card.labels.log}
+            title={card.labels.log}
             empty={card.labels.logEmpty}
             items={walk.steps.map((step, index) => ({
                 id: `${index}-${step.at}`,

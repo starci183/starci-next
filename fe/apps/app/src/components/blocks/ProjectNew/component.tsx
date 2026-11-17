@@ -30,6 +30,7 @@ export type ProjectNewLabels = {
     readonly deployedHint: string
     readonly submit: string
     readonly submitting: string
+    readonly submitNeedsName: string
     readonly cancel: string
     readonly initTitle: string
     readonly initNote: string
@@ -140,6 +141,7 @@ const Form = (props: FormProps) => {
                         startGlyph="plus"
                         isPending={props.props.isCreating}
                         isDisabled={state.name.trim() === "" || props.props.isCreating}
+                        disabledReason={props.props.isCreating ? labels.submitting : labels.submitNeedsName}
                         onPress={props.on.submit}
                     >
                         {props.props.isCreating ? labels.submitting : labels.submit}

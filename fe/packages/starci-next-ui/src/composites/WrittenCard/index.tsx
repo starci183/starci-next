@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a written-answer card, resolved by its block. */
@@ -67,9 +67,9 @@ type CriteriaProps = Pick<WrittenCardProps, "criteria" | "labels">
 /** The criteria of the question as the rows of one list card; nothing when the question has none. */
 const Criteria = (props: CriteriaProps) =>
     props.criteria.length === 0 ? null : (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.labels.criteria}
+            title={props.labels.criteria}
             empty={props.labels.criteria}
             items={props.criteria.map((criterion) => ({ id: criterion, title: criterion }))}
         />
@@ -87,9 +87,9 @@ type GradeProps = Pick<WrittenCardProps, "draft" | "labels">
 /** The grade per criterion as the rows of one list card: the level, the criterion and the quote of the answer that earns it; nothing before a grade. */
 const Grade = (props: GradeProps) =>
     props.draft.criteria.length === 0 ? null : (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.draft.scoreLine}
+            title={props.draft.scoreLine}
             empty={props.draft.scoreLine}
             items={props.draft.criteria.map((each) => ({
                 id: each.id,

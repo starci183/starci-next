@@ -1,4 +1,4 @@
-import { Button, Icon, SurfaceCard } from "@starci/grammar/common"
+import { Button, Icon, Section } from "@starci/grammar/common"
 
 import { PlayGlyph } from "../../leaves/Icon"
 
@@ -24,9 +24,9 @@ export const CatalogContinue = (props: CatalogContinueProps) =>
             {props.action}
         </Button>
     ) : (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.title}
+            title={props.title}
             empty={props.phaseLine}
             items={[
                 {

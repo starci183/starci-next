@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 import { levelWordsOf, toneOf } from "./levels"
 import type { WrittenDraftView, LessonResultLabels } from "../StudyBody/types"
 
@@ -25,9 +25,9 @@ export const ResultCard = (props: ResultCardProps) => {
         .filter((each) => each !== "")
         .join(" · ")
     return (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={labels.title}
+            title={labels.title}
             {...(fact === "" ? {} : { fact })}
             empty={labels.title}
             items={[

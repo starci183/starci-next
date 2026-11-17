@@ -160,7 +160,7 @@ export interface ProjectStanding {
     readonly milestones: ReadonlyArray<MilestoneStanding>
     /** The ids of the concepts proved, each once. */
     readonly provedConceptIds: ReadonlyArray<string>
-    /** How many different concepts the milestones list that have a lesson. */
+    /** How many different concepts the milestones list, the same count the project page shows (a concept whose lesson is still being written counts, and stays todo). */
     readonly conceptCount: number
     /** How many concepts show results from the machine only. */
     readonly practisingConceptIds: ReadonlyArray<string>
@@ -212,7 +212,7 @@ export const projectStandingOf = (
         provedConceptIds: all
             .filter((standing) => standing.state === "proved")
             .map((standing) => standing.definition.id),
-        conceptCount: ids.length - comingSoon.size,
+        conceptCount: ids.length,
         practisingConceptIds: all
             .filter((standing) => standing.state === "practising")
             .map((standing) => standing.definition.id),

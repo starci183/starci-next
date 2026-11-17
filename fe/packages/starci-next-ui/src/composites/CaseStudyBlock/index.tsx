@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 import { FileGlyph } from "../../leaves/Icon"
 
 /** One case study of the collection, announced and not open yet, already in words. */
@@ -24,9 +24,9 @@ type CaseStudyBlockProps = {
 
 /** The case-study collection of the catalog: one list card of announced real-world case studies, each naming the lessons it needs, until they are published. */
 export const CaseStudyBlock = (props: CaseStudyBlockProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.title}
+        title={props.title}
         count={props.cards.length}
         {...(props.meta === "" ? {} : { fact: props.meta })}
         items={props.cards.map((card) => ({
@@ -37,6 +37,6 @@ export const CaseStudyBlock = (props: CaseStudyBlockProps) => (
             badges: [{ label: card.kind }, { label: card.status, tone: "muted" as const }],
         }))}
         empty={props.pending}
-        {...(props.pending === "" ? {} : { note: props.pending })}
+        {...(props.pending === "" ? {} : { caption: props.pending })}
     />
 )

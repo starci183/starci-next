@@ -44,6 +44,7 @@ export type ConnectAiLabels = {
     readonly namePlaceholder: string
     readonly create: string
     readonly creating: string
+    readonly createNeedsName: string
     readonly revoke: string
     readonly createdTitle: string
     readonly createdHint: string
@@ -152,6 +153,7 @@ const CreateCard = (props: ConnectAiBaseProps) => {
                     startGlyph="plus"
                     onPress={props.on.create}
                     isDisabled={view.name.trim() === ""}
+                    disabledReason={view.labels.createNeedsName}
                     isPending={view.isCreating}
                 >
                     {view.isCreating ? view.labels.creating : view.labels.create}

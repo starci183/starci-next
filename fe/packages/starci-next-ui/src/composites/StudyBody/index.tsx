@@ -1,4 +1,4 @@
-import { Stack, SurfaceCard } from "@starci/grammar/common"
+import { Section, Stack } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 import { LockedNotice } from "../LockedNotice"
 import { OverviewPanel } from "../OverviewPanel"
@@ -125,7 +125,7 @@ export const StudyBody = (props: StudyBodyProps) => {
     }
     if (study.phase === "overview") return <OverviewBody study={study} env={env} />
     if (study.phase === "review") {
-        return <SurfaceCard kind="list" label={env.labels.phases.review.title} empty={env.labels.review} items={[]} />
+        return <Section kind="list" title={env.labels.phases.review.title} empty={env.labels.review} items={[]} />
     }
     return <PhaseBody study={study} env={env} />
 }

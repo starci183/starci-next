@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
 import type { MarkdownLabels } from "../StudyBody/types"
@@ -19,9 +19,9 @@ export const ChoiceWhy = (props: ChoiceWhyProps) => {
         (a, b) => Number(b.id === props.correctId) - Number(a.id === props.correctId),
     )
     return (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.title}
+            title={props.title}
             empty={props.title}
             items={ordered.flatMap((option) => {
                 const explanation = props.explanations[option.id]

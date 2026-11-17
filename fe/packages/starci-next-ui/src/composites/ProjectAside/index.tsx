@@ -15,7 +15,7 @@ const RepoSection = (props: CardProps) => (
         {props.view.repo === "" ? (
             <Text tone="muted">{props.labels.noRepo}</Text>
         ) : (
-            <Link variant="plain" href={props.view.repo} kind="external">
+            <Link href={props.view.repo} kind="external">
                 {props.view.repoLabel}
             </Link>
         )}

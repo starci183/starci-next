@@ -23,6 +23,7 @@ const LABEL_KEYS = [
     "namePlaceholder",
     "create",
     "creating",
+    "createNeedsName",
     "revoke",
     "createdTitle",
     "createdHint",

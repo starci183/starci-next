@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 import type { LessonCompletionLabels } from "../StudyBody/types"
 
 /** What the completion card needs: the lesson, when it was completed, the words and where the review and the project lead. */
@@ -14,9 +14,9 @@ type CompletionCardProps = {
 /** The completion of the lesson: that it is done and when, the reviews it opened and the way to take it to a project. Nothing before the completion. */
 export const CompletionCard = (props: CompletionCardProps) =>
     props.completedAt === "" ? null : (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.labels.title}
+            title={props.labels.title}
             empty={props.labels.title}
             items={[
                 { id: "done", title: props.labels.done(props.lessonTitle), meta: { text: props.time } },

@@ -1,4 +1,4 @@
-import { Button, Cluster, FencedCodeBlock, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, FencedCodeBlock, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { FileGlyph } from "../../leaves/Icon"
 import { FileView } from "../../branches/FileView"
 import { WRAPPED_CODE_CLASS_NAME } from "./classNames"
@@ -159,28 +159,32 @@ export const FilesCard = (props: FilesCardProps) => {
     ]
     return (
         <SurfaceCard
-            kind="list"
             label={props.label}
             headers={headers}
-            items={shown.map((file) => ({
-                id: file.path,
-                title: file.path,
-                description: metaOf(file),
-                leading: { icon: FileGlyph },
-                control: (
-                    <FileView
-                        file={file}
-                        {...(props.openLabel === undefined ? {} : { openLabel: props.openLabel })}
-                        {...(props.closeLabel === undefined ? {} : { closeLabel: props.closeLabel })}
-                        {...(props.copyLabel === undefined ? {} : { copyLabel: props.copyLabel })}
-                        {...(props.copiedLabel === undefined ? {} : { copiedLabel: props.copiedLabel })}
-                    />
-                ),
-            }))}
-            empty={props.label}
             {...(selected?.commands === undefined || selected.commands.length === 0
                 ? {}
                 : { footers: [{ kind: "custom" as const, children: <RunBlocks variant={selected} /> }] })}
-        />
+        >
+            <Section
+                kind="list"
+                ariaLabel={props.label}
+                items={shown.map((file) => ({
+                    id: file.path,
+                    title: file.path,
+                    description: metaOf(file),
+                    leading: { icon: FileGlyph },
+                    control: (
+                        <FileView
+                            file={file}
+                            {...(props.openLabel === undefined ? {} : { openLabel: props.openLabel })}
+                            {...(props.closeLabel === undefined ? {} : { closeLabel: props.closeLabel })}
+                            {...(props.copyLabel === undefined ? {} : { copyLabel: props.copyLabel })}
+                            {...(props.copiedLabel === undefined ? {} : { copiedLabel: props.copiedLabel })}
+                        />
+                    ),
+                }))}
+                empty={props.label}
+            />
+        </SurfaceCard>
     )
 }

@@ -1,14 +1,4 @@
-import {
-    Badge,
-    Cluster,
-    EmptyNotice,
-    Page,
-    Pane,
-    PaneGrid,
-    PaneSection,
-    Stack,
-    SurfaceCard,
-} from "@starci/grammar/common"
+import { Badge, Cluster, EmptyNotice, Page, Pane, PaneGrid, PaneSection, Section, Stack } from "@starci/grammar/common"
 import {
     ART,
     CatalogAside,
@@ -85,7 +75,7 @@ const casesNodeOf = (cases: NonNullable<CatalogView["cases"]>): CatalogNode => (
 
 /** The card that says nothing matches the filters, with the way to clear them. */
 const NoResult = (props: Pick<WellProps, "labels" | "on">) => (
-    <SurfaceCard
+    <Section
         kind="list"
         ariaLabel={props.labels.noResult.title}
         items={[]}

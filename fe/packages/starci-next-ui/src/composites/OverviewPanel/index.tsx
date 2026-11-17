@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Disclosure, Grid, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Disclosure, Grid, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { LockIcon } from "../../leaves/Icon"
 
 /** The words of the overview, resolved by its block. */
@@ -98,16 +98,16 @@ export const OverviewPanel = (props: OverviewPanelProps) => (
     <Stack gap="section">
         <AboutCard summary={props.summary} scope={props.scope} labels={props.labels} />
         {props.completion === undefined ? null : (
-            <SurfaceCard
+            <Section
                 kind="list"
                 ariaLabel={props.completion}
                 empty={props.completion}
                 items={[{ id: "completion", title: props.completion, state: "affirmative" }]}
             />
         )}
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.labels.phases}
+            title={props.labels.phases}
             empty={props.labels.empty}
             items={props.phases.map((phase, index) => ({
                 id: phase.id,
@@ -120,19 +120,24 @@ export const OverviewPanel = (props: OverviewPanelProps) => (
                     : { badges: [phaseBadgeOf(phase, props.labels)] as const }),
             }))}
         />
-        <Grid kind="cards" columns={2}>
-            <SurfaceCard
-                kind="list"
-                label={props.labels.outcomes}
-                empty={props.labels.empty}
-                items={props.outcomes.map((outcome) => ({ id: outcome.id, title: outcome.text }))}
-            />
-            <SurfaceCard
-                kind="list"
-                label={props.labels.prerequisites}
-                empty={props.labels.empty}
-                items={props.prerequisites.map((each) => ({ id: each.id, title: each.text }))}
-            />
-        </Grid>
+        <Grid
+            kind="pair"
+            leading={
+                <Section
+                    kind="list"
+                    title={props.labels.outcomes}
+                    empty={props.labels.empty}
+                    items={props.outcomes.map((outcome) => ({ id: outcome.id, title: outcome.text }))}
+                />
+            }
+            trailing={
+                <Section
+                    kind="list"
+                    title={props.labels.prerequisites}
+                    empty={props.labels.empty}
+                    items={props.prerequisites.map((each) => ({ id: each.id, title: each.text }))}
+                />
+            }
+        />
     </Stack>
 )

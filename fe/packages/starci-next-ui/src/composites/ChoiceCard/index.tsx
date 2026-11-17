@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a choice card, resolved by its block. */
@@ -52,7 +52,7 @@ type FeedbackProps = Pick<ChoiceCardProps, "isCorrect" | "labels">
 const Feedback = (props: FeedbackProps) => {
     const words = props.isCorrect ? props.labels.correct : props.labels.incorrect
     return (
-        <SurfaceCard
+        <Section
             kind="list"
             ariaLabel={words}
             empty={words}

@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Cluster, SearchField, Section, Select, Stack, Tabs } from "@starci/grammar/common"
 
 /** One choice of a filter. */
 type CatalogOption = { readonly id: string; readonly label: string }
@@ -29,48 +29,68 @@ type CatalogToolbarProps = {
     readonly onProvider: (id: string) => void
 }
 
+/** One select of the toolbar: a small field named and prefixed by its label, its empty choice meaning every option. */
+const ToolbarSelect = (props: {
+    readonly label: string
+    readonly options: ReadonlyArray<CatalogOption>
+    readonly value: string
+    readonly onChange: (id: string) => void
+}) => (
+    <Select
+        label={props.label}
+        isLabelHidden
+        size="sm"
+        prefix={props.label}
+        options={props.options}
+        value={props.value}
+        onValueChange={(id) => props.onChange(id ?? "")}
+    />
+)
+
 /**
- * The toolbar card of the catalog, two header zones and no body: the filter zone (the difficulty tabs), then the search zone (the search
- * over title and description, with the language and provider as its trailing `filters` selects).
+ * The toolbar of the catalog: a region section named by the search label whose `filter` is one flat row on the surface, never a card.
+ * The difficulty tabs come first, then the search over title and description with the language and provider selects beside it.
  */
 export const CatalogToolbar = (props: CatalogToolbarProps) => (
-    <SurfaceCard
-        kind="list"
-        ariaLabel={props.labels.search}
-        items={[]}
-        empty={null}
-        headers={[
-            {
-                kind: "filter",
-                label: props.labels.difficulty,
-                items: props.difficulties.map((each) => ({ id: each.id, label: each.label })),
-                selectedKey: props.difficulty,
-                onSelect: props.onDifficulty,
-            },
-            {
-                kind: "search",
-                label: props.labels.search,
-                placeholder: props.labels.searchPlaceholder,
-                clearLabel: props.labels.clearSearch,
-                value: props.query,
-                onChange: props.onQuery,
-                filters: [
-                    {
-                        label: props.labels.language,
-                        prefix: props.labels.language,
-                        options: props.languages,
-                        value: props.language,
-                        onChange: (id) => props.onLanguage(id ?? ""),
-                    },
-                    {
-                        label: props.labels.provider,
-                        prefix: props.labels.provider,
-                        options: props.providers,
-                        value: props.provider,
-                        onChange: (id) => props.onProvider(id ?? ""),
-                    },
-                ],
-            },
-        ]}
-    />
+    <Section
+        kind="region"
+        title={props.labels.search}
+        filter={
+            <Stack gap="row">
+                <Tabs
+                    kind="filter"
+                    label={props.labels.difficulty}
+                    items={props.difficulties.map((each) => ({ id: each.id, label: each.label }))}
+                    selectedKey={props.difficulty}
+                    onSelect={props.onDifficulty}
+                />
+                <Cluster gap="inline" align="center">
+                    <SearchField
+                        label={props.labels.search}
+                        isLabelHidden
+                        size="sm"
+                        placeholder={props.labels.searchPlaceholder}
+                        clearLabel={props.labels.clearSearch}
+                        value={props.query}
+                        onValueChange={props.onQuery}
+                        onClear={() => props.onQuery("")}
+                    />
+                    <ToolbarSelect
+                        label={props.labels.language}
+                        options={props.languages}
+                        value={props.language}
+                        onChange={props.onLanguage}
+                    />
+                    <ToolbarSelect
+                        label={props.labels.provider}
+                        options={props.providers}
+                        value={props.provider}
+                        onChange={props.onProvider}
+                    />
+                </Cluster>
+            </Stack>
+        }
+    >
+        {null}
+    </Section>
 )

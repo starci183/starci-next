@@ -201,10 +201,10 @@ describe("projectStandingOf", () => {
         expect(standing.currentMilestoneId).toBe("bf-http-foundation")
     })
 
-    it("leaves a concept that needs the AI read out of the count while no lesson can grade it", () => {
+    it("counts a concept that needs the AI read while no lesson can grade it, and leaves it todo", () => {
         const standing = subject.projectStandingOf(SET, "app", [], new Set())
 
-        expect(standing.conceptCount).toBe(9)
+        expect(standing.conceptCount).toBe(10)
         expect(standing.milestones[0]?.concepts.find((c) => c.definition.id === "unit-testing-behavior")?.state).toBe(
             "todo",
         )

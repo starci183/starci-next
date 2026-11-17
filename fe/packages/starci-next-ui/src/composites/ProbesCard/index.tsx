@@ -1,4 +1,4 @@
-import { SurfaceCard, type ListRowData } from "@starci/grammar/common"
+import { Section, type ListRowData } from "@starci/grammar/common"
 import { PracticeGlyph } from "../../leaves/Icon"
 import type { ProbeLineView } from "../ProjectAside/types"
 
@@ -13,9 +13,9 @@ type ProbesCardProps = {
 /** The probes of the last server run: a list card shown only when there are results. */
 export const ProbesCard = (props: ProbesCardProps) =>
     props.rows.length === 0 ? null : (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={props.label}
+            title={props.label}
             count={props.rows.length}
             isLoading={props.isLoading}
             items={props.rows.map((probe): ListRowData => ({

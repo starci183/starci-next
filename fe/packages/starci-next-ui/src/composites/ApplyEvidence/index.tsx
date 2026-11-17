@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 import type { ApplyEvidenceLabels, ApplyEvidenceProps, EvidenceResult } from "./types"
 
@@ -31,20 +31,11 @@ type ResultCardProps = { readonly result: EvidenceResult; readonly labels: Apply
 
 /** The result card: a level badge and the missing line per criterion, and the saved-at time under them. */
 const ResultCard = (props: ResultCardProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={`${props.labels.result} · ${props.result.scoreLine}`}
+        title={`${props.labels.result} · ${props.result.scoreLine}`}
         empty={props.labels.result}
-        footers={[
-            {
-                kind: "custom",
-                children: (
-                    <Text size="xs" tone="muted">
-                        {props.labels.savedAt.replace("{time}", props.result.savedAt)}
-                    </Text>
-                ),
-            },
-        ]}
+        caption={props.labels.savedAt.replace("{time}", props.result.savedAt)}
         items={props.result.criteria.map((each) => ({
             id: each.id,
             title: each.criterion,

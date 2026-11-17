@@ -75,6 +75,7 @@
 
     /* Grammar theme hooks: gray selection, hairline cards, one field ring, a navigation bar in the accent. */
     --starci-core-card-border: 1px solid var(--border);
+    --starci-core-card-radius: 0.75rem;
     --starci-core-card-hover: var(--surface-secondary);
     --starci-core-card-active: var(--default);
     --starci-core-table-selected: var(--surface-secondary);
