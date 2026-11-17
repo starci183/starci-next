@@ -53,3 +53,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, 1920, 390, phần "Cách thêm connector": tiêu đề phần, tiêu đề nhóm (Claude, ChatGPT) và tên bước đều cỡ 14 gần như cùng độ đậm, phân cấp yếu; dòng giải thích 14 xám nhạt, tương phản thấp; trang rất dài và đặc chữ, không tách được việc "tạo mã" khỏi phần hướng dẫn.
 - 1440, 1920, 390, thanh trên: nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.
 - 390, thứ tự: cột phụ nằm trước việc chính (địa chỉ và tạo mã).
+- Sau 0.43.0, 1920: nút "Tạo mã" vô hiệu khi tên trống đã có `disabledReason` ("Nhập tên mã trước khi bấm Tạo mã.") nhưng chỉ lộ qua tooltip; ảnh thấy một nút xám không lời giải thích. Dòng "Chưa tải được danh sách mã." là trạng thái lỗi vì học viên mới chưa có mã nào cũng như dev stack chưa phục vụ danh sách; cần kiểm tra lại là lỗi thật hay rỗng.
