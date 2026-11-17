@@ -11,7 +11,7 @@
 {"data":{},"findings":[],"hash":"37750c34482f35ef6439c2fc982f374f9b208c345134b94c3181ac293dbc3f2e","path":"gallery/pages/devices/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2d55a258f35ff3f27ba55b5c65118be7aad334990e3b945f3a916b2e5a345a89","path":"gallery/pages/essentials/catalog/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"030297e9ccd094a69e38b967620403833b76f7544ca999c70feaf020b985d074","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"40734491aff2c03136aa670898326009b1c2549b8d7608f1916d0a24cfdaebf4","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c7674259a28ddf1ed7529443d244ad95d9f4325789870697b8e6bc31c0f7087e","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b43dfa6d3e70ce2eb73a1ac900db61284432186241d3518cdca339f978c268af","path":"gallery/pages/essentials/lesson-source/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d3de879a19416a8459da7d07c97d5912732ab8c54774e726f542d0442a0aeb07","path":"gallery/pages/essentials/lesson/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"76d4306633334ddd3ed8713494280de5edccb9767e3435281f499ceea44bd871","path":"gallery/pages/essentials/topic-api-reliability/explain.md","step":"file-rules"}
@@ -37,11 +37,11 @@
 {"data":{},"findings":[],"hash":"7c184a753927363453e6d948e76e878f763768a3dc7cead6ad493f97756ba15b","path":"gallery/pages/profile/overview/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ecc9812b225a9ef328ee2726e7085c8af0494a2fa95e37b6a3f001afe6792a9d","path":"gallery/pages/progress/free/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"af1f7337d08d6c9afe669c67e701e565ef55b1e6dd8dc55d163d557355d0bea0","path":"gallery/pages/progress/overview/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0939b9b95e4cfdf231aff7fe0df7da9c0f3c5c03118c31f6990d02d665ffb166","path":"gallery/pages/projects/concept/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e4f050b9664c2fcf08d92d4f89c8393f38545d7d9ff18ede323bb73a8f634499","path":"gallery/pages/projects/detail/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"87dbc802dba9db6740cebaf981a76f80999ee1cbf068debdae0d2e7ff05baf0a","path":"gallery/pages/projects/concept/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"87bc334f78d400dce2f5448dfc15eef6f96aa75eada2a1e3433b31a816eef028","path":"gallery/pages/projects/detail/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7cf076deabfc361f026ca4d9b315af5508ff8ff92fa6c84a9d6d2f518941e504","path":"gallery/pages/projects/list/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2d4efab5b3804d577cbe1e57f16a6a818e0cc56c41e59e3dfdad5637140c7d34","path":"gallery/pages/projects/milestone/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d4445596824e30cac391ec716a4bbd35f126844a410379d86a43a335124f224a","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2890ea51f87b28c435093e551068adc33f3902d6bd52dc41759d447edeac9ee1","path":"gallery/pages/projects/milestone/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"be5a01fdcde313ccc2359c0dbbd3660de3b94a7aa817b786ca3c07d3e3abaa6a","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ff47677f68ff232051c0726975d37be409b2f94afe63c289c11acdc346d862c1","path":"gallery/pages/projects/paywall/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d4685612e65798e2e1bf6924c4ee5a87b54955a80b1ff6dae741c2d84da6bcf7","path":"gallery/pages/review/decks/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"280b5ad70da9f60e9e3179251ddebb154bf79470348b8c83c8e50ce23907bbe0","path":"gallery/pages/review/hub/explain.md","step":"file-rules"}
