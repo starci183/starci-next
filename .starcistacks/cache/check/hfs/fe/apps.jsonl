@@ -140,14 +140,6 @@
 {"data":{},"findings":[],"hash":"8de5b3da8c8bd3fba757ff6d91500de94f01a941dcd67c11d1ee2f03dda08176","path":"fe/apps/app/src/components/blocks/PracticeSolve/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1bd6084afcbc62e0cc27519b5d31750042e06ee424cca8b2ab69732ce61e8824","path":"fe/apps/app/src/components/blocks/PremiumPlans/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a70a33c2f9ab0647ac3bf16e0e37d7a6e22188d4c0ae5dbe98c65ce449bdd5fc","path":"fe/apps/app/src/components/blocks/PremiumPlans/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"749a3d0c86d96b09f341496261087e6c9608d3ce21c66fb3d9382f38da4edbbe","path":"fe/apps/app/src/components/blocks/ProfileExperience/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"7b26fa3f588ca756b59b2010fc9a4de17d5c6ac86b1f3d84651530f47d161421","path":"fe/apps/app/src/components/blocks/ProfileExperience/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b6424c8aa92889772a2be4dcbcff0299abcfbe0f77e6e7303827ed09d425ed26","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","step":"file-rules"}
-{"findings":[{"column":1,"line":1,"message":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx:1: fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx is not allowed in fe.components (fe/apps/app/src/components/blocks/ProjectConcept); that slot holds only index.tsx, component.tsx, classNames.ts. Rename it to an allowed role or move it to the slot it belongs to.","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","rule":"FE_SLOT_FILE_ROLE"}],"hash":"d8b1f6b8b895ebf1eb16298fa0f384e13017c410cdc3b438336588f97048190f","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","step":"hfs"}
-{"data":{},"findings":[],"hash":"2149a43101885fa932367ce17cd648bca9d1e37f2512ea8e7c198b055bad2bb6","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f1469e8d9a78a17a96523ce5398ea620b4063593618a8006a6e374a9fef76438","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"fc4cd5eb6d16d4d80c2905deb73e26e823e4f7c41127bef25d918fdbf2dc2ae9","path":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts","step":"file-rules"}
-{"findings":[{"column":1,"line":1,"message":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts:1: fe/apps/app/src/components/blocks/ProjectConcept/types.ts is not allowed in fe.components (fe/apps/app/src/components/blocks/ProjectConcept); that slot holds only index.tsx, component.tsx, classNames.ts. Rename it to an allowed role or move it to the slot it belongs to.","path":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts","rule":"FE_SLOT_FILE_ROLE"}],"hash":"6588ce2546bee409907cca8f924849b134df2df7f4f0de4f521488411385494c","path":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts","step":"hfs"}
 {"data":{},"findings":[],"hash":"6177a1ea0076ef3288fe0bc2303fbb43a9f61dcabce45b804b6a9eb67dee14a4","path":"fe/apps/app/src/components/blocks/ProfileHub/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3f0599c333b2cd8dc443e2cbc157332352ea609f23b937921b3c11c0cdfde0f6","path":"fe/apps/app/src/components/blocks/ProfileHub/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1ef95233b7d13ffda89d83aa573bef6d15b37ca146b002749d2a8b562df7b15d","path":"fe/apps/app/src/components/blocks/ProgressOverview/component.tsx","step":"file-rules"}
@@ -467,8 +459,6 @@
 {"data":{},"findings":[],"hash":"f3cb25fb13c9f719ca1558900779d1bb64a87cb838e7a45c0dd3706eee85e2d8","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSubmitReviewRetrievalSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9a2f9cb36e72c10523fdcad2e532d60b58be9e701da4bd3b127449e16b1f8b45","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSyncProjectPracticeSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"909d23f00a5e9a46c562d8fb1e0bdc3d2a94a16853a1be2ea75e9a7e2755b78a","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateUpdateProjectSwr.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a73df855e1ce05207219f19990bba155e1d8538adea800b8c23b9fdba6ce8bc7","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f1c2d03eb240c0d372a4ab032b7856b0ba62b5f09311cdec1d0f47e3d3b4dc2f","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b0923ae7d41f5971936818d550015964bc29e8ffa62c484902255dc95530f249","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6bf3f506afe0db64728b0fa23845256062d06ecf4d58316e2d68bc1db04015a1","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f38eab83bf747be389e337ee65ebb887df23d5ab501384dcec873f06bc919f55","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabTrackSwr.ts","step":"file-rules"}
@@ -542,8 +532,6 @@
 {"data":{},"findings":[],"hash":"2e29e2631140390b27d7944eb401ac2b32960321bc3193f1e620dc5c0b99653a","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f1a36c78e78e34b9e75f1c63f1dfcfcb713aa73e9385b6f36fb71c75b479abae","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e288066642e1defac2444c311a949b261c4649515d65716aa07b448167a9b91","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicsSwr.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bf302ea2565804f59394042929305b562733e47b97800f40939ba764fb967dce","path":"fe/apps/app/src/hooks/swr/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4b8deefc1b9b46cc4494e658f2efb74669977a56fa2229a9b42420a40eb118e6","path":"fe/apps/app/src/hooks/swr/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9ffd745eca2dffc8202004feb21804005c14520fbff44c95501910865362ddf0","path":"fe/apps/app/src/hooks/swr/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fafe16d36e3d20ecea8dbc7178747e4476c2b6b32312c4ab2f47ce7cb03f41fa","path":"fe/apps/app/src/hooks/theme/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7342d55c88e11f38e41c8a7ca51b12eb0d5151a1370d4e4dfa09da3352053747","path":"fe/apps/app/src/hooks/theme/useThemeSwitch.ts","step":"file-rules"}
@@ -652,7 +640,6 @@
 {"data":{},"findings":[],"hash":"06b7ca55f102ebca26553d578fb9f75da90e805b0d0c6b03561f827a2b60e7f1","path":"fe/apps/app/src/modules/api/graphql/queries/query-premium-order.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"86dc30844b8302eb1e1d205fcd003075b3dc2dbbfe39d37c03bc77910cc02181","path":"fe/apps/app/src/modules/api/graphql/queries/query-premium-plans.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"823e0265c185e8eb32769e3213288a9d1c03e2d48cbcfec672d24630a5254be6","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-catalog.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"477c9a5a52c67cc539e27cae5518134e932e55b21db385a34af74d5d4c66125f","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"04bd1e65580b964a383b7d10d6c5e4160b42529e4d8aa8d8a620600f417b9ae3","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9577c8bd8269739a8f11fc9240f48ed512652b0ac939b6feda197cb94e9480bc","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-cv-preview.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4bda8b2d5dfdd163dc87cd5c7b1151cb17f9e12f7641403ccc62b6681ad44329","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-milestone.ts","step":"file-rules"}
@@ -668,8 +655,6 @@
 {"data":{},"findings":[],"hash":"3a8a3cfd4c7f9e054037ad2e1bfacc769ba271cd092a594c71b797a8d8f49750","path":"fe/apps/app/src/modules/api/graphql/queries/query-streak.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67d8bb911b75ec152bf01d75cbdca1c1af64824309f05e11a05d16d2e7372747","path":"fe/apps/app/src/modules/api/graphql/queries/query-verify-experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3b87559acf4831a9e3704cb490b03a45e515befef7ce02f8aaf7a434155cd45b","path":"fe/apps/app/src/modules/api/graphql/types.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"56273307f83c36b344ef6679bcde10e9139d2fb2eeaf39be70b6af51fc9f6047","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4b093193ba9b661bcc26cd138d25948505a3bcbfc6a6a091a078aba5061e0856","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c70bcd1c5572b26effed22d883b332512731bf1f7eb1b098da39cf45f55f1801","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e85cd2cb7319cb3be6ce50ba042e588bfad59f0c0c3e7eed11bd6c2824fee59","path":"fe/apps/app/src/modules/api/rest/identity/credentials.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0d90f9fa639fc427e7bcb464b2aa51eea481e3e5d11b51e9fbf3a7054f907b1c","path":"fe/apps/app/src/modules/api/rest/identity/door.ts","step":"file-rules"}
@@ -687,15 +672,11 @@
 {"data":{},"findings":[],"hash":"0d3a1c420fa76c49ed8aef79596f04744f3909c316da433ff10d0acdb4dc7ca7","path":"fe/apps/app/src/modules/brand/fonts/be-vietnam-pro-600.ttf","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6b84ec9f0c5a6472a62003f76cfc1bc5a6271792cb90bcececa32d5f05052575","path":"fe/apps/app/src/modules/brand/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2bc1d6815d01169b6598c6bc57f1ee5a5cf261ee6ae7fcefc5605c51661fd878","path":"fe/apps/app/src/modules/checkout/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b3c6640bc4270e56bf3c08ade2b63d41bac4e23d4886a46624a7da875eac199b","path":"fe/apps/app/src/modules/config/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"776b025d94939ea35249f6923762458c5710b18525ac1baa3ef25ad0567e6295","path":"fe/apps/app/src/modules/config/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0ed825d8ef6be749123fcafb218954b3c95fbf9e2db573dc33cba9995acb8cf2","path":"fe/apps/app/src/modules/failure/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"fa96e3d4a5cd00f1525996c3fdc5424b862cf26b51a5a0051ca48a1dc44fd131","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"95accf4cd52b1141606112f64191c9783af150a30e4428af2579173a92df9996","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f7fcb2b74e4b84cd380a6ef5ee5b7e633505a1b5a3b27dc3afd3ff16dedf8c36","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5bc9a2833b2d124b4ba990d89890488c998b0806f417a4db884708c9293953f3","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1729b454d9b712ffa7f19218874f8ed56801b35b998879b6a5f652a74f28a56b","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7929379ac2d14980c047e86c4835ab9d641fef6094d68bb6c60647fdcd4b0831","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
@@ -705,8 +686,6 @@
 {"data":{},"findings":[],"hash":"5bcf66f9e662f54f7d07bafd2f17d5ad7089c6288b059de1326dba7a6e83b7a8","path":"fe/apps/app/src/modules/practice-result/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d1f3297b21e332ecd6718d9a95c0b894ce164f5f2da7ee222192d3c4de614705","path":"fe/apps/app/src/modules/practice-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d62f9d274bf7754e8c54320be4b2e487af64ffe9503d13d269b65fe22c276f25","path":"fe/apps/app/src/modules/rail/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9afa98696ce944d4fda68f5fa31fde6860a846481cb7416f8c1ea40ee1972795","path":"fe/apps/app/src/modules/routes/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"906d0c0d66b29589ef0ebe1a28ed31ca3dffe725d9e5d4d94399834d672ff794","path":"fe/apps/app/src/modules/routes/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"717cec92ae0d462c03c5c41d9344fe670e0c80fc9b035b0788d41c7a384216d4","path":"fe/apps/app/src/modules/routes/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d0543061630444415cd6648db5210edd51665ebc34d74725d27b855200988dbe","path":"fe/apps/app/src/modules/social-state/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9099a9f2944a59e37439662024ff6e2a6e890d47b6349f731440ee15f18c9f86","path":"fe/apps/app/src/modules/toast/api.ts","step":"file-rules"}
@@ -722,7 +701,6 @@
 {"data":{},"findings":[],"hash":"4a7eeb4f636b1d0d15ede03f5b2c8120a8cef866ab1a80d8be83e51cae473f46","path":"fe/apps/app/src/modules/types/catalogPlaceholder.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d3aa50adee30e33ad541b9745d678aaae478dd58d255ffa28c9fbdaf3a324b94","path":"fe/apps/app/src/modules/types/essential.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2db4008e28463c9717eaace95c798057100c3faa8784af9df7532c8d34f146ff","path":"fe/apps/app/src/modules/types/experience.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"eaee299e42f6f53b8d337914fae929cbde8d2634194d001f6d6ce9b88ac97d34","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0af2c22aeea913938aae25d6972c68ed781d5d24faabef64cba1409811c0c580","path":"fe/apps/app/src/modules/types/harness.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a71f57b8ced63fcad060b153566763bfe17991e8c331cefe5cba26247730fc33","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9d0ac04af028aaa228be44d75ab669b0c9a0909ff7de985dd32b9f3e29daf9f2","path":"fe/apps/app/src/modules/types/interviewRoom.ts","step":"file-rules"}

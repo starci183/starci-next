@@ -140,12 +140,6 @@
 {"findings":[],"hash":"787d982d4f8c96a1574b650b1bf6795a5eb917f521452c01bfaa8a970491b691","path":"fe/apps/app/src/components/blocks/PracticeSolve/index.tsx","step":"prettier"}
 {"findings":[],"hash":"36ea29b6d256bde70f164a192114563bb7179c3d7519c2167a0ff3c9389ccec3","path":"fe/apps/app/src/components/blocks/PremiumPlans/component.tsx","step":"prettier"}
 {"findings":[],"hash":"dea9961255050c75c93556d76c0f0ff98d17b197c9c4ba829c587c2e82f445fd","path":"fe/apps/app/src/components/blocks/PremiumPlans/index.tsx","step":"prettier"}
-{"findings":[],"hash":"8e7e638293bd16646bb11bf019d0110b0efbc3acb9d1f6300e59bf5b12048a92","path":"fe/apps/app/src/components/blocks/ProfileExperience/component.tsx","step":"prettier"}
-{"findings":[],"hash":"75fb94215fa9458ad0e8558d74192992e94ed74e10a17969480ea96598c1fe83","path":"fe/apps/app/src/components/blocks/ProfileExperience/index.tsx","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx is not formatted by prettier; run `npm run format`","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","rule":"HFS_FORMAT"}],"hash":"d8b1f6b8b895ebf1eb16298fa0f384e13017c410cdc3b438336588f97048190f","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","step":"prettier"}
-{"findings":[],"hash":"27df696b9b6ebe00c81455affab73ec7512a28ef12dfcaf30e4e9c403ac46484","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
-{"findings":[],"hash":"2cbe05140446df880e4ef99d05f8aa6b0618682f45640a924312a4cf2351d439","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"prettier"}
-{"findings":[],"hash":"6588ce2546bee409907cca8f924849b134df2df7f4f0de4f521488411385494c","path":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts","step":"prettier"}
 {"findings":[],"hash":"07c8e04e790ee0730a37a350eeb929e7e4b0e7b50d3d7d54892adf26c322acb3","path":"fe/apps/app/src/components/blocks/ProfileHub/component.tsx","step":"prettier"}
 {"findings":[],"hash":"7619dfc92f2269b9573f2afb807e30ff0c8eb4fdc300bb05de776fed24df4d0a","path":"fe/apps/app/src/components/blocks/ProfileHub/index.tsx","step":"prettier"}
 {"findings":[],"hash":"8a29b8e17df8a8d6575d61c9e5af8ee5c5167058f62865a4414066552898abde","path":"fe/apps/app/src/components/blocks/ProgressOverview/component.tsx","step":"prettier"}
@@ -465,8 +459,6 @@
 {"findings":[],"hash":"1b2a8c82c7c6bb699638abb0ba9b2b600ade46acfaee3b8fb99d7d2017c213f9","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSubmitReviewRetrievalSwr.ts","step":"prettier"}
 {"findings":[],"hash":"c8e6f16fbdc364b3785934e4b8c2d7f7a6fdbaf0fa6267b5182bf1835ef02fed","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateSyncProjectPracticeSwr.ts","step":"prettier"}
 {"findings":[],"hash":"1e5e80940be5faa849e3953d235014bf9912c2d3bd03c1c7f4bb830da88db5ef","path":"fe/apps/app/src/hooks/swr/api/graphql/mutations/useMutateUpdateProjectSwr.ts","step":"prettier"}
-{"findings":[],"hash":"c2d3f961622bb45dd807c82bf4a99dee63453f40ecf9b347a68667ac64cb655a","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"prettier"}
-{"findings":[],"hash":"30488e31682dac9e51c11b6880ba294c84c56fdfa803e40a8a7331ea01264335","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"prettier"}
 {"findings":[],"hash":"2c998a6f662cd05e0d00915529e38cb48e2129edf5295907478ac23978cc1e7e","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/index.ts","step":"prettier"}
 {"findings":[],"hash":"87f6655fb04b340547bff619a6d0e8717176f6631b2ef7ee0a53a0064c61ac63","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabSwr.ts","step":"prettier"}
 {"findings":[],"hash":"4d85f71430ab76f5863251f05f92da8febb3a80e820f4a90adf9abe34bc8ed93","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryAgentLabTrackSwr.ts","step":"prettier"}
@@ -540,8 +532,6 @@
 {"findings":[],"hash":"266882607bb32f4e2a9edc1318966265145d274fe082bbb611a8494d27eb5c7b","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonSwr.ts","step":"prettier"}
 {"findings":[],"hash":"8d7b50133c207710c761ba0135037553eff3cea66059b7b16b22e1594e7bca8b","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicSwr.ts","step":"prettier"}
 {"findings":[],"hash":"fd8b68cb87cb49c21b3fa87895375247d2e1b76dd5c95649c2f00dc88febafbc","path":"fe/apps/app/src/hooks/swr/api/rest/queries/useGetLessonTopicsSwr.ts","step":"prettier"}
-{"findings":[],"hash":"d8444a02ff03236500797c64bf6ddc5ed0e857688385f9ed9770306a5b78bcb8","path":"fe/apps/app/src/hooks/swr/index.ts","step":"prettier"}
-{"findings":[],"hash":"a894da31c0a05531a47d5bf528653c2e6c1ac04dfad0a46e6f949d231c133bc9","path":"fe/apps/app/src/hooks/swr/index.ts","step":"prettier"}
 {"findings":[],"hash":"268a7b14a2c942f23247ec037acdfb1449041c57e7e25c859811742e8f8ba221","path":"fe/apps/app/src/hooks/swr/index.ts","step":"prettier"}
 {"findings":[],"hash":"ae2109c7fbae022bf1ea73a460a1be690e90f7a19f25aa9a4ce056b40567d3e8","path":"fe/apps/app/src/hooks/theme/index.ts","step":"prettier"}
 {"findings":[],"hash":"984d46522b242ed3d57541927d8568c86669c3c5ff2e004983065751dfd07b48","path":"fe/apps/app/src/hooks/theme/useThemeSwitch.ts","step":"prettier"}
@@ -650,7 +640,6 @@
 {"findings":[],"hash":"d0accb1de33b778bec7b123f4336b82e9dabb61ce5aff185b5622b09a929b052","path":"fe/apps/app/src/modules/api/graphql/queries/query-premium-order.ts","step":"prettier"}
 {"findings":[],"hash":"ca43f5604e700661c9639d5e68efd10591a1cfb00251f51bfee45b391ddae8d7","path":"fe/apps/app/src/modules/api/graphql/queries/query-premium-plans.ts","step":"prettier"}
 {"findings":[],"hash":"1735b81947870b20eff9bf84dd996bfcfd87586843284cd81b954d1dff279736","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-catalog.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts is not formatted by prettier; run `npm run format`","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts","rule":"HFS_FORMAT"}],"hash":"329bbb19461ac2a0bfac45a7bf4821724263ecb871d324d663422474dd5d68a0","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts","step":"prettier"}
 {"findings":[],"hash":"9e596bf1199841a90830304ce9d64d056a58b4f80c2c25be235a22d221c34fc7","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-code-read.ts","step":"prettier"}
 {"findings":[],"hash":"d92733b0bc424d287826e2647975eb0029f61e4a4da8a853017948f57d3da647","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-cv-preview.ts","step":"prettier"}
 {"findings":[],"hash":"b08dc5964089481e9d6526602695a50579033b83a5a041eaca7a0abd7a4fba47","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-milestone.ts","step":"prettier"}
@@ -666,8 +655,6 @@
 {"findings":[],"hash":"e11159e1855a40e8c3082632c65ca87ec76d1d95f39aa2b9d949b3a1d54268a7","path":"fe/apps/app/src/modules/api/graphql/queries/query-streak.ts","step":"prettier"}
 {"findings":[],"hash":"35de6630d888b548c9df6c5378db9f935380b89b48d04b95dc444aa8fbdbd96c","path":"fe/apps/app/src/modules/api/graphql/queries/query-verify-experience.ts","step":"prettier"}
 {"findings":[],"hash":"e106acca6569b879dee0787e656124cf0784b2a451c531a328ac527c81aa2214","path":"fe/apps/app/src/modules/api/graphql/types.ts","step":"prettier"}
-{"findings":[],"hash":"30b294d9c2eae17ff00657bf5070a8b62258c38899b7134dfe75d38fe10b8a45","path":"fe/apps/app/src/modules/api/index.ts","step":"prettier"}
-{"findings":[],"hash":"2bbf4a083ba43eeb9b273eae12a34b6ff121ddaae909db861b41b7eddd1d4c4e","path":"fe/apps/app/src/modules/api/index.ts","step":"prettier"}
 {"findings":[],"hash":"7e2eb54427a21f2360f129c10acd26774b5a40ea1c39bc884650f07bd65d976c","path":"fe/apps/app/src/modules/api/index.ts","step":"prettier"}
 {"findings":[],"hash":"651f1d2e22ea325cdf0ba05621496efdf0dda6ca98d5143d25dc07a446a95ffc","path":"fe/apps/app/src/modules/api/rest/identity/credentials.ts","step":"prettier"}
 {"findings":[],"hash":"3231adeb9ece0a65d413f45c96dc5edba18e75c4456ef0192be8cd7e4b4aac02","path":"fe/apps/app/src/modules/api/rest/identity/door.ts","step":"prettier"}
@@ -685,15 +672,11 @@
 {"findings":[],"hash":"cbf437bf71c8536a7aaed632dce2583ea5ec97c07efffc625c31991d1027ba3b","path":"fe/apps/app/src/modules/brand/fonts/be-vietnam-pro-600.ttf","step":"prettier"}
 {"findings":[],"hash":"8009e9e82fd8dde701dcae73448660f566bc827bc246ee0861235ede2d68f524","path":"fe/apps/app/src/modules/brand/index.ts","step":"prettier"}
 {"findings":[],"hash":"cff1096648be25aee698f719fd96f3795f9578013494521cbf6bbfaf9f9a74b1","path":"fe/apps/app/src/modules/checkout/index.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/modules/config/index.ts is not formatted by prettier; run `npm run format`","path":"fe/apps/app/src/modules/config/index.ts","rule":"HFS_FORMAT"}],"hash":"743c98777f7e8ccc3169b5cb53822cc92090c985da04d2ec21ef79950c6951ba","path":"fe/apps/app/src/modules/config/index.ts","step":"prettier"}
+{"findings":[],"hash":"9c39ab4e4eb2dc8487448e6f1d700fd554a024f956dbc8c04a9474127ab7fc56","path":"fe/apps/app/src/modules/config/index.ts","step":"prettier"}
 {"findings":[],"hash":"4d223789b6e367ec3cfd176b2ead1c8f74c36ce8ea9c47e4fa9b164421d71f95","path":"fe/apps/app/src/modules/failure/index.ts","step":"prettier"}
 {"findings":[],"hash":"2b70c69cba7ac72c98f3c7e53372f8ac3dfb3ebfc7cef908df27a3f6a863c299","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"prettier"}
 {"findings":[],"hash":"de04710d324f81730509852c12ee39068fc33a1d370cfb7fb574d8b4999ba25a","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3250a1a387c6be27f6f47ba8c0ca508e554d69ffab7519be25e5722149176c71","path":"fe/apps/app/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"b027f8af8825a839f58b3399fef890254b1d51cd8b316d700df76d8e71de9370","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"cd5777267c80845a55aea1c945e8a470f8403b25295b7352efd8492c6b2caaa1","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
-{"findings":[],"hash":"f65d0517ea0c7822542c4fdcd9d633529614d7008bf1194e686697c7a782beae","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"04ccc01c1b1401b3993f8626f3477350a450ee29c14d82cb1ef5dbf9ea814661","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"9dcbdf8924d9b51107030a58f3316f5dca838e8458a07735efbd92abaf6470c7","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
 {"findings":[],"hash":"85946a845594bd5980643e8ad8ea2edd41ca0324caab53853bec5d643de6dc49","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"5c34d838583710ef39f49ec100882024b7483146a6fe445df0a7bcde24779f95","path":"fe/apps/app/src/modules/i18n/request.ts","step":"prettier"}
@@ -703,8 +686,6 @@
 {"findings":[],"hash":"09c6ebf4ac8070653b20fb59ff11ed4a65811c723c3fd48c9729f1c0b4a54ca6","path":"fe/apps/app/src/modules/practice-result/index.ts","step":"prettier"}
 {"findings":[],"hash":"61b6cbc87dac681033a8399c9f6249181fcecbc37878c4dd05207dacf08859e8","path":"fe/apps/app/src/modules/practice-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"18b3766fb408819a0f4d2142b22051e1e2cce6f12ec5a8f55eb3aab18f440e80","path":"fe/apps/app/src/modules/rail/index.ts","step":"prettier"}
-{"findings":[],"hash":"023fb01229133b2669be15dc92b10568d2be4691a7c2d7c9d102aad19a5371aa","path":"fe/apps/app/src/modules/routes/index.ts","step":"prettier"}
-{"findings":[],"hash":"7e6c4cafb8c58def0a27a45e416c00d7d3d638a7d3bd1814ebfccab8e7ffce15","path":"fe/apps/app/src/modules/routes/index.ts","step":"prettier"}
 {"findings":[],"hash":"f013c1969a1ae13fc10d4f266a2be45d6c68bb30e32b625dd92c0087536a6e96","path":"fe/apps/app/src/modules/routes/index.ts","step":"prettier"}
 {"findings":[],"hash":"6e3917006aa919888b1f7c08eb04c9c48398e7b6798a56a158e394f3bcc0cade","path":"fe/apps/app/src/modules/social-state/index.ts","step":"prettier"}
 {"findings":[],"hash":"ec04ef3a6a0e25353ad1908c04f42aa36f2a2d86cd3e6b2835a83973c161dcb9","path":"fe/apps/app/src/modules/toast/api.ts","step":"prettier"}
@@ -720,7 +701,6 @@
 {"findings":[],"hash":"ab4b0ae7a6eee345e810c176053289874251dd535e23a7ade7badd77e8d5e448","path":"fe/apps/app/src/modules/types/catalogPlaceholder.ts","step":"prettier"}
 {"findings":[],"hash":"6fc9f929130eebdd660f054c8a00f3380c0efa0b2a07fcd4a155ce562a989381","path":"fe/apps/app/src/modules/types/essential.ts","step":"prettier"}
 {"findings":[],"hash":"c7d5b1f14146c687bf695ff7c3735b8b90e02334873c485070f7bb8efdd71701","path":"fe/apps/app/src/modules/types/experience.ts","step":"prettier"}
-{"findings":[],"hash":"a9555c75323993917762d07f1a9247be299537235b43aee2681ccd532f088e44","path":"fe/apps/app/src/modules/types/index.ts","step":"prettier"}
 {"findings":[],"hash":"039470942fb52d68e87795c6339e258504187ef65c54e9456db9070a609798d2","path":"fe/apps/app/src/modules/types/harness.ts","step":"prettier"}
 {"findings":[],"hash":"5eda334a61e90c33e1ccd792102d0ac404dc73aca6b1210fff48033dfac203c3","path":"fe/apps/app/src/modules/types/index.ts","step":"prettier"}
 {"findings":[],"hash":"dd002f088619a259061fcc3c9ec6d4e98b1020876e9737ef28802df6fcd48965","path":"fe/apps/app/src/modules/types/interviewRoom.ts","step":"prettier"}
