@@ -3,7 +3,7 @@
 {"data":{},"findings":[],"hash":"a4f7e75d4e5e1230ce3cad61355d4607e117642e94577b10cbb889316f8b6cd4","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"af768a3278e8e77162d2a4c2a7aafb83920506ca103746b309949b5c11f64890","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d68176fb3d0c4286be573344922fbcee796b4028c82d6bb80f0af6a0eb2879bd","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"c530da29cb34d340383ca25ca9d0c0c6c79a81e11bdceabd377a19677596739f","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"822aeb35c0262b2c8f390d4edfc3be7810ad92b58b643f45d16b1c914ded866b","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0d43bdd3125bc6c4be0ff6bbf998ea66bcee1fa548bb00391c6aac5cb5c5c394","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4056231a07c2533ff12a32d9045e2c008544ec417f65a2d49512ecd0ed0b58a1","path":".starcistacks/dev/secrets/db.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"53542d9265b4864a57913fdf8ede3f79ebb7d60cc9b215040e3973a72787400b","path":".starcistacks/dev/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
