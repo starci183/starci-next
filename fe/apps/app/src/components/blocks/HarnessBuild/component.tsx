@@ -4,7 +4,6 @@ import {
     CopyField,
     DataTable,
     Input,
-    Markdown,
     Page,
     Section,
     Stack,
@@ -14,7 +13,7 @@ import {
     type ListRowData,
     type TableRowData,
 } from "@starci/grammar/common"
-import { SlotView } from "@starci-next/ui"
+import { RichMarkdown, SlotView } from "@starci-next/ui"
 import type {
     HarnessBuildScreen,
     HarnessBuildScreenView,
@@ -123,7 +122,7 @@ const GuideRegion = (props: RegionProps) => {
                                 headingLevel={3}
                                 isLoading={props.isLoading}
                             >
-                                <Markdown source={step.markdown} labels={common.markdown} />
+                                <RichMarkdown source={step.markdown} labels={common.markdown} />
                             </Section>
                         ))}
                     </Stack>

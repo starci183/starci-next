@@ -7,7 +7,6 @@ import {
     PracticeProblemPanel,
     PracticeResult,
     SlotView,
-    type MarkdownBlock,
     type PracticeEditorLabels,
     type PracticeExample,
     type PracticeHintsLabels,
@@ -32,7 +31,7 @@ export type PracticeSolveView = {
     readonly difficulty: string
     readonly difficultyTone: "success" | "warning" | "danger" | "neutral"
     readonly facts: ReadonlyArray<string>
-    readonly blocks: ReadonlyArray<MarkdownBlock>
+    readonly markdown: string
     readonly examples: ReadonlyArray<PracticeExample>
     readonly isLocked: boolean
     readonly hintsTotal: number
@@ -49,7 +48,7 @@ export const PRACTICE_SOLVE_PLACEHOLDER: PracticeSolveView = {
     difficulty: "xxxxxx",
     difficultyTone: "neutral",
     facts: ["xxxxxx", "xxxxxxxx"],
-    blocks: [],
+    markdown: "",
     examples: [],
     isLocked: false,
     hintsTotal: 3,
@@ -167,7 +166,7 @@ const SolveMain = (props: BodyProps) => {
                 difficulty={view.difficulty}
                 difficultyTone={view.difficultyTone}
                 facts={view.facts}
-                blocks={view.blocks}
+                markdown={view.markdown}
                 examples={view.examples}
                 labels={p.labels.problem}
                 isLoading={props.isLoading}

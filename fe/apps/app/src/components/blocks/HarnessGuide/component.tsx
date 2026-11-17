@@ -1,7 +1,6 @@
 import {
     ChoiceChips,
     CopyField,
-    Markdown,
     Page,
     Pane,
     PaneGrid,
@@ -11,7 +10,7 @@ import {
     Switch,
     type ListRowData,
 } from "@starci/grammar/common"
-import { OutlineList, SlotView } from "@starci-next/ui"
+import { OutlineList, RichMarkdown, SlotView } from "@starci-next/ui"
 import type {
     HarnessDoctorPanelView,
     HarnessGuidePageView,
@@ -49,7 +48,7 @@ const GuideBody = (props: {
                 headingLevel={2}
                 isLoading={props.isLoading}
             >
-                <Markdown source={section.markdown} labels={props.guide.props.common.markdown} />
+                <RichMarkdown source={section.markdown} labels={props.guide.props.common.markdown} />
             </Section>
         ))}
     </Stack>

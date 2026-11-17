@@ -5,8 +5,6 @@ export type {
     ReviewPanelLabels,
     ReviewPreviewView,
     DataSlot,
-    InlineNode,
-    MarkdownBlock,
     SimulationCardLabels,
     SlotLabels,
     SlotRead,

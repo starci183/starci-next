@@ -1,11 +1,5 @@
 import type { EssentialView } from "./essential"
-import type {
-    ExerciseFileView,
-    LessonDifficulty,
-    LessonPhase,
-    MarkdownBlock,
-    WorkspaceVariantView,
-} from "@starci-next/ui"
+import type { ExerciseFileView, LessonDifficulty, LessonPhase, WorkspaceVariantView } from "@starci-next/ui"
 
 /** One lesson of the catalog. */
 export type CatalogLessonView = {
@@ -64,14 +58,13 @@ export type ActivityView = {
     readonly files: ReadonlyArray<ExerciseFileView>
 }
 
-/** One section of a phase: its title, its body read into blocks and its activities. */
+/** One section of a phase: its title, its body and its activities. */
 export type SectionView = {
     readonly id: string
     readonly phase: LessonPhase
     readonly title: string
     readonly isLocked: boolean
-    readonly blocks: ReadonlyArray<MarkdownBlock>
-    /** The body as the raw markdown the teacher wrote; the study screen draws it with Grammar's Markdown. */
+    /** The body as the raw markdown the teacher wrote; the study screen draws it with RichMarkdown. */
     readonly markdown: string
     readonly activities: ReadonlyArray<ActivityView>
 }
@@ -89,7 +82,6 @@ export type LessonView = {
     readonly difficulty: LessonDifficulty
     readonly minutes: number
     readonly implementation: string
-    readonly overview: ReadonlyArray<MarkdownBlock>
     /** The overview as raw markdown. */
     readonly overviewMarkdown: string
     readonly outcomes: ReadonlyArray<{ readonly id: string; readonly text: string }>
