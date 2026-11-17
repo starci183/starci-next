@@ -35,5 +35,6 @@
 {"data":{},"findings":[],"hash":"a8d5178d440d0903bda90dfc33aad1509d2efa8e5add53646bea957c9eec60a6","path":"hfs.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"939be2b935123f179862f91c6ffa85dc0877d3c8d3accb07a886fa82a29d9102","path":"package-lock.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d6fc3fc341f43b5198f412d57001e73d2a5021edc766479e55beafcc9366abc1","path":"package.json","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"push.log is neither tracked nor git-ignored, and no ignored slot owns it","path":"push.log","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":"push.log","step":"hfs"}
 {"data":{},"findings":[],"hash":"c5bc1f178131885e0736b8eabeb19dfa8d983474d79a2ff9d64797e7d500889c","path":"sonar-project.properties","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f5f23a5c77da774c8ca2656f5e68be61741cdcfbd707ca310d98913d2258d6c5","path":"turbo.json","step":"file-rules"}
