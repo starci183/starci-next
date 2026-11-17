@@ -7,11 +7,11 @@
       "yourPlan": "Gói của bạn",
       "nav": {
         "learn": "Học",
-        "essentials": "Bản chất",
+        "essentials": "Essentials",
         "review": "Ôn tập",
         "practice": "Luyện code",
         "incidents": "Sự cố",
-        "projects": "Dự án",
+        "projects": "Projects",
         "experience": "Kinh nghiệm đã xác minh",
         "profile": "Hồ sơ",
         "connect": "Kết nối AI",
@@ -19,7 +19,6 @@
         "progress": "Tiến độ"
       },
       "sidebarLabel": "Điều hướng chính",
-      "experienceGroup": "Kinh nghiệm",
       "planPremium": "Premium",
       "planFree": "Chưa có Premium",
       "account": "Tài khoản",
@@ -36,7 +35,12 @@
       "localeNameVi": "Tiếng Việt",
       "localeNameEn": "English",
       "profile": "Hồ sơ",
-      "themeLabel": "Giao diện tối"
+      "themeLabel": "Giao diện tối",
+      "areasGroup": "Khu vực học",
+      "drillsGroup": "Luyện",
+      "mineGroup": "Của bạn",
+      "premiumLocked": "Cần Premium",
+      "reviewDue": "{count, plural, other {# thẻ đến hạn}}"
     },
     "signOut": {
       "submit": "Đăng xuất",

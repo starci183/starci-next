@@ -5,6 +5,13 @@ export interface AppSidebarEntry {
     readonly id: string
     readonly label: string
     readonly source: IconSource
+    /** A count beside the label (the cards due for review). */
+    readonly badge?: number
+    /** The words that name the badge for assistive technology. */
+    readonly badgeLabel?: string
+    /** True when the destination needs Premium the reader does not have: the lock shows beside the label and the page keeps its own paywall. */
+    readonly isLocked?: boolean
+    readonly lockedLabel?: string
 }
 
 /** One group of destinations, with its small label when it has one. */

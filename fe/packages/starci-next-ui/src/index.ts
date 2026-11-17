@@ -30,6 +30,7 @@ export {
     IncidentsGlyph,
     LanguageGlyph,
     LearnGlyph,
+    LockIcon,
     MoonGlyph,
     MoreGlyph,
     PlayGlyph,
