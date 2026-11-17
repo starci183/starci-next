@@ -31,8 +31,8 @@ export const HubExperience = (props: HubExperienceProps) => (
         title={props.view.title}
         headingLevel={2}
         action={
-            <Link href={props.view.moreHref} variant="head">
-                {props.view.moreLabel}
+            <Link href={props.view.moreHref} variant="plain">
+                {`${props.view.moreLabel} →`}
             </Link>
         }
         {...(props.isLoading === true ? { isLoading: true } : {})}

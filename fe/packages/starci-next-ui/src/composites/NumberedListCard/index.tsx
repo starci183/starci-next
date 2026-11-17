@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 
 /** The tone of the badge of a numbered row. */
 export type NumberedListTone = "accent" | "success" | "warning" | "muted" | "neutral"
@@ -25,9 +25,9 @@ type NumberedListCardProps = {
 
 /** A card with a numbered list of rows, each with an optional badge and an optional way on. */
 export const NumberedListCard = (props: NumberedListCardProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.label}
+        title={props.label}
         empty={props.emptyLabel}
         {...(props.isLoading === true ? { isLoading: true } : {})}
         items={props.items.map((item, index) => ({
@@ -44,5 +44,6 @@ export const NumberedListCard = (props: NumberedListCardProps) => (
                       action: { label: item.link.label, href: item.link.href },
                   }),
         }))}
+        headingLevel={2}
     />
 )

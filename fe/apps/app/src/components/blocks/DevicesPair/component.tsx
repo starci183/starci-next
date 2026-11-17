@@ -7,7 +7,6 @@ import {
     PaneSection,
     Section,
     Stack,
-    SurfaceCard,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -102,18 +101,19 @@ const DevicesCard = (props: DevicesPairBaseProps) => {
             onRetry={props.on.retry}
             render={(devices, isLoading) =>
                 devices.length === 0 ? (
-                    <SurfaceCard label={view.labels.pairedTitle} count={0} isLoading={isLoading}>
+                    <Section title={view.labels.pairedTitle} headingLevel={2} count={0} isLoading={isLoading}>
                         <EmptyDevices {...props} />
-                    </SurfaceCard>
+                    </Section>
                 ) : (
-                    <SurfaceCard
+                    <Section
                         kind="list"
-                        label={view.labels.pairedTitle}
+                        title={view.labels.pairedTitle}
+                        headingLevel={2}
                         count={devices.length}
                         isLoading={isLoading}
                         items={devices.map((device) => deviceRowOf(device, props))}
                         empty={null}
-                        note={view.labels.devicesLimit}
+                        caption={view.labels.devicesLimit}
                     />
                 )
             }

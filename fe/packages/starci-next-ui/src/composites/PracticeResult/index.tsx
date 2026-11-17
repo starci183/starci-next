@@ -1,4 +1,4 @@
-import { Alert, Badge, Cluster, FencedCodeBlock, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Badge, Cluster, FencedCodeBlock, Section, Stack, Text } from "@starci/grammar/common"
 
 /** The tone of a verdict badge. */
 export type PracticeVerdictTone = "success" | "danger" | "warning" | "neutral"
@@ -83,9 +83,9 @@ type TestsProps = {
 
 /** The per-test summary of a settled run: pass or fail with time and memory; only example tests open their data. */
 const Tests = (props: TestsProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.labels.tests}
+        title={props.labels.tests}
         empty={props.labels.testsEmpty}
         items={props.rows.map((row) => ({
             id: row.id,
@@ -103,6 +103,7 @@ const Tests = (props: TestsProps) => (
                 ? {}
                 : { detail: <ExampleDetail example={row.example} labels={props.labels} /> }),
         }))}
+        headingLevel={2}
     />
 )
 
@@ -114,7 +115,7 @@ export const PracticeResult = (props: PracticeResultProps) => {
         return <Alert tone="informative" title={state.isQueued ? labels.queued : labels.running} />
     }
     return (
-        <SurfaceCard label={labels.title}>
+        <Section title={labels.title} headingLevel={2}>
             <Stack gap="row">
                 <Cluster gap="inline" wrap align="center">
                     <Badge tone={state.tone}>{state.verdict}</Badge>
@@ -128,6 +129,6 @@ export const PracticeResult = (props: PracticeResultProps) => {
                 )}
                 {state.rows.length === 0 ? null : <Tests rows={state.rows} labels={labels} />}
             </Stack>
-        </SurfaceCard>
+        </Section>
     )
 }

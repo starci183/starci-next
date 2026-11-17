@@ -47,7 +47,7 @@ type OutcomePathCardProps = {
 /** The command that follows the path; the path already followed offers none. */
 const ChooseAction = (props: Pick<OutcomePathCardProps, "path" | "hasActive" | "labels" | "isPending" | "onChoose">) =>
     props.path.isCurrent ? null : (
-        <Button intent="commit" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
+        <Button intent="neutral" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
             {props.hasActive ? props.labels.switchTo : props.labels.choose}
         </Button>
     )

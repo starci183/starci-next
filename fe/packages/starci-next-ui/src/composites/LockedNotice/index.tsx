@@ -1,4 +1,4 @@
-import { Button, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Section, Stack, Text } from "@starci/grammar/common"
 
 /** The words of the locked state of a phase and its way out. */
 type LockedNoticeProps = {
@@ -7,16 +7,18 @@ type LockedNoticeProps = {
     readonly plansLabel: string
     /** The destination of the plans page. */
     readonly plansHref: string
+    /** False when another command of the screen is the one primary button: the way to the plans is then a neutral button. */
+    readonly isPrimary?: boolean
 }
 
 /** A phase the reader's plan does not include: what Premium unlocks and the one link to the plans. */
 export const LockedNotice = (props: LockedNoticeProps) => (
-    <SurfaceCard treatment="soft" label={props.title}>
+    <Section title={props.title} headingLevel={2}>
         <Stack gap="row">
             <Text as="p">{props.description}</Text>
-            <Button intent="commit" href={props.plansHref}>
+            <Button intent={props.isPrimary === false ? "neutral" : "commit"} href={props.plansHref}>
                 {props.plansLabel}
             </Button>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

@@ -53,7 +53,7 @@ const ThemeControl = (props: ThemeControlProps) => (
     <Switch
         label={props.theme.label}
         isLabelHidden
-        size="control"
+        kind="toggle"
         isSelected={props.theme.isDark}
         onSelectedChange={props.onChange}
         thumbIcon={SunGlyph}

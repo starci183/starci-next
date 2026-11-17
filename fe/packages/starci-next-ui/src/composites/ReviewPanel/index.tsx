@@ -5,6 +5,7 @@ import {
     EmptyNotice,
     Heading,
     Stack,
+    Section,
     SurfaceCard,
     Text,
     type BadgeTone,
@@ -108,7 +109,7 @@ const ReviewFacts = (props: ReviewPartProps) => (
 
 /** The audit trail of an item, oldest first. */
 const ReviewHistory = (props: ReviewPartProps) => (
-    <SurfaceCard label={props.labels.historyTitle}>
+    <Section title={props.labels.historyTitle} headingLevel={2}>
         <Stack gap="row">
             {props.item.history.map((row) => (
                 <Stack key={row.id} gap="identity">
@@ -121,7 +122,7 @@ const ReviewHistory = (props: ReviewPartProps) => (
                 </Stack>
             ))}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The item a signer decides: part, learner, state, the line in both locales, its facts, the decision and its history. */

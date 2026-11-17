@@ -1,4 +1,4 @@
-import { SurfaceCard, Text, type IconSource } from "@starci/grammar/common"
+import { Section, Text, type IconSource } from "@starci/grammar/common"
 import {
     EssentialsGlyph,
     IncidentsGlyph,
@@ -43,15 +43,12 @@ type HubTodayCardProps = {
 
 /** The today card: one navigation row per thing left today, a count chip beside the label and the summary at its end. */
 export const HubTodayCard = (props: HubTodayCardProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.label}
+        title={props.label}
+        headingLevel={2}
         count={props.count}
-        labelEnd={
-            <Text tone="muted" size="xs">
-                {props.summary}
-            </Text>
-        }
+        meta={props.summary}
         {...(props.isLoading === true ? { isLoading: true } : {})}
         items={props.rows.map((row) => ({
             id: row.id,

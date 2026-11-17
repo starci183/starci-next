@@ -1,4 +1,4 @@
-import { Alert, Button, RadioGroup, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, RadioGroup, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { Icon, SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -82,7 +82,7 @@ interface IncludesProps {
 }
 
 const Includes = (props: IncludesProps) => (
-    <SurfaceCard label={props.labels.includesTitle}>
+    <Section title={props.labels.includesTitle} headingLevel={2}>
         <Stack gap="row">
             {props.labels.benefits.map((benefit) => (
                 <Text key={benefit} startContent={<Icon />}>
@@ -93,7 +93,7 @@ const Includes = (props: IncludesProps) => (
                 {props.labels.expiryNote}
             </Text>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** What the commit reads: the drawing, the start flags and the words. */

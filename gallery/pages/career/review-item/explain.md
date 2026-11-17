@@ -5,16 +5,16 @@ area: career
 reviewed: 2026-11-17
 ---
 
-Route: `/review-queue/[itemId]` (ảnh chụp: tài khoản học viên thường với một mã mục không có thật, nên thấy trạng thái bị từ chối; thầy mở một mục thật thấy bảng duyệt). Mã: `fe/apps/app/src/components/blocks/ReviewItem/component.tsx`. Khung chung giải thích ở `learn/home`.
+Route: `/review-queue/[itemId]` (ảnh chụp: tài khoản học viên thường với một mã mục không có thật, nên thấy trạng thái bị từ chối; thầy mở một mục thật thấy bảng duyệt). Mã: `fe/apps/app/src/components/blocks/ReviewItem/component.tsx`. Trang trắng, không thẻ.
 
 ## Liên kết "Về hàng chờ"
 
-Vì sao: trang con của `career/review-queue`, đầu trang là liên kết quay lại hàng chờ. CHƯA RÕ: như `agents/track`, liên kết đứng riêng trên nền xám thay vì đường dẫn trong dải `Page`.
-Luật: `page-header-left-sublabel-xs.md`, `type-scale-14-12.md`.
-Grammar: `Link` (`leaf/Link`) trong `Stack`; cần `Page header.breadcrumbs`.
+Vì sao: trang con của `career/review-queue`, đầu trang là liên kết quay lại, chữ foreground. CHƯA RÕ: liên kết đứng riêng, không có mũi tên và không nằm trong đường dẫn của `Page` như `agents/track`; nên là `Page header.breadcrumbs`.
+Luật: `page-header-left-sublabel-xs.md`, `surface-layering` (liên kết điều hướng có mũi tên).
+Grammar: `Link variant="plain"` trong `Stack`; cần `Page header.breadcrumbs`.
 
 ## Thông báo "Chỉ thầy và người duyệt được mở trang này"
 
-Vì sao: cùng trạng thái cấm của hàng chờ: học viên không có quyền thì cửa dữ liệu trả `forbidden`. Với thầy, vùng này là `ReviewPanel`: dòng CV AI soạn, bằng chứng, ô ghi chú, các lệnh Ký xác nhận và Trả lại; chưa có ảnh vì chưa có tài khoản thầy trong dữ liệu chụp.
+Vì sao: cùng trạng thái cấm của hàng chờ: ô icon hộp thư xám nhạt và một câu giữa trang. Với thầy, vùng này là bảng duyệt: dòng CV AI soạn, bằng chứng, ô ghi chú và các lệnh Ký xác nhận, Trả lại (một nút chính); chưa có ảnh vì chưa có tài khoản thầy trong dữ liệu chụp.
 Luật: `grammar-slot-interface`, `verified-experience-per-part.md` (thầy ký mới là Đã xác minh).
-Grammar: `SlotView` và `ReviewPanel` (`fe/packages/starci-next-ui/src/composites/ReviewPanel`), `EmptyNotice`.
+Grammar: `SlotView`, `EmptyNotice`; bảng duyệt là `ReviewPanel` (`fe/packages/starci-next-ui/src/composites/ReviewPanel`).

@@ -1,4 +1,4 @@
-import { Alert, DescriptionList, EmptyNotice, Page, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, DescriptionList, EmptyNotice, Page, Stack, Text } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -50,26 +50,25 @@ export const VerifyExperienceBase = (props: VerifyExperienceBaseProps) => (
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
                 render={(view) => (
-                    <SurfaceCard ariaLabel={view.title} measure="content">
-                        <Stack gap="row">
-                            <Alert
-                                tone={view.isRevoked ? "negative" : "affirmative"}
-                                title={view.title}
-                                description={view.sub}
-                            />
-                            <Text as="p">{view.line}</Text>
-                            <DescriptionList
-                                items={view.facts.map((fact) => ({
-                                    id: fact.term,
-                                    term: fact.term,
-                                    description: fact.value,
-                                }))}
-                            />
-                            <Text size="sm" tone="muted">
-                                {props.props.note}
-                            </Text>
-                        </Stack>
-                    </SurfaceCard>
+                    <Stack gap="row">
+                        <Alert
+                            tone={view.isRevoked ? "negative" : "affirmative"}
+                            title={view.title}
+                            description={view.sub}
+                        />
+                        <Text as="p">{view.line}</Text>
+                        <DescriptionList
+                            isDivided
+                            items={view.facts.map((fact) => ({
+                                id: fact.term,
+                                term: fact.term,
+                                description: fact.value,
+                            }))}
+                        />
+                        <Text size="sm" tone="muted">
+                            {props.props.note}
+                        </Text>
+                    </Stack>
                 )}
             />
         )}

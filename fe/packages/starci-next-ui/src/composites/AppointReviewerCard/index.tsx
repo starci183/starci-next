@@ -1,4 +1,4 @@
-import { Alert, Button, CheckboxGroup, Cluster, Input, NumberField, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Alert, Button, CheckboxGroup, Cluster, Input, NumberField, Section, Stack } from "@starci/grammar/common"
 
 /** One choice of a reviewer form: an id and its words. */
 export type ReviewerChoice = { readonly id: string; readonly label: string }
@@ -43,7 +43,7 @@ export type AppointReviewerCardProps = {
  * items they hold at once. Appointing a subject again replaces its scope.
  */
 export const AppointReviewerCard = (props: AppointReviewerCardProps) => (
-    <SurfaceCard label={props.labels.title}>
+    <Section title={props.labels.title} headingLevel={2}>
         <Stack gap="row">
             <Input
                 id="appoint-reviewer"
@@ -74,5 +74,5 @@ export const AppointReviewerCard = (props: AppointReviewerCardProps) => (
             </Cluster>
             {props.outcome === undefined ? null : <Alert tone={props.outcome.tone} title={props.outcome.text} />}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
