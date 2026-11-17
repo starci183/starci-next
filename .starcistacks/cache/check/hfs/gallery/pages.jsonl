@@ -33,6 +33,13 @@
 {"data":{},"findings":[],"hash":"5bf7c144eb647bd9cb868ab2b9a6366bcba9d7cc4e06818cf4d2c6da24ce5336","path":"gallery/pages/essentials/topic-databases/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e38595ca9691f8cbcb21d94e2e3ca5274d27b93b0af66e34877459d89c749d27","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7403534906a8031c459bd10698dec173bf7ce80cb0375894257f033c387764d4","path":"gallery/pages/essentials/topic/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3b86547b75b594f8e91518cf958b9a421c7aa6ec402b09cf2703d6e1e6b7418b","path":"gallery/pages/harness/build/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0f7573695262e701ab96eb0dc5f95287d9753de90e8a10d290695d2590b72539","path":"gallery/pages/harness/builds/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a7e763980e48b2d70db0eb4d82ed8c2d9dd56ff8ef03787feac8ada141ab2dad","path":"gallery/pages/harness/doc/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"063eea130882023e27d8c474fb7624641d5d60629b7e1530b11fb88b7b6975a4","path":"gallery/pages/harness/docs/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"684fae30fae2f77cce432ec9cbb5c0a70c33a374e803496027fdcc2452ed47aa","path":"gallery/pages/harness/guide/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a0d4c2d529b8201b1eecdad04ad2c16ba0a6444bb7991e01679258adabc74f33","path":"gallery/pages/harness/hub/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"599270cc965056a7d79f0c93afc66d88125ba7aa5227630dd61c02b56b6ac660","path":"gallery/pages/harness/use/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cc4a1b87b6102b8aca394d485e87cd5066b7e49b7c60ca4f6d7d5ab9fbdd1af8","path":"gallery/pages/incidents/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6b309590282b25fe0eabcac201e57999556cdc501a471015f4196387a60bf09d","path":"gallery/pages/interview/report/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"001010e7c2537949492d5ad35cdfc1b27011f0e9e6f5e66922f38dc7dce98221","path":"gallery/pages/interview/session/explain.md","step":"file-rules"}
