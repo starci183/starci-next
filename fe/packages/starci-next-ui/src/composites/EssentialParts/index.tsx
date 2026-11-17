@@ -351,7 +351,7 @@ const ScenarioDetail = (props: { readonly scenario: ScenarioCardView; readonly l
             id={`scenario-${scenario.id}`}
         >
             <Stack gap="row">
-                <Text>{scenario.fault}</Text>
+                <RichMarkdown source={scenario.fault} labels={props.labels.markdown} />
                 <FencedCodeBlock
                     code={[scenario.runCommand, ...scenario.guardCommands].join("\n")}
                     language="bash"
@@ -363,7 +363,7 @@ const ScenarioDetail = (props: { readonly scenario: ScenarioCardView; readonly l
                         <Text size="sm" tone="muted">
                             {labels.expected}
                         </Text>
-                        <Text>{scenario.expected}</Text>
+                        <RichMarkdown source={scenario.expected} labels={props.labels.markdown} />
                     </Stack>
                 )}
                 <Terminal
