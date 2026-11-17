@@ -1,4 +1,4 @@
-{"findings":[],"hash":"7e23474d7f3b0cb403ebcc0ed0c58501f64e9debd8f0f5a7f20657b5841cd25a","path":"fe/packages/starci-next-i18n/package.json","step":"prettier"}
+{"findings":[],"hash":"e033780e7656fe58f295011b3a1558c9e8b59f3eba26c229dff6a700cf1543d0","path":"fe/packages/starci-next-i18n/package.json","step":"prettier"}
 {"findings":[],"hash":"d6d946402c275582bb8d9fd9ee26766123f7e08db6e9df8a4fc003b89745f25b","path":"fe/packages/starci-next-i18n/src/health.ts","step":"prettier"}
 {"findings":[],"hash":"19547eabc8c53f796ed49eca8eeb0865592ad42de497f115a5b5c517be6f336e","path":"fe/packages/starci-next-i18n/src/index.ts","step":"prettier"}
 {"findings":[],"hash":"3569453910f63b55cbcd91ae011df6046d2690bbeb87f44b5fc770311c4a8b1c","path":"fe/packages/starci-next-i18n/src/navigation.ts","step":"prettier"}
