@@ -1,4 +1,12 @@
-import { Alert, Button, Heading, Stack, SurfaceCard, type PresentationState } from "@starci/grammar/common"
+import {
+    Alert,
+    Button,
+    DescriptionList,
+    Heading,
+    Stack,
+    SurfaceCard,
+    type PresentationState,
+} from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -87,12 +95,13 @@ const ResultBody = (props: ResultBodyProps) => (
             isLoading={props.isLoading}
         />
         {props.view.facts.length > 0 ? (
-            <SurfaceCard
-                kind="list"
-                layout="keyValue"
-                ariaLabel={props.view.statusTitle}
-                items={props.view.facts.map((fact) => ({ id: fact.id, title: fact.term, value: fact.description }))}
-                empty={null}
+            <DescriptionList
+                isDivided
+                items={props.view.facts.map((fact) => ({
+                    id: fact.id,
+                    term: fact.term,
+                    description: fact.description,
+                }))}
                 isLoading={props.isLoading}
             />
         ) : null}

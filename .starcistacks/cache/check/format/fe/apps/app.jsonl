@@ -81,7 +81,7 @@
 {"findings":[],"hash":"3673b3a094eede4c8f68e0e8c8cd51769c5ea951fff312b2ceca7b849d7eff50","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"prettier"}
 {"findings":[],"hash":"d06ec5085425b0a9bb00547e4bb3ac24309ec74fd03cbf1faa50f3e50905b9ed","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"prettier"}
 {"findings":[],"hash":"623d73752688a2336931c2c5b1de4a6fc93896017d800382e7d9330ebfd1add0","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"prettier"}
-{"findings":[],"hash":"45177166e75acfa6d7502c235f7322fe614415637b10e66ea4e50826c5cbe8a0","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"prettier"}
+{"findings":[],"hash":"64cbe97c1b193344b4d3b99638711d3c99932249f65531555e560e6feadf960b","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"prettier"}
 {"findings":[],"hash":"ff83b76c1ea6ba9fb6fd37fa73827a4eba08d837b24c6211f05d68f36a9c4457","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"prettier"}
 {"findings":[],"hash":"fb08a935569186db80163eedd46caa2ec3f84ef3f18d57104d2ab9a5403086d3","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"prettier"}
 {"findings":[],"hash":"d120e0c54688179b7c6d71bdc185e54063fe67786aab8ec664bfa09695a8564b","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"prettier"}
