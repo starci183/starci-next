@@ -56,3 +56,7 @@ WHERE e.learner_id = $1::uuid AND e.kind = 'check.result' AND e.slot = $2::text 
     AND left(e.task_id, length($3::text)) = $3::text
 ORDER BY e.task_id, e.check_id, e.ref, e.created_at DESC, e.event_id DESC
 LIMIT $4::int`
+
+/** Whether the learner's devices uploaded any event under a task: a lesson's source was pulled or a check ran ($1 learner, $2 task). */
+export const SELECT_TASK_SEEN: ReturnType<typeof sql> =
+    sql`SELECT EXISTS (SELECT 1 FROM relay_events WHERE learner_id = $1::uuid AND task_id = $2::text) AS seen`

@@ -22,3 +22,13 @@ export { parseRelayConfig } from "./relay-config.mapper"
 export { RelayModule } from "./relay.module"
 export { RelayDeviceService } from "./relay-device.service"
 export { relayEntities, relayMigrations } from "./persistence/connection"
+export { challengeScoresOf, lessonPartsOf, LESSON_PART_IDS } from "./relay-lesson-progress.policy"
+export type {
+    ChallengeCriterionScore,
+    ChallengeRungState,
+    ChallengeScore,
+    LessonPartId,
+    LessonPartProgress,
+    LessonPartState,
+    LessonProgressFacts,
+} from "./relay-lesson-progress.policy"

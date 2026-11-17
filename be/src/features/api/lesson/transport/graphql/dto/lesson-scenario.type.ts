@@ -32,9 +32,13 @@ export class LessonScenarioType {
     @Field(() => [String])
     guards!: ReadonlyArray<string>
 
-    /** The hint for a red run, or null. */
+    /** The hint for a red run; null until the learner has a red run of the scenario or asked for it. */
     @Field(() => String, { nullable: true })
     hint!: string | null
+
+    /** True while the scenario has a hint that stays withheld until the learner's first red run of it or `revealLessonHint`. */
+    @Field(() => Boolean)
+    isHintLocked!: boolean
 }
 
 @ObjectType()

@@ -613,11 +613,38 @@ type LessonCatalogItemType {
   version: String!
 }
 
+type LessonChallengeCriterionScoreType {
+  earned: Int!
+  id: String!
+  isCritical: Boolean!
+  passed: Boolean!
+  points: Int!
+}
+
 type LessonChallengeCriterionType {
   criterion: String!
   id: String!
   isCritical: Boolean!
   points: Int!
+}
+
+type LessonChallengeScoreType {
+  challengeId: String!
+  criteria: [LessonChallengeCriterionScoreType!]!
+  hiddenGreen: Int!
+  hiddenTotal: Int!
+  isCriticalMet: Boolean!
+  isLocked: Boolean!
+  isPassed: Boolean!
+  level: String!
+  maxScore: Int!
+  score: Int!
+  state: String!
+  unlocksNext: Boolean!
+}
+
+input LessonChallengeScoresInput {
+  lessonId: String! @inputBounds(maxLength: 100)
 }
 
 type LessonChallengeType {
@@ -680,6 +707,11 @@ type LessonExerciseType {
   submissionInstructions: String!
 }
 
+type LessonHintRevealedType {
+  hint: String!
+  scenarioId: String!
+}
+
 input LessonInput {
   id: String! @inputBounds(maxLength: 100)
   locale: String!
@@ -707,6 +739,32 @@ input LessonOpenerScoresInput {
 type LessonOptionType {
   id: String!
   label: String!
+}
+
+type LessonPartProgressType {
+  done: Int!
+  part: String!
+  state: String!
+  total: Int!
+}
+
+type LessonPartsOpenerType {
+  answered: Int!
+  firstCorrect: Int!
+  latestCorrect: Int!
+}
+
+input LessonPartsProgressInput {
+  lessonIds: [String!]! @inputBounds(maxItems: 50, itemMaxLength: 100)
+}
+
+type LessonPartsProgressType {
+  inProgressPart: String
+  lessonId: String!
+  opener: LessonPartsOpenerType!
+  parts: [LessonPartProgressType!]!
+  proved: Boolean!
+  usedHint: Boolean!
 }
 
 type LessonProgressActivityType {
@@ -770,6 +828,7 @@ type LessonProgressType {
   outcomes: [LessonProgressOutcomeType!]!
   phase: String!
   phases: [LessonProgressPhaseType!]!
+  readSectionIds: [String!]!
   reviews: [LessonProgressReviewType!]!
   simulations: [LessonProgressSimulationType!]!
   version: String
@@ -796,6 +855,12 @@ type LessonRelatedTopicType {
   id: String!
   listed: Boolean!
   title: String!
+}
+
+type LessonRunRequestedType {
+  command: String!
+  device: String!
+  manifestId: String!
 }
 
 type LessonScenarioRunType {
@@ -828,6 +893,7 @@ type LessonScenarioType {
   hint: String
   id: String!
   invariant: String!
+  isHintLocked: Boolean!
   title: String!
 }
 
@@ -975,6 +1041,11 @@ type LocalizedLineType {
   vi: String!
 }
 
+input MarkLessonSectionReadInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+  sectionId: String! @inputBounds(maxLength: 100)
+}
+
 input MarkNotificationsReadInput {
   all: Boolean = null
   ids: [ID!] = null @inputBounds(maxItems: 100)
@@ -1017,6 +1088,7 @@ type Mutation {
   explainProjectConcept(input: ExplainProjectConceptInput!): ProjectConceptType!
   flipReviewCard(input: FlipRecallCardInput!): RecallFlipType!
   gradeReviewCard(input: GradeRecallCardInput!): RecallGradeType!
+  markLessonSectionRead(input: MarkLessonSectionReadInput!): [String!]!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
@@ -1026,6 +1098,8 @@ type Mutation {
   removeAvatar(input: ProfileInput!): ProfileType!
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
   requestAvatarUpload(input: RequestAvatarUploadInput!): AvatarUploadType!
+  requestLessonRun(input: RequestLessonRunInput!): LessonRunRequestedType!
+  revealLessonHint(input: RevealLessonHintInput!): LessonHintRevealedType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
   revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
   revokeMcpToken(input: RevokeMcpTokenInput!): String!
@@ -1670,8 +1744,13 @@ type Query {
   learnerProgress(input: LearnerProgressInput!): LearnerProgressType!
   lesson(input: LessonInput!): LessonType!
   lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
+  lessonChallengeScores(input: LessonChallengeScoresInput!): [LessonChallengeScoreType!]!
   lessonOpenerScores(input: LessonOpenerScoresInput!): [LessonOpenerScoreType!]!
+  lessonPartsProgress(input: LessonPartsProgressInput!): [LessonPartsProgressType!]!
   lessonProgress(input: LessonProgressInput!): LessonProgressType!
+  """
+  The newest relayed run of each scenario and hidden challenge scenario. The polling contract of the app: a run in flight has status `running` (started, no result yet), so the page re-reads every 2 to 3 seconds while any status is `running` and stops when none is. No subscription: the realtime hub only feeds paired devices.
+  """
   lessonScenarioRuns(input: LessonScenarioRunsInput!): [LessonScenarioRunType!]!
   lessonTopic(input: LessonTopicInput!): LessonTopicType!
   lessons(input: LessonsInput!): [LessonCatalogItemType!]!
@@ -1960,6 +2039,18 @@ input RelayUserCodeInput {
 input RequestAvatarUploadInput {
   contentType: String! @inputBounds(maxLength: 100)
   size: Int! @inputBounds(min: 1, max: 2147483647)
+}
+
+input RequestLessonRunInput {
+  guardsOff: [String!]! = [] @inputBounds(maxItems: 10, itemMaxLength: 100)
+  lessonId: String! @inputBounds(maxLength: 100)
+  scenarioId: String! @inputBounds(maxLength: 100)
+}
+
+input RevealLessonHintInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+  scenarioId: String! @inputBounds(maxLength: 100)
 }
 
 input RevealPracticeHintInput {

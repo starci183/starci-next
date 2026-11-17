@@ -3,7 +3,7 @@ import type { EntityManager } from "typeorm"
 import { lessonRelayTaskId } from "@modules/domain/lesson"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import type { RelayCheckStateRow } from "./persistence/relay-events.rows"
-import { SELECT_TASK_CHECKS } from "./persistence/relay-events.sql"
+import { SELECT_TASK_CHECKS, SELECT_TASK_SEEN } from "./persistence/relay-events.sql"
 
 /** Where one scenario run stands: running (started, no result yet), passed or failed. */
 export type LessonRunStatus = "running" | "passed" | "failed"
@@ -88,5 +88,14 @@ export class RelayLessonService {
             ledger: row.detail?.ledger ?? null,
             at: row.created_at.toISOString(),
         }))
+    }
+
+    /** True once any event of the learner's devices exists under the lesson's task: the source was pulled or a check ran. */
+    async hasEvents(learnerId: string, lessonId: string): Promise<boolean> {
+        const rows: Array<{ seen: boolean }> = await this.entityManager.query(SELECT_TASK_SEEN, [
+            learnerId,
+            lessonRelayTaskId(lessonId),
+        ])
+        return rows[0]?.seen === true
     }
 }
