@@ -77,8 +77,8 @@
 {"findings":[],"hash":"23fe37a95647875d8c3013814c021c9a8def65aa6740d91716854167513cc5ce","path":"fe/apps/app/src/app/health/live/route.ts","step":"prettier"}
 {"findings":[],"hash":"26d134ec77f3e1e3cce2cfb7662680b7a4b31ce42c0a55cd154dfb83b6215ea0","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"prettier"}
 {"findings":[],"hash":"f944c7226b7057b10814ab4cfdfefba490ea8cbbe1e82cf51c23fa33492c6c41","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"prettier"}
-{"findings":[],"hash":"db0e08f6129748d73e438318769d365ddd028c25d7c4c57920c84655ae4e2293","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"prettier"}
-{"findings":[],"hash":"3673b3a094eede4c8f68e0e8c8cd51769c5ea951fff312b2ceca7b849d7eff50","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"prettier"}
+{"findings":[],"hash":"1d16f0f2a4f32f1905154efc882885794033508b376c717db612ea460e7ee7b7","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"prettier"}
+{"findings":[],"hash":"cfc771bb78ac2b34280959624f01d3b14c12e7c2be44b802281378d22c919428","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"prettier"}
 {"findings":[],"hash":"d06ec5085425b0a9bb00547e4bb3ac24309ec74fd03cbf1faa50f3e50905b9ed","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"prettier"}
 {"findings":[],"hash":"623d73752688a2336931c2c5b1de4a6fc93896017d800382e7d9330ebfd1add0","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"prettier"}
 {"findings":[],"hash":"64cbe97c1b193344b4d3b99638711d3c99932249f65531555e560e6feadf960b","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"prettier"}
@@ -620,8 +620,8 @@
 {"findings":[],"hash":"2b70c69cba7ac72c98f3c7e53372f8ac3dfb3ebfc7cef908df27a3f6a863c299","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"prettier"}
 {"findings":[],"hash":"de04710d324f81730509852c12ee39068fc33a1d370cfb7fb574d8b4999ba25a","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3250a1a387c6be27f6f47ba8c0ca508e554d69ffab7519be25e5722149176c71","path":"fe/apps/app/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"5eb38aac6fb9260393e681b397a05b637ae6b435e716c1f374378bc93428545e","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"64fae93053c7226a2c8468535841f653c8b60315d5eb8fbd48672bd6226f9e1c","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
+{"findings":[],"hash":"efc6de41425623814c2f6e1c70ba111f6c7bce045e995f001c3d26c683be2bd5","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
+{"findings":[],"hash":"2ee614b1720bfb5a596134c959108a0b6df32d3238bde1a891f06ae69510c805","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"5c34d838583710ef39f49ec100882024b7483146a6fe445df0a7bcde24779f95","path":"fe/apps/app/src/modules/i18n/request.ts","step":"prettier"}
 {"findings":[],"hash":"9d26eecee2e67ea0678201049d4a51f3502b918b824f395513606b9ab75b5d6d","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3f9d6781eedea34915464508155c9135728867d5fd1f1081c7506b5dd8fd85e7","path":"fe/apps/app/src/modules/practice-draft/index.ts","step":"prettier"}
@@ -636,7 +636,7 @@
 {"findings":[],"hash":"d1e47c3f9c1f9d265feaf05ae52ecba42e08f3b38b96695aec34967ece98d132","path":"fe/apps/app/src/modules/toast/toast.tsx","step":"prettier"}
 {"findings":[],"hash":"e6bc8b34cdf18975fb4e8f13cb9e393a9d01d9f49e6cb47915d2dae131a13fd2","path":"fe/apps/app/src/modules/types/ambient/styles.d.ts","step":"prettier"}
 {"findings":[],"hash":"b6f84c180efff6b11f7239643f741b4d0876cd2c2a2755b5ab176771766c383d","path":"fe/apps/app/src/modules/types/appHeader.ts","step":"prettier"}
-{"findings":[],"hash":"36872d3aa151afdd361b48e54a7d969c9241acc00208a20d75ba2afd35e8f158","path":"fe/apps/app/src/modules/types/appSidebar.ts","step":"prettier"}
+{"findings":[],"hash":"7f8928f312f1df92315c8f7460278a1a96c163bcbe3487093e4d02ddd1b93c55","path":"fe/apps/app/src/modules/types/appSidebar.ts","step":"prettier"}
 {"findings":[],"hash":"cf19856dbc070744fe2cc34290afc1c6134cd24db304d65db94acb61c57ce2b7","path":"fe/apps/app/src/modules/types/authNotice.ts","step":"prettier"}
 {"findings":[],"hash":"f8b4b17944fb7cc9b8d84d08e26596f226df3f8022770dad2067175ad9435e9a","path":"fe/apps/app/src/modules/types/catalog.ts","step":"prettier"}
 {"findings":[],"hash":"ab4b0ae7a6eee345e810c176053289874251dd535e23a7ade7badd77e8d5e448","path":"fe/apps/app/src/modules/types/catalogPlaceholder.ts","step":"prettier"}

@@ -77,8 +77,8 @@
 {"data":{},"findings":[],"hash":"c477f0d2b2b4c9ba65a0d58dad714b552b8ea60121710d0b9cb376cab0f33e6f","path":"fe/apps/app/src/app/health/live/route.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"54a396b0564144529e96c64a2756ae7b85442f5e403667fe289469779074e2ed","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b50d24c653fcda173c1477b5ae75a52808b57cc20b6f85963306e93beff676c","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"15a4e654423b7ba3030427ea98e6ffa89d73cc502ae802e3113b5b6d1b2bda6e","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ea122fa52c47c86227e447f116c00a0c7f944a7fbe4c4841eed3892bc6c09674","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"17b197a3cf962ccc946cb96b6f64440887e57fc43f626191bfb0371b5e3ae9a7","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"58aa69fca5af3c671c766d30a67e25dd9da596e565e1de2bf63f2e556717b7c5","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa90ba8ad371d4793253ed7a4a18014013f59b9540fd96653ef512e02c27e614","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ba8dd3d7541e64ad1afd5d4fb753d5d2b782182ad360ce59776b070464e4e749","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"30c8785c46563d950e0938433caf7aef12c7390205e855d4c5dedb890993db66","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
@@ -620,8 +620,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5e1e9c9b1e6c1d8cc1dd97e69703f1aa43bcddb901fb4fb2be33a2bfa9ea5a0a","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"775c633f0359fa7092ab94ec4c23319a569ae59f8a0e9a14c2e067d8fb391417","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c279f86fcf7dc6469e4d6451444ed7c1712d2beb0a4639ad356206d05c83a957","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cd8b9d25f8f195aea6c0fed53d337f596deacaeb8d6ebe93dc01b1ebb0efe867","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"59c3038ffd8029b1b3ebc87544356b4d7195931abc81ce09091d0bfcab8c5b4e","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e88ccd36c524703065c0e3f04e5fc886a8754b6d2df269f64bfb85e323beba9","path":"fe/apps/app/src/modules/practice-draft/index.ts","step":"file-rules"}
@@ -636,7 +636,7 @@
 {"data":{},"findings":[],"hash":"93419dd28ec3292e3fb25c739bfeefd4d2ec09578fc80be96ab1f396886614ba","path":"fe/apps/app/src/modules/toast/toast.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a8f307d5b72b608d300094ba4999f282ce03d5b211c128108b6f8219308ff2f6","path":"fe/apps/app/src/modules/types/ambient/styles.d.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"70b12f4e139738195cea2d678126c5db09ccfc7bece289f1639df2419c1a6ada","path":"fe/apps/app/src/modules/types/appHeader.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9560ca2d194322f2289598dff911e307e85bea8b27f6ae80185f7eb9bdad4853","path":"fe/apps/app/src/modules/types/appSidebar.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3d84601105bfb531fd26f7bdf830cbbe9fce4e11888b97553ded3b6c15a5374d","path":"fe/apps/app/src/modules/types/appSidebar.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4038c6b6af70b501cfc4c8f01202652755547723569c8bcb5ebe5013ad523536","path":"fe/apps/app/src/modules/types/authNotice.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3cd4df0eeb20418c1e41c2d1ae403701e261369e30bd287292d46f9354642109","path":"fe/apps/app/src/modules/types/catalog.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4a7eeb4f636b1d0d15ede03f5b2c8120a8cef866ab1a80d8be83e51cae473f46","path":"fe/apps/app/src/modules/types/catalogPlaceholder.ts","step":"file-rules"}
