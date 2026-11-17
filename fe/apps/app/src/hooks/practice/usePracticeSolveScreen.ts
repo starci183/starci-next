@@ -159,6 +159,11 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
     const result = useTranslations("app.practice.result")
     const verdict = useTranslations("app.practice.verdict")
     const difficulty = useTranslations("app.practice.difficulty")
+    const difficulties: Readonly<Record<string, string>> = {
+        easy: difficulty("easy"),
+        medium: difficulty("medium"),
+        hard: difficulty("hard"),
+    }
     const slotLabels = useSlotLabels()(t("emptyTitle"))
     const read = useQueryPracticeProblemSwr(slug, locale)
     const problem = read.data
@@ -205,7 +210,7 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
         patternTitle: each.patternTitle,
         patternHref: practicePatternPath(each.patternId),
         meta: [
-            difficulty(each.difficulty.toLowerCase()),
+            difficulties[each.difficulty.toLowerCase()] ?? each.difficulty,
             t("limits", { seconds: each.timeLimitMs / 1000, memory: memoryMbOf(each) }),
             usedHints > 0 ? t("hintsOpened", { count: usedHints }) : "",
             position < 0 ? "" : t("position", { position: position + 1, total: siblings.length }),

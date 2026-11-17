@@ -91,6 +91,12 @@ export const usePracticePatternScreen = (patternId: string): PracticePatternScre
     const t = useTranslations("app.practice.pattern")
     const word = useTranslations("app.practice.difficulty")
     const status = useTranslations("app.practice.status")
+    const difficulties: Readonly<Record<string, string>> = {
+        easy: word("easy"),
+        medium: word("medium"),
+        hard: word("hard"),
+    }
+    const statuses = { UNSOLVED: status("unsolved"), ATTEMPTED: status("attempted"), ACCEPTED: status("accepted") }
     const slotLabels = useSlotLabels()(t("emptyTitle"))
     const read = useQueryPracticeProblemsSwr(patternId, locale)
     const patterns = useQueryPracticePatternsSwr(locale)
@@ -117,10 +123,10 @@ export const usePracticePatternScreen = (patternId: string): PracticePatternScre
         id: problem.slug,
         position: position + 1,
         title: problem.title,
-        difficulty: word(problem.difficulty.toLowerCase()),
+        difficulty: difficulties[problem.difficulty.toLowerCase()] ?? problem.difficulty,
         difficultyTone: difficultyToneOf(problem.difficulty),
         tags: problem.tags.map(tagLabelOf),
-        status: status(problem.status.toLowerCase()),
+        status: statuses[problem.status],
         statusTone: statusToneOf(problem.status),
         href: practiceProblemPath(problem.slug),
     }))

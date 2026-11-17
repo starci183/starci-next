@@ -258,7 +258,6 @@
         "doneTitle": "You are done for today",
         "doneBody": "Goal of {daily} cards reached. Come back tomorrow for more.",
         "lockedTitle": "Premium needed",
-        "lockedBody": "{count} items are waiting behind Premium: the rest of each deck and the review questions of Essentials.",
         "upsell": "Unlock with Premium",
         "upsellNote": "Premium opens every card and the review questions of the lessons you studied.",
         "queueTitle": "Today's queue",
@@ -335,7 +334,6 @@
         "courseLabel": "Course",
         "courseAll": "All courses",
         "cards": "{count, plural, one {# card} other {# cards}}",
-        "free": "{count} free cards",
         "partlyLocked": "Partly needs Premium",
         "add": "Add",
         "added": "Added",
@@ -448,19 +446,13 @@
         "accepted": "Accepted"
       },
       "verdict": {
-        "queued": "Queued",
-        "running": "Judging",
         "accepted": "Accepted",
         "wrongAnswer": "Wrong answer",
-        "timeLimit": "Time limit exceeded",
-        "compileError": "Compile error",
-        "runtimeError": "Runtime error",
-        "internalError": "Judge not ready"
+        "compileError": "Compile error"
       },
       "result": {
         "title": "Result",
         "compileOutput": "Compiler output",
-        "input": "In",
         "expected": "Expected output",
         "actual": "Your program printed",
         "tests": "Tests",

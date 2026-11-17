@@ -258,7 +258,6 @@
         "doneTitle": "Bạn đã ôn xong hôm nay",
         "doneBody": "Đạt mục tiêu {daily} thẻ. Quay lại ngày mai để ôn tiếp.",
         "lockedTitle": "Cần Premium",
-        "lockedBody": "{count} mục đang chờ sau Premium: các thẻ còn lại của bộ thẻ và câu hỏi ôn tập của Bản chất.",
         "upsell": "Mở khoá bằng Premium",
         "upsellNote": "Premium mở mọi thẻ và câu hỏi ôn tập từ các bài đã học.",
         "queueTitle": "Hàng đợi hôm nay",
@@ -335,7 +334,6 @@
         "courseLabel": "Khoá",
         "courseAll": "Mọi khoá",
         "cards": "{count} thẻ",
-        "free": "{count} thẻ miễn phí",
         "partlyLocked": "Một phần cần Premium",
         "add": "Thêm",
         "added": "Đã thêm",
@@ -448,19 +446,13 @@
         "accepted": "Accepted"
       },
       "verdict": {
-        "queued": "Đang xếp hàng",
-        "running": "Đang chấm",
         "accepted": "Accepted",
         "wrongAnswer": "Sai đáp án",
-        "timeLimit": "Quá thời gian",
-        "compileError": "Lỗi biên dịch",
-        "runtimeError": "Lỗi khi chạy",
-        "internalError": "Máy chấm chưa sẵn sàng"
+        "compileError": "Lỗi biên dịch"
       },
       "result": {
         "title": "Kết quả",
         "compileOutput": "Đầu ra của trình biên dịch",
-        "input": "Vào",
         "expected": "Kết quả mong đợi",
         "actual": "Chương trình của bạn in ra",
         "tests": "Từng test",

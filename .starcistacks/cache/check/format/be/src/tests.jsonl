@@ -18,12 +18,12 @@
 {"findings":[],"hash":"8110fec051a3dab1654b1adb03138a4564043b7998b115a46ca2d2c0012d1357","path":"be/src/tests/fixtures/builders/lesson-read.builder.ts","step":"prettier"}
 {"findings":[],"hash":"7a45954cd0dcee4b0032637415f0add7c30a091cbc55007333955de3281edac0","path":"be/src/tests/fixtures/builders/lesson.builder.ts","step":"prettier"}
 {"findings":[],"hash":"378435fdcbf3b20000ae479b16151af390387e7bbc48601a79c2e3a470e6ca1b","path":"be/src/tests/fixtures/builders/path.builder.ts","step":"prettier"}
-{"findings":[],"hash":"c4c053c8640070f4c17f096d65393b2bdaa5e711f33c216b69ad3954add87c13","path":"be/src/tests/fixtures/builders/practice.builder.ts","step":"prettier"}
+{"findings":[],"hash":"7e0eff2d1850d5acb80a24a92a32973ca4b8367cb8caeb17e8c2b47c5a8bdd54","path":"be/src/tests/fixtures/builders/practice.builder.ts","step":"prettier"}
 {"findings":[],"hash":"c6c0913ab8f43b33af5a0683fbd3529fa925faef9235c427ca8c8682c245dc1b","path":"be/src/tests/fixtures/builders/premium.builder.ts","step":"prettier"}
 {"findings":[],"hash":"f6f40d89b0c8c0dea6dd531d3ea7fbe56d6e0693f70d3040246d4b3fa3b1e561","path":"be/src/tests/fixtures/builders/project.builder.ts","step":"prettier"}
 {"findings":[],"hash":"a99513b12bc731a56bd67dd58d2291d7190ad4543d180ebf60580fa578b7024f","path":"be/src/tests/fixtures/builders/purchase.builder.ts","step":"prettier"}
 {"findings":[],"hash":"bd0785ba4e63cb582b7628f5388232cde47d15cf495b8932213898cd3296ce58","path":"be/src/tests/fixtures/builders/raw-lesson.builder.ts","step":"prettier"}
-{"findings":[],"hash":"7f49b46980b11d237e6e5d743da3dbe84fe7cf2c506e733a77ffe7aa517c2238","path":"be/src/tests/fixtures/builders/review.builder.ts","step":"prettier"}
+{"findings":[],"hash":"a2f9255028cb0d508853dc15724eac40448df64c7d73bafe713102423d60a759","path":"be/src/tests/fixtures/builders/review.builder.ts","step":"prettier"}
 {"findings":[],"hash":"df0fb48c474e58c20c4cc107d67aa2a8f98e3a86a6f7e268ecf42e36e17e7339","path":"be/src/tests/fixtures/builders/seed.builder.ts","step":"prettier"}
 {"findings":[],"hash":"79a0155def737f13caf5dc0442444f2899af1ccebd18d425175ce4da816bdfdc","path":"be/src/tests/fixtures/builders/webhook.builder.ts","step":"prettier"}
 {"findings":[],"hash":"4f05e369fa2d81e985247234c2b71ea425c849ac776ec72cbf29d1e2000d4c76","path":"be/src/tests/fixtures/persistence/attempt.sql.ts","step":"prettier"}
@@ -102,7 +102,7 @@
 {"findings":[],"hash":"f0dbbd516370927927544d4b8140bd921dc302fff083a975d9fc2ab3eca05e76","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"69afbf32e70fec81e2836486b40463e44709a7133c6fb2f9101e4ed46a527d7b","path":"be/src/tests/integration/path/path.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"77f97552fa13683f782b8a5e7769f054fcd769000f5eccbf0f83bd50f37637d9","path":"be/src/tests/integration/payos/payos.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"2da43cc565c46a1ef5fcc5037b710f8846ca600571d0436d346f656476e9e460","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"2eaffb40a972f4e713fbb370177e63e664901b9c2f65dbee337c51968bd48fa2","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f53ab780e05e71bb951ce4c37f220d35001ca9352cdfc5e3d04e0b1c03d55998","path":"be/src/tests/integration/probe/probe.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"141784b6e7dee3c43a0969f72e5a8dec40b220e68ee0b84d4b729c6fbf515c15","path":"be/src/tests/integration/project/attestation.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"60c8b83bf11755fdd143dbae31824139ee268ea275e914b6efdd0adb9c52c74f","path":"be/src/tests/integration/project/fixes.integration-spec.ts","step":"prettier"}
@@ -113,7 +113,7 @@
 {"findings":[],"hash":"ceb81c3983974e439b6b48d02d8edd4f97b4ff94f066d4b4549a77c7e2de0492","path":"be/src/tests/integration/relay/relay-devices.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"0997cc7ec29b6abd94b3a8bd33185ced7eedd73c5899279baeecf292c7502f6f","path":"be/src/tests/integration/relay/relay-feed.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"5cebf0db47e2e5d691b172104e9dcc33dfaa396df98cc1ae0c83fb389dccfd13","path":"be/src/tests/integration/relay/relay-realtime.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"e6e8f30d17f622dac9cddebf80e5a042db8c2fe28fd86f816ccdb291e1a34cd4","path":"be/src/tests/integration/review/review.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"06216eb3fd8e6e15ce3eee5c03e7942c8bc4f88df60fb04df56d864d417676b1","path":"be/src/tests/integration/review/review.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"8304fac5e987086e769776b2e375efae35d10ee08c2aa90780467babc64c89e1","path":"be/src/tests/integration/sepay/sepay.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"e95b96c548139e662fcbd72ae69e1fe2dd3a294a2c81838315391ae4192fac22","path":"be/src/tests/integration/streak/streak.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"051c09d2e086e6b75e867e9ee0e7a7afb745527529adea21204701fea3305291","path":"be/src/tests/tsconfig.json","step":"prettier"}
@@ -137,7 +137,7 @@
 {"findings":[],"hash":"df9b99c2217e6d234711206aa18fb6c6d4a3e00801070a1f7ae7b3c5a2ba73eb","path":"be/src/tests/world/mail-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"8a900dab36b774b5c329f69fc6bb9a59d63fce251ff836ba46f33352d85c576b","path":"be/src/tests/world/object-storage-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"e58a7fcf4dbe2cb9101046a611cfb4c53175e8e8f49b583f5c27ab56de958d03","path":"be/src/tests/world/payos-world.options.ts","step":"prettier"}
-{"findings":[],"hash":"4f11f17886918b2b2142b245006247c92e734bcf0377e36bb51537a5fd5dec76","path":"be/src/tests/world/practice-doors.client.ts","step":"prettier"}
+{"findings":[],"hash":"605de59f68fe4fc7ba9a753c9584026fdd868acde859123fae899fa1260a2c7f","path":"be/src/tests/world/practice-doors.client.ts","step":"prettier"}
 {"findings":[],"hash":"1da185b9f6ab124dd9411355ede2f99ec7912fd65dfd0f4fd0866444c0c9f945","path":"be/src/tests/world/practice-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"1372d6df57d40eab34b09f4887cfd0a1ce95bec5ed2e0ed457242bdec0584145","path":"be/src/tests/world/premium-world.options.ts","step":"prettier"}
 {"findings":[],"hash":"d89b77f3aafcaa4295656891d62f33c6894ecda07c24b4fd7316b8e308cecd32","path":"be/src/tests/world/probe-world.options.ts","step":"prettier"}
