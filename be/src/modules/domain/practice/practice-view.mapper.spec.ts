@@ -2,7 +2,7 @@ import { Test } from "@nestjs/testing"
 import { PRACTICE_HIDDEN_MARK, practiceContentOf } from "@tests/fixtures/builders/practice.builder"
 import * as subject from "./practice-view.mapper"
 import type { PracticeStarterCodes } from "./practice.contracts"
-import type { ProblemListRow, ProblemRow, SubmissionRow } from "./persistence/practice.rows"
+import type { ProblemListRow, ProblemRow, StatusRow, SubmissionRow } from "./persistence/practice.rows"
 
 const SUBJECT: unique symbol = Symbol("practice.practice-view.mapper")
 
@@ -26,7 +26,6 @@ const problemRow = (overrides: Partial<ProblemRow> = {}): ProblemRow => ({
     content: practiceContentOf("sum-two"),
     starter_codes: STARTERS,
     examples: [{ input: "1 2", output: "3" }],
-    rank: 0,
     next_slug: "next-one",
     ...overrides,
 })
@@ -85,22 +84,25 @@ describe("toProblemItemView", () => {
         tags: ["math"],
         order_index: 4,
         status: "attempted",
+        solution_revealed: true,
+        solution_viewed: false,
     }
 
-    it("maps a list row with its lock", () => {
-        expect(toProblemItemView(row, true)).toEqual({
+    it("maps a list row with the solution flags", () => {
+        expect(toProblemItemView(row)).toEqual({
             slug: "sum-two",
             title: "Sum Two",
             difficulty: "hard",
             tags: ["math"],
             status: "attempted",
-            locked: true,
+            solutionRevealed: true,
+            solutionViewedBeforeAccepted: false,
             orderIndex: 4,
         })
     })
 
     it("reads an unknown difficulty as medium", () => {
-        expect(toProblemItemView({ ...row, difficulty: "odd" }, false).difficulty).toBe("medium")
+        expect(toProblemItemView({ ...row, difficulty: "odd" }).difficulty).toBe("medium")
     })
 })
 
@@ -114,8 +116,15 @@ describe("toProblemView", () => {
         ;({ toProblemView } = moduleRef.get<typeof subject>(SUBJECT))
     })
 
-    it("opens an unlocked problem with starter codes, examples and only the hint steps the learner revealed", () => {
-        const view = toProblemView(problemRow(), "en", false, "unsolved", [1, 2])
+    const standing = (overrides: Partial<StatusRow> = {}): StatusRow => ({
+        status: "unsolved",
+        solution_revealed: false,
+        solution_viewed: false,
+        ...overrides,
+    })
+
+    it("opens a problem with starter codes, examples and only the hint steps the learner revealed", () => {
+        const view = toProblemView(problemRow(), "en", standing(), [1, 2])
 
         expect(view).toMatchObject({
             slug: "sum-two",
@@ -123,7 +132,9 @@ describe("toProblemView", () => {
             patternId: "arrays",
             patternTitle: "Arrays",
             statementMarkdown: "en statement sum-two",
-            locked: false,
+            status: "unsolved",
+            solutionRevealed: false,
+            solutionViewedBeforeAccepted: false,
             hintsTotal: 3,
             nextSlug: "next-one",
             examples: [{ input: "1 2", output: "3" }],
@@ -138,15 +149,21 @@ describe("toProblemView", () => {
         expect(view.hintsRevealed.map((hint) => hint.step)).toEqual([1, 2])
     })
 
-    it("answers the statement of a locked problem and nothing a run needs, hints included", () => {
-        const view = toProblemView(problemRow(), "vi", true, "unsolved", [1])
+    it("carries the standing and the solution flags of the learner, and an unsolved problem when there is no standing", () => {
+        const viewed = toProblemView(
+            problemRow(),
+            "vi",
+            standing({ status: "attempted", solution_revealed: true, solution_viewed: true }),
+            [1],
+        )
 
-        expect(view.locked).toBe(true)
-        expect(view.statementMarkdown).toBe("vi statement sum-two")
-        expect(view.starterCodes).toEqual([])
-        expect(view.examples).toEqual([])
-        expect(view.hintsRevealed).toEqual([])
-        expect(view.hintsTotal).toBe(3)
+        expect(viewed).toMatchObject({
+            status: "attempted",
+            solutionRevealed: true,
+            solutionViewedBeforeAccepted: true,
+        })
+        expect(viewed.statementMarkdown).toBe("vi statement sum-two")
+        expect(toProblemView(problemRow(), "vi", undefined, []).status).toBe("unsolved")
     })
 
     it("never carries a hidden test or a solution", () => {
@@ -156,7 +173,7 @@ describe("toProblemView", () => {
             solutions: { python: PRACTICE_HIDDEN_MARK },
         }
 
-        expect(JSON.stringify(toProblemView(stored, "en", false, "accepted", [1, 2, 3]))).not.toContain(
+        expect(JSON.stringify(toProblemView(stored, "en", standing({ status: "accepted" }), [1, 2, 3]))).not.toContain(
             PRACTICE_HIDDEN_MARK,
         )
     })

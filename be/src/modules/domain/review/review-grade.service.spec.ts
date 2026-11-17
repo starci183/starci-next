@@ -1,7 +1,6 @@
 import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
 import { REVIEW_LEARNER, cardRowOf, stateRowOf } from "@tests/fixtures/builders/review.builder"
-import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { StreakService } from "@modules/domain/streak"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
@@ -33,7 +32,6 @@ interface Options {
     /** The state the transaction locks; defaults to the state. */
     readonly locked?: StateRow | null
     readonly card?: CardRow | null
-    readonly premium?: boolean
     readonly stored?: string | null
     readonly remaining?: number
 }
@@ -41,8 +39,6 @@ interface Options {
 const build = async (options: Options = {}) => {
     const state = options.state === undefined ? stateRowOf({ flipped_revision: 1 }) : options.state
     const locked = options.locked === undefined ? state : options.locked
-    const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(options.premium ?? true)
     const streak = mock<StreakService>()
     streak.recordStreakAction.mockResolvedValue({ counted: true, day: "2026-11-08" })
     const logger = mock<Logger>()
@@ -68,7 +64,6 @@ const build = async (options: Options = {}) => {
             ReviewGradeService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
-            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: REVIEW_SCHEDULER, useValue: scheduler },
             { provide: LOGGER, useValue: logger },
             { provide: StreakService, useValue: streak },
@@ -249,23 +244,8 @@ describe("ReviewGradeService grade refusals", () => {
 })
 
 describe("ReviewGradeService grade access", () => {
-    it("refuses a premium card and a retrieval item to a learner without Premium", async () => {
-        const premiumCard = await build({ premium: false, card: cardRowOf({ is_premium: true }) })
-        const retrieval = await build({
-            premium: false,
-            state: stateRowOf({ item_id: "retrieval:a/b", source: "retrieval" }),
-        })
-
-        await expect(premiumCard.service.grade(params())).rejects.toMatchObject({
-            code: ReviewErrorCode.PremiumRequired,
-        })
-        await expect(retrieval.service.grade(params({ itemId: "retrieval:a/b" }))).rejects.toMatchObject({
-            code: ReviewErrorCode.PremiumRequired,
-        })
-    })
-
-    it("lets a free learner grade a free card", async () => {
-        const { service } = await build({ premium: false })
+    it("lets any learner grade a card they hold, with no Premium check in the way", async () => {
+        const { service } = await build()
 
         await expect(service.grade(params())).resolves.toMatchObject({ itemId: CARD_ID })
     })

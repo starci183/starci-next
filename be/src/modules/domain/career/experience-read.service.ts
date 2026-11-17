@@ -6,7 +6,9 @@ import { InjectCareerOptions } from "./career.decorators"
 import type {
     CareerSettings,
     MyExperienceView,
+    ExperienceLocale,
     ExperienceReviewItemView,
+    PublicCvLineView,
     MyExperienceParams,
     ReviewQueueItemView,
     ReviewQueueTab,
@@ -33,6 +35,7 @@ import {
     SELECT_ITEM,
     SELECT_LEARNER_ITEMS,
     SELECT_PENDING_ITEMS,
+    SELECT_PUBLIC_ITEMS,
     SELECT_VERIFIED_ITEMS,
 } from "./persistence/career.sql"
 import { CAREER_ROLES, maySign, requireSignerRole, type ReviewerScope } from "./review-access.policy"
@@ -125,6 +128,28 @@ export class ExperienceReadService {
     async verifiedItems(learnerId: string): Promise<ReadonlyArray<VerifiedExperienceView>> {
         const rows: Array<ItemRow> = await this.entityManager.query(SELECT_VERIFIED_ITEMS, [learnerId, LIST_ROWS_MAX])
         return rows.map((row) => toVerifiedExperienceView(row))
+    }
+
+    /**
+     * The verified lines a learner shows publicly in one locale, newest signature first: nothing pending, returned or revoked, and
+     * nothing the learner keeps private; each line carries its public verification code and signing date, never a score or a
+     * reviewer.
+     */
+    async publicLines(learnerId: string, locale: ExperienceLocale): Promise<ReadonlyArray<PublicCvLineView>> {
+        const rows: Array<ItemRow> = await this.entityManager.query(SELECT_PUBLIC_ITEMS, [learnerId, LIST_ROWS_MAX])
+        return rows.flatMap((row): Array<PublicCvLineView> => {
+            const line = row.line ?? row.draft_line
+            return line === null
+                ? []
+                : [
+                      {
+                          line: line[locale],
+                          part: row.part,
+                          verificationCode: row.verification_code,
+                          signedAt: (row.signed_at ?? row.updated_at).toISOString(),
+                      },
+                  ]
+        })
     }
 
     /** Refuses an item the signer may not see: their own, or one outside a reviewer's scope that is not assigned to them. */

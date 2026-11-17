@@ -12,30 +12,30 @@ ON CONFLICT (deck_id, version) DO NOTHING
 RETURNING deck_id`
 
 /**
- * Stores the cards of a deck version from a JSON array of {item_id, sort_index, is_premium, level, langs, front, back}
+ * Stores the cards of a deck version from a JSON array of {item_id, sort_index, level, langs, front, back}
  * ($1 deck, $2 version, $3 cards).
  */
 export const INSERT_CARDS: ReturnType<typeof sql> = sql`INSERT INTO review_cards (
-    item_id, version, deck_id, sort_index, is_premium, level, langs, front, back
+    item_id, version, deck_id, sort_index, level, langs, front, back
 )
-SELECT c.item_id, $2::text, $1::text, c.sort_index, c.is_premium, c.level, c.langs, c.front, c.back
+SELECT c.item_id, $2::text, $1::text, c.sort_index, c.level, c.langs, c.front, c.back
 FROM jsonb_to_recordset($3::jsonb) AS c(
-    item_id text, sort_index integer, is_premium boolean, level text, langs text, front jsonb, back jsonb
+    item_id text, sort_index integer, level text, langs text, front jsonb, back jsonb
 )`
 
 /**
  * Makes a version the live one of its deck ($1 deck, $2 course, $3 sort index, $4 version, $5 difficulty, $6 titles,
- * $7 descriptions, $8 module refs, $9 tracks, $10 card count, $11 free card count, $12 now).
+ * $7 descriptions, $8 module refs, $9 tracks, $10 card count, $11 now).
  */
 export const UPSERT_DECK: ReturnType<typeof sql> = sql`INSERT INTO review_decks (
     deck_id, course, sort_index, live_version, difficulty, titles, descriptions, module_refs, tracks, card_count,
-    free_card_count, updated_at
+    updated_at
 ) VALUES ($1::text, $2::text, $3::int, $4::text, $5::text, $6::jsonb, $7::jsonb, $8::jsonb, $9::jsonb, $10::int,
-    $11::int, $12::timestamptz)
+    $11::timestamptz)
 ON CONFLICT (deck_id) DO UPDATE SET course = EXCLUDED.course, sort_index = EXCLUDED.sort_index,
     live_version = EXCLUDED.live_version, difficulty = EXCLUDED.difficulty, titles = EXCLUDED.titles,
     descriptions = EXCLUDED.descriptions, module_refs = EXCLUDED.module_refs, tracks = EXCLUDED.tracks,
-    card_count = EXCLUDED.card_count, free_card_count = EXCLUDED.free_card_count, updated_at = EXCLUDED.updated_at`
+    card_count = EXCLUDED.card_count, updated_at = EXCLUDED.updated_at`
 
 /** Reads the daily goal of a learner ($1 learner). */
 export const SELECT_GOAL: ReturnType<typeof sql> =
@@ -52,7 +52,7 @@ ON CONFLICT (learner_id) DO UPDATE SET daily_goal = EXCLUDED.daily_goal, updated
  */
 export const SELECT_QUEUE: ReturnType<typeof sql> = sql`SELECT s.item_id, s.source, s.status, s.step::int AS step,
     s.due_on::text AS due_on, s.deck_id, s.lesson_id, s.activity_id, s.lesson_version, s.last_revision,
-    s.flipped_revision, c.is_premium, c.level, d.titles AS deck_titles
+    s.flipped_revision, c.level, d.titles AS deck_titles
 FROM review_states s
 LEFT JOIN review_decks d ON d.deck_id = s.deck_id
 LEFT JOIN review_cards c ON c.item_id = s.item_id AND c.version = d.live_version
@@ -65,14 +65,13 @@ LIMIT $2::int`
 export const COUNT_REVIEWS_ON: ReturnType<typeof sql> =
     sql`SELECT count(*)::int AS total FROM review_reviews WHERE learner_id = $1::uuid AND answered_on = $2::date`
 
-/** Counts the items still due on or before a day that the learner can review ($1 learner, $2 day, $3 premium). */
+/** Counts the items still due on or before a day ($1 learner, $2 day). */
 export const COUNT_REMAINING_DUE: ReturnType<typeof sql> = sql`SELECT count(*)::int AS total
 FROM review_states s
 LEFT JOIN review_decks d ON d.deck_id = s.deck_id
 LEFT JOIN review_cards c ON c.item_id = s.item_id AND c.version = d.live_version
 WHERE s.learner_id = $1::uuid AND s.status IN ('learning', 'review') AND s.due_on <= $2::date
-    AND (s.source = 'retrieval' OR c.item_id IS NOT NULL)
-    AND ($3::boolean OR (s.source = 'flashcard' AND c.is_premium = false))`
+    AND (s.source = 'retrieval' OR c.item_id IS NOT NULL)`
 
 /** Reads the state of an item and locks it ($1 learner, $2 item). */
 export const SELECT_STATE_LOCKED: ReturnType<typeof sql> = sql`SELECT item_id, source, status, step::int AS step,
@@ -86,8 +85,7 @@ export const SELECT_STATE: ReturnType<typeof sql> = sql`SELECT item_id, source, 
 FROM review_states WHERE learner_id = $1::uuid AND item_id = $2::text`
 
 /** Reads a card of the live version of its deck ($1 item). */
-export const SELECT_CARD: ReturnType<typeof sql> =
-    sql`SELECT c.item_id, c.deck_id, c.is_premium, c.level, c.langs, c.front,
+export const SELECT_CARD: ReturnType<typeof sql> = sql`SELECT c.item_id, c.deck_id, c.level, c.langs, c.front,
     c.back, d.titles AS deck_titles
 FROM review_cards c
 JOIN review_decks d ON d.deck_id = c.deck_id AND d.live_version = c.version
@@ -126,7 +124,7 @@ WHERE learner_id = $1::uuid AND item_id = $2::text`
 /** Lists the decks with whether the learner added each ($1 learner, $2 track or null, $3 row bound). */
 export const SELECT_DECKS: ReturnType<typeof sql> =
     sql`SELECT d.deck_id, d.course, d.titles, d.descriptions, d.difficulty,
-    d.card_count, d.free_card_count, d.tracks, COALESCE(l.active, false) AS added
+    d.card_count, d.tracks, COALESCE(l.active, false) AS added
 FROM review_decks d
 LEFT JOIN review_learner_decks l ON l.deck_id = d.deck_id AND l.learner_id = $1::uuid
 WHERE $2::text IS NULL OR d.tracks @> jsonb_build_array($2::text)
@@ -219,3 +217,33 @@ FROM review_states
 WHERE learner_id = $1::uuid AND lesson_id = $2::text AND source = 'retrieval'
 ORDER BY after_days, due_on, item_id
 LIMIT $3::int`
+
+/** Reads one deck with whether the learner added it ($1 learner, $2 deck). */
+export const SELECT_DECK: ReturnType<typeof sql> =
+    sql`SELECT d.deck_id, d.course, d.titles, d.descriptions, d.difficulty,
+    d.card_count, d.tracks, COALESCE(l.active, false) AS added
+FROM review_decks d
+LEFT JOIN review_learner_decks l ON l.deck_id = d.deck_id AND l.learner_id = $1::uuid
+WHERE d.deck_id = $2::text
+LIMIT 1`
+
+/** Reads the first cards of the live version of a deck, for a sample ($1 deck, $2 how many). */
+export const SELECT_SAMPLE_CARDS: ReturnType<typeof sql> = sql`SELECT c.item_id, c.front, c.back
+FROM review_cards c
+JOIN review_decks d ON d.deck_id = c.deck_id AND d.live_version = c.version
+WHERE d.deck_id = $1::text
+ORDER BY c.sort_index
+LIMIT $2::int`
+
+/**
+ * Counts what a learner holds of a deck, how many of those were reviewed and how many are in the review stage and not due
+ * before the day after today ($1 learner, $2 deck, $3 today).
+ */
+export const SELECT_DECK_PROGRESS: ReturnType<typeof sql> = sql`SELECT count(*)::int AS total,
+    (count(*) FILTER (WHERE rv.reviewed))::int AS learned,
+    (count(*) FILTER (WHERE rv.reviewed AND s.status = 'review' AND s.due_on > $3::date))::int AS remembering
+FROM review_states s
+LEFT JOIN LATERAL (
+    SELECT true AS reviewed FROM review_reviews r WHERE r.learner_id = s.learner_id AND r.item_id = s.item_id LIMIT 1
+) rv ON true
+WHERE s.learner_id = $1::uuid AND s.deck_id = $2::text AND s.status <> 'suspended'`

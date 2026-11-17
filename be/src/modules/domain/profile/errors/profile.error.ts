@@ -12,6 +12,8 @@ export enum ProfileErrorCode {
     AvatarKeyInvalid = "PROFILE_AVATAR_KEY_INVALID",
     /** The learner confirms an avatar the store does not hold, or holds in another type or size than asked. */
     AvatarNotUploaded = "PROFILE_AVATAR_NOT_UPLOADED",
+    /** No public CV has this slug: unknown, or its learner keeps it private. */
+    CvNotFound = "PROFILE_CV_NOT_FOUND",
     /** No object store is configured for this environment. */
     AvatarUnavailable = "PROFILE_AVATAR_UNAVAILABLE",
 }
@@ -23,6 +25,7 @@ export const PROFILE_ERROR_KINDS: Record<ProfileErrorCode, ErrorKind> = {
     [ProfileErrorCode.AvatarTooLarge]: "invalid",
     [ProfileErrorCode.AvatarKeyInvalid]: "invalid",
     [ProfileErrorCode.AvatarNotUploaded]: "not-found",
+    [ProfileErrorCode.CvNotFound]: "not-found",
     [ProfileErrorCode.AvatarUnavailable]: "unavailable",
 }
 

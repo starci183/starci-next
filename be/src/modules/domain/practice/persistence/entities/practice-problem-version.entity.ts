@@ -74,6 +74,10 @@ export class PracticeProblemVersionEntity {
     @Column({ name: "solutions", type: "jsonb" })
     solutions!: PracticeSolutions
 
+    /** The written explanation of the solution by locale; an empty text when the author wrote none. */
+    @Column({ name: "explanations", type: "jsonb" })
+    explanations!: Readonly<Record<string, string>>
+
     /** The SHA-256 of every source file. */
     @Column({ name: "source_hashes", type: "jsonb" })
     sourceHashes!: Readonly<Record<string, string>>

@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing"
 import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import type { MockEntityManager } from "@starci/jest-preset"
-import { practiceFilesOf } from "@tests/fixtures/builders/practice.builder"
+import { practiceFilesOf, practiceIntroFilesOf } from "@tests/fixtures/builders/practice.builder"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { LOGGER, type Logger } from "@modules/platform/logging"
@@ -11,7 +11,12 @@ import { PracticeImportService } from "./practice-import.service"
 import { PRACTICE_SOURCE, type PracticeSourceReader } from "./practice-source.port"
 import { PracticeLogEvent } from "./practice.log-events"
 import type { PracticeSourceEntry, PracticeSourceFile } from "./practice.contracts"
-import { INSERT_VERSION, SELECT_VERSION_HASH, SUPERSEDE_PUBLISHED } from "./persistence/practice.sql"
+import {
+    INSERT_VERSION,
+    SELECT_VERSION_HASH,
+    SUPERSEDE_PUBLISHED,
+    UPSERT_PATTERN_INTRO,
+} from "./persistence/practice.sql"
 
 const NOW = new Date("2026-11-08T10:00:00.000Z")
 const DIRECTORY = "coding-problems"
@@ -23,10 +28,12 @@ const build = async (
     em: MockEntityManager,
     entries: ReadonlyArray<PracticeSourceEntry>,
     files: (entry: PracticeSourceEntry) => ReadonlyArray<PracticeSourceFile>,
+    intros: (pattern: string) => ReadonlyArray<PracticeSourceFile> = () => [],
 ) => {
     const source = mock<PracticeSourceReader>()
     source.entries.mockResolvedValue(entries)
     source.read.mockImplementation((_directory, entry) => Promise.resolve(files(entry)))
+    source.intros.mockImplementation((_directory, pattern) => Promise.resolve(intros(pattern)))
     const logger = mock<Logger>()
     const transaction = fakeTransaction(em)
     const moduleRef = await Test.createTestingModule({
@@ -46,6 +53,7 @@ const queriesOf = (held: ReadonlyArray<{ content_hash: string }>, inserted = [{ 
         [SELECT_VERSION_HASH, held],
         [SUPERSEDE_PUBLISHED, []],
         [INSERT_VERSION, inserted],
+        [UPSERT_PATTERN_INTRO, []],
     ] as const
 
 describe("PracticeImportService import", () => {
@@ -65,6 +73,7 @@ describe("PracticeImportService import", () => {
         expect(insert[1]).toBe(REF)
         expect(insert[2]).toBe(buildPracticeDraft(ENTRY, files).draft?.contentHash)
         expect(insert[16]).toEqual(NOW)
+        expect(insert[17]).toBe(JSON.stringify({ vi: "", en: "" }))
         expect(transaction.commits).toBe(1)
         expect(logger.info).toHaveBeenCalledWith(
             PracticeLogEvent.Imported,
@@ -96,6 +105,43 @@ describe("PracticeImportService import", () => {
 
         expect(em.query).not.toHaveBeenCalledWith(INSERT_VERSION, expect.anything())
         expect(transaction.commits).toBe(0)
+    })
+})
+
+describe("PracticeImportService import of explanations and introductions", () => {
+    it("stores the explanation of the solution of each locale next to the reference code", async () => {
+        const em = mockEntityManager({ query: queriesOf([]) })
+        const { service } = await build(em, [ENTRY], () => practiceFilesOf({ explained: true }))
+
+        await service.import({ directory: DIRECTORY, ref: REF, only: "" })
+
+        const insert = em.query.mock.calls.find((call) => call[0] === INSERT_VERSION)?.[1] ?? []
+        expect(insert[17]).toBe(JSON.stringify({ vi: "vi explanation", en: "en explanation" }))
+    })
+
+    it("stores the introduction of a pattern in each locale it has a file for, once per pattern", async () => {
+        const em = mockEntityManager({ query: queriesOf([]) })
+        const { service, source } = await build(
+            em,
+            [ENTRY, { pattern: "arrays", slug: "other" }],
+            () => practiceFilesOf(),
+            () => practiceIntroFilesOf({ en: "when to use it\n" }),
+        )
+
+        await service.import({ directory: DIRECTORY, ref: REF, only: "" })
+
+        expect(source.intros).toHaveBeenCalledTimes(1)
+        expect(em.query).toHaveBeenCalledWith(UPSERT_PATTERN_INTRO, ["arrays", "en", "when to use it", NOW])
+        expect(em.query).not.toHaveBeenCalledWith(UPSERT_PATTERN_INTRO, expect.arrayContaining(["vi"]))
+    })
+
+    it("stores no introduction for a pattern whose folder has none", async () => {
+        const em = mockEntityManager({ query: queriesOf([]) })
+        const { service } = await build(em, [ENTRY], () => practiceFilesOf())
+
+        await service.import({ directory: DIRECTORY, ref: REF, only: "" })
+
+        expect(em.query).not.toHaveBeenCalledWith(UPSERT_PATTERN_INTRO, expect.anything())
     })
 })
 

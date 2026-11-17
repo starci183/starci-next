@@ -86,7 +86,6 @@ describe("ReviewImportService import", () => {
                 contentHash: deckHashOf(deckFilesOf()),
                 files: 6,
                 cards: 2,
-                freeCards: 1,
                 issues: [],
             },
         ])
@@ -97,7 +96,7 @@ describe("ReviewImportService import", () => {
         ])
         expect(em.query).toHaveBeenCalledWith(
             UPSERT_DECK,
-            expect.arrayContaining([DECK.deckId, "origin-main", "hard", 2, 1, NOW]),
+            expect.arrayContaining([DECK.deckId, "origin-main", "hard", 2, NOW]),
         )
         expect(logger.info).toHaveBeenCalledWith(
             ReviewLogEvent.DeckImported,

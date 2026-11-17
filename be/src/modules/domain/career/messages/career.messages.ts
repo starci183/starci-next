@@ -17,6 +17,10 @@ export const CAREER_MESSAGES: MessageBundle = {
         "errors.CAREER_REVIEWER_NOT_FOUND": "Không tìm thấy người duyệt này.",
         "errors.CAREER_ITEM_TYPE_UNKNOWN": "Loại kinh nghiệm này không có trong danh mục.",
         "errors.CAREER_ITEM_NOT_SAVED": "Không thể lưu mục kinh nghiệm; hãy thử lại.",
+        "errors.CAREER_PRACTICE_INCOMPLETE":
+            "Hãy giải xong và đạt Accepted mọi bài của nhóm này trước khi nhận kinh nghiệm.",
+        "errors.CAREER_PRACTICE_SOLUTION_VIEWED":
+            "Bạn đã xem lời giải mẫu trước khi đạt Accepted ở một bài của nhóm này nên chưa nhận được kinh nghiệm.",
         "errors.CAREER_DEV_SEED_DISABLED": "Dữ liệu mẫu kinh nghiệm chỉ chạy được trong môi trường phát triển.",
         "lines.essentials.concept-proved":
             "Áp dụng **<concept>** trong dự án <project> bằng **<language>**: tự viết test bắt được lỗi được gieo sẵn ở bài <lesson> (StarCi Bản chất).",
@@ -50,6 +54,10 @@ export const CAREER_MESSAGES: MessageBundle = {
         "errors.CAREER_REVIEWER_NOT_FOUND": "This reviewer was not found.",
         "errors.CAREER_ITEM_TYPE_UNKNOWN": "This experience type is not in the catalog.",
         "errors.CAREER_ITEM_NOT_SAVED": "The experience item could not be saved; try again.",
+        "errors.CAREER_PRACTICE_INCOMPLETE":
+            "Get every problem of this pattern Accepted before you claim its experience.",
+        "errors.CAREER_PRACTICE_SOLUTION_VIEWED":
+            "You viewed the reference solution of a problem of this pattern before it was Accepted, so its experience cannot be claimed.",
         "errors.CAREER_DEV_SEED_DISABLED": "The sample experience items run in the development environment only.",
         "lines.essentials.concept-proved":
             "Applied **<concept>** in the <project> project in **<language>**: wrote tests that caught the seeded bug of the <lesson> lesson (StarCi Essentials).",

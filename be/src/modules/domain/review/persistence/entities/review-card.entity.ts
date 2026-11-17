@@ -19,10 +19,6 @@ export class ReviewCardEntity {
     @Column({ name: "sort_index", type: "integer" })
     sortIndex!: number
 
-    /** Whether the card needs Premium. */
-    @Column({ name: "is_premium", type: "boolean" })
-    isPremium!: boolean
-
     /** junior, middle, senior or staff. */
     @Column({ name: "level", type: "varchar", length: 16 })
     level!: string

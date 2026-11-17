@@ -3,7 +3,7 @@
  *
  * - `ProgressService.read(learnerId, locale)`: the ribbon (proved concepts, streak, lessons done, builds done), Essentials (topics,
  *   lessons, the opener before and after, the parts the plan opens), the harness (builds, stages, doctor and trial verdicts),
- *   Projects (concepts proved or practising, milestones; a subscriber only), Review (due cards and the streak) and a recent-activity
+ *   Projects (concepts proved or practising, milestones; a subscriber only), Review (due cards and the streak), Practice (accepted problems per pattern) and a recent-activity
  *   timeline.
  *
  * It stores nothing and owns no table: every number is read from the capability that owns it. A source that fails is logged and

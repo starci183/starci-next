@@ -1,5 +1,6 @@
 import type { Type } from "@nestjs/common"
 import type { ExperienceNotifier } from "./experience-notifier.port"
+import type { ExperiencePracticeSource } from "./experience-practice.port"
 
 /** Options of the career capability; every review setting falls back to its proposed default (Q-CA-3..8). */
 export interface CareerOptions {
@@ -19,6 +20,8 @@ export interface CareerOptions {
     readonly hiringMinVerified?: number
     /** The notifier of verified and returned items; absent, `SilentNotifierClient`, which sends nothing. */
     readonly notifier?: Type<ExperienceNotifier>
+    /** The practice source of the claimed pattern experience; absent, `EmptyPracticeClient`, which has no problem to claim. */
+    readonly practice?: Type<ExperiencePracticeSource>
     /** Whether the development seed of experience items may run; absent, false, so production refuses it. */
     readonly devSeed?: boolean
 }

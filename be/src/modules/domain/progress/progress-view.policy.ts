@@ -2,7 +2,9 @@ import { buildEssentials } from "./progress-essentials.policy"
 import { buildHarness } from "./progress-harness.policy"
 import type {
     LearnerProgressView,
+    PracticePatternSource,
     ProgressActivityView,
+    ProgressPracticeView,
     ProgressProjectsView,
     ProgressReviewView,
     ProgressRibbonView,
@@ -52,6 +54,24 @@ export const buildReview = (review: ReviewSource | null, streak: StreakSource | 
               longestStreak: streak?.longest ?? 0,
               todayCounted: streak?.todayCounted ?? false,
           }
+
+/** The Practice section from the patterns in catalog order; a pattern is in progress with some, not all, problems accepted. */
+export const buildPractice = (patterns: ReadonlyArray<PracticePatternSource>): ProgressPracticeView => ({
+    acceptedCount: patterns.reduce((sum, pattern) => sum + pattern.acceptedCount, 0),
+    problemCount: patterns.reduce((sum, pattern) => sum + pattern.problemCount, 0),
+    patternsInProgress: patterns.filter(
+        (pattern) => pattern.acceptedCount > 0 && pattern.acceptedCount < pattern.problemCount,
+    ).length,
+    patternsDone: patterns.filter(
+        (pattern) => pattern.problemCount > 0 && pattern.acceptedCount >= pattern.problemCount,
+    ).length,
+    patterns: patterns.map((pattern) => ({
+        patternId: pattern.patternId,
+        title: pattern.title,
+        acceptedCount: pattern.acceptedCount,
+        problemCount: pattern.problemCount,
+    })),
+})
 
 /** The recent-activity timeline: finished lessons, proved concepts, signed items and harness stages, newest first. */
 export const buildActivity = (sources: ProgressSources): Array<ProgressActivityView> => {
@@ -104,6 +124,7 @@ export const buildProgress = (sources: ProgressSources): LearnerProgressView => 
         projects: isPremium && sources.projects !== null ? buildProjects(sources.projects) : null,
         projectsLocked: !isPremium,
         review: buildReview(sources.review, sources.streak),
+        practice: sources.practice === null ? null : buildPractice(sources.practice),
         activity: buildActivity(sources),
         unavailable: [...sources.unavailable],
     }

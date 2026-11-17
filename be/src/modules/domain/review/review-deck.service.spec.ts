@@ -8,9 +8,13 @@ import {
     COUNT_ACTIVE_DAYS,
     INSERT_DECK_STATES,
     RESTORE_DECK_STATES,
+    SELECT_DECK,
     SELECT_DECKS,
     SELECT_DECK_EXISTS,
+    SELECT_DECK_PROGRESS,
+    SELECT_GOAL,
     SELECT_RECALL,
+    SELECT_SAMPLE_CARDS,
     SUSPEND_DECK_STATES,
     UPSERT_GOAL,
     UPSERT_LEARNER_DECK,
@@ -27,7 +31,6 @@ const deckRow = {
     descriptions: { vi: "vi description", en: "en description" },
     difficulty: "hard",
     card_count: 20,
-    free_card_count: 3,
     tracks: ["backend-fullstack"],
     added: true,
 }
@@ -77,7 +80,6 @@ describe("ReviewDeckService decks", () => {
                 description: "en description",
                 difficulty: "hard",
                 cardCount: 20,
-                freeCardCount: 3,
                 added: true,
                 track: ["backend-fullstack"],
             },
@@ -187,6 +189,99 @@ describe("ReviewDeckService stats", () => {
         await expect(service.stats(REVIEW_LEARNER, { days: 7 })).resolves.toEqual({
             activeDaysPerWeek: 0,
             recallRateByReview: [],
+        })
+    })
+})
+
+const front = (question: string) => ({
+    vi: { question: `vi ${question}`, tags: [] },
+    en: { question, tags: ["secret-tag"] },
+})
+const back = (clozes: ReadonlyArray<{ n: number; term: string; distractors: ReadonlyArray<string> }>) => ({
+    vi: { answer: "vi SECRET-ANSWER", clozes },
+    en: { answer: "en SECRET-ANSWER", clozes },
+})
+const cards = [
+    { item_id: "card:d/0", front: front("What is DI?"), back: back([]) },
+    {
+        item_id: "card:d/1",
+        front: front("A {{c1::container}} builds the graph"),
+        back: back([{ n: 1, term: "container", distractors: ["factory"] }]),
+    },
+    { item_id: "card:d/2", front: front("Why?"), back: back([{ n: 1, term: "x", distractors: ["y"] }]) },
+]
+
+const buildDetail = async (options: { added?: boolean; goal?: number | null; deck?: boolean } = {}) => {
+    const em = mockEntityManager({
+        query: [
+            [SELECT_DECK, options.deck === false ? [] : [{ ...deckRow, added: options.added ?? true }]],
+            [SELECT_SAMPLE_CARDS, cards],
+            [SELECT_DECK_PROGRESS, [{ total: 20, learned: 8, remembering: 5 }]],
+            [SELECT_GOAL, options.goal === null ? [] : [{ daily_goal: options.goal ?? 10 }]],
+        ],
+    })
+    const moduleRef = await Test.createTestingModule({
+        providers: [
+            ReviewDeckService,
+            { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
+            { provide: CLOCK, useValue: new FakeClock(NOW) },
+        ],
+    }).compile()
+    return { service: moduleRef.get(ReviewDeckService), em }
+}
+
+describe("ReviewDeckService deck", () => {
+    it("answers the deck, three sample questions with the kind of each and never an answer, and the progress of the viewer", async () => {
+        const { service, em } = await buildDetail()
+
+        const detail = await service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "en" })
+
+        expect(detail.deck).toMatchObject({ deckId: DECK, title: "en Module 1", cardCount: 20, added: true })
+        expect(detail.sampleCards).toEqual([
+            { cardId: "card:d/0", kind: "direct", question: "What is DI?" },
+            { cardId: "card:d/1", kind: "cloze", question: "A ____ builds the graph" },
+            { cardId: "card:d/2", kind: "cloze", question: "Why?" },
+        ])
+        expect(JSON.stringify(detail)).not.toContain("SECRET")
+        expect(detail.progress).toEqual({ total: 20, learned: 8, remembering: 5, needsReview: 3 })
+        expect(em.query).toHaveBeenCalledWith(SELECT_SAMPLE_CARDS, [DECK, 3])
+        expect(em.query).toHaveBeenCalledWith(SELECT_DECK_PROGRESS, [REVIEW_LEARNER, DECK, "2026-11-08"])
+    })
+})
+
+describe("ReviewDeckService deck pace and refusals", () => {
+    it("paces new cards by the smaller of the daily goal and the cards not yet learned", async () => {
+        const wide = await buildDetail({ goal: 30 })
+        const narrow = await buildDetail({ goal: 5 })
+        const unset = await buildDetail({ goal: null })
+
+        await expect(wide.service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "vi" })).resolves.toMatchObject({
+            estimatedNewPerDay: 12,
+        })
+        await expect(narrow.service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "vi" })).resolves.toMatchObject({
+            estimatedNewPerDay: 5,
+        })
+        await expect(unset.service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "vi" })).resolves.toMatchObject({
+            estimatedNewPerDay: 10,
+        })
+    })
+
+    it("shows no progress for a deck that is not added and paces it over all its cards", async () => {
+        const { service, em } = await buildDetail({ added: false })
+
+        const detail = await service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "vi" })
+
+        expect(detail.progress).toEqual({ total: 0, learned: 0, remembering: 0, needsReview: 0 })
+        expect(detail.estimatedNewPerDay).toBe(10)
+        expect(detail.sampleCards[0]?.question).toBe("vi What is DI?")
+        expect(em.query).not.toHaveBeenCalledWith(SELECT_DECK_PROGRESS, expect.anything())
+    })
+
+    it("refuses an unknown deck with the not found code of the module", async () => {
+        const { service } = await buildDetail({ deck: false })
+
+        await expect(service.deck(REVIEW_LEARNER, { deckId: DECK, locale: "en" })).rejects.toMatchObject({
+            code: ReviewErrorCode.DeckNotFound,
         })
     })
 })

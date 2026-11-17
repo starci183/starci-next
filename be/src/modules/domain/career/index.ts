@@ -15,6 +15,10 @@
  * - `evidence`, `slotValues`, `grade`: StarCi evidence only, never a value the learner typed; every slot of the type's template
  *   must be filled in both locales. A passing grade drafts the CV line and puts the item in ai-graded; a failing one keeps it
  *   practising. The state change and its audit row commit together.
+ * Practice produces through `PracticeExperienceService.claim({ learnerId, patternId })`: the learner claims one pattern, granted only
+ * when every problem of it is Accepted and none had its solution revealed first (CAREER_PRACTICE_INCOMPLETE,
+ * CAREER_PRACTICE_SOLUTION_VIEWED); practice is read through `ExperiencePracticeSource`, bound with
+ * `CareerModule.register({ practice: PracticeReadService })`.
  * Essentials produces through `EssentialsExperienceService.record({ learnerId, lessonId, project })`, and only for a lesson
  * attached to a project (null project: no item).
  *
@@ -31,6 +35,7 @@ export { previewLineOf } from "./cv-line.policy"
 export { EXPERIENCE_PARTS } from "./experience-catalog.policy"
 export { EXPERIENCE_PRODUCER, InjectExperienceProducer } from "./experience-producer.port"
 export { EssentialsExperienceService } from "./essentials-experience.service"
+export { PracticeExperienceService } from "./practice-experience.service"
 export { CareerModule } from "./career.module"
 export { ExperienceSeedService } from "./experience-seed.service"
 export { parseCareerConfig } from "./career.config"

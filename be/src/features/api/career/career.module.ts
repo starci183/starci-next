@@ -10,6 +10,7 @@ import { DecideExperienceHandler } from "./application/decide-experience.handler
 import { RevokeExperienceHandler } from "./application/revoke-experience.handler"
 import { AssignExperienceHandler } from "./application/assign-experience.handler"
 import { SetExperienceReviewerHandler } from "./application/set-experience-reviewer.handler"
+import { ClaimPracticeExperienceHandler } from "./application/claim-practice-experience.handler"
 import { ConfigurableModuleClass } from "./career.module-definition"
 
 @Module({
@@ -25,6 +26,7 @@ import { ConfigurableModuleClass } from "./career.module-definition"
         RevokeExperienceHandler,
         AssignExperienceHandler,
         SetExperienceReviewerHandler,
+        ClaimPracticeExperienceHandler,
     ],
 })
 /** Application handlers of the career feature: the learner's experience items, the review queue, the reviewers and the public verification. */

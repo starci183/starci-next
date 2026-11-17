@@ -1,9 +1,9 @@
 import { Test } from "@nestjs/testing"
 import type { ReviewCloze } from "./review.contracts"
-import { clozeChoices, clozeProblems, parseClozes, revealAnswer } from "./cloze.policy"
+import { blankClozes, clozeChoices, clozeProblems, parseClozes, revealAnswer } from "./cloze.policy"
 
 /** The functions under test, provided the way Nest provides them so the spec builds its subject from a testing module. */
-const SUBJECT = { clozeChoices, clozeProblems, parseClozes, revealAnswer }
+const SUBJECT = { blankClozes, clozeChoices, clozeProblems, parseClozes, revealAnswer }
 
 /** The token the testing module provides the functions under. */
 const SUBJECT_TOKEN: unique symbol = Symbol("review.cloze-policy")
@@ -94,5 +94,23 @@ describe("clozeChoices", () => {
         )
 
         expect(positions.size).toBeGreaterThan(1)
+    })
+})
+
+describe("blankClozes", () => {
+    let subject: typeof SUBJECT
+
+    beforeAll(async () => {
+        subject = await loadSubject()
+    })
+
+    it("replaces every cloze marker with a blank so no term is shown", () => {
+        expect(subject.blankClozes("A {{c1::container::factory,locator}} and a {{c2::scope}} here")).toBe(
+            "A ____ and a ____ here",
+        )
+    })
+
+    it("leaves a text with no marker as it is", () => {
+        expect(subject.blankClozes("Why hand creation to a container?")).toBe("Why hand creation to a container?")
     })
 })

@@ -31,6 +31,9 @@ export const clozeProblems = (clozes: ReadonlyArray<ReviewCloze>): ReadonlyArray
         return problems
     })
 
+/** Replaces each cloze marker of a text with a blank, so a term written in a question is never shown. */
+export const blankClozes = (text: string): string => text.replaceAll(CLOZE, "____")
+
 /** Shows the answer with each cloze term in bold and its distractors dropped. */
 export const revealAnswer = (answer: string): string =>
     answer.replaceAll(CLOZE, (_all, _n: string, term: string) => `**${term.trim()}**`)

@@ -5,6 +5,7 @@ import { PracticeHintService } from "./practice-hint.service"
 import { PracticeImportService } from "./practice-import.service"
 import { PracticeJudgeLanesService } from "./practice-judge-lanes.service"
 import { PracticeReadService } from "./practice-read.service"
+import { PracticeSolutionService } from "./practice-solution.service"
 import { PRACTICE_SOURCE } from "./practice-source.port"
 import { PRACTICE_STREAK } from "./practice-streak.port"
 import { PracticeSubmissionService } from "./practice-submission.service"
@@ -30,8 +31,15 @@ export class PracticeModule extends ConfigurableModuleClass {
                 PracticeReadService,
                 PracticeSubmissionService,
                 PracticeHintService,
+                PracticeSolutionService,
             ],
-            exports: [PracticeImportService, PracticeReadService, PracticeSubmissionService, PracticeHintService],
+            exports: [
+                PracticeImportService,
+                PracticeReadService,
+                PracticeSubmissionService,
+                PracticeHintService,
+                PracticeSolutionService,
+            ],
         }
     }
 }

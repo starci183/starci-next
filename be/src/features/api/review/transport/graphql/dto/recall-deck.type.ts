@@ -27,10 +27,6 @@ export class RecallDeckType {
     @Field(() => Int)
     cardCount!: number
 
-    /** The cards a free learner can review. */
-    @Field(() => Int)
-    freeCardCount!: number
-
     /** Whether the learner added the deck. */
     @Field(() => Boolean)
     added!: boolean

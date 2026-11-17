@@ -57,6 +57,10 @@ type ChosenOutcomePathType {
   chosenAt: String!
 }
 
+input ClaimPracticeExperienceInput {
+  patternId: String! @inputBounds(maxLength: 40)
+}
+
 input ConfirmAvatarUploadInput {
   contentType: String! @inputBounds(maxLength: 100)
   key: String! @inputBounds(maxLength: 200)
@@ -83,6 +87,13 @@ type CriterionGradeType {
   criterion: String!
   evidenceQuote: String!
   level: Int!
+}
+
+type CvLinkType {
+  isPublic: Boolean!
+  path: String!
+  slug: String!
+  verifiedCount: Int!
 }
 
 input DecideExperienceInput {
@@ -491,6 +502,7 @@ type LearnerProgressType {
   essentials: ProgressEssentialsType
   harness: ProgressHarnessType
   plan: String!
+  practice: ProgressPracticeType
   projects: ProgressProjectsType
   projectsLocked: Boolean!
   review: ProgressReviewType
@@ -1008,6 +1020,7 @@ type Mutation {
   bindHarnessBuild(input: BindHarnessBuildInput!): HarnessBuildBindingType!
   checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
   chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
+  claimPracticeExperience(input: ClaimPracticeExperienceInput!): ExperienceItemType!
   confirmAvatarUpload(input: ConfirmAvatarUploadInput!): ProfileType!
   confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
   createMcpToken(input: CreateMcpTokenInput!): McpTokenIssuedType!
@@ -1027,6 +1040,7 @@ type Mutation {
   removeReviewDeck(input: RecallDeckInput!): RecallDeckRemovedType!
   requestAvatarUpload(input: RequestAvatarUploadInput!): AvatarUploadType!
   revealPracticeHint(input: RevealPracticeHintInput!): PracticeHintType!
+  revealPracticeSolution(input: RevealPracticeSolutionInput!): PracticeSolutionType!
   revokeExperience(input: RevokeExperienceInput!): ExperienceItemType!
   revokeMcpToken(input: RevokeMcpTokenInput!): String!
   revokeRelayDevice(input: RevokeRelayDeviceInput!): RevokeRelayDeviceType!
@@ -1034,6 +1048,7 @@ type Mutation {
   runPractice(input: PracticeSolveInput!): PracticeSubmissionType!
   runProjectProbes(input: RunProjectProbesInput!): ProjectProbeRunType!
   saveLessonSimulation(input: SaveLessonSimulationInput!): LessonProgressSimulationType!
+  setCvVisibility(input: SetCvVisibilityInput!): CvLinkType!
   setExperienceReviewer(input: SetExperienceReviewerInput!): ReviewerType!
   setProfileName(input: SetProfileNameInput!): ProfileType!
   setProjectConcept(input: SetProjectConceptInput!): ProjectConceptType!
@@ -1159,10 +1174,28 @@ type PracticeHintType {
   title: String!
 }
 
+input PracticeNextInput {
+  locale: String! = "vi"
+  patternId: String = null @inputBounds(maxLength: 40)
+}
+
+type PracticeNextProblemType {
+  patternId: String!
+  patternProblemCount: Int!
+  patternTitle: String!
+  position: Int!
+  slug: String!
+  title: String!
+}
+
+type PracticeNextType {
+  next: PracticeNextProblemType
+  resume: PracticeResumeProblemType
+}
+
 type PracticePatternType {
   acceptedCount: Int!
-  freeCount: Int!
-  locked: Boolean!
+  intro: String!
   patternId: String!
   problemCount: Int!
   title: String!
@@ -1179,9 +1212,10 @@ input PracticeProblemInput {
 
 type PracticeProblemItemType {
   difficulty: String!
-  locked: Boolean!
   orderIndex: Int!
   slug: String!
+  solutionRevealed: Boolean!
+  solutionViewedBeforeAccepted: Boolean!
   status: String!
   tags: [String!]!
   title: String!
@@ -1192,12 +1226,13 @@ type PracticeProblemType {
   examples: [PracticeExampleType!]!
   hintsRevealed: [PracticeHintType!]!
   hintsTotal: Int!
-  locked: Boolean!
   memoryLimitKb: Int!
   nextSlug: String
   patternId: String!
   patternTitle: String!
   slug: String!
+  solutionRevealed: Boolean!
+  solutionViewedBeforeAccepted: Boolean!
   starterCodes: [PracticeStarterCodeType!]!
   statementMarkdown: String!
   status: String!
@@ -1220,6 +1255,23 @@ type PracticeReadinessItemType {
   patternId: String!
   problemCount: Int!
   title: String!
+}
+
+type PracticeResumeProblemType {
+  attempts: Int!
+  failedTestIndex: Int
+  lastVerdict: String!
+  patternId: String!
+  patternTitle: String!
+  slug: String!
+  title: String!
+}
+
+type PracticeSolutionType {
+  countedForExperience: Boolean!
+  revealedAt: String!
+  slug: String!
+  solution: String!
 }
 
 input PracticeSolveInput {
@@ -1351,6 +1403,21 @@ type ProgressPartType {
   access: String!
   order: Int!
   part: String!
+}
+
+type ProgressPracticePatternType {
+  acceptedCount: Int!
+  patternId: String!
+  problemCount: Int!
+  title: String!
+}
+
+type ProgressPracticeType {
+  acceptedCount: Int!
+  patterns: [ProgressPracticePatternType!]!
+  patternsDone: Int!
+  patternsInProgress: Int!
+  problemCount: Int!
 }
 
 type ProgressProjectType {
@@ -1654,6 +1721,24 @@ input ProjectsInput {
   locale: String! = "vi"
 }
 
+input PublicCvInput {
+  locale: String! = "vi"
+  slug: String! @inputBounds(maxLength: 60)
+}
+
+type PublicCvLineType {
+  line: String!
+  signedAt: String!
+  source: String!
+  verificationCode: String!
+}
+
+type PublicCvType {
+  avatarUrl: String
+  displayName: String!
+  lines: [PublicCvLineType!]!
+}
+
 type Query {
   experienceReviewers: [ReviewerType!]!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
@@ -1677,11 +1762,13 @@ type Query {
   lessons(input: LessonsInput!): [LessonCatalogItemType!]!
   mcpConnectInfo: McpConnectInfoType!
   mcpTokens: [McpTokenType!]!
+  myCvLink: CvLinkType!
   myExperience(input: MyExperienceInput!): MyExperienceType!
   myNotifications(input: MyNotificationsInput = {}): NotificationPage!
   myPremium: MyPremiumType!
   myProfile(input: ProfileInput!): ProfileType!
   outcomePaths(input: OutcomePathsInput!): OutcomePathsType!
+  practiceNext(input: PracticeNextInput!): PracticeNextType!
   practicePatterns(input: PracticePatternsInput!): [PracticePatternType!]!
   practiceProblem(input: PracticeProblemInput!): PracticeProblemType!
   practiceProblems(input: PracticeProblemsInput!): [PracticeProblemItemType!]!
@@ -1697,10 +1784,12 @@ type Query {
   projectRepository(input: ProjectRepositoryInput!): ProjectRepositoryType!
   projects(input: ProjectsInput!): [ProjectSummaryType!]!
   provedProjectConcepts: [ProjectProvedConceptType!]!
+  publicCv(input: PublicCvInput!): PublicCvType!
   recallItem(input: RecallItemInput!): RecallItemType!
   relayDevices: [RelayDeviceType!]!
   relayManifest(input: RelayManifestInput!): RelayManifestType!
   relayPairing(input: RelayUserCodeInput!): RelayPairingType!
+  reviewDeck(input: RecallDeckDetailInput!): RecallDeckDetailType!
   reviewDecks(input: RecallDecksInput!): [RecallDeckType!]!
   reviewItem(input: ReviewItemInput!): ReviewItemType!
   reviewQueue(input: ReviewQueueInput!): ReviewQueueType!
@@ -1725,8 +1814,27 @@ type RecallDeckAddedType {
   newCards: Int!
 }
 
+input RecallDeckDetailInput {
+  deckId: String! @inputBounds(maxLength: 200)
+  locale: String! = "vi"
+}
+
+type RecallDeckDetailType {
+  deck: RecallDeckType!
+  estimatedNewPerDay: Int!
+  progress: RecallDeckProgressType!
+  sampleCards: [RecallSampleCardType!]!
+}
+
 input RecallDeckInput {
   deckId: String! @inputBounds(maxLength: 200)
+}
+
+type RecallDeckProgressType {
+  learned: Int!
+  needsReview: Int!
+  remembering: Int!
+  total: Int!
 }
 
 type RecallDeckRemovedType {
@@ -1742,7 +1850,6 @@ type RecallDeckType {
   deckId: String!
   description: String!
   difficulty: String!
-  freeCardCount: Int!
   title: String!
   track: [String!]!
 }
@@ -1795,7 +1902,6 @@ type RecallItemSummaryType {
   itemId: String!
   lessonTitle: String
   level: String
-  locked: Boolean!
   source: String!
   status: String!
 }
@@ -1821,6 +1927,12 @@ type RecallRecallRateType {
   rate: Float!
 }
 
+type RecallSampleCardType {
+  cardId: String!
+  kind: String!
+  question: String!
+}
+
 input RecallStatsInput {
   days: Int @inputBounds(min: 7, max: 365)
 }
@@ -1839,7 +1951,6 @@ type RecallTodayType {
   due: Int!
   goal: RecallGoalType!
   items: [RecallItemSummaryType!]!
-  lockedCount: Int!
   newAvailable: Int!
   overdue: Int!
 }
@@ -1968,6 +2079,11 @@ input RevealPracticeHintInput {
   step: Int! @inputBounds(min: 1, max: 3)
 }
 
+input RevealPracticeSolutionInput {
+  locale: String! = "vi"
+  slug: String! @inputBounds(maxLength: 100)
+}
+
 input ReviewDecisionItemInput {
   itemId: String! @inputBounds(maxLength: 40)
   note: String = null @inputBounds(maxLength: 2000)
@@ -2078,6 +2194,10 @@ input SaveLessonSimulationInput {
   lessonId: String! @inputBounds(maxLength: 100)
   locale: String! = "vi"
   version: String! @inputBounds(maxLength: 100)
+}
+
+input SetCvVisibilityInput {
+  isPublic: Boolean!
 }
 
 input SetExperienceReviewerInput {

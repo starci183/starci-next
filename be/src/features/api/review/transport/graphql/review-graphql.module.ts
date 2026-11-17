@@ -12,6 +12,7 @@ import { AddReviewDeckResolver } from "./add-review-deck.resolver"
 import { RemoveReviewDeckResolver } from "./remove-review-deck.resolver"
 import { SetReviewGoalResolver } from "./set-review-goal.resolver"
 import { GetReviewStatsResolver } from "./get-review-stats.resolver"
+import { GetReviewDeckResolver } from "./get-review-deck.resolver"
 
 @Module({
     imports: [ReviewApiModule.register({})],
@@ -27,6 +28,7 @@ import { GetReviewStatsResolver } from "./get-review-stats.resolver"
         RemoveReviewDeckResolver,
         SetReviewGoalResolver,
         GetReviewStatsResolver,
+        GetReviewDeckResolver,
     ],
 })
 /** The GraphQL transport of the review feature: the daily queue, items, grades, decks, the goal and the statistics. */

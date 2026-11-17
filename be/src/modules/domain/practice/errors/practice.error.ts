@@ -8,8 +8,6 @@ export enum PracticeErrorCode {
     PatternNotFound = "PRACTICE_PATTERN_NOT_FOUND",
     /** No submission of this learner has this id. */
     SubmissionNotFound = "PRACTICE_SUBMISSION_NOT_FOUND",
-    /** The problem is beyond the free ones of its pattern and the learner holds no Premium. */
-    ProblemLocked = "PRACTICE_PROBLEM_LOCKED",
     /** The learner has a submission in flight or sent too many in the last minute. */
     RateLimited = "PRACTICE_RATE_LIMITED",
     /** The language is not one of the five the problems have starter codes for. */
@@ -35,7 +33,6 @@ export const PRACTICE_ERROR_KINDS: Record<PracticeErrorCode, ErrorKind> = {
     [PracticeErrorCode.ProblemNotFound]: "not-found",
     [PracticeErrorCode.PatternNotFound]: "not-found",
     [PracticeErrorCode.SubmissionNotFound]: "not-found",
-    [PracticeErrorCode.ProblemLocked]: "forbidden",
     [PracticeErrorCode.RateLimited]: "rate-limited",
     [PracticeErrorCode.LanguageUnsupported]: "invalid",
     [PracticeErrorCode.SourceTooLarge]: "invalid",

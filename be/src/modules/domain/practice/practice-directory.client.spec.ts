@@ -65,4 +65,16 @@ describe("practiceDirectory", () => {
 
         expect(files.map((file) => file.path)).toEqual(["en.md"])
     })
+
+    it("reads the introduction files a pattern folder holds and none when it has none", async () => {
+        const pattern = join(root, "sets", "arrays")
+        await mkdir(pattern, { recursive: true })
+        await writeFile(join(pattern, "intro.vi.md"), "vi intro")
+        await writeFile(join(pattern, "notes.md"), "not content")
+
+        const files = await practiceDirectory.intros(root, "arrays")
+
+        expect(files.map((file) => [file.path, file.text])).toEqual([["intro.vi.md", "vi intro"]])
+        await expect(practiceDirectory.intros(root, "strings")).resolves.toEqual([])
+    })
 })

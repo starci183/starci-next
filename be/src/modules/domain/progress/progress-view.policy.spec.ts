@@ -1,9 +1,16 @@
 import { Test } from "@nestjs/testing"
-import { ACTIVITY_MAX, buildActivity, buildProgress, buildProjects, buildReview } from "./progress-view.policy"
+import {
+    ACTIVITY_MAX,
+    buildActivity,
+    buildPractice,
+    buildProgress,
+    buildProjects,
+    buildReview,
+} from "./progress-view.policy"
 import type { ProgressSources } from "./progress.contracts"
 
 /** The functions under test, provided the way Nest provides them so the spec builds its subject from a testing module. */
-const SUBJECT = { buildActivity, buildProgress, buildProjects, buildReview }
+const SUBJECT = { buildActivity, buildPractice, buildProgress, buildProjects, buildReview }
 
 /** The token the testing module provides the functions under. */
 const SUBJECT_TOKEN: unique symbol = Symbol("progress.view-policy")
@@ -21,6 +28,11 @@ const sourcesOf = (overrides: Partial<ProgressSources> = {}): ProgressSources =>
     openParts: ["essence", "source", "script", "apply"],
     streak: { current: 4, longest: 9, todayCounted: true },
     review: { due: 6, overdue: 2, doneToday: 3, goalDaily: 10 },
+    practice: [
+        { patternId: "arrays", title: "Arrays", acceptedCount: 3, problemCount: 3 },
+        { patternId: "strings", title: "Strings", acceptedCount: 1, problemCount: 4 },
+        { patternId: "stack", title: "Stack", acceptedCount: 0, problemCount: 2 },
+    ],
     lessons: [
         {
             id: "l1",
@@ -101,6 +113,7 @@ describe("buildProgress", () => {
                 lessons: null,
                 harness: null,
                 review: null,
+                practice: null,
                 streak: null,
                 unavailable: ["essentials", "harness"],
             }),
@@ -109,6 +122,7 @@ describe("buildProgress", () => {
         expect(view.essentials).toBeNull()
         expect(view.harness).toBeNull()
         expect(view.review).toBeNull()
+        expect(view.practice).toBeNull()
         expect(view.unavailable).toEqual(["essentials", "harness"])
         expect(view.ribbon).toEqual({ provedConcepts: 1, streak: 0, lessonsDone: 0, buildsDone: 0 })
     })
@@ -128,6 +142,42 @@ describe("buildReview", () => {
         expect(review(null, { current: 1, longest: 1, todayCounted: false })).toMatchObject({ due: 0, streak: 1 })
         expect(review(day, null)).toMatchObject({ due: 6, streak: 0 })
         expect(review(null, null)).toBeNull()
+    })
+})
+
+describe("buildPractice", () => {
+    it("sums the accepted problems and counts the patterns done and in progress, keeping the catalog order", async () => {
+        const { buildProgress: build } = await loadSubject()
+
+        const view = build(sourcesOf())
+
+        expect(view.practice).toEqual({
+            acceptedCount: 4,
+            problemCount: 9,
+            patternsInProgress: 1,
+            patternsDone: 1,
+            patterns: [
+                { patternId: "arrays", title: "Arrays", acceptedCount: 3, problemCount: 3 },
+                { patternId: "strings", title: "Strings", acceptedCount: 1, problemCount: 4 },
+                { patternId: "stack", title: "Stack", acceptedCount: 0, problemCount: 2 },
+            ],
+        })
+    })
+
+    it("counts no pattern done when it has no problem and answers an empty catalog as zeros", async () => {
+        const { buildPractice: practice } = await loadSubject()
+
+        expect(practice([{ patternId: "x", title: "X", acceptedCount: 0, problemCount: 0 }])).toMatchObject({
+            patternsDone: 0,
+            patternsInProgress: 0,
+        })
+        expect(practice([])).toEqual({
+            acceptedCount: 0,
+            problemCount: 0,
+            patternsInProgress: 0,
+            patternsDone: 0,
+            patterns: [],
+        })
     })
 })
 

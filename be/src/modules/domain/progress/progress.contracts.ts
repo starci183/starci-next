@@ -23,7 +23,7 @@ export type TrialVerdict = "held" | "breached" | "incomplete"
 export type ActivityKind = "lesson-done" | "concept-proved" | "experience-verified" | "harness-stage"
 
 /** The sources of the read model; a source that fails is listed in `unavailable`. */
-export type ProgressSourceId = "streak" | "review" | "essentials" | "projects" | "harness" | "experience"
+export type ProgressSourceId = "streak" | "review" | "practice" | "essentials" | "projects" | "harness" | "experience"
 
 /** One opener of a lesson: five questions answered once before the lesson and again after it. */
 export interface OpenerSource {
@@ -157,6 +157,18 @@ export interface ReviewSource {
     readonly goalDaily: number
 }
 
+/** One practice pattern with the learner's accepted problems. */
+export interface PracticePatternSource {
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title in the asked locale. */
+    readonly title: string
+    /** How many problems of the pattern the learner got accepted. */
+    readonly acceptedCount: number
+    /** How many problems the pattern has. */
+    readonly problemCount: number
+}
+
 /** The streak as the progress shows it. */
 export interface StreakSource {
     /** The current run of days. */
@@ -177,6 +189,8 @@ export interface ProgressSources {
     readonly streak: StreakSource | null
     /** The review day. */
     readonly review: ReviewSource | null
+    /** The practice patterns in catalog order. */
+    readonly practice: ReadonlyArray<PracticePatternSource> | null
     /** The lessons of the catalog. */
     readonly lessons: ReadonlyArray<EssentialsLessonSource> | null
     /** The harness. */
@@ -387,6 +401,32 @@ export interface ProgressReviewView {
     readonly todayCounted: boolean
 }
 
+/** One pattern of the Practice section. */
+export interface ProgressPracticePatternView {
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title in the asked locale. */
+    readonly title: string
+    /** Problems accepted. */
+    readonly acceptedCount: number
+    /** Problems the pattern has. */
+    readonly problemCount: number
+}
+
+/** The Practice section. */
+export interface ProgressPracticeView {
+    /** Problems accepted across every pattern. */
+    readonly acceptedCount: number
+    /** Problems across every pattern. */
+    readonly problemCount: number
+    /** Patterns with some problem accepted and some not. */
+    readonly patternsInProgress: number
+    /** Patterns with every problem accepted. */
+    readonly patternsDone: number
+    /** The patterns in catalog order. */
+    readonly patterns: Array<ProgressPracticePatternView>
+}
+
 /** One line of the recent-activity timeline. */
 export interface ProgressActivityView {
     /** A stable id of the line. */
@@ -415,6 +455,8 @@ export interface LearnerProgressView {
     readonly projectsLocked: boolean
     /** Review and streak; null when both failed. */
     readonly review: ProgressReviewView | null
+    /** Practice; null when its source failed. */
+    readonly practice: ProgressPracticeView | null
     /** The newest lines first. */
     readonly activity: Array<ProgressActivityView>
     /** The sources that could not be read; their sections show unavailable. */

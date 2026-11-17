@@ -27,6 +27,18 @@ export class ProfileLearnerEntity {
     @Column({ name: "avatar_updated_at", type: "timestamptz", nullable: true })
     avatarUpdatedAt!: Date | null
 
+    /** The slug of the CV link, or null before it is made. */
+    @Column({ name: "cv_slug", type: "text", nullable: true })
+    cvSlug!: string | null
+
+    /** Whether anyone with the link can open the CV. */
+    @Column({ name: "cv_public", type: "boolean", default: false })
+    cvPublic!: boolean
+
+    /** The name of the learner's account as last seen, shown on the public CV when no display name is chosen. */
+    @Column({ name: "account_name", type: "text", nullable: true })
+    accountName!: string | null
+
     /** When the profile last changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date

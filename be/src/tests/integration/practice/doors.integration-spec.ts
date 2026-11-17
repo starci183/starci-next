@@ -35,9 +35,9 @@ const input = { input: { locale: "en" } }
 
 /**
  * Practice doors (integration): the Luyen code doors of the real core app behind the real session guard, judging through the
- * real Judge0 client against the world's Judge0 fake (steered by markers in the source). It proves the free lock per pattern,
+ * real Judge0 client against the world's Judge0 fake (steered by markers in the source). It proves that every problem is open,
  * that hidden tests and solutions never leave the server, the four verdicts with a per-test summary, the hint ladder, the
- * per-learner rate limit, Premium, the readiness per pattern and the one streak action of a graded submit.
+ * per-learner rate limit, the readiness per pattern and the one streak action of a graded submit.
  */
 const setup = () => {
     const world = useTestWorld({ modules: identityModules, apps: ["core"] })
@@ -64,7 +64,7 @@ describe("practice doors, access and reads (integration)", () => {
         })
     })
 
-    it("lists the patterns and problems with one free problem per pattern for a learner without Premium", async () => {
+    it("lists the patterns and problems, every one open, for a learner without Premium", async () => {
         const { cookie } = await doors.signIn(nextLearner(), false)
 
         const patterns = await doors.ask<{ practicePatterns: ReadonlyArray<PracticePatternBody> }>(
@@ -79,26 +79,14 @@ describe("practice doors, access and reads (integration)", () => {
         )
 
         expect(patterns.data?.practicePatterns).toEqual([
-            { patternId: "arrays", problemCount: 3, acceptedCount: 0, freeCount: 1, locked: true },
-            { patternId: "stack", problemCount: 1, acceptedCount: 0, freeCount: 1, locked: false },
+            { patternId: "arrays", problemCount: 3, acceptedCount: 0, intro: "" },
+            { patternId: "stack", problemCount: 1, acceptedCount: 0, intro: "" },
         ])
-        expect(problems.data?.practiceProblems.map((row) => [row.slug, row.locked, row.status])).toEqual([
-            ["sum-one", false, "UNSOLVED"],
-            ["sum-two", true, "UNSOLVED"],
-            ["sum-three", true, "UNSOLVED"],
+        expect(problems.data?.practiceProblems.map((row) => [row.slug, row.status, row.solutionRevealed])).toEqual([
+            ["sum-one", "UNSOLVED", false],
+            ["sum-two", "UNSOLVED", false],
+            ["sum-three", "UNSOLVED", false],
         ])
-    })
-
-    it("opens every problem for Premium", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), true)
-
-        const patterns = await doors.ask<{ practicePatterns: ReadonlyArray<PracticePatternBody> }>(
-            PATTERNS,
-            input,
-            cookie,
-        )
-
-        expect(patterns.data?.practicePatterns[0]).toMatchObject({ patternId: "arrays", freeCount: 3, locked: false })
     })
 
     it("refuses an unknown pattern and an unknown problem with their codes", async () => {
@@ -126,7 +114,6 @@ describe("practice doors, problem reads and locks (integration)", () => {
 
         expect(answer.data?.practiceProblem).toMatchObject({
             slug: "sum-one",
-            locked: false,
             hintsTotal: 3,
             hintsRevealed: [],
             examples: [{ input: "1 2", output: "3" }],
@@ -142,22 +129,18 @@ describe("practice doors, problem reads and locks (integration)", () => {
         expect(JSON.stringify(answer)).not.toMatch(/solution/iu)
     })
 
-    it("refuses a run, a submit and a hint on a locked problem to a learner without Premium, and allows Premium", async () => {
+    it("runs and opens a hint on a problem beyond the first of its pattern for a learner without Premium", async () => {
         const free = await doors.signIn(nextLearner(), false)
-        const premium = await doors.signIn(nextLearner(), true)
 
-        const run = await doors.ask(RUN, solveInput("sum-two", PLAIN), free.cookie)
-        const submit = await doors.ask(SUBMIT, solveInput("sum-two", PLAIN), free.cookie)
-        const hint = await doors.ask(HINT, { input: { locale: "en", slug: "sum-two", step: 1 } }, free.cookie)
-        const allowed = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
+        const run = await doors.ask<{ runPractice: PracticeSubmissionBody }>(
             RUN,
             solveInput("sum-two", PLAIN),
-            premium.cookie,
+            free.cookie,
         )
+        const hint = await doors.ask(HINT, { input: { locale: "en", slug: "sum-two", step: 1 } }, free.cookie)
 
-        for (const answer of [run, submit, hint])
-            expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "PRACTICE_PROBLEM_LOCKED", kind: "forbidden" })
-        expect(allowed.data?.runPractice.verdict).toBe("ACCEPTED")
+        expect(run.data?.runPractice.verdict).toBe("ACCEPTED")
+        expect(hint.errors).toBeUndefined()
     })
 })
 

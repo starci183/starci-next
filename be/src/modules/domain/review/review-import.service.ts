@@ -64,11 +64,8 @@ export class ReviewImportService {
             contentHash: deckHashOf(files),
             files: files.length,
         }
-        if (draft === null) return { ...base, status: "invalid", cards: 0, freeCards: 0, issues }
-        const counts = {
-            cards: draft.cards.length,
-            freeCards: draft.cards.filter((card) => !card.isPremium).length,
-        }
+        if (draft === null) return { ...base, status: "invalid", cards: 0, issues }
+        const counts = { cards: draft.cards.length }
         const stored: Array<DeckHashRow> = await this.entityManager.query(SELECT_DECK_VERSION_HASH, [
             draft.deckId,
             params.ref,
@@ -79,11 +76,11 @@ export class ReviewImportService {
             const message = `version ${params.ref} is stored with hash ${held.content_hash}, the source has ${draft.contentHash}`
             return { ...base, ...counts, status: "refused", issues: [{ path: deck.deckId, field: "", message }] }
         }
-        await this.store(draft, params.ref, counts.freeCards)
+        await this.store(draft, params.ref)
         return { ...base, ...counts, status: "created", issues: [] }
     }
 
-    private store(draft: ReviewDeckDraft, version: string, freeCards: number): Promise<void> {
+    private store(draft: ReviewDeckDraft, version: string): Promise<void> {
         const now = this.clock.now()
         return this.entityManager.transaction(async (manager) => {
             const inserted: Array<DeckHashRow> = await manager.query(INSERT_DECK_VERSION, [
@@ -101,7 +98,6 @@ export class ReviewImportService {
                     draft.cards.map((card) => ({
                         item_id: card.itemId,
                         sort_index: card.sortIndex,
-                        is_premium: card.isPremium,
                         level: card.level,
                         langs: card.langs,
                         front: card.front,
@@ -120,7 +116,6 @@ export class ReviewImportService {
                 JSON.stringify(draft.moduleRefs),
                 JSON.stringify(draft.tracks),
                 draft.cards.length,
-                freeCards,
                 now,
             ])
         })

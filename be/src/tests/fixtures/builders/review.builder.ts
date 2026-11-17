@@ -44,7 +44,6 @@ export interface StateRowFixture {
 
 /** A row of the queue: a state with what the list shows of its card or deck. */
 export interface QueueRowFixture extends StateRowFixture {
-    is_premium: boolean | null
     level: "junior" | "middle" | "senior" | "staff" | null
     deck_titles: Readonly<Record<ReviewLocale, string>> | null
 }
@@ -53,7 +52,6 @@ export interface QueueRowFixture extends StateRowFixture {
 export interface CardRowFixture {
     item_id: string
     deck_id: string
-    is_premium: boolean
     level: "junior" | "middle" | "senior" | "staff"
     langs: string | null
     front: Readonly<Record<ReviewLocale, CardFrontFixture>>
@@ -118,7 +116,7 @@ export const sourceFileOf = (path: string, text: string): SourceFileFixture => (
     sha256: `hash-of-${path}`,
 })
 
-/** The files of a small valid deck: the deck in both locales and two cards, one of them free. */
+/** The files of a small valid deck: the deck in both locales and two cards, one of them still carrying the retired isPremium field. */
 export const deckFilesOf = (): ReadonlyArray<SourceFileFixture> => [
     sourceFileOf("vi.md", deckTextOf("vi")),
     sourceFileOf("en.md", deckTextOf("en")),
@@ -152,7 +150,6 @@ export const stateRowOf: (overrides?: Partial<StateRowFixture>) => StateRowFixtu
 /** A queue row of a flashcard. */
 export const queueRowOf: (overrides?: Partial<QueueRowFixture>) => QueueRowFixture = builder<QueueRowFixture>({
     ...stateRowOf(),
-    is_premium: false,
     level: "junior",
     deck_titles: { vi: "vi Module 1", en: "en Module 1" },
 })
@@ -177,7 +174,6 @@ const BACK: Record<"vi" | "en", CardBackFixture> = {
 export const cardRowOf: (overrides?: Partial<CardRowFixture>) => CardRowFixture = builder<CardRowFixture>({
     item_id: "card:0-fullstack-mastery/0-module-1/0",
     deck_id: "0-fullstack-mastery/0-module-1",
-    is_premium: false,
     level: "junior",
     langs: null,
     front: FRONT,

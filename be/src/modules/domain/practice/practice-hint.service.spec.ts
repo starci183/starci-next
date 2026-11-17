@@ -1,25 +1,21 @@
 import { Test } from "@nestjs/testing"
-import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
+import { FakeClock, fakeTransaction, mockEntityManager } from "@starci/jest-preset"
 import type { FakeTransaction } from "@starci/jest-preset"
 import { PRACTICE_LEARNER, practiceContentOf } from "@tests/fixtures/builders/practice.builder"
-import { ENTITLEMENT_SERVICE } from "@modules/domain/entitlement"
-import type { EntitlementService } from "@modules/domain/entitlement"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { PracticeError, PracticeErrorCode } from "./errors/practice.error"
 import { PracticeHintService } from "./practice-hint.service"
-import { PRACTICE_OPTIONS } from "./practice.decorators"
-import type { PracticeOptions } from "./practice.options"
 import type { HintMaxRow, ProblemRow } from "./persistence/practice.rows"
 import { INSERT_HINT_REVEAL, LOCK_LEARNER, SELECT_HINT_HIGHEST, SELECT_PROBLEM } from "./persistence/practice.sql"
 
 const NOW = new Date("2026-11-08T10:00:00.000Z")
 
-const problemRow = (rank: number): ProblemRow => ({
+const problemRow = (order: number): ProblemRow => ({
     problem_id: "sum-two",
     version: "v1",
     pattern_id: "arrays",
-    order_index: rank,
+    order_index: order,
     difficulty: "easy",
     tags: [],
     time_limit_ms: 2000,
@@ -27,15 +23,10 @@ const problemRow = (rank: number): ProblemRow => ({
     content: practiceContentOf("sum-two"),
     starter_codes: { cpp: "", java: "", javascript: "", python: "", typescript: "" },
     examples: [],
-    rank,
     next_slug: null,
 })
 
-const build = async (
-    problems: ReadonlyArray<ProblemRow>,
-    highest: number | null,
-    options: { premium?: boolean; free?: number } = {},
-) => {
+const build = async (problems: ReadonlyArray<ProblemRow>, highest: number | null) => {
     const em = mockEntityManager({
         query: [
             [SELECT_PROBLEM, problems],
@@ -45,22 +36,14 @@ const build = async (
         ],
     })
     const tx: FakeTransaction = fakeTransaction(em)
-    const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(options.premium ?? false)
-    const practiceOptions: PracticeOptions = { freePerPattern: options.free ?? 1 }
     const moduleRef = await Test.createTestingModule({
         providers: [
             PracticeHintService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
-            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
-            {
-                provide: PRACTICE_OPTIONS,
-                useValue: practiceOptions,
-            },
         ],
     }).compile()
-    return { service: moduleRef.get(PracticeHintService), em, tx, entitlement }
+    return { service: moduleRef.get(PracticeHintService), em, tx }
 }
 
 describe("PracticeHintService reveal", () => {
@@ -140,24 +123,8 @@ describe("PracticeHintService reveal refusals", () => {
         })
     })
 
-    it("gives a locked problem no ladder unless the learner holds Premium", async () => {
-        const locked = await build([problemRow(1)], null)
-
-        await expect(
-            locked.service.reveal({ learnerId: PRACTICE_LEARNER, slug: "sum-two", step: 1, locale: "en" }),
-        ).rejects.toMatchObject({
-            code: PracticeErrorCode.ProblemLocked,
-        })
-
-        const premium = await build([problemRow(1)], null, { premium: true })
-
-        await expect(
-            premium.service.reveal({ learnerId: PRACTICE_LEARNER, slug: "sum-two", step: 1, locale: "en" }),
-        ).resolves.toMatchObject({ step: 1 })
-    })
-
-    it("opens a second problem when the app made two problems free", async () => {
-        const { service } = await build([problemRow(1)], null, { free: 2 })
+    it("opens the ladder of any problem of a pattern, whatever its place in the pattern", async () => {
+        const { service } = await build([problemRow(7)], null)
 
         await expect(
             service.reveal({ learnerId: PRACTICE_LEARNER, slug: "sum-two", step: 1, locale: "en" }),

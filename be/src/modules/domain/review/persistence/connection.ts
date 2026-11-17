@@ -8,6 +8,7 @@ import { ReviewLearnerDeckEntity } from "./entities/review-learner-deck.entity"
 import { ReviewSettingsEntity } from "./entities/review-settings.entity"
 import { InitReview1796400000000 } from "./migrations/1796400000000-init-review"
 import { ReviewDueNotice1796400000001 } from "./migrations/1796400000001-review-due-notice"
+import { ReviewFreeForEveryone1798800000001 } from "./migrations/1798800000001-review-free-for-everyone"
 
 /** The entities of the review capability. */
 export const reviewEntities: Array<
@@ -31,7 +32,6 @@ export const reviewEntities: Array<
 ]
 
 /** The migrations of the review capability, in the order they run. */
-export const reviewMigrations: Array<typeof InitReview1796400000000 | typeof ReviewDueNotice1796400000001> = [
-    InitReview1796400000000,
-    ReviewDueNotice1796400000001,
-]
+export const reviewMigrations: Array<
+    typeof InitReview1796400000000 | typeof ReviewDueNotice1796400000001 | typeof ReviewFreeForEveryone1798800000001
+> = [InitReview1796400000000, ReviewDueNotice1796400000001, ReviewFreeForEveryone1798800000001]

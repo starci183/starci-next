@@ -1,6 +1,8 @@
 import type {
     PracticeContent,
     PracticeExample,
+    PracticeLocale,
+    PracticeSolutions,
     PracticeStarterCodes,
     PracticeTest,
     PracticeTestSummary,
@@ -30,8 +32,6 @@ export interface ProblemRow {
     starter_codes: PracticeStarterCodes
     /** The public examples. */
     examples: ReadonlyArray<PracticeExample>
-    /** How many live problems of the pattern come before this one. */
-    rank: number
     /** The slug of the next live problem of the pattern, or null. */
     next_slug: string | null
 }
@@ -52,8 +52,6 @@ export interface JudgingRow {
     examples: ReadonlyArray<PracticeExample>
     /** The hidden tests. */
     tests: ReadonlyArray<PracticeTest>
-    /** How many live problems of the pattern come before this one. */
-    rank: number
 }
 
 /** One row of a pattern list: the problem with the standing of the viewer. */
@@ -70,6 +68,10 @@ export interface ProblemListRow {
     order_index: number
     /** `unsolved`, `attempted` or `accepted`. */
     status: string
+    /** Whether the learner revealed the reference solution. */
+    solution_revealed: boolean
+    /** Whether the reveal came before the first Accepted. */
+    solution_viewed: boolean
 }
 
 /** The counts of one pattern for one learner. */
@@ -86,6 +88,10 @@ export interface PatternCountRow {
 export interface StatusRow {
     /** `unsolved`, `attempted` or `accepted`. */
     status: string
+    /** Whether the learner revealed the reference solution. */
+    solution_revealed: boolean
+    /** Whether the reveal came before the first Accepted. */
+    solution_viewed: boolean
 }
 
 /** One stored submission. */
@@ -146,4 +152,78 @@ export interface HintStepRow {
 export interface VersionHashRow {
     /** The hash of the source files. */
     content_hash: string
+}
+
+/** The introduction of one pattern in one locale. */
+export interface PatternIntroRow {
+    /** The pattern. */
+    pattern_id: string
+    /** The paragraph. */
+    intro: string
+}
+
+/** The first problem a learner has not got accepted. */
+export interface NextProblemRow {
+    /** The slug. */
+    problem_id: string
+    /** The title in the asked locale. */
+    title: string
+    /** The pattern. */
+    pattern_id: string
+    /** The 1-based position inside the pattern. */
+    position: number
+    /** How many live problems the pattern has. */
+    pattern_problem_count: number
+}
+
+/** The problem a learner submitted most recently without getting it accepted. */
+export interface ResumeProblemRow {
+    /** The slug. */
+    problem_id: string
+    /** The title in the asked locale. */
+    title: string
+    /** The pattern. */
+    pattern_id: string
+    /** How many graded submits the learner made. */
+    attempts: number
+    /** The verdict of the latest graded submit. */
+    last_verdict: string
+    /** The test summaries of the latest graded submit. */
+    last_tests: ReadonlyArray<PracticeTestSummary>
+}
+
+/** The stored reference solution of the live version of a problem. */
+export interface SolutionRow {
+    /** The slug. */
+    problem_id: string
+    /** The reference code of each language. */
+    solutions: PracticeSolutions
+    /** The written explanation by locale. */
+    explanations: Readonly<Record<PracticeLocale, string>>
+}
+
+/** The reveal of a solution by a learner. */
+export interface SolutionRevealRow {
+    /** When the learner first revealed it. */
+    revealed_at: Date
+    /** Whether the reveal came before the first Accepted. */
+    viewed_before_accepted: boolean
+}
+
+/** What a learner has accepted and viewed in one pattern. */
+export interface PatternCompletionRow {
+    /** The pattern. */
+    pattern_id: string
+    /** How many live problems it has. */
+    problem_count: number
+    /** How many of them the learner got accepted. */
+    accepted_count: number
+    /** How many of them have a solution revealed before the first Accepted. */
+    viewed_count: number
+}
+
+/** The language a learner solved most problems of a pattern in. */
+export interface PatternLanguageRow {
+    /** The language id. */
+    language: string
 }

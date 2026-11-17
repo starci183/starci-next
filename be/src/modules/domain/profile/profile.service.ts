@@ -18,6 +18,7 @@ import {
 import { InjectAvatarStore, type AvatarStorePort } from "./profile-store.port"
 import type {
     AvatarConfirmParams,
+    AvatarReadUrl,
     AvatarLimitsView,
     AvatarUploadParams,
     AvatarUploadView,
@@ -58,7 +59,7 @@ export class ProfileService {
         const key = row?.avatar_key ?? null
         return {
             displayName: row?.display_name ?? null,
-            avatarUrl: key === null ? null : await this.readUrlOf(key),
+            avatarUrl: key === null ? null : await this.avatarUrlOf(key),
             avatarUpdatedAt: row?.avatar_updated_at ?? null,
             goal: active === null ? null : { pathId: active.pathId, title: active.title },
             limits: this.limits(),
@@ -141,7 +142,7 @@ export class ProfileService {
     }
 
     /** A signed read of the avatar; a store that cannot answer shows no avatar and is logged, the profile still answers. */
-    private async readUrlOf(key: string): Promise<string | null> {
+    async avatarUrlOf(key: string): Promise<AvatarReadUrl> {
         try {
             return await this.store.presignRead(key)
         } catch (cause) {

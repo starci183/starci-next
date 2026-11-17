@@ -1,8 +1,6 @@
 import { Test } from "@nestjs/testing"
 import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import { PRACTICE_LEARNER, PRACTICE_HIDDEN_MARK } from "@tests/fixtures/builders/practice.builder"
-import { ENTITLEMENT_SERVICE } from "@modules/domain/entitlement"
-import type { EntitlementService } from "@modules/domain/entitlement"
 import { JUDGE0_GATEWAY, Judge0Error, Judge0ErrorCode } from "@modules/integrations/judge0"
 import type { Judge0CaseResult, Judge0Gateway } from "@modules/integrations/judge0"
 import { isRecord } from "@modules/platform/primitives"
@@ -47,7 +45,6 @@ const problemRow = (overrides: Partial<JudgingRow> = {}): JudgingRow => ({
         { input: `1 1 ${PRACTICE_HIDDEN_MARK}`, output: "2" },
         { input: "2 2", output: "4" },
     ],
-    rank: 0,
     ...overrides,
 })
 
@@ -86,7 +83,6 @@ interface Setup {
     readonly claimed?: boolean
     readonly emptyRate?: boolean
     readonly emptyInsert?: boolean
-    readonly premium?: boolean
     readonly options?: PracticeOptions
     readonly judge?: (gateway: jest.Mocked<Judge0Gateway>) => void
     readonly read?: ReadonlyArray<SubmissionRow>
@@ -107,8 +103,6 @@ const build = async (setup: Setup = {}) => {
         ],
     })
     const tx = fakeTransaction(em)
-    const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(setup.premium ?? false)
     const judge = mock<Judge0Gateway>()
     judge.run.mockResolvedValue([passing(), passing(), passing()])
     setup.judge?.(judge)
@@ -127,7 +121,6 @@ const build = async (setup: Setup = {}) => {
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: TIMER, useValue: timer },
             { provide: LOGGER, useValue: logger },
-            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: JUDGE0_GATEWAY, useValue: judge },
             { provide: PRACTICE_STREAK, useValue: streak },
             { provide: PRACTICE_OPTIONS, useValue: options },
@@ -368,25 +361,12 @@ describe("PracticeSubmissionService refusals", () => {
         await expect(service.submit(params())).rejects.toMatchObject({ code: PracticeErrorCode.ProblemNotFound })
     })
 
-    it("refuses a problem beyond the free ones to a learner without Premium, before storing anything", async () => {
-        const { service, em, judge } = await build({ problem: problemRow({ rank: 1 }) })
-
-        await expect(service.submit(params())).rejects.toMatchObject({ code: PracticeErrorCode.ProblemLocked })
-
-        expect(em.query).not.toHaveBeenCalledWith(INSERT_SUBMISSION, expect.anything())
-        expect(judge.run).not.toHaveBeenCalled()
-    })
-
-    it("lets Premium submit a problem beyond the free ones", async () => {
-        const { service } = await build({ problem: problemRow({ rank: 7 }), premium: true })
+    it("judges a submit of any problem for any signed-in learner", async () => {
+        const { service, judge } = await build()
 
         await expect(service.submit(params())).resolves.toBeDefined()
-    })
 
-    it("honours a larger free count of the app", async () => {
-        const { service } = await build({ problem: problemRow({ rank: 1 }), options: { freePerPattern: 2 } })
-
-        await expect(service.submit(params())).resolves.toBeDefined()
+        expect(judge.run).toHaveBeenCalled()
     })
 })
 

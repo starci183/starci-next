@@ -7,6 +7,8 @@ import { ListPracticeReadinessHandler } from "./application/list-practice-readin
 import { RunPracticeHandler } from "./application/run-practice.handler"
 import { SubmitPracticeHandler } from "./application/submit-practice.handler"
 import { RevealPracticeHintHandler } from "./application/reveal-practice-hint.handler"
+import { GetPracticeNextHandler } from "./application/get-practice-next.handler"
+import { RevealPracticeSolutionHandler } from "./application/reveal-practice-solution.handler"
 import { ConfigurableModuleClass } from "./practice.module-definition"
 
 @Module({
@@ -19,7 +21,9 @@ import { ConfigurableModuleClass } from "./practice.module-definition"
         RunPracticeHandler,
         SubmitPracticeHandler,
         RevealPracticeHintHandler,
+        GetPracticeNextHandler,
+        RevealPracticeSolutionHandler,
     ],
 })
-/** Application handlers of the practice feature: patterns, problems, readiness, submissions and the hint ladder. */
+/** Application handlers of the practice feature: patterns, problems, readiness, the next problem, submissions, the hint ladder and the solution reveal. */
 export class PracticeApiModule extends ConfigurableModuleClass {}

@@ -5,6 +5,7 @@ import { AttemptOpenerService, AttemptReadService } from "@modules/domain/attemp
 import { ExperienceReadService } from "@modules/domain/career"
 import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { LessonReadService } from "@modules/domain/lesson"
+import { PracticeReadService } from "@modules/domain/practice"
 import { ProjectReadService } from "@modules/domain/project"
 import { ReviewQueueService } from "@modules/domain/review"
 import { STREAK_SHARD_IDS, StreakService, type StreakSummary } from "@modules/domain/streak"
@@ -41,6 +42,7 @@ type Doubles = {
     readonly harness: jest.Mocked<ProgressHarnessPort>
     readonly streaks: jest.Mocked<StreakService>
     readonly reviews: jest.Mocked<ReviewQueueService>
+    readonly practice: jest.Mocked<PracticeReadService>
     readonly lessons: jest.Mocked<LessonReadService>
     readonly openers: jest.Mocked<AttemptOpenerService>
     readonly attempts: jest.Mocked<AttemptReadService>
@@ -60,6 +62,10 @@ const answer = (d: Doubles): void => {
         goalDaily: 10,
         doneToday: 2,
     })
+    d.practice.readiness.mockResolvedValue([
+        { patternId: "arrays", title: "Arrays", problemCount: 3, acceptedCount: 3 },
+        { patternId: "strings", title: "Strings", problemCount: 5, acceptedCount: 2 },
+    ])
     d.lessons.catalog.mockResolvedValue([catalogItemOf("l1", "One"), catalogItemOf("l2", "Two")])
     d.openers.scores.mockResolvedValue([
         { lessonId: "l1", answered: 5, firstCorrect: 2, latestCorrect: 4, questions: [] },
@@ -84,6 +90,7 @@ const build = async (isPremium: boolean) => {
     const harness = mock<ProgressHarnessPort>()
     const streaks = mock<StreakService>()
     const reviews = mock<ReviewQueueService>()
+    const practice = mock<PracticeReadService>()
     const lessons = mock<LessonReadService>()
     const openers = mock<AttemptOpenerService>()
     const attempts = mock<AttemptReadService>()
@@ -91,13 +98,14 @@ const build = async (isPremium: boolean) => {
     const experience = mock<ExperienceReadService>()
     const logger = mock<Logger>()
     entitlement.isPremium.mockResolvedValue(isPremium)
-    answer({ harness, streaks, reviews, lessons, openers, attempts, projects, experience })
+    answer({ harness, streaks, reviews, practice, lessons, openers, attempts, projects, experience })
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProgressService,
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: StreakService, useValue: streaks },
             { provide: ReviewQueueService, useValue: reviews },
+            { provide: PracticeReadService, useValue: practice },
             { provide: LessonReadService, useValue: lessons },
             { provide: AttemptReadService, useValue: attempts },
             { provide: AttemptOpenerService, useValue: openers },
@@ -107,7 +115,16 @@ const build = async (isPremium: boolean) => {
             { provide: LOGGER, useValue: logger },
         ],
     }).compile()
-    return { service: moduleRef.get(ProgressService), harness, reviews, attempts, projects, experience, logger }
+    return {
+        service: moduleRef.get(ProgressService),
+        harness,
+        reviews,
+        practice,
+        attempts,
+        projects,
+        experience,
+        logger,
+    }
 }
 
 type ProjectList = Awaited<ReturnType<ProjectReadService["list"]>>
@@ -173,6 +190,12 @@ describe("ProgressService read", () => {
             afterCorrect: 4,
         })
         expect(view.review).toMatchObject({ due: 4, overdue: 1, streak: 5 })
+        expect(view.practice).toMatchObject({
+            acceptedCount: 5,
+            problemCount: 8,
+            patternsDone: 1,
+            patternsInProgress: 1,
+        })
         expect(view.harness).toMatchObject({ buildsDone: 1, buildsTotal: 1 })
         expect(view.unavailable).toEqual([])
     })

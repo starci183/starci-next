@@ -42,15 +42,11 @@ export class PracticeProblemType {
     @Field(() => Int)
     memoryLimitKb!: number
 
-    /** Whether the viewer needs Premium to run it; a locked problem answers its statement only. */
-    @Field(() => Boolean)
-    locked!: boolean
-
-    /** The starter code of each language; empty when locked. */
+    /** The starter code of each language. */
     @Field(() => [PracticeStarterCodeType])
     starterCodes!: ReadonlyArray<PracticeStarterCodeType>
 
-    /** The public examples; empty when locked. */
+    /** The public examples. */
     @Field(() => [PracticeExampleType])
     examples!: ReadonlyArray<PracticeExampleType>
 
@@ -65,6 +61,14 @@ export class PracticeProblemType {
     /** How the viewer stands on it. */
     @Field(() => String)
     status!: string
+
+    /** Whether the viewer revealed the reference solution. */
+    @Field(() => Boolean)
+    solutionRevealed!: boolean
+
+    /** Whether the viewer revealed the solution before the first Accepted, which keeps the problem out of experience. */
+    @Field(() => Boolean)
+    solutionViewedBeforeAccepted!: boolean
 
     /** The slug of the next problem of the pattern, or null at the last. */
     @Field(() => String, { nullable: true })

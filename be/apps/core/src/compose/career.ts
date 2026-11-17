@@ -7,6 +7,7 @@ import {
     careerMigrations,
 } from "@modules/domain/career"
 import { NotificationService } from "@modules/domain/notification"
+import { PracticeReadService } from "@modules/domain/practice"
 import {
     AiProjectCoachClient,
     LessonCatalogClient,
@@ -39,7 +40,7 @@ import type { CoreOptions } from "../core.options"
  */
 export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
     RelayModule.register({ isGlobal: true, ...options.relay }),
-    CareerModule.register({ isGlobal: true, notifier: NotificationService }),
+    CareerModule.register({ isGlobal: true, notifier: NotificationService, practice: PracticeReadService }),
     ProjectModule.register({
         isGlobal: true,
         ...options.project,

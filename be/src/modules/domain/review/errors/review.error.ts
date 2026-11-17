@@ -4,8 +4,6 @@ import { DomainError, type ErrorKind } from "@modules/platform/errors"
 export enum ReviewErrorCode {
     /** The learner has no such item in the queue, or the item is no longer published. */
     ItemNotFound = "REVIEW_ITEM_NOT_FOUND",
-    /** The item is Premium and the learner holds none. */
-    PremiumRequired = "REVIEW_PREMIUM_REQUIRED",
     /** The revision was already graded with another grade, or is not the next revision of the item. */
     RevisionConflict = "REVIEW_REVISION_CONFLICT",
     /** The item was graded before the card was flipped or the written answer was submitted. */
@@ -29,7 +27,6 @@ export enum ReviewErrorCode {
 /** How each review code travels. */
 export const REVIEW_ERROR_KINDS: Record<ReviewErrorCode, ErrorKind> = {
     [ReviewErrorCode.ItemNotFound]: "not-found",
-    [ReviewErrorCode.PremiumRequired]: "forbidden",
     [ReviewErrorCode.RevisionConflict]: "conflict",
     [ReviewErrorCode.NotFlipped]: "conflict",
     [ReviewErrorCode.GradeInvalid]: "invalid",

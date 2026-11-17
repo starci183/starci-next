@@ -3,13 +3,16 @@ import { blockNamed, blocksOf, hintStepsOf, valueOf, type PracticeBlock } from "
 import {
     PRACTICE_HINT_STEPS,
     PRACTICE_LANGUAGES,
+    PRACTICE_LOCALES,
     type PracticeDifficulty,
     type PracticeDraft,
     type PracticeExample,
     type PracticeHintText,
     type PracticeIssue,
     type PracticeLanguage,
+    type PracticeLocale,
     type PracticeLocaleText,
+    type PracticePatternIntros,
     type PracticeSolutions,
     type PracticeSourceEntry,
     type PracticeSourceFile,
@@ -30,6 +33,7 @@ export interface PracticeDraftResult {
 /** What both locale files hold: the text and the two fields the files must agree on. */
 interface TextDocument {
     readonly text: PracticeLocaleText
+    readonly explanation: string
     readonly difficulty: PracticeDifficulty
     readonly domain: string
 }
@@ -140,6 +144,7 @@ const parseText = (file: PracticeSourceFile, issues: Array<PracticeIssue>): Text
         return null
     return {
         text: { title, statement, hints },
+        explanation: valueOfField(fields, "solution") ?? "",
         difficulty: difficulty === "easy" || difficulty === "hard" ? difficulty : "medium",
         domain,
     }
@@ -194,7 +199,7 @@ const agree = (path: string, field: string, left: unknown, right: unknown, issue
 
 /**
  * Builds the draft of one problem folder from its `en.md` and `vi.md`: the English file holds the numbers, the codes and the
- * cases, both files hold the text (title, statement, hint ladder) and must agree on the difficulty and the pattern, and the
+ * cases, both files hold the text (title, statement, hint ladder, and the optional `# solution` explanation) and must agree on the difficulty and the pattern, and the
  * pattern must be the folder the problem sits under. A folder with any issue gives no draft.
  */
 export const buildPracticeDraft = (
@@ -230,9 +235,22 @@ export const buildPracticeDraft = (
             examples: structure.examples,
             tests: structure.tests,
             solutions: structure.solutions,
+            explanations: { vi: vi.explanation, en: en.explanation },
             contentHash: practiceContentHashOf(files),
             sourceHashes: Object.fromEntries(files.map((file) => [file.path, file.sha256])),
         },
         issues,
     }
 }
+
+/** The file of a pattern folder that holds the introduction of a locale: `intro.<locale>.md`, the whole file being the paragraph. */
+export const patternIntroFileOf = (locale: PracticeLocale): string => `intro.${locale}.md`
+
+/** The introductions of a pattern from its source files; a file that is missing or empty gives no introduction for its locale. */
+export const buildPatternIntros = (files: ReadonlyArray<PracticeSourceFile>): PracticePatternIntros =>
+    Object.fromEntries(
+        PRACTICE_LOCALES.flatMap((locale) => {
+            const text = files.find((file) => file.path === patternIntroFileOf(locale))?.text.trim() ?? ""
+            return text === "" ? [] : [[locale, text]]
+        }),
+    )

@@ -81,3 +81,7 @@ export const peakOf = (values: ReadonlyArray<number | null>): number | null => {
 /** Whether a verdict counts as a graded attempt for the streak: the judge ran the program, whatever the outcome. */
 export const isGraded = (verdict: PracticeVerdict): boolean =>
     verdict !== "internal-error" && verdict !== "queued" && verdict !== "running"
+
+/** The `index` of the first test summary that did not pass, or null when every summary passed or none was kept. */
+export const failedTestIndexOf = (tests: ReadonlyArray<PracticeTestSummary>): number | null =>
+    tests.find((test) => !test.passed)?.index ?? null

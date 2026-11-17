@@ -23,17 +23,18 @@ describe("the experience catalog", () => {
         subject = await loadSubject()
     })
 
-    it("grants CV lines only from Projects, Incidents and Essentials attached to a project", () => {
+    it("grants CV lines only from Projects, Incidents, the Harness, Coding practice and Essentials attached to a project", () => {
         const cvParts = new Set(EXPERIENCE_CATALOG.filter((i) => i.output === "cv-line").map((i) => i.part))
 
-        expect([...cvParts].sort()).toEqual(["essentials", "harness", "incidents", "projects"])
+        expect([...cvParts].sort()).toEqual(["essentials", "harness", "incidents", "practice", "projects"])
         expect(subject.catalogItemOf("essentials.concept-proved").requiresProject).toBe(true)
     })
 
-    it("feeds hiring readiness from Coding practice", () => {
-        const readiness = EXPERIENCE_CATALOG.filter((i) => i.output === "readiness").map((i) => i.part)
+    it("grants a practice CV line for a pattern solved in full, from the judge", () => {
+        const item = subject.catalogItemOf("practice.pattern-solved")
 
-        expect(readiness.sort()).toEqual(["practice"])
+        expect(item).toMatchObject({ part: "practice", output: "cv-line", requiresProject: false })
+        expect(item.slots).toEqual(["count", "pattern", "language"])
     })
 
     it("carries every slot in both templates, and only the parts that grant items", () => {

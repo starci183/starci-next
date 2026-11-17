@@ -4,7 +4,6 @@ import type { MessageBundle } from "@modules/platform/i18n"
 export const REVIEW_MESSAGES: MessageBundle = {
     vi: {
         "errors.REVIEW_ITEM_NOT_FOUND": "Không tìm thấy mục ôn tập này.",
-        "errors.REVIEW_PREMIUM_REQUIRED": "Mục ôn tập này cần Premium.",
         "errors.REVIEW_REVISION_CONFLICT": "Lượt ôn này đã được ghi với đánh giá khác; hãy tải lại mục.",
         "errors.REVIEW_NOT_FLIPPED": "Hãy lật thẻ hoặc gửi câu trả lời của bạn trước khi tự đánh giá.",
         "errors.REVIEW_GRADE_INVALID": "Đánh giá phải là Quên, Khó, Nhớ hoặc Dễ.",
@@ -17,7 +16,6 @@ export const REVIEW_MESSAGES: MessageBundle = {
     },
     en: {
         "errors.REVIEW_ITEM_NOT_FOUND": "This review item was not found.",
-        "errors.REVIEW_PREMIUM_REQUIRED": "This review item needs Premium.",
         "errors.REVIEW_REVISION_CONFLICT": "This review was already stored with another grade; reload the item.",
         "errors.REVIEW_NOT_FLIPPED": "Flip the card or submit your answer before you grade yourself.",
         "errors.REVIEW_GRADE_INVALID": "The grade must be Again, Hard, Good or Easy.",

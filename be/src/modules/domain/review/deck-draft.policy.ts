@@ -71,7 +71,6 @@ const byLocale = <T>(read: (locale: ReviewLocale) => T): Readonly<Record<ReviewL
 
 interface CardLocale {
     readonly sortIndex: number
-    readonly isPremium: boolean
     readonly level: ReviewLevel
     readonly langs: string | null
     readonly front: ReviewCardFront
@@ -87,16 +86,12 @@ const readCardLocale = (issues: Issues, path: string, text: string): CardLocale 
     const level = required(issues, path, fields, "level")
     if (level !== "" && !LEVEL_NAMES.includes(level))
         issues.add(path, "level", `level ${level} is not junior, middle, senior or staff`)
-    const premium = required(issues, path, fields, "isPremium")
-    if (premium !== "" && premium !== "true" && premium !== "false")
-        issues.add(path, "isPremium", "isPremium is not true or false")
     const answer = required(issues, path, fields, "answer")
     const clozes = parseClozes(answer)
     clozeProblems(clozes).forEach((problem) => issues.add(path, "answer", problem))
     const langs = fields.fields["langs"]?.trim()
     return {
         sortIndex: integer(issues, path, fields, "sortIndex"),
-        isPremium: premium === "true",
         level: REVIEW_LEVELS.find((known) => known === level) ?? "junior",
         langs: langs === undefined || langs === "" ? null : langs,
         front: {
@@ -111,7 +106,6 @@ const sameClozeNumbers = (issues: Issues, path: string, vi: CardLocale, en: Card
     const numbers = (card: CardLocale): string => card.back.clozes.map((cloze) => cloze.n).join(",")
     if (numbers(vi) !== numbers(en)) issues.add(path, "answer", "vi and en have different cloze numbering")
     if (vi.level !== en.level) issues.add(path, "level", "vi and en have different levels")
-    if (vi.isPremium !== en.isPremium) issues.add(path, "isPremium", "vi and en disagree on isPremium")
 }
 
 const readCards = (
@@ -136,7 +130,6 @@ const readCards = (
             {
                 itemId: `card:${deckId}/${vi.sortIndex}`,
                 sortIndex: vi.sortIndex,
-                isPremium: vi.isPremium,
                 level: vi.level,
                 langs: vi.langs,
                 front: { vi: vi.front, en: en.front },

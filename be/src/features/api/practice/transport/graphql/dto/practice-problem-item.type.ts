@@ -23,9 +23,13 @@ export class PracticeProblemItemType {
     @Field(() => String)
     status!: string
 
-    /** Whether the viewer needs Premium to open it. */
+    /** Whether the viewer revealed the reference solution. */
     @Field(() => Boolean)
-    locked!: boolean
+    solutionRevealed!: boolean
+
+    /** Whether the viewer revealed the solution before the first Accepted, which keeps the problem out of experience. */
+    @Field(() => Boolean)
+    solutionViewedBeforeAccepted!: boolean
 
     /** The position inside the pattern. */
     @Field(() => Int)

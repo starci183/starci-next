@@ -25,6 +25,7 @@ import {
     SELECT_ITEM,
     SELECT_LEARNER_ITEMS,
     SELECT_PENDING_ITEMS,
+    SELECT_PUBLIC_ITEMS,
     SELECT_VERIFIED_ITEMS,
 } from "./persistence/career.sql"
 
@@ -224,5 +225,50 @@ describe("ExperienceReadService verifiedItems", () => {
             expect.objectContaining({ itemId: CAREER_ITEM, signedAt: CAREER_NOW }),
         ])
         expect(em.query).toHaveBeenCalledWith(SELECT_VERIFIED_ITEMS, [CAREER_LEARNER, LIST_ROWS_MAX])
+    })
+})
+
+describe("ExperienceReadService publicLines", () => {
+    const signed = (overrides: Parameters<typeof itemRowOf>[0] = {}) =>
+        itemRowOf({
+            state: "verified",
+            signed_at: new Date(CAREER_NOW),
+            line: { vi: "dong vi", en: "line en" },
+            ...overrides,
+        })
+
+    it("answers the verified lines the learner shows in the asked locale with the public code and the signing date only", async () => {
+        const em = mockEntityManager({ query: [SELECT_PUBLIC_ITEMS, [signed(), signed({ part: "practice" })]] })
+        const service = await build(em)
+
+        const lines = await service.publicLines(CAREER_LEARNER, "en")
+
+        expect(lines).toEqual([
+            { line: "line en", part: "essentials", verificationCode: "K7Q2-9DLA-41TR", signedAt: CAREER_NOW },
+            { line: "line en", part: "practice", verificationCode: "K7Q2-9DLA-41TR", signedAt: CAREER_NOW },
+        ])
+        expect(JSON.stringify(lines)).not.toContain("grade")
+        expect(em.query).toHaveBeenCalledWith(SELECT_PUBLIC_ITEMS, [CAREER_LEARNER, LIST_ROWS_MAX])
+    })
+
+    it("falls back to the drafted line of an item with no submitted one and skips an item with neither", async () => {
+        const em = mockEntityManager({
+            query: [SELECT_PUBLIC_ITEMS, [signed({ line: null }), signed({ line: null, draft_line: null })]],
+        })
+        const service = await build(em)
+
+        const lines = await service.publicLines(CAREER_LEARNER, "vi")
+
+        expect(lines).toHaveLength(1)
+        expect(lines[0]?.line).toBe(ESSENTIALS_DRAFT.vi)
+    })
+
+    it("dates a signed item with no signing time by its last change", async () => {
+        const em = mockEntityManager({ query: [SELECT_PUBLIC_ITEMS, [signed({ signed_at: null })]] })
+        const service = await build(em)
+
+        const lines = await service.publicLines(CAREER_LEARNER, "vi")
+
+        expect(lines[0]?.signedAt).toBe(itemRowOf().updated_at.toISOString())
     })
 })

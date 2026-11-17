@@ -24,6 +24,7 @@ export { ReviewScheduleService } from "./review-schedule.service"
 export type {
     ReviewClozeResult,
     ReviewDeckAddedView,
+    ReviewDeckDetailView,
     ReviewDeckRemovedView,
     ReviewDeckView,
     ReviewFlipView,

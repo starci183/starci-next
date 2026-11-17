@@ -20,7 +20,7 @@ export interface CatalogItem {
 
 /**
  * The experience catalog: CV lines come only from projects (agent projects included), incidents and essentials lessons
- * attached to a project; coding practice feeds hiring readiness; review counts toward the streak only; goals,
+ * attached to a project; a practice pattern solved in full is a CV line; review counts toward the streak only; goals,
  * the profile and CV, and the hiring bridge grant nothing.
  */
 export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
@@ -83,7 +83,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
     {
         itemType: "practice.pattern-solved",
         part: "practice",
-        output: "readiness",
+        output: "cv-line",
         requiresProject: false,
         slots: ["count", "pattern", "language"],
         defenseQuestions: [],

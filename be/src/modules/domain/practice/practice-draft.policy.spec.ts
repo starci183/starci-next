@@ -2,6 +2,7 @@ import { Test } from "@nestjs/testing"
 import {
     PRACTICE_HIDDEN_MARK,
     practiceFilesOf,
+    practiceIntroFilesOf,
     practiceSourceFileOf,
     problemFileText,
 } from "@tests/fixtures/builders/practice.builder"
@@ -227,5 +228,35 @@ describe("buildPracticeDraft refuses empty parts", () => {
     it("treats easy and hard as themselves and any other valid text as medium", () => {
         expect(buildPracticeDraft(ENTRY, practiceFilesOf({ difficulty: "easy" })).draft?.difficulty).toBe("easy")
         expect(buildPracticeDraft(ENTRY, practiceFilesOf({ difficulty: "hard" })).draft?.difficulty).toBe("hard")
+    })
+})
+
+describe("buildPracticeDraft explanations", () => {
+    it("reads the optional solution explanation of each locale and an empty text when a file has none", () => {
+        const explained = subject.buildPracticeDraft(ENTRY, practiceFilesOf({ explained: true })).draft
+        const plain = subject.buildPracticeDraft(ENTRY, practiceFilesOf()).draft
+
+        expect(explained?.explanations).toEqual({ vi: "vi explanation", en: "en explanation" })
+        expect(plain?.explanations).toEqual({ vi: "", en: "" })
+    })
+
+    it("changes the content hash when an explanation is added", () => {
+        const explained = subject.buildPracticeDraft(ENTRY, practiceFilesOf({ explained: true })).draft
+        const plain = subject.buildPracticeDraft(ENTRY, practiceFilesOf()).draft
+
+        expect(explained?.contentHash).not.toBe(plain?.contentHash)
+    })
+})
+
+describe("buildPatternIntros", () => {
+    it("names the introduction file of a locale", () => {
+        expect(subject.patternIntroFileOf("vi")).toBe("intro.vi.md")
+    })
+
+    it("trims the text of each locale file and leaves out a locale with no file or an empty one", () => {
+        expect(subject.buildPatternIntros(practiceIntroFilesOf({ en: "  when to use it \n", vi: "\n" }))).toEqual({
+            en: "when to use it",
+        })
+        expect(subject.buildPatternIntros([])).toEqual({})
     })
 })

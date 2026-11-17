@@ -160,6 +160,12 @@ WHERE learner_id = $1::uuid AND state = 'verified'
 ORDER BY signed_at DESC, item_id DESC
 LIMIT $2::int`
 
+/** The verified items of a learner that the learner shows publicly, newest signature first ($1 learner, $2 limit). */
+export const SELECT_PUBLIC_ITEMS: ReturnType<typeof sql> = sql`SELECT * FROM career_experience_items
+WHERE learner_id = $1::uuid AND state = 'verified' AND shown_publicly
+ORDER BY signed_at DESC, item_id DESC
+LIMIT $2::int`
+
 /** The active appointment of a reviewer with the pending items assigned to them ($1 reviewer). */
 export const SELECT_ACTIVE_REVIEWER: ReturnType<typeof sql> =
     sql`SELECT r.reviewer_id, r.parts, r.capacity, r.conflicts,

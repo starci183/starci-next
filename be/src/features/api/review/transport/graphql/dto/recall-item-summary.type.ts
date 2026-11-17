@@ -27,10 +27,6 @@ export class RecallItemSummaryType {
     @Field(() => String, { nullable: true })
     level!: string | null
 
-    /** True when the item needs Premium and the learner holds none. */
-    @Field(() => Boolean)
-    locked!: boolean
-
     /** The due day, yyyy-mm-dd. */
     @Field(() => String)
     dueOn!: string

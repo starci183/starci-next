@@ -6,7 +6,6 @@ export const PRACTICE_MESSAGES: MessageBundle = {
         "errors.PRACTICE_PROBLEM_NOT_FOUND": "Không tìm thấy bài này.",
         "errors.PRACTICE_PATTERN_NOT_FOUND": "Không tìm thấy nhóm bài này.",
         "errors.PRACTICE_SUBMISSION_NOT_FOUND": "Không tìm thấy lượt nộp này.",
-        "errors.PRACTICE_PROBLEM_LOCKED": "Bài này thuộc gói Premium; mỗi nhóm bài mở sẵn một bài miễn phí.",
         "errors.PRACTICE_RATE_LIMITED":
             "Bạn đang chạy bài quá nhanh; hãy đợi lượt trước chấm xong hoặc thử lại sau ít giây.",
         "errors.PRACTICE_LANGUAGE_UNSUPPORTED": "Ngôn ngữ này chưa được hỗ trợ cho bài tập.",
@@ -22,7 +21,6 @@ export const PRACTICE_MESSAGES: MessageBundle = {
         "errors.PRACTICE_PROBLEM_NOT_FOUND": "This problem was not found.",
         "errors.PRACTICE_PATTERN_NOT_FOUND": "This pattern was not found.",
         "errors.PRACTICE_SUBMISSION_NOT_FOUND": "This submission was not found.",
-        "errors.PRACTICE_PROBLEM_LOCKED": "This problem is Premium; each pattern opens one problem for free.",
         "errors.PRACTICE_RATE_LIMITED":
             "You are running problems too fast; wait for the last run to finish or try again in a few seconds.",
         "errors.PRACTICE_LANGUAGE_UNSUPPORTED": "This language is not supported for practice.",

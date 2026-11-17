@@ -1,3 +1,12 @@
+/** The name each language is shown with. */
+export const PRACTICE_LANGUAGE_NAMES: Readonly<Record<PracticeLanguage, string>> = {
+    cpp: "C++",
+    java: "Java",
+    javascript: "JavaScript",
+    python: "Python",
+    typescript: "TypeScript",
+}
+
 /** The languages a problem has a starter code for, in the order the editor lists them. */
 export const PRACTICE_LANGUAGES = ["cpp", "java", "javascript", "python", "typescript"] as const
 
@@ -115,6 +124,8 @@ export interface PracticeDraft {
     readonly tests: ReadonlyArray<PracticeTest>
     /** The reference solutions. */
     readonly solutions: PracticeSolutions
+    /** The written explanation of the solution by locale; an empty text when the author wrote none. */
+    readonly explanations: Readonly<Record<PracticeLocale, string>>
     /** The SHA-256 over the sorted path and hash lines of every source file. */
     readonly contentHash: string
     /** The SHA-256 of every source file by posix path. */
@@ -160,10 +171,8 @@ export interface PracticePatternView {
     readonly problemCount: number
     /** How many of them the viewer got accepted. */
     readonly acceptedCount: number
-    /** How many of them the viewer may open without Premium. */
-    readonly freeCount: number
-    /** Whether the viewer, without Premium, can open only part of the pattern. */
-    readonly locked: boolean
+    /** The paragraph that says when to use the pattern, in the locale; empty when the content has none. */
+    readonly intro: string
 }
 
 /** One problem of a pattern list. */
@@ -178,8 +187,10 @@ export interface PracticeProblemItemView {
     readonly tags: ReadonlyArray<string>
     /** How the viewer stands on it. */
     readonly status: PracticeStatus
-    /** Whether the viewer needs Premium to open it. */
-    readonly locked: boolean
+    /** Whether the viewer revealed the reference solution. */
+    readonly solutionRevealed: boolean
+    /** Whether the viewer revealed the solution before the first Accepted, which keeps the problem out of experience. */
+    readonly solutionViewedBeforeAccepted: boolean
     /** The position inside the pattern. */
     readonly orderIndex: number
 }
@@ -212,11 +223,9 @@ export interface PracticeProblemView {
     readonly timeLimitMs: number
     /** The memory limit of a test in kilobytes. */
     readonly memoryLimitKb: number
-    /** Whether the viewer needs Premium to run it; a locked problem answers its statement only. */
-    readonly locked: boolean
-    /** The starter code of each language; empty when locked. */
+    /** The starter code of each language. */
     readonly starterCodes: ReadonlyArray<PracticeStarterCodeView>
-    /** The public examples; empty when locked. */
+    /** The public examples. */
     readonly examples: ReadonlyArray<PracticeExample>
     /** How many steps the hint ladder has. */
     readonly hintsTotal: number
@@ -224,6 +233,10 @@ export interface PracticeProblemView {
     readonly hintsRevealed: ReadonlyArray<PracticeHintText>
     /** How the viewer stands on it. */
     readonly status: PracticeStatus
+    /** Whether the viewer revealed the reference solution. */
+    readonly solutionRevealed: boolean
+    /** Whether the viewer revealed the solution before the first Accepted. */
+    readonly solutionViewedBeforeAccepted: boolean
     /** The slug of the next problem of the pattern, or null at the last. */
     readonly nextSlug: string | null
 }
@@ -362,4 +375,83 @@ export interface PracticeStreakAction {
     readonly sourceRef: string
     /** When it happened. */
     readonly at: Date
+}
+
+/** The pattern introductions a source holds: the paragraph of each locale that has one. */
+export type PracticePatternIntros = Readonly<Partial<Record<PracticeLocale, string>>>
+
+/** A read of the next and the resume problem, for the whole catalog or one pattern. */
+export interface PracticeNextParams extends PracticeReadParams {
+    /** The pattern to restrict both to, or null for the whole catalog. */
+    readonly patternId: string | null
+}
+
+/** The problem to do next: the first one not yet accepted in the recommended order. */
+export interface PracticeNextProblemView {
+    /** The slug. */
+    readonly slug: string
+    /** The title in the locale. */
+    readonly title: string
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title of the pattern in the locale. */
+    readonly patternTitle: string
+    /** The 1-based position of the problem inside its pattern. */
+    readonly position: number
+    /** How many problems the pattern has. */
+    readonly patternProblemCount: number
+}
+
+/** The problem the learner started and has not got accepted yet. */
+export interface PracticeResumeProblemView {
+    /** The slug. */
+    readonly slug: string
+    /** The title in the locale. */
+    readonly title: string
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title of the pattern in the locale. */
+    readonly patternTitle: string
+    /** How many graded submits the learner made. */
+    readonly attempts: number
+    /** The verdict of the latest graded submit. */
+    readonly lastVerdict: PracticeVerdict
+    /** The `index` of the first test summary the latest submit failed, or null when none is named. */
+    readonly failedTestIndex: number | null
+}
+
+/** Where to go next in practice. */
+export interface PracticeNextView {
+    /** The first problem not yet accepted, or null when every problem is accepted. */
+    readonly next: PracticeNextProblemView | null
+    /** The problem most recently submitted and not accepted, or null. */
+    readonly resume: PracticeResumeProblemView | null
+}
+
+/** The reference solution of one problem after the learner revealed it. */
+export interface PracticeSolutionView {
+    /** The slug. */
+    readonly slug: string
+    /** The solution in markdown, in the locale, with fenced reference code. */
+    readonly solution: string
+    /** When the learner first revealed it. */
+    readonly revealedAt: Date
+    /** Whether the problem still counts toward experience: false when the reveal came before the first Accepted. */
+    readonly countedForExperience: boolean
+}
+
+/** The completion of one pattern for the experience a learner may claim for it. */
+export interface PracticePatternCompletionView {
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title in the locale. */
+    readonly title: string
+    /** How many live problems the pattern has. */
+    readonly problemCount: number
+    /** How many of them the learner got accepted. */
+    readonly acceptedCount: number
+    /** How many of them the learner revealed the solution of before the first Accepted. */
+    readonly viewedCount: number
+    /** The name of the language most of the accepted problems were solved in, or null when none was accepted. */
+    readonly language: string | null
 }

@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import {
     InjectJudge0Gateway,
     Judge0Error,
@@ -12,7 +11,6 @@ import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { InjectTimer, type Timer } from "@modules/platform/retry"
 import { PracticeError, PracticeErrorCode } from "./errors/practice.error"
-import { isBeyondFree } from "./practice-access.policy"
 import { PracticeJudgeLanesService } from "./practice-judge-lanes.service"
 import { settingsOf } from "./practice-settings.policy"
 import { InjectPracticeStreak, type PracticeStreakPort } from "./practice-streak.port"
@@ -80,7 +78,7 @@ interface Job {
 
 @Injectable()
 /**
- * Runs and submits solutions: it checks the language, the size, Premium and the rate limit, stores the submission queued, hands
+ * Runs and submits solutions: it checks the language, the size and the rate limit, stores the submission queued, hands
  * it to the bounded queue in front of Judge0 and waits a short while for the verdict. A run judges the public example only and
  * counts for nothing; a submit judges the example and every hidden test, and a graded submit is announced to the streak.
  */
@@ -90,7 +88,6 @@ export class PracticeSubmissionService {
         @InjectClock() private readonly clock: Clock,
         @InjectTimer() private readonly timer: Timer,
         @InjectLogger() private readonly logger: Logger,
-        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectJudge0Gateway() private readonly judge: Judge0Gateway,
         @InjectPracticeStreak() private readonly streak: PracticeStreakPort,
         @InjectPracticeOptions() private readonly options: PracticeOptions,
@@ -126,11 +123,6 @@ export class PracticeSubmissionService {
         const found: Array<JudgingRow> = await this.entityManager.query(SELECT_JUDGING, [params.slug])
         const problem = found[0]
         if (problem === undefined) throw new PracticeError({ code: PracticeErrorCode.ProblemNotFound })
-        if (
-            isBeyondFree(problem.rank, settings.freePerPattern) &&
-            !(await this.entitlement.isPremium(params.learnerId))
-        )
-            throw new PracticeError({ code: PracticeErrorCode.ProblemLocked })
         const stored = await this.store(kind, language, params, problem)
         const job = this.queue.run(() =>
             this.judging(

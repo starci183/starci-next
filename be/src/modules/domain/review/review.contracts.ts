@@ -69,8 +69,6 @@ export interface ReviewCardDraft {
     readonly itemId: string
     /** The position in the deck. */
     readonly sortIndex: number
-    /** Whether the card needs Premium. */
-    readonly isPremium: boolean
     /** The level. */
     readonly level: ReviewLevel
     /** The code language, or null. */
@@ -172,8 +170,6 @@ export interface ReviewImportReport {
     readonly files: number
     /** The cards of the deck. */
     readonly cards: number
-    /** The cards that are free. */
-    readonly freeCards: number
     /** The problems that blocked the deck; empty when it was stored or unchanged. */
     readonly issues: ReadonlyArray<ReviewIssue>
 }
@@ -192,8 +188,6 @@ export interface ReviewItemSummary {
     readonly lessonTitle: string | null
     /** The level of a card; null for a retrieval item. */
     readonly level: ReviewLevel | null
-    /** True when the item needs Premium and the learner holds none. */
-    readonly locked: boolean
     /** The due day. */
     readonly dueOn: string
 }
@@ -204,6 +198,48 @@ export interface ReviewGoalView {
     readonly daily: number
     /** The items reviewed today. */
     readonly done: number
+}
+
+/** One card of a deck shown before the learner adds it: the question only, never the answer. */
+export interface ReviewSampleCardView {
+    /** The item id. */
+    readonly cardId: string
+    /** `cloze` when the card hides terms of its answer, `direct` otherwise. */
+    readonly kind: "direct" | "cloze"
+    /** The question; a cloze term that appears in it is shown as `____`. */
+    readonly question: string
+}
+
+/** What a learner has done with one deck. */
+export interface ReviewDeckProgressView {
+    /** The cards the learner holds of the deck; 0 for a deck not added. */
+    readonly total: number
+    /** The cards reviewed at least once. */
+    readonly learned: number
+    /** The learned cards the scheduler holds in a good state: in the review stage and not due yet. */
+    readonly remembering: number
+    /** The rest of the learned cards. */
+    readonly needsReview: number
+}
+
+/** One deck with a few sample questions, the progress of the viewer and the pace the daily goal gives. */
+export interface ReviewDeckDetailView {
+    /** The deck as the picker lists it. */
+    readonly deck: ReviewDeckView
+    /** The first cards of the deck, question text only. */
+    readonly sampleCards: ReadonlyArray<ReviewSampleCardView>
+    /** What the viewer has done with the deck. */
+    readonly progress: ReviewDeckProgressView
+    /** How many new cards of the deck the daily goal brings a day: the smaller of the goal and the cards not yet learned. */
+    readonly estimatedNewPerDay: number
+}
+
+/** What one deck is asked. */
+export interface ReviewDeckQuery {
+    /** The locale of the text. */
+    readonly locale: ReviewLocale
+    /** The deck id. */
+    readonly deckId: string
 }
 
 /** What the deck list is asked. */
@@ -246,11 +282,9 @@ export interface ReviewTodayView {
     readonly overdue: number
     /** New items offered today, up to the goal. */
     readonly newAvailable: number
-    /** Items waiting that need Premium. */
-    readonly lockedCount: number
     /** The goal. */
     readonly goal: ReviewGoalView
-    /** The due items, then the new items offered, then the locked due items. */
+    /** The due items, then the new items offered. */
     readonly items: ReadonlyArray<ReviewItemSummary>
 }
 
@@ -340,8 +374,6 @@ export interface ReviewDeckView {
     readonly difficulty: string
     /** The cards. */
     readonly cardCount: number
-    /** The cards a free learner can review. */
-    readonly freeCardCount: number
     /** Whether the learner added the deck. */
     readonly added: boolean
     /** The outcome tracks that use the deck. */

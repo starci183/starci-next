@@ -10,6 +10,8 @@ export interface PracticeSourceReader {
     entries(directory: string): Promise<ReadonlyArray<PracticeSourceEntry>>
     /** Reads the `en.md` and `vi.md` of one problem folder with the hash of their raw bytes, sorted by path. */
     read(directory: string, entry: PracticeSourceEntry): Promise<ReadonlyArray<PracticeSourceFile>>
+    /** Reads the optional `intro.en.md` and `intro.vi.md` of a pattern folder `<directory>/sets/<pattern>`; the ones that exist. */
+    intros(directory: string, pattern: string): Promise<ReadonlyArray<PracticeSourceFile>>
 }
 
 /** Token of the port that reads problem folders. */

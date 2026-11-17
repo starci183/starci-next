@@ -1,6 +1,9 @@
 import type {
+    PracticeNextView,
     PracticeProblemItemView,
     PracticeProblemView,
+    PracticeResumeProblemView,
+    PracticeSolutionView,
     PracticeStarterCodeView,
     PracticeSubmissionView,
 } from "./practice.contracts"
@@ -51,4 +54,36 @@ export const toSubmissionWire = (view: PracticeSubmissionView): PracticeSubmissi
     kind: wireOf(view.kind),
     verdict: wireOf(view.verdict),
     createdAt: view.createdAt.toISOString(),
+})
+
+/** The problem to resume as the door sends it: the verdict of the latest submit as its wire name. */
+export type PracticeResumeWire = Omit<PracticeResumeProblemView, "lastVerdict"> & {
+    /** The verdict of the latest graded submit as a wire name. */
+    readonly lastVerdict: string
+}
+
+/** The next and the resume problem as the door sends them. */
+export interface PracticeNextWire {
+    /** The first problem not yet accepted, or null. */
+    readonly next: PracticeNextView["next"]
+    /** The problem to resume, or null. */
+    readonly resume: PracticeResumeWire | null
+}
+
+/** The next and the resume problem with the verdict as a wire name. */
+export const toNextWire = (view: PracticeNextView): PracticeNextWire => ({
+    next: view.next,
+    resume: view.resume === null ? null : { ...view.resume, lastVerdict: wireOf(view.resume.lastVerdict) },
+})
+
+/** A revealed solution as the door sends it: the instant is an ISO string. */
+export type PracticeSolutionWire = Omit<PracticeSolutionView, "revealedAt"> & {
+    /** When the learner first revealed it, an ISO instant. */
+    readonly revealedAt: string
+}
+
+/** One revealed solution with its instant as an ISO string. */
+export const toSolutionWire = (view: PracticeSolutionView): PracticeSolutionWire => ({
+    ...view,
+    revealedAt: view.revealedAt.toISOString(),
 })

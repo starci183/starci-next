@@ -2,7 +2,6 @@ import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
 import { catalogItemOf } from "@tests/fixtures/builders/lesson-read.builder"
 import { REVIEW_LEARNER, queueRowOf } from "@tests/fixtures/builders/review.builder"
-import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { LessonReadService } from "@modules/domain/lesson"
 import { NOTIFICATION_PRODUCER, type NotificationProducerPort } from "@modules/domain/notification"
 import { CLOCK } from "@modules/platform/clock"
@@ -22,18 +21,12 @@ const retrievalOf = (overrides: Partial<QueueRow> = {}) =>
         lesson_id: "demo-lesson",
         activity_id: "demo--review",
         lesson_version: "v1",
-        is_premium: null,
         level: null,
         deck_titles: null,
         ...overrides,
     })
 
-const build = async (
-    rows: ReadonlyArray<QueueRow>,
-    options: { premium?: boolean; goal?: number | null; done?: number } = {},
-) => {
-    const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(options.premium ?? false)
+const build = async (rows: ReadonlyArray<QueueRow>, options: { goal?: number | null; done?: number } = {}) => {
     const lessons = mock<LessonReadService>()
     lessons.catalog.mockResolvedValue([catalogItemOf("demo-lesson", "Demo lesson")])
     const goal = options.goal === null ? [] : [{ daily_goal: options.goal ?? 10 }]
@@ -51,7 +44,6 @@ const build = async (
             ReviewQueueService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
-            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: LessonReadService, useValue: lessons },
             { provide: NOTIFICATION_PRODUCER, useValue: producer },
         ],
@@ -83,50 +75,44 @@ describe("ReviewQueueService today", () => {
             due: 2,
             overdue: 1,
             newAvailable: 2,
-            lockedCount: 0,
             goal: { daily: 5, done: 1 },
         })
         expect(today.items.map((item) => item.itemId)).toEqual(["card:d/1", "card:d/2", "card:d/4", "card:d/5"])
         expect(today.items[0]).toMatchObject({
             deckTitle: "vi Module 1",
             level: "junior",
-            locked: false,
             source: "flashcard",
         })
         expect(em.query).toHaveBeenCalledWith(SELECT_QUEUE, [REVIEW_LEARNER, 2000])
     })
 
-    it("marks the premium items locked for a free learner and leaves them out of the counts and the new items", async () => {
-        const rows = [
-            dueRow(1),
-            dueRow(2, "2026-11-08", { is_premium: true }),
-            retrievalOf({ due_on: "2026-11-08" }),
-            freshRow(3, { is_premium: true }),
-            freshRow(4),
-        ]
+    it("offers every due and new item, retrieval items included, to every learner and marks none locked", async () => {
+        const rows = [dueRow(1), dueRow(2), retrievalOf({ due_on: "2026-11-08" }), freshRow(3), freshRow(4)]
         const { service } = await build(rows)
 
         const today = await service.today(REVIEW_LEARNER, "en")
 
-        expect(today).toMatchObject({ due: 1, newAvailable: 1, lockedCount: 3 })
-        expect(today.items.map((item) => [item.itemId, item.locked])).toEqual([
-            ["card:d/1", false],
-            ["card:d/4", false],
-            ["card:d/2", true],
-            ["retrieval:demo-lesson/demo--review", true],
+        expect(today).toMatchObject({ due: 3, newAvailable: 2 })
+        expect(today.items.map((item) => item.itemId)).toEqual([
+            "card:d/1",
+            "card:d/2",
+            "retrieval:demo-lesson/demo--review",
+            "card:d/3",
+            "card:d/4",
         ])
+        expect(JSON.stringify(today)).not.toContain("locked")
     })
 
-    it("serves the retrieval items to a Premium learner with the lesson title, and falls back to the lesson id", async () => {
+    it("serves the retrieval items with the lesson title, and falls back to the lesson id", async () => {
         const rows = [retrievalOf(), retrievalOf({ item_id: "retrieval:other/x", lesson_id: "other" })]
-        const { service } = await build(rows, { premium: true, goal: null })
+        const { service } = await build(rows, { goal: null })
 
         const today = await service.today(REVIEW_LEARNER, "vi")
 
         expect(today.goal.daily).toBe(10)
-        expect(today.items.map((item) => [item.lessonTitle, item.deckTitle, item.level, item.locked])).toEqual([
-            ["Demo lesson", null, null, false],
-            ["other", null, null, false],
+        expect(today.items.map((item) => [item.lessonTitle, item.deckTitle, item.level])).toEqual([
+            ["Demo lesson", null, null],
+            ["other", null, null],
         ])
     })
 })
@@ -166,7 +152,7 @@ describe("ReviewQueueService summary", () => {
 
 describe("ReviewQueueService due notice", () => {
     it("tells the learner once a day how many cards are due, with a link to /review", async () => {
-        const { service, em, notify } = await build([dueRow(1), dueRow(2)], { premium: true })
+        const { service, em, notify } = await build([dueRow(1), dueRow(2)])
         em.query.mockImplementation((query: string) => {
             if (query === SELECT_QUEUE) return Promise.resolve([dueRow(1), dueRow(2)])
             return Promise.resolve(query === CLAIM_DUE_NOTICE ? [{ learner_id: REVIEW_LEARNER }] : [])
@@ -178,7 +164,7 @@ describe("ReviewQueueService due notice", () => {
     })
 
     it("says nothing a second time the same day, and nothing when no card is due", async () => {
-        const { service, notify } = await build([dueRow(1)], { premium: true })
+        const { service, notify } = await build([dueRow(1)])
         await service.summary(REVIEW_LEARNER, "vi")
         const quiet = await build([freshRow(1)])
         await quiet.service.summary(REVIEW_LEARNER, "vi")

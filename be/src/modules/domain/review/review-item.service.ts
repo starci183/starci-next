@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { LessonContentService, LessonReadService } from "@modules/domain/lesson"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
@@ -35,15 +34,13 @@ export class ReviewItemService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
-        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectReviewScheduler() private readonly scheduler: ReviewScheduler,
         private readonly content: LessonContentService,
         private readonly lessons: LessonReadService,
     ) {}
 
     /**
-     * The item the learner holds, once Premium is checked: a retrieval item and a card flagged isPremium need it. Not found when
-     * the learner holds no such item or its card is no longer published.
+     * The item the learner holds. Not found when the learner holds no such item or its card is no longer published.
      */
     async hold(learnerId: string, itemId: string): Promise<HeldItem> {
         const states: Array<StateRow> = await this.entityManager.query(SELECT_STATE, [learnerId, itemId])
@@ -53,8 +50,6 @@ export class ReviewItemService {
             state.source === "flashcard" ? await this.entityManager.query(SELECT_CARD, [itemId]) : []
         const card = cards[0] ?? null
         if (state.source === "flashcard" && card === null) throw new ReviewError({ code: ReviewErrorCode.ItemNotFound })
-        if ((card === null || card.is_premium) && !(await this.entitlement.isPremium(learnerId)))
-            throw new ReviewError({ code: ReviewErrorCode.PremiumRequired })
         return { state, card }
     }
 

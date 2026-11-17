@@ -5,7 +5,7 @@ import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { eachInOrder } from "@modules/platform/primitives"
 import { PracticeError, PracticeErrorCode } from "./errors/practice.error"
-import { buildPracticeDraft } from "./practice-draft.policy"
+import { buildPatternIntros, buildPracticeDraft } from "./practice-draft.policy"
 import { InjectPracticeSource, type PracticeSourceReader } from "./practice-source.port"
 import { PracticeLogEvent } from "./practice.log-events"
 import type {
@@ -15,7 +15,12 @@ import type {
     PracticeSourceEntry,
 } from "./practice.contracts"
 import type { VersionHashRow } from "./persistence/practice.rows"
-import { INSERT_VERSION, SELECT_VERSION_HASH, SUPERSEDE_PUBLISHED } from "./persistence/practice.sql"
+import {
+    INSERT_VERSION,
+    SELECT_VERSION_HASH,
+    SUPERSEDE_PUBLISHED,
+    UPSERT_PATTERN_INTRO,
+} from "./persistence/practice.sql"
 
 @Injectable()
 /**
@@ -45,9 +50,21 @@ export class PracticeImportService {
             this.logger.info(PracticeLogEvent.Imported, { ...report, issues: report.issues.length })
             reports.push(report)
         })
+        await eachInOrder([...new Set(chosen.map((entry) => entry.pattern))], (pattern) =>
+            this.importIntros(params.directory, pattern),
+        )
         const failed = reports.filter((report) => report.status === "refused" || report.status === "invalid")
         if (failed.length > 0) throw this.failureOf(failed)
         return reports
+    }
+
+    /** Stores the introductions a pattern folder holds; a locale the folder has no file for keeps the introduction it had. */
+    private async importIntros(directory: string, pattern: string): Promise<void> {
+        const intros = buildPatternIntros(await this.source.intros(directory, pattern))
+        const now = this.clock.now()
+        await eachInOrder(Object.entries(intros), (entry) =>
+            this.entityManager.query(UPSERT_PATTERN_INTRO, [pattern, entry[0], entry[1], now]),
+        )
     }
 
     /** The error for a run in which some folders were refused or invalid: the immutable version wins over invalid content. */
@@ -111,6 +128,7 @@ export class PracticeImportService {
                 JSON.stringify(draft.solutions),
                 JSON.stringify(draft.sourceHashes),
                 this.clock.now(),
+                JSON.stringify(draft.explanations),
             ])
             if (inserted.length === 0) throw new PracticeError({ code: PracticeErrorCode.VersionImmutable })
         })

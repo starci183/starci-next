@@ -28,6 +28,10 @@ export enum CareerErrorCode {
     ItemTypeUnknown = "CAREER_ITEM_TYPE_UNKNOWN",
     /** A write did not answer the row it should have stored; a defect, never a refusal. */
     ItemNotSaved = "CAREER_ITEM_NOT_SAVED",
+    /** The pattern has a problem the learner has not got accepted, or has no problem. */
+    PracticeIncomplete = "CAREER_PRACTICE_INCOMPLETE",
+    /** The learner revealed the solution of a problem of the pattern before getting it accepted. */
+    PracticeSolutionViewed = "CAREER_PRACTICE_SOLUTION_VIEWED",
     /** The development seed was asked for where it is not enabled (production never enables it). */
     DevSeedDisabled = "CAREER_DEV_SEED_DISABLED",
 }
@@ -47,6 +51,8 @@ export const CAREER_ERROR_KINDS: Record<CareerErrorCode, ErrorKind> = {
     [CareerErrorCode.ReviewerNotFound]: "not-found",
     [CareerErrorCode.ItemTypeUnknown]: "invalid",
     [CareerErrorCode.ItemNotSaved]: "internal",
+    [CareerErrorCode.PracticeIncomplete]: "conflict",
+    [CareerErrorCode.PracticeSolutionViewed]: "conflict",
     [CareerErrorCode.DevSeedDisabled]: "forbidden",
 }
 

@@ -1,8 +1,12 @@
 import { createHash } from "node:crypto"
 import { access, readFile, readdir } from "node:fs/promises"
 import { join } from "node:path"
-import type { PracticeSourceEntry, PracticeSourceFile } from "./practice.contracts"
+import { patternIntroFileOf } from "./practice-draft.policy"
+import { PRACTICE_LOCALES, type PracticeSourceEntry, type PracticeSourceFile } from "./practice.contracts"
 import type { PracticeSourceReader } from "./practice-source.port"
+
+/** The optional files of a pattern folder: the introduction of each locale. */
+const PATTERN_FILES: ReadonlyArray<string> = PRACTICE_LOCALES.map((locale) => patternIntroFileOf(locale))
 
 /** The files of a problem folder the importer reads; the audit notes under `.e2e` are not content. */
 const PROBLEM_FILES: ReadonlyArray<string> = ["en.md", "vi.md"]
@@ -43,5 +47,13 @@ const read = async (directory: string, entry: PracticeSourceEntry): Promise<Read
     return files.flat()
 }
 
-/** Reads problem folders from the local disk: the folder list, and the two locale files of a folder with the SHA-256 of their raw bytes. */
-export const practiceDirectory: PracticeSourceReader = { entries, read }
+const intros = async (directory: string, pattern: string): Promise<ReadonlyArray<PracticeSourceFile>> => {
+    const root = join(directory, "sets", pattern)
+    return (await Promise.all(PATTERN_FILES.map((name) => fileOf(root, name)))).flat()
+}
+
+/**
+ * Reads problem folders from the local disk: the folder list, the two locale files of a folder with the SHA-256 of their raw
+ * bytes, and the optional introduction files of a pattern folder.
+ */
+export const practiceDirectory: PracticeSourceReader = { entries, read, intros }

@@ -50,9 +50,9 @@ describe("buildDeckDraft", () => {
             moduleRefs: ["nestjs-core-and-request-lifecycle"],
             tracks: ["backend-fullstack", "ai-engineer", "founder"],
         })
-        expect(draft?.cards.map((card) => [card.itemId, card.isPremium, card.level, card.langs])).toEqual([
-            ["card:0-fullstack-mastery/0-module-1/0", false, "junior", null],
-            ["card:0-fullstack-mastery/0-module-1/1", true, "senior", "go"],
+        expect(draft?.cards.map((card) => [card.itemId, card.level, card.langs])).toEqual([
+            ["card:0-fullstack-mastery/0-module-1/0", "junior", null],
+            ["card:0-fullstack-mastery/0-module-1/1", "senior", "go"],
         ])
         expect(draft?.cards[0]?.back.vi.clozes).toEqual([
             { n: 1, term: "container", distractors: ["factory function", "service locator"] },
@@ -115,7 +115,7 @@ describe("buildDeckDraft fields", () => {
         )
     })
 
-    it("names a level, an isPremium and a cloze the format does not allow", () => {
+    it("names a level and a cloze the format does not allow and ignores the retired isPremium field", () => {
         const bad = subject.buildDeckDraft(
             COURSE,
             FOLDER,
@@ -129,14 +129,13 @@ describe("buildDeckDraft fields", () => {
         expect(messages).toEqual(
             expect.arrayContaining([
                 "level god is not junior, middle, senior or staff",
-                "isPremium is not true or false",
                 "cloze c1 has a distractor equal to its term",
                 "cloze c2 has no distractor",
             ]),
         )
     })
 
-    it("names vi and en that disagree on cloze numbering, level and isPremium", () => {
+    it("names vi and en that disagree on cloze numbering and level, whatever isPremium says", () => {
         const text = replaced(
             "cards/0-card/en.md",
             cardTextOf("en", { level: "staff", isPremium: "true", answer: answerOf("en").replace("c1", "c2") }),
@@ -145,12 +144,9 @@ describe("buildDeckDraft fields", () => {
         const { issues } = subject.buildDeckDraft(COURSE, FOLDER, text)
 
         expect(issues.map((issue) => issue.message)).toEqual(
-            expect.arrayContaining([
-                "vi and en have different cloze numbering",
-                "vi and en have different levels",
-                "vi and en disagree on isPremium",
-            ]),
+            expect.arrayContaining(["vi and en have different cloze numbering", "vi and en have different levels"]),
         )
+        expect(issues.map((issue) => issue.message)).not.toContain("vi and en disagree on isPremium")
     })
 })
 

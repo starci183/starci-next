@@ -7,8 +7,6 @@ export interface PracticeOptions {
     readonly isGlobal?: boolean
     /** The streak port a graded attempt is announced to; absent, the announcement goes nowhere. */
     readonly streak?: Type<PracticeStreakPort>
-    /** How many problems of each pattern a learner without Premium may open; absent, 1. */
-    readonly freePerPattern?: number
     /** How many submissions are judged at the same time on this instance; absent, 4. */
     readonly concurrency?: number
     /** How many submissions one learner may send per minute; absent, 10. */

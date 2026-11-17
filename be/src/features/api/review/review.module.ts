@@ -10,6 +10,7 @@ import { AddReviewDeckHandler } from "./application/add-review-deck.handler"
 import { RemoveReviewDeckHandler } from "./application/remove-review-deck.handler"
 import { SetReviewGoalHandler } from "./application/set-review-goal.handler"
 import { GetReviewStatsHandler } from "./application/get-review-stats.handler"
+import { GetReviewDeckHandler } from "./application/get-review-deck.handler"
 import { ConfigurableModuleClass } from "./review.module-definition"
 
 @Module({
@@ -25,6 +26,7 @@ import { ConfigurableModuleClass } from "./review.module-definition"
         RemoveReviewDeckHandler,
         SetReviewGoalHandler,
         GetReviewStatsHandler,
+        GetReviewDeckHandler,
     ],
 })
 /** Application handlers of the review feature: the daily queue, items, grades, decks, the goal and the statistics. */

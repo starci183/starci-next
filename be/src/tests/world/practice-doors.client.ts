@@ -49,15 +49,15 @@ export interface PracticePatternBody {
     readonly patternId: string
     readonly problemCount: number
     readonly acceptedCount: number
-    readonly freeCount: number
-    readonly locked: boolean
+    readonly intro: string
 }
 
 /** The problem row of a pattern. */
 export interface PracticeProblemRowBody {
     readonly slug: string
     readonly status: string
-    readonly locked: boolean
+    readonly solutionRevealed: boolean
+    readonly solutionViewedBeforeAccepted: boolean
 }
 
 /** One hint as the door answers it. */
@@ -70,7 +70,6 @@ export interface PracticeHintBody {
 /** The problem as the door answers it. */
 export interface PracticeProblemBody {
     readonly slug: string
-    readonly locked: boolean
     readonly hintsTotal: number
     readonly hintsRevealed: ReadonlyArray<PracticeHintBody>
     readonly starterCodes: ReadonlyArray<{ readonly language: string; readonly content: string }>
@@ -82,18 +81,18 @@ const SUBMISSION_FIELDS = `id kind verdict compileOutput failureCode passedCount
 
 /** The pattern list query. */
 export const PATTERNS: string = `query Patterns($input: PracticePatternsInput!) {
-  practicePatterns(input: $input) { patternId problemCount acceptedCount freeCount locked }
+  practicePatterns(input: $input) { patternId problemCount acceptedCount intro }
 }`
 
 /** The problem list query of a pattern. */
 export const PROBLEMS: string = `query Problems($input: PracticeProblemsInput!) {
-  practiceProblems(input: $input) { slug status locked }
+  practiceProblems(input: $input) { slug status solutionRevealed solutionViewedBeforeAccepted }
 }`
 
 /** The problem query. */
 export const PROBLEM: string = `query Problem($input: PracticeProblemInput!) {
   practiceProblem(input: $input) {
-    slug locked hintsTotal hintsRevealed { step title markdown }
+    slug hintsTotal hintsRevealed { step title markdown }
     starterCodes { language content } examples { input output }
   }
 }`

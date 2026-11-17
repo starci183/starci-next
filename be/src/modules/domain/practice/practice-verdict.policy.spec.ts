@@ -169,3 +169,32 @@ describe("isGraded", () => {
         expect(isGraded("running")).toBe(false)
     })
 })
+
+describe("failedTestIndexOf", () => {
+    let failedTestIndexOf: typeof subject.failedTestIndexOf
+
+    beforeAll(async () => {
+        const moduleRef = await Test.createTestingModule({
+            providers: [{ provide: SUBJECT, useFactory: () => subject }],
+        }).compile()
+        ;({ failedTestIndexOf } = moduleRef.get<typeof subject>(SUBJECT))
+    })
+
+    const summary = (index: number, passed: boolean) => ({
+        index,
+        passed,
+        status: passed ? "Accepted" : "Wrong Answer",
+        timeMs: 1,
+        memoryKb: 1,
+        example: null,
+    })
+
+    it("names the index of the first test that did not pass", () => {
+        expect(failedTestIndexOf([summary(0, true), summary(1, false), summary(2, false)])).toBe(1)
+    })
+
+    it("names none when every kept test passed or none was kept", () => {
+        expect(failedTestIndexOf([summary(0, true)])).toBeNull()
+        expect(failedTestIndexOf([])).toBeNull()
+    })
+})

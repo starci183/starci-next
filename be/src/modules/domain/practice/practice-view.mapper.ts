@@ -11,7 +11,7 @@ import {
     type PracticeSubmissionView,
     type PracticeVerdict,
 } from "./practice.contracts"
-import type { ProblemListRow, ProblemRow, SubmissionRow } from "./persistence/practice.rows"
+import type { ProblemListRow, ProblemRow, StatusRow, SubmissionRow } from "./persistence/practice.rows"
 
 const difficultyOf = (value: string): PracticeDifficulty => (value === "easy" || value === "hard" ? value : "medium")
 
@@ -30,34 +30,34 @@ const VERDICTS: ReadonlyArray<PracticeVerdict> = [
     "internal-error",
 ]
 
-const verdictOf = (value: string): PracticeVerdict => VERDICTS.find((verdict) => verdict === value) ?? "internal-error"
+/** The verdict a stored name stands for; anything unknown is an internal error. */
+export const toVerdict = (value: string): PracticeVerdict =>
+    VERDICTS.find((verdict) => verdict === value) ?? "internal-error"
 
 const languageOf = (value: string): PracticeLanguage =>
     PRACTICE_LANGUAGES.find((language) => language === value) ?? "python"
 
-/** One line of a pattern list; the free problems of the pattern are the first ones. */
-export const toProblemItemView = (row: ProblemListRow, locked: boolean): PracticeProblemItemView => ({
+/** One line of a pattern list. */
+export const toProblemItemView = (row: ProblemListRow): PracticeProblemItemView => ({
     slug: row.problem_id,
     title: row.title,
     difficulty: difficultyOf(row.difficulty),
     tags: row.tags,
     status: statusOf(row.status),
-    locked,
+    solutionRevealed: row.solution_revealed,
+    solutionViewedBeforeAccepted: row.solution_viewed,
     orderIndex: row.order_index,
 })
 
-/** The problem a learner opens; a locked one answers the statement and nothing a run needs. */
+/** The problem a learner opens: the statement, the starter codes, the examples and the hint steps the learner opened. */
 export const toProblemView = (
     row: ProblemRow,
     locale: PracticeLocale,
-    locked: boolean,
-    status: PracticeStatus,
+    standing: StatusRow | undefined,
     revealed: ReadonlyArray<number>,
 ): PracticeProblemView => {
     const text = row.content[locale]
-    const opened: ReadonlyArray<PracticeHintText> = locked
-        ? []
-        : text.hints.filter((hint) => revealed.includes(hint.step))
+    const opened: ReadonlyArray<PracticeHintText> = text.hints.filter((hint) => revealed.includes(hint.step))
     return {
         slug: row.problem_id,
         title: text.title,
@@ -68,14 +68,13 @@ export const toProblemView = (
         statementMarkdown: text.statement,
         timeLimitMs: row.time_limit_ms,
         memoryLimitKb: row.memory_limit_kb,
-        locked,
-        starterCodes: locked
-            ? []
-            : PRACTICE_LANGUAGES.map((language) => ({ language, content: row.starter_codes[language] })),
-        examples: locked ? [] : row.examples,
+        starterCodes: PRACTICE_LANGUAGES.map((language) => ({ language, content: row.starter_codes[language] })),
+        examples: row.examples,
         hintsTotal: text.hints.length,
         hintsRevealed: opened,
-        status,
+        status: statusOf(standing?.status),
+        solutionRevealed: standing?.solution_revealed ?? false,
+        solutionViewedBeforeAccepted: standing?.solution_viewed ?? false,
         nextSlug: row.next_slug,
     }
 }
@@ -86,7 +85,7 @@ export const toSubmissionView = (row: SubmissionRow): PracticeSubmissionView => 
     slug: row.problem_id,
     language: languageOf(row.language),
     kind: row.kind === "run" ? "run" : "submit",
-    verdict: verdictOf(row.verdict),
+    verdict: toVerdict(row.verdict),
     compileOutput: row.compile_output,
     failureCode: row.failure_code,
     tests: row.tests,

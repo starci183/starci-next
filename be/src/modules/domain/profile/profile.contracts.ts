@@ -109,3 +109,59 @@ export interface SignedAvatarUpload {
     /** When it stops working, ISO 8601. */
     readonly expiresAt: string
 }
+
+/** The CV link of a learner: where the public CV lives and whether anyone can open it. */
+export interface CvLinkView {
+    /** The slug of the link, fixed once it is made. */
+    readonly slug: string
+    /** The path of the public CV on the web app, `/cv/<slug>`. */
+    readonly path: string
+    /** Whether anyone with the link can open the CV; false until the learner makes it public. */
+    readonly isPublic: boolean
+    /** How many verified lines the learner has. */
+    readonly verifiedCount: number
+}
+
+/** What the CV link read or change is given. */
+export interface CvLinkParams {
+    /** The learner. */
+    readonly learnerId: string
+    /** The name of the learner's account, used for the slug when no display name is chosen, or null. */
+    readonly accountName: string | null
+}
+
+/** What the visibility change is given. */
+export interface CvVisibilityParams extends CvLinkParams {
+    /** Whether the CV is public. */
+    readonly isPublic: boolean
+}
+
+/** What a public CV read is given. */
+export interface PublicCvParams {
+    /** The slug of the link. */
+    readonly slug: string
+    /** The locale of the lines. */
+    readonly locale: ProfileLocale
+}
+
+/** One verified line a public CV shows. */
+export interface PublicCvLine {
+    /** The signed line in the asked locale. */
+    readonly line: string
+    /** The part that granted it: essentials, projects, incidents, practice or harness. */
+    readonly source: string
+    /** The public verification code of /verify/{code}. */
+    readonly verificationCode: string
+    /** When it was signed, ISO 8601. */
+    readonly signedAt: string
+}
+
+/** The public CV of a learner: who they are and the verified lines they show, nothing else. */
+export interface PublicCvView {
+    /** The display name, else the name of the account. */
+    readonly displayName: string
+    /** A short-lived address of the avatar, or null. */
+    readonly avatarUrl: string | null
+    /** The verified lines the learner shows, newest signature first. */
+    readonly lines: Array<PublicCvLine>
+}

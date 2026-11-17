@@ -21,15 +21,11 @@ export class RecallTodayType {
     @Field(() => Int)
     newAvailable!: number
 
-    /** Items waiting that need Premium. */
-    @Field(() => Int)
-    lockedCount!: number
-
     /** The goal. */
     @Field(() => RecallGoalType)
     goal!: RecallGoalType
 
-    /** The due items, then the new items, then the locked due items. */
+    /** The due items, then the new items. */
     @Field(() => [RecallItemSummaryType])
     items!: ReadonlyArray<RecallItemSummaryType>
 }

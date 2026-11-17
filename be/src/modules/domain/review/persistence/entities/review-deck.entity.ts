@@ -43,10 +43,6 @@ export class ReviewDeckEntity {
     @Column({ name: "card_count", type: "integer" })
     cardCount!: number
 
-    /** The cards that are free. */
-    @Column({ name: "free_card_count", type: "integer" })
-    freeCardCount!: number
-
     /** When the live version was stored. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date

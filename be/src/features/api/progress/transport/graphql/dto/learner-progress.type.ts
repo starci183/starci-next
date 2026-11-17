@@ -2,6 +2,7 @@ import { Field, ObjectType } from "@nestjs/graphql"
 import { ProgressActivityType } from "./progress-activity.type"
 import { ProgressEssentialsType } from "./progress-essentials.type"
 import { ProgressHarnessType } from "./progress-harness.type"
+import { ProgressPracticeType } from "./progress-practice.type"
 import { ProgressProjectsType } from "./progress-projects.type"
 import { ProgressReviewType } from "./progress-review.type"
 import { ProgressRibbonType } from "./progress-ribbon.type"
@@ -36,6 +37,10 @@ export class LearnerProgressType {
     /** Review and streak; null when both failed. */
     @Field(() => ProgressReviewType, { nullable: true })
     review!: ProgressReviewType | null
+
+    /** Practice; null when its source failed. */
+    @Field(() => ProgressPracticeType, { nullable: true })
+    practice!: ProgressPracticeType | null
 
     /** The newest lines first. */
     @Field(() => [ProgressActivityType])

@@ -19,11 +19,7 @@ export class PracticePatternType {
     @Field(() => Int)
     acceptedCount!: number
 
-    /** How many of them the viewer may open without Premium. */
-    @Field(() => Int)
-    freeCount!: number
-
-    /** Whether the viewer can open only part of the pattern. */
-    @Field(() => Boolean)
-    locked!: boolean
+    /** The paragraph that says when to use the pattern, in the asked locale; empty when the content has none. */
+    @Field(() => String)
+    intro!: string
 }

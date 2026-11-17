@@ -30,6 +30,7 @@ export interface ProblemFileOptions {
     readonly omit: ReadonlyArray<string>
     readonly hintTitles: ReadonlyArray<string>
     readonly languages: ReadonlyArray<string>
+    readonly explained: boolean
     readonly examples: ReadonlyArray<{ input: string; output: string }>
     readonly tests: ReadonlyArray<{ input: string; output: string }>
 }
@@ -42,6 +43,7 @@ const fileOptions = builder<ProblemFileOptions>({
     omit: [],
     hintTitles: ["Analysis", "Approach", "Related"],
     languages: LANGUAGES,
+    explained: false,
     examples: [{ input: "1 2", output: "3" }],
     tests: [
         { input: `1 1 ${PRACTICE_HIDDEN_MARK}`, output: "2" },
@@ -94,8 +96,9 @@ export const problemFileText = (locale: "en" | "vi", overrides: Partial<ProblemF
         ["example", caseBlocks("example", options.examples).replace(/^# example\n/u, "")],
         ["testcases", caseBlocks("testcases", options.tests).replace(/^# testcases\n/u, "")],
         ["hint", `${MARK}\n${hint}\n${MARK}\n`],
+        ["solution", options.explained ? `${MARK}\n${locale} explanation\n${MARK}\n` : ""],
     ]
-    const keep = (name: string): boolean => !options.omit.includes(name)
+    const keep = (name: string): boolean => !options.omit.includes(name) && (name !== "solution" || options.explained)
     const englishOnly = new Set([
         "orderIndex",
         "tags",
@@ -185,3 +188,12 @@ export const persistPracticeProblems = async (
         }),
     )
 }
+
+/** The introduction of the demo pattern in both locales. */
+const INTRO_TEXTS: Readonly<Record<"en" | "vi", string>> = { en: "en intro\n", vi: "vi intro\n" }
+
+/** The introduction files of a demo pattern folder; a locale left out has no file. */
+export const practiceIntroFilesOf = (
+    texts: Readonly<Partial<Record<"en" | "vi", string>>> = INTRO_TEXTS,
+): ReadonlyArray<PracticeSourceFile> =>
+    Object.entries(texts).map(([locale, text]) => practiceSourceFileOf(`intro.${locale}.md`, text))

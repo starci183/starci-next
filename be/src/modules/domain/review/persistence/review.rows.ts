@@ -42,8 +42,6 @@ export interface StateRow {
 
 /** A row of the queue: a state with what the list shows of its card or deck. */
 export interface QueueRow extends StateRow {
-    /** Whether the card needs Premium; null for a retrieval item. */
-    is_premium: boolean | null
     /** The level of a card. */
     level: ReviewLevel | null
     /** The deck titles by locale. */
@@ -56,8 +54,6 @@ export interface CardRow {
     item_id: string
     /** The deck. */
     deck_id: string
-    /** Whether the card needs Premium. */
-    is_premium: boolean
     /** The level. */
     level: ReviewLevel
     /** The code language. */
@@ -102,8 +98,6 @@ export interface DeckRow {
     difficulty: string
     /** The cards. */
     card_count: number
-    /** The free cards. */
-    free_card_count: number
     /** The tracks. */
     tracks: ReadonlyArray<string>
     /** Whether the learner added the deck. */
@@ -142,4 +136,24 @@ export interface LessonRetrievalRow {
     due_on: string
     /** Where the item stands: learning, review, done or suspended. */
     status: string
+}
+
+/** One card shown as a sample of a deck: its front and the cloze terms of its back, read to build the question only. */
+export interface SampleCardRow {
+    /** The item. */
+    item_id: string
+    /** The front by locale. */
+    front: Readonly<Record<ReviewLocale, ReviewCardFront>>
+    /** The back by locale; read for the cloze count only, never sent. */
+    back: Readonly<Record<ReviewLocale, ReviewCardBack>>
+}
+
+/** What a learner has done with the cards of one deck. */
+export interface DeckProgressRow {
+    /** The cards the learner holds of the deck. */
+    total: number
+    /** The ones reviewed at least once. */
+    learned: number
+    /** The ones reviewed at least once and in the review stage with a due day after today. */
+    remembering: number
 }

@@ -245,6 +245,42 @@ export interface VerifiedExperienceView {
     readonly signedAt: string
 }
 
+/** One verified line of a learner's public CV: only a verified item its learner shows publicly, in one locale. */
+export interface PublicCvLineView {
+    /** The signed line in the asked locale. */
+    readonly line: string
+    /** The part that granted the item. */
+    readonly part: ExperiencePart
+    /** The public code of /verify/{code}. */
+    readonly verificationCode: string
+    /** When it was signed. */
+    readonly signedAt: string
+}
+
+/** What the practice capability knows about a learner and one pattern, as the experience engine reads it. */
+export interface PracticePatternEvidence {
+    /** The pattern id. */
+    readonly patternId: string
+    /** The title of the pattern in the asked locale. */
+    readonly title: string
+    /** How many problems the pattern has. */
+    readonly problemCount: number
+    /** How many of them the learner got accepted. */
+    readonly acceptedCount: number
+    /** How many of them have a solution the learner revealed before the first Accepted. */
+    readonly viewedCount: number
+    /** The name of the language most of them were solved in, or null when none was. */
+    readonly language: string | null
+}
+
+/** What claiming the experience of a practice pattern takes. */
+export interface ClaimPracticeExperienceParams {
+    /** The learner. */
+    readonly learnerId: string
+    /** The pattern id, the subject of the item. */
+    readonly patternId: string
+}
+
 /** The caller of a signer door: the verified session's subject and Keycloak roles. */
 export interface Signer {
     /** The provider subject. */

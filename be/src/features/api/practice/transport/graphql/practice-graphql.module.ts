@@ -9,6 +9,8 @@ import { ListPracticeReadinessResolver } from "./list-practice-readiness.resolve
 import { RunPracticeResolver } from "./run-practice.resolver"
 import { SubmitPracticeResolver } from "./submit-practice.resolver"
 import { RevealPracticeHintResolver } from "./reveal-practice-hint.resolver"
+import { GetPracticeNextResolver } from "./get-practice-next.resolver"
+import { RevealPracticeSolutionResolver } from "./reveal-practice-solution.resolver"
 
 @Module({
     imports: [PracticeApiModule.register({})],
@@ -21,7 +23,9 @@ import { RevealPracticeHintResolver } from "./reveal-practice-hint.resolver"
         RunPracticeResolver,
         SubmitPracticeResolver,
         RevealPracticeHintResolver,
+        GetPracticeNextResolver,
+        RevealPracticeSolutionResolver,
     ],
 })
-/** The GraphQL transport of the practice feature: patterns, problems, readiness, submissions and the hint ladder. */
+/** The GraphQL transport of the practice feature: patterns, problems, readiness, the next problem, submissions, the hint ladder and the solution reveal. */
 export class PracticeGraphqlModule extends ConfigurableModuleClass {}

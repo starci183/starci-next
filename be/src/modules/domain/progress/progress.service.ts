@@ -3,6 +3,7 @@ import { AttemptOpenerService, AttemptReadService } from "@modules/domain/attemp
 import { ExperienceReadService } from "@modules/domain/career"
 import { EntitlementService, InjectEntitlementService } from "@modules/domain/entitlement"
 import { LessonReadService } from "@modules/domain/lesson"
+import { PracticeReadService } from "@modules/domain/practice"
 import { ProjectReadService } from "@modules/domain/project"
 import { ReviewQueueService } from "@modules/domain/review"
 import { StreakService } from "@modules/domain/streak"
@@ -13,6 +14,7 @@ import { buildProgress } from "./progress-view.policy"
 import type {
     EssentialsLessonSource,
     LearnerProgressView,
+    PracticePatternSource,
     ProgressLocale,
     ProgressSourceId,
     ProjectSource,
@@ -28,7 +30,7 @@ const OPENER_BATCH = 50
 
 @Injectable()
 /**
- * The progress of a learner across the whole app: one read model over the streak, review, Essentials (lessons and their opener
+ * The progress of a learner across the whole app: one read model over the streak, review, practice, Essentials (lessons and their opener
  * before and after), the harness, projects and the verified experience. It stores nothing and owns no table; each source is read on
  * its own, so one that fails is logged and listed in `unavailable` while the page still answers.
  */
@@ -39,6 +41,7 @@ export class ProgressService {
         @InjectProgressHarness() private readonly harness: ProgressHarnessPort,
         private readonly streaks: StreakService,
         private readonly reviews: ReviewQueueService,
+        private readonly practice: PracticeReadService,
         private readonly lessons: LessonReadService,
         private readonly attempts: AttemptReadService,
         private readonly openers: AttemptOpenerService,
@@ -59,9 +62,10 @@ export class ProgressService {
             }
         }
         const isPremium = await this.entitlement.isPremium(learnerId)
-        const [streak, review, lessons, harness, projects, verified] = await Promise.all([
+        const [streak, review, practice, lessons, harness, projects, verified] = await Promise.all([
             settled("streak", () => this.streakOf(learnerId)),
             settled("review", () => this.reviewOf(learnerId, locale)),
+            settled("practice", () => this.practiceOf(learnerId, locale)),
             settled("essentials", () => this.lessonsOf(learnerId, locale)),
             settled("harness", () => this.harness.read(learnerId, locale)),
             isPremium ? settled("projects", () => this.projectsOf(learnerId, locale)) : Promise.resolve(null),
@@ -72,6 +76,7 @@ export class ProgressService {
             openParts: this.entitlement.openEssentialParts(isPremium).flatMap((part) => essentialsPartOf(part) ?? []),
             streak,
             review,
+            practice,
             lessons,
             harness,
             projects: projects === null ? null : projects.list,
@@ -94,6 +99,16 @@ export class ProgressService {
             doneToday: summary.doneToday,
             goalDaily: summary.goalDaily,
         }
+    }
+
+    private async practiceOf(learnerId: string, locale: ProgressLocale): Promise<Array<PracticePatternSource>> {
+        const patterns = await this.practice.readiness({ learnerId, locale })
+        return patterns.map((pattern) => ({
+            patternId: pattern.patternId,
+            title: pattern.title,
+            acceptedCount: pattern.acceptedCount,
+            problemCount: pattern.problemCount,
+        }))
     }
 
     private async verifiedOf(learnerId: string, locale: ProgressLocale): Promise<Array<VerifiedItemSource>> {

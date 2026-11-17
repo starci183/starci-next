@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { StreakService, addDays, dayOf } from "@modules/domain/streak"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, type sql } from "@modules/platform/database"
@@ -46,7 +45,6 @@ export class ReviewGradeService {
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
-        @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectReviewScheduler() private readonly scheduler: ReviewScheduler,
         @InjectLogger() private readonly logger: Logger,
         private readonly streak: StreakService,
@@ -123,17 +121,14 @@ export class ReviewGradeService {
             state.source === "flashcard" ? await this.entityManager.query(SELECT_CARD, [itemId]) : []
         if (state.source === "flashcard" && cards[0] === undefined)
             throw new ReviewError({ code: ReviewErrorCode.ItemNotFound })
-        if ((cards[0] === undefined || cards[0].is_premium) && !(await this.entitlement.isPremium(learnerId)))
-            throw new ReviewError({ code: ReviewErrorCode.PremiumRequired })
     }
 
     private async view(learnerId: string, itemId: string, today: string): Promise<ReviewGradeView> {
-        const premium = await this.entitlement.isPremium(learnerId)
         const [states, goals, done, remaining] = await Promise.all([
             this.rows<StateRow>(SELECT_STATE, [learnerId, itemId]),
             this.rows<GoalRow>(SELECT_GOAL, [learnerId]),
             this.rows<CountRow>(COUNT_REVIEWS_ON, [learnerId, today]),
-            this.rows<CountRow>(COUNT_REMAINING_DUE, [learnerId, today, premium]),
+            this.rows<CountRow>(COUNT_REMAINING_DUE, [learnerId, today]),
         ])
         const state = states[0]
         if (state === undefined) throw new ReviewError({ code: ReviewErrorCode.ItemNotFound })

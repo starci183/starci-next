@@ -2,7 +2,6 @@ import { FakeClock, fakeTransaction, mock, mockEntityManager } from "@starci/jes
 import { Test } from "@nestjs/testing"
 import { catalogItemOf } from "@tests/fixtures/builders/lesson-read.builder"
 import { REVIEW_LEARNER, cardRowOf, stateRowOf } from "@tests/fixtures/builders/review.builder"
-import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/entitlement"
 import { LessonContentService, LessonReadService } from "@modules/domain/lesson"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
@@ -29,9 +28,7 @@ const retrievalState = (overrides: Partial<StateRow> = {}) =>
         ...overrides,
     })
 
-const build = async (state: StateRow | null, card: CardRow | null, premium = true) => {
-    const entitlement = mock<EntitlementService>()
-    entitlement.isPremium.mockResolvedValue(premium)
+const build = async (state: StateRow | null, card: CardRow | null) => {
     const content = mock<LessonContentService>()
     content.activity.mockResolvedValue({
         activity: {
@@ -60,13 +57,12 @@ const build = async (state: StateRow | null, card: CardRow | null, premium = tru
             ReviewItemService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
-            { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: REVIEW_SCHEDULER, useValue: scheduler },
             { provide: LessonContentService, useValue: content },
             { provide: LessonReadService, useValue: lessons },
         ],
     }).compile()
-    return { service: moduleRef.get(ReviewItemService), em: tx.em, entitlement, content, lessons }
+    return { service: moduleRef.get(ReviewItemService), em: tx.em, content, lessons }
 }
 
 describe("ReviewItemService item", () => {
@@ -99,7 +95,7 @@ describe("ReviewItemService item", () => {
         await expect(service.item(REVIEW_LEARNER, CARD_ID, "vi")).resolves.toMatchObject({ langs: [], flipped: false })
     })
 
-    it("serves the prompt of a retrieval item with its lesson title to a Premium learner and not the sample answer", async () => {
+    it("serves the prompt of a retrieval item with its lesson title and not the sample answer", async () => {
         const { service } = await build(retrievalState(), null)
 
         const item = await service.item(REVIEW_LEARNER, RETRIEVAL_ID, "vi")
@@ -152,19 +148,14 @@ describe("ReviewItemService item refusals", () => {
         })
     })
 
-    it("refuses a premium card and a retrieval item to a learner without Premium, and a free card passes", async () => {
-        const premiumCard = await build(stateRowOf(), cardRowOf({ is_premium: true }), false)
-        const retrieval = await build(retrievalState(), null, false)
-        const free = await build(stateRowOf(), cardRowOf(), false)
+    it("serves a card and a retrieval item to any learner", async () => {
+        const card = await build(stateRowOf(), cardRowOf())
+        const retrieval = await build(retrievalState(), null)
 
-        await expect(premiumCard.service.item(REVIEW_LEARNER, CARD_ID, "vi")).rejects.toMatchObject({
-            code: ReviewErrorCode.PremiumRequired,
+        await expect(card.service.item(REVIEW_LEARNER, CARD_ID, "vi")).resolves.toMatchObject({ itemId: CARD_ID })
+        await expect(retrieval.service.item(REVIEW_LEARNER, RETRIEVAL_ID, "vi")).resolves.toMatchObject({
+            itemId: RETRIEVAL_ID,
         })
-        await expect(retrieval.service.item(REVIEW_LEARNER, RETRIEVAL_ID, "vi")).rejects.toMatchObject({
-            code: ReviewErrorCode.PremiumRequired,
-        })
-        await expect(free.service.item(REVIEW_LEARNER, CARD_ID, "vi")).resolves.toMatchObject({ itemId: CARD_ID })
-        expect(retrieval.content.activity).not.toHaveBeenCalled()
     })
 })
 

@@ -12,6 +12,7 @@ import { DecideExperienceResolver } from "./decide-experience.resolver"
 import { RevokeExperienceResolver } from "./revoke-experience.resolver"
 import { AssignExperienceResolver } from "./assign-experience.resolver"
 import { SetExperienceReviewerResolver } from "./set-experience-reviewer.resolver"
+import { ClaimPracticeExperienceResolver } from "./claim-practice-experience.resolver"
 
 @Module({
     imports: [CareerApiModule.register({})],
@@ -27,6 +28,7 @@ import { SetExperienceReviewerResolver } from "./set-experience-reviewer.resolve
         RevokeExperienceResolver,
         AssignExperienceResolver,
         SetExperienceReviewerResolver,
+        ClaimPracticeExperienceResolver,
     ],
 })
 /** The GraphQL transport of the career feature. */

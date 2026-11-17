@@ -17,7 +17,6 @@ interface GoalProgress {
 
 interface TodayItem {
     readonly itemId: string
-    readonly locked: boolean
     readonly source: string
 }
 
@@ -25,7 +24,6 @@ interface TodayData {
     readonly date: string
     readonly due: number
     readonly newAvailable: number
-    readonly lockedCount: number
     readonly goal: GoalProgress
     readonly items: ReadonlyArray<TodayItem>
 }
@@ -38,7 +36,6 @@ interface DeckData {
     readonly deckId: string
     readonly added: boolean
     readonly cardCount: number
-    readonly freeCardCount: number
 }
 
 interface DeckBody {
@@ -87,9 +84,9 @@ interface GradeBody {
 }
 
 const TODAY = `query Today($input: RecallTodayInput!) {
-  reviewToday(input: $input) { date due newAvailable lockedCount goal { daily done } items { itemId locked source } }
+  reviewToday(input: $input) { date due newAvailable goal { daily done } items { itemId source } }
 }`
-const DECKS = `query Decks($input: RecallDecksInput!) { reviewDecks(input: $input) { deckId added cardCount freeCardCount } }`
+const DECKS = `query Decks($input: RecallDecksInput!) { reviewDecks(input: $input) { deckId added cardCount } }`
 const ITEM = `query Item($input: RecallItemInput!) { recallItem(input: $input) { question flipped revision } }`
 const ADD = `mutation Add($input: RecallDeckInput!) { addReviewDeck(input: $input) { deckId added newCards } }`
 const FLIP = `mutation Flip($input: FlipRecallCardInput!) {
@@ -115,7 +112,7 @@ const useReviewDoors = (): AttemptDoors => {
 
 /**
  * The review doors (integration): the real core app behind the real session guard, over the dev subset of the teacher's decks.
- * It proves the session gate, that a card's answer is not served before the flip, the free and Premium cut by the teacher's flag,
+ * It proves the session gate, that a card's answer is not served before the flip, that every card is open to every learner,
  * the self-grade once per revision and the goal range.
  */
 describe("review doors (integration)", () => {
@@ -133,7 +130,7 @@ describe("review doors (integration)", () => {
         expect(codeOf(answer)).toMatchObject({ code: "IDENTITY_SESSION_REQUIRED", kind: "unauthenticated" })
     })
 
-    it("lists the decks, adds one and queues its cards with the Premium ones locked for a free learner", async () => {
+    it("lists the decks, adds one and queues its cards up to the goal for a free learner", async () => {
         const { cookie } = await doors.signIn(nextLearner(), false)
 
         const decks = await doors.ask<DeckBody>(DECKS, { input: { locale: "vi" } }, cookie)
@@ -141,15 +138,14 @@ describe("review doors (integration)", () => {
         const today = await doors.ask<TodayBody>(TODAY, { input: { locale: "vi" } }, cookie)
 
         const deck = decks.data?.reviewDecks.find((candidate) => candidate.deckId === DECK)
-        expect(deck).toMatchObject({ added: false, cardCount: 20, freeCardCount: 3 })
+        expect(deck).toMatchObject({ added: false, cardCount: 20 })
         expect(added.errors).toBeUndefined()
-        expect(today.data?.reviewToday.items.filter((item) => !item.locked)).toHaveLength(3)
-        expect(today.data?.reviewToday.lockedCount).toBe(17)
+        expect(today.data?.reviewToday.items).toHaveLength(10)
         expect(today.data?.reviewToday.goal).toEqual({ daily: 10, done: 0 })
     })
 })
 
-/** The review doors once a deck is added: the flip and self-grade, the Premium cut, what does not exist and the goal. */
+/** The review doors once a deck is added: the flip and self-grade, what does not exist and the goal. */
 describe("review doors grading (integration)", () => {
     const doors = useReviewDoors()
     const nextLearner = learnersOf("c8")
@@ -184,16 +180,13 @@ describe("review doors grading (integration)", () => {
         expect(codeOf(conflict)).toMatchObject({ code: "REVIEW_REVISION_CONFLICT", kind: "conflict" })
     })
 
-    it("refuses a Premium card to a free learner and serves it to a Premium one", async () => {
+    it("serves a card the teacher once marked Premium to a learner without Premium", async () => {
         const free = await doors.signIn(nextLearner(), false)
-        const paid = await doors.signIn(nextLearner(), true)
-        await doors.ask(ADD, { input: { deckId: DECK } }, paid.cookie)
         await doors.ask(ADD, { input: { deckId: DECK } }, free.cookie)
 
-        const refused = await doors.ask(ITEM, { input: { itemId: PREMIUM_CARD, locale: "vi" } }, free.cookie)
-        const served = await doors.ask<ItemBody>(ITEM, { input: { itemId: PREMIUM_CARD, locale: "vi" } }, paid.cookie)
+        const served = await doors.ask<ItemBody>(ITEM, { input: { itemId: PREMIUM_CARD, locale: "vi" } }, free.cookie)
 
-        expect(codeOf(refused)).toMatchObject({ code: "REVIEW_PREMIUM_REQUIRED", kind: "forbidden" })
+        expect(served.errors).toBeUndefined()
         expect(served.data?.recallItem.question.length).toBeGreaterThan(0)
     })
 
