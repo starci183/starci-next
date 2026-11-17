@@ -7,9 +7,9 @@
 {"data":{},"findings":[],"hash":"e409b5e64a1a52f484bd3a4a84463801ad2ca9d08f1258edb016e7f3a2995eea","path":"gallery/pages/career/review-queue/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a926490f3e3ba277edc5873b74648f4d1a49cd5b8771995f0703b36d067cc339","path":"gallery/pages/commerce/premium-result/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e259b09bebb031b7de20358616052c8f49350e245da4ac14994a6d05019850d6","path":"gallery/pages/commerce/premium/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"dbcc6698972c7895ae813a424b3a04214ae07e9bf21518b345a8b5dd502514b7","path":"gallery/pages/connect/ai/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"99954a7b6fd52248e5ab441fe0692b80cc9f79d72fb3327f7593be16e972abc0","path":"gallery/pages/connect/ai/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"37750c34482f35ef6439c2fc982f374f9b208c345134b94c3181ac293dbc3f2e","path":"gallery/pages/devices/list/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2d55a258f35ff3f27ba55b5c65118be7aad334990e3b945f3a916b2e5a345a89","path":"gallery/pages/essentials/catalog/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3f8282446c89062cc2cd69f648c0ec0c806a654406c0cf736226c451b085ad04","path":"gallery/pages/essentials/catalog/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"030297e9ccd094a69e38b967620403833b76f7544ca999c70feaf020b985d074","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c7674259a28ddf1ed7529443d244ad95d9f4325789870697b8e6bc31c0f7087e","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b43dfa6d3e70ce2eb73a1ac900db61284432186241d3518cdca339f978c268af","path":"gallery/pages/essentials/lesson-source/explain.md","step":"file-rules"}
@@ -41,7 +41,7 @@
 {"data":{},"findings":[],"hash":"87bc334f78d400dce2f5448dfc15eef6f96aa75eada2a1e3433b31a816eef028","path":"gallery/pages/projects/detail/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7cf076deabfc361f026ca4d9b315af5508ff8ff92fa6c84a9d6d2f518941e504","path":"gallery/pages/projects/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2890ea51f87b28c435093e551068adc33f3902d6bd52dc41759d447edeac9ee1","path":"gallery/pages/projects/milestone/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"be5a01fdcde313ccc2359c0dbbd3660de3b94a7aa817b786ca3c07d3e3abaa6a","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"24b87925deab6ea7f8a5dd1b5504fb14a7927f64e39e60e1a48ce6540c7b2407","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ff47677f68ff232051c0726975d37be409b2f94afe63c289c11acdc346d862c1","path":"gallery/pages/projects/paywall/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d4685612e65798e2e1bf6924c4ee5a87b54955a80b1ff6dae741c2d84da6bcf7","path":"gallery/pages/review/decks/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"280b5ad70da9f60e9e3179251ddebb154bf79470348b8c83c8e50ce23907bbe0","path":"gallery/pages/review/hub/explain.md","step":"file-rules"}
