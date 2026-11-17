@@ -1,6 +1,6 @@
 {"data":{},"findings":[],"hash":"827a147584fb2bae74009c09cb3a74835c7e720da4578e1cbcc76c9a03e81b9f","path":"fe/apps/app/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"33d72a551f83dba48d008b38a1540e7f9284112bf23b07ffb6ffeba39ec5d1e7","path":"fe/apps/app/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4f9f7fae75dd4698e6f430c334b18fb37fe13c9c07533b4077fc41dcdd111e3f","path":"fe/apps/app/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9c34d14a3cd89bc6c8491240f33eb1db18104e9aa73252afe94a305e66ed1dbf","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/app/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f1474d5fdda82a326f0acacb8529975add26763fd5e15a78c4135a316d63307","path":"fe/apps/app/public/art/pro-learning-journey-v1.webp","step":"file-rules"}
 {"data":{},"findings":[],"hash":"80bf42871e2f5efde68c343b88f886392858a00fafb25b15abdb234a1be5523c","path":"fe/apps/app/public/art/stage-ask.webp","step":"file-rules"}
@@ -84,9 +84,9 @@
 {"data":{},"findings":[],"hash":"30c8785c46563d950e0938433caf7aef12c7390205e855d4c5dedb890993db66","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3ccf6a90d26c6471174a90b6071bacaf022f6e55f1ba121ee1c3d01f7c0b0e04","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e01a5dad42e19bf37e89589d66b89fed37519543972e53b1dc829b2ead83c6b4","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"12ea9d5e8c08d3396d406d817d8361b174b93c8975a92c0914a64ede6125b726","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a5af8af64cf6a2a4ce384ded6d62e40a46f69a953a77db8555ad9b96443d5bfb","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"65ab510b2af8c6f67e34ef779d4f69fa19d5ccc654e75508a5507da8e29aa893","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9dcb4603df870eb1b073f80565ee1aa4080b6b9f49a29358cc7355e9b65780d6","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ad6b2b37f543b161cdc06878709b05f3f73b4b7a5f9165585ddf8654d31e7909","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2bd51d819e57d9a3894a168b01b16f51b8ef1cc6ba3ad5d8d67cccba88bb2227","path":"fe/apps/app/src/components/blocks/EssentialLesson/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c35f527f2821042b37961b354e91b85113f3dcaa5b72805da7c1ed09d54452ce","path":"fe/apps/app/src/components/blocks/EssentialLesson/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"84cff58f83bb6a521d6be190726ae795ad64eba843b2f14b9c0964a2cb2979ad","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx","step":"file-rules"}
@@ -378,8 +378,8 @@
 {"data":{},"findings":[],"hash":"5205ed78d1c1ef77f9e8dd396b0fabf358d401cc58d89bf375f535b7bba0d65a","path":"fe/apps/app/src/hooks/reviewView/useReviewDecksView.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"46c3be7f488507c3832b4b45064253dcbd1b931756dbd3e777ed3f9e2104a68d","path":"fe/apps/app/src/hooks/reviewView/useReviewSessionView.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"332eaaf08974d31093038cb286663e848ba6f7ba548dad1c7e50989b129ab166","path":"fe/apps/app/src/hooks/reviewView/useReviewTodayView.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4eb2a8c3d03a8b02b04ac8bdd1e939a775707ecc366b76332cfd07507fa20864","path":"fe/apps/app/src/hooks/slot/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"539e229fbbe9db48000395d89ed021393054045f2c128fffc44af4d0a1fbd450","path":"fe/apps/app/src/hooks/slot/slot.shared.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"600820b01cedea149211b56cb93aa28961be3ce46c3c1df40ebfddd0695bd6a1","path":"fe/apps/app/src/hooks/slot/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ba621090d9b5f499e93bf892392c4ca065384b688097f2fbd0b24804248c0a4c","path":"fe/apps/app/src/hooks/slot/slot.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bc0f7aed75c6f2b3bc408df60e778ef08ca16ac3afad3b11f8e3fcbbc9291b6e","path":"fe/apps/app/src/hooks/slot/useSlotLabels.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"615cf80bba6b1798593d4b18082cabd52064dd849839ef75b9fc9dad0ebd6e83","path":"fe/apps/app/src/hooks/swr/SwrSideEffects.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9eb100b06a3e5a39cb7e446d5f7116d0db8fca9e65477683ec73fb0d500d43d","path":"fe/apps/app/src/hooks/swr/api/graphql/index.ts","step":"file-rules"}
@@ -663,7 +663,7 @@
 {"data":{},"findings":[],"hash":"c8acb681064d234fb2115f7db3b0333ffb16a769c262e23029f67a6d68a36229","path":"fe/apps/app/tsconfig.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"924d3e92a02e0da1e2386e3aff9fd357c6e1e33ca0214c4f3c8af2dc7deb8f90","path":"fe/apps/landing/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"655be6e608b751828898942c2826e9d79617981167de4f12577e37903decd4f1","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ce92ac90f35888219f6194d98bf319781c68afad85a4820c341cd5ff97bcdbea","path":"fe/apps/landing/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"63c7d59629699022de36a31d693b20557ae28f5589ba8ddb05fbf354ad212012","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/landing/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e8fd9f6306a044e6750eff9f6532af155b24ed134d697bc36ad4c7c39c4ad09","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"441ae22edfd58019f16c35dbbbd74a21408ed4047440c8cff41c3d6426f4cceb","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"file-rules"}
