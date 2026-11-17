@@ -169,15 +169,15 @@ export type {
     HarnessVerdict,
 } from "./harness"
 export type {
+    ProfileAsideView,
     ProfileCvLine,
+    ProfileCvLinkView,
     ProfileCvView,
     ProfileDeviceView,
     ProfileHubLabels,
     ProfileHubViews,
     ProfileIdentityView,
     ProfilePlanView,
-    ProfileTokenView,
-    ProfileVerifyLink,
 } from "./profile"
 export type {
     ProgressActivityEntry,
@@ -199,10 +199,10 @@ export type {
     RubricVerdict,
 } from "./projectConcept"
 export {
+    ASIDE_PLACEHOLDER,
+    CV_LINK_PLACEHOLDER,
     CV_PLACEHOLDER,
     DEVICES_PLACEHOLDER,
     IDENTITY_PLACEHOLDER,
     PLAN_PLACEHOLDER,
-    TOKENS_PLACEHOLDER,
-    VERIFY_PLACEHOLDER,
 } from "./profile"

@@ -29,3 +29,6 @@ export const avatarIssueOf = (file: File, limits: AvatarLimits): ProfileIssue =>
     if (!limits.contentTypes.includes(typeOfFile(file))) return "type"
     return file.size <= 0 || file.size > limits.maxBytes ? "size" : "none"
 }
+
+/** The session-store key the editor sets when it saves, so the profile page can say so once. */
+export const PROFILE_SAVED_KEY = "starci.profile.saved"

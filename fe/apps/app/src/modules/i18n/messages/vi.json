@@ -2073,12 +2073,12 @@
       "identity": {
         "title": "Danh tính",
         "avatarLabel": "Ảnh đại diện",
-        "upload": "Tải ảnh lên",
+        "upload": "Chọn ảnh",
         "remove": "Xoá ảnh",
         "avatarHint": "PNG, JPEG hoặc WebP, tối đa {size}.",
         "nameLabel": "Tên hiển thị",
         "namePlaceholder": "Tên bạn muốn hiện",
-        "nameHint": "Để trống thì hiện tên tài khoản.",
+        "nameHint": "Để trống thì hiện tên tài khoản. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
         "save": "Lưu tên",
         "saved": "Đã lưu tên.",
         "error": {
@@ -2088,7 +2088,10 @@
           "unavailable": "Kho ảnh chưa sẵn sàng, bạn thử lại sau.",
           "name": "Tên phải có từ 1 đến {max} ký tự.",
           "other": "Chưa lưu được, bạn thử lại nhé."
-        }
+        },
+        "avatarTitle": "Ảnh đại diện",
+        "uploadAnother": "Chọn ảnh khác",
+        "uploading": "Đang tải lên, giữ trang này mở. Nút Lưu tắt trong lúc ảnh đang tải lên."
       },
       "goal": {
         "title": "Lộ trình mục tiêu",
@@ -2097,19 +2100,23 @@
         "change": "Đổi lộ trình"
       },
       "cv": {
-        "title": "Dòng CV đã xác minh",
+        "title": "CV đã xác minh",
         "caption": "Chỉ mục Đã xác minh mới vào CV. Mục chưa được ký vẫn nằm ở Kinh nghiệm.",
-        "gate": "{count}/{min} mục Đã xác minh để được giới thiệu việc làm",
+        "gate": "{count}/{min} để được giới thiệu việc làm",
         "pending": "{count} mục đang chờ duyệt",
         "seeAll": "Kinh nghiệm",
         "proof": "Bằng chứng",
         "signed": "Ký bởi {role} ngày {date}",
-        "empty": "Chưa có dòng CV nào được xác minh. Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên.",
+        "empty": "Hoàn thành một bài Essentials, bản dựng Harness, dự án hoặc nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi thầy ký.",
         "part": {
-          "essentials": "Bản chất",
+          "essentials": "Essentials",
           "projects": "Dự án",
-          "harness": "Harness"
-        }
+          "harness": "Harness",
+          "practice": "Luyện code"
+        },
+        "verified": "Đã xác minh",
+        "emptyTitle": "Chưa có dòng CV nào",
+        "emptyAction": "Xem việc có thể làm"
       },
       "account": {
         "devices": {
@@ -2123,7 +2130,8 @@
             "windows": "Windows",
             "macos": "macOS",
             "linux": "Linux"
-          }
+          },
+          "count": "{count} máy"
         },
         "tokens": {
           "title": "MCP token",
@@ -2137,19 +2145,71 @@
           "title": "Gói của bạn",
           "free": "Miễn phí",
           "until": "Premium đến {date}",
-          "freeNote": "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí.",
-          "manage": "Quản lý gói",
+          "freeNote": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
+          "manage": "Xem Premium",
           "premiumNote": "Mọi phần của Bản chất, Dự án và Harness đều đã mở."
-        }
+        },
+        "title": "Tài khoản"
       },
       "verify": {
         "title": "Liên kết xác minh công khai",
         "caption": "Người tuyển dụng mở liên kết để xem dòng đã ký, không thấy điểm số hay tên người duyệt.",
-        "copy": "Sao chép liên kết",
+        "copy": "Sao chép",
         "copied": "Đã sao chép",
         "public": "Công khai",
         "private": "Riêng tư",
         "empty": "Liên kết xuất hiện khi một mục được xác minh."
+      },
+      "loading": "Đang tải…",
+      "meta": {
+        "learner": "Học viên",
+        "premium": "Premium",
+        "free": "Gói miễn phí",
+        "verified": "{verified}/{min} mục đã xác minh"
+      },
+      "edit": {
+        "title": "Sửa hồ sơ",
+        "meta": "Thay đổi chưa lưu",
+        "open": "Sửa hồ sơ",
+        "openNew": "Thêm ảnh và tên",
+        "cancel": "Hủy",
+        "save": "Lưu thay đổi",
+        "unsaved": "Thay đổi chưa lưu"
+      },
+      "crumb": {
+        "label": "Đường dẫn",
+        "edit": "Sửa"
+      },
+      "saved": {
+        "title": "Đã cập nhật hồ sơ",
+        "text": "Ảnh và tên mới hiện ở thanh trên và trên CV công khai."
+      },
+      "remove": {
+        "title": "Xoá ảnh đại diện?",
+        "text": "Ảnh sẽ bị xoá khỏi kho lưu trữ. Tên viết tắt của bạn sẽ thay vào chỗ ảnh, kể cả trên CV công khai.",
+        "keep": "Giữ ảnh",
+        "confirm": "Xoá ảnh"
+      },
+      "cvLink": {
+        "title": "Liên kết CV",
+        "label": "Liên kết CV công khai",
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "copyError": "Chưa sao chép được",
+        "switch": "Cho người khác xem CV bằng liên kết này",
+        "switchHint": "Chỉ hiện các dòng đã được ký. Không hiện điểm số hay tên người duyệt.",
+        "empty": "Liên kết CV xuất hiện khi bạn có ít nhất một mục đã xác minh."
+      },
+      "aside": {
+        "progressTitle": "Tiến độ nhanh",
+        "progressLink": "Xem tiến độ",
+        "proved": "Khái niệm đã chứng minh",
+        "accepted": "Bài Accepted",
+        "streak": "Chuỗi ngày",
+        "experienceTitle": "Kinh nghiệm",
+        "experienceLink": "Mở Kinh nghiệm",
+        "experience": "{verified} đã xác minh, {pending} đang chờ duyệt. Cần {min} mục đã xác minh để được giới thiệu việc làm.",
+        "experienceEnough": "{verified} mục đã xác minh, đủ để được giới thiệu việc làm."
       }
     },
     "progress": {
@@ -2280,6 +2340,17 @@
         "profile": "Hồ sơ"
       },
       "pageTitleShort": "Tiến độ"
+    },
+    "publicCv": {
+      "pageTitle": "CV công khai",
+      "title": "CV đã xác minh bởi StarCi",
+      "linesTitle": "Dòng CV đã ký",
+      "note": "Chỉ hiện các dòng đã được thầy ký. Không hiện điểm số hay tên người duyệt.",
+      "empty": "Chưa có dòng CV nào để hiện.",
+      "signed": "Ký ngày {date}",
+      "verify": "Xác minh",
+      "notFoundTitle": "Không có CV ở địa chỉ này",
+      "notFoundDescription": "Liên kết có thể đã sai, hoặc chủ CV đang để riêng tư."
     }
   }
 }

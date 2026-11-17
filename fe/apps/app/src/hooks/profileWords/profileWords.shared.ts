@@ -13,12 +13,13 @@ export const sizeWordsOf = (bytes: number): string =>
 export type ProfileTranslate = ReturnType<typeof useTranslations>
 
 /** The parts whose verified items make a CV line of the profile. */
-export const CV_PARTS: ReadonlySet<string> = new Set(["essentials", "projects", "harness"])
+export const CV_PARTS: ReadonlySet<string> = new Set(["essentials", "projects", "harness", "practice"])
 
 /** The words of the part of a CV line. */
 export const partWordsOf = (t: ProfileTranslate, part: string): string => {
     if (part === "projects") return t("cv.part.projects")
-    return part === "harness" ? t("cv.part.harness") : t("cv.part.essentials")
+    if (part === "harness") return t("cv.part.harness")
+    return part === "practice" ? t("cv.part.practice") : t("cv.part.essentials")
 }
 
 /** The platform of a device in the reader words. */
@@ -44,65 +45,77 @@ export const profileIssueWordsOf = (t: ProfileTranslate, issue: ProfileIssue, li
     return words[issue]
 }
 
-/** The words of the identity part. */
-const identityLabelsOf = (t: ProfileTranslate, issue: string, maxBytes: number) => ({
+/** The fixed words of the profile (view and edit), from the catalogue. */
+export const labelsOf = (t: ProfileTranslate, issue: string, maxBytes: number): ProfileHubLabels => ({
+    title: t("title"),
+    loading: t("loading"),
+    editTitle: t("edit.title"),
+    editMeta: t("edit.meta"),
+    edit: t("edit.open"),
+    editNew: t("edit.openNew"),
+    cancel: t("edit.cancel"),
+    saveChanges: t("edit.save"),
+    crumbLabel: t("crumb.label"),
+    crumbProfile: t("pageTitle"),
+    crumbEdit: t("crumb.edit"),
+    profileHref: APP_ROUTES.profile,
+    editHref: APP_ROUTES.profileEdit,
     identityTitle: t("identity.title"),
+    avatarTitle: t("identity.avatarTitle"),
     avatarLabel: t("identity.avatarLabel"),
     upload: t("identity.upload"),
+    uploadAnother: t("identity.uploadAnother"),
     remove: t("identity.remove"),
+    uploading: t("identity.uploading"),
     avatarHint: t("identity.avatarHint", { size: sizeWordsOf(maxBytes) }),
     nameLabel: t("identity.nameLabel"),
     namePlaceholder: t("identity.namePlaceholder"),
     nameHint: t("identity.nameHint"),
-    save: t("identity.save"),
-    saved: t("identity.saved"),
     issue,
     goalTitle: t("goal.title"),
     goalNone: t("goal.none"),
     goalChoose: t("goal.choose"),
     goalChange: t("goal.change"),
     goalHref: APP_ROUTES.pathsChoose,
-})
-
-/** The words of the CV and verify parts. */
-const cvLabelsOf = (t: ProfileTranslate) => ({
+    cvLinkTitle: t("cvLink.title"),
+    cvLinkLabel: t("cvLink.label"),
+    cvLinkCopy: t("cvLink.copy"),
+    cvLinkCopied: t("cvLink.copied"),
+    cvLinkCopyError: t("cvLink.copyError"),
+    cvLinkSwitch: t("cvLink.switch"),
+    cvLinkSwitchHint: t("cvLink.switchHint"),
+    cvLinkEmpty: t("cvLink.empty"),
     cvTitle: t("cv.title"),
-    cvCaption: t("cv.caption"),
-    cvSeeAll: t("cv.seeAll"),
-    cvSeeAllHref: APP_ROUTES.experience,
+    cvEmptyTitle: t("cv.emptyTitle"),
     cvEmpty: t("cv.empty"),
-    proof: t("cv.proof"),
-    verifyTitle: t("verify.title"),
-    verifyCaption: t("verify.caption"),
+    cvEmptyAction: t("cv.emptyAction"),
+    cvEmptyHref: APP_ROUTES.experience,
+    verified: t("cv.verified"),
     verifyCopy: t("verify.copy"),
     verifyCopied: t("verify.copied"),
     verifyPublic: t("verify.public"),
     verifyPrivate: t("verify.private"),
-    verifyEmpty: t("verify.empty"),
-})
-
-/** The words of the account panels. */
-const accountLabelsOf = (t: ProfileTranslate) => ({
+    accountTitle: t("account.title"),
     devicesTitle: t("account.devices.title"),
     devicesManage: t("account.devices.manage"),
     devicesHref: APP_ROUTES.devices,
     devicesEmpty: t("account.devices.empty"),
     online: t("account.devices.online"),
     offline: t("account.devices.offline"),
-    tokensTitle: t("account.tokens.title"),
-    tokensManage: t("account.tokens.manage"),
-    tokensHref: APP_ROUTES.connect,
-    tokensEmpty: t("account.tokens.empty"),
     planTitle: t("account.plan.title"),
     planManage: t("account.plan.manage"),
     planHref: APP_ROUTES.premium,
-})
-
-/** The fixed words of the profile, from the catalogue. */
-export const labelsOf = (t: ProfileTranslate, issue: string, maxBytes: number): ProfileHubLabels => ({
-    title: t("title"),
-    description: t("description"),
-    ...identityLabelsOf(t, issue, maxBytes),
-    ...cvLabelsOf(t),
-    ...accountLabelsOf(t),
+    asideProgressTitle: t("aside.progressTitle"),
+    asideProgressLink: t("aside.progressLink"),
+    progressHref: APP_ROUTES.progress,
+    asideExperienceTitle: t("aside.experienceTitle"),
+    asideExperienceLink: t("aside.experienceLink"),
+    experienceHref: APP_ROUTES.experience,
+    savedTitle: t("saved.title"),
+    savedText: t("saved.text"),
+    removeTitle: t("remove.title"),
+    removeText: t("remove.text"),
+    removeKeep: t("remove.keep"),
+    removeConfirm: t("remove.confirm"),
+    unsaved: t("edit.unsaved"),
 })

@@ -177,63 +177,69 @@ const CardVerified = (props: ExperienceCardProps) => {
 }
 
 /** One item: source and state with its date, the title, the chips, the returned note, then the next action. */
-const ExperienceCard = (props: ExperienceCardProps) => {
+const ExperienceCardBody = (props: ExperienceCardProps) => {
     const { card, labels, on } = props
     return (
-        <SurfaceCard
-            ariaLabel={card.title}
-            height="fill"
-            {...(card.edit === undefined ? {} : { treatment: "soft" as const })}
-        >
-            <Stack gap="row">
-                <Cluster gap="inline" wrap justify="between" align="center">
-                    <Cluster gap="inline" wrap align="center">
-                        <Badge tone="neutral">{card.source}</Badge>
-                        <Badge tone={card.stateTone}>{card.state}</Badge>
-                    </Cluster>
-                    <Text size="sm" tone="muted">
-                        {card.dateText}
-                    </Text>
+        <Stack gap="row">
+            <Cluster gap="inline" wrap justify="between" align="center">
+                <Cluster gap="inline" wrap align="center">
+                    <Badge tone="neutral">{card.source}</Badge>
+                    <Badge tone={card.stateTone}>{card.state}</Badge>
                 </Cluster>
-                <Stack gap="identity">
-                    <Text isStrong>{card.title}</Text>
-                    {card.subtitle === undefined ? null : (
-                        <Text size="sm" tone="muted">
-                            {card.subtitle}
-                        </Text>
-                    )}
-                </Stack>
-                {card.returnNote === undefined ? null : (
-                    <Alert tone="cautionary" title={labels.returnedNote} description={card.returnNote} />
-                )}
-                {card.tags.length === 0 ? null : (
-                    <Cluster gap="inline" wrap>
-                        {card.tags.map((chip) => (
-                            <Badge key={chip.id} tone="neutral">
-                                {chip.label}
-                            </Badge>
-                        ))}
-                    </Cluster>
-                )}
-                {card.note === undefined ? null : (
+                <Text size="sm" tone="muted">
+                    {card.dateText}
+                </Text>
+            </Cluster>
+            <Stack gap="identity">
+                <Text isStrong>{card.title}</Text>
+                {card.subtitle === undefined ? null : (
                     <Text size="sm" tone="muted">
-                        {card.note}
+                        {card.subtitle}
                     </Text>
                 )}
-                <CardEdit {...props} />
-                {card.isReturned && !card.isEditing ? (
-                    <div>
-                        <Button intent="neutral" size="sm" onPress={() => on.startEdit(card.itemId)}>
-                            {labels.reopen}
-                        </Button>
-                    </div>
-                ) : null}
-                <CardVerified {...props} />
-                {card.notice === undefined ? null : <Alert tone="negative" title={card.notice} />}
             </Stack>
-        </SurfaceCard>
+            {card.returnNote === undefined ? null : (
+                <Alert tone="cautionary" title={labels.returnedNote} description={card.returnNote} />
+            )}
+            {card.tags.length === 0 ? null : (
+                <Cluster gap="inline" wrap>
+                    {card.tags.map((chip) => (
+                        <Badge key={chip.id} tone="neutral">
+                            {chip.label}
+                        </Badge>
+                    ))}
+                </Cluster>
+            )}
+            {card.note === undefined ? null : (
+                <Text size="sm" tone="muted">
+                    {card.note}
+                </Text>
+            )}
+            <CardEdit {...props} />
+            {card.isReturned && !card.isEditing ? (
+                <div>
+                    <Button intent="neutral" size="sm" onPress={() => on.startEdit(card.itemId)}>
+                        {labels.reopen}
+                    </Button>
+                </div>
+            ) : null}
+            <CardVerified {...props} />
+            {card.notice === undefined ? null : <Alert tone="negative" title={card.notice} />}
+        </Stack>
     )
 }
+
+/** One item as a thin-bordered card; one the learner can still edit sits on the soft tint. */
+const ExperienceCard = (props: ExperienceCardProps) =>
+    props.card.edit === undefined ? (
+        <SurfaceCard ariaLabel={props.card.title} height="fill">
+            <ExperienceCardBody {...props} />
+        </SurfaceCard>
+    ) : (
+        <SurfaceCard ariaLabel={props.card.title} height="fill" treatment="soft">
+            <ExperienceCardBody {...props} />
+        </SurfaceCard>
+    )
 
 /** What the ready list is drawn from. */
 type ReadyProps = {

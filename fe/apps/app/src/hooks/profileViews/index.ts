@@ -1,1 +1,1 @@
-export { cvOf, devicesOf, planOf, tokensOf, verifyLinksOf } from "./profileViews.shared"
+export { asideOf, cvLinkOf, cvOf, devicesOf, planOf } from "./profileViews.shared"

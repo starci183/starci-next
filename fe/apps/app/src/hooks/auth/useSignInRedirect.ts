@@ -7,7 +7,7 @@ import { isUnauthenticated } from "@/modules/failure"
 import { APP_ROUTES, signInRedirectHref } from "@/modules/routes"
 
 /** The pages a signed-out reader may stay on (site map): the Premium plans and the public verification and profile pages. */
-const PUBLIC_PATH = new RegExp(`^(?:/[a-z]{2})?(?:${APP_ROUTES.premium}|/verify/|/u/)`)
+const PUBLIC_PATH = new RegExp(`^(?:/[a-z]{2})?(?:${APP_ROUTES.premium}|/verify/|/cv/|/u/)`)
 
 /** True when the path is a public page, whose signed-in reads simply stay empty for a signed-out reader. */
 const isPublicPath = (path: string): boolean => PUBLIC_PATH.test(path) && !path.includes(APP_ROUTES.premiumResult)

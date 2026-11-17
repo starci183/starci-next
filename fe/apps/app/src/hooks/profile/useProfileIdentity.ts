@@ -20,7 +20,7 @@ export type ProfileIdentity = {
     /** The name being typed, or undefined while the learner has not touched the field (the saved name shows). */
     readonly draft: string | undefined
     readonly setDraft: (value: string) => void
-    readonly saveName: () => void
+    readonly saveName: () => Promise<boolean>
     readonly isSaving: boolean
     readonly isSaved: boolean
     readonly uploadAvatar: (file: File) => void
@@ -49,16 +49,18 @@ export const useProfileIdentity = (locale: string): ProfileIdentity => {
     const keep = async (profile: MyProfile): Promise<void> => {
         await read.mutate(profile, { revalidate: false })
     }
-    const saveName = async (): Promise<void> => {
-        if (draft === undefined) return
+    const saveName = async (): Promise<boolean> => {
+        if (draft === undefined) return true
         setIssue("none")
         setIsSaved(false)
         try {
             await keep(await namer.trigger({ displayName: draft.trim() === "" ? null : draft, locale }))
             setDraft(undefined)
             setIsSaved(true)
+            return true
         } catch (error) {
             setIssue(profileIssueOf(error))
+            return false
         }
     }
     const sendAvatar = async (file: File): Promise<void> => {
@@ -99,7 +101,7 @@ export const useProfileIdentity = (locale: string): ProfileIdentity => {
             setIsSaved(false)
             setDraft(value)
         },
-        saveName: () => void saveName(),
+        saveName,
         isSaving: namer.isMutating,
         isSaved,
         uploadAvatar: (file) => void uploadAvatar(file),

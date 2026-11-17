@@ -2073,12 +2073,12 @@
       "identity": {
         "title": "Identity",
         "avatarLabel": "Avatar",
-        "upload": "Upload photo",
+        "upload": "Choose a photo",
         "remove": "Remove photo",
         "avatarHint": "PNG, JPEG or WebP, up to {size}.",
         "nameLabel": "Display name",
         "namePlaceholder": "The name to show",
-        "nameHint": "Leave it empty to show your account name.",
+        "nameHint": "Leave empty to show your account name. This name does not appear on the CV if you turn public off.",
         "save": "Save name",
         "saved": "Name saved.",
         "error": {
@@ -2088,7 +2088,10 @@
           "unavailable": "The image store is not ready, please try again later.",
           "name": "The name must be 1 to {max} characters.",
           "other": "Could not save, please try again."
-        }
+        },
+        "avatarTitle": "Photo",
+        "uploadAnother": "Choose another photo",
+        "uploading": "Uploading, keep this page open. Save is off while the photo uploads."
       },
       "goal": {
         "title": "Goal path",
@@ -2097,23 +2100,27 @@
         "change": "Change path"
       },
       "cv": {
-        "title": "Verified CV lines",
+        "title": "Verified CV",
         "caption": "Only Verified items reach the CV. Items not signed yet stay in Experience.",
-        "gate": "{count}/{min} verified items for a job introduction",
+        "gate": "{count}/{min} to be referred for jobs",
         "pending": "{count} items waiting for review",
         "seeAll": "Experience",
         "proof": "Proof",
         "signed": "Signed by {role} on {date}",
-        "empty": "No verified CV line yet. Finish a Harness build, a project or an Essentials lesson to earn the first one.",
+        "empty": "Finish an Essentials lesson, a Harness build, a project or a Practice pattern to get the first one. A CV line only exists once the teacher signs it.",
         "part": {
           "essentials": "Essentials",
           "projects": "Projects",
-          "harness": "Harness"
-        }
+          "harness": "Harness",
+          "practice": "Practice"
+        },
+        "verified": "Verified",
+        "emptyTitle": "No CV line yet",
+        "emptyAction": "See what you can do"
       },
       "account": {
         "devices": {
-          "title": "Connected devices",
+          "title": "Connected machines",
           "manage": "Manage",
           "empty": "No device connected.",
           "online": "Online",
@@ -2123,7 +2130,8 @@
             "windows": "Windows",
             "macos": "macOS",
             "linux": "Linux"
-          }
+          },
+          "count": "{count} machine(s)"
         },
         "tokens": {
           "title": "MCP tokens",
@@ -2137,19 +2145,71 @@
           "title": "Your plan",
           "free": "Free",
           "until": "Premium until {date}",
-          "freeNote": "Part 1 of every Essentials lesson and all of Harness are free.",
-          "manage": "Manage plan",
+          "freeNote": "Part 1 of every Essentials lesson and all of Harness",
+          "manage": "See Premium",
           "premiumNote": "Every part of Essentials, Projects and Harness is open."
-        }
+        },
+        "title": "Account"
       },
       "verify": {
         "title": "Public verify link",
         "caption": "A recruiter opens the link to see the signed line, never a score or a reviewer name.",
-        "copy": "Copy link",
+        "copy": "Copy",
         "copied": "Copied",
         "public": "Public",
         "private": "Private",
         "empty": "A link appears when an item is verified."
+      },
+      "loading": "Loading…",
+      "meta": {
+        "learner": "Learner",
+        "premium": "Premium",
+        "free": "Free plan",
+        "verified": "{verified}/{min} items verified"
+      },
+      "edit": {
+        "title": "Edit profile",
+        "meta": "Changes not saved",
+        "open": "Edit profile",
+        "openNew": "Add photo and name",
+        "cancel": "Cancel",
+        "save": "Save changes",
+        "unsaved": "Changes not saved"
+      },
+      "crumb": {
+        "label": "Breadcrumb",
+        "edit": "Edit"
+      },
+      "saved": {
+        "title": "Profile updated",
+        "text": "Your new photo and name show in the top bar and on your public CV."
+      },
+      "remove": {
+        "title": "Remove your photo?",
+        "text": "The photo is deleted from storage. Your initials take its place, on the public CV too.",
+        "keep": "Keep photo",
+        "confirm": "Remove photo"
+      },
+      "cvLink": {
+        "title": "CV link",
+        "label": "Public CV link",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copyError": "Could not copy",
+        "switch": "Let others see your CV with this link",
+        "switchHint": "Only signed lines show. No scores and no reviewer names.",
+        "empty": "The CV link appears once you have at least one verified item."
+      },
+      "aside": {
+        "progressTitle": "Quick progress",
+        "progressLink": "See progress",
+        "proved": "Concepts proved",
+        "accepted": "Accepted problems",
+        "streak": "Day streak",
+        "experienceTitle": "Experience",
+        "experienceLink": "Open Experience",
+        "experience": "{verified} verified, {pending} waiting for review. {min} verified items are needed to be referred for jobs.",
+        "experienceEnough": "{verified} verified items, enough to be referred for jobs."
       }
     },
     "progress": {
@@ -2280,6 +2340,17 @@
         "profile": "Profile"
       },
       "pageTitleShort": "Progress"
+    },
+    "publicCv": {
+      "pageTitle": "Public CV",
+      "title": "CV verified by StarCi",
+      "linesTitle": "Signed CV lines",
+      "note": "Only lines a teacher signed show. No scores and no reviewer names.",
+      "empty": "No CV line to show yet.",
+      "signed": "Signed on {date}",
+      "verify": "Verify",
+      "notFoundTitle": "No CV at this address",
+      "notFoundDescription": "The link may be wrong, or its owner keeps the CV private."
     }
   }
 }

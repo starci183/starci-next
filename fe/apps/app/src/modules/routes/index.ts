@@ -9,6 +9,7 @@ export const APP_ROUTES = {
     incidents: "/incidents",
     premium: "/premium",
     profile: "/profile",
+    profileEdit: "/profile/edit",
     projects: "/projects",
     projectsNew: "/projects/new",
     practice: "/practice",
