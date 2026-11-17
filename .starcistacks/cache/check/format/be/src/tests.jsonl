@@ -99,7 +99,7 @@
 {"findings":[],"hash":"9e3c2030530961e80b35061e5180111202b843dca86af6c11fa1746d1972a915","path":"be/src/tests/integration/lesson/import.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"edbdabf290f1e6fc1e6286aa4c0694710b48cb5784e24cdfc95ead765330510d","path":"be/src/tests/integration/mail/mail.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f42a21577617fe2c8d6b65f7fb9ede029b20dc55ff5dfbe3e2352e73acaf8b66","path":"be/src/tests/integration/notification/notification.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"2709d0ddfaac2f5102429ed387eb36ed46a2566fc91cd37eb0f8e041975547f4","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"f0dbbd516370927927544d4b8140bd921dc302fff083a975d9fc2ab3eca05e76","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"69afbf32e70fec81e2836486b40463e44709a7133c6fb2f9101e4ed46a527d7b","path":"be/src/tests/integration/path/path.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"77f97552fa13683f782b8a5e7769f054fcd769000f5eccbf0f83bd50f37637d9","path":"be/src/tests/integration/payos/payos.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"2da43cc565c46a1ef5fcc5037b710f8846ca600571d0436d346f656476e9e460","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
