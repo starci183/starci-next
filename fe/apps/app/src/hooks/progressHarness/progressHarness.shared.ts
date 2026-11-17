@@ -1,8 +1,8 @@
 import type { ListRowData } from "@starci/grammar/common"
 import type { LearnerProgress } from "@/hooks/swr"
+import { HARNESS_ROUTES } from "@/modules/routes"
 import type { ProgressBlockView } from "@/modules/types"
 import {
-    HARNESS_ROUTE,
     proofBadgeOf,
     type ProgressBadge,
     type ProgressFormatter,
@@ -85,7 +85,7 @@ export const harnessOf = (
                 id: "harness-builds",
                 title: t("harness.title"),
                 fact: t("harness.fact", { done: data.buildsDone, total: data.buildsTotal }),
-                link: { label: t("harness.open"), href: HARNESS_ROUTE },
+                link: { label: t("harness.open"), href: HARNESS_ROUTES.hub },
                 rows: buildRowsOf(t, data.builds),
                 empty: t("harness.empty"),
             },

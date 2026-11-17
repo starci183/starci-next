@@ -6,9 +6,6 @@ export type ProgressTranslate = ReturnType<typeof useTranslations>
 /** The formatter of the reader's locale. */
 export type ProgressFormatter = ReturnType<typeof useFormatter>
 
-/** The Harness area is a standalone area of the app with no entry in the shared route table yet. */
-export const HARNESS_ROUTE = "/harness"
-
 /** The tones the progress badges take. */
 export type ProgressTone = "success" | "accent" | "muted" | "danger" | "warning"
 

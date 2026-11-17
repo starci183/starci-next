@@ -57,7 +57,7 @@ import {
     PROFILE_ERROR_KINDS,
     PROFILE_MESSAGES,
     ProfileModule,
-    UnconfiguredAvatarStoreClient,
+    ObjectStorageAvatarClient,
     profileEntities,
     profileMigrations,
 } from "@modules/domain/profile"
@@ -92,7 +92,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
         ...(options.project.ciOidcAudience === undefined ? {} : { ciOidcAudience: options.project.ciOidcAudience }),
     }),
     HubModule.register({ isGlobal: true }),
-    ProfileModule.register({ isGlobal: true, ...options.profile, store: UnconfiguredAvatarStoreClient }),
+    ProfileModule.register({ isGlobal: true, ...options.profile, store: ObjectStorageAvatarClient }),
     ProgressModule.register({ isGlobal: true }),
     NotificationModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true, ...options.practice, streak: StreakServiceClient }),
