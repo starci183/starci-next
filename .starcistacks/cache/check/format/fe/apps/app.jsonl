@@ -28,7 +28,7 @@
 {"findings":[],"hash":"c17535a6eec60744d0f10222e0bd62a898d40f95cde75b80f0258e53026b2a46","path":"fe/apps/app/public/art/topics/llm-agents.webp","step":"prettier"}
 {"findings":[],"hash":"ba651be3034a8badb1a311afdc8f7af8ce31e9c8961202efa3fcb12ea7282c19","path":"fe/apps/app/public/art/topics/server-state.webp","step":"prettier"}
 {"findings":[],"hash":"2d4eeb2dbb2a10fbc2c998bfa09f073af59f550fedc17d3bd68c9aac4ac344ab","path":"fe/apps/app/public/art/topics/testing-strategy.webp","step":"prettier"}
-{"findings":[],"hash":"b00fa437370ef3752c214d7068e0521393262fe6a85c5e19fae53dd67fadf77f","path":"fe/apps/app/public/brand/starci-logo.png","step":"prettier"}
+{"findings":[],"hash":"b00fa437370ef3752c214d7068e0521393262fe6a85c5e19fae53dd67fadf77f","path":"fe/apps/app/public/brand/logo.png","step":"prettier"}
 {"findings":[],"hash":"f6c137abda17a6912d7e278a538e29d9e26156017486461989ee41d15c35e303","path":"fe/apps/app/src/app/[locale]/(app)/connect/page.tsx","step":"prettier"}
 {"findings":[],"hash":"2d78cafa749da6e7fad838fc8d003bbb6a6b3f7fb2b2fcdb34ce769bd31979bc","path":"fe/apps/app/src/app/[locale]/(app)/devices/page.tsx","step":"prettier"}
 {"findings":[],"hash":"0db04dba95198b54bcc9030bb5719ab539ab73154024b305f7c31d8f5bc4f06a","path":"fe/apps/app/src/app/[locale]/(app)/essentials/[topic]/[lesson]/page.tsx","step":"prettier"}
@@ -158,7 +158,7 @@
 {"findings":[],"hash":"0673e56cb14b3eefb3fc8c37bb62c935686584362f568528a9d439ad919c1aaa","path":"fe/apps/app/src/components/blocks/VerifyExperience/component.tsx","step":"prettier"}
 {"findings":[],"hash":"69f853ecd658d31e6cf9794db283bc1ec5a4e7a13ccf807013a6b8680d2438f3","path":"fe/apps/app/src/components/blocks/VerifyExperience/index.tsx","step":"prettier"}
 {"findings":[],"hash":"5b935591a4f2a8a0c5334c298a99bac9b028f2c0377fd88ffcfffecd7841031d","path":"fe/apps/app/src/components/providers/AppProviders/index.tsx","step":"prettier"}
-{"findings":[],"hash":"d602dad9adc64d3a2accf90d9fa66c90ca4f440a46a251facc80c4bc05de45ee","path":"fe/apps/app/src/features/layouts/AppLayout/index.tsx","step":"prettier"}
+{"findings":[],"hash":"8b4383ac0bfabd1ea2e8c5ce23a295eb1477f869d518c364b796f9218458d1d1","path":"fe/apps/app/src/features/layouts/AppLayout/index.tsx","step":"prettier"}
 {"findings":[],"hash":"1aece2cdf590835f8c47ada07540ccd23218b3e8b55cb2ea8f8c27866d313880","path":"fe/apps/app/src/features/layouts/AuthLayout/index.tsx","step":"prettier"}
 {"findings":[],"hash":"ce1d7677fbe84359b3d35320edcffd3f7cfebf4195d33418063547a90691d385","path":"fe/apps/app/src/features/layouts/LocaleLayout/index.tsx","step":"prettier"}
 {"findings":[],"hash":"3e65791ed77af005c5961596183e871f1dda9f2023465549e154dd1f565de51c","path":"fe/apps/app/src/features/layouts/ProjectsLayout/index.tsx","step":"prettier"}
@@ -208,7 +208,7 @@
 {"findings":[],"hash":"c7d1866fe430bbf4e346d150a6b83941e9d1c6b31c98592d413ac1bf60d5b45a","path":"fe/apps/app/src/features/pages/SignInCallbackPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"8a36bb33f0b76f9cb7ab754aba0797ff48621bc6a89d196173a40b66732e6744","path":"fe/apps/app/src/features/pages/SignInPage/classNames.ts","step":"prettier"}
 {"findings":[],"hash":"9c541e678f980c3c74819a3a9df622cc0bab40e318a08316d6e44b029458b299","path":"fe/apps/app/src/features/pages/SignInPage/component.tsx","step":"prettier"}
-{"findings":[],"hash":"210c13d8eca76739b3d026771d81ca5fa500adcc66d98a5fbce02a2fcfbd3274","path":"fe/apps/app/src/features/pages/SignInPage/index.tsx","step":"prettier"}
+{"findings":[],"hash":"f336052cb12f80d8c9265b18e791c02ba25f2c658aeb5af7c7776a3dbf0bc29d","path":"fe/apps/app/src/features/pages/SignInPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"35abbc99f239fbbc0fe41aba855f6106f137f9a296ce827f2040a6ef453af78a","path":"fe/apps/app/src/features/pages/TopicPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"e26180750a5d585fd0a2dae6da3349f20f185cc43a8328215fe76b7d7e282b7b","path":"fe/apps/app/src/features/pages/VerifyPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"4af779a86f9187fb2661581a3639c289b8cb8df40401b5fde6510dfefd51049c","path":"fe/apps/app/src/hooks/auth/auth.shared.ts","step":"prettier"}
