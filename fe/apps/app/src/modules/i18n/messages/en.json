@@ -1321,55 +1321,45 @@
         "agent": "Agent"
       },
       "list": {
-        "title": "Projects",
-        "description": "Bring your own project and put the starci/ folder in each one",
+        "title": "Your projects",
+        "description": "Each project is one of your repos; prove its concepts to earn a verified CV line.",
         "create": "Create a project",
         "emptyTitle": "You have no project yet",
-        "emptyText": "Bring your first project: any topic, any language, then add the starci/ folder.",
+        "emptyText": "Bring in your first project: any topic, any language, then add the starci/ folder with one command.",
         "listLabel": "Your projects",
-        "tabsLabel": "Filter projects",
-        "tabs": {
-          "all": "All",
-          "practicing": "Practising",
-          "proved": "Proved"
-        },
-        "state": {
-          "practicing": "Practising",
-          "proved": "Proved"
-        },
-        "concepts": "{proved}/{count} concepts proved",
         "progressLabel": "Concepts proved",
-        "searchLabel": "Search projects",
-        "searchPlaceholder": "Search projects",
-        "searchClear": "Clear search",
-        "emptyFilteredTitle": "No project matches",
-        "errorTitle": "Projects could not be loaded"
-      },
-      "device": {
-        "connect": "Connect machine",
-        "title": "Your machine",
-        "badge": "Not connected",
-        "text": "Results from the CLI on your machine will show here once device pairing opens. For now you prove with signed CI or the server probing your deployed address."
-      },
-      "levels": {
-        "asideLabel": "Levels of proof",
-        "title": "Levels of proof",
-        "practice": "Practising",
-        "practiceNote": "Results from your machine, not counted",
-        "proof": "Proved",
-        "proofNote": "Signed CI or a server re-run"
+        "errorTitle": "Projects could not be loaded",
+        "ribbonLabel": "Projects overview",
+        "figures": {
+          "proved": "Concepts proved",
+          "milestones": "Milestones done",
+          "cv": "Verified CV lines",
+          "practising": "Concepts practising"
+        },
+        "columns": {
+          "project": "Project",
+          "kind": "Kind",
+          "milestone": "Current milestone",
+          "progress": "Progress",
+          "ci": "CI"
+        },
+        "noMilestone": "None yet",
+        "progress": "{proved}/{count}",
+        "note": "There is no sample project: every project is your own code, on any topic, in any language.",
+        "ci": {
+          "none": "CI not linked",
+          "passed": "Green",
+          "failed": "Red"
+        }
       },
       "new": {
         "title": "Create a project",
         "name": "Project name",
-        "topic": "Topic",
-        "language": "Main language",
-        "stack": "Stack",
         "trackNone": "Not chosen",
         "trackClaude": "Claude Code",
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
-        "repo": "Repository address (https)",
+        "repo": "GitHub repo",
         "submit": "Create project",
         "submitting": "Creating...",
         "createdTitle": "Project created",
@@ -1380,25 +1370,29 @@
         "cancel": "Cancel",
         "infoLabel": "Project details",
         "kindLabel": "Project kind",
-        "kindAppHint": "A web app, API, bot or tool: any topic works.",
-        "kindAgentHint": "An agent that does work for you.",
         "trackLabel": "Agent tool",
-        "trackNoneHint": "Choose after creating.",
-        "howLabel": "How to start",
-        "howFolderTitle": "The starci/ folder",
-        "howFolderText": "Put the starci/ folder with project.yaml in your project repo.",
-        "howCliTitle": "StarCi CLI",
-        "howCliText": "Install the StarCi CLI on your machine to run checks and send results.",
-        "howSecretTitle": "CI secret",
-        "howSecretText": "Save the CI secret in GitHub Secrets as STARCI_PROJECT_SECRET.",
-        "howEmpty": "No steps yet.",
         "copy": "Copy",
         "copied": "Copied",
         "error": {
-          "premiumRequired": "A second project needs Premium.",
+          "premiumRequired": "Projects come with Premium.",
           "invalid": "The project details are not valid; check the name, topic, language, stack and repository address.",
-          "other": "The project could not be created; try again."
-        }
+          "other": "The project could not be created; try again.",
+          "deployed": "The project was created but the deploy address was not saved; save it again on the project page."
+        },
+        "description": "Name it, pick the kind, link the repo and the deploy address. Then run one command in your repo.",
+        "deployed": "Deploy address (optional, for probes)",
+        "deployedHint": "A public http or https address, for example https://api.myblog.dev",
+        "initTitle": "Then run in your repo",
+        "initNote": "You (or your AI) write the code. StarCi only reads the tags in your tests and runs the probes; it imposes no architecture on the repo.",
+        "initLog": [
+          "$ npx @starci/next init {name}",
+          "✓ added starci/project.yaml",
+          "✓ added starci/e2e/*.md per milestone",
+          "✓ added .github/workflows/starci.yml",
+          "$ starci-next run",
+          "  request-response-lifecycle  2 tests  practising",
+          "  health-probe-semantics      0 tests  no evidence yet"
+        ]
       },
       "detail": {
         "back": "All projects",
@@ -1471,7 +1465,7 @@
         "notFound": "No such milestone",
         "notFoundText": "This project does not list that milestone.",
         "locked": "This milestone needs Premium",
-        "lockedText": "The first milestone is free; later milestones and the AI code read need Premium.",
+        "lockedText": "Projects are part of Premium. Subscribe to open the milestones and the AI code read.",
         "plans": "See Premium",
         "conceptsLabel": "Milestone concepts",
         "crumbRoot": "Projects",
@@ -1497,7 +1491,9 @@
           "evidence": "Proof",
           "result": "Result",
           "level": "Level",
-          "when": "When"
+          "when": "When",
+          "state": "Status",
+          "lesson": "Learn it in"
         },
         "result": {
           "pass": "Passed",
@@ -1517,7 +1513,7 @@
         "ciText": "The action signs the result with the project secret. Only a signed result counts as Proved.",
         "ciLink": "See the secret in the project",
         "conceptState": {
-          "todo": "Nothing yet",
+          "todo": "Not started",
           "practising": "Practising",
           "proved": "Proved"
         },
@@ -1565,7 +1561,15 @@
           "invalidEndpoint": "The endpoint must look like METHOD /path and the sample body must be small JSON.",
           "coach": "The AI teacher cannot answer right now; try again in a few minutes.",
           "other": "That did not work; try again."
-        }
+        },
+        "slotShort": {
+          "test": "test",
+          "e2e": "e2e",
+          "probe": "probe",
+          "code-read": "AI code read"
+        },
+        "noLesson": "No lesson yet",
+        "legend": "Practising: runs on your machine through the relay. Proved: GitHub-signed OIDC CI, a server probe, or the AI code read."
       },
       "reason": {
         "ok": "Answered 200",
@@ -1601,6 +1605,112 @@
         "probe-failed": "The probe did not pass",
         "code-read-below-bar": "The AI teacher did not find enough evidence in the code and the explanation",
         "read-below-bar": "The AI teacher did not find enough evidence in the code and the explanation"
+      },
+      "pitch": {
+        "title": "Projects",
+        "description": "Bring your own repo, prove each Essentials concept with evidence a machine can check, and get a verified CV line. Projects come with Premium.",
+        "subscribe": "Subscribe to Premium",
+        "stepsTitle": "From your repo to a CV line",
+        "steps": {
+          "repo": {
+            "title": "Bring your own repo",
+            "text": "There is no sample project: every project is your own code, on any topic, in any language. One command adds a starci/ folder and a CI template to the repo."
+          },
+          "prove": {
+            "title": "Prove each concept",
+            "text": "Every Essentials concept needs its evidence slots: a test, an e2e flow, a probe of your deployed address, or an AI read of the code you paste. Running on your machine is Practising; a CI run GitHub signs with OIDC, or a server re-run, is Proved."
+          },
+          "cv": {
+            "title": "Get a verified CV line",
+            "text": "Each finished milestone writes a CV line from evidence StarCi has checked. There are no self-reported numbers."
+          }
+        },
+        "sampleNote": "Illustrative data, not anyone's project. Your own project shows in exactly this frame.",
+        "conceptsTitle": "Example: the concepts of a milestone",
+        "columns": {
+          "concept": "Concept",
+          "evidence": "Evidence needed",
+          "state": "Status"
+        },
+        "cvTitle": "Example: the CV line once the evidence is complete",
+        "includedTitle": "What Premium opens in Projects",
+        "included": {
+          "many": {
+            "title": "Many projects, every milestone",
+            "text": "Each project is its own repo, with no limit on how many."
+          },
+          "probes": {
+            "title": "Probes on your deployed address",
+            "text": "The StarCi server calls your public http or https address and records each result."
+          },
+          "aiRead": {
+            "title": "AI code read",
+            "text": "Paste the handler, the AI scores it against a rubric and points at what is missing."
+          },
+          "ci": {
+            "title": "Signed CI",
+            "text": "GitHub OIDC confirms the run before it counts as Proved."
+          }
+        },
+        "noTable": "No concepts yet.",
+        "sample": {
+          "lifecycle": {
+            "concept": "Request/response lifecycle",
+            "slots": "test ✓ · probe ✓",
+            "state": "Proved"
+          },
+          "idempotency": {
+            "concept": "Idempotency on retry",
+            "slots": "test ✓ · probe pending",
+            "state": "Practising"
+          },
+          "outbox": {
+            "concept": "Transactional outbox",
+            "slots": "e2e (relay) · CI signed by OIDC",
+            "state": "Not started"
+          }
+        },
+        "cv": {
+          "role": "Backend developer",
+          "badge": "Verified",
+          "text": "Designed idempotent writes and a transactional outbox for my-blog-api; survives 5 parallel duplicate requests without a stray record.",
+          "evidence": "Evidence: CI run #41 (signed by GitHub) · probe 17 Nov · 3 concepts"
+        }
+      },
+      "concept": {
+        "notFound": "This concept is not here",
+        "notFoundText": "This milestone does not list that concept.",
+        "back": "Back to the milestone",
+        "slotsTitle": "Evidence slots",
+        "probeTitle": "Probe on the deploy address",
+        "probeOn": "Probe on",
+        "probeEmpty": "No probe result yet. Run the probe so StarCi calls your deploy address.",
+        "probeNoDeploy": "No deploy address yet. Save it on the project page first.",
+        "probeRun": "Run probe",
+        "probeRunning": "Running...",
+        "ciTitle": "GitHub CI",
+        "ciEmpty": "No signed CI run yet. Push to GitHub so the Action sends its result.",
+        "ciRun": "Run",
+        "ciCommit": "Commit",
+        "ciVerdict": "Result",
+        "ciWhen": "When",
+        "codeTitle": "AI code read",
+        "codeEmpty": "No code read yet.",
+        "rubricTitle": "The AI rubric",
+        "rubricEmpty": "No rubric yet. Send a piece of code for the AI to read and score.",
+        "verdict": {
+          "met": "Pass",
+          "partial": "Partial",
+          "missing": "Not yet"
+        },
+        "cvTitle": "The CV line once the evidence is complete",
+        "cvEmpty": "The CV line shows once the concept has all its evidence.",
+        "cvVerified": "Verified",
+        "cvNote": "There are no self-reported numbers: a CV line is only filled from evidence StarCi has checked.",
+        "askClaude": "Ask Claude about this concept through MCP",
+        "lesson": "Learn it in",
+        "cvPreview": "Preview",
+        "cvEvidence": "Evidence: {items}"
       }
     },
     "experience": {

@@ -103,3 +103,7 @@ export const projectPath = (projectId: string): string => `${APP_ROUTES.projects
 /** The path of one milestone of a project, with its concept checklist. */
 export const projectMilestonePath = (projectId: string, milestoneId: string): string =>
     `${projectPath(projectId)}/${encodeURIComponent(milestoneId)}`
+
+/** The path of one concept of a milestone: its evidence page. */
+export const projectConceptPath = (projectId: string, milestoneId: string, conceptId: string): string =>
+    `${projectMilestonePath(projectId, milestoneId)}/${encodeURIComponent(conceptId)}`

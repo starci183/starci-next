@@ -1,23 +1,20 @@
 import {
     Badge,
+    Cluster,
     DataTable,
-    Divider,
+    Grid,
     Link,
     Page,
-    Pane,
-    PaneGrid,
-    PaneSection,
     Section,
     Stack,
     Text,
-    type ListRowData,
     type TableRowData,
 } from "@starci/grammar/common"
-import { ConceptDrawer, MissingNotice, SlotView } from "@starci-next/ui"
+import { MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
-    ConceptDraftView,
     DataSlot,
+    EvidenceChipView,
     EvidenceRunView,
     ProjectMilestoneLabels,
     ProjectMilestoneView,
@@ -31,15 +28,7 @@ export const PROJECT_MILESTONE_PLACEHOLDER: ProjectMilestoneView = {
     intro: "xxxxxxxxxxxxxxxxxxxx",
     stateLabel: "xxxxxx",
     stateTone: "muted",
-    runs: [1, 2].map((index) => ({
-        id: `placeholder-run-${index}`,
-        concept: "xxxxxxxxxx",
-        evidence: "xxxxxx",
-        resultLabel: "xxxx",
-        resultTone: "muted" as const,
-        levelLabel: "xxxxxx",
-        when: "xxxxxx",
-    })),
+    runs: [],
     concepts: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
         label: "xxxxxxxxxx",
@@ -60,6 +49,13 @@ export const PROJECT_MILESTONE_PLACEHOLDER: ProjectMilestoneView = {
     })),
 }
 
+/** The extra words of the milestone table: the legend under it. */
+export type ProjectMilestoneTableLabels = {
+    readonly legend: string
+    readonly noLesson: string
+    readonly columns: { readonly state: string; readonly lesson: string }
+}
+
 /** Props for {@link ProjectMilestoneBase}. */
 export type ProjectMilestoneBaseProps = {
     readonly props: {
@@ -67,56 +63,97 @@ export type ProjectMilestoneBaseProps = {
         readonly placeholder: ProjectMilestoneView
         readonly slotLabels: SlotLabels
         readonly labels: ProjectMilestoneLabels
+        readonly table: ProjectMilestoneTableLabels
         /** True when the back end said the project or the milestone is not there. */
         readonly isNotFound: boolean
-        /** True when the milestone needs Premium and the learner has none. */
+        /** True when the back end said the milestone needs Premium and the learner has none. */
         readonly isLocked: boolean
-        /** What the learner typed, by concept id; a concept missing here has an empty draft. */
-        readonly drafts: Readonly<Record<string, ConceptDraftView>>
-        /** The concept whose command is running, or undefined. */
-        readonly pendingId: string | undefined
-        /** The concept the last refusal belongs to, or undefined. */
-        readonly issueId: string | undefined
-        readonly issueWords: string
-        /** The concept whose drawer is open, or undefined. */
-        readonly openId: string | undefined
+        /** Where each concept of this milestone opens (its evidence page), by concept id. */
+        readonly conceptHrefs: Readonly<Record<string, string>>
     }
-    readonly on: {
-        readonly retry: () => void
-        readonly write: (conceptId: string, key: keyof ConceptDraftView, value: string) => void
-        readonly savePointer: (conceptId: string) => void
-        readonly explain: (conceptId: string) => void
-        readonly open: (conceptId: string | undefined) => void
+    readonly on: { readonly retry: () => void }
+}
+
+/** What the body needs: the page props, the milestone and whether it is the skeleton. */
+type BodyProps = {
+    readonly props: ProjectMilestoneBaseProps["props"]
+    readonly view: ProjectMilestoneView
+    readonly isLoading: boolean
+}
+
+/** One evidence slot of a concept as a small chip: its words, with the state in its tone. */
+type SlotChipProps = { readonly chip: EvidenceChipView }
+
+/** One evidence slot of a concept as a small chip, as {@link SlotChipProps} says. */
+const SlotChip = (props: SlotChipProps) => (
+    <Badge tone={props.chip.tone}>
+        {props.chip.mark === "" ? props.chip.label : `${props.chip.label} · ${props.chip.mark}`}
+    </Badge>
+)
+
+/** One cell of the concept table: the concept with its kind, the evidence slots it needs, its state and the lesson that teaches it. */
+const cellOf = (concept: ConceptCardView, columnId: string, props: BodyProps) => {
+    switch (columnId) {
+        case "concept":
+            return (
+                <Stack gap="identity">
+                    <Text isStrong>{concept.label}</Text>
+                    <Text size="xs" tone="muted">
+                        {concept.comingSoon ? props.props.labels.comingSoon : concept.kindLabel}
+                    </Text>
+                </Stack>
+            )
+        case "evidence":
+            return (
+                <Cluster gap="inline" wrap>
+                    {concept.chips.map((chip) => (
+                        <SlotChip key={chip.id} chip={chip} />
+                    ))}
+                </Cluster>
+            )
+        case "state":
+            return <Badge tone={concept.stateTone}>{concept.stateLabel}</Badge>
+        default:
+            return concept.lessonHref === "" ? (
+                <Text tone="muted">{props.props.table.noLesson}</Text>
+            ) : (
+                <Link variant="plain" href={concept.lessonHref}>
+                    {concept.lessonTitle}
+                </Link>
+            )
     }
 }
 
-/** What the well needs: the page props, the milestone and whether it is the skeleton. */
-type WellProps = ProjectMilestoneBaseProps & { readonly view: ProjectMilestoneView; readonly isLoading: boolean }
-
-/** What the aside needs: the fixed words. */
-type AsideProps = { readonly labels: ProjectMilestoneLabels }
-
-/** The row of one concept in the list card: name, proof kinds, state chip and the lesson link. */
-const conceptRowOf = (concept: ConceptCardView, props: ProjectMilestoneBaseProps): ListRowData => ({
-    id: concept.id,
-    title: concept.label,
-    description: (
-        <Text size="sm" tone="muted">
-            {concept.proofLine}
-        </Text>
-    ),
-    badges: [{ label: concept.stateLabel, tone: concept.stateTone }],
-    onPress: () => props.on.open(concept.id),
-    ...(concept.lessonHref === ""
-        ? {}
-        : {
-              detail: (
-                  <Link variant="plain" href={concept.lessonHref}>
-                      {props.props.labels.lessonLink}
-                  </Link>
-              ),
-          }),
-})
+/** The table of the concepts of the milestone: a row per concept, each opening its evidence page; the legend of the two levels under it. */
+const ConceptsTable = (props: BodyProps) => {
+    const { labels, table } = props.props
+    return (
+        <Section
+            title={labels.conceptsLabel}
+            headingLevel={2}
+            count={props.view.concepts.length}
+            isLoading={props.isLoading}
+            caption={table.legend}
+        >
+            <DataTable
+                label={labels.conceptsLabel}
+                isLoading={props.isLoading}
+                columns={[
+                    { id: "concept", label: labels.columns.concept },
+                    { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
+                    { id: "state", label: table.columns.state, width: "fit" },
+                    { id: "lesson", label: table.columns.lesson, hideBelow: "desktop" },
+                ]}
+                rows={props.view.concepts.map((concept) => ({
+                    ...concept,
+                    href: props.props.conceptHrefs[concept.id] ?? "",
+                }))}
+                renderCell={(row, columnId) => cellOf(row, columnId, props)}
+                emptyContent={<Text tone="muted">{labels.runsEmpty}</Text>}
+            />
+        </Section>
+    )
+}
 
 /** The row of one evidence run in the runs table. */
 const runRowOf = (run: EvidenceRunView): TableRowData => ({
@@ -130,87 +167,75 @@ const runRowOf = (run: EvidenceRunView): TableRowData => ({
     },
 })
 
-/** The well: the concept list and the runs table, flat on the surface under their section heads. */
-const Well = (props: WellProps) => {
-    const { view, isLoading } = props
+/** The recent evidence runs of the milestone, one row per slot that has a result. */
+const RunsTable = (props: BodyProps) => {
     const { labels } = props.props
-    const open = view.concepts.find((concept) => concept.id === props.props.openId)
     return (
-        <Stack gap="region">
-            <Section
-                title={labels.conceptsLabel}
-                headingLevel={2}
-                count={view.concepts.length}
-                isLoading={isLoading}
-                kind="list"
-                items={view.concepts.map((concept) => conceptRowOf(concept, props))}
-                empty={<Text tone="muted">{labels.runsEmpty}</Text>}
+        <Section title={labels.runsLabel} headingLevel={2} count={props.view.runs.length} isLoading={props.isLoading}>
+            <DataTable
+                label={labels.runsLabel}
+                isLoading={props.isLoading}
+                columns={[
+                    { id: "concept", label: labels.columns.concept },
+                    { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
+                    { id: "result", label: labels.columns.result, width: "fit" },
+                    { id: "level", label: labels.columns.level, hideBelow: "tablet" },
+                    { id: "when", label: labels.columns.when, width: "fit" },
+                ]}
+                rows={props.view.runs.map((run) => runRowOf(run))}
+                renderCell={(row, columnId) => row.cells[columnId]}
+                emptyContent={
+                    <Stack gap="identity">
+                        <Text isStrong>{labels.runsEmpty}</Text>
+                        <Text size="sm" tone="muted">
+                            {labels.runsEmptyText}
+                        </Text>
+                    </Stack>
+                }
             />
-            <Section title={labels.runsLabel} headingLevel={2} count={view.runs.length} isLoading={isLoading}>
-                <DataTable
-                    label={labels.runsLabel}
-                    isLoading={isLoading}
-                    columns={[
-                        { id: "concept", label: labels.columns.concept },
-                        { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
-                        { id: "result", label: labels.columns.result, width: "fit" },
-                        { id: "level", label: labels.columns.level, hideBelow: "tablet" },
-                        { id: "when", label: labels.columns.when, width: "fit" },
-                    ]}
-                    rows={view.runs.map((run) => runRowOf(run))}
-                    renderCell={(row, columnId) => row.cells[columnId]}
-                    emptyContent={
-                        <Stack gap="identity">
-                            <Text isStrong>{labels.runsEmpty}</Text>
-                            <Text size="sm" tone="muted">
-                                {labels.runsEmptyText}
-                            </Text>
-                        </Stack>
-                    }
-                />
-            </Section>
-            {open === undefined ? null : (
-                <ConceptDrawer
-                    concept={open}
-                    labels={labels}
-                    draft={props.props.drafts[open.id]}
-                    isBusy={props.props.pendingId === open.id}
-                    issueWords={props.props.issueId === open.id ? props.props.issueWords : ""}
-                    on={props.on}
-                />
-            )}
-        </Stack>
+        </Section>
     )
 }
 
-/** The aside: how to prove (numbered rows), then the signed CI attestation. */
-const Aside = (props: AsideProps) => (
-    <Stack gap="section">
-        <Section
-            title={props.labels.howTitle}
-            kind="list"
-            items={props.labels.how.map((line, index) => ({
-                id: `how-${index}`,
-                title: line,
-                leading: { position: index + 1 },
-            }))}
-            empty={null}
-        />
-        <Divider />
-        <Section title={props.labels.ciTitle}>
-            <Stack gap="inline">
-                <Text size="sm" tone="muted">
-                    {props.labels.ciText}
-                </Text>
-                <Link href={props.labels.ciHref} variant="plain">
-                    {`${props.labels.ciLink} →`}
-                </Link>
-            </Stack>
-        </Section>
-    </Stack>
+/** How to prove (numbered rows) and the signed CI attestation, side by side under the table. */
+type HowToProveProps = { readonly labels: ProjectMilestoneLabels }
+
+/** How to prove, as {@link HowToProveProps} says. */
+const HowToProve = (props: HowToProveProps) => (
+    <Grid
+        kind="pair"
+        leading={
+            <Section
+                title={props.labels.howTitle}
+                headingLevel={2}
+                kind="list"
+                items={props.labels.how.map((line, index) => ({
+                    id: `how-${index}`,
+                    title: line,
+                    leading: { position: index + 1 },
+                }))}
+                empty={null}
+            />
+        }
+        trailing={
+            <Section title={props.labels.ciTitle} headingLevel={2}>
+                <Stack gap="inline">
+                    <Text size="sm" tone="muted">
+                        {props.labels.ciText}
+                    </Text>
+                    <Link href={props.labels.ciHref} variant="plain">
+                        {`${props.labels.ciLink} →`}
+                    </Link>
+                </Stack>
+            </Section>
+        }
+    />
 )
 
-/** Draws one milestone of a project: band with trail and state, the concept list and the evidence runs, and the aside on how to prove. */
+/**
+ * Draws one milestone of a project: the trail and state in the head, the concept table with the evidence slots and the two levels
+ * (practising, proved), the recent runs, and how a concept gets proved. Everything sits flat on the page.
+ */
 export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
     const { labels, slot } = props.props
     if (props.props.isNotFound || props.props.isLocked) {
@@ -237,7 +262,6 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
     const loadingCrumb = isReady ? {} : { isLoading: true as const }
     return (
         <Page
-            chrome="panes"
             header={{
                 breadcrumbs: {
                     label: labels.crumbTrail,
@@ -253,28 +277,19 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
             }}
             isLoading={!isReady}
         >
-            <PaneGrid
-                label={labels.conceptsLabel}
-                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-            >
-                <Pane area="main" scroll label={labels.conceptsLabel}>
-                    <PaneSection>
-                        <SlotView
-                            slot={slot}
-                            placeholder={props.props.placeholder}
-                            labels={props.props.slotLabels}
-                            onRetry={props.on.retry}
-                            render={(data, loading) => <Well {...props} view={data} isLoading={loading} />}
-                        />
-                    </PaneSection>
-                </Pane>
-                <Pane area="aside" surface scroll label={labels.howTitle}>
-                    <PaneSection>
-                        <Aside labels={labels} />
-                    </PaneSection>
-                </Pane>
-            </PaneGrid>
+            <SlotView
+                slot={slot}
+                placeholder={props.props.placeholder}
+                labels={props.props.slotLabels}
+                onRetry={props.on.retry}
+                render={(data, loading) => (
+                    <Stack gap="region">
+                        <ConceptsTable props={props.props} view={data} isLoading={loading} />
+                        <RunsTable props={props.props} view={data} isLoading={loading} />
+                        <HowToProve labels={labels} />
+                    </Stack>
+                )}
+            />
         </Page>
     )
 }

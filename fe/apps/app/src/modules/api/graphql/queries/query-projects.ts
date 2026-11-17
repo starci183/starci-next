@@ -20,6 +20,9 @@ const query1: TypedDocumentNode<ProjectsQuery, ProjectsQueryVariables> = gql`
             currentMilestoneId
             doneMilestoneCount
             milestoneCount
+            practisingConceptCount
+            latestCiStatus
+            latestCiAt
             createdAt
         }
     }

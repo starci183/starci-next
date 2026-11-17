@@ -19,6 +19,7 @@ const issueWordsOf = (t: Translate, issue: ProjectIssue): string => {
         case "targetRefused":
             return t("new.error.invalid")
         case "deployedMissing":
+            return t("new.error.deployed")
         case "rateLimited":
         case "excerptCredential":
         case "limit":
@@ -32,6 +33,10 @@ const issueWordsOf = (t: Translate, issue: ProjectIssue): string => {
     }
 }
 
+/** The lines of a catalogue list: only strings are kept. */
+const linesOf = (raw: unknown): ReadonlyArray<string> =>
+    Array.isArray(raw) ? raw.filter((line): line is string => typeof line === "string") : []
+
 /** The connected new-project screen: the form, the create command and the secret shown once. */
 export const ProjectNew = () => {
     const t = useTranslations("app.projects")
@@ -44,16 +49,17 @@ export const ProjectNew = () => {
                     breadcrumbs: t("new.breadcrumbs"),
                     projects: t("pageTitle"),
                     title: t("new.title"),
+                    description: t("new.description"),
                     infoLabel: t("new.infoLabel"),
                     kindLabel: t("new.kindLabel"),
                     trackLabel: t("new.trackLabel"),
-                    howLabel: t("new.howLabel"),
-                    howEmpty: t("new.howEmpty"),
                     name: t("new.name"),
-                    topic: t("new.topic"),
-                    language: t("new.language"),
-                    stack: t("new.stack"),
                     repo: t("new.repo"),
+                    deployed: t("new.deployed"),
+                    deployedHint: t("new.deployedHint"),
+                    initTitle: t("new.initTitle"),
+                    initNote: t("new.initNote"),
+                    initLog: linesOf(t.raw("new.initLog")),
                     submit: t("new.submit"),
                     submitting: t("new.submitting"),
                     cancel: t("new.cancel"),
@@ -66,19 +72,14 @@ export const ProjectNew = () => {
                 },
                 projectsHref: APP_ROUTES.projects,
                 kinds: [
-                    { id: "app", label: t("kind.app"), hint: t("new.kindAppHint") },
-                    { id: "agent", label: t("kind.agent"), hint: t("new.kindAgentHint") },
+                    { id: "app", label: t("kind.app") },
+                    { id: "agent", label: t("kind.agent") },
                 ],
                 tracks: [
-                    { id: NO_TRACK, label: t("new.trackNone"), hint: t("new.trackNoneHint") },
-                    { id: "claude", label: t("new.trackClaude"), hint: "" },
-                    { id: "openclaw", label: t("new.trackOpenclaw"), hint: "" },
-                    { id: "hermes", label: t("new.trackHermes"), hint: "" },
-                ],
-                steps: [
-                    { id: "folder", title: t("new.howFolderTitle"), text: t("new.howFolderText") },
-                    { id: "cli", title: t("new.howCliTitle"), text: t("new.howCliText") },
-                    { id: "secret", title: t("new.howSecretTitle"), text: t("new.howSecretText") },
+                    { id: NO_TRACK, label: t("new.trackNone") },
+                    { id: "claude", label: t("new.trackClaude") },
+                    { id: "openclaw", label: t("new.trackOpenclaw") },
+                    { id: "hermes", label: t("new.trackHermes") },
                 ],
                 state: form.values,
                 isCreating: form.isPending,
