@@ -37,12 +37,10 @@ export interface ProjectOptions {
     readonly ciToleranceMs?: number
     /** Milliseconds the AI teacher has for one code read; absent, 60000. */
     readonly codeReadTimeoutMs?: number
-    /** Where the check set is read; absent, `ProjectCheckSetDiskAdapter` (PROJECT_CHECKS_DIR or the active content snapshot). */
+    /** Where the check set is read; absent, `ProjectCheckSetStoreAdapter` (the documents the seed door stored, else PROJECT_CHECKS_DIR). */
     readonly checkSource?: Type<ProjectCheckSource>
-    /** A content checkout whose raw/projects is the check set (development); absent, the active content snapshot. */
+    /** A content checkout whose raw/projects is the check set (development); absent, the check set comes from the database only. */
     readonly checksDir?: string
-    /** The directory of the content snapshots and their active.json; absent with no checksDir, there is no check set. */
-    readonly datasourcesDir?: string
     /** The public base address of the probe sink (`<base>/probe-sink/<id>`); absent, a probe with a sink step is skipped. */
     readonly probeSinkBaseUrl?: string
 }

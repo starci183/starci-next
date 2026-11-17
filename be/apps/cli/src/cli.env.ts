@@ -2,7 +2,6 @@ import type { EnvSource } from "@modules/platform/config"
 import { parsePrimaryDatabaseConfig } from "@modules/platform/database"
 import { parseCareerConfig } from "@modules/domain/career"
 import { parseEntitlementConfig } from "@modules/domain/entitlement"
-import { parseContentConfig } from "@modules/domain/content"
 import { parseMcpConfig } from "@modules/domain/mcp"
 import { parseAiGatewayConfig } from "@modules/integrations/ai-gateway"
 import { parseSepayConfig } from "@modules/integrations/sepay"
@@ -22,8 +21,6 @@ export interface CliEnv {
     readonly career: ReturnType<typeof parseCareerConfig>
     /** The entitlement settings: whether the development grant of Premium may run. */
     readonly entitlement: ReturnType<typeof parseEntitlementConfig>
-    /** The git mount of the content repositories, or null when the environment declares none. */
-    readonly content: ReturnType<typeof parseContentConfig>
     /** The mcp settings the semantic index reads: the local embedder and the harness content checkout. */
     readonly mcp: ReturnType<typeof parseMcpConfig>
 }
@@ -36,6 +33,5 @@ export const readCliEnv = (env: EnvSource): CliEnv => ({
     aiGateway: parseAiGatewayConfig(env),
     career: parseCareerConfig(env),
     entitlement: parseEntitlementConfig(env),
-    content: parseContentConfig(env),
     mcp: parseMcpConfig(env),
 })

@@ -182,3 +182,26 @@ export const SET_PROJECT_REPOSITORY_ID: ReturnType<typeof sql> = sql`WITH change
     RETURNING project_id
 )
 SELECT project_id FROM changed`
+
+/** Reads whether the stored document equals a record of the standard ($1 set, $2 key, $3 record); no row means the document is new. */
+export const SELECT_CHECK_DOCUMENT_EQUAL: ReturnType<typeof sql> = sql`SELECT (body = $3::jsonb) AS equal
+FROM project_check_documents
+WHERE document_set = $1::text AND document_key = $2::text`
+
+/** Stores a check document of the standard in place ($1 set, $2 key, $3 record, $4 import time). */
+export const UPSERT_CHECK_DOCUMENT: ReturnType<typeof sql> = sql`INSERT INTO project_check_documents
+    (document_set, document_key, body, imported_at)
+VALUES ($1::text, $2::text, $3::jsonb, $4::timestamptz)
+ON CONFLICT (document_set, document_key) DO UPDATE SET body = EXCLUDED.body, imported_at = EXCLUDED.imported_at
+RETURNING document_key`
+
+/** Lists the keys of the documents of a set, in byte order ($1 set). */
+export const SELECT_CHECK_DOCUMENT_KEYS: ReturnType<typeof sql> = sql`SELECT document_key FROM project_check_documents
+WHERE document_set = $1::text
+ORDER BY document_key COLLATE "C"`
+
+/** Reads the catalog and probe documents of the check set ($1 the set names). */
+export const SELECT_CHECK_DOCUMENTS: ReturnType<typeof sql> = sql`SELECT document_set, document_key, body
+FROM project_check_documents
+WHERE document_set = ANY($1::text[])
+ORDER BY document_set COLLATE "C", document_key COLLATE "C"`

@@ -13,6 +13,7 @@ import { ProjectPracticeService } from "./project-practice.service"
 import { ProjectProbeService } from "./project-probe.service"
 import { ProjectProbeSinkService } from "./project-probe-sink.service"
 import { ProjectCheckSetDiskAdapter } from "./project-check-set-disk.adapter"
+import { ProjectCheckSetStoreAdapter } from "./project-check-set-store.adapter"
 import { PROJECT_CHECK_SOURCE } from "./project-check-set.port"
 import { ProjectCheckSetService } from "./project-check-set.service"
 import { ProjectReadService } from "./project-read.service"
@@ -33,7 +34,7 @@ export class ProjectModule extends ConfigurableModuleClass {
         const coachClass = options.coach ?? UnconfiguredProjectCoach
         const lessonsClass = options.lessons ?? LessonCatalogClient
         const attestationClass = options.attestation ?? UnattestedCiClient
-        const checkSourceClass = options.checkSource ?? ProjectCheckSetDiskAdapter
+        const checkSourceClass = options.checkSource ?? ProjectCheckSetStoreAdapter
         const bindings: Array<Provider> = [
             { provide: PROJECT_RELAY, useExisting: relayClass },
             { provide: PROJECT_COACH, useExisting: coachClass },
@@ -50,6 +51,7 @@ export class ProjectModule extends ConfigurableModuleClass {
                 lessonsClass,
                 attestationClass,
                 checkSourceClass,
+                ProjectCheckSetDiskAdapter,
                 ...bindings,
                 ProjectCheckSetService,
                 ProjectProbeSinkService,
