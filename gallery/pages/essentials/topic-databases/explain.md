@@ -4,34 +4,34 @@ route: /essentials/[topic]
 area: essentials
 ---
 
-Route: `/essentials/databases`. Trang chương theo mockup "A. Trang chương" (`D:/starci-tmp/codex-art/mockup/redesign.png`, nửa trên). Grammar dưới `node_modules/@starci/grammar/dist/core/`. Vòng "N / 1 Issue" là overlay của Next dev, không phải UI. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
+Route: `/essentials/databases` (khớp `/essentials/[topic]`) (topic "Cơ sở dữ liệu"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
 
 ## Dải đầu trang: trail, tiêu đề, meta
 
-Vì sao: dải trắng, sát trái. Trail "Bản chất / chương", tiêu đề 18, dòng 12 muted "n bài · x phút · k ngôn ngữ" (cộng từ các bài đã mở; chương không gắn ngôn ngữ chỉ còn "n bài · x phút"). Không còn chip nhóm và không còn nút ở band: lệnh duy nhất nằm trong hero.
-Luật: `page-header-left-sublabel-xs.md`, `type-scale-14-12.md`.
+Vì sao: dải trắng sát lề trái, ngăn với thân trang bằng một đường kẻ 1px. Trail "Bản chất / Cơ sở dữ liệu" (mục hiện tại đậm), tiêu đề 18/600, dòng 12 muted "2 bài · 180 phút · TypeScript". Không chip, không nút, không tab: lệnh duy nhất của trang nằm trong hero.
+Luật: `surface-layering` (luật 5: dải đầu sát trái, tiêu đề 18/600, mô tả 12 muted), `theme-and-type`.
 Grammar: `Page header { title, breadcrumbs, meta }` (`frame/Page/index.d.ts`, `frame/PageHeader/index.d.ts`).
 
-## Hero: ảnh 3D của chương, câu giới thiệu, nút tím duy nhất
+## Hero: ảnh 3D, câu giới thiệu, nguồn, nút chính duy nhất
 
-Vì sao: một card trắng nổi, ảnh bìa 3D bên trái (trang trí, `alt=""`, `public/art/topics/<topicId>.webp`), bên phải một dòng giới thiệu (500) là mô tả chương, dòng 12/14 muted nguồn, và đúng một nút tím `commit` có icon play: "Bắt đầu: <bài>" / "Học tiếp: <bài>" cho bài đầu tiên chưa hiểu, "Xem bài: ..." khi đã hiểu hết hoặc chưa có Premium. Tên bài lấy phần trước dấu "—".
-Luật: `verify-against-visualize.md` (chỉ nút chính có icon), `pink-page-surface-rule.md`, `owner-colors-exact.md`.
-Grammar: `SurfaceCard` (children), `Grid kind="pair"`, `MediaFrame aspect="landscape" fit="cover"` + `Image alt=""`, `Button intent="commit" startContent` (`frame/SurfaceCard`, `frame/Grid`, `leaf/MediaFrame`, `leaf/Image`, `leaf/Button`).
+Vì sao: hero là một thẻ trắng viền hairline, không bóng, vì chương là một vật thật có ảnh bìa. Ảnh 3D trên nền tím nhạt ở bên trái (trang trí, `alt=""`), bên phải câu mô tả chương (500), dòng muted "Nguồn: ...", rồi đúng một nút chính "Bắt đầu: <bài>" bo tròn (pill) với icon play đứng đầu: nút chính duy nhất của màn hình. Nút trong ảnh có nền tím nhạt, chữ tối, không phải tím đặc như các nút chính khác (xem lỗi hình). Dưới 48rem ảnh xếp trên, chữ dưới, nút giữ nguyên.
+Luật: `surface-layering` (luật 6: một nút chính mỗi màn hình, chỉ nút chính cỡ md/lg có icon đứng đầu; thẻ cho vật thật), `theme-and-type` (luật 1 và 3: mặt trắng, nút pill, tím chỉ là tín hiệu).
+Grammar: `SurfaceCard` (children), `Grid kind="pair"`, `MediaFrame aspect="landscape" fit="cover"` + `Image alt=""`, `Button intent="commit" startContent={<Icon source={PlayGlyph} />}` (`composites/TopicHero/index.tsx`).
 
-## Well: "Bài trong chương" (một card đánh số)
+## "Bài trong chương" (head, chip đếm, danh sách đánh số)
 
-Vì sao: nhãn + chip đếm xám trên well, một `SurfaceCard kind="list"`: số thứ tự, tên bài (500), 12 muted "độ khó · phút · ngôn ngữ", cuối dòng sáu vòng pha (xong = dấu tick xanh, hiện tại = vòng accent có số, sau = vòng mờ, lấy từ `lessonProgress.phases`) cùng "n/6 pha", rồi chevron. Bài chưa chuyển xong có ổ khóa outline. Chưa có Premium: không vòng, dùng chip trạng thái.
-Luật: `table-heroui-native-section-head.md`, `surfacecard-zones-api.md`, `type-scale-14-12.md`.
-Grammar: `SurfaceCard kind="list" items { leading.position, control, href }`, `Stepper size="dense" completeMarker="check"` (`frame/SurfaceCard`, `composite/Stepper`). Vì sao: CHƯA RÕ về một chỗ: Stepper bắt buộc có nhãn, vòng không có chữ nên nhãn là hai khoảng trắng em để các vòng có khoảng thở; cần Grammar một Stepper "chỉ vòng" hoặc `StepMark` công khai.
+Vì sao: nhãn 14/500 trên mặt trắng kèm chip đếm xám 12 là head của Section; thân là danh sách các bài, mỗi hàng ngăn bằng hairline: số thứ tự đơn cách, tên bài (500), dòng 12 muted "độ khó · phút · trạng thái" hoặc "Bài nguồn đang chuyển sang dạng tương tác". Cả hai bài đều mở. Bài đang mở có sáu vòng pha (vòng 1 viền tím là pha hiện tại, năm vòng còn lại xám) và "0/6 pha"; ở 390 các vòng xuống dòng dưới tên. Cả danh sách vẫn nằm trong một khung bo viền hairline (SurfaceCard), không bóng. CHƯA RÕ: theo luật danh sách phẳng dưới Section head thì khung viền này thừa; cần Grammar bỏ viền của `SurfaceCard kind="list"` hoặc đổi sang `Section`.
+Luật: `surface-layering` (luật 1: danh sách là Section trên mặt trắng, không thẻ bao quanh; luật 3: nhãn khối là head của Section), `theme-and-type` (luật 6: chỉ 14 và 12).
+Grammar: `SurfaceCard kind="list" label fact items { leading.position, control, href }` (`composites/TopicPath/index.tsx`), `Stepper size="dense" completeMarker="check"` cho sáu vòng pha (`composite/Stepper`), icon khoá outline cho bài chưa chuyển xong.
 
 ## Aside: Tiến độ, Nên biết trước, Topic liên quan
 
-Vì sao: pane phải 320, nền trắng, section ngăn bằng hairline. KHÁC mockup: mockup có "Chương này cho bạn" (dòng kinh nghiệm + concept dự án) nhưng ứng dụng chưa có dữ liệu nối bài với concept hoặc dòng kinh nghiệm của chương (`projectCatalog.concepts` không có liên kết tới bài), nên lược bỏ theo yêu cầu; giữ ba khối cũ.
-Luật: `nivo-surface-layering.md`, `pink-page-surface-rule.md`.
-Grammar: `PaneGrid`, `Pane area surface`, `PaneSection rule="start"`, `Meter`, `Link`.
+Vì sao: pane phải rộng 320, trắng, ngăn với thân bằng đường kẻ trái, các khối ngăn nhau bằng hairline, không thẻ. "Tiến độ" có dòng tóm tắt "2 bài · 180 phút · TypeScript" kèm phần trăm, thanh Meter mảnh và dòng muted "0/n bài đã hiểu"; "Nên biết trước" là các câu điều kiện; "Topic liên quan" là các link chữ thường, không mũi tên. Thanh tiến độ tô 100% trong khi "0/2 bài đã hiểu" (xem lỗi hình). Mockup có thêm "Chương này cho bạn" nhưng app chưa có dữ liệu nối bài với concept dự án nên lược bỏ.
+Luật: `surface-layering` (luật 4: aside không làm bằng thẻ, section và hàng có divider), `theme-and-type` (luật 8: link điều hướng phụ là `variant="plain"`).
+Grammar: `PaneGrid`, `Pane area="aside" surface`, `PaneSection rule="start"`, `Meter`, `Link variant="plain"` (`composites/TopicAside/index.tsx`).
 
 ## Phone (390)
 
-Vì sao: dưới 48rem aside thành các khối đầu của well; hero xếp ảnh trên, chữ dưới; vòng pha xuống dòng dưới tên bài.
-Luật: `pink-page-surface-rule.md`.
-Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`): dưới `medium` aside đứng trước main; `Grid kind="pair"` (`frame/Grid/index.d.ts`) xếp ảnh trên, chữ dưới. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`.
+Vì sao: dưới 48rem aside thành các khối đầu của trang (Tiến độ, Nên biết trước, Topic liên quan, mỗi khối ngăn hairline) rồi mới tới hero và danh sách; sidebar thu thành nút "Mở menu" ở đầu trang. Hero xếp ảnh trên, chữ dưới, nút rộng vừa chữ; hàng bài xuống dòng và sáu vòng pha nằm dưới tên.
+Luật: `surface-layering` (luật 4: dưới lg các khối aside là những khối đầu của trang).
+Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Grid kind="pair"` (`frame/Grid/index.d.ts`).

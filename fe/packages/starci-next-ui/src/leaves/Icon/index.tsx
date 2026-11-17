@@ -8,6 +8,7 @@ import {
     BellIcon,
     ChatBubbleLeftRightIcon,
     CheckBadgeIcon,
+    CheckIcon,
     ChevronDoubleLeftIcon,
     CodeBracketIcon,
     EllipsisHorizontalIcon,
@@ -23,10 +24,9 @@ import {
     UserCircleIcon,
     DocumentTextIcon,
 } from "@heroicons/react/24/outline"
-import { CircleIcon } from "@starci/heroicons/24/outline"
 
-/** The decorative completion ring, delegated to the custom Heroicons cut. Visible copy supplies its meaning. */
-export const Icon = () => <CircleIcon width={24} height={24} aria-hidden="true" />
+/** The decorative check mark that bullets a benefit (an empty ring read as an unselected radio). Visible copy supplies its meaning. */
+export const Icon = () => <CheckIcon width={24} height={24} aria-hidden="true" />
 
 /** What the lock needs: its accessible name. */
 type LockIconProps = { readonly label: string }

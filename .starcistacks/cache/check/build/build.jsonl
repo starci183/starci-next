@@ -2,5 +2,5 @@
 {"data":{"verdict":"green"},"findings":[],"hash":"82404f4dfc526d2181b5296d0bf11ebdfa6d4d60a41137cd56e1e31084f54148","path":"build/build fe app","step":"ci-step"}
 {"data":{"verdict":"green"},"findings":[],"hash":"7457dc0912e966c27288b56e6ced373dabf7039b7344dfac425c4209d3f95bc3","path":"build/build fe landing","step":"ci-step"}
 {"data":{"verdict":"green"},"findings":[],"hash":"7ffe4b5973888a70556be28f04b44fed8a062cd9e125567fc5cffffb55647e36","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"adf28babf0f630c0267e35a0026dec720edb4932b96bb3369c39426b59a5a2c1","path":"build/build fe app","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"a74cf8fa1f5d2bec6bb8364c358b6c82b8e23f032466c766337a8986e17d6399","path":"build/build fe landing","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"8092922672e21d2617dea88c2756514a60480cfc72dd77c6e5714574cc73f5dd","path":"build/build fe app","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"9f0bdafb563f5edf5d66c3685a33a98f029b7fa0c67d44cd4c9b6553542ef486","path":"build/build fe landing","step":"ci-step"}

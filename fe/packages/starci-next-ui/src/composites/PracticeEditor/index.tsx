@@ -1,4 +1,4 @@
-import { Button, Cluster, Select, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, Section, Select, Stack, Text, Textarea } from "@starci/grammar/common"
 
 /** One language the editor offers. */
 export type PracticeLanguageOption = { readonly id: string; readonly label: string }
@@ -38,7 +38,7 @@ type PracticeEditorProps = {
  * keyboard trap) and the run (example only) and submit (all tests) actions. No editor package is installed.
  */
 export const PracticeEditor = (props: PracticeEditorProps) => (
-    <SurfaceCard label={props.labels.title}>
+    <Section title={props.labels.title} headingLevel={2}>
         <Stack gap="row">
             <Cluster gap="inline" wrap align="end" justify="between">
                 <Select
@@ -81,5 +81,5 @@ export const PracticeEditor = (props: PracticeEditorProps) => (
                 </Text>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

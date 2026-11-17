@@ -1,11 +1,14 @@
 import {
     Button,
+    Cluster,
     EmptyNotice,
     Page,
     Pane,
     PaneGrid,
     PaneSection,
-    SurfaceCard,
+    SearchField,
+    Section,
+    Tabs,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -140,9 +143,9 @@ const ListCard = (props: ListCardProps) => {
             (needle === "" || `${row.name} ${row.sub}`.toLowerCase().includes(needle)),
     )
     return (
-        <SurfaceCard
+        <Section
             kind="list"
-            label={labels.listLabel}
+            title={labels.listLabel}
             headingLevel={2}
             {...(isFailed ? {} : { count: counts.all })}
             isLoading={isLoading}
@@ -156,28 +159,32 @@ const ListCard = (props: ListCardProps) => {
                       },
                   }
                 : {})}
-            headers={[
-                {
-                    kind: "toolbar",
-                    filter: {
-                        label: labels.tabsLabel,
-                        items: [
+            filter={
+                <Cluster gap="inline" wrap align="center" justify="between">
+                    <Tabs
+                        kind="filter"
+                        label={labels.tabsLabel}
+                        items={[
                             { id: "all", label: labels.tabs.all, count: counts.all },
                             { id: "practicing", label: labels.tabs.practicing, count: counts.practicing },
                             { id: "proved", label: labels.tabs.proved, count: counts.proved },
-                        ],
-                        selectedKey: tab,
-                        onSelect: (key) => props.on.tabChange(tabOf(key)),
-                    },
-                    search: {
-                        label: labels.searchLabel,
-                        value: query,
-                        onChange: props.on.queryChange,
-                        placeholder: labels.searchPlaceholder,
-                        clearLabel: labels.searchClear,
-                    },
-                },
-            ]}
+                        ]}
+                        selectedKey={tab}
+                        onSelect={(key) => props.on.tabChange(tabOf(key))}
+                    />
+                    <SearchField
+                        label={labels.searchLabel}
+                        isLabelHidden
+                        size="sm"
+                        measure="compact"
+                        value={query}
+                        onValueChange={props.on.queryChange}
+                        onClear={() => props.on.queryChange("")}
+                        placeholder={labels.searchPlaceholder}
+                        clearLabel={labels.searchClear}
+                    />
+                </Cluster>
+            }
             items={shown.map((row) => rowOf(row, labels.progressLabel))}
             empty={<EmptyOf labels={labels} isFiltered={tab !== "all" || needle !== ""} />}
         />

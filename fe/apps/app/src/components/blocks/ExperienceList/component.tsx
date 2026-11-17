@@ -176,24 +176,22 @@ const tabsOf = (base: ExperienceListBaseProps["props"]) =>
 
 /** The intro: what an item is, the four steps and the counts. */
 const ExperienceIntro = (props: ExperienceIntroProps) => (
-    <SurfaceCard ariaLabel={props.labels.title}>
-        <Stack gap="row">
-            <Cluster gap="inline" wrap label={props.labels.flowLabel}>
-                {props.view.flow.map((step) => (
-                    <Badge key={step} tone="neutral">
-                        {step}
-                    </Badge>
-                ))}
-            </Cluster>
-            <Cluster gap="inline" wrap>
-                {props.view.facts.map((fact) => (
-                    <Text key={fact} size="sm" tone="muted">
-                        {fact}
-                    </Text>
-                ))}
-            </Cluster>
-        </Stack>
-    </SurfaceCard>
+    <Stack gap="row">
+        <Cluster gap="inline" wrap label={props.labels.flowLabel}>
+            {props.view.flow.map((step) => (
+                <Badge key={step} tone="neutral">
+                    {step}
+                </Badge>
+            ))}
+        </Cluster>
+        <Cluster gap="inline" wrap>
+            {props.view.facts.map((fact) => (
+                <Text key={fact} size="sm" tone="muted">
+                    {fact}
+                </Text>
+            ))}
+        </Cluster>
+    </Stack>
 )
 
 /**
@@ -206,9 +204,8 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => (
         header={{
             breadcrumbs: "root",
             title: props.props.labels.title,
-            titleScale: "title",
+            titleScale: "standard",
             description: props.props.labels.description,
-            meta: props.props.labels.eyebrow,
             tabs: {
                 label: props.props.labels.tabsLabel,
                 kind: "views",

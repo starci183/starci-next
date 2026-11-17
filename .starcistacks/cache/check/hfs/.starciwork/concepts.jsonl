@@ -1,4 +1,4 @@
-{"data":{},"findings":[],"hash":"bc529948d94a4f87df637cdbed69cfb7dc363d38320293daadc03723b87e32aa","path":".starciwork/concepts/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"16a74f764e7e0f4d1c9c778c9ebf459577ebbaf8fca7a7343029ab6d2996ac7f","path":".starciwork/concepts/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f88e7e84af0e45017d79dfe42627ad17598bb75874b23d95a8f068fee22b48c0","path":".starciwork/concepts/ai-teacher.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"da8ac90e3b103697bcb9c68b73666a0a1b82f563d3b91519d684437f06b7efe6","path":".starciwork/concepts/app-shell.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f1d7e2768c4bf2480b5c6c059cc5f1cacab79838bbe6c096f4f07f31371458fc","path":".starciwork/concepts/content.md","step":"file-rules"}
@@ -16,6 +16,6 @@
 {"data":{},"findings":[],"hash":"15fb600ccbc4a6fb73bcd97748afefac94e6b2fb65ac3d2655dfd2978e38dd45","path":".starciwork/concepts/projects.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"93af67d99fb014ac30d9665fc8b513ffbd9848ec3b5295af94f2db167539841b","path":".starciwork/concepts/review.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5ada4940903cf897f94b1aad6d004e07d7ca111944d7be5b1349e69ce873017c","path":".starciwork/concepts/streak.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"fce8e9722321ac1ef696d524a086ee8806ffec23b812e3ec2a8b0e3d081503e6","path":".starciwork/concepts/surface-layering.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"04378288321eff5f54cca0c9e421b157b761cb1ebbef1fcd5bb99b9b6253a7a2","path":".starciwork/concepts/theme-and-type.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e76770a051710ac20c020257e242c3c1db9a215e901db62646425fd8197e1599","path":".starciwork/concepts/surface-layering.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"791365a5ac62d0716b15339bbeefd99de7f4871b5f095723dd094adbd038f81b","path":".starciwork/concepts/theme-and-type.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be0c91baa9b29d1ff1f39b01aef0474484ce77a51abb5d24d6a5ce00c1ee75d0","path":".starciwork/concepts/verified-experience.md","step":"file-rules"}

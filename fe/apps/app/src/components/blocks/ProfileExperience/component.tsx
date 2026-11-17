@@ -1,4 +1,4 @@
-import { Badge, Cluster, Heading, Link, Page, Stack, SurfaceCard, Text, type BadgeTone } from "@starci/grammar/common"
+import { Cluster, Link, Page, Section, Stack, Text, type BadgeTone } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -55,23 +55,26 @@ export type ProfileExperienceBaseProps = {
  * and the hiring-bridge count. The public profile and the CV export show verified items only; the CV export comes later.
  */
 export const ProfileExperienceBase = (props: ProfileExperienceBaseProps) => (
-    <Page>
-        <Stack gap="region">
-            <SurfaceCard ariaLabel={props.props.labels.title}>
-                <Stack gap="identity">
-                    <Heading level={1} scale="title">
-                        {props.props.labels.title}
-                    </Heading>
-                    <Text tone="muted">{props.props.labels.description}</Text>
-                </Stack>
-            </SurfaceCard>
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(view) => (
-                    <SurfaceCard label={props.props.labels.listTitle} note={props.props.labels.cvLater}>
+    <Page
+        header={{
+            title: props.props.labels.title,
+            titleScale: "standard",
+            description: props.props.labels.description,
+        }}
+    >
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            onRetry={props.on.retry}
+            render={(view, isLoading) => (
+                <Section
+                    kind="list"
+                    title={props.props.labels.listTitle}
+                    headingLevel={2}
+                    isLoading={isLoading}
+                    caption={props.props.labels.cvLater}
+                    filter={
                         <Stack gap="row">
                             <Cluster gap="inline" justify="between" wrap>
                                 <Text size="sm" tone="muted">
@@ -82,26 +85,20 @@ export const ProfileExperienceBase = (props: ProfileExperienceBaseProps) => (
                                 </Link>
                             </Cluster>
                             <Text isStrong>{view.gate}</Text>
-                            {view.rows.map((row) => (
-                                <Cluster key={row.itemId} gap="inline" wrap align="center" justify="between">
-                                    <Cluster gap="identity" align="center">
-                                        <Badge tone="neutral">{row.part}</Badge>
-                                        <Text>{row.title}</Text>
-                                    </Cluster>
-                                    <Cluster gap="identity" align="center">
-                                        <Text size="sm" tone="muted">
-                                            {row.evidence}
-                                        </Text>
-                                        <Badge tone={row.stateTone} isDot>
-                                            {row.state}
-                                        </Badge>
-                                    </Cluster>
-                                </Cluster>
-                            ))}
                         </Stack>
-                    </SurfaceCard>
-                )}
-            />
-        </Stack>
+                    }
+                    items={view.rows.map((row) => ({
+                        id: row.itemId,
+                        title: row.title,
+                        description: row.evidence,
+                        badges: [
+                            { label: row.part, tone: "neutral" as const },
+                            { label: row.state, tone: row.stateTone, isDot: true },
+                        ] as const,
+                    }))}
+                    empty={null}
+                />
+            )}
+        />
     </Page>
 )

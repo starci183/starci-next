@@ -1,4 +1,4 @@
-{"findings":[],"hash":"1df1b592985500f68993d7eeda49a587baccbc08ffb06b0d333ae38542daef7b","path":"gallery/pages/auth/sign-in-callback/explain.md","step":"prettier"}
-{"findings":[],"hash":"d6c9d0f915d769d698ac3f5770d902e99c0294af118e5c473eb29067153caa41","path":"gallery/pages/auth/sign-in/explain.md","step":"prettier"}
-{"findings":[],"hash":"5d0d95bcd08869c054dc07d9771e12ea6ca60f9c3d23265218b98332d37e9194","path":"gallery/pages/auth/sign-up/explain.md","step":"prettier"}
-{"findings":[],"hash":"f1a9964be047c53fe617b0fa77e05b41977fda6faba85781297e25ea3969ae33","path":"gallery/pages/auth/verify/explain.md","step":"prettier"}
+{"findings":[],"hash":"2a801b74aace4819c8885ccb5adbccda7b89f65b812ee40d27be89dee4178d16","path":"gallery/pages/auth/sign-in-callback/explain.md","step":"prettier"}
+{"findings":[],"hash":"5ba8b1365f2df8aa507be1d599e0e4ce21d96850b52fefb22ba9e8f4e27cdb74","path":"gallery/pages/auth/sign-in/explain.md","step":"prettier"}
+{"findings":[],"hash":"e0a625682ede29fc701ca872d82c5e16645a70ca9d667b2699ea91e0f28cf488","path":"gallery/pages/auth/sign-up/explain.md","step":"prettier"}
+{"findings":[],"hash":"b39bbab88df366b8460ec4ddb4bffd57227b850cb99d9940ae556ccd8c90a5b1","path":"gallery/pages/auth/verify/explain.md","step":"prettier"}
