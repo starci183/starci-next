@@ -1,0 +1,37 @@
+# Doctor probe: the project says how to work in git worktrees (one worktree per task, so parallel agents do not collide).
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: worktree-usage-documented
+tool: claude
+order: 8
+title:
+  vi: Worktree usage is documented
+  en: Worktree usage is documented
+guide: worktrees
+check:
+  file:
+    path: [CLAUDE.md, .claude/CLAUDE.md, AGENTS.md, docs/worktrees.md]
+    exists: true
+    matches: "git worktree"
+fix:
+  vi: Add a "Worktrees" section to CLAUDE.md. Say that each task runs in its own worktree (`git worktree add .worktrees/<name> -b <branch>`), where the folder lives and how to clean up with `git worktree remove`.
+  en: Add a "Worktrees" section to CLAUDE.md. Say that each task runs in its own worktree (`git worktree add .worktrees/<name> -b <branch>`), where the folder lives and how to clean up with `git worktree remove`.
+good:
+  files:
+    CLAUDE.md: |
+      # Shop API
+
+      ## Worktrees
+      Every task runs in its own git worktree so two agents never edit the same files.
+      - Create: `git worktree add .worktrees/<task> -b task/<task>`
+      - Work and commit inside `.worktrees/<task>` only.
+      - Clean up when the branch is merged: `git worktree remove .worktrees/<task>`
+bad:
+  files:
+    CLAUDE.md: |
+      # Shop API
+
+      ## Commands
+      - `npm test` runs the unit tests.
+      - `npm run build` compiles to `dist/`.

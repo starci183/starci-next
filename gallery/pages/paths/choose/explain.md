@@ -2,6 +2,7 @@
 title: Chọn mục tiêu (lộ trình)
 route: /paths/choose
 area: paths
+reviewed: 2026-11-17
 ---
 
 Route: `/paths/choose` (ảnh chụp: học viên chưa theo lộ trình nào, đã đăng nhập). Mã: `fe/apps/app/src/components/blocks/PathsChoose/component.tsx` (vẽ) và `index.tsx` (đọc dữ liệu, chọn, đổi). Khung chung (thanh bên, thanh trên) giải thích ở `learn/home`.

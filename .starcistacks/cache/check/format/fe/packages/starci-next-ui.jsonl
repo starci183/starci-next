@@ -1,4 +1,4 @@
-{"findings":[],"hash":"cdf68e64d99fbd452fd81bd604b9bcc172e77ef9ea2003ee18ffdd8223029de8","path":"fe/packages/starci-next-ui/package.json","step":"prettier"}
+{"findings":[],"hash":"aee5f5bd097326a89929428951b34d0c30aeceafee6dfb88a9bc59122a361263","path":"fe/packages/starci-next-ui/package.json","step":"prettier"}
 {"findings":[],"hash":"1a88d1888fd6a65cefbf491232777120f4da1260f565baaf0264178978b6b3cc","path":"fe/packages/starci-next-ui/src/branches/FileView/index.tsx","step":"prettier"}
 {"findings":[],"hash":"cb59a55fa74cb9aed6f46a1fbd869d28dda22ffd36cb1e1276f90cfb0f8309d1","path":"fe/packages/starci-next-ui/src/branches/HighlightedCode/index.tsx","step":"prettier"}
 {"findings":[],"hash":"544494f010e1b888c274025e25999f1fff5daf266e4fcae0c82a034792a35a02","path":"fe/packages/starci-next-ui/src/branches/Providers/index.tsx","step":"prettier"}

@@ -17,8 +17,8 @@ const BODY = {
     commit: "ABC1234",
     passed: true,
     results: [
-        { concept: "idempotency", slot: "test", ref: "[idempotency] twice", passed: true },
-        { concept: "idempotency", slot: "e2e", ref: "idempotent-retry", passed: false },
+        { concept: "idempotent-retry", slot: "test", ref: "[idempotency] twice", passed: true },
+        { concept: "idempotent-retry", slot: "e2e", ref: "idempotent-retry", passed: false },
     ],
 }
 
@@ -86,23 +86,7 @@ describe("ciRunOf", () => {
             commit: "abc1234",
             passed: true,
             results: BODY.results.map((result) => ({ ...result })),
-            harness: [],
         })
-    })
-
-    it("reads the optional harness array of build stage results", () => {
-        const harness = [{ build: "agent-cli", stage: "s1-loop", e2e: "loop-calls-tool", passed: true }]
-
-        expect(subject.ciRunOf(rawOf({ ...BODY, harness })).harness).toEqual(harness)
-    })
-
-    it.each([
-        ["a list that is not one", {}],
-        ["an entry that is not an object", ["x"]],
-        ["a bad build id", [{ build: "Bad Id", stage: "s1", e2e: "a", passed: true }]],
-        ["a missing passed flag", [{ build: "b", stage: "s1", e2e: "a" }]],
-    ])("refuses a harness array with %s", (_name, harness) => {
-        expect(() => subject.ciRunOf(rawOf({ ...BODY, harness }))).toThrow()
     })
 
     it.each([

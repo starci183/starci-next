@@ -20,6 +20,20 @@ services:
       retries: 30
       start_period: 10s
     restart: unless-stopped
+  # The dev vector index (Qdrant) of the MCP semantic search: REST on loopback only (the core api reaches it as QDRANT_URL); the collection is made by the app at start.
+  qdrant:
+    image: qdrant/qdrant:v1.20.1@sha256:d18c8e5061be3eaea2f53fbee1f0bf0382dc59cbb9b7112e41ffcc937ec14220
+    ports:
+      - "127.0.0.1:${STACK_PORT_QDRANT}:6333"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    restart: unless-stopped
   # The dev mail sink (Mailpit): the core api sends the sign-in mails to its SMTP port on loopback, a person reads them in its web UI.
   mail:
     image: axllent/mailpit:v1.31.6@sha256:23fe39e81bde596a918000b3135c0f85dc8bb4c9ea6be274b051143f3e300387
@@ -130,6 +144,7 @@ configs:
     file: ./Caddyfile
 volumes:
   postgres-data: {}
+  qdrant-data: {}
   keycloak-tls: {}
   keycloak-data: {}
   storage-data: {}

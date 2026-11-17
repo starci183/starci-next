@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: request-response-lifecycle
 
-Request sai bị chặn ở rìa bằng 4xx (không phải 5xx), request id đi vào được trả lại, và request không có id thì dịch vụ tự sinh id riêng cho mỗi request.
+A bad request is stopped at the edge with a 4xx (never a 5xx), an incoming request id is returned, and a request without an id gets an id the service mints for each request.
 
-Bạn khai trong `starci/project.yaml`: `endpoints.request-response-lifecycle.endpoint` là một endpoint ghi, ví dụ `POST /orders`.
-`starci-next run` chạy luồng này vào `start.baseUrl`; CI chạy nó bằng `npx @starci/next ci-report --e2e`.
+You declare in `starci/project.yaml`: `endpoints.request-response-lifecycle.endpoint` is a write endpoint, for example `POST /orders`.
+`starci-next run` runs this flow against `start.baseUrl`; CI runs it with `npx @starci/next ci-report --e2e`.
 
 ```yaml starci-flow
 id: request-response-lifecycle

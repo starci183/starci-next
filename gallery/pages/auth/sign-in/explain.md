@@ -2,6 +2,7 @@
 title: Đăng nhập
 route: /sign-in
 area: auth
+reviewed: 2026-11-17
 ---
 
 Route: `/sign-in`. Màn đăng nhập không dùng khung chung: thanh bên và thanh trên ẩn ở đây, trang tự vẽ thương hiệu ở giữa. Vòng "N" là lớp phủ Next dev.

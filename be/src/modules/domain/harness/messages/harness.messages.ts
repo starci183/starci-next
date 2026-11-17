@@ -4,7 +4,11 @@ import type { MessageBundle } from "@modules/platform/i18n"
 export const HARNESS_MESSAGES: MessageBundle = {
     vi: {
         "errors.HARNESS_NOT_FOUND": "Không tìm thấy nội dung harness này.",
-        "errors.HARNESS_PROJECT_INVALID": "Dự án này không phải dự án agent của bạn.",
+        "errors.HARNESS_REPOSITORY_INVALID": "Hãy nhập repo GitHub dạng owner/tên hoặc địa chỉ github.com.",
+        "errors.HARNESS_CI_BINDING_UNKNOWN": "Không có liên kết harness nào với mã này.",
+        "errors.HARNESS_CI_PAYLOAD_INVALID": "Báo cáo CI không đúng định dạng.",
+        "errors.HARNESS_CI_NOT_ATTESTED":
+            "GitHub chưa xác nhận lần chạy này: hãy bật permissions id-token: write và chạy từ đúng repo đã liên kết.",
         "errors.HARNESS_CONTENT_INVALID": "Nội dung harness có lỗi nên chưa được nhập.",
         "errors.HARNESS_VERSION_CONFLICT": "Phiên bản này đã có với nội dung khác.",
         "errors.HARNESS_IMPORT_REJECTED": "Không nhập được nội dung harness từ thư mục này.",
@@ -17,7 +21,11 @@ export const HARNESS_MESSAGES: MessageBundle = {
     },
     en: {
         "errors.HARNESS_NOT_FOUND": "This harness content was not found.",
-        "errors.HARNESS_PROJECT_INVALID": "This project is not one of your agent projects.",
+        "errors.HARNESS_REPOSITORY_INVALID": "Enter a GitHub repository as owner/name or a github.com address.",
+        "errors.HARNESS_CI_BINDING_UNKNOWN": "No harness binding has this id.",
+        "errors.HARNESS_CI_PAYLOAD_INVALID": "The CI report is not in the expected format.",
+        "errors.HARNESS_CI_NOT_ATTESTED":
+            "GitHub did not vouch for this run: enable permissions id-token: write and run it from the bound repository.",
         "errors.HARNESS_CONTENT_INVALID": "The harness content has findings, so it was not imported.",
         "errors.HARNESS_VERSION_CONFLICT": "This version already exists with other content.",
         "errors.HARNESS_IMPORT_REJECTED": "The harness content could not be imported from this folder.",

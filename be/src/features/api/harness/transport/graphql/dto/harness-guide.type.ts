@@ -32,4 +32,8 @@ export class HarnessGuideType {
     /** The probes of the guide. */
     @Field(() => [HarnessProbeResultType])
     probes!: Array<HarnessProbeResultType>
+
+    /** The minutes a learner needs, or null. */
+    @Field(() => Int, { nullable: true })
+    minutes!: number | null
 }

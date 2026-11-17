@@ -5,6 +5,10 @@
 {"data":{},"findings":[],"hash":"d68176fb3d0c4286be573344922fbcee796b4028c82d6bb80f0af6a0eb2879bd","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e29842679b97ee5cdce5b406c8c43526046f16fca691f4b69d563c30204786c1","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dd99d38b8f954873c5febf8107a05bf6aab4865f1ddb5d7215246553fb7f06d7","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1c440e21d4b47a707462d249843f7f2aabf743a41040318d6412ade6951ea919","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c32bd444a3bca6c52a8b8c39f24b87919cde66c80dd725f30c8a4c533a8be45a","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3c8440c917d507e2e7e76d09832312e652c7792ba3433e171544a6dd9bfc90b4","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0d43bdd3125bc6c4be0ff6bbf998ea66bcee1fa548bb00391c6aac5cb5c5c394","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4056231a07c2533ff12a32d9045e2c008544ec417f65a2d49512ecd0ed0b58a1","path":".starcistacks/dev/secrets/db.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"53542d9265b4864a57913fdf8ede3f79ebb7d60cc9b215040e3973a72787400b","path":".starcistacks/dev/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"175bfeff769eca85f0ef025bee81e341b5557c9c7e6b43c7a9208db5762e827a","path":".starcistacks/dev/secrets/keycloak-client-secret.enc.yaml","step":"file-rules"}

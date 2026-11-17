@@ -2,6 +2,7 @@
 title: Dự án / Tạo dự án
 route: /projects/new
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/new`. Trang tạo dự án: chọn loại, điền thông tin, xem cách bắt đầu. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.37.12). Code: `fe/apps/app/src/components/blocks/ProjectNew/component.tsx`.

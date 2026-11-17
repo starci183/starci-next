@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from "typeorm"
 
 @Entity("harness_stage_proofs")
-/** One e2e result of an attested CI run of a bound project: only attested results are stored here. */
+/** One e2e result of an attested CI run of a bound repository: only attested results are stored here. */
 export class HarnessStageProofEntity {
     /** The learner. */
     @PrimaryColumn({ name: "learner_id", type: "uuid" })
@@ -31,9 +31,9 @@ export class HarnessStageProofEntity {
     @Column({ name: "commit_sha", type: "text", nullable: true })
     commitSha!: string | null
 
-    /** The project that posted the run. */
-    @Column({ name: "project_id", type: "uuid" })
-    projectId!: string
+    /** The binding whose repository posted the run. */
+    @Column({ name: "binding_id", type: "uuid" })
+    bindingId!: string
 
     /** When it was recorded. */
     @Column({ name: "recorded_at", type: "timestamptz" })

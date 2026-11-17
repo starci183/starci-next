@@ -2,6 +2,7 @@
 title: Dự án (danh sách)
 route: /projects
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects`. Học viên thử nghiệm (ảnh chụp có một dự án; khi chưa có dự án trạng thái rỗng hiện trong thẻ, không phải lỗi). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ProjectsList/`.

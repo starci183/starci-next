@@ -21,6 +21,10 @@ export interface ConfigEnv {
     readonly STARCI_NEXT_MANIFEST_KEY?: string | undefined
     /** `STARCI_NEXT_DATA_DIR`: a checkout of starci-next-data, where `init` reads the kit when `--from` is not given. */
     readonly STARCI_NEXT_DATA_DIR?: string | undefined
+    /** `STARCI_NEXT_CLAUDE_BIN`: the claude program the harness trial runs; `claude` when absent. */
+    readonly STARCI_NEXT_CLAUDE_BIN?: string | undefined
+    /** `STARCI_NEXT_CODEX_BIN`: the codex program the harness trial runs; `codex` when absent. */
+    readonly STARCI_NEXT_CODEX_BIN?: string | undefined
 }
 
 /** Reads the learner CLI settings of an environment source: all optional, so a bare machine runs with the defaults. */
@@ -29,4 +33,6 @@ export const parseRelayClientConfig = (env: EnvSource): ConfigEnv => ({
     STARCI_NEXT_URL: env.optional("STARCI_NEXT_URL"),
     STARCI_NEXT_MANIFEST_KEY: env.optional("STARCI_NEXT_MANIFEST_KEY"),
     STARCI_NEXT_DATA_DIR: env.optional("STARCI_NEXT_DATA_DIR"),
+    STARCI_NEXT_CLAUDE_BIN: env.optional("STARCI_NEXT_CLAUDE_BIN"),
+    STARCI_NEXT_CODEX_BIN: env.optional("STARCI_NEXT_CODEX_BIN"),
 })

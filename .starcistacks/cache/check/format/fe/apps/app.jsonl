@@ -1,6 +1,8 @@
 {"findings":[],"hash":"2ca9727a93aa1bf8c2c07934237a72dcf5f1e7f4131376f039df32cbe8e5e5e6","path":"fe/apps/app/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"7aa1c2cbd1f242968345a51c1c015fc277917160afff2bbfc1246b220279c02f","path":"fe/apps/app/next.config.ts","step":"prettier"}
 {"findings":[],"hash":"88d6d22d7fcf0708f4cf8f4734dfbf55571886dc3fe078e4fb87acaa95642fbe","path":"fe/apps/app/package.json","step":"prettier"}
+{"findings":[],"hash":"fe8f2c5aa33263062b758448ff6ea6d8b0433c103f7f87ad5bb72775c716f708","path":"fe/apps/app/next.config.ts","step":"prettier"}
+{"findings":[],"hash":"bd3b6654b5fe1ca3d0a807b4026400c5ed05a2dff0e6b99702948611da225779","path":"fe/apps/app/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/app/postcss.config.mjs","step":"prettier"}
 {"findings":[],"hash":"ab1f3f5b2801daeabeee3ec5253ee752c0f2f2bcea400cc7ee3c5c757a542e67","path":"fe/apps/app/public/art/pro-learning-journey-v1.webp","step":"prettier"}
 {"findings":[],"hash":"55fa061f40550e338042a05b6e39ef01c0e40bd4a2984edc94242181cf850e7c","path":"fe/apps/app/public/art/stage-ask.webp","step":"prettier"}

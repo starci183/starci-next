@@ -43,6 +43,6 @@ export interface HarnessTrialsRequest extends HarnessLocaleRequest {
 export interface BindHarnessBuildRequest {
     /** The build. */
     readonly buildId: string
-    /** The learner agent project whose CI proves it. */
-    readonly projectId: string
+    /** The GitHub repository, owner/name or a github.com address. */
+    readonly repository: string
 }

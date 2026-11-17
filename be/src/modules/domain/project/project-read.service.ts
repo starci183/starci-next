@@ -3,10 +3,11 @@ import type { EntityManager } from "typeorm"
 import { InjectEntitlementService, type EntitlementService } from "@modules/domain/entitlement"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
-import type { ConceptLessonRef, ProjectSettings } from "./project.contracts"
+import type { ConceptDefinition, ConceptLessonRef, ProjectSettings } from "./project.contracts"
 import { InjectProjectOptions } from "./project.decorators"
 import type { ProjectOptions } from "./project.options"
-import { PROJECT_CONCEPTS, PROJECT_MILESTONES } from "./project-catalog.policy"
+import { learnLessonOf, isComingSoon } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { InjectProjectLessons, type ProjectLessonPort } from "./project-lesson.port"
 import type {
     CatalogParams,
@@ -79,6 +80,7 @@ export class ProjectReadService {
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         @InjectProjectLessons() private readonly lessons: ProjectLessonPort,
+        private readonly checkSet: ProjectCheckSetService,
         @InjectProjectOptions() options: ProjectOptions,
     ) {
         this.settings = projectSettingsOf(options)
@@ -100,11 +102,12 @@ export class ProjectReadService {
             LIST_ROWS_MAX,
         ])
         const lessons = await this.lessons.lessons({ locale: params.locale })
+        const set = await this.checkSet.current()
         const all = toEvidenceRows(evidence)
         return rows.map((row) => {
             const own = all.filter((item) => item.projectId === row.project_id)
             const ciRun = ciRuns.find((run) => run.project_id === row.project_id) ?? null
-            return toSummaryView(row, projectStandingOf(projectKindOf(row), own, new Set(lessons.keys())), ciRun)
+            return toSummaryView(row, projectStandingOf(set, projectKindOf(row), own, new Set(lessons.keys())), ciRun)
         })
     }
 
@@ -143,7 +146,7 @@ export class ProjectReadService {
                 toConceptView(
                     standing,
                     context.pointers.get(standing.definition.id),
-                    context.lessons.get(standing.definition.id),
+                    this.lessonOf(context, standing.definition),
                     params.locale,
                 ),
             ),
@@ -160,7 +163,7 @@ export class ProjectReadService {
         return toConceptView(
             standing,
             context.pointers.get(params.conceptId),
-            context.lessons.get(params.conceptId),
+            this.lessonOf(context, standing.definition),
             params.locale,
         )
     }
@@ -175,20 +178,22 @@ export class ProjectReadService {
     async catalog(params: CatalogParams): Promise<ProjectCatalogView> {
         const { locale } = params
         const lessons = await this.lessons.lessons({ locale })
+        const set = await this.checkSet.current()
+        const liveLessons = new Set(lessons.keys())
         return {
-            milestones: PROJECT_MILESTONES.map((milestone) => ({
+            milestones: set.milestones.map((milestone) => ({
                 id: milestone.id,
                 title: milestone.title[locale],
                 concepts: milestone.concepts,
                 free: this.settings.freeMilestones.includes(milestone.id),
             })),
-            concepts: PROJECT_CONCEPTS.map((concept) => ({
+            concepts: set.concepts.map((concept) => ({
                 id: concept.id,
                 label: concept.label[locale],
                 kind: concept.kind,
                 requires: concept.requires,
                 probes: concept.probes,
-                comingSoon: !lessons.has(concept.id),
+                comingSoon: isComingSoon(concept, liveLessons),
             })),
             freeProjects: this.settings.freeProjects,
         }
@@ -225,7 +230,8 @@ export class ProjectReadService {
         ])
         const ciRuns: Array<CiRunRow> = await this.entityManager.query(SELECT_LAST_CI_RUNS, [[row.project_id], 1])
         const lessons = await this.lessons.lessons({ locale: params.locale })
-        const standing = projectStandingOf(projectKindOf(row), toEvidenceRows(evidence), new Set(lessons.keys()))
+        const set = await this.checkSet.current()
+        const standing = projectStandingOf(set, projectKindOf(row), toEvidenceRows(evidence), new Set(lessons.keys()))
         return {
             ciRun: ciRuns[0] ?? null,
             row,
@@ -233,6 +239,12 @@ export class ProjectReadService {
             pointers: new Map(pointerRows.map((pointer) => [pointer.concept_id, pointer])),
             lessons,
         }
+    }
+
+    /** The live lesson that teaches a concept, or undefined when none does yet. */
+    private lessonOf(context: ProjectContext, concept: ConceptDefinition): ConceptLessonRef | undefined {
+        const id = learnLessonOf(concept, new Set(context.lessons.keys()))
+        return id === null ? undefined : context.lessons.get(id)
     }
 
     private isLocked(milestoneId: string, premium: boolean): boolean {

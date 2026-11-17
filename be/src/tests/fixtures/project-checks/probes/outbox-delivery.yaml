@@ -1,14 +1,14 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
-# App của học viên gửi sự kiện của lần ghi tới địa chỉ trong header X-StarCi-Sink (sink công khai của StarCi).
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
+# The learner's app sends the event of the write to the address in the X-StarCi-Sink header (StarCi's public sink).
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: outbox-delivery
 label:
-  vi: Lần ghi giao đúng một sự kiện tới sink của StarCi
+  vi: A write delivers exactly one event to the StarCi sink
   en: A write delivers exactly one event to the StarCi sink
 question:
-  vi: Sự kiện được ghi cùng transaction với dữ liệu ở đâu, và relay làm sao để không gửi một sự kiện hai lần?
+  vi: Where is the event written in the same transaction as the data, and how does the relay avoid sending it twice?
   en: Where is the event written in the same transaction as the data, and how does the relay avoid sending it twice?
 needs: [endpoint, sample]
 steps:
@@ -27,10 +27,11 @@ steps:
       - { that: count, lte: 1, fail: delivered-twice }
 pass: delivered-once
 reasons:
-  delivered-once: { vi: Sink nhận đúng một sự kiện trong 8 giây., en: The sink got exactly one event within 8 seconds. }
-  write-failed: { vi: Lần ghi không trả 2xx., en: The write did not answer 2xx. }
-  not-delivered: { vi: Sink không nhận sự kiện nào trong 8 giây., en: The sink got no event within 8 seconds. }
-  delivered-twice: { vi: Sink nhận cùng sự kiện hơn một lần., en: The sink got the event more than once. }
+  delivered-once:
+    { vi: The sink got exactly one event within 8 seconds., en: The sink got exactly one event within 8 seconds. }
+  write-failed: { vi: The write did not answer 2xx., en: The write did not answer 2xx. }
+  not-delivered: { vi: The sink got no event within 8 seconds., en: The sink got no event within 8 seconds. }
+  delivered-twice: { vi: The sink got the event more than once., en: The sink got the event more than once. }
 fixtures:
   endpoint: POST /starci-test/items
   sample: '{"name":"book"}'

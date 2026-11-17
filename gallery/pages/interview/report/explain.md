@@ -2,6 +2,7 @@
 title: Kết quả phỏng vấn
 route: /interview/[sessionId]/report
 area: interview
+reviewed: 2026-11-17
 ---
 
 Route: `/interview/[sessionId]/report` (ảnh chụp: mở kết quả của một buổi chưa nộp nên thấy trạng thái "chưa có kết quả"; buổi đã chấm hiện điểm và nhận xét từng câu, chưa có ảnh vì chấm cần mô hình AI mà dữ liệu chụp chưa gọi được). Mã: `fe/apps/app/src/components/blocks/InterviewReport/component.tsx`. Khung chung giải thích ở `learn/home`.

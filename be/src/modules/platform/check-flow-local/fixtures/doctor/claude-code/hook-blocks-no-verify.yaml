@@ -1,0 +1,75 @@
+# Doctor probe: a PreToolUse hook on Bash stops `git commit --no-verify`. hook.simulate feeds it real tool calls and reads the exit code.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: hook-blocks-no-verify
+tool: claude
+order: 2
+title:
+  vi: A hook blocks `--no-verify`
+  en: A hook blocks `--no-verify`
+guide: hooks
+check:
+  hook:
+    config: [.claude/settings.json, .claude/settings.local.json, ~/.claude/settings.json]
+    simulate:
+      event: PreToolUse
+      tool: Bash
+      cases:
+        - input: { command: "git commit --no-verify -m wip" }
+          expect: block
+        - input: { command: "git commit -n -m wip" }
+          expect: block
+        - input: { command: "git push --no-verify origin main" }
+          expect: block
+        - input: { command: 'git commit -m "feat: add cart"' }
+          expect: allow
+fix:
+  vi: Add a PreToolUse hook with matcher `Bash` to `.claude/settings.json`. The script reads the JSON on stdin, and when it sees `--no-verify` or `commit -n` it prints the reason to stderr and exits with code 2.
+  en: Add a PreToolUse hook with matcher `Bash` to `.claude/settings.json`. The script reads the JSON on stdin, and when it sees `--no-verify` or `commit -n` it prints the reason to stderr and exits with code 2.
+good:
+  files:
+    .claude/settings.json: |
+      {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [{ "type": "command", "command": "node .claude/hooks/no-verify-guard.mts" }]
+            }
+          ]
+        }
+      }
+    .claude/hooks/no-verify-guard.mts: |
+      // PreToolUse hook: refuse git calls that skip the hooks. Exit code 2 blocks the tool call.
+      import { stdin, stderr, exit } from "node:process"
+
+      let raw = ""
+      for await (const chunk of stdin) raw += chunk
+      const payload = JSON.parse(raw) as { tool_input?: { command?: string } }
+      const command = payload.tool_input?.command ?? ""
+      const skipsHooks = /\bgit\b[^|;&]*(--no-verify\b|\s-n\b)/u.test(command)
+      if (skipsHooks) {
+          stderr.write("Blocked: never skip git hooks. Fix the failing check instead.\n")
+          exit(2)
+      }
+bad:
+  files:
+    .claude/settings.json: |
+      {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [{ "type": "command", "command": "node .claude/hooks/log-commands.mts" }]
+            }
+          ]
+        }
+      }
+    .claude/hooks/log-commands.mts: |
+      // Logs every shell command. It never blocks anything.
+      import { stdin } from "node:process"
+
+      let raw = ""
+      for await (const chunk of stdin) raw += chunk
+      console.log(`bash call: ${raw.length} bytes`)

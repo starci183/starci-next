@@ -8,11 +8,12 @@
 {"findings":[],"hash":"381541bc51c0b30f8460fdce78371edd54c0c93395e7a2494f04107e0406d8e5","path":".starciwork/concepts/identity.md","step":"prettier"}
 {"findings":[],"hash":"32c4a9e169ab7f2bde8bc92b43d7ca201708124b03bc967ce66cf9e42799ee15","path":".starciwork/concepts/learner-cli-relay.md","step":"prettier"}
 {"findings":[],"hash":"410f2a4cd05af02d3d1299739f7e00fe54315d04c777625a6f31d6c6fbe51368","path":".starciwork/concepts/learning-program.md","step":"prettier"}
-{"findings":[],"hash":"68741c5607d67fce2ce3d26ff5ab8771ceb63a8f9fd84d3b02367784a938bd8c","path":".starciwork/concepts/mcp.md","step":"prettier"}
+{"findings":[],"hash":"410e4531e46c9ff28752281b07913c459baf3f97f8e9e732d5a83ecc2cec589b","path":".starciwork/concepts/mcp.md","step":"prettier"}
 {"findings":[],"hash":"b97cbe37525de596a26bf40c2578e3223ff51e85db0cae58486e3bad3c08642a","path":".starciwork/concepts/mock-interview.md","step":"prettier"}
 {"findings":[],"hash":"44a5ed06a8f79131f8fad87282ded95555835c5f451763fe6f6c3c3718fdeb3f","path":".starciwork/concepts/practice.md","step":"prettier"}
 {"findings":[],"hash":"50902a7bfa4f2a58f0aaa99945d6c10826d9584cef5604bbfd78f398edd45ab5","path":".starciwork/concepts/premium.md","step":"prettier"}
 {"findings":[],"hash":"51e557acbf7a462f767228c430fa4a379a45723fb3ce007b88060e88bc995948","path":".starciwork/concepts/projects.md","step":"prettier"}
+{"findings":[],"hash":"380ce3cec0614b0011283c882fea6a22c575d7740c2a573eb44cef0d7289114b","path":".starciwork/concepts/projects.md","step":"prettier"}
 {"findings":[],"hash":"a87dc17e6566280dc5717d0c055dd0c553947485341bdb4d20b65489d1a69b69","path":".starciwork/concepts/review.md","step":"prettier"}
 {"findings":[],"hash":"5af2f101ac411fe9f5a364c8f7a91415cfd638e5e71f92530f8a44903fde8bb4","path":".starciwork/concepts/streak.md","step":"prettier"}
 {"findings":[],"hash":"c6137b48261f03670cb65ba513c6dab5cafe0fd75fff93d38d00500cab3cbdce","path":".starciwork/concepts/surface-layering.md","step":"prettier"}

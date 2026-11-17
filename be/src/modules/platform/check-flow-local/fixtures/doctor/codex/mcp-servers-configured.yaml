@@ -1,0 +1,32 @@
+# Doctor probe: config.toml declares at least one MCP server.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: mcp-servers-configured
+tool: codex
+order: 4
+title:
+  vi: At least one mcp_servers entry exists
+  en: At least one mcp_servers entry exists
+guide: mcp-servers
+check:
+  toml:
+    path: [.codex/config.toml, ~/.codex/config.toml]
+    at: mcp_servers
+    nonEmpty: true
+fix:
+  vi: Add a `[mcp_servers.<name>]` table to `~/.codex/config.toml` with `command` and `args`. Read API keys from environment variables, never write them into the file.
+  en: Add a `[mcp_servers.<name>]` table to `~/.codex/config.toml` with `command` and `args`. Read API keys from environment variables, never write them into the file.
+good:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+
+      [mcp_servers.shop]
+      command = "node"
+      args = ["mcp/server.mts"]
+bad:
+  files:
+    ~/.codex/config.toml: |
+      model = "gpt-5-codex"
+      sandbox_mode = "workspace-write"

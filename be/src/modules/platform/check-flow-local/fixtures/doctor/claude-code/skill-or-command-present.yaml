@@ -1,0 +1,38 @@
+# Doctor probe: at least one skill or slash command exists, in the project or in the home folder.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: skill-or-command-present
+tool: claude
+order: 6
+title:
+  vi: At least one skill or command exists
+  en: At least one skill or command exists
+guide: skills-commands
+check:
+  file:
+    path:
+      - .claude/skills/*/SKILL.md
+      - .claude/commands/*.md
+      - ~/.claude/skills/*/SKILL.md
+      - ~/.claude/commands/*.md
+    exists: true
+    minBytes: 40
+fix:
+  vi: Create `.claude/commands/review.md` (a reusable prompt, run with `/review`) or `.claude/skills/<name>/SKILL.md` with `name` and `description` in the front matter.
+  en: Create `.claude/commands/review.md` (a reusable prompt, run with `/review`) or `.claude/skills/<name>/SKILL.md` with `name` and `description` in the front matter.
+good:
+  files:
+    .claude/skills/release-notes/SKILL.md: |
+      ---
+      name: release-notes
+      description: Write release notes from the commits since the last tag. Use when asked for a changelog.
+      ---
+
+      1. Run `git log --oneline <last-tag>..HEAD`.
+      2. Group the commits by type (feat, fix, chore).
+      3. Write one line per change, user facing words only.
+bad:
+  files:
+    .claude/notes.md: |
+      Ideas for later: a review command, a release skill.

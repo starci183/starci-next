@@ -1,7 +1,8 @@
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
 import { Test } from "@nestjs/testing"
 import { evidenceOf, PROJECT_ID, PROJECT_LEARNER, PROJECT_NOW } from "@tests/fixtures/builders/project.builder"
-import { milestoneOf } from "./project-catalog.policy"
+import { fixtureCheckSet } from "@tests/fixtures/builders/check-set.builder"
+import { milestoneIn } from "./project-check-set-lookup.policy"
 import { TRACK_LABELS, type ExperienceSubject } from "./project-experience.policy"
 import { deployedExperienceOf, itemTypeOfMilestone, milestoneExperienceOf } from "./project-experience.policy"
 
@@ -25,38 +26,20 @@ const SUBJECT: ExperienceSubject = {
     deployedUrl: "https://clinic.example.com",
 }
 
+const SET = fixtureCheckSet()
+const milestoneOf = (id: string) => milestoneIn(SET, id)
+
 const launch = () => {
-    const milestone = milestoneOf("launch")
+    const milestone = milestoneOf("bf-safe-and-reliable")
     if (milestone === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
     return milestone
 }
 
-const provedLaunch = () => [
-    evidenceOf({ conceptId: "authentication-and-authorization", slot: "e2e", ref: "starci/e2e/auth.md" }),
-    evidenceOf({
-        conceptId: "authentication-and-authorization",
-        slot: "probe",
-        source: "server-probe",
-        runId: "p1",
-        ref: "auth-required",
-    }),
-    evidenceOf({ conceptId: "payment-integration", slot: "test", ref: "[payment-integration] pays" }),
-    evidenceOf({
-        conceptId: "payment-integration",
-        slot: "probe",
-        source: "server-probe",
-        runId: "p1",
-        ref: "invalid-input",
-    }),
-    evidenceOf({ conceptId: "idempotency", slot: "test" }),
-    evidenceOf({
-        conceptId: "idempotency",
-        slot: "probe",
-        source: "server-probe",
-        runId: "p1",
-        ref: "repeat-same-key",
-    }),
-]
+const provedLaunch = () =>
+    launch().concepts.flatMap((id) => [
+        evidenceOf({ conceptId: id, slot: "test", ref: `[${id}] ok` }),
+        evidenceOf({ conceptId: id, slot: "probe", source: "server-probe", runId: "p1", ref: `${id}-probe` }),
+    ])
 
 describe("itemTypeOfMilestone", () => {
     let subject: typeof policies
@@ -69,7 +52,7 @@ describe("itemTypeOfMilestone", () => {
         expect(subject.itemTypeOfMilestone("ai-coding-mindset", "app")).toBe("projects.ai-coding-mindset")
         expect(subject.itemTypeOfMilestone("agent-mindset", "agent")).toBe("projects.agent-built")
         expect(subject.itemTypeOfMilestone("agent-mindset", "app")).toBe("projects.milestone")
-        expect(subject.itemTypeOfMilestone("launch", "app")).toBe("projects.milestone")
+        expect(subject.itemTypeOfMilestone("bf-safe-and-reliable", "app")).toBe("projects.milestone")
     })
 })
 
@@ -82,6 +65,7 @@ describe("milestoneExperienceOf", () => {
 
     it("drafts the milestone line from the project and the proof, passing with a signed CI run among the proof", () => {
         const params = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: SUBJECT,
             milestone: launch(),
             rows: provedLaunch(),
@@ -91,14 +75,16 @@ describe("milestoneExperienceOf", () => {
         expect(params).toMatchObject({
             learnerId: PROJECT_LEARNER,
             itemType: "projects.milestone",
-            subject: `launch@${PROJECT_ID}`,
+            subject: `bf-safe-and-reliable@${PROJECT_ID}`,
             projectId: PROJECT_ID,
             grade: { result: "pass" },
         })
         expect(params.slotValues.en).toEqual({
             project: "Clinic booking",
             stack: "Go, PostgreSQL",
-            concepts: "Authentication and authorization, Payment integration, Idempotency: a repeat changes nothing",
+            concepts: launch()
+                .concepts.map((id) => SET.concepts.find((concept) => concept.id === id)?.label.en)
+                .join(", "),
             ci: "#run-1 (abc1234)",
         })
         expect(params.evidence.map((item) => item.proofForm).sort()).toEqual(["server-probe", "signed-ci"])
@@ -107,12 +93,14 @@ describe("milestoneExperienceOf", () => {
 
     it("fails the grade when a concept has no proof or no signed CI run is among the proof", () => {
         const missing = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: SUBJECT,
             milestone: launch(),
             rows: provedLaunch().slice(0, 2),
             at: PROJECT_NOW,
         })
         const noCi = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: SUBJECT,
             milestone: launch(),
             rows: provedLaunch().map((row) => ({ ...row, source: "server-probe" as const })),
@@ -133,19 +121,21 @@ describe("milestoneExperienceOf (part 2)", () => {
     })
 
     it("writes the tool for the coding-agent and agent-build lines, Claude Code unless the project names a track", () => {
-        const mindset = milestoneOf("ai-coding-mindset")
+        const mindset = { id: "ai-coding-mindset", title: { vi: "x", en: "x" }, concepts: ["task-spec"] }
         const agent = milestoneOf("agent-mindset")
-        if (mindset === null || agent === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
+        if (agent === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
         const reads = (ids: ReadonlyArray<string>) =>
             ids.map((id) => evidenceOf({ conceptId: id, slot: "code-read", source: "ai", ref: `src/${id}.ts` }))
 
         const coding = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: SUBJECT,
             milestone: mindset,
             rows: reads(["task-spec"]),
             at: PROJECT_NOW,
         })
         const built = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: { ...SUBJECT, kind: "agent", track: "openclaw" },
             milestone: agent,
             rows: [],
@@ -163,6 +153,7 @@ describe("milestoneExperienceOf (part 2)", () => {
 
     it("falls back to the concept id for an unknown concept", () => {
         const params = subject.milestoneExperienceOf({
+            concepts: SET.concepts,
             subject: SUBJECT,
             milestone: { id: "custom", title: { vi: "x", en: "x" }, concepts: ["unknown-concept"] },
             rows: [],
@@ -177,8 +168,13 @@ describe("milestoneExperienceOf (part 2)", () => {
         const rows = provedLaunch().map((row) => ({ ...row, commitSha: null }))
 
         expect(
-            subject.milestoneExperienceOf({ subject: SUBJECT, milestone: launch(), rows, at: PROJECT_NOW }).slotValues
-                .en["ci"],
+            subject.milestoneExperienceOf({
+                concepts: SET.concepts,
+                subject: SUBJECT,
+                milestone: launch(),
+                rows,
+                at: PROJECT_NOW,
+            }).slotValues.en["ci"],
         ).toBe("#run-1 ()")
     })
 })

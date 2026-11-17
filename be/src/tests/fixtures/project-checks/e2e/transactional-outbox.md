@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: transactional-outbox
 
-Một lần ghi giao đúng một sự kiện. Request ghi mang header `X-StarCi-Sink`: địa chỉ sink mà app của bạn gửi sự kiện của lần ghi đó tới
-(bằng relay đọc bảng outbox). Trên máy bạn CLI mở sink ở `127.0.0.1`; probe của server dùng sink công khai của StarCi.
+One write delivers exactly one event. The write request carries the `X-StarCi-Sink` header: the sink address your app sends the event of that write to
+(through a relay that reads the outbox table). On your machine the CLI opens the sink at `127.0.0.1`; the server probe uses the public StarCi sink.
 
-Bạn khai: `endpoints.transactional-outbox.endpoint` (endpoint ghi) và `body`.
+You declare: `endpoints.transactional-outbox.endpoint` (the write endpoint) and `body`.
 
 ```yaml starci-flow
 id: transactional-outbox

@@ -3,11 +3,12 @@ import {
     AGENT_TRACKS,
     SLOT_PROOF_SOURCES,
     type AgentTrack,
+    type ConceptDefinition,
     type EvidenceRow,
     type MilestoneDefinition,
     type ProjectKind,
 } from "./project.contracts"
-import { conceptOf } from "./project-catalog.policy"
+import { conceptIn } from "./project-check-set-lookup.policy"
 import { projectKindOf } from "./project-view.mapper"
 import type { ProjectRow } from "./persistence/project.rows"
 
@@ -44,6 +45,8 @@ export interface MilestoneExperienceInput {
     readonly milestone: MilestoneDefinition
     /** The latest results of the milestone's concepts. */
     readonly rows: ReadonlyArray<EvidenceRow>
+    /** The concepts of the check set, whose labels the line names. */
+    readonly concepts: ReadonlyArray<ConceptDefinition>
     /** When the line is drafted. */
     readonly at: Date
 }
@@ -113,13 +116,13 @@ export const proofEvidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray
  * what a learner typed into a field. The line says "in CI", so the grade passes only when at least one signed CI run is among the proof.
  */
 export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceExperienceParams => {
-    const { subject, milestone, rows } = input
+    const { subject, milestone, rows, concepts } = input
     const itemType = itemTypeOfMilestone(milestone.id, subject.kind)
     const evidence = proofEvidenceOf(rows)
     const ciRow = rows.find((row) => row.passed && row.source === "ci")
     const tool = TRACK_LABELS[subject.track ?? "claude"]
     const criteria = milestone.concepts.map((id) => {
-        const definition = conceptOf(id)
+        const definition = conceptIn({ concepts }, id)
         const proof = rows.find(
             (row) => row.conceptId === id && row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source),
         )
@@ -133,7 +136,7 @@ export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceE
         criteria.every((criterion) => criterion.level === 2) && evidence.some((item) => item.proofForm === "signed-ci")
     const grade: ExperienceGrade = { result: passed ? "pass" : "fail", criteria }
     const labels = (locale: "vi" | "en"): string =>
-        milestone.concepts.map((id) => conceptOf(id)?.label[locale] ?? id).join(", ")
+        milestone.concepts.map((id) => conceptIn({ concepts }, id)?.label[locale] ?? id).join(", ")
     const ci = ciRow === undefined ? "-" : `#${ciRow.runId} (${(ciRow.commitSha ?? "").slice(0, 7)})`
     const slotValues = bothLocales((locale) =>
         itemType === MILESTONE

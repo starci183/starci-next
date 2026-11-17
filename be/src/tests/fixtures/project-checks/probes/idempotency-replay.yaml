@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: idempotency-replay
 label:
-  vi: "Gửi lại cùng Idempotency-Key: cùng kết quả, khác body thì bị từ chối"
+  vi: "A replay with the same Idempotency-Key: the same result, another body refused"
   en: "A replay with the same Idempotency-Key: the same result, another body refused"
 question:
-  vi: Lần gọi thứ hai cùng khoá được nhận ra ở đâu, và kết quả lần đầu được lưu thế nào?
+  vi: Where is the second call with the same key recognised, and how is the first result stored?
   en: Where is the second call with the same key recognised, and how is the first result stored?
 needs: [endpoint, sample]
 steps:
@@ -39,11 +39,21 @@ steps:
       - { that: status, in: [409, 422], fail: mismatch-accepted }
 pass: replayed
 reasons:
-  replayed: { vi: "Lần lặp trả đúng body lần đầu; khác body thì bị từ chối 409/422.", en: "The replay returned the first body; another body got 409/422." }
-  first-failed: { vi: Lần gọi đầu không trả 2xx., en: The first call did not answer 2xx. }
-  replay-failed: { vi: Lần lặp cùng khoá không trả 2xx., en: The replay with the same key did not answer 2xx. }
-  second-differs: { vi: Lần lặp trả body khác lần đầu (đã làm lại việc)., en: The replay returned another body (the work ran again). }
-  mismatch-accepted: { vi: Cùng khoá nhưng body khác vẫn được nhận., en: The same key with another body was accepted. }
+  replayed:
+    {
+      vi: "The replay returned the first body; another body got 409/422.",
+      en: "The replay returned the first body; another body got 409/422.",
+    }
+  first-failed: { vi: The first call did not answer 2xx., en: The first call did not answer 2xx. }
+  replay-failed:
+    { vi: The replay with the same key did not answer 2xx., en: The replay with the same key did not answer 2xx. }
+  second-differs:
+    {
+      vi: The replay returned another body (the work ran again).,
+      en: The replay returned another body (the work ran again).,
+    }
+  mismatch-accepted:
+    { vi: The same key with another body was accepted., en: The same key with another body was accepted. }
 fixtures:
   endpoint: POST /starci-test/items
   sample: '{"name":"book"}'

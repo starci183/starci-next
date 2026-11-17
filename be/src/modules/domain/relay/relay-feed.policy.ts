@@ -3,7 +3,7 @@ import type { RealtimeTopic } from "@modules/platform/realtime"
 import { harnessDetailOf, harnessFactsValid } from "./relay-harness.policy"
 import type {
     ManifestBody,
-    ManifestHarnessBuild,
+    ManifestHarness,
     ManifestLesson,
     ManifestLessonScenario,
     ManifestCheck,
@@ -116,17 +116,22 @@ const lessonPayloadOf = (lesson: ManifestLesson): Record<string, unknown> => ({
 })
 
 /** The harness section in the canonical key order (CONTRACT.md, build manifest). */
-const harnessPayloadOf = (harness: ManifestHarnessBuild): Record<string, unknown> => ({
-    kind: harness.kind,
-    buildId: harness.buildId,
-    source: { url: harness.source.url, sha256: harness.source.sha256, commit: harness.source.commit },
-    dir: harness.dir,
-    install: harness.install,
-    e2e: harness.e2e,
-    report: harness.report,
-    keys: harness.keys.map((key) => ({ id: key.id, anyOf: [...key.anyOf] })),
-    stages: harness.stages.map((stage) => ({ id: stage.id, e2e: [...stage.e2e] })),
-})
+const harnessPayloadOf = (harness: ManifestHarness): Record<string, unknown> => {
+    const source = { url: harness.source.url, sha256: harness.source.sha256, commit: harness.source.commit }
+    if (harness.kind === "doctor") return { kind: harness.kind, tool: harness.tool, source }
+    if (harness.kind === "trial") return { kind: harness.kind, trap: harness.trap, source }
+    return {
+        kind: harness.kind,
+        buildId: harness.buildId,
+        source,
+        dir: harness.dir,
+        install: harness.install,
+        e2e: harness.e2e,
+        report: harness.report,
+        keys: harness.keys.map((key) => ({ id: key.id, anyOf: [...key.anyOf] })),
+        stages: harness.stages.map((stage) => ({ id: stage.id, e2e: [...stage.e2e] })),
+    }
+}
 
 /** The canonical JSON of a manifest body: keys in a fixed order, so the CLI verifies the exact signed text. */
 export const manifestPayloadOf = (body: ManifestBody): string =>

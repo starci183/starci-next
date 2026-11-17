@@ -1,6 +1,8 @@
 {"data":{},"findings":[],"hash":"827a147584fb2bae74009c09cb3a74835c7e720da4578e1cbcc76c9a03e81b9f","path":"fe/apps/app/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"33d72a551f83dba48d008b38a1540e7f9284112bf23b07ffb6ffeba39ec5d1e7","path":"fe/apps/app/next.config.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2280c20a3b78df346ee2c8f791a1a934ca2fb2c95bde8998af863e52aa9fa684","path":"fe/apps/app/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"67aa01af725992a2ab2dc1096e9ffab418c48e2633cdf4333380ef98fe261a29","path":"fe/apps/app/next.config.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f94e9601b773e047b3d98f217f38c5bde801dc54d9d15da72704d02ac7385648","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/app/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f1474d5fdda82a326f0acacb8529975add26763fd5e15a78c4135a316d63307","path":"fe/apps/app/public/art/pro-learning-journey-v1.webp","step":"file-rules"}
 {"data":{},"findings":[],"hash":"80bf42871e2f5efde68c343b88f886392858a00fafb25b15abdb234a1be5523c","path":"fe/apps/app/public/art/stage-ask.webp","step":"file-rules"}
@@ -599,6 +601,8 @@
 {"data":{},"findings":[],"hash":"924d3e92a02e0da1e2386e3aff9fd357c6e1e33ca0214c4f3c8af2dc7deb8f90","path":"fe/apps/landing/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"655be6e608b751828898942c2826e9d79617981167de4f12577e37903decd4f1","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"806d19e8a4c1a4df931aaa0d5ebbc1c6f6a8082013da7a137c457c9dbd5db6a6","path":"fe/apps/landing/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a2dbe4706aae5a56baa7b34192679f6f0112e1e99f4591fc3087cb3d9645de75","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cd80b55ce442234d7ab90c2e3e7aab511fa90305256998630345c93a1dbbc3be","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/landing/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e8fd9f6306a044e6750eff9f6532af155b24ed134d697bc36ad4c7c39c4ad09","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"441ae22edfd58019f16c35dbbbd74a21408ed4047440c8cff41c3d6426f4cceb","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"file-rules"}

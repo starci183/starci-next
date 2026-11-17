@@ -2,6 +2,7 @@
 title: Dự án / Chi tiết
 route: /projects/[projectId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>`. Một dự án của người học: milestone, lần chạy gần đây, kinh nghiệm, địa chỉ triển khai; bên phải là kho mã, chứng thực CI, máy của bạn, bí mật CI, thư mục starci/. Grammar 0.37.12, đường dẫn trong `node_modules/@starci/grammar/dist/core/`. Chấm tròn "N" và "1 Issue" là overlay của Next dev, không phải UI của app.

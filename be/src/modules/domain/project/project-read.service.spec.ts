@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { builder, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     ciRunRowOf,
@@ -28,7 +30,7 @@ import {
 } from "./persistence/project.sql"
 
 const LESSONS = new Map<string, ConceptLessonRef>(
-    ["idempotency", "request-response-lifecycle", "health-probe-semantics", "unit-testing-behavior"].map((id) => [
+    ["idempotent-retry", "request-response-lifecycle", "health-probe-semantics", "unit-testing-behavior"].map((id) => [
         id,
         { id, version: "v1", title: id, topicId: "topic" },
     ]),
@@ -52,7 +54,13 @@ const build = async (world: World = {}, options: ProjectOptions = { freeMileston
             [SELECT_LAST_PROBE_RUNS, [probeRunRowOf()]],
             [
                 SELECT_PROVED_CONCEPTS,
-                [{ project_id: PROJECT_ID, concept_id: "saga", proved_at: new Date("2026-11-05T00:00:00.000Z") }],
+                [
+                    {
+                        project_id: PROJECT_ID,
+                        concept_id: "unit-testing-behavior",
+                        proved_at: new Date("2026-11-05T00:00:00.000Z"),
+                    },
+                ],
             ],
         ],
     })
@@ -63,6 +71,7 @@ const build = async (world: World = {}, options: ProjectOptions = { freeMileston
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectReadService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
             { provide: PROJECT_LESSONS, useValue: lessons },
@@ -101,7 +110,7 @@ describe("ProjectReadService list", () => {
         expect(project).toMatchObject({
             id: PROJECT_ID,
             provedConceptCount: 1,
-            conceptCount: 4,
+            conceptCount: 10,
             currentMilestoneId: "bf-http-foundation",
             practisingConceptCount: 0,
             latestCiStatus: "passed",
@@ -160,6 +169,7 @@ describe("ProjectReadService milestone", () => {
         expect(view.concepts.map((concept) => concept.id)).toEqual([
             "request-response-lifecycle",
             "health-probe-semantics",
+            "error-contract",
             "unit-testing-behavior",
         ])
         expect(view.concepts[0]).toMatchObject({
@@ -192,8 +202,8 @@ describe("ProjectReadService concept and summary", () => {
     it("shows one concept of a project, and refuses a concept it does not list", async () => {
         const { service } = await build()
 
-        await expect(service.concept({ ...LOOKUP, conceptId: "idempotency" })).resolves.toMatchObject({
-            id: "idempotency",
+        await expect(service.concept({ ...LOOKUP, conceptId: "idempotent-retry" })).resolves.toMatchObject({
+            id: "idempotent-retry",
         })
         await expect(service.concept({ ...LOOKUP, conceptId: "agent-harness-control-loop" })).rejects.toMatchObject({
             code: "PROJECT_CONCEPT_NOT_FOUND",
@@ -209,14 +219,16 @@ describe("ProjectReadService concept and summary", () => {
 
 describe("ProjectReadService catalog", () => {
     it("lists the milestones with the free ones, the concepts still being written", async () => {
-        const { service } = await build({}, { freeMilestones: ["launch"], freeProjects: 2 })
+        const { service } = await build({}, { freeMilestones: ["bf-safe-and-reliable"], freeProjects: 2 })
 
         const catalog = await service.catalog({ locale: "en" })
 
-        expect(catalog.milestones.find((milestone) => milestone.id === "launch")?.free).toBe(true)
+        expect(catalog.milestones.find((milestone) => milestone.id === "bf-safe-and-reliable")?.free).toBe(true)
         expect(catalog.milestones.find((milestone) => milestone.id === "bf-http-foundation")?.free).toBe(false)
-        expect(catalog.concepts.find((concept) => concept.id === "idempotency")).toMatchObject({ comingSoon: false })
-        expect(catalog.concepts.find((concept) => concept.id === "saga")).toMatchObject({ comingSoon: true })
+        expect(catalog.concepts.find((concept) => concept.id === "idempotent-retry")).toMatchObject({
+            comingSoon: false,
+        })
+        expect(catalog.concepts.find((concept) => concept.id === "task-spec")).toMatchObject({ comingSoon: true })
         expect(catalog.freeProjects).toBe(2)
     })
 })
@@ -226,7 +238,7 @@ describe("ProjectReadService provedConcepts", () => {
         const { service } = await build()
 
         await expect(service.provedConcepts(PROJECT_LEARNER)).resolves.toEqual([
-            { projectId: PROJECT_ID, conceptId: "saga", provedAt: "2026-11-05T00:00:00.000Z" },
+            { projectId: PROJECT_ID, conceptId: "unit-testing-behavior", provedAt: "2026-11-05T00:00:00.000Z" },
         ])
     })
 })

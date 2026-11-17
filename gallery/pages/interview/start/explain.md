@@ -2,6 +2,7 @@
 title: Phỏng vấn thử (bắt đầu một buổi)
 route: /interview
 area: interview
+reviewed: 2026-11-17
 ---
 
 Route: `/interview` (ảnh chụp: học viên chưa có Premium, đã dùng buổi miễn phí của tháng và còn một buổi dở). Mã: `fe/apps/app/src/components/blocks/InterviewHome/component.tsx` (vẽ), `index.tsx` (đọc, bắt đầu, bỏ buổi). Khung chung giải thích ở `learn/home`.

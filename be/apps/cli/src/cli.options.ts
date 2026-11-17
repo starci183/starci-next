@@ -20,6 +20,8 @@ export interface CliAppOptions {
     readonly entitlement: CliEnv["entitlement"]
     /** The git mount of the content repositories, or null when this instance has none. */
     readonly content: CliEnv["content"]
+    /** The mcp settings the semantic index reads: the local embedder and the harness content checkout. */
+    readonly mcp: CliEnv["mcp"]
 }
 
 /** Passes the parsed environment to composition without adding registrations. */
@@ -31,4 +33,5 @@ export const createCliAppOptions = (env: CliEnv): CliAppOptions => ({
     career: env.career,
     entitlement: env.entitlement,
     content: env.content,
+    mcp: env.mcp,
 })
