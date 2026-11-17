@@ -1,1 +1,6 @@
 export { DataSeedModule } from "./seed.module"
+export { DATABASE_STORE } from "./seed.decorators"
+export { SeedDoorService } from "./seed-door.service"
+export { DatabaseStore } from "./database.adapter"
+export { SeedRefusal } from "./seed.errors"
+export type { SeedOutcome, SeedSet, StoreIdentity } from "./seed.contracts"

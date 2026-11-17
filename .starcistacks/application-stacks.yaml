@@ -468,11 +468,23 @@ environments:
             retry: true
 data:
   stores:
-    - {id: database, kind: database, level: logical, component: postgres, adapter: {module: be/src/modules/integrations/seed/database.adapter.ts}}
+    # The seed door of the standard (PROJECT-STACKS-13, "The loader"): `cli data database <verb>` serves the store over starci/data-entries@1 from the compiled cli,
+    # run from the app root in the api's environment; each set of the standard is an upsert by natural key through the capability that owns its tables.
+    - {id: database, kind: database, level: logical, component: postgres, adapter: {module: be/src/modules/integrations/seed/database.adapter.ts, command: [node, be/dist/apps/cli/src/main.js, data, database]}}
   derived:
     - {component: ingress, rebuild: the ingress re-issues its certificates (ACME)}
     - {component: qdrant, from: database, rebuild: "cli mcp reindex rebuilds the vector index from the database and the content sources; points of removed content are deleted by the same job"}
     - {component: keycloak, rebuild: "the development realm is imported again from the dev realm file on start; production uses the owner-provisioned realm"}
+  sets:
+    # The content of the product: Essentials lessons and topics, and the check set of Projects (catalog, probes, learner kit). The one path in (R435): the bring-up's
+    # seed step reads the standard at this commit, never a clone or a content-sync command. Move the pin by editing `commit`; a moved pin is reported
+    # DATA_STANDARD_CHANGED until `force: true` is declared on the set (it then applies once per commit).
+    - id: content
+      purpose: seed-standard
+      stores: [database]
+      environments: [dev]
+      to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
+      commit: db57c9ba9e64c28b44a12aaa287739a8e05a55a6
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
   sonar: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}

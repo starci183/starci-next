@@ -18,8 +18,6 @@ export interface CliAppOptions {
     readonly career: CliEnv["career"]
     /** The entitlement settings: whether the development grant of Premium may run. */
     readonly entitlement: CliEnv["entitlement"]
-    /** The git mount of the content repositories, or null when this instance has none. */
-    readonly content: CliEnv["content"]
     /** The mcp settings the semantic index reads: the local embedder and the harness content checkout. */
     readonly mcp: CliEnv["mcp"]
 }
@@ -32,6 +30,5 @@ export const createCliAppOptions = (env: CliEnv): CliAppOptions => ({
     aiGateway: env.aiGateway,
     career: env.career,
     entitlement: env.entitlement,
-    content: env.content,
     mcp: env.mcp,
 })

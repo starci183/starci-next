@@ -29,10 +29,7 @@ export const DEFAULT_CI_TOLERANCE_MS = 600_000
 export const DEFAULT_CODE_READ_TIMEOUT_MS = 60_000
 
 /** The settings of the project capability the environment tunes. */
-export type ProjectEnvSettings = Pick<
-    ProjectOptions,
-    "checksDir" | "datasourcesDir" | "probeSinkBaseUrl" | "ciOidcAudience"
-> &
+export type ProjectEnvSettings = Pick<ProjectOptions, "checksDir" | "probeSinkBaseUrl" | "ciOidcAudience"> &
     Required<
         Pick<
             ProjectOptions,
@@ -52,7 +49,7 @@ export type ProjectEnvSettings = Pick<
  * Reads the project settings from an environment source: `PROJECT_FREE_PROJECTS`, `PROJECT_FREE_MILESTONES` (comma-separated ids; `0` or empty means none),
  * `PROJECT_PROBE_RUNS_PER_HOUR`, `PROJECT_CODE_READS_PER_DAY`, `PROJECT_PROBE_TIMEOUT`, `PROJECT_PROBE_MAX_BYTES`,
  * `PROJECT_PROBE_PARALLEL`, `PROJECT_CI_TOLERANCE` and `PROJECT_CODE_READ_TIMEOUT`, all with defaults; the audience GitHub run tokens must name (`PROJECT_CI_OIDC_AUDIENCE`, default `starci-next`, optional); and where the check set and
- * the probe sink live: `PROJECT_CHECKS_DIR`, `CONTENT_DATASOURCES_DIR`, `PROJECT_PROBE_SINK_URL`, each optional.
+ * the probe sink live: `PROJECT_CHECKS_DIR`, `PROJECT_PROBE_SINK_URL`, each optional.
  */
 export const parseProjectConfig = (env: EnvSource): ProjectEnvSettings => ({
     freeProjects: env.int("PROJECT_FREE_PROJECTS", DEFAULT_FREE_PROJECTS),
@@ -71,7 +68,6 @@ export const parseProjectConfig = (env: EnvSource): ProjectEnvSettings => ({
     codeReadTimeoutMs: env.duration("PROJECT_CODE_READ_TIMEOUT", DEFAULT_CODE_READ_TIMEOUT_MS),
     ...optionalOf("ciOidcAudience", env.optional("PROJECT_CI_OIDC_AUDIENCE")),
     ...optionalOf("checksDir", env.optional("PROJECT_CHECKS_DIR")),
-    ...optionalOf("datasourcesDir", env.optional("CONTENT_DATASOURCES_DIR")),
     ...optionalOf("probeSinkBaseUrl", env.optional("PROJECT_PROBE_SINK_URL")?.replace(/\/$/u, "")),
 })
 

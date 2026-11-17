@@ -1,12 +1,12 @@
 import { Test } from "@nestjs/testing"
-import { ContentCli } from "./content.cli"
+import { DataCli } from "./data.cli"
 
-describe("ContentCli", () => {
+describe("DataCli", () => {
     it("shows the help of the group, and runs nothing else, when no sub-command is named", async () => {
         const moduleRef = await Test.createTestingModule({
-            providers: [ContentCli],
+            providers: [DataCli],
         }).compile()
-        const group = moduleRef.get(ContentCli)
+        const group = moduleRef.get(DataCli)
         const help = jest.fn()
         Object.defineProperty(group, "command", { value: { help } })
 

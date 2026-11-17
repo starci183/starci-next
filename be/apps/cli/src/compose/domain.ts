@@ -1,20 +1,20 @@
 import type { DynamicModule, Type } from "@nestjs/common"
 import { AttemptModule } from "@modules/domain/attempt"
 import { CareerModule } from "@modules/domain/career"
-import { ContentModule } from "@modules/domain/content"
 import { EntitlementModule } from "@modules/domain/entitlement"
 import { HarnessModule } from "@modules/domain/harness"
-import { LessonModule } from "@modules/domain/lesson"
+import { LessonModule, LessonSeedSet, LessonTopicSeedSet } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
 import { NotificationModule } from "@modules/domain/notification"
 import { PracticeModule } from "@modules/domain/practice"
-import { ProjectModule } from "@modules/domain/project"
+import { ProjectCatalogSeedSet, ProjectKitSeedSet, ProjectModule, ProjectProbesSeedSet } from "@modules/domain/project"
 import { ProbeModule } from "@modules/integrations/probe"
+import { DataSeedModule } from "@modules/integrations/seed"
 import { ReviewModule } from "@modules/domain/review"
 import { StreakModule } from "@modules/domain/streak"
 import type { CliAppOptions } from "../cli.options"
 
-/** The domain capabilities the command line drives: the lesson and deck imports and the entitlement and streak they depend on. */
+/** The domain capabilities the command line drives: the lesson and deck imports, the seed sets of the data standard and the entitlement and streak they depend on. */
 export const domainModules = (options: CliAppOptions): Array<Type<unknown> | DynamicModule> => [
     // The development grant of `cli entitlement dev-grant` is enabled only by ENTITLEMENT_DEV_GRANT.
     EntitlementModule.register({ isGlobal: true, devGrant: options.entitlement.devGrant }),
@@ -30,8 +30,11 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     // The experience engine for `cli career`: its essentials producer reads the attempts, and the development seed is enabled only by CAREER_DEV_SEED.
     AttemptModule.register({ isGlobal: true }),
     CareerModule.register({ isGlobal: true, devSeed: options.career.devSeed }),
-    // The gitmount for `cli content sync`: it pulls the content repositories and runs the importers above at the pulled version.
-    ContentModule.register({ isGlobal: true, ...options.content }),
+    // The seed door of the `database` store (`cli data database`): the sets a pinned seed standard fills, each written by its own capability.
+    DataSeedModule.register({
+        isGlobal: true,
+        sets: [LessonSeedSet, LessonTopicSeedSet, ProjectCatalogSeedSet, ProjectProbesSeedSet, ProjectKitSeedSet],
+    }),
     // The semantic index for `cli mcp reindex`: the embedder, the pgvector store and the harness content, without the relay or the lessons.
     McpIndexModule.register({
         isGlobal: true,

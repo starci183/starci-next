@@ -117,3 +117,44 @@ FROM unnest($1::text[]) AS m(module_ref)
 JOIN lesson_versions v ON v.status = 'published' AND v.source_key LIKE '%/modules/' || m.module_ref || '/contents/%'
 ORDER BY m.module_ref, v.sort_index, v.lesson_id
 LIMIT $3::int`
+
+/** Reads the placement of the live version of a lesson ($1 lesson): the hash and the columns a standard may move without new content. */
+export const SELECT_PUBLISHED_PLACEMENT: ReturnType<typeof sql> =
+    sql`SELECT version, content_hash, source_key, lesson_group,
+    topic, sort_index
+FROM lesson_versions
+WHERE lesson_id = $1::text AND status = 'published'`
+
+/** Lists the ids of the lessons that have a live version, in byte order. */
+export const SELECT_PUBLISHED_IDS: ReturnType<typeof sql> = sql`SELECT lesson_id FROM lesson_versions
+WHERE status = 'published'
+ORDER BY lesson_id COLLATE "C"`
+
+/**
+ * Moves the placement of a stored version ($1 lesson, $2 version, $3 group, $4 topic, $5 sort index, $6 source folder). The placement
+ * is catalog metadata, not content, so it is not part of the hash and does not make a version immutable.
+ */
+export const UPDATE_PLACEMENT: ReturnType<typeof sql> = sql`UPDATE lesson_versions
+SET lesson_group = $3::text, topic = $4::text, sort_index = $5::int, source_key = $6::text
+WHERE lesson_id = $1::text AND version = $2::text`
+
+/** Makes a stored, superseded version the live one again ($1 lesson, $2 version); the caller superseded the live one first. */
+export const PUBLISH_VERSION: ReturnType<typeof sql> = sql`UPDATE lesson_versions SET status = 'published'
+WHERE lesson_id = $1::text AND version = $2::text
+RETURNING lesson_id`
+
+/** Lists the slugs of the stored topics, in byte order. */
+export const SELECT_TOPIC_SLUGS: ReturnType<typeof sql> =
+    sql`SELECT topic FROM lesson_topics ORDER BY topic COLLATE "C"`
+
+/**
+ * Stores a topic from a standard, keeping the path rows the import of a V1 course module wrote ($1 topic, $2 title, $3 source note,
+ * $4 description, $5 prerequisites, $6 related, $7 ref, $8 import time).
+ */
+export const UPSERT_TOPIC_KEEPING_PATH: ReturnType<typeof sql> = sql`INSERT INTO lesson_topics (
+    topic, title, source_note, description, prerequisites, related, path, ref, imported_at
+) VALUES ($1::text, $2::text, $3::text, $4::text, $5::jsonb, $6::jsonb, '[]'::jsonb, $7::text, $8::timestamptz)
+ON CONFLICT (topic) DO UPDATE SET
+    title = EXCLUDED.title, source_note = EXCLUDED.source_note, description = EXCLUDED.description,
+    prerequisites = EXCLUDED.prerequisites, related = EXCLUDED.related, ref = EXCLUDED.ref, imported_at = EXCLUDED.imported_at
+RETURNING topic`
