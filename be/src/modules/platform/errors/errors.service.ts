@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { InjectMessageCatalog, type Locale, type MessageCatalog } from "@modules/platform/i18n"
 import { isDomainError } from "./domain.error"
@@ -28,6 +28,7 @@ export class ErrorsService {
             const kind = this.kinds.get(error.code)
             if (kind !== undefined) return this.build(error.code, kind, error.params)
         }
+        if (error instanceof NotFoundException) return this.build(ErrorsErrorCode.RouteNotFound, "not-found", {})
         this.logger.error(ErrorsLogEvent.Unhandled, error)
         return this.build(ErrorsErrorCode.Internal, "internal", {})
     }

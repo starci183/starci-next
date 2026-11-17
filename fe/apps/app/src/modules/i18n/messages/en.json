@@ -1053,7 +1053,7 @@
           "hiddenState": "{green}/{total} hidden scenarios green",
           "notRun": "Not run",
           "rungStates": {
-            "locked": "Locked",
+            "locked": "Opens after the previous level",
             "open": "Practising",
             "green": "Green"
           }

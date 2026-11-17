@@ -620,8 +620,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"904bda2dc14e88ecf7aa09eafc04b3e4e9ba69e5f63eb2d5ec61cd311fad9f2c","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"851f2799bf1f1e15a23775c6f89f73fdfbf9fd3a7f2198c89917425a9ab0b28e","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7038072f03b61b9f6291aa076351bfdcf2d7eb3b5fb3406f3b4fcdb84e9ede8d","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"93ae3a199c11a04d18172d3f5ade59e0682cd8227404bbc463f0b69e98db1aa3","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"046134e24c6c513a761f7a5775b97636663509c52c86f4dd4b8cc744e07df16c","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c2790b1ae91ffdffb9c70e255f1b8d4e171afc4dac9c47913284f990361e150","path":"fe/apps/app/src/modules/markdown/index.ts","step":"file-rules"}
