@@ -16,6 +16,15 @@ export const mapSlot = <T, U>(slot: DataSlot<T>, map: (items: T) => U): DataSlot
     return slot
 }
 
+/**
+ * A list slot where an empty list is a settled list of no rows, not the notice of an empty slot: the block draws its own empty state
+ * inside the list's card, under the card's title, so the heading and what the learner does next stay on screen.
+ */
+export const settledListSlot = <T>(slot: DataSlot<ReadonlyArray<T>>): DataSlot<ReadonlyArray<T>> =>
+    "isEmpty" in slot
+        ? { items: [], ...(slot.isValidating === undefined ? {} : { isValidating: slot.isValidating }) }
+        : slot
+
 /** A failed read: forbidden when the stable code or kind says the reader may not see it (Premium required), an error otherwise. */
 const failedSlot = <T>(error: unknown): DataSlot<T> => (isForbidden(error) ? { isForbidden: true } : { isError: true })
 

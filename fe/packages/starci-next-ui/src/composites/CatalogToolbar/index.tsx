@@ -1,4 +1,4 @@
-import { Cluster, SearchField, Section, Select, Stack, Tabs } from "@starci/grammar/common"
+import { SearchField, Section, Select, Tabs } from "@starci/grammar/common"
 
 /** One choice of a filter. */
 type CatalogOption = { readonly id: string; readonly label: string }
@@ -48,15 +48,15 @@ const ToolbarSelect = (props: {
 )
 
 /**
- * The toolbar of the catalog: a region section named by the search label whose `filter` is one flat row on the surface, never a card.
- * The difficulty tabs come first, then the search over title and description with the language and provider selects beside it.
+ * The toolbar of the catalog: a headless region named by the search label whose `filter` is one flat wrapping row on the surface, never a card.
+ * The difficulty tabs, the search over title and description and the language and provider selects sit straight in the filter, with no wrapper.
  */
 export const CatalogToolbar = (props: CatalogToolbarProps) => (
     <Section
         kind="region"
-        title={props.labels.search}
+        ariaLabel={props.labels.search}
         filter={
-            <Stack gap="row">
+            <>
                 <Tabs
                     kind="filter"
                     label={props.labels.difficulty}
@@ -64,31 +64,29 @@ export const CatalogToolbar = (props: CatalogToolbarProps) => (
                     selectedKey={props.difficulty}
                     onSelect={props.onDifficulty}
                 />
-                <Cluster gap="inline" align="center">
-                    <SearchField
-                        label={props.labels.search}
-                        isLabelHidden
-                        size="sm"
-                        placeholder={props.labels.searchPlaceholder}
-                        clearLabel={props.labels.clearSearch}
-                        value={props.query}
-                        onValueChange={props.onQuery}
-                        onClear={() => props.onQuery("")}
-                    />
-                    <ToolbarSelect
-                        label={props.labels.language}
-                        options={props.languages}
-                        value={props.language}
-                        onChange={props.onLanguage}
-                    />
-                    <ToolbarSelect
-                        label={props.labels.provider}
-                        options={props.providers}
-                        value={props.provider}
-                        onChange={props.onProvider}
-                    />
-                </Cluster>
-            </Stack>
+                <SearchField
+                    label={props.labels.search}
+                    isLabelHidden
+                    size="sm"
+                    placeholder={props.labels.searchPlaceholder}
+                    clearLabel={props.labels.clearSearch}
+                    value={props.query}
+                    onValueChange={props.onQuery}
+                    onClear={() => props.onQuery("")}
+                />
+                <ToolbarSelect
+                    label={props.labels.language}
+                    options={props.languages}
+                    value={props.language}
+                    onChange={props.onLanguage}
+                />
+                <ToolbarSelect
+                    label={props.labels.provider}
+                    options={props.providers}
+                    value={props.provider}
+                    onChange={props.onProvider}
+                />
+            </>
         }
     >
         {null}

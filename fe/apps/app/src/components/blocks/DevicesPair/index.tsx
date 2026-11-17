@@ -4,9 +4,9 @@ import { useFormatter, useTranslations } from "next-intl"
 import { useState } from "react"
 import { useSession } from "@/hooks/auth"
 import { useDevicePairing, type DevicePairing } from "@/hooks/devices"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useDocumentTitle } from "@/hooks/title"
-import type { DataSlot, DevicesPairDevice, DevicesPairLabels } from "@/modules/types"
+import type { DevicesPairDevice, DevicesPairLabels } from "@/modules/types"
 import { DEVICES_PLACEHOLDER, DevicesPairBase } from "./component"
 
 type Translate = ReturnType<typeof useTranslations>
@@ -107,7 +107,7 @@ export const DevicesPair = () => {
                 isConfirming: pairing.isConfirming,
                 notice: noticeOf(t, pairing),
                 isNoticeError: pairing.issue !== "none",
-                devices: listSlotOf(mapSlot(slotOfSwr(devicesRead), () => devicesOf(t, format, pairing))),
+                devices: settledListSlot(mapSlot(slotOfSwr(devicesRead), () => devicesOf(t, format, pairing))),
                 placeholder: DEVICES_PLACEHOLDER,
                 isConnectOpen,
             }}
@@ -121,7 +121,3 @@ export const DevicesPair = () => {
         />
     )
 }
-
-/** The device list slot where an empty list is a settled list of no rows: the card draws its own empty state with the pairing steps. */
-const listSlotOf = (slot: DataSlot<ReadonlyArray<DevicesPairDevice>>): DataSlot<ReadonlyArray<DevicesPairDevice>> =>
-    "isEmpty" in slot ? { items: [] } : slot

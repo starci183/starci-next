@@ -3,7 +3,7 @@
 import { useFormatter, useTranslations } from "next-intl"
 import { useSession } from "@/hooks/auth"
 import { useMcpConnect, type McpConnectIssue } from "@/hooks/mcpConnect"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useDocumentTitle } from "@/hooks/title"
 import type { DevicesPairStep } from "@/modules/types"
 import { CONNECT_AI_PLACEHOLDER, ConnectAiBase, type ConnectAiLabels, type ConnectAiToken } from "./component"
@@ -71,13 +71,13 @@ export const ConnectAi = () => {
         <ConnectAiBase
             props={{
                 labels: labelsOf(t),
-                slotLabels: useSlotLabels()(t("tokensError")),
+                slotLabels: { ...useSlotLabels()(t("tokensEmpty")), error: t("tokensError") },
                 endpoint: connect.endpoint,
                 guides: [
                     { id: "claude", title: t("claude.title"), steps: stepsOf("claude", ["open", "add", "code"]) },
                     { id: "chatgpt", title: t("chatgpt.title"), steps: stepsOf("chatgpt", ["enable", "add", "use"]) },
                 ],
-                tokens: mapSlot(slotOfSwr(read), tokensOf),
+                tokens: settledListSlot(mapSlot(slotOfSwr(read), tokensOf)),
                 placeholder: CONNECT_AI_PLACEHOLDER,
                 name: connect.name,
                 isCreating: connect.isCreating,
