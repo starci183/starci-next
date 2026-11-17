@@ -1,5 +1,5 @@
 import { Badge, Cluster, FencedCodeBlock, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
-import { MarkdownBody, type MarkdownBlock } from "../MarkdownBody"
+import { RichMarkdown } from "../RichMarkdown"
 
 /** One example of a problem. */
 export type PracticeExample = { readonly input: string; readonly output: string }
@@ -22,7 +22,7 @@ type PracticeProblemPanelProps = {
     readonly difficultyTone: "success" | "warning" | "danger" | "neutral"
     /** The tags, then the limits ("2 s · 256 MB"), as quiet badges. */
     readonly facts: ReadonlyArray<string>
-    readonly blocks: ReadonlyArray<MarkdownBlock>
+    readonly markdown: string
     readonly examples: ReadonlyArray<PracticeExample>
     readonly labels: PracticeProblemLabels
     readonly isLoading?: boolean
@@ -43,11 +43,9 @@ export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
                     </Badge>
                 ))}
             </Cluster>
-            <MarkdownBody
-                blocks={props.blocks}
-                diagramLabel={props.labels.diagram}
-                diagramErrorTitle={props.labels.diagramError}
-                {...(props.isLoading === true ? { isLoading: true } : {})}
+            <RichMarkdown
+                source={props.markdown}
+                labels={{ diagram: props.labels.diagram, diagramError: props.labels.diagramError }}
             />
             {props.examples.length === 0 ? null : (
                 <Stack gap="row">

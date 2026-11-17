@@ -1,12 +1,10 @@
 import type {
-    MarkdownBlock,
     PracticeExampleRun,
     PracticeHintItem,
     PracticeResultState,
     PracticeTestRow,
     PracticeVerdictTone,
 } from "@starci-next/ui"
-import { parseMarkdown } from "@/modules/markdown"
 import type { PracticeHintView, PracticeOutcome, PracticeSubmissionView } from "@/modules/types"
 
 /** The tone each verdict is drawn in. */
@@ -111,7 +109,4 @@ export const resultStateOf = (
 
 /** The hint ladder as the composite draws it. */
 export const hintsOf = (revealed: ReadonlyArray<PracticeHintView>): ReadonlyArray<PracticeHintItem> =>
-    revealed.map((hint) => ({ step: hint.step, title: hint.title, blocks: parseMarkdown(hint.markdown) }))
-
-/** The blocks of a Markdown text, ready for the statement panel. */
-export const markdownBlocksOf = (markdown: string): ReadonlyArray<MarkdownBlock> => parseMarkdown(markdown)
+    revealed.map((hint) => ({ step: hint.step, title: hint.title, markdown: hint.markdown }))

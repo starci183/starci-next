@@ -1052,7 +1052,7 @@
           "hiddenState": "{green}/{total} kịch bản ẩn xanh",
           "notRun": "Chưa chạy",
           "rungStates": {
-            "locked": "Khóa",
+            "locked": "Mở sau khi xong mức trước",
             "open": "Đang luyện",
             "green": "Đã xanh"
           }

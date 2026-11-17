@@ -5,11 +5,14 @@ import type { ErrorKind } from "../errors.contracts"
 export enum ErrorsErrorCode {
     /** A failure no capability declared; the transport masks its details. */
     Internal = "ERRORS_INTERNAL",
+    /** A request path no route answers; the router's own not-found, kept apart from a masked failure. */
+    RouteNotFound = "ERRORS_ROUTE_NOT_FOUND",
 }
 
 /** How each errors code travels. */
 export const ERRORS_ERROR_KINDS: Record<ErrorsErrorCode, ErrorKind> = {
     [ErrorsErrorCode.Internal]: "internal",
+    [ErrorsErrorCode.RouteNotFound]: "not-found",
 }
 
 /** The one error class of the errors capability. */

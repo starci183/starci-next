@@ -1,4 +1,5 @@
-import { Markdown, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Stack, SurfaceCard } from "@starci/grammar/common"
+import { RichMarkdown } from "../RichMarkdown"
 import { LockedNotice } from "../LockedNotice"
 import { OverviewPanel } from "../OverviewPanel"
 import { LessonCode } from "../LessonCode"
@@ -40,7 +41,7 @@ const OverviewBody = (props: StudyBodyProps) => {
             })}
             scope={
                 study.overview.scope === "" ? undefined : (
-                    <Markdown
+                    <RichMarkdown
                         source={study.overview.scope}
                         labels={env.labels.markdown}
                         renderCode={(code) => <LessonCode code={code} />}

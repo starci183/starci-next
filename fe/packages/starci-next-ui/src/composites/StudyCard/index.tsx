@@ -1,4 +1,5 @@
-import { Markdown, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Stack, SurfaceCard } from "@starci/grammar/common"
+import { RichMarkdown } from "../RichMarkdown"
 import { WrittenCard } from "../WrittenCard"
 import { LessonCode } from "../LessonCode"
 import { ChoiceBlock } from "../ChoiceBlock"
@@ -28,7 +29,7 @@ export const StudyCard = (props: StudyCardProps) => {
                         ? {}
                         : { headers: [{ kind: "filter" as const, ...props.sectionTabs }] })}
                 >
-                    <Markdown
+                    <RichMarkdown
                         source={card.markdown}
                         labels={env.labels.markdown}
                         renderCode={(code) => <LessonCode code={code} />}

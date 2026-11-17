@@ -1,4 +1,5 @@
-import { Markdown, SurfaceCard } from "@starci/grammar/common"
+import { SurfaceCard } from "@starci/grammar/common"
+import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
 import type { MarkdownLabels } from "../StudyBody/types"
 
@@ -33,7 +34,7 @@ export const ChoiceWhy = (props: ChoiceWhyProps) => {
                             ? { badges: [{ label: props.correctWords, tone: "success" as const }] as const }
                             : {}),
                         detail: (
-                            <Markdown
+                            <RichMarkdown
                                 source={explanation}
                                 measure="compact"
                                 labels={props.markdownLabels}

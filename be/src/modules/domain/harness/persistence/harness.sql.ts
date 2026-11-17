@@ -71,3 +71,8 @@ export const SELECT_PROOFS: ReturnType<typeof sql> = sql`SELECT DISTINCT ON (bui
     to_char(recorded_at AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS recorded_at
 FROM harness_stage_proofs WHERE learner_id = $1::uuid
 ORDER BY build_id, stage_id, e2e_id, recorded_at DESC, run_id DESC LIMIT $2::int`
+
+/** The keys of the live items of one kind, in byte order ($1 kind). */
+export const SELECT_PUBLISHED_KEYS: ReturnType<typeof sql> = sql`SELECT content_key FROM harness_contents
+WHERE kind = $1::text AND status = 'published'
+ORDER BY content_key COLLATE "C"`

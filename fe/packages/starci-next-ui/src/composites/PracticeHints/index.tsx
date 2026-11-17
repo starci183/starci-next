@@ -1,11 +1,11 @@
 import { Badge, Button, Cluster, Heading, Section, Stack, Text } from "@starci/grammar/common"
-import { MarkdownBody, type MarkdownBlock } from "../MarkdownBody"
+import { RichMarkdown } from "../RichMarkdown"
 
 /** One revealed hint of the ladder. */
 export type PracticeHintItem = {
     readonly step: number
     readonly title: string
-    readonly blocks: ReadonlyArray<MarkdownBlock>
+    readonly markdown: string
 }
 
 /** The words of the hint ladder, resolved by its block. */
@@ -35,6 +35,7 @@ type PracticeHintsProps = {
 /** The hint ladder: revealed hints in order, the button for the next one, and the promise that no code is written for the learner. */
 export const PracticeHints = (props: PracticeHintsProps) => {
     const isComplete = props.revealed.length >= props.total
+    const markdownLabels = { diagram: props.labels.diagram, diagramError: props.labels.diagramError }
     return (
         <Section title={props.labels.title} headingLevel={2}>
             <Stack gap="section">
@@ -49,11 +50,7 @@ export const PracticeHints = (props: PracticeHintsProps) => {
                                 {hint.title}
                             </Heading>
                         </Cluster>
-                        <MarkdownBody
-                            blocks={hint.blocks}
-                            diagramLabel={props.labels.diagram}
-                            diagramErrorTitle={props.labels.diagramError}
-                        />
+                        <RichMarkdown source={hint.markdown} labels={markdownLabels} />
                     </Stack>
                 ))}
                 {isComplete ? (

@@ -1,6 +1,7 @@
 "use client"
 
 import { useLocale, useTranslations } from "next-intl"
+import { plainLineOf } from "@/hooks/experience"
 import { useQueryProjectCodeReadSwr, useQueryProjectCvPreviewSwr } from "@/hooks/swr"
 import type { CodeReadRubricRow, CvPreviewView } from "@/modules/types"
 
@@ -38,7 +39,7 @@ export const useConceptEvidenceExtras = (target: ExtrasTarget): ConceptEvidenceE
             preview === undefined || preview.text === null
                 ? undefined
                 : {
-                      text: preview.text,
+                      text: plainLineOf(preview.text),
                       isProved: preview.proved,
                       evidence: t("cvEvidence", {
                           items: preview.evidence.map((link) => `${link.kind} · ${link.ref}`).join("; "),
