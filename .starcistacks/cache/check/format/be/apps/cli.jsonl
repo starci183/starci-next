@@ -3,10 +3,7 @@
 {"findings":[],"hash":"b89c08fa1b905f3d546fa0f3726998efe79c46b231845d3a64072834f2e96985","path":"be/apps/cli/src/cli.env.ts","step":"prettier"}
 {"findings":[],"hash":"26d08a4f72c3875bd948c4a0306ebc33b436fa48e7b429699939295e10ac1ff9","path":"be/apps/cli/src/cli.options.ts","step":"prettier"}
 {"findings":[],"hash":"a2868b43cd5eac362c4f0525fe3d1f23c7d67b20cf9f1684a65e77651a87b680","path":"be/apps/cli/src/compose/cli.ts","step":"prettier"}
-{"findings":[],"hash":"c16da5d59bf40d2545e7f90541931b05b5d8614121e5432317ad65ebbe388509","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
+{"findings":[],"hash":"d376c13d08f1c7e5ad64b940aa14e5846402c5de6a08852e293094c61aa1e09c","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
 {"findings":[],"hash":"5ea25163140ad7e940f758cccd5e8047af53f641ecf0153ec7ffb47312b4d906","path":"be/apps/cli/src/compose/integrations.ts","step":"prettier"}
-{"findings":[],"hash":"b45d0516f7f1494eb465aef3f435e4f6172b7a01d3f36aff79d7a0da7463afff","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
-{"findings":[],"hash":"dc85c01b6a8e37abdfd2749ed7816d54abf6b69775f8a5b542b049e128a86dc5","path":"be/apps/cli/src/compose/domain.ts","step":"prettier"}
-{"findings":[],"hash":"5ea25163140ad7e940f758cccd5e8047af53f641ecf0153ec7ffb47312b4d906","path":"be/apps/cli/src/compose/integrations.ts","step":"prettier"}
-{"findings":[],"hash":"68409d72d0f1fdb04c932a842a428c4e29c193d6756c3139a65d20493ea86b31","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
+{"findings":[],"hash":"d08105706b9138edeee969fb07c9f4679f5337352bda26c8e227b461c094d7a5","path":"be/apps/cli/src/compose/platform.ts","step":"prettier"}
 {"findings":[],"hash":"c113fab44282bdc7bf0cbb0fefa3bb12ab90524d27c42e51bbe1e4c18a41256e","path":"be/apps/cli/src/main.ts","step":"prettier"}
