@@ -1,10 +1,6 @@
 import { gql, type ApolloClient, type TypedDocumentNode } from "@apollo/client"
 import { createApolloClient } from "../clients"
-import type {
-    ProjectCodeReadQuery,
-    ProjectCodeReadQueryVariables,
-    ProjectConceptInput,
-} from "../__generated__/graphql"
+import type { ProjectCodeReadQuery, ProjectCodeReadQueryVariables, ProjectConceptInput } from "../__generated__/graphql"
 import type { InputVariables, QueryParams } from "../types"
 
 const query1: TypedDocumentNode<ProjectCodeReadQuery, ProjectCodeReadQueryVariables> = gql`

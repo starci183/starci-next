@@ -6,6 +6,7 @@ export const APP_ROUTES = {
     devices: "/devices",
     essentials: "/essentials",
     experience: "/experience",
+    harness: "/harness",
     incidents: "/incidents",
     interview: "/interview",
     premium: "/premium",
@@ -103,6 +104,27 @@ export const projectPath = (projectId: string): string => `${APP_ROUTES.projects
 /** The path of one milestone of a project, with its concept checklist. */
 export const projectMilestonePath = (projectId: string, milestoneId: string): string =>
     `${projectPath(projectId)}/${encodeURIComponent(milestoneId)}`
+
+/** The harness area: its hub and the three parts. */
+export const HARNESS_ROUTES = {
+    hub: APP_ROUTES.harness,
+    build: "/harness/build",
+    use: "/harness/use",
+    docs: "/harness/docs",
+} as const
+
+/** The path of one build of part 1, optionally opened on a stage (`/harness/build/{build}?stage=files`). */
+export const harnessBuildPath = (buildId: string, stageId?: string): string => {
+    const base = `${HARNESS_ROUTES.build}/${encodeURIComponent(buildId)}`
+    return stageId === undefined ? base : `${base}?stage=${encodeURIComponent(stageId)}`
+}
+
+/** The path of one guide of part 2 (`/harness/use/{tool}/{guide}`). */
+export const harnessGuidePath = (tool: string, slug: string): string =>
+    `${HARNESS_ROUTES.use}/${encodeURIComponent(tool)}/${encodeURIComponent(slug)}`
+
+/** The path of one article of part 3. */
+export const harnessDocPath = (slug: string): string => `${HARNESS_ROUTES.docs}/${encodeURIComponent(slug)}`
 
 /** The path of one concept of a milestone: its evidence page. */
 export const projectConceptPath = (projectId: string, milestoneId: string, conceptId: string): string =>

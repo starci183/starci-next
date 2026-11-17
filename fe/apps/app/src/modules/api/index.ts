@@ -38,6 +38,7 @@ export type {
     CreateMcpTokenMutation,
     RelayPairingQuery,
     RevokeRelayDeviceMutation,
+    BindHarnessBuildMutation,
     PracticeProblemQuery,
     PracticeProblemsQuery,
     PracticeSubmissionQuery,

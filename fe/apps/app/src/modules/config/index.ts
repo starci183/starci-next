@@ -10,4 +10,3 @@ const required = (name: string, value: string | undefined): string => {
 
 /** The public origin of the app, the base of every absolute metadata URL; throws when `NEXT_PUBLIC_SITE_URL` is not set. */
 export const siteUrl = (): string => required("NEXT_PUBLIC_SITE_URL", process.env.NEXT_PUBLIC_SITE_URL)
-

@@ -140,6 +140,29 @@ export type {
 } from "@starci-next/ui"
 export type { AppSidebarEntry, AppSidebarBaseProps } from "./appSidebar"
 export type { InterviewRoomLabels } from "./interviewRoom"
+export { HARNESS_PARTS, HARNESS_TOOLS } from "./harness"
+export type {
+    HarnessBuildRowView,
+    HarnessBuildView,
+    HarnessDocRowView,
+    HarnessDocView,
+    HarnessDoctorView,
+    HarnessE2eCaseView,
+    HarnessE2eOutcome,
+    HarnessGuideRowView,
+    HarnessGuideView,
+    HarnessHubPartView,
+    HarnessOutlineEntry,
+    HarnessPart,
+    HarnessProbeView,
+    HarnessSectionView,
+    HarnessShortcutView,
+    HarnessStageView,
+    HarnessStepView,
+    HarnessTool,
+    HarnessTrialView,
+    HarnessVerdict,
+} from "./harness"
 export type {
     CiRunView,
     CodeReadRubricRow,
