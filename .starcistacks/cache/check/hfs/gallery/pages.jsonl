@@ -39,10 +39,12 @@
 {"data":{},"findings":[],"hash":"bd72960c8d812af2fcbc05b59899877b795a468bfc2af8175542e3bf673de07c","path":"gallery/pages/practice/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"345ce8a0206347ed8b2a486cd48ac6a066b2d4cd4cb8937d72f84f64c55d4a04","path":"gallery/pages/practice/pattern/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9aaa27ff8dc599915ec8638bd59faccb78f20284a97c81311e5b0bf95e23e8b6","path":"gallery/pages/practice/problem/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"74571dcf4d54e17b9f60325948b3709e424e2ac1addc5ef2577214dc34272f51","path":"gallery/pages/projects/detail/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"127edcbd88169000aa8ec98f7417fac7bbc88c016eacc016fdc68b8d0b6224c0","path":"gallery/pages/projects/list/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"410ead96208d2e4da7589351f4d69290889cbd6410768d94da87feb9d7ac156e","path":"gallery/pages/projects/milestone/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6ec912b2db43e837b381266ab85caf0f6ddf28e0b4d0b9610f99ce9193e05cab","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3d29c4d369328b1c3f30cf1fbd581049e1a0cb174de8bb55fc2e850a9e9ae79c","path":"gallery/pages/projects/concept/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6083e7fc22ca719cc5eae637dbd7c955c49cbea36f5e0da519b3b05665611b37","path":"gallery/pages/projects/detail/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"eab49ae6472bd724a2058b1206ef95ee30af58703682f7b081a1ce2dbb1c2bf0","path":"gallery/pages/projects/list/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"89c67ae3f29a3be4ef4b4df57dc47565768b23b99ddbe9b4eaa4b9ab3140871d","path":"gallery/pages/projects/milestone/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"20dcd953a2761bae8bf3b7c777204071226844098b7a5e73f205574bb37545f1","path":"gallery/pages/projects/new/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"312459cc5c564a239e0e3a6fc6108ca586cba4f28c93a5435ab1a27167a6e217","path":"gallery/pages/projects/paywall/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"676681425d5d22777cb70be35cee904c11552cc9f682bcc571684be244a4e0f9","path":"gallery/pages/review/decks/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5978cc61fc1287bea3f9a7c958890229fc2d9abf7861b0a4ebf98e8b0bfd3bcf","path":"gallery/pages/review/hub/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9a01ab75ff2a4afbe6e0b0dea909ce394194e6872190f500c507aef0fb91e8ab","path":"gallery/pages/review/session/explain.md","step":"file-rules"}
