@@ -17,11 +17,6 @@
 {"findings":[],"hash":"ea599dd7c02a48ea54077eae3a56167cce0b375881229a0b266c0a4f3dffdd28","path":"be/apps/cli/src/main.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"70099646b7cd03f2b45e92d0a4c047cb2b69d0520543d3a4aada761d57e2b717","path":"be/apps/core/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e9a63222df77a27c1cb1e701b924b25dd57cc17581fc712d25163e88d4a3a4d6","path":"be/apps/core/src/app.module.ts","step":"file-rules"}
-{"findings":[],"hash":"f74473b5498c138e1b6ffbff81c33817d3cd0524bb8a9b6549a8596c573477d0","path":"be/apps/core/src/app.module.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"bffa6f8293466e69ab8a35f53ae419231c8b486bc7f2599ece4a537dffad2ad9","path":"be/apps/core/src/compose/api.ts","step":"file-rules"}
-{"findings":[],"hash":"13879daec077d0268111f34ae60d2f252e04228e041c6f3cf98a87671c55125b","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"02d5db79e6619671f1c7e1bdeb3d321be0699f8f476308ba7ffbd1362b0269e6","path":"be/apps/core/src/compose/career.ts","step":"file-rules"}
-{"findings":[],"hash":"f9b8259c73594de93d29827ebec5b926cab636b5ad30b670845918398e67f60b","path":"be/apps/core/src/compose/career.ts","step":"unit:recurring-observations"}
 {"findings":[],"hash":"095346a69266b0f45d086a02e955ba8dbeee365b8b5d64944cf04c580f753cd3","path":"be/apps/core/src/app.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"b01e81940a128f10230d69556b47c95c4af57e5708ef3be475e8807d7e474e43","path":"be/apps/core/src/compose/api.ts","step":"file-rules"}
 {"findings":[],"hash":"7a2a3d7dc479729068ef1f22f9f2294c5a2b3d501fdae764bcfc1a9c93213c02","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
@@ -40,9 +35,6 @@
 {"data":{},"findings":[],"hash":"ffcaf5c111529062c79ff87f792fd8b593395af5829203b82c80462c98875573","path":"be/apps/core/src/compose/realtime.ts","step":"file-rules"}
 {"findings":[],"hash":"b408102c967acac745c9f17cb9e1b0096072df6131c568a25db0b91a60b2b636","path":"be/apps/core/src/compose/realtime.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"5afccc8d16fcb89ddad78b183e64b97f7f959fc746d21e73703ed13eb73df78d","path":"be/apps/core/src/compose/system.ts","step":"file-rules"}
-{"findings":[],"hash":"ba4a7f5622a7f7aa57bbca392306060d150527cf9f05fdebfd16258ca3eacb0c","path":"be/apps/core/src/compose/system.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"435be76f0772eaba298f5dfc9588c3f71f6a01c71512fed1cd74fa6cd4e0eaff","path":"be/apps/core/src/compose/webhooks.ts","step":"file-rules"}
-{"findings":[],"hash":"fcb96a7effb8eb196ebd0e80d758f061d705d9baca0638610d78e418eee2e286","path":"be/apps/core/src/compose/webhooks.ts","step":"unit:recurring-observations"}
 {"findings":[],"hash":"89b99caa10e23dc44fe835b434efe622136b8e0b65afaa48e1dedae35b9f11e0","path":"be/apps/core/src/compose/system.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"1d3a7b4e841320d7a8f299f3455cdad49d17712d8cbef4f1124deae0e0f0aff6","path":"be/apps/core/src/compose/webhooks.ts","step":"file-rules"}
 {"findings":[],"hash":"5ee3cf033fa72814d70797dbf6e5926a212db3f50c9406f0b2cbf38756727c1d","path":"be/apps/core/src/compose/webhooks.ts","step":"unit:recurring-observations"}

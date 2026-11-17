@@ -9,8 +9,6 @@
 {"findings":[],"hash":"03505e1c8fa21cd3cdc3065d1a1b3a8b66a2f8643e975346190350b259143e86","path":"README.md","step":"prettier"}
 {"findings":[],"hash":"e23caf675b3aa78fc3110ac5c059efc25f2159a2f1b87e241bdc56f907ab22cd","path":"codecov.yml","step":"prettier"}
 {"findings":[],"hash":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da","path":"eslint.config.mjs","step":"prettier"}
-{"findings":[],"hash":"9974b09c65b6a940e3a6bccf2601739f6d1a53f629e8702c98d8f8c55103beb8","path":"hfs.json","step":"prettier"}
-{"findings":[],"hash":"247cc0ef02f1183afd6c4fb0710e8e3f4c2bca792b20eac4988a6e9bc74e690c","path":"package.json","step":"prettier"}
 {"findings":[],"hash":"a03204bc2e41ae8da9f81f0cfdf7ec54a25e95336b1f8473d7bdf7d2e1d65c61","path":"hfs.json","step":"prettier"}
 {"findings":[],"hash":"79cedfb8ef4b4cc0f7eda1a808df25fa757fd72c229f5cd68c647964e1abd922","path":"package.json","step":"prettier"}
 {"findings":[],"hash":"89faf9a45ee0bf580517de9051ace86b758a0262ddfa39098e47d4302c58f947","path":"sonar-project.properties","step":"prettier"}

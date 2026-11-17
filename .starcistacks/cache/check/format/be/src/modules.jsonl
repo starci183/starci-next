@@ -111,7 +111,6 @@
 {"findings":[],"hash":"03620dfdeac4465458092475ecccb6aa53fa8b8298d2a4afa79a73441869ef19","path":"be/src/modules/domain/career/experience.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"e6d1bf308e6a2c42bb5ab7e9dcb24687d6dcdc0e3333731d8aed3e6da32ec59e","path":"be/src/modules/domain/career/experience.service.ts","step":"prettier"}
 {"findings":[],"hash":"47506476b20a5856b16f84e18d21c3ccbae287f5aac8814fb74f958e908c5b57","path":"be/src/modules/domain/career/index.ts","step":"prettier"}
-{"findings":[],"hash":"a2dafd89f9c465f42161dc7dc4e31e609f8a051f7512083b7f3c08e0b7082b46","path":"be/src/modules/domain/career/messages/career.messages.ts","step":"prettier"}
 {"findings":[],"hash":"23cfa44a221c8cba681193f1865683ffc38f1c1eea24467b7f4f63bc4e96edbe","path":"be/src/modules/domain/career/messages/career.messages.ts","step":"prettier"}
 {"findings":[],"hash":"47b3737152a7d0880e11c46a8890079851377b914e1b537a1e0a9c065e059092","path":"be/src/modules/domain/career/persistence/career.rows.ts","step":"prettier"}
 {"findings":[],"hash":"69b658034fa1ff96bc6409a08ef8a14d27cabd687bf0cc2323d8969856cef023","path":"be/src/modules/domain/career/persistence/career.sql.ts","step":"prettier"}
@@ -631,13 +630,6 @@
 {"findings":[],"hash":"2edd27b1d2d9813cc01d8126f110aff78902d92a29c4f8879c4111f80f5a31a0","path":"be/src/modules/domain/project/ai-project-coach.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"8a0f83e81f91df6413093b5e225b84e3c5982a03de21ca1f41ad145fa24aef47","path":"be/src/modules/domain/project/ai-project-coach.client.ts","step":"prettier"}
 {"findings":[],"hash":"e6a2786fc67de897f7b567485c0645845da936346d770c8149b91c838152a4fe","path":"be/src/modules/domain/project/errors/project.error.ts","step":"prettier"}
-{"findings":[],"hash":"3ff299a5a51c172cffd4f371db7f636d83094a542c81523b96672b9ec08e78a2","path":"be/src/modules/domain/project/github-oidc.client.ts","step":"prettier"}
-{"findings":[],"hash":"b227412f94920f8bf3cf873c748a4b72d90111504f9052548feb3dd940f7d106","path":"be/src/modules/domain/project/github-oidc.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"1bb793ffdcb75f430785f71152eea6bc1cd0ab4abfb83dcf289dcbbe979a4ab3","path":"be/src/modules/domain/project/github-oidc.policy.ts","step":"prettier"}
-{"findings":[],"hash":"240fa225a916194710abf898a5a191ae6eb52a2377b9cf746a5e387b2319ce52","path":"be/src/modules/domain/project/index.ts","step":"prettier"}
-{"findings":[],"hash":"efd9d791a0925c623277d4311999870ba183debd09bf8d8ef3c43a5dcda02b42","path":"be/src/modules/domain/project/lesson-catalog.client.spec.ts","step":"prettier"}
-{"findings":[],"hash":"ecf9f201138eb3c4d5eeee44d0456d2294f5a56f5c2f397183f4fac23dd50d8c","path":"be/src/modules/domain/project/lesson-catalog.client.ts","step":"prettier"}
-{"findings":[],"hash":"bd6e5e4bacdae18e65c38672818e5a6b3c81da8ddb50243823633d5f7b7062e1","path":"be/src/modules/domain/project/messages/project.messages.ts","step":"prettier"}
 {"findings":[],"hash":"ea50bd82f63893c070c0634c5482cb4524b4301e8a85be8b4d31d437b21752b0","path":"be/src/modules/domain/project/github-oidc.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"3ff299a5a51c172cffd4f371db7f636d83094a542c81523b96672b9ec08e78a2","path":"be/src/modules/domain/project/github-oidc.client.ts","step":"prettier"}
 {"findings":[],"hash":"b227412f94920f8bf3cf873c748a4b72d90111504f9052548feb3dd940f7d106","path":"be/src/modules/domain/project/github-oidc.policy.spec.ts","step":"prettier"}
@@ -663,9 +655,6 @@
 {"findings":[],"hash":"70bbe1e8058bedbb6ceb6fbe1dbd142c4be78e77de6f64be602c0a8f251f01a7","path":"be/src/modules/domain/project/project-access.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"533e76c42befefa68738026cd2855e707f48e59880d5410c80d8ba3db6f5b2ff","path":"be/src/modules/domain/project/project-access.policy.ts","step":"prettier"}
 {"findings":[],"hash":"eb5bf06c2ec8c043c7877e29e48818878d2fef63f28603a69ba359437744ac5c","path":"be/src/modules/domain/project/project-catalog-rules.policy.ts","step":"prettier"}
-{"findings":[],"hash":"9aef977a6bc21730a744ccb409227bdca0239a2c3b60a193381300b32d23742a","path":"be/src/modules/domain/project/project-catalog.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"a90b00dae3456be572cebe382fbfd4f710815d68c5e3345e50c747a1a2ff597f","path":"be/src/modules/domain/project/project-catalog.policy.ts","step":"prettier"}
-{"findings":[],"hash":"1071f564a2cf7dd7c0d837af09108f4ff0ada3262e714ca5aa1928d15f2ce526","path":"be/src/modules/domain/project/project-check-set-disk.adapter.ts","step":"prettier"}
 {"findings":[],"hash":"1071f564a2cf7dd7c0d837af09108f4ff0ada3262e714ca5aa1928d15f2ce526","path":"be/src/modules/domain/project/project-check-set-disk.adapter.ts","step":"prettier"}
 {"findings":[],"hash":"36018c5b0ad698c9f7ffec5fe8a95412f05938b14d5f8782edcbecccb1d593c6","path":"be/src/modules/domain/project/project-check-set-lookup.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"4ccbb480b4540545f53521501a0c0fd19b8573499e3fc5f2c6ce876989e2e649","path":"be/src/modules/domain/project/project-check-set-lookup.policy.ts","step":"prettier"}
@@ -673,28 +662,11 @@
 {"findings":[],"hash":"5011d2390b941531745e3cbe2ad62284d1c57d035e9781b8d3f61ba6dd5f1590","path":"be/src/modules/domain/project/project-check-set.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"1a4889e01c8ca15d1e346ca23d23570ab989d14a5ecfd217aa55964e8de76d21","path":"be/src/modules/domain/project/project-check-set.policy.ts","step":"prettier"}
 {"findings":[],"hash":"30bb72de06167edcd6918926f9c469d0086bd116915f28ee07606afcc4fe5165","path":"be/src/modules/domain/project/project-check-set.port.ts","step":"prettier"}
-{"findings":[],"hash":"b0c045acce1cf0b91228d7631396baaa79e8508d8095f14592c613aae4f2a341","path":"be/src/modules/domain/project/project-check-set.service.ts","step":"prettier"}
 {"findings":[],"hash":"74e3456ee3b101e99024aa2ac9669dedd7e497378677b7eb59a503acdb7e26ea","path":"be/src/modules/domain/project/project-check-set.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"9c7572d4f7e53f6d1a442af3a5ea679d60fdf8c263e4474868532656e18ecdbc","path":"be/src/modules/domain/project/project-check-set.service.ts","step":"prettier"}
 {"findings":[],"hash":"669a2b6cdab33924a3a4e8faa14ba458d2316849af6b7f960c8ed2b8b5f904fa","path":"be/src/modules/domain/project/project-ci-attestation.port.ts","step":"prettier"}
 {"findings":[],"hash":"8e674263c3e96e78757d86b686a4cb2dc1c3c036d99953775e926d24c6ed1d39","path":"be/src/modules/domain/project/project-ci-proof.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"1c7a60c714161788b9deddc2e340ee9c40549c267d381f11d9dd370e5e16f742","path":"be/src/modules/domain/project/project-ci-proof.service.ts","step":"prettier"}
-{"findings":[],"hash":"d11378ca5c1eb9e0a8fd216bfa119938f85ad25377fe8f9461bb8d5fd63a9961","path":"be/src/modules/domain/project/project-ci.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"5bb9ac1b3289d54ea9308c6136fbedbdae3018f1f36acab5ccd70f1c18064da5","path":"be/src/modules/domain/project/project-ci.policy.ts","step":"prettier"}
-{"findings":[],"hash":"0b3e4ae9f61789bb21cf677c7183dcdea69c0e3128c2b20a54b744e24585b1c4","path":"be/src/modules/domain/project/project-ci.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"448c6865c492e3c7209febc0122f7bef9d351f7e95a6dca70d5202f29bca2427","path":"be/src/modules/domain/project/project-ci.service.ts","step":"prettier"}
-{"findings":[],"hash":"b0978ae30f7a36179078ccafd031d9e207248f4811d16034bbb5a271363e07c8","path":"be/src/modules/domain/project/project-coach.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"a5c5592d93bf2558cf6310179f46f35f0ceac0ae8e5aed01c353f25a9fec13df","path":"be/src/modules/domain/project/project-coach.policy.ts","step":"prettier"}
-{"findings":[],"hash":"290fea14cc2617cb65e49c349ff28c9d5fa794d55e7b5891abba437fdbe404b2","path":"be/src/modules/domain/project/project-coach.port.ts","step":"prettier"}
-{"findings":[],"hash":"3e37c837290833fc9992cec5de8f4752c6148b06027e95f3319d76c5c11a1a8e","path":"be/src/modules/domain/project/project-code-read.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"1d4e8b928f5a149a02c6a4def7ff366bb920d03a654dbfac325865d1f68006e2","path":"be/src/modules/domain/project/project-code-read.service.ts","step":"prettier"}
-{"findings":[],"hash":"a03b369755ea9bbae6ac72d2ddb0570e627734f6b2e37b704ea0eb611dcd51ac","path":"be/src/modules/domain/project/project-evidence-cheat.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"ac9c78953c1b6fe40e6ba109ff8b2700eaaa3874480e5f017151026427b5d1d5","path":"be/src/modules/domain/project/project-evidence.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"718bda263721151d41c12681884667ef251c8ae49779d163c61856142a589c65","path":"be/src/modules/domain/project/project-evidence.service.ts","step":"prettier"}
-{"findings":[],"hash":"aa70f0a10b9f5ca7a485764b59f2bc46202b948359c76b6c46aa3db4f70469e7","path":"be/src/modules/domain/project/project-experience.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"e003699e9ddde883b8f8fd6ae5058f3781c75ed16b2c7b9f733d5f1b1f145784","path":"be/src/modules/domain/project/project-experience.policy.ts","step":"prettier"}
-{"findings":[],"hash":"3731abee5adf69c9d00876bd9d0c8c6ab44f13d02255b8c0534a2f085cd58e5e","path":"be/src/modules/domain/project/project-extras.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"d668f3c680cf606be10cf1c56ca8ae2bd2fedd2bf6cfa4416c92d0921a6c27cd","path":"be/src/modules/domain/project/project-extras.service.ts","step":"prettier"}
 {"findings":[],"hash":"04e286f75648b41c64828b9c1e8f656ba438429818894d5d757cd85ec91fed31","path":"be/src/modules/domain/project/project-ci.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"5bb9ac1b3289d54ea9308c6136fbedbdae3018f1f36acab5ccd70f1c18064da5","path":"be/src/modules/domain/project/project-ci.policy.ts","step":"prettier"}
 {"findings":[],"hash":"cd12a0ddec1c2d9c030630b3979ad95561cf12e7d5969e7c11201e87d4674164","path":"be/src/modules/domain/project/project-ci.service.spec.ts","step":"prettier"}
@@ -715,13 +687,6 @@
 {"findings":[],"hash":"7f7508610063ec0ce60a2f296108c48185065234b8f592912c8bd14009910725","path":"be/src/modules/domain/project/project-input.policy.ts","step":"prettier"}
 {"findings":[],"hash":"788b9eb117ce459087cb2d7bbd6c4d9b3d1a22a66fac24b9c0e1d701ece1eacd","path":"be/src/modules/domain/project/project-lesson.port.ts","step":"prettier"}
 {"findings":[],"hash":"4562a96c4ccc25a5617815143f70c2198b0298ca3488a543ed173bf9fc1c6689","path":"be/src/modules/domain/project/project-params.contracts.ts","step":"prettier"}
-{"findings":[],"hash":"88be81cbdf006d7e6a2bef75725bb2f9ab524105cc3655cdee792ea71c2547ba","path":"be/src/modules/domain/project/project-practice.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"2a1476caea2a90bf919c7812828190fd0368deb37a2ebe5c634f1036498594fc","path":"be/src/modules/domain/project/project-practice.service.ts","step":"prettier"}
-{"findings":[],"hash":"333681059f8c874bd4d45d2555212ccc10850cb9923b74f3c1087df96adc8362","path":"be/src/modules/domain/project/project-probe-sink.service.ts","step":"prettier"}
-{"findings":[],"hash":"2979c13715c87d047a17218d9de4f9cbd5901c3579247743cdaf2ca8d343f8ab","path":"be/src/modules/domain/project/project-probe.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"8f48fd71dd64b5a5d0313a68dcb12ed59b2981ca61bbee3487a5271ce4dc1f8e","path":"be/src/modules/domain/project/project-probe.service.ts","step":"prettier"}
-{"findings":[],"hash":"2c55e19150d416a078766623c7c667be03e29cb14568c2da48265a90b0486adf","path":"be/src/modules/domain/project/project-read.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"2fb31c25b7e0fd8e520ce27e73f13a1e55685ec2c2007ff240ec7d3bd303f5e3","path":"be/src/modules/domain/project/project-read.service.ts","step":"prettier"}
 {"findings":[],"hash":"ff8223542840545606b0ee8f6c0c4af4d3da5e4966abb8da5f10f58c95313d9f","path":"be/src/modules/domain/project/project-practice.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"4395fc20b5371756597b75a7e4a0cd8cb6f713a9bf40a3b3158039ea052481e4","path":"be/src/modules/domain/project/project-practice.service.ts","step":"prettier"}
 {"findings":[],"hash":"333681059f8c874bd4d45d2555212ccc10850cb9923b74f3c1087df96adc8362","path":"be/src/modules/domain/project/project-probe-sink.service.ts","step":"prettier"}
@@ -736,22 +701,6 @@
 {"findings":[],"hash":"8aff11e5ae68cf29f68b7cf2df59f19875fd27ea2586793ebe64f43487f36e57","path":"be/src/modules/domain/project/project-repository.service.ts","step":"prettier"}
 {"findings":[],"hash":"6d96666b7707abd708ec9ef265846fd9777062e41cd7065462fbda8fb25aa5b4","path":"be/src/modules/domain/project/project-settings.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"531a9c538599dfeb9d2b7fd7979ea5103e8e52774cb734c2d98a95b0b2153f22","path":"be/src/modules/domain/project/project-settings.policy.ts","step":"prettier"}
-{"findings":[],"hash":"9ccddc016caea7cd1dfea6b5f024f92218d0f45ccf1635298509d10a7d42d574","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"18bc2ff6fd3b14c5f17258bda2bf0103c87e5b97c7c45529d90b4b1b9ae9b0eb","path":"be/src/modules/domain/project/project-state.policy.ts","step":"prettier"}
-{"findings":[],"hash":"9028a28bc7fbe2fbfe809a9ac007b448f2f193f235ecf29abd4771c0dfce5e24","path":"be/src/modules/domain/project/project-target.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"f01f3a4a6135f1ba6ae653a247cb87c2bebb618ca644bb334e567d6def965cca","path":"be/src/modules/domain/project/project-target.policy.ts","step":"prettier"}
-{"findings":[],"hash":"51bd9774cd21a0920e9fba85c815e76d23b960f75e2f426b4dffae9a21d75d60","path":"be/src/modules/domain/project/project-view.contracts.ts","step":"prettier"}
-{"findings":[],"hash":"2730b3d32c7793bce97fe515844947eda3bc800a96ba1d8117935612fe5207c1","path":"be/src/modules/domain/project/project-view.mapper.spec.ts","step":"prettier"}
-{"findings":[],"hash":"da04c45db9ca931ae9377d2511810975f58caab2bc2f916c9e0a38e0903e7e87","path":"be/src/modules/domain/project/project-view.mapper.ts","step":"prettier"}
-{"findings":[],"hash":"48da6a75cb5ec204e6a8080e73a47c6496b8e0dc4a82309c119c19b53e1fe7fc","path":"be/src/modules/domain/project/project.config.ts","step":"prettier"}
-{"findings":[],"hash":"bbeb3a4ab8dce5a1efb07388eaaf4a7d4469f7b960b261a26e4a0e6452940934","path":"be/src/modules/domain/project/project.contracts.ts","step":"prettier"}
-{"findings":[],"hash":"3a08f23200c92fb06855aa8807aaaf74aa2d87e5c5030fc920d2fb0c63e6133a","path":"be/src/modules/domain/project/project.decorators.ts","step":"prettier"}
-{"findings":[],"hash":"684178990fad7cb14883164820545421dfa8a3ba4e620ee0649205a555a07c18","path":"be/src/modules/domain/project/project.log-events.ts","step":"prettier"}
-{"findings":[],"hash":"e75fdf96f5a779ca93fe672b16c5e9abc07193361dcf9ee07ff3f07d178a2f66","path":"be/src/modules/domain/project/project.module-definition.ts","step":"prettier"}
-{"findings":[],"hash":"2b94c2ae1148ad8f2a4b5fe755ec9c977994cf3013ab86f248cdae65ea24bd04","path":"be/src/modules/domain/project/project.module.ts","step":"prettier"}
-{"findings":[],"hash":"d5f4538a6b3b48d937de7c6a7e2d3d9ea7576ac3084329500909b446e1c492b0","path":"be/src/modules/domain/project/project.options.ts","step":"prettier"}
-{"findings":[],"hash":"f6527e4e7de123b8b8562e1d0f9fa58dcc5e41945bd0346b57790a20cde23d9f","path":"be/src/modules/domain/project/project.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"90e959e85cd74d91a2916f6923931f05e1f6e900f57281868c74c0f22676f264","path":"be/src/modules/domain/project/project.service.ts","step":"prettier"}
 {"findings":[],"hash":"2da49c7106997f20abb7203543eeb95dfc10bb5eab94e598c12a9228ffe3ccdd","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"d758e799a0d9b4be4b43e83f614b29fe4b2aae50b9585ccbe8e7bc4e90df1ac4","path":"be/src/modules/domain/project/project-state.policy.ts","step":"prettier"}
 {"findings":[],"hash":"9028a28bc7fbe2fbfe809a9ac007b448f2f193f235ecf29abd4771c0dfce5e24","path":"be/src/modules/domain/project/project-target.policy.spec.ts","step":"prettier"}
@@ -799,7 +748,6 @@
 {"findings":[],"hash":"2c37fa3ed3d5af1e2c97ce13f11f5496056d0ab9587e83b0a12cd5b5c0d2c644","path":"be/src/modules/domain/purchase/purchase.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"9718ec5143c482ad1a879aa2f25389aa0e44bfe39b2b0fd9f0b6f919d8102442","path":"be/src/modules/domain/purchase/purchase.service.ts","step":"prettier"}
 {"findings":[],"hash":"70e9003b6a83cf190f17fa791d0649fc804148c7446444b628694850873ed4eb","path":"be/src/modules/domain/relay/errors/relay.error.ts","step":"prettier"}
-{"findings":[],"hash":"25bbd3b597105f670bc6924b2a1bdff2af0869de75a35e8f9c0e625a1e77a96f","path":"be/src/modules/domain/relay/index.ts","step":"prettier"}
 {"findings":[],"hash":"ea45fb23e56610cc3ece393c6d97adb8f301e25d758beeb7bb9cff1f1446c5f9","path":"be/src/modules/domain/relay/index.ts","step":"prettier"}
 {"findings":[],"hash":"f45327e411e08df3179b319e5e6ab0369558c25b1bf2e4ead12bc6709ba82481","path":"be/src/modules/domain/relay/messages/relay.messages.ts","step":"prettier"}
 {"findings":[],"hash":"551653724a62d2997b264e55a1b7b6729cdab7d1bfa6829f406eb02b4530b3f3","path":"be/src/modules/domain/relay/persistence/connection.ts","step":"prettier"}
@@ -821,9 +769,6 @@
 {"findings":[],"hash":"f921db2675f44ccb252ed304c8448a5e172dfc394d709be61cb948ef8b39120b","path":"be/src/modules/domain/relay/relay-feed.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"de40d4ea2c6cdb97d60cfab25bd94b200c9924f060c63808723caab002efda7e","path":"be/src/modules/domain/relay/relay-feed.essentials-access.spec.ts","step":"prettier"}
 {"findings":[],"hash":"8761f795e10b80aba8a084dc79644f27ee10ca5d12a9816a1f066cd051dfcaa9","path":"be/src/modules/domain/relay/relay-feed.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"3696ae59ce94bc7160f3850b38e5dc6145bf9daed784032342c3547c6c132e7c","path":"be/src/modules/domain/relay/relay-feed.policy.ts","step":"prettier"}
-{"findings":[],"hash":"c503959e5279d55dc17c4b353bd081775b4aa8e0fcf73818b01ce57717fdbcf4","path":"be/src/modules/domain/relay/relay-feed.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"63dbb86a473f82a191ab3c0f56d86a42719673be22b948833b13700ba34d71cc","path":"be/src/modules/domain/relay/relay-feed.service.ts","step":"prettier"}
 {"findings":[],"hash":"f938251f3ebb272baaa5c5b09196dc8f89de3561dffb8d5567dd1f8e8ee50880","path":"be/src/modules/domain/relay/relay-feed.policy.ts","step":"prettier"}
 {"findings":[],"hash":"edae02ff6006af57b994442e393b3969346b186a01c640bc4577e422343cfdc1","path":"be/src/modules/domain/relay/relay-feed.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"d335e513559696ed50d2adb4642f2ff6a37c6c5f651c1e8f5e269bddc8bde828","path":"be/src/modules/domain/relay/relay-feed.service.ts","step":"prettier"}
@@ -991,7 +936,6 @@
 {"findings":[],"hash":"d3d091eb12c4276df171f789f40f2ff8bfa67ce0986c1857ad351bc3386c1f0c","path":"be/src/modules/integrations/probe/probe.module.ts","step":"prettier"}
 {"findings":[],"hash":"1c985459488590cfbef93f7dea6e6da26001194bbd231dfaacf549565c73570c","path":"be/src/modules/integrations/probe/probe.options.ts","step":"prettier"}
 {"findings":[],"hash":"c119eeb9c14a0029e05a3c39fb410080e7b1dddfded3e2267a804abf7f123f0a","path":"be/src/modules/integrations/probe/probe.port.ts","step":"prettier"}
-{"findings":[],"hash":"797adf2341a6953491513ac2f1fe6e3731d0c7dd926c58cd8ef8160f30ec861b","path":"be/src/modules/integrations/relay-client/ci-report.cli.ts","step":"prettier"}
 {"findings":[],"hash":"d82a6c3b4ea221331ea8c5e178186f770bb8779879eda0d3a646b7f79814b5ae","path":"be/src/modules/integrations/qdrant/errors/qdrant.error.ts","step":"prettier"}
 {"findings":[],"hash":"90c406743f1d22ec474e6a41184a234e0166d1437fcc28b62a4040b2decf558b","path":"be/src/modules/integrations/qdrant/index.ts","step":"prettier"}
 {"findings":[],"hash":"3aa88755404e4497edf566e53bb91e94352239f450824659bab2705b8710a060","path":"be/src/modules/integrations/qdrant/messages/qdrant.messages.ts","step":"prettier"}
@@ -1008,13 +952,6 @@
 {"findings":[],"hash":"009452d47f6c0b8f0648285b612aa341eb13a34a5af0ab1663e4aff74d5b186c","path":"be/src/modules/integrations/relay-client/device-settings.adapter.ts","step":"prettier"}
 {"findings":[],"hash":"8701848902beb188bed396fbfee1df1cdf82a954557fb8672bcf33f020b06d2e","path":"be/src/modules/integrations/relay-client/device-socket.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"7e90c84b977129d45718952f7d31ad20368723b488d3f7227ea213e9a486922a","path":"be/src/modules/integrations/relay-client/device-socket.client.ts","step":"prettier"}
-{"findings":[],"hash":"01f5d5562410151bb874d6bca63215bf853d9bd2f10909c57fba011d42480dca","path":"be/src/modules/integrations/relay-client/harness-files.adapter.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/integrations/relay-client/harness-report.policy.ts is not formatted by prettier; run `npm run format`","path":"be/src/modules/integrations/relay-client/harness-report.policy.ts","rule":"HFS_FORMAT"}],"hash":"8cf90e7f33fe8e0a4829924a71829a35a90e21e9ef6dc0da925090b263305bb2","path":"be/src/modules/integrations/relay-client/harness-report.policy.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/integrations/relay-client/harness.cli.spec.ts is not formatted by prettier; run `npm run format`","path":"be/src/modules/integrations/relay-client/harness.cli.spec.ts","rule":"HFS_FORMAT"}],"hash":"1993e31303379321660f4f1bb89049bdbd15afb660b1e2c1b0e23be7c0e23814","path":"be/src/modules/integrations/relay-client/harness.cli.spec.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/integrations/relay-client/harness.cli.ts is not formatted by prettier; run `npm run format`","path":"be/src/modules/integrations/relay-client/harness.cli.ts","rule":"HFS_FORMAT"}],"hash":"620f753b02a3653136114fb32904bc55e1294750b597dafb135842689d0f5016","path":"be/src/modules/integrations/relay-client/harness.cli.ts","step":"prettier"}
-{"findings":[],"hash":"c6dc108ab58795fa5093f25ee4ed975192118b1287fa0bcd8a86cd3eb4531f22","path":"be/src/modules/integrations/relay-client/harness.contracts.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/integrations/relay-client/harness.policy.spec.ts is not formatted by prettier; run `npm run format`","path":"be/src/modules/integrations/relay-client/harness.policy.spec.ts","rule":"HFS_FORMAT"}],"hash":"63515048e1b3ba2f1d12bb8baa9c5d9f88066437894bb2b9f0305bfb8eef2850","path":"be/src/modules/integrations/relay-client/harness.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"0aec4044bdc187955b10277be574a5341a88dccb83aaf230a3b9d26d0018035b","path":"be/src/modules/integrations/relay-client/harness.policy.ts","step":"prettier"}
 {"findings":[],"hash":"12040d17241524c2d3a2e2eab1151dc8d8e5ecb07515c9ae7d20f8bd78bb2d2b","path":"be/src/modules/integrations/relay-client/harness-content.cli.ts","step":"prettier"}
 {"findings":[],"hash":"57ded3a5ee1be8894574a0e7d77b42fb302eef23e82a3922699be59d99fc3a57","path":"be/src/modules/integrations/relay-client/harness-diff.policy.ts","step":"prettier"}
 {"findings":[],"hash":"0bcc97b894eea60aa67e301ac81c3fe8bcf2fce07fb13899fb7a5d1862ac9076","path":"be/src/modules/integrations/relay-client/harness-doctor.cli.spec.ts","step":"prettier"}
@@ -1069,17 +1006,12 @@
 {"findings":[],"hash":"452d45d229a6b56b13ccd75054ae36d190be68cacbf716a6b9059bcd28bab9a6","path":"be/src/modules/integrations/relay-client/project-kit.service.ts","step":"prettier"}
 {"findings":[],"hash":"dfaeaff969b1a7ab3b3798210072194168916edcde0f9092c31ee0b963ea619e","path":"be/src/modules/integrations/relay-client/project-run.cli.ts","step":"prettier"}
 {"findings":[],"hash":"e48581a83b40a548b732fbff8f463011b3ee6f75ef4d66154aaff84896a53d56","path":"be/src/modules/integrations/relay-client/relay-api.client.ts","step":"prettier"}
-{"findings":[],"hash":"b36dcd542fcd30de5b7cd706e235c04d3b9276fce1818bc8ebab1933518e42fc","path":"be/src/modules/integrations/relay-client/relay-client.config.ts","step":"prettier"}
-{"findings":[],"hash":"9a79d791ce22f1b3b69567b285ca552139f7ff8deae5e8cd2178b4c1ed12d3c1","path":"be/src/modules/integrations/relay-client/relay-client.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"fe70d954aa98da7beb906cd5623e3aa80a2687a56df5fd798667eccdce541177","path":"be/src/modules/integrations/relay-client/relay-client.config.ts","step":"prettier"}
 {"findings":[],"hash":"45c1bcf9e6c7ef6b4c36e7bf62fd295f052737fa7fcbf4d51cd1029a59729ef3","path":"be/src/modules/integrations/relay-client/relay-client.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"a72a95273e20273a31776480173d7ac6984849aed510f69f313cf99f823e915b","path":"be/src/modules/integrations/relay-client/relay-client.decorators.ts","step":"prettier"}
 {"findings":[],"hash":"85f2a8bf7c9856db8aec90c73ebf89c70dda6c153ae64f0cfb430382bea713fb","path":"be/src/modules/integrations/relay-client/relay-client.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"85dd7fb19988cc09a28969e7348421b67c06f2bc89d27822959e7e51995961fd","path":"be/src/modules/integrations/relay-client/relay-client.module.ts","step":"prettier"}
 {"findings":[],"hash":"c2c0b76c6e58f44431f495895b91d9d01a394ddc21e4a09ef9b45cf1eeb77954","path":"be/src/modules/integrations/relay-client/relay-client.options.ts","step":"prettier"}
-{"findings":[],"hash":"5442533f4280e8213687fb48e06e7a216320ea549f350518be6232e0428c98ea","path":"be/src/modules/integrations/relay-client/relay-client.port.ts","step":"prettier"}
-{"findings":[],"hash":"a9f77007719ea4428fbbf9a35cb919c643faec6d7324e06358aea0ce23f1b22e","path":"be/src/modules/integrations/relay-client/relay-client.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"723f9d481e7dbe68c580f877d154a00d63b18f64e07d3d4d8baeccce5016536f","path":"be/src/modules/integrations/relay-client/relay-client.service.ts","step":"prettier"}
 {"findings":[],"hash":"65527ebf96bf55ebfc4e697e823c79bc08fc21229bdd36ef51362d81ca0a8b2c","path":"be/src/modules/integrations/relay-client/relay-client.port.ts","step":"prettier"}
 {"findings":[],"hash":"a9f77007719ea4428fbbf9a35cb919c643faec6d7324e06358aea0ce23f1b22e","path":"be/src/modules/integrations/relay-client/relay-client.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"82fa453b9a710cd1a06df207c3d857d356782602a065e9bff31fa8102a4e3b0b","path":"be/src/modules/integrations/relay-client/relay-client.service.ts","step":"prettier"}
@@ -1089,7 +1021,6 @@
 {"findings":[],"hash":"98804aad526bbd1e532ec7aa61e5d8b2b4e4d8a862dd841626093849c343ecc7","path":"be/src/modules/integrations/relay-client/scenario-report.policy.ts","step":"prettier"}
 {"findings":[],"hash":"c497884ea81e2ba2fc8e41dbf8cc902f8afc4e5fea9edceecf7867c702e99722","path":"be/src/modules/integrations/relay-client/source-archive.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"2b8d974e1e868a27a9bb767b0e62a1f6ce7ba50d02b5f2cd96dc25f13f8caf8c","path":"be/src/modules/integrations/relay-client/source-archive.policy.ts","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"be/src/modules/integrations/relay-client/source-pull.cli.ts is not formatted by prettier; run `npm run format`","path":"be/src/modules/integrations/relay-client/source-pull.cli.ts","rule":"HFS_FORMAT"}],"hash":"6a38b78cdfb65d197e4997a83d64e3b27070cecdfce1600a94473cfd68fb2f9c","path":"be/src/modules/integrations/relay-client/source-pull.cli.ts","step":"prettier"}
 {"findings":[],"hash":"91d463e83c738b53ea18b47275ae9f29d45e608d7a8950bf44cca524e413df23","path":"be/src/modules/integrations/relay-client/source-pull.cli.ts","step":"prettier"}
 {"findings":[],"hash":"8dfc12bb40065e64ba4003aaae153da26e1533c0a1502be30837e9df2a3b392a","path":"be/src/modules/integrations/relay-client/task-run.cli.ts","step":"prettier"}
 {"findings":[],"hash":"813effa56f3fc194b93ed75735848f068915020172e033cbeb972058509a303d","path":"be/src/modules/integrations/relay-client/terminal.client.spec.ts","step":"prettier"}

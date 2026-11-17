@@ -1,6 +1,5 @@
 {"findings":[],"hash":"2ca9727a93aa1bf8c2c07934237a72dcf5f1e7f4131376f039df32cbe8e5e5e6","path":"fe/apps/app/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"fe8f2c5aa33263062b758448ff6ea6d8b0433c103f7f87ad5bb72775c716f708","path":"fe/apps/app/next.config.ts","step":"prettier"}
-{"findings":[],"hash":"188b1edf8c60a648d2fffa2e4fc51a396bdfadcd63009fefa82719329904603b","path":"fe/apps/app/package.json","step":"prettier"}
 {"findings":[],"hash":"bd3b6654b5fe1ca3d0a807b4026400c5ed05a2dff0e6b99702948611da225779","path":"fe/apps/app/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/app/postcss.config.mjs","step":"prettier"}
 {"findings":[],"hash":"ab1f3f5b2801daeabeee3ec5253ee752c0f2f2bcea400cc7ee3c5c757a542e67","path":"fe/apps/app/public/art/pro-learning-journey-v1.webp","step":"prettier"}
@@ -556,10 +555,8 @@
 {"findings":[],"hash":"9c39ab4e4eb2dc8487448e6f1d700fd554a024f956dbc8c04a9474127ab7fc56","path":"fe/apps/app/src/modules/config/index.ts","step":"prettier"}
 {"findings":[],"hash":"4d223789b6e367ec3cfd176b2ead1c8f74c36ce8ea9c47e4fa9b164421d71f95","path":"fe/apps/app/src/modules/failure/index.ts","step":"prettier"}
 {"findings":[],"hash":"3250a1a387c6be27f6f47ba8c0ca508e554d69ffab7519be25e5722149176c71","path":"fe/apps/app/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"2ed51b3afebae24c86d411eacbb9dc0fbe7f544c454dc8c7750abe2c08cad369","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"f7319bd8e0f8a30115e6c3c17ea7ad3004588042111385fb6377ed4c80b514e3","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
-{"findings":[],"hash":"6c592ec4b4f545aa358482dc7e51a497b20c06cd69c65e8e831404cdc7bfec26","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"9f729eb1287cf65c3517b45d8b4cab923b8042541281a8b22610f7b7848bc117","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
+{"findings":[],"hash":"cfb2974b3fbea553af9fd18740a87fdc11eba0892951224ec9fa53c80fdd734c","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
+{"findings":[],"hash":"dc8bcae1bab5bfb46b9ca0aa11f2b4d21e49962bf6bdb026928a442e98c7ab42","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"5c34d838583710ef39f49ec100882024b7483146a6fe445df0a7bcde24779f95","path":"fe/apps/app/src/modules/i18n/request.ts","step":"prettier"}
 {"findings":[],"hash":"448c5f1fda4117a399859ce2854f1f5a253bf4ab735d02de9d9cf65594dd165b","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"4eead43ac26766de8734898edd2f6ab4d9484c60399bbe6f660420653ffc493a","path":"fe/apps/app/src/modules/markdown/index.ts","step":"prettier"}

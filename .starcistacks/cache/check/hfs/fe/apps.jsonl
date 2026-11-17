@@ -1,6 +1,5 @@
 {"data":{},"findings":[],"hash":"827a147584fb2bae74009c09cb3a74835c7e720da4578e1cbcc76c9a03e81b9f","path":"fe/apps/app/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67aa01af725992a2ab2dc1096e9ffab418c48e2633cdf4333380ef98fe261a29","path":"fe/apps/app/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bd8d3d602bd4ada8cba6be84c6b56a55163d3a9075339923134ccb61fdc9ef4d","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f94e9601b773e047b3d98f217f38c5bde801dc54d9d15da72704d02ac7385648","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/app/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f1474d5fdda82a326f0acacb8529975add26763fd5e15a78c4135a316d63307","path":"fe/apps/app/public/art/pro-learning-journey-v1.webp","step":"file-rules"}
@@ -556,10 +555,8 @@
 {"data":{},"findings":[],"hash":"776b025d94939ea35249f6923762458c5710b18525ac1baa3ef25ad0567e6295","path":"fe/apps/app/src/modules/config/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0ed825d8ef6be749123fcafb218954b3c95fbf9e2db573dc33cba9995acb8cf2","path":"fe/apps/app/src/modules/failure/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ce80e98b600fba22da1ffb09146007056ad52fff2bc8bccf2f9961b4e3ac4d7a","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"aae2e9def2269c7831d0a7eb42c7e204c689d0037cc1f3a8685eccf44d36cafd","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0516f66b00841402411a38da47479b6406d35c5b3b8327d775c1ac5dfc3e6605","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0e094d6f22474df3fda19dfc0b72bb60f1fb0dd5206e70af8d94d77032bc5050","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a933f6c990d21262666ed56c7050090a6c7029a5ab00ba2b1dab7f72f7b1363b","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5de2e89bae1dff3fc4f6bdc7b800ee2cced5a9597adb60daf78f83cbeefc564e","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"046134e24c6c513a761f7a5775b97636663509c52c86f4dd4b8cc744e07df16c","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c2790b1ae91ffdffb9c70e255f1b8d4e171afc4dac9c47913284f990361e150","path":"fe/apps/app/src/modules/markdown/index.ts","step":"file-rules"}
@@ -600,7 +597,6 @@
 {"data":{},"findings":[],"hash":"c8acb681064d234fb2115f7db3b0333ffb16a769c262e23029f67a6d68a36229","path":"fe/apps/app/tsconfig.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"924d3e92a02e0da1e2386e3aff9fd357c6e1e33ca0214c4f3c8af2dc7deb8f90","path":"fe/apps/landing/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a2dbe4706aae5a56baa7b34192679f6f0112e1e99f4591fc3087cb3d9645de75","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f2f6e798c99498253397e46bfb7fe94e22baebfd0a32e20b6f602ab25ba97deb","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cd80b55ce442234d7ab90c2e3e7aab511fa90305256998630345c93a1dbbc3be","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/landing/postcss.config.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e8fd9f6306a044e6750eff9f6532af155b24ed134d697bc36ad4c7c39c4ad09","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"file-rules"}
