@@ -2053,7 +2053,6 @@
     "profile": {
       "pageTitle": "Hồ sơ",
       "title": "Hồ sơ của bạn",
-      "description": "Mọi mục dưới đây do StarCi chấm, không tự khai.",
       "identity": {
         "title": "Danh tính",
         "avatarLabel": "Ảnh đại diện",
@@ -2063,8 +2062,6 @@
         "nameLabel": "Tên hiển thị",
         "namePlaceholder": "Tên bạn muốn hiện",
         "nameHint": "Để trống thì hiện tên tài khoản. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
-        "save": "Lưu tên",
-        "saved": "Đã lưu tên.",
         "error": {
           "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
           "size": "Ảnh quá lớn, tối đa {size}.",
@@ -2086,7 +2083,6 @@
       "cv": {
         "title": "CV đã xác minh",
         "gate": "{count}/{min} để được giới thiệu việc làm",
-        "seeAll": "Kinh nghiệm",
         "signed": "Ký bởi {role} ngày {date}",
         "empty": "Hoàn thành một bài Essentials, bản dựng Harness, dự án hoặc nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi thầy ký.",
         "part": {
@@ -2125,13 +2121,10 @@
         "title": "Tài khoản"
       },
       "verify": {
-        "title": "Liên kết xác minh công khai",
-        "caption": "Người tuyển dụng mở liên kết để xem dòng đã ký, không thấy điểm số hay tên người duyệt.",
         "copy": "Sao chép",
         "copied": "Đã sao chép",
         "public": "Công khai",
-        "private": "Riêng tư",
-        "empty": "Liên kết xuất hiện khi một mục được xác minh."
+        "private": "Riêng tư"
       },
       "loading": "Đang tải…",
       "meta": {
@@ -2201,7 +2194,6 @@
       },
       "essentials": {
         "title": "Essentials",
-        "fact": "{done}/{total} bài",
         "open": "Mở Essentials",
         "opener": "Câu mở bài trả lời đúng: trước khi học {before}/{answered}, sau khi học {after}/{answered}.",
         "openerNone": "Chưa trả lời câu mở bài nào.",
@@ -2215,14 +2207,10 @@
           "apply": "Phần 4 · Tự áp dụng"
         },
         "topicFact": "{done}/{total} bài",
-        "done": "Đã học",
-        "started": "Đang học",
-        "todo": "Chưa học",
         "empty": "Chưa có bài nào trong danh mục."
       },
       "harness": {
         "title": "Harness",
-        "fact": "{done}/{total} bản dựng",
         "open": "Mở Harness",
         "build": "{proved}/{total} giai đoạn đã chứng minh, {practising} đang luyện",
         "proved": "Đã chứng minh",
@@ -2236,14 +2224,8 @@
           "claude": "Claude Code",
           "codex": "Codex"
         },
-        "trialsTitle": "Thử bẫy",
-        "held": "Giữ vững",
-        "breached": "Bị phá",
         "incomplete": "Chưa xong",
-        "never": "Chưa thử",
-        "trialLine": "{tool}, {when}",
-        "empty": "Chưa có bản dựng nào.",
-        "doctorFailedBadge": "Có lỗi"
+        "empty": "Chưa có bản dựng nào."
       },
       "projects": {
         "title": "Dự án",

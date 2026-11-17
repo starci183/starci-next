@@ -2053,7 +2053,6 @@
     "profile": {
       "pageTitle": "Profile",
       "title": "Your profile",
-      "description": "Everything below was graded by StarCi, never self-reported.",
       "identity": {
         "title": "Identity",
         "avatarLabel": "Avatar",
@@ -2063,8 +2062,6 @@
         "nameLabel": "Display name",
         "namePlaceholder": "The name to show",
         "nameHint": "Leave empty to show your account name. This name does not appear on the CV if you turn public off.",
-        "save": "Save name",
-        "saved": "Name saved.",
         "error": {
           "type": "Only PNG, JPEG or WebP images.",
           "size": "The image is too large, up to {size}.",
@@ -2086,7 +2083,6 @@
       "cv": {
         "title": "Verified CV",
         "gate": "{count}/{min} to be referred for jobs",
-        "seeAll": "Experience",
         "signed": "Signed by {role} on {date}",
         "empty": "Finish an Essentials lesson, a Harness build, a project or a Practice pattern to get the first one. A CV line only exists once the teacher signs it.",
         "part": {
@@ -2125,13 +2121,10 @@
         "title": "Account"
       },
       "verify": {
-        "title": "Public verify link",
-        "caption": "A recruiter opens the link to see the signed line, never a score or a reviewer name.",
         "copy": "Copy",
         "copied": "Copied",
         "public": "Public",
-        "private": "Private",
-        "empty": "A link appears when an item is verified."
+        "private": "Private"
       },
       "loading": "Loading…",
       "meta": {
@@ -2201,7 +2194,6 @@
       },
       "essentials": {
         "title": "Essentials",
-        "fact": "{done}/{total} lessons",
         "open": "Open Essentials",
         "opener": "Opener answered right: {before}/{answered} before studying, {after}/{answered} after.",
         "openerNone": "No opener question answered yet.",
@@ -2215,14 +2207,10 @@
           "apply": "Part 4 · Apply"
         },
         "topicFact": "{done}/{total} lessons",
-        "done": "Done",
-        "started": "In progress",
-        "todo": "Not started",
         "empty": "No lesson in the catalog yet."
       },
       "harness": {
         "title": "Harness",
-        "fact": "{done}/{total} builds",
         "open": "Open Harness",
         "build": "{proved}/{total} stages proved, {practising} practising",
         "proved": "Proved",
@@ -2236,14 +2224,8 @@
           "claude": "Claude Code",
           "codex": "Codex"
         },
-        "trialsTitle": "Trap trials",
-        "held": "Held",
-        "breached": "Breached",
         "incomplete": "Incomplete",
-        "never": "Never tried",
-        "trialLine": "{tool}, {when}",
-        "empty": "No build yet.",
-        "doctorFailedBadge": "Failing"
+        "empty": "No build yet."
       },
       "projects": {
         "title": "Projects",
