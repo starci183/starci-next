@@ -84,6 +84,10 @@ export interface McpFile {
     readonly total: number
     /** The text of the lines, without line numbers. */
     readonly text: string
+    /** True when the file goes on after `to`: ask again from `nextFrom`. */
+    readonly truncated: boolean
+    /** The line to ask for next, or null when `to` is the last line. */
+    readonly nextFrom: number | null
 }
 
 /** One hit of a code or lesson search. */
@@ -92,6 +96,10 @@ export interface McpSearchHit {
     readonly path: string
     /** The 1-based line of the hit (the first line of the chunk for a semantic hit). */
     readonly line: number
+    /** The 1-based last line of the chunk a semantic hit is, absent for a keyword hit. */
+    readonly endLine?: number
+    /** The heading trail or the symbol the chunk sits under, when the chunker named one. */
+    readonly title?: string
     /** The text of the line or of the chunk, trimmed. */
     readonly text: string
     /** The cosine score of a semantic hit; absent for a keyword hit. */
@@ -136,4 +144,201 @@ export interface McpRunRequested {
     readonly command: string
     /** The manifest id, or null when nothing was delivered. */
     readonly manifestId: string | null
+}
+
+/** One heading of a section, so the AI can jump to a part of a long text. */
+export interface McpHeading {
+    /** The level, 1 for `#`. */
+    readonly level: number
+    /** The heading text. */
+    readonly title: string
+    /** The 1-based line of the heading in the section body. */
+    readonly line: number
+}
+
+/** One section of a lesson with its whole text when the learner may read it. */
+export interface McpLessonSection {
+    /** The number `lesson://<id>/section/<n>` and search hits use. */
+    readonly n: number
+    /** The section id (`1-essential` for the first part of an Essentials lesson). */
+    readonly id: string
+    /** The Essentials part it is, or null for a section of another lesson. */
+    readonly part: string | null
+    /** The phase. */
+    readonly phase: string
+    /** The title. */
+    readonly title: string
+    /** True when the learner may not read it (no text then). */
+    readonly locked: boolean
+    /** The whole markdown body, or null when locked. */
+    readonly body: string | null
+    /** The headings of the body with their lines. */
+    readonly headings: ReadonlyArray<McpHeading>
+}
+
+/** One choice of an opener question; the correctness and the explanation appear only after the learner answered it. */
+export interface McpOpenerChoice {
+    /** The choice id (`c0`, `c1`…). */
+    readonly id: string
+    /** The choice text. */
+    readonly label: string
+    /** Whether it is the right one; present once the learner answered the question. */
+    readonly isCorrect?: boolean
+    /** Why it is right or wrong; present once the learner answered the question. */
+    readonly explanation?: string
+}
+
+/** One question of the five-question opener of Bản chất. */
+export interface McpOpenerQuestion {
+    /** The question id. */
+    readonly id: string
+    /** The question. */
+    readonly prompt: string
+    /** The choices. */
+    readonly choices: ReadonlyArray<McpOpenerChoice>
+    /** The heading number of the article to read when it is wrong, or null. */
+    readonly sectionRef: string | null
+    /** The scenario that shows the answer, or null. */
+    readonly scenarioId: string | null
+    /** True when the learner submitted an answer in the app, which releases the key below. */
+    readonly answered: boolean
+    /** The right choice and why, once answered; null before, because the key leaves the server only after a submit. */
+    readonly answer: { readonly correctChoiceId: string; readonly explanation: string } | null
+}
+
+/** A scenario of Kịch bản with everything the lesson page shows. */
+export interface McpLessonScenario {
+    /** The scenario id. */
+    readonly id: string
+    /** The title. */
+    readonly title: string
+    /** The fault it injects. */
+    readonly fault: string
+    /** The command the learner runs. */
+    readonly command: string
+    /** What a correct system shows, as the page shows it. */
+    readonly expected: string
+    /** The invariant id it judges. */
+    readonly invariant: string
+    /** The guards the learner may switch off. */
+    readonly guards: ReadonlyArray<string>
+    /** The hint the page shows when the learner's run is red; null until the learner has a red run of it. */
+    readonly hint: string | null
+}
+
+/** One entry of the code walk. */
+export interface McpCodeWalkEntry {
+    /** The entry id. */
+    readonly id: string
+    /** The heading. */
+    readonly title: string
+    /** The invariant it keeps. */
+    readonly invariant: string
+    /** The file. */
+    readonly file: string
+    /** The first line of the snippet. */
+    readonly line: number
+    /** The snippet. */
+    readonly snippet: string
+    /** Why the code is written so, or null. */
+    readonly why: string | null
+}
+
+/** One rung of the challenge ladder as the lesson page shows it: the brief and the rubric, never the hidden scenarios. */
+export interface McpLessonChallenge {
+    /** The challenge id. */
+    readonly id: string
+    /** The rung. */
+    readonly level: string
+    /** The title. */
+    readonly title: string
+    /** The brief, markdown. */
+    readonly brief: string
+    /** The rubric criteria as the learner reads them. */
+    readonly rubric: ReadonlyArray<{
+        readonly id: string
+        readonly criterion: string
+        readonly points: number
+        readonly isCritical: boolean
+    }>
+    /** How many hidden scenarios judge it; they are counted, never named. */
+    readonly hiddenScenarios: number
+    /** The essence-check questions (no key). */
+    readonly questions: ReadonlyArray<{
+        readonly id: string
+        readonly prompt: string
+        readonly choices: ReadonlyArray<{ readonly id: string; readonly label: string }>
+    }>
+}
+
+/** A whole lesson as the learner's AI reads it: every part the learner may read, in full. */
+export interface McpLesson {
+    /** The lesson id. */
+    readonly id: string
+    /** The version served. */
+    readonly version: string
+    /** The locale of the text. */
+    readonly locale: string
+    /** The title. */
+    readonly title: string
+    /** The description. */
+    readonly description: string
+    /** The topic. */
+    readonly topic: string
+    /** The learning outcomes. */
+    readonly outcomes: ReadonlyArray<string>
+    /** The prerequisites. */
+    readonly prerequisites: ReadonlyArray<string>
+    /** The references. */
+    readonly references: ReadonlyArray<{
+        readonly label: string
+        readonly url: string | null
+        readonly citation: string
+    }>
+    /** Whether the learner holds Premium. */
+    readonly isPremium: boolean
+    /** The parts the learner may not read; they have no text anywhere in this answer. */
+    readonly lockedParts: ReadonlyArray<string>
+    /** The sections in order, each with its whole body when readable. */
+    readonly sections: ReadonlyArray<McpLessonSection>
+    /** Part 1: the five-question opener. */
+    readonly opener: ReadonlyArray<McpOpenerQuestion>
+    /** Part 2: the invariants (also named by part 3). */
+    readonly invariants: ReadonlyArray<{ readonly id: string; readonly text: string }>
+    /** Part 2: the architecture diagram (mermaid) and its components, when the lesson carries them as data. */
+    readonly architecture: {
+        readonly diagram: string
+        readonly components: ReadonlyArray<{
+            readonly name: string
+            readonly port: string | null
+            readonly role: string | null
+            readonly invariants: ReadonlyArray<string>
+        }>
+    } | null
+    /** Part 2: the code walk. */
+    readonly codeWalk: ReadonlyArray<McpCodeWalkEntry>
+    /** Part 3: the scenarios. */
+    readonly scenarios: ReadonlyArray<McpLessonScenario>
+    /** Part 4: the challenge ladder. */
+    readonly challenges: ReadonlyArray<McpLessonChallenge>
+}
+
+/** One file of the lesson source in the listing. */
+export interface McpFileEntry {
+    /** The path in the source. */
+    readonly path: string
+    /** The size in bytes (characters of text). */
+    readonly bytes: number
+    /** The number of lines. */
+    readonly lines: number
+    /** False for a generated file (a lock file) that is readable but not searched. */
+    readonly searchable: boolean
+}
+
+/** The files of the lesson source the learner's AI may read. */
+export interface McpFileListing {
+    /** The pinned commit. */
+    readonly commit: string
+    /** The readable files in path order. */
+    readonly files: ReadonlyArray<McpFileEntry>
 }

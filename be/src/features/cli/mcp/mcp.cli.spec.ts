@@ -1,5 +1,5 @@
 import { Test } from "@nestjs/testing"
-import { McpHarnessService } from "@modules/domain/mcp"
+import { McpHarnessService, McpLessonIndexService } from "@modules/domain/mcp"
 import { McpCli } from "./mcp.cli"
 import { ReindexMcpCli } from "./subs/reindex.cli"
 
@@ -17,17 +17,27 @@ describe("McpCli", () => {
 })
 
 describe("ReindexMcpCli", () => {
-    it("runs the harness batch job once", async () => {
+    it("runs the harness and the lesson batch jobs once", async () => {
         const reindex = jest.fn().mockResolvedValue({
             documents: 4,
             scopes: [{ scope: "harness:vi", chunks: 3, embedded: 1, reused: 2, pruned: 0 }],
         })
+        const lessons = jest.fn().mockResolvedValue({
+            lessons: 1,
+            scopes: [{ scope: "lesson:a:vi", chunks: 9, embedded: 9, reused: 0, pruned: 0 }],
+            withoutSource: ["b"],
+        })
         const moduleRef = await Test.createTestingModule({
-            providers: [ReindexMcpCli, { provide: McpHarnessService, useValue: { reindex } }],
+            providers: [
+                ReindexMcpCli,
+                { provide: McpHarnessService, useValue: { reindex } },
+                { provide: McpLessonIndexService, useValue: { reindex: lessons } },
+            ],
         }).compile()
 
         await moduleRef.get(ReindexMcpCli).run()
 
         expect(reindex).toHaveBeenCalledTimes(1)
+        expect(lessons).toHaveBeenCalledTimes(1)
     })
 })

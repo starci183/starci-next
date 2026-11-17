@@ -35,9 +35,9 @@ const DENIED_NAME =
 const SKIPPED_DIRECTORIES: ReadonlySet<string> = new Set(["node_modules", "dist", "build", "coverage", ".next"])
 
 /** The longest file the AI reads, in bytes. */
-export const FILE_BYTES_MAX = 200_000
+export const FILE_BYTES_MAX = 1_000_000
 /** The most lines one `read_file` answers. */
-export const LINES_MAX = 400
+export const LINES_MAX = 1000
 /** The most hits one search answers. */
 export const HITS_MAX = 30
 /** The longest text of one hit. */
@@ -75,7 +75,16 @@ export const fileOf = (path: string, commit: string, text: string, from?: number
     const total = lines.length
     const start = Math.min(Math.max(Math.trunc(from ?? 1), 1), total)
     const end = Math.min(Math.max(Math.trunc(to ?? start + LINES_MAX - 1), start), start + LINES_MAX - 1, total)
-    return { path, commit, from: start, to: end, total, text: lines.slice(start - 1, end).join("\n") }
+    return {
+        path,
+        commit,
+        from: start,
+        to: end,
+        total,
+        text: lines.slice(start - 1, end).join("\n"),
+        truncated: end < total,
+        nextFrom: end < total ? end + 1 : null,
+    }
 }
 
 /** A text trimmed to one hit's size. */
@@ -113,7 +122,7 @@ export const catalogOf = (lessonId: string, tree: LessonSourceTree): McpCatalog 
 
 /** A literal, case-insensitive keyword search over texts: every term (at most 8) must appear on the line; hits in text order. */
 export const keywordHitsOf = (
-    texts: ReadonlyArray<{ readonly path: string; readonly text: string }>,
+    texts: ReadonlyArray<{ readonly path: string; readonly text: string; readonly title?: string }>,
     query: string,
 ): Array<McpSearchHit> => {
     const terms = query
@@ -129,7 +138,12 @@ export const keywordHitsOf = (
             const line = lines[index] ?? ""
             const lower = line.toLowerCase()
             if (terms.every((term) => lower.includes(term)))
-                hits.push({ path: item.path, line: index + 1, text: hitTextOf(line) })
+                hits.push({
+                    path: item.path,
+                    line: index + 1,
+                    text: hitTextOf(line),
+                    ...(item.title === undefined ? {} : { title: item.title }),
+                })
         }
         if (hits.length >= HITS_MAX) break
     }

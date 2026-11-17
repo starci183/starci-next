@@ -99,6 +99,6 @@ describe("McpHarnessService over a content checkout on disk", () => {
         rmSync(join(dir, "raw/harness/guides/claude/hooks/vi.md"))
         const third = await service.reindex()
         expect(third.scopes[0]).toMatchObject({ scope: "harness:harness:vi", embedded: 1, reused: 0, pruned: 2 })
-        expect(texts).toEqual(["Tong quan moi ve harness"])
+        expect(texts).toEqual(["harness/docs/overview · docs/overview\nTong quan moi ve harness"])
     })
 })

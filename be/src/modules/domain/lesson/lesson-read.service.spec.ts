@@ -6,6 +6,7 @@ import { ENTITLEMENT_SERVICE, type EntitlementService } from "@modules/domain/en
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { LessonErrorCode } from "./errors/lesson.error"
 import type { LessonWorkspaceVariant } from "./lesson.contracts"
+import type { LessonOpenerQuestion } from "./lesson-essential.contracts"
 import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
 import {
     SELECT_CATALOG,
@@ -274,5 +275,87 @@ describe("LessonReadService workspaceArchive", () => {
         await expect(
             none.service.workspaceArchive({ id: "x", language: "go", learnerId: LEARNER }),
         ).rejects.toMatchObject({ code: LessonErrorCode.NotFound })
+    })
+})
+
+describe("LessonReadService read", () => {
+    it("projects the live lesson as a reader with or without Premium, asking no learner", async () => {
+        const em = mockEntityManager({ query: [SELECT_PUBLISHED, [versionRowOf()]] })
+        const { service, entitlement } = await build(em)
+
+        const open = await service.read({ id: "demo-lesson", locale: "vi", isPremium: false })
+        const full = await service.read({ id: "demo-lesson", locale: "en", isPremium: true })
+
+        expect(entitlement.isPremium).not.toHaveBeenCalled()
+        expect(open.sections.map((section) => section.locked)).toEqual([false, true, true, true, true, true])
+        expect(full.sections.every((section) => !section.locked)).toBe(true)
+        await expect(
+            (await build(mockEntityManager({ query: [SELECT_PUBLISHED, []] }))).service.read({
+                id: "gone",
+                locale: "vi",
+                isPremium: true,
+            }),
+        ).rejects.toMatchObject({ code: LessonErrorCode.NotFound })
+    })
+})
+
+describe("LessonReadService openerAnswers", () => {
+    const opener = (locale: "vi" | "en"): Array<LessonOpenerQuestion> => [
+        {
+            id: "q1",
+            prompt: "Q1",
+            choices: ["a", "b"],
+            correctIndex: 1,
+            explanation: `RIGHT-${locale}`,
+            choiceExplanations: [`WRONG-${locale}`, `RIGHT-${locale}`],
+        },
+        { id: "q2", prompt: "Q2", choices: ["a", "b"], correctIndex: 0, explanation: "KEY-OF-Q2" },
+    ]
+    const rowOf = (): VersionRow => {
+        const content = demoContentOf()
+        const withOpener = (locale: "vi" | "en") => ({
+            ...content.locales[locale],
+            essential: {
+                opener: opener(locale),
+                source: null,
+                invariants: [],
+                architecture: null,
+                codeWalk: [],
+                scenarios: [],
+                challenges: [],
+            },
+        })
+        return versionRowOf({ content: { ...content, locales: { vi: withOpener("vi"), en: withOpener("en") } } })
+    }
+
+    it("releases the key of exactly the questions the caller names, in the asked locale", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [rowOf()]] }))
+
+        const answers = await service.openerAnswers({ id: "demo-lesson", locale: "en", activityIds: ["opener.q1"] })
+
+        expect(answers).toEqual([
+            {
+                questionId: "q1",
+                activityId: "opener.q1",
+                correctChoiceId: "c1",
+                explanation: "RIGHT-en",
+                choices: [
+                    { id: "c0", label: "a", isCorrect: false, explanation: "WRONG-en" },
+                    { id: "c1", label: "b", isCorrect: true, explanation: "RIGHT-en" },
+                ],
+            },
+        ])
+        expect(JSON.stringify(answers)).not.toContain("KEY-OF-Q2")
+    })
+
+    it("releases nothing when no activity is named, the lesson is not live or it has no opener", async () => {
+        const { service } = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [rowOf()]] }))
+        expect(await service.openerAnswers({ id: "demo-lesson", locale: "vi", activityIds: [] })).toEqual([])
+        const gone = await build(mockEntityManager({ query: [SELECT_PUBLISHED, []] }))
+        expect(await gone.service.openerAnswers({ id: "x", locale: "vi", activityIds: ["opener.q1"] })).toEqual([])
+        const plain = await build(mockEntityManager({ query: [SELECT_PUBLISHED, [versionRowOf()]] }))
+        expect(
+            await plain.service.openerAnswers({ id: "demo-lesson", locale: "vi", activityIds: ["opener.q1"] }),
+        ).toEqual([])
     })
 })

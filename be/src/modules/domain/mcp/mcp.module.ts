@@ -1,10 +1,7 @@
 import { Module, type DynamicModule } from "@nestjs/common"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./mcp.module-definition"
-import { LessonSourceService } from "@modules/domain/lesson"
-import { MCP_SOURCE_TREE } from "./mcp-source-tree.port"
 import { McpIndexModule } from "./mcp-index.module"
 import { McpServerFactory } from "./mcp-server.factory"
-import { McpSourceService } from "./mcp-source.service"
 import { McpTokenService } from "./mcp-token.service"
 import { McpTutorService } from "./mcp-tutor.service"
 
@@ -29,14 +26,7 @@ export class McpModule extends ConfigurableModuleClass {
                     qdrant: options.qdrant,
                 }),
             ],
-            providers: [
-                ...(base.providers ?? []),
-                McpTokenService,
-                McpSourceService,
-                McpTutorService,
-                McpServerFactory,
-                { provide: MCP_SOURCE_TREE, useExisting: LessonSourceService },
-            ],
+            providers: [...(base.providers ?? []), McpTokenService, McpTutorService, McpServerFactory],
             exports: [McpTokenService, McpTutorService, McpServerFactory],
         }
     }

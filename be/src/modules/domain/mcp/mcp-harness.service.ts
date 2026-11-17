@@ -1,8 +1,13 @@
 import { Injectable } from "@nestjs/common"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import type { LessonLocale } from "@modules/domain/lesson"
-import { chunksOf } from "./mcp-embedding.policy"
-import { HARNESS_LOCALES, harnessCorpusOf, harnessDocumentsOf, type McpHarnessDocument } from "./mcp-harness.policy"
+import {
+    HARNESS_LOCALES,
+    harnessChunksOf,
+    harnessCorpusOf,
+    harnessDocumentsOf,
+    type McpHarnessDocument,
+} from "./mcp-harness.policy"
 import { InjectMcpHarnessSource, type McpHarnessSource } from "./mcp-harness-source.port"
 import { keywordHitsOf } from "./mcp-source.policy"
 import { McpVectorIndex, type McpSyncReport } from "./mcp-vector.index"
@@ -39,7 +44,7 @@ export class McpHarnessService {
     async search(locale: LessonLocale, query: string, semantic: boolean): Promise<McpSearchResult> {
         const texts = (await this.documents()).filter((document) => document.locale === locale)
         if (semantic && this.vectors.isConfigured) {
-            const chunks = texts.flatMap((document) => chunksOf(document.path, document.text))
+            const chunks = texts.flatMap((document) => harnessChunksOf(document))
             const hits = await this.vectors.search(harnessCorpusOf(locale), chunks, query, "scope")
             if (hits !== null) return { mode: "semantic", fellBack: false, hits }
         }
@@ -54,7 +59,7 @@ export class McpHarnessService {
         for (const locale of HARNESS_LOCALES) {
             const chunks = documents
                 .filter((document) => document.locale === locale)
-                .flatMap((document) => chunksOf(document.path, document.text))
+                .flatMap((document) => harnessChunksOf(document))
             const report = await this.vectors.sync(harnessCorpusOf(locale), chunks, true)
             if (report !== null) scopes.push(report)
         }

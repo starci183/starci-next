@@ -11,6 +11,9 @@ const LESSON_ID = z
     .regex(/^[a-z0-9][a-z0-9-]{0,99}$/u)
     .describe("The lesson id, a slug such as request-response-lifecycle")
 const LOCALE = z.enum(["vi", "en"]).default("vi").describe("The language of the lesson text")
+const PART = z
+    .enum(["1-essential", "2-source", "3-scenarios", "4-apply"])
+    .describe("One part of an Essentials lesson: 1-essential, 2-source, 3-scenarios or 4-apply")
 const SLUG = z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}$/u)
 
 const one = (value: string | ReadonlyArray<string> | undefined): string =>
@@ -94,7 +97,8 @@ export class McpServerFactory {
             new ResourceTemplate("repo://{id}/{+path}", { list: undefined }),
             {
                 title: "Lesson source file",
-                description: "A file of the lesson's repository at its pinned commit (first 400 lines).",
+                description:
+                    "A file of the lesson's repository at its pinned commit (first 1000 lines; use the read_file tool to page).",
                 mimeType: "text/plain",
             },
             async (uri, variables) => ({
@@ -114,9 +118,20 @@ export class McpServerFactory {
         server.registerTool(
             "lesson",
             {
+                title: "The lesson, in full",
+                description:
+                    "The whole lesson the learner may read, in full: every readable section with its headings (the article of part 1, the source explanation and architecture of part 2, the scenarios of part 3, the apply brief of part 4), the 5-question opener (the key and the explanations appear once the learner answered a question in the app), the invariants, the code walk, the scenarios with guards, commands and expected results (a hint only after the learner's own red run), and the challenge briefs and rubrics. A locked part has no text. Pass part to read one part only (all parts together are long).",
+                inputSchema: { id: LESSON_ID, locale: LOCALE, part: PART.optional() },
+                annotations: readOnly,
+            },
+            ({ id, locale, part }) => act(() => this.tutor.lesson(learnerId, id, locale, part ?? null)),
+        )
+        server.registerTool(
+            "lesson_outline",
+            {
                 title: "Lesson outline",
                 description:
-                    "The outline of a lesson: sections (locked ones listed without text) and learning outcomes.",
+                    "The outline of a lesson: sections (locked ones listed without text), their numbers and the learning outcomes.",
                 inputSchema: { id: LESSON_ID, locale: LOCALE },
                 annotations: readOnly,
             },
@@ -137,7 +152,7 @@ export class McpServerFactory {
             {
                 title: "Search the lesson",
                 description:
-                    "Search the sections of the lesson the learner may read. Semantic by default when available, keywords otherwise.",
+                    "Search everything of the lesson the learner may read: article headings, opener questions, invariants, scenarios, code walk and challenges, in Vietnamese or English. Each hit has a path (section/<n>, scenario/<id>, opener/<id>...), a line range and its heading trail. Semantic by default when available, keywords otherwise.",
                 inputSchema: {
                     id: LESSON_ID,
                     query: z.string().min(1).max(300),
@@ -169,7 +184,7 @@ export class McpServerFactory {
             {
                 title: "Read a source file",
                 description:
-                    "Lines of a file of the lesson repository at its pinned commit (at most 400 lines per call).",
+                    "Lines of any file of the lesson repository at its pinned commit (up to 1000 lines per call; when truncated is true, ask again from nextFrom). Use list_files to see the paths.",
                 inputSchema: {
                     id: LESSON_ID,
                     path: z.string().min(1).max(300),
@@ -181,11 +196,22 @@ export class McpServerFactory {
             ({ id, path, from, to }) => act(() => this.tutor.readFile(learnerId, id, path, from, to)),
         )
         server.registerTool(
+            "list_files",
+            {
+                title: "List the source files",
+                description:
+                    "Every readable file of the lesson repository at its pinned commit with its size and line count; read any of them with read_file.",
+                inputSchema: { id: LESSON_ID },
+                annotations: readOnly,
+            },
+            ({ id }) => act(() => this.tutor.listFiles(learnerId, id)),
+        )
+        server.registerTool(
             "search_code",
             {
                 title: "Search the source",
                 description:
-                    "Search the lesson repository at its pinned commit. Semantic by default when available, keywords otherwise.",
+                    "Search the lesson repository at its pinned commit: every file is indexed by file and symbol, and a hit gives the path, the symbol and the line range to read. Semantic by default when available, keywords otherwise.",
                 inputSchema: {
                     id: LESSON_ID,
                     query: z.string().min(1).max(300),

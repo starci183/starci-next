@@ -70,11 +70,22 @@ describe("catalogOf", () => {
 })
 
 describe("fileOf", () => {
-    const text = Array.from({ length: 1000 }, (_, index) => `line ${index + 1}`).join("\n")
+    const text = Array.from({ length: 2500 }, (_, index) => `line ${index + 1}`).join("\n")
 
-    it("clamps a range to 400 lines and the file", () => {
-        expect(fileOf("a.ts", "abc1234", text, 10, 5000)).toMatchObject({ from: 10, to: 409, total: 1000 })
-        expect(fileOf("a.ts", "abc1234", text, 990, 1100)).toMatchObject({ from: 990, to: 1000 })
-        expect(fileOf("a.ts", "abc1234", text).to).toBe(400)
+    it("clamps a range to 1000 lines and the file, and says where to go on", () => {
+        expect(fileOf("a.ts", "abc1234", text, 10, 5000)).toMatchObject({
+            from: 10,
+            to: 1009,
+            total: 2500,
+            truncated: true,
+            nextFrom: 1010,
+        })
+        expect(fileOf("a.ts", "abc1234", text, 2490, 3000)).toMatchObject({
+            from: 2490,
+            to: 2500,
+            truncated: false,
+            nextFrom: null,
+        })
+        expect(fileOf("a.ts", "abc1234", text).to).toBe(1000)
     })
 })

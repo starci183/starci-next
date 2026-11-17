@@ -1,6 +1,7 @@
 import { Global, Module } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import { FakeClock, mockEntityManager } from "@starci/jest-preset"
+import { AttemptOpenerService } from "@modules/domain/attempt"
 import { LessonReadService, LessonSourceService } from "@modules/domain/lesson"
 import { RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { CLOCK } from "@modules/platform/clock"
@@ -15,6 +16,7 @@ import { McpTutorService } from "./mcp-tutor.service"
     providers: [
         { provide: LessonReadService, useValue: {} },
         { provide: LessonSourceService, useValue: {} },
+        { provide: AttemptOpenerService, useValue: {} },
         { provide: RelayDeviceService, useValue: {} },
         { provide: RelayFeedService, useValue: {} },
         { provide: CLOCK, useValue: new FakeClock("2026-11-17T00:00:00.000Z") },
@@ -23,6 +25,7 @@ import { McpTutorService } from "./mcp-tutor.service"
     exports: [
         LessonReadService,
         LessonSourceService,
+        AttemptOpenerService,
         RelayDeviceService,
         RelayFeedService,
         CLOCK,

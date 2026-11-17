@@ -1,3 +1,5 @@
+import { markdownChunksOf } from "./mcp-chunk.policy"
+import type { Chunk } from "./mcp-embedding.policy"
 import type { McpCorpus } from "./mcp-vector.index"
 import { FILE_BYTES_MAX, isBinary, readablePathOf } from "./mcp-source.policy"
 
@@ -30,6 +32,36 @@ export interface McpHarnessDocument {
 const ALLOWED =
     /^(?:raw\/)?harness\/((?:guides\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*)|(?:docs\/[a-z0-9][a-z0-9-]*))\/(vi|en)\.md$/u
 
+const SEPARATOR = /^<!-- @starci\/seperator -->[ \t]*$/mu
+const FIELD_NAME = /^\s*# ([A-Za-z][A-Za-z0-9]*)\s*$/u
+
+/**
+ * The text a learner's AI reads of a harness file. A file in the separator-field format (`# title`, the marker, the value, the
+ * marker...) is read as its title, description and body, so the sources, the status and the author never become search text; any
+ * other file is its own text.
+ */
+export const harnessTextOf = (raw: string): string => {
+    if (!SEPARATOR.test(raw)) return raw
+    const parts = raw.split(SEPARATOR)
+    const fields = new Map<string, string>()
+    for (let index = 0; index + 1 < parts.length; index += 2) {
+        const name = FIELD_NAME.exec(parts[index] ?? "")?.[1]
+        if (name !== undefined) fields.set(name, (parts[index + 1] ?? "").trim())
+    }
+    const body = fields.get("body")
+    if (body === undefined || body === "") return raw
+    return [fields.get("title") === undefined ? "" : `# ${fields.get("title")}`, fields.get("description") ?? "", body]
+        .filter((part) => part.trim() !== "")
+        .join("\n\n")
+}
+
+/** The chunks of one harness document: cut by heading, each titled by its trail and located by its path. */
+export const harnessChunksOf = (document: McpHarnessDocument): Array<Chunk> =>
+    markdownChunksOf(document.path, document.text).map((chunk) => ({
+        ...chunk,
+        context: `harness/${document.path} · ${chunk.title ?? document.path}`,
+    }))
+
 /** The document a content path names, or null for anything the index must not read (also any denied or unreadable path). */
 export const harnessDocumentOf = (file: McpHarnessFile): McpHarnessDocument | null => {
     const match = ALLOWED.exec(file.path)
@@ -38,7 +70,7 @@ export const harnessDocumentOf = (file: McpHarnessFile): McpHarnessDocument | nu
     if (id === undefined || (locale !== "vi" && locale !== "en")) return null
     if (readablePathOf(file.path) === null) return null
     if (file.text.length > FILE_BYTES_MAX || isBinary(Buffer.from(file.text.slice(0, 4096)))) return null
-    return { path: id, locale, text: file.text }
+    return { path: id, locale, text: harnessTextOf(file.text) }
 }
 
 /** The documents of a set of files, one per allowed file (the first of a path and locale wins), in path order. */

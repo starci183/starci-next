@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common"
+import { AttemptOpenerService } from "@modules/domain/attempt"
 import type { EssentialPart } from "@modules/domain/entitlement"
 import { LessonReadService, type LessonLocale, type LessonView } from "@modules/domain/lesson"
 import { RelayDeviceService, RelayFeedService, type LearnerRunEvent } from "@modules/domain/relay"
@@ -8,13 +9,15 @@ import type { McpOptions } from "./mcp.options"
 import type {
     McpConnectInfo,
     McpFile,
+    McpFileListing,
     McpInvariant,
+    McpLesson,
     McpRun,
     McpRunRequested,
     McpScenario,
     McpSearchResult,
 } from "./mcp.contracts"
-import { chunksOf } from "./mcp-embedding.policy"
+import { lessonChunksOf, lessonDocsOf, lessonOf } from "./mcp-lesson.policy"
 import { keywordHitsOf, readablePathOf } from "./mcp-source.policy"
 import { McpSourceService } from "./mcp-source.service"
 import { McpHarnessService } from "./mcp-harness.service"
@@ -81,6 +84,7 @@ export class McpTutorService {
         private readonly harness: McpHarnessService,
         private readonly devices: RelayDeviceService,
         private readonly feed: RelayFeedService,
+        private readonly openers: AttemptOpenerService,
         @InjectMcpOptions() private readonly options: McpOptions,
     ) {}
 
@@ -108,6 +112,38 @@ export class McpTutorService {
         }
     }
 
+    /**
+     * The whole lesson as the learner may read it, or one part of it: every readable section in full with its headings, the opener
+     * (with the key and the explanations of the questions the learner already answered in the app), the invariants, the code walk,
+     * the scenarios (a hint only after the learner's own red run of that scenario) and the challenge briefs and rubrics. A locked
+     * part has no text; asking for it is MCP_PREMIUM_REQUIRED.
+     */
+    async lesson(learnerId: string, id: string, locale: LessonLocale, part: EssentialPart | null): Promise<McpLesson> {
+        const view = await this.view(learnerId, id, locale)
+        if (part !== null && view.essential?.lockedParts.includes(part) === true)
+            throw new McpError({ code: McpErrorCode.PremiumRequired })
+        const showsOpener = part === null || part === "1-essential"
+        const showsScenarios = part === null || part === "3-scenarios"
+        const answered =
+            showsOpener && (view.essential?.opener.length ?? 0) > 0
+                ? ((await this.openers.scores({ learnerId, lessonIds: [id] }))[0]?.questions ?? []).map(
+                      (question) => question.activityId,
+                  )
+                : []
+        const answers =
+            answered.length === 0 ? [] : await this.lessons.openerAnswers({ id, locale, activityIds: answered })
+        const red = new Set<string>()
+        if (showsScenarios && (view.essential?.scenarios.length ?? 0) > 0) {
+            const seen = new Set<string>()
+            for (const event of await this.feed.runEvents(learnerId, taskOf(id))) {
+                if (event.kind !== "check.result" || seen.has(event.checkId)) continue
+                seen.add(event.checkId)
+                if (event.passed === false) red.add(event.checkId)
+            }
+        }
+        return lessonOf(view, { part, answers, redScenarios: red })
+    }
+
     /** One section by its 1-based number; a locked one is MCP_PREMIUM_REQUIRED, never its text. */
     async section(learnerId: string, id: string, n: number, locale: LessonLocale): Promise<McpSection> {
         const view = await this.view(learnerId, id, locale)
@@ -123,12 +159,17 @@ export class McpTutorService {
         return this.source.read(id, path, from, to)
     }
 
+    /** The readable files of the lesson repository with their sizes, so the AI can browse and then read any of them. */
+    async listFiles(learnerId: string, id: string): Promise<McpFileListing> {
+        await this.requirePart(learnerId, id, "2-source")
+        return this.source.list(id)
+    }
+
     /** A search over the lesson repository: semantic when asked and available, keywords otherwise. */
     async searchCode(learnerId: string, id: string, query: string, semantic: boolean): Promise<McpSearchResult> {
         await this.requirePart(learnerId, id, "2-source")
         if (semantic && this.vectors.isConfigured) {
-            const texts = await this.source.texts(id)
-            const chunks = texts.flatMap((file) => chunksOf(file.path, file.text))
+            const chunks = await this.source.chunks(id)
             const hits = await this.vectors.search(
                 { scope: { kind: "code", sourceId: id, locale: "und" }, access: "premium", readable: ["premium"] },
                 chunks,
@@ -148,11 +189,9 @@ export class McpTutorService {
         semantic: boolean,
     ): Promise<McpSearchResult> {
         const view = await this.view(learnerId, id, locale)
-        const unlocked = view.sections.flatMap((section, index) =>
-            section.locked || section.body === null ? [] : [{ path: `section/${index + 1}`, text: section.body }],
-        )
+        const docs = lessonDocsOf(view)
         if (semantic && this.vectors.isConfigured) {
-            const chunks = unlocked.flatMap((section) => chunksOf(section.path, section.text))
+            const chunks = lessonChunksOf(id, docs)
             const hits = await this.vectors.search(
                 {
                     scope: { kind: "lesson", sourceId: id, locale },
@@ -164,7 +203,7 @@ export class McpTutorService {
             )
             if (hits !== null) return { mode: "semantic", fellBack: false, hits }
         }
-        return { mode: "keyword", fellBack: semantic, hits: keywordHitsOf(unlocked, query) }
+        return { mode: "keyword", fellBack: semantic, hits: keywordHitsOf(docs, query) }
     }
 
     /** A search over the harness guides and docs: free to every learner with a token, no entitlement asked. */

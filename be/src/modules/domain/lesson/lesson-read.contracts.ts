@@ -248,6 +248,52 @@ export interface LessonLookupParams {
     readonly learnerId: string
 }
 
+/** A lesson to read as a reader with or without Premium would, without a learner. */
+export interface LessonReadParams {
+    /** The lesson id. */
+    readonly id: string
+    /** The locale of the text. */
+    readonly locale: LessonLocale
+    /** Whether the reader holds Premium. */
+    readonly isPremium: boolean
+}
+
+/** The opener answers to release: which activities the learner already submitted. */
+export interface LessonOpenerAnswersParams {
+    /** The lesson id. */
+    readonly id: string
+    /** The locale of the text. */
+    readonly locale: LessonLocale
+    /** The activity ids (`opener.<question id>`) the learner answered. */
+    readonly activityIds: ReadonlyArray<string>
+}
+
+/** One choice of an answered opener question with its correctness and explanation. */
+export interface LessonOpenerChoiceAnswerView {
+    /** The choice id. */
+    readonly id: string
+    /** The choice text. */
+    readonly label: string
+    /** Whether it is the right choice. */
+    readonly isCorrect: boolean
+    /** Why it is right or wrong. */
+    readonly explanation: string
+}
+
+/** The released answer of one opener question the learner submitted. */
+export interface LessonOpenerAnswerView {
+    /** The question id. */
+    readonly questionId: string
+    /** The activity id. */
+    readonly activityId: string
+    /** The id of the right choice. */
+    readonly correctChoiceId: string
+    /** Why the right choice is right. */
+    readonly explanation: string
+    /** Every choice with its explanation. */
+    readonly choices: ReadonlyArray<LessonOpenerChoiceAnswerView>
+}
+
 /** The stored activity the grading side asks for, in one locale, with its answers and rubric. */
 export interface LessonActivityParams {
     /** The lesson id. */

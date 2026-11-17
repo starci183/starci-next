@@ -17,8 +17,12 @@ import type {
     LessonCatalogFilter,
     LessonCatalogItemView,
     LessonLookupParams,
+    LessonOpenerAnswersParams,
+    LessonOpenerAnswerView,
+    LessonReadParams,
     LessonView,
 } from "./lesson-read.contracts"
+import { choiceOptionId, openerActivityId } from "./lesson-essential.contracts"
 import { workspaceVariantOf } from "./lesson-workspace.policy"
 import { workspaceEntriesOf, zipOf } from "./workspace-archive.policy"
 import { toTopicView } from "./lesson-topic.mapper"
@@ -59,6 +63,45 @@ export class LessonReadService {
         if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
         const isPremium = await this.entitlement.isPremium(params.learnerId)
         return toLessonView(row, params.locale, isPremium, this.entitlement.openEssentialParts(isPremium))
+    }
+
+    /**
+     * The projection of the live version of a lesson as a reader with or without Premium would see it, for a reader that is not a
+     * learner (the semantic index): the same allowlist and the same part gating as `find`, only the entitlement is given.
+     */
+    async read(params: LessonReadParams): Promise<LessonView> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [params.id])
+        const row = rows[0]
+        if (row === undefined) throw new LessonError({ code: LessonErrorCode.NotFound })
+        return toLessonView(row, params.locale, params.isPremium, this.entitlement.openEssentialParts(params.isPremium))
+    }
+
+    /**
+     * The answer key of the opener questions the caller names, released after the learner submitted them (the same release the
+     * submit makes): the right choice and the explanation of every choice. A question the caller does not name, and every
+     * question of a lesson without an opener, has no entry. The caller names only the activities the learner answered.
+     */
+    async openerAnswers(params: LessonOpenerAnswersParams): Promise<ReadonlyArray<LessonOpenerAnswerView>> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [params.id])
+        const opener = rows[0]?.content.locales[params.locale].essential?.opener ?? []
+        return opener.flatMap((question) =>
+            params.activityIds.includes(openerActivityId(question.id))
+                ? [
+                      {
+                          questionId: question.id,
+                          activityId: openerActivityId(question.id),
+                          correctChoiceId: choiceOptionId(question.correctIndex),
+                          explanation: question.explanation,
+                          choices: question.choices.map((label, index) => ({
+                              id: choiceOptionId(index),
+                              label,
+                              isCorrect: index === question.correctIndex,
+                              explanation: question.choiceExplanations?.[index] ?? "",
+                          })),
+                      },
+                  ]
+                : [],
+        )
     }
 
     /**

@@ -7,6 +7,11 @@ import type { McpIndexOptions } from "./mcp-index.options"
 
 /** The most texts one embeddings call carries. */
 const BATCH_TEXTS = 16
+/**
+ * The most characters one embeddings call carries: the router sizes a call at a quarter of its characters in tokens and refuses
+ * one above the 4096-token window of the model, so a batch of long chunks is cut by size as well as by count.
+ */
+const BATCH_CHARS = 12_000
 /** The pinned profile of the embeddings space: the model never changes under the index. */
 const PROFILE = "local-embed"
 
@@ -14,6 +19,23 @@ const PROFILE = "local-embed"
 export const localBaseUrlOf = (url: string): string => {
     const root = url.replace(/\/+$/u, "")
     return root.endsWith("/v1") ? root : `${root}/v1`
+}
+
+/** Cuts the texts, in order, into batches of at most `BATCH_TEXTS` texts and `BATCH_CHARS` characters (a longer text goes alone). */
+export const batchesOf = (texts: ReadonlyArray<string>): Array<Array<string>> => {
+    const batches: Array<Array<string>> = []
+    let size = 0
+    for (const text of texts) {
+        const last = batches[batches.length - 1]
+        if (last === undefined || last.length >= BATCH_TEXTS || size + text.length > BATCH_CHARS) {
+            batches.push([text])
+            size = text.length
+        } else {
+            last.push(text)
+            size += text.length
+        }
+    }
+    return batches
 }
 
 @Injectable()
@@ -25,12 +47,14 @@ export const localBaseUrlOf = (url: string): string => {
 export class McpRouterEmbedder implements McpEmbedder {
     readonly isConfigured: boolean
     readonly model: string
+    private readonly modelName: string
     private readonly router: ReturnType<typeof createRouter> | null
 
     constructor(@InjectMcpIndexOptions() options: McpIndexOptions) {
         const embed = options.embed
         this.isConfigured = embed !== null
-        this.model = `${embed?.model ?? "off"}/${EMBEDDING_DIMENSIONS}`
+        this.modelName = embed?.model ?? "off"
+        this.model = `${this.modelName}/${EMBEDDING_DIMENSIONS}`
         this.router =
             embed === null
                 ? null
@@ -56,9 +80,12 @@ export class McpRouterEmbedder implements McpEmbedder {
         if (this.router === null) return null
         const vectors: Array<Array<number>> = []
         try {
-            for (let start = 0; start < texts.length; start += BATCH_TEXTS) {
-                const batch = texts.slice(start, start + BATCH_TEXTS)
-                const { data } = await this.router.embeddings({ model: PROFILE, input: batch })
+            for (const batch of batchesOf(texts)) {
+                // The request names the model; the pinned profile keeps every call on that one model space and its provider.
+                const { data } = await this.router.embeddings(
+                    { model: this.modelName, input: batch },
+                    { profile: PROFILE },
+                )
                 const ordered = [...data].sort((a, b) => a.index - b.index)
                 if (ordered.length !== batch.length) return null
                 for (const item of ordered) {

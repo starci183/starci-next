@@ -2,7 +2,9 @@ import { Injectable } from "@nestjs/common"
 import type { LessonSourceTree } from "@modules/domain/lesson"
 import { McpError, McpErrorCode } from "./errors/mcp.error"
 import { InjectMcpSourceTree, type McpSourceTree } from "./mcp-source-tree.port"
-import type { McpCatalog, McpFile, McpSearchHit } from "./mcp.contracts"
+import type { McpCatalog, McpFile, McpFileListing, McpSearchHit } from "./mcp.contracts"
+import { codeChunksOf, isSearchNoise } from "./mcp-chunk.policy"
+import type { Chunk } from "./mcp-embedding.policy"
 import {
     FILE_BYTES_MAX,
     HITS_MAX,
@@ -49,6 +51,23 @@ export class McpSourceService {
         return fileOf(safe, tree.commit, file.text, from, to)
     }
 
+    /** The readable files of the source with their sizes: the listing a learner's AI browses before it reads one. */
+    async list(lessonId: string): Promise<McpFileListing> {
+        const tree = await this.treeOf(lessonId)
+        const files = (await this.texts(lessonId)).map((file) => ({
+            path: file.path,
+            bytes: file.text.length,
+            lines: file.text.split(/\r?\n/u).length,
+            searchable: !isSearchNoise(file.path),
+        }))
+        return { commit: tree.commit, files }
+    }
+
+    /** The chunks of every searchable file, by file and symbol, each with its path, its symbol and its line range. */
+    async chunks(lessonId: string): Promise<Array<Chunk>> {
+        return (await this.texts(lessonId)).flatMap((file) => codeChunksOf(file.path, file.text))
+    }
+
     /** Every readable text file of the source, in path order, bounded in count and size. */
     async texts(lessonId: string): Promise<ReadonlyArray<SourceText>> {
         const tree = await this.treeOf(lessonId)
@@ -72,7 +91,7 @@ export class McpSourceService {
             .slice(0, 8)
         if (terms.length === 0) return []
         const hits: Array<McpSearchHit> = []
-        for (const file of await this.texts(lessonId)) {
+        for (const file of (await this.texts(lessonId)).filter((item) => !isSearchNoise(item.path))) {
             const lines = file.text.split(/\r?\n/u)
             for (let index = 0; index < lines.length && hits.length < HITS_MAX; index += 1) {
                 const line = lines[index] ?? ""

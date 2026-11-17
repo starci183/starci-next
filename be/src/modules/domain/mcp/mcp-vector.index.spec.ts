@@ -133,3 +133,27 @@ describe("McpVectorIndex", () => {
         ).toBeNull()
     })
 })
+
+describe("McpVectorIndex per-chunk access", () => {
+    it("writes each chunk under its own access class and embeds the locating line with the text", async () => {
+        const { embedder, calls } = embedderOf()
+        const index = new McpVectorIndex(embedder, new McpMemoryVectorStore())
+        const open: Chunk = {
+            path: "section/1",
+            line: 1,
+            lineEnd: 3,
+            title: "Open",
+            context: "l/section/1 · Open",
+            text: "free words",
+            access: "free",
+        }
+        const closed: Chunk = { path: "section/2", line: 1, lineEnd: 2, text: "premium words" }
+        await index.sync(corpus("s", "premium"), [open, closed], false)
+        expect(calls[0]).toEqual(["l/section/1 · Open\nfree words", "premium words"])
+
+        // A free reader sees the free chunk the batch wrote and not the premium one, and the hit says where it is.
+        const hits = await index.search(corpus("s", "free"), [open], "words")
+        expect(hits?.map((hit) => hit.path)).toEqual(["section/1"])
+        expect(hits?.[0]).toMatchObject({ line: 1, endLine: 3, title: "Open" })
+    })
+})

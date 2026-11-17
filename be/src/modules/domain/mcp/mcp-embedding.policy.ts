@@ -15,9 +15,24 @@ export interface Chunk {
     readonly path: string
     /** The 1-based first line of the chunk. */
     readonly line: number
+    /** The 1-based last line of the chunk; absent for a chunk that is not a span of a text. */
+    readonly lineEnd?: number
+    /** The heading trail or the symbol the chunk sits under (`2 Source > 2.1 Outbox`, `class Relay`), or null. */
+    readonly title?: string | null
+    /** A line that locates the chunk for the embedder (path and title); it is embedded with the text and never returned. */
+    readonly context?: string | null
+    /** The access class of the chunk when it differs from its corpus (a free part inside a Premium corpus). */
+    readonly access?: "free" | "premium"
     /** The text. */
     readonly text: string
 }
+
+/** What the embedder reads for a chunk: its locating line and its text. */
+export const embedTextOf = (chunk: Chunk): string =>
+    chunk.context === undefined || chunk.context === null || chunk.context === ""
+        ? chunk.text
+        : `${chunk.context}
+${chunk.text}`
 
 /**
  * The first `EMBEDDING_DIMENSIONS` values of a model vector, scaled to unit length (MRL truncation, then L2 normalisation), so
@@ -47,7 +62,8 @@ export const chunksOf = (path: string, text: string): Array<Chunk> => {
             .slice(start, start + CHUNK_LINES)
             .join("\n")
             .slice(0, CHUNK_CHARS)
-        if (body.trim().length > 0) chunks.push({ path, line: start + 1, text: body })
+        if (body.trim().length > 0)
+            chunks.push({ path, line: start + 1, lineEnd: Math.min(start + CHUNK_LINES, lines.length), text: body })
         if (start + CHUNK_LINES >= lines.length) break
     }
     return chunks

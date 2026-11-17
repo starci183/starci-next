@@ -78,9 +78,14 @@ export type { LessonTopicView } from "./lesson-topic-view.contracts"
 export type {
     LessonActivityParams,
     LessonArchiveView,
+    LessonCatalogFilter,
     LessonCatalogItemView,
+    LessonOpenerAnswersParams,
+    LessonOpenerAnswerView,
+    LessonOpenerChoiceAnswerView,
     LessonOutline,
     LessonOutlineActivity,
     LessonPlan,
+    LessonReadParams,
     LessonView,
 } from "./lesson-read.contracts"

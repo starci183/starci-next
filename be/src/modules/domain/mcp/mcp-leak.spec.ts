@@ -1,17 +1,16 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js"
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js"
-import {
-    lessonSourceTreeOf,
-    type LessonReadService,
-    type LessonSourceTree,
-    type LessonView,
-} from "@modules/domain/lesson"
+import { LessonReadService, lessonSourceTreeOf, type LessonSourceTree } from "@modules/domain/lesson"
+import type { AttemptOpenerService } from "@modules/domain/attempt"
+import { ESSENTIAL_PARTS } from "@modules/domain/entitlement"
+import type { VersionRow } from "@modules/domain/lesson/persistence/lesson.rows"
 import type { LearnerRunEvent, RelayDeviceService, RelayFeedService } from "@modules/domain/relay"
 import { McpErrorCode } from "./errors/mcp.error"
 import { FakeClock } from "@starci/jest-preset"
 import type { McpEmbedder } from "./mcp-embedder.port"
 import type { McpHarnessFile } from "./mcp-harness.policy"
 import { McpHarnessService } from "./mcp-harness.service"
+import { McpLessonIndexService } from "./mcp-lesson-index.service"
 import { McpMemoryVectorStore } from "./mcp-memory.vector-store"
 import { McpServerFactory } from "./mcp-server.factory"
 import type { McpSourceTree } from "./mcp-source-tree.port"
@@ -31,10 +30,10 @@ const SECRETS = [
     "TEACHERONLYSECRET",
     "OUTSIDESECRET",
     "DEPENDENCYSECRET",
-    "HINTSECRET",
-    "EXPECTEDEVIDENCESECRET",
     "HIDDENSCENARIOSECRET",
-    "LOCKEDSECTIONSECRET",
+    "ESSENCEKEYSECRET",
+    "UNANSWEREDKEYSECRET",
+    "SOLUTIONSECRET",
     "HARNESSBUILDSECRET",
     "HARNESSTRAPSECRET",
     "HARNESSDOCTORSECRET",
@@ -96,17 +95,17 @@ const content = {
                         title: "Double spend",
                         fault: "a retry applies the transfer twice",
                         command: "npm run double-spend",
-                        expected: "EXPECTEDEVIDENCESECRET",
+                        expected: "CATALOGMUSTNOTREADEXPECTED",
                         invariant: "C2",
                         guards: [{ name: "idempotency", env: "IDEMPOTENCY", off: "off" }],
-                        hint: "HINTSECRET",
+                        hint: "CATALOGMUSTNOTREADHINT",
                     },
                     {
                         id: "lost-update",
                         title: "Lost update",
                         fault: "two writers",
                         command: "npm run lost-update",
-                        expected: "EXPECTEDEVIDENCESECRET",
+                        expected: "CATALOGMUSTNOTREADEXPECTED",
                         invariant: "C3",
                         guards: [],
                     },
@@ -145,36 +144,149 @@ const treeOf = (): LessonSourceTree => {
     return tree
 }
 
-const view = (isPremium: boolean): LessonView =>
-    ({
-        id: LESSON,
-        version: "v1",
-        locale: "vi",
-        title: "Chuyen tien",
+/** Words only a Premium reader may ever see: the body of the parts the free reader does not open. */
+const PREMIUM_ONLY = [
+    "PREMIUMSOURCETEXT",
+    "PREMIUMSCENARIOTEXT",
+    "PREMIUMAPPLYTEXT",
+    "SCENARIOEXPECTEDTEXT",
+    "BRIEFVISIBLE",
+]
+
+/** The stored version of the lesson as the importer leaves it, with the key, the hint and the hidden parts a page never sends. */
+const storedRow = (): VersionRow => {
+    const document = (locale: "vi" | "en") => ({
+        title: locale === "vi" ? "Chuyen tien" : "Transfer",
         description: "desc",
-        isPremium,
+        body: "overview OVERVIEWTEXT",
         learningOutcomes: [{ id: "o1", text: "Hieu luat" }],
+        prerequisites: [],
+        references: [],
+        retrieval: [],
         sections: [
             {
-                id: "s1",
+                id: "1-essential",
+                title: "Ban chat",
+                phase: "explain",
                 sortIndex: 1,
-                phase: "challenge",
-                title: "Mo dau",
-                locked: false,
-                body: "Chuyen tien phai ap dung mot lan UNLOCKEDTEXT",
-                activities: [],
+                body: "# Ban chat\n\nChuyen tien phai ap dung mot lan UNLOCKEDTEXT\n\n## Ly do\n\nVi sao UNLOCKEDTEXT quan trong",
             },
             {
-                id: "s2",
+                id: "2-source",
+                title: "Source",
+                phase: "explore",
                 sortIndex: 2,
-                phase: "explain",
-                title: "Ban chat",
-                locked: !isPremium,
-                body: isPremium ? "Ban chat day du UNLOCKEDTEXT premium" : null,
-                activities: [],
+                body: "# Source\n\nPREMIUMSOURCETEXT idempotency key",
+            },
+            {
+                id: "3-scenarios",
+                title: "Kich ban",
+                phase: "apply",
+                sortIndex: 3,
+                body: "# Kich ban\n\nPREMIUMSCENARIOTEXT",
+            },
+            {
+                id: "4-apply",
+                title: "Tu ap dung",
+                phase: "reflect",
+                sortIndex: 4,
+                body: "# Tu ap dung\n\nPREMIUMAPPLYTEXT",
             },
         ],
-    }) as unknown as LessonView
+        essential: {
+            opener: [
+                {
+                    id: "q1",
+                    prompt: "Vi sao can idempotency key?",
+                    choices: ["Nhanh hon", "Mot lenh hai lan chi co mot tac dung"],
+                    correctIndex: 1,
+                    explanation: "ANSWEREDKEYTEXT dung vi khoa idempotency",
+                    choiceExplanations: ["ANSWEREDWRONGTEXT sai", "ANSWEREDKEYTEXT dung"],
+                    sectionId: "1-essential",
+                },
+                {
+                    id: "q2",
+                    prompt: "Outbox giu gi?",
+                    choices: ["Ban ghi cung giao dich", "Cache"],
+                    correctIndex: 0,
+                    explanation: "UNANSWEREDKEYSECRET outbox cung giao dich",
+                    choiceExplanations: ["UNANSWEREDKEYSECRET a", "UNANSWEREDKEYSECRET b"],
+                    sectionId: "1-essential",
+                },
+            ],
+            source: { langs: ["typescript"] },
+            invariants: [{ id: "C2", text: "A transfer applies once" }],
+            architecture: null,
+            codeWalk: [],
+            scenarios: [
+                {
+                    id: "double-spend",
+                    title: "Double spend",
+                    fault: "a retry applies the transfer twice",
+                    brief: "retry",
+                    command: "npm run double-spend",
+                    expected: "SCENARIOEXPECTEDTEXT balance stays 100",
+                    invariant: "C2",
+                    concepts: [],
+                    guards: [{ name: "idempotency", env: "IDEMPOTENCY", off: "off" }],
+                    hint: "HINTAFTERRED look at the key",
+                },
+            ],
+            challenges: [
+                {
+                    id: "easy",
+                    level: "easy",
+                    title: "Easy",
+                    brief: "BRIEFVISIBLE write the key",
+                    rubric: [{ id: "r1", criterion: "RUBRICVISIBLE keys the retry", points: 100 }],
+                    hidden: [
+                        {
+                            id: "easy-hidden",
+                            title: "HIDDENSCENARIOSECRET",
+                            brief: "HIDDENSCENARIOSECRET",
+                            concepts: [],
+                            command: "npm test",
+                            files: [
+                                { path: "tests/h.ts", from: "hidden/h.ts", content: "HIDDENTESTSECRET SOLUTIONSECRET" },
+                            ],
+                        },
+                    ],
+                    questions: [
+                        {
+                            id: "e1",
+                            prompt: "Essence?",
+                            choices: ["x", "y"],
+                            correctIndex: 1,
+                            explanation: "ESSENCEKEYSECRET",
+                        },
+                    ],
+                },
+            ],
+        },
+    })
+    return {
+        lesson_id: LESSON,
+        version: COMMIT,
+        category: "backend",
+        lesson_group: "core",
+        topic: "api-reliability",
+        topic_title: "API reliability",
+        difficulty: "intermediate",
+        minutes_read: 30,
+        implementation: "typescript",
+        content: { locales: { vi: document("vi"), en: document("en") }, workspace: null, files: [] },
+    } as unknown as VersionRow
+}
+
+/** The real lesson read over the stored version: the same projection, part gating and answer release the app serves. */
+const lessonsOf = (isPremium: boolean): LessonReadService =>
+    new LessonReadService(
+        { query: jest.fn().mockResolvedValue([storedRow()]) } as never,
+        {
+            isPremium: jest.fn().mockResolvedValue(isPremium),
+            openEssentialParts: (premium: boolean) => (premium ? ESSENTIAL_PARTS : ["1-essential"]),
+        } as never,
+    )
 
 const event = (partial: Partial<LearnerRunEvent>): LearnerRunEvent => ({
     runId: "r1",
@@ -194,7 +306,11 @@ interface Build {
     readonly factory: McpServerFactory
     readonly feed: { scenarioManifest: jest.Mock; runEvents: jest.Mock }
     readonly devices: { devices: jest.Mock }
-    readonly lessons: { find: jest.Mock }
+    readonly lessons: { find: jest.SpyInstance }
+    readonly vectors: McpVectorIndex
+    readonly source: McpSourceService
+    readonly openers: { scores: jest.Mock }
+    readonly index: McpLessonIndexService
 }
 
 const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree | null = treeOf()): Build => {
@@ -209,7 +325,9 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
             return embedder.embed(texts)
         },
     }
-    const lessons = { find: jest.fn().mockResolvedValue(view(isPremium)) }
+    const real = lessonsOf(isPremium)
+    const lessons = { find: jest.spyOn(real, "find") }
+    const openers = { scores: jest.fn().mockResolvedValue([{ lessonId: LESSON, questions: [] }]) }
     const devices = { devices: jest.fn().mockResolvedValue([{ id: "d1", name: "laptop", online: true }]) }
     const feed = {
         scenarioManifest: jest
@@ -225,9 +343,10 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
         runEvents: jest.fn().mockResolvedValue([]),
     }
     const vectors = new McpVectorIndex(recording, new McpMemoryVectorStore())
+    const source = new McpSourceService(trees)
     const tutor = new McpTutorService(
-        lessons as unknown as LessonReadService,
-        new McpSourceService(trees),
+        real,
+        source,
         vectors,
         new McpHarnessService(
             { files: () => Promise.resolve(HARNESS_FILES) },
@@ -236,9 +355,21 @@ const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree
         ),
         devices as unknown as RelayDeviceService,
         feed as unknown as RelayFeedService,
+        openers as unknown as AttemptOpenerService,
         options,
     )
-    return { embeddedTexts, tutor, factory: new McpServerFactory(tutor), feed, devices, lessons }
+    return {
+        embeddedTexts,
+        tutor,
+        factory: new McpServerFactory(tutor),
+        feed,
+        devices,
+        lessons,
+        vectors,
+        source,
+        openers,
+        index: new McpLessonIndexService(real, source, vectors),
+    }
 }
 
 const offline: McpEmbedder = { isConfigured: false, model: "off", embed: () => Promise.resolve(null) }
@@ -268,6 +399,13 @@ const connect = async (factory: McpServerFactory): Promise<Client> => {
 const assertClean = (value: unknown): void => {
     const text = JSON.stringify(value)
     for (const secret of SECRETS) expect(text).not.toContain(secret)
+}
+
+/** What a free reader gets holds nothing of the parts only Premium opens. */
+const assertFree = (value: unknown): void => {
+    assertClean(value)
+    const text = JSON.stringify(value)
+    for (const word of PREMIUM_ONLY) expect(text).not.toContain(word)
 }
 
 describe("the MCP never leaks what a learner AI may not read", () => {
@@ -398,7 +536,8 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             code: McpErrorCode.PremiumRequired,
         })
         const outline = await built.tutor.outline(LEARNER, LESSON, "vi")
-        expect(outline.sections.map((section) => section.locked)).toEqual([false, true])
+        assertFree(outline)
+        expect(outline.sections.map((section) => section.locked)).toEqual([false, true, true, true])
         expect(JSON.stringify(outline)).not.toContain("UNLOCKEDTEXT")
         expect((await built.tutor.section(LEARNER, LESSON, 1, "vi")).body).toContain("UNLOCKEDTEXT")
         assertClean(outline)
@@ -458,7 +597,9 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             [
                 "invariants",
                 "lesson",
+                "lesson_outline",
                 "lesson_section",
+                "list_files",
                 "list_scenarios",
                 "my_runs",
                 "read_file",
@@ -491,6 +632,153 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         const file = await client.readResource({ uri: `repo://${LESSON}/src/ledger.ts` })
         expect(JSON.stringify(file)).toContain("idempotency key")
         await client.close()
+    })
+
+    it("returns the whole lesson to a Premium reader and only Bản chất to a free one, never a key before the learner answered", async () => {
+        const premium = await make(true, offline)
+        const full = await premium.tutor.lesson(LEARNER, LESSON, "vi", null)
+        assertClean(full)
+        expect(full.lockedParts).toEqual([])
+        expect(full.sections.map((section) => section.part)).toEqual(ESSENTIAL_PARTS)
+        expect(full.sections[0]?.body).toContain("UNLOCKEDTEXT")
+        expect(full.sections[0]?.headings.map((heading) => heading.title)).toEqual(["Ban chat", "Ly do"])
+        expect(full.sections[1]?.body).toContain("PREMIUMSOURCETEXT")
+        expect(full.invariants).toEqual([{ id: "C2", text: "A transfer applies once" }])
+        expect(full.scenarios[0]).toMatchObject({ id: "double-spend", guards: ["idempotency"], hint: null })
+        expect(full.scenarios[0]?.expected).toContain("SCENARIOEXPECTEDTEXT")
+        expect(full.challenges[0]).toMatchObject({ id: "easy", hiddenScenarios: 1 })
+        expect(full.challenges[0]?.rubric[0]?.criterion).toContain("RUBRICVISIBLE")
+        // The opener questions are listed with their choices and no key until the learner answered them in the app.
+        expect(full.opener.map((question) => [question.id, question.answered, question.answer])).toEqual([
+            ["q1", false, null],
+            ["q2", false, null],
+        ])
+        expect(JSON.stringify(full.opener)).not.toContain("ANSWEREDKEYTEXT")
+
+        const part = await premium.tutor.lesson(LEARNER, LESSON, "vi", "3-scenarios")
+        expect(part.sections.map((section) => section.id)).toEqual(["3-scenarios"])
+        expect(part.opener).toEqual([])
+        expect(part.scenarios).toHaveLength(1)
+
+        const free = await make(false, offline)
+        const open = await free.tutor.lesson(LEARNER, LESSON, "vi", null)
+        assertFree(open)
+        expect(open.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply"])
+        expect(open.sections.map((section) => section.body === null)).toEqual([false, true, true, true])
+        expect(open.scenarios).toEqual([])
+        expect(open.challenges).toEqual([])
+        await expect(free.tutor.lesson(LEARNER, LESSON, "vi", "2-source")).rejects.toMatchObject({
+            code: McpErrorCode.PremiumRequired,
+        })
+    })
+
+    it("releases the key and the explanations of an opener question only after the learner answered it", async () => {
+        const free = await make(false, offline)
+        free.openers.scores.mockResolvedValue([
+            {
+                lessonId: LESSON,
+                questions: [{ activityId: "opener.q1", firstCorrect: true, latestCorrect: true, attempts: 1 }],
+            },
+        ])
+        const lesson = await free.tutor.lesson(LEARNER, LESSON, "vi", null)
+        const [answered, open] = lesson.opener
+        expect(answered).toMatchObject({ id: "q1", answered: true, answer: { correctChoiceId: "c1" } })
+        expect(answered?.choices.map((choice) => choice.isCorrect)).toEqual([false, true])
+        expect(JSON.stringify(answered)).toContain("ANSWEREDKEYTEXT")
+        expect(open).toMatchObject({ id: "q2", answered: false, answer: null })
+        expect(JSON.stringify(open)).not.toContain("isCorrect")
+        assertFree(lesson)
+    })
+
+    it("shows a scenario hint only after the learner's own red run of that scenario", async () => {
+        const premium = await make(true, offline)
+        expect((await premium.tutor.lesson(LEARNER, LESSON, "vi", null)).scenarios[0]?.hint).toBeNull()
+        premium.feed.runEvents.mockResolvedValue([event({ passed: true }), event({ passed: false, runId: "r0" })])
+        expect((await premium.tutor.lesson(LEARNER, LESSON, "vi", null)).scenarios[0]?.hint).toBeNull()
+        premium.feed.runEvents.mockResolvedValue([event({ passed: false })])
+        expect((await premium.tutor.lesson(LEARNER, LESSON, "vi", null)).scenarios[0]?.hint).toContain("HINTAFTERRED")
+    })
+
+    it("lists every readable source file with its size and reads each of them in pages", async () => {
+        const { tutor } = await make(true, offline)
+        const listing = await tutor.listFiles(LEARNER, LESSON)
+        expect(listing.commit).toBe(COMMIT)
+        expect(listing.files.map((file) => file.path)).toEqual(["src/ledger.ts"])
+        assertClean(listing)
+        const free = await make(false, offline)
+        await expect(free.tutor.listFiles(LEARNER, LESSON)).rejects.toMatchObject({
+            code: McpErrorCode.PremiumRequired,
+        })
+    })
+
+    it("indexes both locales and the code in a batch, free chunks readable by a free reader and Premium chunks only by Premium", async () => {
+        const store = new McpMemoryVectorStore()
+        const make2 = (isPremium: boolean) => {
+            const base = build(isPremium, letters)
+            // The batch and the readers share one vector store, as the app does.
+            const vectors = new McpVectorIndex(letters, store)
+            return { ...base, vectors, index: new McpLessonIndexService(lessonsOf(true), base.source, vectors) }
+        }
+        const batch = make2(true)
+        const catalog = jest.spyOn(LessonReadService.prototype, "catalog").mockResolvedValue([{ id: LESSON } as never])
+        const report = await batch.index.reindex()
+        catalog.mockRestore()
+        expect(report.lessons).toBe(1)
+        expect(report.scopes.map((scope) => scope.scope).sort()).toEqual([
+            "code:bank-transfer:und",
+            "lesson:bank-transfer:en",
+            "lesson:bank-transfer:vi",
+        ])
+        expect(report.scopes.every((scope) => scope.embedded > 0)).toBe(true)
+        // A second run embeds nothing: the hashes are stored.
+        const again = new McpLessonIndexService(lessonsOf(true), batch.source, new McpVectorIndex(letters, store))
+        jest.spyOn(LessonReadService.prototype, "catalog").mockResolvedValue([{ id: LESSON } as never])
+        expect((await again.reindex()).scopes.every((scope) => scope.embedded === 0)).toBe(true)
+        jest.restoreAllMocks()
+
+        // A free reader's search over the shared store sees the free part and not one word of the Premium parts.
+        const freeReader = build(false, letters)
+        const freeTutor = new McpTutorService(
+            lessonsOf(false),
+            new McpSourceService({ tree: () => Promise.resolve(treeOf()) }),
+            new McpVectorIndex(letters, store),
+            new McpHarnessService(
+                { files: () => Promise.resolve([]) },
+                new McpVectorIndex(letters, store),
+                new FakeClock("2026-11-17T00:00:00.000Z"),
+            ),
+            freeReader.devices as unknown as RelayDeviceService,
+            freeReader.feed as unknown as RelayFeedService,
+            freeReader.openers as unknown as AttemptOpenerService,
+            { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null },
+        )
+        const seen = await freeTutor.searchLesson(LEARNER, LESSON, "vi", "idempotency key source scenario apply", true)
+        expect(seen.mode).toBe("semantic")
+        assertFree(seen)
+        expect(seen.hits.length).toBeGreaterThan(0)
+        const premiumTutor = new McpTutorService(
+            lessonsOf(true),
+            new McpSourceService({ tree: () => Promise.resolve(treeOf()) }),
+            new McpVectorIndex(letters, store),
+            new McpHarnessService(
+                { files: () => Promise.resolve([]) },
+                new McpVectorIndex(letters, store),
+                new FakeClock("2026-11-17T00:00:00.000Z"),
+            ),
+            freeReader.devices as unknown as RelayDeviceService,
+            freeReader.feed as unknown as RelayFeedService,
+            freeReader.openers as unknown as AttemptOpenerService,
+            { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null },
+        )
+        const all = await premiumTutor.searchLesson(
+            LEARNER,
+            LESSON,
+            "vi",
+            "idempotency key source scenario apply",
+            true,
+        )
+        expect(JSON.stringify(all)).toContain("PREMIUMSOURCETEXT")
+        assertClean(all)
     })
 
     it("walks the AI through diagnose, explain, propose and check in fix_scenario without any key", async () => {

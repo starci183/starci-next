@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { InjectMcpEmbedder, type McpEmbedder } from "./mcp-embedder.port"
-import { chunkHashOf, type Chunk } from "./mcp-embedding.policy"
-import { HIT_TEXT_MAX, HITS_MAX } from "./mcp-source.policy"
+import { chunkHashOf, embedTextOf, type Chunk } from "./mcp-embedding.policy"
 import { InjectMcpVectorStore, type McpAccess, type McpScope, type McpVectorStore } from "./mcp-vector-store.port"
 import type { McpSearchHit } from "./mcp.contracts"
 
@@ -9,7 +8,10 @@ import type { McpSearchHit } from "./mcp.contracts"
 const QUERY_PREFIX =
     "Instruct: Given a learner's question about a software lesson, retrieve the passages that answer it\nQuery: "
 /** The most chunks one search corpus holds (a lesson's readable text or one lesson repository). */
-const CHUNKS_MAX = 600
+const CHUNKS_MAX = 2000
+/** The most chunks one semantic search answers, and the most characters of a chunk it shows (the path and lines say where the rest is). */
+const SEMANTIC_HITS_MAX = 10
+const SEMANTIC_TEXT_MAX = 2000
 
 /**
  * One corpus a caller indexes or searches: where it lives, the access class its chunks are written with and the classes the
@@ -83,7 +85,7 @@ export class McpVectorIndex {
             const near = await this.store.nearest(
                 corpus.scope,
                 vector,
-                HITS_MAX,
+                SEMANTIC_HITS_MAX,
                 corpus.readable,
                 reach === "scope" ? null : [...embedded.byHash.keys()],
             )
@@ -95,7 +97,9 @@ export class McpVectorIndex {
                           {
                               path: chunk.path,
                               line: chunk.line,
-                              text: chunk.text.trim().slice(0, HIT_TEXT_MAX * 4),
+                              ...(chunk.lineEnd === undefined ? {} : { endLine: chunk.lineEnd }),
+                              ...(chunk.title === undefined || chunk.title === null ? {} : { title: chunk.title }),
+                              text: chunk.text.trim().slice(0, SEMANTIC_TEXT_MAX),
                               score: Math.round(score * 1000) / 1000,
                           },
                       ]
@@ -130,24 +134,27 @@ export class McpVectorIndex {
     private async ensure(corpus: McpCorpus, chunks: ReadonlyArray<Chunk>): Promise<Embedded | null> {
         const byHash = new Map<string, Chunk>()
         for (const chunk of chunks) {
-            const hash = chunkHashOf(this.embedder.model, chunk.text)
+            const hash = chunkHashOf(this.embedder.model, embedTextOf(chunk))
             if (!byHash.has(hash)) byHash.set(hash, chunk)
         }
+        const accessOf = (chunk: Chunk): McpAccess => chunk.access ?? corpus.access
         const known = await this.store.known(corpus.scope, [...byHash.keys()])
-        // A chunk stored as premium that this reader may read as free is opened to every free reader, with no new embedding.
-        const reopened = [...known].flatMap(([hash, access]) =>
-            access !== corpus.access && corpus.access === "free" ? [hash] : [],
-        )
+        // A chunk stored as premium that its reader may read as free is opened to every free reader, with no new embedding.
+        const reopened = [...known].flatMap(([hash, access]) => {
+            const chunk = byHash.get(hash)
+            return chunk !== undefined && access !== accessOf(chunk) && accessOf(chunk) === "free" ? [hash] : []
+        })
         if (reopened.length > 0) await this.store.retag(corpus.scope, reopened, "free")
         const missing = [...byHash.entries()].filter(([hash]) => !known.has(hash))
         if (missing.length === 0) return { byHash, embedded: 0 }
-        const vectors = await this.embedder.embed(missing.map(([, chunk]) => chunk.text))
+        const vectors = await this.embedder.embed(missing.map(([, chunk]) => embedTextOf(chunk)))
         if (vectors === null || vectors.length !== missing.length) return null
-        await this.store.put(
-            corpus.scope,
-            missing.map(([hash, chunk], index) => ({ hash, vector: vectors[index] ?? [], part: chunk.path })),
-            corpus.access,
-        )
+        for (const access of ["free", "premium"] as const) {
+            const group = missing.flatMap(([hash, chunk], index) =>
+                accessOf(chunk) === access ? [{ hash, vector: vectors[index] ?? [], part: chunk.path }] : [],
+            )
+            await this.store.put(corpus.scope, group, access)
+        }
         return { byHash, embedded: missing.length }
     }
 }

@@ -11,13 +11,22 @@ export const SELECT_TOKENS: ReturnType<typeof sql> =
     sql`SELECT token_id, learner_id, name, hint, created_at, last_used_at
 FROM mcp_access_tokens WHERE learner_id = $1::uuid AND revoked_at IS NULL ORDER BY created_at DESC, token_id LIMIT $2::int`
 
-/** Revokes one of the learner's tokens ($1 token, $2 learner, $3 now); no row means it is not theirs or already revoked. */
-export const REVOKE_TOKEN: ReturnType<typeof sql> = sql`UPDATE mcp_access_tokens SET revoked_at = $3::timestamptz
-WHERE token_id = $1::uuid AND learner_id = $2::uuid AND revoked_at IS NULL RETURNING token_id`
+/**
+ * Revokes one of the learner's tokens ($1 token, $2 learner, $3 now); no row means it is not theirs or already revoked. The update
+ * is wrapped in a select because the driver answers a bare `UPDATE ... RETURNING` as `[rows, count]`, not as rows.
+ */
+export const REVOKE_TOKEN: ReturnType<typeof sql> = sql`WITH revoked AS (
+    UPDATE mcp_access_tokens SET revoked_at = $3::timestamptz
+    WHERE token_id = $1::uuid AND learner_id = $2::uuid AND revoked_at IS NULL RETURNING token_id
+)
+SELECT token_id FROM revoked`
 
-/** Touches and answers the learner of a working token by its digest ($1 digest, $2 now). */
-export const TOUCH_BY_DIGEST: ReturnType<typeof sql> = sql`UPDATE mcp_access_tokens SET last_used_at = $2::timestamptz
-WHERE token_digest = $1::text AND revoked_at IS NULL RETURNING learner_id`
+/** Touches and answers the learner of a working token by its digest ($1 digest, $2 now); wrapped in a select like `REVOKE_TOKEN`. */
+export const TOUCH_BY_DIGEST: ReturnType<typeof sql> = sql`WITH touched AS (
+    UPDATE mcp_access_tokens SET last_used_at = $2::timestamptz
+    WHERE token_digest = $1::text AND revoked_at IS NULL RETURNING learner_id
+)
+SELECT learner_id FROM touched`
 
 /** The synced chunks of a scope among the hashes ($1 kind, $2 source, $3 locale, $4 hashes). */
 export const SELECT_KNOWN_POINTS: ReturnType<typeof sql> = sql`SELECT content_hash, access FROM mcp_vector_points
@@ -35,9 +44,12 @@ DO UPDATE SET part = EXCLUDED.part, access = EXCLUDED.access, synced_at = NULL`
 export const MARK_POINTS_SYNCED: ReturnType<typeof sql> =
     sql`UPDATE mcp_vector_points SET synced_at = $2::timestamptz WHERE point_id = ANY($1::uuid[])`
 
-/** Re-labels the access class of chunks and answers their point ids ($1 kind, $2 source, $3 locale, $4 hashes, $5 access). */
-export const UPDATE_POINT_ACCESS: ReturnType<typeof sql> = sql`UPDATE mcp_vector_points SET access = $5::text
-WHERE kind = $1::text AND source_id = $2::text AND locale = $3::text AND content_hash = ANY($4::text[]) RETURNING point_id`
+/** Re-labels the access class of chunks and answers their point ids ($1 kind, $2 source, $3 locale, $4 hashes, $5 access); wrapped in a select like `REVOKE_TOKEN`. */
+export const UPDATE_POINT_ACCESS: ReturnType<typeof sql> = sql`WITH tagged AS (
+    UPDATE mcp_vector_points SET access = $5::text
+    WHERE kind = $1::text AND source_id = $2::text AND locale = $3::text AND content_hash = ANY($4::text[]) RETURNING point_id
+)
+SELECT point_id FROM tagged`
 
 /** The content hash of each point a search returned ($1 point ids). */
 export const SELECT_POINT_HASHES: ReturnType<typeof sql> =

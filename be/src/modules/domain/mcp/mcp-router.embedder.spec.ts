@@ -1,7 +1,7 @@
 import { createRouter } from "@starci/ai-router/gateway"
 import { Secret } from "@modules/platform/config"
 import type { McpIndexOptions } from "./mcp-index.options"
-import { McpRouterEmbedder, localBaseUrlOf } from "./mcp-router.embedder"
+import { McpRouterEmbedder, batchesOf, localBaseUrlOf } from "./mcp-router.embedder"
 
 jest.mock("@starci/ai-router/gateway", () => ({
     createRouter: jest.fn(),
@@ -49,7 +49,10 @@ describe("McpRouterEmbedder", () => {
         expect(embedder.model).toBe("qwen3-embedding:8b/1024")
 
         const vectors = await embedder.embed(["a", "b"])
-        expect(embeddings).toHaveBeenCalledWith({ model: "local-embed", input: ["a", "b"] })
+        expect(embeddings).toHaveBeenCalledWith(
+            { model: "qwen3-embedding:8b", input: ["a", "b"] },
+            { profile: "local-embed" },
+        )
         expect(vectors).toHaveLength(2)
         expect(vectors?.[0]).toHaveLength(1024)
         expect(Math.hypot(...(vectors?.[0] ?? []))).toBeCloseTo(1, 10)
@@ -75,6 +78,13 @@ describe("McpRouterEmbedder", () => {
         const vectors = await new McpRouterEmbedder(options(LOCAL)).embed(Array.from({ length: 20 }, () => "t"))
         expect(embeddings).toHaveBeenCalledTimes(2)
         expect(vectors).toHaveLength(20)
+    })
+
+    it("cuts a batch by size as well as by count, so a call never passes the context window of the model", () => {
+        const long = "x".repeat(5000)
+        expect(batchesOf([long, long, long, long, long]).map((batch) => batch.length)).toEqual([2, 2, 1])
+        expect(batchesOf(["x".repeat(20_000), "y"]).map((batch) => batch.length)).toEqual([1, 1])
+        expect(batchesOf([])).toEqual([])
     })
 
     it("answers null for an outage, a short answer or a vector of another size so search falls back to keywords", async () => {
