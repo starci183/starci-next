@@ -48,6 +48,8 @@ milestone is a list of Bản chất concepts; it passes when each concept has ev
 7. CI posts only test and e2e results (`npx @starci/next ci-report`, JUnit plus the e2e flows run against the service the workflow
    started), signed with the project's CI secret and carrying the run's GitHub OIDC token, which `GithubOidcClient` verifies (RS256
    against GitHub's keys, issuer, audience, lifetime, repository and its id, commit, run and attempt). A probe result from CI is refused.
+   The GitHub address a learner gives (at create or on update) is also the repository the CI runs are bound to (`github_repository`); an
+   address elsewhere binds nothing, and the repository id is recorded from the first attested run.
 8. The StarCi harness is never forced on a learner's project: no spec records, no architecture lint, no mutation score.
 9. Practice comes through the relay and is never proof. Proof is a CI run GitHub attests, the server probe runner (public http or
    https only), or the AI read of the excerpt the learner pastes; the server never clones the repository.

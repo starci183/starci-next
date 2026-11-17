@@ -18,3 +18,14 @@ export const repositoryOf = (input: string): string => {
         throw new ProjectError({ code: ProjectErrorCode.RepositoryInvalid })
     return candidate
 }
+
+/** The GitHub repository a project's address names, or null when the address is none or points elsewhere (the OIDC binding follows the address a learner gives). */
+export const githubRepositoryOf = (address: string | null): string | null => {
+    if (address === null || address.trim() === "") return null
+    try {
+        return repositoryOf(address)
+    } catch (cause) {
+        if (cause instanceof ProjectError && cause.code === ProjectErrorCode.RepositoryInvalid) return null
+        throw cause
+    }
+}

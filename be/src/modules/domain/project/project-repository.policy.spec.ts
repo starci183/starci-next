@@ -1,6 +1,6 @@
 import { Test } from "@nestjs/testing"
 import { ProjectErrorCode } from "./errors/project.error"
-import { repositoryOf } from "./project-repository.policy"
+import { githubRepositoryOf, repositoryOf } from "./project-repository.policy"
 
 const POLICY: unique symbol = Symbol("project.repository-policy")
 
@@ -28,4 +28,13 @@ describe("repositoryOf", () => {
             expect(() => policy(input)).toThrow(ProjectErrorCode.RepositoryInvalid)
         },
     )
+})
+
+describe("githubRepositoryOf", () => {
+    it("follows a github address and leaves any other address unbound", () => {
+        expect(githubRepositoryOf("https://github.com/starci/shop")).toBe("starci/shop")
+        expect(githubRepositoryOf("https://gitlab.com/starci/shop")).toBeNull()
+        expect(githubRepositoryOf("   ")).toBeNull()
+        expect(githubRepositoryOf(null)).toBeNull()
+    })
 })

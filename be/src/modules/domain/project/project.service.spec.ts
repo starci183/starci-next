@@ -26,6 +26,7 @@ import {
     LOCK_LEARNER,
     ROTATE_SECRET,
     SELECT_PROJECT,
+    SET_PROJECT_REPOSITORY,
     UPDATE_PROJECT,
     UPSERT_CONCEPT,
 } from "./persistence/project.sql"
@@ -55,6 +56,7 @@ const build = async (
             [INSERT_PROJECT, [{ project_id: PROJECT_ID }]],
             [SELECT_PROJECT, row],
             [UPDATE_PROJECT, []],
+            [SET_PROJECT_REPOSITORY, []],
             [UPSERT_CONCEPT, []],
             [DELETE_PROJECT, options.changed === false ? [] : [{ project_id: PROJECT_ID }]],
             [ROTATE_SECRET, options.changed === false ? [] : [{ project_id: PROJECT_ID }]],
@@ -113,6 +115,12 @@ describe("ProjectService create", () => {
             null,
             "https://github.com/learner/clinic",
             created.ciSecret,
+            PROJECT_NOW,
+        ])
+        expect(em.query).toHaveBeenCalledWith(SET_PROJECT_REPOSITORY, [
+            PROJECT_ID,
+            PROJECT_LEARNER,
+            "learner/clinic",
             PROJECT_NOW,
         ])
         expect(reads.summary).toHaveBeenCalledWith({ learnerId: PROJECT_LEARNER, projectId: PROJECT_ID, locale: "en" })

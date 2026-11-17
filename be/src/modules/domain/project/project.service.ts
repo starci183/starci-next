@@ -28,6 +28,7 @@ import type {
     UpdateProjectParams,
 } from "./project-params.contracts"
 import { ProjectReadService } from "./project-read.service"
+import { githubRepositoryOf } from "./project-repository.policy"
 import { publicTargetOf } from "./project-target.policy"
 import type { ConceptView, ProjectDeletedView, ProjectSecretView, ProjectSummaryView } from "./project-view.contracts"
 import { projectKindOf } from "./project-view.mapper"
@@ -36,6 +37,7 @@ import {
     DELETE_PROJECT,
     INSERT_PROJECT,
     ROTATE_SECRET,
+    SET_PROJECT_REPOSITORY,
     SELECT_PROJECT,
     UPDATE_PROJECT,
     UPSERT_CONCEPT,
@@ -91,7 +93,12 @@ export class ProjectService {
                 secret,
                 this.clock.now(),
             ])
-            return String(created[0]?.project_id)
+            const id = String(created[0]?.project_id)
+            const repository = githubRepositoryOf(values[6] ?? null)
+            if (repository !== null) {
+                await manager.query(SET_PROJECT_REPOSITORY, [id, params.learnerId, repository, this.clock.now()])
+            }
+            return id
         })
         const project = await this.reads.summary({ learnerId: params.learnerId, projectId, locale: params.locale })
         return { project, ciSecret: secret }
@@ -113,6 +120,16 @@ export class ProjectService {
             await this.deployedUrlChecked(params.deployedUrl, row.deployed_url),
             this.clock.now(),
         ])
+        // The address a learner gives is also the repository the attested CI runs are bound to.
+        const repository = githubRepositoryOf(params.repoUrl)
+        if (repository !== null) {
+            await this.entityManager.query(SET_PROJECT_REPOSITORY, [
+                row.project_id,
+                row.learner_id,
+                repository,
+                this.clock.now(),
+            ])
+        }
         return this.reads.summary(params)
     }
 
