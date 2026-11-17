@@ -2,6 +2,7 @@
 title: Dự án / Tạo dự án
 route: /projects/new
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/new`. Trang tạo dự án: chọn loại, điền thông tin, xem cách bắt đầu. Mã: `fe/apps/app/src/components/blocks/ProjectNew/component.tsx`. Biểu mẫu và danh sách nằm phẳng trên mặt trắng dưới đầu mục Section, không thẻ.

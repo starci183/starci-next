@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: error-contract
 
-Một tài nguyên không có (404) và một body hỏng (400) trả cùng một dạng lỗi JSON, và không phản hồi lỗi nào lộ stack trace, đường dẫn
-file hay bí mật.
+A missing resource (404) and a broken body (400) answer with one JSON error shape, and no error response leaks a stack trace, a file
+path or a secret.
 
-Bạn khai: `endpoints.error-contract.endpoint` (một endpoint ghi, ví dụ `POST /orders`; luồng đọc `GET <path>/<id không có>`).
+You declare: `endpoints.error-contract.endpoint` (a write endpoint, for example `POST /orders`; the flow reads `GET <path>/<missing id>`).
 
 ```yaml starci-flow
 id: error-contract

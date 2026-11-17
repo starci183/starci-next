@@ -14,7 +14,8 @@ export interface HarnessE2eCliOptions {
 @Command({
     name: "e2e",
     arguments: "[build]",
-    description: "Run the build's signed e2e here with your own key, print the stage table and send the results (practice)",
+    description:
+        "Run the build's signed e2e here with your own key, print the stage table and send the results (practice)",
 })
 /** `starci-next harness e2e [build] [--stage n]`: delegates to the learner's relay client once. */
 export class HarnessE2eCli extends CommandRunner {

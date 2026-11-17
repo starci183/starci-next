@@ -2,6 +2,7 @@
 title: Bản chất (danh mục)
 route: /essentials
 area: essentials
+reviewed: 2026-11-17
 ---
 
 Route: `/essentials`. Danh mục Bản chất cho học viên Premium: 16 nhóm kiến thức, mỗi nhóm một danh sách topic, kèm tìm kiếm, bộ lọc độ khó và aside điều hướng nhóm. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác, trang cuộn trong từng pane nên ảnh dài. Vòng tròn "N" ở góc là lớp phủ của Next dev, không phải UI. Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, composite `CatalogToolbar`, `CatalogSection`, `CatalogAside` trong `fe/packages/starci-next-ui/src/composites/`.

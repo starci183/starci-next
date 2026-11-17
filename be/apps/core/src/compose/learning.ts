@@ -78,7 +78,10 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
     McpModule.register({ isGlobal: true, ...options.mcp }),
     StreakModule.register({ isGlobal: true }),
     PathModule.register({ isGlobal: true }),
-    HarnessModule.register({ isGlobal: true }),
+    HarnessModule.register({
+        isGlobal: true,
+        ...(options.project.ciOidcAudience === undefined ? {} : { ciOidcAudience: options.project.ciOidcAudience }),
+    }),
     HubModule.register({ isGlobal: true }),
     NotificationModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true, ...options.practice, streak: StreakServiceClient }),

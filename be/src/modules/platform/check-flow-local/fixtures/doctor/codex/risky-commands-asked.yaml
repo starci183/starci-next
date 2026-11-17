@@ -2,11 +2,11 @@
 schema: starci/harness-probe@1
 status: draft
 author: ai-placeholder
-id: approval-policy-set
+id: risky-commands-asked
 tool: codex
 order: 3
 title:
-  vi: approval_policy không để chạy tự do
+  vi: approval_policy does not run unattended
   en: approval_policy does not run unattended
 guide: config-approval
 check:
@@ -15,7 +15,7 @@ check:
     at: approval_policy
     oneOf: [untrusted, on-request, on-failure]
 fix:
-  vi: Trong `~/.codex/config.toml` đặt `approval_policy = "on-request"` (hoặc `"untrusted"`). Giá trị `never` cho Codex chạy mọi lệnh mà không hỏi.
+  vi: In `~/.codex/config.toml` set `approval_policy = "on-request"` (or `"untrusted"`). The value `never` lets Codex run every command without asking.
   en: In `~/.codex/config.toml` set `approval_policy = "on-request"` (or `"untrusted"`). The value `never` lets Codex run every command without asking.
 good:
   files:

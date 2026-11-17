@@ -2,6 +2,7 @@
 title: Luyện code (các pattern)
 route: /practice
 area: practice
+reviewed: 2026-11-17
 ---
 
 Route: `/practice` (ảnh chụp: học viên Premium, chưa Accepted bài nào). Mã: `fe/apps/app/src/components/blocks/PracticeCatalog/component.tsx` (vẽ), `index.tsx` (đọc các pattern và tiến độ). Khung chung giải thích ở `learn/home`.

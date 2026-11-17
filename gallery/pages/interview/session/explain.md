@@ -2,6 +2,7 @@
 title: Phòng phỏng vấn (một buổi đang làm)
 route: /interview/[sessionId]
 area: interview
+reviewed: 2026-11-17
 ---
 
 Route: `/interview/[sessionId]` (ảnh chụp: câu 1/5 đang hỏi, học viên chưa gõ gì). Mã: `fe/apps/app/src/components/blocks/InterviewRoom/component.tsx`. Khung chung giải thích ở `learn/home`.

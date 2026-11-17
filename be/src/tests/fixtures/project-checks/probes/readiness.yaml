@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: readiness
 label:
-  vi: "Readiness: có route /ready riêng và nó báo sẵn sàng"
+  vi: "Readiness: a separate /ready route that says ready"
   en: "Readiness: a separate /ready route that says ready"
 question:
-  vi: Dịch vụ sẵn sàng nhận request khi nào, và readiness khác health ở điểm nào?
+  vi: When is the service ready for traffic, and how does readiness differ from health?
   en: When is the service ready for traffic, and how does readiness differ from health?
 needs: []
 steps:
@@ -17,8 +17,12 @@ steps:
       - { that: status, eq: 200, fail: not-ready }
 pass: ready
 reasons:
-  ready: { vi: GET /ready trả 200., en: GET /ready answered 200. }
-  not-ready: { vi: "GET /ready không trả 200 (thiếu route hoặc chưa sẵn sàng).", en: "GET /ready did not answer 200 (no route, or not ready)." }
+  ready: { vi: GET /ready answered 200., en: GET /ready answered 200. }
+  not-ready:
+    {
+      vi: "GET /ready did not answer 200 (no route, or not ready).",
+      en: "GET /ready did not answer 200 (no route, or not ready).",
+    }
 fixtures:
   endpoint: GET /health
   cheats:

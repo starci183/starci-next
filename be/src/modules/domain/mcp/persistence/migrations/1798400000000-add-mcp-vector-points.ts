@@ -23,7 +23,9 @@ export class AddMcpVectorPoints1798400000000 implements MigrationInterface {
         await queryRunner.query(
             `CREATE UNIQUE INDEX ux_mcp_vector_points_chunk ON mcp_vector_points (kind, source_id, locale, content_hash)`,
         )
-        await queryRunner.query(`CREATE INDEX ix_mcp_vector_points_pending ON mcp_vector_points (kind, source_id) WHERE synced_at IS NULL`)
+        await queryRunner.query(
+            `CREATE INDEX ix_mcp_vector_points_pending ON mcp_vector_points (kind, source_id) WHERE synced_at IS NULL`,
+        )
     }
 
     /** Drops the table. */

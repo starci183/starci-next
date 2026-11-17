@@ -87,7 +87,12 @@ export class QdrantClient implements VectorIndex {
             const batch = points
                 .slice(from, from + UPSERT_MAX)
                 .map((point) => ({ id: point.pointId, vector: [...point.vector], payload: { ...point.payload } }))
-            await this.call("PUT", `/collections/${this.options.collection}/points?wait=true`, { points: batch }, "upsert")
+            await this.call(
+                "PUT",
+                `/collections/${this.options.collection}/points?wait=true`,
+                { points: batch },
+                "upsert",
+            )
         }
     }
 

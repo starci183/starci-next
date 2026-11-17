@@ -1,8 +1,8 @@
 import { Field, InputType } from "@nestjs/graphql"
-import { IsString, IsUUID, Matches, MaxLength } from "class-validator"
+import { IsString, Matches, MaxLength } from "class-validator"
 
 @InputType()
-/** The build to bind and the learner agent project whose CI proves it; whether the project is the learner own is checked by the project capability. */
+/** The build to bind and the GitHub repository whose attested CI proves it. */
 export class BindHarnessBuildInput {
     /** The build id. */
     @Field(() => String)
@@ -11,8 +11,9 @@ export class BindHarnessBuildInput {
     @Matches(/^[a-z0-9][a-z0-9-]{0,63}$/u)
     buildId!: string
 
-    /** The project id. */
+    /** The GitHub repository, owner/name or a github.com address; whether it is one is checked by the harness capability. */
     @Field(() => String)
-    @IsUUID()
-    projectId!: string
+    @IsString()
+    @MaxLength(200)
+    repository!: string
 }

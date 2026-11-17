@@ -1,15 +1,15 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
-# Quy ước của kit: trên đường test, header X-StarCi-Probe-User mang danh tính người dùng test (không có header là ẩn danh);
-# POST <path> tạo tài nguyên và trả {"id":...}; GET <path>/<id> đọc nó.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
+# Kit convention: on the test path, the X-StarCi-Probe-User header carries the test user's identity (no header means anonymous);
+# POST <path> creates a resource and returns {"id":...}; GET <path>/<id> reads it.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: owner-only
 label:
-  vi: Chỉ chủ sở hữu đọc được tài nguyên; ẩn danh bị 401, người khác bị 403/404
+  vi: Only the owner reads a resource; anonymous gets 401, another user 403/404
   en: Only the owner reads a resource; anonymous gets 401, another user 403/404
 question:
-  vi: "Chỗ nào trong code so người gọi với chủ của tài nguyên, và route nào chỉ kiểm tra đã đăng nhập?"
+  vi: "Where does the code compare the caller with the resource owner, and which route only checks that someone signed in?"
   en: "Where does the code compare the caller with the resource owner, and which route only checks that someone signed in?"
 needs: [endpoint, sample]
 steps:
@@ -48,19 +48,19 @@ steps:
 pass: owner-only
 reasons:
   owner-only:
-    vi: "Chủ đọc được; người khác bị 403/404; ẩn danh bị 401."
+    vi: "The owner can read; another user gets 403/404; anonymous gets 401."
     en: "The owner can read; another user gets 403/404; anonymous gets 401."
   open-without-credentials:
-    vi: "Gọi không có danh tính mà không bị 401."
+    vi: "A call with no identity was not refused with 401."
     en: "A call with no identity was not refused with 401."
   create-failed:
-    vi: "Người dùng test không tạo được tài nguyên (2xx với id)."
+    vi: "The test user could not create a resource (2xx with an id)."
     en: "The test user could not create a resource (2xx with an id)."
   owner-refused:
-    vi: "Chủ sở hữu không đọc được tài nguyên của chính mình."
+    vi: "The owner could not read their own resource."
     en: "The owner could not read their own resource."
   other-user-allowed:
-    vi: "Người dùng khác đọc được tài nguyên không phải của mình (IDOR)."
+    vi: "Another user read a resource that is not theirs (IDOR)."
     en: "Another user read a resource that is not theirs (IDOR)."
 fixtures:
   endpoint: POST /starci-test/items

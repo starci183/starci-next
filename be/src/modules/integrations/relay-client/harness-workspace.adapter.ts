@@ -37,7 +37,15 @@ export const hashesOf = (root: string, globs: ReadonlyArray<string>): ReadonlyMa
     new Map(
         filesUnder(root)
             .filter((path) => globs.some((glob) => matchesGlob(glob, path)))
-            .map((path) => [path, createHash("sha256").update(readFileSync(join(root, path))).digest("hex")] as const),
+            .map(
+                (path) =>
+                    [
+                        path,
+                        createHash("sha256")
+                            .update(readFileSync(join(root, path)))
+                            .digest("hex"),
+                    ] as const,
+            ),
     )
 
 /** What applying the learner's config to the trap repo did. */
@@ -78,7 +86,13 @@ const hasSandboxMode = (path: string): boolean => {
  * and `.codex/`, and a temp `CODEX_HOME` holding a copy of the user's `config.toml` and `auth.json` (deleted by `removeWorkspace`).
  * The learner's config replaces the trap's own file of the same name.
  */
-export const applyConfig = (repo: string, project: string, home: string, tool: HarnessTool, codexHomeSource: string): AppliedConfig => {
+export const applyConfig = (
+    repo: string,
+    project: string,
+    home: string,
+    tool: HarnessTool,
+    codexHomeSource: string,
+): AppliedConfig => {
     const applied = CONFIG_FILES[tool].filter((name) => existsSync(join(project, name)))
     applied.forEach((name) => {
         cpSync(join(project, name), join(repo, name), {
@@ -93,7 +107,8 @@ export const applyConfig = (repo: string, project: string, home: string, tool: H
         const source = join(codexHomeSource === "" ? join(home, ".codex") : codexHomeSource, name)
         if (existsSync(source)) cpSync(source, join(codexHome, name))
     })
-    const setsSandbox = hasSandboxMode(join(codexHome, "config.toml")) || hasSandboxMode(join(repo, ".codex", "config.toml"))
+    const setsSandbox =
+        hasSandboxMode(join(codexHome, "config.toml")) || hasSandboxMode(join(repo, ".codex", "config.toml"))
     return { applied, codexHome, setsSandbox }
 }
 
@@ -116,5 +131,9 @@ export const probeFilesIn = (folder: string): ReadonlyArray<{ readonly name: str
 /** Whether a file of the repo exists and holds the text (any text when null). */
 export const keepHolds = (repo: string, path: string, contains: string | null): boolean => {
     const full = join(repo, path)
-    return existsSync(full) && statSync(full).isFile() && (contains === null || readFileSync(full, "utf8").includes(contains))
+    return (
+        existsSync(full) &&
+        statSync(full).isFile() &&
+        (contains === null || readFileSync(full, "utf8").includes(contains))
+    )
 }

@@ -2,6 +2,7 @@
 title: Đăng nhập bằng mạng xã hội (trang trả về)
 route: /sign-in/callback
 area: auth
+reviewed: 2026-11-17
 ---
 
 Route: `/sign-in/callback` (ảnh chụp: mở trang không kèm mã và trạng thái hợp lệ từ nhà cung cấp nên thấy thất bại; trong luồng thật Facebook hoặc GitHub chuyển về đây kèm `code` và `state`). Mã: `fe/apps/app/src/components/blocks/SocialCallbackStatus/component.tsx` trên cùng khung với `auth/sign-in`. Nút mạng xã hội trong dev chưa cấu hình nhà cung cấp, nên chưa chụp được luồng thành công.

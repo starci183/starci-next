@@ -2,6 +2,7 @@
 title: Dự án / Chi tiết
 route: /projects/[projectId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>`. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`. Ảnh chụp hiện tại là trạng thái "không tìm thấy dự án" (mã dự án không có trong dữ liệu chụp, danh sách dự án đang rỗng), nên chỉ giải thích những gì thấy; trang đầy đủ (milestone, lần chạy, aside kho mã) chưa có ảnh. CHƯA RÕ: cần chụp lại với một dự án thật để gallery phản ánh trang chính.

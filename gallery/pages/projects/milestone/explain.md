@@ -2,6 +2,7 @@
 title: Dự án / Milestone
 route: /projects/[projectId]/[milestoneId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>/<milestoneId>`. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Ảnh chụp hiện tại là trạng thái "không có milestone này" (không có dự án và milestone trong dữ liệu chụp), nên chỉ giải thích những gì thấy; trang đầy đủ (danh sách concept, bảng lần chạy, aside "Cách chứng minh") chưa có ảnh. CHƯA RÕ: cần chụp lại với một dự án có milestone để gallery phản ánh trang chính.

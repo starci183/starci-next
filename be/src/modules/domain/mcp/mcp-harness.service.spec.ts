@@ -71,7 +71,9 @@ describe("McpHarnessService over a content checkout on disk", () => {
         const { embedder, texts } = embedderOf()
         const semantic = await make(dir, embedder).search("vi", "hook chay truoc tool", true)
         expect(semantic.mode).toBe("semantic")
-        expect(semantic.hits.map((hit) => hit.path)).toEqual(expect.arrayContaining(["guides/claude/hooks", "docs/overview"]))
+        expect(semantic.hits.map((hit) => hit.path)).toEqual(
+            expect.arrayContaining(["guides/claude/hooks", "docs/overview"]),
+        )
         expect(texts.join("\n")).not.toContain("HIDDEN")
         const off = make(dir, { isConfigured: false, model: "off", embed: () => Promise.resolve(null) })
         expect(await off.search("vi", "hook", true)).toMatchObject({ mode: "keyword", fellBack: true })

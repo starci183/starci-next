@@ -6,7 +6,7 @@ id: sandbox-mode-set
 tool: codex
 order: 2
 title:
-  vi: sandbox_mode giới hạn quyền ghi
+  vi: sandbox_mode limits writes
   en: sandbox_mode limits writes
 guide: config-sandbox
 check:
@@ -15,7 +15,7 @@ check:
     at: sandbox_mode
     oneOf: [read-only, workspace-write]
 fix:
-  vi: Trong `~/.codex/config.toml` đặt `sandbox_mode = "workspace-write"` (hoặc `"read-only"` khi chỉ cần đọc). Tránh `danger-full-access`.
+  vi: In `~/.codex/config.toml` set `sandbox_mode = "workspace-write"` (or `"read-only"` when it only needs to read). Avoid `danger-full-access`.
   en: In `~/.codex/config.toml` set `sandbox_mode = "workspace-write"` (or `"read-only"` when it only needs to read). Avoid `danger-full-access`.
 good:
   files:

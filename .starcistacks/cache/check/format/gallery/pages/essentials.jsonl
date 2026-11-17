@@ -1,4 +1,15 @@
 {"findings":[],"hash":"190b6e1d60bc6d77a5c60f63eff8e22d0e51577735d73c9baf9b257b9adc913c","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
+{"findings":[],"hash":"996c2d6a1a60c07222374a2d707d2c7090f191c4f49bb332581bcb6200e4bf3b","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
+{"findings":[],"hash":"cb8d877a035119e41415302ff662f892eac9039c3acdec2fc64b3999f6f9e3a6","path":"gallery/pages/essentials/lesson-apply/explain.md","step":"prettier"}
+{"findings":[],"hash":"a490f70682500208603da513b2c138ade4848662f2b7ead9c81bc04f5d29a3b7","path":"gallery/pages/essentials/lesson-challenge/explain.md","step":"prettier"}
+{"findings":[],"hash":"341682a79d8064732f8c0c63796346c180a5f5f9efaf46f421a43be941d3315b","path":"gallery/pages/essentials/lesson-explain/explain.md","step":"prettier"}
+{"findings":[],"hash":"8f98a0d0e71ad82f4b7966035a6cb0d91b99f3524885dd2c37af6fd8c813bc1a","path":"gallery/pages/essentials/lesson-explore/explain.md","step":"prettier"}
+{"findings":[],"hash":"3b462e3a66d3a73fcbb0e39508d997110d4cffe7215a486073c08dedc6f45022","path":"gallery/pages/essentials/lesson-idempotency-apply/explain.md","step":"prettier"}
+{"findings":[],"hash":"d60ebad62dfa87c014a8dd6a41a1c6c138ae87594be63136728289c1171164e2","path":"gallery/pages/essentials/lesson-idempotency-challenge/explain.md","step":"prettier"}
+{"findings":[],"hash":"2420fdbaa142b0aee80185381c33234c10abf9b73d926b5d30beefc5bab3911c","path":"gallery/pages/essentials/lesson-idempotency-explain/explain.md","step":"prettier"}
+{"findings":[],"hash":"4539cde8fb339b0fad891a547dd4d7db1c505e241a588ed247729f29e5d36599","path":"gallery/pages/essentials/lesson-idempotency-explore/explain.md","step":"prettier"}
+{"findings":[],"hash":"7bb3929d42c6bb3288e8a36fcb965b80f5813e20dc5eaa67611360daa3a334c4","path":"gallery/pages/essentials/lesson-idempotency-predict/explain.md","step":"prettier"}
+{"findings":[],"hash":"c6b4d9ba1b655574858a7b861e6b6002f578fb299ae814399947e0ed28c2a5db","path":"gallery/pages/essentials/lesson-idempotency-reflect/explain.md","step":"prettier"}
 {"findings":[],"hash":"6657819dabc9993ced7bfae014d0fcb83744fe3eacaf98701820709fba06a711","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"prettier"}
 {"findings":[],"hash":"a40412638177bb6471e83334e36d8a3e2a23d5ee5067e56c75c3f17db4109bb3","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"prettier"}
 {"findings":[],"hash":"a9b060f011d3bef286f45dc7211f4c90f0446d8c4d8cfa4df28ef2ca30c86529","path":"gallery/pages/essentials/lesson-source/explain.md","step":"prettier"}
@@ -7,3 +18,8 @@
 {"findings":[],"hash":"ef4c601f3c28e98e41c9cf2ac9d3a7909505992fc74d5849023f1c8a96841a12","path":"gallery/pages/essentials/topic-databases/explain.md","step":"prettier"}
 {"findings":[],"hash":"f670fed9f3f51dea8a42873ae9a1366762997706c030fef59d7a233c2ceec691","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"prettier"}
 {"findings":[],"hash":"9f0b926f4fb9c97c48c8342128051515269cbf9bd9dab8c2c315c38b02983950","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}
+{"findings":[],"hash":"e700571c0f58d459111c2b4c2d42a4b53dd72b156263577b68e430d89b2c89bb","path":"gallery/pages/essentials/lesson/explain.md","step":"prettier"}
+{"findings":[],"hash":"0c4123793aa0c1f3946dfd042f27ecd060a2ed3565f5122b64839d87e6a604db","path":"gallery/pages/essentials/topic-api-reliability/explain.md","step":"prettier"}
+{"findings":[],"hash":"51b69df5ea0ee4e732aeef8fecad183653428b71534ba7796ad7dc0acb37ac4e","path":"gallery/pages/essentials/topic-databases/explain.md","step":"prettier"}
+{"findings":[],"hash":"917e7c927a906dd1ea4ebeb059c6834e8c440d116674b80a86dae3247e3e825e","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"prettier"}
+{"findings":[],"hash":"edd11ee0308f7596a1ed94a6be3cc00c2b9146e0be50c2bcec810c85f0b6afb3","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}

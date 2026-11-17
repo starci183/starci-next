@@ -2,6 +2,7 @@
 title: Dự án (danh sách)
 route: /projects
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects`. Học viên thử nghiệm (ảnh chụp: chưa có dự án nào nên thấy trạng thái rỗng, không phải lỗi). Mã: `fe/apps/app/src/components/blocks/ProjectsList/`. Trang trắng, các lớp ngăn bằng đường kẻ 1px, danh sách phẳng dưới đầu mục, không thẻ.

@@ -1,9 +1,10 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: health-probe-semantics
 
-`GET /health` báo sống nhanh (dưới 2 giây), và `GET /ready` là route riêng báo sẵn sàng nhận việc.
+`GET /health` reports liveness fast (under 2 seconds), and `GET /ready` is a separate route that reports readiness for work.
 
-Bạn khai: `endpoints.health-probe-semantics.endpoint` (mặc định `GET /health`).
+You declare: `endpoints.health-probe-semantics.endpoint` (default `GET /health`).
 
 ```yaml starci-flow
 id: health-probe-semantics

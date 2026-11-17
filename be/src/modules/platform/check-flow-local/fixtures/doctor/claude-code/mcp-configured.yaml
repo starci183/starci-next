@@ -6,7 +6,7 @@ id: mcp-configured
 tool: claude
 order: 7
 title:
-  vi: Đã cấu hình ít nhất một MCP server
+  vi: At least one MCP server is configured
   en: At least one MCP server is configured
 guide: mcp
 check:
@@ -15,7 +15,7 @@ check:
     at: mcpServers
     nonEmpty: true
 fix:
-  vi: Tạo `.mcp.json` ở thư mục gốc với khóa `mcpServers`, hoặc chạy `claude mcp add <tên> -- <lệnh>`. Khóa API đặt trong `.env`, không ghi vào file này.
+  vi: Create `.mcp.json` in the repo root with a `mcpServers` key, or run `claude mcp add <name> -- <command>`. Keep API keys in `.env`, never in this file.
   en: Create `.mcp.json` in the repo root with a `mcpServers` key, or run `claude mcp add <name> -- <command>`. Keep API keys in `.env`, never in this file.
 good:
   files:

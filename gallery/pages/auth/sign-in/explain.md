@@ -2,6 +2,7 @@
 title: Đăng nhập
 route: /sign-in
 area: auth
+reviewed: 2026-11-17
 ---
 
 Route: `/sign-in`. Màn đăng nhập không dùng khung chung: thanh bên và thanh trên ẩn ở đây, trang tự vẽ thương hiệu ở giữa. Trang trắng, thẻ đăng nhập chỉ có viền 1px, không bóng. Ở 1440 và 1920 thẻ rộng cố định giữa trang, ở 390 thẻ chiếm gần hết bề ngang.

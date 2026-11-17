@@ -22,4 +22,8 @@ export class HarnessGuideSummaryType {
     /** The summary. */
     @Field(() => String)
     summary!: string
+
+    /** The minutes a learner needs, or null. */
+    @Field(() => Int, { nullable: true })
+    minutes!: number | null
 }

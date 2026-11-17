@@ -2,6 +2,7 @@
 title: Bản chất / Chương (topic)
 route: /essentials/[topic]
 area: essentials
+reviewed: 2026-11-17
 ---
 
 Route: `/essentials/[topic]` (topic "Backend framework (NestJS)"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.

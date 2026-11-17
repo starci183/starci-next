@@ -4,6 +4,7 @@ import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { HarnessErrorCode } from "./errors/harness.error"
 import type { HarnessRunRow } from "./harness.contracts"
 import { HarnessReadService } from "./harness-read.service"
+import { HARNESS_OPTIONS } from "./harness.decorators"
 import type { ContentRow, PackRow, ProofRow } from "./persistence/harness.rows"
 import {
     SELECT_BINDINGS,
@@ -42,6 +43,7 @@ const GUIDE = row("guide", "claude/claude-md", {
     order: 1,
     title: { vi: "Tieu de", en: "Title" },
     summary: { vi: "", en: "" },
+    minutes: 5,
     probes: ["p"],
     sections: [{ id: "one", order: 1, title: { vi: "Mot", en: "One" }, body: { vi: "v", en: "e" }, run: ["ls"] }],
     contentHash: "h",
@@ -50,18 +52,20 @@ const PROBE = row("probe", "claude/p", {
     id: "p",
     tool: "claude",
     order: 1,
-    label: { vi: "Nhan", en: "Label" },
-    needs: [],
-    reasons: { missing: { vi: "Tao", en: "Create" } },
+    title: { vi: "Nhan", en: "Label" },
+    guide: "claude-md",
+    fix: { vi: "Tao", en: "Create" },
     yaml: "id: p",
 })
 const TRAP = row("trap", "t", {
     id: "t",
     order: 1,
-    label: { vi: "Bay", en: "Trap" },
-    task: "do it",
+    title: { vi: "Bay", en: "Trap" },
+    brief: { vi: "Ngan", en: "Brief" },
+    prompt: "do it",
     tools: ["claude", "codex"],
-    estimate: null,
+    budget: { maxUsd: 0.5, maxTurns: 20, timeoutSec: 600 },
+    shortcuts: [{ id: "env-read", title: { vi: "Doc env", en: "Reads env" } }],
     paths: ["trap.yaml"],
 })
 
@@ -96,14 +100,26 @@ const build = async (options: Options = {}) => {
             return Promise.resolve(
                 options.bound === undefined || options.bound === null
                     ? []
-                    : [{ build_id: "agent-cli", project_id: options.bound }],
+                    : [
+                          {
+                              build_id: "agent-cli",
+                              learner_id: LEARNER,
+                              binding_id: "b1",
+                              repository: options.bound,
+                              repository_id: null,
+                          },
+                      ],
             )
         }
         if (text === SELECT_PACK) return Promise.resolve([...(options.pack ?? [])])
         return Promise.reject(new Error("unstubbed"))
     }) as never)
     const moduleRef = await Test.createTestingModule({
-        providers: [HarnessReadService, { provide: PRIMARY_ENTITY_MANAGER, useValue: em }],
+        providers: [
+            HarnessReadService,
+            { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
+            { provide: HARNESS_OPTIONS, useValue: {} },
+        ],
     }).compile()
     return moduleRef.get(HarnessReadService)
 }
@@ -133,14 +149,19 @@ describe("HarnessReadService", () => {
                     recorded_at: "2026-11-17T02:00:00.000Z",
                 },
             ],
-            bound: "p1",
+            bound: "learner/agent",
         })
 
         const [summary] = await reads.builds(LEARNER, "en", [])
         const detail = await reads.build(LEARNER, "vi", "agent-cli", [])
 
         expect(summary).toMatchObject({ id: "agent-cli", state: "proved", provedStages: 1 })
-        expect(detail.repository).toEqual({ bound: true, projectId: "p1" })
+        expect(detail.repository).toEqual({
+            bound: true,
+            repository: "learner/agent",
+            bindingId: "b1",
+            audience: "starci-next",
+        })
         await expect(reads.build(LEARNER, "vi", "ghost", [])).rejects.toMatchObject({ code: HarnessErrorCode.NotFound })
     })
 
@@ -187,7 +208,12 @@ describe("HarnessReadService", () => {
         ])
 
         expect(doctor).toMatchObject({ tool: "claude", passed: 1, total: 1 })
-        expect(traps[0]).toMatchObject({ id: "t", task: "do it", last: { verdict: "held", tool: "codex" } })
+        expect(traps[0]).toMatchObject({
+            id: "t",
+            prompt: "do it",
+            brief: "Ngan",
+            last: { verdict: "held", tool: "codex" },
+        })
     })
 
     it("answers a pack with its hash and version, and an unknown one as HARNESS_NOT_FOUND", async () => {

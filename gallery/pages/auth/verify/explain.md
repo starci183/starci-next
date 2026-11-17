@@ -2,6 +2,7 @@
 title: Xác minh công khai một kinh nghiệm
 route: /verify/[code]
 area: auth
+reviewed: 2026-11-17
 ---
 
 Route: `/verify/[code]` (ảnh chụp: một mã đúng định dạng nhưng StarCi chưa từng xác minh, nên thấy trạng thái "không tìm thấy"). Trang công khai, không cần đăng nhập, nên không có thanh bên và thanh trên; nền trắng. Mã: `fe/apps/app/src/components/blocks/VerifyExperience/component.tsx` (vẽ), `index.tsx` (đọc, không có phiên).

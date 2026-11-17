@@ -27,7 +27,8 @@ export interface McpHarnessDocument {
  * a doc (`docs/<slug>/`). The build kits (source, stages, e2e, hidden), the doctor probes and the trial traps are not here.
  * The checkout may hold the authoring layout (`raw/harness/...`) or the published one (`harness/...`).
  */
-const ALLOWED = /^(?:raw\/)?harness\/((?:guides\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*)|(?:docs\/[a-z0-9][a-z0-9-]*))\/(vi|en)\.md$/u
+const ALLOWED =
+    /^(?:raw\/)?harness\/((?:guides\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*)|(?:docs\/[a-z0-9][a-z0-9-]*))\/(vi|en)\.md$/u
 
 /** The document a content path names, or null for anything the index must not read (also any denied or unreadable path). */
 export const harnessDocumentOf = (file: McpHarnessFile): McpHarnessDocument | null => {

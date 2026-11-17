@@ -6,7 +6,7 @@ id: permissions-deny-destructive
 tool: claude
 order: 5
 title:
-  vi: Chặn `git push --force` và `rm -rf`
+  vi: "`git push --force` and `rm -rf` are denied"
   en: "`git push --force` and `rm -rf` are denied"
 guide: permissions
 check:
@@ -17,7 +17,7 @@ check:
       - "^Bash\\(git push\\b[^)]*(--force|-f\\b)"
       - "^Bash\\(rm\\s+-(rf|fr|r\\s+-f|f\\s+-r)"
 fix:
-  vi: Thêm `Bash(git push --force:*)`, `Bash(git push -f:*)` và `Bash(rm -rf:*)` vào `permissions.deny`.
+  vi: Add `Bash(git push --force:*)`, `Bash(git push -f:*)` and `Bash(rm -rf:*)` to `permissions.deny`.
   en: Add `Bash(git push --force:*)`, `Bash(git push -f:*)` and `Bash(rm -rf:*)` to `permissions.deny`.
 good:
   files:

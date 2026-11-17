@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: burst
 label:
-  vi: Dồn 20 request thì bị giới hạn, có Retry-After
+  vi: A burst of 20 is limited, with Retry-After
   en: A burst of 20 is limited, with Retry-After
 question:
-  vi: "Giới hạn tốc độ đếm theo gì (IP, người dùng, khoá) và lưu bộ đếm ở đâu?"
+  vi: "What does your rate limit count by (IP, user, key) and where does the counter live?"
   en: "What does your rate limit count by (IP, user, key) and where does the counter live?"
 needs: [endpoint]
 steps:
@@ -22,16 +22,16 @@ steps:
 pass: limited
 reasons:
   limited:
-    vi: "Trong 20 request đồng thời có 429, mỗi 429 kèm Retry-After, không có 5xx."
+    vi: "Among 20 simultaneous requests some got 429, each with Retry-After, and none got 5xx."
     en: "Among 20 simultaneous requests some got 429, each with Retry-After, and none got 5xx."
   server-error:
-    vi: "Dồn request làm dịch vụ trả 5xx."
+    vi: "The burst made the service answer 5xx."
     en: "The burst made the service answer 5xx."
   no-429:
-    vi: "20 request đồng thời không request nào bị 429."
+    vi: "None of 20 simultaneous requests got 429."
     en: "None of 20 simultaneous requests got 429."
   no-retry-after:
-    vi: "Có 429 thiếu header Retry-After."
+    vi: "A 429 came without a Retry-After header."
     en: "A 429 came without a Retry-After header."
 fixtures:
   endpoint: GET /starci-test/items

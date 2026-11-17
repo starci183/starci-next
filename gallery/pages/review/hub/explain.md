@@ -2,6 +2,7 @@
 title: Ôn tập hôm nay
 route: /review
 area: review
+reviewed: 2026-11-17
 ---
 
 Route: `/review` (ảnh chụp: học viên mới, chưa có bộ thẻ hay bài Bản chất nào nên hôm nay không có gì đến hạn). Mã: `fe/apps/app/src/components/blocks/ReviewToday/component.tsx`. Khung chung giải thích ở `learn/home`.

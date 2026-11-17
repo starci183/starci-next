@@ -118,7 +118,7 @@ export const toBindParams = (
     identity: IdentityPrincipal,
     input: BindHarnessBuildInput,
 ): ExecuteParams<BindHarnessBuildRequest> => ({
-    request: { buildId: input.buildId, projectId: input.projectId },
+    request: { buildId: input.buildId, repository: input.repository },
     principal: authenticated(identity),
 })
 
@@ -193,7 +193,8 @@ export const toHarnessTrapTypes = (views: ReadonlyArray<HarnessTrapView>): Array
     views.map((view) => ({
         ...view,
         tools: [...view.tools],
-        estimate: view.estimate === null ? null : { ...view.estimate },
+        budget: { ...view.budget },
+        shortcuts: view.shortcuts.map((shortcut) => ({ ...shortcut })),
         last:
             view.last === null
                 ? null

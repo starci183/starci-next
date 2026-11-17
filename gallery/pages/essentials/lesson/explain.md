@@ -2,6 +2,7 @@
 title: Bản chất / Bài học · phần 1 Bản chất
 route: /essentials/[topic]/[lesson]
 area: essentials
+reviewed: 2026-11-17
 ---
 
 Route: `/essentials/[topic]/[lesson]` (không có `?phase=`; `?part=essence` là mặc định). Một bài có bốn phần (owner, COOK 2026-11-17): Bản chất, Source, Kịch bản, Tự áp dụng. Đây là phần 1: mở bằng 5 câu trắc nghiệm phỏng vấn, rồi bài viết, cuối bài làm lại 5 câu. Mockup: `D:/starci-tmp/claude-20261117/essentials-clusters/mockup/essential-4-parts.html` (artboard 1). Code: `fe/apps/app/src/components/blocks/EssentialLesson/component.tsx`, hook `fe/apps/app/src/hooks/essentialLesson/`, composite `fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx`. Grammar dưới `node_modules/@starci/grammar/dist/core/`. Liên kết `?phase=` cũ vẫn mở trang sáu pha (`LessonStudy`).

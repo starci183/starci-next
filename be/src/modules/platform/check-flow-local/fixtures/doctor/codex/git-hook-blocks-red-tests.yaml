@@ -6,7 +6,7 @@ id: git-hook-blocks-red-tests
 tool: codex
 order: 5
 title:
-  vi: Git pre-commit chặn commit khi test đỏ
+  vi: A git pre-commit hook blocks red tests
   en: A git pre-commit hook blocks red tests
 guide: git-hooks
 check:
@@ -15,7 +15,7 @@ check:
       scenario: red-test
       expect: reject
 fix:
-  vi: Tạo `.githooks/pre-commit` chạy `npm test`, rồi bật bằng `git config core.hooksPath .githooks`. Test đỏ thì hook thoát khác 0 và git từ chối commit.
+  vi: Create `.githooks/pre-commit` that runs `npm test`, then enable it with `git config core.hooksPath .githooks`. When the tests are red the hook exits non-zero and git refuses the commit.
   en: Create `.githooks/pre-commit` that runs `npm test`, then enable it with `git config core.hooksPath .githooks`. When the tests are red the hook exits non-zero and git refuses the commit.
 good:
   files:

@@ -1,15 +1,15 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
-# Quy ước của kit: GET <path>?limit=<n>&cursor=<c> trả {"items":[{"id":...}],"nextCursor":...}, mới nhất trước;
-# POST <path> với body mẫu tạo một item.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
+# Kit convention: GET <path>?limit=<n>&cursor=<c> returns {"items":[{"id":...}],"nextCursor":...}, newest first;
+# POST <path> with the sample body creates an item.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: stable-pages
 label:
-  vi: Trang sau không lặp item của trang trước dù có item mới chen vào
+  vi: The next page repeats no item of the first even when new items arrive
   en: The next page repeats no item of the first even when new items arrive
 question:
-  vi: "Cursor của bạn mã hoá gì (id, thời điểm, cả hai), và vì sao offset lặp item khi có bản ghi mới?"
+  vi: "What does your cursor encode (an id, a time, both), and why does an offset repeat items when rows arrive?"
   en: "What does your cursor encode (an id, a time, both), and why does an offset repeat items when rows arrive?"
 needs: [endpoint, sample]
 steps:
@@ -39,25 +39,25 @@ steps:
 pass: stable
 reasons:
   stable:
-    vi: "Trang sau không lặp item nào của trang đầu dù có 2 item mới."
+    vi: "The next page repeated no item of the first page despite 2 new items."
     en: "The next page repeated no item of the first page despite 2 new items."
   seed-failed:
-    vi: "Tạo item không trả 2xx."
+    vi: "Creating an item did not answer 2xx."
     en: "Creating an item did not answer 2xx."
   read-failed:
-    vi: "Đọc danh sách không trả 2xx."
+    vi: "Reading the list did not answer 2xx."
     en: "Reading the list did not answer 2xx."
   limit-ignored:
-    vi: "limit=2 không cho đúng 2 item."
+    vi: "limit=2 did not give 2 items."
     en: "limit=2 did not give 2 items."
   no-cursor:
-    vi: "Trang đầu không có nextCursor."
+    vi: "The first page has no nextCursor."
     en: "The first page has no nextCursor."
   empty-page:
-    vi: "Trang sau rỗng dù còn item."
+    vi: "The next page is empty although items remain."
     en: "The next page is empty although items remain."
   repeated-items:
-    vi: "Trang sau lặp item của trang đầu (phân trang theo offset)."
+    vi: "The next page repeated items of the first (offset paging)."
     en: "The next page repeated items of the first (offset paging)."
 fixtures:
   endpoint: GET /starci-test/items

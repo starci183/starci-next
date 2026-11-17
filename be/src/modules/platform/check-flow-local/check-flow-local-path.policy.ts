@@ -6,7 +6,13 @@ import { isRecord } from "@modules/platform/primitives"
 const isFile = (path: string): boolean => existsSync(path) && statSync(path).isFile()
 
 const wildcard = (part: string): RegExp =>
-    new RegExp(`^${part.split("*").map((piece) => piece.replace(/[.+?^${}()|[\]\\]/gu, "\\$&")).join(".*")}$`, "u")
+    new RegExp(
+        `^${part
+            .split("*")
+            .map((piece) => piece.replace(/[.+?^${}()|[\]\\]/gu, "\\$&"))
+            .join(".*")}$`,
+        "u",
+    )
 
 /**
  * Expands one path pattern into the files that exist: project relative, or `~/` for the home folder, and one segment may use `*`

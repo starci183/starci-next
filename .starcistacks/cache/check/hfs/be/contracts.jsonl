@@ -1,3 +1,5 @@
 {"data":{},"findings":[],"hash":"263c919490c55f605fcbea31b7775f9cbf0b3358f95eea965a4b884aff33403c","path":"be/contracts/core/schema.graphql","step":"file-rules"}
 {"findings":[{"column":0,"line":0,"message":"contracts/core cannot be verified: `starci app emit` failed for core: starci app emit: core failed (exit 1): ProjectModule: a provider list cannot be decided (property checkSource of an open object)","path":"be/contracts/core/schema.graphql","rule":"HFS_CONTRACT_SNAPSHOT_DRIFT"}],"hash":"c4a2093c12306f630599ed405424ca5314a5380df079928f3d44cd34b24f55f9","path":"be/contracts/core/schema.graphql","step":"hfs"}
 {"data":{},"findings":[],"hash":"c25c0eb1cbcf29baf70a1db599cf56b25671c1e8bfa6505046488bcd876f775c","path":"be/contracts/core/starci-next@1.tools.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"649801cabdb3c6f96c751164ccc0388c06be5b21c24625cdf01d8ad13054e76f","path":"be/contracts/core/schema.graphql","step":"file-rules"}
+{"data":{},"findings":[],"hash":"19512bd688d06969eda640e991c282c7be751c9bf8a9d524bfba93804e2ac350","path":"be/contracts/core/starci-next@1.tools.json","step":"file-rules"}

@@ -2,6 +2,7 @@
 title: Premium (chọn gói và thanh toán)
 route: /premium
 area: commerce
+reviewed: 2026-11-17
 ---
 
 Route: `/premium` (ảnh chụp: học viên đang là Premium, gói năm và SePay đang chọn mặc định, nên nút là "Gia hạn thêm"). Mã: `fe/apps/app/src/components/blocks/PremiumPlans/component.tsx` (vẽ), `index.tsx` (đọc giá, tạo đơn). Trang trắng; lựa chọn là radio phẳng dưới đầu mục, chỉ bản tóm tắt gói là thẻ.

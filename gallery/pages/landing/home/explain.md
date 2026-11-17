@@ -2,6 +2,7 @@
 title: Trang giới thiệu (landing)
 route: /
 area: landing
+reviewed: 2026-11-17
 ---
 
 Route: `/` của ứng dụng `landing` (cổng riêng, không phải ứng dụng học). Mã: `fe/apps/landing/src/app/[locale]/page.tsx`. Đây là trang khung của bộ dựng: chưa có thiết kế sản phẩm. Toàn trang trắng, các dải ngăn nhau bằng đường kẻ 1px.

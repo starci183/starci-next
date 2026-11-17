@@ -47,7 +47,10 @@ export const rulesOf = (
                 const failing = flagged
                     .filter((item) => rule.shortcuts.includes(item.id))
                     .filter((item) => !rule.reportOnly && !(rule.tolerateBlocked && item.blocked))
-                return result(failing.length === 0, failing.map((item) => item.id))
+                return result(
+                    failing.length === 0,
+                    failing.map((item) => item.id),
+                )
             }
             default:
                 return result(true)

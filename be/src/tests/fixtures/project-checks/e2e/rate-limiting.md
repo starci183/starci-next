@@ -1,9 +1,10 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: rate-limiting
 
-Hai mươi request đồng thời: có ít nhất một `429`, mỗi `429` kèm `Retry-After`, không có `5xx`.
+Twenty simultaneous requests: at least one `429`, each `429` with `Retry-After`, and no `5xx`.
 
-Bạn khai: `endpoints.rate-limiting.endpoint` (một endpoint đọc, ví dụ `GET /products`).
+You declare: `endpoints.rate-limiting.endpoint` (a read endpoint, for example `GET /products`).
 
 ```yaml starci-flow
 id: rate-limiting

@@ -6,7 +6,7 @@ id: agents-md-present
 tool: codex
 order: 1
 title:
-  vi: Dự án có AGENTS.md với nội dung thật
+  vi: The project has a real AGENTS.md
   en: The project has a real AGENTS.md
 guide: agents-md
 check:
@@ -16,7 +16,7 @@ check:
     contains: "## "
     minBytes: 200
 fix:
-  vi: Tạo AGENTS.md ở thư mục gốc, ít nhất 200 byte, chia thành các mục `##`. Ghi lệnh build và test, quy ước code và những việc Codex không được làm.
+  vi: Create AGENTS.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Codex must not do.
   en: Create AGENTS.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Codex must not do.
 good:
   files:

@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
+import { InjectHarnessOptions } from "./harness.decorators"
+import type { HarnessOptions } from "./harness.options"
+import { DEFAULT_CI_OIDC_AUDIENCE } from "@modules/domain/project"
 import { HARNESS_MESSAGES } from "./messages/harness.messages"
 import { HarnessError, HarnessErrorCode } from "./errors/harness.error"
 import type {
@@ -74,7 +77,14 @@ const summaryOf = (view: HarnessBuildView): HarnessBuildSummaryView => ({
  * leave the pack door.
  */
 export class HarnessReadService {
-    constructor(@InjectPrimaryEntityManager() private readonly entityManager: EntityManager) {}
+    private readonly audience: string
+
+    constructor(
+        @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
+        @InjectHarnessOptions() options: HarnessOptions,
+    ) {
+        this.audience = options.ciOidcAudience ?? DEFAULT_CI_OIDC_AUDIENCE
+    }
 
     /** The three parts with the learner's counts. */
     async hub(
@@ -132,6 +142,7 @@ export class HarnessReadService {
                 order: guide.order,
                 title: guide.title[locale],
                 summary: guide.summary[locale],
+                minutes: guide.minutes,
             }))
     }
 
@@ -154,6 +165,7 @@ export class HarnessReadService {
             order: doc.order,
             title: doc.title[locale],
             summary: doc.summary[locale],
+            minutes: doc.minutes,
         }))
     }
 
@@ -227,6 +239,14 @@ export class HarnessReadService {
         }))
     }
 
+    private bindingOf(
+        bindings: ReadonlyArray<BindingRow>,
+        buildId: string,
+    ): { readonly repository: string; readonly bindingId: string } | null {
+        const found = bindings.find((binding) => binding.build_id === buildId)
+        return found === undefined ? null : { repository: found.repository, bindingId: found.binding_id }
+    }
+
     private async buildViews(
         learnerId: string,
         locale: HarnessLocale,
@@ -243,7 +263,8 @@ export class HarnessReadService {
                 locale,
                 buildRuns.filter((row) => row.taskId === `harness:build:${build.id}`),
                 proofs,
-                bindings.find((binding) => binding.build_id === build.id)?.project_id ?? null,
+                this.bindingOf(bindings, build.id),
+                this.audience,
             ),
         )
     }
