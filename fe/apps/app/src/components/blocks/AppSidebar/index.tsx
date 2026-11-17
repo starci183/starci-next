@@ -81,7 +81,13 @@ export const AppSidebar = (props: AppSidebarProps) => {
     const all = [...MAIN, ...EXPERIENCE]
     const entriesOf = (list: ReadonlyArray<Destination>): ReadonlyArray<AppSidebarEntry> =>
         list.map((d) => ({ id: d.id, label: t(`nav.${d.id}`), source: d.source }))
-    const selected = all.find((d) => isOnRoute(pathname, d.route, d.id === "learn"))?.id
+    // A page that belongs to a destination without being below its route keeps that destination marked: the goal picker is part of Học, the review queue of the verified experience.
+    const belongsTo = isOnRoute(pathname, APP_ROUTES.pathsChoose, false)
+        ? "learn"
+        : isOnRoute(pathname, APP_ROUTES.reviewQueue, false)
+          ? "experience"
+          : undefined
+    const selected = belongsTo ?? all.find((d) => isOnRoute(pathname, d.route, d.id === "learn"))?.id
     return (
         <AppSidebarBase
             props={{

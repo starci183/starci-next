@@ -139,6 +139,7 @@ export const topicScreenOf = (input: TopicInput): TopicScreenView => {
         next: nextOf(input, rows),
         note: input.topic.source === "" ? "" : input.words.source(input.topic.source),
         progress: input.words.isPremium ? input.words.progress(understood, total) : "",
+        understood: input.words.isPremium ? understood : 0,
         rows,
         prerequisites: input.topic.prerequisites.map((text) => ({ id: text, title: text, href: "" })),
         related: relatedOf(input),

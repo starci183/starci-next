@@ -42,7 +42,7 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: mô tả bộ thẻ cắt bằng "…" giữa câu (Module 1, Thiết kế API, Caching...) nên mất ý; chữ mô tả muted ngả nâu.
 - 1440: chip chọn "Tất cả" nền xám có viền đậm hơn các chip khác, nhìn như nút nhấn.
 - 1440: đầu mục "Lọc theo lộ trình" và "Mục tiêu mỗi ngày" cùng cỡ với nhãn nhóm "Lộ trình", "Khoá", phân cấp mờ; cột lọc có khoảng trống rất dài bên dưới.
-- 1440: nút chính "Lưu mục tiêu" nền tím nhạt chữ đen, tương phản thấp; ô số rộng hết cột nên nút trừ cộng ở hai mép xa nhau.
+- 1440: nút "Lưu mục tiêu": ô số rộng hết cột nên nút trừ cộng ở hai mép xa nhau.
 - 1920: cột lọc và danh sách bị đẩy vào giữa (lọc ở x≈268, thẻ ở x≈464) trong khi đường dẫn và tiêu đề sát trái x=160; hai trục trái lệch nhau. Các lỗi chip tô màu, "Một phần cần Premium" cho học viên Premium, mô tả cắt "…" giữ nguyên.
 - 390: bộ lọc rơi xuống cuối trang, sau cả mười lăm thẻ và "Mục tiêu mỗi ngày", nên lọc đến sau thứ nó lọc.
 - 390: mô tả thẻ cắt sau hai dòng bằng "…"; nút "Thêm" nằm dòng riêng nên thẻ cao, trang dài khoảng 3900px; chip độ khó sát tên bộ ở mép phải thẻ.

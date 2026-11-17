@@ -35,7 +35,6 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: tiêu đề Section "Hôm nay chưa có gì đến hạn" lặp y nguyên với câu bên dưới tranh; một trạng thái nói hai lần.
 - 1440: cột phụ có tiêu đề "Xem chuỗi ở trang Học" và liên kết cuối cột cũng "Xem chuỗi ở trang Học"; lặp chữ, liên kết không có mũi tên "→" và nhìn như một tiêu đề đậm chứ không phải liên kết.
 - 1440: dòng mô tả dưới tranh và các đoạn muted ngả nâu đỏ nhạt thay vì xám trung tính (luật neutral chroma 0); tương phản chữ muted thấp trên nền trắng.
-- 1440: nút chính "Chọn bộ thẻ" nền tím nhạt, chữ đen; tương phản chữ trên nút thấp.
 - 1440: nửa dưới trang trống; dải đầu trang cao hơn nội dung cần.
 - 1920: vùng chính và cột phụ bị co vào giữa (bắt đầu ở x=480) trong khi dải tiêu đề sát trái ở x=288; hai trục trái lệch nhau. Các lỗi căn giữa/căn trái, tiêu đề lặp, liên kết lặp không mũi tên và chữ muted ngả nâu giữ nguyên.
 - 390: cột phụ xuống dưới nút; "Xem chuỗi ở trang Học" vẫn lặp hai lần, liên kết cuối không có mũi tên; câu mô tả bị bẻ để "ngày." đứng một mình ở dòng cuối (từ mồ côi); tranh nhỏ và hai nút căn trái trong khi chữ căn giữa, lệch trục.

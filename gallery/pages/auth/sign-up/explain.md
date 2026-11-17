@@ -30,10 +30,9 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, nút "Đăng ký" đang tắt: nền tím rất nhạt với chữ xám, gần như không đọc được (tương phản thấp); trạng thái tắt trông như một ô tô màu mờ.
 - 1440, 1920: dòng điều khoản xuống dòng và để chữ "tư" mồ côi ở dòng hai; ở 390 dòng không còn mồ côi nhưng nhãn vẫn đậm và dài.
 - 1440, 1920, 390, hộp kiểm đồng ý: nhãn đậm ngang nhãn ô nhập, "Điều khoản sử dụng" và "Chính sách quyền riêng tư" không có dấu hiệu là liên kết (không gạch chân, không màu); hộp kiểm dính sát nút chính bên dưới (khoảng 12px) trong khi các ô khác cách nhau rộng hơn.
 - 1440, 1920, 390, dòng gợi ý "Từ 6 đến 256 ký tự": nhỏ hơn 12px và xám nhạt, tương phản thấp.
-- 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và ô nhập; tiêu đề "Tạo tài khoản" cỡ khoảng 24px, vượt 18/600.
+- 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và ô nhập.
 - 1440, 1920, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám: nền tô thay vì viền 1px; nút ngôn ngữ trôi riêng ở góc phải.
 - 1440, 1920, 390, placeholder, "Hiện mật khẩu" xám nhạt cỡ 12, tương phản thấp; "Đăng nhập" ở cuối thẻ không gạch chân, như một nhãn đậm.

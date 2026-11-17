@@ -124,7 +124,7 @@ export const projectRowsOf = (
             repo: repoOf(project.repoUrl),
             kindLabel: project.kind === "agent" ? words.kind.agent : words.kind.app,
             isAgent: project.kind === "agent",
-            milestone: milestoneId === null ? words.noMilestone : (titles[milestoneId] ?? milestoneId),
+            milestone: milestoneId === null ? words.noMilestone : (titles[milestoneId] ?? words.noMilestone),
             percent:
                 project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
             progress: words.progress(project.provedConceptCount, project.conceptCount),

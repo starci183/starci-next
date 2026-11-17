@@ -25,7 +25,8 @@ export const IncidentsList = () => {
                 placeholder: INCIDENTS_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 labels: {
-                    intro: { eyebrow: t("eyebrow"), title: t("title"), description: t("description") },
+                    title: t("title"),
+                    description: t("description"),
                     runnerNote: t("runnerNote"),
                     empty: t("empty"),
                 },

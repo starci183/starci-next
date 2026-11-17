@@ -106,6 +106,12 @@ const statusToneOf = (status: PracticeProgress, locked: boolean): PracticeRow["b
     }
 }
 
+/** A technique tag in words: the camelCase id the data carries ("twoPointers") as a sentence-case label ("Two pointers"). */
+const tagLabelOf = (tag: string): string => {
+    const words = tag.replace(/([a-z\d])([A-Z])/g, "$1 $2").toLowerCase()
+    return `${words.slice(0, 1).toUpperCase()}${words.slice(1)}`
+}
+
 /** The rows of a pattern's problems; `currentSlug` marks the one being solved. */
 export const problemRowsOf = (
     problems: ReadonlyArray<PracticeProblemItemView>,
@@ -115,7 +121,7 @@ export const problemRowsOf = (
     problems.map((problem) => ({
         id: problem.slug,
         title: problem.title,
-        description: [words.difficulty(problem.difficulty), ...problem.tags].join(" · "),
+        description: [words.difficulty(problem.difficulty), ...problem.tags.map(tagLabelOf)].join(" · "),
         badge: problem.locked ? words.premium : words.statuses[problem.status],
         badgeTone: statusToneOf(problem.status, problem.locked),
         href: practiceProblemPath(problem.slug),

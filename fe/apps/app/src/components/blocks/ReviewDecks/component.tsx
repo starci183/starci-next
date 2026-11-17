@@ -124,7 +124,7 @@ const Deck = (props: DeckProps) => (
             </Text>
             <Cluster gap="inline" wrap>
                 <Badge tone="neutral">{props.deck.cards}</Badge>
-                <Badge tone="muted">{props.deck.free}</Badge>
+                {props.deck.free === "" ? null : <Badge tone="muted">{props.deck.free}</Badge>}
                 {props.deck.isPartlyLocked ? <Badge tone="warning">{props.labels.partlyLocked}</Badge> : null}
             </Cluster>
             <Cluster gap="inline" wrap align="center">

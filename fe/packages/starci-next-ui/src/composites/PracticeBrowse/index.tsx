@@ -1,4 +1,4 @@
-import { Section, Stack, Text } from "@starci/grammar/common"
+import { Stack, Text } from "@starci/grammar/common"
 import { PracticeList, type PracticeRow } from "../PracticeList"
 import { SlotView, type DataSlot, type SlotLabels } from "../SlotView"
 import { UpsellRow } from "../UpsellRow"
@@ -19,7 +19,6 @@ export type PracticeBrowseProps = {
     readonly placeholder: PracticeBrowseView
     readonly slotLabels: SlotLabels
     readonly onRetry: () => void
-    readonly cardLabel: string
     /** The paragraph that opens the card; empty draws none. */
     readonly intro: string
     readonly upsell: PracticeBrowseUpsell | undefined
@@ -27,7 +26,7 @@ export type PracticeBrowseProps = {
     readonly emptyLabel: string
 }
 
-/** The body of the catalog and the pattern screens: a soft card with its notes and the Premium upsell, then the rows. */
+/** The body of the catalog and the pattern screens: its notes and the Premium upsell, then the rows. */
 export const PracticeBrowse = (props: PracticeBrowseProps) => (
     <SlotView
         slot={props.slot}
@@ -36,17 +35,15 @@ export const PracticeBrowse = (props: PracticeBrowseProps) => (
         onRetry={props.onRetry}
         render={(view, isLoading) => (
             <Stack gap="region">
-                <Section title={props.cardLabel} isLoading={isLoading} headingLevel={2}>
-                    <Stack gap="row">
-                        {props.intro === "" ? null : <Text as="p">{props.intro}</Text>}
-                        {view.lines.map((line) => (
-                            <Text key={line} size="sm" tone="muted">
-                                {line}
-                            </Text>
-                        ))}
-                        {props.upsell === undefined ? null : <UpsellRow {...props.upsell} />}
-                    </Stack>
-                </Section>
+                <Stack gap="row">
+                    {props.intro === "" ? null : <Text as="p">{props.intro}</Text>}
+                    {view.lines.map((line) => (
+                        <Text key={line} size="sm" tone="muted">
+                            {line}
+                        </Text>
+                    ))}
+                    {props.upsell === undefined ? null : <UpsellRow {...props.upsell} />}
+                </Stack>
                 <PracticeList
                     label={props.listLabel}
                     emptyLabel={props.emptyLabel}

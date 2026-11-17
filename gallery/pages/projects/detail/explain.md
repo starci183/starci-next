@@ -49,7 +49,6 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, aside, khối máy của bạn: tiêu đề hiện khoá dịch thô "app.projects.device.title" và chip "App.projects.device.badge" (thiếu chuỗi dịch).
 - 1440, dải đầu trang: nút "Cập nhật kết quả từ máy" kết thúc ở x=1428, cách mép phải 12px, trong khi các trang khác chừa lề 32px; nút sát mép hơn lề nội dung.
 - 1440 và 1920, lề trái trang là 268 (đường dẫn, tiêu đề, danh sách) còn các trang Dự án khác là 288: không cùng lề với `projects/list`.
 - 1440 và 1920, "Lần chạy gần đây": bảng rỗng được bao trong một thẻ bo góc có viền, thân trống cao khoảng 120px; luật là bảng phẳng trên nền trang, không thẻ.

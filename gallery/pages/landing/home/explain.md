@@ -33,7 +33,6 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 
 - 1440, 1920: khối thân (dòng mô tả và nút) thụt vào x=112 ở 1440 và x=352 ở 1920 trong khi dải thương hiệu và tiêu đề dính x=32; ba cột lề khác nhau, lệch trục.
 - 390: thân thẳng lề với tiêu đề, nhưng nút "Mở ứng dụng" chỉ rộng bằng chữ, không có dấu hiệu là CTA chính của trang; nửa dưới màn hình trống.
-- 1440, 1920, 390, nút "Mở ứng dụng": nền tím nhạt chữ đen in đậm, tương phản thấp, không đọc như nút chính (theme-and-type).
 - 1440, 1920, 390, dải thương hiệu: chữ "starci-next" thường, nhỏ, không logo, không điều hướng; khác thương hiệu ứng dụng học (logo StarCi Next).
 - 1440, 1920, 390, tiêu đề "Chào mừng đến với starci-next" là lời chào mặc định, không nói sản phẩm là gì; dòng mô tả "Mọi thứ bạn cần đều ở trong ứng dụng." xám nhạt cỡ 14, tương phản thấp.
 - 1440, 1920: gần 80% chiều cao trang trống, nội dung dồn lên trên trái.

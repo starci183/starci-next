@@ -23,7 +23,7 @@ export type PathsScreen = {
 
 /** The fixed words of the goal screen, resolved from the `app.paths` catalog. */
 export type PathsLabelSet = {
-    readonly intro: { readonly eyebrow: string; readonly title: string; readonly description: string }
+    readonly intro: { readonly title: string; readonly description: string }
     /** The stage names in the order the paths string them. */
     readonly stages: ReadonlyArray<string>
     readonly note: string

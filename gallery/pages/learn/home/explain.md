@@ -74,7 +74,6 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 
 - 1440, 1920, phần "Lộ trình đang theo": khoảng trống khoảng 50px giữa đầu phần và nội dung, và khoảng 80px giữa nút và đầu phần "Hôm nay"; nhịp dọc rời rạc so với các phần khác. Hình minh hoạ là một tranh nền gradient hình chữ nhật, không phải vật thật để cầm.
 - 390, "Lộ trình đang theo": hình thu nhỏ cỡ 100px nằm lệch trái, bỏ trống bên phải; nút chính "Chọn mục tiêu" nằm ở khoảng y=965, tức xa dưới màn hình đầu vì cột phụ (chuỗi ngày, mục tiêu tuần, kinh nghiệm) chen lên trước.
-- 1440, 1920, 390, nút "Chọn mục tiêu": nền tím nhạt chữ đen kèm icon, tương phản thấp, không giống nút chính đặc.
 - 1440, 1920, 390, dải tiêu đề: dòng phụ "Sáu phần học, một chuỗi ngày" cỡ 14 xám, không phải 12 muted như luật; "Xem hướng dẫn" là viên thuốc viền nằm lệch mép phải, cách xa tiêu đề.
 - 1440, 1920, 390, "0 ngày liên tiếp": chữ "ngày liên tiếp" cũng cỡ 20 xám nhạt, tương phản thấp, chỉ "0" đậm; luật chỉ cho số lớn cỡ 20.
 - 1440, 1920, 390, hàng bảy ngày: nhãn T4..T3 12px xám nhạt và chấm rỗng rất nhỏ; chấm hôm nay chỉ khác một vòng mờ, khó thấy.

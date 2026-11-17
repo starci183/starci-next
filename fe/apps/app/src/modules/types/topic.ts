@@ -19,6 +19,8 @@ export type TopicScreenView = {
     readonly note: string
     /** The learner progress in the topic; empty for a reader without Premium. */
     readonly progress: string
+    /** How many lessons of the topic the learner has understood (the meter value, matching the count in the words). */
+    readonly understood: number
     readonly rows: ReadonlyArray<TopicPathRow>
     readonly prerequisites: ReadonlyArray<TopicAsideEntry>
     readonly related: ReadonlyArray<TopicAsideEntry>

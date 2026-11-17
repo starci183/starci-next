@@ -1,5 +1,5 @@
 import { Page, Stack, Text } from "@starci/grammar/common"
-import { CatalogIntro, IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
+import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The incident list as it is drawn: the facts under the title and the topics with their lessons, every word resolved. */
@@ -30,7 +30,8 @@ export const INCIDENTS_PLACEHOLDER: IncidentsScreenView = {
 
 /** The fixed words of the page. */
 export type IncidentsLabels = {
-    readonly intro: { readonly eyebrow: string; readonly title: string; readonly description: string }
+    readonly title: string
+    readonly description: string
     /** The note that running an incident needs a connected device, which is not open yet. */
     readonly runnerNote: string
     readonly empty: string
@@ -54,7 +55,7 @@ export type IncidentsListBaseProps = {
 export const IncidentsListBase = (props: IncidentsListBaseProps) => {
     const { slot, placeholder, slotLabels, labels } = props.props
     return (
-        <Page>
+        <Page header={{ title: labels.title, description: labels.description, breadcrumbs: "root" }}>
             <SlotView
                 slot={slot}
                 placeholder={placeholder}
@@ -62,8 +63,9 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
                 onRetry={props.on.retry}
                 render={(view, isLoading) => (
                     <Stack gap="region">
-                        <CatalogIntro {...labels.intro} facts={view.facts} upsell={undefined} />
-                        <Text tone="muted">{labels.runnerNote}</Text>
+                        <Text size="sm" tone="muted">
+                            {[...view.facts, labels.runnerNote].join(" · ")}
+                        </Text>
                         <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
                     </Stack>
                 )}

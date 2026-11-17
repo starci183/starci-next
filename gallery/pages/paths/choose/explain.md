@@ -43,12 +43,9 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, ảnh thầy giáo: khối hình khoảng 550px (1440) và 596px (1920) kéo hàng mở đầu cao, chữ và chip chỉ chiếm ~170px đầu nên có khoảng trống lớn bên dưới chip; hình là một ô gradient tím nhạt tô kín, không phải vật thật, lấn át cả trang.
-- 390, ảnh thầy giáo: một khối tím nhạt tô kín chiếm khoảng 370px, đẩy lưới lộ trình xuống thấp.
 - 1440, 1920, 390, các thẻ lộ trình: ở thẻ nào cũng hai nút "Xem lộ trình" và "Chọn lộ trình" cùng một kiểu viền trung tính, không có nút chính nào trên cả màn; "Chọn lộ trình" (lệnh chính của trang) ngang hàng với lệnh xem. Hai nút dồn trái, bỏ trống nửa phải chân thẻ.
 - 1440, 1920, đường kẻ chân thẻ lệch nhau giữa các thẻ cùng hàng (thẻ 1 ở y≈1077, thẻ 3 ở 1085, thẻ 4 ở 1057 tại 1440) và khoảng trống dưới nút của thẻ 4 lớn hơn các thẻ khác.
 - 1440, 1920, lưới 4 cột để thẻ thứ năm ("Senior · System design") một mình ở hàng hai, ba ô bên phải trống.
 - 1440, 1920, 390, thẻ: chữ rất dày đặc (câu hứa, "Đích:", chip, "n bước · khoảng m tuần"), nhãn loại "XÂY SẢN PHẨM" và "VIỆC LÀM" viết hoa 12px xám nhạt, tương phản thấp; các chip phần học tô xám và bị xuống hai ba hàng không đều.
 - 1440, 1920, 390, nhãn "MỤC TIÊU ĐẦU RA" viết hoa xám nhạt nhỏ; chữ đoạn mở đầu xám đậm cỡ 14 trên dòng dài khoảng 540px, hơi sát; dòng ghi chú "Mục tiêu không có chuỗi ngày..." xám nhạt, kéo dài một dòng ở 1440 và 1920.
-- 1440, 1920, 390, sidebar không có mục nào được chọn (mục "Học" không còn nền xám và thanh accent), nên không biết đang ở đâu; trang cũng không có dải tiêu đề 18/600 riêng, tiêu đề câu hỏi chỉ 14/600 trong thân.
 - 1440, 1920, 390, thanh trên: nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.

@@ -47,7 +47,7 @@ type OutcomePathCardProps = {
 /** The command that follows the path; the path already followed offers none. */
 const ChooseAction = (props: Pick<OutcomePathCardProps, "path" | "hasActive" | "labels" | "isPending" | "onChoose">) =>
     props.path.isCurrent ? null : (
-        <Button intent="neutral" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
+        <Button intent="neutral" size="sm" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
             {props.hasActive ? props.labels.switchTo : props.labels.choose}
         </Button>
     )
@@ -67,7 +67,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
                 kind: "custom",
                 children: (
                     <Cluster gap="row">
-                        <Button intent="neutral" onPress={() => props.onView(props.path.id)}>
+                        <Button intent="neutral" size="sm" onPress={() => props.onView(props.path.id)}>
                             {props.labels.view}
                         </Button>
                         <ChooseAction {...props} />
