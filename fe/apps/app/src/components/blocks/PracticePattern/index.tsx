@@ -30,7 +30,7 @@ export const PracticePattern = (props: PracticePatternProps) => {
                 browse: {
                     slot: mapSlot(slotOfSwr(read), (problems) => ({
                         lines: [
-                            t("facts", {
+                            t(isPremium ? "factsPremium" : "facts", {
                                 accepted: problems.filter((problem) => problem.status === "ACCEPTED").length,
                                 total: problems.length,
                                 free: pattern?.freeCount ?? 0,
@@ -40,7 +40,6 @@ export const PracticePattern = (props: PracticePatternProps) => {
                     })),
                     placeholder: PRACTICE_PATTERN_PLACEHOLDER,
                     slotLabels: useSlotLabels()(t("empty")),
-                    cardLabel: title,
                     intro: "",
                     upsell: isPremium
                         ? undefined

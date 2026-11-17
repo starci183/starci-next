@@ -7,7 +7,7 @@ import type { PathsLabelSet } from "./paths.shared"
 export const usePathsLabels = (): PathsLabelSet => {
     const t = useTranslations("app.paths")
     return {
-        intro: { eyebrow: t("eyebrow"), title: t("title"), description: t("description") },
+        intro: { title: t("title"), description: t("description") },
         stages: [
             t("stage.understand"),
             t("stage.remember"),

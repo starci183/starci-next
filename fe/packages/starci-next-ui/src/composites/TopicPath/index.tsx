@@ -1,4 +1,4 @@
-import { Cluster, Stepper, SurfaceCard, Text, type StepperStepState } from "@starci/grammar/common"
+import { Cluster, Section, Stepper, Text, type StepperStepState } from "@starci/grammar/common"
 import { LockIcon } from "../../leaves/Icon"
 
 /** One lesson of the topic path in the teacher's module order. */
@@ -79,13 +79,14 @@ const endOf = (row: TopicPathRow, props: TopicPathProps) => {
 }
 
 /**
- * The lessons of a topic as ONE numbered list card, in the teacher's order: a numbered mark, the lesson name, a muted one-liner and, at the end,
+ * The lessons of a topic as ONE numbered list on the surface (a Section, never a card around it), in the teacher's order: a numbered mark, the lesson name, a muted one-liner and, at the end,
  * the six phase rings with their count (Premium) or the state chip of a published lesson (a row that opens the lesson, with its chevron) or the outline lock of a lesson not yet open.
  */
 export const TopicPath = (props: TopicPathProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.label}
+        title={props.label}
+        headingLevel={2}
         count={props.rows.length}
         empty={props.emptyLabel}
         items={props.rows.map((row, index) => ({

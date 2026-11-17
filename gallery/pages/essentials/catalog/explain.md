@@ -49,8 +49,8 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, dải tiêu đề: dòng phụ "KIẾN THỨC NGÀNH · HỌC TƯƠNG TÁC" vẫn in hoa, 12 muted; luật 5 của surface-layering yêu cầu mô tả 12 muted thường, không phải eyebrow in hoa. Ba chip nền xám (11 bài đã mở, 16 nhóm, 343 bài...) là nền tô; chip thứ ba dài và đọc như một câu, không phải một số liệu.
-- 1440, khung lọc và mọi danh sách (Bài toán thực chiến, từng nhóm topic): vẫn nằm trong khung viền bo góc, dù luật 1 nói danh sách là thân của Section trên mặt trắng, không thẻ bao quanh. Cùng lỗi ở aside "Nhóm kiến thức": aside là một khung bo góc chứ không phải các hàng phẳng (luật 4).
+- 1440, dải tiêu đề: Ba chip nền xám (11 bài đã mở, 16 nhóm, 343 bài...) là nền tô; chip thứ ba dài và đọc như một câu, không phải một số liệu.
+- 1440, khung lọc (CatalogToolbar) vẫn là một thẻ bo góc, và aside "Nhóm kiến thức" là danh sách có khung viền bo góc do Grammar vẽ cho Section kind="list"; các danh sách nhóm đã là Section trên mặt trắng, không còn thẻ bao quanh.
 - 1440, "Bài toán thực chiến": bốn hàng đều mang chip "BÀI TOÁN" nền xám và chữ "Sắp có" 12 muted rất nhạt, độ tương phản thấp; chip lặp lại thông tin của cả nhóm trên mỗi hàng. Bốn hàng không bấm được nhưng trông giống hàng danh sách bình thường.
 - 1440, hàng topic: ảnh bìa 3D màu sắc rực (đỏ, tím, cam) cỡ 40px lệch hẳn với trang trắng trung tính và khó đọc chi tiết; ảnh nằm trong một ô tím nhạt, tức nền tô.
 - 1440, số liệu cuối hàng: "1/5 bài đã mở" và "0/5 đã hiểu" cùng 12 muted, "0/5 đã hiểu" đậm hơn chút; hai số gần nhau, dễ đọc nhầm, và không căn cột giữa các hàng (hàng Kubernetes "1/15 bài đã mở" lệch trái so với các hàng khác).

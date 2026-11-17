@@ -1,7 +1,7 @@
 /*
  * StarCi Next brand, white theme: the one place the app writes colour. Owner 2026-11-17 (the NIVO white-theme rulings, applied to this
  * app with its OWN accent): the page and every surface are white, neutrals carry no hue (chroma 0), and layers separate by a 1px hairline,
- * not by tint or shadow. The violet --accent is a signal only: the one primary button, the urgent count, the focus edge and ring, errors
+ * not by tint or shadow. The violet --accent is a solid brand fill with an on-colour foreground (never a pale tint with dark text) and a signal only: the one primary button, the urgent count, the focus edge and ring, errors
  * stay --danger, and the checked checkbox, radio and switch. Selection (a nav item, a table row, a chip) is gray, never violet. Info is a
  * neutral gray. Only a real floating layer (popover, menu, dialog, toast) carries one soft shadow.
  * The grammar renderers read these same HeroUI tokens, so a renderer and a HeroUI part paint the same colour. The `--starci-core-*`
@@ -14,11 +14,11 @@
     --radius: 0.5rem;
     --field-radius: 0.75rem;
 
-    --accent: oklch(77% 0.13 305);
-    --accent-foreground: oklch(15% 0.026 305);
+    --accent: oklch(51% 0.24 285);
+    --accent-foreground: oklch(99.1% 0 0);
     --background: oklch(100% 0 0);
     --border: oklch(92.2% 0 0);
-    --danger: oklch(65.32% 0.2335 31.88);
+    --danger: oklch(55% 0.22 27);
     --danger-foreground: oklch(99.11% 0 0);
     --default: oklch(96.1% 0 0);
     --default-foreground: oklch(20.5% 0 0);
@@ -29,7 +29,7 @@
     --field-foreground: oklch(20.5% 0 0);
     --field-placeholder: oklch(62% 0 0);
     --field-shadow: none;
-    --focus: oklch(77% 0.13 305);
+    --focus: var(--accent);
     --foreground: oklch(20.5% 0 0);
     --muted: oklch(55.6% 0 0);
     --overlay: oklch(100% 0 0);
@@ -110,8 +110,8 @@
 .dark,
 [data-theme="dark"] {
     color-scheme: dark;
-    --accent: oklch(77% 0.13 305);
-    --accent-foreground: oklch(15% 0.026 305);
+    --accent: oklch(58% 0.22 285);
+    --accent-foreground: oklch(99.1% 0 0);
     --background: oklch(14.5% 0 0);
     --border: oklch(28% 0 0);
     --danger: oklch(59.4% 0.1973 30.77);
@@ -125,7 +125,7 @@
     --field-foreground: oklch(98.5% 0 0);
     --field-placeholder: oklch(62% 0 0);
     --field-shadow: none;
-    --focus: oklch(77% 0.13 305);
+    --focus: var(--accent);
     --foreground: oklch(98.5% 0 0);
     --muted: oklch(70.5% 0 0);
     --overlay: oklch(18% 0 0);

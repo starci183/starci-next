@@ -43,7 +43,7 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, 1920, 390, chip "Được" xanh và "Không" đỏ nhạt: nền tô màu, chữ 12px nhỏ, tương phản thấp; ở 1440 chip nằm sát mép phải khung, hàng chữ xuống hai dòng khiến chiều cao các hàng không đều.
 - 1440, 1920, 390, khối mã (`npm install ...`, `starci-next login`): nền xám tô kín, không viền hairline, chữ monospace nhỏ; không có nút chép lệnh.
 - 1440, 1920, 390, dòng phụ các bước (xám nhạt 14px) và tiêu đề bước "1. Cài StarCi CLI" đều cỡ 14 gần nhau, phân cấp yếu; trạng thái rỗng dài, ba bước và hai khối mã xếp dọc cao hơn cả danh sách.
-- 1440, 1920, nút chính "Kết nối máy": tím nhạt chữ đen kèm icon dấu cộng, tương phản thấp; dính ngay dưới bước 3 và nằm lẻ ở góc trái, trong khi nửa phải cột trống.
+- 1440, 1920, nút chính "Kết nối máy": dính ngay dưới bước 3 và nằm lẻ ở góc trái, trong khi nửa phải cột trống.
 - 1920: cột chính chỉ dùng khoảng 1220px, khối mã kéo dài toàn bộ chiều ngang chỉ chứa một lệnh ngắn; hơn một nửa chiều cao trang trống.
 - 390, thứ tự: cột phụ (mức chứng minh, quy tắc CLI) đứng trước, nút "Kết nối máy" nằm tận cuối trang (khoảng y=1300), người học phải cuộn qua hai khung mới gặp việc chính.
 - 1440, 1920, 390, sidebar không có mục "Máy" nào được chọn; nút tròn tô xám và công tắc sáng tối tô xám ở thanh trên, avatar đỏ bão hoà.

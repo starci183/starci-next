@@ -2,8 +2,8 @@
 
 import { useLocale, useTranslations } from "next-intl"
 import { projectRowsOf, projectsFiguresOf } from "@/hooks/projects"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryProjectCatalogSwr, useQueryProjectsSwr } from "@/hooks/swr"
+import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { type ProjectsRead, useQueryProjectCatalogSwr, useQueryProjectsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot } from "@/modules/types"
@@ -22,7 +22,9 @@ export const ProjectsList = () => {
     const titles = Object.fromEntries(
         (catalog.data?.milestones ?? []).map((milestone) => [milestone.id, milestone.title]),
     )
-    const settled = slotOfSwr(read)
+    // The milestone names come from the catalog read: a row is drawn once it has arrived, never with the raw milestone code in its place.
+    const settled =
+        catalog.data === undefined && catalog.error === undefined ? loadingSlot<ProjectsRead>() : slotOfSwr(read)
     const failed = "isError" in settled || "isForbidden" in settled
     const mapped = mapSlot(settled, (projects) => ({
         outcome: "ready" as const,

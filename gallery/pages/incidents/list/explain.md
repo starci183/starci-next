@@ -31,7 +31,6 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440: không có dải tiêu đề `Page header` (viền dưới) như các trang khác; tiêu đề "Sự cố" nằm trên thân với nhãn viết hoa "SỬA LỖI THẬT · TẦNG 2 CỦA BẢN CHẤT" (hoa, xám nhạt, tương phản thấp); mô tả là chữ foreground 14, không phải 12 muted.
 - 1440: dòng "Chạy sự cố cần thiết bị đã kết nối — sắp có." muted ngả nâu đứng lẻ ngoài các nhóm.
 - 1440: tiêu đề nhóm sát trái x=288 còn hàng sự cố thụt vào x=300; hai trục trái lệch mười hai điểm ảnh.
 - 1440: nhóm chỉ một hàng thì không có đường kẻ, nhóm cách nhau khoảng 140px nên trang dài; cả mười một hàng "Sắp có" nên không có việc nào làm được.

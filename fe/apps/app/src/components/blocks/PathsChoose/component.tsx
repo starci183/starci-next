@@ -1,8 +1,5 @@
 import { AlertDialog, Button, Grid, Page, Stack, Text } from "@starci/grammar/common"
 import {
-    ART,
-    ArtImage,
-    CatalogIntro,
     OutcomePathCard,
     OutcomePathDialog,
     SlotView,
@@ -37,7 +34,7 @@ export const PATHS_PLACEHOLDER: PathsScreenView = {
 /** The fixed words of the page. */
 export type PathsLabels = {
     readonly empty: string
-    readonly intro: { readonly eyebrow: string; readonly title: string; readonly description: string }
+    readonly intro: { readonly title: string; readonly description: string }
     /** The stage names in the order the paths string them, shown as facts under the intro. */
     readonly stages: ReadonlyArray<string>
     /** The note that a goal holds no streak and no experience of its own. */
@@ -97,7 +94,7 @@ const SignInAction = (props: Pick<PathsChooseBaseProps["props"], "labels" | "sig
 export const PathsChooseBase = (props: PathsChooseBaseProps) => {
     const { slot, placeholder, slotLabels, labels, openId, confirmId, hasActive, isPending, status } = props.props
     return (
-        <Page>
+        <Page header={{ title: labels.intro.title, description: labels.intro.description, breadcrumbs: "root" }}>
             <SlotView
                 slot={slot}
                 placeholder={placeholder}
@@ -107,13 +104,9 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 onRetry={props.on.retry}
                 render={(view, isLoading) => (
                     <Stack gap="region">
-                        <CatalogIntro
-                            {...labels.intro}
-                            facts={labels.stages}
-                            art={<ArtImage asset={ART.teacher} />}
-                            upsell={undefined}
-                        />
-                        <Text tone="muted">{labels.note}</Text>
+                        <Text size="sm" tone="muted">
+                            {[labels.stages.join(" · "), labels.note].join(" — ")}
+                        </Text>
                         {status === "" ? null : (
                             <Text as="p" live="polite">
                                 {status}

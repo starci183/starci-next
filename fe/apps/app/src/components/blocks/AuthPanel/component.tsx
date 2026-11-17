@@ -104,7 +104,7 @@ const Body = (props: AuthPanelBaseProps) => {
 const Content = (props: AuthPanelBaseProps) => (
     <Stack gap="section">
         <Stack gap="identity">
-            <Heading level={props.props.isEmbedded ? 2 : 1} scale="title">
+            <Heading level={props.props.isEmbedded ? 2 : 1} scale="standard">
                 {props.props.title}
             </Heading>
             <Text tone="muted">{props.props.subtitle}</Text>

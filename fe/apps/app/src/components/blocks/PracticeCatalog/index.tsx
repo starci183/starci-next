@@ -34,7 +34,6 @@ export const PracticeCatalog = () => {
                     })),
                     placeholder: PRACTICE_CATALOG_PLACEHOLDER,
                     slotLabels: useSlotLabels()(t("empty")),
-                    cardLabel: t("pageTitle"),
                     intro: t("intro"),
                     upsell: isPremium
                         ? undefined

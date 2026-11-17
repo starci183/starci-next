@@ -380,6 +380,7 @@
         "empty": "This pattern has no problems yet.",
         "upsell": "Unlock every problem",
         "upsellNote": "The free plan opens part of each pattern; Premium opens all of it.",
+        "factsPremium": "{accepted}/{total} Accepted",
         "facts": "{accepted}/{total} Accepted · the free plan opens {free}"
       },
       "words": {
@@ -531,7 +532,6 @@
     },
     "paths": {
       "pageTitle": "Goals",
-      "eyebrow": "OUTCOME GOALS",
       "title": "What do you want to be able to do?",
       "description": "Pick a target. StarCi strings Essentials, review, code practice, projects and your profile into an ordered path that ends in something measurable: a launched product, an agent running for real or a job offer.",
       "note": "A goal has no streak and grants no experience. Every part still works alone; a path only orders them and says when you are done.",
@@ -584,7 +584,6 @@
     },
     "incidents": {
       "pageTitle": "Incidents",
-      "eyebrow": "FIX A REAL BUG · TIER 2 OF THE ESSENTIALS",
       "title": "Incidents",
       "description": "Each incident is a real bug in the teacher's repo, written as production symptoms. You find it, fix it until the flows are green, then submit with an explanation.",
       "runnerNote": "Running an incident needs a connected device — coming soon.",
@@ -623,13 +622,13 @@
         "noResultText": "Try another keyword or remove some filters.",
         "clear": "Clear filters",
         "soon": "Coming soon",
-        "eyebrow": "INDUSTRY KNOWLEDGE · INTERACTIVE LEARNING",
+        "eyebrow": "Industry knowledge · interactive learning",
         "topicKind": "TOPIC",
         "topicCount": "{count, plural, one {# topic} other {# topics}}",
         "matchCount": "{count, plural, one {# lesson matches} other {# lessons match}}",
         "sources": "{count} source lessons are being turned into interactive ones",
         "pendingGroup": "{count} source lessons in this group are still being turned into interactive ones; a new topic appears with its first lesson.",
-        "caseBadge": "CASE STUDY",
+        "caseBadge": "Case study",
         "casesMeta": "Collection · each case study combines several lessons",
         "casesPending": "Coming soon · 12 case studies from the System Design course, open once the foundation lessons are ready.",
         "topicOpen": "{count, plural, one {# lesson open} other {# lessons open}}",
@@ -1210,6 +1209,8 @@
         "ciAttested": "Signed",
         "ciNotAttested": "Not signed",
         "ciAttestNote": "GitHub OIDC confirms a run before it counts",
+        "deviceTitle": "Your machine",
+        "deviceBadge": "Practising",
         "deviceNote": "Results from your machine are practice only, not yet proof.",
         "deviceConnect": "Connect machine",
         "secretAside": "CI secret",
@@ -1472,7 +1473,7 @@
     },
     "experience": {
       "pageTitle": "Experience",
-      "eyebrow": "EXPERIENCE FOR YOUR CV",
+      "eyebrow": "Experience for your CV",
       "title": "Every part gives you experience, signed by the teacher",
       "description": "The AI teacher grades first and drafts a CV line with its evidence. An item is verified only when the teacher, or a reviewer the teacher appoints, signs it. Only verified items reach the profile, a path's goal and the CV.",
       "flowLabel": "The steps of an item",

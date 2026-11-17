@@ -380,6 +380,7 @@
         "empty": "Pattern này chưa có bài nào.",
         "upsell": "Mở toàn bộ bài",
         "upsellNote": "Bản miễn phí mở một phần bài của mỗi pattern; Premium mở toàn bộ.",
+        "factsPremium": "{accepted}/{total} bài Accepted",
         "facts": "{accepted}/{total} bài Accepted · bản miễn phí mở {free} bài"
       },
       "words": {
@@ -531,7 +532,6 @@
     },
     "paths": {
       "pageTitle": "Mục tiêu",
-      "eyebrow": "MỤC TIÊU ĐẦU RA",
       "title": "Bạn học để làm được gì?",
       "description": "Chọn một đích. StarCi xâu bài Bản chất, ôn tập, luyện code, dự án và hồ sơ thành một lộ trình có thứ tự, kết thúc bằng một thứ đo được: sản phẩm đã ra mắt, agent chạy thật hoặc lời mời làm việc.",
       "note": "Mục tiêu không có chuỗi ngày và không tự cấp kinh nghiệm. Các phần vẫn học riêng được; lộ trình chỉ xếp thứ tự và nói khi nào là xong.",
@@ -584,7 +584,6 @@
     },
     "incidents": {
       "pageTitle": "Sự cố",
-      "eyebrow": "SỬA LỖI THẬT · TẦNG 2 CỦA BẢN CHẤT",
       "title": "Sự cố",
       "description": "Mỗi sự cố là một lỗi thật trong repo của thầy, viết như triệu chứng ở production. Bạn tìm lỗi, sửa cho các flow xanh, rồi nộp kèm giải thích.",
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
@@ -623,13 +622,13 @@
         "noResultText": "Thử đổi từ khoá hoặc bỏ bớt bộ lọc.",
         "clear": "Xoá bộ lọc",
         "soon": "Sắp có",
-        "eyebrow": "KIẾN THỨC NGÀNH · HỌC TƯƠNG TÁC",
+        "eyebrow": "Kiến thức ngành · học tương tác",
         "topicKind": "TOPIC",
         "topicCount": "{count} topic",
         "matchCount": "{count} bài khớp",
         "sources": "{count} bài nguồn đang chuyển sang dạng tương tác",
         "pendingGroup": "Còn {count} bài nguồn trong nhóm này đang được chuyển sang dạng tương tác; topic mới hiện khi có bài đầu tiên.",
-        "caseBadge": "BÀI TOÁN",
+        "caseBadge": "Bài toán",
         "casesMeta": "Bộ sưu tập · mỗi bài toán ghép từ nhiều bài",
         "casesPending": "Sắp có · 12 bài toán từ khoá System Design, mở khi các bài nền đã sẵn.",
         "topicOpen": "{count} bài đã mở",
@@ -1210,6 +1209,8 @@
         "ciAttested": "Có chữ ký",
         "ciNotAttested": "Chưa có chữ ký",
         "ciAttestNote": "GitHub OIDC xác nhận lần chạy trước khi tính",
+        "deviceTitle": "Máy của bạn",
+        "deviceBadge": "Đang luyện",
         "deviceNote": "Kết quả chạy trên máy chỉ là đang luyện, chưa tính chứng minh.",
         "deviceConnect": "Kết nối máy",
         "secretAside": "Bí mật CI",
@@ -1472,7 +1473,7 @@
     },
     "experience": {
       "pageTitle": "Kinh nghiệm",
-      "eyebrow": "KINH NGHIỆM ĐỂ GHI CV",
+      "eyebrow": "Kinh nghiệm để ghi CV",
       "title": "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận",
       "description": "Thầy AI chấm trước và soạn sẵn một dòng CV kèm bằng chứng. Mục chỉ thành Đã xác minh khi thầy hoặc người thầy giao duyệt. Chỉ mục đã xác minh mới vào hồ sơ, đích lộ trình và CV.",
       "flowLabel": "Các bước của một mục",

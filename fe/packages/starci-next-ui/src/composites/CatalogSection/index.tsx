@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { Section } from "@starci/grammar/common"
 
 /** One lesson of a group, already in words; without `href` the row is announced only (a case study that is not open yet). */
 type CatalogCard = {
@@ -72,15 +72,16 @@ const rowsOf = (node: CatalogNode) =>
               ...(card.href === undefined ? {} : { href: card.href }),
           }))
 
-/** A group of the catalog: one list card with a row per topic or lesson, its name on the well above it with the count chip, what is still to come under it. */
+/** A group of the catalog: one list on the surface (a Section, no card around it) with a row per topic or lesson, its name and fact chip as the head, what is still to come as the caption under it. */
 export const CatalogSection = (props: CatalogSectionProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.node.label}
+        title={props.node.label}
+        headingLevel={2}
         fact={props.node.meta}
         empty={props.node.label}
         items={rowsOf(props.node)}
-        {...(props.node.pending === "" ? {} : { note: props.node.pending })}
+        {...(props.node.pending === "" ? {} : { caption: props.node.pending })}
         {...(props.node.isLoading === true ? { isLoading: true } : {})}
     />
 )

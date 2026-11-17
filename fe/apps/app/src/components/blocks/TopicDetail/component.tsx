@@ -14,6 +14,7 @@ export const TOPIC_PLACEHOLDER: TopicScreenView = {
     next: undefined,
     note: "xxxxxxxx",
     progress: "xxxxxxxxxx",
+    understood: 0,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,
         title: "xxxxxxxxxx",
@@ -92,33 +93,30 @@ const TopicMain = (props: TopicBodyProps) => (
 )
 
 /** The aside pane: progress, what to know first and the related topics, each shown only when the data carries it. */
-const TopicSide = (props: TopicBodyProps) => {
-    const open = props.view.rows.filter((row) => row.isOpen).length
-    return (
-        <TopicAside
-            progressLabel={props.props.progressTitle}
-            progress={{
-                label: props.view.facts[0] ?? "",
-                value: open,
-                max: props.view.rows.length,
-                note: props.view.progress,
-            }}
-            prerequisitesLabel={props.props.labels.prerequisites}
-            prerequisites={props.view.prerequisites}
-            relatedLabel={props.props.labels.related}
-            related={props.view.related}
-            upsell={
-                props.props.labels.upsell === undefined
-                    ? undefined
-                    : {
-                          note: props.props.labels.upsell.note,
-                          label: props.props.labels.upsell.label,
-                          href: props.props.plansHref,
-                      }
-            }
-        />
-    )
-}
+const TopicSide = (props: TopicBodyProps) => (
+    <TopicAside
+        progressLabel={props.props.progressTitle}
+        progress={{
+            label: props.view.progress === "" ? (props.view.facts[0] ?? "") : props.view.progress,
+            value: props.view.understood,
+            max: props.view.rows.length,
+            note: "",
+        }}
+        prerequisitesLabel={props.props.labels.prerequisites}
+        prerequisites={props.view.prerequisites}
+        relatedLabel={props.props.labels.related}
+        related={props.view.related}
+        upsell={
+            props.props.labels.upsell === undefined
+                ? undefined
+                : {
+                      note: props.props.labels.upsell.note,
+                      label: props.props.labels.upsell.label,
+                      href: props.props.plansHref,
+                  }
+        }
+    />
+)
 
 /** What the notice needs: the shared words and links. */
 type MovedProps = { readonly props: TopicDetailBaseProps["props"] }
