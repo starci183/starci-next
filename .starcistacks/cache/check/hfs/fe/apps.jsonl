@@ -83,10 +83,8 @@
 {"data":{},"findings":[],"hash":"0400e49314fa4c73151f34e119fc68ff735596c7548d21ecab0c42bdeb85f7e1","path":"fe/apps/app/src/components/blocks/AgentTrack/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"54a396b0564144529e96c64a2756ae7b85442f5e403667fe289469779074e2ed","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b50d24c653fcda173c1477b5ae75a52808b57cc20b6f85963306e93beff676c","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2829fbc9e1085f544a5b0f2f3a4587050317a4489652ad3b6be7cfdb4f5b869f","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b7a8b4a24120842a8d8af8b66818a844f26b2fcf177165757579d67ffbb88e6f","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"15a4e654423b7ba3030427ea98e6ffa89d73cc502ae802e3113b5b6d1b2bda6e","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9e99de1214bad0724d01086167300a167021202e2f9782f7bac2637b6a58a3f6","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b7a8b4a24120842a8d8af8b66818a844f26b2fcf177165757579d67ffbb88e6f","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f54c116e13edf8d30f6c65a8c3db4a690d4c6acf1f71c09cd0e71f78c706d5b9","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ba8dd3d7541e64ad1afd5d4fb753d5d2b782182ad360ce59776b070464e4e749","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"43e49f2d60c0281ff4282ba6cfcbc1bb29a93afbce3f82dd82938c2e4f6f9e8b","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
@@ -623,10 +621,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6f5f8919bd5347af1561ba6d049c923f06f2768295bde646e91e6901f81b87c2","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f751dfc021cfe765831c2860ed3c377ba3adfb34cbefb60ef0ab5e416b220b4a","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a933f6c990d21262666ed56c7050090a6c7029a5ab00ba2b1dab7f72f7b1363b","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5de2e89bae1dff3fc4f6bdc7b800ee2cced5a9597adb60daf78f83cbeefc564e","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7a2ecfb95196eee1522f551bfe86d7b559c2fadd781f621815178e59177c7e9b","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3f5e9a73464c186adc934c86d4eefdf9a22a0d862df9a5f7384ca1da3beb4979","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"046134e24c6c513a761f7a5775b97636663509c52c86f4dd4b8cc744e07df16c","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c2790b1ae91ffdffb9c70e255f1b8d4e171afc4dac9c47913284f990361e150","path":"fe/apps/app/src/modules/markdown/index.ts","step":"file-rules"}
