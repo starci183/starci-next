@@ -1547,33 +1547,18 @@
     },
     "experience": {
       "pageTitle": "Experience",
-      "eyebrow": "Experience for your CV",
-      "title": "Every part gives you experience, signed by the teacher",
-      "description": "The AI teacher grades first and drafts a CV line with its evidence. An item is verified only when the teacher, or a reviewer the teacher appoints, signs it. Only verified items reach the profile, a path's goal and the CV.",
-      "flowLabel": "The steps of an item",
       "verifiedCount": "{count} verified",
       "pendingCount": "{count} waiting for the teacher",
       "hiringGate": "{count} verified items are needed to be referred for jobs",
       "tabsLabel": "State",
       "tabAll": "All",
       "empty": "No experience item yet. The first one comes when a proved Essentials lesson is attached to one of your projects.",
-      "emptyTab": "No item in this state.",
-      "readinessLine": "Hiring-readiness signal (not a CV line)",
       "returnedNote": "Teacher's note",
-      "metaVerified": "Verified by StarCi · {role} · {date}",
-      "metaPending": "Waiting for the teacher · due {date}",
-      "metaGraded": "Graded by the AI · {count} defense questions",
-      "metaPractising": "Practising · proved evidence needed",
-      "metaReturned": "Returned · time {count}",
-      "metaRevoked": "Revoked on {date}",
       "send": "Send for review",
       "resend": "Edit the CV line and send again",
       "sendHint": "After sending you cannot edit the CV line until the teacher replies.",
       "editVi": "CV line (Vietnamese)",
       "editEn": "CV line (English)",
-      "verifyLink": "Verification page",
-      "showPublicly": "Show on profile",
-      "hidePublicly": "Hide from profile",
       "failure": {
         "CAREER_PREMIUM_REQUIRED": "Sending for review needs Premium.",
         "CAREER_LINE_SLOT_CHANGED": "You can reword the line, but not the figures and values taken from the evidence.",
@@ -1708,7 +1693,6 @@
         "code": "Verification code",
         "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
       },
-      "lineCaption": "CV line",
       "loading": "Loading…",
       "crumb": {
         "label": "Breadcrumb",
@@ -2101,11 +2085,8 @@
       },
       "cv": {
         "title": "Verified CV",
-        "caption": "Only Verified items reach the CV. Items not signed yet stay in Experience.",
         "gate": "{count}/{min} to be referred for jobs",
-        "pending": "{count} items waiting for review",
         "seeAll": "Experience",
-        "proof": "Proof",
         "signed": "Signed by {role} on {date}",
         "empty": "Finish an Essentials lesson, a Harness build, a project or a Practice pattern to get the first one. A CV line only exists once the teacher signs it.",
         "part": {
@@ -2132,14 +2113,6 @@
             "linux": "Linux"
           },
           "count": "{count} machine(s)"
-        },
-        "tokens": {
-          "title": "MCP tokens",
-          "manage": "Open Connect",
-          "empty": "No token yet.",
-          "hint": "Ends with {hint}",
-          "used": "used {when}",
-          "neverUsed": "never used"
         },
         "plan": {
           "title": "Your plan",
@@ -2242,8 +2215,6 @@
           "apply": "Part 4 · Apply"
         },
         "topicFact": "{done}/{total} lessons",
-        "lessonOpener": "Opener: before {before}/{total}, after {after}/{total}",
-        "lessonNoOpener": "Opener not answered",
         "done": "Done",
         "started": "In progress",
         "todo": "Not started",

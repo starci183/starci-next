@@ -1547,33 +1547,18 @@
     },
     "experience": {
       "pageTitle": "Kinh nghiệm",
-      "eyebrow": "Kinh nghiệm để ghi CV",
-      "title": "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận",
-      "description": "Thầy AI chấm trước và soạn sẵn một dòng CV kèm bằng chứng. Mục chỉ thành Đã xác minh khi thầy hoặc người thầy giao duyệt. Chỉ mục đã xác minh mới vào hồ sơ, đích lộ trình và CV.",
-      "flowLabel": "Các bước của một mục",
       "verifiedCount": "{count} đã xác minh",
       "pendingCount": "{count} đang chờ thầy",
       "hiringGate": "Cần {count} mục đã xác minh để được giới thiệu việc làm",
       "tabsLabel": "Trạng thái",
       "tabAll": "Tất cả",
       "empty": "Chưa có mục kinh nghiệm nào. Mục đầu tiên đến khi một bài Bản chất đã chứng minh được gắn vào dự án của bạn.",
-      "emptyTab": "Không có mục nào ở trạng thái này.",
-      "readinessLine": "Tín hiệu sẵn sàng tuyển dụng (không ghi vào CV)",
       "returnedNote": "Lời thầy",
-      "metaVerified": "Đã xác minh bởi StarCi · {role} · {date}",
-      "metaPending": "Đang chờ thầy · hạn {date}",
-      "metaGraded": "AI đã chấm · {count} câu hỏi bảo vệ",
-      "metaPractising": "Đang luyện · cần bằng chứng đã chứng minh",
-      "metaReturned": "Trả lại · lần {count}",
-      "metaRevoked": "Đã thu hồi ngày {date}",
       "send": "Gửi thầy duyệt",
       "resend": "Sửa dòng CV và gửi lại",
       "sendHint": "Gửi xong bạn không sửa dòng CV nữa cho tới khi thầy trả lời.",
       "editVi": "Dòng CV (tiếng Việt)",
       "editEn": "CV line (English)",
-      "verifyLink": "Trang xác minh",
-      "showPublicly": "Hiện trên hồ sơ",
-      "hidePublicly": "Ẩn khỏi hồ sơ",
       "failure": {
         "CAREER_PREMIUM_REQUIRED": "Gửi thầy duyệt cần gói Premium.",
         "CAREER_LINE_SLOT_CHANGED": "Bạn sửa được câu chữ nhưng không sửa được số liệu và giá trị lấy từ bằng chứng.",
@@ -1708,7 +1693,6 @@
         "code": "Mã xác minh",
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
       },
-      "lineCaption": "Dòng CV",
       "loading": "Đang tải…",
       "crumb": {
         "label": "Đường dẫn",
@@ -2101,11 +2085,8 @@
       },
       "cv": {
         "title": "CV đã xác minh",
-        "caption": "Chỉ mục Đã xác minh mới vào CV. Mục chưa được ký vẫn nằm ở Kinh nghiệm.",
         "gate": "{count}/{min} để được giới thiệu việc làm",
-        "pending": "{count} mục đang chờ duyệt",
         "seeAll": "Kinh nghiệm",
-        "proof": "Bằng chứng",
         "signed": "Ký bởi {role} ngày {date}",
         "empty": "Hoàn thành một bài Essentials, bản dựng Harness, dự án hoặc nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi thầy ký.",
         "part": {
@@ -2132,14 +2113,6 @@
             "linux": "Linux"
           },
           "count": "{count} máy"
-        },
-        "tokens": {
-          "title": "MCP token",
-          "manage": "Mở Kết nối",
-          "empty": "Chưa có token nào.",
-          "hint": "Kết thúc bằng {hint}",
-          "used": "dùng {when}",
-          "neverUsed": "chưa dùng"
         },
         "plan": {
           "title": "Gói của bạn",
@@ -2242,8 +2215,6 @@
           "apply": "Phần 4 · Tự áp dụng"
         },
         "topicFact": "{done}/{total} bài",
-        "lessonOpener": "Câu mở bài: trước {before}/{total}, sau {after}/{total}",
-        "lessonNoOpener": "Chưa trả lời câu mở bài",
         "done": "Đã học",
         "started": "Đang học",
         "todo": "Chưa học",
