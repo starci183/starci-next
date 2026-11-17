@@ -12,12 +12,36 @@ import {
     Terminal,
     Text,
 } from "@starci/grammar/common"
-import { MissingNotice, SlotView } from "@starci-next/ui"
-import type { ProjectConceptView } from "@/modules/types"
-import { CodeRead, Rubric } from "./code-read"
-import type { BodyProps, ProjectConceptBaseProps } from "./types"
+import { ConceptCodeRead, MissingNotice, SlotView } from "@starci-next/ui"
+import type { ConceptDraftView, DataSlot, ProjectConceptLabels, ProjectConceptView, SlotLabels } from "@/modules/types"
 
-export type { ProjectConceptBaseProps } from "./types"
+/** Props for {@link ProjectConceptBase}. */
+export type ProjectConceptBaseProps = {
+    readonly props: {
+        readonly slot: DataSlot<ProjectConceptView>
+        readonly placeholder: ProjectConceptView
+        readonly slotLabels: SlotLabels
+        readonly labels: ProjectConceptLabels
+        /** True when the project, the milestone or the concept is not there. */
+        readonly isNotFound: boolean
+        readonly draft: ConceptDraftView
+        /** True while the pointer or the code read runs. */
+        readonly isBusy: boolean
+        readonly isProbing: boolean
+        /** The words of the last refusal of a command; empty for none. */
+        readonly issueWords: string
+    }
+    readonly on: {
+        readonly retry: () => void
+        readonly write: (key: keyof ConceptDraftView, value: string) => void
+        readonly savePointer: () => void
+        readonly explain: () => void
+        readonly runProbes: () => void
+    }
+}
+
+/** What a section of the body needs: the page props, the concept and whether it is the skeleton. */
+export type BodyProps = ProjectConceptBaseProps & { readonly view: ProjectConceptView; readonly isLoading: boolean }
 
 /** The fake concept page with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_CONCEPT_PLACEHOLDER: ProjectConceptView = {
@@ -236,8 +260,17 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
                                 }
                                 trailing={
                                     <Stack gap="region">
-                                        <CodeRead {...body} />
-                                        <Rubric {...body} />
+                                        <ConceptCodeRead
+                                            concept={data.concept}
+                                            labels={labels}
+                                            draft={props.props.draft}
+                                            rubric={data.rubric}
+                                            verdictLabels={labels.verdict}
+                                            isBusy={props.props.isBusy}
+                                            isLoading={loading}
+                                            issueWords={props.props.issueWords}
+                                            on={props.on}
+                                        />
                                     </Stack>
                                 }
                             />

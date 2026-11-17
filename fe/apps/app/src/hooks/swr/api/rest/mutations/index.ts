@@ -9,3 +9,5 @@ export { usePostIdentitySignUpVerifySwr } from "./usePostIdentitySignUpVerifySwr
 export { usePostIdentitySocialExchangeSwr } from "./usePostIdentitySocialExchangeSwr"
 export { usePostIdentitySocialStartSwr } from "./usePostIdentitySocialStartSwr"
 export { usePostLessonAttemptSwr } from "./usePostLessonAttemptSwr"
+export { usePutAvatarSwr } from "./usePutAvatarSwr"
+export type { PutAvatarArgument } from "./usePutAvatarSwr"

@@ -16,7 +16,9 @@
         "agents": "Agents & AI",
         "experience": "Verified experience",
         "profile": "Profile",
-        "connect": "Connect AI"
+        "connect": "Connect AI",
+        "harness": "Harness",
+        "progress": "Progress"
       },
       "sidebarLabel": "Main navigation",
       "experienceGroup": "Experience",
@@ -1876,17 +1878,6 @@
         "code": "Verification code",
         "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
       },
-      "profile": {
-        "pageTitle": "Profile",
-        "title": "Your profile",
-        "description": "Every item below was graded by StarCi, never self-reported.",
-        "listTitle": "Experience",
-        "seeAll": "See all",
-        "publicNote": "The public profile and the CV show only verified items; the others are visible to you alone.",
-        "empty": "No experience item yet.",
-        "gate": "{count}/{min} verified items for a job introduction",
-        "cvLater": "CV export from verified items comes in a later round."
-      },
       "lineCaption": "CV line"
     },
     "devices": {
@@ -2009,6 +2000,359 @@
           "title": "Use it in a chat",
           "note": "Start a new chat, switch on the StarCi Next connector and name the lesson you study, for example: explain why the double-spend scenario is red on my machine."
         }
+      }
+    },
+    "harness": {
+      "pageTitle": "Harness",
+      "breadcrumbs": "Breadcrumb",
+      "tabs": {
+        "label": "Parts of the Harness",
+        "overview": "Overview",
+        "build": "Build",
+        "use": "Use",
+        "docs": "Deep dive"
+      },
+      "tools": {
+        "label": "Your tool",
+        "claude": "Claude Code",
+        "codex": "Codex"
+      },
+      "outcomes": {
+        "green": "Green",
+        "red": "Red",
+        "untested": "Not run",
+        "running": "Running"
+      },
+      "probes": {
+        "pass": "Passed",
+        "fail": "Failed",
+        "skipped": "Not run"
+      },
+      "verdicts": {
+        "clean": "Clean",
+        "shortcut": "Took shortcuts",
+        "untested": "Not tried",
+        "incomplete": "Incomplete"
+      },
+      "copy": {
+        "copy": "Copy",
+        "copied": "Copied",
+        "error": "Could not copy"
+      },
+      "markdown": {
+        "diagram": "Diagram",
+        "diagramError": "The diagram could not be drawn",
+        "table": "Table"
+      },
+      "hub": {
+        "title": "Build an AI agent, use agents right, understand them to the bottom",
+        "description": "A separate area that goes from how Claude Code and Codex work to using the StarCi harness. Part 1 is hands-on with tests; parts 2 and 3 are guides and explainers.",
+        "figuresLabel": "Your progress in the Harness",
+        "partsTitle": "Three parts",
+        "toolTitle": "The tool you use",
+        "toolDescription": "The guides, the checks and the trial traps of the Use part follow this tool. Your pick is remembered for you.",
+        "empty": "There is no Harness content yet.",
+        "open": "Open",
+        "figures": {
+          "builds": "Builds done",
+          "practising": "Stages practising",
+          "proved": "Stages proved",
+          "checks": "Machine checks passed"
+        },
+        "parts": {
+          "build": {
+            "topics": "AI agent · MCP server · Support chatbot · Lead agent",
+            "progress": "{done} / {total} builds done"
+          },
+          "use": {
+            "topics": "Claude Code · Codex · harness doctor · trial traps",
+            "progress": "{done} / {total} checks passed"
+          },
+          "docs": {
+            "topics": "How LLMs work · The agent loop · Context · Harness design",
+            "progress": "{count} articles"
+          }
+        }
+      },
+      "builds": {
+        "title": "Build",
+        "description": "Pull a rough starter, follow it stage by stage and watch the e2e turn green.",
+        "listTitle": "Builds",
+        "empty": "There are no builds yet.",
+        "practising": "{n} / {total} stages run",
+        "proved": "{n} / {total} stages proved"
+      },
+      "build": {
+        "title": "Build",
+        "missing": "This build was not found.",
+        "e2e": "e2e {passed} / {total}",
+        "count": "{passed} / {total}",
+        "position": "Stage {n} of {total}",
+        "stagesTitle": "Stages",
+        "pullLabel": "Pull the starter source",
+        "pullDescription": "Run it in an empty folder. Your AI key stays in .env on your machine and is never sent to StarCi.",
+        "casesTitle": "e2e cases of the stage",
+        "caseColumn": "Case",
+        "outcomeColumn": "Result",
+        "detailColumn": "Why",
+        "onlyOpenLabel": "Open cases only",
+        "onlyOpenDescription": "Hide the green cases so the work left stands out",
+        "casesEmpty": "This stage has no cases yet.",
+        "logTitle": "Newest e2e run",
+        "stepsTitle": "Step by step",
+        "lockedTitle": "This stage is locked",
+        "lockedText": "Turn the stage before it fully green and the guide of this one opens.",
+        "keysLabel": "Keys needed in .env",
+        "repoTitle": "Connect a repo to prove it",
+        "repoText": "A run on your machine only counts as practising. To be proved, the build must run in a signed CI of your GitHub repo.",
+        "repoBound": "Connected",
+        "repoUnbound": "Not connected",
+        "repoField": "GitHub repo",
+        "repoPlaceholder": "owner/repo-name",
+        "repoBind": "Connect repo",
+        "repoFailed": "Could not connect this repo. Check the name looks like owner/repo.",
+        "repoAudienceLabel": "Workflow audience",
+        "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience."
+      },
+      "use": {
+        "title": "Use",
+        "description": "Markdown guides with commands you can run, a command that checks your machine and traps that test an agent.",
+        "empty": "There are no guides for this tool yet.",
+        "probesSummary": "{passed} / {ran} passed",
+        "fix": "See how to fix it",
+        "noShortcuts": "None",
+        "never": "Not run",
+        "toolDescription": "Pick the tool you use. The lists below follow it.",
+        "guidesTitle": "Guides",
+        "guidesEmpty": "There are no guides yet.",
+        "doctorTitle": "Machine check with harness doctor",
+        "doctorCommandLabel": "Check command",
+        "doctorCommandDescription": "Run it in your repo. It reads the setup on your machine and the result comes back here over the relay.",
+        "doctorEmpty": "There are no conditions to show.",
+        "onlyFailingLabel": "Failed conditions only",
+        "onlyFailingDescription": "Hide the conditions that passed",
+        "trialsTitle": "Agent trap trials",
+        "trialsEmpty": "There are no traps for this tool yet.",
+        "trapColumn": "Trap",
+        "shortcutsColumn": "Shortcuts seen",
+        "verdictColumn": "Verdict",
+        "costColumn": "Estimated cost",
+        "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs.",
+        "shortcutBlocked": "{label} (blocked)",
+        "budget": "Up to {usd}"
+      },
+      "guide": {
+        "title": "Guide",
+        "missing": "This guide was not found.",
+        "probesSummary": "{passed} / {ran} passed",
+        "fix": "See how to fix it",
+        "never": "Not run",
+        "outlineTitle": "In this guide",
+        "outlineEmpty": "This guide has no sections yet.",
+        "toolDescription": "Switch the tool to jump to the matching guide.",
+        "doctorTitle": "harness doctor result",
+        "doctorCommandLabel": "Check command",
+        "doctorCommandDescription": "Run it in your repo and the result comes back here.",
+        "doctorEmpty": "There are no conditions to show.",
+        "onlyFailingLabel": "Failed conditions only",
+        "onlyFailingDescription": "Hide the conditions that passed"
+      },
+      "docs": {
+        "title": "Deep dive",
+        "description": "Long explainers with diagrams and no tests. Read them to see how an agent really runs.",
+        "listTitle": "Articles",
+        "empty": "There are no articles yet."
+      },
+      "doc": {
+        "title": "Article",
+        "missing": "This article was not found.",
+        "outlineTitle": "In this article",
+        "outlineEmpty": "This article has no sections yet."
+      },
+      "proofs": {
+        "none": "Not practised",
+        "practising": "Practising",
+        "proved": "Proved"
+      }
+    },
+    "profile": {
+      "pageTitle": "Profile",
+      "title": "Your profile",
+      "description": "Everything below was graded by StarCi, never self-reported.",
+      "identity": {
+        "title": "Identity",
+        "avatarLabel": "Avatar",
+        "upload": "Upload photo",
+        "remove": "Remove photo",
+        "avatarHint": "PNG, JPEG or WebP, up to {size}.",
+        "nameLabel": "Display name",
+        "namePlaceholder": "The name to show",
+        "nameHint": "Leave it empty to show your account name.",
+        "save": "Save name",
+        "saved": "Name saved.",
+        "error": {
+          "type": "Only PNG, JPEG or WebP images.",
+          "size": "The image is too large, up to {size}.",
+          "failed": "The photo did not upload, please try again.",
+          "unavailable": "The image store is not ready, please try again later.",
+          "name": "The name must be 1 to {max} characters.",
+          "other": "Could not save, please try again."
+        }
+      },
+      "goal": {
+        "title": "Goal path",
+        "none": "No path chosen",
+        "choose": "Choose a path",
+        "change": "Change path"
+      },
+      "cv": {
+        "title": "Verified CV lines",
+        "caption": "Only Verified items reach the CV. Items not signed yet stay in Experience.",
+        "gate": "{count}/{min} verified items for a job introduction",
+        "pending": "{count} items waiting for review",
+        "seeAll": "Experience",
+        "proof": "Proof",
+        "signed": "Signed by {role} on {date}",
+        "empty": "No verified CV line yet. Finish a Harness build, a project or an Essentials lesson to earn the first one.",
+        "part": {
+          "essentials": "Essentials",
+          "projects": "Projects",
+          "harness": "Harness"
+        }
+      },
+      "account": {
+        "devices": {
+          "title": "Connected devices",
+          "manage": "Manage",
+          "empty": "No device connected.",
+          "online": "Online",
+          "offline": "Offline",
+          "seen": "{platform}, seen {when}",
+          "platform": {
+            "windows": "Windows",
+            "macos": "macOS",
+            "linux": "Linux"
+          }
+        },
+        "tokens": {
+          "title": "MCP tokens",
+          "manage": "Open Connect",
+          "empty": "No token yet.",
+          "hint": "Ends with {hint}",
+          "used": "used {when}",
+          "neverUsed": "never used"
+        },
+        "plan": {
+          "title": "Your plan",
+          "free": "Free",
+          "until": "Premium until {date}",
+          "freeNote": "Part 1 of every Essentials lesson and all of Harness are free.",
+          "manage": "Manage plan",
+          "premiumNote": "Every part of Essentials, Projects and Harness is open."
+        }
+      },
+      "verify": {
+        "title": "Public verify link",
+        "caption": "A recruiter opens the link to see the signed line, never a score or a reviewer name.",
+        "copy": "Copy link",
+        "copied": "Copied",
+        "public": "Public",
+        "private": "Private",
+        "empty": "A link appears when an item is verified."
+      }
+    },
+    "progress": {
+      "pageTitle": "Progress",
+      "title": "Your progress",
+      "description": "Every number is read straight from Essentials, Harness, Projects and Review, never copied.",
+      "unavailable": "This part could not be loaded.",
+      "ribbon": {
+        "label": "Progress summary",
+        "proved": "Concepts proved",
+        "streak": "Streak",
+        "lessons": "Lessons done",
+        "builds": "Builds done",
+        "days": "days"
+      },
+      "essentials": {
+        "title": "Essentials",
+        "fact": "{done}/{total} lessons",
+        "open": "Open Essentials",
+        "opener": "Opener: {before}/{answered} right at first, {after}/{answered} right after studying.",
+        "openerNone": "No opener question answered yet.",
+        "unlocked": "Open",
+        "locked": "Needs Premium",
+        "upgrade": "See Premium",
+        "part": {
+          "essence": "Part 1 · Essence",
+          "source": "Part 2 · Source",
+          "script": "Part 3 · Script",
+          "apply": "Part 4 · Apply"
+        },
+        "topicFact": "{done}/{total} lessons",
+        "lessonOpener": "Opener: before {before}/{total}, after {after}/{total}",
+        "lessonNoOpener": "Opener not answered",
+        "done": "Done",
+        "started": "In progress",
+        "todo": "Not started",
+        "empty": "No lesson in the catalog yet."
+      },
+      "harness": {
+        "title": "Harness",
+        "fact": "{done}/{total} builds",
+        "open": "Open Harness",
+        "build": "{proved}/{total} stages proved, {practising} practising",
+        "proved": "Proved",
+        "practising": "Practising",
+        "none": "Not started",
+        "doctorTitle": "Doctor",
+        "doctorPassed": "Passed {passed}/{total} probes",
+        "doctorFailed": "Failing, passed {passed}/{total} probes",
+        "doctorNotRun": "Not run",
+        "tool": {
+          "claude": "Claude Code",
+          "codex": "Codex"
+        },
+        "trialsTitle": "Trap trials",
+        "held": "Held",
+        "breached": "Breached",
+        "incomplete": "Incomplete",
+        "never": "Never tried",
+        "trialLine": "{tool}, {when}",
+        "empty": "No build yet.",
+        "doctorFailedBadge": "Failing"
+      },
+      "projects": {
+        "title": "Projects",
+        "open": "Open Projects",
+        "proved": "Concepts proved",
+        "practising": "Concepts practising",
+        "milestones": "Milestones done",
+        "project": "{proved}/{total} concepts, {done}/{milestones} milestones",
+        "empty": "No project yet.",
+        "pitchTitle": "Projects come with Premium",
+        "pitchBody": "Projects grade your real work with signed CI. A concept counts as proved only when CI passes it, and becomes a CV line once the teacher signs.",
+        "pitchCta": "See Premium"
+      },
+      "review": {
+        "title": "Review",
+        "open": "Open Review",
+        "due": "Cards due",
+        "overdue": "Overdue",
+        "doneToday": "Reviewed today",
+        "streak": "Current streak",
+        "longest": "Longest streak",
+        "today": "Today counts toward the streak",
+        "notToday": "Today does not count yet"
+      },
+      "activity": {
+        "title": "Recent activity",
+        "label": "Activity timeline",
+        "empty": "No activity yet.",
+        "lesson": "Finished the lesson {title}",
+        "concept": "Proved the concept {title}",
+        "verified": "Verified: {title}",
+        "harness": "Harness stage: {title}"
       }
     }
   }

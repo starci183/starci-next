@@ -12,12 +12,22 @@
   "Phỏng vấn thử": ["interview/start", "interview/session", "interview/report"],
   "Dự án": ["projects/paywall", "projects/list", "projects/new", "projects/milestone", "projects/concept"],
   "Premium": ["commerce/premium", "commerce/premium-result"],
-  "Kinh nghiệm": ["career/profile", "career/experience", "auth/verify"],
+  "Kinh nghiệm": ["profile/overview", "career/experience", "auth/verify"],
+  "Hồ sơ và tiến độ": ["progress/overview", "profile/overview", "auth/verify"],
   "Bài Bản chất 4 phần": [
     "essentials/topic",
     "essentials/lesson",
     "essentials/lesson-source",
     "essentials/lesson-scenarios",
     "essentials/lesson-ladder"
+  ],
+  "Harness": [
+    "harness/hub",
+    "harness/builds",
+    "harness/build",
+    "harness/use",
+    "harness/guide",
+    "harness/docs",
+    "harness/doc"
   ]
 }

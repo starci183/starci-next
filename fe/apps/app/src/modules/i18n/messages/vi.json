@@ -16,7 +16,9 @@
         "agents": "Agent và AI",
         "experience": "Kinh nghiệm đã xác minh",
         "profile": "Hồ sơ",
-        "connect": "Kết nối AI"
+        "connect": "Kết nối AI",
+        "harness": "Harness",
+        "progress": "Tiến độ"
       },
       "sidebarLabel": "Điều hướng chính",
       "experienceGroup": "Kinh nghiệm",
@@ -1876,17 +1878,6 @@
         "code": "Mã xác minh",
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
       },
-      "profile": {
-        "pageTitle": "Hồ sơ",
-        "title": "Hồ sơ của bạn",
-        "description": "Mọi mục dưới đây do StarCi chấm, không tự khai.",
-        "listTitle": "Kinh nghiệm",
-        "seeAll": "Xem tất cả",
-        "publicNote": "Hồ sơ công khai và CV chỉ hiện mục Đã xác minh; mục khác chỉ bạn thấy.",
-        "empty": "Chưa có mục kinh nghiệm nào.",
-        "gate": "{count}/{min} mục Đã xác minh để được giới thiệu việc làm",
-        "cvLater": "Xuất CV từ các mục đã xác minh sẽ có trong đợt sau."
-      },
       "lineCaption": "Dòng CV"
     },
     "devices": {
@@ -2009,6 +2000,359 @@
           "title": "Dùng trong cuộc trò chuyện",
           "note": "Mở cuộc trò chuyện mới, bật connector StarCi Next và nói tên bài bạn đang học, ví dụ: giải thích vì sao kịch bản double-spend đỏ trên máy tôi."
         }
+      }
+    },
+    "harness": {
+      "pageTitle": "Harness",
+      "breadcrumbs": "Đường dẫn",
+      "tabs": {
+        "label": "Các phần của Harness",
+        "overview": "Tổng quan",
+        "build": "Build",
+        "use": "Xài",
+        "docs": "Hiểu sâu"
+      },
+      "tools": {
+        "label": "Công cụ của bạn",
+        "claude": "Claude Code",
+        "codex": "Codex"
+      },
+      "outcomes": {
+        "green": "Xanh",
+        "red": "Đỏ",
+        "untested": "Chưa chạy",
+        "running": "Đang chạy"
+      },
+      "probes": {
+        "pass": "Đạt",
+        "fail": "Chưa đạt",
+        "skipped": "Chưa chạy"
+      },
+      "verdicts": {
+        "clean": "Sạch",
+        "shortcut": "Đi đường tắt",
+        "untested": "Chưa thử",
+        "incomplete": "Chưa xong"
+      },
+      "copy": {
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "error": "Không sao chép được"
+      },
+      "markdown": {
+        "diagram": "Sơ đồ",
+        "diagramError": "Không vẽ được sơ đồ",
+        "table": "Bảng"
+      },
+      "hub": {
+        "title": "Tự build AI agent, xài agent cho đúng, hiểu nó tới tận gốc",
+        "description": "Phần riêng, dạy từ bản chất của Claude Code và Codex tới xài StarCi harness. Phần 1 làm tay có kiểm thử, phần 2 và 3 là hướng dẫn và bài giải thích.",
+        "figuresLabel": "Tiến độ của bạn trong Harness",
+        "partsTitle": "Ba phần",
+        "toolTitle": "Công cụ bạn dùng",
+        "toolDescription": "Hướng dẫn, bảng kiểm tra và bẫy thử ở phần Xài theo công cụ này. Lựa chọn được nhớ cho riêng bạn.",
+        "empty": "Chưa có nội dung Harness.",
+        "open": "Mở",
+        "figures": {
+          "builds": "Build xong",
+          "practising": "Chặng đang luyện",
+          "proved": "Chặng đã chứng minh",
+          "checks": "Kiểm tra máy đạt"
+        },
+        "parts": {
+          "build": {
+            "topics": "AI agent · MCP server · Chatbot CSKH · Agent tìm lead",
+            "progress": "{done} / {total} build xong"
+          },
+          "use": {
+            "topics": "Claude Code · Codex · harness doctor · bẫy thử",
+            "progress": "{done} / {total} kiểm tra đạt"
+          },
+          "docs": {
+            "topics": "Bản chất LLM · Vòng lặp agent · Context · Thiết kế harness",
+            "progress": "{count} bài"
+          }
+        }
+      },
+      "builds": {
+        "title": "Build",
+        "description": "Tải source mẫu sơ sài, làm theo từng chặng và xem e2e chuyển xanh dần.",
+        "listTitle": "Các build",
+        "empty": "Chưa có build nào.",
+        "practising": "{n} / {total} chặng đã chạy",
+        "proved": "{n} / {total} chặng đã chứng minh"
+      },
+      "build": {
+        "title": "Build",
+        "missing": "Không tìm thấy build này.",
+        "e2e": "e2e {passed} / {total}",
+        "count": "{passed} / {total}",
+        "position": "Chặng {n} trên {total}",
+        "stagesTitle": "Các chặng",
+        "pullLabel": "Tải source mẫu",
+        "pullDescription": "Chạy lệnh này trong thư mục trống. Key AI nằm trong .env trên máy bạn và không bao giờ gửi lên StarCi.",
+        "casesTitle": "Ca e2e của chặng",
+        "caseColumn": "Ca",
+        "outcomeColumn": "Kết quả",
+        "detailColumn": "Lý do",
+        "onlyOpenLabel": "Chỉ ca chưa xanh",
+        "onlyOpenDescription": "Ẩn các ca đã xanh để còn thấy việc phải làm",
+        "casesEmpty": "Chặng này chưa có ca nào.",
+        "logTitle": "Lần chạy e2e gần nhất",
+        "stepsTitle": "Hướng dẫn từng bước",
+        "lockedTitle": "Chặng này đang khóa",
+        "lockedText": "Làm cho chặng trước xanh hết thì hướng dẫn của chặng này mở ra.",
+        "keysLabel": "Key cần có trong .env",
+        "repoTitle": "Kết nối repo để chứng minh",
+        "repoText": "Kết quả chạy trên máy bạn chỉ tính là đang luyện. Muốn được chứng minh, build cần chạy trong CI có chữ ký của repo GitHub của bạn.",
+        "repoBound": "Đã kết nối",
+        "repoUnbound": "Chưa kết nối",
+        "repoField": "Repo GitHub",
+        "repoPlaceholder": "owner/ten-repo",
+        "repoBind": "Kết nối repo",
+        "repoFailed": "Không kết nối được repo này. Kiểm tra tên có dạng owner/repo.",
+        "repoAudienceLabel": "Audience của workflow",
+        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này."
+      },
+      "use": {
+        "title": "Xài",
+        "description": "Hướng dẫn markdown kèm lệnh chạy được, lệnh kiểm tra máy và bẫy thử agent.",
+        "empty": "Chưa có hướng dẫn cho công cụ này.",
+        "probesSummary": "{passed} / {ran} đạt",
+        "fix": "Xem cách sửa",
+        "noShortcuts": "Không có",
+        "never": "Chưa chạy",
+        "toolDescription": "Chọn công cụ bạn dùng. Danh sách bên dưới đổi theo.",
+        "guidesTitle": "Hướng dẫn",
+        "guidesEmpty": "Chưa có hướng dẫn.",
+        "doctorTitle": "Kiểm tra máy với harness doctor",
+        "doctorCommandLabel": "Lệnh kiểm tra",
+        "doctorCommandDescription": "Chạy trong repo của bạn. Lệnh đọc cấu hình trên máy bạn, kết quả về đây qua relay.",
+        "doctorEmpty": "Không có điều kiện nào để hiển thị.",
+        "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt",
+        "trialsTitle": "Bẫy thử agent",
+        "trialsEmpty": "Chưa có bẫy nào cho công cụ này.",
+        "trapColumn": "Bẫy",
+        "shortcutsColumn": "Đường tắt đã thấy",
+        "verdictColumn": "Kết luận",
+        "costColumn": "Chi phí ước tính",
+        "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
+        "shortcutBlocked": "{label} (bị chặn)",
+        "budget": "Tối đa {usd}"
+      },
+      "guide": {
+        "title": "Hướng dẫn",
+        "missing": "Không tìm thấy hướng dẫn này.",
+        "probesSummary": "{passed} / {ran} đạt",
+        "fix": "Xem cách sửa",
+        "never": "Chưa chạy",
+        "outlineTitle": "Trong bài này",
+        "outlineEmpty": "Bài chưa có mục nào.",
+        "toolDescription": "Đổi công cụ để sang bài tương ứng.",
+        "doctorTitle": "Kết quả harness doctor",
+        "doctorCommandLabel": "Lệnh kiểm tra",
+        "doctorCommandDescription": "Chạy trong repo của bạn, kết quả về đây.",
+        "doctorEmpty": "Không có điều kiện nào để hiển thị.",
+        "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt"
+      },
+      "docs": {
+        "title": "Hiểu sâu",
+        "description": "Bài giải thích dài, có sơ đồ, không có kiểm thử. Đọc để hiểu agent chạy ra sao.",
+        "listTitle": "Các bài",
+        "empty": "Chưa có bài nào."
+      },
+      "doc": {
+        "title": "Bài giải thích",
+        "missing": "Không tìm thấy bài này.",
+        "outlineTitle": "Trong bài này",
+        "outlineEmpty": "Bài chưa có mục nào."
+      },
+      "proofs": {
+        "none": "Chưa luyện",
+        "practising": "Đang luyện",
+        "proved": "Đã chứng minh"
+      }
+    },
+    "profile": {
+      "pageTitle": "Hồ sơ",
+      "title": "Hồ sơ của bạn",
+      "description": "Mọi mục dưới đây do StarCi chấm, không tự khai.",
+      "identity": {
+        "title": "Danh tính",
+        "avatarLabel": "Ảnh đại diện",
+        "upload": "Tải ảnh lên",
+        "remove": "Xoá ảnh",
+        "avatarHint": "PNG, JPEG hoặc WebP, tối đa {size}.",
+        "nameLabel": "Tên hiển thị",
+        "namePlaceholder": "Tên bạn muốn hiện",
+        "nameHint": "Để trống thì hiện tên tài khoản.",
+        "save": "Lưu tên",
+        "saved": "Đã lưu tên.",
+        "error": {
+          "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
+          "size": "Ảnh quá lớn, tối đa {size}.",
+          "failed": "Chưa tải được ảnh, bạn thử lại nhé.",
+          "unavailable": "Kho ảnh chưa sẵn sàng, bạn thử lại sau.",
+          "name": "Tên phải có từ 1 đến {max} ký tự.",
+          "other": "Chưa lưu được, bạn thử lại nhé."
+        }
+      },
+      "goal": {
+        "title": "Lộ trình mục tiêu",
+        "none": "Chưa chọn lộ trình",
+        "choose": "Chọn lộ trình",
+        "change": "Đổi lộ trình"
+      },
+      "cv": {
+        "title": "Dòng CV đã xác minh",
+        "caption": "Chỉ mục Đã xác minh mới vào CV. Mục chưa được ký vẫn nằm ở Kinh nghiệm.",
+        "gate": "{count}/{min} mục Đã xác minh để được giới thiệu việc làm",
+        "pending": "{count} mục đang chờ duyệt",
+        "seeAll": "Kinh nghiệm",
+        "proof": "Bằng chứng",
+        "signed": "Ký bởi {role} ngày {date}",
+        "empty": "Chưa có dòng CV nào được xác minh. Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên.",
+        "part": {
+          "essentials": "Bản chất",
+          "projects": "Dự án",
+          "harness": "Harness"
+        }
+      },
+      "account": {
+        "devices": {
+          "title": "Máy đã nối",
+          "manage": "Quản lý",
+          "empty": "Chưa nối máy nào.",
+          "online": "Đang kết nối",
+          "offline": "Ngoại tuyến",
+          "seen": "{platform}, thấy {when}",
+          "platform": {
+            "windows": "Windows",
+            "macos": "macOS",
+            "linux": "Linux"
+          }
+        },
+        "tokens": {
+          "title": "MCP token",
+          "manage": "Mở Kết nối",
+          "empty": "Chưa có token nào.",
+          "hint": "Kết thúc bằng {hint}",
+          "used": "dùng {when}",
+          "neverUsed": "chưa dùng"
+        },
+        "plan": {
+          "title": "Gói của bạn",
+          "free": "Miễn phí",
+          "until": "Premium đến {date}",
+          "freeNote": "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí.",
+          "manage": "Quản lý gói",
+          "premiumNote": "Mọi phần của Bản chất, Dự án và Harness đều đã mở."
+        }
+      },
+      "verify": {
+        "title": "Liên kết xác minh công khai",
+        "caption": "Người tuyển dụng mở liên kết để xem dòng đã ký, không thấy điểm số hay tên người duyệt.",
+        "copy": "Sao chép liên kết",
+        "copied": "Đã sao chép",
+        "public": "Công khai",
+        "private": "Riêng tư",
+        "empty": "Liên kết xuất hiện khi một mục được xác minh."
+      }
+    },
+    "progress": {
+      "pageTitle": "Tiến độ",
+      "title": "Tiến độ của bạn",
+      "description": "Mọi con số được đọc thẳng từ Bản chất, Harness, Dự án và Ôn tập, không lưu bản sao.",
+      "unavailable": "Chưa tải được phần này.",
+      "ribbon": {
+        "label": "Tóm tắt tiến độ",
+        "proved": "Khái niệm đã chứng minh",
+        "streak": "Chuỗi ngày",
+        "lessons": "Bài đã học",
+        "builds": "Bản dựng đã xong",
+        "days": "ngày"
+      },
+      "essentials": {
+        "title": "Bản chất",
+        "fact": "{done}/{total} bài",
+        "open": "Mở Bản chất",
+        "opener": "Câu mở bài: đúng {before}/{answered} lúc đầu, đúng {after}/{answered} sau khi học.",
+        "openerNone": "Chưa trả lời câu mở bài nào.",
+        "unlocked": "Đã mở",
+        "locked": "Cần Premium",
+        "upgrade": "Xem Premium",
+        "part": {
+          "essence": "Phần 1 · Bản chất",
+          "source": "Phần 2 · Source",
+          "script": "Phần 3 · Kịch bản",
+          "apply": "Phần 4 · Tự áp dụng"
+        },
+        "topicFact": "{done}/{total} bài",
+        "lessonOpener": "Câu mở bài: trước {before}/{total}, sau {after}/{total}",
+        "lessonNoOpener": "Chưa trả lời câu mở bài",
+        "done": "Đã học",
+        "started": "Đang học",
+        "todo": "Chưa học",
+        "empty": "Chưa có bài nào trong danh mục."
+      },
+      "harness": {
+        "title": "Harness",
+        "fact": "{done}/{total} bản dựng",
+        "open": "Mở Harness",
+        "build": "{proved}/{total} giai đoạn đã chứng minh, {practising} đang luyện",
+        "proved": "Đã chứng minh",
+        "practising": "Đang luyện",
+        "none": "Chưa bắt đầu",
+        "doctorTitle": "Doctor",
+        "doctorPassed": "Đạt {passed}/{total} phép thử",
+        "doctorFailed": "Lỗi, đạt {passed}/{total} phép thử",
+        "doctorNotRun": "Chưa chạy",
+        "tool": {
+          "claude": "Claude Code",
+          "codex": "Codex"
+        },
+        "trialsTitle": "Thử bẫy",
+        "held": "Giữ vững",
+        "breached": "Bị phá",
+        "incomplete": "Chưa xong",
+        "never": "Chưa thử",
+        "trialLine": "{tool}, {when}",
+        "empty": "Chưa có bản dựng nào.",
+        "doctorFailedBadge": "Có lỗi"
+      },
+      "projects": {
+        "title": "Dự án",
+        "open": "Mở Dự án",
+        "proved": "Khái niệm đã chứng minh",
+        "practising": "Khái niệm đang luyện",
+        "milestones": "Cột mốc xong",
+        "project": "{proved}/{total} khái niệm, {done}/{milestones} cột mốc",
+        "empty": "Chưa có dự án nào.",
+        "pitchTitle": "Dự án dành cho gói Premium",
+        "pitchBody": "Dự án chấm bài làm thật của bạn bằng CI có chữ ký. Khái niệm nào qua CI mới được tính là đã chứng minh, và thành dòng CV khi thầy ký.",
+        "pitchCta": "Xem Premium"
+      },
+      "review": {
+        "title": "Ôn tập",
+        "open": "Mở Ôn tập",
+        "due": "Thẻ đến hạn",
+        "overdue": "Quá hạn",
+        "doneToday": "Đã ôn hôm nay",
+        "streak": "Chuỗi hiện tại",
+        "longest": "Chuỗi dài nhất",
+        "today": "Hôm nay đã tính vào chuỗi",
+        "notToday": "Hôm nay chưa tính vào chuỗi"
+      },
+      "activity": {
+        "title": "Hoạt động gần đây",
+        "label": "Dòng thời gian hoạt động",
+        "empty": "Chưa có hoạt động nào.",
+        "lesson": "Học xong bài {title}",
+        "concept": "Chứng minh khái niệm {title}",
+        "verified": "Được xác minh: {title}",
+        "harness": "Giai đoạn Harness: {title}"
       }
     }
   }

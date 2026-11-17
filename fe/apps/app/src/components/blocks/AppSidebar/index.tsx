@@ -30,6 +30,7 @@ type AppSidebarProps = {
 type Destination = {
     readonly id:
         | "learn"
+        | "progress"
         | "essentials"
         | "review"
         | "interview"
@@ -37,6 +38,7 @@ type Destination = {
         | "incidents"
         | "projects"
         | "agents"
+        | "harness"
         | "experience"
         | "connect"
         | "profile"
@@ -46,6 +48,7 @@ type Destination = {
 
 const MAIN: ReadonlyArray<Destination> = [
     { id: "learn", route: APP_ROUTES.home, source: LearnGlyph },
+    { id: "progress", route: APP_ROUTES.progress, source: ExperienceGlyph },
     { id: "essentials", route: APP_ROUTES.essentials, source: EssentialsGlyph },
     { id: "review", route: APP_ROUTES.review, source: ReviewGlyph },
     { id: "interview", route: APP_ROUTES.interview, source: InterviewGlyph },
@@ -53,6 +56,7 @@ const MAIN: ReadonlyArray<Destination> = [
     { id: "incidents", route: APP_ROUTES.incidents, source: IncidentsGlyph },
     { id: "projects", route: APP_ROUTES.projects, source: ProjectsGlyph },
     { id: "agents", route: APP_ROUTES.agents, source: AgentsGlyph },
+    { id: "harness", route: APP_ROUTES.harness, source: AgentsGlyph },
 ]
 
 const EXPERIENCE: ReadonlyArray<Destination> = [

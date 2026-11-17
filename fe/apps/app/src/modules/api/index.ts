@@ -16,6 +16,12 @@ export type {
     InterviewSessionQuery,
     InterviewSessionRefInput,
     LearnerHubQuery,
+    LearnerProgressQuery,
+    MyProfileQuery,
+    SetProfileNameMutation,
+    RequestAvatarUploadMutation,
+    ConfirmAvatarUploadMutation,
+    RemoveAvatarMutation,
     OutcomePathsQuery,
     ChooseOutcomePathMutation,
     LessonOpenerScoresQuery,
@@ -38,6 +44,7 @@ export type {
     CreateMcpTokenMutation,
     RelayPairingQuery,
     RevokeRelayDeviceMutation,
+    BindHarnessBuildMutation,
     PracticeProblemQuery,
     PracticeProblemsQuery,
     PracticeSubmissionQuery,
@@ -106,3 +113,5 @@ export {
 export type { IdentityChallenge } from "./rest/identity/credentials"
 export { exchangeSocialCode, startSocialSignIn } from "./rest/identity/social"
 export type { SocialProvider } from "./rest/identity/social"
+export { putAvatar } from "./rest/storage/avatar"
+export type { AvatarPutTarget } from "./rest/storage/avatar"
