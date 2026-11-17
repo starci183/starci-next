@@ -9,7 +9,7 @@
         "learn": "Learn",
         "essentials": "Essentials",
         "review": "Review",
-        "practice": "Practice code",
+        "practice": "Practice",
         "incidents": "Incidents",
         "projects": "Projects",
         "experience": "Verified experience",
@@ -19,7 +19,6 @@
         "progress": "Progress"
       },
       "sidebarLabel": "Main navigation",
-      "experienceGroup": "Experience",
       "planPremium": "Premium",
       "planFree": "No Premium",
       "account": "Account",
@@ -36,7 +35,12 @@
       "localeNameVi": "Tiếng Việt",
       "localeNameEn": "English",
       "profile": "Profile",
-      "themeLabel": "Dark theme"
+      "themeLabel": "Dark theme",
+      "areasGroup": "Learning areas",
+      "drillsGroup": "Drills",
+      "mineGroup": "Yours",
+      "premiumLocked": "Premium required",
+      "reviewDue": "{count, plural, one {# card due} other {# cards due}}"
     },
     "signOut": {
       "submit": "Sign out",
