@@ -5,7 +5,25 @@ import { ApiFailure } from "@/modules/failure"
 export const SIGNER_ROLES = { teacher: "TEACHER", reviewer: "REVIEWER" } as const
 
 /** The states of an item, in the order the canvas tabs list them. */
-export const EXPERIENCE_TABS = ["all", "verified", "pending-review", "ai-graded", "returned"] as const
+export const EXPERIENCE_TABS = [
+    "all",
+    "verified",
+    "pending-review",
+    "ai-graded",
+    "returned",
+    "practising",
+    "revoked",
+] as const
+
+/** The sources of an item, as the filter chips list them; the part of an item picks its source. */
+export const EXPERIENCE_SOURCES = ["all", "essentials", "projects", "harness", "practice"] as const
+
+/** One source chip of the learner's list. */
+export type ExperienceSource = (typeof EXPERIENCE_SOURCES)[number]
+
+/** The source an item belongs to; a part the list does not name (the retired incidents) reads as Essentials. */
+export const sourceOfPart = (part: string): ExperienceSource =>
+    part === "projects" || part === "harness" || part === "practice" ? part : "essentials"
 
 /** One tab of the learner's list. */
 export type ExperienceTab = (typeof EXPERIENCE_TABS)[number]

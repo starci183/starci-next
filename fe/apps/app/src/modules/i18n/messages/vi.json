@@ -1551,15 +1551,15 @@
       "title": "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận",
       "description": "Thầy AI chấm trước và soạn sẵn một dòng CV kèm bằng chứng. Mục chỉ thành Đã xác minh khi thầy hoặc người thầy giao duyệt. Chỉ mục đã xác minh mới vào hồ sơ, đích lộ trình và CV.",
       "flowLabel": "Các bước của một mục",
-      "verifiedCount": "{count} kinh nghiệm đã xác minh",
-      "pendingCount": "{count} mục đang chờ",
+      "verifiedCount": "{count} đã xác minh",
+      "pendingCount": "{count} đang chờ thầy",
       "hiringGate": "Cần {count} mục đã xác minh để được giới thiệu việc làm",
       "tabsLabel": "Trạng thái",
       "tabAll": "Tất cả",
       "empty": "Chưa có mục kinh nghiệm nào. Mục đầu tiên đến khi một bài Bản chất đã chứng minh được gắn vào dự án của bạn.",
       "emptyTab": "Không có mục nào ở trạng thái này.",
       "readinessLine": "Tín hiệu sẵn sàng tuyển dụng (không ghi vào CV)",
-      "returnedNote": "Thầy trả lại",
+      "returnedNote": "Lời thầy",
       "metaVerified": "Đã xác minh bởi StarCi · {role} · {date}",
       "metaPending": "Đang chờ thầy · hạn {date}",
       "metaGraded": "AI đã chấm · {count} câu hỏi bảo vệ",
@@ -1567,10 +1567,10 @@
       "metaReturned": "Trả lại · lần {count}",
       "metaRevoked": "Đã thu hồi ngày {date}",
       "send": "Gửi thầy duyệt",
-      "resend": "Sửa và gửi lại",
-      "sendHint": "Bạn sửa được câu chữ, không sửa được số liệu từ bằng chứng.",
-      "editVi": "Dòng CV tiếng Việt",
-      "editEn": "Dòng CV tiếng Anh",
+      "resend": "Sửa dòng CV và gửi lại",
+      "sendHint": "Gửi xong bạn không sửa dòng CV nữa cho tới khi thầy trả lời.",
+      "editVi": "Dòng CV (tiếng Việt)",
+      "editEn": "CV line (English)",
       "verifyLink": "Trang xác minh",
       "showPublicly": "Hiện trên hồ sơ",
       "hidePublicly": "Ẩn khỏi hồ sơ",
@@ -1587,14 +1587,15 @@
         "ai-graded": "AI đã chấm",
         "pending-review": "Chờ thầy duyệt",
         "verified": "Đã xác minh",
-        "returned": "Thầy trả lại",
+        "returned": "Bị trả lại",
         "revoked": "Đã thu hồi"
       },
       "part": {
-        "essentials": "Bản chất",
+        "essentials": "Essentials",
         "projects": "Dự án",
         "incidents": "Sự cố",
-        "practice": "Luyện code"
+        "practice": "Luyện code",
+        "harness": "Harness"
       },
       "role": {
         "TEACHER": "Thầy",
@@ -1707,7 +1708,67 @@
         "code": "Mã xác minh",
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
       },
-      "lineCaption": "Dòng CV"
+      "lineCaption": "Dòng CV",
+      "loading": "Đang tải…",
+      "crumb": {
+        "label": "Đường dẫn",
+        "profile": "Hồ sơ"
+      },
+      "sourcesLabel": "Nguồn",
+      "sourceAll": "Mọi nguồn",
+      "first": {
+        "title": "Mỗi phần học cho bạn một dòng kinh nghiệm",
+        "text": "Chỉ dòng đã được ký mới vào hồ sơ và CV. Chọn một việc để bắt đầu.",
+        "waysLabel": "Nơi tạo kinh nghiệm"
+      },
+      "ways": {
+        "essentials": {
+          "title": "Essentials",
+          "text": "Học xong một bài và qua phần Kịch bản"
+        },
+        "projects": {
+          "title": "Dự án",
+          "text": "Qua CI một cột mốc của dự án"
+        },
+        "harness": {
+          "title": "Harness",
+          "text": "Hoàn thành một bản dựng và kiểm tra"
+        },
+        "practice": {
+          "title": "Luyện code",
+          "text": "Accepted cả một nhóm bài trong pattern"
+        }
+      },
+      "emptyTabTitle": "Không có mục nào ở trạng thái này",
+      "emptyTabText": "Mục bạn gửi hoặc nhận sẽ hiện ở đây khi đổi trạng thái.",
+      "showAll": "Xem tất cả",
+      "shown": "Công khai",
+      "hidden": "Riêng tư",
+      "copyLink": "Sao chép liên kết",
+      "copiedLink": "Đã sao chép",
+      "confirm": {
+        "title": "Gửi thầy duyệt?",
+        "text": "Thầy sẽ đọc dòng CV và hỏi câu bảo vệ. Trong lúc chờ bạn không sửa được dòng CV.",
+        "cancel": "Chưa gửi"
+      },
+      "claims": {
+        "title": "Luyện code: pattern đã xong",
+        "action": "Nhận kinh nghiệm"
+      },
+      "claimText": "{accepted} bài Accepted, chưa nhận kinh nghiệm",
+      "noteVerified": "Ký {date} · {code}",
+      "noteSent": "Gửi {date} · hạn trả lời {due}",
+      "noteGraded": "Chấm {date}",
+      "noteReturned": "Trả {date}",
+      "noteRevoked": "Thu hồi {date}",
+      "noteNone": "",
+      "pendingNote": "Thầy đang xem, chưa cần làm gì.",
+      "practisingNote": "Đang luyện, cần bằng chứng đã chứng minh.",
+      "gradeChip": "AI chấm: {result} {passed}/{total} tiêu chí",
+      "gradePass": "Đạt",
+      "gradeFail": "Chưa đạt",
+      "defenseChip": "{count} câu bảo vệ",
+      "signerChip": "{role} ký"
     },
     "devices": {
       "pageTitle": "Thiết bị",

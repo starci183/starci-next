@@ -1551,15 +1551,15 @@
       "title": "Every part gives you experience, signed by the teacher",
       "description": "The AI teacher grades first and drafts a CV line with its evidence. An item is verified only when the teacher, or a reviewer the teacher appoints, signs it. Only verified items reach the profile, a path's goal and the CV.",
       "flowLabel": "The steps of an item",
-      "verifiedCount": "{count} verified items",
-      "pendingCount": "{count} pending items",
-      "hiringGate": "{count} verified items open the hiring bridge",
+      "verifiedCount": "{count} verified",
+      "pendingCount": "{count} waiting for the teacher",
+      "hiringGate": "{count} verified items are needed to be referred for jobs",
       "tabsLabel": "State",
       "tabAll": "All",
       "empty": "No experience item yet. The first one comes when a proved Essentials lesson is attached to one of your projects.",
       "emptyTab": "No item in this state.",
       "readinessLine": "Hiring-readiness signal (not a CV line)",
-      "returnedNote": "Returned by the teacher",
+      "returnedNote": "Teacher's note",
       "metaVerified": "Verified by StarCi · {role} · {date}",
       "metaPending": "Waiting for the teacher · due {date}",
       "metaGraded": "Graded by the AI · {count} defense questions",
@@ -1567,10 +1567,10 @@
       "metaReturned": "Returned · time {count}",
       "metaRevoked": "Revoked on {date}",
       "send": "Send for review",
-      "resend": "Edit and resend",
-      "sendHint": "You can reword the line, not the figures from the evidence.",
-      "editVi": "Vietnamese CV line",
-      "editEn": "English CV line",
+      "resend": "Edit the CV line and send again",
+      "sendHint": "After sending you cannot edit the CV line until the teacher replies.",
+      "editVi": "CV line (Vietnamese)",
+      "editEn": "CV line (English)",
       "verifyLink": "Verification page",
       "showPublicly": "Show on profile",
       "hidePublicly": "Hide from profile",
@@ -1585,7 +1585,7 @@
       "state": {
         "practising": "Practising",
         "ai-graded": "Graded by AI",
-        "pending-review": "Waiting for review",
+        "pending-review": "Waiting for the teacher",
         "verified": "Verified",
         "returned": "Returned",
         "revoked": "Revoked"
@@ -1594,7 +1594,8 @@
         "essentials": "Essentials",
         "projects": "Projects",
         "incidents": "Incidents",
-        "practice": "Coding practice"
+        "practice": "Practice",
+        "harness": "Harness"
       },
       "role": {
         "TEACHER": "Teacher",
@@ -1707,7 +1708,67 @@
         "code": "Verification code",
         "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
       },
-      "lineCaption": "CV line"
+      "lineCaption": "CV line",
+      "loading": "Loading…",
+      "crumb": {
+        "label": "Breadcrumb",
+        "profile": "Profile"
+      },
+      "sourcesLabel": "Source",
+      "sourceAll": "All sources",
+      "first": {
+        "title": "Each part you learn gives you one experience line",
+        "text": "Only a signed line reaches your profile and CV. Pick one to start.",
+        "waysLabel": "Where experience comes from"
+      },
+      "ways": {
+        "essentials": {
+          "title": "Essentials",
+          "text": "Finish a lesson and pass its Script part"
+        },
+        "projects": {
+          "title": "Projects",
+          "text": "Pass CI on a project milestone"
+        },
+        "harness": {
+          "title": "Harness",
+          "text": "Finish a build and its checks"
+        },
+        "practice": {
+          "title": "Practice",
+          "text": "Get a whole group of a pattern Accepted"
+        }
+      },
+      "emptyTabTitle": "No item in this state",
+      "emptyTabText": "Items you send or receive show here when they change state.",
+      "showAll": "Show all",
+      "shown": "Public",
+      "hidden": "Private",
+      "copyLink": "Copy link",
+      "copiedLink": "Copied",
+      "confirm": {
+        "title": "Send for review?",
+        "text": "The teacher reads the CV line and asks the defense questions. While you wait you cannot edit the CV line.",
+        "cancel": "Not yet"
+      },
+      "claims": {
+        "title": "Practice: finished patterns",
+        "action": "Claim experience"
+      },
+      "claimText": "{accepted} problems Accepted, experience not claimed yet",
+      "noteVerified": "Signed {date} · {code}",
+      "noteSent": "Sent {date} · reply due {due}",
+      "noteGraded": "Graded {date}",
+      "noteReturned": "Returned {date}",
+      "noteRevoked": "Revoked {date}",
+      "noteNone": "",
+      "pendingNote": "The teacher is reading, nothing to do yet.",
+      "practisingNote": "Practising, needs proved evidence.",
+      "gradeChip": "AI grade: {result} {passed}/{total} criteria",
+      "gradePass": "Pass",
+      "gradeFail": "Not yet",
+      "defenseChip": "{count} defense questions",
+      "signerChip": "Signed by {role}"
     },
     "devices": {
       "pageTitle": "Devices",

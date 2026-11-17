@@ -27,7 +27,7 @@ const STATES: ReadonlySet<string> = new Set([
 ])
 
 /** The parts the catalog words. */
-const PARTS: ReadonlySet<string> = new Set(["essentials", "projects", "incidents", "practice"])
+const PARTS: ReadonlySet<string> = new Set(["essentials", "projects", "harness", "incidents", "practice"])
 
 /** The evidence kinds the catalog words. */
 const EVIDENCE: ReadonlySet<string> = new Set(["lesson-proved", "signed-ci", "server-probe", "graded-session", "judge"])

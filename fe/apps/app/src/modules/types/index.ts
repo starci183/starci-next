@@ -76,7 +76,14 @@ export type {
 } from "./reviewView"
 export type {
     ExperienceCardView,
+    ExperienceChip,
+    ExperienceClaimView,
+    ExperienceEdit,
     ExperienceListView,
+    ExperienceSourceView,
+    ExperienceTabView,
+    ExperienceVerifiedLink,
+    ExperienceWayView,
     ReviewerRowView,
     ReviewQueueRowView,
     ReviewQueueScreenView,

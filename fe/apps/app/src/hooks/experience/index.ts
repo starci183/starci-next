@@ -1,6 +1,15 @@
-export { SIGNER_ROLES, failureCodeOf, plainLineOf, signerRoleOf, stateToneOf } from "./experience.shared"
+export {
+    EXPERIENCE_SOURCES,
+    SIGNER_ROLES,
+    failureCodeOf,
+    plainLineOf,
+    signerRoleOf,
+    sourceOfPart,
+    stateToneOf,
+} from "./experience.shared"
+export type { ExperienceSource } from "./experience.shared"
 export { useExperienceListView } from "./useExperienceListView"
-export type { ExperienceDrafts } from "./useExperienceListView"
+export type { ExperienceCardState, ExperienceDrafts } from "./useExperienceListView"
 export { useExperienceWords } from "./useExperienceWords"
 export type { ExperienceWords } from "./useExperienceWords"
 export { useReviewDecision } from "./useReviewDecision"
