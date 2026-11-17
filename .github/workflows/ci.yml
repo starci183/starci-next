@@ -124,7 +124,7 @@ jobs:
       - run: npm ci --ignore-scripts
         if: steps.deps.outputs.cache-hit != 'true'
       - name: production dependency audit
-        run: npm audit --omit=dev --audit-level=high
+        run: npx --no-install starci app audit --omit-dev --level=high
       - name: format
         run: npx --no-install starci app check --gate format --env prod
       - name: typecheck
