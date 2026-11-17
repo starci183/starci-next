@@ -1,3 +1,4 @@
+import { NotFoundException } from "@nestjs/common"
 import { Test } from "@nestjs/testing"
 import { mock } from "@starci/jest-preset"
 import { MESSAGE_CATALOG } from "@modules/platform/i18n"
@@ -58,6 +59,18 @@ describe("ErrorsService", () => {
                 params: {},
             })
             expect(logger.error).toHaveBeenCalledWith(ErrorsLogEvent.Unhandled, error)
+        })
+
+        it("answers the router's not-found for an unrouted path as a 404 in the error contract, without logging it", async () => {
+            const { service, logger } = await build()
+
+            expect(service.describe(new NotFoundException("Cannot GET /health"))).toEqual({
+                code: ErrorsErrorCode.RouteNotFound,
+                kind: "not-found",
+                status: 404,
+                params: {},
+            })
+            expect(logger.error).not.toHaveBeenCalled()
         })
 
         it("masks any other failure as internal, and logs it", async () => {
