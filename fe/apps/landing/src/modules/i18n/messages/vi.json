@@ -1,0 +1,31 @@
+{
+  "landing": {
+    "title": "starci-next",
+    "description": "Trang giới thiệu starci-next.",
+    "shell": {
+      "brand": "starci-next"
+    },
+    "home": {
+      "title": "Chào mừng đến với starci-next",
+      "lede": "Mọi thứ bạn cần đều ở trong ứng dụng.",
+      "openApp": "Mở ứng dụng"
+    },
+    "loading": {
+      "message": "Đang tải"
+    },
+    "notFound": {
+      "title": "Không tìm thấy trang",
+      "home": "Về trang chủ"
+    },
+    "errors": {
+      "page": {
+        "title": "Đã xảy ra lỗi",
+        "retry": "Thử lại"
+      },
+      "global": {
+        "title": "Đã xảy ra lỗi nghiêm trọng",
+        "retry": "Thử lại"
+      }
+    }
+  }
+}
