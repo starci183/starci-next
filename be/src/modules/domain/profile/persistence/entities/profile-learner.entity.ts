@@ -1,0 +1,33 @@
+import { Column, Entity, PrimaryColumn } from "typeorm"
+
+@Entity("profile_learners")
+/** The profile of one learner: the name they chose and the avatar they uploaded. */
+export class ProfileLearnerEntity {
+    /** The learner. */
+    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    learnerId!: string
+
+    /** The name the learner chose, or null to show the name of their account. */
+    @Column({ name: "display_name", type: "text", nullable: true })
+    displayName!: string | null
+
+    /** The storage key of the avatar, or null. */
+    @Column({ name: "avatar_key", type: "text", nullable: true })
+    avatarKey!: string | null
+
+    /** The content type the avatar was stored with, or null. */
+    @Column({ name: "avatar_content_type", type: "text", nullable: true })
+    avatarContentType!: string | null
+
+    /** The size of the avatar in bytes, or null. */
+    @Column({ name: "avatar_size", type: "integer", nullable: true })
+    avatarSize!: number | null
+
+    /** When the avatar was last set, or null. */
+    @Column({ name: "avatar_updated_at", type: "timestamptz", nullable: true })
+    avatarUpdatedAt!: Date | null
+
+    /** When the profile last changed. */
+    @Column({ name: "updated_at", type: "timestamptz" })
+    updatedAt!: Date
+}

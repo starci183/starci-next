@@ -54,6 +54,8 @@ component_management:
         - "be/src/modules/domain/notification/**"
         - "be/src/modules/domain/path/**"
         - "be/src/modules/domain/practice/**"
+        - "be/src/modules/domain/profile/**"
+        - "be/src/modules/domain/progress/**"
         - "be/src/modules/domain/project/**"
         - "be/src/modules/domain/purchase/**"
         - "be/src/modules/domain/relay/**"

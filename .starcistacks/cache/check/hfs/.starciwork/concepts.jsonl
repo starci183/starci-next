@@ -1,4 +1,4 @@
-{"data":{},"findings":[],"hash":"16a74f764e7e0f4d1c9c778c9ebf459577ebbaf8fca7a7343029ab6d2996ac7f","path":".starciwork/concepts/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8b1fd49c6f2ead5622afbd62e75f3dba10715f8e94607d298c534f37ce1701b1","path":".starciwork/concepts/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f88e7e84af0e45017d79dfe42627ad17598bb75874b23d95a8f068fee22b48c0","path":".starciwork/concepts/ai-teacher.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"da8ac90e3b103697bcb9c68b73666a0a1b82f563d3b91519d684437f06b7efe6","path":".starciwork/concepts/app-shell.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f1d7e2768c4bf2480b5c6c059cc5f1cacab79838bbe6c096f4f07f31371458fc","path":".starciwork/concepts/content.md","step":"file-rules"}
@@ -12,6 +12,7 @@
 {"data":{},"findings":[],"hash":"52e9f943ff6e34b7eecce0c63ccfd7e3dc3dfe3c925f38ee1cb7a8ff643a3cbd","path":".starciwork/concepts/mock-interview.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b9163cd519614ddf8c278eb23c561a2e4daf6e55f1ec3c7c1a15bbef8e98c16","path":".starciwork/concepts/practice.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8b702f6e8b7852f0547a74412f9c0fa523329022b013d306486bcd6648b9b57c","path":".starciwork/concepts/premium.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"29ec48928f297206f094880972ffaf38c97f9a1b8c4359531ada65d86ea4aacf","path":".starciwork/concepts/profile-progress.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"15fb600ccbc4a6fb73bcd97748afefac94e6b2fb65ac3d2655dfd2978e38dd45","path":".starciwork/concepts/projects.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"93af67d99fb014ac30d9665fc8b513ffbd9848ec3b5295af94f2db167539841b","path":".starciwork/concepts/review.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5ada4940903cf897f94b1aad6d004e07d7ca111944d7be5b1349e69ce873017c","path":".starciwork/concepts/streak.md","step":"file-rules"}

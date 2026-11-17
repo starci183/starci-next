@@ -54,6 +54,15 @@ import {
     streakMigrations,
 } from "@modules/domain/streak"
 import {
+    PROFILE_ERROR_KINDS,
+    PROFILE_MESSAGES,
+    ProfileModule,
+    UnconfiguredAvatarStoreClient,
+    profileEntities,
+    profileMigrations,
+} from "@modules/domain/profile"
+import { ProgressModule } from "@modules/domain/progress"
+import {
     HARNESS_ERROR_KINDS,
     HARNESS_MESSAGES,
     HarnessModule,
@@ -83,6 +92,8 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
         ...(options.project.ciOidcAudience === undefined ? {} : { ciOidcAudience: options.project.ciOidcAudience }),
     }),
     HubModule.register({ isGlobal: true }),
+    ProfileModule.register({ isGlobal: true, ...options.profile, store: UnconfiguredAvatarStoreClient }),
+    ProgressModule.register({ isGlobal: true }),
     NotificationModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true, ...options.practice, streak: StreakServiceClient }),
     ReviewModule.register({ isGlobal: true }),
@@ -110,6 +121,7 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
     JUDGE0_ERROR_KINDS,
     PRACTICE_ERROR_KINDS,
     AGENT_LAB_ERROR_KINDS,
+    PROFILE_ERROR_KINDS,
 ]
 
 /** The message bundles of the learning area. */
@@ -127,6 +139,7 @@ export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     JUDGE0_MESSAGES,
     PRACTICE_MESSAGES,
     AGENT_LAB_MESSAGES,
+    PROFILE_MESSAGES,
 ]
 
 /** The entities the learning area keeps in the primary database. */
@@ -141,6 +154,7 @@ export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
     ...pathEntities,
     ...harnessEntities,
     ...notificationEntities,
+    ...profileEntities,
 ]
 
 /** The migrations of the learning area. */
@@ -155,4 +169,5 @@ export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
     ...pathMigrations,
     ...harnessMigrations,
     ...notificationMigrations,
+    ...profileMigrations,
 ]

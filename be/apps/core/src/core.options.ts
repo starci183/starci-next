@@ -46,6 +46,8 @@ export interface CoreOptions {
     readonly agentLab: CoreEnv["agentLab"]
     /** Parsed project settings: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: CoreEnv["project"]
+    /** Parsed profile settings: the avatar limits, the longest display name and the signed upload lifetime. */
+    readonly profile: CoreEnv["profile"]
     /** Parsed probe transport options. */
     readonly probe: CoreEnv["probe"]
     /** Parsed relay settings: the pairing code lifetime, the confirm page, the device limits per plan and the manifest key. */

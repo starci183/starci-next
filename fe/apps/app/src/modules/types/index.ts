@@ -164,6 +164,26 @@ export type {
     HarnessVerdict,
 } from "./harness"
 export type {
+    ProfileCvLine,
+    ProfileCvView,
+    ProfileDeviceView,
+    ProfileHubLabels,
+    ProfileHubViews,
+    ProfileIdentityView,
+    ProfilePlanView,
+    ProfileTokenView,
+    ProfileVerifyLink,
+} from "./profile"
+export type {
+    ProgressActivityEntry,
+    ProgressBlockView,
+    ProgressFigureView,
+    ProgressLabels,
+    ProgressLinkView,
+    ProgressListView,
+    ProgressPageView,
+} from "./progress"
+export type {
     CiRunView,
     CodeReadRubricRow,
     CvPreviewView,
@@ -172,3 +192,11 @@ export type {
     ProjectConceptView,
     RubricVerdict,
 } from "./projectConcept"
+export {
+    CV_PLACEHOLDER,
+    DEVICES_PLACEHOLDER,
+    IDENTITY_PLACEHOLDER,
+    PLAN_PLACEHOLDER,
+    TOKENS_PLACEHOLDER,
+    VERIFY_PLACEHOLDER,
+} from "./profile"

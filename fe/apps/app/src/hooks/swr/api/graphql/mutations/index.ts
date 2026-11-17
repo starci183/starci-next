@@ -82,5 +82,19 @@ export { MUTATE_ASSIGN_EXPERIENCE_SWR_KEY, useMutateAssignExperienceSwr } from "
 export { MUTATE_CREATE_MCP_TOKEN_SWR_KEY, useMutateCreateMcpTokenSwr } from "./useMutateCreateMcpTokenSwr"
 export type { CreatedMcpToken } from "./useMutateCreateMcpTokenSwr"
 export { MUTATE_REVOKE_MCP_TOKEN_SWR_KEY, useMutateRevokeMcpTokenSwr } from "./useMutateRevokeMcpTokenSwr"
+export { MUTATE_SET_PROFILE_NAME_SWR_KEY, useMutateSetProfileNameSwr } from "./useMutateSetProfileNameSwr"
+export type { SetProfileNameArgument, SetProfileNameResult } from "./useMutateSetProfileNameSwr"
+export {
+    MUTATE_REQUEST_AVATAR_UPLOAD_SWR_KEY,
+    useMutateRequestAvatarUploadSwr,
+} from "./useMutateRequestAvatarUploadSwr"
+export type { RequestAvatarUploadArgument } from "./useMutateRequestAvatarUploadSwr"
+export {
+    MUTATE_CONFIRM_AVATAR_UPLOAD_SWR_KEY,
+    useMutateConfirmAvatarUploadSwr,
+} from "./useMutateConfirmAvatarUploadSwr"
+export type { ConfirmAvatarUploadArgument, ConfirmAvatarUploadResult } from "./useMutateConfirmAvatarUploadSwr"
+export { MUTATE_REMOVE_AVATAR_SWR_KEY, useMutateRemoveAvatarSwr } from "./useMutateRemoveAvatarSwr"
+export type { RemoveAvatarArgument, RemoveAvatarResult } from "./useMutateRemoveAvatarSwr"
 export { MUTATE_BIND_HARNESS_BUILD_SWR_KEY, useMutateBindHarnessBuildSwr } from "./useMutateBindHarnessBuildSwr"
 export type { HarnessBuildBinding } from "./useMutateBindHarnessBuildSwr"

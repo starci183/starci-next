@@ -2,6 +2,7 @@ export { SIGNER_ROLES, failureCodeOf, plainLineOf, signerRoleOf, stateToneOf } f
 export { useExperienceListView } from "./useExperienceListView"
 export type { ExperienceDrafts } from "./useExperienceListView"
 export { useExperienceWords } from "./useExperienceWords"
+export type { ExperienceWords } from "./useExperienceWords"
 export { useReviewDecision } from "./useReviewDecision"
 export { useReviewPanelLabels } from "./useReviewPanelLabels"
 export { useReviewQueueViews } from "./useReviewQueueViews"

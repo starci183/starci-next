@@ -13,6 +13,7 @@ import {
 } from "@modules/platform/http-security"
 import { I18nModule } from "@modules/platform/i18n"
 import { HTTP_ERROR_KINDS, HTTP_MESSAGES, HttpModule } from "@modules/platform/http"
+import { IdsModule } from "@modules/platform/ids"
 import { IDEMPOTENCY_ERROR_KINDS, IDEMPOTENCY_MESSAGES } from "@modules/platform/idempotency"
 import { INBOX_ERROR_KINDS, INBOX_MESSAGES, inboxEntities, inboxMigrations } from "@modules/platform/inbox"
 import { LoggingModule } from "@modules/platform/logging"
@@ -33,6 +34,7 @@ import { learningAreaEntities, learningAreaErrorKinds, learningAreaMessages, lea
  */
 export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     ClockModule.register({ isGlobal: true }),
+    IdsModule.register({ isGlobal: true }),
     RetryModule.register({ isGlobal: true }),
     LoggingModule.register({ isGlobal: true }),
     I18nModule.register({

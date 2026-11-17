@@ -8,6 +8,7 @@ import { parseAttemptConfig } from "@modules/domain/attempt"
 import { parseInterviewConfig } from "@modules/domain/interview"
 import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
+import { parseProfileConfig } from "@modules/domain/profile"
 import { parseProjectConfig } from "@modules/domain/project"
 import { parseMcpConfig } from "@modules/domain/mcp"
 import { parseRelayConfig } from "@modules/domain/relay"
@@ -59,6 +60,8 @@ export interface CoreEnv {
     readonly agentLab: ReturnType<typeof parseAgentLabConfig>
     /** The project capability: free projects and milestones, the probe caps, the CI replay window and the AI code read cap. */
     readonly project: ReturnType<typeof parseProjectConfig>
+    /** The profile capability: the avatar size and type limits, the longest display name and the signed upload lifetime. */
+    readonly profile: ReturnType<typeof parseProfileConfig>
     /** The probe transport options (no key of its own: the transport reaches public addresses only). */
     readonly probe: ReturnType<typeof parseProbeConfig>
     /** The relay capability: the pairing code lifetime, the confirm page, the device limits per plan and the manifest key. */
@@ -92,6 +95,7 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         practice: parsePracticeConfig(env),
         agentLab: parseAgentLabConfig(env),
         project: parseProjectConfig(env),
+        profile: parseProfileConfig(env),
         probe: parseProbeConfig(env),
         relay: parseRelayConfig(env, httpSecurity.allowedOrigins[0] ?? ""),
         realtime: parseRealtimeConfig(env),

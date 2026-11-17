@@ -20,6 +20,9 @@
 {"findings":[],"hash":"b4aba0e2414b50f67ce14be3d397af5343cebeaa50cb57aa99773232cf587cd3","path":"be/apps/core/src/app.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"b01e81940a128f10230d69556b47c95c4af57e5708ef3be475e8807d7e474e43","path":"be/apps/core/src/compose/api.ts","step":"file-rules"}
 {"findings":[],"hash":"bab1d821afde29ee6102ebbb2c9f833f319032637ed495bf073dd59bb5b56ec6","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
+{"findings":[],"hash":"095346a69266b0f45d086a02e955ba8dbeee365b8b5d64944cf04c580f753cd3","path":"be/apps/core/src/app.module.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"23d013ac8620a44efeb1c992a11d01db0793d91de67f20b1695d7546d3a2d1c5","path":"be/apps/core/src/compose/api.ts","step":"file-rules"}
+{"findings":[],"hash":"bde2c8c1335d0c7c2fcb82809eeebe09ccc72105ff693f8fea4ef1f6cb411935","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"af7bedb500ec8b624e6d485d13c6b4e5a7b749d3ec0948878b70f21b34194149","path":"be/apps/core/src/compose/career.ts","step":"file-rules"}
 {"findings":[],"hash":"366f5f75ba6c4232032236ee83a4ced496fb61afaf5a24bbc6e47236f95c48d3","path":"be/apps/core/src/compose/career.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"d843758973341c73a4116ac9ad479a2055baa5532d2b7d113884abcf7b5f877a","path":"be/apps/core/src/compose/commerce.ts","step":"file-rules"}
@@ -32,6 +35,13 @@
 {"findings":[],"hash":"673560d19576ddb3feec745a52f9312f1a1020254a1c28596310c76764bf07cd","path":"be/apps/core/src/compose/learning.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"adb8daac4125357fb8f2e5b7b77df1132bf3163564f6db427dd9d49aef20219b","path":"be/apps/core/src/compose/platform.ts","step":"file-rules"}
 {"findings":[],"hash":"f31c4a2ce6ab28dac2a97dbc4558fac56b09f4e8103a94e29abe35adac75fb88","path":"be/apps/core/src/compose/platform.ts","step":"unit:recurring-observations"}
+{"findings":[],"hash":"8fecaf1a73621c6509d4ff68459b544a3e5646de4d273e8e22dc9d4c1ad4c3a7","path":"be/apps/core/src/compose/identity.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"48911cc46a3a012a3f9ae0efc70d99aa069880d260e9e7dae6f3f78b7183c292","path":"be/apps/core/src/compose/integrations.ts","step":"file-rules"}
+{"findings":[],"hash":"2d3cf58be6ce169ed4ce8aa24b867eacda25fedd4742d861522007f9fbc7be84","path":"be/apps/core/src/compose/integrations.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"cece02f0cc005b1d87450e16e0f983695b1cd15863c12a3b50ef529ca9e00fb3","path":"be/apps/core/src/compose/learning.ts","step":"file-rules"}
+{"findings":[],"hash":"396d8857f8818f44dd49e5300fb9b2b213da667b556dc7e5c9e473692741f339","path":"be/apps/core/src/compose/learning.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"d57dfcefc9b8bcf4c9cc2de30e50cda43c648f0026d876b9006acef993c56020","path":"be/apps/core/src/compose/platform.ts","step":"file-rules"}
+{"findings":[],"hash":"547a082c5bd5828c927d72e794d524500a62ad02de5d2ac6aa6fa9846398f25c","path":"be/apps/core/src/compose/platform.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"ffcaf5c111529062c79ff87f792fd8b593395af5829203b82c80462c98875573","path":"be/apps/core/src/compose/realtime.ts","step":"file-rules"}
 {"findings":[],"hash":"7c9d9e12961a4059e0fcad7cc7c2aea83736b3c13ac3fe980bbe335dc220e32c","path":"be/apps/core/src/compose/realtime.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"5afccc8d16fcb89ddad78b183e64b97f7f959fc746d21e73703ed13eb73df78d","path":"be/apps/core/src/compose/system.ts","step":"file-rules"}
@@ -42,6 +52,11 @@
 {"findings":[],"hash":"398cdeccc28e33ada1b15089937ffec738ab336cf8e48daa5f89198786de6cc9","path":"be/apps/core/src/core.env.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"9126cd204b56daf38f2c4adbd2a985aa37d62935424116dec1769f68c9090dcb","path":"be/apps/core/src/core.options.ts","step":"file-rules"}
 {"findings":[],"hash":"81c7593a521d008e117dcf22bb4b7ba3d1710fbf335fb92f61321f55239009b8","path":"be/apps/core/src/core.options.ts","step":"unit:recurring-observations"}
+{"findings":[],"hash":"5ee3cf033fa72814d70797dbf6e5926a212db3f50c9406f0b2cbf38756727c1d","path":"be/apps/core/src/compose/webhooks.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"ada794b6b0e1e7fa4a18b70b13da02bbf0231fbfad2c7fd2080b5869a56a7898","path":"be/apps/core/src/core.env.ts","step":"file-rules"}
+{"findings":[],"hash":"c8b87b636c2548eaa555b7dce5e8ff62f9e1356ed1ebfb84f6a87abd1cf6812c","path":"be/apps/core/src/core.env.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"94d710c7375eeccf2117c2875b7c3d555d51755cf2250c5d4deb25a0d9513879","path":"be/apps/core/src/core.options.ts","step":"file-rules"}
+{"findings":[],"hash":"2522c14b4c05b0d32f3557a08a8b8b3af2e05e879f5b9b723d4b1da291975b25","path":"be/apps/core/src/core.options.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"7054df0d0c2fd5d217a121d5f00143c0d3a2ef99b89a9870084d6df1f36e3390","path":"be/apps/core/src/main.ts","step":"file-rules"}
 {"findings":[],"hash":"2e03666755d864f51edf05a58704151ec663e7487db3467ee203658dcc0039fb","path":"be/apps/core/src/main.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"f5790adc9646653ee33f62d353ef23131ad712b2e110ada5f5cd6bd6deec9a38","path":"be/apps/relay-cli/package.json","step":"file-rules"}
