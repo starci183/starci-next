@@ -620,8 +620,8 @@
 {"findings":[],"hash":"2b70c69cba7ac72c98f3c7e53372f8ac3dfb3ebfc7cef908df27a3f6a863c299","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"prettier"}
 {"findings":[],"hash":"de04710d324f81730509852c12ee39068fc33a1d370cfb7fb574d8b4999ba25a","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3250a1a387c6be27f6f47ba8c0ca508e554d69ffab7519be25e5722149176c71","path":"fe/apps/app/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"2658b96530209c63b45455195b960c6efaaff122669d2734f0e2534968a30b49","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"1c8f24213d0000a2704cbe9c8afb4a2f8a9115beab24f3f511c7f30462e9d45a","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
+{"findings":[],"hash":"ebab978d9f7d564fab29651d22fbd738ab3603df2546d69878895110e7784c2a","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
+{"findings":[],"hash":"160875894fc5e5e89572bb0c379a64c1cfa8aed091075298a4bdc986f1dac55f","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"5c34d838583710ef39f49ec100882024b7483146a6fe445df0a7bcde24779f95","path":"fe/apps/app/src/modules/i18n/request.ts","step":"prettier"}
 {"findings":[],"hash":"448c5f1fda4117a399859ce2854f1f5a253bf4ab735d02de9d9cf65594dd165b","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"4eead43ac26766de8734898edd2f6ab4d9484c60399bbe6f660420653ffc493a","path":"fe/apps/app/src/modules/markdown/index.ts","step":"prettier"}
