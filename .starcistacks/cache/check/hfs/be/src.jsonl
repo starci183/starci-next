@@ -3313,9 +3313,9 @@
 {"data":{},"findings":[],"hash":"ae11a2f12e9bf29b1dd1a239ea6280566769c709fc2002ad69e90c77a6732c70","path":"be/src/modules/domain/project/project-settings.policy.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d15136cbc84692e123dc4b90d0dd51c29fb1ba97d787ad9ed36f48bb67e5a901","path":"be/src/modules/domain/project/project-settings.policy.ts","step":"file-rules"}
 {"findings":[],"hash":"a92484266881c7f8fa648fd6376f962d9a877c58fa0011c1a7f2d59d47fa1bc6","path":"be/src/modules/domain/project/project-settings.policy.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"c65c358fa6eb823da92c03e2002c0cfc70019ffb4d3217e80e43d3114981ed74","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0ddb2480962a115184c96b04c8c43b06b719ed0efaef892ec0ba72329c4ec185","path":"be/src/modules/domain/project/project-state.policy.ts","step":"file-rules"}
-{"findings":[],"hash":"f1eef2b429f98b6fc3e1b5abe0022785dc1a30aa523952473b7782cab6dc80b4","path":"be/src/modules/domain/project/project-state.policy.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"c97e42b949158354ff253b97c2667e7cd7dce0e76cb1f2ce7f02bfc6cdb1ad77","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bf5bb8995aac85127b4a11915bec91b1ad6d829881fc02f774f9807b1d0590ec","path":"be/src/modules/domain/project/project-state.policy.ts","step":"file-rules"}
+{"findings":[],"hash":"b013a4bc7f2a9d84dcb6c2c922897deb9f999f54774414a9e5896cbeedca9fd3","path":"be/src/modules/domain/project/project-state.policy.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"b4606b4088c05c02fcb50d6eaf66630fdffd717adfbb4ddbeb91192683b71611","path":"be/src/modules/domain/project/project-target.policy.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dbe686146078f413f219f0469690a3064601d4b7f840139f22907468c5ae24bf","path":"be/src/modules/domain/project/project-target.policy.ts","step":"file-rules"}
 {"findings":[],"hash":"41e4c2474532ac181cf6e5a5a5bf00ce3663e82107c420b08b62b01c537c798c","path":"be/src/modules/domain/project/project-target.policy.ts","step":"unit:recurring-observations"}

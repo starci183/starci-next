@@ -638,8 +638,8 @@
 {"findings":[],"hash":"8aff11e5ae68cf29f68b7cf2df59f19875fd27ea2586793ebe64f43487f36e57","path":"be/src/modules/domain/project/project-repository.service.ts","step":"prettier"}
 {"findings":[],"hash":"6d96666b7707abd708ec9ef265846fd9777062e41cd7065462fbda8fb25aa5b4","path":"be/src/modules/domain/project/project-settings.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"531a9c538599dfeb9d2b7fd7979ea5103e8e52774cb734c2d98a95b0b2153f22","path":"be/src/modules/domain/project/project-settings.policy.ts","step":"prettier"}
-{"findings":[],"hash":"2da49c7106997f20abb7203543eeb95dfc10bb5eab94e598c12a9228ffe3ccdd","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"d758e799a0d9b4be4b43e83f614b29fe4b2aae50b9585ccbe8e7bc4e90df1ac4","path":"be/src/modules/domain/project/project-state.policy.ts","step":"prettier"}
+{"findings":[],"hash":"064a74dc30e3a902a9ebd05e6194fe5434bd1bb510ccd04147a061ffefdf03b3","path":"be/src/modules/domain/project/project-state.policy.spec.ts","step":"prettier"}
+{"findings":[],"hash":"fe3ee41f2111f9f0bcea9df1a56ff3d67b2a26b6774d73905281ee33a47a32c9","path":"be/src/modules/domain/project/project-state.policy.ts","step":"prettier"}
 {"findings":[],"hash":"9028a28bc7fbe2fbfe809a9ac007b448f2f193f235ecf29abd4771c0dfce5e24","path":"be/src/modules/domain/project/project-target.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"f01f3a4a6135f1ba6ae653a247cb87c2bebb618ca644bb334e567d6def965cca","path":"be/src/modules/domain/project/project-target.policy.ts","step":"prettier"}
 {"findings":[],"hash":"51bd9774cd21a0920e9fba85c815e76d23b960f75e2f426b4dffae9a21d75d60","path":"be/src/modules/domain/project/project-view.contracts.ts","step":"prettier"}
