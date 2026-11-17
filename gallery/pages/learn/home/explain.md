@@ -83,3 +83,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, 1920, "Kinh nghiệm" ở cột phụ: hai chip đếm "0" xám tô; nhãn tên mục sidebar "Kinh nghiệm" nhóm cũng trùng tên với tên nhóm nhỏ "Kinh nghiệm" ở cột phụ và mục "Kinh nghiệm đã xác minh", ba chỗ cùng một từ.
 - 1920: cột phụ rộng khoảng 420px, rộng hơn hẳn ở 1440 (320px); mỗi dòng "Hôm nay" kéo dài hơn 1200px, tiêu đề ở trái còn mũi tên › cách xa gần 1100px, mắt phải đi rất xa. Cả hai độ rộng 1440 và 1920 để trống hơn 250px cuối cột chính và cột phụ.
 - 1440, 1920, 390, các dòng "Hôm nay": mỗi dòng có IconTile xám tô, tiêu đề 14/500 và phụ đề 12; năm dòng gần như giống nhau, không phân biệt việc nào ưu tiên.
+
+- Sau Grammar 0.44.0 và alpha.148 (2026-11-17, đã đọc ở 1440 trên dev, tài khoản học viên dùng một lần): thanh trên có nút đổi ngôn ngữ, công tắc sáng/tối `kind="toggle"` không size và avatar; không lỗi mới ở thanh trên. Các lỗi đã ghi ở trên (ví dụ mục tiêu tuần chưa có giá trị, khối "Lộ trình đang theo" trống rộng) vẫn còn.
