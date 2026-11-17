@@ -1,0 +1,74 @@
+# Doctor probe: a hook runs the tests when Claude is about to commit. inspect reads the registered command and the script it names.
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: hook-runs-tests-precommit
+tool: claude
+order: 3
+title:
+  vi: A hook runs the tests before a commit
+  en: A hook runs the tests before a commit
+guide: hooks
+check:
+  hook:
+    config: [.claude/settings.json, .claude/settings.local.json, ~/.claude/settings.json]
+    inspect:
+      event: PreToolUse
+      tool: Bash
+      matches: "(npm|pnpm|yarn|bun)\\s+(run\\s+)?test|vitest|jest|node\\s+--test|go\\s+test|dotnet\\s+test|mvn\\s+test|gradle\\w*\\s+test"
+fix:
+  vi: Add a PreToolUse hook (matcher `Bash`). When the command contains `git commit`, the script runs `npm test`; if the tests are red it exits with code 2 so Claude cannot commit.
+  en: Add a PreToolUse hook (matcher `Bash`). When the command contains `git commit`, the script runs `npm test`; if the tests are red it exits with code 2 so Claude cannot commit.
+good:
+  files:
+    .claude/settings.json: |
+      {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [{ "type": "command", "command": "node .claude/hooks/tests-before-commit.mts" }]
+            }
+          ]
+        }
+      }
+    .claude/hooks/tests-before-commit.mts: |
+      // PreToolUse hook: run the test suite before `git commit`. Exit code 2 blocks the commit.
+      import { spawnSync } from "node:child_process"
+      import { stdin, stderr, exit } from "node:process"
+
+      let raw = ""
+      for await (const chunk of stdin) raw += chunk
+      const payload = JSON.parse(raw) as { tool_input?: { command?: string } }
+      const command = payload.tool_input?.command ?? ""
+      if (/\bgit\s+commit\b/u.test(command)) {
+          const run = spawnSync("npm test --silent", { shell: true, encoding: "utf8" })
+          if (run.status !== 0) {
+              stderr.write("Blocked: the tests are red. Fix them, then commit.\n")
+              exit(2)
+          }
+      }
+bad:
+  files:
+    .claude/settings.json: |
+      {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [{ "type": "command", "command": "node .claude/hooks/no-verify-guard.mts" }]
+            }
+          ]
+        }
+      }
+    .claude/hooks/no-verify-guard.mts: |
+      // Refuses git calls that skip the hooks. It does not run anything else.
+      import { stdin, stderr, exit } from "node:process"
+
+      let raw = ""
+      for await (const chunk of stdin) raw += chunk
+      const payload = JSON.parse(raw) as { tool_input?: { command?: string } }
+      if (/--no-verify\b/u.test(payload.tool_input?.command ?? "")) {
+          stderr.write("Blocked: never skip git hooks.\n")
+          exit(2)
+      }

@@ -2,6 +2,7 @@
 title: Dự án / Tạo dự án
 route: /projects/new
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/new`, dành cho người đăng ký Premium. Hai nửa: bên trái biểu mẫu, bên phải bảng "init" với các lệnh chạy trong repo của học viên. Mã: `fe/apps/app/src/components/blocks/ProjectNew/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.

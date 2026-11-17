@@ -59,7 +59,7 @@ export const isProjectPremiumRequired = (error: unknown): boolean =>
 export type ProjectsWords = {
     readonly kind: Readonly<Record<"app" | "agent", string>>
     readonly noMilestone: string
-    readonly noDeploy: string
+    readonly ci: Readonly<Record<string, string>>
     readonly progress: (proved: number, count: number) => string
 }
 
@@ -69,16 +69,6 @@ const repoOf = (url: string | null): string => {
     try {
         const path = new URL(url).pathname.replaceAll(/^\/|\/$/g, "")
         return path === "" ? new URL(url).host : path
-    } catch {
-        return url
-    }
-}
-
-/** The host of a deployed address, or the address itself when it is not a plain URL. */
-const hostOf = (url: string | null): string => {
-    if (url === null || url === "") return ""
-    try {
-        return new URL(url).host
     } catch {
         return url
     }
@@ -94,7 +84,8 @@ export type ProjectListRow = {
     readonly milestone: string
     readonly percent: number
     readonly progress: string
-    readonly deploy: string
+    readonly ci: string
+    readonly ciTone: "success" | "warning" | "muted"
     readonly isProved: boolean
     readonly href: string
 }
@@ -102,7 +93,7 @@ export type ProjectListRow = {
 /** The four figures of the ribbon over the list, summed over the projects. */
 export type ProjectsFigures = {
     readonly proved: number
-    readonly remaining: number
+    readonly practising: number
     readonly milestonesDone: number
     readonly milestonesTotal: number
     /** The verified CV lines: one for each milestone proved (the career producer reads proved milestones). */
@@ -112,10 +103,7 @@ export type ProjectsFigures = {
 /** The ribbon figures of a list of projects. */
 export const projectsFiguresOf = (projects: ProjectsRead): ProjectsFigures => ({
     proved: projects.reduce((sum, project) => sum + project.provedConceptCount, 0),
-    remaining: projects.reduce(
-        (sum, project) => sum + Math.max(0, project.conceptCount - project.provedConceptCount),
-        0,
-    ),
+    practising: projects.reduce((sum, project) => sum + project.practisingConceptCount, 0),
     milestonesDone: projects.reduce((sum, project) => sum + project.doneMilestoneCount, 0),
     milestonesTotal: projects.reduce((sum, project) => sum + project.milestoneCount, 0),
     cvLines: projects.reduce((sum, project) => sum + project.doneMilestoneCount, 0),
@@ -140,7 +128,13 @@ export const projectRowsOf = (
             percent:
                 project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
             progress: words.progress(project.provedConceptCount, project.conceptCount),
-            deploy: hostOf(project.deployedUrl) === "" ? words.noDeploy : hostOf(project.deployedUrl),
+            ci: words.ci[project.latestCiStatus] ?? words.ci.none ?? "",
+            ciTone:
+                project.latestCiStatus === "passed"
+                    ? "success"
+                    : project.latestCiStatus === "failed"
+                      ? "warning"
+                      : "muted",
             isProved,
             href: projectPath(project.id),
         }

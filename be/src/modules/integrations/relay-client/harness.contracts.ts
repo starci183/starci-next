@@ -40,7 +40,37 @@ export interface HarnessBuildSection extends HarnessPlan {
     readonly source: { readonly url: string; readonly sha256: string; readonly commit: string }
 }
 
-/** A signed `harness` section of a kind the build commands do not run (doctor, trial). */
+/** The signed tarball of a harness section: where to get it, its sha256 and the content commit it was cut at. */
+export interface HarnessSource {
+    /** A path on StarCi's origin (device bearer) or an https URL (no bearer). */
+    readonly url: string
+    /** The sha256 of the tarball bytes. */
+    readonly sha256: string
+    /** The content commit the tarball was cut at. */
+    readonly commit: string
+}
+
+/** The `harness` section of a signed manifest of kind `doctor` (task `harness:doctor:<tool>`): the probes of one tool. */
+export interface HarnessDoctorSection {
+    /** Always `doctor`. */
+    readonly kind: "doctor"
+    /** The tool the probes are for. */
+    readonly tool: "claude" | "codex"
+    /** The tarball of `doctor/<tool>/**` with its fixtures. */
+    readonly source: HarnessSource
+}
+
+/** The `harness` section of a signed manifest of kind `trial` (task `harness:trial:<trap>`): one trap repo. */
+export interface HarnessTrialSection {
+    /** Always `trial`. */
+    readonly kind: "trial"
+    /** The trap id. */
+    readonly trap: string
+    /** The tarball of `trap.yaml` and `repo/**`. */
+    readonly source: HarnessSource
+}
+
+/** A signed `harness` section of a kind the CLI does not know. */
 export interface HarnessOtherSection {
     /** Always `other`. */
     readonly kind: "other"
@@ -49,7 +79,7 @@ export interface HarnessOtherSection {
 }
 
 /** The `harness` section of a verified manifest. */
-export type HarnessSection = HarnessBuildSection | HarnessOtherSection
+export type HarnessSection = HarnessBuildSection | HarnessDoctorSection | HarnessTrialSection | HarnessOtherSection
 
 /** What `harness pull` leaves in the build folder (tracked in git, so CI can run `harness ci-report` without a device). */
 export interface HarnessState extends HarnessPlan {

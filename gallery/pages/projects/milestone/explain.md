@@ -2,6 +2,7 @@
 title: Dự án / Milestone
 route: /projects/[projectId]/[milestoneId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>/<milestoneId>`, dành cho người đăng ký Premium. Một milestone là danh sách concept Bản chất; mỗi concept cần đủ ô bằng chứng. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.

@@ -71,10 +71,15 @@ export interface LessonChallengeView {
     readonly questions: ReadonlyArray<LessonQuestionView>
 }
 
-/** The four parts of a lesson as the learner sees them. Source, scenarios and challenges need Premium and are empty without it. */
+/**
+ * The four parts of a lesson as the learner sees them. A part the entitlement setting does not leave free (by default Source,
+ * Kịch bản and Tự áp dụng) is empty without Premium; its payload is never sent, only its id in `lockedParts`.
+ */
 export interface LessonEssentialView {
-    /** True when the learner lacks Premium: the opener stays, the other parts are empty. */
+    /** True when at least one part is locked for the learner. */
     readonly isLocked: boolean
+    /** The ids of the parts the learner may not read (`1-essential`, `2-source`, `3-scenarios`, `4-apply`), in order. */
+    readonly lockedParts: ReadonlyArray<string>
     /** The five-question opener. */
     readonly opener: ReadonlyArray<LessonQuestionView>
     /** The source repository, or null. */

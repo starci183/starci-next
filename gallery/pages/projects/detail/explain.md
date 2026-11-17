@@ -2,6 +2,7 @@
 title: Dự án / Chi tiết
 route: /projects/[projectId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>`, dành cho người đăng ký Premium. Trang dự án: milestone, lần chạy gần đây, kinh nghiệm và địa chỉ deploy ở pane giữa; kho mã, chứng thực CI, máy của bạn, bí mật CI và thư mục starci/ ở aside. Trang này dùng các composite của starci-next-ui đã chuyển sang Section và DataTable ở lane theme (Grammar 0.40.1); lane projects-fe giữ cấu trúc hai pane và chỉ thêm cổng Premium. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`.

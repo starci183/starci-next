@@ -2,10 +2,11 @@
 title: Dự án / Bằng chứng của concept
 route: /projects/[projectId]/[milestoneId]/[conceptId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>/<milestoneId>/<conceptId>`, dành cho người đăng ký Premium. Một concept: các ô bằng chứng, kết quả probe trên deploy thật, thang chấm của AI đọc code, lần CI ký và bản xem trước dòng CV. Mã: `fe/apps/app/src/components/blocks/ProjectConcept/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
-CHƯA RÕ: thang chấm AI (các tiêu chí kèm Đạt, Một phần) và dòng CV xem trước chưa có cửa ở back end (lane projects-10 sở hữu luật bằng chứng). Trang đọc chúng qua một chỗ duy nhất, `useConceptEvidenceExtras`; hiện trả rỗng, và bản dựng gallery đặt `NEXT_PUBLIC_PROJECTS_EVIDENCE_FIXTURES=1` để thấy hình dạng với dữ liệu mẫu có kiểu.
+Thang chấm đọc từ `projectCodeRead`, dòng CV xem trước từ `projectCvPreview` (back end projects-be); chưa có lần đọc code thì mục thang chấm nói gửi đoạn code.
 
 ## Dải đầu trang (đường dẫn bốn cấp, tên concept, chip trạng thái)
 
@@ -33,12 +34,12 @@ Grammar: `DescriptionList density="compact" isDivided`, `Badge tone`.
 
 ## AI đọc code và thang chấm
 
-Vì sao: học viên chỉ vị trí code và endpoint cho probe, rồi dán đoạn xử lý cùng 2 đến 3 câu giải thích; AI chấm theo tiêu chí và bảng thang chấm hiện từng tiêu chí với Đạt, Một phần hay Chưa đạt. Đoạn chứa giá trị giống bí mật bị từ chối trước khi gửi; lỗi của lệnh hiện ngay dưới biểu mẫu.
+Vì sao: học viên chỉ vị trí code và endpoint cho probe, rồi dán đoạn xử lý cùng 2 đến 3 câu giải thích; AI chấm theo tiêu chí và bảng thang chấm hiện từng tiêu chí với Đạt (met), Một phần (partial) hay Chưa đạt (missing). Đoạn chứa giá trị giống bí mật bị từ chối trước khi gửi; lỗi của lệnh hiện ngay dưới biểu mẫu.
 Luật: `projects.md` (server không clone repo, chỉ đọc đoạn học viên dán), `premium.md` (AI đọc code thuộc Premium).
 Grammar: `Input`, `Textarea rows`, `Button intent="neutral" isPending`, `DataTable surface="none" phone="table"`, `Badge tone`, `Alert tone="negative"`.
 
 ## Dòng CV khi đủ bằng chứng
 
-Vì sao: bản xem trước dòng CV concept sẽ sinh ra: vai trò, nhãn "Đã xác minh", câu mô tả, dòng muted nêu bằng chứng (CI run, ngày probe, số concept). Dưới đó nói không có số tự khai, và nút "Hỏi Claude qua MCP về concept này" dẫn tới trang kết nối.
+Vì sao: bản xem trước dòng CV concept sẽ sinh ra: nhãn "Đã xác minh" (hoặc "Bản xem trước" khi concept chưa chứng minh), câu CV do back end sinh, dòng muted nêu bằng chứng (CI run, ngày probe, số concept). Dưới đó nói không có số tự khai, và nút "Hỏi Claude qua MCP về concept này" dẫn tới trang kết nối.
 Luật: `verified-experience.md`, `learner-cli-relay.md` (hỏi AI qua MCP).
 Grammar: `Section caption`, `Badge tone="success"`, `Button intent="neutral" href`.

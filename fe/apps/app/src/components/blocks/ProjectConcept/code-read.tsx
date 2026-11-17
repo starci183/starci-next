@@ -15,7 +15,7 @@ import type { ConceptDraftView, RubricVerdict } from "@/modules/types"
 import type { BodyProps, ProjectConceptBaseProps } from "./types"
 
 /** The tone of a rubric verdict. */
-const VERDICT_TONE: Readonly<Record<RubricVerdict, BadgeTone>> = { pass: "success", partial: "warning", fail: "danger" }
+const VERDICT_TONE: Readonly<Record<RubricVerdict, BadgeTone>> = { met: "success", partial: "warning", missing: "danger" }
 
 /** What a draft field needs. */
 type DraftProps = {

@@ -2,6 +2,7 @@
 title: Dự án (giới thiệu, chưa đăng ký Premium)
 route: /projects
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects` và mọi màn hình con của nó. Dự án chỉ dành cho người đăng ký Premium (owner 2026-11-17): người chưa đăng ký không thấy một công cụ bị cắt bớt, không có bộ đếm miễn phí, chỉ thấy trang giới thiệu và một nút đăng ký. Cổng nằm ở một chỗ, `features/layouts/ProjectsLayout`; back end vẫn từ chối cùng các cửa, màn hình chỉ nói thành lời. Ảnh chụp cần một tài khoản đã đăng nhập nhưng chưa có Premium (`CAPTURE_FREE_STATE`). Mã: `fe/apps/app/src/components/blocks/ProjectsPitch/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.

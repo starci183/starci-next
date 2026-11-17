@@ -46,4 +46,10 @@ export class RelayManifestInput {
     @IsOptional()
     @IsIn(["easy", "medium", "hard", "insane"])
     challenge?: string
+
+    /** For a harness trial task: the tool whose headless run the manifest is for. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsIn(["claude", "codex"])
+    tool?: string
 }

@@ -155,6 +155,21 @@ export class McpServerFactory {
                 act(() => this.tutor.searchLesson(learnerId, id, locale, query, mode === "semantic")),
         )
         server.registerTool(
+            "search_harness",
+            {
+                title: "Search the StarCi harness",
+                description:
+                    "Search the StarCi harness guides (Claude Code, Codex) and docs. Free for every learner. Semantic by default when available, keywords otherwise.",
+                inputSchema: {
+                    query: z.string().min(1).max(300),
+                    mode: z.enum(["semantic", "keyword"]).default("semantic"),
+                    locale: LOCALE,
+                },
+                annotations: readOnly,
+            },
+            ({ query, mode, locale }) => act(() => this.tutor.searchHarness(locale, query, mode === "semantic")),
+        )
+        server.registerTool(
             "read_file",
             {
                 title: "Read a source file",

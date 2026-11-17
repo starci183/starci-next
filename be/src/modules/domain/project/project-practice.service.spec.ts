@@ -1,4 +1,6 @@
 import { Test } from "@nestjs/testing"
+import { checkSetServiceOf } from "@tests/fixtures/builders/check-set.builder"
+import { ProjectCheckSetService } from "@modules/domain/project/project-check-set.service"
 import { fakeTransaction, mock, mockEntityManager } from "@starci/jest-preset"
 import {
     PROJECT_ID,
@@ -40,6 +42,7 @@ const build = async (options: { missing?: boolean; cursor?: Date | null; added?:
     const moduleRef = await Test.createTestingModule({
         providers: [
             ProjectPracticeService,
+            { provide: ProjectCheckSetService, useValue: checkSetServiceOf() },
             { provide: PRIMARY_ENTITY_MANAGER, useValue: tx.em },
             { provide: LOGGER, useValue: logger },
             { provide: ENTITLEMENT_SERVICE, useValue: entitlement },
@@ -86,9 +89,9 @@ describe("ProjectPracticeService sync", () => {
         })
         const inputs = evidence.append.mock.calls[0]?.[2] ?? []
         expect(inputs.map((input) => [input.conceptId, input.slot, input.source, input.runId])).toEqual([
-            ["idempotency", "test", "relay", "relay-run-1"],
+            ["idempotent-retry", "test", "relay", "relay-run-1"],
             ["request-response-lifecycle", "probe", "relay", "relay-run-1"],
-            ["idempotency", "test", "relay", "relay-run-2"],
+            ["idempotent-retry", "test", "relay", "relay-run-2"],
         ])
         expect(inputs[0]).toMatchObject({ detail: { eventId: "evt-1" }, commitSha: "abc1234" })
         expect(evidence.settle).toHaveBeenCalledWith(expect.objectContaining({ project_id: PROJECT_ID }), [

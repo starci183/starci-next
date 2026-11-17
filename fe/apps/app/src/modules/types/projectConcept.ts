@@ -2,7 +2,7 @@ import type { BadgeTone } from "@starci/grammar/common"
 import type { ConceptCardView } from "@starci-next/ui"
 
 /** What the AI teacher says about one criterion of the code read. */
-export type RubricVerdict = "pass" | "partial" | "fail"
+export type RubricVerdict = "met" | "partial" | "missing"
 
 /** One row of the code-read rubric: the criterion in words and its verdict. The words come from the door that owns the rubric (the evidence rules). */
 export type CodeReadRubricRow = {
@@ -13,8 +13,9 @@ export type CodeReadRubricRow = {
 
 /** The CV line a concept earns once it is proved, with the evidence it stands on. */
 export type CvPreviewView = {
-    readonly role: string
     readonly text: string
+    /** True once the concept is proved; false while the line is only what it would say. */
+    readonly isProved: boolean
     readonly evidence: string
 }
 
@@ -79,6 +80,7 @@ export type ProjectConceptLabels = {
     readonly cvTitle: string
     readonly cvEmpty: string
     readonly cvVerified: string
+    readonly cvPreview: string
     readonly cvNote: string
     readonly askClaude: string
     readonly askClaudeHref: string

@@ -47,10 +47,7 @@ export const ProjectConcept = (props: ProjectConceptProps) => {
     const forms = useConceptForms(props.projectId, refresh)
     const actions = useProjectActions(props.projectId, refresh)
     const labels = useProjectConceptLabels(props.projectId, props.milestoneId)
-    const extras = useConceptEvidenceExtras({
-        concept: milestone.data?.concepts.find((each) => each.id === props.conceptId)?.label ?? "",
-        project: milestone.data?.project.name ?? "",
-    })
+    const extras = useConceptEvidenceExtras({ projectId: props.projectId, conceptId: props.conceptId })
     const view =
         milestone.data === undefined
             ? undefined

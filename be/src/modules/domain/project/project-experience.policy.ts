@@ -1,12 +1,16 @@
 import type { ExperienceEvidence, ExperienceGrade, ProduceExperienceParams, SlotValues } from "@modules/domain/career"
 import {
+    AGENT_TRACKS,
     SLOT_PROOF_SOURCES,
     type AgentTrack,
+    type ConceptDefinition,
     type EvidenceRow,
     type MilestoneDefinition,
     type ProjectKind,
 } from "./project.contracts"
-import { conceptOf } from "./project-catalog.policy"
+import { conceptIn } from "./project-check-set-lookup.policy"
+import { projectKindOf } from "./project-view.mapper"
+import type { ProjectRow } from "./persistence/project.rows"
 
 /** The tool each agent track names in a CV line. */
 export const TRACK_LABELS: Readonly<Record<AgentTrack, string>> = {
@@ -41,6 +45,8 @@ export interface MilestoneExperienceInput {
     readonly milestone: MilestoneDefinition
     /** The latest results of the milestone's concepts. */
     readonly rows: ReadonlyArray<EvidenceRow>
+    /** The concepts of the check set, whose labels the line names. */
+    readonly concepts: ReadonlyArray<ConceptDefinition>
     /** When the line is drafted. */
     readonly at: Date
 }
@@ -73,7 +79,7 @@ const bothLocales = (valueOf: (locale: "vi" | "en") => Readonly<Record<string, s
     en: valueOf("en"),
 })
 
-const evidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceEvidence> => {
+export const proofEvidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceEvidence> => {
     const proof = rows.filter((row) => row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source))
     const runs = new Map(
         proof.flatMap((row) =>
@@ -110,13 +116,13 @@ const evidenceOf = (rows: ReadonlyArray<EvidenceRow>): ReadonlyArray<ExperienceE
  * what a learner typed into a field. The line says "in CI", so the grade passes only when at least one signed CI run is among the proof.
  */
 export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceExperienceParams => {
-    const { subject, milestone, rows } = input
+    const { subject, milestone, rows, concepts } = input
     const itemType = itemTypeOfMilestone(milestone.id, subject.kind)
-    const evidence = evidenceOf(rows)
+    const evidence = proofEvidenceOf(rows)
     const ciRow = rows.find((row) => row.passed && row.source === "ci")
     const tool = TRACK_LABELS[subject.track ?? "claude"]
     const criteria = milestone.concepts.map((id) => {
-        const definition = conceptOf(id)
+        const definition = conceptIn({ concepts }, id)
         const proof = rows.find(
             (row) => row.conceptId === id && row.passed && SLOT_PROOF_SOURCES[row.slot].includes(row.source),
         )
@@ -130,7 +136,7 @@ export const milestoneExperienceOf = (input: MilestoneExperienceInput): ProduceE
         criteria.every((criterion) => criterion.level === 2) && evidence.some((item) => item.proofForm === "signed-ci")
     const grade: ExperienceGrade = { result: passed ? "pass" : "fail", criteria }
     const labels = (locale: "vi" | "en"): string =>
-        milestone.concepts.map((id) => conceptOf(id)?.label[locale] ?? id).join(", ")
+        milestone.concepts.map((id) => conceptIn({ concepts }, id)?.label[locale] ?? id).join(", ")
     const ci = ciRow === undefined ? "-" : `#${ciRow.runId} (${(ciRow.commitSha ?? "").slice(0, 7)})`
     const slotValues = bothLocales((locale) =>
         itemType === MILESTONE
@@ -160,4 +166,15 @@ export const deployedExperienceOf = (input: DeployedExperienceInput): ProduceExp
         result: "pass",
         criteria: [{ criterion: "health and readiness", level: 2, evidenceQuote: input.url.slice(0, 300) }],
     },
+})
+
+/** The facts of a project a CV line is drafted from, read from its row. */
+export const experienceSubjectOf = (project: ProjectRow): ExperienceSubject => ({
+    learnerId: project.learner_id,
+    projectId: project.project_id,
+    name: project.name,
+    stack: project.stack,
+    kind: projectKindOf(project),
+    track: AGENT_TRACKS.find((track) => track === project.track) ?? null,
+    deployedUrl: project.deployed_url,
 })

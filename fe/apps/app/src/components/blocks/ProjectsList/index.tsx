@@ -9,6 +9,9 @@ import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot } from "@/modules/types"
 import { PROJECTS_LIST_PLACEHOLDER, ProjectsListBase, type ProjectsListView } from "./component"
 
+/** The states of the latest CI run a project can be in. */
+const CI_STATES = ["none", "passed", "failed"] as const
+
 /** The connected projects screen: reads the learner's projects and the milestone titles, and words the ribbon and every row. */
 export const ProjectsList = () => {
     const t = useTranslations("app.projects")
@@ -27,7 +30,7 @@ export const ProjectsList = () => {
         rows: projectRowsOf(projects, titles, {
             kind: { app: t("kind.app"), agent: t("kind.agent") },
             noMilestone: t("list.noMilestone"),
-            noDeploy: t("list.noDeploy"),
+            ci: Object.fromEntries(CI_STATES.map((state) => [state, t(`list.ci.${state}`)])),
             progress: (proved, count) => t("list.progress", { proved, count }),
         }),
     }))
@@ -55,7 +58,7 @@ export const ProjectsList = () => {
                     ribbonLabel: t("list.ribbonLabel"),
                     figures: {
                         proved: t("list.figures.proved"),
-                        remaining: t("list.figures.remaining"),
+                        practising: t("list.figures.practising"),
                         milestones: t("list.figures.milestones"),
                         cv: t("list.figures.cv"),
                     },
@@ -65,7 +68,7 @@ export const ProjectsList = () => {
                         kind: t("list.columns.kind"),
                         milestone: t("list.columns.milestone"),
                         progress: t("list.columns.progress"),
-                        deploy: t("list.columns.deploy"),
+                        ci: t("list.columns.ci"),
                     },
                     progressLabel: t("list.progressLabel"),
                     emptyTitle: t("list.emptyTitle"),

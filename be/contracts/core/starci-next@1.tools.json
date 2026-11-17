@@ -131,6 +131,49 @@
       }
     },
     {
+      "name": "search_harness",
+      "title": "Search the StarCi harness",
+      "description": "Search the StarCi harness guides (Claude Code, Codex) and docs. Free for every learner. Semantic by default when available, keywords otherwise.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "mode": {
+            "default": "semantic",
+            "type": "string",
+            "enum": [
+              "semantic",
+              "keyword"
+            ]
+          },
+          "locale": {
+            "default": "vi",
+            "description": "The language of the lesson text",
+            "type": "string",
+            "enum": [
+              "vi",
+              "en"
+            ]
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
       "name": "read_file",
       "title": "Read a source file",
       "description": "Lines of a file of the lesson repository at its pinned commit (at most 400 lines per call).",

@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: idempotent-retry
 
-Gửi lại cùng `Idempotency-Key` trả đúng kết quả lần đầu, cùng khoá mà khác body bị từ chối (409 hoặc 422), và năm request cùng khoá gửi
-đồng thời chỉ làm việc một lần.
+Resending the same `Idempotency-Key` returns the first result, the same key with another body is refused (409 or 422), and five requests with
+one key sent at once do the work only once.
 
-Bạn khai: `endpoints.idempotent-retry.endpoint` (một endpoint ghi, ví dụ `POST /payments`) và `body` (JSON mẫu).
+You declare: `endpoints.idempotent-retry.endpoint` (a write endpoint, for example `POST /payments`) and `body` (a sample JSON).
 
 ```yaml starci-flow
 id: idempotent-retry

@@ -158,8 +158,9 @@ const CvPreview = (props: BodyProps) => {
                     <Text tone="muted">{labels.cvEmpty}</Text>
                 ) : (
                     <Stack gap="identity">
-                        <Text isStrong>{cv.role}</Text>
-                        <Badge tone="success">{labels.cvVerified}</Badge>
+                        <Badge tone={cv.isProved ? "success" : "muted"}>
+                            {cv.isProved ? labels.cvVerified : labels.cvPreview}
+                        </Badge>
                         <Text>{cv.text}</Text>
                         <Text size="sm" tone="muted">
                             {cv.evidence}

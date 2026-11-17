@@ -14,6 +14,8 @@ import { RotateProjectCiSecretHandler } from "./application/rotate-project-ci-se
 import { SyncProjectPracticeHandler } from "./application/sync-project-practice.handler"
 import { GetProjectRepositoryHandler } from "./application/get-project-repository.handler"
 import { SetProjectRepositoryHandler } from "./application/set-project-repository.handler"
+import { GetProjectCodeReadHandler } from "./application/get-project-code-read.handler"
+import { GetProjectCvPreviewHandler } from "./application/get-project-cv-preview.handler"
 import { ConfigurableModuleClass } from "./project.module-definition"
 
 @Module({
@@ -33,6 +35,8 @@ import { ConfigurableModuleClass } from "./project.module-definition"
         GetProjectRepositoryHandler,
         SetProjectRepositoryHandler,
         SyncProjectPracticeHandler,
+        GetProjectCodeReadHandler,
+        GetProjectCvPreviewHandler,
     ],
 })
 /** Application handlers of the project feature: the learner's projects, milestones, evidence doors and probes. */

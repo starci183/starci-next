@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: invalid-input
 label:
-  vi: JSON hỏng bị từ chối bằng 4xx
+  vi: Broken JSON is refused with a 4xx
   en: Broken JSON is refused with a 4xx
 question:
-  vi: Input sai đi qua những tầng nào trước khi bị từ chối, và lỗi trả về có nhất quán không?
+  vi: Which layers does bad input pass before it is refused, and is the error shape consistent?
   en: Which layers does bad input pass before it is refused, and is the error shape consistent?
 needs: [endpoint]
 steps:
@@ -21,9 +21,9 @@ steps:
       - { that: status, is: 4xx, fail: accepted }
 pass: rejected
 reasons:
-  rejected: { vi: JSON hỏng nhận mã 4xx., en: Broken JSON got a 4xx. }
-  server-error: { vi: JSON hỏng làm dịch vụ trả 5xx., en: Broken JSON made the service answer 5xx. }
-  accepted: { vi: JSON hỏng vẫn được nhận (không phải 4xx)., en: Broken JSON was accepted (not a 4xx). }
+  rejected: { vi: Broken JSON got a 4xx., en: Broken JSON got a 4xx. }
+  server-error: { vi: Broken JSON made the service answer 5xx., en: Broken JSON made the service answer 5xx. }
+  accepted: { vi: Broken JSON was accepted (not a 4xx)., en: Broken JSON was accepted (not a 4xx). }
 fixtures:
   endpoint: POST /starci-test/items
   sample: '{"name":"book"}'

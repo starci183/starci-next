@@ -9,7 +9,8 @@ import { ProjectError, ProjectErrorCode } from "./errors/project.error"
 import { assertSubscriber } from "./project-access.policy"
 import type { EvidenceInput } from "./project.contracts"
 import { ProjectLogEvent } from "./project.log-events"
-import { milestonesOfKind } from "./project-catalog.policy"
+import { conceptIdsOfKind } from "./project-check-set-lookup.policy"
+import { ProjectCheckSetService } from "./project-check-set.service"
 import { ciRunOf, type CiRun } from "./project-ci.policy"
 import { InjectCiAttestation, type CiAttestationVerifier } from "./project-ci-attestation.port"
 import { ProjectEvidenceService } from "./project-evidence.service"
@@ -35,6 +36,7 @@ export class ProjectCiService {
         @InjectInbox() private readonly inbox: Inbox,
         @InjectEntitlementService() private readonly entitlement: EntitlementService,
         private readonly evidence: ProjectEvidenceService,
+        private readonly checkSet: ProjectCheckSetService,
         @InjectCiAttestation() private readonly attestation: CiAttestationVerifier,
     ) {}
 
@@ -96,10 +98,10 @@ export class ProjectCiService {
     }
 
     /** Records a claimed run once with its evidence results. */
-    private apply(project: ProjectRow, run: CiRun, attestation: CiAttestation): Promise<CiReceipt> {
+    private async apply(project: ProjectRow, run: CiRun, attestation: CiAttestation): Promise<CiReceipt> {
         const source = attestation.kind === "attested" ? ("ci" as const) : ("ci-signed" as const)
         const now = this.clock.now()
-        const listed = new Set(milestonesOfKind(projectKindOf(project)).flatMap((milestone) => milestone.concepts))
+        const listed = new Set(conceptIdsOfKind(await this.checkSet.current(), projectKindOf(project)))
         const results: ReadonlyArray<EvidenceInput> = run.results
             .filter((result) => listed.has(result.concept))
             .map((result) => ({

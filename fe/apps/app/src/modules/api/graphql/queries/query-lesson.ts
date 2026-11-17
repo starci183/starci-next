@@ -110,6 +110,7 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
             }
             essential {
                 isLocked
+                lockedParts
                 opener {
                     id
                     activityId

@@ -610,7 +610,7 @@
       "conceptsLabel": "The 7 concepts of the standard mindset",
       "conceptsEmpty": "There are no concepts yet.",
       "conceptFree": "Free taste",
-      "keyByo": "Uses your own Anthropic account",
+      "keyByo": "Your own account",
       "keyProxy": "StarCi pays, capped",
       "pinned": "Version {version}",
       "pinnedNone": "Version pinned per lab",
@@ -1073,6 +1073,7 @@
           "run": "Run command",
           "guards": "Turn a guard off to see the fault land",
           "expected": "A correct system shows",
+          "judged": "Rule it judges",
           "output": "Result relayed from your machine",
           "noOutput": "No run yet. Run the command above and the result shows here.",
           "why": "Why it is red",
@@ -1122,8 +1123,13 @@
         },
         "locked": {
           "title": "This part opens with Premium",
-          "description": "The opener is free. The source, the scenarios and the challenges need Premium.",
-          "plans": "See Premium"
+          "plans": "Subscribe to Premium",
+          "parts": {
+            "essence": "The five-question opener and the article of this lesson. Premium opens them.",
+            "source": "Pull the real TypeScript and Express repository, run it, and read where each rule lives in the code. The opener and the article of this lesson stay free.",
+            "scenarios": "Run each fault on your own machine, switch one guard off and see which rule breaks and why. The opener and the article of this lesson stay free.",
+            "apply": "The four-rung challenge ladder, judged by hidden scenarios and an essence check, with your result sent back from your machine. The opener and the article of this lesson stay free."
+          }
         }
       }
     },
@@ -1326,21 +1332,25 @@
         "ribbonLabel": "Projects overview",
         "figures": {
           "proved": "Concepts proved",
-          "remaining": "Concepts left",
           "milestones": "Milestones done",
-          "cv": "Verified CV lines"
+          "cv": "Verified CV lines",
+          "practising": "Concepts practising"
         },
         "columns": {
           "project": "Project",
           "kind": "Kind",
           "milestone": "Current milestone",
           "progress": "Progress",
-          "deploy": "Deploy address"
+          "ci": "CI"
         },
         "noMilestone": "None yet",
-        "noDeploy": "Not linked",
         "progress": "{proved}/{count}",
-        "note": "There is no sample project: every project is your own code, on any topic, in any language."
+        "note": "There is no sample project: every project is your own code, on any topic, in any language.",
+        "ci": {
+          "none": "CI not linked",
+          "passed": "Green",
+          "failed": "Red"
+        }
       },
       "new": {
         "title": "Create a project",
@@ -1689,9 +1699,9 @@
         "rubricTitle": "The AI rubric",
         "rubricEmpty": "No rubric yet. Send a piece of code for the AI to read and score.",
         "verdict": {
-          "pass": "Pass",
+          "met": "Pass",
           "partial": "Partial",
-          "fail": "Not yet"
+          "missing": "Not yet"
         },
         "cvTitle": "The CV line once the evidence is complete",
         "cvEmpty": "The CV line shows once the concept has all its evidence.",
@@ -1699,18 +1709,8 @@
         "cvNote": "There are no self-reported numbers: a CV line is only filled from evidence StarCi has checked.",
         "askClaude": "Ask Claude about this concept through MCP",
         "lesson": "Learn it in",
-        "fixture": {
-          "rubric": {
-            "database": "Blocks duplicates in the database, not with an if",
-            "replay": "Returns the first result for the duplicate",
-            "expiry": "Expires keys and cleans up old ones"
-          },
-          "cv": {
-            "role": "Backend developer",
-            "text": "Designed {concept} for {project}; survives 5 parallel duplicate requests without a stray record.",
-            "evidence": "Evidence: CI run #41 (signed by GitHub) · probe 17 Nov · 3 concepts"
-          }
-        }
+        "cvPreview": "Preview",
+        "cvEvidence": "Evidence: {items}"
       }
     },
     "experience": {

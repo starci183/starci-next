@@ -40,6 +40,8 @@ export interface ManifestRequest {
     readonly scenario?: string | undefined
     /** For a lesson task: the challenge tier whose hidden scenarios are asked, or undefined. */
     readonly challenge?: string | undefined
+    /** For a harness trial task: the tool of the run, or undefined. */
+    readonly tool?: string | undefined
 }
 
 /** A project run resolved against the catalog: the milestone with its concepts, and the test command and report. */
@@ -118,6 +120,61 @@ export interface ManifestLesson {
     readonly challenge?: { readonly tier: string; readonly scenarios: ReadonlyArray<ManifestLessonScenario> }
 }
 
+/** The harness section of a build manifest (CONTRACT.md, build manifest): the pinned tarball and what the CLI may run. */
+export interface ManifestHarnessBuild {
+    /** Always `build`. */
+    readonly kind: "build"
+    /** The build id, the task id suffix. */
+    readonly buildId: string
+    /** The tarball of `source/` and `e2e/` at the content commit: path, SHA-256 of the bytes and the 40 hex commit. */
+    readonly source: { readonly url: string; readonly sha256: string; readonly commit: string }
+    /** The project folder inside the unpacked tree. */
+    readonly dir: string
+    /** The install command. */
+    readonly install: string
+    /** The e2e command. */
+    readonly e2e: string
+    /** The JUnit report, relative to the unpacked root. */
+    readonly report: string
+    /** The key needs by id and environment names. */
+    readonly keys: ReadonlyArray<{ readonly id: string; readonly anyOf: ReadonlyArray<string> }>
+    /** The stages in order with their e2e ids. */
+    readonly stages: ReadonlyArray<{ readonly id: string; readonly e2e: ReadonlyArray<string> }>
+}
+
+/** The pinned tarball a doctor or trial manifest names: the same link rules as a build (path or https URL, SHA-256, 40 hex commit). */
+export interface ManifestHarnessSource {
+    /** The path of the tarball on the StarCi origin. */
+    readonly url: string
+    /** The SHA-256 of the tarball bytes. */
+    readonly sha256: string
+    /** The 40 hex content commit the tarball was cut at. */
+    readonly commit: string
+}
+
+/** The harness section of a doctor manifest (task `harness:doctor:<tool>`): the probe files of one tool. */
+export interface ManifestHarnessDoctor {
+    /** Always `doctor`. */
+    readonly kind: "doctor"
+    /** `claude` or `codex`. */
+    readonly tool: string
+    /** The tarball of `doctor/<folder>/` with the fixtures. */
+    readonly source: ManifestHarnessSource
+}
+
+/** The harness section of a trial manifest (task `harness:trial:<trap>`): the trap folder. */
+export interface ManifestHarnessTrial {
+    /** Always `trial`. */
+    readonly kind: "trial"
+    /** The trap id. */
+    readonly trap: string
+    /** The tarball of `trap.yaml` and `repo/`. */
+    readonly source: ManifestHarnessSource
+}
+
+/** Any harness section of a manifest. */
+export type ManifestHarness = ManifestHarnessBuild | ManifestHarnessDoctor | ManifestHarnessTrial
+
 /** The manifest body StarCi signs: the task, who may run it, when it was issued and its allowlisted checks. */
 export interface ManifestBody {
     /** The manifest id the ack names. */
@@ -136,6 +193,8 @@ export interface ManifestBody {
     readonly plan?: ManifestPlan
     /** The lesson section of a `lesson:<id>` task, absent otherwise. */
     readonly lesson?: ManifestLesson
+    /** The harness section of a `harness:build:<id>` task, absent otherwise. */
+    readonly harness?: ManifestHarness
 }
 
 /** A signed manifest: the body, its canonical text and the base64 Ed25519 signature of that text. */
@@ -201,6 +260,24 @@ export interface RelayUpload {
     readonly why?: string | undefined
     /** The ledger lines of the run, 4000 characters at most. */
     readonly ledger?: string | undefined
+    /** For a harness-stage result: the build id (the task is `harness:build:<id>`). */
+    readonly buildId?: string | undefined
+    /** For a harness-stage result: the stage id (the check id). */
+    readonly stageId?: string | undefined
+    /** For a harness-doctor or harness-trial result: `claude` or `codex`. */
+    readonly tool?: string | undefined
+    /** For a harness-trial result: `held`, `breached` or `incomplete`. */
+    readonly verdict?: string | undefined
+    /** For a harness-trial result: whether the tests ended green. */
+    readonly testsGreen?: boolean | undefined
+    /** For a harness-stage result: the NAMES of the key variables present (never values), 16 at most. */
+    readonly envPresent?: ReadonlyArray<string> | undefined
+    /** For a harness-trial result: the shortcuts observed, 20 at most. */
+    readonly shortcuts?: ReadonlyArray<{ readonly kind: string; readonly blocked: boolean }> | undefined
+    /** For a harness-doctor result: `passed`, `failed`, `skipped` or `invalid`. */
+    readonly status?: string | undefined
+    /** For a harness-doctor result: the stable fail code. */
+    readonly reason?: string | undefined
 }
 
 /** What an upload answers: the event id and that it is stored (also when it was a resend). */

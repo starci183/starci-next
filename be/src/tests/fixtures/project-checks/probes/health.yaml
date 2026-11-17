@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: health
 label:
-  vi: "Health: dịch vụ báo sống, nhanh"
+  vi: "Health: the service says it is alive, fast"
   en: "Health: the service says it is alive, fast"
 question:
-  vi: Health của bạn trả 200 khi nào, và nó có kiểm tra phụ thuộc quan trọng không?
+  vi: When does your health endpoint answer 200, and does it check a critical dependency?
   en: When does your health endpoint answer 200, and does it check a critical dependency?
 needs: []
 steps:
@@ -18,9 +18,9 @@ steps:
       - { that: ms, lte: 2000, fail: slow }
 pass: ok
 reasons:
-  ok: { vi: Health trả 200 trong 2 giây., en: Health answered 200 within 2 seconds. }
-  not-200: { vi: Health không trả 200., en: Health did not answer 200. }
-  slow: { vi: Health trả lời chậm hơn 2 giây., en: Health took longer than 2 seconds. }
+  ok: { vi: Health answered 200 within 2 seconds., en: Health answered 200 within 2 seconds. }
+  not-200: { vi: Health did not answer 200., en: Health did not answer 200. }
+  slow: { vi: Health took longer than 2 seconds., en: Health took longer than 2 seconds. }
 fixtures:
   endpoint: GET /health
   cheats:

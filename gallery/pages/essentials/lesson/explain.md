@@ -2,6 +2,7 @@
 title: Bản chất / Bài học · phần 1 Bản chất
 route: /essentials/[topic]/[lesson]
 area: essentials
+reviewed: 2026-11-17
 ---
 
 Route: `/essentials/[topic]/[lesson]` (không có `?phase=`; `?part=essence` là mặc định). Một bài có bốn phần (owner, COOK 2026-11-17): Bản chất, Source, Kịch bản, Tự áp dụng. Đây là phần 1: mở bằng 5 câu trắc nghiệm phỏng vấn, rồi bài viết, cuối bài làm lại 5 câu. Mockup: `D:/starci-tmp/claude-20261117/essentials-clusters/mockup/essential-4-parts.html` (artboard 1). Code: `fe/apps/app/src/components/blocks/EssentialLesson/component.tsx`, hook `fe/apps/app/src/hooks/essentialLesson/`, composite `fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx`. Grammar dưới `node_modules/@starci/grammar/dist/core/`. Liên kết `?phase=` cũ vẫn mở trang sáu pha (`LessonStudy`).
@@ -14,19 +15,19 @@ Grammar: `Page header { breadcrumbs, title, status, meta, tabs: { kind: "views",
 
 ## Mở bài · 5 câu trắc nghiệm phỏng vấn
 
-Vì sao: mỗi lần một câu, thanh 5 bước và "Câu n / 5" trên đầu; chọn một đáp án rồi gửi, server chấm ngay (attempt `opener.<id>`, loại choice, không lộ đáp án trước khi gửi). Đúng: hộp affirmative với lời giải thích. Sai: hộp negative với lời giải thích và link "Đọc kỹ mục n" (neo `#section-…`) cùng "Thấy tận mắt ở kịch bản …" (`?part=scenarios&scenario=…`). Không có ô trả lời tự do. Xong 5 câu hiện "Đúng x/5".
+Vì sao: mỗi lần một câu, head Section "Mở bài · 5 câu trắc nghiệm phỏng vấn" với "Câu 1 / 5" ở bên phải (thanh 5 bước chưa thấy rõ trong ảnh); câu hỏi nằm trên mặt trắng, bốn đáp án là các hàng radio trong một khung viền hairline, nút "Nộp đáp án" là pill tím nhạt (chưa chọn đáp án nên bị khoá) và "Câu tiếp" là nút trung tính chữ nhỏ bên dưới; câu hỏi dài bị cắt bằng dấu "…" ở 1440 và 1920 (xem lỗi hình); chọn một đáp án rồi gửi, server chấm ngay (attempt `opener.<id>`, loại choice, không lộ đáp án trước khi gửi). Đúng: hộp affirmative với lời giải thích. Sai: hộp negative với lời giải thích và link "Đọc kỹ mục n" (neo `#section-…`) cùng "Thấy tận mắt ở kịch bản …" (`?part=scenarios&scenario=…`). Không có ô trả lời tự do. Xong 5 câu hiện "Đúng x/5".
 Luật: COOK 2026-11-17 phần 1 (5 câu trắc nghiệm, chấm tất định, sai thì giải thích + "đọc §n / xem kịch bản"); concept `conventions` rule 4 (đáp án không rời server trước khi nộp).
 Grammar: `Section title meta` (`frame/Section/index.d.ts`), `Progress steps` (`leaf/Progress/index.d.ts`), `SurfaceCard kind="select"` qua `ChoiceCard` (`fe/packages/starci-next-ui/src/composites/ChoiceCard/index.tsx`), `Alert tone="affirmative"|"negative"` (`composite/Alert/index.d.ts`), `Link` (`leaf/Link/index.d.ts`), `Button intent="neutral"` (`leaf/Button/index.d.ts`).
 
 ## Mục lục (chip "Nên đọc kỹ")
 
-Vì sao: danh sách phẳng các mục của bài viết, mỗi hàng là link neo tới mục; mục mà một câu mở bài trả lời sai trỏ tới mang chip vàng "Nên đọc kỹ". Danh sách nằm thẳng trên mặt trang, không bọc thẻ.
+Vì sao: danh sách phẳng các mục của bài viết, mỗi hàng là link neo tới mục; mục mà một câu mở bài trả lời sai trỏ tới mang chip vàng "Nên đọc kỹ". Danh sách nằm thẳng trên mặt trang dưới head "Mục lục", chỉ có một hàng ("1. Bản chất: tin nhắn đi ra...") kèm chevron, ngăn hairline; chưa có chip vì chưa trả lời câu nào.
 Luật: COOK 2026-11-17 ("sai câu nào, mục đó được đánh dấu nên đọc kỹ"); white-theme BRIEF "LIMIT CARDS" (danh sách nằm phẳng trên bề mặt).
 Grammar: `Section kind="list" items[{ title, href, badges }]` (`frame/Section/index.d.ts`, `surfaceCardData.d.ts` `ListRowData`).
 
 ## Bài viết (các mục lý thuyết)
 
-Vì sao: mỗi mục lý thuyết là một Section có neo `section-<id>`, thân markdown của thầy (bảng, code, mermaid) vẽ bằng Markdown của Grammar; mục cần Premium chỉ giữ tiêu đề.
+Vì sao: mỗi mục lý thuyết là một Section có neo `section-<id>`, thân markdown của thầy (bảng, code, mermaid) vẽ bằng Markdown của Grammar (cùng font IBM Plex Sans, code và bảng tô nền xám nhạt trong bài, đáng xem lại với luật "không giếng tô màu"); mục cần Premium chỉ giữ tiêu đề.
 Luật: concept `content` rule 5 (hiển thị đúng chữ của thầy); `grammar-generic-app-themed.md`.
 Grammar: `Section id title` (`frame/Section/index.d.ts`), `Markdown source labels renderCode` (`frame/Markdown/index.d.ts`).
 
@@ -35,3 +36,15 @@ Grammar: `Section id title` (`frame/Section/index.d.ts`), `Markdown source label
 Vì sao: cuối bài, bảng phẳng mỗi câu một hàng: "Lần đầu" (lần trả lời đầu tiên) và "Lần mới nhất" (đúng/sai/chưa làm), đọc từ `lessonOpenerScores`; nút nhỏ "Làm lại" đưa về câu 1 và mở lại 5 câu (revision mới, lần đầu vẫn giữ).
 Luật: COOK 2026-11-17 ("the same 5 again at the end shows before/after"); Grammar 0.40 "DataTable surface none" (bảng phẳng, không thẻ).
 Grammar: `Section action={<Button intent="neutral" size="sm">}` (`frame/Section/head.d.ts`), `DataTable columns rows renderCell` (`branch/DataTable/index.d.ts`), `Badge tone` (`leaf/Badge/index.d.ts`).
+
+## Phần khóa (Source, Kịch bản, Tự áp dụng khi chưa có Premium)
+
+Vì sao: Bản chất (câu mở bài và bài viết) miễn phí cho mọi người; ba phần còn lại cần Premium. Server không gửi nội dung của phần khóa, chỉ gửi tên phần trong `lockedParts`. Tab của phần khóa mở ra một thẻ nhẹ: một câu mô tả phần đó có gì và nút "Đăng ký Premium" tới trang gói.
+Luật: owner 2026-11-17 (truy cập một phần); concept `premium` rule 2; cài đặt `ENTITLEMENT_ESSENTIAL_FREE_PARTS`.
+Grammar: `SurfaceCard treatment="soft"`, `Text`, `Button intent="commit"` qua `LockedNotice` (`fe/packages/starci-next-ui/src/composites/LockedNotice/index.tsx`).
+
+## Panel kịch bản: luật được chấm và hệ thống đúng sẽ cho
+
+Vì sao: mỗi kịch bản hiện thêm dòng "Luật nó chấm" (mã luật và câu của luật) và khối "Hệ thống đúng sẽ cho" lấy từ `expected` của `scenarios.yaml`; thiếu một trong hai thì dòng đó không vẽ.
+Luật: format nội dung (`invariant`, `expected` theo từng ngôn ngữ).
+Grammar: `Text size="sm"`, `Stack gap="identity"` trong `Section` của `EssentialScenarios`.

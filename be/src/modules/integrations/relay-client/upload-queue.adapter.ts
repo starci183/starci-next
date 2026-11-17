@@ -11,6 +11,7 @@ const MUTATIONS: ReadonlySet<string> = new Set([
     "relayCheckResult",
     "relayLog",
     "relayManifestAck",
+    "relayHarnessResult",
 ])
 
 /** The queue file beside the config: uploads not yet accepted, resent on the next run (offline-safe). */

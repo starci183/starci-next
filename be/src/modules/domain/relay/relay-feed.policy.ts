@@ -1,7 +1,9 @@
 import { createHash, createPrivateKey, createPublicKey, generateKeyPairSync, sign, type KeyObject } from "node:crypto"
 import type { RealtimeTopic } from "@modules/platform/realtime"
+import { harnessDetailOf, harnessFactsValid } from "./relay-harness.policy"
 import type {
     ManifestBody,
+    ManifestHarness,
     ManifestLesson,
     ManifestLessonScenario,
     ManifestCheck,
@@ -16,7 +18,16 @@ import type {
 /** The longest log text an upload carries. */
 export const LOG_TEXT_MAX = 16_384
 const ID_MAX = 100
-const SLOTS: ReadonlySet<string> = new Set(["test", "e2e", "probe", "scenario", "challenge"])
+const SLOTS: ReadonlySet<string> = new Set([
+    "test",
+    "e2e",
+    "probe",
+    "scenario",
+    "challenge",
+    "harness-stage",
+    "harness-doctor",
+    "harness-trial",
+])
 const LESSON_ID = /^[a-z0-9-]{1,100}$/u
 const TIERS: ReadonlySet<string> = new Set(["easy", "medium", "hard", "insane"])
 const LIST_MAX = 50
@@ -104,6 +115,24 @@ const lessonPayloadOf = (lesson: ManifestLesson): Record<string, unknown> => ({
           }),
 })
 
+/** The harness section in the canonical key order (CONTRACT.md, build manifest). */
+const harnessPayloadOf = (harness: ManifestHarness): Record<string, unknown> => {
+    const source = { url: harness.source.url, sha256: harness.source.sha256, commit: harness.source.commit }
+    if (harness.kind === "doctor") return { kind: harness.kind, tool: harness.tool, source }
+    if (harness.kind === "trial") return { kind: harness.kind, trap: harness.trap, source }
+    return {
+        kind: harness.kind,
+        buildId: harness.buildId,
+        source,
+        dir: harness.dir,
+        install: harness.install,
+        e2e: harness.e2e,
+        report: harness.report,
+        keys: harness.keys.map((key) => ({ id: key.id, anyOf: [...key.anyOf] })),
+        stages: harness.stages.map((stage) => ({ id: stage.id, e2e: [...stage.e2e] })),
+    }
+}
+
 /** The canonical JSON of a manifest body: keys in a fixed order, so the CLI verifies the exact signed text. */
 export const manifestPayloadOf = (body: ManifestBody): string =>
     JSON.stringify({
@@ -124,6 +153,7 @@ export const manifestPayloadOf = (body: ManifestBody): string =>
                   plan: { milestone: body.plan.milestone, report: body.plan.report, concepts: [...body.plan.concepts] },
               }),
         ...(body.lesson === undefined ? {} : { lesson: lessonPayloadOf(body.lesson) }),
+        ...(body.harness === undefined ? {} : { harness: harnessPayloadOf(body.harness) }),
     })
 
 /** Signs a manifest body with the relay's Ed25519 key. */
@@ -171,6 +201,7 @@ export const resultDetailOf = (upload: RelayUpload): Record<string, unknown> | n
         ...(upload.challengeTier === undefined ? {} : { challengeTier: upload.challengeTier }),
         ...(upload.why === undefined ? {} : { why: upload.why }),
         ...(upload.ledger === undefined ? {} : { ledger: upload.ledger }),
+        ...harnessDetailOf(upload),
     }
     return upload.kind === "check.result" && Object.keys(detail).length > 0 ? detail : null
 }
@@ -178,6 +209,7 @@ export const resultDetailOf = (upload: RelayUpload): Record<string, unknown> | n
 /** True when the facts a result needs are present and bounded. */
 const resultFacts = (upload: RelayUpload): boolean =>
     lessonFacts(upload) &&
+    harnessFactsValid(upload) &&
     upload.checkId !== undefined &&
     upload.passed !== undefined &&
     (upload.slot === undefined || SLOTS.has(upload.slot)) &&

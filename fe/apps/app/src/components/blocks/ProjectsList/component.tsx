@@ -13,7 +13,8 @@ export type ProjectRowView = {
     readonly milestone: string
     readonly percent: number
     readonly progress: string
-    readonly deploy: string
+    readonly ci: string
+    readonly ciTone: "success" | "warning" | "muted"
     readonly isProved: boolean
     readonly href: string
 }
@@ -21,7 +22,7 @@ export type ProjectRowView = {
 /** The four figures of the ribbon, as numbers. */
 export type ProjectsFiguresView = {
     readonly proved: number
-    readonly remaining: number
+    readonly practising: number
     readonly milestonesDone: number
     readonly milestonesTotal: number
     readonly cvLines: number
@@ -37,7 +38,7 @@ export type ProjectsListView = {
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECTS_LIST_PLACEHOLDER: ProjectsListView = {
     outcome: "ready",
-    figures: { proved: 0, remaining: 0, milestonesDone: 0, milestonesTotal: 0, cvLines: 0 },
+    figures: { proved: 0, practising: 0, milestonesDone: 0, milestonesTotal: 0, cvLines: 0 },
     rows: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
         name: "xxxxxxxxxx",
@@ -47,7 +48,8 @@ export const PROJECTS_LIST_PLACEHOLDER: ProjectsListView = {
         milestone: "xxxxxxxxxx",
         percent: 0,
         progress: "x/x",
-        deploy: "xxxxxxxxxx",
+        ci: "xxxxxx",
+        ciTone: "muted",
         isProved: false,
         href: "",
     })),
@@ -62,7 +64,7 @@ export type ProjectsListLabels = {
     readonly ribbonLabel: string
     readonly figures: {
         readonly proved: string
-        readonly remaining: string
+        readonly practising: string
         readonly milestones: string
         readonly cv: string
     }
@@ -72,7 +74,7 @@ export type ProjectsListLabels = {
         readonly kind: string
         readonly milestone: string
         readonly progress: string
-        readonly deploy: string
+        readonly ci: string
     }
     readonly progressLabel: string
     readonly emptyTitle: string
@@ -112,7 +114,7 @@ const Ribbon = (props: BodyProps) => {
             isLoading={props.isLoading}
             items={[
                 { id: "proved", term: labels.figures.proved, value: figures.proved },
-                { id: "remaining", term: labels.figures.remaining, value: figures.remaining },
+                { id: "practising", term: labels.figures.practising, value: figures.practising },
                 {
                     id: "milestones",
                     term: labels.figures.milestones,
@@ -153,7 +155,7 @@ const cellOf = (row: ProjectRowView, columnId: string, progressLabel: string): R
                 </Cluster>
             )
         default:
-            return <Text>{row.deploy}</Text>
+            return <Badge tone={row.ciTone}>{row.ci}</Badge>
     }
 }
 
@@ -187,7 +189,7 @@ const ListTable = (props: BodyProps) => {
                     { id: "kind", label: labels.columns.kind, width: "fit", hideBelow: "tablet" },
                     { id: "milestone", label: labels.columns.milestone, hideBelow: "tablet" },
                     { id: "progress", label: labels.columns.progress, width: "fit" },
-                    { id: "deploy", label: labels.columns.deploy, hideBelow: "desktop" },
+                    { id: "ci", label: labels.columns.ci, width: "fit", hideBelow: "tablet" },
                 ]}
                 rows={props.view.rows.map((row) => ({ ...row }))}
                 renderCell={(row, columnId) => cellOf(row, columnId, labels.progressLabel)}

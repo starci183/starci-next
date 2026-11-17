@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: cursor-pagination
 
-Quy ước: `GET <path>?limit=<n>&cursor=<c>` trả `{"items":[{"id":...}],"nextCursor":...}`, mới nhất trước; `POST <path>` với body mẫu
-tạo một item. Có item mới chen vào giữa hai trang thì trang sau vẫn không lặp item của trang đầu.
+Convention: `GET <path>?limit=<n>&cursor=<c>` returns `{"items":[{"id":...}],"nextCursor":...}`, newest first; `POST <path>` with the sample body
+creates an item. When a new item lands between two pages, the second page still repeats no item of the first.
 
-Bạn khai: `endpoints.cursor-pagination.endpoint` (ví dụ `GET /posts`) và `body` (JSON tạo một item).
+You declare: `endpoints.cursor-pagination.endpoint` (for example `GET /posts`) and `body` (the JSON that creates an item).
 
 ```yaml starci-flow
 id: cursor-pagination

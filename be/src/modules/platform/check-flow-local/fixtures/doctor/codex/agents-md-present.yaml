@@ -1,0 +1,41 @@
+# Doctor probe: the project has a real AGENTS.md (Codex reads it before every run).
+schema: starci/harness-probe@1
+status: draft
+author: ai-placeholder
+id: agents-md-present
+tool: codex
+order: 1
+title:
+  vi: The project has a real AGENTS.md
+  en: The project has a real AGENTS.md
+guide: agents-md
+check:
+  file:
+    path: [AGENTS.md, ~/.codex/AGENTS.md]
+    exists: true
+    contains: "## "
+    minBytes: 200
+fix:
+  vi: Create AGENTS.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Codex must not do.
+  en: Create AGENTS.md in the repo root, at least 200 bytes, split into `##` sections. Put the build and test commands, the code conventions and what Codex must not do.
+good:
+  files:
+    AGENTS.md: |
+      # Shop API
+
+      ## Commands
+      - `npm test` runs the unit tests. Run it before every commit.
+      - `npm run build` compiles to `dist/`.
+
+      ## Conventions
+      - TypeScript strict, no `any`. Errors are typed, never strings.
+      - Tests sit next to the code as `*.test.ts`.
+
+      ## Never
+      - Never edit files under `generated/`.
+      - Never commit `.env`.
+bad:
+  files:
+    AGENTS.md: |
+      # notes
+      TODO

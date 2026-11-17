@@ -610,7 +610,7 @@
       "conceptsLabel": "7 concept của tư duy chuẩn",
       "conceptsEmpty": "Chưa có concept nào.",
       "conceptFree": "Học thử miễn phí",
-      "keyByo": "Dùng tài khoản Anthropic của bạn",
+      "keyByo": "Tài khoản của bạn",
       "keyProxy": "StarCi trả, có hạn mức",
       "pinned": "Phiên bản {version}",
       "pinnedNone": "Phiên bản khoá theo lab",
@@ -1073,6 +1073,7 @@
           "run": "Lệnh chạy",
           "guards": "Tắt guard để thấy lỗi xảy ra",
           "expected": "Hệ thống đúng sẽ cho",
+          "judged": "Luật nó chấm",
           "output": "Kết quả gửi về từ máy bạn",
           "noOutput": "Chưa có lần chạy nào. Chạy lệnh ở trên, kết quả sẽ hiện ở đây.",
           "why": "Vì sao sai",
@@ -1122,8 +1123,13 @@
         },
         "locked": {
           "title": "Phần này mở với Premium",
-          "description": "Câu mở bài miễn phí. Source, kịch bản và thử thách cần Premium.",
-          "plans": "Xem Premium"
+          "plans": "Đăng ký Premium",
+          "parts": {
+            "essence": "Năm câu hỏi mở bài và bài viết của phần Bản chất. Premium mở phần này.",
+            "source": "Kéo repo TypeScript và Express thật về máy, chạy nó và đọc chỗ từng luật nằm trong code. Câu mở bài và bài viết của bài này vẫn miễn phí.",
+            "scenarios": "Chạy từng lỗi ngay trên máy bạn, tắt một guard và xem luật nào vỡ, vỡ vì sao. Câu mở bài và bài viết của bài này vẫn miễn phí.",
+            "apply": "Thang thử thách bốn bậc, chấm bằng kịch bản ẩn và câu hỏi bản chất, kết quả gửi về từ máy bạn. Câu mở bài và bài viết của bài này vẫn miễn phí."
+          }
         }
       }
     },
@@ -1326,21 +1332,25 @@
         "ribbonLabel": "Tổng quan dự án",
         "figures": {
           "proved": "Concept đã chứng minh",
-          "remaining": "Concept còn lại",
           "milestones": "Milestone xong",
-          "cv": "Dòng CV xác minh"
+          "cv": "Dòng CV xác minh",
+          "practising": "Concept đang luyện"
         },
         "columns": {
           "project": "Dự án",
           "kind": "Loại",
           "milestone": "Milestone hiện tại",
           "progress": "Tiến độ",
-          "deploy": "Địa chỉ deploy"
+          "ci": "CI"
         },
         "noMilestone": "Chưa có",
-        "noDeploy": "Chưa nối",
         "progress": "{proved}/{count}",
-        "note": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ."
+        "note": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ.",
+        "ci": {
+          "none": "Chưa nối CI",
+          "passed": "Xanh",
+          "failed": "Đỏ"
+        }
       },
       "new": {
         "title": "Tạo dự án",
@@ -1689,9 +1699,9 @@
         "rubricTitle": "Thang chấm của AI",
         "rubricEmpty": "Chưa có thang chấm. Gửi đoạn code để AI đọc và chấm.",
         "verdict": {
-          "pass": "Đạt",
+          "met": "Đạt",
           "partial": "Một phần",
-          "fail": "Chưa đạt"
+          "missing": "Chưa đạt"
         },
         "cvTitle": "Dòng CV khi đủ bằng chứng",
         "cvEmpty": "Dòng CV hiện khi concept đủ bằng chứng.",
@@ -1699,18 +1709,8 @@
         "cvNote": "Không có số tự khai: mọi dòng CV chỉ điền từ bằng chứng StarCi đã kiểm.",
         "askClaude": "Hỏi Claude qua MCP về concept này",
         "lesson": "Học ở",
-        "fixture": {
-          "rubric": {
-            "database": "Chặn trùng ở database, không bằng if",
-            "replay": "Trả lại kết quả lần đầu cho bản trùng",
-            "expiry": "Khóa hết hạn và dọn khóa cũ"
-          },
-          "cv": {
-            "role": "Backend developer",
-            "text": "Thiết kế {concept} cho {project}; chịu 5 request trùng song song không tạo bản ghi thừa.",
-            "evidence": "Bằng chứng: CI run #41 (GitHub ký) · probe 17/11 · 3 concept"
-          }
-        }
+        "cvPreview": "Bản xem trước",
+        "cvEvidence": "Bằng chứng: {items}"
       }
     },
     "experience": {

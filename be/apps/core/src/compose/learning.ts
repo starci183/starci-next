@@ -53,8 +53,16 @@ import {
     streakEntities,
     streakMigrations,
 } from "@modules/domain/streak"
+import {
+    HARNESS_ERROR_KINDS,
+    HARNESS_MESSAGES,
+    HarnessModule,
+    harnessEntities,
+    harnessMigrations,
+} from "@modules/domain/harness"
 import { MCP_ERROR_KINDS, MCP_MESSAGES, McpModule, mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { JUDGE0_ERROR_KINDS, JUDGE0_MESSAGES, Judge0Module } from "@modules/integrations/judge0"
+import { QDRANT_ERROR_KINDS, QDRANT_MESSAGES } from "@modules/integrations/qdrant"
 import type { DatabaseConnectionOptions } from "@modules/platform/database"
 import type { ErrorKind } from "@modules/platform/errors"
 import type { MessageBundle } from "@modules/platform/i18n"
@@ -70,6 +78,10 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
     McpModule.register({ isGlobal: true, ...options.mcp }),
     StreakModule.register({ isGlobal: true }),
     PathModule.register({ isGlobal: true }),
+    HarnessModule.register({
+        isGlobal: true,
+        ...(options.project.ciOidcAudience === undefined ? {} : { ciOidcAudience: options.project.ciOidcAudience }),
+    }),
     HubModule.register({ isGlobal: true }),
     NotificationModule.register({ isGlobal: true }),
     PracticeModule.register({ isGlobal: true, ...options.practice, streak: StreakServiceClient }),
@@ -88,10 +100,12 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
 export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, ErrorKind>>> = [
     LESSON_ERROR_KINDS,
     MCP_ERROR_KINDS,
+    QDRANT_ERROR_KINDS,
     ATTEMPT_ERROR_KINDS,
     REVIEW_ERROR_KINDS,
     STREAK_ERROR_KINDS,
     PATH_ERROR_KINDS,
+    HARNESS_ERROR_KINDS,
     NOTIFICATION_ERROR_KINDS,
     JUDGE0_ERROR_KINDS,
     PRACTICE_ERROR_KINDS,
@@ -102,10 +116,12 @@ export const learningAreaErrorKinds: ReadonlyArray<Readonly<Record<string, Error
 export const learningAreaMessages: ReadonlyArray<MessageBundle> = [
     LESSON_MESSAGES,
     MCP_MESSAGES,
+    QDRANT_MESSAGES,
     ATTEMPT_MESSAGES,
     REVIEW_MESSAGES,
     STREAK_MESSAGES,
     PATH_MESSAGES,
+    HARNESS_MESSAGES,
     HUB_MESSAGES,
     NOTIFICATION_MESSAGES,
     JUDGE0_MESSAGES,
@@ -123,6 +139,7 @@ export const learningAreaEntities: DatabaseConnectionOptions["entities"] = [
     ...agentLabEntities,
     ...streakEntities,
     ...pathEntities,
+    ...harnessEntities,
     ...notificationEntities,
 ]
 
@@ -136,5 +153,6 @@ export const learningAreaMigrations: DatabaseConnectionOptions["migrations"] = [
     ...agentLabMigrations,
     ...streakMigrations,
     ...pathMigrations,
+    ...harnessMigrations,
     ...notificationMigrations,
 ]

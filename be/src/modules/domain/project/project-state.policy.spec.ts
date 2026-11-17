@@ -2,9 +2,12 @@ import { Test } from "@nestjs/testing"
 import { evidenceOf } from "@tests/fixtures/builders/project.builder"
 import { ProjectError, ProjectErrorCode } from "./errors/project.error"
 import { SLOT_PROOF_SOURCES, type EvidenceSlot } from "./project.contracts"
-import { conceptOf, PROJECT_CONCEPTS } from "./project-catalog.policy"
+import { fixtureCheckSet } from "@tests/fixtures/builders/check-set.builder"
+import { conceptIn } from "./project-check-set-lookup.policy"
 import { slotStandingOf, conceptStandingOf, milestoneStateOf, projectStandingOf } from "./project-state.policy"
 
+const SET = fixtureCheckSet()
+const conceptOf = (id: string) => conceptIn(SET, id)
 const POLICY: unique symbol = Symbol("project.project-state-policy")
 const policies = { slotStandingOf, conceptStandingOf, milestoneStateOf, projectStandingOf }
 
@@ -15,14 +18,14 @@ const build = async (): Promise<typeof policies> => {
     return moduleRef.get<typeof policies>(POLICY)
 }
 
-const IDEMPOTENCY = conceptOf("idempotency")
-const SAGA = conceptOf("saga")
+const IDEMPOTENCY = conceptOf("idempotent-retry")
+const SAGA = conceptOf("unit-testing-behavior")
 
 /** One passing proof row per group of what a concept requires, from the first slot of the group and the one source that may prove it. */
 const proofRowsOf = (conceptId: string, hour = 9, runId = "proof") => {
     const definition = conceptOf(conceptId)
     if (definition === null) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
-    return definition.requires.map((group) => {
+    return definition.requires.map((group: ReadonlyArray<EvidenceSlot>) => {
         const slot: EvidenceSlot = group[0] ?? "test"
         const source = SLOT_PROOF_SOURCES[slot][0] ?? "ci"
         return evidenceOf({
@@ -139,7 +142,7 @@ describe("conceptStandingOf", () => {
     })
 
     it("is proved for a structure concept by a test and the AI read, and by neither alone", () => {
-        const [test, read] = proofRowsOf("saga")
+        const [test, read] = proofRowsOf("unit-testing-behavior")
         if (test === undefined || read === undefined) throw new Error("saga has two groups")
 
         expect(subject.conceptStandingOf(saga(), [test, read], false).state).toBe("proved")
@@ -157,7 +160,7 @@ describe("milestoneStateOf", () => {
     })
 
     const standingsOf = () => ({
-        proved: subject.conceptStandingOf(saga(), proofRowsOf("saga"), false),
+        proved: subject.conceptStandingOf(saga(), proofRowsOf("unit-testing-behavior"), false),
         untouched: subject.conceptStandingOf(idempotency(), [], false),
         started: subject.conceptStandingOf(idempotency(), [evidenceOf({ passed: false })], false),
     })
@@ -166,7 +169,7 @@ describe("milestoneStateOf", () => {
         const { proved, untouched } = standingsOf()
 
         expect(subject.milestoneStateOf([proved], new Set())).toBe("done")
-        expect(subject.milestoneStateOf([proved, untouched], new Set(["idempotency"]))).toBe("done")
+        expect(subject.milestoneStateOf([proved, untouched], new Set(["idempotent-retry"]))).toBe("done")
     })
 
     it("is in progress once a concept has results, and todo before", () => {
@@ -176,7 +179,7 @@ describe("milestoneStateOf", () => {
         expect(subject.milestoneStateOf([started], new Set())).toBe("in-progress")
         expect(subject.milestoneStateOf([untouched], new Set())).toBe("todo")
         expect(subject.milestoneStateOf([], new Set())).toBe("todo")
-        expect(subject.milestoneStateOf([untouched], new Set(["idempotency"]))).toBe("todo")
+        expect(subject.milestoneStateOf([untouched], new Set(["idempotent-retry"]))).toBe("todo")
     })
 })
 
@@ -187,36 +190,49 @@ describe("projectStandingOf", () => {
         subject = await build()
     })
 
-    const allLessons = new Set(["saga", "idempotency", "request-response-lifecycle"])
+    const allLessons = new Set(["unit-testing-behavior", "idempotent-retry", "request-response-lifecycle"])
 
     it("lists the milestones of the kind, counts a shared concept once and finds the current milestone", () => {
-        const standing = subject.projectStandingOf("app", [], allLessons)
+        const standing = subject.projectStandingOf(SET, "app", [], allLessons)
 
         expect(standing.milestones.map((milestone) => milestone.definition.id)[0]).toBe("bf-http-foundation")
-        expect(standing.conceptCount).toBe(3)
+        expect(standing.conceptCount).toBe(10)
         expect(standing.provedConceptIds).toEqual([])
         expect(standing.currentMilestoneId).toBe("bf-http-foundation")
     })
 
+    it("leaves a concept that needs the AI read out of the count while no lesson can grade it", () => {
+        const standing = subject.projectStandingOf(SET, "app", [], new Set())
+
+        expect(standing.conceptCount).toBe(9)
+        expect(standing.milestones[0]?.concepts.find((c) => c.definition.id === "unit-testing-behavior")?.state).toBe(
+            "todo",
+        )
+    })
+
     it("proves a concept once however many milestones list it, and reports practice", () => {
-        const rows = [...proofRowsOf("saga"), evidenceOf({ conceptId: "request-response-lifecycle", source: "relay" })]
+        const rows = [
+            ...proofRowsOf("unit-testing-behavior"),
+            evidenceOf({ conceptId: "request-response-lifecycle", source: "relay" }),
+        ]
 
-        const standing = subject.projectStandingOf("app", rows, allLessons)
+        const standing = subject.projectStandingOf(SET, "app", rows, allLessons)
 
-        expect(standing.provedConceptIds).toEqual(["saga"])
+        expect(standing.provedConceptIds).toEqual(["unit-testing-behavior"])
         expect(standing.practisingConceptIds).toEqual(["request-response-lifecycle"])
-        expect(
-            standing.milestones.find((milestone) => milestone.definition.id === "sd-reliable-messaging")?.state,
-        ).toBe("in-progress")
+        expect(standing.milestones.find((milestone) => milestone.definition.id === "bf-http-foundation")?.state).toBe(
+            "in-progress",
+        )
     })
 
     it("has no current milestone when every milestone is done", () => {
-        const rows = PROJECT_CONCEPTS.flatMap((concept) => proofRowsOf(concept.id))
+        const rows = SET.concepts.flatMap((concept) => proofRowsOf(concept.id))
 
         const standing = subject.projectStandingOf(
+            SET,
             "agent",
             rows,
-            new Set(PROJECT_CONCEPTS.map((concept) => concept.id)),
+            new Set(SET.concepts.map((concept) => concept.id)),
         )
 
         expect(standing.milestones.every((milestone) => milestone.state === "done")).toBe(true)
