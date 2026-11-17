@@ -17,6 +17,7 @@
         "experience": "Kinh nghiệm đã xác minh",
         "profile": "Hồ sơ",
         "connect": "Kết nối AI",
+        "harness": "Harness",
         "progress": "Tiến độ"
       },
       "sidebarLabel": "Điều hướng chính",
@@ -1999,6 +2000,179 @@
           "title": "Dùng trong cuộc trò chuyện",
           "note": "Mở cuộc trò chuyện mới, bật connector StarCi Next và nói tên bài bạn đang học, ví dụ: giải thích vì sao kịch bản double-spend đỏ trên máy tôi."
         }
+      }
+    },
+    "harness": {
+      "pageTitle": "Harness",
+      "breadcrumbs": "Đường dẫn",
+      "tabs": {
+        "label": "Các phần của Harness",
+        "overview": "Tổng quan",
+        "build": "Build",
+        "use": "Xài",
+        "docs": "Hiểu sâu"
+      },
+      "tools": {
+        "label": "Công cụ của bạn",
+        "claude": "Claude Code",
+        "codex": "Codex"
+      },
+      "outcomes": {
+        "green": "Xanh",
+        "red": "Đỏ",
+        "untested": "Chưa chạy",
+        "running": "Đang chạy"
+      },
+      "probes": {
+        "pass": "Đạt",
+        "fail": "Chưa đạt",
+        "skipped": "Chưa chạy"
+      },
+      "verdicts": {
+        "clean": "Sạch",
+        "shortcut": "Đi đường tắt",
+        "untested": "Chưa thử",
+        "incomplete": "Chưa xong"
+      },
+      "copy": {
+        "copy": "Sao chép",
+        "copied": "Đã sao chép",
+        "error": "Không sao chép được"
+      },
+      "markdown": {
+        "diagram": "Sơ đồ",
+        "diagramError": "Không vẽ được sơ đồ",
+        "table": "Bảng"
+      },
+      "hub": {
+        "title": "Tự build AI agent, xài agent cho đúng, hiểu nó tới tận gốc",
+        "description": "Phần riêng, dạy từ bản chất của Claude Code và Codex tới xài StarCi harness. Phần 1 làm tay có kiểm thử, phần 2 và 3 là hướng dẫn và bài giải thích.",
+        "figuresLabel": "Tiến độ của bạn trong Harness",
+        "partsTitle": "Ba phần",
+        "toolTitle": "Công cụ bạn dùng",
+        "toolDescription": "Hướng dẫn, bảng kiểm tra và bẫy thử ở phần Xài theo công cụ này. Lựa chọn được nhớ cho riêng bạn.",
+        "empty": "Chưa có nội dung Harness.",
+        "open": "Mở",
+        "figures": {
+          "builds": "Build xong",
+          "practising": "Chặng đang luyện",
+          "proved": "Chặng đã chứng minh",
+          "checks": "Kiểm tra máy đạt"
+        },
+        "parts": {
+          "build": {
+            "topics": "AI agent · MCP server · Chatbot CSKH · Agent tìm lead",
+            "progress": "{done} / {total} build xong"
+          },
+          "use": {
+            "topics": "Claude Code · Codex · harness doctor · bẫy thử",
+            "progress": "{done} / {total} kiểm tra đạt"
+          },
+          "docs": {
+            "topics": "Bản chất LLM · Vòng lặp agent · Context · Thiết kế harness",
+            "progress": "{count} bài"
+          }
+        }
+      },
+      "builds": {
+        "title": "Build",
+        "description": "Tải source mẫu sơ sài, làm theo từng chặng và xem e2e chuyển xanh dần.",
+        "listTitle": "Các build",
+        "empty": "Chưa có build nào.",
+        "practising": "{n} / {total} chặng đã chạy",
+        "proved": "{n} / {total} chặng đã chứng minh"
+      },
+      "build": {
+        "title": "Build",
+        "missing": "Không tìm thấy build này.",
+        "e2e": "e2e {passed} / {total}",
+        "count": "{passed} / {total}",
+        "position": "Chặng {n} trên {total}",
+        "stagesTitle": "Các chặng",
+        "pullLabel": "Tải source mẫu",
+        "pullDescription": "Chạy lệnh này trong thư mục trống. Key AI nằm trong .env trên máy bạn và không bao giờ gửi lên StarCi.",
+        "casesTitle": "Ca e2e của chặng",
+        "caseColumn": "Ca",
+        "outcomeColumn": "Kết quả",
+        "detailColumn": "Lý do",
+        "onlyOpenLabel": "Chỉ ca chưa xanh",
+        "onlyOpenDescription": "Ẩn các ca đã xanh để còn thấy việc phải làm",
+        "casesEmpty": "Chặng này chưa có ca nào.",
+        "logTitle": "Lần chạy e2e gần nhất",
+        "stepsTitle": "Hướng dẫn từng bước",
+        "lockedTitle": "Chặng này đang khóa",
+        "lockedText": "Làm cho chặng trước xanh hết thì hướng dẫn của chặng này mở ra.",
+        "keysLabel": "Key cần có trong .env",
+        "repoTitle": "Kết nối repo để chứng minh",
+        "repoText": "Kết quả chạy trên máy bạn chỉ tính là đang luyện. Muốn được chứng minh, build cần chạy trong CI có chữ ký của repo GitHub của bạn.",
+        "repoBound": "Đã kết nối",
+        "repoUnbound": "Chưa kết nối",
+        "repoField": "Repo GitHub",
+        "repoPlaceholder": "owner/ten-repo",
+        "repoBind": "Kết nối repo",
+        "repoFailed": "Không kết nối được repo này. Kiểm tra tên có dạng owner/repo.",
+        "repoAudienceLabel": "Audience của workflow",
+        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này."
+      },
+      "use": {
+        "title": "Xài",
+        "description": "Hướng dẫn markdown kèm lệnh chạy được, lệnh kiểm tra máy và bẫy thử agent.",
+        "empty": "Chưa có hướng dẫn cho công cụ này.",
+        "probesSummary": "{passed} / {ran} đạt",
+        "fix": "Xem cách sửa",
+        "noShortcuts": "Không có",
+        "never": "Chưa chạy",
+        "toolDescription": "Chọn công cụ bạn dùng. Danh sách bên dưới đổi theo.",
+        "guidesTitle": "Hướng dẫn",
+        "guidesEmpty": "Chưa có hướng dẫn.",
+        "doctorTitle": "Kiểm tra máy với harness doctor",
+        "doctorCommandLabel": "Lệnh kiểm tra",
+        "doctorCommandDescription": "Chạy trong repo của bạn. Lệnh đọc cấu hình trên máy bạn, kết quả về đây qua relay.",
+        "doctorEmpty": "Không có điều kiện nào để hiển thị.",
+        "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt",
+        "trialsTitle": "Bẫy thử agent",
+        "trialsEmpty": "Chưa có bẫy nào cho công cụ này.",
+        "trapColumn": "Bẫy",
+        "shortcutsColumn": "Đường tắt đã thấy",
+        "verdictColumn": "Kết luận",
+        "costColumn": "Chi phí ước tính",
+        "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
+        "shortcutBlocked": "{label} (bị chặn)",
+        "budget": "Tối đa {usd}"
+      },
+      "guide": {
+        "title": "Hướng dẫn",
+        "missing": "Không tìm thấy hướng dẫn này.",
+        "probesSummary": "{passed} / {ran} đạt",
+        "fix": "Xem cách sửa",
+        "never": "Chưa chạy",
+        "outlineTitle": "Trong bài này",
+        "outlineEmpty": "Bài chưa có mục nào.",
+        "toolDescription": "Đổi công cụ để sang bài tương ứng.",
+        "doctorTitle": "Kết quả harness doctor",
+        "doctorCommandLabel": "Lệnh kiểm tra",
+        "doctorCommandDescription": "Chạy trong repo của bạn, kết quả về đây.",
+        "doctorEmpty": "Không có điều kiện nào để hiển thị.",
+        "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt"
+      },
+      "docs": {
+        "title": "Hiểu sâu",
+        "description": "Bài giải thích dài, có sơ đồ, không có kiểm thử. Đọc để hiểu agent chạy ra sao.",
+        "listTitle": "Các bài",
+        "empty": "Chưa có bài nào."
+      },
+      "doc": {
+        "title": "Bài giải thích",
+        "missing": "Không tìm thấy bài này.",
+        "outlineTitle": "Trong bài này",
+        "outlineEmpty": "Bài chưa có mục nào."
+      },
+      "proofs": {
+        "none": "Chưa luyện",
+        "practising": "Đang luyện",
+        "proved": "Đã chứng minh"
       }
     },
     "profile": {

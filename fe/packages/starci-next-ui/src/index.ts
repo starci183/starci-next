@@ -227,3 +227,5 @@ export type {
     ScenariosPartView,
     SourcePartView,
 } from "./composites/EssentialParts"
+export { OutlineList } from "./composites/OutlineList"
+export type { OutlineEntry } from "./composites/OutlineList"
