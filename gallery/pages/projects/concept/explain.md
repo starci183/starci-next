@@ -56,7 +56,6 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, "Dòng CV khi đủ bằng chứng": câu CV hiện dấu markdown thô: "Áp dụng **Request lifecycle — đặt logic đúng tầng** ... bằng **typescript**".
 - 1440, 1920, 390, "Dòng CV": dòng "Bằng chứng:" kết thúc rỗng, không có nội dung sau dấu hai chấm; nhãn "Bản xem trước" là chữ xám nhỏ sát lề, không phải chip.
 - 1440, 1920, 390, "AI đọc code": ba ô nhập và nút "Lưu" nhưng không thấy ô dán đoạn code hay ô giải thích 2 đến 3 câu nên không có cách gửi để AI chấm, trong khi mục bên dưới bảo "Gửi đoạn code".
 - 1440, 1920, 390, ba ô nhập trống không có placeholder, hiện như hộp trắng trống không gợi ý.

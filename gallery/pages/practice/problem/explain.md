@@ -15,7 +15,7 @@ Grammar: `Page header={{ breadcrumbs, title }}` (`frame/Page/index.d.ts`).
 
 ## Đề bài
 
-Vì sao: đề là một vật thật nên vẫn là một thẻ viền mảnh, không bóng: tên pattern muted, hàng chip (độ khó "Trung bình", các nhãn kỹ thuật, giới hạn "2 s · 256 MB"), tên bài đậm, rồi đề viết bằng markdown: đoạn mô tả, mục Đầu vào, Đầu ra, "Ví dụ" với hai khối mã (vào và ra), phông đơn cách của Grammar. SAI: đề vẫn hiện nguyên các dấu ":::muted Đầu vào :::" và ":::muted Đầu ra :::" thành chữ giữa các đoạn; đó là chỉ thị markdown (`:::muted`) mà bộ vẽ markdown chưa hiểu hoặc dữ liệu đề viết sai; không sửa gọn được trong fe vì đề là dữ liệu của thầy. CHƯA RÕ: hai khối mã và mã nội dòng vẫn có nền xám nhạt trong thẻ trắng, trái luật không có giếng tô nền; ở 390 các mã nội dòng (`N`, "start end") bị bẻ thành ô rộng làm dòng chữ lệch.
+Vì sao: đề là một vật thật nên vẫn là một thẻ viền mảnh, không bóng: tên pattern muted, hàng chip (độ khó "Trung bình", các nhãn kỹ thuật, giới hạn "2 s · 256 MB"), tên bài đậm, rồi đề viết bằng markdown: đoạn mô tả, mục Đầu vào, Đầu ra, "Ví dụ" với hai khối mã (vào và ra), phông đơn cách của Grammar. Các đầu mục "Đầu vào", "Đầu ra" là dòng muted của chỉ thị `:::muted`, do bộ vẽ markdown dùng chung (RichMarkdown) dựng. CHƯA RÕ: hai khối mã và mã nội dòng vẫn có nền xám nhạt trong thẻ trắng, trái luật không có giếng tô nền; ở 390 các mã nội dòng (`N`, "start end") bị bẻ thành ô rộng làm dòng chữ lệch.
 Luật: `surface-layering` (thẻ chỉ cho vật thật), `theme-and-type`.
 Grammar: `PracticeProblemPanel`, `MarkdownArticle` và `FencedCodeBlock` (`node_modules/@starci/grammar/dist/core/frame/MarkdownArticle/index.d.ts`), `SurfaceCard`, `Badge`; code `PracticeSolve/component.tsx`.
 
@@ -43,13 +43,12 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440: đề bài hiện nguyên ":::muted Đầu vào :::" và ":::muted Đầu ra :::" thành chữ giữa các đoạn: chỉ thị markdown lộ ra.
 - 1440: thẻ đề: chip "Trung bình" nền vàng nhạt (nền tô màu), các nhãn kỹ thuật và "2 s · 256 MB" không viền nên khác kiểu nhau; tiêu đề "Chèn Khoảng" lặp với tiêu đề trang.
 - 1440: hai khối mã ví dụ và các mã nội dòng ([a, b], N) nền xám đặc trong thẻ trắng: giếng tô nền; hai khối vào và ra không có nhãn nên không biết cái nào là gì.
 - 1440: ô "Mã nguồn" là Textarea phông không đơn cách nên thụt dòng khó đọc, không tô màu cú pháp; dòng cuối bị cắt ngang đáy ô.
 - 1440: ba nút "Chạy thử", "Nộp bài", "Về mã khởi đầu" khác kiểu (viền mảnh, xám đặc).
 - 1440: ô "Ngôn ngữ" rộng hết cột mà chỉ chứa "Python"; đầu mục "Bài làm của bạn" cùng cỡ với nhãn "Ngôn ngữ", "Mã nguồn" nên không phân cấp.
 - 1440: cột phải "Các bài trong pattern": nhãn kỹ thuật bị cắt "tw…" và "in…" giữa chừng; chip "Chưa làm" và "Giải bài" xuống dòng riêng nên hàng rất cao; năm nút "Giải bài" lặp.
-- 1920: cột chính bị co vào giữa (x=466) trong khi đường dẫn sát trái x=280; các lỗi ":::muted", giếng xám, cắt nhãn và nút khác kiểu giữ nguyên.
-- 390: mã nội dòng ([a, b], "start end", [0, 10^9]) bị bẻ thành ô rộng làm các mục gạch đầu dòng bẻ từng chữ lệch; ":::muted" vẫn lộ.
+- 1920: cột chính bị co vào giữa (x=466) trong khi đường dẫn sát trái x=280; giếng xám, cắt nhãn và nút khác kiểu giữ nguyên.
+- 390: mã nội dòng ([a, b], "start end", [0, 10^9]) bị bẻ thành ô rộng làm các mục gạch đầu dòng bẻ từng chữ lệch.
 - 390: ô mã cao khoảng 300px với dòng cuối bị cắt; ba nút trong một hàng khít; cột "Các bài trong pattern" nằm cuối trang với nhãn bị cắt "…" và nút "Giải bài" xuống dòng riêng.
