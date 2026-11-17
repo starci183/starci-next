@@ -35,5 +35,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: tiêu đề nhóm sát trái x=288 còn hàng sự cố thụt vào x=300; hai trục trái lệch mười hai điểm ảnh.
 - 1440: nhóm chỉ một hàng thì không có đường kẻ, nhóm cách nhau khoảng 140px nên trang dài; cả mười một hàng "Sắp có" nên không có việc nào làm được.
 - 1440: "Sắp có" là chữ muted nhỏ trần, không phải chip, lệch kiểu với trạng thái ở các trang khác.
-- 1920: nội dung co vào giữa (x=480); hàng sự cố vẫn thụt 12px so với tiêu đề nhóm; "Sắp có" cách tên hơn 800px nên khó đọc ngang hàng.
 - 390: tên sự cố bẻ dòng để chữ mồ côi ("lần", "lại?"); "Sắp có" chiếm cột phải làm hẹp tên; khoảng cách nhóm lớn nên trang dài.

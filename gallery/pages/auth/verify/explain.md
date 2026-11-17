@@ -25,8 +25,8 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, toàn trang: khối thông báo dính sát mép trên (cách đỉnh khoảng 56px) và bên dưới trống đến cuối trang; không có tên thương hiệu StarCi để người lạ biết đây là trang của ai.
-- 1440, 1920, 390, ô icon hộp thư: nền xám nhạt tô kín thay vì viền; icon nhỏ, xám, tương phản thấp.
-- 1440, 1920, 390, tiêu đề "Không tìm thấy mã xác minh" cỡ 14 giữa trang, nhỏ so với khoảng trống xung quanh; dòng muted xám nhạt cỡ 14, tương phản thấp.
+- 1440, 390, toàn trang: khối thông báo dính sát mép trên (cách đỉnh khoảng 56px) và bên dưới trống đến cuối trang; không có tên thương hiệu StarCi để người lạ biết đây là trang của ai.
+- 1440, 390, ô icon hộp thư: nền xám nhạt tô kín thay vì viền; icon nhỏ, xám, tương phản thấp.
+- 1440, 390, tiêu đề "Không tìm thấy mã xác minh" cỡ 14 giữa trang, nhỏ so với khoảng trống xung quanh; dòng muted xám nhạt cỡ 14, tương phản thấp.
 - 390: dòng muted xuống hai dòng và để chữ "StarCi xác minh." lẻ ở dòng hai; căn giữa nên mép trái lởm chởm.
-- 1440, 1920, 390: không có hành động nào (về trang chủ, thử mã khác); trạng thái lỗi là ngõ cụt.
+- 1440, 390: không có hành động nào (về trang chủ, thử mã khác); trạng thái lỗi là ngõ cụt.

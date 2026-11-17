@@ -28,5 +28,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: liên kết "Về hàng chờ" đứng lẻ ở đầu trang, chữ foreground không có mũi tên và không nằm trong đường dẫn của dải tiêu đề; trang không có tiêu đề hay dải đầu trang.
 - 1440: ô icon hộp thư và câu căn giữa trong khi liên kết căn trái ở x=288; hai trục lệch nhau.
 - 1440: mục không có thật và người không có quyền cùng một thông báo, không nói vì sao bị cấm.
-- 1920: liên kết ở x=480 còn câu giữa vùng (x=1088); khoảng trống rất lớn, vẫn không có tiêu đề hay dải trang.
 - 390: liên kết "Về hàng chờ" là chữ foreground thường, không gạch chân, không mũi tên nên không có dấu hiệu là liên kết; câu gần khít hai mép khi ngắt dòng; không có đầu trang.

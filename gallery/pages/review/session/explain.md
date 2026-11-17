@@ -34,5 +34,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: bộ đếm "0/0" 12 muted dưới tiêu đề không có nhãn nên không rõ là gì; thanh tiến độ bên dưới bắt đầu ở x=578, lệch so với tiêu đề ở x=288.
 - 1440: cột nội dung nhỏ (khoảng 540px) đặt giữa trang trong khi dải sát trái; icon hộp thư và câu căn giữa nhưng nút "Về Ôn tập" căn trái (x=578), lệch trục.
 - 1440: trạng thái rỗng chỉ một câu, không nói vì sao rỗng và không có lệnh đi tiếp (ví dụ chọn bộ thẻ); khoảng cách giữa thanh tiến độ, icon, câu và nút rời rạc.
-- 1920: cột 540px đứng giữa vùng nội dung (x=818) cách xa dải sát trái x=288; nút vẫn lệch trái so với icon và câu.
 - 390: thanh tiến độ xám rất nhạt, gần như không thấy; nút "Về Ôn tập" căn trái dưới icon và câu căn giữa, lệch trục như ở 1440.

@@ -4,7 +4,7 @@ route: /essentials/[topic]
 area: essentials
 ---
 
-Route: `/essentials/kubernetes` (khớp `/essentials/[topic]`) (topic "Kubernetes"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
+Route: `/essentials/kubernetes` (khớp `/essentials/[topic]`) (topic "Kubernetes"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
 
 ## Dải đầu trang: trail, tiêu đề, meta
 
@@ -45,5 +45,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, hero: ảnh 3D chiếm hơn nửa thẻ trong khi cột chữ chỉ cao khoảng một phần ba, để trống bên dưới nút.
 - 1440, "Bài trong chương": 14 trong 15 hàng là cùng một dòng "Bài nguồn đang chuyển sang dạng tương tác" và cùng một ổ khoá, thành một bức tường lặp; chỉ bài 10 mở, nằm giữa danh sách, người học phải cuộn qua chín bài khoá mới thấy. Chip đếm "15" nói 15 bài nhưng gần như không bài nào dùng được. Số thứ tự 10 đến 15 hai chữ số làm tên bài lệch sang phải so với bài 1 đến 9 (hàng 10 đến 15 thụt hơn vài px). Cả danh sách vẫn trong khung bo góc viền hairline (luật 1). Sáu vòng pha 12 px nhỏ, vòng 1 gần như không thấy, "0/6 pha" lệch ngoài cùng.
 - 1440, aside: "Nên biết trước" hai câu rời không dấu đầu dòng; "Topic liên quan" link chữ thường không có dấu hiệu là link.
-- 1920: Không thấy lỗi mới ở 1920; lỗi trên giữ nguyên, thêm hàng bài kéo rất rộng, chữ bên trái, ổ khoá cách xa cuối hàng, ảnh hero phóng lớn.
 - 390: aside đứng trước hero nên nút bắt đầu nằm sau một màn. Tên bài dài xuống hai đến ba dòng (bài 8, 9) làm hàng cao không đều; hàng bài 10 cao hơn và lệch (số thứ tự "10." rộng hơn đẩy tên). "0/6 pha" lệch phải khỏi sáu vòng. Danh sách 15 hàng khoá lặp rất dài.

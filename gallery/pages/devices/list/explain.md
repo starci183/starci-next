@@ -27,7 +27,7 @@ Grammar: `Section title count`, `StepRows` (`@starci-next/ui`), `FencedCodeBlock
 
 ## Cột phụ bên phải: "Mức chứng minh" và "CLI được phép làm gì"
 
-Vì sao: hai hàng Đang luyện (kết quả chạy trên máy qua CLI, chưa tính vào milestone) và Đã chứng minh (CI có chữ ký hoặc server chạy lại), gạch ngăn, rồi năm quy tắc của CLI, mỗi hàng có chip "Được" (xanh mềm) hoặc "Không" (đỏ mềm). Ghi chú lỗi ảnh: mỗi danh sách được bọc trong một khung viền bo góc như thẻ, trái luật aside không làm bằng thẻ (nên là hàng phẳng ngăn bằng đường kẻ); dòng phụ "Đang luyện" bị cắt bằng dấu ba chấm ở cả 1440, 1920 và 390.
+Vì sao: hai hàng Đang luyện (kết quả chạy trên máy qua CLI, chưa tính vào milestone) và Đã chứng minh (CI có chữ ký hoặc server chạy lại), gạch ngăn, rồi năm quy tắc của CLI, mỗi hàng có chip "Được" (xanh mềm) hoặc "Không" (đỏ mềm). Ghi chú lỗi ảnh: mỗi danh sách được bọc trong một khung viền bo góc như thẻ, trái luật aside không làm bằng thẻ (nên là hàng phẳng ngăn bằng đường kẻ); dòng phụ "Đang luyện" bị cắt bằng dấu ba chấm ở cả 1440 và 390.
 Luật: `verified-experience-per-part.md`, `surface-layering` (aside không thẻ), `type-scale-14-12.md`.
 Grammar: `Pane area="aside" surface scroll`, `Section kind="list"` (`frame/Section/index.d.ts`), `Divider`.
 
@@ -37,14 +37,13 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, dòng phụ dưới "Máy của bạn": chữ nhỏ hơn 12 và ngả màu vàng nâu (không phải xám trung tính), tương phản thấp; ở 1440 và 1920 băng đầu trang cao với khoảng trống lớn dưới dòng phụ.
-- 1440, 1920, 390, cột phụ: "Mức chứng minh" và "CLI được phép làm gì" vẫn nằm trong khung viền bo góc như thẻ, trái luật aside không làm bằng thẻ; thêm một đường kẻ ngăn giữa hai khung nên có hai lớp viền chồng nhau.
-- 1440, 1920, 390, dòng "Đang luyện": mô tả bị cắt bằng dấu ba chấm ("giúp bạn ...") ở cả ba độ rộng, mất nghĩa.
-- 1440, 1920, 390, chip "Được" xanh và "Không" đỏ nhạt: nền tô màu, chữ 12px nhỏ, tương phản thấp; ở 1440 chip nằm sát mép phải khung, hàng chữ xuống hai dòng khiến chiều cao các hàng không đều.
-- 1440, 1920, 390, khối mã (`npm install ...`, `starci-next login`): nền xám tô kín, không viền hairline, chữ monospace nhỏ; không có nút chép lệnh.
-- 1440, 1920, 390, dòng phụ các bước (xám nhạt 14px) và tiêu đề bước "1. Cài StarCi CLI" đều cỡ 14 gần nhau, phân cấp yếu; trạng thái rỗng dài, ba bước và hai khối mã xếp dọc cao hơn cả danh sách.
-- 1440, 1920, nút chính "Kết nối máy": dính ngay dưới bước 3 và nằm lẻ ở góc trái, trong khi nửa phải cột trống.
-- 1920: cột chính chỉ dùng khoảng 1220px, khối mã kéo dài toàn bộ chiều ngang chỉ chứa một lệnh ngắn; hơn một nửa chiều cao trang trống.
+- 1440, 390, dòng phụ dưới "Máy của bạn": chữ nhỏ hơn 12 và ngả màu vàng nâu (không phải xám trung tính), tương phản thấp; ở 1440 băng đầu trang cao với khoảng trống lớn dưới dòng phụ.
+- 1440, 390, cột phụ: "Mức chứng minh" và "CLI được phép làm gì" vẫn nằm trong khung viền bo góc như thẻ, trái luật aside không làm bằng thẻ; thêm một đường kẻ ngăn giữa hai khung nên có hai lớp viền chồng nhau.
+- 1440, 390, dòng "Đang luyện": mô tả bị cắt bằng dấu ba chấm ("giúp bạn ...") ở cả ba độ rộng, mất nghĩa.
+- 1440, 390, chip "Được" xanh và "Không" đỏ nhạt: nền tô màu, chữ 12px nhỏ, tương phản thấp; ở 1440 chip nằm sát mép phải khung, hàng chữ xuống hai dòng khiến chiều cao các hàng không đều.
+- 1440, 390, khối mã (`npm install ...`, `starci-next login`): nền xám tô kín, không viền hairline, chữ monospace nhỏ; không có nút chép lệnh.
+- 1440, 390, dòng phụ các bước (xám nhạt 14px) và tiêu đề bước "1. Cài StarCi CLI" đều cỡ 14 gần nhau, phân cấp yếu; trạng thái rỗng dài, ba bước và hai khối mã xếp dọc cao hơn cả danh sách.
+- 1440, nút chính "Kết nối máy": dính ngay dưới bước 3 và nằm lẻ ở góc trái, trong khi nửa phải cột trống.
 - 390, thứ tự: cột phụ (mức chứng minh, quy tắc CLI) đứng trước, nút "Kết nối máy" nằm tận cuối trang (khoảng y=1300), người học phải cuộn qua hai khung mới gặp việc chính.
-- 1440, 1920, 390, sidebar không có mục "Máy" nào được chọn; nút tròn tô xám và công tắc sáng tối tô xám ở thanh trên, avatar đỏ bão hoà.
+- 1440, 390, sidebar không có mục "Máy" nào được chọn; nút tròn tô xám và công tắc sáng tối tô xám ở thanh trên, avatar đỏ bão hoà.
 - Sau alpha.147 (2026-11-17), 1440 và 390 trên dev, học viên mới chưa có máy: trạng thái rỗng thiết kế hiện đúng (đầu phần "Máy đã nối" số 0, ba bước, nút "Kết nối máy"), không có thanh lỗi; màn này đã tự xử lý danh sách rỗng, nay dùng chung `settledListSlot` với màn kết nối AI. Các lỗi cũ còn nguyên: mô tả "Đang luyện" bị cắt bằng dấu ba chấm, nút "Kết nối máy" nằm lẻ ở góc trái dưới bước 3, ở 390 cột phụ đứng trước việc chính và nút chính ở tận cuối trang, khối mã chưa có nút chép.

@@ -41,5 +41,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, sơ đồ kiến trúc: mermaid vẽ rất nhỏ trong khung hẹp, chữ trên các nút nhỏ hơn 12 px, gần như không đọc được; chú thích "Hình 1" ở dưới dài ba dòng xám nhạt.
 - 1440, bảng "Luật nó giữ": hàng tiêu đề nền xám tô; cột "Cổng" và "Vai trò" chữ nhỏ, cột cuối xuống dòng nhiều; tên thành phần dùng code inline nền xám, nhiều nền tô nhỏ trong cùng một bảng.
 - 1440, dải đầu: tab "Source" đang chọn gạch chân đúng, nhưng chip "Trung cấp" cạnh tiêu đề nền xám; không thấy chỉ báo premium hay trạng thái tải source.
-- 1920: Không thấy lỗi mới ở 1920; lỗi 1440 giữ nguyên, cột nội dung hẹp ở giữa với lề trắng rất rộng hai bên, khối code vẫn có đuôi thừa trắng.
 - 390: bảng "Luật nó giữ" bị ép bốn cột hẹp, chữ xuống từng từ hoặc ngắt giữa chữ ("scripts/ledger.ts" ngắt dòng, "api (2 replica)"), cột "Luật nó giữ" bị cắt; sơ đồ mermaid thu nhỏ còn lại các vệt không đọc được; code dài khó đọc và nút "Sao chép" cạnh nhãn ngôn ngữ nhỏ sát mép; trang dài hơn 8300 px.

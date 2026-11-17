@@ -33,5 +33,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 
 - 1440: độ khó "Trung bình" cùng màu muted nên không nổi.
 - 1440: mỗi hàng có chip "Chưa làm" và nút "Giải bài" cạnh nhau ở mép phải; năm nút lặp, hàng vốn đã là liên kết; chip và nút cùng cỡ nhỏ nhìn như hai nút, viền nút gần như vô hình.
-- 1920: nội dung co vào giữa (x=480) trong khi đường dẫn và tiêu đề sát trái x=288.
 - 390: nút "Giải bài" xuống dòng riêng dưới mỗi hàng, lệch trái so với tên bài; nhãn kỹ thuật bị cắt "…" giữa chừng (greed…, sorti…, dynamicProgr…) nên mất nghĩa; chip "Chưa làm" đứng cao hơn dòng tên.

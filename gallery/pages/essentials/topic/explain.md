@@ -5,7 +5,7 @@ area: essentials
 reviewed: 2026-11-17
 ---
 
-Route: `/essentials/[topic]` (topic "Backend framework (NestJS)"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
+Route: `/essentials/[topic]` (topic "Backend framework (NestJS)"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
 
 ## Dải đầu trang: trail, tiêu đề, meta
 
@@ -46,5 +46,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, hero: ảnh 3D chiếm hơn nửa thẻ trong khi cột chữ chỉ cao khoảng một phần ba, để trống bên dưới nút.
 - 1440, "Bài trong chương": bốn trên năm hàng chỉ là "Bài nguồn đang chuyển sang dạng tương tác" kèm ổ khoá, lặp nguyên một câu; chip đếm "5" nhưng chỉ một bài mở. Sáu vòng pha "1 2 3 4 5 6" 12 px rất nhỏ, vòng 1 viền tím nhạt gần như không thấy, và "0/6 pha" nằm lệch ngoài cùng, không căn thẳng với các số.
 - 1440, aside: "Topic liên quan" là link chữ thường, nhưng không có dấu hiệu là link (không mũi tên, không màu), dễ đọc nhầm thành văn bản.
-- 1920: Không thấy lỗi mới ở 1920; vẫn nguyên các lỗi trên, thêm ảnh hero phóng to rất lớn (gần 600px) và hàng bài kéo rất rộng nên "0/6 pha" cách xa tên bài.
 - 390: aside (Tiến độ, Nên biết trước, Topic liên quan) đứng trước hero, buộc học viên cuộn qua một màn rưỡi mới tới nút bắt đầu. Sáu vòng pha xuống dòng riêng nhưng "0/6 pha" nằm dưới, lệch phải khỏi các vòng; hàng Request lifecycle cao gấp rưỡi các hàng khác.

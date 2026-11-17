@@ -31,8 +31,8 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, thông báo "Đã thanh toán": nền xanh lá nhạt tô kín bo lớn, chữ xanh đậm; chữ thân cỡ 14 xanh trên nền xanh nhạt tương phản vừa phải, và câu "Cảm ơn bạn đã ủng hộ StarCi Next." xuống dòng để "hộ StarCi Next." lẻ ở dòng hai (1440, 1920); ở 390 chữ "ơn" lẻ đầu dòng hai sau "Cảm".
-- 1440, 1920, 390, nút "Tiếp tục học": nút trải suốt hàng ngay dưới thông báo, hai nút xếp dọc rộng bằng nhau, "Về trang gói" viền trắng đúng luật nhưng chiếm cùng chiều rộng.
-- 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và thông báo bên trong; tiêu đề "Premium đã được kích hoạt" dính sát mép trên thẻ, rồi cách thông báo một khoảng lớn hơn; thẻ chỉ khoảng 450px nằm lơ lửng ở trên cùng, phần còn lại của trang trống.
-- 1440, 1920: thẻ căn giữa vùng nội dung chứ không căn giữa trang, nên lệch phải so với trục màn hình; trang không có đầu trang 18/600 nên chỉ có tiêu đề thẻ.
-- 1440, 1920, 390, sidebar không có mục nào được chọn; thanh trên có nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.
+- 1440, 390, thông báo "Đã thanh toán": nền xanh lá nhạt tô kín bo lớn, chữ xanh đậm; chữ thân cỡ 14 xanh trên nền xanh nhạt tương phản vừa phải, và câu "Cảm ơn bạn đã ủng hộ StarCi Next." xuống dòng để "hộ StarCi Next." lẻ ở dòng hai (1440); ở 390 chữ "ơn" lẻ đầu dòng hai sau "Cảm".
+- 1440, 390, nút "Tiếp tục học": nút trải suốt hàng ngay dưới thông báo, hai nút xếp dọc rộng bằng nhau, "Về trang gói" viền trắng đúng luật nhưng chiếm cùng chiều rộng.
+- 1440, 390, thẻ: bo góc khoảng 24px lớn hơn nút và thông báo bên trong; tiêu đề "Premium đã được kích hoạt" dính sát mép trên thẻ, rồi cách thông báo một khoảng lớn hơn; thẻ chỉ khoảng 450px nằm lơ lửng ở trên cùng, phần còn lại của trang trống.
+- 1440: thẻ căn giữa vùng nội dung chứ không căn giữa trang, nên lệch phải so với trục màn hình; trang không có đầu trang 18/600 nên chỉ có tiêu đề thẻ.
+- 1440, 390, sidebar không có mục nào được chọn; thanh trên có nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.

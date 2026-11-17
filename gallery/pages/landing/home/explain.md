@@ -21,7 +21,7 @@ Grammar: `Page header={{ title }}` (`frame/Page/index.d.ts`).
 
 ## Đoạn mô tả và nút "Mở ứng dụng"
 
-Vì sao: một dòng muted "Mọi thứ bạn cần đều ở trong ứng dụng." và MỘT nút chính "Mở ứng dụng" (viên thuốc, màu accent tím) dẫn sang ứng dụng học, cùng họ màu với ứng dụng học. Ghi chú lỗi ảnh: khối thân thụt vào so với dải tiêu đề (chữ bắt đầu ở x=112 ở 1440 và x=352 ở 1920, trong khi tiêu đề ở x=32); ở 390 thì thẳng lề. Nút chính vẽ nền tím nhạt với chữ đen.
+Vì sao: một dòng muted "Mọi thứ bạn cần đều ở trong ứng dụng." và MỘT nút chính "Mở ứng dụng" (viên thuốc, màu accent tím) dẫn sang ứng dụng học, cùng họ màu với ứng dụng học. Ghi chú lỗi ảnh: khối thân thụt vào so với dải tiêu đề (chữ bắt đầu ở x=112 ở 1440, trong khi tiêu đề ở x=32); ở 390 thì thẳng lề. Nút chính vẽ nền tím nhạt với chữ đen.
 Luật: `surface-layering` (một nút chính), `theme-and-type` (accent là tín hiệu của nút chính).
 Grammar: `Button intent="commit" href` (`leaf/Button`).
 
@@ -31,8 +31,8 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920: khối thân (dòng mô tả và nút) thụt vào x=112 ở 1440 và x=352 ở 1920 trong khi dải thương hiệu và tiêu đề dính x=32; ba cột lề khác nhau, lệch trục.
+- 1440: khối thân (dòng mô tả và nút) thụt vào x=112 ở 1440 trong khi dải thương hiệu và tiêu đề dính x=32; ba cột lề khác nhau, lệch trục.
 - 390: thân thẳng lề với tiêu đề, nhưng nút "Mở ứng dụng" chỉ rộng bằng chữ, không có dấu hiệu là CTA chính của trang; nửa dưới màn hình trống.
-- 1440, 1920, 390, dải thương hiệu: chữ "starci-next" thường, nhỏ, không logo, không điều hướng; khác thương hiệu ứng dụng học (logo StarCi Next).
-- 1440, 1920, 390, tiêu đề "Chào mừng đến với starci-next" là lời chào mặc định, không nói sản phẩm là gì; dòng mô tả "Mọi thứ bạn cần đều ở trong ứng dụng." xám nhạt cỡ 14, tương phản thấp.
-- 1440, 1920: gần 80% chiều cao trang trống, nội dung dồn lên trên trái.
+- 1440, 390, dải thương hiệu: chữ "starci-next" thường, nhỏ, không logo, không điều hướng; khác thương hiệu ứng dụng học (logo StarCi Next).
+- 1440, 390, tiêu đề "Chào mừng đến với starci-next" là lời chào mặc định, không nói sản phẩm là gì; dòng mô tả "Mọi thứ bạn cần đều ở trong ứng dụng." xám nhạt cỡ 14, tương phản thấp.
+- 1440: gần 80% chiều cao trang trống, nội dung dồn lên trên trái.

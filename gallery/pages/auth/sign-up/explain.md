@@ -20,7 +20,7 @@ Grammar: `IdentityLockup` (`composite/IdentityLockup`); code `fe/apps/app/src/co
 
 ## Thẻ đăng ký (form)
 
-Vì sao: thẻ đăng ký là khung đăng nhập nên vẫn là thẻ (viền 1px, không bóng). Trong thẻ: tiêu đề "Tạo tài khoản", hai nút mạng xã hội viền, vạch "hoặc", ô email, ô mật khẩu kèm dòng gợi ý "Từ 6 đến 256 ký tự", ô nhập lại mật khẩu, hộp kiểm đồng ý điều khoản và MỘT nút chính "Đăng ký". Nút chính ở trạng thái tắt (nhạt) cho tới khi tích đồng ý, đúng với ảnh. Hộp kiểm chưa tích là ô vuông viền; khi tích mới dùng màu accent. Cuối thẻ "Đã có tài khoản? Đăng nhập". Ghi chú lỗi ảnh: dòng điều khoản ở 1440 và 1920 xuống dòng và để lại chữ "tư" mồ côi; ở 390 hộp kiểm nằm lệch xuống so với dòng đầu của nhãn.
+Vì sao: thẻ đăng ký là khung đăng nhập nên vẫn là thẻ (viền 1px, không bóng). Trong thẻ: tiêu đề "Tạo tài khoản", hai nút mạng xã hội viền, vạch "hoặc", ô email, ô mật khẩu kèm dòng gợi ý "Từ 6 đến 256 ký tự", ô nhập lại mật khẩu, hộp kiểm đồng ý điều khoản và MỘT nút chính "Đăng ký". Nút chính ở trạng thái tắt (nhạt) cho tới khi tích đồng ý, đúng với ảnh. Hộp kiểm chưa tích là ô vuông viền; khi tích mới dùng màu accent. Cuối thẻ "Đã có tài khoản? Đăng nhập". Ghi chú lỗi ảnh: dòng điều khoản ở 1440 xuống dòng và để lại chữ "tư" mồ côi; ở 390 hộp kiểm nằm lệch xuống so với dòng đầu của nhãn.
 Luật: `surface-layering` (thẻ chỉ cho vật thật, một nút chính), `theme-and-type` (ô trắng viền 1px, accent chỉ cho điều khiển đã chọn và nút chính).
 Grammar: `SurfaceCard measure="formCompact"`, `TextField`, `Checkbox`, `Button intent="commit" isDisabled`, `TextAction` (`fe/apps/app/src/components/blocks/AuthPanel/component.tsx`).
 
@@ -30,9 +30,9 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920: dòng điều khoản xuống dòng và để chữ "tư" mồ côi ở dòng hai; ở 390 dòng không còn mồ côi nhưng nhãn vẫn đậm và dài.
-- 1440, 1920, 390, hộp kiểm đồng ý: nhãn đậm ngang nhãn ô nhập, "Điều khoản sử dụng" và "Chính sách quyền riêng tư" không có dấu hiệu là liên kết (không gạch chân, không màu); hộp kiểm dính sát nút chính bên dưới (khoảng 12px) trong khi các ô khác cách nhau rộng hơn.
-- 1440, 1920, 390, dòng gợi ý "Từ 6 đến 256 ký tự": nhỏ hơn 12px và xám nhạt, tương phản thấp.
-- 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và ô nhập.
-- 1440, 1920, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám: nền tô thay vì viền 1px; nút ngôn ngữ trôi riêng ở góc phải.
-- 1440, 1920, 390, placeholder, "Hiện mật khẩu" xám nhạt cỡ 12, tương phản thấp; "Đăng nhập" ở cuối thẻ không gạch chân, như một nhãn đậm.
+- 1440: dòng điều khoản xuống dòng và để chữ "tư" mồ côi ở dòng hai; ở 390 dòng không còn mồ côi nhưng nhãn vẫn đậm và dài.
+- 1440, 390, hộp kiểm đồng ý: nhãn đậm ngang nhãn ô nhập, "Điều khoản sử dụng" và "Chính sách quyền riêng tư" không có dấu hiệu là liên kết (không gạch chân, không màu); hộp kiểm dính sát nút chính bên dưới (khoảng 12px) trong khi các ô khác cách nhau rộng hơn.
+- 1440, 390, dòng gợi ý "Từ 6 đến 256 ký tự": nhỏ hơn 12px và xám nhạt, tương phản thấp.
+- 1440, 390, thẻ: bo góc khoảng 24px lớn hơn nút và ô nhập.
+- 1440, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám: nền tô thay vì viền 1px; nút ngôn ngữ trôi riêng ở góc phải.
+- 1440, 390, placeholder, "Hiện mật khẩu" xám nhạt cỡ 12, tương phản thấp; "Đăng nhập" ở cuối thẻ không gạch chân, như một nhãn đậm.
