@@ -63,7 +63,8 @@ export class HarnessImportService {
         return reports
     }
 
-    private async store(item: HarnessStoreItem, version: string): Promise<HarnessImportReport["status"]> {
+    /** Stores one item as the live version of its key, or leaves it: `created`, `unchanged` or `refused` (the version holds other bytes). */
+    async store(item: HarnessStoreItem, version: string): Promise<HarnessImportReport["status"]> {
         const live: Array<ContentRow> = await this.entityManager.query(SELECT_PUBLISHED_ONE, [item.kind, item.key])
         if (live[0]?.content_hash === item.hash) return "unchanged"
         const sameVersion: Array<HashRow> = await this.entityManager.query(SELECT_VERSION_HASH, [

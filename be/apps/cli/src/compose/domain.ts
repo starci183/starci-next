@@ -2,7 +2,15 @@ import type { DynamicModule, Type } from "@nestjs/common"
 import { AttemptModule } from "@modules/domain/attempt"
 import { CareerModule } from "@modules/domain/career"
 import { EntitlementModule } from "@modules/domain/entitlement"
-import { HarnessModule } from "@modules/domain/harness"
+import {
+    HarnessBuildsSeedSet,
+    HarnessDocsSeedSet,
+    HarnessDoctorPacksSeedSet,
+    HarnessGuidesSeedSet,
+    HarnessModule,
+    HarnessProbesSeedSet,
+    HarnessTrapsSeedSet,
+} from "@modules/domain/harness"
 import { LessonModule, LessonSeedSet, LessonTopicSeedSet } from "@modules/domain/lesson"
 import { McpIndexModule } from "@modules/domain/mcp"
 import { NotificationModule } from "@modules/domain/notification"
@@ -33,7 +41,19 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     // The seed door of the `database` store (`cli data database`): the sets a pinned seed standard fills, each written by its own capability.
     DataSeedModule.register({
         isGlobal: true,
-        sets: [LessonSeedSet, LessonTopicSeedSet, ProjectCatalogSeedSet, ProjectProbesSeedSet, ProjectKitSeedSet],
+        sets: [
+            LessonSeedSet,
+            LessonTopicSeedSet,
+            ProjectCatalogSeedSet,
+            ProjectProbesSeedSet,
+            ProjectKitSeedSet,
+            HarnessBuildsSeedSet,
+            HarnessGuidesSeedSet,
+            HarnessDocsSeedSet,
+            HarnessProbesSeedSet,
+            HarnessDoctorPacksSeedSet,
+            HarnessTrapsSeedSet,
+        ],
     }),
     // The semantic index for `cli mcp reindex`: the embedder, the pgvector store and the harness content, without the relay or the lessons.
     McpIndexModule.register({
