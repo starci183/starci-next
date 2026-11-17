@@ -6,7 +6,6 @@ import {
     DataTable,
     FencedCodeBlock,
     Link,
-    Markdown,
     MermaidDiagram,
     Progress,
     Section,
@@ -15,6 +14,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { ChoiceCard } from "../ChoiceCard"
+import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
 import { HighlightedCode } from "../../branches/HighlightedCode"
 import type {
@@ -188,7 +188,7 @@ export const EssentialArticle = (props: ArticleProps) => {
                     {section.isLocked ? (
                         <Text tone="muted">{labels.article.locked}</Text>
                     ) : (
-                        <Markdown
+                        <RichMarkdown
                             source={section.markdown}
                             labels={labels.markdown}
                             renderCode={(code) => <LessonCode code={code} />}
@@ -209,7 +209,7 @@ export const EssentialPartIntro = (props: {
         {props.section.isLocked ? (
             <Text tone="muted">{props.labels.article.locked}</Text>
         ) : (
-            <Markdown
+            <RichMarkdown
                 source={props.section.markdown}
                 labels={props.labels.markdown}
                 renderCode={(code) => <LessonCode code={code} />}
@@ -464,7 +464,7 @@ export const EssentialApply = (props: ApplyProps) => {
             {challenge === undefined ? null : (
                 <Stack gap="section">
                     <Section title={challenge.heading} headingLevel={2}>
-                        <Markdown
+                        <RichMarkdown
                             source={challenge.brief}
                             labels={labels.markdown}
                             renderCode={(code) => <LessonCode code={code} />}

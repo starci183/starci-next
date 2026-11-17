@@ -1,4 +1,3 @@
-import { parseMarkdown } from "@/modules/markdown"
 import { ApiFailure, isForbidden } from "@/modules/failure"
 import type {
     ReviewAnswerPart,
@@ -71,7 +70,7 @@ export const answerPartsOf = (markdown: string): ReadonlyArray<ReviewAnswerPart>
     return sections
         .map((section) => ({ title: section.title, body: section.lines.join("\n").trim() }))
         .filter((section) => section.body !== "" || section.title !== undefined)
-        .map((section, index) => ({ id: `${index}`, title: section.title, blocks: parseMarkdown(section.body) }))
+        .map((section, index) => ({ id: `${index}`, title: section.title, markdown: section.body }))
 }
 
 /** The days until the next review of a grade. */

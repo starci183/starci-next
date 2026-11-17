@@ -1,4 +1,3 @@
-import { parseMarkdown } from "@/modules/markdown"
 import {
     CHALLENGE_LEVELS,
     LESSON_PHASES,
@@ -90,7 +89,6 @@ const sectionOf = (wire: LessonWire["sections"][number]): SectionView => ({
     phase: sectionPhaseOf(wire.phase),
     title: wire.title,
     isLocked: wire.locked,
-    blocks: wire.body === null ? [] : parseMarkdown(wire.body),
     markdown: wire.body ?? "",
     activities: wire.activities.map((activity) => activityOf(activity)),
 })
@@ -148,7 +146,6 @@ export const lessonOf = (wire: LessonWire): LessonView => ({
     difficulty: difficultyOf(wire.difficulty),
     minutes: wire.minutes,
     implementation: wire.implementation,
-    overview: parseMarkdown(wire.overview),
     overviewMarkdown: wire.overview,
     outcomes: wire.learningOutcomes,
     prerequisites: wire.prerequisites,

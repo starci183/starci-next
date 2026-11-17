@@ -1,5 +1,5 @@
-import { Markdown, Page, Pane, PaneGrid, PaneSection, Section, Stack } from "@starci/grammar/common"
-import { OutlineList, SlotView } from "@starci-next/ui"
+import { Page, Pane, PaneGrid, PaneSection, Section, Stack } from "@starci/grammar/common"
+import { OutlineList, RichMarkdown, SlotView } from "@starci-next/ui"
 import type { HarnessDocPageView, HarnessDocScreen } from "@/hooks/harnessDocs"
 
 /** Props for {@link HarnessDocBase}: the resolved screen of one article. */
@@ -26,7 +26,7 @@ const DocBody = (props: RegionProps) => (
                 headingLevel={2}
                 isLoading={props.isLoading}
             >
-                <Markdown source={section.markdown} labels={props.doc.props.common.markdown} />
+                <RichMarkdown source={section.markdown} labels={props.doc.props.common.markdown} />
             </Section>
         ))}
     </Stack>

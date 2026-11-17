@@ -1,5 +1,3 @@
-import type { MarkdownBlock } from "../MarkdownBody"
-
 /** The tone of a badge in the review screens. */
 export type ReviewTone = "neutral" | "accent" | "success" | "warning" | "danger" | "muted"
 
@@ -25,7 +23,7 @@ export type ReviewClozeView = {
 export type ReviewAnswerPart = {
     readonly id: string
     readonly title: string | undefined
-    readonly blocks: ReadonlyArray<MarkdownBlock>
+    readonly markdown: string
 }
 
 /** The revealed answer with the grade buttons. */
