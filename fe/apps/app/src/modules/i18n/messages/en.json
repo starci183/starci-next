@@ -2094,7 +2094,7 @@
     "progress": {
       "pageTitle": "Progress",
       "title": "Your progress",
-      "description": "Every number is read straight from Essentials, Harness, Projects and Review, never copied.",
+      "description": "Read from Essentials, Harness, Projects, Practice and Review",
       "unavailable": "This part could not be loaded.",
       "ribbon": {
         "label": "Progress summary",
@@ -2102,13 +2102,14 @@
         "streak": "Streak",
         "lessons": "Lessons done",
         "builds": "Builds done",
-        "days": "days"
+        "days": "days",
+        "accepted": "Accepted problems"
       },
       "essentials": {
         "title": "Essentials",
         "fact": "{done}/{total} lessons",
         "open": "Open Essentials",
-        "opener": "Opener: {before}/{answered} right at first, {after}/{answered} right after studying.",
+        "opener": "Opener answered right: {before}/{answered} before studying, {after}/{answered} after.",
         "openerNone": "No opener question answered yet.",
         "unlocked": "Open",
         "locked": "Needs Premium",
@@ -2136,8 +2137,8 @@
         "practising": "Practising",
         "none": "Not started",
         "doctorTitle": "Doctor",
-        "doctorPassed": "Passed {passed}/{total} probes",
-        "doctorFailed": "Failing, passed {passed}/{total} probes",
+        "doctorPassed": "{passed}/{total} checks passed",
+        "doctorFailed": "{passed}/{total} checks passed",
         "doctorNotRun": "Not run",
         "tool": {
           "claude": "Claude Code",
@@ -2161,14 +2162,14 @@
         "project": "{proved}/{total} concepts, {done}/{milestones} milestones",
         "empty": "No project yet.",
         "pitchTitle": "Projects come with Premium",
-        "pitchBody": "Projects grade your real work with signed CI. A concept counts as proved only when CI passes it, and becomes a CV line once the teacher signs.",
+        "pitchBody": "Projects grade your real work with signed CI.",
         "pitchCta": "See Premium"
       },
       "review": {
         "title": "Review",
         "open": "Open Review",
         "due": "Cards due",
-        "overdue": "Overdue",
+        "overdue": "overdue",
         "doneToday": "Reviewed today",
         "streak": "Current streak",
         "longest": "Longest streak",
@@ -2183,7 +2184,41 @@
         "concept": "Proved the concept {title}",
         "verified": "Verified: {title}",
         "harness": "Harness stage: {title}"
-      }
+      },
+      "descriptionFree": "Free plan",
+      "descriptionFirst": "Start today",
+      "loading": "Loading…",
+      "retry": "Try again",
+      "practice": {
+        "title": "Practice",
+        "open": "Open Practice",
+        "acceptedTerm": "Accepted problems",
+        "doing": "Patterns in progress",
+        "done": "Patterns done",
+        "accepted": "{done} problems Accepted",
+        "empty": "No patterns yet."
+      },
+      "firstVisit": {
+        "title": "Nothing to measure yet, and that is normal",
+        "text": "Every number here is work you really did. Study a lesson, solve a problem or review a card and the first one appears.",
+        "essentials": {
+          "title": "Essentials",
+          "text": "Study your first lesson"
+        },
+        "practice": {
+          "title": "Practice",
+          "text": "Solve your first problem"
+        },
+        "review": {
+          "title": "Review",
+          "text": "Pick your first deck"
+        }
+      },
+      "crumb": {
+        "label": "Breadcrumb",
+        "profile": "Profile"
+      },
+      "pageTitleShort": "Progress"
     }
   }
 }

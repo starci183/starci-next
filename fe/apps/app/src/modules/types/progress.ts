@@ -12,6 +12,9 @@ export type ProgressFigureView = {
 /** A link that ends the head row of a section. */
 export type ProgressLinkView = { readonly label: string; readonly href: string }
 
+/** One row of a progress list; a row with a percent draws a thin meter at its end. */
+export type ProgressRowView = ListRowData & { readonly percent?: number }
+
 /** One list section: its words, its rows and the line under it. */
 export type ProgressListView = {
     readonly id: string
@@ -19,7 +22,7 @@ export type ProgressListView = {
     readonly fact?: string
     readonly caption?: string
     readonly link?: ProgressLinkView
-    readonly rows: ReadonlyArray<ListRowData>
+    readonly rows: ReadonlyArray<ProgressRowView>
     readonly empty: string
 }
 
@@ -47,21 +50,37 @@ export type ProgressPageView = {
     readonly essentials: ProgressBlockView | null
     readonly harness: ProgressBlockView | null
     readonly projects: ProgressBlockView | null
+    readonly practice: ProgressBlockView | null
     readonly review: ProgressBlockView | null
     readonly activity: ReadonlyArray<ProgressActivityEntry>
+    /** Set when nothing has been measured yet: the invitation rows stand in for the sections. */
+    readonly firstVisit: ReadonlyArray<ListRowData> | null
+    /** The plan line under the page title: "Gói miễn phí" for a free learner, nothing for a subscriber. */
+    readonly isFree: boolean
 }
 
 /** The fixed words of the progress page. */
 export type ProgressLabels = {
     readonly title: string
     readonly description: string
+    readonly descriptionFree: string
+    readonly descriptionFirst: string
+    readonly loading: string
+    readonly crumbLabel: string
+    readonly crumbProfile: string
+    readonly crumbHref: string
+    readonly crumbSelf: string
     readonly ribbonLabel: string
     readonly essentialsTitle: string
     readonly harnessTitle: string
     readonly projectsTitle: string
+    readonly practiceTitle: string
     readonly reviewTitle: string
     readonly activityTitle: string
     readonly activityLabel: string
     readonly activityEmpty: string
     readonly unavailable: string
+    readonly retry: string
+    readonly firstVisitTitle: string
+    readonly firstVisitText: string
 }

@@ -85,3 +85,13 @@ export type { RemoveAvatarArgument, RemoveAvatarResult } from "./useMutateRemove
 export { MUTATE_BIND_HARNESS_BUILD_SWR_KEY, useMutateBindHarnessBuildSwr } from "./useMutateBindHarnessBuildSwr"
 export type { HarnessBuildBinding } from "./useMutateBindHarnessBuildSwr"
 export { MUTATE_PRACTICE_SOLUTION_SWR_KEY, useMutatePracticeSolutionSwr } from "./useMutatePracticeSolutionSwr"
+export { MUTATE_SET_CV_VISIBILITY_SWR_KEY, useMutateSetCvVisibilitySwr } from "./useMutateSetCvVisibilitySwr"
+export type { SetCvVisibilityArgument, SetCvVisibilityResult } from "./useMutateSetCvVisibilitySwr"
+export {
+    MUTATE_CLAIM_PRACTICE_EXPERIENCE_SWR_KEY,
+    useMutateClaimPracticeExperienceSwr,
+} from "./useMutateClaimPracticeExperienceSwr"
+export type {
+    ClaimPracticeExperienceArgument,
+    ClaimPracticeExperienceResult,
+} from "./useMutateClaimPracticeExperienceSwr"

@@ -10,7 +10,7 @@ const dueFigureOf = (t: ProgressTranslate, data: Review) => ({
     id: "due",
     term: t("review.due"),
     value: data.due,
-    ...(data.overdue > 0 ? { meta: `${t("review.overdue")}: ${data.overdue}` } : {}),
+    ...(data.overdue > 0 ? { meta: `${data.overdue} ${t("review.overdue")}` } : {}),
 })
 
 /** The Review part: the cards due and the streak, as figures. */

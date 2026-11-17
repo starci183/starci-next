@@ -1,18 +1,10 @@
-import type { ListRowData } from "@starci/grammar/common"
 import type { LearnerProgress } from "@/hooks/swr"
 import { HARNESS_ROUTES } from "@/modules/routes"
-import type { ProgressBlockView } from "@/modules/types"
-import {
-    proofBadgeOf,
-    type ProgressBadge,
-    type ProgressFormatter,
-    type ProgressTone,
-    type ProgressTranslate,
-} from "@/hooks/progressWords"
+import type { ProgressBlockView, ProgressRowView } from "@/modules/types"
+import { proofBadgeOf, type ProgressBadge, type ProgressTranslate } from "@/hooks/progressWords"
 
 type Harness = NonNullable<LearnerProgress["harness"]>
 type Doctor = Harness["doctor"][number]
-type Trial = Harness["trials"][number]
 
 /** The names of the tools the harness checks. */
 const toolNamesOf = (t: ProgressTranslate): Record<string, string> => ({
@@ -23,7 +15,7 @@ const toolNamesOf = (t: ProgressTranslate): Record<string, string> => ({
 /** The chip of a doctor verdict. */
 const doctorBadgeOf = (t: ProgressTranslate, doctor: Doctor): ProgressBadge => {
     if (doctor.verdict === "passed") return { label: t("harness.proved"), tone: "success", isDot: true }
-    if (doctor.verdict === "failed") return { label: t("harness.doctorFailedBadge"), tone: "danger", isDot: true }
+    if (doctor.verdict === "failed") return { label: t("harness.incomplete"), tone: "warning", isDot: true }
     return { label: t("harness.doctorNotRun"), tone: "muted", isDot: true }
 }
 
@@ -34,33 +26,9 @@ const doctorLineOf = (t: ProgressTranslate, doctor: Doctor): string => {
     return t("harness.doctorNotRun")
 }
 
-const TRIAL_TONES: Readonly<Record<string, ProgressTone>> = {
-    held: "success",
-    breached: "danger",
-    incomplete: "warning",
-}
-
-/** The chip of the newest trial of a trap. */
-const trialBadgeOf = (t: ProgressTranslate, trial: Trial): ProgressBadge => {
-    const words: Record<string, string> = {
-        held: t("harness.held"),
-        breached: t("harness.breached"),
-        incomplete: t("harness.incomplete"),
-    }
-    if (trial.verdict === null) return { label: t("harness.never"), tone: "muted", isDot: true }
-    return { label: words[trial.verdict] ?? trial.verdict, tone: TRIAL_TONES[trial.verdict] ?? "muted", isDot: true }
-}
-
-/** The line under a trial row: the tool and when it ran, or that it was never tried. */
-const trialLineOf = (t: ProgressTranslate, format: ProgressFormatter, trial: Trial): string => {
-    if (trial.tool === null || trial.at === null) return t("harness.never")
-    const tool = toolNamesOf(t)[trial.tool] ?? trial.tool
-    return t("harness.trialLine", { tool, when: format.relativeTime(new Date(trial.at)) })
-}
-
 /** The rows of the builds with their stage counts. */
-const buildRowsOf = (t: ProgressTranslate, builds: Harness["builds"]): ReadonlyArray<ListRowData> =>
-    builds.map((build): ListRowData => ({
+const buildRowsOf = (t: ProgressTranslate, builds: Harness["builds"]): ReadonlyArray<ProgressRowView> =>
+    builds.map((build): ProgressRowView => ({
         id: build.buildId,
         title: build.title,
         description: t("harness.build", {
@@ -71,44 +39,27 @@ const buildRowsOf = (t: ProgressTranslate, builds: Harness["builds"]): ReadonlyA
         badges: [proofBadgeOf(t, build.state)],
     }))
 
-/** The Harness part: the builds with their stages, the doctor verdict of each tool and the newest trial of each trap. */
-export const harnessOf = (
-    t: ProgressTranslate,
-    format: ProgressFormatter,
-    data: LearnerProgress["harness"],
-): ProgressBlockView | null => {
-    if (data === null) return null
+/** The rows of the doctor of each tool: how many checks passed, and whether the tool is proved. */
+const doctorRowsOf = (t: ProgressTranslate, doctors: Harness["doctor"]): ReadonlyArray<ProgressRowView> => {
     const tools = toolNamesOf(t)
+    return doctors.map((doctor): ProgressRowView => ({
+        id: `doctor-${doctor.tool}`,
+        title: `${t("harness.doctorTitle")} · ${tools[doctor.tool] ?? doctor.tool}`,
+        description: doctorLineOf(t, doctor),
+        badges: [doctorBadgeOf(t, doctor)],
+    }))
+}
+
+/** The Harness part: the builds with their stages, then the doctor verdict of each tool, in one list. */
+export const harnessOf = (t: ProgressTranslate, data: LearnerProgress["harness"]): ProgressBlockView | null => {
+    if (data === null) return null
     return {
         lists: [
             {
                 id: "harness-builds",
                 title: t("harness.title"),
-                fact: t("harness.fact", { done: data.buildsDone, total: data.buildsTotal }),
                 link: { label: t("harness.open"), href: HARNESS_ROUTES.hub },
-                rows: buildRowsOf(t, data.builds),
-                empty: t("harness.empty"),
-            },
-            {
-                id: "harness-doctor",
-                title: t("harness.doctorTitle"),
-                rows: data.doctor.map((doctor): ListRowData => ({
-                    id: doctor.tool,
-                    title: tools[doctor.tool] ?? doctor.tool,
-                    description: doctorLineOf(t, doctor),
-                    badges: [doctorBadgeOf(t, doctor)],
-                })),
-                empty: t("harness.empty"),
-            },
-            {
-                id: "harness-trials",
-                title: t("harness.trialsTitle"),
-                rows: data.trials.map((trial): ListRowData => ({
-                    id: trial.trap,
-                    title: trial.title,
-                    description: trialLineOf(t, format, trial),
-                    badges: [trialBadgeOf(t, trial)],
-                })),
+                rows: [...buildRowsOf(t, data.builds), ...doctorRowsOf(t, data.doctor)],
                 empty: t("harness.empty"),
             },
         ],

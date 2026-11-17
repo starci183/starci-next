@@ -60,10 +60,7 @@ export const projectsOf = (t: ProgressTranslate, data: LearnerProgress): Progres
                         done: project.milestonesDone,
                         milestones: project.milestonesTotal,
                     }),
-                    action: {
-                        label: t("projects.open"),
-                        href: `${APP_ROUTES.projects}/${encodeURIComponent(project.projectId)}`,
-                    },
+                    href: `${APP_ROUTES.projects}/${encodeURIComponent(project.projectId)}`,
                 })),
                 empty: t("projects.empty"),
             },

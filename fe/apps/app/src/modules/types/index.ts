@@ -180,6 +180,7 @@ export type {
     ProgressLinkView,
     ProgressListView,
     ProgressPageView,
+    ProgressRowView,
 } from "./progress"
 export type {
     CiRunView,

@@ -2094,7 +2094,7 @@
     "progress": {
       "pageTitle": "Tiến độ",
       "title": "Tiến độ của bạn",
-      "description": "Mọi con số được đọc thẳng từ Bản chất, Harness, Dự án và Ôn tập, không lưu bản sao.",
+      "description": "Đọc từ Essentials, Harness, Projects, Luyện code và Ôn tập",
       "unavailable": "Chưa tải được phần này.",
       "ribbon": {
         "label": "Tóm tắt tiến độ",
@@ -2102,13 +2102,14 @@
         "streak": "Chuỗi ngày",
         "lessons": "Bài đã học",
         "builds": "Bản dựng đã xong",
-        "days": "ngày"
+        "days": "ngày",
+        "accepted": "Bài Accepted"
       },
       "essentials": {
-        "title": "Bản chất",
+        "title": "Essentials",
         "fact": "{done}/{total} bài",
-        "open": "Mở Bản chất",
-        "opener": "Câu mở bài: đúng {before}/{answered} lúc đầu, đúng {after}/{answered} sau khi học.",
+        "open": "Mở Essentials",
+        "opener": "Câu mở bài trả lời đúng: trước khi học {before}/{answered}, sau khi học {after}/{answered}.",
         "openerNone": "Chưa trả lời câu mở bài nào.",
         "unlocked": "Đã mở",
         "locked": "Cần Premium",
@@ -2136,8 +2137,8 @@
         "practising": "Đang luyện",
         "none": "Chưa bắt đầu",
         "doctorTitle": "Doctor",
-        "doctorPassed": "Đạt {passed}/{total} phép thử",
-        "doctorFailed": "Lỗi, đạt {passed}/{total} phép thử",
+        "doctorPassed": "{passed}/{total} kiểm tra qua",
+        "doctorFailed": "{passed}/{total} kiểm tra qua",
         "doctorNotRun": "Chưa chạy",
         "tool": {
           "claude": "Claude Code",
@@ -2161,14 +2162,14 @@
         "project": "{proved}/{total} khái niệm, {done}/{milestones} cột mốc",
         "empty": "Chưa có dự án nào.",
         "pitchTitle": "Dự án dành cho gói Premium",
-        "pitchBody": "Dự án chấm bài làm thật của bạn bằng CI có chữ ký. Khái niệm nào qua CI mới được tính là đã chứng minh, và thành dòng CV khi thầy ký.",
+        "pitchBody": "Dự án chấm bài làm thật bằng CI có chữ ký.",
         "pitchCta": "Xem Premium"
       },
       "review": {
         "title": "Ôn tập",
         "open": "Mở Ôn tập",
         "due": "Thẻ đến hạn",
-        "overdue": "Quá hạn",
+        "overdue": "quá hạn",
         "doneToday": "Đã ôn hôm nay",
         "streak": "Chuỗi hiện tại",
         "longest": "Chuỗi dài nhất",
@@ -2183,7 +2184,41 @@
         "concept": "Chứng minh khái niệm {title}",
         "verified": "Được xác minh: {title}",
         "harness": "Giai đoạn Harness: {title}"
-      }
+      },
+      "descriptionFree": "Gói miễn phí",
+      "descriptionFirst": "Bắt đầu hôm nay",
+      "loading": "Đang tải…",
+      "retry": "Thử lại",
+      "practice": {
+        "title": "Luyện code",
+        "open": "Mở Luyện code",
+        "acceptedTerm": "Bài Accepted",
+        "doing": "Pattern đang làm",
+        "done": "Pattern đã xong",
+        "accepted": "{done} bài Accepted",
+        "empty": "Chưa có pattern nào."
+      },
+      "firstVisit": {
+        "title": "Chưa có gì để đo, và đó là bình thường",
+        "text": "Mọi con số ở đây là việc bạn làm thật. Học một bài, luyện một bài hoặc ôn một thẻ là có số đầu tiên.",
+        "essentials": {
+          "title": "Essentials",
+          "text": "Học bài đầu tiên"
+        },
+        "practice": {
+          "title": "Luyện code",
+          "text": "Làm bài đầu tiên"
+        },
+        "review": {
+          "title": "Ôn tập",
+          "text": "Chọn bộ thẻ đầu tiên"
+        }
+      },
+      "crumb": {
+        "label": "Đường dẫn",
+        "profile": "Hồ sơ"
+      },
+      "pageTitleShort": "Tiến độ"
     }
   }
 }
