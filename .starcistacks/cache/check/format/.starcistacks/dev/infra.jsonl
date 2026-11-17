@@ -1,3 +1,0 @@
-{"findings":[],"hash":"56fcc771e7ab98326c4253008fe4eea54052846851749a66df7771ed005073b8","path":".starcistacks/dev/infra/compose/Caddyfile","step":"prettier"}
-{"findings":[],"hash":"1beeb78111e5c719821810c8701f5f4689468ad992f907ee04cf4408f88fb85a","path":".starcistacks/dev/infra/compose/compose.yaml","step":"prettier"}
-{"findings":[],"hash":"80eb9407c2088de896ca78b5a6f94d6f3cd1d1657df7b2b01ff9044b2ce07f18","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"prettier"}

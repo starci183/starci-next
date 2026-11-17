@@ -29,7 +29,7 @@ type CatalogToolbarProps = {
     readonly onProvider: (id: string) => void
 }
 
-/** One select of the toolbar: a small field named and prefixed by its label, its empty choice meaning every option. */
+/** One select of the toolbar: a compact pill named by its hidden label that keeps its content width, its empty choice meaning every option. */
 const ToolbarSelect = (props: {
     readonly label: string
     readonly options: ReadonlyArray<CatalogOption>
@@ -39,8 +39,7 @@ const ToolbarSelect = (props: {
     <Select
         label={props.label}
         isLabelHidden
-        size="sm"
-        prefix={props.label}
+        appearance="compact"
         options={props.options}
         value={props.value}
         onValueChange={(id) => props.onChange(id ?? "")}
