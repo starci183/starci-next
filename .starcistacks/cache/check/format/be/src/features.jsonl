@@ -1105,7 +1105,7 @@
 {"findings":[],"hash":"f80d9710392e3185f4b95d23f67f49489d8c3d0080c409fd2cfbadc62697d09f","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"271dc272982ba1c92e07fb9c76daac605414980390ddc51e8d15759910c0ed24","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.module.ts","step":"prettier"}
 {"findings":[],"hash":"487998096b19c0b1631620017a042c817840d6634688ee5dc685563cdff0e02e","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink-http.options.ts","step":"prettier"}
-{"findings":[],"hash":"e3245b405ec09a58dfc10ccf2738421e9885e4c99e71b921b0077b60ce2f4ac8","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink.webhook.spec.ts","step":"prettier"}
+{"findings":[],"hash":"4adf06f77ed860651d561a576a6ec6506c83c86a09689271c9cca7ef26ea277d","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink.webhook.spec.ts","step":"prettier"}
 {"findings":[],"hash":"738f7c7ed3c0d6cd90fbe14f036636e800eb7c18c015271294acb3b10b723b0d","path":"be/src/features/webhooks/probe-sink/transport/http/probe-sink.webhook.ts","step":"prettier"}
 {"findings":[],"hash":"bf6f5148281224b8bd434225377e0ff48477d41e88759f8911b1c946a2ca6abe","path":"be/src/features/webhooks/project-ci/index.ts","step":"prettier"}
 {"findings":[],"hash":"61fdbf2c4f86642c8910aa1cd39ef81e02b3f727f3ce625a8d2700306a6bab88","path":"be/src/features/webhooks/project-ci/transport/http/project-ci-http.module-definition.ts","step":"prettier"}

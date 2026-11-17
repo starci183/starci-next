@@ -1,1 +1,2 @@
 {"data":{"reads":{"files":[],"packages":[]},"result":{"apps":[],"findings":[],"loaded":[],"ok":true,"status":"skipped"}},"findings":[],"hash":"2a10f57bdb5e71f23c974f472f08166a489568b136188bc9ac8026890857b3db","path":"be","step":"boot-proof"}
+{"data":{"reads":{"files":[],"packages":[]},"result":{"apps":[],"findings":[],"loaded":[],"ok":true,"status":"skipped"}},"findings":[],"hash":"3053fc19005cefada87244d8387da27adaf77012e10c6864e7b768c736f36030","path":"be","step":"boot-proof"}

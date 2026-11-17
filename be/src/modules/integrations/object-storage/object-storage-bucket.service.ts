@@ -5,6 +5,9 @@ import { ObjectStorageErrorCode } from "./errors/object-storage.error"
 import { InjectObjectStorage, InjectObjectStorageBucket } from "./object-storage.decorators"
 import { ObjectStorageLogEvent } from "./object-storage.log-events"
 
+const isUnavailable = (cause: unknown): boolean =>
+    typeof cause === "object" && cause !== null && "code" in cause && cause.code === ObjectStorageErrorCode.Unavailable
+
 @Injectable()
 /** Makes sure the app's bucket exists when a fresh store starts empty; an unreachable store is logged, never a reason to stop the boot. */
 export class ObjectStorageBucketService implements OnModuleInit {
@@ -19,7 +22,7 @@ export class ObjectStorageBucketService implements OnModuleInit {
         try {
             await this.storage.ensureBucket(this.bucket)
         } catch (cause) {
-            if ((cause as { code?: string }).code !== (ObjectStorageErrorCode.Unavailable as string)) throw cause
+            if (!isUnavailable(cause)) throw cause
             this.logger.error(ObjectStorageLogEvent.BucketUnconfirmed, cause, { bucket: this.bucket })
         }
     }

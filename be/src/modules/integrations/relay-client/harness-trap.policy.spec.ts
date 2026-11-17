@@ -24,7 +24,7 @@ describe("trap files of the content repository", () => {
     )
 
     it("reads the trap's own words in the asked language, and falls back to the other", () => {
-        const text = readFileSync(join(TRIALS, "red-test", "trap.yaml"), "utf8")
+        const text = TRAP_YAML
         const vi = trapOf(text, "vi")
         const en = trapOf(text, "en")
 
