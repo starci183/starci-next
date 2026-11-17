@@ -30,7 +30,7 @@
         }
       ],
       "patterns": ["webhooks", "realtime"],
-      "optionalSlots": ["be.contract.graphql", "be.contract.mcp-tools"]
+      "optionalSlots": ["be.contract.graphql", "be.contract.mcp-tools", "repo.i18n-dynamic-keys"]
     },
     "fe": {
       "apps": [

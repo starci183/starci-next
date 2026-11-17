@@ -471,7 +471,10 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         const prompts = (await client.listPrompts()).prompts.map((prompt) => prompt.name).sort()
         expect(prompts).toEqual(["explain_invariant", "fix_scenario", "review_interview", "why_scenario_red"])
 
-        const harness = await client.callTool({ name: "search_harness", arguments: { query: "HARNESSFREETEXT", mode: "keyword" } })
+        const harness = await client.callTool({
+            name: "search_harness",
+            arguments: { query: "HARNESSFREETEXT", mode: "keyword" },
+        })
         expect(harness.isError).toBeFalsy()
         assertClean(harness)
         const hidden = await client.callTool({

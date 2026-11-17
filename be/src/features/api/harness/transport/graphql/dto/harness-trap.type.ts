@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
-import { HarnessEstimateType } from "./harness-estimate.type"
+import { HarnessBudgetType } from "./harness-budget.type"
+import { HarnessTrapShortcutType } from "./harness-trap-shortcut.type"
 import { HarnessTrialResultType } from "./harness-trial-result.type"
 
 @ObjectType()
@@ -17,17 +18,25 @@ export class HarnessTrapType {
     @Field(() => String)
     title!: string
 
+    /** What the tool is asked to do. */
+    @Field(() => String)
+    brief!: string
+
     /** The prompt sent to the learner own agent. */
     @Field(() => String)
-    task!: string
+    prompt!: string
 
     /** The tools it runs with. */
     @Field(() => [String])
     tools!: Array<string>
 
-    /** The estimate, or null. */
-    @Field(() => HarnessEstimateType, { nullable: true })
-    estimate!: HarnessEstimateType | null
+    /** The budget of one run. */
+    @Field(() => HarnessBudgetType)
+    budget!: HarnessBudgetType
+
+    /** The shortcuts the observer flags. */
+    @Field(() => [HarnessTrapShortcutType])
+    shortcuts!: Array<HarnessTrapShortcutType>
 
     /** The newest result, or null. */
     @Field(() => HarnessTrialResultType, { nullable: true })

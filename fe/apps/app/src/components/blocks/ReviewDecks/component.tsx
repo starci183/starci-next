@@ -6,9 +6,9 @@ import {
     Cluster,
     Grid,
     Heading,
-    Link,
     NumberField,
     Page,
+    Section,
     Select,
     Stack,
     SurfaceCard,
@@ -80,7 +80,7 @@ const toneOf = (difficulty: string): "success" | "warning" | "danger" | "neutral
 
 /** The goal form: how many cards a day, from 5 to 50. */
 const GoalForm = (props: Pick<ReviewDecksBaseProps, "props" | "on">) => (
-    <SurfaceCard label={props.props.labels.goalTitle}>
+    <Section title={props.props.labels.goalTitle} headingLevel={2}>
         <Stack gap="row">
             <NumberField
                 label={props.props.labels.goalLabel}
@@ -99,7 +99,7 @@ const GoalForm = (props: Pick<ReviewDecksBaseProps, "props" | "on">) => (
             {props.props.goal.state === "saved" ? <Badge tone="success">{props.props.labels.goalSaved}</Badge> : null}
             {props.props.goal.state === "failed" ? <Text tone="muted">{props.props.labels.failed}</Text> : null}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** What one deck card needs. */
@@ -129,7 +129,8 @@ const Deck = (props: DeckProps) => (
             </Cluster>
             <Cluster gap="inline" wrap align="center">
                 <Button
-                    intent={props.deck.isAdded ? "alternative" : "commit"}
+                    intent="neutral"
+                    size="sm"
                     isPending={props.deck.isPending}
                     onPress={() => props.onToggle(props.deck.id)}
                 >
@@ -141,10 +142,10 @@ const Deck = (props: DeckProps) => (
     </SurfaceCard>
 )
 
-/** The aside: filters by path and by course, and the way back to today's review. */
+/** The aside: filters by path and by course, flat on the page; the way back to today's review is the breadcrumb. */
 const Rail = (props: ReviewDecksBaseProps) => (
     <Stack gap="region">
-        <SurfaceCard label={props.props.labels.asideTitle}>
+        <Section title={props.props.labels.asideTitle} headingLevel={2}>
             <Stack gap="row">
                 <ChoiceChips
                     label={props.props.labels.filterLabel}
@@ -160,10 +161,7 @@ const Rail = (props: ReviewDecksBaseProps) => (
                     onValueChange={(course) => props.on.setCourse(course ?? "all")}
                 />
             </Stack>
-        </SurfaceCard>
-        <Link variant="plain" href={props.props.todayHref}>
-            {props.props.labels.back}
-        </Link>
+        </Section>
     </Stack>
 )
 

@@ -1,4 +1,4 @@
-import { Cluster, Link, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Cluster, Link, Section, Stack, Text } from "@starci/grammar/common"
 
 /** One step of an open lab, with the official doc page it cites. */
 export type AgentLabStepRow = {
@@ -47,9 +47,9 @@ const stepsOf = (steps: ReadonlyArray<AgentLabStepRow>, sourceLabel: string) =>
 
 /** The labs of a track: one numbered row per mindset concept with the state of its lab; no lab text is invented while the teacher is still writing. */
 export const AgentLabGrid = (props: AgentLabGridProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.label}
+        title={props.label}
         empty={props.emptyLabel}
         {...(props.isLoading === true ? { isLoading: true } : {})}
         items={props.cells.map((cell, index) => {
@@ -63,5 +63,6 @@ export const AgentLabGrid = (props: AgentLabGridProps) => (
                 ...(detail === undefined ? {} : { detail }),
             }
         })}
+        headingLevel={2}
     />
 )

@@ -5,7 +5,7 @@ import type { QdrantConfig } from "@modules/integrations/qdrant"
 export interface McpEmbedOptions {
     /** The base address, `https://embed.starci.org/v1` for the shared host service or `http://localhost:11434/v1` for an own Ollama. */
     readonly url: string
-    /** The token of the service (`LOCAL_AI_API_KEY`, sealed), or null for a keyless server. */
+    /** The token of the service (`AI_API_KEY`, sealed), or null for a keyless server. */
     readonly apiKey: Secret | null
     /** The embedding model, `qwen3-embedding:8b` unless the environment names another. */
     readonly model: string

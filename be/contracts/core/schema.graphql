@@ -101,7 +101,7 @@ type AvatarUploadType {
 
 input BindHarnessBuildInput {
   buildId: String! @inputBounds(maxLength: 64)
-  projectId: String!
+  repository: String! @inputBounds(maxLength: 200)
 }
 
 input CheckRecallClozeInput {
@@ -234,9 +234,17 @@ input GradeRecallCardInput {
   revision: Int! @inputBounds(min: 1, max: 100000)
 }
 
+type HarnessBudgetType {
+  maxTurns: Int!
+  maxUsd: Float!
+  timeoutSec: Int!
+}
+
 type HarnessBuildBindingType {
+  audience: String!
+  bindingId: String!
   buildId: String!
-  projectId: String!
+  repository: String!
 }
 
 input HarnessBuildInput {
@@ -277,6 +285,7 @@ input HarnessDocInput {
 }
 
 type HarnessDocSummaryType {
+  minutes: Int
   order: Int!
   slug: String!
   summary: String!
@@ -284,6 +293,7 @@ type HarnessDocSummaryType {
 }
 
 type HarnessDocType {
+  minutes: Int
   order: Int!
   sections: [HarnessTextType!]!
   slug: String!
@@ -311,11 +321,6 @@ type HarnessE2eType {
   state: String!
 }
 
-type HarnessEstimateType {
-  outputTokensPerTurn: Int!
-  turns: Int!
-}
-
 input HarnessGuideInput {
   locale: String! = "vi"
   slug: String! @inputBounds(maxLength: 64)
@@ -323,6 +328,7 @@ input HarnessGuideInput {
 }
 
 type HarnessGuideSummaryType {
+  minutes: Int
   order: Int!
   slug: String!
   summary: String!
@@ -331,6 +337,7 @@ type HarnessGuideSummaryType {
 }
 
 type HarnessGuideType {
+  minutes: Int
   order: Int!
   probes: [HarnessProbeResultType!]!
   sections: [HarnessTextType!]!
@@ -383,8 +390,10 @@ type HarnessProbeResultType {
 }
 
 type HarnessRepositoryType {
+  audience: String!
+  bindingId: String
   bound: Boolean!
-  projectId: String
+  repository: String
 }
 
 type HarnessRuntimeType {
@@ -397,6 +406,7 @@ type HarnessRuntimeType {
 type HarnessShortcutType {
   blocked: Boolean!
   kind: String!
+  title: String
 }
 
 type HarnessStageType {
@@ -419,12 +429,19 @@ type HarnessTextType {
   title: String!
 }
 
+type HarnessTrapShortcutType {
+  id: String!
+  title: String!
+}
+
 type HarnessTrapType {
-  estimate: HarnessEstimateType
+  brief: String!
+  budget: HarnessBudgetType!
   id: String!
   last: HarnessTrialResultType
   order: Int!
-  task: String!
+  prompt: String!
+  shortcuts: [HarnessTrapShortcutType!]!
   title: String!
   tools: [String!]!
 }

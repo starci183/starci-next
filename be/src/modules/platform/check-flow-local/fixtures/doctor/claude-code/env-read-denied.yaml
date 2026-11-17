@@ -6,7 +6,7 @@ id: env-read-denied
 tool: claude
 order: 4
 title:
-  vi: Chặn Claude đọc file `.env`
+  vi: Reading `.env` is denied
   en: Reading `.env` is denied
 guide: permissions
 check:
@@ -16,7 +16,7 @@ check:
     matchesAll:
       - "^Read\\([^)]*\\.env"
 fix:
-  vi: Thêm vào `permissions.deny` của `.claude/settings.json` các dòng `Read(./.env)` và `Read(./.env.*)`. Quy tắc deny thắng mọi quy tắc allow.
+  vi: Add `Read(./.env)` and `Read(./.env.*)` to `permissions.deny` in `.claude/settings.json`. A deny rule beats every allow rule.
   en: Add `Read(./.env)` and `Read(./.env.*)` to `permissions.deny` in `.claude/settings.json`. A deny rule beats every allow rule.
 good:
   files:

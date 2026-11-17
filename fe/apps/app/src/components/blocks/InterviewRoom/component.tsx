@@ -5,9 +5,9 @@ import {
     Cluster,
     Grid,
     Page,
+    Section,
     Stack,
     Stepper,
-    SurfaceCard,
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -159,16 +159,16 @@ const Header = (props: Omit<BodyProps, "isLoading">) => (
 
 /** The step after the last question: send the whole interview to be graded once. */
 const Finish = (props: Pick<BodyProps, "props" | "on">) => (
-    <SurfaceCard label={props.props.labels.done}>
+    <Section title={props.props.labels.done} headingLevel={2}>
         <Button intent="commit" onPress={props.on.submit}>
             {props.props.labels.submit}
         </Button>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The way out of a session that no longer takes answers. */
 const Closed = (props: Pick<BodyProps, "props">) => (
-    <SurfaceCard treatment="soft" label={props.props.labels.closedTitle}>
+    <Section title={props.props.labels.closedTitle} headingLevel={2}>
         <Stack gap="row">
             <Text>{props.props.labels.closedDescription}</Text>
             <InterviewExitLinks
@@ -177,7 +177,7 @@ const Closed = (props: Pick<BodyProps, "props">) => (
                 second={{ label: props.props.labels.back, href: props.props.homeHref }}
             />
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /** The primary column: the header line, the conversation, the material to read and either the answer box or the way out. */
@@ -200,14 +200,14 @@ const Main = (props: BodyProps) => {
                 <Alert tone="informative" title={p.labels.grading} description={p.labels.gradingNote} />
             ) : null}
             {view.material.length === 0 || !view.isActive ? null : (
-                <SurfaceCard label={p.labels.material}>
+                <Section title={p.labels.material} headingLevel={2}>
                     <MarkdownBody
                         blocks={view.material}
                         diagramLabel={p.labels.diagram}
                         diagramErrorTitle={p.labels.diagramError}
                         isLoading={props.isLoading}
                     />
-                </SurfaceCard>
+                </Section>
             )}
             {p.isNoAnswer ? (
                 <Button intent="neutral" onPress={props.on.abandon}>
@@ -230,7 +230,7 @@ type RailProps = {
 /** The rail: the questions of the session with where the learner is, and the note on how the interview is graded. */
 const Rail = (props: RailProps) => (
     <Stack gap="region">
-        <SurfaceCard label={props.labels.progressTitle}>
+        <Section title={props.labels.progressTitle} headingLevel={2}>
             <Stepper
                 label={props.labels.progressTitle}
                 orientation="vertical"
@@ -244,10 +244,12 @@ const Rail = (props: RailProps) => (
                 currentStepId={props.view.currentId}
                 isLoading={props.isLoading}
             />
-        </SurfaceCard>
-        <SurfaceCard treatment="soft" label={props.labels.title}>
-            <Text size="sm">{props.labels.note}</Text>
-        </SurfaceCard>
+        </Section>
+        <Section title={props.labels.title} headingLevel={2}>
+            <Text size="sm" tone="muted">
+                {props.labels.note}
+            </Text>
+        </Section>
     </Stack>
 )
 

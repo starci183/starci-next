@@ -1,10 +1,11 @@
-<!-- Luồng e2e của StarCi (nháp do AI viết, status: draft, author: ai-placeholder). Đừng sửa khối starci-flow: CLI chạy đúng khối này. -->
+<!-- StarCi e2e flow (a draft written by an AI, status: draft, author: ai-placeholder). Do not edit the starci-flow block: the CLI runs exactly this block. -->
+
 # concept: cache-freshness
 
-Đọc (cache ấm), ghi một giá trị mới, đọc ngay: phải thấy giá trị mới; đọc thêm lần nữa: cùng kết quả.
+Read (warm cache), write a new value, read at once: the new value must show; read once more: the same result.
 
-Bạn khai: `endpoints.cache-freshness.endpoint` (endpoint ghi, ví dụ `PUT /profile`; luồng đọc bằng `GET` cùng path) và `body` có chỗ
-`{{value}}`, ví dụ `{"name":"{{value}}"}`: StarCi điền một giá trị mới mỗi lần chạy.
+You declare: `endpoints.cache-freshness.endpoint` (the write endpoint, for example `PUT /profile`; the flow reads with `GET` on the same path) and a `body` with a
+`{{value}}` slot, for example `{"name":"{{value}}"}`: StarCi fills a new value on each run.
 
 ```yaml starci-flow
 id: cache-freshness

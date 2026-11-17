@@ -1,4 +1,4 @@
-import { Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, Heading, Section, Stack, Text } from "@starci/grammar/common"
 import type { ReviewSessionLabels, ReviewSummaryScreen } from "../ReviewItemCard/types"
 
 /** What the end of the session needs. */
@@ -26,7 +26,7 @@ const Figure = (props: FigureProps) => (
 
 /** The end of the session: what was reviewed, the share remembered, the goal, what is left, and the way on. */
 export const ReviewSummaryCard = (props: ReviewSummaryCardProps) => (
-    <SurfaceCard label={props.labels.summaryTitle}>
+    <Section title={props.labels.summaryTitle} headingLevel={2}>
         <Stack gap="row">
             <Cluster gap="inline" wrap>
                 <Figure caption={props.labels.summaryReviewed} value={props.summary.reviewed} />
@@ -45,5 +45,5 @@ export const ReviewSummaryCard = (props: ReviewSummaryCardProps) => (
                 </Button>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

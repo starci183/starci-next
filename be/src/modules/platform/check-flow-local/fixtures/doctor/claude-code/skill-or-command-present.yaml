@@ -6,7 +6,7 @@ id: skill-or-command-present
 tool: claude
 order: 6
 title:
-  vi: Có ít nhất một skill hoặc command
+  vi: At least one skill or command exists
   en: At least one skill or command exists
 guide: skills-commands
 check:
@@ -19,7 +19,7 @@ check:
     exists: true
     minBytes: 40
 fix:
-  vi: Tạo `.claude/commands/review.md` (một prompt dùng lại, gọi bằng `/review`) hoặc `.claude/skills/<tên>/SKILL.md` có phần front matter `name` và `description`.
+  vi: Create `.claude/commands/review.md` (a reusable prompt, run with `/review`) or `.claude/skills/<name>/SKILL.md` with `name` and `description` in the front matter.
   en: Create `.claude/commands/review.md` (a reusable prompt, run with `/review`) or `.claude/skills/<name>/SKILL.md` with `name` and `description` in the front matter.
 good:
   files:

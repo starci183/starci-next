@@ -1,4 +1,4 @@
-import { Badge, Cluster, Grid, Heading, Link, Page, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Cluster, Link, Page, Section, Stack, Text } from "@starci/grammar/common"
 import {
     InterviewAttributeBars,
     InterviewExitLinks,
@@ -118,49 +118,49 @@ export type InterviewReportBaseProps = {
 
 type ReadyProps = { readonly view: ReportReadyView; readonly labels: InterviewReportLabels }
 
-/** The score header: the overall score and verdict, and the two pillars apart. */
+/** The score header: the overall score and the two pillars apart, as one ribbon of figures on the surface, then the delta and the fallback note. */
 const ScoreHeader = (props: ReadyProps) => (
-    <SurfaceCard label={props.labels.overall}>
-        <Stack gap="row">
-            <Cluster gap="inline" wrap align="center">
-                <Heading level={2} scale="standard">
-                    {props.view.overall}
-                </Heading>
-                <Text tone="muted">{props.labels.outOf}</Text>
-                <Badge tone={props.view.tone}>{props.view.verdict}</Badge>
-            </Cluster>
-            <Grid kind="cards">
-                {props.view.pillars.map((pillar) => (
-                    <Stack key={pillar.label} gap="identity">
-                        <Text size="sm" tone="muted">
-                            {pillar.label}
-                        </Text>
-                        <Text isStrong>{pillar.score}</Text>
-                        <Badge tone={pillar.tone}>{pillar.verdict}</Badge>
-                    </Stack>
-                ))}
-            </Grid>
-            {props.view.delta === "" ? null : <Badge tone="muted">{props.view.delta}</Badge>}
-            {props.view.fallback === "" ? null : (
-                <Text size="sm" tone="muted">
-                    {props.view.fallback}
-                </Text>
-            )}
-        </Stack>
-    </SurfaceCard>
+    <Stack gap="row">
+        <Section
+            kind="figures"
+            ribbon
+            ariaLabel={props.labels.overall}
+            items={[
+                {
+                    id: "overall",
+                    term: props.labels.overall,
+                    value: props.view.overall,
+                    unit: props.labels.outOf,
+                    meta: props.view.verdict,
+                },
+                ...props.view.pillars.map((pillar) => ({
+                    id: pillar.label,
+                    term: pillar.label,
+                    value: pillar.score,
+                    meta: pillar.verdict,
+                })),
+            ]}
+        />
+        {props.view.delta === "" ? null : <Badge tone="muted">{props.view.delta}</Badge>}
+        {props.view.fallback === "" ? null : (
+            <Text size="sm" tone="muted">
+                {props.view.fallback}
+            </Text>
+        )}
+    </Stack>
 )
 
 /** What to keep and what to study again, each gap with its Essentials lessons. */
 const Summary = (props: ReadyProps) => (
     <Stack gap="region">
-        <SurfaceCard label={props.labels.strengthsTitle}>
+        <Section title={props.labels.strengthsTitle} headingLevel={2}>
             <Stack gap="inline">
                 {props.view.strengths.map((each) => (
                     <Text key={each}>{each}</Text>
                 ))}
             </Stack>
-        </SurfaceCard>
-        <SurfaceCard label={props.labels.gapsTitle}>
+        </Section>
+        <Section title={props.labels.gapsTitle} headingLevel={2}>
             <Stack gap="section">
                 {props.view.gaps.length === 0 && props.view.looseGaps === "" ? (
                     <Text tone="muted">{props.labels.gapsEmpty}</Text>
@@ -183,7 +183,7 @@ const Summary = (props: ReadyProps) => (
                     </Text>
                 )}
             </Stack>
-        </SurfaceCard>
+        </Section>
     </Stack>
 )
 

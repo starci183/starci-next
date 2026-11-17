@@ -1,13 +1,6 @@
 import { join } from "node:path"
 import type { CheckRun, CliIo } from "./relay-client.contracts"
-import {
-    ARCHIVE_NAME,
-    dropArchive,
-    hasFolder,
-    makeFolder,
-    removeFolder,
-    writeArchive,
-} from "./lesson-files.adapter"
+import { ARCHIVE_NAME, dropArchive, hasFolder, makeFolder, removeFolder, writeArchive } from "./lesson-files.adapter"
 import { ARCHIVE_MAX_BYTES, archiveRefusal, hashHolds } from "./source-archive.policy"
 import type { RelaySession } from "./task-run.cli"
 
@@ -51,7 +44,9 @@ export const unpackSource = async (io: CliIo, session: RelaySession, plan: Sourc
     const answer = await io.download(from.url, from.bearer)
     if (answer.status !== 200) {
         io.err(
-            answer.status === 0 ? "StarCi could not be reached." : `The ${noun} source was refused (HTTP ${answer.status}).`,
+            answer.status === 0
+                ? "StarCi could not be reached."
+                : `The ${noun} source was refused (HTTP ${answer.status}).`,
         )
         return false
     }
@@ -79,7 +74,8 @@ export const unpackSource = async (io: CliIo, session: RelaySession, plan: Sourc
             ? archiveRefusal(names.output, types.output)
             : "tar could not read it"
     if (refusal !== null) return failed(`Not unpacked: ${refusal}.`)
-    if ((await step(`tar -xzf ${ARCHIVE_NAME}`)).exitCode !== 0) return failed(`tar could not unpack the ${noun} source.`)
+    if ((await step(`tar -xzf ${ARCHIVE_NAME}`)).exitCode !== 0)
+        return failed(`tar could not unpack the ${noun} source.`)
     dropArchive(target)
     if (!hasFolder(join(target, dir))) return failed(`The source has no folder ${dir}; nothing was selected.`)
     plan.prepare?.(target)

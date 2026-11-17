@@ -1,4 +1,4 @@
-import { EmptyNotice, Stack, SurfaceCard } from "@starci/grammar/common"
+import { EmptyNotice, Section, Stack } from "@starci/grammar/common"
 
 /** One lesson row of the incident list, already in words. */
 export type IncidentRowView = {
@@ -37,10 +37,10 @@ export const IncidentGroups = (props: IncidentGroupsProps) =>
     ) : (
         <Stack gap="region">
             {props.groups.map((group) => (
-                <SurfaceCard
+                <Section
                     key={group.id}
                     kind="list"
-                    label={group.label}
+                    title={group.label}
                     empty={props.emptyLabel}
                     {...(props.isLoading === true ? { isLoading: true } : {})}
                     items={group.rows.map((row) => ({
@@ -50,6 +50,7 @@ export const IncidentGroups = (props: IncidentGroupsProps) =>
                         badges: [{ label: row.badge, tone: row.badgeTone }] as const,
                         ...(row.href === "" ? {} : { href: row.href, action: { label: row.cta, href: row.href } }),
                     }))}
+                    headingLevel={2}
                 />
             ))}
         </Stack>

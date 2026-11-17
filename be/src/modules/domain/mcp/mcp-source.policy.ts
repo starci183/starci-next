@@ -128,7 +128,8 @@ export const keywordHitsOf = (
         for (let index = 0; index < lines.length && hits.length < HITS_MAX; index += 1) {
             const line = lines[index] ?? ""
             const lower = line.toLowerCase()
-            if (terms.every((term) => lower.includes(term))) hits.push({ path: item.path, line: index + 1, text: hitTextOf(line) })
+            if (terms.every((term) => lower.includes(term)))
+                hits.push({ path: item.path, line: index + 1, text: hitTextOf(line) })
         }
         if (hits.length >= HITS_MAX) break
     }

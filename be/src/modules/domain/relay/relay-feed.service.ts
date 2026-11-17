@@ -14,7 +14,12 @@ import { milestoneIn, ProjectCheckSetService } from "@modules/domain/project"
 import { LessonContentService, LessonSourceService, type LessonSourcePack } from "@modules/domain/lesson"
 import { RelayLessonService, type LessonScenarioRunView } from "./relay-lesson.service"
 import { isHarnessTask } from "./relay-harness.policy"
-import { harnessBuildIdOfTask, harnessBuildManifestOf } from "./relay-harness-manifest.policy"
+import {
+    harnessBuildManifestOf,
+    harnessDoctorManifestOf,
+    harnessTargetOfTask,
+    harnessTrialManifestOf,
+} from "./relay-harness-manifest.policy"
 import {
     LESSON_SOURCE_MAX_BYTES,
     lessonIdOfTask,
@@ -24,7 +29,7 @@ import {
 } from "./relay-lesson-manifest.policy"
 import type {
     LearnerRunEvent,
-    ManifestHarnessBuild,
+    ManifestHarness,
     ManifestLesson,
     ManifestRequest,
     RelayUpload,
@@ -114,20 +119,43 @@ export class RelayFeedService {
      * The signed harness section of a `harness:build:<id>` task, or null for any other task. /harness is free for everyone, so no
      * entitlement is asked; an unknown build or a tarball the CLI could not take is HARNESS_NOT_FOUND.
      */
-    private async harnessSection(taskId: string): Promise<ManifestHarnessBuild | null> {
-        const buildId = harnessBuildIdOfTask(taskId)
-        if (buildId === null) return null
+    private async harnessSection(taskId: string): Promise<ManifestHarness | null> {
+        const target = harnessTargetOfTask(taskId)
+        if (target === null) return null
         if (this.harness === undefined) throw new HarnessError({ code: HarnessErrorCode.NotFound })
-        const build = (await this.harness.storedBuilds()).find((each) => each.id === buildId)
-        if (build === undefined) throw new HarnessError({ code: HarnessErrorCode.NotFound })
-        const pack = await this.harness.pack("build", buildId)
-        const section = harnessBuildManifestOf(build, {
+        const section = await this.harnessSectionOf(this.harness, target)
+        if (section === null) throw new HarnessError({ code: HarnessErrorCode.NotFound })
+        return section
+    }
+
+    private async harnessSectionOf(
+        harness: HarnessReadService,
+        target: NonNullable<ReturnType<typeof harnessTargetOfTask>>,
+    ): Promise<ManifestHarness | null> {
+        if (target.kind === "build") {
+            const build = (await harness.storedBuilds()).find((each) => each.id === target.key)
+            if (build === undefined) return null
+            const pack = await harness.pack("build", target.key)
+            return harnessBuildManifestOf(build, {
+                sha256: pack.sha256,
+                commit: pack.commit,
+                size: pack.content.length,
+            })
+        }
+        if (target.kind === "doctor") {
+            const pack = await harness.pack("doctor-pack", target.key)
+            return harnessDoctorManifestOf(target.key, {
+                sha256: pack.sha256,
+                commit: pack.commit,
+                size: pack.content.length,
+            })
+        }
+        const pack = await harness.pack("trap", target.key)
+        return harnessTrialManifestOf(target.key, {
             sha256: pack.sha256,
             commit: pack.commit,
             size: pack.content.length,
         })
-        if (section === null) throw new HarnessError({ code: HarnessErrorCode.NotFound })
-        return section
     }
 
     /** The signed lesson section of a lesson task, or null for any other task; refuses what the learner may not run. */

@@ -42,7 +42,7 @@ const SUMMARY: HarnessBuildSummaryView = {
 const BUILD: HarnessBuildView = {
     ...SUMMARY,
     runtime: { dir: "source", install: "npm ci", e2e: "npm run e2e", report: "report.xml" },
-    repository: { bound: false, projectId: null },
+    repository: { bound: false, repository: null, bindingId: null, audience: "starci-next" },
     stages: [
         stageOf("s1", "Loop", "proved", "2026-11-14T08:00:00.000Z"),
         stageOf("s2", "Tools", "practising", "2026-11-15T08:00:00.000Z"),
@@ -65,9 +65,11 @@ const trapOf = (id: string, verdict: string | null): HarnessTrapView => ({
     id,
     order: 1,
     title: id,
-    task: "task",
+    brief: "brief",
+    prompt: "prompt",
     tools: ["claude"],
-    estimate: null,
+    budget: { maxTurns: 10, maxUsd: 1, timeoutSec: 600 },
+    shortcuts: [],
     last:
         verdict === null
             ? null

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Alert, Button, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, Section, Stack, Text } from "@starci/grammar/common"
 
 /** The states of a session that has no scorecard to show. */
 export type InterviewReportNoticeKind = "grading" | "failed" | "notReady" | "abandoned"
@@ -40,13 +40,13 @@ type CardProps = {
 }
 
 const Card = (props: CardProps) => (
-    <SurfaceCard treatment="soft" label={props.title}>
+    <Section title={props.title} headingLevel={2}>
         <Stack gap="row">
             <Text>{props.text}</Text>
             {props.extra}
             {props.action}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 /**

@@ -50,7 +50,13 @@ export const probeFlowOf = (id: string, check: Record<string, unknown>): Record<
         ? null
         : {
               id,
-              steps: [{ id: "check", [key]: check[key], expect: [{ that: "status", eq: CHECK_PASSED, fail: "check-failed" }] }],
+              steps: [
+                  {
+                      id: "check",
+                      [key]: check[key],
+                      expect: [{ that: "status", eq: CHECK_PASSED, fail: "check-failed" }],
+                  },
+              ],
               pass: "check-passed",
           }
 }

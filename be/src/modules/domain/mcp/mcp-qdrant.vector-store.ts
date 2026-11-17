@@ -35,7 +35,10 @@ const HASHES_MAX = 600
  * point and the Postgres row and the Qdrant point can always be matched without a lookup.
  */
 export const pointIdOf = (scope: McpScope, hash: string): string => {
-    const bytes = createHash("sha256").update(`${scopeKeyOf(scope)}\u0000${hash}`).digest().subarray(0, 16)
+    const bytes = createHash("sha256")
+        .update(`${scopeKeyOf(scope)}\u0000${hash}`)
+        .digest()
+        .subarray(0, 16)
     bytes[6] = ((bytes[6] ?? 0) & 0x0f) | 0x50
     bytes[8] = ((bytes[8] ?? 0) & 0x3f) | 0x80
     const hex = bytes.toString("hex")

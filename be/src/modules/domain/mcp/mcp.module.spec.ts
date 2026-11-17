@@ -36,7 +36,14 @@ describe("McpModule", () => {
         const moduleRef = await Test.createTestingModule({
             imports: [
                 NeighboursModule,
-                McpModule.register({ isGlobal: true, tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null }),
+                McpModule.register({
+                    isGlobal: true,
+                    tokenLimit: 5,
+                    publicUrl: null,
+                    embed: null,
+                    harnessDir: null,
+                    qdrant: null,
+                }),
             ],
         }).compile()
 

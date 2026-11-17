@@ -6,7 +6,7 @@ id: worktree-usage-documented
 tool: claude
 order: 8
 title:
-  vi: Có ghi cách dùng git worktree
+  vi: Worktree usage is documented
   en: Worktree usage is documented
 guide: worktrees
 check:
@@ -15,7 +15,7 @@ check:
     exists: true
     matches: "git worktree"
 fix:
-  vi: Thêm mục "Worktrees" vào CLAUDE.md. Nói rõ mỗi việc chạy trong một worktree riêng (`git worktree add .worktrees/<tên> -b <nhánh>`), thư mục nằm ở đâu và dọn bằng `git worktree remove`.
+  vi: Add a "Worktrees" section to CLAUDE.md. Say that each task runs in its own worktree (`git worktree add .worktrees/<name> -b <branch>`), where the folder lives and how to clean up with `git worktree remove`.
   en: Add a "Worktrees" section to CLAUDE.md. Say that each task runs in its own worktree (`git worktree add .worktrees/<name> -b <branch>`), where the folder lives and how to clean up with `git worktree remove`.
 good:
   files:

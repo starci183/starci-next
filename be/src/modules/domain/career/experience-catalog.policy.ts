@@ -76,7 +76,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         itemType: "harness.build-proved",
         part: "harness",
         output: "cv-line",
-        requiresProject: true,
+        requiresProject: false,
         slots: ["build", "stages", "ci"],
         defenseQuestions: [],
     },

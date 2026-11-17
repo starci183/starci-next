@@ -42,6 +42,7 @@ component_management:
         - "be/src/modules/domain/attempt/**"
         - "be/src/modules/domain/career/**"
         - "be/src/modules/domain/entitlement/**"
+        - "be/src/modules/domain/harness/**"
         - "be/src/modules/domain/hub/**"
         - "be/src/modules/domain/identity/**"
         - "be/src/modules/domain/incident/**"
@@ -53,6 +54,8 @@ component_management:
         - "be/src/modules/domain/notification/**"
         - "be/src/modules/domain/path/**"
         - "be/src/modules/domain/practice/**"
+        - "be/src/modules/domain/profile/**"
+        - "be/src/modules/domain/progress/**"
         - "be/src/modules/domain/project/**"
         - "be/src/modules/domain/purchase/**"
         - "be/src/modules/domain/relay/**"
@@ -64,6 +67,7 @@ component_management:
         - "be/src/modules/integrations/mail/**"
         - "be/src/modules/integrations/payos/**"
         - "be/src/modules/integrations/probe/**"
+        - "be/src/modules/integrations/qdrant/**"
         - "be/src/modules/integrations/sepay/**"
     - component_id: platform
       name: platform

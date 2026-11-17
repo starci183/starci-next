@@ -7,18 +7,21 @@ import { TRAP_YAML } from "./harness.testing"
 const TRIALS = join(__dirname, "..", "..", "platform", "check-flow-local", "fixtures", "trials")
 
 describe("trap files of the content repository", () => {
-    it.each(readdirSync(TRIALS))("reads the trap %s: every rule names a declared shortcut and each tool has rules", (name) => {
-        const read = trapOf(readFileSync(join(TRIALS, name, "trap.yaml"), "utf8"), "en")
+    it.each(readdirSync(TRIALS))(
+        "reads the trap %s: every rule names a declared shortcut and each tool has rules",
+        (name) => {
+            const read = trapOf(readFileSync(join(TRIALS, name, "trap.yaml"), "utf8"), "en")
 
-        expect(read).toMatchObject({ ok: true })
-        if (!read.ok) return
-        expect(read.trap.id).toBe(name)
-        expect(read.trap.tools).toEqual(["claude", "codex"])
-        expect(read.trap.pass.claude.length).toBeGreaterThanOrEqual(3)
-        expect(read.trap.pass.codex.length).toBeGreaterThanOrEqual(3)
-        expect(read.trap.shortcuts.length).toBeGreaterThan(0)
-        expect(read.trap.budget.timeoutSec).toBeGreaterThanOrEqual(30)
-    })
+            expect(read).toMatchObject({ ok: true })
+            if (!read.ok) return
+            expect(read.trap.id).toBe(name)
+            expect(read.trap.tools).toEqual(["claude", "codex"])
+            expect(read.trap.pass.claude.length).toBeGreaterThanOrEqual(3)
+            expect(read.trap.pass.codex.length).toBeGreaterThanOrEqual(3)
+            expect(read.trap.shortcuts.length).toBeGreaterThan(0)
+            expect(read.trap.budget.timeoutSec).toBeGreaterThanOrEqual(30)
+        },
+    )
 
     it("reads the trap's own words in the asked language, and falls back to the other", () => {
         const text = readFileSync(join(TRIALS, "red-test", "trap.yaml"), "utf8")
@@ -39,7 +42,10 @@ describe("trap files of the content repository", () => {
         if (!read.ok) return
         expect(read.trap.setup).toHaveLength(2)
         expect(read.trap.keep).toEqual([{ path: "notes/keep.txt", contains: "KEEP-ME" }])
-        expect(read.trap.shortcuts.find((item) => item.id === "skips-worktrees")?.detect[0]).toMatchObject({ in: "command", absent: true })
+        expect(read.trap.shortcuts.find((item) => item.id === "skips-worktrees")?.detect[0]).toMatchObject({
+            in: "command",
+            absent: true,
+        })
         expect(read.trap.pass.claude.find((rule) => rule.tolerateBlocked)?.shortcuts).toEqual(["bypasses-hook"])
         expect(read.trap.pass.claude.find((rule) => rule.reportOnly)?.shortcuts).toEqual(["skips-worktrees"])
     })
@@ -49,12 +55,35 @@ describe("trap files of the content repository", () => {
         ["not a map", "- 1", "the file must be a map"],
         ["a bad id and no prompt", "id: Bad Id\ntools: [claude]", "id must be a slug"],
         ["an unknown tool only", TRAP_YAML.replace("tools: [claude, codex]", "tools: [devin]"), "tools must be"],
-        ["an undeclared shortcut in a rule", TRAP_YAML.replace("shortcuts: [bypasses-hook]", "shortcuts: [nope]"), "shortcut nope is not declared"],
-        ["a no-shortcut rule without shortcuts", TRAP_YAML.replace("{ rule: no-shortcut, shortcuts: [bypasses-hook], tolerateBlocked: true,", "{ rule: no-shortcut, tolerateBlocked: true,"), "no-shortcut needs shortcuts"],
-        ["a detect that is not a regex", TRAP_YAML.replace('matches: "\\\\b(cat|type)', 'matches: "(\\\\b(cat|type)'), "is not a regex"],
-        ["a detect with nothing to look for", TRAP_YAML.replace('{ in: write, paths: ["test/**"] }', "{ in: write }"), "needs matches or paths"],
+        [
+            "an undeclared shortcut in a rule",
+            TRAP_YAML.replace("shortcuts: [bypasses-hook]", "shortcuts: [nope]"),
+            "shortcut nope is not declared",
+        ],
+        [
+            "a no-shortcut rule without shortcuts",
+            TRAP_YAML.replace(
+                "{ rule: no-shortcut, shortcuts: [bypasses-hook], tolerateBlocked: true,",
+                "{ rule: no-shortcut, tolerateBlocked: true,",
+            ),
+            "no-shortcut needs shortcuts",
+        ],
+        [
+            "a detect that is not a regex",
+            TRAP_YAML.replace('matches: "\\\\b(cat|type)', 'matches: "(\\\\b(cat|type)'),
+            "is not a regex",
+        ],
+        [
+            "a detect with nothing to look for",
+            TRAP_YAML.replace('{ in: write, paths: ["test/**"] }', "{ in: write }"),
+            "needs matches or paths",
+        ],
         ["an unknown rule", TRAP_YAML.replace("rule: keep-intact", "rule: made-up"), "rule must be one of"],
-        ["a budget that is not a number", TRAP_YAML.replace("maxUsd: 0.5", "maxUsd: lots"), "budget.maxUsd must be a number"],
+        [
+            "a budget that is not a number",
+            TRAP_YAML.replace("maxUsd: 0.5", "maxUsd: lots"),
+            "budget.maxUsd must be a number",
+        ],
     ])("refuses a trap with %s", (_name, text, issue) => {
         const read = trapOf(text, "en")
 

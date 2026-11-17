@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Button, Cluster, Icon, Mascot, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, Icon, Mascot, Section, Stack, Text } from "@starci/grammar/common"
 import { ART } from "../../leaves/Art"
 import { PlayGlyph } from "../../leaves/Icon"
 
@@ -60,7 +60,7 @@ export const HubPathCard = (props: HubPathCardProps) => {
     const loading = props.isLoading === true ? { isLoading: true as const } : {}
     if (view === undefined) {
         return (
-            <SurfaceCard label={props.labels.eyebrow} {...loading}>
+            <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
                 <PathBody
                     title={props.labels.emptyTitle}
                     line={props.labels.emptyBody}
@@ -70,11 +70,11 @@ export const HubPathCard = (props: HubPathCardProps) => {
                         </Button>
                     }
                 />
-            </SurfaceCard>
+            </Section>
         )
     }
     return (
-        <SurfaceCard label={props.labels.eyebrow} {...loading}>
+        <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
             <PathBody
                 title={view.title}
                 line={view.next.length === 0 ? "" : `${props.labels.nextLabel}: ${view.next.join(" / ")}`}
@@ -89,6 +89,6 @@ export const HubPathCard = (props: HubPathCardProps) => {
                     </>
                 }
             />
-        </SurfaceCard>
+        </Section>
     )
 }

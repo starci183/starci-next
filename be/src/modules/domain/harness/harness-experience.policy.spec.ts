@@ -47,8 +47,8 @@ describe("buildExperienceOf", () => {
         ]
 
         expect(proved(BUILD, rows)).toBe(false)
-        expect(produce("learner", "project", BUILD, rows)).toBeNull()
-        expect(produce("learner", "project", BUILD, [])).toBeNull()
+        expect(produce("learner", BUILD, rows)).toBeNull()
+        expect(produce("learner", BUILD, [])).toBeNull()
     })
 
     it("grades a proved build as a pass with one signed-ci evidence per run and slots read from the proof only", async () => {
@@ -58,13 +58,13 @@ describe("buildExperienceOf", () => {
             proof("s2", "b", true, "run-2", "2026-11-17T02:00:00.000Z"),
         ]
 
-        const params = produce("learner", "project", BUILD, rows)
+        const params = produce("learner", BUILD, rows)
 
         expect(params).toMatchObject({
             learnerId: "learner",
             itemType: "harness.build-proved",
             subject: "agent-cli",
-            projectId: "project",
+            projectId: null,
             grade: { result: "pass" },
         })
         expect(params?.evidence.map((item) => [item.ref, item.proofForm])).toEqual([

@@ -29,7 +29,6 @@ export const isBuildProved = (build: StoredBuild, proofs: ReadonlyArray<HarnessP
  */
 export const buildExperienceOf = (
     learnerId: string,
-    projectId: string,
     build: StoredBuild,
     proofs: ReadonlyArray<HarnessProofRow>,
 ): ProduceExperienceParams | null => {
@@ -43,7 +42,7 @@ export const buildExperienceOf = (
         learnerId,
         itemType: HARNESS_BUILD_ITEM,
         subject: build.id,
-        projectId,
+        projectId: null,
         evidence: [...runs.values()].map((row) => ({
             kind: "ci-run",
             ref: row.runId,

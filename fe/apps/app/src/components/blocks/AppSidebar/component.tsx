@@ -42,7 +42,7 @@ export const AppSidebarBase = (props: AppSidebarBaseProps) => {
                               <Switch
                                   label={controls.themeLabel}
                                   isLabelHidden
-                                  size="control"
+                                  kind="toggle"
                                   isSelected={controls.isDark}
                                   onSelectedChange={controls.onChooseDark}
                                   thumbIcon={SunGlyph}

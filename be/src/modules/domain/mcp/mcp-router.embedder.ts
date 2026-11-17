@@ -18,7 +18,7 @@ export const localBaseUrlOf = (url: string): string => {
 
 @Injectable()
 /**
- * The embedder behind the port: `@starci/ai-router` `kind:"local"` (the token of the shared host service is read from the sealed `LOCAL_AI_API_KEY` at each call, never logged) serving `qwen3-embedding:8b` cut to 1024
+ * The embedder behind the port: `@starci/ai-router` `kind:"local"` (the token of the shared host service is read from the sealed `AI_API_KEY` at each call, never logged) serving `qwen3-embedding:8b` cut to 1024
  * dimensions by MRL truncation and L2-normalised, declared in code. Off when `MCP_EMBED_URL` is not declared; any failure
  * answers null so search falls back to keywords.
  */

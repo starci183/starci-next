@@ -1,12 +1,28 @@
 import { parse } from "yaml"
 import { isRecord } from "@modules/platform/primitives"
-import { HARNESS_TOOLS, type Detect, type HarnessTool, type PassRule, type Trap, type TrapShortcut } from "./harness-trial.contracts"
+import {
+    HARNESS_TOOLS,
+    type Detect,
+    type HarnessTool,
+    type PassRule,
+    type Trap,
+    type TrapShortcut,
+} from "./harness-trial.contracts"
 
 /** What reading a trap file answered. */
-export type TrapRead = { readonly ok: true; readonly trap: Trap } | { readonly ok: false; readonly issues: ReadonlyArray<string> }
+export type TrapRead =
+    { readonly ok: true; readonly trap: Trap } | { readonly ok: false; readonly issues: ReadonlyArray<string> }
 
 const SLUG = /^[a-z0-9][a-z0-9-]{0,63}$/u
-const RULES = ["verify-green", "protect-intact", "keep-intact", "no-shortcut", "committed", "committed-or-explained", "observed"]
+const RULES = [
+    "verify-green",
+    "protect-intact",
+    "keep-intact",
+    "no-shortcut",
+    "committed",
+    "committed-or-explained",
+    "observed",
+]
 const DETECT_IN = ["command", "read", "write", "diff", "message"]
 
 /** A localized text as one text: a plain string is both languages. */
@@ -21,7 +37,11 @@ export const localizedOf = (value: unknown, lang: string): string => {
 
 const texts = (value: unknown, at: string, issues: Array<string>, minimum = 0): ReadonlyArray<string> => {
     const list: ReadonlyArray<unknown> = Array.isArray(value) ? (value as ReadonlyArray<unknown>) : []
-    if (!Array.isArray(value) || list.length < minimum || !list.every((item) => typeof item === "string" && item !== "")) {
+    if (
+        !Array.isArray(value) ||
+        list.length < minimum ||
+        !list.every((item) => typeof item === "string" && item !== "")
+    ) {
         issues.push(`${at} must be a list of ${minimum > 0 ? "at least one " : ""}non-empty texts`)
         return []
     }
@@ -45,8 +65,12 @@ const detectOf = (raw: unknown, at: string, issues: Array<string>): Detect | nul
     const matches = typeof raw["matches"] === "string" && raw["matches"] !== "" ? raw["matches"] : undefined
     if (matches !== undefined && !regexOk(matches)) issues.push(`${at}.matches is not a regex`)
     const paths = raw["paths"] === undefined ? undefined : texts(raw["paths"], `${at}.paths`, issues, 1)
-    if (raw["in"] !== "message" && matches === undefined && paths === undefined) issues.push(`${at} needs matches or paths`)
-    const atLeast = typeof raw["atLeast"] === "number" && Number.isInteger(raw["atLeast"]) && raw["atLeast"] >= 1 ? raw["atLeast"] : undefined
+    if (raw["in"] !== "message" && matches === undefined && paths === undefined)
+        issues.push(`${at} needs matches or paths`)
+    const atLeast =
+        typeof raw["atLeast"] === "number" && Number.isInteger(raw["atLeast"]) && raw["atLeast"] >= 1
+            ? raw["atLeast"]
+            : undefined
     return {
         in: raw["in"] as Detect["in"],
         ...(matches === undefined ? {} : { matches }),
@@ -57,11 +81,19 @@ const detectOf = (raw: unknown, at: string, issues: Array<string>): Detect | nul
 }
 
 const shortcutOf = (raw: unknown, at: string, issues: Array<string>, lang: string): TrapShortcut | null => {
-    if (!isRecord(raw) || typeof raw["id"] !== "string" || !SLUG.test(raw["id"]) || !Array.isArray(raw["detect"]) || raw["detect"].length === 0) {
+    if (
+        !isRecord(raw) ||
+        typeof raw["id"] !== "string" ||
+        !SLUG.test(raw["id"]) ||
+        !Array.isArray(raw["detect"]) ||
+        raw["detect"].length === 0
+    ) {
         issues.push(`${at} needs an id and at least one detect`)
         return null
     }
-    const detect = (raw["detect"] as ReadonlyArray<unknown>).flatMap((item, index) => detectOf(item, `${at}.detect.${index}`, issues) ?? [])
+    const detect = (raw["detect"] as ReadonlyArray<unknown>).flatMap(
+        (item, index) => detectOf(item, `${at}.detect.${index}`, issues) ?? [],
+    )
     return { id: raw["id"], title: localizedOf(raw["title"], lang) || raw["id"], detect }
 }
 
@@ -94,7 +126,10 @@ export const trapOf = (text: string, lang: string): TrapRead => {
     try {
         raw = parse(text) as unknown
     } catch (cause) {
-        return { ok: false, issues: [cause instanceof Error ? (cause.message.split("\n")[0] ?? "not YAML") : "not YAML"] }
+        return {
+            ok: false,
+            issues: [cause instanceof Error ? (cause.message.split("\n")[0] ?? "not YAML") : "not YAML"],
+        }
     }
     if (!isRecord(raw) || Array.isArray(raw)) return { ok: false, issues: ["the file must be a map"] }
     const id = typeof raw["id"] === "string" && SLUG.test(raw["id"]) ? raw["id"] : ""
@@ -114,7 +149,9 @@ export const trapOf = (text: string, lang: string): TrapRead => {
     if (shortcuts.length === 0) issues.push("shortcuts must list at least one shortcut")
     const pass = isRecord(raw["pass"]) ? raw["pass"] : {}
     const rulesOf = (tool: HarnessTool): ReadonlyArray<PassRule> =>
-        (Array.isArray(pass[tool]) ? (pass[tool] as ReadonlyArray<unknown>) : []).flatMap((item, index) => ruleOf(item, `pass.${tool}.${index}`, issues, lang) ?? [])
+        (Array.isArray(pass[tool]) ? (pass[tool] as ReadonlyArray<unknown>) : []).flatMap(
+            (item, index) => ruleOf(item, `pass.${tool}.${index}`, issues, lang) ?? [],
+        )
     const rules = { claude: rulesOf("claude"), codex: rulesOf("codex") }
     HARNESS_TOOLS.forEach((tool) => {
         if (rules[tool].length === 0) issues.push(`pass.${tool} needs rules`)

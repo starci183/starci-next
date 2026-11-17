@@ -1,4 +1,4 @@
-import { Alert, Button, Cluster, Grid, Page, Select, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, Cluster, Grid, Page, Section, Select, Stack, Text } from "@starci/grammar/common"
 import { CatalogIntro, LockedNotice, PracticeList, SlotView, type PracticeRow } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -140,7 +140,7 @@ const Setup = (props: SetupProps) => {
     const { view, props: p } = props
     const { labels, state } = p
     return (
-        <SurfaceCard label={labels.setupTitle}>
+        <Section title={labels.setupTitle} headingLevel={2}>
             <Stack gap="region">
                 <Grid kind="form">
                     <Choice label={labels.track} options={view.tracks} value={state.track} onChange={props.on.track} />
@@ -157,7 +157,7 @@ const Setup = (props: SetupProps) => {
                 {state.issueWords === "" ? null : <Alert tone="negative" title={state.issueWords} />}
                 <Cluster gap="inline" wrap align="center">
                     <Button
-                        intent="commit"
+                        intent={view.active === null && !view.isLocked ? "commit" : "neutral"}
                         isPending={p.isStarting}
                         isDisabled={view.isLocked || !view.hasBanks || props.isLoading || p.isStarting}
                         onPress={props.on.start}
@@ -169,7 +169,7 @@ const Setup = (props: SetupProps) => {
                     </Text>
                 </Cluster>
             </Stack>
-        </SurfaceCard>
+        </Section>
     )
 }
 
@@ -182,7 +182,7 @@ type ResumeProps = {
 
 /** The card of a session left open: where to resume it and the way to abandon it. */
 const Resume = (props: ResumeProps) => (
-    <SurfaceCard treatment="soft" label={props.active.title}>
+    <Section title={props.active.title} headingLevel={2}>
         <Stack gap="row">
             <Text>{props.active.description}</Text>
             <Cluster gap="inline" wrap>
@@ -198,7 +198,7 @@ const Resume = (props: ResumeProps) => (
                 </Button>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )
 
 type HistoryProps = { readonly block: InterviewHistoryBlock; readonly labels: InterviewHomeLabels }
@@ -219,7 +219,7 @@ const History = (props: HistoryProps) => (
                     isLoading={isLoading}
                 />
                 {history.trend.length === 0 ? null : (
-                    <SurfaceCard label={props.labels.trendTitle}>
+                    <Section title={props.labels.trendTitle} headingLevel={2}>
                         <Stack gap="inline">
                             {history.trend.map((line) => (
                                 <Text key={line} size="sm">
@@ -227,7 +227,7 @@ const History = (props: HistoryProps) => (
                                 </Text>
                             ))}
                         </Stack>
-                    </SurfaceCard>
+                    </Section>
                 )}
             </Stack>
         )}
@@ -269,6 +269,7 @@ export const InterviewHomeBase = (props: InterviewHomeBaseProps) => (
                                 description={props.props.labels.lockedDescription}
                                 plansLabel={props.props.labels.plans}
                                 plansHref={props.props.plansHref}
+                                isPrimary={view.active === null}
                             />
                         ) : null}
                         <Setup view={view} props={props.props} on={props.on} isLoading={isLoading} />

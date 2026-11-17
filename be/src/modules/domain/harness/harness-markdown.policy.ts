@@ -25,9 +25,53 @@ export interface MarkdownSection {
     readonly body: string
 }
 
+/** The line the lesson standard puts between a field name and its value. */
+export const SEPARATOR = "<!-- @starci/seperator -->"
+
+/** The fields of a separator file (`# name`, value, `# name`, value...): the content standard of guides and docs. */
+const separatorFieldsOf = (text: string): Readonly<Record<string, string>> => {
+    const parts = text.split(SEPARATOR).map((part) => part.trim())
+    const fields: Record<string, string> = {}
+    for (let index = 0; index + 1 < parts.length; index += 1) {
+        const name = /^# ([A-Za-z]+)$/u.exec(parts[index] ?? "")?.[1]
+        if (name !== undefined) {
+            fields[name] = parts[index + 1] ?? ""
+            index += 1
+        }
+    }
+    return fields
+}
+
+const numberOf = (value: string | undefined): number | undefined => {
+    const parsed = Number(value)
+    return value !== undefined && value !== "" && Number.isFinite(parsed) ? parsed : undefined
+}
+
+/** The probe ids a `doctorProbes` field lists, one per line or comma separated, without the tool prefix (`claude-code/id`). */
+const probeIdsOf = (value: string | undefined): ReadonlyArray<string> =>
+    (value ?? "")
+        .split(/[\n,]/u)
+        .map((item) => item.trim().split("/").pop() ?? "")
+        .filter((item) => item !== "")
+
 /** Splits the front matter (`---` fenced yaml at the very start) from the text; an unreadable front matter is empty. */
 export const documentOf = (text: string): MarkdownDocument => {
     const normal = text.replace(/\r\n/gu, "\n")
+    if (normal.includes(SEPARATOR)) {
+        const fields = separatorFieldsOf(normal)
+        const order = numberOf(fields["sortIndex"])
+        const minutes = numberOf(fields["minutesRead"])
+        return {
+            meta: {
+                ...(fields["title"] === undefined ? {} : { title: fields["title"] }),
+                ...(fields["description"] === undefined ? {} : { summary: fields["description"] }),
+                ...(order === undefined ? {} : { order }),
+                ...(minutes === undefined ? {} : { minutes }),
+                probes: probeIdsOf(fields["doctorProbes"]),
+            },
+            body: fields["body"] ?? "",
+        }
+    }
     const match = /^---\n([\s\S]*?)\n---\n?/u.exec(normal)
     if (match === null) return { meta: {}, body: normal }
     try {
@@ -104,4 +148,43 @@ export const runBlocksOf = (body: string): ReadonlyArray<string> => {
         current.push(line)
     }
     return blocks
+}
+
+/**
+ * The headings of one level with no anchor, in order, with the text under each: the shape of a guide or doc written in the content
+ * standard (`## Title`), where the converter gives each section an id from its English title.
+ */
+export const titledSectionsOf = (body: string, level: number): ReadonlyArray<MarkdownSection> => {
+    const found: Array<{ title: string; lines: Array<string> }> = []
+    let fence: string | null = null
+    for (const line of body.split("\n")) {
+        const marker = FENCE.exec(line)
+        if (marker !== null) fence = fence === null ? (marker[1] ?? "") : line.startsWith(fence) ? null : fence
+        const heading = fence === null && marker === null ? /^(#{1,6})\s+(.+?)\s*$/u.exec(line) : null
+        if (heading !== null && (heading[1]?.length ?? 0) <= level) {
+            found.push({ title: (heading[1]?.length ?? 0) === level ? (heading[2] ?? "") : "", lines: [] })
+            continue
+        }
+        found[found.length - 1]?.lines.push(line)
+    }
+    return found
+        .filter((section) => section.title !== "")
+        .map((section) => ({
+            id: "",
+            title: section.title.replace(/\s*\{#[^}]*\}$/u, ""),
+            body: section.lines.join("\n").trim(),
+        }))
+}
+
+/** A slug of a heading: lower case ASCII words joined by dashes, at most 64 characters, `section` when nothing is left. */
+export const slugOf = (title: string): string => {
+    const slug = title
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/gu, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/gu, "-")
+        .replace(/^-+|-+$/gu, "")
+        .slice(0, 64)
+        .replace(/-+$/u, "")
+    return slug === "" ? "section" : slug
 }

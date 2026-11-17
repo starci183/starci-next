@@ -19,7 +19,8 @@ export interface HarnessContent {
 }
 
 /** What a command asks the content for. */
-export type ContentAsk = { readonly kind: "doctor"; readonly tool: HarnessTool } | { readonly kind: "trial"; readonly trap: string }
+export type ContentAsk =
+    { readonly kind: "doctor"; readonly tool: HarnessTool } | { readonly kind: "trial"; readonly trap: string }
 
 const firstExisting = (paths: ReadonlyArray<string>, marker: string): string | null =>
     paths.find((path) => existsSync(join(path, marker))) ?? null
@@ -45,7 +46,9 @@ export const harnessContentOf = async (
     if (data !== undefined) return checkoutContent(data)
     const read = sessionOf(io)
     if (read.kind === "unpaired") {
-        io.err("Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR), or pair this machine (starci-next login) to get the content from StarCi.")
+        io.err(
+            "Pass --from <a starci-next-data checkout> (or set STARCI_NEXT_DATA_DIR), or pair this machine (starci-next login) to get the content from StarCi.",
+        )
         return null
     }
     const { session } = read
@@ -53,7 +56,11 @@ export const harnessContentOf = async (
     const taskId = ask.kind === "doctor" ? `harness:doctor:${ask.tool}` : `harness:trial:${ask.trap}`
     const fetched = await fetchManifest(io, session, { taskId }, io.env.STARCI_NEXT_MANIFEST_KEY ?? "")
     if (fetched.kind !== "verified") {
-        io.err(fetched.kind === "refused" ? refusalLine(fetched) : "The manifest is not signed by StarCi; nothing was run.")
+        io.err(
+            fetched.kind === "refused"
+                ? refusalLine(fetched)
+                : "The manifest is not signed by StarCi; nothing was run.",
+        )
         return null
     }
     const { harness } = fetched.manifest
@@ -83,7 +90,11 @@ export const harnessContentOf = async (
     return {
         probesDir: (tool) =>
             firstExisting(
-                [join(target, "doctor", DOCTOR_FOLDERS[tool]), join(target, "doctor", tool), join(target, "raw", "harness", "doctor", DOCTOR_FOLDERS[tool])],
+                [
+                    join(target, "doctor", DOCTOR_FOLDERS[tool]),
+                    join(target, "doctor", tool),
+                    join(target, "raw", "harness", "doctor", DOCTOR_FOLDERS[tool]),
+                ],
                 ".",
             ),
         trapDir: (trap) => firstExisting([target, join(target, "raw", "harness", "trials", trap)], "trap.yaml"),

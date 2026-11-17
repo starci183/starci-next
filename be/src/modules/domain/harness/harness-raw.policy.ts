@@ -7,11 +7,14 @@ import {
     firstTitleOf,
     runBlocksOf,
     sectionsOf,
+    slugOf,
+    titledSectionsOf,
     type MarkdownSection,
 } from "./harness-markdown.policy"
 import {
     HARNESS_LOCALES,
     HARNESS_TOOLS,
+    type HarnessBudget,
     type HarnessBuildRecord,
     type HarnessConverted,
     type HarnessDocRecord,
@@ -24,6 +27,7 @@ import {
     type HarnessProbeRecord,
     type HarnessRawFile,
     type HarnessSectionRecord,
+    type HarnessShortcut,
     type HarnessStageRecord,
     type HarnessStepRecord,
     type HarnessTool,
@@ -113,6 +117,25 @@ const sectionOf = (
     run: ReadonlyArray<string>,
 ): HarnessSectionRecord => ({ id, order, title, body, run })
 
+/** Gives the sections of a guide written in the content standard their ids: the slug of the English title, made unique. */
+const unanchoredOf = (
+    sections: Record<HarnessLocale, ReadonlyArray<MarkdownSection>>,
+): Record<HarnessLocale, ReadonlyArray<MarkdownSection>> => {
+    const taken = new Map<string, number>()
+    const ids = sections.en.map((section) => {
+        const base = slugOf(section.title)
+        const seen = taken.get(base) ?? 0
+        taken.set(base, seen + 1)
+        return seen === 0 ? base : `${base}-${String(seen + 1)}`
+    })
+    const withIds = (list: ReadonlyArray<MarkdownSection>): ReadonlyArray<MarkdownSection> =>
+        list.map((section, index) => ({ ...section, id: ids[index] ?? section.id }))
+    return {
+        vi: sections.vi.length === sections.en.length ? withIds(sections.vi) : sections.vi,
+        en: withIds(sections.en),
+    }
+}
+
 /** Reads both locale files of a guide or a doc into sections; null when a file is missing or the two disagree. */
 const bothSectionsOf = (
     folder: string,
@@ -122,6 +145,7 @@ const bothSectionsOf = (
     readonly title: Localized
     readonly summary: Localized
     readonly order: number | null
+    readonly minutes: number | null
     readonly probes: ReadonlyArray<string>
     readonly sections: ReadonlyArray<HarnessSectionRecord>
 } | null => {
@@ -132,10 +156,14 @@ const bothSectionsOf = (
     })
     const [vi, en] = docs
     if (vi === null || vi === undefined || en === null || en === undefined) return null
-    const parsed: Record<HarnessLocale, ReadonlyArray<MarkdownSection>> = {
+    const anchored: Record<HarnessLocale, ReadonlyArray<MarkdownSection>> = {
         vi: sectionsOf(vi.body, 2),
         en: sectionsOf(en.body, 2),
     }
+    const parsed =
+        anchored.vi.length > 0 || anchored.en.length > 0
+            ? anchored
+            : unanchoredOf({ vi: titledSectionsOf(vi.body, 2), en: titledSectionsOf(en.body, 2) })
     const ids = parsed.vi.map((section) => section.id)
     if (ids.join("|") !== parsed.en.map((section) => section.id).join("|") || new Set(ids).size !== ids.length) {
         findings.add(
@@ -153,6 +181,7 @@ const bothSectionsOf = (
         title: { vi: titleOf(vi), en: titleOf(en) },
         summary: { vi: summaryOf(vi), en: summaryOf(en) },
         order: typeof order === "number" && Number.isFinite(order) ? order : null,
+        minutes: typeof vi.meta["minutes"] === "number" ? vi.meta["minutes"] : null,
         probes: stringsOf(vi.meta["probes"]) ?? [],
         sections: parsed.vi.map((section, index) =>
             sectionOf(
@@ -172,8 +201,9 @@ const guideOf = (
     entries: ReadonlyArray<Entry>,
     index: number,
     findings: Findings,
+    folder: string,
 ): HarnessGuideRecord | null => {
-    const read = bothSectionsOf(`guides/${tool}/${slug}`, entries, findings)
+    const read = bothSectionsOf(`guides/${folder}/${slug}`, entries, findings)
     if (read === null) return null
     return {
         tool,
@@ -181,6 +211,7 @@ const guideOf = (
         order: read.order ?? index + 1,
         title: read.title,
         summary: read.summary,
+        minutes: read.minutes,
         probes: read.probes,
         sections: read.sections,
         contentHash: filesHashOf(entries),
@@ -200,6 +231,7 @@ const docOf = (
         order: read.order ?? index + 1,
         title: read.title,
         summary: read.summary,
+        minutes: read.minutes,
         sections: read.sections,
         contentHash: filesHashOf(entries),
     }
@@ -368,42 +400,62 @@ const buildOf = (
     }
 }
 
-const reasonsOf = (value: unknown): Readonly<Record<string, Localized>> => {
-    if (!isRecord(value)) return {}
-    const pairs = Object.entries(value).flatMap(([code, hint]): Array<[string, Localized]> => {
-        const text = localizedOf(hint)
-        return text === null ? [] : [[code, text]]
-    })
-    return Object.fromEntries(pairs)
+/** The tool a content folder holds: `claude-code` and `claude` hold the Claude Code track, `codex` the Codex track. */
+const TOOL_FOLDERS: Readonly<Record<string, HarnessTool>> = {
+    "claude-code": "claude",
+    claude: "claude",
+    codex: "codex",
 }
 
-const probesOf = (tool: HarnessTool, entries: ReadonlyArray<Entry>, findings: Findings): Array<HarnessProbeRecord> => {
+const toolOfFolder = (folder: string): HarnessTool | null => TOOL_FOLDERS[folder] ?? null
+
+const probesOf = (
+    tool: HarnessTool,
+    folder: string,
+    entries: ReadonlyArray<Entry>,
+    findings: Findings,
+): Array<HarnessProbeRecord> => {
     const files = entries
         .filter((entry) => !entry.path.includes("/") && entry.path.endsWith(".yaml"))
         .sort((a, b) => a.path.localeCompare(b.path))
     const probes: Array<HarnessProbeRecord> = []
     for (const [index, file] of files.entries()) {
-        const path = `doctor/${tool}/${file.path}`
+        const path = `doctor/${folder}/${file.path}`
         const raw = yamlOf(file.text)
-        const fallback = file.path.replace(/\.yaml$/u, "")
-        const id = isRecord(raw) ? (textOf(raw["id"]) ?? fallback) : null
-        if (!isRecord(raw) || id === null || !HARNESS_ID.test(id)) {
-            findings.add(path, "HARNESS_PROBE_INVALID", "a probe is a yaml map with a kebab-case id")
+        const id = isRecord(raw) ? (textOf(raw["id"]) ?? file.path.replace(/\.yaml$/u, "")) : null
+        const title = isRecord(raw) ? localizedOf(raw["title"]) : null
+        const fix = isRecord(raw) ? localizedOf(raw["fix"]) : null
+        if (
+            !isRecord(raw) ||
+            id === null ||
+            !HARNESS_ID.test(id) ||
+            title === null ||
+            fix === null ||
+            !isRecord(raw["check"])
+        ) {
+            findings.add(
+                path,
+                "HARNESS_PROBE_INVALID",
+                "a probe is a yaml map with a kebab-case id, a title, a fix and one check",
+            )
+            continue
+        }
+        if (toolOfFolder(textOf(raw["tool"]) ?? "") !== tool) {
+            findings.add(path, "HARNESS_PROBE_INVALID", `the probe tool must be ${tool}, the tool of its folder`)
             continue
         }
         if (probes.some((probe) => probe.id === id)) {
             findings.add(path, "HARNESS_PROBE_INVALID", `probe id ${id} is used twice for ${tool}`)
             continue
         }
-        const label = localizedOf(raw["label"]) ?? { vi: id, en: id }
         const order = raw["order"]
         probes.push({
             id,
             tool,
             order: typeof order === "number" && Number.isFinite(order) ? order : index + 1,
-            label,
-            needs: stringsOf(raw["needs"]) ?? [],
-            reasons: reasonsOf(raw["reasons"]),
+            title,
+            guide: textOf(raw["guide"]),
+            fix,
             yaml: file.text,
         })
     }
@@ -424,6 +476,24 @@ export const globMatches = (glob: string, path: string): boolean => {
     return new RegExp(`^${source}$`, "u").test(path)
 }
 
+const budgetOf = (value: unknown): HarnessBudget | null => {
+    if (!isRecord(value)) return null
+    const { maxUsd, maxTurns, timeoutSec } = value
+    return typeof maxUsd === "number" && typeof maxTurns === "number" && typeof timeoutSec === "number"
+        ? { maxUsd, maxTurns, timeoutSec }
+        : null
+}
+
+const shortcutsOf = (value: unknown): ReadonlyArray<HarnessShortcut> | null => {
+    if (!Array.isArray(value) || value.length === 0) return null
+    const found = value.flatMap((item: unknown): Array<HarnessShortcut> => {
+        const id = isRecord(item) ? textOf(item["id"]) : null
+        const title = isRecord(item) ? localizedOf(item["title"]) : null
+        return id === null || title === null ? [] : [{ id, title }]
+    })
+    return found.length === value.length ? found : null
+}
+
 const trapOf = (
     id: string,
     entries: ReadonlyArray<Entry>,
@@ -437,22 +507,31 @@ const trapOf = (
         return null
     }
     const raw = yamlOf(text)
-    const label = isRecord(raw) ? localizedOf(raw["label"]) : null
-    const task = isRecord(raw) ? textOf(raw["task"]) : null
-    if (!isRecord(raw) || raw["id"] !== id || label === null || task === null || !isRecord(raw["test"])) {
+    const title = isRecord(raw) ? localizedOf(raw["title"]) : null
+    const brief = isRecord(raw) ? localizedOf(raw["brief"]) : null
+    const prompt = isRecord(raw) ? textOf(raw["prompt"]) : null
+    const budget = isRecord(raw) ? budgetOf(raw["budget"]) : null
+    const shortcuts = isRecord(raw) ? shortcutsOf(raw["shortcuts"]) : null
+    const verify = isRecord(raw) && isRecord(raw["verify"]) ? raw["verify"] : null
+    if (
+        !isRecord(raw) ||
+        raw["id"] !== id ||
+        title === null ||
+        brief === null ||
+        prompt === null ||
+        budget === null ||
+        shortcuts === null ||
+        verify === null ||
+        textOf(verify["command"]) === null
+    ) {
         findings.add(
             `${base}/trap.yaml`,
             "HARNESS_TRAP_INVALID",
-            "a trap needs id (the folder name), label, task and test",
+            "a trap needs id (the folder name), title, brief, prompt, budget, shortcuts and verify.command",
         )
         return null
     }
-    const tools = (stringsOf(raw["tools"]) ?? [...HARNESS_TOOLS]).filter((tool): tool is HarnessTool =>
-        HARNESS_TOOLS.some((known) => known === tool),
-    )
-    const estimate = raw["estimate"]
-    const turns = isRecord(estimate) ? estimate["turns"] : null
-    const per = isRecord(estimate) ? estimate["outputTokensPerTurn"] : null
+    const tools = (stringsOf(raw["tools"]) ?? []).flatMap((tool) => toolOfFolder(tool) ?? [])
     const files: Array<HarnessFile> = entries
         .filter((entry) => !isSkipped(entry.path))
         .map((entry) => ({ path: entry.path, text: entry.text }))
@@ -461,19 +540,41 @@ const trapOf = (
     return {
         id,
         order: typeof order === "number" && Number.isFinite(order) ? order : index + 1,
-        label,
-        task,
+        title,
+        brief,
+        prompt,
         tools: tools.length === 0 ? [...HARNESS_TOOLS] : tools,
-        estimate: typeof turns === "number" && typeof per === "number" ? { turns, outputTokensPerTurn: per } : null,
+        budget,
+        shortcuts,
         files,
         contentHash: filesHashOf(files),
     }
 }
 
+/** The folders of one kind under `prefix`, each with the tool it holds; a folder that holds none is a finding. */
+const toolGroupsOf = (
+    entries: ReadonlyArray<Entry>,
+    prefix: string,
+    findings: Findings,
+): ReadonlyArray<{ readonly tool: HarnessTool; readonly folder: string; readonly group: Array<Entry> }> =>
+    [...groupedBy(entries, prefix)].flatMap(([folder, group]) => {
+        const tool = toolOfFolder(folder)
+        if (tool === null) {
+            findings.add(
+                `${prefix}/${folder}`,
+                "HARNESS_TOOL_UNKNOWN",
+                `${folder} is not a tool folder (claude-code, claude or codex)`,
+            )
+            return []
+        }
+        return [{ tool, folder, group }]
+    })
+
 /**
  * Converts the `raw/harness/**` files of the content tree to the records the app stores (CONTRACT.md): builds (stages.yaml, the two
- * guides, `source/`, `e2e/`, `hidden/`), guides, docs, doctor probes with their packs, and trial traps. It is pure: files in, records
- * and findings out; the importer and the seed adapter both call it, and any finding refuses the import.
+ * guides, `source/`, `e2e/`, `hidden/`), guides and docs (the content standard with separator fields, or front matter with anchored
+ * sections), doctor probes with their packs, and trial traps. It is pure: files in, records and findings out; the importer and the
+ * seed adapter both call it, and any finding refuses the import.
  */
 export const convertRawHarness = (files: ReadonlyArray<HarnessRawFile>): HarnessConverted => {
     const findings = new Findings()
@@ -486,41 +587,46 @@ export const convertRawHarness = (files: ReadonlyArray<HarnessRawFile>): Harness
             const build = buildOf(id, group, index, findings)
             return build === null ? [] : [build]
         })
-    const guides: Array<HarnessGuideRecord> = []
-    const doctorPacks: Array<HarnessDoctorPackRecord> = []
     const probes: Array<HarnessProbeRecord> = []
-    for (const tool of HARNESS_TOOLS) {
-        const prefix = `guides/${tool}`
-        ;[...groupedBy(entries, prefix)]
+    const doctorPacks: Array<HarnessDoctorPackRecord> = []
+    for (const { tool, folder, group } of toolGroupsOf(entries, "doctor", findings)) {
+        probes.push(...probesOf(tool, folder, group, findings))
+        const packed = group
+            .filter((entry) => !isSkipped(entry.path))
+            .map((entry) => ({ path: `doctor/${folder}/${entry.path}`, text: entry.text }))
+            .sort((a, b) => a.path.localeCompare(b.path))
+        if (packed.length > 0) doctorPacks.push({ tool, files: packed, contentHash: filesHashOf(packed) })
+    }
+    const guides: Array<HarnessGuideRecord> = []
+    for (const { tool, folder } of toolGroupsOf(entries, "guides", findings)) {
+        ;[...groupedBy(entries, `guides/${folder}`)]
             .sort(([a], [b]) => a.localeCompare(b))
             .forEach(([slug, group], index) => {
-                const guide = HARNESS_ID.test(slug) ? guideOf(tool, slug, group, index, findings) : null
+                const guide = HARNESS_ID.test(slug) ? guideOf(tool, slug, group, index, findings, folder) : null
                 if (guide !== null) guides.push(guide)
             })
-        const doctor = entries
-            .filter((entry) => entry.path.startsWith(`doctor/${tool}/`) && !isSkipped(entry.path))
-            .map((entry) => ({ path: entry.path.slice(`doctor/${tool}/`.length), text: entry.text }))
-        probes.push(...probesOf(tool, doctor, findings))
-        if (doctor.length > 0)
-            doctorPacks.push({
-                tool,
-                files: [...doctor].sort((a, b) => a.path.localeCompare(b.path)),
-                contentHash: filesHashOf(doctor),
-            })
     }
-    for (const [name] of groupedBy(entries, "guides")) {
-        if (!HARNESS_TOOLS.some((tool) => tool === name))
-            findings.add(`guides/${name}`, "HARNESS_TOOL_UNKNOWN", `${name} is not a tool (claude or codex)`)
-    }
-    for (const guide of guides) {
+    const linked = guides.map((guide) => ({
+        ...guide,
+        probes: [
+            ...new Set([
+                ...guide.probes,
+                ...probes
+                    .filter((probe) => probe.tool === guide.tool && probe.guide === guide.slug)
+                    .map((probe) => probe.id),
+            ]),
+        ],
+    }))
+    for (const guide of linked) {
         const known = new Set(probes.filter((probe) => probe.tool === guide.tool).map((probe) => probe.id))
         const missing = guide.probes.filter((probe) => !known.has(probe))
-        if (missing.length > 0)
+        if (missing.length > 0) {
             findings.add(
                 `guides/${guide.tool}/${guide.slug}`,
                 "HARNESS_PROBE_UNKNOWN",
                 `unknown probe ids: ${missing.join(", ")}`,
             )
+        }
     }
     const docs = [...groupedBy(entries, "docs")]
         .sort(([a], [b]) => a.localeCompare(b))
@@ -534,7 +640,13 @@ export const convertRawHarness = (files: ReadonlyArray<HarnessRawFile>): Harness
             const trap = trapOf(id, group, index, findings)
             return trap === null ? [] : [trap]
         })
-    return { builds, guides, docs, probes, doctorPacks, traps, issues: findings.list }
+    // A probe that names a guide not written yet keeps no link instead of refusing the import: the guide may land in a later commit.
+    const linkedProbes = probes.map((probe) =>
+        probe.guide !== null && !linked.some((guide) => guide.tool === probe.tool && guide.slug === probe.guide)
+            ? { ...probe, guide: null }
+            : probe,
+    )
+    return { builds, guides: linked, docs, probes: linkedProbes, doctorPacks, traps, issues: findings.list }
 }
 
 /** Whether any file of the list belongs to the harness raw tree. */

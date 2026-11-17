@@ -1,4 +1,4 @@
-import { Button, Cluster, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, Section, Stack, Text, Textarea } from "@starci/grammar/common"
 
 /** The words of the answer box of an interview, resolved by its block. */
 export type InterviewComposerLabels = {
@@ -32,10 +32,11 @@ type InterviewComposerProps = {
 
 /** The answer box of the interview room: the text, send, a hint with the hints left, and skip. The one commit is the send. */
 export const InterviewComposer = (props: InterviewComposerProps) => (
-    <SurfaceCard label={props.labels.answer}>
+    <Section title={props.labels.answer} headingLevel={2}>
         <Stack gap="row">
             <Textarea
                 label={props.labels.answer}
+                isLabelHidden
                 name="interview-answer"
                 rows={6}
                 placeholder={props.labels.placeholder}
@@ -68,5 +69,5 @@ export const InterviewComposer = (props: InterviewComposerProps) => (
                 </Text>
             </Cluster>
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

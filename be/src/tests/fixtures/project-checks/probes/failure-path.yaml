@@ -1,14 +1,14 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
-# Body mẫu của học viên phải chứa {{message}} ở chỗ tin nhắn người dùng; probe gửi tin nhắn rỗng.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
+# The learner's sample body must hold {{message}} where the user message goes; the probe sends an empty message.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: failure-path
 label:
-  vi: Đường lỗi vẫn trả lời có kiểm soát
+  vi: The failure path still answers in control
   en: The failure path still answers in control
 question:
-  vi: "Khi công cụ hoặc model lỗi, agent trả gì cho người dùng và ghi gì vào log?"
+  vi: "When a tool or the model fails, what does the agent tell the user and what does it log?"
   en: "When a tool or the model fails, what does the agent tell the user and what does it log?"
 needs: [endpoint, sample, sample.message]
 vars:
@@ -21,10 +21,10 @@ steps:
 pass: graceful
 reasons:
   graceful:
-    vi: "Tin nhắn rỗng vẫn nhận phản hồi không phải 5xx."
+    vi: "An empty message still got a response that is not 5xx."
     en: "An empty message still got a response that is not 5xx."
   server-error:
-    vi: "Tin nhắn rỗng làm agent trả 5xx."
+    vi: "An empty message made the agent answer 5xx."
     en: "An empty message made the agent answer 5xx."
 fixtures:
   endpoint: POST /starci-test/agent

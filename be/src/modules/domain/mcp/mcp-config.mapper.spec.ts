@@ -34,7 +34,7 @@ describe("parseMcpConfig", () => {
 
     it("reads the token of the shared host embeddings service as a sealed secret", () => {
         const config = parseMcpConfig(
-            new EnvSource({ MCP_EMBED_URL: "https://embed.starci.org/v1", LOCAL_AI_API_KEY: "host-token" }),
+            new EnvSource({ MCP_EMBED_URL: "https://embed.starci.org/v1", AI_API_KEY: "host-token" }),
         )
         expect(config.embed?.url).toBe("https://embed.starci.org/v1")
         expect(config.embed?.apiKey?.reveal()).toBe("host-token")

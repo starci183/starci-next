@@ -1,6 +1,7 @@
 import type { DynamicModule, Type } from "@nestjs/common"
 import { SepayHttpModule } from "@features/webhooks/sepay"
 import { PayosHttpModule } from "@features/webhooks/payos"
+import { HarnessCiHttpModule } from "@features/webhooks/harness-ci"
 import { ProjectCiHttpModule } from "@features/webhooks/project-ci"
 import { ProbeSinkHttpModule } from "@features/webhooks/probe-sink"
 import { InboxModule } from "@modules/platform/inbox"
@@ -12,5 +13,6 @@ export const webhooksModules = (): Array<Type<unknown> | DynamicModule> => [
     SepayHttpModule.register({}),
     PayosHttpModule.register({}),
     ProjectCiHttpModule.register({}),
+    HarnessCiHttpModule.register({}),
     ProbeSinkHttpModule.register({}),
 ]

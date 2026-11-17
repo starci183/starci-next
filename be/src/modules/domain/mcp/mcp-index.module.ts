@@ -27,14 +27,19 @@ export class McpIndexModule extends ConfigurableModuleClass {
             ...base,
             imports: [
                 ...(base.imports ?? []),
-                ...(qdrant === null ? [] : [QdrantModule.register({ isGlobal: false, ...qdrant, payloadIndexes: MCP_PAYLOAD_INDEXES })]),
+                ...(qdrant === null
+                    ? []
+                    : [QdrantModule.register({ isGlobal: false, ...qdrant, payloadIndexes: MCP_PAYLOAD_INDEXES })]),
             ],
             providers: [
                 ...(base.providers ?? []),
                 McpVectorIndex,
                 McpHarnessService,
                 { provide: MCP_EMBEDDER, useClass: McpRouterEmbedder },
-                { provide: MCP_VECTOR_STORE, useClass: qdrant === null ? McpUnconfiguredVectorStore : McpQdrantVectorStore },
+                {
+                    provide: MCP_VECTOR_STORE,
+                    useClass: qdrant === null ? McpUnconfiguredVectorStore : McpQdrantVectorStore,
+                },
                 { provide: MCP_HARNESS_SOURCE, useClass: McpHarnessDiskSource },
             ],
             exports: [McpVectorIndex, McpHarnessService],

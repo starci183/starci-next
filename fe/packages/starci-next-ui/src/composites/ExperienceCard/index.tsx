@@ -1,4 +1,4 @@
-import { Link, SurfaceCard, type ListRowData } from "@starci/grammar/common"
+import { Link, Section, type ListRowData } from "@starci/grammar/common"
 import { ExperienceGlyph } from "../../leaves/Icon"
 import type { ExperienceRowView, ProjectDetailLabels } from "../ProjectAside/types"
 
@@ -11,12 +11,13 @@ type ExperienceCardProps = {
 
 /** The experience this project earned: one list card with a head link to the experience page. */
 export const ExperienceCard = (props: ExperienceCardProps) => (
-    <SurfaceCard
+    <Section
         kind="list"
-        label={props.labels.expTitle}
-        labelEnd={
-            <Link variant="head" href={props.labels.experienceHref}>
-                {props.labels.expLink}
+        title={props.labels.expTitle}
+        headingLevel={2}
+        action={
+            <Link variant="plain" href={props.labels.experienceHref}>
+                {`${props.labels.expLink} →`}
             </Link>
         }
         isLoading={props.isLoading}
