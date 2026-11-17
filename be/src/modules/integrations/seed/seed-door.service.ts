@@ -1,14 +1,8 @@
-import { writeSync } from "node:fs"
 import { createInterface } from "node:readline"
 import type { Readable, Writable } from "node:stream"
 import { Injectable } from "@nestjs/common"
 import { serveStore, type StoreAdapter } from "@starci/seed"
 import { InjectDatabaseStore } from "./seed.decorators"
-
-/** The file descriptor of the standard output. */
-const STDOUT_FD = 1
-
-const NEWLINE = "\n"
 
 @Injectable()
 /**
@@ -21,20 +15,13 @@ export class SeedDoorService {
 
     /** Serves one verb (`describe`, `export`, `import`, `identity`) and answers the exit code. */
     async serve(args: ReadonlyArray<string>, input: Readable, output: Writable): Promise<number> {
-        const answers: Array<string> = []
-        const code = await serveStore(this.store, {
+        // Every line serveStore writes carries the protocol mark, so the loader finds the answer among the logs the framework writes.
+        return serveStore(this.store, {
             args,
             lines: createInterface({ input, crlfDelay: Infinity }),
             write: (line) => {
-                answers.push(line)
+                output.write(`${line}\n`)
             },
         })
-        // The loader reads the last line of stdout as the answer, and the process logs while it shuts down: the answer is written on exit, after them.
-        process.once("exit", () => {
-            const text = answers.map((line) => line + NEWLINE).join("")
-            if (output === process.stdout) writeSync(STDOUT_FD, text)
-            else output.write(text)
-        })
-        return code
     }
 }

@@ -187,11 +187,13 @@ environments:
         # The core api runs compiled (Nest reads GraphQL field types from the decorator metadata only tsc emits); the cli of the migrate seed step is in the same build.
         - {name: build-be, argv: [npm, run, build:be], heavy: build}
       seed:
-        # The TypeORM migrations of the app (the harness `db migrate` only reads db/migrations/*.sql, which this app does not use, hence the empty db/migrations folder).
+        # The TypeORM migrations of the app: the harness `db migrate` reads db/migrations/*.sql (this app has none, an absent folder is an empty chain), and this step
+        # runs right after it on every `up`, before the data.sets loader writes the standard into the tables.
         - name: migrate-typeorm
           argv: [node, dist/apps/cli/src/main.js, migrate, run]
           cwd: be
           after: migrate
+          mode: always
       processes:
         - name: core
           argv: [node, dist/apps/core/src/main.js]

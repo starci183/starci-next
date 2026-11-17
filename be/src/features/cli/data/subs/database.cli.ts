@@ -1,5 +1,4 @@
 import { CommandRunner, SubCommand } from "nest-commander"
-import { MigrationRunnerService } from "@modules/platform/database"
 import { SeedDoorService } from "@modules/integrations/seed"
 
 @SubCommand({
@@ -14,19 +13,15 @@ import { SeedDoorService } from "@modules/integrations/seed"
  * `import` reads the entry lines on stdin and answers its report on the last line of stdout.
  */
 export class DataDatabaseCli extends CommandRunner {
-    constructor(
-        private readonly migrations: MigrationRunnerService,
-        private readonly door: SeedDoorService,
-    ) {
+    constructor(private readonly door: SeedDoorService) {
         super()
     }
 
     /**
-     * Applies the pending migrations, then serves the verb over stdin and stdout and sets the exit code the protocol answers. The loader
-     * runs this door before the stack's own migration step, so the tables the sets write exist before the first entry.
+     * Serves the verb over stdin and stdout and sets the exit code the protocol answers. The tables the sets write exist already: the
+     * stack's `migrate-typeorm` seed step (`mode: always`) runs before the loader.
      */
     async run(passed: Array<string>): Promise<void> {
-        await this.migrations.run()
         process.exitCode = await this.door.serve(passed, process.stdin, process.stdout)
     }
 }

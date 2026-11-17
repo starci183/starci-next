@@ -1,20 +1,14 @@
 import { mock } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
-import { MigrationRunnerService } from "@modules/platform/database"
 import { SeedDoorService } from "@modules/integrations/seed"
 import { DataDatabaseCli } from "./database.cli"
 
 const build = async () => {
     const door = mock<SeedDoorService>()
-    const migrations = mock<MigrationRunnerService>()
     const moduleRef = await Test.createTestingModule({
-        providers: [
-            DataDatabaseCli,
-            { provide: SeedDoorService, useValue: door },
-            { provide: MigrationRunnerService, useValue: migrations },
-        ],
+        providers: [DataDatabaseCli, { provide: SeedDoorService, useValue: door }],
     }).compile()
-    return { command: moduleRef.get(DataDatabaseCli), door, migrations }
+    return { command: moduleRef.get(DataDatabaseCli), door }
 }
 
 describe("DataDatabaseCli", () => {
@@ -23,7 +17,7 @@ describe("DataDatabaseCli", () => {
     })
 
     it("serves the verb it was given over stdin and stdout, once, and takes the protocol exit code", async () => {
-        const { command, door, migrations } = await build()
+        const { command, door } = await build()
         door.serve.mockResolvedValue(2)
 
         await command.run(["import", '{"dryRun":true,"mode":"merge"}'])
@@ -33,7 +27,6 @@ describe("DataDatabaseCli", () => {
             process.stdin,
             process.stdout,
         )
-        expect(migrations.run).toHaveBeenCalledTimes(1)
         expect(door.serve).toHaveBeenCalledTimes(1)
         expect(process.exitCode).toBe(2)
     })
