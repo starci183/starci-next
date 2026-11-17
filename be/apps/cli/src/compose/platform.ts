@@ -20,12 +20,13 @@ import { mcpEntities, mcpMigrations } from "@modules/domain/mcp"
 import { ClockModule } from "@modules/platform/clock"
 import {
     DatabaseModule,
+    PRIMARY_ENTITY_MANAGER,
     type DatabaseConnectionConfig,
     type DatabaseConnectionOptions,
 } from "@modules/platform/database"
 import { HttpModule } from "@modules/platform/http"
 import { httpSecurityEntities, httpSecurityMigrations } from "@modules/platform/http-security"
-import { inboxEntities, inboxMigrations } from "@modules/platform/inbox"
+import { InboxModule, inboxEntities, inboxMigrations } from "@modules/platform/inbox"
 import { LoggingModule } from "@modules/platform/logging"
 import { RetryModule } from "@modules/platform/retry"
 import type { CliAppOptions } from "../cli.options"
@@ -89,4 +90,6 @@ export const platformModules = (options: CliAppOptions): Array<DynamicModule> =>
         isGlobal: true,
         connections: [primaryConnectionOf(options.database)],
     }),
+    // The inbox the harness CI service dedupes deliveries with: the cli composes the same HarnessModule as the core api.
+    InboxModule.register({ isGlobal: true, connection: PRIMARY_ENTITY_MANAGER }),
 ]
