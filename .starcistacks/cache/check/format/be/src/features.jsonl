@@ -771,9 +771,9 @@
 {"findings":[],"hash":"44108b4ee9f5fef15ee0337abf83ec197792cc8ca48725be4587452fc9b23968","path":"be/src/features/api/relay-feed/application/get-lesson-challenge-scores.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"73580292714a78b435ccb47b3087aad2a638b8ac38568d271e390cd7682e9a82","path":"be/src/features/api/relay-feed/application/get-lesson-challenge-scores.handler.ts","step":"prettier"}
 {"findings":[],"hash":"72801121ac0f084ecf0ca60662789e01b8a68ed1b7b97783d3d4fda2acb093e3","path":"be/src/features/api/relay-feed/application/get-lesson-challenge-scores.query.ts","step":"prettier"}
-{"findings":[],"hash":"f57091f1985c18a5ecb3538c66f996ca6b88085921d1073c6ae2845e7c47ca99","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.contracts.ts","step":"prettier"}
-{"findings":[],"hash":"b15a8ea5be55cba87acf5ca7c2471f07a03f24b8192f12058f34a870b100832d","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.handler.ts","step":"prettier"}
-{"findings":[],"hash":"551d2ba1036218a8b25abd20b5a50581198c0537c5ef8f20aadad89f424728f1","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.query.ts","step":"prettier"}
+{"findings":[],"hash":"832662a10b66e305f8984e716cb0487d8e7d3dbc89a3d80493f11d076c84b49a","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.contracts.ts","step":"prettier"}
+{"findings":[],"hash":"62c3bd10ec1a743e8755ee6d4dc3eb3b5dc6f04bc2c97b2f2a385c578b6149a7","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.handler.ts","step":"prettier"}
+{"findings":[],"hash":"c87c6a2496ca0fc63a03ff68fe3d2a3c18d1fa39ba246c86ba443ac3b567de26","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.query.ts","step":"prettier"}
 {"findings":[],"hash":"25cfd91c4be57003311d72632b93c2f4e68e8de2a06628448212c7f90f6a7618","path":"be/src/features/api/relay-feed/application/get-lesson-scenario-runs.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"587ccebb79fa880082af373987b5e38f8b7af6d04b6c7aecab4608e780d66c84","path":"be/src/features/api/relay-feed/application/get-lesson-scenario-runs.handler.ts","step":"prettier"}
 {"findings":[],"hash":"6fbb3f827f1e13da8e663d5e93d275f99d53e6e5e2de08fa022f0a91964feb2e","path":"be/src/features/api/relay-feed/application/get-lesson-scenario-runs.query.ts","step":"prettier"}
@@ -782,7 +782,6 @@
 {"findings":[],"hash":"1afaf3c05964f4c5789f961f02c2041a95a63cf78a75ab667945304831331f99","path":"be/src/features/api/relay-feed/application/get-relay-manifest.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"b38c37e41887ccae60f07956b22a9e68c344123489b1a507de93ebcc20fb0c60","path":"be/src/features/api/relay-feed/application/get-relay-manifest.handler.ts","step":"prettier"}
 {"findings":[],"hash":"3be7ebfa80c80c4de174668175a7b4120b08d82c65890b2c7489cbce51ea7d1a","path":"be/src/features/api/relay-feed/application/get-relay-manifest.query.ts","step":"prettier"}
-{"findings":[],"hash":"d31955c884286e723617cff4d9a5811f4e91017ce7345109220826da974cbedb","path":"be/src/features/api/relay-feed/application/lesson-parts-progress.view.ts","step":"prettier"}
 {"findings":[],"hash":"c904684c5451360325a641bf813678b628d9e03ff0c2f3285319379045463f99","path":"be/src/features/api/relay-feed/application/request-lesson-run.command.ts","step":"prettier"}
 {"findings":[],"hash":"d18a8bbb577bdca34cc3e77828bdbe758ed1b02c9db3dd7802a0bf29ef45158a","path":"be/src/features/api/relay-feed/application/request-lesson-run.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"ee79b82b9fa78a9c6f3d267bd5ee1058ada055b558f4a284ad77d2160daa37be","path":"be/src/features/api/relay-feed/application/request-lesson-run.handler.ts","step":"prettier"}
