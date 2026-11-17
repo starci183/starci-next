@@ -21,9 +21,9 @@ Grammar: `Text tone="muted"` (`leaf/Text`).
 
 ## Lưới năm thẻ lộ trình
 
-Vì sao: năm lộ trình là năm thẻ vì mỗi lộ trình là một vật thật có thể chọn (Khởi nghiệp, AI Engineer, Backend / Fullstack, DevOps / SRE, Senior · System design): viền 1px, không bóng, cùng khuôn: avatar nhỏ + nhãn loại ("XÂY SẢN PHẨM", "VIỆC LÀM") + tên, một câu hứa, khối "Đích:" có chữ đậm, chip các phần học và dòng "n bước · khoảng m tuần". Chân thẻ có đường kẻ và hai nút: "Xem lộ trình" (trung tính) và "Chọn lộ trình" (nút chính). Lưới 4 cột ở 1440 và 1920 (thẻ thứ năm xuống hàng riêng, để trống ba ô), một cột ở 390. Khi học viên đã theo một lộ trình thì chọn lộ trình khác phải qua hộp xác nhận đổi. Ghi chú lỗi ảnh: (1) mỗi thẻ có một nút chính nên màn có năm nút chính, trái luật một nút chính; (2) các thẻ cùng hàng cao thấp khác nhau theo độ dài chữ nên hàng nút ở chân thẻ lệch nhau.
+Vì sao: năm lộ trình là năm thẻ vì mỗi lộ trình là một vật thật có thể chọn (Khởi nghiệp, AI Engineer, Backend / Fullstack, DevOps / SRE, Senior · System design): viền 1px, không bóng, cùng khuôn: avatar nhỏ + nhãn loại ("XÂY SẢN PHẨM", "VIỆC LÀM") + tên, một câu hứa, khối "Đích:" có chữ đậm, chip các phần học và dòng "n bước · khoảng m tuần". Chân thẻ có đường kẻ và hai nút: "Xem lộ trình" và "Chọn lộ trình", cả hai là nút trung tính viền (viên thuốc, không icon). Lưới 4 cột ở 1440 và 1920 (thẻ thứ năm xuống hàng riêng, để trống ba ô), một cột ở 390. Khi học viên đã theo một lộ trình thì chọn lộ trình khác phải qua hộp xác nhận đổi. Ghi chú lỗi ảnh: các thẻ cùng hàng có chiều cao khung bằng nhau nhưng đường kẻ chân thẻ và hàng nút lệch nhau theo độ dài chữ. Màn hiện không còn nút chính nào (lệnh lặp theo hàng là nút trung tính).
 Luật: `surface-layering` (thẻ cho vật thật, một nút chính mỗi màn, lệnh lặp theo hàng là nút trung tính nhỏ), `theme-and-type`.
-Grammar: `Grid kind="cards"` (`frame/Grid`), `OutcomePathCard` (`fe/packages/starci-next-ui/src/composites/OutcomePathCard`) trên `SurfaceCard`, `Badge`, `Button intent="commit"` và `Button intent="neutral"`.
+Grammar: `Grid kind="cards"` (`frame/Grid`), `OutcomePathCard` (`fe/packages/starci-next-ui/src/composites/OutcomePathCard`) trên `SurfaceCard`, `Badge`, `Button intent="neutral"` cho cả hai lệnh.
 
 ## Hộp thoại chi tiết và hộp xác nhận đổi lộ trình
 
@@ -36,3 +36,19 @@ Grammar: `AlertDialog` (`frame/AlertDialog`), `OutcomePathDialog` (`fe/packages/
 Vì sao: không có trong ảnh, viết từ mã: ba trạng thái của một khe dữ liệu (`SlotView`) thay cho lưới: khung xương khi đang đọc, thông báo lỗi có nút "Thử lại", và với khách là câu "cần đăng nhập" kèm nút chính "Đăng nhập". Chỉ `SlotView` rẽ nhánh trạng thái, các thẻ chỉ nhận `isLoading`.
 Luật: `grammar-slot-interface` (DataSlot, chỉ SlotView rẽ nhánh), `surface-layering` (trạng thái nằm trong vùng của nó).
 Grammar: `SlotView` (`fe/packages/starci-next-ui/src/branches/SlotView`), `Button intent="commit" href`.
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440, 1920, ảnh thầy giáo: khối hình khoảng 550px (1440) và 596px (1920) kéo hàng mở đầu cao, chữ và chip chỉ chiếm ~170px đầu nên có khoảng trống lớn bên dưới chip; hình là một ô gradient tím nhạt tô kín, không phải vật thật, lấn át cả trang.
+- 390, ảnh thầy giáo: một khối tím nhạt tô kín chiếm khoảng 370px, đẩy lưới lộ trình xuống thấp.
+- 1440, 1920, 390, các thẻ lộ trình: ở thẻ nào cũng hai nút "Xem lộ trình" và "Chọn lộ trình" cùng một kiểu viền trung tính, không có nút chính nào trên cả màn; "Chọn lộ trình" (lệnh chính của trang) ngang hàng với lệnh xem. Hai nút dồn trái, bỏ trống nửa phải chân thẻ.
+- 1440, 1920, đường kẻ chân thẻ lệch nhau giữa các thẻ cùng hàng (thẻ 1 ở y≈1077, thẻ 3 ở 1085, thẻ 4 ở 1057 tại 1440) và khoảng trống dưới nút của thẻ 4 lớn hơn các thẻ khác.
+- 1440, 1920, lưới 4 cột để thẻ thứ năm ("Senior · System design") một mình ở hàng hai, ba ô bên phải trống.
+- 1440, 1920, 390, thẻ: chữ rất dày đặc (câu hứa, "Đích:", chip, "n bước · khoảng m tuần"), nhãn loại "XÂY SẢN PHẨM" và "VIỆC LÀM" viết hoa 12px xám nhạt, tương phản thấp; các chip phần học tô xám và bị xuống hai ba hàng không đều.
+- 1440, 1920, 390, nhãn "MỤC TIÊU ĐẦU RA" viết hoa xám nhạt nhỏ; chữ đoạn mở đầu xám đậm cỡ 14 trên dòng dài khoảng 540px, hơi sát; dòng ghi chú "Mục tiêu không có chuỗi ngày..." xám nhạt, kéo dài một dòng ở 1440 và 1920.
+- 1440, 1920, 390, sidebar không có mục nào được chọn (mục "Học" không còn nền xám và thanh accent), nên không biết đang ở đâu; trang cũng không có dải tiêu đề 18/600 riêng, tiêu đề câu hỏi chỉ 14/600 trong thân.
+- 1440, 1920, 390, thanh trên: nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.

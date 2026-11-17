@@ -24,3 +24,16 @@ Grammar: `Badge tone="neutral"` và `Text size="sm" tone="muted"` trong `Stack`;
 Vì sao: ảnh chụp là trạng thái rỗng, chỉ một câu muted "Không có mục nào ở trạng thái này." Khi có dữ liệu, mỗi mục là một thẻ hairline (kinh nghiệm là vật thật): phần học, trạng thái, dòng CV song ngữ sửa được, chip bằng chứng, dòng meta và nút việc tiếp theo như "Gửi thầy duyệt" (nút chính chỉ một mỗi lúc); mục đã xác minh có liên kết công khai. CHƯA RÕ: trạng thái rỗng chưa có chỉ dẫn "làm bài nào để có mục đầu tiên" và chưa dùng `EmptyNotice`.
 Luật: `verified-experience-per-part.md` (mỗi phần học một kinh nghiệm, thầy ký), `surface-layering` (thẻ cho vật thật).
 Grammar: `Text tone="muted"` cho rỗng; mục dựng từ `SurfaceCard`, `Badge`, `Textarea`, `Button` (`ExperienceList/component.tsx`).
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440: tab "Tất cả" đang chọn có chữ màu accent tím (gạch chân đen); luật nói tab chọn là foreground, accent không đánh dấu lựa chọn. Lỗi này còn ở cả ba độ rộng.
+- 1440: tiêu đề "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận" là một câu dài chứ không phải tên trang; mô tả muted xuống dòng và để "CV." mồ côi.
+- 1440: bốn chip luồng nền xám nhạt không có mũi tên hay thứ tự nên không đọc ra là một luồng; ba cụm số muted bên dưới dính liền nhau không có dấu ngăn nên nhìn như một câu.
+- 1440: trạng thái rỗng "Không có mục nào ở trạng thái này." là một câu muted trơ trọi, không chỉ dẫn và không có nút.
+- 1920: tab, tiêu đề và mô tả sát trái x=288 nhưng chip, số liệu và câu rỗng ở x=480; hai trục trái lệch nhau.
+- 390: tab cuộn ngang và "AI đã chấm" bị cắt ở mép phải kèm mũi tên; chip "Đã xác minh" sát mép phải; cụm số thứ ba xuống dòng, lệch nhịp; tiêu đề bẻ thành hai dòng.

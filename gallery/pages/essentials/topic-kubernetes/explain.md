@@ -35,3 +35,16 @@ Grammar: `PaneGrid`, `Pane area="aside" surface`, `PaneSection rule="start"`, `M
 Vì sao: dưới 48rem aside thành các khối đầu của trang (Tiến độ, Nên biết trước, Topic liên quan, mỗi khối ngăn hairline) rồi mới tới hero và danh sách; sidebar thu thành nút "Mở menu" ở đầu trang. Hero xếp ảnh trên, chữ dưới, nút rộng vừa chữ; hàng bài xuống dòng và sáu vòng pha nằm dưới tên.
 Luật: `surface-layering` (luật 4: dưới lg các khối aside là những khối đầu của trang).
 Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Grid kind="pair"` (`frame/Grid/index.d.ts`).
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440, aside "Tiến độ": thanh Meter tô khoảng 7% và ghi "7%" trong khi dòng dưới ghi "0/15 bài đã hiểu"; tiến độ không khớp số đếm. Dòng "1 bài · 65 phút · TypeScript" lặp meta của dải đầu.
+- 1440, hero: nút "Bắt đầu: Health probes" nền tím nhạt, chữ tối, không phải tím đặc (nền tô, tương phản thấp hơn nút chính chuẩn); ảnh hero chiếm nửa thẻ, cột chữ để trống phía dưới nút.
+- 1440, "Bài trong chương": 14 trong 15 hàng là cùng một dòng "Bài nguồn đang chuyển sang dạng tương tác" và cùng một ổ khoá, thành một bức tường lặp; chỉ bài 10 mở, nằm giữa danh sách, người học phải cuộn qua chín bài khoá mới thấy. Chip đếm "15" nói 15 bài nhưng gần như không bài nào dùng được. Số thứ tự 10 đến 15 hai chữ số làm tên bài lệch sang phải so với bài 1 đến 9 (hàng 10 đến 15 thụt hơn vài px). Cả danh sách vẫn trong khung bo góc viền hairline (luật 1). Sáu vòng pha 12 px nhỏ, vòng 1 gần như không thấy, "0/6 pha" lệch ngoài cùng.
+- 1440, aside: "Nên biết trước" hai câu rời không dấu đầu dòng; "Topic liên quan" link chữ thường không có dấu hiệu là link.
+- 1920: Không thấy lỗi mới ở 1920; lỗi trên giữ nguyên, thêm hàng bài kéo rất rộng, chữ bên trái, ổ khoá cách xa cuối hàng, ảnh hero phóng lớn.
+- 390: aside đứng trước hero nên nút bắt đầu nằm sau một màn; meter 7% vẫn trái với "0/15 bài đã hiểu". Tên bài dài xuống hai đến ba dòng (bài 8, 9) làm hàng cao không đều; hàng bài 10 cao hơn và lệch (số thứ tự "10." rộng hơn đẩy tên). "0/6 pha" lệch phải khỏi sáu vòng. Danh sách 15 hàng khoá lặp rất dài.

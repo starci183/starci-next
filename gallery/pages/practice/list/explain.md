@@ -24,3 +24,18 @@ Grammar: `PracticeBrowse` (`fe/packages/starci-next-ui/src/composites/PracticeBr
 Vì sao: một `Section` danh sách phẳng, các hàng ngăn nhau bằng đường kẻ 1px: số thứ tự đơn sắc, tên 500 (Mảng, Chuỗi, Băm...), dòng 12 muted "0/5 bài Accepted" và bên phải nút pill trung tính "Mở pattern". Hàng là điều hướng tới `practice/pattern`. Học viên Premium nên không hàng nào có chip "Premium" (chip chỉ hiện ở pattern khoá với học viên miễn phí). Số thứ tự 10 trở đi rộng hơn nên tên lệch ba điểm ảnh so với hàng 1 đến 9. CHƯA RÕ: hai mươi nút "Mở pattern" giống nhau trong khi hàng vốn đã là liên kết, nên nút chỉ lặp lại chức năng.
 Luật: `surface-layering` (danh sách là Section, không thẻ; lệnh lặp theo hàng là nút trung tính nhỏ), `theme-and-type`.
 Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList`) trong `Section`, `Button` neutral cỡ sm.
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440: tiêu đề trang "Luyện code" và đầu mục Section cũng "Luyện code" ngay dưới nó; lặp hai lần.
+- 1440: đoạn mở đầu là chữ foreground 14 như thân, còn hai dòng thống kê bên dưới muted ngả nâu đỏ; ba dòng nối tiếp không có nhịp rõ, dòng "20 pattern · 96 bài · 0 bài Accepted" khó phân biệt với mô tả.
+- 1440: danh sách pattern căng hết bề rộng (x=288 đến 1408) với một nút "Mở pattern" ở mép phải; mắt phải quét hơn 1000px từ tên đến nút.
+- 1440: hai mươi nút "Mở pattern" giống nhau trong khi cả hàng đã là liên kết; nút viền mảnh gần như vô hình.
+- 1440: số thứ tự đơn cách từ "10." trở đi rộng hơn nên tên lệch ba điểm ảnh so với hàng 1 đến 9.
+- 1440: hai mươi hàng đều "0/..." nên chỉ báo tiến độ không giúp chọn.
+- 1920: nội dung co vào giữa (x=480 đến 1696) trong khi tiêu đề trang sát trái x=288; lệch trục. Các lỗi lặp tiêu đề, nút lặp và lệch số thứ tự giữ nguyên.
+- 390: số thứ tự 10 trở đi vẫn đẩy tên lệch so với hàng 1 đến 9; nút "Mở pattern" chiếm khoảng 90px bên phải làm tên có ít chỗ.

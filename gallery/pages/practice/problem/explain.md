@@ -36,3 +36,20 @@ Grammar: `PracticeHints`, `Section`, `Button` neutral, `Alert` khi bị từ ch�
 Vì sao: cột phụ phẳng, không thẻ, đầu là `Section`: năm bài cùng pattern để chuyển bài mà không về danh sách: số thứ tự, tên, dòng 12 muted nhãn (cắt bằng "…" khi dài), chip xám "Chưa làm" và nút pill "Giải bài", hàng ngăn bằng đường kẻ. Dưới lg cột này xếp xuống dưới cột chính (ảnh 390, sau "Gợi ý"). CHƯA RÕ: nhãn kỹ thuật bị cắt giữa chừng ("tw…", "dynamicProgrammi…", "greed…") nên mất nghĩa; nên cho xuống dòng hoặc chỉ giữ hai nhãn đầu.
 Luật: `surface-layering` (cột phụ không làm bằng thẻ), `theme-and-type`.
 Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList`) trong `Page layout="main-rail"` có cột phụ, `Section`.
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440: đề bài hiện nguyên ":::muted Đầu vào :::" và ":::muted Đầu ra :::" thành chữ giữa các đoạn: chỉ thị markdown lộ ra.
+- 1440: thẻ đề: chip "Trung bình" nền vàng nhạt (nền tô màu), các nhãn kỹ thuật và "2 s · 256 MB" không viền nên khác kiểu nhau; tiêu đề "Chèn Khoảng" lặp với tiêu đề trang.
+- 1440: hai khối mã ví dụ và các mã nội dòng ([a, b], N) nền xám đặc trong thẻ trắng: giếng tô nền; hai khối vào và ra không có nhãn nên không biết cái nào là gì.
+- 1440: ô "Mã nguồn" là Textarea phông không đơn cách nên thụt dòng khó đọc, không tô màu cú pháp; dòng cuối bị cắt ngang đáy ô.
+- 1440: ba nút "Chạy thử", "Nộp bài", "Về mã khởi đầu" khác kiểu (viền mảnh, tím nhạt chữ đen, xám đặc); nút chính chữ đen trên tím nhạt tương phản thấp.
+- 1440: ô "Ngôn ngữ" rộng hết cột mà chỉ chứa "Python"; đầu mục "Bài làm của bạn" cùng cỡ với nhãn "Ngôn ngữ", "Mã nguồn" nên không phân cấp.
+- 1440: cột phải "Các bài trong pattern": nhãn kỹ thuật bị cắt "tw…" và "in…" giữa chừng; chip "Chưa làm" và "Giải bài" xuống dòng riêng nên hàng rất cao; năm nút "Giải bài" lặp.
+- 1920: cột chính bị co vào giữa (x=466) trong khi đường dẫn sát trái x=280; các lỗi ":::muted", giếng xám, cắt nhãn và nút khác kiểu giữ nguyên.
+- 390: mã nội dòng ([a, b], "start end", [0, 10^9]) bị bẻ thành ô rộng làm các mục gạch đầu dòng bẻ từng chữ lệch; ":::muted" vẫn lộ.
+- 390: ô mã cao khoảng 300px với dòng cuối bị cắt; ba nút trong một hàng khít; cột "Các bài trong pattern" nằm cuối trang với nhãn bị cắt "…" và nút "Giải bài" xuống dòng riêng.

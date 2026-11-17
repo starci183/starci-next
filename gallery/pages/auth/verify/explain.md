@@ -18,3 +18,15 @@ Grammar: `EmptyNotice` (`composite/EmptyNotice`), `Page`, `SlotView` (`fe/packag
 Vì sao: không có trong ảnh, viết từ mã (`VerifyExperience/component.tsx`): một `Alert` "Đã xác minh" (hoặc "Đã thu hồi" kèm ngày), dòng người ký và ngày, dòng CV thầy đã ký, một danh sách mô tả `DescriptionList` gồm phần học, loại bằng chứng và mã, và một ghi chú nhỏ cuối trang. Không hiện điểm, tên hay mã của học viên. Danh sách mô tả nằm phẳng trên trang, không bọc thẻ. CHƯA RÕ: chưa có ảnh của trạng thái này vì dữ liệu chụp chưa có mục nào được thầy xác minh.
 Luật: `verified-experience-per-part.md`, `surface-layering` (danh sách chi tiết là phần phẳng).
 Grammar: `Alert` (đã xác minh và đã thu hồi), `DescriptionList` (`composite/DescriptionList`), `Text`.
+
+## Phản biện
+
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
+- 1440, 1920, 390, toàn trang: khối thông báo dính sát mép trên (cách đỉnh khoảng 56px) và bên dưới trống đến cuối trang; không có tên thương hiệu StarCi để người lạ biết đây là trang của ai.
+- 1440, 1920, 390, ô icon hộp thư: nền xám nhạt tô kín thay vì viền; icon nhỏ, xám, tương phản thấp.
+- 1440, 1920, 390, tiêu đề "Không tìm thấy mã xác minh" cỡ 14 giữa trang, nhỏ so với khoảng trống xung quanh; dòng muted xám nhạt cỡ 14, tương phản thấp.
+- 390: dòng muted xuống hai dòng và để chữ "StarCi xác minh." lẻ ở dòng hai; căn giữa nên mép trái lởm chởm.
+- 1440, 1920, 390: không có hành động nào (về trang chủ, thử mã khác); trạng thái lỗi là ngõ cụt.
