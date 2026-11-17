@@ -3284,9 +3284,9 @@
 {"data":{},"findings":[],"hash":"df7e730015fa3747f8324e2e8aa26594ac7843ea62493c11eb942c480b4012ae","path":"be/src/modules/domain/project/project-extras.service.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"21e5cf3bfd2ace0b4b4fc6d646593fd7366e443b0164b825a02c16437b4d5851","path":"be/src/modules/domain/project/project-extras.service.ts","step":"file-rules"}
 {"findings":[],"hash":"f9231ee8e1b52b109cfaa0360dca773d78f514ec911fc9dd6567b92cd0922e8c","path":"be/src/modules/domain/project/project-extras.service.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"a708b0d59b46250cfc812aefb980a54296dfa8eebb1fdd0f4080a50b7975e25d","path":"be/src/modules/domain/project/project-input.policy.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"23d3acd0f94c8e89bbd55bda7b77ec98f882d90a41183f14d7be207323345763","path":"be/src/modules/domain/project/project-input.policy.ts","step":"file-rules"}
-{"findings":[],"hash":"c42c24ef8e10f526d60977701204e2a20876280f380d84f7b2c14e89d7b07051","path":"be/src/modules/domain/project/project-input.policy.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"3db76107fab6f78583577500c6908ef55e1bc207fdacec5606033f9bd254726d","path":"be/src/modules/domain/project/project-input.policy.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"25ffb0888c8d2fef6fed7dcabe250eaee219558fcb5cf97241abea2b67f2b72d","path":"be/src/modules/domain/project/project-input.policy.ts","step":"file-rules"}
+{"findings":[],"hash":"67d6fd04a7ff20d483fc5ea91e2d2aa18605530b453933d199bb0ed454966a3e","path":"be/src/modules/domain/project/project-input.policy.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"f1bc7f6dde238c27b0487c3316ac9893854ad72a5ec3fe2cb776c81f93803d74","path":"be/src/modules/domain/project/project-lesson.port.ts","step":"file-rules"}
 {"findings":[],"hash":"2573306d65906039a160e131ff6b4b4b33b9c67e8ba9e5a9a046f78b954bfa42","path":"be/src/modules/domain/project/project-lesson.port.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"0974a44ab19015690487451e23d1b7d112d5ee0bb90fe6f15f3b4414f804a14f","path":"be/src/modules/domain/project/project-params.contracts.ts","step":"file-rules"}
@@ -3339,9 +3339,9 @@
 {"findings":[],"hash":"79bbd240b3ef77537464120bebb030b6ea65ae09216ca2957bd3269efb651729","path":"be/src/modules/domain/project/project.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"d2f29357c01f21535a2b6c93f76b18d80ce21f309f59145975058cfa7639dd47","path":"be/src/modules/domain/project/project.options.ts","step":"file-rules"}
 {"findings":[],"hash":"47a4a493a3cd4b310414e8eb5b3e1b875f96cf064037ca0ede066f8c4b6162d6","path":"be/src/modules/domain/project/project.options.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"beaec6ea3c606ef4b96ecfabf94e66924f330c0e85bf8ef0c95d3afe3dec1f13","path":"be/src/modules/domain/project/project.service.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"92b15bf61331e9ad492f4cf16359e63d98a689b698345dccfdec3e7536b29e08","path":"be/src/modules/domain/project/project.service.ts","step":"file-rules"}
-{"findings":[],"hash":"f9caf93ba80b82aa330730b872610e7633b5b1b227c4b20b7615581ad4bfe62b","path":"be/src/modules/domain/project/project.service.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"5d28f871d80a8b9081c87d9d04f4fbb64eb154713cbde99f25a51ade62d6962c","path":"be/src/modules/domain/project/project.service.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d9827a9ce1e8a8092ec1920440ddc12d8f85b29422ac2f41e8e514dae41027e2","path":"be/src/modules/domain/project/project.service.ts","step":"file-rules"}
+{"findings":[],"hash":"d83b6ea5c9e9aeccafee1987bfe6749458a129a8f2a8b6d43e0146548825ac99","path":"be/src/modules/domain/project/project.service.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"4e70625df9a732fb9dd16e57d1c220183727c133a969395c03d54f92d35de801","path":"be/src/modules/domain/project/unattested-ci.client.spec.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c0100b309967f5e1962ec981fa8400ee7f3f7fa839c0c90cd34f8e65f2c81c5b","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"file-rules"}
 {"findings":[],"hash":"d49b95d20eb6b8896bc976e45cb056393312f77c01bbebc67f8ba149f0f746d1","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"unit:recurring-observations"}

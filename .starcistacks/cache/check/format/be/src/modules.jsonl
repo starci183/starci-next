@@ -620,8 +620,8 @@
 {"findings":[],"hash":"fd7479ac2a79f6af0991b18b48b25ef92b2b1c60557a377d7c78081286265530","path":"be/src/modules/domain/project/project-experience.policy.ts","step":"prettier"}
 {"findings":[],"hash":"ec1519d4b47ce927423828a3c074ada914a190b51e0ad8b28db95a4efaf173c5","path":"be/src/modules/domain/project/project-extras.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"8c35e6f1a4bb5ba00af445e16401193b6025bf38d3c1c3b56df0e43d3b58f33b","path":"be/src/modules/domain/project/project-extras.service.ts","step":"prettier"}
-{"findings":[],"hash":"9ccb10b057f185a7d5f92311203d3c13f9d76fc8074ccaea242fb1a7ebe58255","path":"be/src/modules/domain/project/project-input.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"7f7508610063ec0ce60a2f296108c48185065234b8f592912c8bd14009910725","path":"be/src/modules/domain/project/project-input.policy.ts","step":"prettier"}
+{"findings":[],"hash":"22cd4f32163b440f2374333442b44c316a812d13e201de96f38fa912dc74bb3c","path":"be/src/modules/domain/project/project-input.policy.spec.ts","step":"prettier"}
+{"findings":[],"hash":"eddce37463a461294892047af7afe615daf001460c35dfdb3685c3e432c03f91","path":"be/src/modules/domain/project/project-input.policy.ts","step":"prettier"}
 {"findings":[],"hash":"788b9eb117ce459087cb2d7bbd6c4d9b3d1a22a66fac24b9c0e1d701ece1eacd","path":"be/src/modules/domain/project/project-lesson.port.ts","step":"prettier"}
 {"findings":[],"hash":"4562a96c4ccc25a5617815143f70c2198b0298ca3488a543ed173bf9fc1c6689","path":"be/src/modules/domain/project/project-params.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"ff8223542840545606b0ee8f6c0c4af4d3da5e4966abb8da5f10f58c95313d9f","path":"be/src/modules/domain/project/project-practice.service.spec.ts","step":"prettier"}
@@ -653,8 +653,8 @@
 {"findings":[],"hash":"e75fdf96f5a779ca93fe672b16c5e9abc07193361dcf9ee07ff3f07d178a2f66","path":"be/src/modules/domain/project/project.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"d8437ad469a0828ba006ee718adc93caed39cf4d244072805d8b3d3027fe15ea","path":"be/src/modules/domain/project/project.module.ts","step":"prettier"}
 {"findings":[],"hash":"7a5fe6a1de25b4dbec6508394d1b51d0595eceebe5b2f5a1bccb1dd092cedcfc","path":"be/src/modules/domain/project/project.options.ts","step":"prettier"}
-{"findings":[],"hash":"e1563f082ac498581160af9c4ec908da553b4e2553ab6169b37244c8283c30f0","path":"be/src/modules/domain/project/project.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"a2330f436937769d557f9531cfa3d77f94fec0df87e48e237e8cb8ba6dae47ba","path":"be/src/modules/domain/project/project.service.ts","step":"prettier"}
+{"findings":[],"hash":"a10096621e0431e5575047356d30269da5e371206ed2d1ba7a127756666b6536","path":"be/src/modules/domain/project/project.service.spec.ts","step":"prettier"}
+{"findings":[],"hash":"849c16ec12167c74f940ae18f0d5c9a590080345ce13133b98a70cda8d6b42e0","path":"be/src/modules/domain/project/project.service.ts","step":"prettier"}
 {"findings":[],"hash":"3cd5ffe462355399e0112800c26947cfb90d765dce142659e7d14f0cf80ebfbf","path":"be/src/modules/domain/project/unattested-ci.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"2d565e0234478e479671936714ba15e9e8fe20926560aa6021806ef1af7bffbc","path":"be/src/modules/domain/project/unattested-ci.client.ts","step":"prettier"}
 {"findings":[],"hash":"918ff3d7fa74c1fdccdb2815f5cff25d039acb03b7da8278335726c15975179c","path":"be/src/modules/domain/project/unconfigured-project-coach.client.spec.ts","step":"prettier"}

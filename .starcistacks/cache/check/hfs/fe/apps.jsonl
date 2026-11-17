@@ -135,7 +135,7 @@
 {"data":{},"findings":[],"hash":"2cb0a1554b555e330e64b0c96b56d428d385e5d8414112619d2be5b54542469b","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7184c2d833af26f1bebc1f3876c3f739e7b63707d8b71cd171de7db619c201f5","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"131d87ef2c8cce4c602922e581944614d774e94414e9f669bdf30b5629a8a9c7","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0324bb4d3f97f7750c7b5c2130008cb833f418cd3c1a8d7440321c57e54d585b","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"66a2918a2a256293f6e33f4502882713e99d4d0c9bfe555a5e9cee98d06c18f2","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6d19688c4b6b5a23d8de3a43dc14fb5a5519cce5240db0b9e831ead89d920593","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"14cc86ed7cee32e2311f832d24f62e065a1be7fd098116d98691ea42618e364b","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ffbbb24d59baa6b447e4f7b613426c8a6fbfd8f78dd9baf4aedf38ec4b72c7c1","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"file-rules"}
@@ -359,7 +359,7 @@
 {"data":{},"findings":[],"hash":"1a133159f40bd4b7db53abd32b07cf06cbc301db594de16bff5bb3be4ea50042","path":"fe/apps/app/src/hooks/projects/projects.shared.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5447e856360bd5eac5514494134e102cb2ed7f14c98055257870face6168760c","path":"fe/apps/app/src/hooks/projects/useConceptForms.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3ca946f4d05dc202a3f5389ce7afab12be4eedc01f5eb8e01c17a192a48f6325","path":"fe/apps/app/src/hooks/projects/useProjectActions.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f55a48fb447ee5010fa8262b91dbb86caeae0303b6ad924dd9a8df957d8a0342","path":"fe/apps/app/src/hooks/projects/useProjectNewForm.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"15091c4b073ad45fad32a4fe8e1179fa48d5e95e61fd4b5b446a5cb0b41f1d25","path":"fe/apps/app/src/hooks/projects/useProjectNewForm.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dbb38238ef76847d8231554f5d00b76828852d6070134d8e5db543fd97565aba","path":"fe/apps/app/src/hooks/projects/useProjectsAccess.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dd74db10c9a8b95cd88b3721af2b5efd7bf59702db4f18bd689a2d30cee90376","path":"fe/apps/app/src/hooks/rail/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e10f162e299627510d186989d5fa684b2343b5ff13969dd5060a06b488e76b61","path":"fe/apps/app/src/hooks/rail/useRailCollapsed.ts","step":"file-rules"}

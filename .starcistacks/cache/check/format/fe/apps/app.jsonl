@@ -135,7 +135,7 @@
 {"findings":[],"hash":"b1584ceca21815c5fd4d2fbdb04dcc7851211f05b6c276bf0aa820fb804dce9e","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"prettier"}
 {"findings":[],"hash":"f2fcbc4fe38c861a169602c6b0edd0634403682dbe4b5f9eceb5d0dafb15cfb7","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"prettier"}
 {"findings":[],"hash":"30972f5ef275f00e9a80feae575b1827aa8762ad6f718118c2b352f0e40e38bb","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"prettier"}
-{"findings":[],"hash":"9778bce6713ddc850a0e20bcdae61e7decc1c30dfde4ccb20da0ae7720231ea6","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"prettier"}
+{"findings":[],"hash":"d259ff1436b5e0b1cee75d4dd3240e4975f30dfa2353624970a3d79f8e0d6374","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"prettier"}
 {"findings":[],"hash":"756df030d966118db033d908f3782d7ab067e7c0c16d62dd803db9826810558e","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"prettier"}
 {"findings":[],"hash":"5ca57fb2f87fb0157273f852ccf5cf679083df99abf0f4aa7f5b09040409f5bc","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"prettier"}
 {"findings":[],"hash":"79d6450a2c8bddcd4862be14590d350068dc50b3453a6a821ef7fcdec3a25601","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"prettier"}
@@ -359,7 +359,7 @@
 {"findings":[],"hash":"f6ec36e78279a2dd079195032abe5141c17d093c0bb6e06d0961c3cc1a35b5c0","path":"fe/apps/app/src/hooks/projects/projects.shared.ts","step":"prettier"}
 {"findings":[],"hash":"eedb67eaf77178d85cdbd6f48733b5f7bf746b1924a08cbda90caaa2f4b09a79","path":"fe/apps/app/src/hooks/projects/useConceptForms.ts","step":"prettier"}
 {"findings":[],"hash":"f8de6dbf5da5d7ee6444b2719c5e08ad6970a2b0b9cdefe2f6dbff531faa0e71","path":"fe/apps/app/src/hooks/projects/useProjectActions.ts","step":"prettier"}
-{"findings":[],"hash":"913aefd7c40161d50d3a1856067d594833da7feacd3704c5164fd293a161270a","path":"fe/apps/app/src/hooks/projects/useProjectNewForm.ts","step":"prettier"}
+{"findings":[],"hash":"119a75e8f6cdd0715d0ef9998d9a13b40b9c63d40e00c218709181dca1d98c40","path":"fe/apps/app/src/hooks/projects/useProjectNewForm.ts","step":"prettier"}
 {"findings":[],"hash":"6398c1b376134d5c9643eff95628236050d09e6fe90e99019fb999bbf18245f5","path":"fe/apps/app/src/hooks/projects/useProjectsAccess.ts","step":"prettier"}
 {"findings":[],"hash":"542481825c6f5d38392d60cce29d48184f08a5d4b6df708c94eb224bbd8cca82","path":"fe/apps/app/src/hooks/rail/index.ts","step":"prettier"}
 {"findings":[],"hash":"fa31b1e9f20279865606f41bfee2b0c509d37cf2d4eb920b44505d2ff342fc09","path":"fe/apps/app/src/hooks/rail/useRailCollapsed.ts","step":"prettier"}

@@ -16,6 +16,7 @@ import {
     projectEntities,
     projectMigrations,
     GithubOidcClient,
+    ProjectCheckSetStoreAdapter,
 } from "@modules/domain/project"
 import {
     RELAY_ERROR_KINDS,
@@ -46,6 +47,7 @@ export const careerModules = (options: CoreOptions): Array<DynamicModule> => [
         relay: RelayProjectService,
         lessons: LessonCatalogClient,
         attestation: GithubOidcClient,
+        checkSource: ProjectCheckSetStoreAdapter,
     }),
     ProbeModule.register({ isGlobal: true, ...options.probe }),
 ]
