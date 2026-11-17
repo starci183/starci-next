@@ -21,9 +21,9 @@ Grammar: `Alert` có tông theo câu trả lời của máy chủ (`toneOf`) (`c
 
 ## Nút "Tiếp tục học" và "Về trang gói"
 
-Vì sao: hai nút rộng hết thẻ, xếp dọc: "Tiếp tục học" là nút chính duy nhất (accent), "Về trang gói" là nút pill trung tính trắng viền 1px. Đích do máy chủ trả lời, không suy từ địa chỉ trả về. Với đơn khác, thẻ thêm các dòng thông tin đơn và đổi nút chính cho hợp trạng thái (ví dụ "Về trang gói" khi không có đơn).
+Vì sao: hai nút rộng hết thẻ, xếp dọc: "Tiếp tục học" là nút chính duy nhất (accent), "Về trang gói" là nút pill trung tính trắng viền 1px. Đích do máy chủ trả lời, không suy từ địa chỉ trả về. Với đơn khác, thẻ thêm các dòng thông tin đơn (`DescriptionList isDivided`, không lồng thẻ trong thẻ) và đổi nút chính cho hợp trạng thái (ví dụ "Về trang gói" khi không có đơn).
 Luật: `surface-layering` (một nút chính mỗi màn hình).
-Grammar: `Button intent="commit" width="fill" href` và `Button intent="neutral" width="fill" href` (`leaf/Button`).
+Grammar: `DescriptionList isDivided` (`composite/DescriptionList`) cho các dòng đơn; `Button intent="commit" width="fill" href` và `Button intent="neutral" width="fill" href` (`leaf/Button`).
 
 ## Phản biện
 
