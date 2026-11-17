@@ -5,8 +5,12 @@ import { ProjectProbeSinkService } from "@modules/domain/project"
 import { RateBucket, RateTier } from "@modules/platform/http-security"
 import { ProbeSinkWebhook } from "./probe-sink.webhook"
 
-const requestOf = (rawBody: Buffer | undefined, headers: Request["headers"] = {}) =>
-    mock<RawBodyRequest<Request>>({ ...(rawBody === undefined ? {} : { rawBody }), headers })
+const requestOf = (rawBody: Buffer | undefined, headers: Request["headers"] = {}) => {
+    const request = mock<RawBodyRequest<Request>>({ headers })
+    // a deep mock answers a missing property with a function, so an absent raw body is set as absent
+    Reflect.set(request, "rawBody", rawBody)
+    return request
+}
 
 describe("ProbeSinkWebhook", () => {
     describe("receive", () => {

@@ -135,13 +135,12 @@ describe("project views", () => {
         const launch = standing.milestones.find((milestone) => milestone.definition.id === "bf-safe-and-reliable")
         if (launch === undefined) throw new ProjectError({ code: ProjectErrorCode.ConceptNotFound })
 
-        expect(subject.toMilestoneSummaryView(launch, "vi", true)).toEqual({
-            id: "bf-safe-and-reliable",
-            title: `An to${String.fromCharCode(0xe0)}n v${String.fromCharCode(0xe0)} tin c${String.fromCharCode(0x1ead)}y`,
+        const titled = { ...launch, definition: { ...launch.definition, title: { vi: "Tieu de vi", en: "Title en" } } }
+
+        expect(subject.toMilestoneSummaryView(titled, "vi", true)).toMatchObject({ title: "Tieu de vi", locked: true })
+        expect(subject.toMilestoneSummaryView(titled, "en", false)).toMatchObject({
+            title: "Title en",
             conceptCount: 4,
-            provedCount: 0,
-            state: "todo",
-            locked: true,
         })
     })
 

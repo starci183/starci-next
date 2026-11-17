@@ -1,5 +1,9 @@
-import { OBJECT_STORAGE, OBJECT_STORAGE_BUCKET, ObjectStorageErrorCode } from "@modules/integrations/object-storage"
-import type { ObjectStorage } from "@starci/object-storage"
+import {
+    OBJECT_STORAGE,
+    OBJECT_STORAGE_BUCKET,
+    ObjectStorageErrorCode,
+    type ObjectStorage,
+} from "@modules/integrations/object-storage"
 import { objectStorageModules } from "../../world/object-storage-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
@@ -20,7 +24,7 @@ describe("object storage (integration)", () => {
         const stored = await storage().get(bucket(), "avatars/ada.txt")
 
         expect(stored).not.toBeNull()
-        expect(new TextDecoder().decode(stored?.body)).toBe("hello")
+        expect(new TextDecoder().decode(stored?.bytes)).toBe("hello")
     })
 
     it("answers null for an object that was never written", async () => {

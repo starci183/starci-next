@@ -1,4 +1,4 @@
-import type { ErrorKind } from "@modules/platform/errors"
+import { DomainError, type ErrorKind } from "@modules/platform/errors"
 
 /** The code of `@starci/object-storage` the app itself acts on; the package's other codes travel as the package names them. */
 export enum ObjectStorageErrorCode {
@@ -10,3 +10,6 @@ export enum ObjectStorageErrorCode {
 export const OBJECT_STORAGE_ERROR_KINDS: Record<ObjectStorageErrorCode, ErrorKind> = {
     [ObjectStorageErrorCode.Unavailable]: "unavailable",
 }
+
+/** The one error class of the object storage integration. */
+export class ObjectStorageError extends DomainError<ObjectStorageErrorCode> {}

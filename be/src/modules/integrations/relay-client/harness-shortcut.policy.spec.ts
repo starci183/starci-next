@@ -218,7 +218,7 @@ describe("the observer: shortcuts[].detect", () => {
 
     it("counts atLeast hits", () => {
         const text = TRAP_YAML.replace(
-            'matches: "\\\\b(cat|type)\\\\b[^|;&]*\\\\.env" }',
+            'matches: "\\\\b(cat|type)\\\\b[^|;&]*[.]env" }',
             'matches: "npm test", atLeast: 3 }',
         )
         const counted = trapOf(text, "en")
