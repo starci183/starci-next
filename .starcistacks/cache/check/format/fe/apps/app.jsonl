@@ -126,10 +126,8 @@
 {"findings":[],"hash":"bfb6caeafe01ee1e74474d8fde2c227b8c71454d9dc443bc0d7fcd7580a2557b","path":"fe/apps/app/src/components/blocks/ProfileHub/sections.tsx","step":"prettier"}
 {"findings":[],"hash":"8a29b8e17df8a8d6575d61c9e5af8ee5c5167058f62865a4414066552898abde","path":"fe/apps/app/src/components/blocks/ProgressOverview/component.tsx","step":"prettier"}
 {"findings":[],"hash":"b455fafcb47f3fd8e08bd4b653db9c2c5c6783d7cebe384ea8c6d440b206e4a6","path":"fe/apps/app/src/components/blocks/ProgressOverview/index.tsx","step":"prettier"}
-{"findings":[],"hash":"1ab2c260d38b0731d13dcc8a477a6be579d1f1fc05ad4f7b03f30467835342c0","path":"fe/apps/app/src/components/blocks/ProjectConcept/code-read.tsx","step":"prettier"}
-{"findings":[],"hash":"27df696b9b6ebe00c81455affab73ec7512a28ef12dfcaf30e4e9c403ac46484","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
+{"findings":[],"hash":"ec6c8331b9f3022fc70274c8f96b24c5e3250b3792fb178c7fd73204cea4f470","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
 {"findings":[],"hash":"2cbe05140446df880e4ef99d05f8aa6b0618682f45640a924312a4cf2351d439","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"prettier"}
-{"findings":[],"hash":"6588ce2546bee409907cca8f924849b134df2df7f4f0de4f521488411385494c","path":"fe/apps/app/src/components/blocks/ProjectConcept/types.ts","step":"prettier"}
 {"findings":[],"hash":"f2c59f8dd4ca336899b2eded9fb2e716cbee1bc1303033eccc6faeb8a4dedc6d","path":"fe/apps/app/src/components/blocks/ProjectDetail/component.tsx","step":"prettier"}
 {"findings":[],"hash":"b1584ceca21815c5fd4d2fbdb04dcc7851211f05b6c276bf0aa820fb804dce9e","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"prettier"}
 {"findings":[],"hash":"f2fcbc4fe38c861a169602c6b0edd0634403682dbe4b5f9eceb5d0dafb15cfb7","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"prettier"}
