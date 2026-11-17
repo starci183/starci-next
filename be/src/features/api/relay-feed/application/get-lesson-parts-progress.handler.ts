@@ -5,7 +5,7 @@ import { lessonPartsOf, LESSON_PART_IDS, RelayLessonService, type LessonPartId }
 import { ICQRSHandler } from "@modules/platform/cqrs"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { GetLessonPartsProgressQuery } from "./get-lesson-parts-progress.query"
-import type { LessonPartsProgressView } from "./lesson-parts-progress.view"
+import type { LessonPartsProgressView } from "./get-lesson-parts-progress.contracts"
 
 /** The entitlement part each page part reads. */
 const ENTITLEMENT_PART = {

@@ -784,24 +784,6 @@
         "ai": "AI & LLM",
         "casestudy": "Bài toán thực chiến"
       },
-      "cases": {
-        "webhook": {
-          "title": "Webhook delivery system",
-          "needs": "Cần trước: Request lifecycle, Messaging & xử lý nền."
-        },
-        "wallet": {
-          "title": "Distributed transactions — ví điện tử",
-          "needs": "Cần trước: CQRS, Kiến trúc & hệ phân tán."
-        },
-        "flashsale": {
-          "title": "E-commerce flash sale",
-          "needs": "Cần trước: Caching & Redis, Messaging & xử lý nền."
-        },
-        "chat": {
-          "title": "Realtime chat system",
-          "needs": "Cần trước: Realtime, Dữ liệu, lưu trữ & tìm kiếm."
-        }
-      },
       "topic": {
         "pageTitle": "Essentials",
         "breadcrumbs": "Đường dẫn",
@@ -953,7 +935,6 @@
           "scenarios": "Kịch bản",
           "apply": "Tự áp dụng"
         },
-        "typescript": "TypeScript",
         "empty": "Bài này chưa có nội dung.",
         "soon": "Phần này đang soạn.",
         "article": {
@@ -973,7 +954,6 @@
           "component": "Thành phần",
           "port": "Cổng",
           "rules": "Luật nó giữ",
-          "codeWalk": "Đọc code · luật nằm ở đâu",
           "why": "Vì sao",
           "empty": "Chưa có thành phần.",
           "download": "Tải source (.tgz)",

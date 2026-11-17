@@ -209,7 +209,7 @@ export type {
     EssenceStage,
     EssenceView,
 } from "./composites/LessonEssence"
-export { DoneIcon, LockIcon } from "./leaves/Icon"
+export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
 export { OutlineList } from "./composites/OutlineList"
 export type { OutlineEntry } from "./composites/OutlineList"

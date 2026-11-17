@@ -78,15 +78,7 @@
 {"findings":[],"hash":"3b552fe04711a6bf76aad30add7f8eaace6c3bb72ffe2dd0c0d5d532b3696d0c","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"prettier"}
 {"findings":[],"hash":"7f8fdb7d8ad7d9e88d16e403a65a25dffdf27da4b2362458292e67d9c1b1ed5f","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"prettier"}
 {"findings":[],"hash":"95a6336e5da089b26374dfa10aff6f6638a4f170e33621d9872845204cb21b84","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"prettier"}
-{"findings":[],"hash":"8569b3e5f5db5d5c62a33ab6f921aa965396d3246ac9f18ae233098e73db0cf5","path":"fe/apps/app/src/components/blocks/EssentialLesson/component.tsx","step":"prettier"}
 {"findings":[],"hash":"d0ce77c7965392cbeb71a0e844cc58add1a470218e85c819a2b956834d8f1db2","path":"fe/apps/app/src/components/blocks/EssentialLesson/index.tsx","step":"prettier"}
-{"findings":[],"hash":"1a7eadd4a6e43caea2ff2957b6579899f05749455da716bc1aa07612aceeeb8e","path":"fe/apps/app/src/components/blocks/EssentialLesson/layout.ts","step":"prettier"}
-{"findings":[],"hash":"3ab34c5b7143afd0a27b0457291631e37424c1d7d33cdce82c78f6392bafa312","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/PrimaryAction.tsx","step":"prettier"}
-{"findings":[],"hash":"7e9721810993eb1e05ee53d05c740c2c12662332fa84a91be64077a50309c630","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/partApply.tsx","step":"prettier"}
-{"findings":[],"hash":"848cc4ac58d667ec17043ea9db6c61dd400156940b9652bcc42c6cd362ecabe3","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/partEssence.tsx","step":"prettier"}
-{"findings":[],"hash":"eedd6b5082cc1982343ed9ec4b69a0526644793094313aca82e8bd57ea9a3d81","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/partLocked.tsx","step":"prettier"}
-{"findings":[],"hash":"d9ffae66f14137d8ebdd37ff1dc999bc51779b5fd64ce1210373f50955a5dd64","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/partScenarios.tsx","step":"prettier"}
-{"findings":[],"hash":"32457eb331c4e733c3e23695004203385c486f9a4703e6c689603dd3caae7a65","path":"fe/apps/app/src/components/blocks/EssentialLesson/parts/partSource.tsx","step":"prettier"}
 {"findings":[],"hash":"1644f42f341e718c53e5c1a5e1f565c655713d73aa61f2fa91329571b0f86128","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx","step":"prettier"}
 {"findings":[],"hash":"05c9595fbed8005bc407119d073c7170d193ffaa6646a7e5ca6d6b12182043ee","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/index.tsx","step":"prettier"}
 {"findings":[],"hash":"c58494c2fbf88a1bae16c3f148e6400444ea9a7b743dc4d5017c03bba39a5d29","path":"fe/apps/app/src/components/blocks/ExperienceList/component.tsx","step":"prettier"}

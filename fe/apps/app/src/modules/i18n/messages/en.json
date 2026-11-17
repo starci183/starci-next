@@ -784,24 +784,6 @@
         "ai": "AI and LLM",
         "casestudy": "Case studies"
       },
-      "cases": {
-        "webhook": {
-          "title": "Webhook delivery system",
-          "needs": "Needs first: Request lifecycle, Messaging and background work."
-        },
-        "wallet": {
-          "title": "Distributed transactions: an e-wallet",
-          "needs": "Needs first: CQRS, Architecture and distributed systems."
-        },
-        "flashsale": {
-          "title": "E-commerce flash sale",
-          "needs": "Needs first: Caching and Redis, Messaging and background work."
-        },
-        "chat": {
-          "title": "Realtime chat system",
-          "needs": "Needs first: Realtime, Data, storage and search."
-        }
-      },
       "topic": {
         "pageTitle": "Essentials",
         "breadcrumbs": "Breadcrumb",
@@ -953,7 +935,6 @@
           "scenarios": "Scenarios",
           "apply": "Apply it"
         },
-        "typescript": "TypeScript",
         "empty": "This lesson has no content yet.",
         "soon": "This part is being written.",
         "article": {
@@ -973,7 +954,6 @@
           "component": "Component",
           "port": "Port",
           "rules": "Rule it keeps",
-          "codeWalk": "Read the code · where the rule lives",
           "why": "Why",
           "empty": "No components yet.",
           "download": "Download source (.tgz)",
