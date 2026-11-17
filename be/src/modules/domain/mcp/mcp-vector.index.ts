@@ -135,7 +135,9 @@ export class McpVectorIndex {
         }
         const known = await this.store.known(corpus.scope, [...byHash.keys()])
         // A chunk stored as premium that this reader may read as free is opened to every free reader, with no new embedding.
-        const reopened = [...known].flatMap(([hash, access]) => (access !== corpus.access && corpus.access === "free" ? [hash] : []))
+        const reopened = [...known].flatMap(([hash, access]) =>
+            access !== corpus.access && corpus.access === "free" ? [hash] : [],
+        )
         if (reopened.length > 0) await this.store.retag(corpus.scope, reopened, "free")
         const missing = [...byHash.entries()].filter(([hash]) => !known.has(hash))
         if (missing.length === 0) return { byHash, embedded: 0 }

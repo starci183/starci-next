@@ -26,11 +26,19 @@ describe("harness commands", () => {
         const relay = mock<RelayClientPort>()
         const command = await commandOf(HarnessE2eCli, relay)
 
-        await command.run([], { install: command.parseInstall(), yes: command.parseYes(), stage: command.parseStage("2") })
+        await command.run([], {
+            install: command.parseInstall(),
+            yes: command.parseYes(),
+            stage: command.parseStage("2"),
+        })
         await command.run(["agent-cli"], { install: false, yes: false })
 
         expect(relay.harnessE2e).toHaveBeenNthCalledWith(1, undefined, { stage: "2", install: true, yes: true })
-        expect(relay.harnessE2e).toHaveBeenNthCalledWith(2, "agent-cli", { stage: undefined, install: false, yes: false })
+        expect(relay.harnessE2e).toHaveBeenNthCalledWith(2, "agent-cli", {
+            stage: undefined,
+            install: false,
+            yes: false,
+        })
     })
 
     it("ci-report delegates the report path and the stage", async () => {

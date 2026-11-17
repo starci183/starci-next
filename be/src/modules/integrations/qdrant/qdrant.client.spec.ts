@@ -12,7 +12,9 @@ const options: QdrantOptions = {
     payloadIndexes: ["kind", "access"],
 }
 
-const make = (answers: Array<{ status: number; body?: unknown } | Error>): { client: QdrantClient; request: jest.Mock } => {
+const make = (
+    answers: Array<{ status: number; body?: unknown } | Error>,
+): { client: QdrantClient; request: jest.Mock } => {
     const request = jest.fn().mockImplementation(() => {
         const next = answers.shift() ?? { status: 200, body: {} }
         return next instanceof Error ? Promise.reject(next) : Promise.resolve(next)
@@ -49,15 +51,25 @@ describe("QdrantClient", () => {
     it("upserts points in batches with only keyword payload and no text", async () => {
         const { client, request } = make([])
         await client.upsert(
-            Array.from({ length: 130 }, (_, index) => ({ pointId: `id${index}`, vector: [1], payload: { kind: "lesson" } })),
+            Array.from({ length: 130 }, (_, index) => ({
+                pointId: `id${index}`,
+                vector: [1],
+                payload: { kind: "lesson" },
+            })),
         )
         expect(request).toHaveBeenCalledTimes(2)
         expect(request.mock.calls[0]?.[0].body.points).toHaveLength(128)
-        expect(request.mock.calls[0]?.[0].body.points[0]).toEqual({ id: "id0", vector: [1], payload: { kind: "lesson" } })
+        expect(request.mock.calls[0]?.[0].body.points[0]).toEqual({
+            id: "id0",
+            vector: [1],
+            payload: { kind: "lesson" },
+        })
     })
 
     it("searches under a mandatory filter and answers ids with scores", async () => {
-        const { client, request } = make([{ status: 200, body: { result: { points: [{ id: "p1", score: 0.8 }, { id: 7 }] } } }])
+        const { client, request } = make([
+            { status: 200, body: { result: { points: [{ id: "p1", score: 0.8 }, { id: 7 }] } } },
+        ])
         const found = await client.search(
             [
                 { key: "kind", any: ["lesson"] },

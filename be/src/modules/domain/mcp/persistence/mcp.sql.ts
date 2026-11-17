@@ -48,4 +48,5 @@ export const SELECT_STALE_POINTS: ReturnType<typeof sql> = sql`SELECT point_id F
 WHERE kind = $1::text AND source_id = $2::text AND locale = $3::text AND NOT (content_hash = ANY($4::text[]))`
 
 /** Deletes point rows ($1 point ids). */
-export const DELETE_POINT_ROWS: ReturnType<typeof sql> = sql`DELETE FROM mcp_vector_points WHERE point_id = ANY($1::uuid[])`
+export const DELETE_POINT_ROWS: ReturnType<typeof sql> =
+    sql`DELETE FROM mcp_vector_points WHERE point_id = ANY($1::uuid[])`

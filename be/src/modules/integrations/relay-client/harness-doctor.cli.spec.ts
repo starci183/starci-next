@@ -1,6 +1,13 @@
 import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
-import { CLAUDE_PROBE_YAML, CODEX_PROBES, harnessWorld, putFile, writeProbes, type HarnessWorld } from "./harness.testing"
+import {
+    CLAUDE_PROBE_YAML,
+    CODEX_PROBES,
+    harnessWorld,
+    putFile,
+    writeProbes,
+    type HarnessWorld,
+} from "./harness.testing"
 import { doctorCommand } from "./harness-doctor.cli"
 import type { DoctorOptions } from "./harness-trial.contracts"
 import { readQueue } from "./upload-queue.adapter"
@@ -18,7 +25,8 @@ beforeEach(() => {
     writeProbes(world.data, "codex", CODEX_PROBES)
 })
 
-const doctor = (options: Partial<DoctorOptions> = {}) => doctorCommand(world.io, { ...OPTIONS, from: world.data, ...options }, world.cwd)
+const doctor = (options: Partial<DoctorOptions> = {}) =>
+    doctorCommand(world.io, { ...OPTIONS, from: world.data, ...options }, world.cwd)
 const text = (): string => world.out.join("\n")
 
 describe("harness doctor", () => {
@@ -44,7 +52,7 @@ describe("harness doctor", () => {
 
         await doctor({ tool: "codex", lang: "vi" })
 
-        expect(text()).toMatch(/failed\s+approval-policy-set\s+approval/u)
+        expect(text()).toMatch(/failed\s+risky-commands-asked\s+approval/u)
         expect(text()).toContain("Fix: Đặt approval_policy")
         expect(text()).toContain("approval_policy is not one of untrusted, on-request")
     })
@@ -53,7 +61,11 @@ describe("harness doctor", () => {
         const declined = harnessWorld({ confirm: false })
         writeProbes(declined.data, "codex", CODEX_PROBES)
 
-        const code = await doctorCommand(declined.io, { ...OPTIONS, yes: false, tool: "codex", from: declined.data }, declined.cwd)
+        const code = await doctorCommand(
+            declined.io,
+            { ...OPTIONS, yes: false, tool: "codex", from: declined.data },
+            declined.cwd,
+        )
 
         expect(code).toBe(1)
         expect(declined.out.join("\n")).toContain("  node -e process.exit(0)")
@@ -73,7 +85,7 @@ describe("harness doctor", () => {
         expect(text()).toMatch(/invalid\s+two-checks/u)
         expect(text()).toContain("check must hold exactly one of file, json, toml, env, command, hook, git")
         expect(text()).toMatch(/passed\s+node-runs/u)
-        expect(text()).toMatch(/failed\s+approval-policy-set/u)
+        expect(text()).toMatch(/failed\s+risky-commands-asked/u)
     })
 
     it("runs both tools when none is named, and prints one JSON result per tool with --json", async () => {
@@ -81,9 +93,21 @@ describe("harness doctor", () => {
 
         await doctor({ json: true })
 
-        const results = world.out.map((line) => JSON.parse(line) as { kind: string; tool: string; probes: Array<{ id: string; status: string }>; summary: Record<string, number> })
+        const results = world.out.map(
+            (line) =>
+                JSON.parse(line) as {
+                    kind: string
+                    tool: string
+                    probes: Array<{ id: string; status: string }>
+                    summary: Record<string, number>
+                },
+        )
         expect(results.map((result) => result.tool)).toEqual(["claude", "codex"])
-        expect(results[0]).toMatchObject({ kind: "harness-doctor", probes: [{ id: "claude-md-present", status: "passed" }], summary: { passed: 1, failed: 0, skipped: 0, invalid: 0 } })
+        expect(results[0]).toMatchObject({
+            kind: "harness-doctor",
+            probes: [{ id: "claude-md-present", status: "passed" }],
+            summary: { passed: 1, failed: 0, skipped: 0, invalid: 0 },
+        })
         expect(results[1]?.summary).toEqual({ passed: 1, failed: 1, skipped: 0, invalid: 1 })
         expect(world.err.join("\n")).toContain("The probes will run these on this machine:")
     })
@@ -94,7 +118,13 @@ describe("harness doctor", () => {
 
         expect(world.sent[0]?.query).toContain("relayHarnessResult")
         expect(world.sent.map((body) => body.variables.input)).toEqual([
-            { eventId: expect.any(String), kind: "harness-doctor", tool: "claude", probe: "claude-md-present", status: "passed" },
+            {
+                eventId: expect.any(String),
+                kind: "harness-doctor",
+                tool: "claude",
+                probe: "claude-md-present",
+                status: "passed",
+            },
         ])
 
         const offline = harnessWorld({ fetchStatus: 0 })
@@ -134,13 +164,23 @@ describe("harness doctor with the probes of the content repository", () => {
     it("reads all fourteen files as valid probes, none invalid", async () => {
         const real = harnessWorld()
         readdirSync(FIXTURES).forEach((folder) => {
-            const probes = Object.fromEntries(readdirSync(join(FIXTURES, folder)).map((file) => [file, readFileSync(join(FIXTURES, folder, file), "utf8")]))
+            const probes = Object.fromEntries(
+                readdirSync(join(FIXTURES, folder)).map((file) => [
+                    file,
+                    readFileSync(join(FIXTURES, folder, file), "utf8"),
+                ]),
+            )
             writeProbes(real.data, folder, probes)
         })
 
         await doctorCommand(real.io, { ...OPTIONS, from: real.data, noUpload: true, json: true }, real.cwd)
 
-        const results = real.out.map((line) => JSON.parse(line) as { tool: string; probes: Array<unknown>; summary: { invalid: number } })
-        expect(results.map((result) => [result.tool, result.probes.length, result.summary.invalid])).toEqual([["claude", 8, 0], ["codex", 6, 0]])
+        const results = real.out.map(
+            (line) => JSON.parse(line) as { tool: string; probes: Array<unknown>; summary: { invalid: number } },
+        )
+        expect(results.map((result) => [result.tool, result.probes.length, result.summary.invalid])).toEqual([
+            ["claude", 8, 0],
+            ["codex", 6, 0],
+        ])
     })
 })

@@ -109,7 +109,7 @@ environments:
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
       - name: "local-ai-api-key"
         member: "ai"
-        key: "LOCAL_AI_API_KEY"
+        key: "AI_API_KEY"
         where: "secrets/ai"
         recipientPolicy: "its environment's rule of the app's managed .sops.yaml"
         keyCustody: "SOPS_AGE_KEY in the host's untracked .claude/secret.env"
@@ -165,7 +165,7 @@ environments:
           argv: [node, dist/apps/core/src/main.js]
           cwd: be
           port: core
-          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, LOCAL_AI_API_KEY]
+          files: [IDENTITY_KEYCLOAK_CLIENT_SECRET, IDENTITY_SESSION_ENCRYPTION_KEY, PAYOS_CHECKSUM_KEY, PAYOS_API_KEY, SEPAY_IPN_SECRET_KEY, SEPAY_SIGNING_SECRET_KEY, OPENROUTER_API_KEY, AI_API_KEY]
           env:
             NODE_ENV: development
             PORT: "${port.core}"
@@ -197,7 +197,7 @@ environments:
             # The vector index of the MCP semantic search: Qdrant of the compose project, vectors of 1024 dimensions (qwen3-embedding:8b cut by MRL). With no MCP_EMBED_URL the search answers by keywords.
             QDRANT_URL: "http://127.0.0.1:${port.qdrant}"
             QDRANT_VECTOR_SIZE: "1024"
-            # The shared host embeddings service (ai-router kind local, qwen3-embedding:8b cut to 1024 by MRL); its token is the sealed LOCAL_AI_API_KEY. The gateway checks the token and caps the body at 1 MB.
+            # The shared host embeddings service (ai-router kind local, qwen3-embedding:8b cut to 1024 by MRL); its token is the sealed AI_API_KEY. The gateway checks the token and caps the body at 1 MB.
             MCP_EMBED_URL: "https://embed.starci.org/v1"
             # Dev signs task manifests with a key pair made once by `node scripts/relay-manifest-key.mjs` (a key per process could not be verified by the learner CLI).
             RELAY_MANIFEST_SIGNING_KEY_FILE: "${data}/relay-dev/manifest-signing.pem"
@@ -411,6 +411,7 @@ data:
     - {id: database, kind: database, level: logical, component: postgres, adapter: {module: be/src/modules/integrations/seed/database.adapter.ts}}
   derived:
     - {component: ingress, rebuild: the ingress re-issues its certificates (ACME)}
+    - {component: qdrant, from: database, rebuild: "cli mcp reindex rebuilds the vector index from the database and the content sources; points of removed content are deleted by the same job"}
     - {component: keycloak, rebuild: "the development realm is imported again from the dev realm file on start; production uses the owner-provisioned realm"}
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}

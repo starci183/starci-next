@@ -23,7 +23,11 @@ export class McpModule extends ConfigurableModuleClass {
             ...base,
             imports: [
                 ...(base.imports ?? []),
-                McpIndexModule.register({ embed: options.embed, harnessDir: options.harnessDir, qdrant: options.qdrant }),
+                McpIndexModule.register({
+                    embed: options.embed,
+                    harnessDir: options.harnessDir,
+                    qdrant: options.qdrant,
+                }),
             ],
             providers: [
                 ...(base.providers ?? []),

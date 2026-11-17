@@ -6,7 +6,7 @@ id: mcp-servers-configured
 tool: codex
 order: 4
 title:
-  vi: Đã khai báo ít nhất một mcp_servers
+  vi: At least one mcp_servers entry exists
   en: At least one mcp_servers entry exists
 guide: mcp-servers
 check:
@@ -15,7 +15,7 @@ check:
     at: mcp_servers
     nonEmpty: true
 fix:
-  vi: Thêm bảng `[mcp_servers.<tên>]` vào `~/.codex/config.toml` với `command` và `args`. Khóa API lấy từ biến môi trường, không ghi thẳng vào file.
+  vi: Add a `[mcp_servers.<name>]` table to `~/.codex/config.toml` with `command` and `args`. Read API keys from environment variables, never write them into the file.
   en: Add a `[mcp_servers.<name>]` table to `~/.codex/config.toml` with `command` and `args`. Read API keys from environment variables, never write them into the file.
 good:
   files:

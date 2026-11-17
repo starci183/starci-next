@@ -6,7 +6,7 @@ id: git-hook-blocks-env-commit
 tool: codex
 order: 6
 title:
-  vi: Git pre-commit chặn commit file `.env`
+  vi: A git pre-commit hook blocks committing `.env`
   en: A git pre-commit hook blocks committing `.env`
 guide: git-hooks
 check:
@@ -15,7 +15,7 @@ check:
       scenario: env-file
       expect: reject
 fix:
-  vi: Trong `.githooks/pre-commit` kiểm `git diff --cached --name-only`; thấy `.env` (không phải `.env.example`) thì in lý do và thoát với mã 1. Nhớ thêm `.env` vào `.gitignore`.
+  vi: In `.githooks/pre-commit` check `git diff --cached --name-only`; when it lists `.env` (not `.env.example`) print the reason and exit with 1. Add `.env` to `.gitignore` too.
   en: In `.githooks/pre-commit` check `git diff --cached --name-only`; when it lists `.env` (not `.env.example`) print the reason and exit with 1. Add `.env` to `.gitignore` too.
 good:
   files:

@@ -128,6 +128,8 @@ describe("McpVectorIndex", () => {
             nearest: () => Promise.resolve([]),
             prune: () => Promise.resolve(0),
         }
-        expect(await new McpVectorIndex(embedderOf().embedder, broken).search(corpus(), [chunk("a", "x")], "x")).toBeNull()
+        expect(
+            await new McpVectorIndex(embedderOf().embedder, broken).search(corpus(), [chunk("a", "x")], "x"),
+        ).toBeNull()
     })
 })

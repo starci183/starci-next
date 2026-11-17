@@ -55,7 +55,10 @@ export class TrialCli extends CommandRunner {
     }
 
     /** `--permission-mode`: the claude mode. */
-    @Option({ flags: "--permission-mode <mode>", description: "Claude only: the permission mode (default acceptEdits)" })
+    @Option({
+        flags: "--permission-mode <mode>",
+        description: "Claude only: the permission mode (default acceptEdits)",
+    })
     parsePermissionMode(value: string): string {
         return value
     }
@@ -79,7 +82,9 @@ export class TrialCli extends CommandRunner {
             from: options.from,
             yes: options.yes,
             maxBudgetUsd:
-                options.maxBudgetUsd !== undefined && Number.isFinite(options.maxBudgetUsd) ? options.maxBudgetUsd : undefined,
+                options.maxBudgetUsd !== undefined && Number.isFinite(options.maxBudgetUsd)
+                    ? options.maxBudgetUsd
+                    : undefined,
             permissionMode: options.permissionMode,
             noUpload: options.upload === false,
             keep: options.keep,

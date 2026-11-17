@@ -1,0 +1,17 @@
+schema: starci/i18n-dynamic-keys@1
+namespaces:
+  part.build:
+    - key: title
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.
+    - key: summary
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.
+  part.use:
+    - key: title
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.
+    - key: summary
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.
+  part.docs:
+    - key: title
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.
+    - key: summary
+      reason: harness-progress.policy.ts reads part.<key>.title and part.<key>.summary for each of the three parts of the hub through the words callback.

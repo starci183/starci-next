@@ -40,7 +40,8 @@ const valueOf = (spec: Record<string, unknown>, env: LocalFlowEnv, read: (text: 
         }
         const found = valueAt(data, String(spec["at"]))
         if (found === undefined) continue
-        if (Array.isArray(found) && Array.isArray(value)) value = [...(value as ReadonlyArray<unknown>), ...(found as ReadonlyArray<unknown>)]
+        if (Array.isArray(found) && Array.isArray(value))
+            value = [...(value as ReadonlyArray<unknown>), ...(found as ReadonlyArray<unknown>)]
         else if (value === undefined) value = found
     }
     return value
@@ -50,16 +51,20 @@ const checkValue = (spec: Record<string, unknown>, value: unknown): CheckAnswer 
     const at = String(spec["at"])
     if (value === undefined) return fail(`${at} is not set`)
     if (spec["nonEmpty"] === true && !isNonEmpty(value)) return fail(`${at} is empty`)
-    if (spec["equals"] !== undefined && JSON.stringify(value) !== JSON.stringify(spec["equals"])) return fail(`${at} is not the expected value`)
+    if (spec["equals"] !== undefined && JSON.stringify(value) !== JSON.stringify(spec["equals"]))
+        return fail(`${at} is not the expected value`)
     const oneOf = spec["oneOf"]
     if (Array.isArray(oneOf) && !(oneOf as ReadonlyArray<unknown>).includes(value)) {
         return fail(`${at} is not one of ${(oneOf as ReadonlyArray<unknown>).join(", ")}`)
     }
     const patterns = spec["matchesAll"]
     if (Array.isArray(patterns)) {
-        const items = (Array.isArray(value) ? (value as ReadonlyArray<unknown>) : [value]).filter((item) => typeof item === "string")
+        const items = (Array.isArray(value) ? (value as ReadonlyArray<unknown>) : [value]).filter(
+            (item) => typeof item === "string",
+        )
         for (const pattern of patterns as ReadonlyArray<string>) {
-            if (!items.some((item) => new RegExp(pattern, FLAGS).test(String(item)))) return fail(`no ${at} entry matches ${pattern}`)
+            if (!items.some((item) => new RegExp(pattern, FLAGS).test(String(item))))
+                return fail(`no ${at} entry matches ${pattern}`)
         }
     }
     return pass(`${at} ok`)
@@ -67,11 +72,17 @@ const checkValue = (spec: Record<string, unknown>, value: unknown): CheckAnswer 
 
 /** `json`: the value at a dotted key of the first JSON file that has it satisfies nonEmpty, equals, oneOf, matchesAll. */
 export const jsonCheck = (spec: Record<string, unknown>, env: LocalFlowEnv): CheckAnswer =>
-    checkValue(spec, valueOf(spec, env, (text) => JSON.parse(text) as unknown))
+    checkValue(
+        spec,
+        valueOf(spec, env, (text) => JSON.parse(text) as unknown),
+    )
 
 /** `toml`: the same over TOML files. */
 export const tomlCheck = (spec: Record<string, unknown>, env: LocalFlowEnv): CheckAnswer =>
-    checkValue(spec, valueOf(spec, env, (text) => parseToml(text) as unknown))
+    checkValue(
+        spec,
+        valueOf(spec, env, (text) => parseToml(text) as unknown),
+    )
 
 /** `env`: a variable is set (non-empty) or is not. */
 export const envCheck = (spec: Record<string, unknown>, env: LocalFlowEnv): CheckAnswer => {
@@ -84,7 +95,11 @@ export const envCheck = (spec: Record<string, unknown>, env: LocalFlowEnv): Chec
 }
 
 /** `command`: runs the command (or reads its stub) and checks the exit code and the output. */
-export const commandCheck = async (spec: Record<string, unknown>, env: LocalFlowEnv, proc: ProcessPort): Promise<CheckAnswer> => {
+export const commandCheck = async (
+    spec: Record<string, unknown>,
+    env: LocalFlowEnv,
+    proc: ProcessPort,
+): Promise<CheckAnswer> => {
     const run = String(spec["run"])
     const stub = env.commands?.[run]
     const result =
@@ -95,10 +110,15 @@ export const commandCheck = async (spec: Record<string, unknown>, env: LocalFlow
             : await proc.run({ command: run, args: [], cwd: env.project, timeoutMs: COMMAND_TIMEOUT_MS, shell: true })
     if (result === null) return fail("command has no stub in this fixture")
     const wanted = typeof spec["exitCode"] === "number" ? spec["exitCode"] : 0
-    if (env.commands === undefined ? result.exitCode !== wanted : spec["exitCode"] !== undefined && result.exitCode !== wanted) {
+    if (
+        env.commands === undefined
+            ? result.exitCode !== wanted
+            : spec["exitCode"] !== undefined && result.exitCode !== wanted
+    ) {
         return fail("unexpected exit code")
     }
-    if (typeof spec["stdoutMatches"] === "string" && !new RegExp(spec["stdoutMatches"], "u").test(result.stdout)) return fail("stdout does not match")
+    if (typeof spec["stdoutMatches"] === "string" && !new RegExp(spec["stdoutMatches"], "u").test(result.stdout))
+        return fail("stdout does not match")
     return pass("command ok")
 }
 

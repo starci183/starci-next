@@ -19,12 +19,20 @@ const lineJson = (line: string): Record<string, unknown> | null => {
 }
 
 const pathsOf = (input: Record<string, unknown>): ReadonlyArray<string> =>
-    ["file_path", "path", "notebook_path"].flatMap((key) => (typeof input[key] === "string" ? [String(input[key])] : []))
+    ["file_path", "path", "notebook_path"].flatMap((key) =>
+        typeof input[key] === "string" ? [String(input[key])] : [],
+    )
 
 const toolAction = (block: Record<string, unknown>): ToolAction => {
     const name = textOf(block["name"])
     const input = isRecord(block["input"]) ? block["input"] : {}
-    const kind = SHELL_TOOLS.includes(name) ? "shell" : READ_TOOLS.includes(name) ? "read" : WRITE_TOOLS.includes(name) ? "write" : "other"
+    const kind = SHELL_TOOLS.includes(name)
+        ? "shell"
+        : READ_TOOLS.includes(name)
+          ? "read"
+          : WRITE_TOOLS.includes(name)
+            ? "write"
+            : "other"
     return {
         id: textOf(block["id"]),
         kind,
@@ -119,7 +127,11 @@ export const codexRunOf = (lines: ReadonlyArray<string>): AgentRun => {
     lines.forEach((line) => {
         const event = lineJson(line)
         if (event === null) return
-        if (event["type"] === "item.completed" && isRecord(event["item"]) && event["item"]["type"] === "agent_message") {
+        if (
+            event["type"] === "item.completed" &&
+            isRecord(event["item"]) &&
+            event["item"]["type"] === "agent_message"
+        ) {
             answer = textOf(event["item"]["text"])
         }
         if (event["type"] === "item.completed" && isRecord(event["item"])) {
@@ -129,7 +141,8 @@ export const codexRunOf = (lines: ReadonlyArray<string>): AgentRun => {
         if (event["type"] === "turn.completed" && isRecord(event["usage"])) {
             const usage = event["usage"]
             inputTokens = (inputTokens ?? 0) + (typeof usage["input_tokens"] === "number" ? usage["input_tokens"] : 0)
-            outputTokens = (outputTokens ?? 0) + (typeof usage["output_tokens"] === "number" ? usage["output_tokens"] : 0)
+            outputTokens =
+                (outputTokens ?? 0) + (typeof usage["output_tokens"] === "number" ? usage["output_tokens"] : 0)
         }
     })
     return { actions, message: answer, inputTokens, outputTokens }

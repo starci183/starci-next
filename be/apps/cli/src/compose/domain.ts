@@ -30,5 +30,10 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     // The gitmount for `cli content sync`: it pulls the content repositories and runs the importers above at the pulled version.
     ContentModule.register({ isGlobal: true, ...options.content }),
     // The semantic index for `cli mcp reindex`: the embedder, the pgvector store and the harness content, without the relay or the lessons.
-    McpIndexModule.register({ isGlobal: true, embed: options.mcp.embed, harnessDir: options.mcp.harnessDir, qdrant: options.mcp.qdrant }),
+    McpIndexModule.register({
+        isGlobal: true,
+        embed: options.mcp.embed,
+        harnessDir: options.mcp.harnessDir,
+        qdrant: options.mcp.qdrant,
+    }),
 ]

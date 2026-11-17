@@ -8,7 +8,7 @@ import { HARNESS_STATE_FILE } from "./harness-files.adapter"
 import type { CliIo, FetchInit } from "./relay-client.contracts"
 import { COMMIT, uploads, worldOf, type World } from "./lesson.testing"
 
-const SECRET_VALUE = "sk-ant-this-must-never-travel"
+const SECRET_VALUE = "fake-key-must-never-travel"
 
 const buildBody = (extra: Record<string, unknown> = {}) => ({
     kind: "build",
@@ -164,7 +164,11 @@ describe("harness pull", () => {
     })
 
     it("refuses a manifest that is a doctor section, not a build, and a bad build id", async () => {
-        const made = harnessWorld({ kind: "doctor", tool: "claude", source: { url: "/x.tgz", sha256: "e".repeat(64), commit: "a".repeat(40) } })
+        const made = harnessWorld({
+            kind: "doctor",
+            tool: "claude",
+            source: { url: "/x.tgz", sha256: "e".repeat(64), commit: "a".repeat(40) },
+        })
         expect(await pullBuild(made.io, "agent-cli", made.world.cwd)).toBe(1)
         expect(made.world.err.join("\n")).toContain("no build")
         expect(await pullBuild(made.io, "Agent CLI", made.world.cwd)).toBe(1)

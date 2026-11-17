@@ -1,13 +1,13 @@
-# Probe của StarCi (học viên không sửa). Ngôn ngữ check-flow: docs/check-flow.md. File nháp do AI viết.
+# StarCi probe (learners do not edit it). Check-flow language: docs/check-flow.md. A draft file written by an AI.
 schema: starci-next-data/check-flow@1
 status: draft
 author: ai-placeholder
 id: request-id
 label:
-  vi: Request id được trả lại đúng và mỗi request có id riêng
+  vi: The request id is echoed, and each request gets its own
   en: The request id is echoed, and each request gets its own
 question:
-  vi: Một request id đi từ đâu đến log, và bạn nhìn thấy nó ở đâu khi cần truy vết?
+  vi: Where does a request id enter and reach the logs, and where do you look when you trace a failure?
   en: Where does a request id enter and reach the logs, and where do you look when you trace a failure?
 needs: [endpoint]
 steps:
@@ -29,10 +29,19 @@ steps:
       - { that: header x-request-id, ne: "{{minted}}", fail: constant-id }
 pass: echoed
 reasons:
-  echoed: { vi: "Id gửi lên được trả lại, id tự sinh khác nhau mỗi request.", en: "The sent id came back and minted ids differ per request." }
-  not-echoed: { vi: Phản hồi không trả lại đúng x-request-id đã gửi., en: The response did not echo the x-request-id that was sent. }
-  not-minted: { vi: Request không có id thì phản hồi cũng không có x-request-id., en: A request without an id got no x-request-id back. }
-  constant-id: { vi: Hai request khác nhau nhận cùng một id., en: Two different requests got the same id. }
+  echoed:
+    {
+      vi: "The sent id came back and minted ids differ per request.",
+      en: "The sent id came back and minted ids differ per request.",
+    }
+  not-echoed:
+    {
+      vi: The response did not echo the x-request-id that was sent.,
+      en: The response did not echo the x-request-id that was sent.,
+    }
+  not-minted:
+    { vi: A request without an id got no x-request-id back., en: A request without an id got no x-request-id back. }
+  constant-id: { vi: Two different requests got the same id., en: Two different requests got the same id. }
 fixtures:
   endpoint: POST /starci-test/items
   sample: '{"name":"book"}'
