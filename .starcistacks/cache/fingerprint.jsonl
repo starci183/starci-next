@@ -30,7 +30,7 @@
 {"name":"pkg:@starci/auth","sha256":"9d21244aa832248a8d3223a43efde902c2ff458ed4dcb1be6e7ec75509c5b556"}
 {"name":"pkg:@starci/common","sha256":"bb10c8f4e2fe2a0d428a1bf6ab86d28a2ddaa4054282eca4e213cdbc1681df9f"}
 {"name":"pkg:@starci/eslint-canon-be","sha256":"d783eab37fa5989ee80cb325884e001e93da474639646bc91a915503cf1c3d99"}
-{"name":"pkg:@starci/eslint-canon-fe","sha256":"8c4287ae8e16d0882e574ea7531bd929b779509d67e28a303decb0d910e05d41"}
+{"name":"pkg:@starci/eslint-canon-fe","sha256":"82dd29dded31680e52f5b24ea9025246a4b27df3ee75eb9b31f6b71947b47bf2"}
 {"name":"pkg:@starci/eslint-grammar-core","sha256":"9d967539c6f9b78e047a859b5da6324dfc4f214b93005d18e4e67213937a49af"}
 {"name":"pkg:@starci/grammar","sha256":"394cd7165b17464119bf68988082bfd79272d0afef6929e8cde54f3111a3f933"}
 {"name":"pkg:@starci/heroicons","sha256":"af23d60a104cf4662d750e3eeacc0a0721a3847b05e52bfb6126c95e2f7263cd"}
