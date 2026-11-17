@@ -62,3 +62,11 @@ export type { HarnessCiDelivery } from "./harness-ci.policy"
 export type { HarnessCiReceipt } from "./harness-ci.service"
 export { HarnessReadService } from "./harness-read.service"
 export { HarnessLogEvent } from "./harness.log-events"
+export {
+    HarnessBuildsSeedSet,
+    HarnessDocsSeedSet,
+    HarnessDoctorPacksSeedSet,
+    HarnessGuidesSeedSet,
+    HarnessProbesSeedSet,
+    HarnessTrapsSeedSet,
+} from "./harness-seed.set"
