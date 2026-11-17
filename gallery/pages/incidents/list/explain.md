@@ -24,3 +24,13 @@ Grammar: `Text tone="muted"` (`leaf/Text`).
 Vì sao: sự cố gom theo chủ đề (Backend framework, Độ tin cậy của API, Server state, Communication patterns, Testing strategy, Kubernetes, Cloud networking, LLM & agent, Cơ sở dữ liệu): mỗi nhóm là một `Section` phẳng với tên nhóm làm đầu mục và các hàng bên dưới. Hàng gồm tên sự cố 500, dòng 12 muted "Nền tảng · 65 phút" (bậc và thời lượng) và bên phải chữ muted "Sắp có". Hàng không bấm được cho đến khi sự cố có thật; khi có sẽ là liên kết. Đường kẻ 1px chỉ ngăn hàng trong cùng nhóm; nhóm chỉ có một hàng không có đường kẻ nào. CHƯA RÕ: mười một hàng đều "Sắp có" nên trang là một danh sách dài không làm được gì; chờ sự cố đầu tiên mở. Khoảng cách giữa các nhóm lớn nên trang rất dài ở 390.
 Luật: `surface-layering` (danh sách là Section, không thẻ), `theme-and-type`.
 Grammar: `IncidentGroups` (`fe/packages/starci-next-ui/src/composites/IncidentGroups`) gồm `Section` và `Text`.
+
+## Phản biện
+
+- 1440: không có dải tiêu đề `Page header` (viền dưới) như các trang khác; tiêu đề "Sự cố" nằm trên thân với nhãn viết hoa "SỬA LỖI THẬT · TẦNG 2 CỦA BẢN CHẤT" (hoa, xám nhạt, tương phản thấp); mô tả là chữ foreground 14, không phải 12 muted.
+- 1440: dòng "Chạy sự cố cần thiết bị đã kết nối — sắp có." muted ngả nâu đứng lẻ ngoài các nhóm.
+- 1440: tiêu đề nhóm sát trái x=288 còn hàng sự cố thụt vào x=300; hai trục trái lệch mười hai điểm ảnh.
+- 1440: nhóm chỉ một hàng thì không có đường kẻ, nhóm cách nhau khoảng 140px nên trang dài; cả mười một hàng "Sắp có" nên không có việc nào làm được.
+- 1440: "Sắp có" là chữ muted nhỏ trần, không phải chip, lệch kiểu với trạng thái ở các trang khác.
+- 1920: nội dung co vào giữa (x=480); hàng sự cố vẫn thụt 12px so với tiêu đề nhóm; "Sắp có" cách tên hơn 800px nên khó đọc ngang hàng.
+- 390: tên sự cố bẻ dòng để chữ mồ côi ("lần", "lại?"); "Sắp có" chiếm cột phải làm hẹp tên; khoảng cách nhóm lớn nên trang dài.

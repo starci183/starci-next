@@ -24,3 +24,11 @@ Grammar: `PracticeBrowse` (`fe/packages/starci-next-ui/src/composites/PracticeBr
 Vì sao: một `Section` danh sách phẳng năm bài, hàng ngăn bằng đường kẻ 1px: số thứ tự, tên bài 500, dòng 12 muted độ khó và các nhãn kỹ thuật (Trung bình · arrays · sorting...), bên phải chip xám "Chưa làm" và nút pill trung tính "Giải bài". Bài khoá (với học viên miễn phí) vẫn là liên kết và mang chip "Premium". Ở 390 nút "Giải bài" xuống dòng riêng dưới mỗi hàng và nhãn kỹ thuật bị cắt bằng "…".
 Luật: `surface-layering` (danh sách là Section, không thẻ), `theme-and-type`.
 Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList`) trong `Section`, `Badge`, `Button` neutral cỡ sm.
+
+## Phản biện
+
+- 1440: tiêu đề trang "Mảng" lặp với đầu mục Section "Mảng" ngay dưới; dòng muted "0/5 bài Accepted · bản miễn phí mở 5 bài" vẫn nói "bản miễn phí" với học viên Premium nên sai nghĩa.
+- 1440: nhãn kỹ thuật hiện nguyên mã camelCase thô (dynamicProgramming, twoPointers, prefixSum) chứ không phải tên đọc được; độ khó "Trung bình" cùng màu muted nên không nổi.
+- 1440: mỗi hàng có chip "Chưa làm" và nút "Giải bài" cạnh nhau ở mép phải; năm nút lặp, hàng vốn đã là liên kết; chip và nút cùng cỡ nhỏ nhìn như hai nút, viền nút gần như vô hình.
+- 1920: nội dung co vào giữa (x=480) trong khi đường dẫn và tiêu đề sát trái x=288; tiêu đề lặp và dòng "bản miễn phí" sai nghĩa như ở 1440.
+- 390: nút "Giải bài" xuống dòng riêng dưới mỗi hàng, lệch trái so với tên bài; nhãn kỹ thuật bị cắt "…" giữa chừng (greed…, sorti…, dynamicProgr…) nên mất nghĩa; chip "Chưa làm" đứng cao hơn dòng tên.

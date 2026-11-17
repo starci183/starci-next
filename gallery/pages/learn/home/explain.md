@@ -65,3 +65,18 @@ Grammar: `Section fact`, `Progress label value valueText`, `ChoiceChips`, `Butto
 Vì sao: hai dòng "Đã xác minh" và "Chờ thầy duyệt", mỗi dòng một chip đếm xám, và liên kết điều hướng "Xem kinh nghiệm →" ở cuối đầu phần (màu foreground, mũi tên →).
 Luật: `surface-layering` (liên kết điều hướng ở đầu phần kết bằng →), `red-budget-links-foreground`.
 Grammar: `Section action={<Link variant="head">}`, `Badge tone="neutral"`; code `fe/packages/starci-next-ui/src/composites/HubExperience`.
+
+## Phản biện
+
+- 1440, 1920, phần "Lộ trình đang theo": khoảng trống khoảng 50px giữa đầu phần và nội dung, và khoảng 80px giữa nút và đầu phần "Hôm nay"; nhịp dọc rời rạc so với các phần khác. Hình minh hoạ là một tranh nền gradient hình chữ nhật, không phải vật thật để cầm.
+- 390, "Lộ trình đang theo": hình thu nhỏ cỡ 100px nằm lệch trái, bỏ trống bên phải; nút chính "Chọn mục tiêu" nằm ở khoảng y=965, tức xa dưới màn hình đầu vì cột phụ (chuỗi ngày, mục tiêu tuần, kinh nghiệm) chen lên trước.
+- 1440, 1920, 390, nút "Chọn mục tiêu": nền tím nhạt chữ đen kèm icon, tương phản thấp, không giống nút chính đặc.
+- 1440, 1920, 390, dải tiêu đề: dòng phụ "Sáu phần học, một chuỗi ngày" cỡ 14 xám, không phải 12 muted như luật; "Xem hướng dẫn" là viên thuốc viền nằm lệch mép phải, cách xa tiêu đề.
+- 1440, 1920, 390, "0 ngày liên tiếp": chữ "ngày liên tiếp" cũng cỡ 20 xám nhạt, tương phản thấp, chỉ "0" đậm; luật chỉ cho số lớn cỡ 20.
+- 1440, 1920, 390, hàng bảy ngày: nhãn T4..T3 12px xám nhạt và chấm rỗng rất nhỏ; chấm hôm nay chỉ khác một vòng mờ, khó thấy.
+- 1440, 1920, 390, "Mục tiêu tuần": thanh Progress ở 0% chỉ là một rãnh xám cực nhạt, gần như vô hình; "Đổi mục tiêu tuần" dính ngay dưới rãnh, không thở.
+- 1440, 1920, 390, thanh trên: nút đổi ngôn ngữ và nút thu gọn thanh bên là hình tròn tô xám, công tắc sáng tối là một viên thuốc rộng tô xám với nút gạt lệch trái; ảnh avatar đỏ bão hoà là điểm màu mạnh nhất trang, vượt cả accent (nền tô thay vì viền).
+- 1440, 1920, 390, "Học viên · Premium" và "Còn 5 việc để giữ chuỗi", tên nhóm sidebar "Kinh nghiệm": xám nhạt cỡ 12, tương phản thấp.
+- 1440, 1920, "Kinh nghiệm" ở cột phụ: hai chip đếm "0" xám tô; nhãn tên mục sidebar "Kinh nghiệm" nhóm cũng trùng tên với tên nhóm nhỏ "Kinh nghiệm" ở cột phụ và mục "Kinh nghiệm đã xác minh", ba chỗ cùng một từ.
+- 1920: cột phụ rộng khoảng 420px, rộng hơn hẳn ở 1440 (320px); mỗi dòng "Hôm nay" kéo dài hơn 1200px, tiêu đề ở trái còn mũi tên › cách xa gần 1100px, mắt phải đi rất xa. Cả hai độ rộng 1440 và 1920 để trống hơn 250px cuối cột chính và cột phụ.
+- 1440, 1920, 390, các dòng "Hôm nay": mỗi dòng có IconTile xám tô, tiêu đề 14/500 và phụ đề 12; năm dòng gần như giống nhau, không phân biệt việc nào ưu tiên.

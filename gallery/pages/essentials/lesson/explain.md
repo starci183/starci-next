@@ -37,14 +37,12 @@ Vì sao: cuối bài, bảng phẳng mỗi câu một hàng: "Lần đầu" (l�
 Luật: COOK 2026-11-17 ("the same 5 again at the end shows before/after"); Grammar 0.40 "DataTable surface none" (bảng phẳng, không thẻ).
 Grammar: `Section action={<Button intent="neutral" size="sm">}` (`frame/Section/head.d.ts`), `DataTable columns rows renderCell` (`branch/DataTable/index.d.ts`), `Badge tone` (`leaf/Badge/index.d.ts`).
 
-## Phần khóa (Source, Kịch bản, Tự áp dụng khi chưa có Premium)
+## Phản biện
 
-Vì sao: Bản chất (câu mở bài và bài viết) miễn phí cho mọi người; ba phần còn lại cần Premium. Server không gửi nội dung của phần khóa, chỉ gửi tên phần trong `lockedParts`. Tab của phần khóa mở ra một thẻ nhẹ: một câu mô tả phần đó có gì và nút "Đăng ký Premium" tới trang gói.
-Luật: owner 2026-11-17 (truy cập một phần); concept `premium` rule 2; cài đặt `ENTITLEMENT_ESSENTIAL_FREE_PARTS`.
-Grammar: `SurfaceCard treatment="soft"`, `Text`, `Button intent="commit"` qua `LockedNotice` (`fe/packages/starci-next-ui/src/composites/LockedNotice/index.tsx`).
-
-## Panel kịch bản: luật được chấm và hệ thống đúng sẽ cho
-
-Vì sao: mỗi kịch bản hiện thêm dòng "Luật nó chấm" (mã luật và câu của luật) và khối "Hệ thống đúng sẽ cho" lấy từ `expected` của `scenarios.yaml`; thiếu một trong hai thì dòng đó không vẽ.
-Luật: format nội dung (`invariant`, `expected` theo từng ngôn ngữ).
-Grammar: `Text size="sm"`, `Stack gap="identity"` trong `Section` của `EssentialScenarios`.
+- 1440, "Mở bài": câu hỏi 14/600 dài bị cắt bằng dấu "…" ở cuối dòng ("...Process bị kill ngay sau COMMIT. Cổng thanh toán gửi lại thông báo vì ..."), người học không đọc được hết đề; luật truncation vi phạm vì đề bài là nội dung chính. Nút "Nộp đáp án" tím nhạt khoá, chữ nhạt khó đọc (tương phản thấp), "Câu tiếp" chữ xám nhỏ lệch phải, hai nút không thẳng hàng và gần như vô hình. Bốn đáp án nằm trong khung bo góc viền (một khung bao cả bốn hàng); thanh 5 bước vẫn không thấy, chỉ có chữ "Câu 1 / 5" 12 muted ở lề phải xa tiêu đề.
+- 1440, dải đầu: chip "Trung cấp" nền xám cạnh tiêu đề; tab phần ("Bản chất, Source, Kịch bản, Tự áp dụng") chữ 14 sát nhau; dải đầu không có nút nào, hợp lệ. Dòng "40 phút đọc · TypeScript" 12 muted mờ.
+- 1440, mục lục: chỉ một hàng ("1. Bản chất: tin nhắn đi ra...") trong khung riêng, trong khi bài viết có bảy mục con 2.1 đến 2.7 cộng các mục 3, 4; mục lục không phản ánh cấu trúc bài. Nó trùng gần như nguyên văn tiêu đề h2 ngay dưới.
+- 1440, bài viết: thân là một khối chữ dài 14 px liên tục, không có hairline hay head Section giữa các mục lớn; mục 1 đến 4 chỉ phân biệt bằng chữ đậm, rất khó quét. Code inline có nền xám tô, bảng "Bức tranh đầy đủ" có hàng tiêu đề nền xám tô (luật: hairline thay nền tô, không giếng tô màu) và cột "Thiếu nó thì" dài, chữ nhỏ. Câu hỏi phỏng vấn mục 4 là danh sách lồng bullet dày, không phân tách.
+- 1440, "Làm lại 5 câu": bảng có cột "Câu hỏi" bị cắt "…" ở cuối mỗi dòng, hai cột trạng thái chỉ toàn "Chưa làm" lặp 10 lần; nút "Làm lại" nằm ở head và là nút thứ hai cạnh "Nộp đáp án" (ở trên) và "Câu tiếp", ba nút trung tính/phụ tranh nhau trên một trang. Dòng chú thích dưới bảng 12 muted rất nhạt.
+- 1920: Không thấy lỗi mới ở 1920; lỗi 1440 vẫn còn, riêng đề câu hỏi bị cắt "…" dù còn thừa rất nhiều chỗ (đề chiếm gần hết chiều ngang rồi cắt), và cột nội dung bài hẹp ở giữa trang với lề trắng rất lớn hai bên.
+- 390: trang dài hơn 8000 px; không thấy "Câu 1 / 5" cùng hàng với head, các đáp án và đề xuống dòng nhiều; bảng "Bức tranh đầy đủ" bốn cột bị ép hẹp làm chữ xuống từng từ ("INSERT outbox cùng transaction với đơn paid" thành nhiều dòng ngắn), cột đầu tiên dòng "Transactional outbox" ngắt giữa chữ. Bảng "Làm lại 5 câu" ép cột câu hỏi hẹp, ba cột khó đọc. Dải tab phần ở 390 sát mép phải. Không có điều hướng nhanh về đầu trang hay mục lục sau khi cuộn hơn tám nghìn px.

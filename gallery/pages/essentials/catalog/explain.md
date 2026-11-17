@@ -5,7 +5,7 @@ area: essentials
 reviewed: 2026-11-17
 ---
 
-Route: `/essentials`. Danh mục Bản chất cho học viên Premium: 16 nhóm kiến thức, mỗi nhóm một danh sách topic, kèm tìm kiếm, bộ lọc độ khó và aside điều hướng nhóm. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác, trang cuộn trong từng pane nên ảnh dài. Vòng tròn "N" ở góc là lớp phủ của Next dev, không phải UI. Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, composite `CatalogToolbar`, `CatalogSection`, `CatalogAside` trong `fe/packages/starci-next-ui/src/composites/`.
+Route: `/essentials`. Danh mục Bản chất cho học viên Premium: 16 nhóm kiến thức, mỗi nhóm một danh sách topic, kèm tìm kiếm, bộ lọc độ khó và aside điều hướng nhóm. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác, trang cuộn trong từng pane nên ảnh dài. Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, composite `CatalogToolbar`, `CatalogSection`, `CatalogAside` trong `fe/packages/starci-next-ui/src/composites/`.
 
 ## Dải tiêu đề (title, chip số liệu, dòng phụ)
 
@@ -42,3 +42,17 @@ Grammar: `Pane area="aside" surface scroll` + `PaneGrid areas={{ base: ["aside",
 Vì sao: thân là mặt trắng của trang, nội dung cuộn trong pane và bị chặn ở 80rem, căn trái; các nhóm cách nhau một khoảng đều, ngăn bằng khoảng trắng chứ không bằng nền tô. Ở 1920 thân giãn rộng hơn 1440 nhưng danh sách vẫn là các hàng cùng cấu trúc, aside giữ nguyên bề rộng.
 Luật: `surface-layering` (Terms: Surface trắng, nội dung capped ở `--grammar-content-max`), `theme-and-type` (luật 1: mọi bề mặt trắng).
 Grammar: `Pane area="main" scroll` (`frame/PaneGrid/index.d.ts`), `Stack gap="region"`. Code: `EssentialsCatalog/component.tsx`.
+
+## Phản biện
+
+- 1440, dải tiêu đề: dòng phụ "KIẾN THỨC NGÀNH · HỌC TƯƠNG TÁC" vẫn in hoa, 12 muted; luật 5 của surface-layering yêu cầu mô tả 12 muted thường, không phải eyebrow in hoa. Ba chip nền xám (11 bài đã mở, 16 nhóm, 343 bài...) là nền tô; chip thứ ba dài và đọc như một câu, không phải một số liệu.
+- 1440, khung lọc và mọi danh sách (Bài toán thực chiến, từng nhóm topic): vẫn nằm trong khung viền bo góc, dù luật 1 nói danh sách là thân của Section trên mặt trắng, không thẻ bao quanh. Cùng lỗi ở aside "Nhóm kiến thức": aside là một khung bo góc chứ không phải các hàng phẳng (luật 4).
+- 1440, "Bài toán thực chiến": bốn hàng đều mang chip "BÀI TOÁN" nền xám và chữ "Sắp có" 12 muted rất nhạt, độ tương phản thấp; chip lặp lại thông tin của cả nhóm trên mỗi hàng. Bốn hàng không bấm được nhưng trông giống hàng danh sách bình thường.
+- 1440, hàng topic: ảnh bìa 3D màu sắc rực (đỏ, tím, cam) cỡ 40px lệch hẳn với trang trắng trung tính và khó đọc chi tiết; ảnh nằm trong một ô tím nhạt, tức nền tô.
+- 1440, số liệu cuối hàng: "1/5 bài đã mở" và "0/5 đã hiểu" cùng 12 muted, "0/5 đã hiểu" đậm hơn chút; hai số gần nhau, dễ đọc nhầm, và không căn cột giữa các hàng (hàng Kubernetes "1/15 bài đã mở" lệch trái so với các hàng khác).
+- 1440, aside: số đếm không nhãn ("Backend nền tảng 5") trong khi thân ghi "3 topic" cho cùng nhóm; hai đơn vị khác nhau (bài và topic) nhưng không ghi rõ. Tên nhóm dài xuống hai dòng ("Cloud (AWS, GCP, Azure, DigitalOcean)", "Tích hợp dịch vụ...") làm hàng cao không đều. Mục "Tất cả" không có dấu hiệu đang chọn.
+- 1440, lặp: dòng "Còn N bài nguồn trong nhóm này đang được chuyển..." xuất hiện bảy lần với cùng một câu, nhiễu thị giác.
+- 1920: Không thấy lỗi mới ở 1920; các lỗi ở 1440 vẫn còn (khung bo góc, chip xám, ảnh bìa, eyebrow in hoa), thêm hàng topic kéo rất rộng nên số liệu cuối hàng cách xa tên.
+- 390, "Bài toán thực chiến": nhãn bị cắt thành "Bài toán thực c..." và mô tả xuống hai dòng; dòng "Cần trước: Request lifecycle,..." và "Cần trước: CQRS, Kiến trúc &..." bị cắt; "Distributed transactions — ví điện tử" xuống hai dòng và chip "BÀI TOÁN" cùng "Sắp có" chiếm nửa hàng. Hàng Kubernetes cắt "Nguồn: System Design module 2 và DevOp...", LLM & agent cắt "...module 0" thành "mo...".
+- 390, thứ tự: aside "Nhóm kiến thức" (16 hàng) đứng trước khung lọc, đẩy danh sách thật xuống dưới một màn rưỡi; khối này là khung bo góc. Ba chip tiêu đề xuống dòng và chip dài sát lề.
+- 390, hàng topic: ảnh bìa, tên, số bài và chevron xếp chồng không thẳng cột; số "1/5 bài đã mở" nằm dưới nguồn, tách khỏi chevron ở cuối.

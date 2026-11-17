@@ -35,3 +35,12 @@ Grammar: `PaneGrid`, `Pane area="aside" surface`, `PaneSection rule="start"`, `M
 Vì sao: dưới 48rem aside thành các khối đầu của trang (Tiến độ, Nên biết trước, Topic liên quan, mỗi khối ngăn hairline) rồi mới tới hero và danh sách; sidebar thu thành nút "Mở menu" ở đầu trang. Hero xếp ảnh trên, chữ dưới, nút rộng vừa chữ; hàng bài xuống dòng và sáu vòng pha nằm dưới tên.
 Luật: `surface-layering` (luật 4: dưới lg các khối aside là những khối đầu của trang).
 Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Grid kind="pair"` (`frame/Grid/index.d.ts`).
+
+## Phản biện
+
+- 1440, aside "Tiến độ": thanh Meter tô đầy 100% và ghi "100%" trong khi dòng dưới ghi "0/2 bài đã hiểu"; thanh tiến độ không khớp với số đếm, và hai bài đều "0/6 pha". Dòng tóm tắt "2 bài · ... · TypeScript" lặp đúng meta của dải đầu.
+- 1440, hero: nút chính "Outbox + Idempotency" nền tím nhạt với chữ tối, không phải tím đặc; là nền tô và tương phản chữ thấp hơn nút chính chuẩn. Ảnh 3D trên nền tím nhạt chiếm hơn nửa thẻ trong khi cột chữ chỉ cao khoảng một phần ba, để trống bên dưới nút.
+- 1440, "Bài trong chương": danh sách hai bài vẫn nằm trong khung bo góc viền hairline (luật 1: danh sách là Section, không thẻ bao quanh). Sáu vòng pha 12 px rất nhỏ, vòng 1 viền tím nhạt gần như không phân biệt với vòng khác, "0/6 pha" lệch ngoài cùng. Hai hàng lặp cùng một trạng thái "Chưa làm mở bài".
+- 1440, aside: "Topic liên quan" là hai link chữ thường không có dấu hiệu là link; "Nên biết trước" là câu rời không dấu đầu dòng. Dưới danh sách hai bài là khoảng trống lớn đến cuối pane.
+- 1920: Không thấy lỗi mới ở 1920; các lỗi trên giữ nguyên, ảnh hero phóng rất lớn (gần 600px) và hàng bài kéo rất rộng nên "0/6 pha" cách xa tên bài.
+- 390: aside (Tiến độ, Nên biết trước, Topic liên quan) đứng trước hero, đẩy nút bắt đầu xuống hơn một màn; meter 100% vẫn trái với "0/2 bài đã hiểu". Nút tím nhạt chữ tối. Sáu vòng pha xuống dòng riêng, "0/6 pha" lệch phải khỏi các vòng, hàng cao không đều.

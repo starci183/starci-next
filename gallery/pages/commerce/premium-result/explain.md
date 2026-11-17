@@ -24,3 +24,11 @@ Grammar: `Alert` có tông theo câu trả lời của máy chủ (`toneOf`) (`c
 Vì sao: hai nút rộng hết thẻ, xếp dọc: "Tiếp tục học" là nút chính duy nhất (accent), "Về trang gói" là nút pill trung tính trắng viền 1px. Đích do máy chủ trả lời, không suy từ địa chỉ trả về. Với đơn khác, thẻ thêm các dòng thông tin đơn và đổi nút chính cho hợp trạng thái (ví dụ "Về trang gói" khi không có đơn).
 Luật: `surface-layering` (một nút chính mỗi màn hình).
 Grammar: `Button intent="commit" width="fill" href` và `Button intent="neutral" width="fill" href` (`leaf/Button`).
+
+## Phản biện
+
+- 1440, 1920, 390, thông báo "Đã thanh toán": nền xanh lá nhạt tô kín bo lớn, chữ xanh đậm; chữ thân cỡ 14 xanh trên nền xanh nhạt tương phản vừa phải, và câu "Cảm ơn bạn đã ủng hộ StarCi Next." xuống dòng để "hộ StarCi Next." lẻ ở dòng hai (1440, 1920); ở 390 chữ "ơn" lẻ đầu dòng hai sau "Cảm".
+- 1440, 1920, 390, nút "Tiếp tục học": tím nhạt chữ đen, tương phản thấp; nút trải suốt hàng ngay dưới thông báo, hai nút xếp dọc rộng bằng nhau, "Về trang gói" viền trắng đúng luật nhưng chiếm cùng chiều rộng.
+- 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và thông báo bên trong; tiêu đề "Premium đã được kích hoạt" dính sát mép trên thẻ, rồi cách thông báo một khoảng lớn hơn; thẻ chỉ khoảng 450px nằm lơ lửng ở trên cùng, phần còn lại của trang trống.
+- 1440, 1920: thẻ căn giữa vùng nội dung chứ không căn giữa trang, nên lệch phải so với trục màn hình; trang không có đầu trang 18/600 nên chỉ có tiêu đề thẻ.
+- 1440, 1920, 390, sidebar không có mục nào được chọn; thanh trên có nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.

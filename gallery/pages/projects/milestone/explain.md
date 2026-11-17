@@ -7,32 +7,46 @@ reviewed: 2026-11-17
 
 Route: `/projects/<projectId>/<milestoneId>`, dành cho người đăng ký Premium. Một milestone là danh sách concept Bản chất; mỗi concept cần đủ ô bằng chứng. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
 
-## Dải đầu trang (đường dẫn, tên milestone, "5 / 8 đã chứng minh", chip trạng thái)
+## Dải đầu trang (đường dẫn, tên milestone, chip trạng thái, "0/3 concept đã chứng minh")
 
-Vì sao: đường dẫn Dự án / tên dự án / milestone; dòng phụ nói đã chứng minh bao nhiêu trên tổng số; chip Đã xong hoặc Đang làm.
+Vì sao: đường dẫn Dự án / tên dự án / milestone; chip "Đang làm" (hoặc Đã xong) cạnh tên; dòng 12 muted nói đã chứng minh bao nhiêu trên tổng số.
 Luật: `theme-and-type.md`, `verified-experience.md`.
 Grammar: `Page header={{ breadcrumbs, title, meta, status }}`, `Badge tone`.
 
-## Bảng concept với ô bằng chứng
+## Concept của milestone
 
-Vì sao: bảng phẳng, mỗi hàng một concept: tên và loại (Hành vi hoặc Cấu trúc), các ô bằng chứng nó cần (test, e2e, probe, AI đọc code) mỗi ô là một chip có tông theo trạng thái (đạt kèm "đang luyện" hoặc "đã chứng minh", lỗi, chưa có), trạng thái Đang luyện hay Đã chứng minh, và bài Bản chất để học lại. Cả hàng mở trang bằng chứng của concept. Dòng chú thích dưới bảng giải nghĩa hai mức: Đang luyện = chạy trên máy qua relay; Đã chứng minh = CI GitHub ký OIDC, probe của server hoặc AI đọc code.
+Vì sao: bảng phẳng dưới đầu mục có chip đếm, mỗi hàng một concept: tên và loại (Hành vi hoặc Cấu trúc), các ô bằng chứng nó cần (test, e2e, probe, AI đọc code) xếp thành cột chữ, trạng thái ("Chưa bắt đầu") và bài Bản chất để học lại ("Học ở"). Cả hàng mở trang bằng chứng của concept. Dòng chú thích dưới bảng giải nghĩa hai mức: Đang luyện = chạy trên máy qua relay; Đã chứng minh = CI GitHub ký OIDC, probe của server hoặc AI đọc code. Ở 390 chỉ còn cột Concept và Trạng thái.
 Luật: `verified-experience.md` (hai mức), `learner-cli-relay.md`, `surface-layering.md`.
 Grammar: `Section title count caption` bọc `DataTable surface="none" rows[{ href }]`, `Badge tone`, `Link variant="plain"`.
 
-## Lần chạy bằng chứng gần đây
+## Lần chạy bằng chứng
 
-Vì sao: một bảng phẳng thứ hai: mỗi ô bằng chứng đã có kết quả là một hàng (concept, loại bằng chứng, đạt hay lỗi, mức, lúc nào); chưa có thì nói chạy test trên máy hoặc đẩy lên GitHub.
+Vì sao: bảng phẳng thứ hai (cột Concept, Bằng chứng, Kết quả, Mức, Lúc) có chip đếm 0; chưa có lần chạy nào thì thân bảng nói "Chưa có lần chạy nào" và một dòng bảo chạy test trên máy hoặc đẩy lên GitHub.
 Luật: `verified-experience.md`.
-Grammar: `Section` + `DataTable surface="none"`.
+Grammar: `Section` + `DataTable surface="none"` có nội dung rỗng.
 
-## Cách chứng minh và CI có chữ ký
+## Cách chứng minh
 
-Vì sao: hai khối cạnh nhau ở cuối trang: bốn bước đánh số (viết bằng chứng, chạy trên máy là Đang luyện, đẩy lên GitHub, kết quả có chữ ký hoặc server chạy lại thì thành Đã chứng minh) và lời giải thích rằng chỉ kết quả có chữ ký mới tính, kèm liên kết tới bí mật trong trang dự án.
+Vì sao: bốn bước đánh số trong danh sách phẳng: viết bằng chứng, chạy trên máy (Đang luyện), đẩy lên GitHub (CI ký gửi kết quả), kết quả có chữ ký hoặc server chạy lại thì thành Đã chứng minh.
 Luật: `learner-cli-relay.md`, `projects.md`.
-Grammar: `Grid kind="pair"`, `Section kind="list" items[{ leading: { position } }]`, `Link variant="plain"`.
+Grammar: `Section kind="list" items[{ leading: { position } }]`.
 
-## Trạng thái không tìm thấy, bị khoá, đang tải
+## CI có chữ ký
 
-Vì sao: milestone không có thì thông báo kèm đường về dự án; cửa Premium của back end từ chối thì thông báo kèm liên kết Premium; đang tải thì bảng giữ hình khối.
-Luật: `premium.md`, `surface-layering.md`.
-Grammar: `MissingNotice` (starci-next-ui), `Page isLoading`, `DataTable isLoading`.
+Vì sao: đoạn giải thích chỉ kết quả có chữ ký mới tính là Đã chứng minh, kèm liên kết "Xem bí mật trong dự án →". Đứng cạnh "Cách chứng minh" ở 1440 và 1920, đứng dưới ở 390.
+Luật: `learner-cli-relay.md`, `projects.md`.
+Grammar: `Grid kind="pair"`, `Section`, `Link variant="plain"`.
+
+## Phản biện
+
+- 1440 và 1920, bảng concept, cột Bằng chứng: các ô test, e2e, probe, AI đọc code hiện là chữ xám rời xếp dọc, không có chip tông theo trạng thái (đạt, lỗi, chưa có); không đọc được ô nào đã đạt.
+- 1440 và 1920, bảng concept: mỗi hàng cao khoảng 100px vì ba dòng bằng chứng xếp dọc; tên concept, trạng thái và "Học ở" căn giữa còn cột bằng chứng căn đầu nên các cột trong một hàng không thẳng hàng.
+- 1440 và 1920, cột Trạng thái: "Chưa bắt đầu" là chữ xám nhạt, không phải chip; khác với chip "Đang làm" ở đầu trang.
+- 1440, 1920, 390, chip "Đang làm" ở đầu trang có nền vàng nhạt tô màu, lệch tông so với các chip xám khác trên trang (luật: không tô nền).
+- 1440 và 1920, cột "Học ở": liên kết chữ đen đậm như văn bản thường, không có dấu hiệu là liên kết, kéo dài sát mép phải bảng.
+- 1440 và 1920, dòng chú thích dưới bảng: chữ 12 có sắc nâu, tương phản thấp.
+- 1440 và 1920, "Lần chạy bằng chứng": tiêu đề cột vẫn hiện trên bảng rỗng, rồi một vùng trống cao khoảng 140px với chữ canh giữa, trong khi các bảng khác canh trái.
+- 1920, dải đầu trang canh trái ở x=288, còn bảng và các Section thu hẹp ở giữa từ x=480: mép trái lệch 192px.
+- 1440 và 1920, "CI có chữ ký": cột phải ngắn hơn nhiều cột "Cách chứng minh" nên một nửa vùng trống; mô tả muted sắc nâu.
+- 390, bảng concept ẩn cột Bằng chứng và Học ở, người dùng không thấy ô bằng chứng nào cần và không có đường dẫn học lại.
+- 390, số thứ tự "1." đến "4." của "Cách chứng minh" là chữ mono nâu nhạt, tương phản thấp.

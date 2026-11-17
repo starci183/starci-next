@@ -29,3 +29,13 @@ Grammar: `DropdownMenuItem` {href, tone="danger"}, `AvatarButton` (trigger).
 Vì sao: `DropdownMenuSection` của Grammar luôn vẽ tiêu đề nhóm (12 mờ); nhãn "Tài khoản" đặt tên cho nhóm gồm hàng danh tính, lệnh gói, hồ sơ cho trình đọc màn hình. Giữ hay bỏ là quyết định của chủ sản phẩm.
 Luật: `surface-layering` (nhãn nhóm 12, weight 500, mờ).
 Grammar: `DropdownMenuSection` {label}.
+
+## Phản biện
+
+- 1440, 1920, 390, vị trí menu: lớp nổi dính ngay dưới avatar, mép trên khoảng y=60 chạm vạch kẻ dưới thanh trên và che nút "Xem hướng dẫn" (chỉ còn thấy chữ "n" lọt ra ở 1440 và 1920) cùng dòng phụ của dải tiêu đề ở 390; không có khoảng thở giữa trigger và menu.
+- 1440, 1920, 390, bóng và góc bo: góc bo rất lớn (khoảng 20px) và bóng mềm lan rộng, lớn hơn mọi chỗ khác; đúng luật "lớp nổi mới có bóng" nhưng góc bo không cùng họ với nút và ô.
+- 390, hàng email: bị bẻ giữa chữ ("gallery-" / "theme@example.test"), xuống hai dòng và làm hàng cao hơn các hàng khác.
+- 1440, 1920, 390, "Đăng xuất": đỏ cam sáng khác hẳn màu danger của các chỗ khác (chữ đỏ đậm), trên nền trắng tương phản thấp; menu không có đường kẻ ngăn lệnh nguy hiểm khỏi "Hồ sơ".
+- 1440, 1920, 390, các hàng menu: "Gói của bạn", "Hồ sơ" không có hover hay icon, không đường kẻ giữa nhóm; nhãn "Tài khoản" và dòng "Premium" cỡ 12 xám nhạt, tương phản thấp.
+- 1440, 1920, 390, nền trang phía sau không bị làm tối hay mờ, nên menu và nội dung (chữ "Chuỗi ngày..." bị cắt dở ở 1440) chồng lên nhau, đọc lẫn.
+- Các lỗi của khung phía sau (nút chính tím nhạt, cột phụ, nút tròn tô xám) giữ như `learn/home`.

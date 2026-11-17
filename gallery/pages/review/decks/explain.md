@@ -30,3 +30,15 @@ Grammar: `SurfaceCard`, `Badge`, `Button` neutral cỡ sm (`leaf/Button`); thẻ
 Vì sao: cuối trang, một `Section` phẳng: ô số "Số thẻ mỗi ngày" trắng viền 1px có nút trừ và cộng (giá trị 10), dòng muted nói từ 5 đến 50 thẻ và nút chính pill "Lưu mục tiêu", nút chính duy nhất của màn. Ô số có nút bấm vì học viên chỉnh nhanh từng bước.
 Luật: `surface-layering` (form là Section, một nút chính), `theme-and-type`.
 Grammar: `Section`, `NumberField` (`composite/NumberField`), `Button intent="commit"`.
+
+## Phản biện
+
+- 1440: chip độ khó "hard" nền đỏ nhạt chữ đỏ, "medium" nền vàng nhạt, "Một phần cần Premium" nền vàng nhạt: nền tô màu lặp mười lăm lần thành các mảng màu, trái luật cặp soft trung tính; lại hiện "Một phần cần Premium" và "2 thẻ miễn phí" cho học viên đã Premium nên sai trạng thái.
+- 1440: mười lăm thẻ giống nhau xếp dọc, mỗi thẻ một nút "Thêm" lẻ loi dưới cùng bên trái, chừa trống nửa phải của thẻ.
+- 1440: mô tả bộ thẻ cắt bằng "…" giữa câu (Module 1, Thiết kế API, Caching...) nên mất ý; chữ mô tả muted ngả nâu.
+- 1440: chip chọn "Tất cả" nền xám có viền đậm hơn các chip khác, nhìn như nút nhấn.
+- 1440: đầu mục "Lọc theo lộ trình" và "Mục tiêu mỗi ngày" cùng cỡ với nhãn nhóm "Lộ trình", "Khoá", phân cấp mờ; cột lọc có khoảng trống rất dài bên dưới.
+- 1440: nút chính "Lưu mục tiêu" nền tím nhạt chữ đen, tương phản thấp; ô số rộng hết cột nên nút trừ cộng ở hai mép xa nhau.
+- 1920: cột lọc và danh sách bị đẩy vào giữa (lọc ở x≈268, thẻ ở x≈464) trong khi đường dẫn và tiêu đề sát trái x=160; hai trục trái lệch nhau. Các lỗi chip tô màu, "Một phần cần Premium" cho học viên Premium, mô tả cắt "…" giữ nguyên.
+- 390: bộ lọc rơi xuống cuối trang, sau cả mười lăm thẻ và "Mục tiêu mỗi ngày", nên lọc đến sau thứ nó lọc.
+- 390: mô tả thẻ cắt sau hai dòng bằng "…"; nút "Thêm" nằm dòng riêng nên thẻ cao, trang dài khoảng 3900px; chip độ khó sát tên bộ ở mép phải thẻ.
