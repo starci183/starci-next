@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Section, Stack, Textarea } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a written-answer card, resolved by its block. */
@@ -126,45 +126,20 @@ export const WrittenCard = (props: WrittenCardProps) => {
     const isSettled = props.draft.status === "saved" || props.draft.status === "graded"
     if (props.draft.status === "premium") {
         return (
-            <SurfaceCard ariaLabel={props.prompt}>
-                <EmptyNotice
-                    frame="frameless"
-                    message={props.labels.premium}
-                    actionIntent="neutral"
-                    actionLabel={props.labels.plans}
-                    actionHref={props.plansHref}
-                />
-            </SurfaceCard>
+            <EmptyNotice
+                frame="frameless"
+                message={props.labels.premium}
+                actionIntent="neutral"
+                actionLabel={props.labels.plans}
+                actionHref={props.plansHref}
+            />
         )
     }
     return (
         <Stack gap="row">
             <Criteria criteria={props.criteria} labels={props.labels} />
-            <SurfaceCard
-                ariaLabel={props.prompt}
-                footers={[
-                    {
-                        kind: "custom",
-                        children: (
-                            <Cluster gap="inline" justify="end">
-                                <Button
-                                    intent="commit"
-                                    startGlyph="send"
-                                    isPending={isPending}
-                                    isDisabled={
-                                        props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"
-                                    }
-                                    onPress={props.onSubmit}
-                                >
-                                    {submitLabelOf(props)}
-                                </Button>
-                            </Cluster>
-                        ),
-                    },
-                ]}
-            >
+            <Section title={props.prompt}>
                 <Stack gap="row">
-                    <Text isStrong>{props.prompt}</Text>
                     <Textarea
                         label={props.labels.answer}
                         isLabelHidden
@@ -188,8 +163,19 @@ export const WrittenCard = (props: WrittenCardProps) => {
                         plansLabel={props.labels.plans}
                         plansHref={props.plansHref}
                     />
+                    <Cluster gap="inline" justify="end">
+                        <Button
+                            intent="commit"
+                            startGlyph="send"
+                            isPending={isPending}
+                            isDisabled={props.draft.value.trim() === "" || isSettled || props.draft.issue === "limit"}
+                            onPress={props.onSubmit}
+                        >
+                            {submitLabelOf(props)}
+                        </Button>
+                    </Cluster>
                 </Stack>
-            </SurfaceCard>
+            </Section>
             <Grade draft={props.draft} labels={props.labels} />
         </Stack>
     )

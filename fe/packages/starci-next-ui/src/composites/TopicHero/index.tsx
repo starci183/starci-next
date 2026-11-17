@@ -1,4 +1,4 @@
-import { Button, Grid, Icon as GlyphIcon, Image, MediaFrame, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Grid, Icon as GlyphIcon, Image, MediaFrame, Section, Stack, Text } from "@starci/grammar/common"
 import { PlayGlyph } from "../../leaves/Icon"
 
 /** The hero card at the head of a chapter page: its 3D cover, the one-line pitch, a muted line and the one primary command. */
@@ -16,7 +16,7 @@ type TopicHeroProps = {
 
 /** The hero of a chapter: the cover left, the pitch, the muted line and the one purple command right. */
 export const TopicHero = (props: TopicHeroProps) => (
-    <SurfaceCard ariaLabel={props.title}>
+    <Section ariaLabel={props.title}>
         <Grid
             kind="pair"
             leading={
@@ -59,5 +59,5 @@ export const TopicHero = (props: TopicHeroProps) => (
                 </Stack>
             }
         />
-    </SurfaceCard>
+    </Section>
 )

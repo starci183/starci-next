@@ -1,4 +1,4 @@
-import { Button, Cluster, FencedCodeBlock, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Button, Cluster, FencedCodeBlock, Section, Stack, Tabs, Text } from "@starci/grammar/common"
 import { FileGlyph } from "../../leaves/Icon"
 import { FileView } from "../../branches/FileView"
 import { WRAPPED_CODE_CLASS_NAME } from "./classNames"
@@ -70,17 +70,20 @@ const tabsOf = (a: Tab, b: Tab, c: Tab | undefined, d: Tab | undefined) => {
     return d === undefined ? ([a, b, c] as const) : ([a, b, c, d] as const)
 }
 
-/** The switch zone over a lab shipped in two to four languages, or no zone for a lab of one. */
-const switchOf = (
-    props: FilesCardProps,
-    selected: string,
-    onSelect: (id: string) => void,
-): NonNullable<React.ComponentProps<typeof SurfaceCard>["headers"]> => {
+/** The pill switch over a lab shipped in two to four languages, or nothing for a lab of one. */
+const switchOf = (props: FilesCardProps, selected: string, onSelect: (id: string) => void) => {
     const items = (props.variants ?? []).map((variant) => ({ id: variant.id, label: variant.label }))
     const [a, b, c, d] = items
-    if (a === undefined || b === undefined) return []
-    const tabs = tabsOf(a, b, c, d)
-    return [{ kind: "switch", label: props.variantLabel ?? props.label, items: tabs, selectedKey: selected, onSelect }]
+    if (a === undefined || b === undefined) return null
+    return (
+        <Tabs
+            appearance="primary"
+            label={props.variantLabel ?? props.label}
+            items={tabsOf(a, b, c, d)}
+            selectedKey={selected}
+            onSelect={onSelect}
+        />
+    )
 }
 
 /** The commands to run, as blocks: one block when every OS runs the same text, else one labelled block per OS. */
@@ -138,36 +141,28 @@ export const FilesCard = (props: FilesCardProps) => {
     const shown = selected?.files ?? props.files
     const href = selected?.downloadHref ?? props.downloadHref
     const downloadLabel = selected?.downloadLabel ?? props.downloadLabel
-    const download: NonNullable<React.ComponentProps<typeof SurfaceCard>["headers"]> =
-        href === undefined || downloadLabel === undefined
-            ? []
-            : [
-                  {
-                      kind: "custom",
-                      children: (
-                          <Cluster gap="inline" justify="end">
-                              <Button intent="neutral" size="sm" href={href} download>
-                                  {downloadLabel}
-                              </Button>
-                          </Cluster>
-                      ),
-                  },
-              ]
-    const headers: NonNullable<React.ComponentProps<typeof SurfaceCard>["headers"]> = [
-        ...switchOf(props, chosen, props.onVariant ?? noop),
-        ...download,
-    ]
+    const switcher = switchOf(props, chosen, props.onVariant ?? noop)
+    const download =
+        href === undefined || downloadLabel === undefined ? null : (
+            <Button intent="neutral" size="sm" href={href} download>
+                {downloadLabel}
+            </Button>
+        )
     return (
-        <SurfaceCard
-            label={props.label}
-            headers={headers}
-            {...(selected?.commands === undefined || selected.commands.length === 0
-                ? {}
-                : { footers: [{ kind: "custom" as const, children: <RunBlocks variant={selected} /> }] })}
-        >
+        <Stack gap="row">
             <Section
                 kind="list"
-                ariaLabel={props.label}
+                title={props.label}
+                {...(switcher === null && download === null
+                    ? {}
+                    : {
+                          action: (
+                              <Cluster gap="inline" align="center">
+                                  {switcher}
+                                  {download}
+                              </Cluster>
+                          ),
+                      })}
                 items={shown.map((file) => ({
                     id: file.path,
                     title: file.path,
@@ -185,6 +180,9 @@ export const FilesCard = (props: FilesCardProps) => {
                 }))}
                 empty={props.label}
             />
-        </SurfaceCard>
+            {selected?.commands === undefined || selected.commands.length === 0 ? null : (
+                <RunBlocks variant={selected} />
+            )}
+        </Stack>
     )
 }

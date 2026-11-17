@@ -109,7 +109,6 @@ const Ribbon = (props: BodyProps) => {
     return (
         <Section
             kind="figures"
-            ribbon
             ariaLabel={labels.ribbonLabel}
             isLoading={props.isLoading}
             items={[
