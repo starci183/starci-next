@@ -26,6 +26,8 @@ export type ReviewCard = {
     readonly flip: () => void
     readonly submitAnswer: () => void
     readonly gradeAction: ReviewGradeAction
+    /** Reads the card again and starts it clean, after another device graded it. */
+    readonly reloadCard: () => void
 }
 
 /** What the card hook needs: the item of this step and what to do when it is graded. */
@@ -46,8 +48,11 @@ export const useReviewCard = (params: ReviewCardParams): ReviewCard => {
     const retrieval = useMutateSubmitReviewRetrievalSwr()
     const data = item.data
     const isRetrieval = data?.source === "retrieval"
-    const reload = useCallback(() => void item.mutate(), [item])
-    const gradeAction = useReviewGrade({ itemId, work, update, onGraded: params.onGraded, reload })
+    const reloadCard = useCallback(() => {
+        update((before) => ({ ...before, flipped: undefined, isConflict: false, isGradeFailed: false }))
+        void item.mutate()
+    }, [item, update])
+    const gradeAction = useReviewGrade({ itemId, work, update, onGraded: params.onGraded })
 
     const pick = useCallback(
         (n: number, choice: string) => {
@@ -103,5 +108,6 @@ export const useReviewCard = (params: ReviewCardParams): ReviewCard => {
         flip,
         submitAnswer,
         gradeAction,
+        reloadCard,
     }
 }

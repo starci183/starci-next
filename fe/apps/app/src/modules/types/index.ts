@@ -63,17 +63,7 @@ export type {
     ReviewQueueItemView,
     ReviewTodayView,
 } from "./review"
-export type {
-    ReviewDeckCard,
-    ReviewDeckNote,
-    ReviewDecksLabels,
-    ReviewFilterOption,
-    ReviewGoalForm,
-    ReviewSessionScreen,
-    ReviewTodayLabels,
-    ReviewTodayRow,
-    ReviewTodayScreen,
-} from "./reviewView"
+export type { ReviewSessionScreen } from "./reviewView"
 export type {
     ExperienceCardView,
     ExperienceListView,

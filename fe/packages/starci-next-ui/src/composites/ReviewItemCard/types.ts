@@ -28,6 +28,8 @@ export type ReviewAnswerPart = {
 
 /** The revealed answer with the grade buttons. */
 export type ReviewBackView = {
+    /** What the learner wrote before the flip; empty when nothing. */
+    readonly note: string
     readonly parts: ReadonlyArray<ReviewAnswerPart>
     readonly grades: ReadonlyArray<ReviewGradeButton>
 }
@@ -37,6 +39,8 @@ export type ReviewItemScreen = {
     readonly kind: "item"
     readonly isRetrieval: boolean
     readonly sourceLine: string
+    /** The kind of the question and how many times it was reviewed, as one line of words. */
+    readonly kindLine: string
     readonly lessonLine: string | undefined
     readonly question: string
     readonly level: string | undefined
@@ -49,21 +53,24 @@ export type ReviewItemScreen = {
     readonly back: ReviewBackView | undefined
     readonly isGrading: boolean
     readonly isGradeFailed: boolean
+    /** The card was graded on another device meanwhile. */
+    readonly isConflict: boolean
 }
 
 /** The end of the session. */
 export type ReviewSummaryScreen = {
     readonly kind: "summary"
-    readonly reviewed: string
-    readonly recall: string
-    readonly goal: string | undefined
-    readonly remaining: string
+    readonly title: string
+    /** One count per level, in the order Again, Hard, Good, Easy. */
+    readonly levels: ReadonlyArray<{ readonly id: string; readonly term: string; readonly value: string }>
+    readonly line: string
     readonly isAllDone: boolean
 }
 
 /** The fixed words of the session. */
 export type ReviewSessionLabels = {
     readonly pageTitle: string
+    readonly root: string
     readonly progressLabel: string
     readonly progressText: string
     readonly noteLabel: string
@@ -84,19 +91,21 @@ export type ReviewSessionLabels = {
     readonly saveFailedTitle: string
     readonly saveFailedBody: string
     readonly retry: string
-    readonly lockedTitle: string
-    readonly lockedBody: string
-    readonly upsell: string
+    readonly recalled: string
+    readonly answerTitle: string
+    readonly conflictTitle: string
+    readonly conflictBody: string
+    readonly reload: string
+    readonly emptyTitle: string
+    readonly emptyText: string
+    readonly emptyDecks: string
+    readonly decksHref: string
     readonly answerError: string
     readonly diagram: string
     readonly diagramError: string
-    readonly summaryTitle: string
-    readonly summaryReviewed: string
-    readonly summaryRecall: string
-    readonly summaryGoal: string
-    readonly summaryAllDone: string
     readonly summaryBack: string
-    readonly summaryHub: string
+    readonly summaryMore: string
+    readonly moreHref: string
     readonly emptyBack: string
 }
 
@@ -109,4 +118,5 @@ export type ReviewItemCommands = {
     readonly grade: (grade: ReviewBackView["grades"][number]["grade"]) => void
     readonly skip: () => void
     readonly retry: () => void
+    readonly reload: () => void
 }

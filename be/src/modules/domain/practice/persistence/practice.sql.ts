@@ -276,3 +276,17 @@ WHERE s.learner_id = $1::uuid AND v.pattern_id = $2::text AND s.kind = 'submit' 
 GROUP BY s.language
 ORDER BY count(DISTINCT s.problem_id) DESC, s.language
 LIMIT 1`
+
+/**
+ * Reads one page of the graded submits of a learner in one pattern, newest first, after a cursor ($1 learner, $2 pattern,
+ * $3 locale, $4 cursor instant or null, $5 cursor id or null, $6 row bound).
+ */
+export const SELECT_SUBMISSION_HISTORY: ReturnType<typeof sql> = sql`SELECT s.submission_id, s.problem_id,
+    v.titles ->> $3::text AS title, s.language, s.verdict, s.passed_count, s.total_count, s.time_ms, s.memory_kb, s.created_at
+FROM practice_submissions s
+JOIN practice_problem_versions v ON v.problem_id = s.problem_id AND v.status = 'published'
+WHERE s.learner_id = $1::uuid AND s.kind = 'submit' AND s.verdict NOT IN ('queued', 'running', 'internal-error')
+    AND v.pattern_id = $2::text
+    AND ($4::timestamptz IS NULL OR (s.created_at, s.submission_id) < ($4::timestamptz, $5::uuid))
+ORDER BY s.created_at DESC, s.submission_id DESC
+LIMIT $6::int`

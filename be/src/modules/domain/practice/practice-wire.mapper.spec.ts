@@ -56,13 +56,14 @@ describe("practice wire mapper", () => {
     let toProblemWire: typeof subject.toProblemWire
     let toSubmissionWire: typeof subject.toSubmissionWire
     let toNextWire: typeof subject.toNextWire
+    let toSubmissionsPageWire: typeof subject.toSubmissionsPageWire
     let toSolutionWire: typeof subject.toSolutionWire
 
     beforeAll(async () => {
         const moduleRef = await Test.createTestingModule({
             providers: [{ provide: SUBJECT, useFactory: () => subject }],
         }).compile()
-        ;({ toProblemItemWires, toProblemWire, toSubmissionWire, toNextWire, toSolutionWire } =
+        ;({ toProblemItemWires, toProblemWire, toSubmissionWire, toNextWire, toSolutionWire, toSubmissionsPageWire } =
             moduleRef.get<typeof subject>(SUBJECT))
     })
 
@@ -84,6 +85,28 @@ describe("practice wire mapper", () => {
             kind: "SUBMIT",
             verdict: "WRONG_ANSWER",
             createdAt: "2026-11-08T10:00:00.000Z",
+        })
+    })
+
+    it("names the language and verdict of a history item, gives its instant as ISO text and carries the next cursor", () => {
+        const item = {
+            id: "s1",
+            slug: "two-sum",
+            problemTitle: "Two Sum",
+            language: "cpp" as const,
+            verdict: "time-limit-exceeded" as const,
+            passedCount: 1,
+            totalCount: 2,
+            timeMs: 5,
+            memoryKb: null,
+            submittedAt: new Date("2026-11-08T10:00:00.000Z"),
+        }
+
+        expect(toSubmissionsPageWire({ items: [item], next: "c" })).toEqual({
+            items: [
+                { ...item, language: "CPP", verdict: "TIME_LIMIT_EXCEEDED", submittedAt: "2026-11-08T10:00:00.000Z" },
+            ],
+            nextCursor: "c",
         })
     })
 

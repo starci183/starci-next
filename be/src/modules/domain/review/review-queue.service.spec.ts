@@ -2,7 +2,7 @@ import { FakeClock, mock, mockEntityManager } from "@starci/jest-preset"
 import { Test } from "@nestjs/testing"
 import { catalogItemOf } from "@tests/fixtures/builders/lesson-read.builder"
 import { REVIEW_LEARNER, queueRowOf } from "@tests/fixtures/builders/review.builder"
-import { LessonReadService } from "@modules/domain/lesson"
+import { LessonContentService, LessonReadService } from "@modules/domain/lesson"
 import { NOTIFICATION_PRODUCER, type NotificationProducerPort } from "@modules/domain/notification"
 import { CLOCK } from "@modules/platform/clock"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
@@ -23,12 +23,17 @@ const retrievalOf = (overrides: Partial<QueueRow> = {}) =>
         lesson_version: "v1",
         level: null,
         deck_titles: null,
+        front: null,
+        cloze_counts: null,
+        last_revision: 2,
         ...overrides,
     })
 
 const build = async (rows: ReadonlyArray<QueueRow>, options: { goal?: number | null; done?: number } = {}) => {
     const lessons = mock<LessonReadService>()
     lessons.catalog.mockResolvedValue([catalogItemOf("demo-lesson", "Demo lesson")])
+    const content = mock<LessonContentService>()
+    content.prompts.mockResolvedValue(new Map([["demo-lesson:v1:demo--review", "Explain the review."]]))
     const goal = options.goal === null ? [] : [{ daily_goal: options.goal ?? 10 }]
     const em = mockEntityManager({
         query: [
@@ -45,10 +50,11 @@ const build = async (rows: ReadonlyArray<QueueRow>, options: { goal?: number | n
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: CLOCK, useValue: new FakeClock(NOW) },
             { provide: LessonReadService, useValue: lessons },
+            { provide: LessonContentService, useValue: content },
             { provide: NOTIFICATION_PRODUCER, useValue: producer },
         ],
     }).compile()
-    return { service: moduleRef.get(ReviewQueueService), em, lessons, notify: producer.notify }
+    return { service: moduleRef.get(ReviewQueueService), em, lessons, content, notify: producer.notify }
 }
 
 const dueRow = (n: number, due = "2026-11-08", overrides: Partial<QueueRow> = {}) =>
@@ -114,6 +120,30 @@ describe("ReviewQueueService today", () => {
             ["Demo lesson", null, null],
             ["other", null, null],
         ])
+    })
+})
+
+describe("ReviewQueueService question of an item", () => {
+    it("serves the card question with blanks, its kind and review count, and the retrieval prompt from one batched read", async () => {
+        const rows = [
+            dueRow(1),
+            dueRow(2, "2026-11-08", {
+                cloze_counts: { vi: 0, en: 0 },
+                front: { vi: { question: "vi Q", tags: [] }, en: { question: "en Q", tags: [] } },
+            }),
+            retrievalOf({ due_on: "2026-11-08" }),
+        ]
+        const { service, content } = await build(rows)
+
+        const today = await service.today(REVIEW_LEARNER, "en")
+
+        expect(today.items.map((item) => [item.question, item.kind, item.reviewCount])).toEqual([
+            ["en Why ____?", "cloze", 0],
+            ["en Q", "direct", 0],
+            ["Explain the review.", "retrieval", 2],
+        ])
+        expect(JSON.stringify(today)).not.toContain("container")
+        expect(content.prompts).toHaveBeenCalledTimes(1)
     })
 })
 

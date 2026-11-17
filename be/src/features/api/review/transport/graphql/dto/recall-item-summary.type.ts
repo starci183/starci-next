@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql"
+import { Field, Int, ObjectType } from "@nestjs/graphql"
 
 @ObjectType()
 /** One item of the queue. */
@@ -30,4 +30,16 @@ export class RecallItemSummaryType {
     /** The due day, yyyy-mm-dd. */
     @Field(() => String)
     dueOn!: string
+
+    /** The front of the item: a card question (cloze blanks as "____") or the retrieval question; never an answer. */
+    @Field(() => String)
+    question!: string
+
+    /** direct, cloze or retrieval. */
+    @Field(() => String)
+    kind!: string
+
+    /** How many times the learner already reviewed the item. */
+    @Field(() => Int)
+    reviewCount!: number
 }

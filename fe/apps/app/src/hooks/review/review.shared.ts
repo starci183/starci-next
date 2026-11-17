@@ -1,12 +1,7 @@
 import { ApiFailure, isForbidden } from "@/modules/failure"
-import type {
-    ReviewAnswerPart,
-    ReviewGrade,
-    ReviewIntervalsView,
-    ReviewSessionLabels,
-    ReviewTodayLabels,
-} from "@/modules/types"
-import type { ReviewTranslator, ReviewWords } from "./useReviewWords"
+import { APP_ROUTES } from "@/modules/routes"
+import type { ReviewAnswerPart, ReviewGrade, ReviewIntervalsView, ReviewSessionLabels } from "@/modules/types"
+import type { ReviewWords } from "./useReviewWords"
 
 /** The smallest and largest daily goal the door accepts. */
 export const REVIEW_GOAL_BOUNDS = { min: 5, max: 50 } as const
@@ -96,33 +91,12 @@ export const isTypingTarget = (target: EventTarget | null): boolean => {
 /** The label of a course folder (`0-fullstack-mastery`) as words. */
 export const courseLabelOf = (course: string): string => course.replace(/^\d+-/, "").replaceAll("-", " ")
 
-/** The fixed words of today's screen. */
-export const todayLabelsOf = (t: ReviewTranslator): ReviewTodayLabels => ({
-    pageTitle: t("today.pageTitle"),
-    intro: t("today.intro"),
-    goalLabel: t("today.goalLabel"),
-    dueTitle: t("today.dueTitle"),
-    start: t("today.start"),
-    startNew: t("today.startNew"),
-    decks: t("today.decks"),
-    emptyTitle: t("today.emptyTitle"),
-    emptyBody: t("today.emptyBody"),
-    emptyEssentials: t("today.emptyEssentials"),
-    doneTitle: t("today.doneTitle"),
-    lockedTitle: t("today.lockedTitle"),
-    upsell: t("today.upsell"),
-    upsellNote: t("today.upsellNote"),
-    queueTitle: t("today.queueTitle"),
-    sourcesTitle: t("today.sourcesTitle"),
-    streakNote: t("today.streakNote"),
-    hubLink: t("today.hubLink"),
-})
-
 /** The fixed words of the session. */
 export const sessionLabelsOf = (words: ReviewWords, progressText: string): ReviewSessionLabels => {
     const t = words.t
     return {
         pageTitle: t("session.pageTitle"),
+        root: t("session.root"),
         progressLabel: t("session.progressLabel"),
         progressText,
         noteLabel: t("session.noteLabel"),
@@ -143,19 +117,21 @@ export const sessionLabelsOf = (words: ReviewWords, progressText: string): Revie
         saveFailedTitle: t("session.saveFailedTitle"),
         saveFailedBody: t("session.saveFailedBody"),
         retry: t("session.retry"),
-        lockedTitle: t("session.lockedTitle"),
-        lockedBody: t("session.lockedBody"),
-        upsell: t("session.upsell"),
+        recalled: t("session.recalled"),
+        answerTitle: t("session.answerTitle"),
+        conflictTitle: t("session.conflictTitle"),
+        conflictBody: t("session.conflictBody"),
+        reload: t("session.reload"),
+        emptyTitle: t("session.emptyTitle"),
+        emptyText: t("session.emptyText"),
+        emptyDecks: t("session.emptyDecks"),
+        decksHref: APP_ROUTES.reviewDecks,
         answerError: t("session.answerError"),
         diagram: t("session.diagram"),
         diagramError: t("session.diagramError"),
-        summaryTitle: t("session.summaryTitle"),
-        summaryReviewed: t("session.summaryReviewed"),
-        summaryRecall: t("session.summaryRecall"),
-        summaryGoal: t("session.summaryGoal"),
-        summaryAllDone: t("session.summaryAllDone"),
         summaryBack: t("session.summaryBack"),
-        summaryHub: t("session.summaryHub"),
+        summaryMore: t("session.summaryMore"),
+        moreHref: APP_ROUTES.reviewSession,
         emptyBack: t("session.emptyBack"),
     }
 }

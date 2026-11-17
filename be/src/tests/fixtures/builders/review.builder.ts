@@ -46,6 +46,8 @@ export interface StateRowFixture {
 export interface QueueRowFixture extends StateRowFixture {
     level: "junior" | "middle" | "senior" | "staff" | null
     deck_titles: Readonly<Record<ReviewLocale, string>> | null
+    front: Readonly<Record<ReviewLocale, CardFrontFixture>> | null
+    cloze_counts: Readonly<Record<ReviewLocale, number>> | null
 }
 
 /** A card of the live version of its deck. */
@@ -152,6 +154,11 @@ export const queueRowOf: (overrides?: Partial<QueueRowFixture>) => QueueRowFixtu
     ...stateRowOf(),
     level: "junior",
     deck_titles: { vi: "vi Module 1", en: "en Module 1" },
+    front: {
+        vi: { question: "vi Why {{c1::container::factory}}?", tags: [] },
+        en: { question: "en Why {{c1::container::factory}}?", tags: [] },
+    },
+    cloze_counts: { vi: 1, en: 1 },
 })
 
 const FRONT: Record<"vi" | "en", CardFrontFixture> = {

@@ -2,6 +2,7 @@ import { Test } from "@nestjs/testing"
 import {
     DEFAULT_CONCURRENCY,
     DEFAULT_MAX_SOURCE_BYTES,
+    DEFAULT_SUBMISSIONS_PAGE,
     DEFAULT_SUBMISSIONS_PER_MINUTE,
     DEFAULT_WAIT_MS,
 } from "./practice.config"
@@ -25,15 +26,25 @@ describe("settingsOf", () => {
             submissionsPerMinute: DEFAULT_SUBMISSIONS_PER_MINUTE,
             maxSourceBytes: DEFAULT_MAX_SOURCE_BYTES,
             waitMs: DEFAULT_WAIT_MS,
+            submissionsPage: DEFAULT_SUBMISSIONS_PAGE,
         })
     })
 
     it("keeps the values the app named", () => {
-        expect(settingsOf({ concurrency: 2, submissionsPerMinute: 3, maxSourceBytes: 100, waitMs: 50 })).toEqual({
+        expect(
+            settingsOf({
+                concurrency: 2,
+                submissionsPerMinute: 3,
+                maxSourceBytes: 100,
+                waitMs: 50,
+                submissionsPage: 7,
+            }),
+        ).toEqual({
             concurrency: 2,
             submissionsPerMinute: 3,
             maxSourceBytes: 100,
             waitMs: 50,
+            submissionsPage: 7,
         })
     })
 })

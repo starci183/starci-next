@@ -15,4 +15,6 @@ export interface PracticeOptions {
     readonly maxSourceBytes?: number
     /** How long a run or submit waits for its verdict before answering a submission still running, in milliseconds; absent, 25000. */
     readonly waitMs?: number
+    /** How many submissions a page of the learner history holds when the request names no limit; absent, 20. */
+    readonly submissionsPage?: number
 }

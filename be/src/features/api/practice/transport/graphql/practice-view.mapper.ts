@@ -3,6 +3,7 @@ import {
     toProblemItemWires,
     toProblemWire,
     toSolutionWire,
+    toSubmissionsPageWire,
     toSubmissionWire,
     type PracticeHintText,
     type PracticeNextView,
@@ -11,6 +12,7 @@ import {
     type PracticeProblemView,
     type PracticeReadinessView,
     type PracticeSolutionView,
+    type PracticeSubmissionsPageView,
     type PracticeSubmissionView,
 } from "@modules/domain/practice"
 import type { PracticeHintType } from "./dto/practice-hint.type"
@@ -20,6 +22,7 @@ import type { PracticeProblemItemType } from "./dto/practice-problem-item.type"
 import type { PracticeProblemType } from "./dto/practice-problem.type"
 import type { PracticeReadinessItemType } from "./dto/practice-readiness-item.type"
 import type { PracticeSolutionType } from "./dto/practice-solution.type"
+import type { PracticeSubmissionPageType } from "./dto/practice-submission-page.type"
 import type { PracticeSubmissionType } from "./dto/practice-submission.type"
 
 /** Maps the patterns to their GraphQL type. */
@@ -48,6 +51,10 @@ export const toPracticeHintType = (view: PracticeHintText): PracticeHintType => 
 
 /** Maps the next and the resume problem to their GraphQL type. */
 export const toPracticeNextType = (view: PracticeNextView): PracticeNextType => toNextWire(view)
+
+/** Maps one page of the submission history to its GraphQL type. */
+export const toPracticeSubmissionPageType = (view: PracticeSubmissionsPageView): PracticeSubmissionPageType =>
+    toSubmissionsPageWire(view)
 
 /** Maps one revealed solution to its GraphQL type. */
 export const toPracticeSolutionType = (view: PracticeSolutionView): PracticeSolutionType => toSolutionWire(view)

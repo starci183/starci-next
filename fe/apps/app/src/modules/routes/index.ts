@@ -118,3 +118,6 @@ export const harnessDocPath = (slug: string): string => `${HARNESS_ROUTES.docs}/
 /** The path of one concept of a milestone: its evidence page. */
 export const projectConceptPath = (projectId: string, milestoneId: string, conceptId: string): string =>
     `${projectMilestonePath(projectId, milestoneId)}/${encodeURIComponent(conceptId)}`
+
+/** The path of one flashcard deck of Review. */
+export const reviewDeckPath = (deckId: string): string => `${APP_ROUTES.reviewDecks}/${encodeURIComponent(deckId)}`

@@ -1289,6 +1289,24 @@ input PracticeSubmissionInput {
   submissionId: String! @inputBounds(maxLength: 36)
 }
 
+type PracticeSubmissionItemType {
+  id: String!
+  language: String!
+  memoryKb: Int
+  passedCount: Int!
+  problemTitle: String!
+  slug: String!
+  submittedAt: String!
+  timeMs: Int
+  totalCount: Int!
+  verdict: String!
+}
+
+type PracticeSubmissionPageType {
+  items: [PracticeSubmissionItemType!]!
+  nextCursor: String
+}
+
 type PracticeSubmissionType {
   compileOutput: String
   createdAt: String!
@@ -1303,6 +1321,13 @@ type PracticeSubmissionType {
   timeMs: Int
   totalCount: Int!
   verdict: String!
+}
+
+input PracticeSubmissionsInput {
+  cursor: String = null @inputBounds(maxLength: 2048)
+  limit: Int = 20 @inputBounds(min: 1, max: 50)
+  locale: String! = "vi"
+  patternId: String! @inputBounds(maxLength: 40)
 }
 
 type PracticeTestSummaryType {
@@ -1774,6 +1799,7 @@ type Query {
   practiceProblems(input: PracticeProblemsInput!): [PracticeProblemItemType!]!
   practiceReadiness(input: PracticeReadinessInput!): [PracticeReadinessItemType!]!
   practiceSubmission(input: PracticeSubmissionInput!): PracticeSubmissionType!
+  practiceSubmissions(input: PracticeSubmissionsInput!): PracticeSubmissionPageType!
   premiumOrder(input: PremiumOrderInput!): PremiumOrderType!
   premiumPlans: [PlanType!]!
   project(input: ProjectInput!): ProjectDetailType!
@@ -1900,8 +1926,11 @@ type RecallItemSummaryType {
   deckTitle: String
   dueOn: String!
   itemId: String!
+  kind: String!
   lessonTitle: String
   level: String
+  question: String!
+  reviewCount: Int!
   source: String!
   status: String!
 }

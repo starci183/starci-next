@@ -10,6 +10,11 @@ export type ReviewQueueItemView = {
     readonly deckTitle: string | null
     readonly lessonTitle: string | null
     readonly level: string | null
+    readonly question: string
+    /** `direct`, `cloze` or `retrieval`. */
+    readonly kind: string
+    /** How many times the learner already reviewed it. */
+    readonly reviewCount: number
     readonly dueOn: string
 }
 
