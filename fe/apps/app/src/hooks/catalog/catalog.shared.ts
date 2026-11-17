@@ -143,13 +143,13 @@ export const catalogViewOf = (
             KNOWN_LANGUAGES,
             lessons.flatMap((lesson) => lesson.languages),
             words.languageNames,
-            words.all,
+            words.allLanguages,
         ),
         providers: optionsOf(
             KNOWN_PROVIDERS,
             lessons.flatMap((lesson) => lesson.providers),
             words.providerNames,
-            words.all,
+            words.allProviders,
         ),
         cases: casesOf((filters.group === ALL_ID || filters.group === "casestudy") && !isLessonMode(filters), words),
         tree: LESSON_GROUPS.flatMap((group) => {

@@ -105,7 +105,10 @@ export type CatalogWords = {
     readonly phases: Readonly<Record<string, string>>
     readonly resume: (phase: string) => string
     readonly understood: (done: number, total: number) => string
-    readonly all: string
+    /** The empty choice of the language select: it says what it filters. */
+    readonly allLanguages: string
+    /** The empty choice of the cloud select: it says what it filters. */
+    readonly allProviders: string
     readonly minutes: (minutes: number) => string
     readonly count: (count: number) => string
     readonly published: (count: number) => string

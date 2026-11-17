@@ -608,6 +608,8 @@
         "statusNone": "Not started",
         "statusFree": "Free: overview + Asked",
         "all": "All",
+        "allLanguages": "All languages",
+        "allProviders": "All clouds",
         "asideLabel": "Knowledge groups",
         "asideEmpty": "No groups.",
         "upsell": "Unlock everything with Premium",

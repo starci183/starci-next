@@ -608,6 +608,8 @@
         "statusNone": "Chưa học",
         "statusFree": "Miễn phí: tổng quan + Bị hỏi",
         "all": "Tất cả",
+        "allLanguages": "Mọi ngôn ngữ",
+        "allProviders": "Mọi cloud",
         "asideLabel": "Nhóm kiến thức",
         "asideEmpty": "Chưa có nhóm nào.",
         "upsell": "Mở hết với Premium",
