@@ -52,6 +52,7 @@ const chipToneOf = (state: string): EvidenceChipView["tone"] => {
 
 /** The mark of a chip: whether the latest pass is proof or practice, or empty when nothing passed. */
 const chipMarkOf = (t: Translate, slot: ConceptRead["slots"][number]): string => {
+    if (slot.state === "fail") return t("milestone.slotState.fail")
     if (slot.state !== "pass") return ""
     return slot.proof ? t("milestone.proofMark") : t("milestone.practiceMark")
 }
@@ -60,14 +61,14 @@ const chipMarkOf = (t: Translate, slot: ConceptRead["slots"][number]): string =>
 const chipsOf = (t: Translate, concept: ConceptRead): ReadonlyArray<EvidenceChipView> =>
     concept.slots.map((slot) => ({
         id: slot.slot,
-        label: t(`milestone.slot.${slot.slot}`),
+        label: t(`milestone.slotShort.${slot.slot}`),
         state: t(`milestone.slotState.${slot.state}`),
         tone: chipToneOf(slot.state),
         mark: chipMarkOf(t, slot),
     }))
 
 /** The card of one concept, from the read. */
-const cardOf = (t: Translate, concept: ConceptRead): ConceptCardView => {
+export const conceptCardOf = (t: Translate, concept: ConceptRead): ConceptCardView => {
     const lessonHref = concept.lesson === null ? "" : lessonPath(concept.lesson.topicId, concept.lesson.id)
     const fallbackHref = lessonHref === "" ? APP_ROUTES.essentials : lessonHref
     const relearnLabel = concept.lesson === null ? "" : t("milestone.relearn", { title: concept.lesson.title })
@@ -140,6 +141,6 @@ export const projectMilestoneViewOf = (
         stateLabel: t(isDone ? "milestone.stateDone" : "milestone.stateOpen"),
         stateTone: isDone ? "success" : "warning",
         runs: runsOf(t, format, read),
-        concepts: read.concepts.map((concept) => cardOf(t, concept)),
+        concepts: read.concepts.map((concept) => conceptCardOf(t, concept)),
     }
 }

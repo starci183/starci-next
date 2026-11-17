@@ -1322,55 +1322,45 @@
         "agent": "Agent"
       },
       "list": {
-        "title": "Dự án",
-        "description": "Mang dự án của bạn vào, đặt thư mục starci/ trong mỗi dự án",
+        "title": "Dự án của bạn",
+        "description": "Mỗi dự án là một repo của bạn; chứng minh từng concept để có dòng CV đã xác minh.",
         "create": "Tạo dự án",
         "emptyTitle": "Bạn chưa có dự án nào",
-        "emptyText": "Mang dự án đầu tiên của bạn vào: đề tài nào, ngôn ngữ nào cũng được, rồi đặt thư mục starci/ vào.",
+        "emptyText": "Mang dự án đầu tiên của bạn vào: đề tài nào, ngôn ngữ nào cũng được, rồi thêm thư mục starci/ bằng một lệnh.",
         "listLabel": "Dự án của bạn",
-        "tabsLabel": "Lọc dự án",
-        "tabs": {
-          "all": "Tất cả",
-          "practicing": "Đang luyện",
-          "proved": "Đã chứng minh"
-        },
-        "state": {
-          "practicing": "Đang luyện",
-          "proved": "Đã chứng minh"
-        },
-        "concepts": "{proved}/{count} concept đã chứng minh",
         "progressLabel": "Concept đã chứng minh",
-        "searchLabel": "Tìm dự án",
-        "searchPlaceholder": "Tìm dự án",
-        "searchClear": "Xoá tìm kiếm",
-        "emptyFilteredTitle": "Không có dự án nào khớp",
-        "errorTitle": "Không tải được dự án"
-      },
-      "device": {
-        "connect": "Kết nối máy",
-        "title": "Máy của bạn",
-        "badge": "Chưa kết nối",
-        "text": "Kết quả chạy trên máy qua CLI sẽ hiện ở đây khi tính năng kết nối thiết bị mở. Hiện tại bạn chứng minh bằng CI có chữ ký hoặc server kiểm tra địa chỉ đã triển khai."
-      },
-      "levels": {
-        "asideLabel": "Mức chứng minh",
-        "title": "Mức chứng minh",
-        "practice": "Đang luyện",
-        "practiceNote": "Kết quả từ máy của bạn, chưa tính",
-        "proof": "Đã chứng minh",
-        "proofNote": "CI có chữ ký hoặc server chạy lại"
+        "errorTitle": "Không tải được dự án",
+        "ribbonLabel": "Tổng quan dự án",
+        "figures": {
+          "proved": "Concept đã chứng minh",
+          "milestones": "Milestone xong",
+          "cv": "Dòng CV xác minh",
+          "practising": "Concept đang luyện"
+        },
+        "columns": {
+          "project": "Dự án",
+          "kind": "Loại",
+          "milestone": "Milestone hiện tại",
+          "progress": "Tiến độ",
+          "ci": "CI"
+        },
+        "noMilestone": "Chưa có",
+        "progress": "{proved}/{count}",
+        "note": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ.",
+        "ci": {
+          "none": "Chưa nối CI",
+          "passed": "Xanh",
+          "failed": "Đỏ"
+        }
       },
       "new": {
         "title": "Tạo dự án",
         "name": "Tên dự án",
-        "topic": "Đề tài",
-        "language": "Ngôn ngữ chính",
-        "stack": "Công nghệ",
         "trackNone": "Chưa chọn",
         "trackClaude": "Claude Code",
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
-        "repo": "Địa chỉ repo (https)",
+        "repo": "Repo GitHub",
         "submit": "Tạo dự án",
         "submitting": "Đang tạo...",
         "createdTitle": "Dự án đã tạo",
@@ -1381,25 +1371,29 @@
         "cancel": "Huỷ",
         "infoLabel": "Thông tin dự án",
         "kindLabel": "Loại dự án",
-        "kindAppHint": "Web, API, bot hay công cụ: đề tài nào cũng được.",
-        "kindAgentHint": "Một agent chạy việc thay bạn.",
         "trackLabel": "Công cụ agent",
-        "trackNoneHint": "Chọn sau khi tạo.",
-        "howLabel": "Cách bắt đầu",
-        "howFolderTitle": "Thư mục starci/",
-        "howFolderText": "Đặt thư mục starci/ với project.yaml vào repo của dự án.",
-        "howCliTitle": "CLI StarCi",
-        "howCliText": "Cài CLI StarCi trên máy để chạy kiểm tra và gửi kết quả.",
-        "howSecretTitle": "Bí mật CI",
-        "howSecretText": "Lưu bí mật CI vào GitHub Secrets với tên STARCI_PROJECT_SECRET.",
-        "howEmpty": "Chưa có bước nào.",
         "copy": "Sao chép",
         "copied": "Đã sao chép",
         "error": {
-          "premiumRequired": "Dự án thứ hai cần Premium.",
+          "premiumRequired": "Dự án nằm trong gói Premium.",
           "invalid": "Thông tin dự án chưa hợp lệ; kiểm tra tên, đề tài, ngôn ngữ, công nghệ và địa chỉ repo.",
-          "other": "Chưa tạo được dự án; thử lại sau."
-        }
+          "other": "Chưa tạo được dự án; thử lại sau.",
+          "deployed": "Đã tạo dự án nhưng chưa lưu được địa chỉ deploy; lưu lại ở trang dự án."
+        },
+        "description": "Đặt tên, chọn loại, nối repo và địa chỉ deploy. Rồi chạy một lệnh trong repo của bạn.",
+        "deployed": "Địa chỉ deploy (tùy chọn, để probe)",
+        "deployedHint": "http hoặc https công khai, ví dụ https://api.myblog.dev",
+        "initTitle": "Rồi chạy trong repo của bạn",
+        "initNote": "Code do bạn (hoặc AI của bạn) viết. StarCi chỉ đọc tag trong test và chạy probe, không áp kiến trúc nào lên repo.",
+        "initLog": [
+          "$ npx @starci/next init {name}",
+          "✓ thêm starci/project.yaml",
+          "✓ thêm starci/e2e/*.md theo milestone",
+          "✓ thêm .github/workflows/starci.yml",
+          "$ starci-next run",
+          "  request-response-lifecycle  2 test  đang luyện",
+          "  health-probe-semantics      0 test  chưa có bằng chứng"
+        ]
       },
       "detail": {
         "back": "Tất cả dự án",
@@ -1472,7 +1466,7 @@
         "notFound": "Không có milestone này",
         "notFoundText": "Dự án này không liệt kê milestone đó.",
         "locked": "Milestone này cần Premium",
-        "lockedText": "Milestone đầu miễn phí; các milestone sau và thầy AI đọc code cần Premium.",
+        "lockedText": "Dự án thuộc gói Premium. Đăng ký để mở các milestone và thầy AI đọc code.",
         "plans": "Xem Premium",
         "conceptsLabel": "Concept của milestone",
         "crumbRoot": "Dự án",
@@ -1498,7 +1492,9 @@
           "evidence": "Bằng chứng",
           "result": "Kết quả",
           "level": "Mức",
-          "when": "Lúc"
+          "when": "Lúc",
+          "state": "Trạng thái",
+          "lesson": "Học ở"
         },
         "result": {
           "pass": "Đạt",
@@ -1518,7 +1514,7 @@
         "ciText": "Action ký kết quả bằng bí mật của dự án. Chỉ kết quả có chữ ký mới tính là Đã chứng minh.",
         "ciLink": "Xem bí mật trong dự án",
         "conceptState": {
-          "todo": "Chưa có",
+          "todo": "Chưa bắt đầu",
           "practising": "Đang luyện",
           "proved": "Đã chứng minh"
         },
@@ -1566,7 +1562,15 @@
           "invalidEndpoint": "Endpoint phải có dạng METHOD /đường-dẫn và body mẫu phải là JSON nhỏ.",
           "coach": "Thầy AI chưa trả lời được; thử lại sau ít phút.",
           "other": "Chưa thực hiện được; thử lại sau."
-        }
+        },
+        "slotShort": {
+          "test": "test",
+          "e2e": "e2e",
+          "probe": "probe",
+          "code-read": "AI đọc code"
+        },
+        "noLesson": "Chưa có bài",
+        "legend": "Đang luyện: chạy trên máy qua relay. Đã chứng minh: CI GitHub ký OIDC, probe của server hoặc AI đọc code."
       },
       "reason": {
         "ok": "Trả 200",
@@ -1602,6 +1606,112 @@
         "probe-failed": "Probe chưa đạt",
         "code-read-below-bar": "Thầy AI chưa thấy đủ bằng chứng trong code và lời giải thích",
         "read-below-bar": "Thầy AI chưa thấy đủ bằng chứng trong code và lời giải thích"
+      },
+      "pitch": {
+        "title": "Dự án",
+        "description": "Mang repo thật của bạn vào, chứng minh từng concept Bản chất bằng bằng chứng máy kiểm được, rồi nhận một dòng CV đã xác minh. Dự án nằm trong gói Premium.",
+        "subscribe": "Đăng ký Premium",
+        "stepsTitle": "Từ repo của bạn đến dòng CV",
+        "steps": {
+          "repo": {
+            "title": "Mang repo của bạn vào",
+            "text": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ. Một lệnh thêm thư mục starci/ và mẫu CI vào repo."
+          },
+          "prove": {
+            "title": "Chứng minh từng concept",
+            "text": "Mỗi concept Bản chất cần đủ ô bằng chứng: test, e2e, probe trên địa chỉ deploy, hoặc AI đọc đoạn code bạn dán. Chạy trên máy là Đang luyện; CI GitHub ký OIDC hoặc server chạy lại mới là Đã chứng minh."
+          },
+          "cv": {
+            "title": "Nhận dòng CV đã xác minh",
+            "text": "Mỗi milestone xong sinh một dòng CV từ bằng chứng StarCi đã kiểm. Không có số tự khai."
+          }
+        },
+        "sampleNote": "Dữ liệu minh hoạ, không phải dự án của ai. Dự án thật của bạn hiện ở đúng khung này.",
+        "conceptsTitle": "Ví dụ: concept của một milestone",
+        "columns": {
+          "concept": "Concept",
+          "evidence": "Bằng chứng cần",
+          "state": "Trạng thái"
+        },
+        "cvTitle": "Ví dụ: dòng CV khi đủ bằng chứng",
+        "includedTitle": "Premium mở những gì ở Dự án",
+        "included": {
+          "many": {
+            "title": "Nhiều dự án, mọi milestone",
+            "text": "Mỗi dự án là một repo riêng, không giới hạn số lượng."
+          },
+          "probes": {
+            "title": "Probe trên địa chỉ deploy",
+            "text": "Server StarCi gọi địa chỉ http hoặc https công khai của bạn và ghi lại từng kết quả."
+          },
+          "aiRead": {
+            "title": "AI đọc code",
+            "text": "Dán đoạn xử lý, AI chấm theo thang tiêu chí và chỉ ra chỗ còn thiếu."
+          },
+          "ci": {
+            "title": "CI có chữ ký",
+            "text": "GitHub OIDC xác nhận lần chạy trước khi tính là Đã chứng minh."
+          }
+        },
+        "noTable": "Chưa có concept.",
+        "sample": {
+          "lifecycle": {
+            "concept": "Vòng đời request/response",
+            "slots": "test ✓ · probe ✓",
+            "state": "Đã chứng minh"
+          },
+          "idempotency": {
+            "concept": "Idempotency khi retry",
+            "slots": "test ✓ · probe đang chờ",
+            "state": "Đang luyện"
+          },
+          "outbox": {
+            "concept": "Transactional outbox",
+            "slots": "e2e (relay) · CI ký OIDC",
+            "state": "Chưa bắt đầu"
+          }
+        },
+        "cv": {
+          "role": "Backend developer",
+          "badge": "Đã xác minh",
+          "text": "Thiết kế API ghi idempotent và transactional outbox cho my-blog-api; chịu 5 request trùng song song không tạo bản ghi thừa.",
+          "evidence": "Bằng chứng: CI run #41 (GitHub ký) · probe 17/11 · 3 concept"
+        }
+      },
+      "concept": {
+        "notFound": "Không có concept này",
+        "notFoundText": "Milestone này không liệt kê concept đó.",
+        "back": "Về milestone",
+        "slotsTitle": "Ô bằng chứng",
+        "probeTitle": "Probe trên địa chỉ deploy",
+        "probeOn": "Probe trên",
+        "probeEmpty": "Chưa có kết quả probe. Chạy probe để StarCi gọi địa chỉ deploy của bạn.",
+        "probeNoDeploy": "Chưa có địa chỉ deploy. Lưu địa chỉ ở trang dự án trước.",
+        "probeRun": "Chạy probe",
+        "probeRunning": "Đang chạy...",
+        "ciTitle": "CI GitHub",
+        "ciEmpty": "Chưa có run CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
+        "ciRun": "Run",
+        "ciCommit": "Commit",
+        "ciVerdict": "Kết quả",
+        "ciWhen": "Lúc",
+        "codeTitle": "AI đọc code",
+        "codeEmpty": "Chưa có bản đọc code.",
+        "rubricTitle": "Thang chấm của AI",
+        "rubricEmpty": "Chưa có thang chấm. Gửi đoạn code để AI đọc và chấm.",
+        "verdict": {
+          "met": "Đạt",
+          "partial": "Một phần",
+          "missing": "Chưa đạt"
+        },
+        "cvTitle": "Dòng CV khi đủ bằng chứng",
+        "cvEmpty": "Dòng CV hiện khi concept đủ bằng chứng.",
+        "cvVerified": "Đã xác minh",
+        "cvNote": "Không có số tự khai: mọi dòng CV chỉ điền từ bằng chứng StarCi đã kiểm.",
+        "askClaude": "Hỏi Claude qua MCP về concept này",
+        "lesson": "Học ở",
+        "cvPreview": "Bản xem trước",
+        "cvEvidence": "Bằng chứng: {items}"
       }
     },
     "experience": {

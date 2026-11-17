@@ -125,3 +125,7 @@ export const harnessGuidePath = (tool: string, slug: string): string =>
 
 /** The path of one article of part 3. */
 export const harnessDocPath = (slug: string): string => `${HARNESS_ROUTES.docs}/${encodeURIComponent(slug)}`
+
+/** The path of one concept of a milestone: its evidence page. */
+export const projectConceptPath = (projectId: string, milestoneId: string, conceptId: string): string =>
+    `${projectMilestonePath(projectId, milestoneId)}/${encodeURIComponent(conceptId)}`

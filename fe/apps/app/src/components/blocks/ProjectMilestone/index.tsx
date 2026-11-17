@@ -1,12 +1,12 @@
 "use client"
 
 import { useFormatter, useLocale, useTranslations } from "next-intl"
-import { useState } from "react"
-import { issueWordsOf, projectMilestoneViewOf, useProjectMilestoneLabels } from "@/hooks/projectMilestone"
-import { isProjectMissing, isProjectPremiumRequired, useConceptForms } from "@/hooks/projects"
+import { projectMilestoneViewOf, useProjectMilestoneLabels } from "@/hooks/projectMilestone"
+import { isProjectMissing, isProjectPremiumRequired } from "@/hooks/projects"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectMilestoneSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { projectConceptPath } from "@/modules/routes"
 import { PROJECT_MILESTONE_PLACEHOLDER, ProjectMilestoneBase } from "./component"
 
 /** What the route hands the milestone block: the segments of the address. */
@@ -16,14 +16,12 @@ type ProjectMilestoneProps = { readonly projectId: string; readonly milestoneId:
 export const ProjectMilestone = (props: ProjectMilestoneProps) => {
     const t = useTranslations("app.projects")
     const format = useFormatter()
-    const [openId, setOpenId] = useState<string | undefined>(undefined)
     const read = useQueryProjectMilestoneSwr({
         projectId: props.projectId,
         milestoneId: props.milestoneId,
         locale: useLocale(),
     })
     const labels = useProjectMilestoneLabels(props.projectId)
-    const forms = useConceptForms(props.projectId, () => void read.mutate())
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.milestone.title} · ${t("pageTitle")}`)
     return (
         <ProjectMilestoneBase
@@ -33,22 +31,20 @@ export const ProjectMilestone = (props: ProjectMilestoneProps) => {
                 slotLabels: useSlotLabels()(t("empty")),
                 isNotFound: isProjectMissing(read.error),
                 isLocked: isProjectPremiumRequired(read.error),
-                drafts: Object.fromEntries(
-                    (read.data?.concepts ?? []).map((concept) => [concept.id, forms.draftOf(concept.id)]),
-                ),
-                pendingId: forms.pendingId,
-                issueId: forms.issueId,
-                issueWords: issueWordsOf(t, forms.issue),
-                openId,
                 labels,
+                table: {
+                    legend: t("milestone.legend"),
+                    noLesson: t("milestone.noLesson"),
+                    columns: { state: t("milestone.col.state"), lesson: t("milestone.col.lesson") },
+                },
+                conceptHrefs: Object.fromEntries(
+                    (read.data?.concepts ?? []).map((concept) => [
+                        concept.id,
+                        projectConceptPath(props.projectId, props.milestoneId, concept.id),
+                    ]),
+                ),
             }}
-            on={{
-                retry: () => void read.mutate(),
-                write: forms.write,
-                savePointer: forms.savePointer,
-                explain: forms.explain,
-                open: setOpenId,
-            }}
+            on={{ retry: () => void read.mutate() }}
         />
     )
 }

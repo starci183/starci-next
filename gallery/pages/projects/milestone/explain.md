@@ -5,16 +5,34 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects/<projectId>/<milestoneId>`. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Ảnh chụp hiện tại là trạng thái "không có milestone này" (không có dự án và milestone trong dữ liệu chụp), nên chỉ giải thích những gì thấy; trang đầy đủ (danh sách concept, bảng lần chạy, aside "Cách chứng minh") chưa có ảnh. CHƯA RÕ: cần chụp lại với một dự án có milestone để gallery phản ánh trang chính.
+Route: `/projects/<projectId>/<milestoneId>`, dành cho người đăng ký Premium. Một milestone là danh sách concept Bản chất; mỗi concept cần đủ ô bằng chứng. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
 
-## Thông báo "Không có milestone này"
+## Dải đầu trang (đường dẫn, tên milestone, "5 / 8 đã chứng minh", chip trạng thái)
 
-Vì sao: milestone không có trong dự án thì thấy trạng thái giữa trang: ô icon hộp thư xám nhạt, tiêu đề đậm "Không có milestone này" và một dòng muted "Dự án này không liệt kê milestone đó." Không dải tiêu đề, không thẻ.
-Luật: `grammar-slot-interface`, `surface-layering` (trạng thái nằm trong trang).
-Grammar: `SlotView` và `MissingNotice`.
+Vì sao: đường dẫn Dự án / tên dự án / milestone; dòng phụ nói đã chứng minh bao nhiêu trên tổng số; chip Đã xong hoặc Đang làm.
+Luật: `theme-and-type.md`, `verified-experience.md`.
+Grammar: `Page header={{ breadcrumbs, title, meta, status }}`, `Badge tone`.
 
-## Liên kết "Về dự án"
+## Bảng concept với ô bằng chứng
 
-Vì sao: lối quay về `projects/detail`, đặt dưới thông báo, chữ foreground. CHƯA RÕ: không có mũi tên và không nằm trong đường dẫn của băng đầu trang; nên là `Page header.breadcrumbs` hoặc kết thúc bằng "→".
-Luật: `surface-layering` (liên kết điều hướng có mũi tên), `page-header-left-sublabel-xs.md`.
-Grammar: `Link variant="plain" href` trong `MissingNotice`.
+Vì sao: bảng phẳng, mỗi hàng một concept: tên và loại (Hành vi hoặc Cấu trúc), các ô bằng chứng nó cần (test, e2e, probe, AI đọc code) mỗi ô là một chip có tông theo trạng thái (đạt kèm "đang luyện" hoặc "đã chứng minh", lỗi, chưa có), trạng thái Đang luyện hay Đã chứng minh, và bài Bản chất để học lại. Cả hàng mở trang bằng chứng của concept. Dòng chú thích dưới bảng giải nghĩa hai mức: Đang luyện = chạy trên máy qua relay; Đã chứng minh = CI GitHub ký OIDC, probe của server hoặc AI đọc code.
+Luật: `verified-experience.md` (hai mức), `learner-cli-relay.md`, `surface-layering.md`.
+Grammar: `Section title count caption` bọc `DataTable surface="none" rows[{ href }]`, `Badge tone`, `Link variant="plain"`.
+
+## Lần chạy bằng chứng gần đây
+
+Vì sao: một bảng phẳng thứ hai: mỗi ô bằng chứng đã có kết quả là một hàng (concept, loại bằng chứng, đạt hay lỗi, mức, lúc nào); chưa có thì nói chạy test trên máy hoặc đẩy lên GitHub.
+Luật: `verified-experience.md`.
+Grammar: `Section` + `DataTable surface="none"`.
+
+## Cách chứng minh và CI có chữ ký
+
+Vì sao: hai khối cạnh nhau ở cuối trang: bốn bước đánh số (viết bằng chứng, chạy trên máy là Đang luyện, đẩy lên GitHub, kết quả có chữ ký hoặc server chạy lại thì thành Đã chứng minh) và lời giải thích rằng chỉ kết quả có chữ ký mới tính, kèm liên kết tới bí mật trong trang dự án.
+Luật: `learner-cli-relay.md`, `projects.md`.
+Grammar: `Grid kind="pair"`, `Section kind="list" items[{ leading: { position } }]`, `Link variant="plain"`.
+
+## Trạng thái không tìm thấy, bị khoá, đang tải
+
+Vì sao: milestone không có thì thông báo kèm đường về dự án; cửa Premium của back end từ chối thì thông báo kèm liên kết Premium; đang tải thì bảng giữ hình khối.
+Luật: `premium.md`, `surface-layering.md`.
+Grammar: `MissingNotice` (starci-next-ui), `Page isLoading`, `DataTable isLoading`.
