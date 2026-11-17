@@ -484,7 +484,9 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: db57c9ba9e64c28b44a12aaa287739a8e05a55a6
+      commit: db452247aadae9f919c1297563a43d60684b1f93
+      # Applies once at this commit although the pin moved from the first review commit (DATA_STANDARD_CHANGED); remove it after the bring-up.
+      force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
   sonar: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
