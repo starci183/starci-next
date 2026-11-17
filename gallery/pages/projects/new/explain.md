@@ -41,3 +41,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1920, vùng trống phía dưới bảng init rất lớn so với biểu mẫu; hai cột cao không bằng nhau.
 - 390, terminal: dòng "request-response-lifecycle 2 test đang luyện" bị ngắt giữa cụm ("đang / luyện", "chưa / có bằng chứng") làm bảng kết quả mất thẳng hàng.
 - 390, bảng init nằm sau nút "Tạo dự án" nên người dùng phải cuộn qua nút chính mới thấy hướng dẫn chạy lệnh.
+- Lần chụp lại 2026-11-17 trên dev (học viên Premium thử): biểu mẫu chỉ có Tên dự án, Loại dự án, Repo GitHub, Địa chỉ deploy; bấm Tạo dự án thành công và hiện bí mật CI một lần. Không còn ô đề tài, ngôn ngữ, công nghệ: server nhận rỗng. Các điều trên vẫn đúng ở 1440 và 390, trừ hàng dưới.
+- 1440 và 390, ô Repo GitHub không nói chỉ địa chỉ github.com mới nối được chứng thực CI (OIDC); không có placeholder nên học viên không biết dạng `https://github.com/chủ/tên`.

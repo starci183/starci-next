@@ -54,3 +54,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440 và 1920, "CI có chữ ký": cột phải ngắn hơn nhiều cột "Cách chứng minh" nên một nửa vùng trống; mô tả muted sắc nâu.
 - 390, bảng concept ẩn cột Bằng chứng và Học ở, người dùng không thấy ô bằng chứng nào cần và không có đường dẫn học lại.
 - 390, số thứ tự "1." đến "4." của "Cách chứng minh" là chữ mono nâu nhạt, tương phản thấp.
+- Lần chụp lại 2026-11-17 trên dev: bảng đủ 4 concept của Nền tảng HTTP (request-response-lifecycle, health-probe-semantics, error-contract, unit-testing-behavior) với ô test, e2e, probe, AI đọc code; các điều trên vẫn đúng ở 1440 và 390.
+- 1440 và 390, mọi concept ghi 'Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone' và 'Chưa có bài' vì `learn` của catalog trỏ tới bài chưa sống; đúng theo luật nhưng cả 4 hàng lặp cùng một câu và học viên không biết khi nào concept sẽ tính được.

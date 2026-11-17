@@ -66,3 +66,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1920, dải đầu trang canh trái ở x=288, còn nội dung thu hẹp ở giữa từ x=480: mép trái lệch 192px.
 - 390, đường dẫn bốn cấp bị cắt cụt ở cấp cuối ("Vòng đời re") và không có dấu ba chấm; tên concept hiện không đầy đủ.
 - 1440 và 1920, mô tả muted ("Chưa có địa chỉ deploy...", "Chưa có run CI...") mang sắc nâu, tương phản thấp.
+- Lần chụp lại 2026-11-17 trên dev: dòng CV hiện 'Dòng CV hiện khi concept đủ bằng chứng.' không còn dấu `**` thô nào và không còn dòng 'Bằng chứng:' rỗng; mục đầu của Phản biện này (dòng 'Bằng chứng:' rỗng, nhãn 'Bản xem trước') không còn thấy, các mục khác vẫn đúng.
+- 1440 và 390, ba ô bằng chứng test, e2e, probe vẫn là chữ xám rời, chưa có chip tông cho trạng thái code đọc, probe, CI nên chưa thấy ba trạng thái khác nhau; mới chỉ thấy 'Chưa bắt đầu' vì dự án mới chưa có run nào.

@@ -61,3 +61,6 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440, aside hẹp làm các đoạn giải thích xuống 3 đến 4 dòng; khối "Thư mục starci/" kéo dài hơn pane trái.
 - 390, aside đứng trước danh sách Milestone nên nội dung chính bị đẩy xuống sau 5 khối cấu hình; thanh tiến độ của mỗi milestone nằm dưới hàng và canh trái lệch với tên.
 - 390, nút "Cập nhật kết quả từ máy" nằm dưới dòng repo; chip trạng thái "Chưa bắt đầu" nhỏ và sát tên.
+- Lần chụp lại 2026-11-17 trên dev: dự án tạo mới hiện đủ 3 milestone (Nền tảng HTTP 0/4, Dữ liệu và cache 0/2, An toàn và tin cậy 0/4) tức 10 check; các điều trên vẫn đúng ở 1440 và 390.
+- 1440 và 390, 'Kho mã' chỉ hiện 'Chưa gắn repo' và không có ô nối repo sau khi tạo; repo chỉ nhập được ở màn Tạo dự án, nên dự án tạo không có repo không thể nối chứng thực CI từ trang này.
+- Danh sách dự án hiện '0/9' còn trang dự án cộng 4+2+4 = 10 concept: concept unit-testing-behavior cần AI đọc code mà chưa có bài Bản chất sống nên bị loại khỏi mẫu số ở danh sách nhưng vẫn hiện ở trang milestone.
