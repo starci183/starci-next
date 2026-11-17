@@ -39,6 +39,10 @@ Grammar: `Section kind="list" items[{ title, description }]`.
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440 và 1920, "Từ repo của bạn đến dòng CV", bước 2: mô tả bị cắt bằng dấu ba chấm giữa câu ("CI GitHub ký OIDC hoặc s..." ở 1440, "server chạy lại m..." ở 1920): mất nội dung.
 - 390, cả ba bước và cả bốn hàng "Premium mở những gì" bị cắt bằng dấu ba chấm ở dòng mô tả (một dòng duy nhất), nên không đọc được ý hoàn chỉnh của hàng nào.
 - 1440 và 1920, hai danh sách (ba bước, bốn hàng Premium) có phần thụt khác nhau: số thứ tự và nội dung thụt 44px so với đầu mục, các hàng Premium thụt 12px, còn bảng và CV mẫu không thụt; mép trái của các khối không thẳng.

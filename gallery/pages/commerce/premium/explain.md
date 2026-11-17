@@ -51,6 +51,10 @@ Grammar: `SlotView` (`fe/packages/starci-next-ui/src/branches/SlotView`), `Alert
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1920: tiêu đề và mô tả của đầu trang dính x=288 trong khi thân (thông báo, nhóm radio, thẻ tóm tắt) căn giữa bắt đầu x=480; hai trục lề lệch nhau gần 200px (surface-layering: đầu trang sát trái, thân tối đa 80rem).
 - 1440, 1920, 390, thông báo "Bạn đang là Premium...": nền xám tô kín bo lớn (giếng tô màu), không phải nền trắng viền 1px; chữ đậm ở dòng một và thường ở dòng hai gần như cùng cỡ.
 - 1440, 1920, 390, nhóm radio: hàng đang chọn có nền xám tô kín cộng viền đen đậm 1px, nặng nhất trang; hai nhóm "Chọn gói" và "Thanh toán qua" đều là các hàng thẻ viền bo góc lớn, chiếm cả bề ngang (1440 và 1920 dài hơn 1100px) cho chỉ hai lựa chọn ngắn, nên nhiều thẻ lồng như danh sách thay vì hàng phẳng.

@@ -27,6 +27,10 @@ Grammar: `Section title count caption` bọc `DataTable surface="none" columns[{
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, bảng dự án, cột Milestone hiện tại: hiện tên "Nền tảng HTTP", còn ở 1920 cùng dữ liệu hiện mã thô "bf-http-foundation": hai độ rộng cho hai nội dung khác nhau, mã thô lộ ra người dùng.
 - 1440 và 1920, cột Tiến độ: thanh tiến độ 0/9 chỉ là một vạch xám rất nhạt, gần như vô hình trên nền trắng; số "0/9" nằm lệch xuống dưới thanh và không cùng dòng với các cột khác.
 - 1440 và 1920, bảng: các ô Loại, Milestone, Tiến độ, CI căn dọc không đồng đều (chip "Ứng dụng" và "Chưa nối CI" thấp hơn tên dự án), hàng trông lệch.

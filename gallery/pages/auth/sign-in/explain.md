@@ -27,6 +27,10 @@ Grammar: `SurfaceCard measure="formCompact"`, `Heading`, `Button intent="neutral
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, nút "Đăng nhập": nút chính nền tím nhạt (pastel) chữ đen, tương phản chữ/nền thấp và trông như nút đang tắt; accent phải là tín hiệu rõ (theme-and-type).
 - 1440, 1920, 390, thẻ đăng nhập: bo góc rất lớn (khoảng 24px), lớn hơn hẳn nút và ô nhập, nhìn không cùng một họ bo góc.
 - 1440, 1920, 390, tiêu đề "Đăng nhập": cỡ khoảng 24px, vượt mức 18/600 của tiêu đề trang (theme-and-type: hai cỡ 14/12, tiêu đề 18).

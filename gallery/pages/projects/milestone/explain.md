@@ -39,6 +39,10 @@ Grammar: `Grid kind="pair"`, `Section`, `Link variant="plain"`.
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440 và 1920, bảng concept, cột Bằng chứng: các ô test, e2e, probe, AI đọc code hiện là chữ xám rời xếp dọc, không có chip tông theo trạng thái (đạt, lỗi, chưa có); không đọc được ô nào đã đạt.
 - 1440 và 1920, bảng concept: mỗi hàng cao khoảng 100px vì ba dòng bằng chứng xếp dọc; tên concept, trạng thái và "Học ở" căn giữa còn cột bằng chứng căn đầu nên các cột trong một hàng không thẳng hàng.
 - 1440 và 1920, cột Trạng thái: "Chưa bắt đầu" là chữ xám nhạt, không phải chip; khác với chip "Đang làm" ở đầu trang.

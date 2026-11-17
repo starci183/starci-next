@@ -32,6 +32,10 @@ Grammar: `DropdownMenuSection` {label}.
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, vị trí menu: lớp nổi dính ngay dưới avatar, mép trên khoảng y=60 chạm vạch kẻ dưới thanh trên và che nút "Xem hướng dẫn" (chỉ còn thấy chữ "n" lọt ra ở 1440 và 1920) cùng dòng phụ của dải tiêu đề ở 390; không có khoảng thở giữa trigger và menu.
 - 1440, 1920, 390, bóng và góc bo: góc bo rất lớn (khoảng 20px) và bóng mềm lan rộng, lớn hơn mọi chỗ khác; đúng luật "lớp nổi mới có bóng" nhưng góc bo không cùng họ với nút và ô.
 - 390, hàng email: bị bẻ giữa chữ ("gallery-" / "theme@example.test"), xuống hai dòng và làm hàng cao hơn các hàng khác.

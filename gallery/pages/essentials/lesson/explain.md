@@ -39,6 +39,10 @@ Grammar: `Section action={<Button intent="neutral" size="sm">}` (`frame/Section/
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, "Mở bài": câu hỏi 14/600 dài bị cắt bằng dấu "…" ở cuối dòng ("...Process bị kill ngay sau COMMIT. Cổng thanh toán gửi lại thông báo vì ..."), người học không đọc được hết đề; luật truncation vi phạm vì đề bài là nội dung chính. Nút "Nộp đáp án" tím nhạt khoá, chữ nhạt khó đọc (tương phản thấp), "Câu tiếp" chữ xám nhỏ lệch phải, hai nút không thẳng hàng và gần như vô hình. Bốn đáp án nằm trong khung bo góc viền (một khung bao cả bốn hàng); thanh 5 bước vẫn không thấy, chỉ có chữ "Câu 1 / 5" 12 muted ở lề phải xa tiêu đề.
 - 1440, dải đầu: chip "Trung cấp" nền xám cạnh tiêu đề; tab phần ("Bản chất, Source, Kịch bản, Tự áp dụng") chữ 14 sát nhau; dải đầu không có nút nào, hợp lệ. Dòng "40 phút đọc · TypeScript" 12 muted mờ.
 - 1440, mục lục: chỉ một hàng ("1. Bản chất: tin nhắn đi ra...") trong khung riêng, trong khi bài viết có bảy mục con 2.1 đến 2.7 cộng các mục 3, 4; mục lục không phản ánh cấu trúc bài. Nó trùng gần như nguyên văn tiêu đề h2 ngay dưới.

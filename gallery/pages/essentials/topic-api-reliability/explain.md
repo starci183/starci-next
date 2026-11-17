@@ -38,6 +38,10 @@ Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` 
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, aside "Tiến độ": thanh Meter tô đầy 100% và ghi "100%" trong khi dòng dưới ghi "0/2 bài đã hiểu"; thanh tiến độ không khớp với số đếm, và hai bài đều "0/6 pha". Dòng tóm tắt "2 bài · ... · TypeScript" lặp đúng meta của dải đầu.
 - 1440, hero: nút chính "Outbox + Idempotency" nền tím nhạt với chữ tối, không phải tím đặc; là nền tô và tương phản chữ thấp hơn nút chính chuẩn. Ảnh 3D trên nền tím nhạt chiếm hơn nửa thẻ trong khi cột chữ chỉ cao khoảng một phần ba, để trống bên dưới nút.
 - 1440, "Bài trong chương": danh sách hai bài vẫn nằm trong khung bo góc viền hairline (luật 1: danh sách là Section, không thẻ bao quanh). Sáu vòng pha 12 px rất nhỏ, vòng 1 viền tím nhạt gần như không phân biệt với vòng khác, "0/6 pha" lệch ngoài cùng. Hai hàng lặp cùng một trạng thái "Chưa làm mở bài".

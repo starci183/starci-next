@@ -32,6 +32,10 @@ Grammar: `Markdown source labels renderCode` (`frame/Markdown/index.d.ts`), `Dat
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, "Kiểm tra bản chất": hai câu hỏi mỗi câu nằm trong một khung bo góc viền (vừa khung đáp án vừa khung nút), nút "Nộp đáp án" tím nhạt khoá với chữ và icon gần như mờ, hai nút "Nộp đáp án" trên một màn hình (mỗi câu một nút) cùng kiểu nút chính khoá; luật một nút chính mỗi màn hình bị vi phạm, và icon trước chữ trên nút cỡ nhỏ. Đáp án là radio trong khung dày, khoảng cách hàng hơi hẹp.
 - 1440, thang chấm: chip điểm ("40đ", "25đ"...) và chip "Trọng yếu" tím nhạt nền tô; tiêu chí đầu cắt dài nhưng không bị cắt, mã `(h-easy-key-reuse-409 xanh)` lẫn vào tên tiêu chí làm dòng dài và khó đọc.
 - 1440, "Kịch bản ẩn": chip "Chưa chạy" nền xám; khối lệnh nền xám; dòng "Từ Đang luyện tới Đã chứng minh" 12 muted rất nhạt; hai khối nền tô và một đoạn chữ mờ nối tiếp nhau, không có hairline giữa các mục.

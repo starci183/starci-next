@@ -27,6 +27,10 @@ Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: tiêu đề trang "Mảng" lặp với đầu mục Section "Mảng" ngay dưới; dòng muted "0/5 bài Accepted · bản miễn phí mở 5 bài" vẫn nói "bản miễn phí" với học viên Premium nên sai nghĩa.
 - 1440: nhãn kỹ thuật hiện nguyên mã camelCase thô (dynamicProgramming, twoPointers, prefixSum) chứ không phải tên đọc được; độ khó "Trung bình" cùng màu muted nên không nổi.
 - 1440: mỗi hàng có chip "Chưa làm" và nút "Giải bài" cạnh nhau ở mép phải; năm nút lặp, hàng vốn đã là liên kết; chip và nút cùng cỡ nhỏ nhìn như hai nút, viền nút gần như vô hình.

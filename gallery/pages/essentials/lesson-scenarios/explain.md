@@ -26,6 +26,10 @@ Grammar: `Markdown source labels renderCode` (`frame/Markdown/index.d.ts`), `Fen
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, bài viết "2. Tám kịch bản": cú pháp thô của markdown rò ra thành chữ: các dòng `::::accordion`, `:::panel{title="Kịch bản 1 · happy-path: ..."}`, `:::muted ... :::`, `:::` và `::::` hiện nguyên văn giữa trang; tám panel không dựng thành accordion nên tám kịch bản trải ra một mạch dài hơn 9000 px, và dòng muted bị dính thành một câu có `:::` hai đầu. Đây là lỗi nội dung hiển thị rõ nhất của trang.
 - 1440, danh sách kịch bản: hàng thứ hai cắt mô tả bằng "..." ("Đối tác vẫn phải được ..."); chip "Chưa chạy" 12 muted rất nhạt cạnh chevron, tám hàng cùng một trạng thái không phân biệt; chưa có bất kỳ chỉ báo nào hàng nào đang chọn (hàng đầu không khác các hàng còn lại), trái với claim "hàng đang chọn được đánh dấu".
 - 1440, khối kết quả: Terminal nền tối đặc là mảng tối duy nhất của cả trang trắng, cao khoảng 100px chỉ để nói "Chưa có lần chạy nào"; tiêu đề "Kết quả gửi về từ máy bạn" 12 xám trên nền đen, tương phản thấp. Ngay trên có khối lệnh nền xám, hai khối nền tô liền nhau, một xám nhạt một đen.

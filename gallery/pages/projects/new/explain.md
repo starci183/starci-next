@@ -27,6 +27,10 @@ Grammar: `Grid kind="pair" leading trailing`, `Terminal label lines` (`branch/Te
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, biểu mẫu: ba ô Tên dự án, Repo GitHub, Địa chỉ deploy trống không có placeholder, hiện như hộp trắng viền mảnh không gợi ý nội dung; riêng Địa chỉ deploy có gợi ý ở dưới còn hai ô kia không có gì.
 - 1440, 1920, 390, nút "Tạo dự án": nút chính mờ (tím rất nhạt) với chữ và dấu cộng gần như không đọc được; không có lý do hiển thị vì sao bị khoá.
 - 1440 và 1920, biểu mẫu: khoảng cách dọc không đều, nhóm "Loại dự án" nằm sát nhãn "Repo GitHub" bên dưới (chưa tới 20px) trong khi các nhóm khác cách xa hơn.

@@ -27,6 +27,10 @@ Grammar: `Button intent="commit" href` (`leaf/Button`).
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920: khối thân (dòng mô tả và nút) thụt vào x=112 ở 1440 và x=352 ở 1920 trong khi dải thương hiệu và tiêu đề dính x=32; ba cột lề khác nhau, lệch trục.
 - 390: thân thẳng lề với tiêu đề, nhưng nút "Mở ứng dụng" chỉ rộng bằng chữ, không có dấu hiệu là CTA chính của trang; nửa dưới màn hình trống.
 - 1440, 1920, 390, nút "Mở ứng dụng": nền tím nhạt chữ đen in đậm, tương phản thấp, không đọc như nút chính (theme-and-type).

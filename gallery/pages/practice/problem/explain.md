@@ -39,6 +39,10 @@ Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: đề bài hiện nguyên ":::muted Đầu vào :::" và ":::muted Đầu ra :::" thành chữ giữa các đoạn: chỉ thị markdown lộ ra.
 - 1440: thẻ đề: chip "Trung bình" nền vàng nhạt (nền tô màu), các nhãn kỹ thuật và "2 s · 256 MB" không viền nên khác kiểu nhau; tiêu đề "Chèn Khoảng" lặp với tiêu đề trang.
 - 1440: hai khối mã ví dụ và các mã nội dòng ([a, b], N) nền xám đặc trong thẻ trắng: giếng tô nền; hai khối vào và ra không có nhãn nên không biết cái nào là gì.

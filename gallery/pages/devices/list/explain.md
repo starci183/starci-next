@@ -33,6 +33,10 @@ Grammar: `Pane area="aside" surface scroll`, `Section kind="list"` (`frame/Secti
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, dòng phụ dưới "Máy của bạn": chữ nhỏ hơn 12 và ngả màu vàng nâu (không phải xám trung tính), tương phản thấp; ở 1440 và 1920 băng đầu trang cao với khoảng trống lớn dưới dòng phụ.
 - 1440, 1920, 390, cột phụ: "Mức chứng minh" và "CLI được phép làm gì" vẫn nằm trong khung viền bo góc như thẻ, trái luật aside không làm bằng thẻ; thêm một đường kẻ ngăn giữa hai khung nên có hai lớp viền chồng nhau.
 - 1440, 1920, 390, dòng "Đang luyện": mô tả bị cắt bằng dấu ba chấm ("giúp bạn ...") ở cả ba độ rộng, mất nghĩa.

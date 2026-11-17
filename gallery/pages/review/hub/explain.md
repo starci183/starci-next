@@ -27,6 +27,10 @@ Grammar: `Page layout="main-rail"` có cột phụ (`frame/Page`), `Section`, `L
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: vùng chính "Hôm nay chưa có gì đến hạn": tranh, tiêu đề và dòng mô tả căn giữa nhưng hai nút "Chọn bộ thẻ" và "Đến Bản chất" căn trái dưới cùng cột; nhóm chữ và nút lệch trục.
 - 1440: tiêu đề Section "Hôm nay chưa có gì đến hạn" lặp y nguyên với câu bên dưới tranh; một trạng thái nói hai lần.
 - 1440: cột phụ có tiêu đề "Xem chuỗi ở trang Học" và liên kết cuối cột cũng "Xem chuỗi ở trang Học"; lặp chữ, liên kết không có mũi tên "→" và nhìn như một tiêu đề đậm chứ không phải liên kết.

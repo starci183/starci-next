@@ -39,6 +39,10 @@ Grammar: `Pane area="aside" surface scroll`, `Section kind="list"` (`frame/Secti
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, thanh lỗi "Không tải được phần này.": nền hồng tô kín chữ đỏ đậm và nút "Thử lại" đặc màu đỏ cam bão hoà, là điểm màu mạnh nhất trang và vượt cả nút chính; luật là "Thử lại" trung tính. Ở 390 nút rộng suốt hàng. Phần "Mã truy cập của bạn" không có đầu phần nên thanh lỗi trôi lơ lửng, không rõ lỗi của phần nào.
 - 1440, 1920, 390, nút "Tạo mã": tím rất nhạt chữ xám (tắt), tương phản thấp, icon dấu cộng mờ; không có lý do hiển thị vì sao nút tắt (ô tên đã có chữ "Claude" nhạt như placeholder).
 - 1440, 1920, 390, dòng phụ dưới tiêu đề: chữ nhỏ hơn 12 và ngả màu nâu cam, không phải xám trung tính; băng đầu trang cao với khoảng trống dưới dòng phụ.

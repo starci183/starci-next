@@ -68,6 +68,10 @@ Grammar: `Section action={<Link variant="head">}`, `Badge tone="neutral"`; code 
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, phần "Lộ trình đang theo": khoảng trống khoảng 50px giữa đầu phần và nội dung, và khoảng 80px giữa nút và đầu phần "Hôm nay"; nhịp dọc rời rạc so với các phần khác. Hình minh hoạ là một tranh nền gradient hình chữ nhật, không phải vật thật để cầm.
 - 390, "Lộ trình đang theo": hình thu nhỏ cỡ 100px nằm lệch trái, bỏ trống bên phải; nút chính "Chọn mục tiêu" nằm ở khoảng y=965, tức xa dưới màn hình đầu vì cột phụ (chuỗi ngày, mục tiêu tuần, kinh nghiệm) chen lên trước.
 - 1440, 1920, 390, nút "Chọn mục tiêu": nền tím nhạt chữ đen kèm icon, tương phản thấp, không giống nút chính đặc.

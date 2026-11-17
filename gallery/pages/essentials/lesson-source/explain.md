@@ -32,6 +32,10 @@ Grammar: `FencedCodeBlock code language label` (`frame/MarkdownArticle/index.d.t
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, "Tải source và chạy" và mọi khối code: nền xám nhạt tô (luật: hairline thay nền tô), chữ code mono nhỏ và mờ; nhãn "bash" và "typescript" ở góc trái cùng "Sao chép" ở góc phải chỉ 12 muted rất nhạt, khó thấy. Khối code gốc TypeScript ở 3.1 dài hơn 40 dòng không xuống dòng, ở 390 phải cuộn ngang hoặc bị cắt.
 - 1440, bố cục: thân là một cột chữ liên tục, không có head Section hay hairline giữa năm mục lớn; tiêu đề mục (1., 2., 3.) chỉ đậm 14, hierarchy chỉ phân biệt bằng đậm nên mục 3.1 đến 3.5 khó quét. Có hai khối "Tải source và chạy" ở đầu và mục "1. Lấy source và khởi động" ngay dưới lặp cùng lệnh pull/up.
 - 1440, sơ đồ kiến trúc: mermaid vẽ rất nhỏ trong khung hẹp, chữ trên các nút nhỏ hơn 12 px, gần như không đọc được; chú thích "Hình 1" ở dưới dài ba dòng xám nhạt.

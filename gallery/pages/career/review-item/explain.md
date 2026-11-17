@@ -21,6 +21,10 @@ Grammar: `SlotView`, `EmptyNotice`; bảng duyệt là `ReviewPanel` (`fe/packag
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: liên kết "Về hàng chờ" đứng lẻ ở đầu trang, chữ foreground không có mũi tên và không nằm trong đường dẫn của dải tiêu đề; trang không có tiêu đề hay dải đầu trang.
 - 1440: ô icon hộp thư và câu căn giữa trong khi liên kết căn trái ở x=288; hai trục lệch nhau.
 - 1440: mục không có thật và người không có quyền cùng một thông báo, không nói vì sao bị cấm.

@@ -39,6 +39,10 @@ Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` 
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, hero: nút chính "Bắt đầu: Request lifecycle" nền tím nhạt (tím pha trắng) với chữ tối, không phải tím đặc như nút chính chuẩn; là một nền tô và độ tương phản chữ trên tím nhạt thấp hơn nút chính khác. Ảnh 3D chiếm hơn nửa thẻ, cột chữ bên phải chỉ cao khoảng một phần ba, để trống lớn bên dưới nút.
 - 1440, hero và danh sách "Bài trong chương": cả hai nằm trong khung bo góc viền hairline; hero là một vật thật nên hợp lệ, nhưng danh sách năm bài là thân của Section mà vẫn bị bao thẻ (luật 1). Ảnh bìa nằm trên nền tím nhạt tô.
 - 1440, "Bài trong chương": bốn trên năm hàng chỉ là "Bài nguồn đang chuyển sang dạng tương tác" kèm ổ khoá, lặp nguyên một câu; chip đếm "5" nhưng chỉ một bài mở. Sáu vòng pha "1 2 3 4 5 6" 12 px rất nhỏ, vòng 1 viền tím nhạt gần như không thấy, và "0/6 pha" nằm lệch ngoài cùng, không căn thẳng với các số.

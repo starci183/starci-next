@@ -15,6 +15,10 @@ Grammar: `SlotView` (`fe/packages/starci-next-ui/src/branches/SlotView`) nhãn `
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: trang không có dải tiêu đề, không tiêu đề và không đường quay lại; chỉ một ô icon hộp thư và câu căn giữa nên người dùng không biết đang ở trang nào và không có lối ra ngoài sidebar.
 - 1440: trạng thái cấm dùng icon hộp thư (giống trạng thái rỗng) và không có dòng mô tả cách có quyền; câu nằm sát trên (y=182), trang trống bên dưới.
 - 1920: câu và icon đứng giữa vùng nội dung (x=1088); vẫn không có dải tiêu đề hay lối quay lại.

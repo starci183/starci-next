@@ -27,6 +27,10 @@ Grammar: `Text tone="muted"` cho rỗng; mục dựng từ `SurfaceCard`, `Badge
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: tab "Tất cả" đang chọn có chữ màu accent tím (gạch chân đen); luật nói tab chọn là foreground, accent không đánh dấu lựa chọn. Lỗi này còn ở cả ba độ rộng.
 - 1440: tiêu đề "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận" là một câu dài chứ không phải tên trang; mô tả muted xuống dòng và để "CV." mồ côi.
 - 1440: bốn chip luồng nền xám nhạt không có mũi tên hay thứ tự nên không đọc ra là một luồng; ba cụm số muted bên dưới dính liền nhau không có dấu ngăn nên nhìn như một câu.

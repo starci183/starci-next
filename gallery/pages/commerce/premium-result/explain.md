@@ -27,6 +27,10 @@ Grammar: `Button intent="commit" width="fill" href` và `Button intent="neutral"
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, thông báo "Đã thanh toán": nền xanh lá nhạt tô kín bo lớn, chữ xanh đậm; chữ thân cỡ 14 xanh trên nền xanh nhạt tương phản vừa phải, và câu "Cảm ơn bạn đã ủng hộ StarCi Next." xuống dòng để "hộ StarCi Next." lẻ ở dòng hai (1440, 1920); ở 390 chữ "ơn" lẻ đầu dòng hai sau "Cảm".
 - 1440, 1920, 390, nút "Tiếp tục học": tím nhạt chữ đen, tương phản thấp; nút trải suốt hàng ngay dưới thông báo, hai nút xếp dọc rộng bằng nhau, "Về trang gói" viền trắng đúng luật nhưng chiếm cùng chiều rộng.
 - 1440, 1920, 390, thẻ: bo góc khoảng 24px lớn hơn nút và thông báo bên trong; tiêu đề "Premium đã được kích hoạt" dính sát mép trên thẻ, rồi cách thông báo một khoảng lớn hơn; thẻ chỉ khoảng 450px nằm lơ lửng ở trên cùng, phần còn lại của trang trống.

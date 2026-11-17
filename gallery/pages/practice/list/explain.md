@@ -27,6 +27,10 @@ Grammar: `PracticeList` (`fe/packages/starci-next-ui/src/composites/PracticeList
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: tiêu đề trang "Luyện code" và đầu mục Section cũng "Luyện code" ngay dưới nó; lặp hai lần.
 - 1440: đoạn mở đầu là chữ foreground 14 như thân, còn hai dòng thống kê bên dưới muted ngả nâu đỏ; ba dòng nối tiếp không có nhịp rõ, dòng "20 pattern · 96 bài · 0 bài Accepted" khó phân biệt với mô tả.
 - 1440: danh sách pattern căng hết bề rộng (x=288 đến 1408) với một nút "Mở pattern" ở mép phải; mắt phải quét hơn 1000px từ tên đến nút.

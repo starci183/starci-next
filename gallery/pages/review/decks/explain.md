@@ -33,6 +33,10 @@ Grammar: `Section`, `NumberField` (`composite/NumberField`), `Button intent="com
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440: chip độ khó "hard" nền đỏ nhạt chữ đỏ, "medium" nền vàng nhạt, "Một phần cần Premium" nền vàng nhạt: nền tô màu lặp mười lăm lần thành các mảng màu, trái luật cặp soft trung tính; lại hiện "Một phần cần Premium" và "2 thẻ miễn phí" cho học viên đã Premium nên sai trạng thái.
 - 1440: mười lăm thẻ giống nhau xếp dọc, mỗi thẻ một nút "Thêm" lẻ loi dưới cùng bên trái, chừa trống nửa phải của thẻ.
 - 1440: mô tả bộ thẻ cắt bằng "…" giữa câu (Module 1, Thiết kế API, Caching...) nên mất ý; chữ mô tả muted ngả nâu.

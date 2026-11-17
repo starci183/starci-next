@@ -26,6 +26,10 @@ Grammar: `SurfaceCard measure="formCompact"`, `TextField`, `Checkbox`, `Button i
 
 ## Phản biện
 
+Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Luật: `surface-layering`, `theme-and-type`.
+Grammar: không phải vùng của màn hình; không có thành phần.
+
 - 1440, 1920, 390, nút "Đăng ký" đang tắt: nền tím rất nhạt với chữ xám, gần như không đọc được (tương phản thấp); trạng thái tắt trông như một ô tô màu mờ.
 - 1440, 1920: dòng điều khoản xuống dòng và để chữ "tư" mồ côi ở dòng hai; ở 390 dòng không còn mồ côi nhưng nhãn vẫn đậm và dài.
 - 1440, 1920, 390, hộp kiểm đồng ý: nhãn đậm ngang nhãn ô nhập, "Điều khoản sử dụng" và "Chính sách quyền riêng tư" không có dấu hiệu là liên kết (không gạch chân, không màu); hộp kiểm dính sát nút chính bên dưới (khoảng 12px) trong khi các ô khác cách nhau rộng hơn.
