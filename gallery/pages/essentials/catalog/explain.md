@@ -2,6 +2,7 @@
 title: Bản chất (danh mục)
 route: /essentials
 area: essentials
+reviewed: 2026-11-17
 ---
 
 Route: `/essentials`. Danh mục Bản chất: 16 nhóm kiến thức, mỗi nhóm một thẻ danh sách các topic, kèm tiếp tục học, tìm kiếm và bộ lọc. Đường dẫn Grammar nằm dưới `node_modules/@starci/grammar/dist/core/` (0.37.12). Khung (sidebar, thanh trên) thuộc lane S1; ảnh chụp chỉ thấy phần viewport vì trang cuộn trong từng pane. Vòng tròn "N" và "1 Issue" là lớp phủ của Next dev, không phải UI của app.

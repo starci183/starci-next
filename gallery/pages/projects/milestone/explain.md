@@ -2,6 +2,7 @@
 title: Dự án / Milestone
 route: /projects/[projectId]/[milestoneId]
 area: projects
+reviewed: 2026-11-17
 ---
 
 Route: `/projects/<projectId>/<milestoneId>` (ảnh chụp: dự án "Shop bán sách", milestone "Nền tảng HTTP", chưa có lần chạy nào). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/` (`component.tsx` vẽ trang, `drawer.tsx` ngăn kéo chỉ code, `view.ts` đổi dữ liệu ra chữ).

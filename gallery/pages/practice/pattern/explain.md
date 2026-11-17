@@ -2,6 +2,7 @@
 title: Một pattern (các bài trong pattern)
 route: /practice/patterns/[patternId]
 area: practice
+reviewed: 2026-11-17
 ---
 
 Route: `/practice/patterns/[patternId]` (ảnh chụp: pattern Mảng, học viên chưa có Premium nên chỉ bài đầu mở). Mã: `fe/apps/app/src/components/blocks/PracticePattern/component.tsx`. Khung chung giải thích ở `learn/home`.

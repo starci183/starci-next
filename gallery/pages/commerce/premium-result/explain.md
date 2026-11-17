@@ -2,6 +2,7 @@
 title: Kết quả thanh toán Premium
 route: /premium/result
 area: commerce
+reviewed: 2026-11-17
 ---
 
 Route: `/premium/result` (ảnh chụp: mở trang không kèm mã đơn hợp lệ nên thấy trạng thái "không tìm thấy đơn"; cổng thanh toán đưa học viên về đây kèm mã đơn). Mã: `fe/apps/app/src/components/blocks/CheckoutResult/component.tsx`. Khung chung giải thích ở `learn/home`.

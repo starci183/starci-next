@@ -2,6 +2,7 @@
 title: Agent và AI (danh mục công cụ)
 route: /agents
 area: agents
+reviewed: 2026-11-17
 ---
 
 Route: `/agents` (ảnh chụp: học viên chưa có Premium, chưa có lab nào). Mã: `fe/apps/app/src/components/blocks/AgentLab/component.tsx` (vẽ), `index.tsx` (đọc). Khung chung giải thích ở `learn/home`.

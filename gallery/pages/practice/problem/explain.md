@@ -2,6 +2,7 @@
 title: Giải một bài (đề, bài làm, gợi ý)
 route: /practice/[slug]
 area: practice
+reviewed: 2026-11-17
 ---
 
 Route: `/practice/[slug]` (ảnh chụp: bài "Chèn Khoảng", bài miễn phí của pattern Mảng, ngôn ngữ Python). Mã: `fe/apps/app/src/components/blocks/PracticeSolve/component.tsx`. Khung chung giải thích ở `learn/home`.
