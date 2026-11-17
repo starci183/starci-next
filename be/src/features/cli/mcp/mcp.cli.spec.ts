@@ -1,5 +1,6 @@
 import { Test } from "@nestjs/testing"
-import { McpHarnessService, McpLessonIndexService } from "@modules/domain/mcp"
+import { McpHarnessService, McpLessonIndexService, McpLogEvent } from "@modules/domain/mcp"
+import { LOGGER } from "@modules/platform/logging"
 import { McpCli } from "./mcp.cli"
 import { ReindexMcpCli } from "./subs/reindex.cli"
 
@@ -27,11 +28,13 @@ describe("ReindexMcpCli", () => {
             scopes: [{ scope: "lesson:a:vi", chunks: 9, embedded: 9, reused: 0, pruned: 0 }],
             withoutSource: ["b"],
         })
+        const logger = { info: jest.fn(), warn: jest.fn(), error: jest.fn() }
         const moduleRef = await Test.createTestingModule({
             providers: [
                 ReindexMcpCli,
                 { provide: McpHarnessService, useValue: { reindex } },
                 { provide: McpLessonIndexService, useValue: { reindex: lessons } },
+                { provide: LOGGER, useValue: logger },
             ],
         }).compile()
 
@@ -39,5 +42,15 @@ describe("ReindexMcpCli", () => {
 
         expect(reindex).toHaveBeenCalledTimes(1)
         expect(lessons).toHaveBeenCalledTimes(1)
+        expect(logger.info).toHaveBeenCalledWith(
+            McpLogEvent.Reindexed,
+            expect.objectContaining({ scope: "harness:vi" }),
+        )
+        expect(logger.info).toHaveBeenCalledWith(
+            McpLogEvent.Reindexed,
+            expect.objectContaining({ scope: "lesson:a:vi" }),
+        )
+        expect(logger.info).toHaveBeenCalledWith(McpLogEvent.ReindexNoSource, { lessons: "b" })
+        expect(logger.warn).not.toHaveBeenCalled()
     })
 })

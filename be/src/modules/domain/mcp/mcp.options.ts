@@ -21,8 +21,6 @@ export interface McpOptions {
     readonly publicUrl: string | null
     /** The local embedder, or null when `MCP_EMBED_URL` is not declared (semantic search is off, keywords answer). */
     readonly embed: McpEmbedOptions | null
-    /** The content checkout whose harness guides and docs `search_harness` reads, or null when `MCP_HARNESS_DIR` is not declared. */
-    readonly harnessDir: string | null
     /** The Qdrant service of the semantic index, or null when `QDRANT_URL` is not declared (keywords answer). */
     readonly qdrant: QdrantConfig | null
 }

@@ -13,7 +13,6 @@ const build = (query: jest.Mock, tokenLimit = 2): McpTokenService => {
         tokenLimit,
         publicUrl: null,
         embed: null,
-        harnessDir: null,
         qdrant: null,
     })
 }

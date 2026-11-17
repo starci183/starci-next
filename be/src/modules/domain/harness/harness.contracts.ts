@@ -526,6 +526,22 @@ export interface HarnessDocSummaryView {
     readonly minutes: number | null
 }
 
+/** A guide or a doc as plain text pages: no probe, no run result, no build and no trap. */
+export interface HarnessPageView {
+    /** Whether it is a guide or a doc. */
+    readonly kind: "guide" | "doc"
+    /** The tool a guide teaches, or null for a doc. */
+    readonly tool: HarnessTool | null
+    /** The slug. */
+    readonly slug: string
+    /** The title. */
+    readonly title: string
+    /** The summary. */
+    readonly summary: string
+    /** The sections. */
+    readonly sections: ReadonlyArray<HarnessTextView>
+}
+
 /** A doc with its sections. */
 export interface HarnessDocView extends HarnessDocSummaryView {
     /** The sections. */

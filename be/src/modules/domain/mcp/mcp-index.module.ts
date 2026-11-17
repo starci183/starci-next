@@ -2,7 +2,7 @@ import { Module, type DynamicModule } from "@nestjs/common"
 import { QdrantModule } from "@modules/integrations/qdrant"
 import { ConfigurableModuleClass, OPTIONS_TYPE } from "./mcp-index.module-definition"
 import { MCP_EMBEDDER } from "./mcp-embedder.port"
-import { McpHarnessDiskSource } from "./mcp-harness-disk.source"
+import { McpHarnessStoreSource } from "./mcp-harness-store.source"
 import { MCP_HARNESS_SOURCE } from "./mcp-harness-source.port"
 import { LessonSourceService } from "@modules/domain/lesson"
 import { McpHarnessService } from "./mcp-harness.service"
@@ -48,7 +48,7 @@ export class McpIndexModule extends ConfigurableModuleClass {
                     provide: MCP_VECTOR_STORE,
                     useClass: qdrant === null ? McpUnconfiguredVectorStore : McpQdrantVectorStore,
                 },
-                { provide: MCP_HARNESS_SOURCE, useClass: McpHarnessDiskSource },
+                { provide: MCP_HARNESS_SOURCE, useClass: McpHarnessStoreSource },
             ],
             exports: [McpVectorIndex, McpHarnessService, McpSourceService, McpLessonIndexService],
         }

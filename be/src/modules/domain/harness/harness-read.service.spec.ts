@@ -179,6 +179,24 @@ describe("HarnessReadService", () => {
         expect((await reads.hub(LEARNER, "en", [], [])).parts[1]?.title).toBe("Use")
     })
 
+    it("lists the guides and docs as plain text pages and nothing of a build, a probe or a trap", async () => {
+        const reads = await build()
+
+        const pages = await reads.pages("en")
+
+        expect(pages).toEqual([
+            {
+                kind: "guide",
+                tool: "claude",
+                slug: "claude-md",
+                title: "Title",
+                summary: "",
+                sections: [{ id: "one", order: 1, title: "One", body: "e", run: ["ls"] }],
+            },
+        ])
+        expect(JSON.stringify(pages)).not.toContain("agent-cli")
+    })
+
     it("reads a guide with the probe results the learner CLI uploaded, and lists the guides of one tool", async () => {
         const reads = await build()
 

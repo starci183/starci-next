@@ -48,6 +48,7 @@ export const toEssentialView = (
         invariants: showRules
             ? essential.invariants.map((invariant) => ({ id: invariant.id, text: invariant.text }))
             : [],
+        hiddenInvariants: showRules ? (essential.hiddenInvariants?.length ?? 0) : 0,
         architecture:
             !has("2-source") || essential.architecture === null
                 ? null

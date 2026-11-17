@@ -101,3 +101,21 @@ describe("convertRawLesson reads the topic from topic.yaml", () => {
         expect(issues).toContainEqual({ path: "topic.yaml", field: "", message: "has no from" })
     })
 })
+
+describe("convertRawLesson keeps the invariants of the hidden challenge scenarios out of the public list", () => {
+    const withPlanInvariants = (): ReadonlyArray<LessonSourceFile> =>
+        lessonFiles("").map((file) =>
+            file.path === "hidden/challenge-scenarios.yaml"
+                ? {
+                      ...file,
+                      text: `invariants:\n  refund-once: "One refund per order"\n  effect-once: "dup of a public one"\ntiers:\n  - { tier: easy, file: hidden/tests/easy.test.ts, writeTo: scenarios/hidden/easy.test.ts, solution: hidden/solutions/easy, scenarios: [h-easy] }\n`,
+                  }
+                : file,
+        )
+
+    it("lists only the invariants of scenarios.yaml as public and stores the others apart", () => {
+        const essential = convert(withPlanInvariants()).draft?.content.locales.vi.essential
+        expect(essential?.invariants).toEqual([{ id: "effect-once", text: "One effect" }])
+        expect(essential?.hiddenInvariants).toEqual([{ id: "refund-once", text: "One refund per order" }])
+    })
+})

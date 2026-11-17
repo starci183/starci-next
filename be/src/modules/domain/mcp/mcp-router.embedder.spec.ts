@@ -8,7 +8,7 @@ jest.mock("@starci/ai-router/gateway", () => ({
     localModel: jest.fn((id: string, options: unknown) => ({ id, options })),
 }))
 
-const options = (embed: McpIndexOptions["embed"]): McpIndexOptions => ({ embed, harnessDir: null, qdrant: null })
+const options = (embed: McpIndexOptions["embed"]): McpIndexOptions => ({ embed, qdrant: null })
 const LOCAL = { url: "http://localhost:11434", apiKey: null, model: "qwen3-embedding:8b" }
 const HOST = { url: "https://embed.starci.org/v1", apiKey: new Secret("host-token"), model: "qwen3-embedding:8b" }
 

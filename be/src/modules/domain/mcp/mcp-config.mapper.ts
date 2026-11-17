@@ -11,8 +11,7 @@ const EMBED_MODEL = "qwen3-embedding:8b"
  * Reads the mcp tunables: `MCP_TOKEN_LIMIT` (default 5),
  * `MCP_PUBLIC_URL` (the address learners paste into Claude or ChatGPT, optional), the local embedder: `MCP_EMBED_URL`
  * (the OpenAI-compatible address, `https://embed.starci.org/v1` for the shared host service; semantic search is off when it is
- * unset) with `AI_API_KEY` (its token, sealed, optional for a keyless server) and `MCP_EMBED_MODEL`, and `MCP_HARNESS_DIR`
- * (the content checkout whose harness guides and docs `search_harness` reads; the tool answers empty when it is unset) and the
+ * unset) with `AI_API_KEY` (its token, sealed, optional for a keyless server) and `MCP_EMBED_MODEL`, and the
  * Qdrant service (`QDRANT_URL` with `QDRANT_VECTOR_SIZE`, see `parseQdrantConfig`; with none, semantic search is off).
  */
 export const parseMcpConfig = (env: EnvSource): Omit<McpOptions, "isGlobal"> => ({
@@ -25,6 +24,5 @@ export const parseMcpConfig = (env: EnvSource): Omit<McpOptions, "isGlobal"> => 
               model: env.optional("MCP_EMBED_MODEL") ?? EMBED_MODEL,
           }
         : null,
-    harnessDir: env.optional("MCP_HARNESS_DIR") ?? null,
     qdrant: parseQdrantConfig(env),
 })

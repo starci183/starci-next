@@ -314,7 +314,7 @@ interface Build {
 }
 
 const build = (isPremium: boolean, embedder: McpEmbedder, tree: LessonSourceTree | null = treeOf()): Build => {
-    const options: McpOptions = { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null }
+    const options: McpOptions = { tokenLimit: 5, publicUrl: null, embed: null, qdrant: null }
     const trees: McpSourceTree = { tree: () => Promise.resolve(tree) }
     const embeddedTexts: Array<string> = []
     const recording: McpEmbedder = {
@@ -750,7 +750,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             freeReader.devices as unknown as RelayDeviceService,
             freeReader.feed as unknown as RelayFeedService,
             freeReader.openers as unknown as AttemptOpenerService,
-            { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null },
+            { tokenLimit: 5, publicUrl: null, embed: null, qdrant: null },
         )
         const seen = await freeTutor.searchLesson(LEARNER, LESSON, "vi", "idempotency key source scenario apply", true)
         expect(seen.mode).toBe("semantic")
@@ -768,7 +768,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
             freeReader.devices as unknown as RelayDeviceService,
             freeReader.feed as unknown as RelayFeedService,
             freeReader.openers as unknown as AttemptOpenerService,
-            { tokenLimit: 5, publicUrl: null, embed: null, harnessDir: null, qdrant: null },
+            { tokenLimit: 5, publicUrl: null, embed: null, qdrant: null },
         )
         const all = await premiumTutor.searchLesson(
             LEARNER,

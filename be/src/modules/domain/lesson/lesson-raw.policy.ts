@@ -281,10 +281,11 @@ const essentialOf = (
         ? yamlOf(byPath, "hidden/essence-answers.yaml", issues)
         : null
     const source = isRecord(scenarios.source) ? scenarios.source : {}
-    const invariants = {
-        ...(isRecord(scenarios.invariants) ? scenarios.invariants : {}),
-        ...(isRecord(plans?.invariants) ? plans.invariants : {}),
-    }
+    const publicInvariants = isRecord(scenarios.invariants) ? scenarios.invariants : {}
+    // The laws only the hidden challenge scenarios judge stay out of the public list: their names hint at the hidden tests.
+    const hiddenInvariants = Object.entries(isRecord(plans?.invariants) ? plans.invariants : {}).filter(
+        ([id]) => !Object.hasOwn(publicInvariants, id),
+    )
     return {
         opener: openerOf(quiz, locale, issues),
         source: {
@@ -293,7 +294,8 @@ const essentialOf = (
             ...(typeof source.compose === "string" ? { compose: source.compose } : {}),
             ...(typeof source.project === "string" ? { project: source.project } : {}),
         },
-        invariants: Object.entries(invariants).map(([id, text]) => ({ id, text: stringOf(text) })),
+        invariants: Object.entries(publicInvariants).map(([id, text]) => ({ id, text: stringOf(text) })),
+        hiddenInvariants: hiddenInvariants.map(([id, text]) => ({ id, text: stringOf(text) })),
         architecture: null,
         codeWalk: [],
         scenarios: scenariosOf(scenarios, locale),

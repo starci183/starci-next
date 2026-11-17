@@ -16,6 +16,7 @@ import type {
     HarnessGuideRecord,
     HarnessGuideSummaryView,
     HarnessGuideView,
+    HarnessPageView,
     HarnessHubView,
     HarnessLocale,
     HarnessProbeRecord,
@@ -172,6 +173,36 @@ export class HarnessReadService {
     /** One doc with its sections. */
     async doc(slug: string, locale: HarnessLocale): Promise<HarnessDocView> {
         return docViewOf(recordOf<HarnessDocRecord>(await this.one("doc", slug)), locale)
+    }
+
+    /**
+     * Every live guide and doc as text pages in one locale, in order. It reads only the kinds `guide` and `doc` and builds no probe
+     * result, so a build kit, a hidden part, a doctor probe or a trial trap is never in it (the AI search reads this).
+     */
+    async pages(locale: HarnessLocale): Promise<ReadonlyArray<HarnessPageView>> {
+        const guides = (await this.records<HarnessGuideRecord>("guide")).map((guide): HarnessPageView => {
+            const view = guideViewOf(guide, [], locale, [])
+            return {
+                kind: "guide",
+                tool: guide.tool,
+                slug: guide.slug,
+                title: view.title,
+                summary: view.summary,
+                sections: view.sections,
+            }
+        })
+        const docs = (await this.records<HarnessDocRecord>("doc")).map((doc): HarnessPageView => {
+            const view = docViewOf(doc, locale)
+            return {
+                kind: "doc",
+                tool: null,
+                slug: doc.slug,
+                title: view.title,
+                summary: view.summary,
+                sections: view.sections,
+            }
+        })
+        return [...guides, ...docs]
     }
 
     /** The probes of one tool with the learner's newest result of each. */

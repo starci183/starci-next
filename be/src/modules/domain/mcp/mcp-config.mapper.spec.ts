@@ -7,7 +7,6 @@ describe("parseMcpConfig", () => {
             tokenLimit: 5,
             publicUrl: null,
             embed: null,
-            harnessDir: null,
             qdrant: null,
         })
     })
@@ -16,13 +15,11 @@ describe("parseMcpConfig", () => {
         const config = parseMcpConfig(
             new EnvSource({
                 MCP_EMBED_URL: "http://localhost:11434",
-                MCP_HARNESS_DIR: "D:/content",
                 QDRANT_URL: "http://127.0.0.1:3293/",
                 QDRANT_VECTOR_SIZE: "1024",
             }),
         )
         expect(config.embed).toEqual({ url: "http://localhost:11434", apiKey: null, model: "qwen3-embedding:8b" })
-        expect(config.harnessDir).toBe("D:/content")
         expect(config.qdrant).toMatchObject({
             url: "http://127.0.0.1:3293",
             apiKey: null,

@@ -1,5 +1,5 @@
 import type { LessonView } from "@modules/domain/lesson"
-import { lessonChunksOf, lessonChunksWithAccessOf, lessonDocsOf } from "./mcp-lesson.policy"
+import { lessonChunksOf, lessonChunksWithAccessOf, lessonDocsOf, lessonOf } from "./mcp-lesson.policy"
 
 const view = (partial: Partial<LessonView> = {}): LessonView =>
     ({
@@ -43,6 +43,7 @@ const view = (partial: Partial<LessonView> = {}): LessonView =>
             ],
             source: null,
             invariants: [{ id: "one-effect", text: "One effect" }],
+            hiddenInvariants: 3,
             architecture: {
                 diagram: "graph TD\nA-->B",
                 components: [{ name: "api", port: "3000", role: "writes", invariants: ["one-effect"] }],
@@ -114,6 +115,15 @@ describe("lessonDocsOf", () => {
 
     it("has only the overview and sections for a lesson without the four parts", () => {
         expect(lessonDocsOf(view({ essential: null })).map((doc) => doc.path)).toEqual(["overview", "section/1"])
+    })
+})
+
+describe("lessonOf", () => {
+    it("counts the invariants only hidden scenarios judge and never names them", () => {
+        const lesson = lessonOf(view(), { part: null, answers: [], redScenarios: new Set() })
+        expect(lesson.hiddenInvariants).toBe(3)
+        expect(lesson.invariants).toEqual([{ id: "one-effect", text: "One effect" }])
+        expect(lessonOf(view(), { part: "1-essential", answers: [], redScenarios: new Set() }).hiddenInvariants).toBe(0)
     })
 })
 

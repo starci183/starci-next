@@ -204,8 +204,13 @@ export interface LessonEssential {
     readonly opener: ReadonlyArray<LessonOpenerQuestion>
     /** The source repository, or null. */
     readonly source: LessonSourceRepo | null
-    /** The invariants. */
+    /** The invariants a learner may read: the ones the public scenarios and the code walk name. */
     readonly invariants: ReadonlyArray<LessonInvariant>
+    /**
+     * The invariants only the hidden challenge scenarios judge. They hint at hidden tests, so no page and no MCP reads them; only
+     * the signed manifest of a challenge run names them to the learner CLI, which reveals an id after a run hit it.
+     */
+    readonly hiddenInvariants?: ReadonlyArray<LessonInvariant>
     /** The architecture, or null. */
     readonly architecture: LessonArchitecture | null
     /** The code walk. */

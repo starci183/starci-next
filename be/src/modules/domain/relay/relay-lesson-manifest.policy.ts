@@ -119,7 +119,12 @@ export const lessonManifestOf = (
         dir,
         compose: source?.compose ?? under(dir, ".docker"),
         project: source?.project ?? lessonId,
-        invariants: Object.fromEntries(essential.invariants.map((invariant) => [invariant.id, invariant.text])),
+        invariants: Object.fromEntries(
+            [...essential.invariants, ...(essential.hiddenInvariants ?? [])].map((invariant) => [
+                invariant.id,
+                invariant.text,
+            ]),
+        ),
         scenarios: essential.scenarios.map((scenario) =>
             scenarioOf(scenario, defaults, {
                 fallbackBrief: scenario.fault,

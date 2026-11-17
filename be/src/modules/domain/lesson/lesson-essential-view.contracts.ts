@@ -86,6 +86,8 @@ export interface LessonEssentialView {
     readonly source: LessonSourceView | null
     /** The invariants. */
     readonly invariants: ReadonlyArray<LessonInvariant>
+    /** How many invariants only the hidden challenge scenarios judge; they are counted, never named. */
+    readonly hiddenInvariants: number
     /** The architecture, or null. */
     readonly architecture: LessonArchitectureView | null
     /** The code walk. */

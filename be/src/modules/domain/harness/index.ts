@@ -28,6 +28,7 @@ export type {
     HarnessConverted,
     HarnessDocSummaryView,
     HarnessDocView,
+    HarnessPageView,
     HarnessDoctorView,
     HarnessE2eView,
     HarnessGuideSummaryView,

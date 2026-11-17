@@ -19,9 +19,17 @@ import type { LessonDraftResult, LessonIssue, LessonParsedLocale, LessonSourceFi
 /** The lesson id of a concept folder: its name without the numeric order prefix (`2-cqrs-read-models` is `cqrs-read-models`). */
 export const lessonIdOf = (folder: string): string => folder.replace(/^\d+-/u, "")
 
-/** The SHA-256 over the sorted `path`, `hash` lines of every source file: one value for the bytes of the whole folder. */
+/**
+ * The form the stored content takes (what is kept and where); it is part of the content hash, so a change of form stores a new
+ * version of every lesson instead of leaving the old form under the same hash. Form 2 keeps the invariants of the hidden
+ * challenge scenarios apart from the public ones.
+ */
+export const LESSON_CONTENT_FORM = 2
+
+/** The SHA-256 over the sorted `path`, `hash` lines of every source file and the content form: one value for the folder and how it is stored. */
 export const contentHashOf = (files: ReadonlyArray<LessonSourceFile>): string =>
     createHash("sha256")
+        .update(`form ${LESSON_CONTENT_FORM}\n`)
         .update(
             [...files]
                 .sort((a, b) => a.path.localeCompare(b.path))

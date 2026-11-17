@@ -59,7 +59,6 @@ export const domainModules = (options: CliAppOptions): Array<Type<unknown> | Dyn
     McpIndexModule.register({
         isGlobal: true,
         embed: options.mcp.embed,
-        harnessDir: options.mcp.harnessDir,
         qdrant: options.mcp.qdrant,
     }),
 ]

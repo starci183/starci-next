@@ -305,6 +305,8 @@ export interface McpLesson {
     readonly opener: ReadonlyArray<McpOpenerQuestion>
     /** Part 2: the invariants (also named by part 3). */
     readonly invariants: ReadonlyArray<{ readonly id: string; readonly text: string }>
+    /** How many more invariants only the hidden challenge scenarios judge; they are counted, never named. */
+    readonly hiddenInvariants: number
     /** Part 2: the architecture diagram (mermaid) and its components, when the lesson carries them as data. */
     readonly architecture: {
         readonly diagram: string

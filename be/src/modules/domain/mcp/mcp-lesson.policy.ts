@@ -332,6 +332,7 @@ export const lessonOf = (view: LessonView, options: McpLessonOptions): McpLesson
             .filter((section) => options.part === null || section.part === options.part),
         opener,
         invariants: wants("2-source", "3-scenarios") ? (essential?.invariants ?? []) : [],
+        hiddenInvariants: wants("2-source", "3-scenarios") ? (essential?.hiddenInvariants ?? 0) : 0,
         architecture: wants("2-source") ? (essential?.architecture ?? null) : null,
         codeWalk: wants("2-source") ? (essential?.codeWalk ?? []) : [],
         scenarios: (wants("3-scenarios") ? (essential?.scenarios ?? []) : []).map((scenario) => ({
