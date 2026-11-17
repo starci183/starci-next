@@ -35,7 +35,7 @@
 {"findings":[],"hash":"8a93771f71b19142e0a97a4c07d07611c16a32aa8fcf0048627d3d79c6fe7a7b","path":"fe/packages/starci-next-ui/src/composites/DeployCard/index.tsx","step":"prettier"}
 {"findings":[],"hash":"abb507037d00b3fc12011d6ba6212486ca1077f0ea02366e8957cc15fe3d98e0","path":"fe/packages/starci-next-ui/src/composites/DraftField/index.tsx","step":"prettier"}
 {"findings":[],"hash":"35a4cad042d2cdecce966476f76b08affab0ff6095c51031f72730e52eaa240f","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"prettier"}
-{"findings":[],"hash":"19c152abcb831017e6efb56536dc6deba4d16129798c14feaa0dd6aae6d2fd26","path":"fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx","step":"prettier"}
+{"findings":[],"hash":"a85db752b3e3cfb4a51ba1d0d35785c6e8b1ee21f070978e0effdd4e99fd7f3f","path":"fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx","step":"prettier"}
 {"findings":[],"hash":"d129d7169a983d3a7161012e91b9b82d68ca43f1d902b9d6d4c3fb111759ce6a","path":"fe/packages/starci-next-ui/src/composites/EssentialParts/types.ts","step":"prettier"}
 {"findings":[],"hash":"fa91b45d4106567a961858993b6d233b5976e1062c4ceeeb8d73d21af5c57f98","path":"fe/packages/starci-next-ui/src/composites/EvidenceBlock/index.tsx","step":"prettier"}
 {"findings":[],"hash":"cf05481f433895b29996f40c6c5f7e841ed2ccd2081920312d01a807d3cc0e3a","path":"fe/packages/starci-next-ui/src/composites/ExperienceCard/index.tsx","step":"prettier"}
