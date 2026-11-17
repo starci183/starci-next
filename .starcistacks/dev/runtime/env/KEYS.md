@@ -29,6 +29,7 @@ This roster declares names only. Store credential values in sealed custody and m
 | `CAREER_DEV_SEED` | CLI `career seed` only: `true` lets the development seed create sample experience items; never declared in production, where the seed is refused `CAREER_DEV_SEED_DISABLED` |
 | `ENTITLEMENT_DEV_GRANT` | CLI `entitlement dev-grant` only: `true` lets the development command grant Premium to a learner with no purchase; set on the dev cli run by hand, never declared in production or on a core process, where the command is refused `ENTITLEMENT_DEV_GRANT_DISABLED` |
 | `QDRANT_API_KEY` | Core API and CLI vector index client (optional: absent on a private network); the secret of the owner-provisioned Qdrant |
+| `AI_API_KEY` | Core API MCP embedder: the token of the shared host embeddings service (ai-router kind local); optional for a keyless server |
 | `MAIL_HOST` | Core API outgoing mail server host |
 | `MAIL_PORT` | Core API outgoing mail server port |
 | `MAIL_SECURITY` | Core API mail transport security: `tls`, `starttls` or `none` |
