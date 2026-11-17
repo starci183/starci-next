@@ -8,8 +8,25 @@ const ENTRY = process.env.CAPTURE_ENTRY || "http://localhost:3280"
 const LANDING = process.env.CAPTURE_LANDING || "http://localhost:3202"
 const [, , stateFile, only, onlyScreen] = process.argv
 const PAGES = path.join(__dirname, "..", "gallery", "pages")
-const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(",").map(Number) : [1440, 1920, 390]
+const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(",").map(Number) : [1440, 390]
 const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra })
+// The lesson the Essentials lesson screens open, and the learner's pick of the n-th opener answer (the wrong one or the right one, by the option's place in the stand-in sample).
+const LESSON = "/essentials/api-reliability/outbox-idempotency"
+const answerAs = async (p, n, isRight) => {
+    await p
+        .getByRole("button", { name: new RegExp("^Câu " + n + "$") })
+        .first()
+        .click()
+        .catch(() => {})
+    await p.waitForTimeout(600)
+    const options = p.getByRole("radio")
+    if ((await options.count()) === 0) return
+    await options
+        .nth(isRight ? 1 : 0)
+        .check({ force: true })
+        .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
+    await p.waitForTimeout(1200)
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -20,14 +37,76 @@ const SCREENS = [
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
     S("paths", "choose", "/paths/choose"),
     S("essentials", "catalog", "/essentials"),
-    S("essentials", "topic", "/essentials/backend-framework"),
-    S("essentials", "lesson", "/essentials/api-reliability/outbox-idempotency"),
-    S("essentials", "lesson-source", "/essentials/api-reliability/outbox-idempotency?part=source"),
-    S("essentials", "lesson-scenarios", "/essentials/api-reliability/outbox-idempotency?part=scenarios"),
-    S("essentials", "lesson-ladder", "/essentials/api-reliability/outbox-idempotency?part=apply"),
-    S("essentials", "topic-databases", "/essentials/databases"),
-    S("essentials", "topic-api-reliability", "/essentials/api-reliability"),
-    S("essentials", "topic-kubernetes", "/essentials/kubernetes"),
+    // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
+    S("essentials", "catalog-first-visit", "/essentials", { first: true }),
+    S("essentials", "catalog-no-match", "/essentials", {
+        fill: { sel: 'input[type="search"], input[placeholder*="Tìm"]', text: "kafka exactly" },
+    }),
+    S("essentials", "catalog-loading", "/essentials", { hold: true }),
+    S("essentials", "catalog-error", "/essentials", { refuse: true }),
+    S("essentials", "catalog-free", "/essentials", { free: true }),
+    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }),
+    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { first: true }),
+    S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
+    S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
+    // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
+    S("essentials", "lesson", LESSON, { cookies: { seed: "R" }, act: async (p) => answerAs(p, 2, false) }),
+    S("essentials", "lesson-question-1", LESSON, { cookies: { seed: "" } }),
+    S("essentials", "lesson-result", LESSON, {
+        cookies: { seed: "RWRR" },
+        act: async (p) => {
+            await answerAs(p, 5, true)
+            await p
+                .getByRole("button", { name: "Xem kết quả" })
+                .first()
+                .click()
+                .catch(() => {})
+        },
+    }),
+    S("essentials", "lesson-article", LESSON, { cookies: { seed: "RWRRW" } }),
+    S("essentials", "lesson-free-end", LESSON, {
+        free: true,
+        cookies: { plan: "free", seed: "RWRRW" },
+        act: async (p) => {
+            await p
+                .getByRole("button", { name: "Làm lại 5 câu" })
+                .first()
+                .click()
+                .catch(() => {})
+            for (let n = 1; n <= 5; n++) await answerAs(p, n, true)
+            await p
+                .getByRole("button", { name: "Xem kết quả" })
+                .first()
+                .click()
+                .catch(() => {})
+        },
+    }),
+    S("essentials", "lesson-locked-source", LESSON + "?part=source", {
+        free: true,
+        cookies: { plan: "free", seed: "RWRRW" },
+    }),
+    S("essentials", "lesson-locked-scenarios", LESSON + "?part=scenarios", {
+        free: true,
+        cookies: { plan: "free", seed: "RWRRW" },
+    }),
+    S("essentials", "lesson-locked-apply", LESSON + "?part=apply", {
+        free: true,
+        cookies: { plan: "free", seed: "RWRRW" },
+    }),
+    // Parts that run on the machine of the learner (Source, Scenarios, Apply). A scenario names its stand-in answers by cookie: dev (a machine online), scn (the runs), rung (the score of the ladder), up (the up command failed).
+    S("essentials", "lesson-source", LESSON + "?part=source", { cookies: { dev: "on" } }),
+    S("essentials", "lesson-source-no-device", LESSON + "?part=source", { cookies: { dev: "off" } }),
+    S("essentials", "lesson-source-up-failed", LESSON + "?part=source", { cookies: { up: "fail" } }),
+    S("essentials", "lesson-scenarios", LESSON + "?part=scenarios", { cookies: { scn: "red" } }),
+    S("essentials", "lesson-scenarios-not-run", LESSON + "?part=scenarios", { cookies: { scn: "none" } }),
+    S("essentials", "lesson-scenarios-running", LESSON + "?part=scenarios", { cookies: { scn: "running" } }),
+    S("essentials", "lesson-scenarios-green", LESSON + "?part=scenarios&scenario=crash-after-commit", {
+        cookies: { scn: "green" },
+    }),
+    S("essentials", "lesson-scenarios-stuck", LESSON + "?part=scenarios", { cookies: { scn: "stuck" } }),
+    S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
+    S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
+    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply", { cookies: { rung: "mid" }, click: "Khó" }),
     S("review", "hub", "/review"),
     S("review", "decks", "/review/decks"),
     S("review", "session", "/review/session"),
@@ -51,6 +130,8 @@ const SCREENS = [
     S("devices", "list", "/devices"),
     S("connect", "ai", "/connect"),
 ]
+// The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
+const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
 const norm = (href) => {
     try {
         const u = new URL(href, ENTRY)
@@ -76,6 +157,10 @@ const norm = (href) => {
         })
         ws.onMessage((m) => up.send(m))
     }
+    const first = process.env.CAPTURE_FIRST_STATE
+        ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
+        : undefined
+    await first?.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await free?.routeWebSocket(/_next\/hmr/, hmrQuiet)
@@ -121,7 +206,28 @@ const norm = (href) => {
         const dir = path.join(PAGES, s.area, s.screen)
         fs.mkdirSync(dir, { recursive: true })
         for (const w of WIDTHS) {
-            const p = await (s.free ? (free ?? guest) : s.guest ? guest : user).newPage()
+            // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
+            const fresh =
+                s.hold || s.refuse || s.cookies !== undefined
+                    ? await b.newContext({ storageState: stateFile })
+                    : undefined
+            // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
+            if (s.cookies !== undefined && process.env.CAPTURE_MOCK)
+                await fetch(`${process.env.CAPTURE_MOCK}/__mock?${new URLSearchParams(s.cookies)}`).catch(() => {})
+            if (s.cookies !== undefined)
+                await fresh.addCookies(
+                    Object.entries({ sid: s.screen + "-" + w + "-" + Date.now(), ...s.cookies }).map(
+                        ([name, value]) => ({ name, value, domain: "localhost", path: "/" }),
+                    ),
+                )
+            await fresh?.routeWebSocket(/_next\/hmr/, hmrQuiet)
+            const p = await (
+                fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
+            ).newPage()
+            // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
+            if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
+            if (s.refuse)
+                await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
             await p.setViewportSize({
                 width: w,
                 height:
@@ -129,13 +235,25 @@ const norm = (href) => {
                     (w === 390 ? 844 : w === 1920 ? 1080 : w === 2560 ? 1440 : 900),
             })
             const res = await p
-                .goto((s.origin || ENTRY) + route, { waitUntil: "load" })
+                .goto((s.origin || ENTRY) + route, { waitUntil: s.hold ? "commit" : "load" })
                 .catch((e) => ({ status: () => String(e.message).slice(0, 60) }))
             if (s.clickSel) {
                 await p
                     .locator(s.clickSel)
                     .first()
                     .click()
+                    .catch(() => {})
+                await p.waitForTimeout(800)
+            }
+            if (s.act) {
+                await p.waitForTimeout(2500)
+                await s.act(p)
+            }
+            if (s.fill) {
+                await p
+                    .locator(s.fill.sel)
+                    .first()
+                    .fill(s.fill.text)
                     .catch(() => {})
                 await p.waitForTimeout(800)
             }

@@ -597,50 +597,45 @@
     },
     "essentials": {
       "catalog": {
-        "title": "Bản chất",
-        "description": "Mỗi bài là một khái niệm: bị hỏi trước, đoán, thí nghiệm, hiểu, đọc code thật rồi phỏng vấn lại. Thầy StarCi AI chấm theo rubric của bài.",
+        "title": "Essentials",
+        "breadcrumbs": "Đường dẫn",
         "empty": "Chưa có bài nào được mở. Bài mới sẽ hiện ở đây ngay khi được phát hành.",
-        "open": "Mở bài",
         "minutes": "{minutes} phút",
-        "count": "{count} bài",
-        "published": "{count} bài đã mở",
-        "groupCount": "{count} nhóm",
-        "statusNone": "Chưa học",
-        "statusFree": "Miễn phí: tổng quan + Bị hỏi",
-        "all": "Tất cả",
-        "allLanguages": "Mọi ngôn ngữ",
-        "allProviders": "Mọi cloud",
-        "asideLabel": "Nhóm kiến thức",
-        "asideEmpty": "Chưa có nhóm nào.",
-        "upsell": "Mở hết với Premium",
-        "upsellNote": "Chưa có Premium: mọi bài vẫn xem được tổng quan và làm câu Bị hỏi.",
+        "partsLabel": "{done} trên 4 phần đã xong",
+        "facts": "{topics} chủ đề · {lessons} bài cụm · bạn đã xong {done}",
+        "factsFirst": "{topics} chủ đề · {lessons} bài cụm · bạn chưa học bài nào",
+        "groupProgress": "{done}/{total} bài xong",
+        "viewAll": "Xem cả {count} bài trong chủ đề",
+        "viewTopic": "Xem chủ đề",
+        "state": {
+          "todo": "Chưa học",
+          "done": "Đã xong",
+          "free": "Phần 1 miễn phí",
+          "partDone": "Xong phần {part}",
+          "doing": "Đang học · phần {part}"
+        },
+        "resume": "Học tiếp: {title} · phần {part}",
+        "start": "Bắt đầu: {title}",
+        "upgrade": "Nâng cấp Premium",
+        "opener": "Mở bài {right}/{total}",
+        "openerNone": "—",
+        "statusLabel": "Trạng thái học",
+        "tabAll": "Tất cả",
+        "tabDoing": "Đang học",
+        "tabTodo": "Chưa học",
+        "tabDone": "Đã xong",
         "search": "Tìm bài",
-        "searchPlaceholder": "Tìm theo tên hoặc mô tả bài…",
+        "searchPlaceholder": "Tìm bài hoặc bài toán, ví dụ: outbox, cache",
         "clearSearch": "Xoá ô tìm",
-        "difficulty": "Độ khó",
-        "language": "Ngôn ngữ",
-        "provider": "Cloud",
-        "noResultTitle": "Không có bài nào khớp",
-        "noResultText": "Thử đổi từ khoá hoặc bỏ bớt bộ lọc.",
-        "clear": "Xoá bộ lọc",
-        "soon": "Sắp có",
-        "eyebrow": "Kiến thức ngành · học tương tác",
-        "topicKind": "TOPIC",
-        "topicCount": "{count} topic",
-        "matchCount": "{count} bài khớp",
-        "sources": "{count} bài nguồn đang chuyển sang dạng tương tác",
-        "pendingGroup": "Còn {count} bài nguồn trong nhóm này đang được chuyển sang dạng tương tác; topic mới hiện khi có bài đầu tiên.",
-        "caseBadge": "Bài toán",
-        "casesMeta": "Bộ sưu tập · mỗi bài toán ghép từ nhiều bài",
-        "casesPending": "Sắp có · 12 bài toán từ khoá System Design, mở khi các bài nền đã sẵn.",
-        "topicOpen": "{count} bài đã mở",
-        "statusDoing": "Đang học",
-        "statusUnderstood": "Đã hiểu",
-        "statusProved": "Đã chứng minh",
-        "resumeTitle": "Đang học dở",
-        "resumeAction": "Học tiếp",
-        "resumePhase": "Đang ở pha {phase}",
-        "topicUnderstood": "{done}/{total} đã hiểu"
+        "topicSelect": "Chủ đề",
+        "allTopics": "Tất cả",
+        "planSelect": "Gói",
+        "planAll": "Tất cả",
+        "planFree": "Phần 1 miễn phí",
+        "planPremium": "Cần Premium",
+        "noResultTitle": "Không có bài nào khớp \"{query}\"",
+        "noResultText": "Thử tên bài toán như \"email gửi trùng\", hoặc bỏ bộ lọc chủ đề.",
+        "clear": "Xóa bộ lọc"
       },
       "difficulty": {
         "foundation": "Nền tảng",
@@ -804,31 +799,30 @@
         }
       },
       "topic": {
-        "doneLabel": "đã xong",
-        "ringsLabel": "Tiến độ sáu pha",
-        "phasesNote": "{done}/{total} pha",
-        "pageTitle": "Bản chất",
-        "empty": "Topic này chưa có nội dung.",
-        "path": "Bài trong chương",
-        "pathEmpty": "Chưa có bài nào trong lộ trình.",
-        "soon": "Sắp có",
-        "pending": "Bài nguồn đang chuyển sang dạng tương tác",
-        "ctaStart": "Bắt đầu",
-        "ctaResume": "Học tiếp",
-        "ctaView": "Xem bài",
-        "openFacts": "{open}/{total} bài đã mở",
-        "source": "Nguồn: {from}",
-        "progress": "{done}/{total} bài đã hiểu",
+        "pageTitle": "Essentials",
+        "breadcrumbs": "Đường dẫn",
+        "empty": "Chủ đề này chưa có nội dung.",
+        "list": "Bài trong chủ đề",
+        "pathEmpty": "Chưa có bài nào trong chủ đề này.",
+        "facts": "{lessons} bài · khoảng {minutes} phút đọc",
+        "progress": "{done}/{total} bài xong",
+        "startFirst": "Bắt đầu bài 1",
+        "resumePart": "Học tiếp phần {part}",
+        "resume": "Học tiếp: {title} · phần {part}",
+        "noticeTitle": "Gói miễn phí học được phần 1 của mọi bài",
+        "noticeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
+        "partsTitle": "Mỗi bài có 4 phần",
+        "partsNote": "Phần 2 đến 4 cần Premium.",
+        "parts": {
+          "essence": "Bản chất · miễn phí",
+          "source": "Source",
+          "scenarios": "Kịch bản",
+          "apply": "Tự áp dụng"
+        },
         "prerequisites": "Nên biết trước",
-        "related": "Topic liên quan",
-        "upsellNote": "Mỗi bài vẫn xem được tổng quan và làm câu Bị hỏi.",
-        "moved": "Bài này đã chuyển vào một topic. Địa chỉ cũ không còn dùng.",
-        "movedOpen": "Mở bài",
-        "progressTitle": "Tiến độ",
-        "opener": "Mở bài {right}/{total}",
-        "openerNone": "Chưa làm mở bài",
-        "metaOpener": "{difficulty} · {minutes} phút · {opener}",
-        "factsLessons": "{lessons} bài · {minutes} phút · TypeScript"
+        "related": "Chủ đề liên quan",
+        "moved": "Bài này đã chuyển vào một chủ đề. Địa chỉ cũ không còn dùng.",
+        "movedOpen": "Mở bài"
       },
       "attempt": {
         "saved": "Đã lưu câu trả lời của bạn.",
@@ -946,7 +940,7 @@
         "download": "Tải workspace {language} (.zip)"
       },
       "essential": {
-        "pageTitle": "Bản chất",
+        "pageTitle": "Essentials",
         "breadcrumbs": "Đường dẫn",
         "tabs": "Bốn phần của bài",
         "parts": {
@@ -955,95 +949,99 @@
           "scenarios": "Kịch bản",
           "apply": "Tự áp dụng"
         },
-        "facts": "{minutes} phút đọc · {languages}",
         "typescript": "TypeScript",
         "empty": "Bài này chưa có nội dung.",
         "soon": "Phần này đang soạn.",
-        "opener": {
-          "title": "Mở bài · 5 câu trắc nghiệm phỏng vấn",
-          "progress": "Tiến độ 5 câu mở bài",
-          "position": "Câu {n} / {total}",
-          "score": "Đúng {right}/{total}. Câu nào sai, mục tương ứng được đánh dấu “nên đọc kỹ”.",
-          "next": "Câu tiếp",
-          "previous": "Câu trước",
-          "right": "Đúng",
-          "wrong": "Chưa đúng",
-          "readMore": "Đọc thêm",
-          "readSection": "Đọc kỹ mục {n}: {title}",
-          "seeScenario": "Thấy tận mắt ở kịch bản “{title}”",
-          "empty": "Bài này chưa có câu mở bài."
-        },
         "article": {
-          "title": "Bài viết",
-          "toc": "Mục lục",
-          "flagged": "Nên đọc kỹ",
-          "locked": "Mục này mở với Premium.",
-          "empty": "Bài này chưa có mục nào."
-        },
-        "retake": {
-          "title": "Làm lại 5 câu",
-          "description": "Trả lời lại 5 câu mở bài sau khi đọc để thấy trước và sau.",
-          "start": "Làm lại",
-          "question": "Câu hỏi",
-          "before": "Lần đầu",
-          "after": "Lần mới nhất",
-          "right": "Đúng",
-          "wrong": "Sai",
-          "none": "Chưa làm"
+          "locked": "Mục này mở với Premium."
         },
         "source": {
-          "pullTitle": "Tải source và chạy",
-          "pullNote": "Source TypeScript của bài; starci-next up dựng các service bằng docker compose.",
+          "pullTitle": "Lấy source về máy",
+          "pullNote": "Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker",
+          "machineOnline": "{name} · trực tuyến",
+          "machineNone": "Chưa thấy máy nào kết nối",
+          "machineNoneNote": "Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.",
+          "upFailed": "Lệnh up báo lỗi",
           "architecture": "Kiến trúc",
           "diagram": "Sơ đồ kiến trúc",
           "diagramError": "Không vẽ được sơ đồ",
-          "components": "Thành phần",
+          "components": "Mỗi thành phần giữ luật nào",
           "component": "Thành phần",
-          "port": "Port",
+          "port": "Cổng",
           "rules": "Luật nó giữ",
-          "codeWalk": "Đọc code",
+          "codeWalk": "Đọc code · luật nằm ở đâu",
           "why": "Vì sao",
-          "empty": "Chưa có thành phần."
+          "empty": "Chưa có thành phần.",
+          "download": "Tải source (.tgz)",
+          "aside": {
+            "inSource": "Trong source",
+            "notIncludedTitle": "Không có trong source",
+            "notIncluded": "Đáp án mẫu và test ẩn của mức tự áp dụng. Chúng ở lại máy chủ.",
+            "needsTitle": "Cần có",
+            "needs": "Node 22, Docker, cổng 3031 đến 3033 và 5440 còn trống."
+          },
+          "copy": "Sao chép"
         },
         "scenarios": {
           "list": "Kịch bản",
-          "summary": "{green}/{total} kịch bản xanh",
-          "run": "Lệnh chạy",
-          "guards": "Tắt guard để thấy lỗi xảy ra",
-          "expected": "Hệ thống đúng sẽ cho",
-          "judged": "Luật nó chấm",
-          "output": "Kết quả gửi về từ máy bạn",
-          "noOutput": "Chưa có lần chạy nào. Chạy lệnh ở trên, kết quả sẽ hiện ở đây.",
-          "why": "Vì sao sai",
-          "invariant": "Luật bị phá",
-          "hint": "Gợi ý",
-          "askAi": "Hỏi AI sửa",
-          "askAiNote": "Dán lời nhắc này vào Claude, ChatGPT hoặc agent trong IDE (đã nối StarCi MCP). Sửa xong, check lại.",
-          "prompt": "Lời nhắc cho AI",
-          "check": "Check lại",
+          "summary": "{green}/{total} xanh",
+          "flow": "Mỗi kịch bản: chạy, đọc “Vì sao sai”, nhờ AI sửa, check lại. Gợi ý chỉ mở sau lần chạy đỏ.",
           "empty": "Bài này chưa có kịch bản.",
+          "machineOnline": "{name} · trực tuyến",
+          "relayNote": "kết quả về app qua relay",
+          "machineNone": "Chưa có máy nào trực tuyến",
+          "machineNoneNote": "Mở terminal trên máy của bạn và chạy starci-next login một lần. Trang tự nhận máy khi CLI báo về.",
+          "noRun": "chưa chạy lần nào",
+          "why": "Vì sao sai",
+          "ruleBroken": "luật bị phá",
+          "kept": "Luật đã giữ",
+          "hintTitle": "Gợi ý",
+          "hintLocked": "Gợi ý mở sau lần chạy đỏ đầu tiên. Chạy kịch bản trước, đọc “Vì sao sai”, rồi mới cần đến gợi ý.",
+          "hintNote": "Dùng gợi ý thì bài ghi “có hỗ trợ”.",
+          "fixTitle": "Sửa",
+          "fixNote": "Bạn không phải gõ code. Nhờ AI của bạn (Claude, ChatGPT hoặc agent trong IDE) sửa trong thư mục source, rồi check lại.",
+          "fixPrompt": "Lời nhắc cho AI",
+          "guardTitle": "Tắt luật {rule}",
+          "guardNote": "--guard {flag} để thấy hệ thống vỡ khi thiếu nó",
+          "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-next check {lesson} --scenario {scenario}",
+          "ask": {
+            "title": "Bí? Hỏi Claude",
+            "badge": "MCP StarCi · bài này",
+            "note": "Claude của bạn đọc lần chạy và code qua connector StarCi (my_runs, read_file) rồi trả lời. Dán lời nhắc này vào Claude đã nối connector.",
+            "connect": "Nối Claude với StarCi"
+          },
           "states": {
             "none": "Chưa chạy",
             "running": "Đang chạy",
             "passed": "Xanh",
             "failed": "Đỏ",
-            "guarded": "Đỏ do tắt guard"
+            "guarded": "Đỏ do tắt luật"
           },
-          "ranAt": "Lần chạy lúc {at}",
-          "fixPrompt": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy gần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard nào, giải thích ngắn vì sao, rồi chạy: starci-next check {lesson} --scenario {scenario}"
+          "primary": {
+            "run": "Chạy kịch bản",
+            "check": "Check lại",
+            "next": "Kịch bản tiếp theo",
+            "running": "Đang chạy",
+            "failed": "Không gửi được yêu cầu tới máy của bạn"
+          },
+          "hintReveal": "Xem gợi ý",
+          "fixCopy": "Sao chép lời nhắc"
         },
         "apply": {
-          "ladder": "Thử thách 4 bậc",
-          "brief": "Đề bài",
-          "rubric": "Thang chấm · 100 điểm",
+          "ladder": "Bốn mức, mở lần lượt",
           "critical": "Trọng yếu",
-          "essence": "Kiểm tra bản chất",
-          "hidden": "Kịch bản ẩn",
-          "run": "Chạy kịch bản ẩn",
-          "proof": "Từ Đang luyện tới Đã chứng minh",
-          "proofSteps": "Chạy trên máy bạn là Đang luyện. Push lên GitHub, CI chạy kịch bản ẩn và GitHub ký OIDC: lên Đã chứng minh và thành dòng CV đã xác minh.",
-          "locked": "Bậc này mở khi mọi kịch bản ẩn của bậc dưới đã xanh.",
+          "rubric": "Thang điểm · 100",
           "empty": "Bài này chưa có thử thách.",
+          "essence": "Chốt thiết kế",
+          "proof": "Từ Đang luyện tới Đã chứng minh",
+          "proofSteps": {
+            "run": "Chạy ẩn trên máy",
+            "push": "Đẩy lên GitHub của bạn",
+            "ci": "CI chạy kịch bản ẩn",
+            "oidc": "GitHub ký OIDC",
+            "proved": "Đã chứng minh"
+          },
+          "proofNote": "Chỉ CI có chữ ký mới ghi “Đã chứng minh” vào hồ sơ. Chạy trên máy là luyện.",
           "levels": {
             "easy": "Dễ",
             "medium": "Vừa",
@@ -1051,22 +1049,116 @@
             "insane": "Siêu khó"
           },
           "points": "{points}đ",
-          "hiddenState": "{green}/{total} kịch bản ẩn xanh",
-          "notRun": "Chưa chạy",
-          "rungStates": {
+          "pointsOf": "{earned}/{max}",
+          "noRunYet": "chưa chạy lần nào",
+          "hiddenGreen": "{green}/{total} kịch bản ẩn đạt · {score}/{max}",
+          "rungs": {
             "locked": "Mở sau khi xong mức trước",
-            "open": "Đang luyện",
-            "green": "Đã xanh"
+            "open": "Sẵn sàng",
+            "doing": "Đang luyện · {score}/{max}",
+            "passed": "Đã xanh"
+          },
+          "lock": {
+            "title": "{level} mở sau khi xong mức {below}",
+            "text": "Mức {below} đang {score}/{max}. Mức này mở khi mọi kịch bản ẩn của mức {below} đều xanh."
+          },
+          "primary": {
+            "run": "Chạy mức {level}",
+            "rerun": "Chạy lại mức {level}"
+          },
+          "aside": {
+            "score": "Điểm của bạn",
+            "scoreNote": "Qua mức khi mọi kịch bản ẩn xanh. Tổng {max} điểm.",
+            "cvTitle": "Dòng hồ sơ",
+            "cvNote": "Hiện ở hồ sơ công khai của bạn như một dòng đã xác minh.",
+            "cvNone": "Chưa có: dòng hồ sơ chỉ hiện sau khi CI chứng minh mức này."
           }
         },
-        "locked": {
-          "title": "Phần này mở với Premium",
-          "plans": "Đăng ký Premium",
-          "parts": {
-            "essence": "Năm câu hỏi mở bài và bài viết của phần Bản chất. Premium mở phần này.",
-            "source": "Kéo repo TypeScript và Express thật về máy, chạy nó và đọc chỗ từng luật nằm trong code. Câu mở bài và bài viết của bài này vẫn miễn phí.",
-            "scenarios": "Chạy từng lỗi ngay trên máy bạn, tắt một guard và xem luật nào vỡ, vỡ vì sao. Câu mở bài và bài viết của bài này vẫn miễn phí.",
-            "apply": "Thang thử thách bốn bậc, chấm bằng kịch bản ẩn và câu hỏi bản chất, kết quả gửi về từ máy bạn. Câu mở bài và bài viết của bài này vẫn miễn phí."
+        "essence": {
+          "opener": {
+            "eyebrow": "Mở bài · 5 câu hỏi mở bài, chấm ngay",
+            "barLabel": "Kết quả 5 câu mở bài",
+            "hint": "Chọn một đáp án, kết quả và lời giải hiện ngay. Không có ô viết tự do.",
+            "empty": "Bài này chưa có câu hỏi mở bài.",
+            "correct": "Đáp án đúng",
+            "picked": "Bạn chọn",
+            "why": "Vì sao.",
+            "sendFailed": "Chưa gửi được câu trả lời.",
+            "retry": "Gửi lại",
+            "grading": "Đang chấm câu trả lời…",
+            "readMore": "Đọc tiếp",
+            "readSection": "Đọc kỹ mục {n} · {title}",
+            "seeScenario": "Xem tận mắt ở kịch bản {title}"
+          },
+          "bar": {
+            "question": "Câu {n}"
+          },
+          "position": "Câu {n}/{total} · đúng {right}",
+          "positionFirst": "Câu {n}/{total} · khoảng 1 phút",
+          "result": {
+            "eyebrow": "Mở bài · kết quả",
+            "score": "Đúng {right}/{total}",
+            "flagged": "Câu sai nằm ở {sections}. Các mục này được đánh dấu \"nên đọc kỹ\". Cuối bài bạn làm lại 5 câu để so điểm.",
+            "clean": "Bạn trả lời đúng cả 5 câu. Bài viết vẫn ở dưới nếu bạn muốn đọc lại; cuối bài có thể làm lại 5 câu.",
+            "retake": "Làm lại: {right}/{total} (trước {before}/{total})",
+            "section": "mục {n}",
+            "readArticle": "Đọc bài viết",
+            "review": "Xem lại 5 câu",
+            "freeTitle": "Bạn xong phần 1",
+            "freeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium."
+          },
+          "toc": {
+            "title": "Mục lục",
+            "flagged": "Nên đọc kỹ"
+          },
+          "article": {
+            "eyebrow": "Bài viết · {minutes} phút đọc",
+            "locked": "Mục này thuộc Premium.",
+            "empty": "Bài này chưa có bài viết."
+          },
+          "aside": {
+            "journeyTitle": "Bài này gồm 4 phần",
+            "journeyNote": "Phần 2 đến 4 cần Premium.",
+            "retakeTitle": "Cuối bài",
+            "retakeText": "Làm lại 5 câu để thấy điểm trước và sau khi đọc.",
+            "lockedPart": "Premium"
+          },
+          "shell": {
+            "nextQuestion": "Câu tiếp theo",
+            "questionNumber": "Câu {n}",
+            "seeResult": "Xem kết quả",
+            "readArticle": "Đọc bài viết",
+            "retake": "Làm lại 5 câu",
+            "upgrade": "Nâng cấp Premium",
+            "tabDone": "Đã xong",
+            "tabLocked": "Cần Premium",
+            "position": "Bài {n}/{total} trong {topic}",
+            "facts": "{minutes} phút đọc · {scenarios} kịch bản · {levels} mức tự áp dụng",
+            "factsPlain": "{minutes} phút đọc"
+          },
+          "locked": {
+            "description": "Gói miễn phí học trọn phần 1 của mọi bài. Điểm 5 câu mở bài và tiến độ của bạn được giữ nguyên khi nâng cấp.",
+            "list": "Trong phần này bạn có",
+            "back": "Quay lại phần 1",
+            "compare": "So sánh hai gói",
+            "source": {
+              "title": "Phần 2 · Source thuộc gói Premium",
+              "one": "Tải source TypeScript + Express về máy, chạy bằng Docker",
+              "two": "Sơ đồ kiến trúc và bảng thành phần, mỗi thành phần giữ một luật",
+              "three": "Đọc code: mỗi đoạn gắn với luật và số dòng thật"
+            },
+            "scenarios": {
+              "title": "Phần 3 · Kịch bản thuộc gói Premium",
+              "one": "Chạy từng kịch bản lỗi trên máy bạn qua CLI",
+              "two": "Xem vì sao sai: luật nào bị phá, kèm gợi ý sau mỗi lần chạy đỏ",
+              "three": "Nhờ AI của bạn sửa rồi check lại tới khi xanh"
+            },
+            "apply": {
+              "title": "Phần 4 · Tự áp dụng thuộc gói Premium",
+              "one": "Bốn mức Dễ, Vừa, Khó, Siêu khó, mỗi mức mở khi xong mức trước",
+              "two": "Test ẩn chạy trên máy bạn, thang điểm 100 chia theo từng mục",
+              "three": "Đã chứng minh khi CI của GitHub ký xác nhận, rồi thành dòng trên hồ sơ"
+            }
           }
         }
       }

@@ -1,22 +1,27 @@
-import { Badge, Button, EmptyNotice, Page, Stack, type PageHeaderContent } from "@starci/grammar/common"
-import {
-    EssentialApply,
-    EssentialArticle,
-    EssentialOpener,
-    EssentialPartIntro,
-    EssentialRetake,
-    EssentialScenarios,
-    EssentialSource,
-    LockedNotice,
-    SlotView,
-} from "@starci-next/ui"
+import { Button, EmptyNotice, Page, Pane, PaneGrid, PaneSection, type PageHeaderContent } from "@starci/grammar/common"
+import type { ReactNode } from "react"
+import { DoneIcon, LockIcon, SlotView } from "@starci-next/ui"
 import type { EssentialLessonScreen, EssentialLessonView } from "@/hooks/essentialLesson"
 import type { DataSlot } from "@/modules/types"
+import type { PartContext, PartLayout, PartLayoutOf } from "./layout"
+import { applyLayout } from "./parts/partApply"
+import { essenceLayout } from "./parts/partEssence"
+import { lockedLayout } from "./parts/partLocked"
+import { scenariosLayout } from "./parts/partScenarios"
+import { sourceLayout } from "./parts/partSource"
 
 /** Props for {@link EssentialLessonBase}: the resolved props and the actions of the screen. */
 export type EssentialLessonBaseProps = {
     readonly props: EssentialLessonScreen["props"]
     readonly on: EssentialLessonScreen["on"]
+}
+
+/** The layout of each part; a part the reader's plan lacks is drawn by the locked layout instead. */
+const LAYOUTS: Readonly<Record<EssentialLessonView["part"], PartLayoutOf>> = {
+    essence: essenceLayout,
+    source: sourceLayout,
+    scenarios: scenariosLayout,
+    apply: applyLayout,
 }
 
 /** The lesson the band draws: the settled one, the placeholder while the first read runs, none otherwise. */
@@ -29,8 +34,28 @@ const lessonOfSlot = (
     return undefined
 }
 
-/** The band: the trail from the catalog through the topic, the title, the level chip, the facts and the four parts as page tabs. */
-const bandOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): PageHeaderContent => ({
+/** What a tab wears at its start: the lock of a part Premium unlocks, the check of a finished one. */
+const markOf = (tab: EssentialLessonView["tabs"][number], props: EssentialLessonBaseProps): ReactNode => {
+    if (tab.state === "locked") return <LockIcon label={props.props.shell.tabLocked} />
+    return tab.state === "done" ? <DoneIcon label={props.props.shell.tabDone} /> : undefined
+}
+
+/** What the layout of the part on screen is built from. */
+const layoutOf = (context: PartContext): PartLayout => {
+    const { lesson, screen } = context
+    if (lesson.isLocked) return lockedLayout(context)
+    if (lesson.isEmpty && lesson.part !== "essence") {
+        return { main: <EmptyNotice message={screen.props.page.soon} />, aside: undefined, action: undefined }
+    }
+    return LAYOUTS[lesson.part](context)
+}
+
+/** The band: the trail through the topic, the title, the problem the lesson solves, its facts, the primary of the part and the four parts as page tabs. */
+const bandOf = (
+    lesson: EssentialLessonView,
+    layout: PartLayout,
+    props: EssentialLessonBaseProps,
+): PageHeaderContent => ({
     breadcrumbs: {
         label: props.props.page.breadcrumbs,
         items: [
@@ -41,12 +66,22 @@ const bandOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): P
     },
     title: lesson.title,
     titleScale: "standard",
-    status: <Badge>{lesson.difficulty}</Badge>,
+    ...(lesson.subtitle === "" ? {} : { description: lesson.subtitle }),
     meta: lesson.facts,
+    ...(layout.action === undefined ? {} : { actions: layout.action }),
     tabs: {
         label: props.props.page.tabs,
         kind: "views",
-        items: lesson.tabs.map((tab) => ({ id: tab.id, label: tab.label })),
+        labelVisibility: "always",
+        items: lesson.tabs.map((tab) => {
+            const mark = markOf(tab, props)
+            return {
+                id: tab.id,
+                label: tab.label,
+                ...(tab.count === undefined ? {} : { count: tab.count }),
+                ...(mark === undefined ? {} : { leading: mark }),
+            }
+        }),
         selectedKey: lesson.part,
         onSelect: (key) => {
             const tab = lesson.tabs.find((each) => each.id === key)
@@ -55,97 +90,54 @@ const bandOf = (lesson: EssentialLessonView, props: EssentialLessonBaseProps): P
     },
 })
 
-/** The part on screen. */
-const PartBody = (props: { readonly lesson: EssentialLessonView; readonly screen: EssentialLessonBaseProps }) => {
-    const { lesson } = props
-    const { labels, plansHref, page } = props.screen.props
-    const on = props.screen.on
-    if (lesson.isLocked) {
-        const locked = labels.locked.parts[lesson.part]
-        return (
-            <LockedNotice
-                title={locked.title}
-                description={locked.description}
-                plansLabel={labels.locked.plans}
-                plansHref={plansHref}
-            />
-        )
-    }
-    if (lesson.part === "essence") {
-        return (
-            <Stack gap="region">
-                {lesson.opener.questions.length === 0 ? null : (
-                    <EssentialOpener
-                        opener={lesson.opener}
-                        labels={labels}
-                        plansHref={plansHref}
-                        onPick={on.pick}
-                        onSubmit={on.submit}
-                        onMove={on.moveOpener}
-                    />
-                )}
-                <EssentialArticle sections={lesson.article} labels={labels} />
-                {lesson.compare.length === 0 ? null : (
-                    <EssentialRetake rows={lesson.compare} labels={labels} onStart={on.retake} />
-                )}
-            </Stack>
-        )
-    }
-    if (lesson.isEmpty) return <EmptyNotice message={page.soon} />
-    const intro = lesson.intro === undefined ? null : <EssentialPartIntro section={lesson.intro} labels={labels} />
-    if (lesson.part === "source")
-        return (
-            <Stack gap="region">
-                <EssentialSource source={lesson.source} labels={labels} />
-                {intro}
-            </Stack>
-        )
-    if (lesson.part === "scenarios")
-        return (
-            <Stack gap="region">
-                <EssentialScenarios part={lesson.scenarios} labels={labels} onSelect={on.selectScenario} />
-                {intro}
-            </Stack>
-        )
-    return (
-        <Stack gap="region">
-            <EssentialApply
-                part={lesson.apply}
-                labels={labels}
-                plansHref={plansHref}
-                onSelect={on.selectChallenge}
-                onPick={on.pick}
-                onSubmit={on.submit}
-            />
-            {intro}
-        </Stack>
-    )
-}
-
 /**
- * One Bản chất lesson in four parts, the page tabs of its band (`?part=`): Bản chất (the five-question opener, the article,
- * the same five again), Source (pull, architecture, code walk), Kịch bản (scenarios run on the learner's machine, results over
- * the relay, the fix handed to the learner's AI) and Tự áp dụng (the challenge ladder). Bản chất, the opener and the article, is
- * free; each other part shows what it holds and a Subscribe link while the learner lacks Premium (the back end names the locked
- * parts and never sends their payload).
+ * One lesson in four parts, the page tabs of its band (`?part=`): essence (the five-question opener, the article), Source,
+ * Kịch bản and Tự áp dụng. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
+ * the reader's plan lacks is the locked notice (the back end names the locked parts and never sends their payload).
  */
 export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
-    const { slot, placeholder, slotLabels, plansHref, labels } = props.props
+    const { slot, placeholder, slotLabels } = props.props
     const lesson = lessonOfSlot(slot, placeholder)
+    const isLoading = "isLoading" in slot
+    const layout = lesson === undefined ? undefined : layoutOf({ lesson, screen: props, isLoading })
+    const hasAside = layout?.aside !== undefined
     return (
-        <Page isLoading={"isLoading" in slot} {...(lesson === undefined ? {} : { header: bandOf(lesson, props) })}>
-            <SlotView
-                slot={slot}
-                placeholder={placeholder}
-                labels={slotLabels}
-                forbiddenAction={
-                    <Button intent="commit" href={plansHref}>
-                        {labels.locked.plans}
-                    </Button>
-                }
-                onRetry={props.on.retry}
-                render={(each) => <PartBody lesson={each} screen={props} />}
-            />
+        <Page
+            chrome="panes"
+            layout="workspace"
+            isLoading={isLoading}
+            {...(lesson === undefined || layout === undefined ? {} : { header: bandOf(lesson, layout, props) })}
+        >
+            <PaneGrid
+                label={props.props.page.pageTitle}
+                areas={hasAside ? { base: ["main"], wide: ["main aside"] } : { base: ["main"] }}
+                columns={hasAside ? { base: ["fill"], wide: ["fill", "standard"] } : { base: ["fill"] }}
+                rows={{ base: ["fill"] }}
+            >
+                <Pane area="main">
+                    <PaneSection gap="section">
+                        <SlotView
+                            slot={slot}
+                            placeholder={placeholder}
+                            labels={slotLabels}
+                            forbiddenAction={
+                                <Button intent="commit" href={props.props.plansHref}>
+                                    {props.props.shell.upgrade}
+                                </Button>
+                            }
+                            onRetry={props.on.retry}
+                            render={(each, loading) =>
+                                layoutOf({ lesson: each, screen: props, isLoading: loading }).main
+                            }
+                        />
+                    </PaneSection>
+                </Pane>
+                {hasAside ? (
+                    <Pane area="aside" surface>
+                        {layout.aside}
+                    </Pane>
+                ) : null}
+            </PaneGrid>
         </Page>
     )
 }

@@ -1,45 +1,48 @@
 import { SearchField, Section, Select, Tabs } from "@starci/grammar/common"
 
-/** One choice of a filter. */
-type CatalogOption = { readonly id: string; readonly label: string }
+/** One choice of a select or one status tab. */
+type ToolbarOption = { readonly id: string; readonly label: string }
 
 /** The words of the toolbar, resolved by its block. */
 export type CatalogToolbarLabels = {
+    readonly statusLabel: string
     readonly search: string
     readonly searchPlaceholder: string
     readonly clearSearch: string
-    readonly difficulty: string
-    readonly language: string
-    readonly provider: string
+    readonly topicSelect: string
+    readonly planSelect: string
 }
 
-/** The search box and filters of the catalog. */
+/** The status tabs, search and the two selects of the catalog. */
 type CatalogToolbarProps = {
-    readonly query: string
-    readonly difficulties: ReadonlyArray<CatalogOption>
-    readonly difficulty: string
-    readonly languages: ReadonlyArray<CatalogOption>
-    readonly language: string
-    readonly providers: ReadonlyArray<CatalogOption>
-    readonly provider: string
     readonly labels: CatalogToolbarLabels
+    readonly statuses: ReadonlyArray<ToolbarOption & { readonly count: number }>
+    readonly status: string
+    readonly query: string
+    readonly topics: ReadonlyArray<ToolbarOption>
+    readonly topic: string
+    readonly plans: ReadonlyArray<ToolbarOption>
+    readonly plan: string
+    readonly onStatus: (id: string) => void
     readonly onQuery: (query: string) => void
-    readonly onDifficulty: (id: string) => void
-    readonly onLanguage: (id: string) => void
-    readonly onProvider: (id: string) => void
+    readonly onTopic: (id: string) => void
+    readonly onPlan: (id: string) => void
 }
 
-/** One select of the toolbar: a compact pill named by its hidden label that keeps its content width, its empty choice meaning every option. */
-const ToolbarSelect = (props: {
+/** What one select of the toolbar needs. */
+type ToolbarSelectProps = {
     readonly label: string
-    readonly options: ReadonlyArray<CatalogOption>
+    readonly options: ReadonlyArray<ToolbarOption>
     readonly value: string
     readonly onChange: (id: string) => void
-}) => (
+}
+
+/** One select of the toolbar: a field named and prefixed by what it filters, its first option meaning every value. */
+const ToolbarSelect = (props: ToolbarSelectProps) => (
     <Select
         label={props.label}
         isLabelHidden
-        appearance="compact"
+        prefix={props.label}
         options={props.options}
         value={props.value}
         onValueChange={(id) => props.onChange(id ?? "")}
@@ -47,8 +50,8 @@ const ToolbarSelect = (props: {
 )
 
 /**
- * The toolbar of the catalog: a headless region named by the search label whose `filter` is one flat wrapping row on the surface, never a card.
- * The difficulty tabs, the search over title and description and the language and provider selects sit straight in the filter, with no wrapper.
+ * The toolbar of the catalog: a headless region named by the search label whose `filter` is one flat wrapping row on the surface, never a
+ * card. The status tabs with their counts, the search over the title and the problem and the topic and plan selects sit straight in it.
  */
 export const CatalogToolbar = (props: CatalogToolbarProps) => (
     <Section
@@ -58,15 +61,14 @@ export const CatalogToolbar = (props: CatalogToolbarProps) => (
             <>
                 <Tabs
                     kind="filter"
-                    label={props.labels.difficulty}
-                    items={props.difficulties.map((each) => ({ id: each.id, label: each.label }))}
-                    selectedKey={props.difficulty}
-                    onSelect={props.onDifficulty}
+                    label={props.labels.statusLabel}
+                    items={props.statuses.map((each) => ({ id: each.id, label: each.label, count: each.count }))}
+                    selectedKey={props.status}
+                    onSelect={props.onStatus}
                 />
                 <SearchField
                     label={props.labels.search}
                     isLabelHidden
-                    size="sm"
                     placeholder={props.labels.searchPlaceholder}
                     clearLabel={props.labels.clearSearch}
                     value={props.query}
@@ -74,16 +76,16 @@ export const CatalogToolbar = (props: CatalogToolbarProps) => (
                     onClear={() => props.onQuery("")}
                 />
                 <ToolbarSelect
-                    label={props.labels.language}
-                    options={props.languages}
-                    value={props.language}
-                    onChange={props.onLanguage}
+                    label={props.labels.topicSelect}
+                    options={props.topics}
+                    value={props.topic}
+                    onChange={props.onTopic}
                 />
                 <ToolbarSelect
-                    label={props.labels.provider}
-                    options={props.providers}
-                    value={props.provider}
-                    onChange={props.onProvider}
+                    label={props.labels.planSelect}
+                    options={props.plans}
+                    value={props.plan}
+                    onChange={props.onPlan}
                 />
             </>
         }

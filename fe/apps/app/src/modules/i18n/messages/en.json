@@ -598,49 +598,44 @@
     "essentials": {
       "catalog": {
         "title": "Essentials",
-        "description": "Each lesson is one concept: get asked first, predict, experiment, understand, read real code, then interview again. The StarCi AI teacher grades by the lesson's rubric.",
-        "empty": "No lessons are open yet. New lessons appear here as soon as they are published.",
-        "open": "Open lesson",
+        "breadcrumbs": "Breadcrumb",
+        "empty": "No lesson is open yet. New lessons appear here as soon as they are released.",
         "minutes": "{minutes} min",
-        "count": "{count, plural, one {# lesson} other {# lessons}}",
-        "published": "{count, plural, one {# lesson open} other {# lessons open}}",
-        "groupCount": "{count, plural, one {# group} other {# groups}}",
-        "statusNone": "Not started",
-        "statusFree": "Free: overview + Asked",
-        "all": "All",
-        "allLanguages": "All languages",
-        "allProviders": "All clouds",
-        "asideLabel": "Knowledge groups",
-        "asideEmpty": "No groups.",
-        "upsell": "Unlock everything with Premium",
-        "upsellNote": "No Premium yet: you can still read every overview and answer the Asked question.",
-        "search": "Search lessons",
-        "searchPlaceholder": "Search by lesson title or description…",
+        "partsLabel": "{done} of 4 parts done",
+        "facts": "{topics} topics · {lessons} lessons · you finished {done}",
+        "factsFirst": "{topics} topics · {lessons} lessons · you have not started any",
+        "groupProgress": "{done}/{total} lessons done",
+        "viewAll": "See all {count} lessons in the topic",
+        "viewTopic": "View topic",
+        "state": {
+          "todo": "Not started",
+          "done": "Done",
+          "free": "Part 1 is free",
+          "partDone": "Part {part} done",
+          "doing": "Studying · part {part}"
+        },
+        "resume": "Continue: {title} · part {part}",
+        "start": "Start: {title}",
+        "upgrade": "Upgrade to Premium",
+        "opener": "Opener {right}/{total}",
+        "openerNone": "—",
+        "statusLabel": "Study status",
+        "tabAll": "All",
+        "tabDoing": "Studying",
+        "tabTodo": "Not started",
+        "tabDone": "Done",
+        "search": "Find a lesson",
+        "searchPlaceholder": "Find a lesson or a problem, e.g. outbox, cache",
         "clearSearch": "Clear search",
-        "difficulty": "Difficulty",
-        "language": "Language",
-        "provider": "Cloud",
-        "noResultTitle": "No lesson matches",
-        "noResultText": "Try another keyword or remove some filters.",
-        "clear": "Clear filters",
-        "soon": "Coming soon",
-        "eyebrow": "Industry knowledge · interactive learning",
-        "topicKind": "TOPIC",
-        "topicCount": "{count, plural, one {# topic} other {# topics}}",
-        "matchCount": "{count, plural, one {# lesson matches} other {# lessons match}}",
-        "sources": "{count} source lessons are being turned into interactive ones",
-        "pendingGroup": "{count} source lessons in this group are still being turned into interactive ones; a new topic appears with its first lesson.",
-        "caseBadge": "Case study",
-        "casesMeta": "Collection · each case study combines several lessons",
-        "casesPending": "Coming soon · 12 case studies from the System Design course, open once the foundation lessons are ready.",
-        "topicOpen": "{count, plural, one {# lesson open} other {# lessons open}}",
-        "statusDoing": "In progress",
-        "statusUnderstood": "Understood",
-        "statusProved": "Proved",
-        "resumeTitle": "Continue learning",
-        "resumeAction": "Continue",
-        "resumePhase": "At the {phase} phase",
-        "topicUnderstood": "{done}/{total} understood"
+        "topicSelect": "Topic",
+        "allTopics": "All",
+        "planSelect": "Plan",
+        "planAll": "All",
+        "planFree": "Part 1 is free",
+        "planPremium": "Needs Premium",
+        "noResultTitle": "No lesson matches \"{query}\"",
+        "noResultText": "Try a problem such as \"duplicate email\", or drop the topic filter.",
+        "clear": "Clear filters"
       },
       "difficulty": {
         "foundation": "Foundation",
@@ -804,31 +799,30 @@
         }
       },
       "topic": {
-        "doneLabel": "done",
-        "ringsLabel": "Progress across six phases",
-        "phasesNote": "{done}/{total} phases",
         "pageTitle": "Essentials",
+        "breadcrumbs": "Breadcrumb",
         "empty": "This topic has no content yet.",
-        "path": "Lessons in this chapter",
-        "pathEmpty": "No lessons in the path yet.",
-        "soon": "Coming soon",
-        "pending": "The source lesson is being moved to the interactive format",
-        "ctaStart": "Start",
-        "ctaResume": "Continue",
-        "ctaView": "View lesson",
-        "openFacts": "{open}/{total} lessons open",
-        "source": "Source: {from}",
-        "progress": "{done}/{total} lessons understood",
-        "prerequisites": "Know first",
+        "list": "Lessons in the topic",
+        "pathEmpty": "There is no lesson in this topic yet.",
+        "facts": "{lessons} lessons · about {minutes} min of reading",
+        "progress": "{done}/{total} lessons done",
+        "startFirst": "Start lesson 1",
+        "resumePart": "Continue part {part}",
+        "resume": "Continue: {title} · part {part}",
+        "noticeTitle": "The free plan covers part 1 of every lesson",
+        "noticeText": "Source, scenarios that run on your machine and the apply ladder belong to Premium.",
+        "partsTitle": "Every lesson has 4 parts",
+        "partsNote": "Parts 2 to 4 need Premium.",
+        "parts": {
+          "essence": "Essence · free",
+          "source": "Source",
+          "scenarios": "Scenarios",
+          "apply": "Apply"
+        },
+        "prerequisites": "Good to know first",
         "related": "Related topics",
-        "upsellNote": "Every lesson still shows its overview and the Asked question.",
         "moved": "This lesson moved into a topic. The old address is no longer used.",
-        "movedOpen": "Open lesson",
-        "progressTitle": "Progress",
-        "opener": "Opener {right}/{total}",
-        "openerNone": "Opener not taken",
-        "metaOpener": "{difficulty} · {minutes} min · {opener}",
-        "factsLessons": "{lessons} lessons · {minutes} min · TypeScript"
+        "movedOpen": "Open lesson"
       },
       "attempt": {
         "saved": "Your answer was saved.",
@@ -955,95 +949,99 @@
           "scenarios": "Scenarios",
           "apply": "Apply it"
         },
-        "facts": "{minutes} min read · {languages}",
         "typescript": "TypeScript",
         "empty": "This lesson has no content yet.",
         "soon": "This part is being written.",
-        "opener": {
-          "title": "Opener · 5 multiple-choice interview questions",
-          "progress": "Progress of the five opener questions",
-          "position": "Question {n} / {total}",
-          "score": "{right}/{total} right. Each wrong answer marks its section “read closely”.",
-          "next": "Next question",
-          "previous": "Previous question",
-          "right": "Right",
-          "wrong": "Not quite",
-          "readMore": "Read more",
-          "readSection": "Read section {n} closely: {title}",
-          "seeScenario": "See it happen in the scenario “{title}”",
-          "empty": "This lesson has no opener questions yet."
-        },
         "article": {
-          "title": "Article",
-          "toc": "Contents",
-          "flagged": "Read closely",
-          "locked": "This section opens with Premium.",
-          "empty": "This lesson has no sections yet."
-        },
-        "retake": {
-          "title": "Take the 5 again",
-          "description": "Answer the five opener questions again after reading to see before and after.",
-          "start": "Take again",
-          "question": "Question",
-          "before": "First",
-          "after": "Latest",
-          "right": "Right",
-          "wrong": "Wrong",
-          "none": "Not yet"
+          "locked": "This section opens with Premium."
         },
         "source": {
-          "pullTitle": "Pull the source and run it",
-          "pullNote": "The lesson's TypeScript source; starci-next up starts the services with docker compose.",
+          "pullTitle": "Get the source on your machine",
+          "pullNote": "Terminal on your machine · TypeScript + Express, run with Docker",
+          "machineOnline": "{name} · online",
+          "machineNone": "No machine connected yet",
+          "machineNoneNote": "Run the commands below in a terminal, sign in once, then come back to this page. It picks the machine up when the CLI reports.",
+          "upFailed": "The up command failed",
           "architecture": "Architecture",
           "diagram": "Architecture diagram",
           "diagramError": "The diagram could not be drawn",
-          "components": "Components",
+          "components": "Which rule each component keeps",
           "component": "Component",
           "port": "Port",
           "rules": "Rule it keeps",
-          "codeWalk": "Code walk",
+          "codeWalk": "Read the code · where the rule lives",
           "why": "Why",
-          "empty": "No components yet."
+          "empty": "No components yet.",
+          "download": "Download source (.tgz)",
+          "aside": {
+            "inSource": "In the source",
+            "notIncludedTitle": "Not in the source",
+            "notIncluded": "The sample answers and the hidden tests of the apply levels. They stay on the server.",
+            "needsTitle": "You need",
+            "needs": "Node 22, Docker, and ports 3031 to 3033 and 5440 free."
+          },
+          "copy": "Copy"
         },
         "scenarios": {
           "list": "Scenarios",
-          "summary": "{green}/{total} scenarios green",
-          "run": "Run command",
-          "guards": "Turn a guard off to see the fault land",
-          "expected": "A correct system shows",
-          "judged": "Rule it judges",
-          "output": "Result relayed from your machine",
-          "noOutput": "No run yet. Run the command above and the result shows here.",
-          "why": "Why it is red",
-          "invariant": "Rule broken",
-          "hint": "Hint",
-          "askAi": "Ask your AI to fix it",
-          "askAiNote": "Paste this prompt into Claude, ChatGPT or your IDE agent (with the StarCi MCP connected). Then check again.",
-          "prompt": "Prompt for your AI",
-          "check": "Check again",
-          "empty": "This lesson has no scenarios yet.",
+          "summary": "{green}/{total} green",
+          "flow": "Each scenario: run, read “Why it failed”, ask your AI to fix it, check again. The hint opens after the first red run.",
+          "empty": "This lesson has no scenarios.",
+          "machineOnline": "{name} · online",
+          "relayNote": "the result reaches the app over the relay",
+          "machineNone": "No machine online",
+          "machineNoneNote": "Open a terminal on your machine and run starci-next login once. The page picks the machine up when the CLI reports.",
+          "noRun": "never run",
+          "why": "Why it failed",
+          "ruleBroken": "rule broken",
+          "kept": "Rule kept",
+          "hintTitle": "Hint",
+          "hintLocked": "The hint opens after the first red run. Run the scenario, read “Why it failed”, then reach for the hint.",
+          "hintNote": "Using the hint marks the lesson “with help”.",
+          "fixTitle": "Fix",
+          "fixNote": "You do not type code. Ask your own AI (Claude, ChatGPT or an IDE agent) to fix it in the source folder, then check again.",
+          "fixPrompt": "Prompt for your AI",
+          "guardTitle": "Turn rule {rule} off",
+          "guardNote": "--guard {flag} to see the system break without it",
+          "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-next check {lesson} --scenario {scenario}",
+          "ask": {
+            "title": "Stuck? Ask Claude",
+            "badge": "StarCi MCP · this lesson",
+            "note": "Your Claude reads the run and the code through the StarCi connector (my_runs, read_file) and answers. Paste this prompt into a Claude that has the connector.",
+            "connect": "Connect Claude to StarCi"
+          },
           "states": {
             "none": "Not run",
             "running": "Running",
             "passed": "Green",
             "failed": "Red",
-            "guarded": "Red, guard off"
+            "guarded": "Red, rule off"
           },
-          "ranAt": "Run at {at}",
-          "fixPrompt": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to read the latest run and the code involved. Fix the code so the scenario is green without turning any guard off, explain why in short, then run: starci-next check {lesson} --scenario {scenario}"
+          "primary": {
+            "run": "Run scenario",
+            "check": "Check again",
+            "next": "Next scenario",
+            "running": "Running",
+            "failed": "The request did not reach your machine"
+          },
+          "hintReveal": "Show the hint",
+          "fixCopy": "Copy the prompt"
         },
         "apply": {
-          "ladder": "Challenge ladder",
-          "brief": "Brief",
-          "rubric": "Rubric · 100 points",
+          "ladder": "Four levels, opening in turn",
           "critical": "Critical",
-          "essence": "Essence check",
-          "hidden": "Hidden scenarios",
-          "run": "Run the hidden scenarios",
-          "proof": "From practising to proved",
-          "proofSteps": "A run on your machine is practice. Push to GitHub, CI runs the hidden scenarios and GitHub signs it with OIDC: it becomes proved and a verified CV line.",
-          "locked": "This rung opens once every hidden scenario of the rung below is green.",
-          "empty": "This lesson has no challenges yet.",
+          "rubric": "Rubric · 100",
+          "empty": "This lesson has no challenge yet.",
+          "essence": "Design check",
+          "proof": "From Practising to Proved",
+          "proofSteps": {
+            "run": "Hidden run on your machine",
+            "push": "Push to your GitHub",
+            "ci": "CI runs the hidden scenarios",
+            "oidc": "GitHub signs with OIDC",
+            "proved": "Proved"
+          },
+          "proofNote": "Only the signed CI run writes “Proved” to your profile. Running on your machine is practice.",
           "levels": {
             "easy": "Easy",
             "medium": "Medium",
@@ -1051,22 +1049,116 @@
             "insane": "Insane"
           },
           "points": "{points} pts",
-          "hiddenState": "{green}/{total} hidden scenarios green",
-          "notRun": "Not run",
-          "rungStates": {
-            "locked": "Opens after the previous level",
-            "open": "Practising",
-            "green": "Green"
+          "pointsOf": "{earned}/{max}",
+          "noRunYet": "never run",
+          "hiddenGreen": "{green}/{total} hidden scenarios passed · {score}/{max}",
+          "rungs": {
+            "locked": "Opens after the level before",
+            "open": "Ready",
+            "doing": "Practising · {score}/{max}",
+            "passed": "Green"
+          },
+          "lock": {
+            "title": "{level} opens after {below}",
+            "text": "{below} stands at {score}/{max}. This level opens when every hidden scenario of {below} is green."
+          },
+          "primary": {
+            "run": "Run {level}",
+            "rerun": "Run {level} again"
+          },
+          "aside": {
+            "score": "Your score",
+            "scoreNote": "You pass a level when every hidden scenario is green. {max} points in total.",
+            "cvTitle": "Profile line",
+            "cvNote": "Shown on your public profile as a verified line.",
+            "cvNone": "None yet: the profile line appears only after CI proves this level."
           }
         },
-        "locked": {
-          "title": "This part opens with Premium",
-          "plans": "Subscribe to Premium",
-          "parts": {
-            "essence": "The five-question opener and the article of this lesson. Premium opens them.",
-            "source": "Pull the real TypeScript and Express repository, run it, and read where each rule lives in the code. The opener and the article of this lesson stay free.",
-            "scenarios": "Run each fault on your own machine, switch one guard off and see which rule breaks and why. The opener and the article of this lesson stay free.",
-            "apply": "The four-rung challenge ladder, judged by hidden scenarios and an essence check, with your result sent back from your machine. The opener and the article of this lesson stay free."
+        "essence": {
+          "opener": {
+            "eyebrow": "Opener · 5 interview questions, graded at once",
+            "barLabel": "Result of the 5 opener questions",
+            "hint": "Pick an answer: the verdict and the explanation show at once. No free-text box.",
+            "empty": "This lesson has no opener questions.",
+            "correct": "Right answer",
+            "picked": "Your pick",
+            "why": "Why.",
+            "sendFailed": "Your answer could not be sent.",
+            "retry": "Send again",
+            "grading": "Grading your answer…",
+            "readMore": "Read on",
+            "readSection": "Read section {n} closely · {title}",
+            "seeScenario": "See it in the {title} scenario"
+          },
+          "bar": {
+            "question": "Question {n}"
+          },
+          "position": "Question {n}/{total} · {right} right",
+          "positionFirst": "Question {n}/{total} · about 1 minute",
+          "result": {
+            "eyebrow": "Opener · result",
+            "score": "{right}/{total} right",
+            "flagged": "The wrong answers point at {sections}. They are marked \"read closely\". At the end of the lesson you answer the 5 again to compare.",
+            "clean": "You answered all 5 right. The article is below if you want to reread it; at the end you can answer the 5 again.",
+            "retake": "Again: {right}/{total} (before {before}/{total})",
+            "section": "section {n}",
+            "readArticle": "Read the article",
+            "review": "Review the 5 answers",
+            "freeTitle": "You finished part 1",
+            "freeText": "Source, scenarios that run on your machine and the apply ladder are Premium."
+          },
+          "toc": {
+            "title": "Contents",
+            "flagged": "Read closely"
+          },
+          "article": {
+            "eyebrow": "Article · {minutes} min read",
+            "locked": "This section is Premium.",
+            "empty": "This lesson has no article."
+          },
+          "aside": {
+            "journeyTitle": "This lesson has 4 parts",
+            "journeyNote": "Parts 2 to 4 need Premium.",
+            "retakeTitle": "At the end",
+            "retakeText": "Answer the 5 again to see your score before and after reading.",
+            "lockedPart": "Premium"
+          },
+          "shell": {
+            "nextQuestion": "Next question",
+            "questionNumber": "Question {n}",
+            "seeResult": "See the result",
+            "readArticle": "Read the article",
+            "retake": "Answer the 5 again",
+            "upgrade": "Upgrade to Premium",
+            "tabDone": "Done",
+            "tabLocked": "Needs Premium",
+            "position": "Lesson {n}/{total} in {topic}",
+            "facts": "{minutes} min read · {scenarios} scenarios · {levels} apply levels",
+            "factsPlain": "{minutes} min read"
+          },
+          "locked": {
+            "description": "The free plan covers all of part 1 of every lesson. Your opener score and progress stay when you upgrade.",
+            "list": "What this part has",
+            "back": "Back to part 1",
+            "compare": "Compare the two plans",
+            "source": {
+              "title": "Part 2 · Source is a Premium part",
+              "one": "Download the TypeScript + Express source and run it with Docker",
+              "two": "Architecture diagram and a table where each component keeps one rule",
+              "three": "Read the code: each snippet tied to a rule and its real line number"
+            },
+            "scenarios": {
+              "title": "Part 3 · Scenarios are a Premium part",
+              "one": "Run each failure scenario on your own machine through the CLI",
+              "two": "See why it failed: the broken rule, plus a hint after each red run",
+              "three": "Ask your own AI to fix it, then check again until it is green"
+            },
+            "apply": {
+              "title": "Part 4 · Apply is a Premium part",
+              "one": "Four levels, Easy, Medium, Hard, Insane, each opens when the one before is done",
+              "two": "Hidden tests run on your machine, a 100-point scale split per item",
+              "three": "Proved when GitHub CI signs it, then it becomes a line on your profile"
+            }
           }
         }
       }

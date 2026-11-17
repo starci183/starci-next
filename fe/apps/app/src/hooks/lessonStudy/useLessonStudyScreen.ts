@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { navigation } from "@starci-next/i18n/navigation"
 import { phaseOf, useLessonWorkbench, type LessonWorkbench } from "@/hooks/lesson"
 import { evidenceKeyOf, evidenceTextOf } from "@/hooks/lessonEvidence"
-import { useCatalogWords } from "@/hooks/catalog"
+import { useCatalogNames } from "@/hooks/catalog"
 import { useLessonProgress } from "@/hooks/lessonProgress"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useGetLessonSwr, useMutateSaveLessonSimulationSwr } from "@/hooks/swr"
@@ -36,7 +36,7 @@ type LessonStudyRoute = {
 /** The words of a lesson's facts, its level and its group, and the score line. */
 const useStudyWords = (): ((lesson: LessonView) => StudyWords) => {
     const t = useTranslations("app.essentials")
-    const catalog = useCatalogWords()
+    const catalog = useCatalogNames()
     const difficulty = {
         foundation: t("difficulty.foundation"),
         intermediate: t("difficulty.intermediate"),

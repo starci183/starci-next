@@ -1,180 +1,192 @@
-import { lessonPath } from "@/modules/routes"
-import { casesOf, topicsOf } from "@/hooks/catalogTopics"
-import { lessonStatusOf } from "@/hooks/lessonStatus"
+import { lessonStateOf, UNTOUCHED_PARTS } from "@/hooks/lessonParts"
+import { lessonPartPath, topicPath } from "@/modules/routes"
 import {
-    LESSON_GROUP_SOURCES,
-    LESSON_GROUPS,
-    LESSON_SOURCE_TOTAL,
+    ESSENTIAL_PARTS,
     type CatalogFilters,
+    type CatalogGroupView,
     type CatalogLessonView,
-    type CatalogTopics,
     type CatalogView,
     type CatalogWords,
-    type ProgressView,
+    type LessonPartsView,
+    type LessonRowView,
+    type LessonState,
+    type TopicView,
 } from "@/modules/types"
 
 /** The value of a filter that filters nothing. */
 export const ALL_ID = "all"
 
 /** The filters of a reader who chose nothing. */
-export const NO_FILTERS: CatalogFilters = {
-    group: ALL_ID,
-    difficulty: ALL_ID,
-    query: "",
-    language: ALL_ID,
-    provider: ALL_ID,
+export const NO_FILTERS: CatalogFilters = { status: "all", query: "", topic: ALL_ID, plan: "all" }
+
+/** How many lessons of a topic the catalog lists before "see all". */
+const LESSONS_SHOWN = 3
+
+/** What the catalog view is built from. */
+type CatalogInput = {
+    readonly lessons: ReadonlyArray<CatalogLessonView>
+    readonly topics: Readonly<Record<string, TopicView>>
+    readonly parts: Readonly<Record<string, LessonPartsView>>
+    readonly filters: CatalogFilters
+    readonly words: CatalogWords
+    /** The destination of the plans page, the primary of a reader without Premium. */
+    readonly plansHref: string
 }
 
-/** The implementation languages the catalog always offers, in the order the canvas lists them. */
-export const KNOWN_LANGUAGES: ReadonlyArray<string> = ["typescript", "go", "python", "java"]
+/** One lesson with where the learner stands on it. */
+export type Standing = {
+    readonly lesson: CatalogLessonView
+    readonly parts: LessonPartsView
+    readonly state: LessonState
+}
 
-/** The cloud providers the catalog always offers, in the order the canvas lists them. */
-export const KNOWN_PROVIDERS: ReadonlyArray<string> = ["aws", "gcp", "azure", "digitalocean"]
+/** The lessons of one topic in the topic's own order (the lessons its path names first), the rest in catalog order. */
+export const orderedOf = (lessons: ReadonlyArray<Standing>, topic: TopicView | undefined): ReadonlyArray<Standing> => {
+    const order = topic?.path.flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId])) ?? []
+    const rank = (standing: Standing): number => {
+        const index = order.indexOf(standing.lesson.id)
+        return index === -1 ? order.length : index
+    }
+    return lessons.toSorted((a, b) => rank(a) - rank(b))
+}
 
-/** The words of a lesson status: the free line for a reader without Premium, the progress status otherwise. */
-const statusWordsOf = (progress: ProgressView | undefined, words: CatalogWords): string =>
-    words.statuses[words.isPremium ? lessonStatusOf(progress) : "free"]
+/** The state badge of a lesson: the free line for a reader without Premium, else where the learner stands. */
+const badgeOf = (standing: Standing, words: CatalogWords): LessonRowView["badge"] => {
+    if (!words.isPremium) return { label: words.state.free, tone: "neutral" }
+    if (standing.state === "done") return { label: words.state.done, tone: "success" }
+    if (standing.state === "todo") return { label: words.state.todo, tone: "neutral" }
+    if (!standing.parts.isUnderWay && standing.parts.doneParts > 0)
+        return { label: words.state.partDone(standing.parts.doneParts), tone: "neutral" }
+    return { label: words.state.doing(standing.parts.currentPart), tone: "warning" }
+}
 
-/** True when the lesson passes every filter: the group, the difficulty, the words in its title or description, the language and the provider. */
-const matches = (lesson: CatalogLessonView, filters: CatalogFilters): boolean => {
+/** One lesson row, the same on the catalog and on the topic page. */
+export const lessonRowOf = (
+    standing: Standing,
+    words: CatalogWords,
+    isCurrent: boolean,
+    isWithOpener: boolean,
+): LessonRowView => ({
+    id: standing.lesson.id,
+    title: standing.lesson.title,
+    problem: standing.lesson.description,
+    href: lessonPartPath(standing.lesson.topic.id, standing.lesson.id, ESSENTIAL_PARTS[0]),
+    minutes: words.minutes(standing.lesson.minutes),
+    doneParts: standing.parts.doneParts,
+    partsLabel: words.partsLabel(standing.parts.doneParts),
+    state: standing.state,
+    badge: badgeOf(standing, words),
+    isCurrent,
+    opener: isWithOpener ? words.opener(standing.parts.openerRight, standing.parts.openerAnswered) : "",
+})
+
+/** The lessons of the catalog with where the learner stands on each. */
+export const standingsOf = (
+    lessons: ReadonlyArray<CatalogLessonView>,
+    parts: Readonly<Record<string, LessonPartsView>>,
+    isPremium: boolean,
+): ReadonlyArray<Standing> =>
+    lessons.map((lesson) => {
+        const own = parts[lesson.id] ?? UNTOUCHED_PARTS
+        return { lesson, parts: own, state: lessonStateOf(own, isPremium) }
+    })
+
+/** The lesson under way: the first one the learner started and has not finished. */
+export const currentOf = (standings: ReadonlyArray<Standing>): Standing | undefined =>
+    standings.find((each) => each.state === "doing")
+
+/** The address of the part a lesson is on. */
+export const currentPathOf = (standing: Standing): string =>
+    lessonPartPath(
+        standing.lesson.topic.id,
+        standing.lesson.id,
+        ESSENTIAL_PARTS[Math.min(Math.max(standing.parts.currentPart, 1), ESSENTIAL_PARTS.length) - 1] ??
+            ESSENTIAL_PARTS[0],
+    )
+
+/** True when the lesson passes the toolbar: status, topic, plan and the words of its title or problem. */
+const matches = (standing: Standing, filters: CatalogFilters): boolean => {
     const needle = filters.query.trim().toLowerCase()
     return (
-        (filters.group === ALL_ID || lesson.group === filters.group) &&
-        (filters.difficulty === ALL_ID || lesson.difficulty === filters.difficulty) &&
-        (filters.language === ALL_ID || lesson.languages.some((each) => each.toLowerCase() === filters.language)) &&
-        (filters.provider === ALL_ID || lesson.providers.some((each) => each.toLowerCase() === filters.provider)) &&
-        (needle === "" || `${lesson.title} ${lesson.description}`.toLowerCase().includes(needle))
+        (filters.status === "all" || standing.state === filters.status) &&
+        (filters.topic === ALL_ID || standing.lesson.topic.id === filters.topic) &&
+        (filters.plan === "all" ||
+            (filters.plan === "free" ? standing.parts.doneParts === 0 : standing.parts.doneParts > 0)) &&
+        (needle === "" || `${standing.lesson.title} ${standing.lesson.description}`.toLowerCase().includes(needle))
     )
 }
 
-/** True while a search or a filter other than the group is active: the catalog then lists lesson cards instead of topic cards. */
-const isLessonMode = (filters: CatalogFilters): boolean =>
-    filters.query.trim() !== "" ||
-    filters.difficulty !== ALL_ID ||
-    filters.language !== ALL_ID ||
-    filters.provider !== ALL_ID
-
-/** The words of an option: the proper name of a value the catalog knows, the value itself otherwise. */
-const nameOf = (value: string, names: Readonly<Record<string, string>>): string => names[value] ?? value
-
-/**
- * The options of a filter led by the "all" option: the values the catalog always offers, then any other value the lessons carry,
- * each under its proper name. An option never has a blank label.
- */
-const optionsOf = (
-    known: ReadonlyArray<string>,
-    values: ReadonlyArray<string>,
-    names: Readonly<Record<string, string>>,
-    all: string,
-): CatalogView["languages"] => {
-    const extra = [...new Set(values.map((value) => value.toLowerCase()))]
-        .filter((value) => value !== "" && !known.includes(value))
-        .toSorted((a, b) => a.localeCompare(b))
-    return [
-        { id: ALL_ID, label: all },
-        ...[...known, ...extra].map((value) => ({ id: value, label: nameOf(value, names) })),
-    ]
+/** The primary of the band: continue, start the first lesson, or (without Premium) upgrade. */
+const primaryOf = (
+    standings: ReadonlyArray<Standing>,
+    current: Standing | undefined,
+    input: CatalogInput,
+): CatalogView["primary"] => {
+    const { words } = input
+    if (!words.isPremium) return { label: words.upgrade, href: input.plansHref }
+    if (current !== undefined)
+        return { label: words.resume(current.lesson.title, current.parts.currentPart), href: currentPathOf(current) }
+    const next = standings.find((each) => each.state === "todo") ?? standings[0]
+    return next === undefined
+        ? undefined
+        : {
+              label: words.start(next.lesson.title),
+              href: lessonPartPath(next.lesson.topic.id, next.lesson.id, "essence"),
+          }
 }
 
-/** The lesson cards of a group, one per lesson that passed the filters. */
-const cardsOf = (
-    lessons: ReadonlyArray<CatalogLessonView>,
-    progress: Readonly<Record<string, ProgressView>>,
-    words: CatalogWords,
-): CatalogView["tree"][number]["cards"] =>
-    lessons.map((lesson) => ({
-        id: lesson.id,
-        title: lesson.title,
-        description: lesson.description,
-        difficulty: words.difficulty[lesson.difficulty] ?? lesson.difficulty,
-        status: statusWordsOf(progress[lesson.id], words),
-        facts: [
-            words.minutes(lesson.minutes),
-            ...lesson.languages.map((each) => nameOf(each.toLowerCase(), words.languageNames)),
-            ...lesson.providers.map((each) => nameOf(each.toLowerCase(), words.providerNames)),
-        ],
-        href: lessonPath(lesson.topic.id, lesson.id),
-    }))
-
-/** The lesson a Premium learner left half way, with the phase reached. */
-const resumeOf = (
-    lessons: ReadonlyArray<CatalogLessonView>,
-    progress: Readonly<Record<string, ProgressView>>,
-    words: CatalogWords,
-): CatalogView["resume"] => {
-    if (!words.isPremium) return undefined
-    const lesson = lessons.find((each) => lessonStatusOf(progress[each.id]) === "doing")
-    if (lesson === undefined) return undefined
-    return {
-        title: lesson.title,
-        phaseLine: words.resume(progress[lesson.id]?.phase ?? ""),
-        href: lessonPath(lesson.topic.id, lesson.id, progress[lesson.id]?.phase),
-    }
+/** The groups the catalog lists: one per topic with a lesson that passes the toolbar, each with its bar over all its lessons. */
+const groupsOf = (
+    standings: ReadonlyArray<Standing>,
+    current: Standing | undefined,
+    input: CatalogInput,
+): ReadonlyArray<CatalogGroupView> => {
+    const topicIds = [...new Set(standings.map((each) => each.lesson.topic.id))]
+    return topicIds.flatMap((id) => {
+        const all = orderedOf(
+            standings.filter((each) => each.lesson.topic.id === id),
+            input.topics[id],
+        )
+        const shown = all.filter((each) => matches(each, input.filters))
+        if (shown.length === 0) return []
+        const done = all.filter((each) => each.state === "done").length
+        return [
+            {
+                id,
+                title: all[0]?.lesson.topic.title ?? id,
+                progressLabel: input.words.groupProgress(done, all.length),
+                done,
+                total: all.length,
+                href: topicPath(id),
+                lessons: shown
+                    .slice(0, LESSONS_SHOWN)
+                    .map((each) => lessonRowOf(each, input.words, each.lesson.id === current?.lesson.id, false)),
+                moreLabel: shown.length > LESSONS_SHOWN ? input.words.viewAll(all.length) : "",
+            },
+        ]
+    })
 }
 
 /**
- * The catalog the screen draws: the aside counts every published lesson per group; the tree holds one section per group that has a
- * lesson passing the filters, with topic cards by default and lesson cards while a search or a filter is active; the case studies
- * lead the tree while nothing hides them.
+ * The catalog the screen draws: the lessons grouped by topic, the status tabs counted over every lesson (so the three states add up to
+ * the total and match the bars of the groups), the groups that pass the toolbar and the one primary.
  */
-export const catalogViewOf = (
-    lessons: ReadonlyArray<CatalogLessonView>,
-    filters: CatalogFilters,
-    progress: Readonly<Record<string, ProgressView>>,
-    words: CatalogWords,
-    topics: CatalogTopics,
-): CatalogView => {
-    const shown = lessons.filter((lesson) => matches(lesson, filters))
-    const byLesson = isLessonMode(filters)
+export const catalogViewOf = (input: CatalogInput): CatalogView => {
+    const standings = standingsOf(input.lessons, input.parts, input.words.isPremium)
+    const count = (state: LessonState): number => standings.filter((each) => each.state === state).length
+    const current = currentOf(standings)
+    const topicIds = [...new Set(standings.map((each) => each.lesson.topic.id))]
     return {
-        resume: resumeOf(lessons, progress, words),
-        total: lessons.length,
-        facts: [
-            words.published(lessons.length),
-            words.groupCount(LESSON_GROUPS.length),
-            words.sources(LESSON_SOURCE_TOTAL),
-        ],
-        groups: LESSON_GROUPS.map((group) => ({
-            id: group,
-            label: words.groups[group] ?? group,
-            count: lessons.filter((lesson) => lesson.group === group).length,
+        facts:
+            count("done") + count("doing") === 0
+                ? input.words.factsFirst(topicIds.length, standings.length)
+                : input.words.facts(topicIds.length, standings.length, count("done")),
+        primary: primaryOf(standings, current, input),
+        counts: { all: standings.length, todo: count("todo"), doing: count("doing"), done: count("done") },
+        topics: topicIds.map((id) => ({
+            id,
+            label: standings.find((each) => each.lesson.topic.id === id)?.lesson.topic.title ?? id,
         })),
-        languages: optionsOf(
-            KNOWN_LANGUAGES,
-            lessons.flatMap((lesson) => lesson.languages),
-            words.languageNames,
-            words.allLanguages,
-        ),
-        providers: optionsOf(
-            KNOWN_PROVIDERS,
-            lessons.flatMap((lesson) => lesson.providers),
-            words.providerNames,
-            words.allProviders,
-        ),
-        cases: casesOf((filters.group === ALL_ID || filters.group === "casestudy") && !isLessonMode(filters), words),
-        tree: LESSON_GROUPS.flatMap((group) => {
-            const inGroup = shown.filter((lesson) => lesson.group === group)
-            if (inGroup.length === 0) return []
-            const groupTopics = byLesson ? [] : topicsOf(inGroup, topics, progress, words)
-            return [
-                {
-                    id: group,
-                    label: words.groups[group] ?? group,
-                    meta: byLesson ? words.matchCount(inGroup.length) : words.topicCount(groupTopics.length),
-                    topics: groupTopics,
-                    cards: byLesson ? cardsOf(inGroup, progress, words) : [],
-                    pending: byLesson
-                        ? ""
-                        : words.pendingGroup(
-                              Math.max(
-                                  0,
-                                  LESSON_GROUP_SOURCES[group] -
-                                      lessons.filter((lesson) => lesson.group === group).length,
-                              ),
-                          ),
-                },
-            ]
-        }),
+        groups: groupsOf(standings, current, input),
     }
 }
-export { lessonStatusOf } from "@/hooks/lessonStatus"

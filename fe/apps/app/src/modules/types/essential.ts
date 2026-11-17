@@ -34,6 +34,8 @@ export type EssentialScenarioView = {
     readonly invariant: string
     readonly guards: ReadonlyArray<string>
     readonly hint: string
+    /** True while the back end keeps the hint back (it opens after the first red run or on request). */
+    readonly isHintLocked: boolean
 }
 
 /** One rung of the challenge ladder. */
@@ -118,4 +120,32 @@ export type OpenerScoreView = {
         readonly latestCorrect: boolean
         readonly attempts: number
     }>
+}
+
+/** The state of one rung of the ladder as the back end names it. */
+export type ChallengeScoreState = "locked" | "open" | "doing" | "passed"
+
+/** The score of one rubric criterion of a rung. */
+export type ChallengeCriterionScoreView = {
+    readonly id: string
+    readonly points: number
+    readonly earned: number
+    readonly isCritical: boolean
+    readonly passed: boolean
+}
+
+/** The score of one rung: points out of the maximum per criterion; `isLocked` and `isPassed` are the back end's answer, never recomputed. */
+export type ChallengeScoreView = {
+    readonly challengeId: string
+    readonly level: ChallengeLevel
+    readonly state: ChallengeScoreState
+    readonly score: number
+    readonly maxScore: number
+    readonly isLocked: boolean
+    readonly isPassed: boolean
+    readonly unlocksNext: boolean
+    readonly hiddenGreen: number
+    readonly hiddenTotal: number
+    readonly isCriticalMet: boolean
+    readonly criteria: ReadonlyArray<ChallengeCriterionScoreView>
 }

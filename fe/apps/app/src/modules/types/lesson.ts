@@ -183,6 +183,8 @@ export type ProgressView = {
     readonly total: number
     /** ISO time the lesson was completed; empty before. */
     readonly completedAt: string
+    /** The article sections the learner marked read; a flagged section in the list clears its "nên đọc kỹ" mark. */
+    readonly readSectionIds: ReadonlyArray<string>
     /** The six phases in order: done once the learner answered all their activities. */
     readonly phases: ReadonlyArray<{
         readonly phase: string
