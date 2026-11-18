@@ -1,0 +1,14 @@
+{"data":{},"findings":[],"hash":"daacd94012d64f9d6396b79d746f5af9f19a9f2750cfc40da2abe5cdc73d8e7d","path":"statics/illustrations/empty/essentials-empty.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"62f2c103f952a5517d831c48b0f35a69c8bbc3ce04103d2f8b77c2e2e70fa5ac","path":"statics/illustrations/empty/essentials-empty.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"655a56803c1d4cfdeed151677115d3e810614b5f27691d80a2356d652e62c746","path":"statics/illustrations/empty/hoc-first-visit.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"361d660a11710e71db12b8d83b4a93f3a881198ebc23dab94c3603c721b43b5a","path":"statics/illustrations/empty/hoc-first-visit.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b9cdd028e33f0e0c3c016480b3b3915f2dafd66ca477013c03d7d140fb562f17","path":"statics/illustrations/empty/kich-ban-no-machine.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6eecd3d8715b521b34805a948541387b1ecadaf58e376e4e2dbe696078909ffd","path":"statics/illustrations/empty/kich-ban-no-machine.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"003b2d1999ade7b460fe24cbc7d5f4d68ee6b225d9c7af89ff052b4c62b4213c","path":"statics/illustrations/errors/not-found.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1562541bd753f20022b40c16d03611b0f7328f94fe739dd8540f95334a103cf6","path":"statics/illustrations/errors/not-found.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"13dba355660cd5f8c2e180c9cddf852ca293651f9db9337ff9a17e814f7725bf","path":"statics/illustrations/errors/server-error.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"39f8d868f827cadf26fe957a156d7642ba533b42fd565f25a7d9b18aea68dfcc","path":"statics/illustrations/errors/server-error.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"21a8fdd284eb9cb48a3b454da420ce807ed96b213093dabc59f6e5452e68d98e","path":"statics/illustrations/states/premium-activated.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b2aa69a686796de76fa07cfd6b09651973c13eb0764f41045d347954bfcd48b7","path":"statics/illustrations/states/premium-activated.prompt.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1100b146fae13cdc799b2f21de7e60fb03e7dbb66a3f527d3ea7fba479213f7e","path":"statics/illustrations/states/projects-paywall.png","step":"file-rules"}
+{"data":{},"findings":[],"hash":"fafebc7685aa9477cc4505fae449704437d244d965e9d86d6ad2d4dcb50177ab","path":"statics/illustrations/states/projects-paywall.prompt.yaml","step":"file-rules"}

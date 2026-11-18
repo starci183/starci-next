@@ -185,3 +185,41 @@ WHERE learner_id = $1::uuid AND lesson_id = ANY($2::text[]) AND activity_id LIKE
 GROUP BY lesson_id, activity_id
 ORDER BY lesson_id, activity_id
 LIMIT $3::int`
+
+/** Records that a learner asked for the hint of a scenario; a repeat changes nothing ($1 learner, $2 lesson, $3 scenario, $4 now). */
+export const INSERT_HINT_USE: ReturnType<typeof sql> =
+    sql`INSERT INTO lesson_hint_uses (learner_id, lesson_id, scenario_id, used_at)
+VALUES ($1::uuid, $2::text, $3::text, $4::timestamptz)
+ON CONFLICT (learner_id, lesson_id, scenario_id) DO NOTHING`
+
+/** The scenarios whose hint a learner asked for, in some lessons ($1 learner, $2 lessons, $3 row bound). */
+export const SELECT_HINT_USES: ReturnType<typeof sql> = sql`SELECT lesson_id, scenario_id
+FROM lesson_hint_uses
+WHERE learner_id = $1::uuid AND lesson_id = ANY($2::text[])
+ORDER BY lesson_id, scenario_id
+LIMIT $3::int`
+
+/** Records that a learner marked a section as read; a repeat changes nothing ($1 learner, $2 lesson, $3 section, $4 now). */
+export const INSERT_SECTION_READ: ReturnType<typeof sql> =
+    sql`INSERT INTO lesson_section_reads (learner_id, lesson_id, section_id, read_at)
+VALUES ($1::uuid, $2::text, $3::text, $4::timestamptz)
+ON CONFLICT (learner_id, lesson_id, section_id) DO NOTHING`
+
+/** The sections a learner marked as read in a lesson ($1 learner, $2 lesson, $3 row bound). */
+export const SELECT_SECTION_READS: ReturnType<typeof sql> = sql`SELECT section_id
+FROM lesson_section_reads
+WHERE learner_id = $1::uuid AND lesson_id = $2::text
+ORDER BY read_at, section_id
+LIMIT $3::int`
+
+/**
+ * Whether the newest graded answer of every challenge essence question of some lessons is right ($1 learner, $2 lessons, $3 row
+ * bound); the activity id is `challenge.<challenge id>.<question id>`.
+ */
+export const SELECT_CHALLENGE_CHOICES: ReturnType<typeof sql> = sql`SELECT lesson_id, activity_id,
+    (array_agg((result ->> 'correct')::boolean ORDER BY submitted_at DESC, revision DESC))[1] AS latest_correct
+FROM lesson_attempts
+WHERE learner_id = $1::uuid AND lesson_id = ANY($2::text[]) AND activity_id LIKE 'challenge.%' AND status = 'graded'
+GROUP BY lesson_id, activity_id
+ORDER BY lesson_id, activity_id
+LIMIT $3::int`

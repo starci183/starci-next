@@ -15,6 +15,8 @@ export type ReviewCardWork = {
     readonly flipped: ReviewFlipView | undefined
     readonly issue: ReviewCardIssue
     readonly isGradeFailed: boolean
+    /** True when the item was graded on another device meanwhile. */
+    readonly isConflict: boolean
     readonly lastGrade: ReviewGrade | undefined
 }
 
@@ -27,6 +29,7 @@ const freshWork = (step: number): ReviewCardWork => ({
     flipped: undefined,
     issue: "none",
     isGradeFailed: false,
+    isConflict: false,
     lastGrade: undefined,
 })
 

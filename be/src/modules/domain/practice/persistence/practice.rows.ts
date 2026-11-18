@@ -222,6 +222,30 @@ export interface PatternCompletionRow {
     viewed_count: number
 }
 
+/** One graded submit of a learner with the title of its problem. */
+export interface SubmissionHistoryRow {
+    /** The submission id. */
+    submission_id: string
+    /** The problem slug. */
+    problem_id: string
+    /** The problem title in the locale. */
+    title: string
+    /** The language id. */
+    language: string
+    /** The stored verdict. */
+    verdict: string
+    /** How many tests passed. */
+    passed_count: number
+    /** How many tests the submission has. */
+    total_count: number
+    /** The slowest test time, or null. */
+    time_ms: number | null
+    /** The highest memory, or null. */
+    memory_kb: number | null
+    /** When it was sent. */
+    created_at: Date
+}
+
 /** The language a learner solved most problems of a pattern in. */
 export interface PatternLanguageRow {
     /** The language id. */

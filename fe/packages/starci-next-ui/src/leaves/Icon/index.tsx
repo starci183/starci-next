@@ -35,6 +35,17 @@ export const LockIcon = (props: LockIconProps) => (
     <LockClosedIcon width={16} height={16} role="img" aria-label={props.label} />
 )
 
+/** The padlock glyph, for the icon tile of a notice about a part that needs Premium. */
+export const LockGlyph = LockClosedIcon
+
+/** The check that marks a finished part, named for assistive technology by `label`. */
+type DoneIconProps = LockIconProps
+
+/** The check that marks a finished part, named for assistive technology by `label`. */
+export const DoneIcon = (props: DoneIconProps) => (
+    <CheckIcon width={16} height={16} role="img" aria-label={props.label} />
+)
+
 /** What the language glyph takes from the icon carrier that draws it. */
 type LanguageGlyphProps = IconSourceProps
 

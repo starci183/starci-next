@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import {
     Badge,
     Button,
@@ -11,7 +12,6 @@ import {
     Terminal,
     Text,
     type ListRowData,
-    type TableRowData,
 } from "@starci/grammar/common"
 import { RichMarkdown, SlotView } from "@starci-next/ui"
 import type {
@@ -45,8 +45,11 @@ const stageRowOf = (stage: HarnessStageItemView): ListRowData => ({
     ...(stage.isSelected ? { state: "informative" as const } : {}),
 })
 
+/** A table row: its id and the cell of each column by column id. */
+type CellsRow = { readonly id: string; readonly cells: Readonly<Record<string, ReactNode>> }
+
 /** One e2e case as a table row: its title, its outcome chip and why it failed. */
-const caseRowOf = (each: HarnessCaseItemView): TableRowData => ({
+const caseRowOf = (each: HarnessCaseItemView): CellsRow => ({
     id: each.id,
     cells: {
         case: <Text>{each.title}</Text>,

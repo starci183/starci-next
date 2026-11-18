@@ -1,11 +1,11 @@
-import { Alert, Button, Cluster, Input, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, Cluster, Input, Section, Stack, Text } from "@starci/grammar/common"
 import type { DeployCardProps } from "../ProjectAside/types"
 
 /** The form that saves the deployed address and asks the server to probe it. */
 export const DeployCard = (props: DeployCardProps) => {
     const { labels, busy, fields, view } = props
     return (
-        <SurfaceCard kind="body" label={labels.deployTitle} isLoading={props.isLoading}>
+        <Section title={labels.deployTitle} isLoading={props.isLoading}>
             <Stack gap="row">
                 <Text tone="muted">{labels.deployText}</Text>
                 {fields.issueWords === "" ? null : <Alert tone="negative" title={fields.issueWords} />}
@@ -32,6 +32,6 @@ export const DeployCard = (props: DeployCardProps) => {
                     </Button>
                 </Cluster>
             </Stack>
-        </SurfaceCard>
+        </Section>
     )
 }

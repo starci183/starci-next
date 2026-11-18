@@ -1,210 +1,276 @@
 import {
-    Alert,
     Badge,
+    BarChart,
     Button,
-    Cluster,
+    ChoiceChips,
+    Dialog,
     EmptyNotice,
     Grid,
-    Link,
+    NumberField,
     Page,
-    ProgressCircle,
     Section,
     Stack,
     Text,
+    type ListRowData,
 } from "@starci/grammar/common"
-import { ART, SlotView, UpsellRow } from "@starci-next/ui"
-import type { DataSlot, ReviewTodayLabels, ReviewTodayScreen, SlotLabels } from "@/modules/types"
+import { SlotView } from "@starci-next/ui"
+import type { ReviewHubScreen, ReviewHubView } from "@/hooks/reviewHub"
 
-/** The fake screen with the geometry of a settled one, drawn as a skeleton while the first read runs. */
-export const REVIEW_TODAY_PLACEHOLDER: ReviewTodayScreen = {
-    state: "ready",
-    goalPercent: 40,
-    goalText: "xxxxxxxx",
-    dueLine: "xxxxxxxxxxxxxxxx",
-    newLine: "xxxxxxxxxxxx",
-    splitCards: "xxxxxxxx",
-    splitRetrieval: "xxxxxxxx",
-    doneBody: "xxxxxxxx",
-    lockedBody: undefined,
-    canStartNew: false,
-    rows: [1, 2, 3].map((index) => ({
-        id: `placeholder-${index}`,
-        title: "xxxxxxxxxxxxxx",
-        meta: "xxxxxxxx",
-        badge: "xxxxxx",
-        badgeTone: "muted" as const,
-        isLocked: false,
-    })),
-    sourceDeck: "xx",
-    sourceLesson: "xx",
-}
-
-/** Props for {@link ReviewTodayBase}. */
+/** Props for {@link ReviewTodayBase}: the resolved screen of the day. */
 export type ReviewTodayBaseProps = {
-    readonly props: {
-        readonly slot: DataSlot<ReviewTodayScreen>
-        readonly placeholder: ReviewTodayScreen
-        readonly slotLabels: SlotLabels
-        readonly labels: ReviewTodayLabels
-        readonly sessionHref: string
-        readonly decksHref: string
-        readonly essentialsHref: string
-        readonly plansHref: string
-        readonly hubHref: string
-    }
-    readonly on: { readonly retry: () => void }
+    readonly props: ReviewHubScreen["props"]
+    readonly on: ReviewHubScreen["on"]
 }
 
-/** The props of the pieces of the screen: the resolved screen, the shared props and whether it is a skeleton. */
+/** What a piece needs: the screen, the day and whether it is a skeleton. */
 type PieceProps = {
-    readonly screen: ReviewTodayScreen
-    readonly base: ReviewTodayBaseProps["props"]
+    readonly screen: ReviewTodayBaseProps
+    readonly view: ReviewHubView
     readonly isLoading: boolean
 }
 
-/** The state of the day when there is something to review: counts, the split and the way in. */
-const Summary = (props: PieceProps) => (
-    <Section title={props.base.labels.dueTitle} headingLevel={2} isLoading={props.isLoading}>
-        <Stack gap="row">
-            <Cluster gap="inline" wrap align="center">
-                <ProgressCircle label={props.base.labels.goalLabel} value={props.screen.goalPercent} size="lg" />
-                <Stack gap="identity">
-                    <Text isStrong>{props.base.labels.goalLabel}</Text>
-                    <Text tone="muted">{props.screen.goalText}</Text>
-                </Stack>
-            </Cluster>
-            <Text as="p" isStrong>
-                {props.screen.dueLine}
-            </Text>
-            <Cluster gap="inline" wrap>
-                <Badge tone="neutral">{props.screen.splitCards}</Badge>
-                <Badge tone="accent">{props.screen.splitRetrieval}</Badge>
-            </Cluster>
-            {props.screen.newLine === undefined ? null : <Text tone="muted">{props.screen.newLine}</Text>}
-            <Cluster gap="inline" wrap>
-                <Button intent="commit" href={props.base.sessionHref}>
-                    {props.screen.canStartNew ? props.base.labels.startNew : props.base.labels.start}
-                </Button>
-                <Button intent="alternative" href={props.base.decksHref}>
-                    {props.base.labels.decks}
-                </Button>
-            </Cluster>
-        </Stack>
-    </Section>
+/** The command of the header: start the cards, or the neutral way on. */
+const HeaderAction = (props: { readonly primary: NonNullable<ReviewHubScreen["props"]["header"]["primary"]> }) => (
+    <Button intent={props.primary.intent} href={props.primary.href}>
+        {props.primary.label}
+    </Button>
 )
 
-/** The card shown when nothing is left: either the goal is met or nothing is due. */
-const Rest = (props: PieceProps) => (
-    <Section
-        title={props.screen.state === "done" ? props.base.labels.doneTitle : props.base.labels.emptyTitle}
-        headingLevel={2}
-        isLoading={props.isLoading}
-    >
-        <Stack gap="row">
-            {props.screen.state === "done" ? (
-                <Text as="p">{props.screen.doneBody}</Text>
-            ) : (
+/** The next cards as one flat list; a day with nothing due says so and points to the next step. */
+const Queue = (props: PieceProps) => {
+    const { labels } = props.screen.props
+    const { view } = props
+    const rows: ReadonlyArray<ListRowData> = view.rows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        badges: [{ label: row.badge, tone: row.tone }],
+    }))
+    if (view.state === "done" || view.state === "nothing") {
+        const isDone = view.state === "done"
+        return (
+            <Section title={labels.listTitle} headingLevel={2} isLoading={props.isLoading}>
                 <EmptyNotice
-                    artwork={{ src: ART.remember.src, alt: "", assetSlot: "review-empty" }}
-                    message={props.base.labels.emptyTitle}
-                    description={props.base.labels.emptyBody}
+                    message={isDone ? labels.doneTitle : labels.nothingTitle}
+                    description={isDone ? labels.doneBody : labels.nothingBody}
+                    {...(isDone ? {} : { actionLabel: labels.nothingAction, actionHref: "/essentials" })}
+                    frame="frameless"
                 />
-            )}
-            <Cluster gap="inline" wrap>
-                <Button intent="commit" href={props.base.decksHref}>
-                    {props.base.labels.decks}
-                </Button>
-                <Button intent="alternative" href={props.base.essentialsHref}>
-                    {props.base.labels.emptyEssentials}
-                </Button>
-            </Cluster>
-        </Stack>
-    </Section>
-)
+            </Section>
+        )
+    }
+    return (
+        <Section
+            kind="list"
+            title={labels.listTitle}
+            headingLevel={2}
+            count={view.total}
+            isLoading={props.isLoading}
+            items={rows}
+            empty={labels.nothingTitle}
+            caption={view.total > view.rows.length ? view.moreLine : labels.listLabel}
+        />
+    )
+}
 
-/** The queue of the day: every row with where it comes from; locked rows say so. */
-const Queue = (props: PieceProps) => (
-    <Section title={props.base.labels.queueTitle} headingLevel={2} isLoading={props.isLoading}>
-        <Stack gap="row">
-            {props.screen.rows.map((row) => (
-                <Cluster key={row.id} gap="inline" wrap align="center" justify="between">
-                    <Stack gap="identity">
-                        <Text isStrong overflow="clamp-2">
-                            {row.title}
-                        </Text>
+/** The chart of how much the learner remembers by the number of the review, with its one sentence. */
+const Recall = (props: PieceProps) => {
+    const { labels } = props.screen.props
+    return (
+        <Section title={labels.recallTitle} headingLevel={2} isLoading={props.isLoading}>
+            <Stack gap="row">
+                <BarChart
+                    label={labels.recallLabel}
+                    bars={props.view.bars}
+                    empty={labels.recallEmpty}
+                    isLoading={props.isLoading}
+                />
+                <Text size="sm" tone="muted">
+                    {labels.recallNote}
+                </Text>
+            </Stack>
+        </Section>
+    )
+}
+
+/** The first visit: how review works and the goal to pick. */
+const First = (props: PieceProps) => {
+    const { labels, goalOptions, goalChoice } = props.screen.props
+    return (
+        <Stack gap="region">
+            <Section title={labels.howTitle} headingLevel={2} isLoading={props.isLoading}>
+                <Text as="p">{labels.howBody}</Text>
+            </Section>
+            <Section title={labels.goalFirstTitle} headingLevel={2} isLoading={props.isLoading}>
+                <Stack gap="row">
+                    <ChoiceChips
+                        label={labels.goalOptionsLabel}
+                        isLabelHidden
+                        options={goalOptions.filter((option) => option.value !== "other")}
+                        value={goalChoice}
+                        onValueChange={props.screen.on.quickGoal}
+                        empty={labels.goalFirstTitle}
+                    />
+                    <Text size="sm" tone="muted">
+                        {labels.goalFirstNote}
+                    </Text>
+                </Stack>
+            </Section>
+        </Stack>
+    )
+}
+
+/** The right column: the daily goal with its dialog and the decks of the learner. */
+const Rail = (props: PieceProps) => {
+    const { labels } = props.screen.props
+    const { view } = props
+    return (
+        <Stack gap="region">
+            {view.state === "first" ? null : (
+                <Section
+                    title={labels.goalTitle}
+                    headingLevel={2}
+                    isLoading={props.isLoading}
+                    action={
+                        <Button intent="neutral" size="sm" onPress={props.screen.on.openGoal}>
+                            {labels.goalChange}
+                        </Button>
+                    }
+                >
+                    <Stack gap="row">
+                        <Text isStrong>{view.goalLine}</Text>
                         <Text size="sm" tone="muted">
-                            {row.isLocked ? props.base.labels.lockedTitle : row.meta}
+                            {view.streakLine}
                         </Text>
                     </Stack>
-                    <Badge tone={row.badgeTone}>{row.badge}</Badge>
-                </Cluster>
-            ))}
-        </Stack>
-    </Section>
-)
-
-/** The well: the summary or the rest card, the queue and the Premium notice. */
-const Primary = (props: PieceProps) => (
-    <Stack gap="region">
-        {props.screen.state === "ready" ? <Summary {...props} /> : <Rest {...props} />}
-        {props.screen.rows.length === 0 ? null : <Queue {...props} />}
-        {props.screen.lockedBody === undefined ? null : (
-            <Stack gap="row">
-                <Alert tone="informative" title={props.base.labels.lockedTitle} description={props.screen.lockedBody} />
-                <UpsellRow
-                    label={props.base.labels.upsell}
-                    note={props.base.labels.upsellNote}
-                    href={props.base.plansHref}
-                />
-            </Stack>
-        )}
-    </Stack>
-)
-
-/** The aside: where the items come from, and the link to the streak on the Learn page. */
-const Rail = (props: PieceProps) => (
-    <Stack gap="region">
-        <Section title={props.base.labels.sourcesTitle} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
-                <Text>{props.screen.sourceDeck}</Text>
-                <Text>{props.screen.sourceLesson}</Text>
-            </Stack>
-        </Section>
-        <Section title={props.base.labels.hubLink} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
-                <Text size="sm" tone="muted">
-                    {props.base.labels.streakNote}
-                </Text>
-                <Link variant="plain" href={props.base.hubHref}>
-                    {props.base.labels.hubLink}
-                </Link>
-            </Stack>
-        </Section>
-    </Stack>
-)
-
-/** Today's review: the goal ring, what is due, the queue and the way into the session and the decks. */
-export const ReviewTodayBase = (props: ReviewTodayBaseProps) => (
-    <Page
-        header={{
-            title: props.props.labels.pageTitle,
-            titleScale: "standard",
-            description: props.props.labels.intro,
-            breadcrumbs: "root",
-        }}
-    >
-        <SlotView
-            slot={props.props.slot}
-            placeholder={props.props.placeholder}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(screen, isLoading) => (
-                <Grid
-                    kind="main-rail"
-                    primary={<Primary screen={screen} base={props.props} isLoading={isLoading} />}
-                    rail={<Rail screen={screen} base={props.props} isLoading={isLoading} />}
-                />
+                </Section>
             )}
-        />
-    </Page>
-)
+            <Section
+                kind="list"
+                title={labels.decksTitle}
+                headingLevel={2}
+                count={view.decks.length}
+                isLoading={props.isLoading}
+                action={
+                    <Button intent="neutral" size="sm" href={props.screen.props.decksHref}>
+                        {labels.decksManage}
+                    </Button>
+                }
+                items={view.decks.map((deck) => ({
+                    id: deck.id,
+                    title: deck.title,
+                    description: deck.description,
+                    href: deck.href,
+                }))}
+                empty={labels.decksEmpty}
+            />
+        </Stack>
+    )
+}
+
+/** The dialog that changes the daily goal. */
+const GoalDialog = (props: ReviewTodayBaseProps) => {
+    const { labels, goalOptions, goalChoice, goalCustom, isGoalOpen, isGoalSaving, isGoalFailed } = props.props
+    return (
+        <Dialog
+            title={labels.dialogTitle}
+            description={labels.dialogBody}
+            isOpen={isGoalOpen}
+            onOpenChange={(isOpen) => {
+                if (!isOpen) props.on.closeGoal()
+            }}
+            footer={
+                <>
+                    <Button intent="dismiss" onPress={props.on.closeGoal}>
+                        {labels.dialogCancel}
+                    </Button>
+                    <Button intent="commit" isPending={isGoalSaving} onPress={props.on.saveGoal}>
+                        {labels.dialogSave}
+                    </Button>
+                </>
+            }
+        >
+            <Stack gap="row">
+                <ChoiceChips
+                    label={labels.goalOptionsLabel}
+                    isLabelHidden
+                    options={goalOptions}
+                    value={goalChoice}
+                    onValueChange={props.on.chooseGoal}
+                    empty={labels.dialogTitle}
+                />
+                {goalChoice === "other" ? (
+                    <NumberField
+                        label={labels.dialogOtherLabel}
+                        value={goalCustom}
+                        minValue={0}
+                        maxValue={50}
+                        onValueChange={props.on.setCustom}
+                    />
+                ) : null}
+                {isGoalFailed ? <Badge tone="danger">{labels.saveFailed}</Badge> : null}
+            </Stack>
+        </Dialog>
+    )
+}
+
+/**
+ * Draws Ôn tập today: the header with the one command (start the due cards), the strip of three numbers, the next cards as a flat list
+ * and the recall chart; beside them the daily goal and the decks of the learner. A day with nothing due or already done says so.
+ */
+export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
+    const { header } = props.props
+    return (
+        <Page
+            isLoading={"isLoading" in props.props.slot}
+            header={{
+                title: header.title,
+                titleScale: "standard",
+                breadcrumbs: "root",
+                meta: header.meta,
+                ...(header.primary === null ? {} : { actions: <HeaderAction primary={header.primary} /> }),
+            }}
+        >
+            <SlotView
+                slot={props.props.slot}
+                placeholder={props.props.placeholder}
+                labels={props.props.slotLabels}
+                errorDescription={props.props.labels.errorText}
+                onRetry={props.on.retry}
+                render={(view, isLoading) => {
+                    const piece: PieceProps = { screen: props, view, isLoading }
+                    return (
+                        <Stack gap="region">
+                            {view.state === "first" ? null : (
+                                <Section
+                                    kind="figures"
+                                    ariaLabel={props.props.labels.figuresLabel}
+                                    items={view.figures.map((figure) => ({
+                                        id: figure.id,
+                                        term: figure.term,
+                                        value: figure.value,
+                                    }))}
+                                />
+                            )}
+                            <Grid
+                                kind="main-rail"
+                                primary={
+                                    view.state === "first" ? (
+                                        <First {...piece} />
+                                    ) : (
+                                        <Stack gap="region">
+                                            <Queue {...piece} />
+                                            <Recall {...piece} />
+                                        </Stack>
+                                    )
+                                }
+                                rail={<Rail {...piece} />}
+                            />
+                            <GoalDialog {...props} />
+                        </Stack>
+                    )
+                }}
+            />
+        </Page>
+    )
+}

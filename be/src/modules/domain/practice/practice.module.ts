@@ -2,6 +2,7 @@ import { Module, type DynamicModule, type Provider } from "@nestjs/common"
 import { NoopStreakClient } from "./noop-streak.client"
 import { practiceDirectory } from "./practice-directory.client"
 import { PracticeHintService } from "./practice-hint.service"
+import { PracticeHistoryService } from "./practice-history.service"
 import { PracticeImportService } from "./practice-import.service"
 import { PracticeJudgeLanesService } from "./practice-judge-lanes.service"
 import { PracticeReadService } from "./practice-read.service"
@@ -29,6 +30,7 @@ export class PracticeModule extends ConfigurableModuleClass {
                 PracticeJudgeLanesService,
                 PracticeImportService,
                 PracticeReadService,
+                PracticeHistoryService,
                 PracticeSubmissionService,
                 PracticeHintService,
                 PracticeSolutionService,
@@ -36,6 +38,7 @@ export class PracticeModule extends ConfigurableModuleClass {
             exports: [
                 PracticeImportService,
                 PracticeReadService,
+                PracticeHistoryService,
                 PracticeSubmissionService,
                 PracticeHintService,
                 PracticeSolutionService,

@@ -73,6 +73,10 @@ export const lessonPath = (topic: string, lesson: string, phase?: string): strin
     return phase === undefined ? base : `${base}?phase=${encodeURIComponent(phase)}`
 }
 
+/** The path of one part of a lesson (`/essentials/{topic}/{lesson}?part=source`). */
+export const lessonPartPath = (topic: string, lesson: string, part: string): string =>
+    `${topicPath(topic)}/${encodeURIComponent(lesson)}?part=${encodeURIComponent(part)}`
+
 /**
  * The sign-in address that sends the reader back to `returnTo` (a path with its query, already in the reader's locale) once
  * signed in: `signInPath` alone when `returnTo` is not a path the doors accept (the sign-in screen itself, a foreign address).
@@ -119,3 +123,6 @@ export const harnessDocPath = (slug: string): string => `${HARNESS_ROUTES.docs}/
 /** The path of one concept of a milestone: its evidence page. */
 export const projectConceptPath = (projectId: string, milestoneId: string, conceptId: string): string =>
     `${projectMilestonePath(projectId, milestoneId)}/${encodeURIComponent(conceptId)}`
+
+/** The path of one flashcard deck of Review. */
+export const reviewDeckPath = (deckId: string): string => `${APP_ROUTES.reviewDecks}/${encodeURIComponent(deckId)}`

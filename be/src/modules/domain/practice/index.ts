@@ -17,7 +17,15 @@ export { PracticeModule } from "./practice.module"
 export { PracticeReadService } from "./practice-read.service"
 export { PracticeSolutionService } from "./practice-solution.service"
 export { PracticeSubmissionService } from "./practice-submission.service"
-export { toNextWire, toProblemItemWires, toProblemWire, toSolutionWire, toSubmissionWire } from "./practice-wire.mapper"
+export {
+    toNextWire,
+    toProblemItemWires,
+    toProblemWire,
+    toSolutionWire,
+    toSubmissionsPageWire,
+    toSubmissionWire,
+} from "./practice-wire.mapper"
+export { PracticeHistoryService } from "./practice-history.service"
 export { StreakServiceClient } from "./practice-streak.client"
 export { practiceEntities, practiceMigrations } from "./persistence/connection"
 export type {
@@ -33,5 +41,7 @@ export type {
     PracticeReadinessView,
     PracticeSolutionView,
     PracticeSourceFile,
+    PracticeSubmissionItemView,
+    PracticeSubmissionsPageView,
     PracticeSubmissionView,
 } from "./practice.contracts"

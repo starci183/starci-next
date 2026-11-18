@@ -229,17 +229,12 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
     )
 }
 
-/** One item as a thin-bordered card; one the learner can still edit sits on the soft tint. */
-const ExperienceCard = (props: ExperienceCardProps) =>
-    props.card.edit === undefined ? (
-        <SurfaceCard ariaLabel={props.card.title} height="fill">
-            <ExperienceCardBody {...props} />
-        </SurfaceCard>
-    ) : (
-        <SurfaceCard ariaLabel={props.card.title} height="fill" treatment="soft">
-            <ExperienceCardBody {...props} />
-        </SurfaceCard>
-    )
+/** One item as a thin-bordered card. */
+const ExperienceCard = (props: ExperienceCardProps) => (
+    <SurfaceCard ariaLabel={props.card.title} height="fill">
+        <ExperienceCardBody {...props} />
+    </SurfaceCard>
+)
 
 /** What the ready list is drawn from. */
 type ReadyProps = {

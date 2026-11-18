@@ -17,6 +17,8 @@ export const RELAY_MESSAGES: MessageBundle = {
         "errors.RELAY_CHALLENGE_LOCKED": "Bậc thử thách này chưa mở: hãy làm xanh hết kịch bản ẩn của bậc dưới trước.",
         "errors.RELAY_PROJECT_PREMIUM_REQUIRED":
             "Chạy dự án cần Premium. Dự án cũ vẫn xem được, chỉ không nhận thêm lần chạy.",
+        "errors.RELAY_DEVICE_OFFLINE":
+            "Chưa có máy nào đang trực tuyến để chạy kịch bản. Mở starci-next listen trên máy của bạn rồi thử lại.",
     },
     en: {
         "errors.RELAY_CODE_NOT_FOUND": "The pairing code is wrong or has expired. Run starci-next login again.",
@@ -33,5 +35,7 @@ export const RELAY_MESSAGES: MessageBundle = {
             "This challenge tier is locked: turn every hidden scenario of the tier below green first.",
         "errors.RELAY_PROJECT_PREMIUM_REQUIRED":
             "Running a project needs Premium. An older project stays readable but takes no new runs.",
+        "errors.RELAY_DEVICE_OFFLINE":
+            "No paired machine is online to run the scenario. Start starci-next listen on your machine and try again.",
     },
 }

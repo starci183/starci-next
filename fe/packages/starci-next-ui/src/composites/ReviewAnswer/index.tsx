@@ -10,34 +10,51 @@ type ReviewAnswerProps = {
     readonly on: Pick<ReviewItemCommands, "grade" | "retry">
 }
 
-/** The revealed answer with its muted sections and the four grade buttons. */
+/** The revealed answer: what the learner remembered next to it, then the four grades, each with its next interval right under it. */
 export const ReviewAnswer = (props: ReviewAnswerProps) => {
     const markdownLabels = { diagram: props.labels.diagram, diagramError: props.labels.diagramError }
     return (
         <Stack gap="row">
-            {props.back.parts.map((part) => (
-                <Stack key={part.id} gap="inline">
-                    {part.title === undefined ? null : (
-                        <Text size="sm" tone="muted" isStrong>
-                            {part.title}
-                        </Text>
-                    )}
-                    <RichMarkdown source={part.markdown} labels={markdownLabels} />
+            {props.back.note === "" ? null : (
+                <Stack gap="identity">
+                    <Text size="sm" tone="muted" isStrong>
+                        {props.labels.recalled}
+                    </Text>
+                    <Text>{props.back.note}</Text>
                 </Stack>
-            ))}
-            <Text size="sm" tone="muted">
+            )}
+            <Stack gap="identity">
+                <Text size="sm" tone="muted" isStrong>
+                    {props.labels.answerTitle}
+                </Text>
+                {props.back.parts.map((part) => (
+                    <Stack key={part.id} gap="identity">
+                        {part.title === undefined ? null : (
+                            <Text size="sm" tone="muted">
+                                {part.title}
+                            </Text>
+                        )}
+                        <RichMarkdown source={part.markdown} labels={markdownLabels} />
+                    </Stack>
+                ))}
+            </Stack>
+            <Text size="sm" tone="muted" isStrong>
                 {props.labels.rateQuestion}
             </Text>
             <Cluster gap="inline" wrap label={props.labels.rateGroup}>
                 {props.back.grades.map((each) => (
-                    <Button
-                        key={each.grade}
-                        intent={each.grade === "AGAIN" ? "neutral" : "alternative"}
-                        isDisabled={props.item.isGrading}
-                        onPress={() => props.on.grade(each.grade)}
-                    >
-                        {`${each.key} · ${each.label} · ${each.interval}`}
-                    </Button>
+                    <Stack key={each.grade} gap="identity" align="center">
+                        <Button
+                            intent={each.grade === "GOOD" ? "commit" : "neutral"}
+                            isDisabled={props.item.isGrading}
+                            onPress={() => props.on.grade(each.grade)}
+                        >
+                            {each.label}
+                        </Button>
+                        <Text size="xs" tone="muted">
+                            {each.interval}
+                        </Text>
+                    </Stack>
                 ))}
             </Cluster>
             {props.item.isGradeFailed ? (

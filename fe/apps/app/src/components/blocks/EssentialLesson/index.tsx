@@ -6,7 +6,7 @@ import { EssentialLessonBase } from "./component"
 /** What the route hands the lesson block: the lesson and the `part` and `scenario` queries, all atoms. */
 type EssentialLessonProps = {
     readonly lessonId: string
-    /** The raw `part` query; anything that names no part opens Bản chất. */
+    /** The raw `part` query; anything that names no part opens essence. */
     readonly part: string | undefined
     /** The raw `scenario` query: the scenario Kịch bản opens on. */
     readonly scenario: string | undefined

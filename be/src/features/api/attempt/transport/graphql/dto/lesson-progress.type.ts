@@ -48,4 +48,8 @@ export class LessonProgressType {
     /** The attempts of each activity. */
     @Field(() => [LessonProgressActivityType])
     activities!: ReadonlyArray<LessonProgressActivityType>
+
+    /** The ids of the article sections the learner marked as read (`markLessonSectionRead`), oldest first. */
+    @Field(() => [String])
+    readSectionIds!: ReadonlyArray<string>
 }

@@ -28,7 +28,11 @@ appoints, signs each item (owner: "AI chấm, thầy ký từng mục"). Only ve
    unchanged resubmit is refused; after 3 returns the next resubmit goes to the teacher and waits 7 days.
 9. The hiring bridge is a Premium perk, opt-in, sent by hand to one partner (Pegasi), opened by at least 3 verified items. No fee to
    companies, no automatic matching, no placement promise.
-10. The streak, practice counts are evidence or readiness, never a CV line by themselves.
+10. The streak is never a CV line. Practice is one CV line per pattern, `practice.pattern-solved`: every problem of the pattern is
+    Accepted and none had its solution viewed before its first Accepted. The learner claims it with `claimPracticeExperience`; the
+    claim is refused `CAREER_PRACTICE_INCOMPLETE` while a problem is not Accepted (or the pattern has none) and
+    `CAREER_PRACTICE_SOLUTION_VIEWED` when a solution was opened first. A single problem, an Accepted count and a streak day are
+    readiness only.
 
 ## Example
 A learner proves a Bản chất concept; the AI drafts "Triển khai CQRS read model trong NestJS" with its evidence; it waits in the

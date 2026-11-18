@@ -23,7 +23,7 @@ export const BrandLockup = (props: BrandLockupProps) => (
                 media={{
                     src: props.logoSrc,
                     alt: "",
-                    aspect: "square",
+                    ratio: "1:1",
                     fit: "contain",
                     loading: "eager",
                     plate: "none",

@@ -24,6 +24,8 @@ export enum PracticeErrorCode {
     ContentInvalid = "PRACTICE_CONTENT_INVALID",
     /** The version exists with other bytes; a published version never changes. */
     VersionImmutable = "PRACTICE_VERSION_IMMUTABLE",
+    /** The history cursor is not one a page of the learner history handed out. */
+    CursorInvalid = "PRACTICE_CURSOR_INVALID",
     /** The import was not given a usable directory or ref, or names a pattern that does not exist. */
     ImportRejected = "PRACTICE_IMPORT_REJECTED",
 }
@@ -41,6 +43,7 @@ export const PRACTICE_ERROR_KINDS: Record<PracticeErrorCode, ErrorKind> = {
     [PracticeErrorCode.NotSaved]: "internal",
     [PracticeErrorCode.ContentInvalid]: "invalid",
     [PracticeErrorCode.VersionImmutable]: "conflict",
+    [PracticeErrorCode.CursorInvalid]: "invalid",
     [PracticeErrorCode.ImportRejected]: "invalid",
 }
 

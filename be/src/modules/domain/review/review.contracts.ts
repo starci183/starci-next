@@ -190,6 +190,12 @@ export interface ReviewItemSummary {
     readonly level: ReviewLevel | null
     /** The due day. */
     readonly dueOn: string
+    /** The front of the item: a card question with its cloze blanks as "____", or the retrieval question. Never an answer. */
+    readonly question: string
+    /** direct, cloze or retrieval. */
+    readonly kind: "direct" | "cloze" | "retrieval"
+    /** How many times the learner already reviewed the item. */
+    readonly reviewCount: number
 }
 
 /** The goal and what is done today. */

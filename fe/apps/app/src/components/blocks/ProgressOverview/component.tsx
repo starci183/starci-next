@@ -198,7 +198,6 @@ const FirstVisit = (props: ReadyProps) => (
         <Alert tone="informative" title={props.labels.firstVisitTitle} description={props.labels.firstVisitText} />
         <Section
             kind="figures"
-            ribbon
             ariaLabel={props.labels.ribbonLabel}
             items={props.view.ribbon}
             isLoading={props.isLoading}
@@ -226,7 +225,6 @@ const Ready = (props: ReadyProps) => {
         <Stack gap="region">
             <Section
                 kind="figures"
-                ribbon
                 ariaLabel={props.labels.ribbonLabel}
                 items={props.view.ribbon}
                 isLoading={props.isLoading}

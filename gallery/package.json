@@ -3,12 +3,13 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Screenshot gallery of every page of starci-next (before and after each UI fix round), rendered with Vite.",
+  "description": "Screenshot gallery of every page of starci-next, a thin config over @starci/gallery.",
   "scripts": {
     "dev": "vite --port 3250 --strictPort",
     "build": "vite build"
   },
   "devDependencies": {
+    "@starci/gallery": "0.1.0",
     "vite": "6.3.5"
   }
 }

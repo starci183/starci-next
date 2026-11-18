@@ -8,10 +8,17 @@ import {
     type PracticeProblemItemView,
     type PracticeProblemView,
     type PracticeStatus,
+    type PracticeSubmissionItemView,
     type PracticeSubmissionView,
     type PracticeVerdict,
 } from "./practice.contracts"
-import type { ProblemListRow, ProblemRow, StatusRow, SubmissionRow } from "./persistence/practice.rows"
+import type {
+    ProblemListRow,
+    ProblemRow,
+    StatusRow,
+    SubmissionHistoryRow,
+    SubmissionRow,
+} from "./persistence/practice.rows"
 
 const difficultyOf = (value: string): PracticeDifficulty => (value === "easy" || value === "hard" ? value : "medium")
 
@@ -78,6 +85,20 @@ export const toProblemView = (
         nextSlug: row.next_slug,
     }
 }
+
+/** One graded submit of the history as the learner reads it. */
+export const toSubmissionItemView = (row: SubmissionHistoryRow): PracticeSubmissionItemView => ({
+    id: row.submission_id,
+    slug: row.problem_id,
+    problemTitle: row.title,
+    language: languageOf(row.language),
+    verdict: toVerdict(row.verdict),
+    passedCount: row.passed_count,
+    totalCount: row.total_count,
+    timeMs: row.time_ms,
+    memoryKb: row.memory_kb,
+    submittedAt: row.created_at,
+})
 
 /** A stored submission as the learner reads it. */
 export const toSubmissionView = (row: SubmissionRow): PracticeSubmissionView => ({

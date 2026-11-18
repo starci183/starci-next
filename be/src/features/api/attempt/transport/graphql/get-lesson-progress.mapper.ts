@@ -1,7 +1,6 @@
-import type { LessonProgressView } from "@modules/domain/attempt"
 import type { IdentityPrincipal } from "@modules/domain/identity"
 import type { ExecuteParams } from "@modules/platform/cqrs"
-import type { GetLessonProgressRequest } from "../../application/get-lesson-progress.contracts"
+import type { GetLessonProgressRequest, LessonProgressWithReads } from "../../application/get-lesson-progress.contracts"
 import type { LessonProgressInput } from "./dto/lesson-progress.input"
 import type { LessonProgressType } from "./dto/lesson-progress.type"
 import { toLessonAttemptType } from "./get-lesson-attempt.mapper"
@@ -16,7 +15,7 @@ export const toGetLessonProgressParams = (
 })
 
 /** Maps the progress to its GraphQL type. */
-export const toLessonProgressType = (view: LessonProgressView): LessonProgressType => ({
+export const toLessonProgressType = (view: LessonProgressWithReads): LessonProgressType => ({
     ...view,
     activities: view.activities.map((activity) => ({ ...activity, latest: toLessonAttemptType(activity.latest) })),
 })

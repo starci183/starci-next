@@ -1,3 +1,4 @@
+export { QUERY_LESSON_PARTS_PROGRESS_SWR_KEY, useQueryLessonPartsProgressSwr } from "./useQueryLessonPartsProgressSwr"
 export { QUERY_INCIDENTS_SWR_KEY, useQueryIncidentsSwr } from "./useQueryIncidentsSwr"
 export type { IncidentRows } from "./useQueryIncidentsSwr"
 export { QUERY_LEARNER_HUB_SWR_KEY, useQueryLearnerHubSwr } from "./useQueryLearnerHubSwr"
@@ -43,6 +44,10 @@ export { QUERY_PROJECT_CATALOG_SWR_KEY, useQueryProjectCatalogSwr } from "./useQ
 export type { ProjectCatalogRead } from "./useQueryProjectCatalogSwr"
 export { QUERY_LESSON_OPENER_SCORES_SWR_KEY, useQueryLessonOpenerScoresSwr } from "./useQueryLessonOpenerScoresSwr"
 export { QUERY_LESSON_SCENARIO_RUNS_SWR_KEY, useQueryLessonScenarioRunsSwr } from "./useQueryLessonScenarioRunsSwr"
+export {
+    QUERY_LESSON_CHALLENGE_SCORES_SWR_KEY,
+    useQueryLessonChallengeScoresSwr,
+} from "./useQueryLessonChallengeScoresSwr"
 export { QUERY_MCP_TOKENS_SWR_KEY, useQueryMcpTokensSwr } from "./useQueryMcpTokensSwr"
 export type { McpConnection } from "./useQueryMcpTokensSwr"
 export { QUERY_MY_PROFILE_SWR_KEY, useQueryMyProfileSwr } from "./useQueryMyProfileSwr"
@@ -67,3 +72,9 @@ export { QUERY_MY_CV_LINK_SWR_KEY, useQueryMyCvLinkSwr } from "./useQueryMyCvLin
 export type { MyCvLink } from "./useQueryMyCvLinkSwr"
 export { QUERY_PUBLIC_CV_SWR_KEY, useQueryPublicCvSwr } from "./useQueryPublicCvSwr"
 export type { PublicCv } from "./useQueryPublicCvSwr"
+export { QUERY_PRACTICE_SUBMISSIONS_SWR_KEY, useQueryPracticeSubmissionsSwr } from "./useQueryPracticeSubmissionsSwr"
+export type { PracticeSubmissionsPage } from "./useQueryPracticeSubmissionsSwr"
+export { QUERY_REVIEW_STATS_SWR_KEY, useQueryReviewStatsSwr } from "./useQueryReviewStatsSwr"
+export type { ReviewStats } from "./useQueryReviewStatsSwr"
+export { QUERY_REVIEW_DECK_SWR_KEY, useQueryReviewDeckSwr } from "./useQueryReviewDeckSwr"
+export type { ReviewDeckDetail } from "./useQueryReviewDeckSwr"

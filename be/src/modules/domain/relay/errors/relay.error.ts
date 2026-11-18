@@ -24,6 +24,8 @@ export enum RelayErrorCode {
     ChallengeLocked = "RELAY_CHALLENGE_LOCKED",
     /** A project run, manifest or upload from a learner without Premium: Projects are subscription-only. */
     ProjectPremiumRequired = "RELAY_PROJECT_PREMIUM_REQUIRED",
+    /** A run was asked for from the app and none of the learner's paired devices is online to take it. */
+    DeviceOffline = "RELAY_DEVICE_OFFLINE",
 }
 
 /** How each relay code travels. */
@@ -39,6 +41,7 @@ export const RELAY_ERROR_KINDS: Record<RelayErrorCode, ErrorKind> = {
     [RelayErrorCode.LessonNotRunnable]: "not-found",
     [RelayErrorCode.ChallengeLocked]: "forbidden",
     [RelayErrorCode.ProjectPremiumRequired]: "forbidden",
+    [RelayErrorCode.DeviceOffline]: "unavailable",
 }
 
 /** The one error class of the relay capability. */

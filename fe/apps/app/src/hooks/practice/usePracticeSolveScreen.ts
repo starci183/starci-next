@@ -5,10 +5,15 @@ import { useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { hintsOf, isUnsettled, resultStateOf, type PracticeResultWords } from "@/modules/practice-result"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useMutatePracticeSolutionSwr, useQueryPracticeProblemSwr, useQueryPracticeProblemsSwr } from "@/hooks/swr"
+import {
+    useMutatePracticeSolutionSwr,
+    useQueryPracticeProblemSwr,
+    useQueryPracticeProblemsSwr,
+    useQueryPracticeSubmissionsSwr,
+} from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES, practicePatternPath, practiceProblemPath } from "@/modules/routes"
-import type { DataSlot, PracticeProblemView, PracticeSubmissionView, SlotLabels } from "@/modules/types"
+import type { DataSlot, PracticeProblemView, SlotLabels } from "@/modules/types"
 import { languageOf, languageOptions, type PracticeIssue } from "./practice.shared"
 import { usePracticeSolve } from "./usePracticeSolve"
 
@@ -28,11 +33,12 @@ export type PracticeSolveView = {
     readonly isAccepted: boolean
 }
 
-/** One past submission of this visit, in words. */
+/** One past submission of the learner in the pattern, in words. */
 export type PracticeSubmissionRow = {
     readonly id: string
     readonly title: string
     readonly meta: string
+    readonly verdict: string
     readonly isAccepted: boolean
 }
 
@@ -73,6 +79,7 @@ export type PracticeSolveLabels = {
     readonly solutionResultAction: string
     readonly submissionsTitle: string
     readonly submissionsEmpty: string
+    readonly submissionsMore: string
     readonly solutionTitle: string
     readonly solutionText: string
     readonly solutionAction: string
@@ -101,6 +108,9 @@ export type PracticeSolveState = {
     readonly isRevealingHint: boolean
     readonly tab: PracticeSolveTab
     readonly submissions: ReadonlyArray<PracticeSubmissionRow>
+    readonly submissionsTotal: number
+    readonly hasMoreSubmissions: boolean
+    readonly isLoadingMoreSubmissions: boolean
     readonly solution: string | null
     readonly isSolutionPending: boolean
     readonly isSolutionFailed: boolean
@@ -130,6 +140,7 @@ export type PracticeSolveScreen = {
         readonly openSolution: () => void
         readonly confirmSolution: () => void
         readonly cancelSolution: () => void
+        readonly moreSubmissions: () => void
     }
 }
 
@@ -171,18 +182,20 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
     const work = usePracticeSolve(slug, problem)
     const { trigger: triggerSolution, isMutating: isSolutionPending } = useMutatePracticeSolutionSwr()
     const [tab, setTab] = useState<PracticeSolveTab>("problem")
-    const [history, setHistory] = useState<ReadonlyArray<PracticeSubmissionView>>([])
     const [solution, setSolution] = useState<string | null>(null)
     const [isSolutionFailed, setSolutionFailed] = useState(false)
     const [isConfirmOpen, setConfirmOpen] = useState(false)
     useDocumentTitle(problem === undefined ? undefined : `${problem.title} · ${t("catalog")}`)
     const submission = work.submission
+    const submissionsRead = useQueryPracticeSubmissionsSwr(problem?.patternId, locale)
+    const settledId =
+        submission !== undefined && submission.kind === "SUBMIT" && !isUnsettled(submission) ? submission.id : undefined
+    const { mutate: reloadSubmissions } = submissionsRead
     useEffect(() => {
-        if (submission === undefined || submission.kind !== "SUBMIT" || isUnsettled(submission)) return
-        setHistory((current) =>
-            current.some((each) => each.id === submission.id) ? current : [...current, submission],
-        )
-    }, [submission])
+        if (settledId !== undefined) void reloadSubmissions()
+    }, [settledId, reloadSubmissions])
+    const pages = submissionsRead.data ?? []
+    const history = pages.flatMap((page) => page.items)
     const usedHints = work.hints.hints.length
     const words: PracticeResultWords = {
         testStatuses: {},
@@ -223,7 +236,8 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
         nextHref: each.nextSlug === null ? null : practiceProblemPath(each.nextSlug),
         isAccepted: each.status === "ACCEPTED" || (submission?.kind === "SUBMIT" && submission.verdict === "ACCEPTED"),
     })
-    const isAccepted = problem?.status === "ACCEPTED" || history.some((each) => each.verdict === "ACCEPTED")
+    const isAccepted =
+        problem?.status === "ACCEPTED" || history.some((each) => each.slug === slug && each.verdict === "ACCEPTED")
     const solutionRevealed = solution !== null || problem?.solutionRevealed === true
     const reveal = async (): Promise<void> => {
         setSolutionFailed(false)
@@ -283,6 +297,7 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
                 solutionResultAction: t("solutionAction"),
                 submissionsTitle: t("submissionsTitle"),
                 submissionsEmpty: t("submissionsEmpty"),
+                submissionsMore: t("submissionsMore"),
                 solutionTitle: t("solutionTitle"),
                 solutionText: t("solutionText"),
                 solutionAction: t("solutionAction"),
@@ -308,12 +323,20 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
                 isBusy: work.isBusy,
                 isRevealingHint: work.hints.isRevealing,
                 tab,
-                submissions: history.map((each, index): PracticeSubmissionRow => ({
+                submissions: history.map((each): PracticeSubmissionRow => ({
                     id: each.id,
-                    title: t("submissionTitle", { n: index + 1 }),
-                    meta: `${verdict(each.verdict === "ACCEPTED" ? "accepted" : "wrongAnswer")} · ${each.passedCount}/${each.totalCount}`,
+                    title: each.problemTitle,
+                    meta: t("submissionMeta", {
+                        passed: each.passedCount,
+                        total: each.totalCount,
+                        time: new Date(each.submittedAt).toLocaleString(locale),
+                    }),
+                    verdict: verdict(each.verdict === "ACCEPTED" ? "accepted" : "wrongAnswer"),
                     isAccepted: each.verdict === "ACCEPTED",
                 })),
+                submissionsTotal: history.length,
+                hasMoreSubmissions: pages.length > 0 && pages[pages.length - 1]?.nextCursor !== null,
+                isLoadingMoreSubmissions: submissionsRead.isValidating,
                 solution,
                 isSolutionPending,
                 isSolutionFailed,
@@ -340,6 +363,7 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
             openSolution,
             confirmSolution: () => void reveal(),
             cancelSolution: () => setConfirmOpen(false),
+            moreSubmissions: () => void submissionsRead.setSize(submissionsRead.size + 1),
         },
     }
 }

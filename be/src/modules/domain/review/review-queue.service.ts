@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { LessonReadService } from "@modules/domain/lesson"
+import { LessonContentService, LessonReadService } from "@modules/domain/lesson"
 import { InjectNotificationProducer, type NotificationProducerPort } from "@modules/domain/notification"
 import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager, type sql } from "@modules/platform/database"
 import { dayOf } from "@modules/domain/streak"
+import { blankClozes } from "./cloze.policy"
 import {
     REVIEW_GOAL_DEFAULT,
     type ReviewItemSummary,
@@ -34,13 +35,17 @@ export class ReviewQueueService {
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
         @InjectClock() private readonly clock: Clock,
         private readonly lessons: LessonReadService,
+        private readonly content: LessonContentService,
         @InjectNotificationProducer() private readonly notifications: NotificationProducerPort,
     ) {}
 
     /** The queue of the day: due items (overdue first, oldest first), new items up to the goal. */
     async today(learnerId: string, locale: ReviewLocale): Promise<ReviewTodayView> {
         const queue = await this.build(learnerId)
-        const titles = await this.lessonTitles(locale)
+        const [titles, prompts] = await Promise.all([
+            this.lessonTitles(locale),
+            this.retrievalPrompts([...queue.due, ...queue.fresh], locale),
+        ])
         const summarize = (row: QueueRow): ReviewItemSummary => ({
             itemId: row.item_id,
             source: row.source,
@@ -49,6 +54,9 @@ export class ReviewQueueService {
             lessonTitle: row.lesson_id === null ? null : (titles.get(row.lesson_id) ?? row.lesson_id),
             level: row.level,
             dueOn: row.due_on,
+            question: this.questionOf(row, locale, prompts),
+            kind: row.source === "retrieval" ? "retrieval" : (row.cloze_counts?.[locale] ?? 0) > 0 ? "cloze" : "direct",
+            reviewCount: row.last_revision,
         })
         return {
             date: queue.date,
@@ -113,6 +121,28 @@ export class ReviewQueueService {
         ])
         if (claimed.length === 0) return
         await this.notifications.notify(learnerId, "review.due", { count: due }, "/review")
+    }
+
+    /** The front of an item: the card question with its cloze blanks, or the prompt of the retrieval activity. */
+    private questionOf(row: QueueRow, locale: ReviewLocale, prompts: ReadonlyMap<string, string>): string {
+        if (row.source === "flashcard") return blankClozes(row.front?.[locale].question ?? "")
+        return prompts.get(`${row.lesson_id}:${row.lesson_version}:${row.activity_id}`) ?? ""
+    }
+
+    /** The prompts of the retrieval items of the queue, read in one batch. */
+    private retrievalPrompts(
+        rows: ReadonlyArray<QueueRow>,
+        locale: ReviewLocale,
+    ): Promise<ReadonlyMap<string, string>> {
+        const refs = rows.flatMap((row) =>
+            row.source === "retrieval" &&
+            row.lesson_id !== null &&
+            row.lesson_version !== null &&
+            row.activity_id !== null
+                ? [{ lessonId: row.lesson_id, version: row.lesson_version, activityId: row.activity_id }]
+                : [],
+        )
+        return this.content.prompts(refs, locale)
     }
 
     private async lessonTitles(locale: ReviewLocale): Promise<ReadonlyMap<string, string>> {

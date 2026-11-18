@@ -126,7 +126,7 @@ const ShareBody = (props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "
         <Text size="sm" tone="muted">
             {props.share.previewTitle}
         </Text>
-        <Image src={props.previewSrc} alt={props.share.previewAlt} aspect="wide" fit="cover" />
+        <Image src={props.previewSrc} alt={props.share.previewAlt} ratio="16:9" fit="cover" />
     </Stack>
 )
 
@@ -315,6 +315,7 @@ const Foot = (props: { readonly labels: PublicCvLabels }) => (
 const NotFound = (props: { readonly labels: PublicCvLabels; readonly address: string }) => (
     <Stack gap="row" align="center">
         <EmptyNotice
+            scope="page"
             message={props.labels.notFoundTitle}
             description={props.labels.notFoundDescription}
             actionIntent="neutral"

@@ -62,19 +62,14 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         height="fill"
         {...(props.isLoading === true ? { isLoading: true } : {})}
         {...(props.path.isCurrent ? { emphasis: "accent" as const } : {})}
-        footers={[
-            {
-                kind: "custom",
-                children: (
-                    <Cluster gap="row">
-                        <Button intent="neutral" size="sm" onPress={() => props.onView(props.path.id)}>
-                            {props.labels.view}
-                        </Button>
-                        <ChooseAction {...props} />
-                    </Cluster>
-                ),
-            },
-        ]}
+        actions={
+            <Cluster gap="row">
+                <Button intent="neutral" size="sm" onPress={() => props.onView(props.path.id)}>
+                    {props.labels.view}
+                </Button>
+                <ChooseAction {...props} />
+            </Cluster>
+        }
     >
         <Stack gap="row">
             <Cluster gap="inline" align="start" wrap={false}>

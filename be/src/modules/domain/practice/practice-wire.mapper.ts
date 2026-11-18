@@ -5,6 +5,8 @@ import type {
     PracticeResumeProblemView,
     PracticeSolutionView,
     PracticeStarterCodeView,
+    PracticeSubmissionItemView,
+    PracticeSubmissionsPageView,
     PracticeSubmissionView,
 } from "./practice.contracts"
 
@@ -86,4 +88,32 @@ export type PracticeSolutionWire = Omit<PracticeSolutionView, "revealedAt"> & {
 export const toSolutionWire = (view: PracticeSolutionView): PracticeSolutionWire => ({
     ...view,
     revealedAt: view.revealedAt.toISOString(),
+})
+
+/** A graded submit of the history as the door sends it: language and verdict as wire names, the instant as ISO text. */
+export type PracticeSubmissionItemWire = Omit<
+    Wired<PracticeSubmissionItemView, "language" | "verdict">,
+    "submittedAt"
+> & {
+    /** When the submission was made, an ISO instant. */
+    readonly submittedAt: string
+}
+
+/** One page of the history as the door sends it. */
+export interface PracticeSubmissionsPageWire {
+    /** The submits of the page. */
+    readonly items: ReadonlyArray<PracticeSubmissionItemWire>
+    /** The cursor of the next page, or null on the last page. */
+    readonly nextCursor: string | null
+}
+
+/** One page of the history with its closed-set fields as wire names and its instants as ISO text. */
+export const toSubmissionsPageWire = (view: PracticeSubmissionsPageView): PracticeSubmissionsPageWire => ({
+    items: view.items.map((item) => ({
+        ...item,
+        language: wireOf(item.language),
+        verdict: wireOf(item.verdict),
+        submittedAt: item.submittedAt.toISOString(),
+    })),
+    nextCursor: view.next,
 })

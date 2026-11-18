@@ -1,15 +1,5 @@
-import {
-    Badge,
-    Cluster,
-    DataTable,
-    Grid,
-    Link,
-    Page,
-    Section,
-    Stack,
-    Text,
-    type TableRowData,
-} from "@starci/grammar/common"
+import type { ReactNode } from "react"
+import { Badge, Cluster, DataTable, Grid, Link, Page, Section, Stack, Text } from "@starci/grammar/common"
 import { MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
@@ -155,8 +145,11 @@ const ConceptsTable = (props: BodyProps) => {
     )
 }
 
+/** A table row: its id and the cell of each column by column id. */
+type CellsRow = { readonly id: string; readonly cells: Readonly<Record<string, ReactNode>> }
+
 /** The row of one evidence run in the runs table. */
-const runRowOf = (run: EvidenceRunView): TableRowData => ({
+const runRowOf = (run: EvidenceRunView): CellsRow => ({
     id: run.id,
     cells: {
         concept: <Text isStrong>{run.concept}</Text>,

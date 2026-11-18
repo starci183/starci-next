@@ -1,5 +1,5 @@
-import { Alert, Button, Page, Progress, Stack } from "@starci/grammar/common"
-import { ReviewItemCard, ReviewSummaryCard, SlotView, UpsellRow } from "@starci-next/ui"
+import { Button, Page, Progress, Stack } from "@starci/grammar/common"
+import { ReviewItemCard, ReviewSummaryCard, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
     ReviewItemCommands,
@@ -13,6 +13,7 @@ export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
     kind: "item",
     isRetrieval: false,
     sourceLine: "xxxxxxxx",
+    kindLine: "xxxxxxxx · xxxxxxxx",
     lessonLine: undefined,
     question: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     level: "xxxxxx",
@@ -24,6 +25,7 @@ export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
     back: undefined,
     isGrading: false,
     isGradeFailed: false,
+    isConflict: false,
 }
 
 /** Props for {@link ReviewSessionBase}. */
@@ -36,41 +38,18 @@ export type ReviewSessionBaseProps = {
         readonly percent: number
         readonly labels: ReviewSessionLabels
         readonly todayHref: string
-        readonly hubHref: string
-        readonly plansHref: string
     }
     readonly on: ReviewItemCommands
 }
-
-/** The notice of an item behind Premium, with the way to the plans and a way past it. */
-const Locked = (props: ReviewSessionBaseProps) => (
-    <Stack gap="row">
-        <Alert tone="informative" title={props.props.labels.lockedTitle} description={props.props.labels.lockedBody} />
-        <UpsellRow
-            label={props.props.labels.upsell}
-            note={props.props.labels.lockedBody}
-            href={props.props.plansHref}
-        />
-        <Button intent="alternative" onPress={props.on.skip}>
-            {props.props.labels.skip}
-        </Button>
-    </Stack>
-)
 
 /** What the body needs: the base props, the screen it draws and whether it is a skeleton. */
 type BodyProps = ReviewSessionBaseProps & { readonly screen: ReviewSessionScreen; readonly isLoading: boolean }
 
 /** The body by what the session shows: the item, the locked notice or the summary. */
 const Body = (props: BodyProps) => {
-    if (props.screen.kind === "locked") return <Locked props={props.props} on={props.on} />
     if (props.screen.kind === "summary") {
         return (
-            <ReviewSummaryCard
-                summary={props.screen}
-                labels={props.props.labels}
-                todayHref={props.props.todayHref}
-                hubHref={props.props.hubHref}
-            />
+            <ReviewSummaryCard summary={props.screen} labels={props.props.labels} todayHref={props.props.todayHref} />
         )
     }
     return <ReviewItemCard item={props.screen} labels={props.props.labels} isLoading={props.isLoading} on={props.on} />
@@ -84,9 +63,9 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
             titleScale: "standard",
             meta: props.props.labels.progressText,
             breadcrumbs: {
-                label: props.props.labels.summaryBack,
+                label: props.props.labels.root,
                 items: [
-                    { id: "review", label: props.props.labels.summaryBack, href: props.props.todayHref },
+                    { id: "review", label: props.props.labels.root, href: props.props.todayHref },
                     { id: "session", label: props.props.labels.pageTitle },
                 ],
             },
@@ -99,12 +78,21 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
                 slot={props.props.slot}
                 placeholder={props.props.placeholder}
                 labels={props.props.slotLabels}
+                errorDescription={props.props.labels.saveFailedBody}
+                emptyDescription={props.props.labels.emptyText}
                 onRetry={props.on.retry}
                 render={(screen, isLoading) => <Body {...props} screen={screen} isLoading={isLoading} />}
             />
-            <Button intent="neutral" href={props.props.todayHref}>
-                {props.props.labels.emptyBack}
-            </Button>
+            {"isEmpty" in props.props.slot ? (
+                <Button intent="commit" href={props.props.labels.decksHref}>
+                    {props.props.labels.emptyDecks}
+                </Button>
+            ) : null}
+            {"items" in props.props.slot && props.props.slot.items.kind === "summary" ? null : (
+                <Button intent="neutral" href={props.props.todayHref}>
+                    {props.props.labels.emptyBack}
+                </Button>
+            )}
         </Stack>
     </Page>
 )

@@ -1,10 +1,10 @@
 # review
 
 Ôn tập is one daily queue across everything the learner has met: the teacher's flashcards, recalled before the flip and self-graded,
-and the retrieval questions of finished Bản chất lessons, answered in writing and graded by rubric.
+and the retrieval questions of finished Bản chất lessons, answered in writing and graded by rubric. It is free for every learner.
 
 ## Terms
-- **Card**: a flashcard of the teacher's decks (grouped by outcome track); free when the teacher marked it `isPremium: false`.
+- **Card**: a flashcard of the teacher's decks (grouped by outcome track); every card is open to every learner.
 - **Retrieval item**: a Bản chất retrieval activity that falls due at lesson completion + its authored `afterDays` (1, 7, 21).
 - **Ladder**: the card schedule, steps 1, 3, 7, 14, 30, 60, 120, 180 days.
 - **Self-grade**: Quên, Khó, Nhớ, Dễ. *Not to confuse with* `/review-queue`, the teacher's experience queue ([verified-experience](verified-experience.md)).
@@ -18,8 +18,8 @@ and the retrieval questions of finished Bản chất lessons, answered in writin
 4. A retrieval result below level 2 schedules one extra attempt after 3 days; level 2 closes the item. A written retrieval answer may
    raise the lesson's understood level, never lower it.
 5. A cloze card may be checked by picking the hidden term among the authored choices; that check is deterministic and calls no AI.
-6. A free learner reviews the free cards of every deck and sees the rest as locked (`REVIEW_PREMIUM_REQUIRED`, no AI call). Premium adds
-   every card, the retrieval items, the automatic queue from studied lessons and AI grading.
+6. Every learner reviews every card of every deck, the retrieval items, the automatic queue from studied lessons and the graded
+   written answers; there is no free count, no lock and no Premium gate.
 7. Due dates are `Asia/Ho_Chi_Minh` calendar days; overdue items sort first, oldest first. The daily goal defaults to 10 items (5..50).
 8. Encouragement, not pressure: at most one reminder a day, and a broken streak is never shamed.
 
@@ -33,4 +33,4 @@ A card answered "Khó" on step 7 stays on 7 days; a retrieval answer at level 1 
 ## Where
 `be/src/modules/domain/review/`, `be/src/features/api/review/`, `fe/apps/app/src/app/[locale]/(app)/review/`
 
-Related: [essentials](essentials.md), [streak](streak.md), [premium](premium.md), [ai-teacher](ai-teacher.md)
+Related: [essentials](essentials.md), [streak](streak.md), [ai-teacher](ai-teacher.md)

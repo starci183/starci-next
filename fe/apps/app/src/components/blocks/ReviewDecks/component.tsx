@@ -1,213 +1,129 @@
-import {
-    Alert,
-    Badge,
-    Button,
-    ChoiceChips,
-    Cluster,
-    Grid,
-    Heading,
-    NumberField,
-    Page,
-    Section,
-    Select,
-    Stack,
-    SurfaceCard,
-    Text,
-} from "@starci/grammar/common"
+import { Alert, ChoiceChips, EmptyNotice, Page, Section, Stack, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
-import type {
-    DataSlot,
-    ReviewDeckCard,
-    ReviewDeckNote,
-    ReviewDecksLabels,
-    ReviewFilterOption,
-    ReviewGoalForm,
-    SlotLabels,
-} from "@/modules/types"
+import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
-/** The fake decks with the geometry of settled ones, drawn as a skeleton while the first read runs. */
-export const REVIEW_DECKS_PLACEHOLDER: ReadonlyArray<ReviewDeckCard> = [1, 2, 3].map((index) => ({
-    id: `placeholder-${index}`,
-    title: "xxxxxxxxxxxx",
-    description: "xxxxxxxxxxxxxxxxxxxxxxxx",
-    difficulty: "xxxxxx",
-    cards: "xxxxxx",
-    free: "xxxxxx",
-    isPartlyLocked: false,
-    isAdded: false,
-    isPending: false,
-}))
-
-/** Props for {@link ReviewDecksBase}. */
+/** Props for {@link ReviewDecksBase}: the resolved screen of the decks. */
 export type ReviewDecksBaseProps = {
-    readonly props: {
-        readonly slot: DataSlot<ReadonlyArray<ReviewDeckCard>>
-        readonly placeholder: ReadonlyArray<ReviewDeckCard>
-        readonly slotLabels: SlotLabels
-        readonly labels: ReviewDecksLabels
-        readonly tracks: ReadonlyArray<ReviewFilterOption>
-        readonly courses: ReadonlyArray<ReviewFilterOption>
-        readonly track: string
-        readonly course: string
-        /** The note about the last add or remove; undefined shows none. */
-        readonly note: ReviewDeckNote | undefined
-        readonly goal: ReviewGoalForm
-        readonly todayHref: string
-    }
-    readonly on: {
-        readonly retry: () => void
-        readonly setTrack: (track: string) => void
-        readonly setCourse: (course: string) => void
-        readonly toggle: (deckId: string) => void
-        readonly setGoal: (value: number) => void
-        readonly saveGoal: () => void
-    }
+    readonly props: ReviewDecksScreen["props"]
+    readonly on: ReviewDecksScreen["on"]
 }
 
-/** The tone of a difficulty the teacher wrote. */
-const toneOf = (difficulty: string): "success" | "warning" | "danger" | "neutral" => {
-    switch (difficulty.toLowerCase()) {
-        case "easy":
-            return "success"
-        case "medium":
-            return "warning"
-        case "hard":
-            return "danger"
-        default:
-            return "neutral"
-    }
+/** One deck as a row: its name and one sentence, the cards, difficulty and tracks, the state and the one command; the row opens the deck. */
+const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps): ListRowData => ({
+    id: deck.id,
+    title: deck.title,
+    description: `${deck.facts}${deck.tracks.length === 0 ? "" : ` · ${deck.tracks.join(", ")}`}`,
+    href: deck.href,
+    detail: deck.description,
+    ...(deck.isAdded ? { badges: [{ label: props.props.labels.added, tone: "success" as const }] } : {}),
+    action: {
+        label: deck.isAdded ? props.props.labels.remove : props.props.labels.add,
+        intent: "neutral",
+        isPending: deck.isPending,
+        press: () => props.on.toggle(deck.id),
+    },
+    actionPlacement: "end",
+})
+
+/** The note after an add: what was added and the way to undo it. */
+const Note = (props: ReviewDecksBaseProps) => {
+    const { note, labels } = props.props
+    if (note === null) return null
+    return note.isFailed ? (
+        <Alert tone="negative" title={note.title} />
+    ) : (
+        <Alert
+            tone="affirmative"
+            title={note.title}
+            description={note.text}
+            action={{ label: labels.undo, onAction: props.on.undo }}
+        />
+    )
 }
 
-/** The goal form: how many cards a day, from 5 to 50. */
-const GoalForm = (props: Pick<ReviewDecksBaseProps, "props" | "on">) => (
-    <Section title={props.props.labels.goalTitle} headingLevel={2}>
-        <Stack gap="row">
-            <NumberField
-                label={props.props.labels.goalLabel}
-                description={props.props.labels.goalHelp}
-                value={props.props.goal.value}
-                minValue={props.props.goal.min}
-                maxValue={props.props.goal.max}
-                {...(props.props.goal.state === "invalid"
-                    ? { isInvalid: true, errorMessage: props.props.labels.goalInvalid }
-                    : {})}
-                onValueChange={props.on.setGoal}
+/** The decks as one flat list under the two chip rows; a filter with no deck says so. */
+const DeckList = (
+    props: ReviewDecksBaseProps & { readonly rows: ReadonlyArray<ReviewDeckRow>; readonly isLoading: boolean },
+) => {
+    const { labels, filter, filterOptions, track, trackOptions } = props.props
+    return (
+        <Section
+            kind="list"
+            title={labels.listTitle}
+            headingLevel={2}
+            count={props.rows.length}
+            isLoading={props.isLoading}
+            filter={
+                <>
+                    <ChoiceChips
+                        label={labels.filterLabel}
+                        isLabelHidden
+                        options={filterOptions}
+                        value={filter}
+                        onValueChange={props.on.setFilter}
+                        empty={labels.noMatch}
+                        isLoading={props.isLoading}
+                    />
+                    <ChoiceChips
+                        label={labels.trackLabel}
+                        isLabelHidden
+                        options={trackOptions}
+                        value={track}
+                        onValueChange={props.on.setTrack}
+                        empty={labels.noMatch}
+                        isLoading={props.isLoading}
+                    />
+                </>
+            }
+            items={props.rows.map((row) => rowOf(row, props))}
+            empty={
+                <EmptyNotice
+                    message={labels.emptyAdded}
+                    description={labels.emptyAddedText}
+                    actionLabel={labels.emptyAddedAction}
+                    onAction={props.on.showAll}
+                    frame="frameless"
+                />
+            }
+        />
+    )
+}
+
+/**
+ * Draws the decks: the header with the trail and the one rule (a daily cap from the goal), the added and not-added chips with the track
+ * chips, and the decks as a flat list. There is no primary command: each row carries its own "Add deck", so nothing pretends to be one.
+ */
+export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
+    const { header, labels } = props.props
+    return (
+        <Page
+            isLoading={"isLoading" in props.props.slot}
+            header={{
+                title: header.title,
+                titleScale: "standard",
+                meta: header.meta,
+                breadcrumbs: {
+                    label: labels.breadcrumbs,
+                    items: [
+                        { id: "review", label: labels.root, href: header.rootHref },
+                        { id: "decks", label: header.title },
+                    ],
+                },
+            }}
+        >
+            <SlotView
+                slot={props.props.slot}
+                placeholder={props.props.placeholder}
+                labels={props.props.slotLabels}
+                errorDescription={labels.errorText}
+                onRetry={props.on.retry}
+                render={(rows, isLoading) => (
+                    <Stack gap="section">
+                        <Note {...props} />
+                        <DeckList {...props} rows={rows} isLoading={isLoading} />
+                    </Stack>
+                )}
             />
-            <Button intent="commit" isPending={props.props.goal.isSaving} onPress={props.on.saveGoal}>
-                {props.props.labels.goalSave}
-            </Button>
-            {props.props.goal.state === "saved" ? <Badge tone="success">{props.props.labels.goalSaved}</Badge> : null}
-            {props.props.goal.state === "failed" ? <Text tone="muted">{props.props.labels.failed}</Text> : null}
-        </Stack>
-    </Section>
-)
-
-/** What one deck card needs. */
-type DeckProps = {
-    readonly deck: ReviewDeckCard
-    readonly labels: ReviewDecksLabels
-    readonly onToggle: (id: string) => void
+        </Page>
+    )
 }
-
-/** One deck: title, difficulty, card counts, partly-locked mark and add or remove. */
-const Deck = (props: DeckProps) => (
-    <SurfaceCard ariaLabel={props.deck.title}>
-        <Stack gap="row">
-            <Cluster gap="inline" wrap align="center" justify="between">
-                <Heading level={3} scale="standard">
-                    {props.deck.title}
-                </Heading>
-                <Badge tone={toneOf(props.deck.difficulty)}>{props.deck.difficulty}</Badge>
-            </Cluster>
-            <Text tone="muted" overflow="clamp-2">
-                {props.deck.description}
-            </Text>
-            <Cluster gap="inline" wrap>
-                <Badge tone="neutral">{props.deck.cards}</Badge>
-                {props.deck.free === "" ? null : <Badge tone="muted">{props.deck.free}</Badge>}
-                {props.deck.isPartlyLocked ? <Badge tone="warning">{props.labels.partlyLocked}</Badge> : null}
-            </Cluster>
-            <Cluster gap="inline" wrap align="center">
-                <Button
-                    intent="neutral"
-                    size="sm"
-                    isPending={props.deck.isPending}
-                    onPress={() => props.onToggle(props.deck.id)}
-                >
-                    {props.deck.isAdded ? props.labels.remove : props.labels.add}
-                </Button>
-                {props.deck.isAdded ? <Badge tone="success">{props.labels.added}</Badge> : null}
-            </Cluster>
-        </Stack>
-    </SurfaceCard>
-)
-
-/** The aside: filters by path and by course, flat on the page; the way back to today's review is the breadcrumb. */
-const Rail = (props: ReviewDecksBaseProps) => (
-    <Stack gap="region">
-        <Section title={props.props.labels.asideTitle} headingLevel={2}>
-            <Stack gap="row">
-                <ChoiceChips
-                    label={props.props.labels.filterLabel}
-                    options={props.props.tracks.map((each) => ({ value: each.id, label: each.label }))}
-                    value={props.props.track}
-                    onValueChange={props.on.setTrack}
-                    empty={null}
-                />
-                <Select
-                    label={props.props.labels.courseLabel}
-                    options={props.props.courses}
-                    value={props.props.course}
-                    onValueChange={(course) => props.on.setCourse(course ?? "all")}
-                />
-            </Stack>
-        </Section>
-    </Stack>
-)
-
-/** The well: the note about the last change, the deck cards and the goal form. */
-const Primary = (props: ReviewDecksBaseProps) => (
-    <Stack gap="region">
-        {props.props.note === undefined ? null : <Alert tone={props.props.note.tone} title={props.props.note.text} />}
-        <SlotView
-            slot={props.props.slot}
-            placeholder={props.props.placeholder}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(decks) => (
-                <Stack gap="row">
-                    {decks.map((deck) => (
-                        <Deck key={deck.id} deck={deck} labels={props.props.labels} onToggle={props.on.toggle} />
-                    ))}
-                </Stack>
-            )}
-        />
-        <GoalForm props={props.props} on={props.on} />
-    </Stack>
-)
-
-/** The decks screen: filters in the aside, deck cards in the well, and the daily goal form. */
-export const ReviewDecksBase = (props: ReviewDecksBaseProps) => (
-    <Page
-        header={{
-            title: props.props.labels.pageTitle,
-            titleScale: "standard",
-            description: props.props.labels.intro,
-            breadcrumbs: {
-                label: props.props.labels.back,
-                items: [
-                    { id: "review", label: props.props.labels.back, href: props.props.todayHref },
-                    { id: "decks", label: props.props.labels.pageTitle },
-                ],
-            },
-        }}
-    >
-        <Grid
-            kind="main-rail"
-            railPosition="leading"
-            railWidth="standard"
-            primary={<Primary {...props} />}
-            rail={<Rail {...props} />}
-        />
-    </Page>
-)

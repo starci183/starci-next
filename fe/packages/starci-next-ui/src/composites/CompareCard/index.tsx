@@ -1,4 +1,4 @@
-import { Badge, SurfaceCard } from "@starci/grammar/common"
+import { Badge, DataTable, Section, type DataTableColumn } from "@starci/grammar/common"
 import { levelWordsOf, toneOf } from "../ResultCard/levels"
 import type { LessonCompareLabels, StudyView } from "../StudyBody/types"
 
@@ -36,27 +36,30 @@ const LevelBadge = (props: LevelBadgeProps) => (
     </Badge>
 )
 
+/** One row of the comparison, as the server states it. */
+type CompareRow = StudyView["compare"][number]
+
 /** The before and after of the closing interview: per criterion the first level, the level now and why, with the two totals in the head. */
 export const CompareCard = (props: CompareCardProps) => (
-    <SurfaceCard
-        kind="table"
-        label={props.labels.title}
-        {...(props.score === "" ? {} : { fact: props.score })}
-        empty={props.labels.empty}
-        columns={[
-            { id: "criterion", label: props.labels.criterion, width: "fill", minWidth: 220 },
-            { id: "before", label: props.labels.before, width: "fit" },
-            { id: "after", label: props.labels.after, width: "fit" },
-            { id: "why", label: props.labels.why, priority: "low" },
-        ]}
-        rows={props.rows.map((row) => ({
-            id: row.id,
-            cells: {
-                criterion: row.criterion,
-                before: <LevelBadge level={row.before} labels={props.labels} />,
-                after: <LevelBadge level={row.after} labels={props.labels} />,
-                why: reasonOf(row, props.labels),
-            },
-        }))}
-    />
+    <Section title={props.labels.title} {...(props.score === "" ? {} : { fact: props.score })}>
+        <DataTable
+            label={props.labels.title}
+            columns={
+                [
+                    { id: "criterion", label: props.labels.criterion, width: "fill", minWidth: 220 },
+                    { id: "before", label: props.labels.before, width: "fit" },
+                    { id: "after", label: props.labels.after, width: "fit" },
+                    { id: "why", label: props.labels.why, priority: "low" },
+                ] satisfies DataTableColumn[]
+            }
+            rows={props.rows}
+            renderCell={(row: CompareRow, column) => {
+                if (column === "criterion") return row.criterion
+                if (column === "before") return <LevelBadge level={row.before} labels={props.labels} />
+                if (column === "after") return <LevelBadge level={row.after} labels={props.labels} />
+                return reasonOf(row, props.labels)
+            }}
+            emptyContent={props.labels.empty}
+        />
+    </Section>
 )
