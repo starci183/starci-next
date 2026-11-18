@@ -10,6 +10,7 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
             version
             phase
             completedAt
+            readSectionIds
             phases {
                 phase
                 state

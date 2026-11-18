@@ -31,14 +31,12 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, biểu mẫu: ba ô Tên dự án, Repo GitHub, Địa chỉ deploy trống không có placeholder, hiện như hộp trắng viền mảnh không gợi ý nội dung; riêng Địa chỉ deploy có gợi ý ở dưới còn hai ô kia không có gì.
-- 1440, 1920, 390, nút "Tạo dự án": nút chính mờ (tím rất nhạt) với chữ và dấu cộng gần như không đọc được; không có lý do hiển thị vì sao bị khoá.
-- 1440 và 1920, biểu mẫu: khoảng cách dọc không đều, nhóm "Loại dự án" nằm sát nhãn "Repo GitHub" bên dưới (chưa tới 20px) trong khi các nhóm khác cách xa hơn.
-- 1440 và 1920, nút "Huỷ" có viền riêng cạnh nút chính khiến hàng nút trông là hai pill xếp sát nhau.
-- 1440 và 1920, bảng init: terminal nền đen đặc là một khối tối lớn trên trang trắng, nặng hơn mọi thứ khác trong màn hình; chữ mono cỡ không thuộc thang 14/12.
+- 1440, 390, biểu mẫu: ba ô Tên dự án, Repo GitHub, Địa chỉ deploy trống không có placeholder, hiện như hộp trắng viền mảnh không gợi ý nội dung; riêng Địa chỉ deploy có gợi ý ở dưới còn hai ô kia không có gì.
+- 1440, 390, nút "Tạo dự án": nút chính mờ (tím rất nhạt) với chữ và dấu cộng gần như không đọc được; không có lý do hiển thị vì sao bị khoá.
+- 1440, biểu mẫu: khoảng cách dọc không đều, nhóm "Loại dự án" nằm sát nhãn "Repo GitHub" bên dưới (chưa tới 20px) trong khi các nhóm khác cách xa hơn.
+- 1440, nút "Huỷ" có viền riêng cạnh nút chính khiến hàng nút trông là hai pill xếp sát nhau.
+- 1440, bảng init: terminal nền đen đặc là một khối tối lớn trên trang trắng, nặng hơn mọi thứ khác trong màn hình; chữ mono cỡ không thuộc thang 14/12.
 - 1440, bảng init: khối terminal bắt đầu ở y=290 còn ô đầu tiên của biểu mẫu ở y=316, hai tiêu đề Section ngang nhau nhưng thân không thẳng hàng.
-- 1920, dải đầu trang canh trái ở x=288 trong khi biểu mẫu và bảng init bị giới hạn bề rộng và bắt đầu ở x=480: mép trái lệch 192px.
-- 1920, vùng trống phía dưới bảng init rất lớn so với biểu mẫu; hai cột cao không bằng nhau.
 - 390, terminal: dòng "request-response-lifecycle 2 test đang luyện" bị ngắt giữa cụm ("đang / luyện", "chưa / có bằng chứng") làm bảng kết quả mất thẳng hàng.
 - 390, bảng init nằm sau nút "Tạo dự án" nên người dùng phải cuộn qua nút chính mới thấy hướng dẫn chạy lệnh.
 - Lần chụp lại 2026-11-17 trên dev (học viên Premium thử): biểu mẫu chỉ có Tên dự án, Loại dự án, Repo GitHub, Địa chỉ deploy; bấm Tạo dự án thành công và hiện bí mật CI một lần. Không còn ô đề tài, ngôn ngữ, công nghệ: server nhận rỗng. Các điều trên vẫn đúng ở 1440 và 390, trừ hàng dưới.

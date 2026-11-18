@@ -74,13 +74,7 @@
     --terminal-title-foreground: oklch(72% 0 0);
 
     /* Grammar theme hooks: gray selection, hairline cards, one field ring, a navigation bar in the accent. */
-    --starci-core-card-border: 1px solid var(--border);
     --starci-core-card-radius: 0.75rem;
-    --starci-core-card-hover: var(--surface-secondary);
-    --starci-core-card-active: var(--default);
-    --starci-core-table-selected: var(--surface-secondary);
-    --starci-core-table-selected-foreground: var(--foreground);
-    --starci-core-pagination-current: var(--default);
     --starci-core-schedule-current: var(--surface-secondary);
     --starci-core-sidebar-selected: oklch(95.1% 0 0);
     --starci-core-sidebar-selected-foreground: var(--foreground);

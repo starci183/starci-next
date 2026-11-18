@@ -1,15 +1,15 @@
 import type { ReactElement } from "react"
 import { Image } from "@starci/grammar/common"
 
-/** One piece of the lesson art as the app serves it: its path under `public/` and its intrinsic size, so the box is reserved before it loads. */
+/** One piece of the lesson art as the app serves it: its staticsKey (the path under `statics/`) and its intrinsic size, so the box is reserved before it loads. */
 type ArtAsset = {
-    readonly src: string
+    readonly key: string
     readonly width: number
     readonly height: number
 }
 
 /** A stage picture, 960 by 640. */
-const stage = (name: string): ArtAsset => ({ src: `/art/${name}.webp`, width: 960, height: 640 })
+const stage = (name: string): ArtAsset => ({ key: `art/${name}.webp`, width: 960, height: 640 })
 
 /** The names of the generic art pieces. */
 type ArtName =
@@ -27,8 +27,8 @@ type ArtName =
 
 /** The generic 3D art of the product, by name; every one is decorative (empty `alt`). */
 export const ART: Readonly<Record<ArtName, ArtAsset>> = {
-    teacher: { src: "/art/teacher-3d.webp", width: 320, height: 320 },
-    journey: { src: "/art/pro-learning-journey-v1.webp", width: 960, height: 540 },
+    teacher: { key: "art/teacher-3d.webp", width: 320, height: 320 },
+    journey: { key: "art/pro-learning-journey-v1.webp", width: 960, height: 540 },
     map: stage("stage-map"),
     ask: stage("stage-ask"),
     predictRun: stage("stage-predict-run"),
@@ -75,9 +75,18 @@ const GROUP_ART: Readonly<Record<string, ArtAsset>> = {
 export const groupArtOf = (group: string): ArtAsset => GROUP_ART[group] ?? ART.map
 
 /** What {@link ArtImage} draws. */
-type ArtImageProps = { readonly asset: ArtAsset }
+type ArtImageProps = {
+    readonly asset: ArtAsset
+    /** The public base of the statics (`NEXT_PUBLIC_STATICS_URL`), read once by the app. */ readonly base: string
+}
 
 /** A decorative art image at its own aspect: width and height reserve the box, so nothing shifts when it loads. */
 export const ArtImage = (props: ArtImageProps): ReactElement => (
-    <Image src={props.asset.src} alt="" width={props.asset.width} height={props.asset.height} loading="lazy" />
+    <Image
+        src={`${props.base}/${props.asset.key}`}
+        alt=""
+        width={props.asset.width}
+        height={props.asset.height}
+        loading="lazy"
+    />
 )

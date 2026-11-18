@@ -1,4 +1,4 @@
-import { Button, Cluster, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, ChoiceChips, Cluster, Section, Stack, Text } from "@starci/grammar/common"
 import type { SimulationCardProps, SimulationState, Walk } from "./types"
 import { branchesOf, clockOf, isOpenIn, stateIdAfter, statusOf } from "./walk"
 
@@ -8,30 +8,19 @@ type StatesRowProps = { readonly card: SimulationCardProps; readonly walk: Walk 
 /** The props of the event log. */
 type EventLogProps = { readonly card: SimulationCardProps; readonly walk: Walk }
 
-/** The lead-in sentence and the row of states: each a card, the current one with the accent ring. */
+/** The lead-in sentence and the row of states as read-only chips, the current one selected. */
 export const StatesRow = (props: StatesRowProps) => {
     const currentId = stateIdAfter(props.card.initialStateId, props.walk.steps)
     return (
         <Stack gap="row">
             <Text>{props.card.prompt}</Text>
-            <Cluster gap="inline" wrap>
-                {props.card.states.map((state) => (
-                    <SurfaceCard
-                        key={state.id}
-                        ariaLabel={state.label}
-                        {...(state.id === currentId ? { emphasis: "accent" as const } : {})}
-                    >
-                        <Stack gap="identity">
-                            <Text isStrong>{state.label}</Text>
-                            {state.id === currentId ? (
-                                <Text size="xs" tone="muted">
-                                    {props.card.labels.current}
-                                </Text>
-                            ) : null}
-                        </Stack>
-                    </SurfaceCard>
-                ))}
-            </Cluster>
+            <ChoiceChips
+                label={props.card.labels.current}
+                isLabelHidden
+                options={props.card.states.map((state) => ({ value: state.id, label: state.label }))}
+                value={currentId}
+                empty={null}
+            />
         </Stack>
     )
 }
@@ -39,16 +28,18 @@ export const StatesRow = (props: StatesRowProps) => {
 /** What the observation needs. */
 type ObservationProps = { readonly state: SimulationState; readonly labels: SimulationCardProps["labels"] }
 
-/** The observation of the current state and, when it has counters, those as figures. */
+/** The observation of the current state as an alert and, when it has counters, those as figures. */
 export const Observation = (props: ObservationProps) => (
     <Stack gap="row">
-        <SurfaceCard label={props.state.isSuccess ? props.labels.succeeded : props.labels.observing}>
-            <Text>{props.state.observation}</Text>
-        </SurfaceCard>
+        <Alert
+            tone={props.state.isSuccess ? "affirmative" : "informative"}
+            title={props.state.isSuccess ? props.labels.succeeded : props.labels.observing}
+            description={props.state.observation}
+        />
         {props.state.facts === undefined || props.state.facts.length === 0 ? null : (
-            <SurfaceCard
+            <Section
                 kind="figures"
-                label={props.state.label}
+                title={props.state.label}
                 items={props.state.facts.map((fact) => ({ id: fact.label, term: fact.label, value: fact.value }))}
             />
         )}
@@ -64,68 +55,45 @@ type MovesProps = {
     readonly onRestart: () => void
 }
 
-/** Every action as a row with its button; the progress line, back and start over in the footer. */
+/** Every action as a row with its button; the progress line is the fact of the head, back and start over its actions. */
 export const Moves = (props: MovesProps) => {
     const { card, walk } = props
     const branches = branchesOf(card)
     const triedCount = branches.filter((action) => walk.tried.includes(action.id)).length
     return (
-        <SurfaceCard
-            label={card.labels.moves}
-            footers={[
-                {
-                    kind: "custom",
-                    children: (
-                        <Cluster gap="row" wrap justify="between" align="center">
-                            <Text size="xs" tone="muted">
-                                {card.labels.progress
-                                    .replace("{tried}", String(triedCount))
-                                    .replace("{total}", String(branches.length))}
-                            </Text>
-                            <Cluster gap="inline" wrap>
-                                <Button
-                                    intent="neutral"
-                                    size="sm"
-                                    isDisabled={walk.steps.length === 0}
-                                    onPress={props.onBack}
-                                >
-                                    {card.labels.back}
-                                </Button>
-                                <Button
-                                    intent="neutral"
-                                    size="sm"
-                                    isDisabled={walk.steps.length === 0}
-                                    onPress={props.onRestart}
-                                >
-                                    {card.labels.restart}
-                                </Button>
-                            </Cluster>
-                        </Cluster>
-                    ),
-                },
-            ]}
-        >
-            <Section
-                kind="list"
-                ariaLabel={card.labels.moves}
-                empty={card.labels.noMoves}
-                items={card.actions.map((action) => ({
-                    id: action.id,
-                    title: action.label,
-                    description: statusOf(card, walk, action.id),
-                    control: (
-                        <Button
-                            intent="neutral"
-                            size="sm"
-                            isDisabled={!isOpenIn(card, walk, action.id)}
-                            onPress={() => props.onPress(action.id)}
-                        >
-                            {action.label}
-                        </Button>
-                    ),
-                }))}
-            />
-        </SurfaceCard>
+        <Section
+            kind="list"
+            title={card.labels.moves}
+            fact={card.labels.progress
+                .replace("{tried}", String(triedCount))
+                .replace("{total}", String(branches.length))}
+            action={
+                <Cluster gap="inline" wrap>
+                    <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onBack}>
+                        {card.labels.back}
+                    </Button>
+                    <Button intent="neutral" size="sm" isDisabled={walk.steps.length === 0} onPress={props.onRestart}>
+                        {card.labels.restart}
+                    </Button>
+                </Cluster>
+            }
+            empty={card.labels.noMoves}
+            items={card.actions.map((action) => ({
+                id: action.id,
+                title: action.label,
+                description: statusOf(card, walk, action.id),
+                control: (
+                    <Button
+                        intent="neutral"
+                        size="sm"
+                        isDisabled={!isOpenIn(card, walk, action.id)}
+                        onPress={() => props.onPress(action.id)}
+                    >
+                        {action.label}
+                    </Button>
+                ),
+            }))}
+        />
     )
 }
 

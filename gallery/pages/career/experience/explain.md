@@ -35,5 +35,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: tiêu đề "Mỗi phần học cho bạn một kinh nghiệm, thầy ký xác nhận" là một câu dài chứ không phải tên trang; mô tả muted xuống dòng và để "CV." mồ côi.
 - 1440: bốn chip luồng nền xám nhạt không có mũi tên hay thứ tự nên không đọc ra là một luồng; ba cụm số muted bên dưới dính liền nhau không có dấu ngăn nên nhìn như một câu.
 - 1440: trạng thái rỗng "Không có mục nào ở trạng thái này." là một câu muted trơ trọi, không chỉ dẫn và không có nút.
-- 1920: tab, tiêu đề và mô tả sát trái x=288 nhưng chip, số liệu và câu rỗng ở x=480; hai trục trái lệch nhau.
 - 390: tab cuộn ngang và "AI đã chấm" bị cắt ở mép phải kèm mũi tên; chip "Đã xác minh" sát mép phải; cụm số thứ ba xuống dòng, lệch nhịp; tiêu đề bẻ thành hai dòng.

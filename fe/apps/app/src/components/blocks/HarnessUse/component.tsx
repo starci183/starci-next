@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import {
     Badge,
     ChoiceChips,
@@ -9,7 +10,6 @@ import {
     Switch,
     Text,
     type ListRowData,
-    type TableRowData,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type {
@@ -50,8 +50,11 @@ const probeRowOf = (probe: HarnessProbeItemView): ListRowData => ({
     ...(probe.fixHref === "" ? {} : { action: { label: probe.fixLabel, href: probe.fixHref } }),
 })
 
+/** A table row: its id and the cell of each column by column id. */
+type CellsRow = { readonly id: string; readonly cells: Readonly<Record<string, ReactNode>> }
+
 /** One trap as a table row: the shortcuts the headless run observed, the verdict and the cost the CLI estimated. */
-const trialRowOf = (trial: HarnessTrialItemView): TableRowData => ({
+const trialRowOf = (trial: HarnessTrialItemView): CellsRow => ({
     id: trial.id,
     cells: {
         trap: (

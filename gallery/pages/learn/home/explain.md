@@ -38,7 +38,7 @@ Grammar: `Page chrome="panes" layout="workspace" header={{ title, description, a
 
 ## Phần: "Lộ trình đang theo"
 
-Vì sao: một phần phẳng trên nền trắng dưới đầu phần "Lộ trình đang theo", không thẻ. Bên trái hình minh hoạ (Mascot md, tranh ngang 160px), bên phải câu hỏi "Bạn học để làm được gì?" (500), một dòng mờ và nút chính "Chọn mục tiêu" có icon (md): đây là MỘT nút chính của màn. Khi đã theo lộ trình: tên lộ trình, "Bước tiếp theo", nút "Làm tiếp" và nút trung tính "Đổi mục tiêu". Ghi chú lỗi ảnh: giữa đầu phần và nội dung còn một khoảng trống cao khoảng 50px ở 1440 và 1920; ở 390 hình thu nhỏ, nằm lệch trái, bỏ trống bên phải.
+Vì sao: một phần phẳng trên nền trắng dưới đầu phần "Lộ trình đang theo", không thẻ. Bên trái hình minh hoạ (Mascot md, tranh ngang 160px), bên phải câu hỏi "Bạn học để làm được gì?" (500), một dòng mờ và nút chính "Chọn mục tiêu" có icon (md): đây là MỘT nút chính của màn. Khi đã theo lộ trình: tên lộ trình, "Bước tiếp theo", nút "Làm tiếp" và nút trung tính "Đổi mục tiêu". Ghi chú lỗi ảnh: giữa đầu phần và nội dung còn một khoảng trống cao khoảng 50px ở 1440; ở 390 hình thu nhỏ, nằm lệch trái, bỏ trống bên phải.
 Luật: `surface-layering` (một nút chính, nút chính md có icon, phần phẳng không thẻ).
 Grammar: `Section title headingLevel={2}`, `Mascot size="md" assetSlot`, `Button intent="commit" startContent`; code `fe/packages/starci-next-ui/src/composites/HubPathCard`.
 
@@ -50,7 +50,7 @@ Grammar: `Section kind="list" title count meta items[].leading.icon items[].href
 
 ## Cột phụ: "Chuỗi ngày học"
 
-Vì sao: cột trắng 320px (1440; rộng hơn ở 1920), đường kẻ trái, các mục là phần ngăn bằng đường kẻ, không thẻ. Số lớn 20 "0" kèm "ngày liên tiếp" (mờ), dòng 12 mờ "Dài nhất n ngày · n lần nghỉ còn lại" và hàng bảy ngày T4..T3 với chấm rỗng; hôm nay có vòng echo. Ở 390 các phần của cột phụ đứng trước "Lộ trình đang theo".
+Vì sao: cột trắng 320px (1440), đường kẻ trái, các mục là phần ngăn bằng đường kẻ, không thẻ. Số lớn 20 "0" kèm "ngày liên tiếp" (mờ), dòng 12 mờ "Dài nhất n ngày · n lần nghỉ còn lại" và hàng bảy ngày T4..T3 với chấm rỗng; hôm nay có vòng echo. Ở 390 các phần của cột phụ đứng trước "Lộ trình đang theo".
 Luật: `surface-layering` (aside là phần có đường kẻ, không thẻ), `type-scale-14-12.md`.
 Grammar: `Section title headingLevel={2}`, `Text size="figure"`, `StatusDot tone size="lg" echo`; code `fe/packages/starci-next-ui/src/composites/HubStreakCard`.
 
@@ -72,16 +72,15 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, phần "Lộ trình đang theo": khoảng trống khoảng 50px giữa đầu phần và nội dung, và khoảng 80px giữa nút và đầu phần "Hôm nay"; nhịp dọc rời rạc so với các phần khác. Hình minh hoạ là một tranh nền gradient hình chữ nhật, không phải vật thật để cầm.
+- 1440, phần "Lộ trình đang theo": khoảng trống khoảng 50px giữa đầu phần và nội dung, và khoảng 80px giữa nút và đầu phần "Hôm nay"; nhịp dọc rời rạc so với các phần khác. Hình minh hoạ là một tranh nền gradient hình chữ nhật, không phải vật thật để cầm.
 - 390, "Lộ trình đang theo": hình thu nhỏ cỡ 100px nằm lệch trái, bỏ trống bên phải; nút chính "Chọn mục tiêu" nằm ở khoảng y=965, tức xa dưới màn hình đầu vì cột phụ (chuỗi ngày, mục tiêu tuần, kinh nghiệm) chen lên trước.
-- 1440, 1920, 390, dải tiêu đề: dòng phụ "Sáu phần học, một chuỗi ngày" cỡ 14 xám, không phải 12 muted như luật; "Xem hướng dẫn" là viên thuốc viền nằm lệch mép phải, cách xa tiêu đề.
-- 1440, 1920, 390, "0 ngày liên tiếp": chữ "ngày liên tiếp" cũng cỡ 20 xám nhạt, tương phản thấp, chỉ "0" đậm; luật chỉ cho số lớn cỡ 20.
-- 1440, 1920, 390, hàng bảy ngày: nhãn T4..T3 12px xám nhạt và chấm rỗng rất nhỏ; chấm hôm nay chỉ khác một vòng mờ, khó thấy.
-- 1440, 1920, 390, "Mục tiêu tuần": thanh Progress ở 0% chỉ là một rãnh xám cực nhạt, gần như vô hình; "Đổi mục tiêu tuần" dính ngay dưới rãnh, không thở.
-- 1440, 1920, 390, thanh trên: nút đổi ngôn ngữ và nút thu gọn thanh bên là hình tròn tô xám, công tắc sáng tối là một viên thuốc rộng tô xám với nút gạt lệch trái; ảnh avatar đỏ bão hoà là điểm màu mạnh nhất trang, vượt cả accent (nền tô thay vì viền).
-- 1440, 1920, 390, "Học viên · Premium" và "Còn 5 việc để giữ chuỗi", tên nhóm sidebar "Kinh nghiệm": xám nhạt cỡ 12, tương phản thấp.
-- 1440, 1920, "Kinh nghiệm" ở cột phụ: hai chip đếm "0" xám tô; nhãn tên mục sidebar "Kinh nghiệm" nhóm cũng trùng tên với tên nhóm nhỏ "Kinh nghiệm" ở cột phụ và mục "Kinh nghiệm đã xác minh", ba chỗ cùng một từ.
-- 1920: cột phụ rộng khoảng 420px, rộng hơn hẳn ở 1440 (320px); mỗi dòng "Hôm nay" kéo dài hơn 1200px, tiêu đề ở trái còn mũi tên › cách xa gần 1100px, mắt phải đi rất xa. Cả hai độ rộng 1440 và 1920 để trống hơn 250px cuối cột chính và cột phụ.
-- 1440, 1920, 390, các dòng "Hôm nay": mỗi dòng có IconTile xám tô, tiêu đề 14/500 và phụ đề 12; năm dòng gần như giống nhau, không phân biệt việc nào ưu tiên.
+- 1440, 390, dải tiêu đề: dòng phụ "Sáu phần học, một chuỗi ngày" cỡ 14 xám, không phải 12 muted như luật; "Xem hướng dẫn" là viên thuốc viền nằm lệch mép phải, cách xa tiêu đề.
+- 1440, 390, "0 ngày liên tiếp": chữ "ngày liên tiếp" cũng cỡ 20 xám nhạt, tương phản thấp, chỉ "0" đậm; luật chỉ cho số lớn cỡ 20.
+- 1440, 390, hàng bảy ngày: nhãn T4..T3 12px xám nhạt và chấm rỗng rất nhỏ; chấm hôm nay chỉ khác một vòng mờ, khó thấy.
+- 1440, 390, "Mục tiêu tuần": thanh Progress ở 0% chỉ là một rãnh xám cực nhạt, gần như vô hình; "Đổi mục tiêu tuần" dính ngay dưới rãnh, không thở.
+- 1440, 390, thanh trên: nút đổi ngôn ngữ và nút thu gọn thanh bên là hình tròn tô xám, công tắc sáng tối là một viên thuốc rộng tô xám với nút gạt lệch trái; ảnh avatar đỏ bão hoà là điểm màu mạnh nhất trang, vượt cả accent (nền tô thay vì viền).
+- 1440, 390, "Học viên · Premium" và "Còn 5 việc để giữ chuỗi", tên nhóm sidebar "Kinh nghiệm": xám nhạt cỡ 12, tương phản thấp.
+- 1440, "Kinh nghiệm" ở cột phụ: hai chip đếm "0" xám tô; nhãn tên mục sidebar "Kinh nghiệm" nhóm cũng trùng tên với tên nhóm nhỏ "Kinh nghiệm" ở cột phụ và mục "Kinh nghiệm đã xác minh", ba chỗ cùng một từ.
+- 1440, 390, các dòng "Hôm nay": mỗi dòng có IconTile xám tô, tiêu đề 14/500 và phụ đề 12; năm dòng gần như giống nhau, không phân biệt việc nào ưu tiên.
 
 - Sau Grammar 0.44.0 và alpha.148 (2026-11-17, đã đọc ở 1440 trên dev, tài khoản học viên dùng một lần): thanh trên có nút đổi ngôn ngữ, công tắc sáng/tối `kind="toggle"` không size và avatar; không lỗi mới ở thanh trên. Các lỗi đã ghi ở trên (ví dụ mục tiêu tuần chưa có giá trị, khối "Lộ trình đang theo" trống rộng) vẫn còn.

@@ -55,11 +55,10 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1920: tiêu đề và mô tả của đầu trang dính x=288 trong khi thân (thông báo, nhóm radio, thẻ tóm tắt) căn giữa bắt đầu x=480; hai trục lề lệch nhau gần 200px (surface-layering: đầu trang sát trái, thân tối đa 80rem).
-- 1440, 1920, 390, thông báo "Bạn đang là Premium...": nền xám tô kín bo lớn (giếng tô màu), không phải nền trắng viền 1px; chữ đậm ở dòng một và thường ở dòng hai gần như cùng cỡ.
-- 1440, 1920, 390, nhóm radio: hàng đang chọn có nền xám tô kín cộng viền đen đậm 1px, nặng nhất trang; hai nhóm "Chọn gói" và "Thanh toán qua" đều là các hàng thẻ viền bo góc lớn, chiếm cả bề ngang (1440 và 1920 dài hơn 1100px) cho chỉ hai lựa chọn ngắn, nên nhiều thẻ lồng như danh sách thay vì hàng phẳng.
-- 1440, 1920, 390, dòng phụ trong radio ("Dùng 1 tháng...", "Bằng giá 10 tháng.", "Mặc định") cỡ 12 xám nhạt, tương phản thấp, và thụt vào so với nhãn radio.
-- 1440, 1920, 390, nút "Gia hạn thêm": ở 1440 và 1920 nút dồn lề trái trong thẻ rộng hơn 1100px, bỏ trống phần còn lại; ở 390 nút rộng hết thẻ.
-- 1440, 1920, 390, thẻ tóm tắt gói: dòng "Premium hằng năm · SePay" xám nhạt nhỏ, số tiền cỡ 14 đậm (không nổi hơn nhãn), câu giải thích dài xám nhạt; số tiền là con số quan trọng nhất nhưng không được nhấn.
-- 1440, 1920, 390, dòng "Mở toàn bộ nội dung đang là bản xem trước" là một dòng lợi ích duy nhất, đứng một mình dưới đầu mục "Premium gồm những gì" với dấu tích lớn đậm hơn chữ.
-- 1440, 1920, 390, sidebar không có mục nào được chọn; thanh trên có nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.
+- 1440, 390, thông báo "Bạn đang là Premium...": nền xám tô kín bo lớn (giếng tô màu), không phải nền trắng viền 1px; chữ đậm ở dòng một và thường ở dòng hai gần như cùng cỡ.
+- 1440, 390, nhóm radio: hàng đang chọn có nền xám tô kín cộng viền đen đậm 1px, nặng nhất trang; hai nhóm "Chọn gói" và "Thanh toán qua" đều là các hàng thẻ viền bo góc lớn, chiếm cả bề ngang (1440 dài hơn 1100px) cho chỉ hai lựa chọn ngắn, nên nhiều thẻ lồng như danh sách thay vì hàng phẳng.
+- 1440, 390, dòng phụ trong radio ("Dùng 1 tháng...", "Bằng giá 10 tháng.", "Mặc định") cỡ 12 xám nhạt, tương phản thấp, và thụt vào so với nhãn radio.
+- 1440, 390, nút "Gia hạn thêm": ở 1440 nút dồn lề trái trong thẻ rộng hơn 1100px, bỏ trống phần còn lại; ở 390 nút rộng hết thẻ.
+- 1440, 390, thẻ tóm tắt gói: dòng "Premium hằng năm · SePay" xám nhạt nhỏ, số tiền cỡ 14 đậm (không nổi hơn nhãn), câu giải thích dài xám nhạt; số tiền là con số quan trọng nhất nhưng không được nhấn.
+- 1440, 390, dòng "Mở toàn bộ nội dung đang là bản xem trước" là một dòng lợi ích duy nhất, đứng một mình dưới đầu mục "Premium gồm những gì" với dấu tích lớn đậm hơn chữ.
+- 1440, 390, sidebar không có mục nào được chọn; thanh trên có nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.

@@ -4,7 +4,7 @@ Every screen has a gallery folder of shots and an `explain.md` that traces each 
 is compared with its approved drawing before anyone calls it done (owner: a screen is not done from tsc alone).
 
 ## Terms
-- **Screen folder**: `gallery/pages/<area>/<screen>/` with `1440.png`, `1920.png`, `390.png`, the required `explain.md` and an
+- **Screen folder**: `gallery/pages/<area>/<screen>/` with `1440.png`, `390.png`, the required `explain.md` and an
   optional `links.json`.
 - **Flow**: a named sequence of screens in `gallery/flows.json`.
 - **Explain**: for every visible region, what it is, why it is drawn so (which owner law or concept) and its Grammar reference

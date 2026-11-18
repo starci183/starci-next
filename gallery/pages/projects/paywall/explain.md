@@ -43,13 +43,12 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440 và 1920, "Từ repo của bạn đến dòng CV", bước 2: mô tả bị cắt bằng dấu ba chấm giữa câu ("CI GitHub ký OIDC hoặc s..." ở 1440, "server chạy lại m..." ở 1920): mất nội dung.
+- 1440, "Từ repo của bạn đến dòng CV", bước 2: mô tả bị cắt bằng dấu ba chấm giữa câu ("CI GitHub ký OIDC hoặc s..." ở 1440): mất nội dung.
 - 390, cả ba bước và cả bốn hàng "Premium mở những gì" bị cắt bằng dấu ba chấm ở dòng mô tả (một dòng duy nhất), nên không đọc được ý hoàn chỉnh của hàng nào.
-- 1440 và 1920, hai danh sách (ba bước, bốn hàng Premium) có phần thụt khác nhau: số thứ tự và nội dung thụt 44px so với đầu mục, các hàng Premium thụt 12px, còn bảng và CV mẫu không thụt; mép trái của các khối không thẳng.
-- 1440 và 1920, "Ví dụ: dòng CV": chip "Đã xác minh" nền xanh nhạt tô màu đứng ngay dưới tiêu đề rồi sát dòng mô tả, khoảng cách rất chặt; ba cấp (vai trò, chip, câu CV) xếp dọc không có phân nhóm.
-- 1440 và 1920, bảng ví dụ: chip "Đã chứng minh" (xanh) và "Đang luyện" (vàng) tô nền màu; "Chưa bắt đầu" là chữ xám không chip nên ba trạng thái không cùng dạng.
-- 1440, 1920, dòng chú thích 12 dưới bảng mang sắc nâu, tương phản thấp.
+- 1440, hai danh sách (ba bước, bốn hàng Premium) có phần thụt khác nhau: số thứ tự và nội dung thụt 44px so với đầu mục, các hàng Premium thụt 12px, còn bảng và CV mẫu không thụt; mép trái của các khối không thẳng.
+- 1440, "Ví dụ: dòng CV": chip "Đã xác minh" nền xanh nhạt tô màu đứng ngay dưới tiêu đề rồi sát dòng mô tả, khoảng cách rất chặt; ba cấp (vai trò, chip, câu CV) xếp dọc không có phân nhóm.
+- 1440, bảng ví dụ: chip "Đã chứng minh" (xanh) và "Đang luyện" (vàng) tô nền màu; "Chưa bắt đầu" là chữ xám không chip nên ba trạng thái không cùng dạng.
+- 1440, dòng chú thích 12 dưới bảng mang sắc nâu, tương phản thấp.
 - 1440, dải đầu trang: mô tả 14 muted dài xuống hai dòng và nút "Đăng ký Premium" đứng lệch ở giữa hai dòng, không thẳng với tiêu đề.
-- 1920, dải đầu trang canh trái ở x=288 và nút ở mép phải, còn các Section thu hẹp ở giữa từ x=480: mép trái lệch 192px; mô tả một dòng rất dài (khoảng 1000px).
 - 390, nút "Đăng ký Premium" đứng bên phải mô tả bốn dòng và căn giữa theo chiều dọc, tách khỏi tiêu đề "Dự án"; mô tả bị ép vào cột hẹp.
 - 390, bảng ví dụ ẩn cột "Bằng chứng cần" nên người xem không thấy ô bằng chứng mà phần giới thiệu nói tới.

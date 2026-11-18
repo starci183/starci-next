@@ -2,37 +2,37 @@
 
 import { useTranslations } from "next-intl"
 import type { CatalogLabels } from "@/modules/types"
-import { useViewerPremium } from "./useViewerPremium"
 
-/** Resolves the fixed words of the catalog: the intro, the aside, the toolbar and the empty results. */
+/** Resolves the fixed words of the catalog: the tabs, the toolbar, the empty results. */
 export const useCatalogLabels = (): CatalogLabels => {
-    const t = useTranslations("app.essentials")
-    const isPremium = useViewerPremium()
+    const t = useTranslations("app.essentials.catalog")
     return {
-        eyebrow: t("catalog.eyebrow"),
-        title: t("catalog.title"),
-        all: t("catalog.all"),
-        description: t("catalog.description"),
-        asideLabel: t("catalog.asideLabel"),
-        asideEmpty: t("catalog.asideEmpty"),
-        open: t("catalog.open"),
-        upsell: isPremium ? undefined : { label: t("catalog.upsell"), note: t("catalog.upsellNote") },
-        toolbar: {
-            search: t("catalog.search"),
-            searchPlaceholder: t("catalog.searchPlaceholder"),
-            clearSearch: t("catalog.clearSearch"),
-            difficulty: t("catalog.difficulty"),
-            language: t("catalog.language"),
-            provider: t("catalog.provider"),
-        },
-        difficulties: [
-            { id: "all", label: t("catalog.all") },
-            { id: "foundation", label: t("difficulty.foundation") },
-            { id: "intermediate", label: t("difficulty.intermediate") },
-            { id: "advanced", label: t("difficulty.advanced") },
+        title: t("title"),
+        breadcrumbs: t("breadcrumbs"),
+        statusLabel: t("statusLabel"),
+        statuses: [
+            { id: "all", label: t("tabAll") },
+            { id: "doing", label: t("tabDoing") },
+            { id: "todo", label: t("tabTodo") },
+            { id: "done", label: t("tabDone") },
         ],
-        resumeTitle: t("catalog.resumeTitle"),
-        resumeAction: t("catalog.resumeAction"),
-        noResult: { title: t("catalog.noResultTitle"), text: t("catalog.noResultText"), clear: t("catalog.clear") },
+        search: t("search"),
+        searchPlaceholder: t("searchPlaceholder"),
+        clearSearch: t("clearSearch"),
+        topicSelect: t("topicSelect"),
+        allTopics: t("allTopics"),
+        planSelect: t("planSelect"),
+        plans: [
+            { id: "all", label: t("planAll") },
+            { id: "free", label: t("planFree") },
+            { id: "premium", label: t("planPremium") },
+        ],
+        viewTopic: t("viewTopic"),
+        noResult: {
+            title: (query) => t("noResultTitle", { query }),
+            text: t("noResultText"),
+            clear: t("clear"),
+        },
+        empty: t("empty"),
     }
 }

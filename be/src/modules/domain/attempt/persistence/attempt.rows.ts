@@ -100,3 +100,27 @@ export interface OpenerScoreRow {
     /** The graded answers given. */
     attempts: number
 }
+
+/** One scenario hint a learner asked for. */
+export interface HintUseRow {
+    /** The lesson. */
+    lesson_id: string
+    /** The scenario. */
+    scenario_id: string
+}
+
+/** One section a learner marked as read. */
+export interface SectionReadRow {
+    /** The section. */
+    section_id: string
+}
+
+/** The newest graded answer of one challenge essence question. */
+export interface ChallengeChoiceRow {
+    /** The lesson. */
+    lesson_id: string
+    /** The activity, `challenge.<challenge id>.<question id>`. */
+    activity_id: string
+    /** Whether the newest graded answer is right. */
+    latest_correct: boolean | null
+}

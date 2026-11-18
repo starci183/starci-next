@@ -90,9 +90,10 @@ const emptyNotice = (props: Pick<SlotViewProps<unknown>, "emptyDescription" | "e
         <EmptyNotice message={props.labels.empty} {...descriptionOf(props.emptyDescription)} />
     ) : (
         <EmptyNotice
+            scope="page"
             message={props.labels.empty}
             {...descriptionOf(props.emptyDescription)}
-            artwork={{ ...props.emptyArtwork, alt: "" }}
+            media={{ illustration: props.emptyArtwork }}
         />
     )
 

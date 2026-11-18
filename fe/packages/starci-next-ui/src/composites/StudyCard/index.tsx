@@ -1,4 +1,4 @@
-import { Stack, SurfaceCard } from "@starci/grammar/common"
+import { Section, Stack, Tabs } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 import { WrittenCard } from "../WrittenCard"
 import { LessonCode } from "../LessonCode"
@@ -23,18 +23,20 @@ export const StudyCard = (props: StudyCardProps) => {
     switch (card.kind) {
         case "reading":
             return (
-                <SurfaceCard
-                    {...(props.sectionTabs === undefined ? { label: card.title } : { ariaLabel: card.title })}
+                <Section
                     {...(props.sectionTabs === undefined
-                        ? {}
-                        : { headers: [{ kind: "filter" as const, ...props.sectionTabs }] })}
+                        ? { title: card.title }
+                        : {
+                              ariaLabel: card.title,
+                              filter: <Tabs kind="filter" {...props.sectionTabs} />,
+                          })}
                 >
                     <RichMarkdown
                         source={card.markdown}
                         labels={env.labels.markdown}
                         renderCode={(code) => <LessonCode code={code} />}
                     />
-                </SurfaceCard>
+                </Section>
             )
         case "choice":
             return <ChoiceBlock card={card} env={env} />

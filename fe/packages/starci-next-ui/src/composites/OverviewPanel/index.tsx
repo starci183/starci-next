@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Disclosure, Grid, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { DescriptionList, Disclosure, Grid, Section, Stack, Text } from "@starci/grammar/common"
 import { LockIcon } from "../../leaves/Icon"
 
 /** The words of the overview, resolved by its block. */
@@ -73,7 +73,11 @@ const AboutCard = (props: Pick<OverviewPanelProps, "summary" | "scope" | "labels
               ]),
     ]
     if (items.length === 0) return null
-    return <SurfaceCard kind="details" label={props.labels.title} items={items} />
+    return (
+        <Section title={props.labels.title}>
+            <DescriptionList isDivided items={items} />
+        </Section>
+    )
 }
 
 /** The chip of a phase: finished (success) or open (neutral). */

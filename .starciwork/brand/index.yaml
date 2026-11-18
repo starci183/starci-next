@@ -611,7 +611,7 @@ brand:
       - Reuse the Academy masters unchanged; do not redraw, recolour or generate a second mascot.
       - The mascot is the AI assistant's face only; other surfaces use no mascot.
     assets:
-      - path: assets/starci-ai-teacher-v1.png
+      - path: ../../statics/brand/starci-ai-teacher-v1.png
         sha256: ca3fd1ae9b5de5d147d556287f3b262dee3ed34c90ad972a1688a1f3ad241cad
         format: png
         width: 1303
@@ -621,7 +621,7 @@ brand:
           by starci183 in starci-academy-fe b9a1a8e, 2026-08-30; owner's own product asset). Copied under
           brand/assets by brand.decide job op-brand.decide-43e6b4b2b5, cut brand-foundation-r1 2/3 (commit
           ecbfad6, 2026-09-25) and recorded in assets/provenance.yaml; this op re-hashed the bytes.
-      - path: assets/starci-ai-mark-v1.png
+      - path: ../../statics/brand/starci-ai-mark-v1.png
         sha256: 74ae6263ec642933967422d33a2b5a099295b97c346c39512795007e4352e055
         format: png
         width: 256
@@ -654,7 +654,7 @@ brand:
     status: copied-byte-identical-from-academy
     mark: StarCi logo, 40x40 in the product navbar beside the product name.
     assets:
-      - path: assets/starci-logo.png
+      - path: ../../fe/apps/app/public/brand/logo.png
         sha256: b00fa437370ef3752c214d7068e0521393262fe6a85c5e19fae53dd67fadf77f
         format: png
         width: 256
@@ -725,7 +725,7 @@ brand:
       kind: raster-asset
       surfaces: [subscription benefits joined-card image band]
       states: [eligible, active, pending, expired]
-      master: assets/pro-learning-journey-v1.png
+      master: ../../statics/brand/pro-learning-journey-v1.png
       masterSource: starci-academy-fe/public/images/pro-subscription/pro-learning-journey-v1.png
       sha256: b01f982b323eb0359a57643976bc9a7e6ada92b518618e3544ac1a5f3df25294
       dimensions: 1672x941
@@ -739,14 +739,14 @@ brand:
         on 2026-09-02; copied byte-for-byte into this record's assets with its SHA-256.
     - id: ai-assistant-mascot
       surfaces: [global AI assistant trigger, AI chat panel]
-      master: assets/starci-ai-teacher-v1.png
+      master: ../../statics/brand/starci-ai-teacher-v1.png
       masterSource: starci-academy-fe/public/brand/starci-ai-teacher-v1.png, copied byte-for-byte (sha256
         ca3fd1ae...; provenance assets/provenance.yaml) - the slot names this record's own bytes
       purpose: the AI assistant's face
       decorative: false
     - id: navbar-logo
       surfaces: [product navbar]
-      master: assets/starci-logo.png
+      master: ../../fe/apps/app/public/brand/logo.png
       masterSource: starci-academy-fe/public/brand/starci-logo.png, copied byte-for-byte (sha256 b00fa437...;
         provenance assets/provenance.yaml) - the slot names this record's own bytes
       purpose: product mark
@@ -1253,25 +1253,25 @@ brand:
     golden:
       - archetype: list
         html: assets/direction/list.html
-        png: assets/direction/list-desktop.png
+        png: ../../statics/brand/direction/list-desktop.png
         sha256: 506d05ee87b6beb89d4b6ca6ceaa69081d8fb50255e6b85d8a81e12d1b948ffe
         htmlSha256: 2dc6ac214ae67d4cedc4e594945946a1fb0f6850c895ae59da1a7589a251ca79
         breakpoint: desktop
       - archetype: list
         html: assets/direction/list.html
-        png: assets/direction/list-mobile.png
+        png: ../../statics/brand/direction/list-mobile.png
         sha256: 8fca5d283c7179d88b68f1bdc80ab072dfc8cd54d9f08b183b1605108681ae97
         htmlSha256: 2dc6ac214ae67d4cedc4e594945946a1fb0f6850c895ae59da1a7589a251ca79
         breakpoint: mobile
       - archetype: detail
         html: assets/direction/detail.html
-        png: assets/direction/detail-desktop.png
+        png: ../../statics/brand/direction/detail-desktop.png
         sha256: 8b4cb8f9e2c55bc819721856acf5dc83b0fdd2c7c5965c7157cb7b9252c8ed5d
         htmlSha256: bba679ceb6bc49186d2ab0156fde67240a74c0766340d0b6438283133bed9683
         breakpoint: desktop
       - archetype: detail
         html: assets/direction/detail.html
-        png: assets/direction/detail-mobile.png
+        png: ../../statics/brand/direction/detail-mobile.png
         sha256: 526229b5bf5c362235e9a561034dd014e5964676ecbd1388ae0071d63bd97abb
         htmlSha256: bba679ceb6bc49186d2ab0156fde67240a74c0766340d0b6438283133bed9683
         breakpoint: mobile

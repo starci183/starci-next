@@ -31,8 +31,8 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, thông báo lỗi: nền hồng tô kín chữ đỏ đậm in đậm; chữ đậm cả hai dòng, nặng hơn mọi chữ khác trong thẻ, và là một khối tô màu thay vì viền hairline (theme-and-type: tránh nền tô). Ở 1440 và 1920 câu xuống dòng để chữ "thử lại." lẻ ở dòng hai.
-- 1440, 1920, 390, thẻ bo góc khoảng 24px.
-- 1440, 1920, 390, "Quên mật khẩu?" đen đậm không gạch chân, lẻ một dòng cách nút xa; "Đăng ký" cũng không gạch chân, không rõ là liên kết.
-- 1440, 1920, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám (nền tô, không viền); placeholder xám nhạt cỡ 12 tương phản thấp.
-- 1440, 1920, 390, trang thất bại không có đường lui riêng: thông báo lỗi nằm trên cả form đầy đủ nên người xem phải đọc lại toàn bộ form để thử lại.
+- 1440, 390, thông báo lỗi: nền hồng tô kín chữ đỏ đậm in đậm; chữ đậm cả hai dòng, nặng hơn mọi chữ khác trong thẻ, và là một khối tô màu thay vì viền hairline (theme-and-type: tránh nền tô). Ở 1440 câu xuống dòng để chữ "thử lại." lẻ ở dòng hai.
+- 1440, 390, thẻ bo góc khoảng 24px.
+- 1440, 390, "Quên mật khẩu?" đen đậm không gạch chân, lẻ một dòng cách nút xa; "Đăng ký" cũng không gạch chân, không rõ là liên kết.
+- 1440, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám (nền tô, không viền); placeholder xám nhạt cỡ 12 tương phản thấp.
+- 1440, 390, trang thất bại không có đường lui riêng: thông báo lỗi nằm trên cả form đầy đủ nên người xem phải đọc lại toàn bộ form để thử lại.

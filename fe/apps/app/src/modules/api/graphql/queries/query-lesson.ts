@@ -159,6 +159,7 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     invariant
                     guards
                     hint
+                    isHintLocked
                 }
                 challenges {
                     id

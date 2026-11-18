@@ -1,13 +1,9 @@
 "use client"
 
 import { useLocale, useTranslations } from "next-intl"
+import { useCatalogWords } from "@/hooks/catalog"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import {
-    useGetEssentialsSwr,
-    useGetLessonProgressSwr,
-    useGetLessonTopicSwr,
-    useQueryLessonOpenerScoresSwr,
-} from "@/hooks/swr"
+import { useGetEssentialsSwr, useGetLessonTopicSwr, useQueryLessonPartsProgressSwr } from "@/hooks/swr"
 import { topicScreenOf, useLegacyLessonDestination, useTopicLabels, useTopicWords } from "@/hooks/topic"
 import { useDocumentTitle } from "@/hooks/title"
 import { APP_ROUTES } from "@/modules/routes"
@@ -17,8 +13,8 @@ import { TOPIC_PLACEHOLDER, TopicDetailBase } from "./component"
 type TopicDetailProps = { readonly topicId: string }
 
 /**
- * The connected topic screen: reads the topic, the catalog (which titles the lessons and the related topics) and the
- * five-question opener score of each lesson, and words every row; the lessons stand in the teacher's order.
+ * The connected topic screen: reads the topic, the catalog (which titles its lessons) and the learner's four-part progress in each
+ * lesson, and words every row; the lessons stand in the topic's order.
  */
 export const TopicDetail = (props: TopicDetailProps) => {
     const t = useTranslations("app.essentials.topic")
@@ -26,11 +22,9 @@ export const TopicDetail = (props: TopicDetailProps) => {
     const read = useGetLessonTopicSwr(props.topicId, locale)
     const catalog = useGetEssentialsSwr(locale)
     const words = useTopicWords()
-    const progress =
-        useGetLessonProgressSwr((read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId])))
-            .data ?? {}
+    const catalogWords = useCatalogWords()
     const lessonIds = (read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId]))
-    const openers = useQueryLessonOpenerScoresSwr(lessonIds).data ?? {}
+    const parts = useQueryLessonPartsProgressSwr(lessonIds).data ?? {}
     const movedTo = useLegacyLessonDestination(props.topicId, read.error)
     useDocumentTitle(read.data === undefined ? undefined : `${read.data.title} · ${t("pageTitle")}`)
     return (
@@ -39,14 +33,12 @@ export const TopicDetail = (props: TopicDetailProps) => {
                 slot:
                     movedTo === ""
                         ? mapSlot(slotOfSwr(read), (topic) =>
-                              topicScreenOf({ topic, catalog: catalog.data ?? [], progress, words, openers }),
+                              topicScreenOf({ topic, catalog: catalog.data ?? [], parts, catalogWords, words }),
                           )
                         : loadingSlot(),
                 placeholder: TOPIC_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 labels: useTopicLabels(),
-                progressTitle: t("progressTitle"),
-                plansHref: APP_ROUTES.premium,
                 catalogHref: APP_ROUTES.essentials,
                 movedTo,
             }}

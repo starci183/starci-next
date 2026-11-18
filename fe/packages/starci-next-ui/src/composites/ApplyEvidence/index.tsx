@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard, Text, Textarea } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Section, Stack, Text, Textarea } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 import type { ApplyEvidenceLabels, ApplyEvidenceProps, EvidenceResult } from "./types"
 
@@ -92,52 +92,43 @@ export const ApplyEvidence = (props: ApplyEvidenceProps) => {
     const isEmpty = props.outputValue.trim() === "" || props.explanationValue.trim() === ""
     if (props.status === "premium") {
         return (
-            <SurfaceCard ariaLabel={props.task}>
-                <EmptyNotice
-                    frame="frameless"
-                    message={props.labels.premium}
-                    actionIntent="neutral"
-                    actionLabel={props.labels.plans}
-                    actionHref={props.plansHref}
-                />
-            </SurfaceCard>
+            <EmptyNotice
+                frame="frameless"
+                message={props.labels.premium}
+                actionIntent="neutral"
+                actionLabel={props.labels.plans}
+                actionHref={props.plansHref}
+            />
         )
     }
     return (
         <Stack gap="row">
-            <SurfaceCard
-                ariaLabel={props.task}
-                footers={[
-                    {
-                        kind: "custom",
-                        children: (
-                            <Cluster gap="inline" justify="end">
-                                <Button
-                                    intent="neutral"
-                                    isPending={isPending}
-                                    isDisabled={isEmpty || isSettled || props.issue === "limit"}
-                                    onPress={props.onSubmit}
-                                >
-                                    {submitLabelOf(props)}
-                                </Button>
-                            </Cluster>
-                        ),
-                    },
-                ]}
-            >
-                <Fields
-                    task={props.task}
-                    outputValue={props.outputValue}
-                    explanationValue={props.explanationValue}
-                    status={props.status}
-                    isSendFailed={props.isSendFailed}
-                    labels={props.labels}
-                    plansHref={props.plansHref}
-                    onOutputChange={props.onOutputChange}
-                    onExplanationChange={props.onExplanationChange}
-                    isPending={isPending}
-                />
-            </SurfaceCard>
+            <Section ariaLabel={props.task}>
+                <Stack gap="row">
+                    <Fields
+                        task={props.task}
+                        outputValue={props.outputValue}
+                        explanationValue={props.explanationValue}
+                        status={props.status}
+                        isSendFailed={props.isSendFailed}
+                        labels={props.labels}
+                        plansHref={props.plansHref}
+                        onOutputChange={props.onOutputChange}
+                        onExplanationChange={props.onExplanationChange}
+                        isPending={isPending}
+                    />
+                    <Cluster gap="inline" justify="end">
+                        <Button
+                            intent="neutral"
+                            isPending={isPending}
+                            isDisabled={isEmpty || isSettled || props.issue === "limit"}
+                            onPress={props.onSubmit}
+                        >
+                            {submitLabelOf(props)}
+                        </Button>
+                    </Cluster>
+                </Stack>
+            </Section>
             {props.result === undefined ? null : <ResultCard result={props.result} labels={props.labels} />}
         </Stack>
     )

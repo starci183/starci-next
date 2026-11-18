@@ -1,4 +1,4 @@
-import { SurfaceCard } from "@starci/grammar/common"
+import { DataTable, Section, type DataTableColumn } from "@starci/grammar/common"
 
 /** The words of the comparison, resolved by its block. */
 export type ReflectCompareLabels = {
@@ -31,22 +31,22 @@ const wordsOf = (level: number, labels: ReflectCompareLabels): string => labels.
 
 /** The before and after of each criterion: the opening diagnostic against the reflection graded by the same rubric, as a table. */
 export const ReflectCompare = (props: ReflectCompareProps) => (
-    <SurfaceCard
-        kind="table"
-        label={props.labels.title}
-        empty={props.labels.empty}
-        columns={[
-            { id: "criterion", label: props.labels.criterion },
-            { id: "before", label: props.labels.before },
-            { id: "after", label: props.labels.after },
-        ]}
-        rows={props.rows.map((row) => ({
-            id: row.id,
-            cells: {
-                criterion: row.criterion,
-                before: wordsOf(row.before, props.labels),
-                after: wordsOf(row.after, props.labels),
-            },
-        }))}
-    />
+    <Section title={props.labels.title}>
+        <DataTable
+            label={props.labels.title}
+            columns={
+                [
+                    { id: "criterion", label: props.labels.criterion },
+                    { id: "before", label: props.labels.before },
+                    { id: "after", label: props.labels.after },
+                ] satisfies DataTableColumn[]
+            }
+            rows={props.rows}
+            renderCell={(row, column) => {
+                if (column === "criterion") return row.criterion
+                return wordsOf(column === "before" ? row.before : row.after, props.labels)
+            }}
+            emptyContent={props.labels.empty}
+        />
+    </Section>
 )
