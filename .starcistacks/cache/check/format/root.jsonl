@@ -5,7 +5,7 @@
 {"findings":[],"hash":"f14b4987904bcb5814e4459a057ed4d20f58a633152288a761214dcd28780b56","path":".nvmrc","step":"prettier"}
 {"findings":[],"hash":"49fb39ee1c0135043dae9e526e28c01ba900c1b269bbe4496e2c4719d22b7ce5","path":".prettierignore","step":"prettier"}
 {"findings":[],"hash":"7940273320387409c9d24de8ad5f964a8fa889424fa4ce47a67efa698c1f2c25","path":".prettierrc","step":"prettier"}
-{"findings":[],"hash":"4af7dc69a3ad5258aa22a7d54f93ce550ad232fc969dd8b4482351eb1a3f7e55","path":".sops.yaml","step":"prettier"}
+{"findings":[],"hash":"ed92d3bad228c04cbbc860f920383c72fc0e1348b2759e716492284f758bd2a2","path":".sops.yaml","step":"prettier"}
 {"findings":[],"hash":"03505e1c8fa21cd3cdc3065d1a1b3a8b66a2f8643e975346190350b259143e86","path":"README.md","step":"prettier"}
 {"findings":[],"hash":"30a33fd191a1840a9c5a29d080f2d00c84e94d1146eb694d99168753ca2ca5fd","path":"codecov.yml","step":"prettier"}
 {"findings":[],"hash":"f67f0a1223e6b71d428764bf770d24d1525ed3536fb0277c1d3688ca8dd2c1da","path":"eslint.config.mjs","step":"prettier"}

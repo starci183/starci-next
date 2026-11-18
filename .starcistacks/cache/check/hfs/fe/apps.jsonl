@@ -1,4 +1,4 @@
-{"data":{},"findings":[],"hash":"abbbe1f374e8e170da772eb1b710121d4baaabe8f3f70e9ffdfaf40806f2fb26","path":"fe/apps/app/Dockerfile","step":"file-rules"}
+{"data":{},"findings":[],"hash":"27a14c006acceaa4374b798fbdb2d2eb0e782e1e0a0a6311a2fd5c470cd04229","path":"fe/apps/app/Dockerfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"33d72a551f83dba48d008b38a1540e7f9284112bf23b07ffb6ffeba39ec5d1e7","path":"fe/apps/app/next.config.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"552f8c5bdd23eb464523eaeb10df2578acc140780059d77621bf406b7f1010d7","path":"fe/apps/app/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/app/postcss.config.mjs","step":"file-rules"}
