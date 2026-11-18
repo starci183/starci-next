@@ -7,7 +7,7 @@
 {"data":{},"findings":[],"hash":"9b1b833e13d6c06ce99033ddb5a169f184fc1cf35d7bc4e064904eaa2f2c8452","path":".starcistacks/production/infra/swarm/releases/images.lock.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"82544386730812f191e1689b2b48038afb8e71c9c8058b91946fc1ed610dff1a","path":".starcistacks/production/infra/swarm/releases/previous.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a8af488ccd8e48820be27ca1bdd7f935e06c0ecdde897a4a763902ba87193a52","path":".starcistacks/production/infra/swarm/stack.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0e0c14aab320ca2e3360d34fea69ccd4a5de217f2d5c01d132e8abed9479cb60","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"a1c3552ebf364c6d3daaf1346d9f7852d25139779f9690a9d9c73ef32ef70bec","path":".starcistacks/production/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1a6018c4e2d40501f580e80cfc77ed06081275853998f50cecbbae4d89551828","path":".starcistacks/production/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"95783af680e9c2b47548d5ebabb7200a3b95bd6d86b3a274f4d37f6acf93652f","path":".starcistacks/production/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b9c4b61d264f6d1f2ce4c79d82b7a11934a6270205e25ad751f38950c373a703","path":".starcistacks/production/secrets/keycloak-client-secret.enc.yaml","step":"file-rules"}

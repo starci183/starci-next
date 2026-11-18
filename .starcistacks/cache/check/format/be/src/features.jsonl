@@ -530,6 +530,9 @@
 {"findings":[],"hash":"dbf651bd28ca41cdecace41e94e4ac805001ba07f9db552f54ec036da683b988","path":"be/src/features/api/practice/application/list-practice-readiness.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"6ceb667bd90e34cad3cffe54776dda97b2f0deb78db15bd1c3b75c798031751a","path":"be/src/features/api/practice/application/list-practice-readiness.handler.ts","step":"prettier"}
 {"findings":[],"hash":"a85025b5304607a82c750b721cfb089adf0646a2e340a14383a62f6d405e0c23","path":"be/src/features/api/practice/application/list-practice-readiness.query.ts","step":"prettier"}
+{"findings":[],"hash":"9a9e5fa9db5f5d514cc8b42bbf59ead9b1fb88a81bcf08599f9bf063786b88f1","path":"be/src/features/api/practice/application/list-practice-submissions.contracts.ts","step":"prettier"}
+{"findings":[],"hash":"29aaa3592385f4d6f16467df16389aca9eba23f34cf7809c689ca87a4e88c1d0","path":"be/src/features/api/practice/application/list-practice-submissions.handler.ts","step":"prettier"}
+{"findings":[],"hash":"3aa85efa6ef23f86e66edce18cce0bdc55fe9677ebe3e7269454702408e2beff","path":"be/src/features/api/practice/application/list-practice-submissions.query.ts","step":"prettier"}
 {"findings":[],"hash":"35798fe313793f77b683c416a295b4d32a2ce6aee68cd05bb06773e9d706bfe3","path":"be/src/features/api/practice/application/reveal-practice-hint.command.ts","step":"prettier"}
 {"findings":[],"hash":"59bf4d2b6c88c02bd8bfeb69387e56870f1056678805866721724b37451115f8","path":"be/src/features/api/practice/application/reveal-practice-hint.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"5849e7663634c26bb7c9854ec794a023864a701ec1b36f90b4cc4086fb011553","path":"be/src/features/api/practice/application/reveal-practice-hint.handler.ts","step":"prettier"}
@@ -544,7 +547,7 @@
 {"findings":[],"hash":"1799e66826957f8b5659945d69adb7ab448b4cdb76f1dcbde936fd99ef48de63","path":"be/src/features/api/practice/application/submit-practice.handler.ts","step":"prettier"}
 {"findings":[],"hash":"3ee358588fafd6d3042616d06645978e3a5d03a068a62fe511330add3735ade0","path":"be/src/features/api/practice/index.ts","step":"prettier"}
 {"findings":[],"hash":"99ba082cefeb10b1ce4b85ad866d97a81afc2428d4b8eda0160759e4f317f436","path":"be/src/features/api/practice/practice.module-definition.ts","step":"prettier"}
-{"findings":[],"hash":"4dfc166df84ae4f8e5d7e9f1488427afef415f4c8f6381f19b5cdb2106554f58","path":"be/src/features/api/practice/practice.module.ts","step":"prettier"}
+{"findings":[],"hash":"52ba1a50c54801d9d251372e6796045f630d9222f57e834ea7b92ba05d16e9d3","path":"be/src/features/api/practice/practice.module.ts","step":"prettier"}
 {"findings":[],"hash":"16a61d110d78aefa8748bace48193783fb9f113e2b6ee2a28870006cbabd206e","path":"be/src/features/api/practice/practice.options.ts","step":"prettier"}
 {"findings":[],"hash":"7a0a9ce2c7e5b25a54352e12901cffea86330198f3cc04e878a2d8f79cb2aecc","path":"be/src/features/api/practice/transport/graphql/dto/practice-example-result.type.ts","step":"prettier"}
 {"findings":[],"hash":"62cd812fa861d9b3e233cf32c8e4aeaa0aca99d560e7d78145631d706b6d6fac","path":"be/src/features/api/practice/transport/graphql/dto/practice-example.type.ts","step":"prettier"}
@@ -564,8 +567,11 @@
 {"findings":[],"hash":"a320f5d07931de6fbe16b0133846370476beb733db6b325d489cf895681e5a14","path":"be/src/features/api/practice/transport/graphql/dto/practice-solution.type.ts","step":"prettier"}
 {"findings":[],"hash":"15495d6b470340897f155e9774545361f3b40705e6ffa7fd49f56c288b0a6a5f","path":"be/src/features/api/practice/transport/graphql/dto/practice-solve.input.ts","step":"prettier"}
 {"findings":[],"hash":"0f3f2e17978fb67df41cacedbc7e1eed5759abc49b0b1c9f5540ad3df6065f61","path":"be/src/features/api/practice/transport/graphql/dto/practice-starter-code.type.ts","step":"prettier"}
+{"findings":[],"hash":"d6e67638fb36c1533f56c77445367d4c44b521610e738f3064eb1b952b43c964","path":"be/src/features/api/practice/transport/graphql/dto/practice-submission-item.type.ts","step":"prettier"}
+{"findings":[],"hash":"c622ff20a5a3a9a73ece2848935c27ef8b04080e7fe87cb21d6c40caf06b85d9","path":"be/src/features/api/practice/transport/graphql/dto/practice-submission-page.type.ts","step":"prettier"}
 {"findings":[],"hash":"8044232d784bbba820eff34092084aba2200836496b644e9f4583f846b34ecab","path":"be/src/features/api/practice/transport/graphql/dto/practice-submission.input.ts","step":"prettier"}
 {"findings":[],"hash":"76db9068f32257f81b43182300d0d9f47dcb73190761804163417e18b93f7142","path":"be/src/features/api/practice/transport/graphql/dto/practice-submission.type.ts","step":"prettier"}
+{"findings":[],"hash":"55a09823046b6bff08501e478da1b2484a26747aa74aa5d2e0fdb941c3795dc9","path":"be/src/features/api/practice/transport/graphql/dto/practice-submissions.input.ts","step":"prettier"}
 {"findings":[],"hash":"2539c6f68dc7eec65f61515089828ac606b9db6c749b53f554e1825fe3463f06","path":"be/src/features/api/practice/transport/graphql/dto/practice-test-summary.type.ts","step":"prettier"}
 {"findings":[],"hash":"d96b34b07799ec240ffb5d065b9ad22decbafed8c7381f60699b286f4781ae88","path":"be/src/features/api/practice/transport/graphql/dto/reveal-practice-hint.input.ts","step":"prettier"}
 {"findings":[],"hash":"a6d129ce780dbd4054044c07c9f85f6cd0a6241c0ba6b6d89db4d2a963eb42a0","path":"be/src/features/api/practice/transport/graphql/dto/reveal-practice-solution.input.ts","step":"prettier"}
@@ -581,10 +587,12 @@
 {"findings":[],"hash":"f2c3163305c7c92aaafa6fc555d6c594ba96e4f29b5df3ea31c942edc04f89f5","path":"be/src/features/api/practice/transport/graphql/list-practice-problems.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"84b12e9e2eff6eb3716e266507ce3f726c327469ed59ea2face5716512854d96","path":"be/src/features/api/practice/transport/graphql/list-practice-readiness.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"87ebad83dc7c4a3b99e10ef3e9c93b32f21eecfe930af16d36c7159c89146c85","path":"be/src/features/api/practice/transport/graphql/list-practice-readiness.resolver.ts","step":"prettier"}
+{"findings":[],"hash":"b134614b869bffc593a9f0fadf106634d51d2ff34ae135a031d190a1e50c1e25","path":"be/src/features/api/practice/transport/graphql/list-practice-submissions.mapper.ts","step":"prettier"}
+{"findings":[],"hash":"4e791cbcfd97e7ae3d7b080d0c1943958a84a5c4172716d9491dd8110b15d1a6","path":"be/src/features/api/practice/transport/graphql/list-practice-submissions.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"838fd28a8fccf519c9206e5c42d8621aa8d800fda87a6a29ceeba0623571903b","path":"be/src/features/api/practice/transport/graphql/practice-graphql.module-definition.ts","step":"prettier"}
-{"findings":[],"hash":"55ece1bd874bdd1dd544303aad1a1e07ae229a977ffff3aca1f08e862917fa42","path":"be/src/features/api/practice/transport/graphql/practice-graphql.module.ts","step":"prettier"}
+{"findings":[],"hash":"215a728e4613f1ddce64bc392c562e63d288c9f7a294c8c774172367e676b5bb","path":"be/src/features/api/practice/transport/graphql/practice-graphql.module.ts","step":"prettier"}
 {"findings":[],"hash":"f3df482c0231269d55fdb13c2501d98a9393fe4e27e791e322fc957ed375f39b","path":"be/src/features/api/practice/transport/graphql/practice-graphql.options.ts","step":"prettier"}
-{"findings":[],"hash":"9231db5bbcea4f3b389423798807ae6a449ba986d7bbe181d6676ff24f6d415e","path":"be/src/features/api/practice/transport/graphql/practice-view.mapper.ts","step":"prettier"}
+{"findings":[],"hash":"03dd92090eee9b8a79b0ca7acc47dbb2e45189d6d4425f98a31b4105157bab36","path":"be/src/features/api/practice/transport/graphql/practice-view.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"abe9e896c729caa2485a983bfcb1351c368c1fa037cc134ad7ead092fc846ca7","path":"be/src/features/api/practice/transport/graphql/reveal-practice-hint.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"177d2fbb1c9c3ab38ea84d16ee6cd23ebebdb7e246ea4236073ea39fef0887a9","path":"be/src/features/api/practice/transport/graphql/reveal-practice-hint.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"32180b84ae78e6c29c1fc818fb8bcf33efe4390dce8ab4174a37817d07182a1c","path":"be/src/features/api/practice/transport/graphql/reveal-practice-solution.mapper.ts","step":"prettier"}
@@ -973,7 +981,7 @@
 {"findings":[],"hash":"3ec0c0b854cde70fe0257a4c26be02489091862b55ffcb376a99280e7c547478","path":"be/src/features/api/review/transport/graphql/dto/recall-goal.type.ts","step":"prettier"}
 {"findings":[],"hash":"359c74a2674f05cdc58c0961815e6d247042c07a65595427c148962cdff9f5b9","path":"be/src/features/api/review/transport/graphql/dto/recall-grade.type.ts","step":"prettier"}
 {"findings":[],"hash":"7c89b40a9010418454fa5f3a689ad126d3d9d202602e93a2b448ac06f0bb5655","path":"be/src/features/api/review/transport/graphql/dto/recall-intervals.type.ts","step":"prettier"}
-{"findings":[],"hash":"dd929750cb573cc0c5c540cd5cf02a8c90f97cacf5423faed8068d4908c28d46","path":"be/src/features/api/review/transport/graphql/dto/recall-item-summary.type.ts","step":"prettier"}
+{"findings":[],"hash":"7211f24691971ae2617b3ab61a40f5e7c35dc8aabcae7e389607f4cc1531b84e","path":"be/src/features/api/review/transport/graphql/dto/recall-item-summary.type.ts","step":"prettier"}
 {"findings":[],"hash":"c196e12b934d06c197756f3f5334668a301c0905b05abb5c65ef708ec6995a1a","path":"be/src/features/api/review/transport/graphql/dto/recall-item.input.ts","step":"prettier"}
 {"findings":[],"hash":"e3c15a6abf4de7c70b504302f91fc8720644c66b29a47373ce0e6d05bcab53e5","path":"be/src/features/api/review/transport/graphql/dto/recall-item.type.ts","step":"prettier"}
 {"findings":[],"hash":"c4d37022a0c751d0b143da290dcef796aedc1adcbadc2a658f16558dfcf45f13","path":"be/src/features/api/review/transport/graphql/dto/recall-recall-rate.type.ts","step":"prettier"}

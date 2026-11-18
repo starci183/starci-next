@@ -19,12 +19,9 @@
 {"data":{},"findings":[],"hash":"e9a63222df77a27c1cb1e701b924b25dd57cc17581fc712d25163e88d4a3a4d6","path":"be/apps/core/src/app.module.ts","step":"file-rules"}
 {"findings":[],"hash":"4dc731072b9dc2ed18403ae20bad0f34d73c123164e231baf77f13f22f1e6d5e","path":"be/apps/core/src/app.module.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"09841a32b6bbfd6a3792d5865aec0388b3788da27ef71eabbc41ef26b08a48f2","path":"be/apps/core/src/compose/api.ts","step":"file-rules"}
-{"findings":[],"hash":"77b983b0271231ad670d5b3bfbe70f6488dd91ac32b3c21aabc4c5b08b7d9927","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"57847d717e24316427c5cd81bdd454390c860b7c5c4b3e665ccc43e13be35aa1","path":"be/apps/core/src/compose/career.ts","step":"file-rules"}
-{"findings":[],"hash":"758508b1c62fee4fd912b049f95c3c91ba3415bab61931e30d825d7e3f3aa181","path":"be/apps/core/src/compose/career.ts","step":"unit:recurring-observations"}
 {"findings":[],"hash":"464a69ee7b355de3a2308a3d62c646045eee8e3f841e0ae314e26a0169a68c13","path":"be/apps/core/src/compose/api.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"7e125248b744d61355d87341b90f3b85dc8f7f26b6dbe872785f73d1dedbc36c","path":"be/apps/core/src/compose/career.ts","step":"file-rules"}
-{"findings":[],"hash":"ab7b3861afca42adea3c2e1016f0df084adead13361599ba91dd9cf1ae04932c","path":"be/apps/core/src/compose/career.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"57847d717e24316427c5cd81bdd454390c860b7c5c4b3e665ccc43e13be35aa1","path":"be/apps/core/src/compose/career.ts","step":"file-rules"}
+{"findings":[],"hash":"736e9215a9026ae6b18d830302e132342840788b269f759383cf9cc6297be60f","path":"be/apps/core/src/compose/career.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"d843758973341c73a4116ac9ad479a2055baa5532d2b7d113884abcf7b5f877a","path":"be/apps/core/src/compose/commerce.ts","step":"file-rules"}
 {"findings":[],"hash":"bd43050bb898b6005b8598eae1134e261aa243c9c90dbc1a42891e0c7c941927","path":"be/apps/core/src/compose/commerce.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"0aa74346a6df052a018335e8f4ad100cb828488bd5dbf0a22b4a3ae4699eeb20","path":"be/apps/core/src/compose/identity.ts","step":"file-rules"}
