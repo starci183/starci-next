@@ -33,9 +33,9 @@ Grammar: `BarChart`.
 
 ## Cột phải
 
-Vì sao: Mục tiêu mỗi ngày với nút Đổi mở hộp thoại, và bộ thẻ của bạn.
+Vì sao: Mục tiêu mỗi ngày với lệnh chữ "Đổi" nằm trong thân mục (mở hộp thoại; ở 390 không còn đè lên dòng số thẻ), và bộ thẻ của bạn với liên kết đầu mục "Quản lý".
 Luật: `surface-layering`
-Grammar: `Grid kind="main-rail"` với `Section` (`frame/Grid`).
+Grammar: `Grid kind="main-rail"` với `Section` (`frame/Grid`), `TextAction`, `Link variant="head"`.
 
 ## Phản biện
 

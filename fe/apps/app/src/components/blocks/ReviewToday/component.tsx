@@ -6,11 +6,13 @@ import {
     Dialog,
     EmptyNotice,
     Grid,
+    Link,
     NumberField,
     Page,
     Section,
     Stack,
     Text,
+    TextAction,
     type ListRowData,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
@@ -127,21 +129,13 @@ const Rail = (props: PieceProps) => {
     return (
         <Stack gap="region">
             {view.state === "first" ? null : (
-                <Section
-                    title={labels.goalTitle}
-                    headingLevel={2}
-                    isLoading={props.isLoading}
-                    action={
-                        <Button intent="neutral" size="sm" onPress={props.screen.on.openGoal}>
-                            {labels.goalChange}
-                        </Button>
-                    }
-                >
+                <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
                     <Stack gap="row">
                         <Text isStrong>{view.goalLine}</Text>
                         <Text size="sm" tone="muted">
                             {view.streakLine}
                         </Text>
+                        <TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>
                     </Stack>
                 </Section>
             )}
@@ -152,9 +146,9 @@ const Rail = (props: PieceProps) => {
                 count={view.decks.length}
                 isLoading={props.isLoading}
                 action={
-                    <Button intent="neutral" size="sm" href={props.screen.props.decksHref}>
+                    <Link variant="head" href={props.screen.props.decksHref}>
                         {labels.decksManage}
-                    </Button>
+                    </Link>
                 }
                 items={view.decks.map((deck) => ({
                     id: deck.id,
