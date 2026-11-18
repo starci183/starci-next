@@ -214,3 +214,16 @@ namespaces:
       reason: read through the translator that the ConnectAi block maps over its label and step keys
     - key: note
       reason: read through the translator that the ConnectAi block maps over its label and step keys
+  app.publicCv:
+    - key: imageBrand
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator
+    - key: imageBadge
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator
+    - key: imageGeneric
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator
+    - key: imageTrail
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator
+    - key: imageCount
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator
+    - key: imageMore
+      reason: read through the catalog translator of the link-preview image route, which has no request scope for the page translator

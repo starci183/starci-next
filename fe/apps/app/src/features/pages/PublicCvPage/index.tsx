@@ -2,9 +2,7 @@ import type { Metadata } from "next"
 import { getLocale, getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { PublicCv, PublicCvMissing } from "@/components/blocks/PublicCv"
-import { navigation } from "@starci-next/i18n/navigation"
-import { PUBLIC_CV_IMAGE_ALT, PUBLIC_CV_IMAGE_SIZE } from "./image"
-import { readPublicCv } from "@/modules/api/server/publicCv"
+import { readPublicCv } from "@/modules/api/rest/cv/public-cv"
 import type { ReactElement } from "react"
 
 /** What the route hands the page: the segment of the address. */
@@ -31,13 +29,7 @@ export const publicCvMetadata = async (props: PublicCvPageProps): Promise<Metada
     if (read.status !== "found") return { title: t("pageTitle"), robots }
     const title = t("metaTitle", { name: read.cv.displayName })
     const description = t("metaDescription", { count: read.cv.lines.length })
-    const locale = await getLocale()
-    const image = {
-        url: navigation.getPathname({ href: `/cv/${props.slug}/opengraph-image`, locale }),
-        ...PUBLIC_CV_IMAGE_SIZE,
-        alt: PUBLIC_CV_IMAGE_ALT,
-    }
-    return { title, description, robots, openGraph: { title, description, type: "profile", images: [image] } }
+    return { title, description, robots, openGraph: { title, description, type: "profile" } }
 }
 
 /**

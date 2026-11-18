@@ -8,7 +8,7 @@ import { useOrigin } from "@/hooks/profile"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryPublicCvSwr, type PublicCv } from "@/hooks/swr"
 import { navigation } from "@starci-next/i18n/navigation"
-import { PUBLIC_CV_NOT_FOUND_CODES } from "@/modules/api/server/publicCv"
+import { PUBLIC_CV_NOT_FOUND_CODES } from "@/modules/api"
 import { APP_ROUTES, verifyPath } from "@/modules/routes"
 import type { PublicCvLabels, PublicCvLineView, PublicCvScreenView, PublicCvShareLabels } from "@/modules/types"
 import {
@@ -21,7 +21,7 @@ import {
     sourcesOf,
     type PublicCvLine,
 } from "./publicCv.shared"
-import { useCanShare, useIsPhone } from "./useViewport"
+import { useCanShare, useIsPhone, usePreviewSrc } from "./useViewport"
 
 /** The steps of the trust trail, in the order every line carries them. */
 const STEP_IDS = ["proved", "graded", "signed"] as const
@@ -36,7 +36,7 @@ export const usePublicCvLabels = (): PublicCvLabels => {
     const shell = useTranslations("app.shell")
     return {
         brand: shell("brand"),
-        logoSrc: "/brand/starci-logo.png",
+        logoSrc: "/brand/logo.png",
         homeHref: navigation.getPathname({ href: APP_ROUTES.home, locale }),
         signIn: t("signIn"),
         signInHref: navigation.getPathname({ href: APP_ROUTES.signIn, locale }),
@@ -98,6 +98,7 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
     const read = useQueryPublicCvSwr(decodeURIComponent(input.slug), locale, input.initial)
     const isPhone = useIsPhone()
     const canShare = useCanShare()
+    const previewSrc = usePreviewSrc()
     const [source, setSource] = useState(ALL_SOURCES)
     const [shown, setShown] = useState(0)
     const [isShareOpen, setIsShareOpen] = useState(false)
@@ -162,7 +163,7 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
         isPhone,
         canShare,
         url,
-        previewSrc: `${pathname}/opengraph-image`,
+        previewSrc,
         name,
         retry: () => void read.mutate(),
         chooseSource: (next: string) => {

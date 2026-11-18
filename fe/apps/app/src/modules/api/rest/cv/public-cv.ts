@@ -1,14 +1,9 @@
 import { cache } from "react"
 import { print } from "graphql"
 import { siteUrl } from "@/modules/config"
-import { publicCvDocument } from "../graphql/queries/query-public-cv"
-import type { PublicCvQuery } from "../graphql/__generated__/graphql"
-
-/** The codes the door answers for a link nobody owns or whose owner keeps it private: both read as one not found. */
-export const PUBLIC_CV_NOT_FOUND_CODES: ReadonlySet<string> = new Set([
-    "PROFILE_CV_NOT_FOUND",
-    "HTTP_SECURITY_REQUEST_INVALID",
-])
+import { publicCvDocument } from "../../graphql/queries/query-public-cv"
+import type { PublicCvQuery } from "../../graphql/__generated__/graphql"
+import { PUBLIC_CV_NOT_FOUND_CODES } from "./public-cv-codes"
 
 /** The window the server read may take before the page reads in the browser instead. */
 const TIMEOUT_MS = 3000

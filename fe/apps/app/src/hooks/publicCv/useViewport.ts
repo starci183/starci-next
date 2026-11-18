@@ -32,3 +32,12 @@ const canShareOnServer = (): boolean => false
 
 /** Whether the browser offers the system share sheet ("Ứng dụng khác"). */
 export const useCanShare = (): boolean => useSyncExternalStore(subscribeNothing, canShareNow, canShareOnServer)
+
+/** The address of the preview image the page head names (`og:image`), empty while none is there. */
+const previewNow = (): string => document.querySelector('meta[property="og:image"]')?.getAttribute("content") ?? ""
+
+/** The server draws before it can read the head. */
+const previewOnServer = (): string => ""
+
+/** The preview image of this CV link, read from the page head so the share sheet shows exactly what a pasted link shows. */
+export const usePreviewSrc = (): string => useSyncExternalStore(subscribeNothing, previewNow, previewOnServer)

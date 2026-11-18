@@ -1,18 +1,44 @@
-import { readPublicCv } from "@/modules/api/server/publicCv"
+import { ImageResponse } from "next/og"
+import { readPublicCv } from "@/modules/api/rest/cv/public-cv"
 import { siteUrl } from "@/modules/config"
+import en from "@/modules/i18n/messages/en.json"
+import vi from "@/modules/i18n/messages/vi.json"
 import type { ReactElement } from "react"
 
+/** The catalogs the preview reads straight from: a metadata image route has no request scope for the translator of the pages. */
+const CATALOGS: Readonly<Record<string, typeof vi>> = { vi, en }
+
+/** Reads one namespace of the catalog of a locale, filling the `{name}` marks of a message; the same call shape as the page translator. */
+const translatorOf =
+    (locale: string, namespace: "publicCv" | "experience") =>
+    (key: string, values: Readonly<Record<string, string | number>> = {}): string => {
+        const catalog: Readonly<Record<string, unknown>> = (CATALOGS[locale] ?? vi).app[namespace]
+        const message = key
+            .split(".")
+            .reduce<unknown>(
+                (node, part) => (typeof node === "object" && node !== null ? Reflect.get(node, part) : undefined),
+                catalog,
+            )
+        return Object.entries(values).reduce(
+            (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+            typeof message === "string" ? message : key,
+        )
+    }
+
 /** The size every platform asks of a link preview. */
-export const PUBLIC_CV_IMAGE_SIZE = { width: 1200, height: 630 } as const
+export const size = { width: 1200, height: 630 }
+
+/** The format of the preview. */
+export const contentType = "image/png"
 
 /** The text alternative of the preview image. */
-export const PUBLIC_CV_IMAGE_ALT = "StarCi Next"
+export const alt = "StarCi Next"
 
 /** How many signed lines the preview shows before "and N more". */
 const SHOWN_LINES = 3
 
 /** The words of the preview, resolved for the locale of the link. */
-export type PublicCvImageWords = {
+type PublicCvImageWords = {
     readonly brand: string
     readonly badge: string
     readonly generic: string
@@ -121,7 +147,7 @@ const genericOf = (words: PublicCvImageWords, address: string): ReactElement => 
  * The 1200 by 630 preview of a public CV, read from the same `publicCv` the page reads: the initials, the name, the signed count and
  * sources, the first three lines with "and N more", and the trust trail. A missing, private or unreachable CV gets the generic card.
  */
-export const publicCvImageOf = async (input: PublicCvImageInput): Promise<ReactElement> => {
+const publicCvImageOf = async (input: PublicCvImageInput): Promise<ReactElement> => {
     const address = `${new URL(siteUrl()).host}/cv/${input.slug}`
     const read = await readPublicCv(input.slug, input.locale)
     if (read.status !== "found") return genericOf(input.words, address)
@@ -170,3 +196,31 @@ export const publicCvImageOf = async (input: PublicCvImageInput): Promise<ReactE
         </Card>
     )
 }
+
+/** The route's framework inputs: the locale and the slug of the address. */
+type ImageProps = { readonly params: Promise<{ readonly locale: string; readonly slug: string }> }
+
+/** The preview a pasted CV link shows: the owner and the signed lines when the CV is public, the generic StarCi card when it is not. */
+const Image = async (props: ImageProps): Promise<ImageResponse> => {
+    const { locale, slug } = await props.params
+    const t = translatorOf(locale, "publicCv")
+    const parts = translatorOf(locale, "experience")
+    return new ImageResponse(
+        await publicCvImageOf({
+            slug,
+            locale,
+            words: {
+                brand: t("imageBrand"),
+                badge: t("imageBadge"),
+                generic: t("imageGeneric"),
+                trail: t("imageTrail"),
+                count: (count: number) => t("imageCount", { count }),
+                more: (count: number) => t("imageMore", { count }),
+                part: (part: string) => parts(`part.${part}`),
+            },
+        }),
+        size,
+    )
+}
+
+export default Image
