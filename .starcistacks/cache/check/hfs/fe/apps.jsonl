@@ -40,7 +40,9 @@
 {"data":{},"findings":[],"hash":"24aafeb5f4337bd8bd24f296dfb2618173c98fed56a0f0ef61f13df31e6a0c8e","path":"fe/apps/app/src/app/[locale]/(app)/review/decks/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5c1ae818594dc50a2104166d1c7735e331e6707a5af2fa96148df5733ab96a3c","path":"fe/apps/app/src/app/[locale]/(app)/review/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"17c341fe53df5c813c7d3c65c242c640eab2bd46bb02686d7c649aceaa15b598","path":"fe/apps/app/src/app/[locale]/(app)/review/session/page.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"08c4a31f9360e5b89e5f295f31a88e9d33172bfac9a19195e3d95ccf583b50dd","path":"fe/apps/app/src/app/[locale]/(auth)/cv/[slug]/page.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f47ec92ffd7cb93dcc4ce727f86190b29858a6864e94333d7a6749221d9d9ba5","path":"fe/apps/app/src/app/[locale]/(auth)/cv/[slug]/not-found.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"332609c0e125f641128347cb101c95b0a545114958f79ea128c27085c3cc152d","path":"fe/apps/app/src/app/[locale]/(auth)/cv/[slug]/opengraph-image.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"311f373dc999272d808f0f9e479bdee38f73fb44e433d104fbe7e6f509b6ce42","path":"fe/apps/app/src/app/[locale]/(auth)/cv/[slug]/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b98cfcf95f1165e413e4b9d12cfd0c7c52ee316e0c7dac72102f3aa1132d13ca","path":"fe/apps/app/src/app/[locale]/(auth)/layout.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e94073d0b03e558fa74a576681cc44f2f50f59087cbe314b6193e9d6d67156b2","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/callback/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a78e2711ea07a4d71f1b17d989512e852911f41123ac3a49efb6dbcbf39d6357","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/page.tsx","step":"file-rules"}
@@ -121,8 +123,8 @@
 {"data":{},"findings":[],"hash":"ffbbb24d59baa6b447e4f7b613426c8a6fbfd8f78dd9baf4aedf38ec4b72c7c1","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8abf4943618d62b37fa3c47a2fffc39e3af1fae555828c1b51c515c2c01be20c","path":"fe/apps/app/src/components/blocks/ProjectsPitch/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5aac1a2a35681e86d560679d6ca2c9a93fd42f7136978fbcd5be38cce0b3a77e","path":"fe/apps/app/src/components/blocks/ProjectsPitch/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"1ddc1d6db8e0b85845e036910d2b984955cd36927223adba5981ea666be53cfe","path":"fe/apps/app/src/components/blocks/PublicCv/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2a92a9d82ee6ea0fbc8abfd2bfac09365dfddc996041ec87056f5876e541ea9a","path":"fe/apps/app/src/components/blocks/PublicCv/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bfa6b6e76acf495de93f7dca3875ed97b63acf9a77c748fa2339d3d643d7f9cd","path":"fe/apps/app/src/components/blocks/PublicCv/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"96ec9dd76b13fb3b8e3dd8f192091aa31289c32c52e265ef6b809afafbd51a15","path":"fe/apps/app/src/components/blocks/PublicCv/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a70b4435ff9dffd114850fcbbccb1318e482c8a697a48798404dfe550d1cbf5a","path":"fe/apps/app/src/components/blocks/ReviewDeck/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"52113d73ff1ef369f9c963ca90a02be500b39e0fc34a30eae5b61052b87da83c","path":"fe/apps/app/src/components/blocks/ReviewDeck/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"70fe7f53bd1337f2382fbd3547a8d54a2a6fc540a1ef10d7de3a2d701ca7e040","path":"fe/apps/app/src/components/blocks/ReviewDecks/component.tsx","step":"file-rules"}
@@ -184,7 +186,7 @@
 {"data":{},"findings":[],"hash":"1eabed8c84fcbb376c95428bcad6b854b06a85d6af4e1a60e18e44fa113aa645","path":"fe/apps/app/src/features/pages/ProjectNewPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b3e8c737ed68f66ee088f3654fd7e0a65e997afa3dc560843cb0abf022c851e5","path":"fe/apps/app/src/features/pages/ProjectPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"18e677133fe38f0e91da84d99f4c50b3c2b63645cb7cc2ee4cd59614d6d877f0","path":"fe/apps/app/src/features/pages/ProjectsPage/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"c2a41c55ef897768ccdb1560c7b271b09e1b2c408fc95169bd6ffe8f0b06dcac","path":"fe/apps/app/src/features/pages/PublicCvPage/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e1efebc8a5d4809e40b84e0f49428e6ce2e126067d29f9b66b64963d2d8942a9","path":"fe/apps/app/src/features/pages/PublicCvPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ebee586e428b1f19f89d246f381815e174b4bc6ff4733510fd9dba698465c3c7","path":"fe/apps/app/src/features/pages/ReviewDeckPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"988b95ded1d2afc4f7e8adef8b4c133ee8044e5a9c00cdc8855b93d92c305820","path":"fe/apps/app/src/features/pages/ReviewDecksPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"16ff0335f87782ddd6afd115a197b438fd6737e0ffb5f65a9ef923d168fc2542","path":"fe/apps/app/src/features/pages/ReviewItemPage/index.tsx","step":"file-rules"}
@@ -362,6 +364,10 @@
 {"data":{},"findings":[],"hash":"3ca946f4d05dc202a3f5389ce7afab12be4eedc01f5eb8e01c17a192a48f6325","path":"fe/apps/app/src/hooks/projects/useProjectActions.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"15091c4b073ad45fad32a4fe8e1179fa48d5e95e61fd4b5b446a5cb0b41f1d25","path":"fe/apps/app/src/hooks/projects/useProjectNewForm.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dbb38238ef76847d8231554f5d00b76828852d6070134d8e5db543fd97565aba","path":"fe/apps/app/src/hooks/projects/useProjectsAccess.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4c6db331ebb43fd61991d67d1a5f1eae570778dc26d6b4f56120a9651a5d7c66","path":"fe/apps/app/src/hooks/publicCv/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7e1f15824f4c81ab3e300e0c3c8986cd94abd5e1b792b595430813eb02c01100","path":"fe/apps/app/src/hooks/publicCv/publicCv.shared.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"79fda8b83e63ef890e142bbaed49c1be8e49f86162cd0e9253bff9a770e07c1f","path":"fe/apps/app/src/hooks/publicCv/usePublicCvView.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2ad65824e5609bb4d8aa72171c24b7e895aff623784d23ac521ab12bd0119859","path":"fe/apps/app/src/hooks/publicCv/useViewport.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dd74db10c9a8b95cd88b3721af2b5efd7bf59702db4f18bd689a2d30cee90376","path":"fe/apps/app/src/hooks/rail/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e10f162e299627510d186989d5fa684b2343b5ff13969dd5060a06b488e76b61","path":"fe/apps/app/src/hooks/rail/useRailCollapsed.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7e13574dc64381f845c83261e70ba6ab68143b5bd675fdb0bb3ee5d9a64bba4a","path":"fe/apps/app/src/hooks/review/index.ts","step":"file-rules"}
@@ -467,7 +473,7 @@
 {"data":{},"findings":[],"hash":"b3fcf164c37df6e8c1dd7a10a21c118df8d5afe9325fd8bc55fc5d9acd5fddcc","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryProjectMilestoneSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6dc8f960d44a0edb98e6c53005bd0ddea7444567d841818429604788c3230cab","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryProjectSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3bbbd54595c1c227caef707b9c209207b683e0cf19e83f82af96f99bd1adafe5","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryProjectsSwr.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"cc5ac316c43c12051a09af6661f21f8b7c1607fb99744561c81f831adfdb678b","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryPublicCvSwr.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"196c10ada0011288c9854ea3bf28f90d189f3fd388a5d9c708c01ed16dd60131","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryPublicCvSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"685042da12f783dfc3533081218323644112fd9e1c24fa93d92435f5d986d600","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryRecallItemSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e0255876a2fc56f4e3ce42edd7c7da8a6a461f9bc6dad47ca3de002c021f66d","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryRelayDevicesSwr.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0264eaf7e5a3d9d2f7d428ece6d6bbbba59132221cabc95911e929531300c788","path":"fe/apps/app/src/hooks/swr/api/graphql/queries/useQueryRelayPairingSwr.ts","step":"file-rules"}
@@ -613,7 +619,7 @@
 {"data":{},"findings":[],"hash":"4bda8b2d5dfdd163dc87cd5c7b1151cb17f9e12f7641403ccc62b6681ad44329","path":"fe/apps/app/src/modules/api/graphql/queries/query-project-milestone.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b699087632654b3631d871012c4e5e803ea8b1903241a444863a87f1040cb9c1","path":"fe/apps/app/src/modules/api/graphql/queries/query-project.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"280687bf572cacb189d83a341c4c9889cff266b7d68b564b006fc6eda9d30066","path":"fe/apps/app/src/modules/api/graphql/queries/query-projects.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"62302db754219cd4e0625916a32396269268bda1c5be7e251ac83939f51ef8eb","path":"fe/apps/app/src/modules/api/graphql/queries/query-public-cv.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1e251199ff30dce44a30054e5b27c7097946064581414e13aaef61200ae34880","path":"fe/apps/app/src/modules/api/graphql/queries/query-public-cv.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7ca989d2722b1c859477c65d16385c0e3a1f8fbe334fd7c512aae7b98563ffc1","path":"fe/apps/app/src/modules/api/graphql/queries/query-recall-item.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9fd2a28d300415b2ac0baf3b793c2320ea3de5570229e35c46ead64c0bffd03c","path":"fe/apps/app/src/modules/api/graphql/queries/query-relay-devices.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"632eefc973d90a770ff496ac1888770ca354b5c5bb57c312960b92bf1ecc561d","path":"fe/apps/app/src/modules/api/graphql/queries/query-relay-pairing.ts","step":"file-rules"}
@@ -626,7 +632,9 @@
 {"data":{},"findings":[],"hash":"3a8a3cfd4c7f9e054037ad2e1bfacc769ba271cd092a594c71b797a8d8f49750","path":"fe/apps/app/src/modules/api/graphql/queries/query-streak.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67d8bb911b75ec152bf01d75cbdca1c1af64824309f05e11a05d16d2e7372747","path":"fe/apps/app/src/modules/api/graphql/queries/query-verify-experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3b87559acf4831a9e3704cb490b03a45e515befef7ce02f8aaf7a434155cd45b","path":"fe/apps/app/src/modules/api/graphql/types.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4f279f235af78676f0c6e6e810f33bf5e8d45c6a412c63494502715b7c10cc89","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3359d7a552781888cee0caec286c4f452f5e581a9475dbbb0022d537b26fcfdb","path":"fe/apps/app/src/modules/api/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"69b0d38ad220658a4298c10a0f54c657be3514cdadc06e9958e93bd7e4e08343","path":"fe/apps/app/src/modules/api/rest/cv/public-cv-codes.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7eee3f2faa3137c6bbbef65aeccbd0fb534b8addf5a46a28e4d7ac021d303021","path":"fe/apps/app/src/modules/api/rest/cv/public-cv.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1e85cd2cb7319cb3be6ce50ba042e588bfad59f0c0c3e7eed11bd6c2824fee59","path":"fe/apps/app/src/modules/api/rest/identity/credentials.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0d90f9fa639fc427e7bcb464b2aa51eea481e3e5d11b51e9fbf3a7054f907b1c","path":"fe/apps/app/src/modules/api/rest/identity/door.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b1114cff5f61d02258aba711818a8aef05a2fe1121f4ee48de33a6446001ec9f","path":"fe/apps/app/src/modules/api/rest/identity/session.ts","step":"file-rules"}
@@ -655,8 +663,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d2cf817557dcfcb6b862e2eb9d337361cc779f48fdcb24508b298d2862be77b8","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"8dd4cefc7a76dddc65f5519e4c768f8e3a5fcce5a8729ff34857a3ea96b29984","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"21d5429fb935e8273fd062ccf429a15993d236524d1cd572f7e1209cf7f35749","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5758dfc70592474561a193e558460baf697412ef06bd1e10409eefdd8e6ea219","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{"size-soft":[{"code":"HFS_SIZE_SOFT_BACKLOG","level":"info","lines":510,"message":"apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","soft":500}]},"findings":[{"column":0,"line":0,"message":"apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"55a002937a3e82135b393acca850a97b3b212fa496b5421e6260dcf2d6cd428e","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"fe/apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"2f2d0610e6a3d235ed2dfb32731f258e6db4f6668152866edbc11a4d61f70904","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"hfs"}
@@ -679,13 +687,14 @@
 {"data":{},"findings":[],"hash":"4379ae5dd424930b9941b4284402dbdcb172edccdf32e38f2de17c78ab297591","path":"fe/apps/app/src/modules/types/essential.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6d742de817f90518fbdc5798825d9503287fd1e52ebd4ce0b740b673bf148632","path":"fe/apps/app/src/modules/types/experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0af2c22aeea913938aae25d6972c68ed781d5d24faabef64cba1409811c0c580","path":"fe/apps/app/src/modules/types/harness.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e168e630937ae6bbae83433ae2a07d61fd6ab89f551356429a12f4fad2c710cd","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f02255f081ffd2fc4ce68253e7531a7fc357c1f2fba360cc6c072958ccb3a7bc","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"32310ed1f1b21c9ab63177f5c922c15bbcac085873f6cf5d11e0da4fa56e4d3a","path":"fe/apps/app/src/modules/types/lesson.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b6d22fdb2aea6034ff048c10b4949bda3c5dbf279ad118c60e1096be6658d38","path":"fe/apps/app/src/modules/types/placeholder.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5f8bc14c506bb86677659d722d8ab359f3d5807822d57781962fcf53ee7cc01b","path":"fe/apps/app/src/modules/types/practice.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5cf1ae7f466782acd7eae25acac9103c75b81f5e374da1d43f92d91b9965c702","path":"fe/apps/app/src/modules/types/profile.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"08eea82e1cf92921706b478f4676e3d7e47454afbfb91c3488c17c803d04bff8","path":"fe/apps/app/src/modules/types/progress.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"930b0c50f0be649a1c4e04a823cb14c2674bc1d52cb2fdb6feda363072145a57","path":"fe/apps/app/src/modules/types/projectConcept.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bc650bae2e1d2a82de56b3287d739ef0d72e44f3fed656ad2690208c515d28e1","path":"fe/apps/app/src/modules/types/publicCv.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ded242f6e912599a45a5caefd4e3b6314c36b12816b815140911b2a860a3307a","path":"fe/apps/app/src/modules/types/review.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d5c5b22d2ef82f352436461bc55013bfc7fbc6fdec70890a5f925d9c5370ea8b","path":"fe/apps/app/src/modules/types/reviewView.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e66dad2ad1724adcdb61048f440288bb6d09fb7aa03644e271ec7d215e5fc31a","path":"fe/apps/app/src/modules/types/topic.ts","step":"file-rules"}

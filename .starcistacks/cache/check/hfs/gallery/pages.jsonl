@@ -8,7 +8,12 @@
 {"data":{},"findings":[],"hash":"5e9fbffb10f54bf4a36a9f5813565ce3ab71bbdc7f44e710b00b40e2bf5bc1cd","path":"gallery/pages/commerce/premium-result/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c20287737d050cdeef97555ba85f9755dd45d804dbaad8f0b06dcd90f46a5a65","path":"gallery/pages/commerce/premium/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"19ccdf5bdc75b92baf9eae76f492d13a1d5acde18b9b433c5a67449c0b4a6495","path":"gallery/pages/connect/ai/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b7f43b0ab00e513ce29f31f94ad1b96c6858078b47e3e12cfd1086fc256c6e9c","path":"gallery/pages/cv/public/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"56e868aacfcfcc9a0860a291182c3193c99cb33f5fcb11f1b999595a12539a34","path":"gallery/pages/cv/public-few-lines/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"03e23de0727858816790799a8187fad8aafdfca63bc96a980f8edaeea5662c5b","path":"gallery/pages/cv/public-loading/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"76b3ccbb392a547d45eb5320b60c539dddf4915fc933835fa2f6d88cf23877c3","path":"gallery/pages/cv/public-many-lines/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4f5f62c01811522d0f4d78a44c7856c1d1ba8a1121d55a049e4da657bf173992","path":"gallery/pages/cv/public-not-found/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cb0c1c7989caba17c642e1ae2ce4779ff866a39a4e68cc638ec3c75349f6fcd1","path":"gallery/pages/cv/public-share/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d1423816dffbf13e6eae5a4c013ae4ce9a3a0839f818d5a0e85a8ef0283365cf","path":"gallery/pages/cv/public/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d57b6a4ca71ce90c47b97d64a19e30254d75a837eaa769ed3570cf8ab4d0e7a6","path":"gallery/pages/devices/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2a10b1f6b333caec2686acdd94ac53396f8011ae123513eabcec7c1b0d95c116","path":"gallery/pages/essentials/catalog-error/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f1942a6e74eb9feb718c542ab597205baf3ef103ed5c15f94b93137fd38f8ea3","path":"gallery/pages/essentials/catalog-first-visit/explain.md","step":"file-rules"}

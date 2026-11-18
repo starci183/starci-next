@@ -637,7 +637,7 @@
 {"findings":[],"hash":"de4d2fbb45d491d8a9aadcc55ecd78e15fa7bbe1d2b37977b43da27279aee768","path":"be/src/features/api/profile/transport/graphql/dto/profile-goal.type.ts","step":"prettier"}
 {"findings":[],"hash":"2e2f14aac62eb0fd69d7fc7fe776b30e5d8f0a8a75871fb10017f721f830a865","path":"be/src/features/api/profile/transport/graphql/dto/profile.input.ts","step":"prettier"}
 {"findings":[],"hash":"c36b396a8f945c3b3aba21d83e76dda214f8c3c00c8cda9e39f578b8c54d2e87","path":"be/src/features/api/profile/transport/graphql/dto/profile.type.ts","step":"prettier"}
-{"findings":[],"hash":"21a7989ebefda69345feef6c64762a1f5b0acf97e9b9927e378691dbb428515e","path":"be/src/features/api/profile/transport/graphql/dto/public-cv-line.type.ts","step":"prettier"}
+{"findings":[],"hash":"0c18906700b1b391e1769d0cd5dbdade1ab0bb0b9c1bbf056c3983b7979687a1","path":"be/src/features/api/profile/transport/graphql/dto/public-cv-line.type.ts","step":"prettier"}
 {"findings":[],"hash":"ab7fcffbedcb010222f5e01d7cdeaa673d19dff4624c727c0c03f461c04c9037","path":"be/src/features/api/profile/transport/graphql/dto/public-cv.input.ts","step":"prettier"}
 {"findings":[],"hash":"8df2a9aa65287e6354f67aa1fe9f0624798e04365ba92b402dbb2e76f021eaf1","path":"be/src/features/api/profile/transport/graphql/dto/public-cv.type.ts","step":"prettier"}
 {"findings":[],"hash":"4c9e272b6c04d19c7d1b2f8c4e0696d8091fbad3b59d1d9c86d231b18f9c21de","path":"be/src/features/api/profile/transport/graphql/dto/request-avatar-upload.input.ts","step":"prettier"}
