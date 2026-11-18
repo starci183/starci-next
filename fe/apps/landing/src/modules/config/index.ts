@@ -10,3 +10,7 @@ const required = (name: string, value: string | undefined): string => {
 
 /** The public origin of the product app the landing hands the reader over to; throws when `NEXT_PUBLIC_APP_URL` is not set. */
 export const appUrl = (): string => required("NEXT_PUBLIC_APP_URL", process.env.NEXT_PUBLIC_APP_URL)
+
+/** The public base of the repo-owned media: the full prefix of the statics in the project store; throws when `NEXT_PUBLIC_STATICS_URL` is not set. */
+export const staticsBase = (): string =>
+    required("NEXT_PUBLIC_STATICS_URL", process.env.NEXT_PUBLIC_STATICS_URL).replace(/\/+$/u, "")

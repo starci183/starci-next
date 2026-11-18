@@ -338,6 +338,7 @@ jobs:
         run: npm run codegen --silent && npx --no-install turbo run build --filter=./fe/apps/landing
         env:
           NEXT_PUBLIC_APP_URL: "https://starci-next.example.invalid"
+          NEXT_PUBLIC_STATICS_URL: "https://storage.starci-next.example.invalid/starci-next-production/statics"
       - name: build cache save
         if: always()
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0

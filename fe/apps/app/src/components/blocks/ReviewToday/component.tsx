@@ -106,7 +106,8 @@ const Rest = (props: PieceProps) => (
                 <Text as="p">{props.screen.doneBody}</Text>
             ) : (
                 <EmptyNotice
-                    artwork={{ src: staticsUrl(ART.remember.key), alt: "", assetSlot: "review-empty" }}
+                    scope="page"
+                    media={{ illustration: { src: staticsUrl(ART.remember.key), assetSlot: "review-empty" } }}
                     message={props.base.labels.emptyTitle}
                     description={props.base.labels.emptyBody}
                 />
