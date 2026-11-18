@@ -47,6 +47,7 @@
 {"data":{},"findings":[],"hash":"e94073d0b03e558fa74a576681cc44f2f50f59087cbe314b6193e9d6d67156b2","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/callback/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a78e2711ea07a4d71f1b17d989512e852911f41123ac3a49efb6dbcbf39d6357","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"eae6fdf457bbb4ef3b45e0b1752f5f543c9bf1a9a2521d328de62fc132d5b0f6","path":"fe/apps/app/src/app/[locale]/(auth)/verify/[code]/page.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d33104601b60cdbd9c000ab596fbc9ba7287f0efd05c365156fbc3012106265c","path":"fe/apps/app/src/app/[locale]/[...rest]/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7d853cc529e3ba1469e62689ebfb0e6b101b51a9b935b69769d78d5350f9dfef","path":"fe/apps/app/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"02f4f86684ed12eee68c39a5a4ed8d981f146ce75fdaea239eaecb28e4836af9","path":"fe/apps/app/src/app/[locale]/layout.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8bf12ae6d46a94bfa13568123926fa2cd6ec3942e93aaaec32138fad3008aaaa","path":"fe/apps/app/src/app/[locale]/loading.tsx","step":"file-rules"}
@@ -54,6 +55,7 @@
 {"data":{},"findings":[],"hash":"7bf1e36b9bc8d0661ac7366c967ff5caddceb3fadddccfc629af86d37df7d78b","path":"fe/apps/app/src/app/global-error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f4548f2f878414b2b432eef9eb220dea9e740e206b4d515c9b0289791f7bbdf","path":"fe/apps/app/src/app/globals.css","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c477f0d2b2b4c9ba65a0d58dad714b552b8ea60121710d0b9cb376cab0f33e6f","path":"fe/apps/app/src/app/health/live/route.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"aacdb04e146d05de7f5c7c95d16f4eef1f563a2a7d32b7045996ebb67d9a6ac8","path":"fe/apps/app/src/app/not-found.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"54a396b0564144529e96c64a2756ae7b85442f5e403667fe289469779074e2ed","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0b50d24c653fcda173c1477b5ae75a52808b57cc20b6f85963306e93beff676c","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"17b197a3cf962ccc946cb96b6f64440887e57fc43f626191bfb0371b5e3ae9a7","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
@@ -135,7 +137,7 @@
 {"data":{},"findings":[],"hash":"982a1f94c9c2fa7686af33ad323c58f4910069401d898411de0703777ecf081e","path":"fe/apps/app/src/components/blocks/ReviewQueue/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5cb7730fc37cd408e73a073c519b3eeb1ac2df3510cf2be37970222937835833","path":"fe/apps/app/src/components/blocks/ReviewSession/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2576879f2168b388b02014dec6fe62144354c5aba739ca02931473b5af5e9a55","path":"fe/apps/app/src/components/blocks/ReviewSession/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"549304c75ddc0f5bdcb34aee54bedfc2c9345e34ef09d53bcc176f24e1054aaa","path":"fe/apps/app/src/components/blocks/ReviewToday/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5cd89e184d8a286a132c79c926040a97834d13e55e105141fef22b84e58076c4","path":"fe/apps/app/src/components/blocks/ReviewToday/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"440c5d646ac712708b9e7fd97e62ac5f4fb88b6f3c14faf42517b04dccc973be","path":"fe/apps/app/src/components/blocks/ReviewToday/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"814db56ebbb112948150098003ff7be09b9387ee6fa22d37d803f8c874e6c02a","path":"fe/apps/app/src/components/blocks/SocialCallbackStatus/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9d5de1e3e43f8f5f72ce58e3a99b00470d8ad2ce8da9081edfb09509977072ce","path":"fe/apps/app/src/components/blocks/SocialCallbackStatus/index.tsx","step":"file-rules"}
@@ -153,6 +155,7 @@
 {"data":{},"findings":[],"hash":"824d5406f5ddd35218289d3556825e935054e2447f6b894c5e5784d925c7d71a","path":"fe/apps/app/src/features/pages/AppErrorPage/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2fbc2776e4440ced72b4d0aafafaef6536768978f9d3efdc83259e40b4fb037a","path":"fe/apps/app/src/features/pages/AppErrorPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a832d606b99e67d3bddaee7cfeb7f72d93529058006c4d195f055495a429367a","path":"fe/apps/app/src/features/pages/AppGlobalErrorPage/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5d160a6609e4449a7dc2e9b88d2397124e8e9a93ab1bdf05e974df543e238cfd","path":"fe/apps/app/src/features/pages/AppGlobalNotFoundPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bcbf4c832d0a40f000fcce8395d50d49a5f0c03e7daeabcd1f5422e48cc34fb2","path":"fe/apps/app/src/features/pages/AppHomePage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa4e854d8cade4d9777942ea72303317af4e37b4d217b23bbb4d55000384e071","path":"fe/apps/app/src/features/pages/AppLoadingPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d73a1d5cd655ae385a0128a32e272beefadff175d6410e4fcd6ef7edb46db460","path":"fe/apps/app/src/features/pages/AppNotFoundPage/index.tsx","step":"file-rules"}
@@ -710,6 +713,7 @@
 {"data":{},"findings":[],"hash":"655be6e608b751828898942c2826e9d79617981167de4f12577e37903decd4f1","path":"fe/apps/landing/next.config.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c3ba1a538ee1b7afb70de22db984bb83daede2715c98d619204ba05ff58cb39e","path":"fe/apps/landing/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67c36240f174ebdb86140723ac03a6d30038a1fbf387969b6de6c5e0efb44415","path":"fe/apps/landing/postcss.config.mjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d33104601b60cdbd9c000ab596fbc9ba7287f0efd05c365156fbc3012106265c","path":"fe/apps/landing/src/app/[locale]/[...rest]/page.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e8fd9f6306a044e6750eff9f6532af155b24ed134d697bc36ad4c7c39c4ad09","path":"fe/apps/landing/src/app/[locale]/error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"441ae22edfd58019f16c35dbbbd74a21408ed4047440c8cff41c3d6426f4cceb","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9d0f6972896d22029d6acb479ca24c047ee999ee99ee70d2278ebca1e9b2ae25","path":"fe/apps/landing/src/app/[locale]/loading.tsx","step":"file-rules"}
@@ -718,10 +722,12 @@
 {"data":{},"findings":[],"hash":"bdb9c534f4064c52e878a7938886c45d158693b59b2f82388cdb79b7eb334a17","path":"fe/apps/landing/src/app/global-error.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f4548f2f878414b2b432eef9eb220dea9e740e206b4d515c9b0289791f7bbdf","path":"fe/apps/landing/src/app/globals.css","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c477f0d2b2b4c9ba65a0d58dad714b552b8ea60121710d0b9cb376cab0f33e6f","path":"fe/apps/landing/src/app/health/live/route.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"62ebc89e0bc6e62fadbc4c729a9d2ca0af6dec617e447301d955e6efc63e678e","path":"fe/apps/landing/src/app/not-found.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"920b29224a5f38a590f2761f3af06609c7d15a91b92277345173943a6a236428","path":"fe/apps/landing/src/features/layouts/LandingLayout/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5c892b784c39ecbbc4638a57c26bbe041386f78648459c3de82ebc08c1fde4c4","path":"fe/apps/landing/src/features/pages/LandingErrorPage/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"09bf64020d58c7c4d96a83c7dc4d494003f762cb28852c2a04c2688ef1e83241","path":"fe/apps/landing/src/features/pages/LandingErrorPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"85d172e3d7d3752192b296aac73ebb9ecc648978128010ff4d418eae9267649d","path":"fe/apps/landing/src/features/pages/LandingGlobalErrorPage/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c24e594d536d5c0a3707254a7725f58b6d30e1d0e25024408be466268e4ea060","path":"fe/apps/landing/src/features/pages/LandingGlobalNotFoundPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2331cb28357f2da186ae95c3b7299ed0bc1bd2de831d69363902379ea266f778","path":"fe/apps/landing/src/features/pages/LandingLoadingPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"daafa78b4f2a23bb1c3620a71cbb040f4a9d822ebee10d1fd34f28d02f46fa04","path":"fe/apps/landing/src/features/pages/LandingNotFoundPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ccd75bdb4a615676991bed6388753a0bef3b80ce8606e1f92983360f9b7e1f23","path":"fe/apps/landing/src/features/pages/LandingPage/component.tsx","step":"file-rules"}

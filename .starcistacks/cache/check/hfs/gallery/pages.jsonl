@@ -52,9 +52,13 @@
 {"data":{},"findings":[],"hash":"a0d4c2d529b8201b1eecdad04ad2c16ba0a6444bb7991e01679258adabc74f33","path":"gallery/pages/harness/hub/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"599270cc965056a7d79f0c93afc66d88125ba7aa5227630dd61c02b56b6ac660","path":"gallery/pages/harness/use/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"156f73e8d847954a810b220b803a3a46dcf7053135986fc013e0af383048e9b7","path":"gallery/pages/incidents/list/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2f82e3bf9802de86d95283a64041fa3f6af341a8f9076a85e0bea2e3782e84c2","path":"gallery/pages/landing/error/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2a83e5571f406d1b1e3aeccf1ce6415ebfdde3487dd6e258fb8dcb13a172116e","path":"gallery/pages/landing/home/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e003ac28553f920957c146c1d8937a4101dda67177a6938c3915ed07a9c7f41b","path":"gallery/pages/landing/not-found/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6228489c51234723f1b75d2f2ef932eff4cd5d63cb6b6b38da0f4c3761a6cbcd","path":"gallery/pages/learn/error/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"01e29aa66abea94a459890c2b4dd75603cf554f0ea27b2f76629d743f93262d1","path":"gallery/pages/learn/home-account-menu/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"77431bd0bc4d9b58917826555cb294406944ef8ab5673c96361dbf88ed61b342","path":"gallery/pages/learn/home/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"396fa1b9f43aefa48c8242051f953c8008c33bf7328e458c63012820b6601eb7","path":"gallery/pages/learn/not-found/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"55b39fe8e8f4660fb052b3787e35ad559f7f00afb7ac5b3a0fefe476b9255b39","path":"gallery/pages/paths/choose/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2cb9221378c8e2b3346b615ed824e921c90923fab5b56808f30ec797b59951a4","path":"gallery/pages/practice/list-error/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a5563b50bb5040cc7840801b6ac55bf9ff65a3016d6612634552e650308caff0","path":"gallery/pages/practice/list-first/explain.md","step":"file-rules"}
@@ -99,7 +103,7 @@
 {"data":{},"findings":[],"hash":"9acc892e180d2db94d4d0514b8cb86cdbd6d2175869e1f67ad05620c396e6908","path":"gallery/pages/review/hub-goal/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8c1e0b507ae9c79c6ae536be1b7e2b90088d0487522dc2eb873b6e9be419b25c","path":"gallery/pages/review/hub-loading/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bf239ad7f3cfd949ec7caef487064f0f5c608636b9db91703f72433e27a70a24","path":"gallery/pages/review/hub-nothing/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d2b947cf58dbd5a6507b96c66a7310844c3706890f84bc9c320d1dad1d423dd1","path":"gallery/pages/review/hub/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"76eedaff271f19f99936afa583998140bf52c43a3a3e6f3b3f4a789f4709f019","path":"gallery/pages/review/hub/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a43d4e3d97adc1fc6e5ef71d4c304a09171a8aaa377dc3b9c3f5294aea350847","path":"gallery/pages/review/session-answer/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"60eafa7e31015f0240cfb9648e14d090c6eda20161474b4c41bfb9be539f107c","path":"gallery/pages/review/session-cloze/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"851ae87b3ca23f763f2a60ad87197b7342e99230c67cecc9b800eeb1b3e40810","path":"gallery/pages/review/session-conflict/explain.md","step":"file-rules"}

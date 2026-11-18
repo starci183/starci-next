@@ -47,6 +47,7 @@
 {"findings":[],"hash":"56cc43b73b23044b5b335c155012b15b48fd441ca4e8efdab5e2a2096da9da88","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/callback/page.tsx","step":"prettier"}
 {"findings":[],"hash":"a41170fc41edc413634c7b4aa3ac7809dbd4962851fa3afbc0cd64110209b5e5","path":"fe/apps/app/src/app/[locale]/(auth)/sign-in/page.tsx","step":"prettier"}
 {"findings":[],"hash":"3496b3f2403f9cb34e1c3908d30d28d6dd49e1872fd3081cadbbe453e9cf0811","path":"fe/apps/app/src/app/[locale]/(auth)/verify/[code]/page.tsx","step":"prettier"}
+{"findings":[],"hash":"11c3272b52470ddc6dc53c988d639270dd3e89e03e6aba0573728b238bcbf11b","path":"fe/apps/app/src/app/[locale]/[...rest]/page.tsx","step":"prettier"}
 {"findings":[],"hash":"425158222cc8eacdced946252fd1bad3cdb694d6cd1a96ca47fea8817be0c707","path":"fe/apps/app/src/app/[locale]/error.tsx","step":"prettier"}
 {"findings":[],"hash":"bdd451e0c804e18dae5745f520bba5bb6275861110e12e76b02ff2da466dc316","path":"fe/apps/app/src/app/[locale]/layout.tsx","step":"prettier"}
 {"findings":[],"hash":"691d563b5f01d7c398caf2b9d2427386b82098773e997e35bde1062130e9c85d","path":"fe/apps/app/src/app/[locale]/loading.tsx","step":"prettier"}
@@ -54,6 +55,7 @@
 {"findings":[],"hash":"630a9fbdfe0e0817eb606b6673ee6d0339019ec17bad1dfac44c896cac60c19a","path":"fe/apps/app/src/app/global-error.tsx","step":"prettier"}
 {"findings":[],"hash":"44bb9838fd55cce04c0a200512547650c9d82c5a852e9fd2f327e7d0be43ee5f","path":"fe/apps/app/src/app/globals.css","step":"prettier"}
 {"findings":[],"hash":"23fe37a95647875d8c3013814c021c9a8def65aa6740d91716854167513cc5ce","path":"fe/apps/app/src/app/health/live/route.ts","step":"prettier"}
+{"findings":[],"hash":"cb58c7459044d7a2921312dbdf6a332123731e3aadb709c15d744b814a639a8c","path":"fe/apps/app/src/app/not-found.tsx","step":"prettier"}
 {"findings":[],"hash":"26d134ec77f3e1e3cce2cfb7662680b7a4b31ce42c0a55cd154dfb83b6215ea0","path":"fe/apps/app/src/components/blocks/AppHeader/component.tsx","step":"prettier"}
 {"findings":[],"hash":"f944c7226b7057b10814ab4cfdfefba490ea8cbbe1e82cf51c23fa33492c6c41","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"prettier"}
 {"findings":[],"hash":"1d16f0f2a4f32f1905154efc882885794033508b376c717db612ea460e7ee7b7","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"prettier"}
@@ -135,7 +137,7 @@
 {"findings":[],"hash":"959dbb372891f0f575a44aefc7e65c4ed1fd4b5944f4b2108380b0b59d0fac5e","path":"fe/apps/app/src/components/blocks/ReviewQueue/index.tsx","step":"prettier"}
 {"findings":[],"hash":"b32230e58bcb07e7c9340ceb85dc7e4a4e794a9419ec833568283b46ab70081f","path":"fe/apps/app/src/components/blocks/ReviewSession/component.tsx","step":"prettier"}
 {"findings":[],"hash":"71c9ed222cb114afac360d87ed45c9927d0627fbec8b6ae28477686b8c9ed141","path":"fe/apps/app/src/components/blocks/ReviewSession/index.tsx","step":"prettier"}
-{"findings":[],"hash":"9065a7a9a7fe493e9d8d1318cd7d65dba3e7753ca841035551ee0df741397012","path":"fe/apps/app/src/components/blocks/ReviewToday/component.tsx","step":"prettier"}
+{"findings":[],"hash":"176732f04007c474d88143d6c5c42c6657ecfb84ed31249c9fad669783f32e43","path":"fe/apps/app/src/components/blocks/ReviewToday/component.tsx","step":"prettier"}
 {"findings":[],"hash":"a8ad715f9042866fd342c3dd3efba2e9d856403079186a72b2fe422800c833bd","path":"fe/apps/app/src/components/blocks/ReviewToday/index.tsx","step":"prettier"}
 {"findings":[],"hash":"55a71d5a6b6e27eb01170f503f23063910f66e8b61a317b0f3ebf974263c9445","path":"fe/apps/app/src/components/blocks/SocialCallbackStatus/component.tsx","step":"prettier"}
 {"findings":[],"hash":"2a4724403eefb00eab3634f4afb2b9a902a2ae2e339b863d9674dc9d2573a05d","path":"fe/apps/app/src/components/blocks/SocialCallbackStatus/index.tsx","step":"prettier"}
@@ -153,6 +155,7 @@
 {"findings":[],"hash":"ac5aa0dedc3773eded5f613d866d1ee42cffcfbdd90ca75ea44513ad073bfc2b","path":"fe/apps/app/src/features/pages/AppErrorPage/component.tsx","step":"prettier"}
 {"findings":[],"hash":"72e3b7acfb4c1967f35c84572f77d068aea0e9b7579699c9bfa20a023d193065","path":"fe/apps/app/src/features/pages/AppErrorPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"28b6c7291593049347c184d770664147d0d5e5907bd541bf2af915b660817370","path":"fe/apps/app/src/features/pages/AppGlobalErrorPage/index.tsx","step":"prettier"}
+{"findings":[],"hash":"94dca726fc05b261d4525d82966da083b30d9c7b1a68fd3bb116b2f41d7ee620","path":"fe/apps/app/src/features/pages/AppGlobalNotFoundPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"ebb169a26fb159b556884904324d743cb17e11f272289502b7da14bc57c9051a","path":"fe/apps/app/src/features/pages/AppHomePage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"3adb720f767cc6cae79b67e131a3fefef6902731d10d7a5179467c4df934a43a","path":"fe/apps/app/src/features/pages/AppLoadingPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"bdb6798d7e0db8042aff72ff8effd2c25c60520d0b0a72903f74c7cd2ca302e3","path":"fe/apps/app/src/features/pages/AppNotFoundPage/index.tsx","step":"prettier"}
