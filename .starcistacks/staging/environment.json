@@ -1,0 +1,6 @@
+{
+  "environment": "staging",
+  "provider": "postgres",
+  "project": "starci-next",
+  "runtime": "docker-swarm"
+}

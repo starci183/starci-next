@@ -1,5 +1,6 @@
 {
   "environment": "production",
-  "provider": "external-postgres",
-  "project": "starci-next"
+  "provider": "postgres",
+  "project": "starci-next",
+  "runtime": "docker-swarm"
 }

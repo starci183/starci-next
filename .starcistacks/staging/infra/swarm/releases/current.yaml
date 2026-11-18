@@ -1,0 +1,6 @@
+schema: starci/release-pointer@1
+environment: staging
+status: pending-first-release
+release: null
+verification: null
+# The accepted release lives on the manager under /srv/next-staging/releases (starci app stack deploy moves the pointer after verify).

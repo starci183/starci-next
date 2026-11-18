@@ -46,12 +46,12 @@ jobs:
             args: false
           - name: cli
             file: be/apps/cli/Dockerfile
-            deployed: false
+            deployed: true
             args: false
           - name: landing
             file: fe/apps/landing/Dockerfile
-            deployed: true
-            args: true
+            deployed: false
+            args: false
           - name: app
             file: fe/apps/app/Dockerfile
             deployed: true
@@ -143,7 +143,7 @@ jobs:
             refs=$(jq -c --arg service "$service" --arg ref "$repo@$digest" '. + {($service): $ref}' <<<"$refs")
           done <<'LIST'
           core core false
-          landing landing false
+          cli cli false
           app app false
           LIST
           echo "refs=$refs" >> "$GITHUB_OUTPUT"

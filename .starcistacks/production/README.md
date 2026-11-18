@@ -1,37 +1,31 @@
-# Production stack
+# Production stack (sv-hk-1)
 
-The tracked model declares Docker Swarm application services and one digest-pinned Caddy ingress.
-The production database is external PostgreSQL; the owner supplies its least-privilege connection through sealed custody.
-The model is a deployment declaration. It contains no owner credentials, real DNS receipt, completed release or restore proof. The public records under `.starcistacks/production/infra/swarm/` mark those owner-run operations as pending. Its all-zero application image digests are illustrative and must be replaced before deployment.
+`next-production` runs on sv-hk-1 (103.130.216.216), a one-manager Docker Swarm on a shared DirectAdmin hosting box. The stack touches nothing of the
+hosting: its services sit on its own overlay `app`, and the three public ones also join the shared external network `edge`, where `edge-traefik`
+(103.130.216.201:80/443, resolver `cf`) routes the hosts declared in `environments.production.ingress.hosts`:
 
-The runtime template tracks no encrypted members. Scaffolding generates the declared database member with a placeholder value encrypted to this app's own recipient in `.sops.yaml`. Replace it with `starci app secret set production` using the matching host age identity in untracked local custody. Each Docker secret contains its corresponding key's real value; the API receives it through the declared mounted file.
-
-| Command | Operation |
+| Host | Service |
 | --- | --- |
-| prepare | Owner provisions the Swarm, node label, database, DNS and real sealed secret members, then runs `starci app stack prepare --env production --execute` to create the missing external volumes (the one-time swarm initialization stays an owner-approved step: `--init-swarm` with `--execute`, after the owner's explicit approval). Release images are built and pushed by the managed the managed stack-deploy workflow. |
-| doctor | Run `starci app stack doctor --env production` (read-only): docker, swarm, volumes, services, secrets, configs and the release pointers on the intended manager. |
-| up | After preparation and review, run the manual stack-deploy workflow (Actions, deploy stack) on a release tag; it builds the images and runs `starci app stack deploy --env production --image <service>=<repository>@sha256:<digest> --source-sha <sha> --execute`. A dry run is `starci app stack render` or `deploy` without `--execute`. |
-| status | Run `starci app stack doctor --env production`, or `starci app stack converge --env production --since <ISO time>` to inspect desired and running replicas plus update state. |
-| logs | Run `docker service logs starci-next-production_core` on the manager; never include secret values in a receipt. |
-| down | After the owner's removal decision, run `docker stack rm starci-next-production`; persistent external volumes remain in owner custody. |
-| verification | Run `starci app stack verify --env production` (the journeys declared in `deploy.verify`); also confirm public TLS and a signed-in GraphQL request before moving the release pointer. |
+| https://next.starci.org | app (Next standalone, 3000); `/api/*`, `/graphql`, `/mcp` and `/socket.io/*` go to core (3001) |
+| https://api.next.starci.org | core (3001): MCP, the learner CLI, payment webhooks |
+| https://minio.next.starci.org | storage, the S3 port only (9000); statics are public-read under `starci-next-production/statics` |
 
-## Owner actions before the first release
+`postgres` (PostgreSQL 16: the databases `starci_next` and `keycloak`), `keycloak` (production mode, https on the overlay only) and `storage`
+(MinIO) keep their data on `next-production-postgres-data` and `next-production-storage-data`; no port is published. `cli` applies the TypeORM migrations when
+its task starts and idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
 
-Every item is pending. Swarm initialization, provider URIs, DNS changes and key rotation are owner-run steps.
+The operator reaches the manager as `deploy-next` through the sealed member `vps` (the host listens on SSH port 9999: the operator machine's
+`~/.ssh/config` maps `Host 103.130.216.216` to `Port 9999`, and `Host sv-hk-1-next` to the same key for the docker transport (`ssh://sv-hk-1-next`)).
 
-| Area | Required owner action and evidence |
-| --- | --- |
-| Swarm and placement | Initialize the intended manager; label the intended stateful node `starci-next=production`. Only that node owns the external ingress volumes. |
-| DNS | Replace the reserved `example.invalid` hosts consistently in the manifest, Caddyfile and public configuration; publish address records for the product, API and landing hosts and retain a provider receipt in `.starcistacks/production/infra/swarm/owner-actions.md`. |
-| TLS | Caddy issues certificates after real DNS resolves. Provision `starci-next-production-ingress-data` and `starci-next-production-ingress-config-data` on the selected node; retain an issuance and renewal receipt in `.starcistacks/production/infra/swarm/owner-actions.md`. |
-| Database | Provision external PostgreSQL and its least-privilege application role. Record the provider URI and recovery owner without copying credentials here. |
-| Secret custody | Replace the generated placeholder with the real value in the manifest's declared `.starcistacks/production/secrets/primary-db-url.enc`; record its key in `.starcistacks/production/runtime/env/KEYS.md`. The age identity stays only in the host's untracked `.claude/secret.env`. |
-| External secrets | Materialize the sealed members in owner custody and create `starci-next-production-primary-db-url-v1`. The API reads mounted files; rotation creates new versioned names before updating the model. |
-| Public build configuration | Build the front end with its declared public site and GraphQL URLs. Public browser values stay outside sealed secret custody. |
-| Immutable release | Replace the illustrative all-zero application digests in the manifest, model and `.starcistacks/production/infra/swarm/releases/images.lock.yaml` with the verified release digests. Store each rendered release under `/srv/starci-next/releases/<digest>`. Retain the last accepted record in `.starcistacks/production/infra/swarm/releases/previous.yaml`, then move the pointer and update `.starcistacks/production/infra/swarm/releases/current.yaml` after verification. |
-| Rollback | Retain the previous model and images, redeploy that model if convergence or health fails, and record the resulting convergence receipt. Database changes follow an expand/contract sequence. |
-| Backup | Provision the manifest's thirty daily encrypted off-host database exports and ingress-volume snapshots. Record the actual destination and encryption custody in `.starcistacks/production/infra/swarm/recovery/restore-proof.md`; the production operator owns both components. |
-| Restore proof | Perform a restore into isolated infrastructure, verify the restored database and ingress state, and attach a dated receipt with artifact digests to `.starcistacks/production/infra/swarm/recovery/restore-proof.md`. Its initial record is pending; no restore has been run by scaffolding. |
+| Operation | Command | Acceptance |
+| --- | --- | --- |
+| prepare | `starci app stack prepare --env production --execute` | every check `ok`: swarm manager, the two volumes, `/srv/next-production` writable |
+| doctor | `starci app stack doctor --env production`; `starci app stack render --env production --image ... --sha ...` | read-only; names and counts only |
+| up | tag the commit (`v<version>`), `starci app stack build --env production --push --execute`, then `starci app stack deploy --env production --image <svc>=<ref>@sha256:<digest> ... --sha <sha> --execute` | render, provision, converge (the cli task migrates first), post-deploy `migrate` (a no-op receipt), verify, accept |
+| status | `starci app stack status --env production`; `starci app stack converge --env production --since <ISO time>` | desired equals running, no failed task, the release pointer on the manager |
+| logs | `docker service logs --since 10m --tail 200 next-production_core` on the manager as `deploy-next` | bounded; never print environment or secrets |
+| down | owner decision only: `docker stack rm next-production` | never removes volumes, secrets of other stacks or the edge |
+| verification | `starci app stack verify --env production` | core `/health/live` and `/health/ready`, the app home, the cookie door and the device socket through the app host, all over TLS |
 
-No host scheduler is installed. Scheduled application work belongs to the back-end scheduler or an explicitly declared replicated job.
+Data: production is born from the seed levels production applies (`production/seeds`, empty today); the product content set `content` is declared for dev only, so production starts empty (no lessons) until the owner declares it for production. It never receives a copy of another environment's data.
+Backups: `infra/swarm/recovery/restore-proof.md`. Prerequisites and receipts: `infra/swarm/owner-actions.md`. Keys: `runtime/env/KEYS.md`.

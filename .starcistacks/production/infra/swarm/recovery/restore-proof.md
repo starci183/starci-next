@@ -1,7 +1,9 @@
 # Production recovery record
 
-Status: pending owner execution. No backup or restore has been run by scaffolding.
+Status: no restore performed yet.
 
-The production operator owns recovery of the external PostgreSQL database and both external ingress volumes, `starci-next-production-ingress-data` and `starci-next-production-ingress-config-data`. Provision provider recovery and thirty daily encrypted off-host database exports. Retain thirty daily encrypted off-host snapshots for both ingress volumes.
+- `postgres` (`next-production-postgres-data`): the authoritative data (learners, progress, purchases, and Keycloak's database). No backup job runs
+  yet: the owner provisions an encrypted off-host dump (`pg_dump` of `starci_next` and `keycloak` through `docker exec` on the manager) and records it here.
+- `storage` (`next-production-storage-data`): uploaded objects (avatars, learner uploads); the statics are rebuilt from the storage image.
 
-Before relying on the backup policy, restore a database backup and both volume snapshots into isolated infrastructure. Record the actual off-host destination, retention, encryption custody, backup artifact digests, restoration time and operator. Verify database connectivity and the API readiness endpoint, then verify the restored TLS and ingress configuration. Attach the dated result here without credentials.
+Before relying on recovery, restore a dump and a volume snapshot into isolated infrastructure and attach the dated result here.
