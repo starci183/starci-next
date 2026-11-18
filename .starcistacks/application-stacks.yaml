@@ -355,7 +355,7 @@ environments:
         restoreProof: .starcistacks/staging/infra/swarm/recovery/restore-proof.md
     # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
     # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
+    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER, VPS_PORT,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
       - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-staging-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
@@ -364,13 +364,13 @@ environments:
       - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-staging-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-staging-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-staging-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: vps, keys: [VPS_HOST, VPS_USER, VPS_PORT, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-staging
       remote:
         host: vps
         releasesBase: /srv/next-staging
-        # VPS_HOST, VPS_USER (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
+        # VPS_HOST, VPS_USER, VPS_PORT (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
         sealed: vps
         serverRecipient: age1dypvrqkgumsr0e37d5ejenzs6gnczfqwwtegusat35t5sy7ne57sfn3kd8
       registry:
@@ -533,7 +533,7 @@ environments:
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
     # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
     # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
+    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER, VPS_PORT,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
       - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-production-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
@@ -542,13 +542,13 @@ environments:
       - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-production-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-production-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-production-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: vps, keys: [VPS_HOST, VPS_USER, VPS_PORT, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-production
       remote:
         host: vps
         releasesBase: /srv/next-production
-        # VPS_HOST, VPS_USER (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
+        # VPS_HOST, VPS_USER, VPS_PORT (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
         sealed: vps
         serverRecipient: age1dypvrqkgumsr0e37d5ejenzs6gnczfqwwtegusat35t5sy7ne57sfn3kd8
       registry:
