@@ -7,6 +7,7 @@
 {"data":{},"findings":[],"hash":"f28ba0af1502e4fc2ff8fb674ee3b6b79efe12c7fdb3af9f41cfd3e17bf1f71e","path":"fe/packages/starci-next-i18n/tsconfig.build.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f2388b528bf9cddb2e94bd8a76066f56cfc4ce7ad712e76d8ac8f4c0156ceb43","path":"fe/packages/starci-next-i18n/tsconfig.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"32a0e6c3f18d45dd6d835ea7fd7d343a06096ed24612c5bb758c7def801326e8","path":"fe/packages/starci-next-ui/package.json","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"@starci/grammar in fe/packages/starci-next-ui/package.json dependencies: declared 0.45.1, pinned the range ~0.46.0 (at least 0.46.0, below the next minor)","path":"fe/packages/starci-next-ui/package.json","rule":"HFS_CANON_PIN_DRIFT"}],"hash":"0d698b16036262017daef2f38b9e7926acc3eef441d6c42280205b11e1844429","path":"fe/packages/starci-next-ui/package.json","step":"hfs"}
 {"data":{},"findings":[],"hash":"2d3f32c937df0a9d49f4bd0085fcf80b72f7e62116f701dd2c6bfbb1436a368a","path":"fe/packages/starci-next-ui/src/branches/FileView/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5e9b649b8e9a5a3b138f747655b95e8f7d9363ed0331d065e54e5457e60dceab","path":"fe/packages/starci-next-ui/src/branches/HighlightedCode/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b9bd56ee4c76da19d93e7f73fc234014f5faa61cbf3a8d443b38fe52939a83e3","path":"fe/packages/starci-next-ui/src/branches/Providers/index.tsx","step":"file-rules"}
@@ -55,7 +56,7 @@
 {"data":{},"findings":[],"hash":"7a6294a03c151076a2924e3e9fc8a7292fb3764247c990e1e536c9487275d67e","path":"fe/packages/starci-next-ui/src/composites/GlobalErrorNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9c4edf87fc53bfb929fe8a97c7bc6f9b0964e64a4df82391270420b8e9e8e942","path":"fe/packages/starci-next-ui/src/composites/HubExperience/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"36bd09657d7b6ca2de67c40bcdb0e95d8b49e2fc18e81688e675f7ef4436df06","path":"fe/packages/starci-next-ui/src/composites/HubGoalEditor/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f844a60363d32216061ae96eaad11ba6a6a308e175b574d3549934ac9be0db80","path":"fe/packages/starci-next-ui/src/composites/HubPathCard/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"65bf1f17f877f84fdf785292ab286305759ee70ee5fd66e221bdfcbbc39388c6","path":"fe/packages/starci-next-ui/src/composites/HubPathCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b16afafc5e677c87e92aeecaccb605f291fde95c9410ddd5e36fd07cfdd1785d","path":"fe/packages/starci-next-ui/src/composites/HubStreakCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"db493f4a17af9334666d49b4a3c7221154cc3a83fca4a0f53a57dbb4890675e7","path":"fe/packages/starci-next-ui/src/composites/HubTodayCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1b4bc7047d1143cd7c666fe05328a118b80a870af070b5cd3fe6788384b5c5a5","path":"fe/packages/starci-next-ui/src/composites/IncidentGroups/index.tsx","step":"file-rules"}
@@ -107,7 +108,7 @@
 {"data":{},"findings":[],"hash":"e28262c9c85fdfb440a325ae1bff6691122ed188b026689371f5373dfe06b5be","path":"fe/packages/starci-next-ui/src/composites/StepRows/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0946c83b35fc57fb64e0c97520527553a1af9618d82273743b4d8fa40731b81b","path":"fe/packages/starci-next-ui/src/composites/StudyBody/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9f4be6763e114c9eb2fa8156aa8b98aeed109fb418fdc59f21a683a02e9080f1","path":"fe/packages/starci-next-ui/src/composites/StudyBody/lesson.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ef01265f7e54316a8d995aa19830c9e40a3d5afb6e2aaf6f807b22532ab71450","path":"fe/packages/starci-next-ui/src/composites/StudyBody/types.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e74e0f2143eb0fec219a3ac0d1f01c618f96e551f50afd9cec9a69e0664d0067","path":"fe/packages/starci-next-ui/src/composites/StudyBody/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"493f0b7b3ecf5d0a6091586ea87077178fdd42dd700fbb2b85820899e9eea13e","path":"fe/packages/starci-next-ui/src/composites/StudyCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fe73ba9cd171d77c4ba4267cdd6f39d39cdfebc7b5373ca5df733de0f2a11408","path":"fe/packages/starci-next-ui/src/composites/TopicAside/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9862f73ed58f6e22fd996224e506cb908ef42064790a6e5d584a15e7675a2bde","path":"fe/packages/starci-next-ui/src/composites/TopicHero/index.tsx","step":"file-rules"}
@@ -119,7 +120,7 @@
 {"data":{},"findings":[],"hash":"9a560a984739d6838bd601a38fc7d19029bea31efc792b57446e412b4679a9d3","path":"fe/packages/starci-next-ui/src/frames/BarWide/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"241b223a334e6df305c3a1bc4bb5f84df41db276ca1c04c3c7ff048e0422298c","path":"fe/packages/starci-next-ui/src/frames/SiteShell/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a7c16a7b130ed8da9730c853bbd968ec1139becd93ccd7252b44e83cad8e41f5","path":"fe/packages/starci-next-ui/src/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"913b496599e0db7d2e174fa6ed5a58b55c772b6b163f6ab9336699c48dd497cb","path":"fe/packages/starci-next-ui/src/leaves/Art/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"557953fef358cd97dc9412d9e70aaa9170bfa7e887db60f7ec945047568d7ddf","path":"fe/packages/starci-next-ui/src/leaves/Art/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ecd786c3165a406cf04040372591f2a22c2043855a06a7e5c6b31ad3a66260e5","path":"fe/packages/starci-next-ui/src/leaves/AttemptNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8a405047a7e178fc8258e35407aeaa397494b5f76653efcf95b91e4b3582583e","path":"fe/packages/starci-next-ui/src/leaves/Icon/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f28ba0af1502e4fc2ff8fb674ee3b6b79efe12c7fdb3af9f41cfd3e17bf1f71e","path":"fe/packages/starci-next-ui/tsconfig.build.json","step":"file-rules"}
