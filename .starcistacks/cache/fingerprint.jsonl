@@ -21,7 +21,7 @@
 {"name":"file:fe/tsconfig.json","sha256":"b8e1cb6f05a72d5e193b5a55718f11a148e7e39eb0015a759aa9d525492579d3"}
 {"name":"file:hfs.json","sha256":"a03204bc2e41ae8da9f81f0cfdf7ec54a25e95336b1f8473d7bdf7d2e1d65c61"}
 {"name":"file:sonar-project.properties","sha256":"89faf9a45ee0bf580517de9051ace86b758a0262ddfa39098e47d4302c58f947"}
-{"name":"hfs","sha256":"e62cff701dc9792eacdc20d4b6bb1f8383f0fd14d35e5706b05017d8a7a16d9b"}
+{"name":"hfs","sha256":"7029e54fb8ec90265d03525d4f859d6cc859f5f20345938254fd788fc422d1d6"}
 {"name":"lock:format","sha256":"275d51588fe77bd48bc71d50a0fee3ba59de74b5b462fb49d464a1569040b0ba"}
 {"name":"lock:lint","sha256":"3308b526f3535599c0e4d61f8399a0fc4e22b8a041ae61d2cfd41cd8ddbf74f5"}
 {"name":"lock:test","sha256":"c3d08f292c26bfa9f936cc895a120298ba3ffce5f39c06b712ddeb60bf3f7d45"}
@@ -34,7 +34,7 @@
 {"name":"pkg:@starci/eslint-grammar-core","sha256":"2161cb6722a7de789a6c0880e898321dfbd04419ff6c00fbbce8f9c3bf24f95a"}
 {"name":"pkg:@starci/grammar","sha256":"012fa4ff991176fcf3939b50a10fbb23eac95c0124ca48d8ca79f326f52dc1cd"}
 {"name":"pkg:@starci/heroicons","sha256":"af23d60a104cf4662d750e3eeacc0a0721a3847b05e52bfb6126c95e2f7263cd"}
-{"name":"pkg:@starci/hfs","sha256":"6c55d7626cc454e660ec9c7a692fbdceff68f96dad3e8b6245e36bd13b3492f3"}
+{"name":"pkg:@starci/hfs","sha256":"e0c582363ff5702f07533f1e8a0b36cf74ee225c8d35a44f061669ea18ba2a32"}
 {"name":"pkg:@starci/jest-preset","sha256":"3b91f7ec8fe66c2b699e6d2604e5f016bb0c939d793d2e96425b3ef654249274"}
 {"name":"pkg:@starci/mail","sha256":"5666c5e806b6c880878822f17d4c476e96474930c762aa6cdc059d11aeb4bb6f"}
 {"name":"pkg:@starci/nest-kit","sha256":"680f5362ce42f3899707c94bd3a3ac120328246fd70f7784a3363b5e22b62a75"}
@@ -52,4 +52,4 @@
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
 {"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4159ce5bb5eb43ac94370a9ed4414017e9895decc12bb2d40f7bb80dd8724ea5"}
 {"name":"shape:gallery/package.json","sha256":"d3a8b0c96cf97697a7455020a14bd4514051ad735834138855d0824c8afc1771"}
-{"name":"shape:package.json","sha256":"706c7d690d411ea735e8022f3688562320e272c9719bd1799ce60c8f5d116c75"}
+{"name":"shape:package.json","sha256":"0f7a6d0ed1dca170a6f567af32940c35c86e403be5176bf81f29782b7b5ce6dd"}
