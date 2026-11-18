@@ -47,6 +47,7 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
     <Page>
         {props.shape === "notFound" ? (
             <EmptyNotice
+                scope="page"
                 message={props.props.labels.notFoundTitle}
                 description={props.props.labels.notFoundDescription}
             />
