@@ -140,7 +140,7 @@
 {"findings":[],"hash":"b74655f88323cdf48a46e6a520ba467f3b766f3417350ef7e1e604f24c89c9ca","path":"fe/apps/app/src/features/overlays/SignInModal/index.tsx","step":"prettier"}
 {"findings":[],"hash":"ac5aa0dedc3773eded5f613d866d1ee42cffcfbdd90ca75ea44513ad073bfc2b","path":"fe/apps/app/src/features/pages/AppErrorPage/component.tsx","step":"prettier"}
 {"findings":[],"hash":"72e3b7acfb4c1967f35c84572f77d068aea0e9b7579699c9bfa20a023d193065","path":"fe/apps/app/src/features/pages/AppErrorPage/index.tsx","step":"prettier"}
-{"findings":[],"hash":"68b536ef0a2978815ca22dc1ee7820bcdeb14f8aa307e75fafe1885d550bd1e8","path":"fe/apps/app/src/features/pages/AppGlobalErrorPage/index.tsx","step":"prettier"}
+{"findings":[],"hash":"28b6c7291593049347c184d770664147d0d5e5907bd541bf2af915b660817370","path":"fe/apps/app/src/features/pages/AppGlobalErrorPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"ebb169a26fb159b556884904324d743cb17e11f272289502b7da14bc57c9051a","path":"fe/apps/app/src/features/pages/AppHomePage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"3adb720f767cc6cae79b67e131a3fefef6902731d10d7a5179467c4df934a43a","path":"fe/apps/app/src/features/pages/AppLoadingPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"bdb6798d7e0db8042aff72ff8effd2c25c60520d0b0a72903f74c7cd2ca302e3","path":"fe/apps/app/src/features/pages/AppNotFoundPage/index.tsx","step":"prettier"}
