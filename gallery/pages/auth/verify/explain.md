@@ -5,7 +5,7 @@ area: auth
 reviewed: 2026-11-17
 ---
 
-Route: `/verify/[code]` (ảnh chụp: một mã đúng định dạng nhưng StarCi chưa từng xác minh, nên thấy trạng thái "không tìm thấy"). Trang công khai, không cần đăng nhập, nên không có thanh bên và thanh trên; nền trắng. Mã: `fe/apps/app/src/components/blocks/VerifyExperience/component.tsx` (vẽ), `index.tsx` (đọc, không có phiên).
+Route: `/verify/[code]` (ảnh chụp: một mã đúng định dạng nhưng StarCi chưa từng xác minh, nên thấy trạng thái "không tìm thấy"). Trang công khai, không cần đăng nhập, nên không có thanh bên và thanh trên; nền trắng. Mã: `fe/apps/app/src/components/blocks/VerifyExperience/component.tsx` (vẽ), `index.tsx` (đọc, không có phiên). Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Thông báo "Không tìm thấy mã xác minh"
 

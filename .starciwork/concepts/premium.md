@@ -56,6 +56,6 @@ IPN arrives twice; Premium is granted once for one month and the same lesson and
 ## Where
 `be/src/modules/domain/purchase/`, `be/src/modules/domain/entitlement/`, `be/src/modules/integrations/sepay/`,
 `be/src/modules/integrations/payos/`, `be/src/features/api/commerce/`, `be/src/features/cli/entitlement/`,
-`fe/apps/app/src/app/[locale]/(app)/premium/`
+`fe/apps/app/src/app/[locale]/(pages)/(app)/premium/`
 
 Related: [ai-teacher](ai-teacher.md), [app-shell](app-shell.md), [content](content.md), [conventions](conventions.md)

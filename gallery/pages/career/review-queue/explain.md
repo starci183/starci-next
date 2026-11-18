@@ -5,7 +5,7 @@ area: career
 reviewed: 2026-11-17
 ---
 
-Route: `/review-queue` (ảnh chụp: tài khoản học viên thường, nên thấy trạng thái bị từ chối; thầy và người duyệt thấy danh sách các mục chờ ký). Mã: `fe/apps/app/src/components/blocks/ReviewQueue/component.tsx`. Trang trắng, không thẻ.
+Route: `/review-queue` (ảnh chụp: tài khoản học viên thường, nên thấy trạng thái bị từ chối; thầy và người duyệt thấy danh sách các mục chờ ký). Mã: `fe/apps/app/src/components/blocks/ReviewQueue/component.tsx`. Trang trắng, không thẻ. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Thông báo "Chỉ thầy và người duyệt được mở trang này"
 

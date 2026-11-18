@@ -5,7 +5,7 @@ area: review
 reviewed: 2026-11-18
 ---
 
-Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá.
+Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

@@ -5,7 +5,7 @@ area: devices
 reviewed: 2026-11-17
 ---
 
-Route: `/devices` (ảnh chụp: học viên chưa nối máy nào, nên trạng thái rỗng hiện ngay dưới đầu phần). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/DevicesPair/` (`component.tsx` trang, `connect.tsx` ngăn kéo nối máy, `steps.tsx` các bước).
+Route: `/devices` (ảnh chụp: học viên chưa nối máy nào, nên trạng thái rỗng hiện ngay dưới đầu phần). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/DevicesPair/` (`component.tsx` trang, `connect.tsx` ngăn kéo nối máy, `steps.tsx` các bước). Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang (Máy của bạn, dòng phụ, lệnh Kết nối máy)
 

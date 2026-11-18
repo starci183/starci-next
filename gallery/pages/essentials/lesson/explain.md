@@ -5,7 +5,7 @@ area: essentials
 reviewed: 2026-11-18
 ---
 
-Route: `/essentials/[topic]/[lesson]`. Phần 1 Bản chất khi học viên đã trả lời câu 1 đúng và câu 2 sai: thanh năm đoạn, câu 2 đã chấm với lời giải và liên kết, mục lục có nhãn "Nên đọc kỹ", bài viết bên dưới. Trạng thái dựng bằng lõi giả của lane (mẫu Outbox + Idempotency). Code: `fe/apps/app/src/components/blocks/EssentialLesson/` (vỏ trang, `parts/partEssence.tsx`, `parts/partLocked.tsx`), hook `fe/apps/app/src/hooks/essence/`, composite `fe/packages/starci-next-ui/src/composites/LessonEssence/` và `LessonLockedPart/`.
+Route: `/essentials/[topic]/[lesson]`. Phần 1 Bản chất khi học viên đã trả lời câu 1 đúng và câu 2 sai: thanh năm đoạn, câu 2 đã chấm với lời giải và liên kết, mục lục có nhãn "Nên đọc kỹ", bài viết bên dưới. Trạng thái dựng bằng lõi giả của lane (mẫu Outbox + Idempotency). Code: `fe/apps/app/src/components/blocks/EssentialLesson/` (vỏ trang, `parts/partEssence.tsx`, `parts/partLocked.tsx`), hook `fe/apps/app/src/hooks/essence/`, composite `fe/packages/starci-next-ui/src/composites/LessonEssence/` và `LessonLockedPart/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
 

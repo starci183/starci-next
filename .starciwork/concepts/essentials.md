@@ -66,7 +66,7 @@ and an aside with the learning result, the retrieval after 1, 7 and 21 days and 
 
 ## Where
 `be/src/modules/domain/lesson/`, `be/src/modules/domain/attempt/`, `be/src/modules/domain/incident/`, `be/src/features/api/lesson/`,
-`be/src/features/api/attempt/`, `fe/apps/app/src/app/[locale]/(app)/essentials/`, `fe/apps/app/src/components/blocks/LessonStudy/`,
+`be/src/features/api/attempt/`, `fe/apps/app/src/app/[locale]/(pages)/(app)/essentials/`, `fe/apps/app/src/components/blocks/LessonStudy/`,
 `fe/apps/app/src/components/blocks/EssentialLesson/`, `be/src/modules/domain/lesson/lesson-essential.policy.ts`,
 `be/src/modules/domain/relay/relay-lesson.service.ts`
 

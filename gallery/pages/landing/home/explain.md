@@ -5,7 +5,7 @@ area: landing
 reviewed: 2026-11-17
 ---
 
-Route: `/` của ứng dụng `landing` (cổng riêng, không phải ứng dụng học). Mã: `fe/apps/landing/src/app/[locale]/page.tsx`. Đây là trang khung của bộ dựng: chưa có thiết kế sản phẩm. Toàn trang trắng, các dải ngăn nhau bằng đường kẻ 1px.
+Route: `/` của ứng dụng `landing` (cổng riêng, không phải ứng dụng học). Mã: `fe/apps/landing/src/app/[locale]/page.tsx`. Đây là trang khung của bộ dựng: chưa có thiết kế sản phẩm. Toàn trang trắng, các dải ngăn nhau bằng đường kẻ 1px. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải thương hiệu "starci-next"
 

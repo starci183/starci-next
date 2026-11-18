@@ -5,7 +5,7 @@ area: review
 reviewed: 2026-11-18
 ---
 
-Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh "Thêm bộ thẻ" ngang hàng.
+Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh "Thêm bộ thẻ" ngang hàng. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

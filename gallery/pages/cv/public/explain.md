@@ -4,7 +4,7 @@ route: /cv/{slug}
 area: cv
 ---
 
-Route: `/cv/{slug}` (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn nguồn). Mã: `fe/apps/app/src/components/blocks/PublicCv/`. Trạng thái khác: `cv/public-few-lines`, `cv/public-many-lines`, `cv/public-not-found`, `cv/public-loading`, `cv/public-share`. Trang không được máy tìm kiếm lập chỉ mục (`noindex`) cho tới khi chủ sản phẩm quyết.
+Route: `/cv/{slug}` (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn nguồn). Mã: `fe/apps/app/src/components/blocks/PublicCv/`. Trạng thái khác: `cv/public-few-lines`, `cv/public-many-lines`, `cv/public-not-found`, `cv/public-loading`, `cv/public-share`. Trang không được máy tìm kiếm lập chỉ mục (`noindex`) cho tới khi chủ sản phẩm quyết. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Thanh trên công khai
 

@@ -5,7 +5,7 @@ area: review
 reviewed: 2026-11-18
 ---
 
-Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới.
+Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

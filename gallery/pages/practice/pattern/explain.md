@@ -5,7 +5,7 @@ area: practice
 reviewed: 2026-11-18
 ---
 
-Route: `/practice/patterns/{id}`. Một pattern: đoạn "Khi nào dùng", các bài với độ khó, nhãn và trạng thái, tiến độ pattern và pattern kế tiếp.
+Route: `/practice/patterns/{id}`. Một pattern: đoạn "Khi nào dùng", các bài với độ khó, nhãn và trạng thái, tiến độ pattern và pattern kế tiếp. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

@@ -43,7 +43,7 @@ reviewer's queue; only after the signature does it show Đã xác minh and appea
 - Don't show a pending item on the public profile.
 
 ## Where
-`be/src/modules/domain/career/`, `be/src/features/api/career/`, `fe/apps/app/src/app/[locale]/(app)/experience/`,
-`fe/apps/app/src/app/[locale]/(app)/review-queue/`, `fe/apps/app/src/app/[locale]/(app)/profile/`
+`be/src/modules/domain/career/`, `be/src/features/api/career/`, `fe/apps/app/src/app/[locale]/(pages)/(app)/experience/`,
+`fe/apps/app/src/app/[locale]/(pages)/(app)/review-queue/`, `fe/apps/app/src/app/[locale]/(pages)/(app)/profile/`
 
 Related: [learning-program](learning-program.md), [projects](projects.md), [identity](identity.md), [streak](streak.md)

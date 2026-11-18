@@ -5,7 +5,7 @@ area: connect
 reviewed: 2026-11-17
 ---
 
-Route: `/connect` (ảnh chụp 1440, 390 đã có; phần "Mã truy cập của bạn" chụp ở trạng thái lỗi tải vì stack chạy không trả danh sách mã). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ConnectAi/` (`component.tsx` trang, `index.tsx` nối dữ liệu), dữ liệu từ `fe/apps/app/src/hooks/mcpConnect/`.
+Route: `/connect` (ảnh chụp 1440, 390 đã có; phần "Mã truy cập của bạn" chụp ở trạng thái lỗi tải vì stack chạy không trả danh sách mã). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ConnectAi/` (`component.tsx` trang, `index.tsx` nối dữ liệu), dữ liệu từ `fe/apps/app/src/hooks/mcpConnect/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang (Kết nối Claude / ChatGPT, dòng phụ)
 

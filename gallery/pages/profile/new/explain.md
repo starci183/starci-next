@@ -4,7 +4,7 @@ route: /profile
 area: profile
 ---
 
-Route: `/profile` (ảnh chụp: học viên mới, chưa có ảnh, chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích ở `profile/overview`.
+Route: `/profile` (ảnh chụp: học viên mới, chưa có ảnh, chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích ở `profile/overview`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Danh tính khi chưa có ảnh
 

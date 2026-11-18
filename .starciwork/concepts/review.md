@@ -31,6 +31,6 @@ A card answered "Khó" on step 7 stays on 7 days; a retrieval answer at level 1 
 - Don't keep a second streak in review; record a review-due-done action on the one streak ([streak](streak.md)).
 
 ## Where
-`be/src/modules/domain/review/`, `be/src/features/api/review/`, `fe/apps/app/src/app/[locale]/(app)/review/`
+`be/src/modules/domain/review/`, `be/src/features/api/review/`, `fe/apps/app/src/app/[locale]/(pages)/(app)/review/`
 
 Related: [essentials](essentials.md), [streak](streak.md), [ai-teacher](ai-teacher.md)

@@ -5,7 +5,7 @@ area: review
 reviewed: 2026-11-18
 ---
 
-Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ có gì trước khi thêm và quản lý sau khi thêm.
+Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ có gì trước khi thêm và quản lý sau khi thêm. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

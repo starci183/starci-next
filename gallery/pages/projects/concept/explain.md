@@ -5,7 +5,7 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects/<projectId>/<milestoneId>/<conceptId>`, dành cho người đăng ký Premium. Một concept: các ô bằng chứng, kết quả probe trên deploy thật, thang chấm của AI đọc code, lần CI ký và bản xem trước dòng CV. Ở 1440 phần giữa chia hai cột (probe và CI bên trái, AI đọc code và thang chấm bên phải); ở 390 xếp một cột. Mã: `fe/apps/app/src/components/blocks/ProjectConcept/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
+Route: `/projects/<projectId>/<milestoneId>/<conceptId>`, dành cho người đăng ký Premium. Một concept: các ô bằng chứng, kết quả probe trên deploy thật, thang chấm của AI đọc code, lần CI ký và bản xem trước dòng CV. Ở 1440 phần giữa chia hai cột (probe và CI bên trái, AI đọc code và thang chấm bên phải); ở 390 xếp một cột. Mã: `fe/apps/app/src/components/blocks/ProjectConcept/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 Thang chấm đọc từ `projectCodeRead`, dòng CV xem trước từ `projectCvPreview`; chưa có lần đọc code thì mục thang chấm nói gửi đoạn code.
 
 ## Dải đầu trang (đường dẫn bốn cấp, tên concept, trạng thái)

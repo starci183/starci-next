@@ -5,7 +5,7 @@ area: practice
 reviewed: 2026-11-18
 ---
 
-Route: `/practice/{slug}`. Giải bài: đề, mã, kết quả, gợi ý. Nút chính theo trạng thái: Nộp bài, Đang chấm, hoặc Bài tiếp theo khi Accepted. Xem lời giải trước khi Accepted phải xác nhận vì bài không vào kinh nghiệm Luyện code.
+Route: `/practice/{slug}`. Giải bài: đề, mã, kết quả, gợi ý. Nút chính theo trạng thái: Nộp bài, Đang chấm, hoặc Bài tiếp theo khi Accepted. Xem lời giải trước khi Accepted phải xác nhận vì bài không vào kinh nghiệm Luyện code. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

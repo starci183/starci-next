@@ -38,6 +38,6 @@ the learner claims the pattern's CV line.
 
 ## Where
 `be/src/modules/domain/practice/`, `be/src/modules/integrations/judge0/`, `be/src/features/api/practice/`,
-`fe/apps/app/src/app/[locale]/(app)/practice/`
+`fe/apps/app/src/app/[locale]/(pages)/(app)/practice/`
 
 Related: [verified-experience](verified-experience.md), [streak](streak.md), [content](content.md)

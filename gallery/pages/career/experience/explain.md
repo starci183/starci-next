@@ -4,7 +4,7 @@ route: /experience
 area: career
 ---
 
-Route: `/experience` (ảnh chụp: năm mục, đủ các trạng thái). Mã: `fe/apps/app/src/components/blocks/ExperienceList/`. Trạng thái khác: `career/experience-first`, `career/experience-tab-empty`, `career/experience-confirm`, `career/experience-error`, `career/experience-loading`, `career/experience-claim`.
+Route: `/experience` (ảnh chụp: năm mục, đủ các trạng thái). Mã: `fe/apps/app/src/components/blocks/ExperienceList/`. Trạng thái khác: `career/experience-first`, `career/experience-tab-empty`, `career/experience-confirm`, `career/experience-error`, `career/experience-loading`, `career/experience-claim`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Mục tiêu
 

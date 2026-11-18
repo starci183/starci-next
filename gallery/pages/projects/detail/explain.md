@@ -5,7 +5,7 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects/<projectId>`, dành cho người đăng ký Premium. Trang dự án có hai pane ở 1440: milestone, lần chạy, kinh nghiệm và địa chỉ deploy ở pane giữa; kho mã, chứng thực CI, máy của bạn, bí mật CI và thư mục starci/ ở aside bên phải. Ở 390 aside đứng trước pane giữa. Trang dùng các composite của starci-next-ui. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
+Route: `/projects/<projectId>`, dành cho người đăng ký Premium. Trang dự án có hai pane ở 1440: milestone, lần chạy, kinh nghiệm và địa chỉ deploy ở pane giữa; kho mã, chứng thực CI, máy của bạn, bí mật CI và thư mục starci/ ở aside bên phải. Ở 390 aside đứng trước pane giữa. Trang dùng các composite của starci-next-ui. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu trang (đường dẫn, tên, chip trạng thái, dòng repo, "Cập nhật kết quả từ máy")
 

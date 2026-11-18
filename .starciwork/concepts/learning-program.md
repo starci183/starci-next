@@ -33,7 +33,7 @@ hub shows it as the top Mục tiêu card, beside the part cards with today's due
 
 ## Where
 `be/src/modules/domain/hub/`, `be/src/modules/domain/path/`, `be/src/features/api/hub/`,
-`fe/apps/app/src/app/[locale]/(app)/`, `fe/apps/app/src/components/blocks/LearnHub/`
+`fe/apps/app/src/app/[locale]/(pages)/(app)/`, `fe/apps/app/src/components/blocks/LearnHub/`
 
 Related: [essentials](essentials.md), [projects](projects.md), [verified-experience](verified-experience.md), [streak](streak.md),
 [content](content.md)

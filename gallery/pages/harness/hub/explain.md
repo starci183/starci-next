@@ -4,7 +4,7 @@ route: /harness
 area: harness
 ---
 
-Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts`. Dữ liệu đọc từ API harness của harness-be (`harnessHub`), ánh xạ ở `fe/apps/app/src/modules/harness-view`.
+Route: `/harness`. Grammar ở `node_modules/@starci/grammar/dist/core/` (0.40.1). Mã: `fe/apps/app/src/components/blocks/HarnessHub/` (`component.tsx` trang), dữ liệu qua `fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts`. Dữ liệu đọc từ API harness của harness-be (`harnessHub`), ánh xạ ở `fe/apps/app/src/modules/harness-view`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang (tiêu đề, dòng phụ, bốn tab)
 

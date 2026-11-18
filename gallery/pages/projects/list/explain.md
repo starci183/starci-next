@@ -5,7 +5,7 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects`, dành cho người đăng ký Premium (người khác thấy `projects/paywall`). Học viên mang repo của chính mình vào; không có dự án mẫu. Mã: `fe/apps/app/src/components/blocks/ProjectsList/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
+Route: `/projects`, dành cho người đăng ký Premium (người khác thấy `projects/paywall`). Học viên mang repo của chính mình vào; không có dự án mẫu. Mã: `fe/apps/app/src/components/blocks/ProjectsList/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu trang (tiêu đề, mô tả, Tạo dự án)
 

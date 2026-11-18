@@ -5,7 +5,7 @@ area: auth
 reviewed: 2026-11-17
 ---
 
-Route: `/sign-in`. Màn đăng nhập không dùng khung chung: thanh bên và thanh trên ẩn ở đây, trang tự vẽ thương hiệu ở giữa. Trang trắng, thẻ đăng nhập chỉ có viền 1px, không bóng. Ở 1440 thẻ rộng cố định giữa trang, ở 390 thẻ chiếm gần hết bề ngang.
+Route: `/sign-in`. Màn đăng nhập không dùng khung chung: thanh bên và thanh trên ẩn ở đây, trang tự vẽ thương hiệu ở giữa. Trang trắng, thẻ đăng nhập chỉ có viền 1px, không bóng. Ở 1440 thẻ rộng cố định giữa trang, ở 390 thẻ chiếm gần hết bề ngang. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Khung (không có thanh bên, thanh trên)
 

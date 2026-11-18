@@ -4,7 +4,7 @@ route: /progress
 area: progress
 ---
 
-Route: `/progress` (ảnh chụp: học viên chưa có Premium). Khung chung và các vùng giống `progress/overview`; ở đây chỉ nêu chỗ khác.
+Route: `/progress` (ảnh chụp: học viên chưa có Premium). Khung chung và các vùng giống `progress/overview`; ở đây chỉ nêu chỗ khác. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Essentials: phần bị khóa
 

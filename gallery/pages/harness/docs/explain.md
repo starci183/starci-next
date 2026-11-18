@@ -4,7 +4,7 @@ route: /harness/docs
 area: harness
 ---
 
-Route: `/harness/docs`. Mã: `fe/apps/app/src/components/blocks/HarnessDocs/`, dữ liệu qua `fe/apps/app/src/hooks/harnessDocs/useHarnessDocsScreen.ts`.
+Route: `/harness/docs`. Mã: `fe/apps/app/src/components/blocks/HarnessDocs/`, dữ liệu qua `fe/apps/app/src/hooks/harnessDocs/useHarnessDocsScreen.ts`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang và danh sách bài
 

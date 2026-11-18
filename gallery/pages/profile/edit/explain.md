@@ -4,7 +4,7 @@ route: /profile/edit
 area: profile
 ---
 
-Route: `/profile/edit` (trang con "Hồ sơ / Sửa"). Mã: `fe/apps/app/src/components/blocks/ProfileEdit/`. Giải thích đầy đủ nằm ở `profile/overview`, mục "Sửa hồ sơ".
+Route: `/profile/edit` (trang con "Hồ sơ / Sửa"). Mã: `fe/apps/app/src/components/blocks/ProfileEdit/`. Giải thích đầy đủ nằm ở `profile/overview`, mục "Sửa hồ sơ". Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Đầu trang: Hủy và Lưu thay đổi
 

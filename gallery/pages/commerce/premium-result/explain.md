@@ -5,7 +5,7 @@ area: commerce
 reviewed: 2026-11-17
 ---
 
-Route: `/premium/result` (ảnh chụp: đơn đã trả, Premium được kích hoạt; cổng thanh toán đưa học viên về đây kèm mã đơn). Mã: `fe/apps/app/src/components/blocks/CheckoutResult/component.tsx`. Trang trắng, không đầu trang; kết quả là một bảng điều khiển hẹp (panel kết quả) giữa vùng nội dung, một trong ít chỗ còn dùng thẻ.
+Route: `/premium/result` (ảnh chụp: đơn đã trả, Premium được kích hoạt; cổng thanh toán đưa học viên về đây kèm mã đơn). Mã: `fe/apps/app/src/components/blocks/CheckoutResult/component.tsx`. Trang trắng, không đầu trang; kết quả là một bảng điều khiển hẹp (panel kết quả) giữa vùng nội dung, một trong ít chỗ còn dùng thẻ. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Panel kết quả, đặt giữa trang
 

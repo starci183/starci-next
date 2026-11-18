@@ -5,7 +5,7 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects/<projectId>/<milestoneId>`, dành cho người đăng ký Premium. Một milestone là danh sách concept Bản chất; mỗi concept cần đủ ô bằng chứng. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
+Route: `/projects/<projectId>/<milestoneId>`, dành cho người đăng ký Premium. Một milestone là danh sách concept Bản chất; mỗi concept cần đủ ô bằng chứng. Mã: `fe/apps/app/src/components/blocks/ProjectMilestone/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu trang (đường dẫn, tên milestone, chip trạng thái, "0/3 concept đã chứng minh")
 

@@ -5,7 +5,7 @@ area: paths
 reviewed: 2026-11-17
 ---
 
-Route: `/paths/choose` (ảnh chụp: học viên chưa theo lộ trình nào, đã đăng nhập). Mã: `fe/apps/app/src/components/blocks/PathsChoose/component.tsx` (vẽ) và `index.tsx` (đọc dữ liệu, chọn, đổi). Khung chung giải thích ở `learn/home`. Ảnh dài: 1440 cao ~1590px, 390 cao ~2745px.
+Route: `/paths/choose` (ảnh chụp: học viên chưa theo lộ trình nào, đã đăng nhập). Mã: `fe/apps/app/src/components/blocks/PathsChoose/component.tsx` (vẽ) và `index.tsx` (đọc dữ liệu, chọn, đổi). Khung chung giải thích ở `learn/home`. Ảnh dài: 1440 cao ~1590px, 390 cao ~2745px. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Phần mở đầu "Bạn học để làm được gì?"
 

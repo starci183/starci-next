@@ -5,7 +5,7 @@ area: essentials
 reviewed: 2026-11-18
 ---
 
-Route: `/essentials`. Danh mục các bài cụm theo chủ đề: thấy mình đang ở đâu, vào đúng bài đang dở hoặc chọn bài theo bài toán. Ảnh chụp ở 1440, 1920 và 390; khung (thanh trên, thanh bên) thuộc lane khác. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html` (essentials-catalog). Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, mapper `fe/apps/app/src/hooks/catalog/catalog.shared.ts`, composite `CatalogToolbar`, `CatalogGroup`, `LessonList` trong `fe/packages/starci-next-ui/src/composites/`. Các trạng thái có thư mục riêng: `catalog-first-visit`, `catalog-no-match`, `catalog-loading`, `catalog-error`, `catalog-free`.
+Route: `/essentials`. Danh mục các bài cụm theo chủ đề: thấy mình đang ở đâu, vào đúng bài đang dở hoặc chọn bài theo bài toán. Ảnh chụp ở 1440, 1920 và 390; khung (thanh trên, thanh bên) thuộc lane khác. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html` (essentials-catalog). Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`, mapper `fe/apps/app/src/hooks/catalog/catalog.shared.ts`, composite `CatalogToolbar`, `CatalogGroup`, `LessonList` trong `fe/packages/starci-next-ui/src/composites/`. Các trạng thái có thư mục riêng: `catalog-first-visit`, `catalog-no-match`, `catalog-loading`, `catalog-error`, `catalog-free`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu: tên trang, dòng sự kiện, nút chính
 

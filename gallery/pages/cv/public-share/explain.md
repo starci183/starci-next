@@ -4,7 +4,7 @@ route: /cv/{slug}
 area: cv
 ---
 
-Route: `/cv/{slug}` (ảnh chụp: bảng chia sẻ mở). Mã: `fe/apps/app/src/components/blocks/PublicCv/`, ảnh xem trước `app/[locale]/(auth)/cv/[slug]/opengraph-image.tsx`.
+Route: `/cv/{slug}` (ảnh chụp: bảng chia sẻ mở). Mã: `fe/apps/app/src/components/blocks/PublicCv/`, ảnh xem trước `app/[locale]/(pages)/(auth)/cv/[slug]/opengraph-image.tsx`.
 
 ## Bảng chia sẻ
 

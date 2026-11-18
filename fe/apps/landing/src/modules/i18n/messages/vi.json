@@ -15,6 +15,7 @@
     },
     "notFound": {
       "title": "Không tìm thấy trang",
+      "documentTitle": "Không tìm thấy trang · StarCi Next",
       "home": "Về trang chủ",
       "description": "Trang này không còn ở đây hoặc đường dẫn đã bị gõ sai. Hãy quay về trang chủ để tiếp tục."
     },

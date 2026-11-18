@@ -5,7 +5,7 @@ area: practice
 reviewed: 2026-11-18
 ---
 
-Route: `/practice`. Danh sách pattern: nút chính là bài kế tiếp, lọc ở trình duyệt, cột phải nói mức sẵn sàng, bài đang làm dở và cách chấm. Luyện code miễn phí nên không còn chip Premium.
+Route: `/practice`. Danh sách pattern: nút chính là bài kế tiếp, lọc ở trình duyệt, cột phải nói mức sẵn sàng, bài đang làm dở và cách chấm. Luyện code miễn phí nên không còn chip Premium. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Băng đầu trang
 

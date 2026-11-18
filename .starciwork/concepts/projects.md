@@ -74,7 +74,7 @@ on each after their GitHub Action runs; neither started from a template.
 
 ## Where
 `be/src/modules/domain/project/`, `be/src/modules/platform/check-flow/`, `be/src/features/webhooks/probe-sink/`,
-`be/src/modules/integrations/relay-client/` (`project-e2e.cli.ts`, `project-ci-report.cli.ts`), `be/src/features/api/project/`, `fe/apps/app/src/app/[locale]/(app)/projects/`,
+`be/src/modules/integrations/relay-client/` (`project-e2e.cli.ts`, `project-ci-report.cli.ts`), `be/src/features/api/project/`, `fe/apps/app/src/app/[locale]/(pages)/(app)/projects/`,
 `fe/apps/app/src/components/blocks/ProjectsList/`
 
 Related: [learner-cli-relay](learner-cli-relay.md), [essentials](essentials.md), [verified-experience](verified-experience.md),

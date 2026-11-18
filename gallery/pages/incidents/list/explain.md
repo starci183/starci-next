@@ -5,7 +5,7 @@ area: incidents
 reviewed: 2026-11-17
 ---
 
-Route: `/incidents` (ảnh chụp: học viên chưa có thiết bị nào nối, nên mọi sự cố đều ghi "Sắp có"). Mã: `fe/apps/app/src/components/blocks/IncidentsList/component.tsx`. Khung chung giải thích ở `learn/home`.
+Route: `/incidents` (ảnh chụp: học viên chưa có thiết bị nào nối, nên mọi sự cố đều ghi "Sắp có"). Mã: `fe/apps/app/src/components/blocks/IncidentsList/component.tsx`. Khung chung giải thích ở `learn/home`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Phần mở đầu "Sự cố"
 

@@ -4,7 +4,7 @@ route: /cv/{slug}
 area: cv
 ---
 
-Route: `/cv/{slug}` (ảnh chụp: địa chỉ gõ sai). Mã: `fe/apps/app/src/components/blocks/PublicCv/`, `app/[locale]/(auth)/cv/[slug]/not-found.tsx`. Trang trả HTTP 404 và `noindex`; ảnh xem trước của liên kết này là ảnh chung của StarCi, không có tên.
+Route: `/cv/{slug}` (ảnh chụp: địa chỉ gõ sai). Mã: `fe/apps/app/src/components/blocks/PublicCv/`, `app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx`. Trang trả HTTP 404 và `noindex`; ảnh xem trước của liên kết này là ảnh chung của StarCi, không có tên.
 
 ## Không có CV ở địa chỉ này
 

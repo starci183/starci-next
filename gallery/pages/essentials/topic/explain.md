@@ -5,7 +5,7 @@ area: essentials
 reviewed: 2026-11-18
 ---
 
-Route: `/essentials/[topic]`. Một chủ đề: các bài theo thứ tự nên học và còn bao nhiêu bài là xong. Ảnh ở 1440, 1920 và 390. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html` (essentials-topic). Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `LessonList`. Trạng thái có thư mục riêng: `topic-first-visit`, `topic-free`, `topic-loading`.
+Route: `/essentials/[topic]`. Một chủ đề: các bài theo thứ tự nên học và còn bao nhiêu bài là xong. Ảnh ở 1440, 1920 và 390. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html` (essentials-topic). Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `LessonList`. Trạng thái có thư mục riêng: `topic-first-visit`, `topic-free`, `topic-loading`. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
 
 ## Dải đầu: breadcrumb, tên, mô tả, dòng sự kiện, nút chính
 

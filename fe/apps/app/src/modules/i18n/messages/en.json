@@ -60,6 +60,7 @@
     },
     "notFound": {
       "title": "Page not found",
+      "documentTitle": "Page not found · StarCi Next",
       "home": "Return home",
       "description": "This page is no longer here, or the address was mistyped. Go back to the home page to continue."
     },
