@@ -1,6 +1,6 @@
 {"data":{},"findings":[],"hash":"bbc029d1e6c693b784d21faf2ac692e5a2b2b92cd2949ecd5b9e9cfa913a4c77","path":"gallery/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6332476b884372b8262faf422c457779a89f55b3b1350c59cc1902b67039947","path":"gallery/flows.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2b70b649c4632fbea617e95fd42729ad60be02caa9d7fe371387eeca08d6393a","path":"gallery/index.html","step":"file-rules"}
-{"data":{},"findings":[],"hash":"799769875707d53fdc25219b4b88f611b563d05987a15e5540e0539640666923","path":"gallery/package-lock.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2b2a4b9b49ca72b014f3b499b3f7cb8a5749616af033b3fabf6f380fb6b87f3e","path":"gallery/package.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1aaa987952085c6aab61e3952b61c47b87bc37fa7aacce324035e2399e9c59b4","path":"gallery/package-lock.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"210ccfb899bb6f46500ecf9c95749629dd2436d14141cf94b02bf878827f8143","path":"gallery/package.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"540839cee14cf73958e7c00ca541ec3bdb2ed07a3c832c9639e6116ab398f34f","path":"gallery/vite.config.js","step":"file-rules"}
