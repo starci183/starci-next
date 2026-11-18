@@ -19,10 +19,18 @@ WORKDIR /app
 COPY --from=manifests /app ./
 RUN npm ci --ignore-scripts
 
+# The public browser configuration of the environment (deploy.images.app.buildArgs), inlined by next build.
+ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_STATICS_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_STATICS_URL=$NEXT_PUBLIC_STATICS_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+
 COPY turbo.json ./
 COPY scripts scripts
 COPY fe/tsconfig.json fe/tsconfig.json
 COPY fe/packages fe/packages
+COPY be/contracts be/contracts
 COPY fe/apps/app fe/apps/app
 RUN mkdir -p fe/apps/app/public
 RUN npm run codegen --silent

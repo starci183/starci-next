@@ -1,180 +1,271 @@
-# Rendered production model. All-zero app digests are illustrative; publish verified images before use.
-version: "3.8"
+# The production stack of starci-next on the shared VPS sv-hk-1 (a one-manager swarm that also serves DirectAdmin hosting; this stack touches none of it).
+# The images, the plain environment, the <KEY>_FILE pointers and the versioned secrets come from the override `starci app stack render|deploy --env production`
+# writes from application-stacks.yaml (environments.production.deploy); this file holds the structure only.
+# Ingress: the shared edge Traefik outside this stack (environments.production.ingress.external) routes the hosts of environments.production.ingress.hosts to the
+# services joined to the external `edge` network (core, app, storage); this stack publishes no port. Every in-stack address is a unique alias on the
+# stack's own overlay `app` (next-production-postgres, next-production-keycloak, next-production-storage), never a short service name, so nothing resolves across tenants.
+# The box serves other tenants: every service carries CPU and memory limits.
 services:
   core:
     image: "starci-next/core:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-    environment:
-      NODE_ENV: production
-      PORT: "3001"
-      HTTP_SECURITY_ALLOWED_ORIGINS: https://starci-next.example.invalid
-      PRIMARY_DB_URL_FILE: /run/secrets/primary-db-url
-      IDENTITY_KEYCLOAK_ISSUER: https://auth.starci-next.example.invalid/realms/starci-next
-      IDENTITY_KEYCLOAK_CLIENT_ID: starci-next-identity
-      IDENTITY_SOCIAL_CALLBACK_URI: https://starci-next.example.invalid/sign-in/callback
-      IDENTITY_PROVIDER_TIMEOUT_MS: "10000"
-      IDENTITY_SESSION_MAX_SECONDS: "0"
-      IDENTITY_CHALLENGE_TTL_SECONDS: "600"
-      IDENTITY_CHALLENGE_MAX_ATTEMPTS: "5"
-      IDENTITY_SESSION_ENCRYPTION_KEY_FILE: /run/secrets/identity-session-encryption-key
-      MAIL_HOST: smtp.starci-next.example.invalid
-      MAIL_PORT: "587"
-      MAIL_SECURITY: starttls
-      MAIL_USER: replace-with-smtp-user
-      MAIL_PASSWORD_FILE: /run/secrets/mail-password
-      MAIL_FROM: no-reply@starci-next.example.invalid
-      MAIL_FROM_NAME: Starci Next
-      MAIL_DEFAULT_LANGUAGE: en
-      IDENTITY_KEYCLOAK_CLIENT_SECRET_FILE: /run/secrets/keycloak-client-secret
-      PAYOS_CLIENT_ID: replace-with-payos-client-id
-      PAYOS_CHECKSUM_KEY_FILE: /run/secrets/payos-checksum-key
-      PAYOS_API_KEY_FILE: /run/secrets/payos-api-key
-      SEPAY_MERCHANT_ID: replace-with-sepay-merchant-id
-      SEPAY_IPN_SECRET_KEY_FILE: /run/secrets/sepay-ipn-secret-key
-      SEPAY_SIGNING_SECRET_KEY_FILE: /run/secrets/sepay-signing-secret-key
-      OPENROUTER_API_KEY_FILE: /run/secrets/openrouter-api-key
-      AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
-      ATTEMPT_COACH_DAILY_LIMIT: "100"
-      REALTIME_HUB: memory
-      # Owner-provisioned S3-compatible object storage (profile avatars, learner uploads); the public origin is what links and presigned requests are built on.
-      STORAGE_ENDPOINT: https://s3.starci-next.example.invalid
-      STORAGE_PUBLIC_URL: https://files.starci-next.example.invalid
-      STORAGE_REGION: replace-with-s3-region
-      STORAGE_BUCKET: starci-next-production
-      STORAGE_ACCESS_KEY_ID_FILE: /run/secrets/storage-access-key-id
-      STORAGE_SECRET_ACCESS_KEY_FILE: /run/secrets/storage-secret-access-key
-      RELAY_MANIFEST_SIGNING_KEY_FILE: /run/secrets/relay-manifest-signing-key
-    secrets:
-      - source: primary-db-url
-        target: primary-db-url
-      - source: keycloak-client-secret
-        target: keycloak-client-secret
-      - source: identity-session-encryption-key
-        target: identity-session-encryption-key
-      - source: payos-checksum-key
-        target: payos-checksum-key
-      - source: payos-api-key
-        target: payos-api-key
-      - source: sepay-ipn-secret-key
-        target: sepay-ipn-secret-key
-      - source: sepay-signing-secret-key
-        target: sepay-signing-secret-key
-      - source: openrouter-api-key
-        target: openrouter-api-key
-      - source: mail-password
-        target: mail-password
-      - source: relay-manifest-signing-key
-        target: relay-manifest-signing-key
-      - source: storage-access-key-id
-        target: storage-access-key-id
-      - source: storage-secret-access-key
-        target: storage-secret-access-key
-    networks: [app]
+    networks:
+      app:
+        aliases: [next-production-core]
+      edge:
+        aliases: [next-production-core]
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
-      start_period: 20s
-      retries: 3
+      start_period: 60s
+      retries: 5
     deploy:
       # One replica: the core api runs the in-process realtime hub of the device socket until a shared hub is built (BE-REALTIME-7).
       replicas: 1
       placement:
-        constraints: ["node.labels.starci-next == production"]
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "2", memory: 1536M}
+        reservations: {memory: 256M}
+      labels:
+        traefik.enable: "true"
+        traefik.swarm.network: edge
+        # The api host: the MCP endpoint, the learner CLI and the payment webhooks.
+        traefik.http.routers.next-production-api.rule: "Host(`api.next.starci.org`)"
+        traefik.http.routers.next-production-api.entrypoints: websecure
+        traefik.http.routers.next-production-api.tls.certresolver: cf
+        traefik.http.routers.next-production-api.service: next-production-core
+        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api,
+        # so the host-only session cookie reaches them; every other path is the Next app (the router of the app service, lower priority).
+        traefik.http.routers.next-production-app-core.rule: "Host(`next.starci.org`) && (PathPrefix(`/api/`) || Path(`/graphql`) || Path(`/mcp`) || PathPrefix(`/socket.io/`))"
+        traefik.http.routers.next-production-app-core.priority: "100"
+        traefik.http.routers.next-production-app-core.entrypoints: websecure
+        traefik.http.routers.next-production-app-core.tls.certresolver: cf
+        traefik.http.routers.next-production-app-core.service: next-production-core
+        traefik.http.services.next-production-core.loadbalancer.server.port: "3001"
       update_config:
         parallelism: 1
         order: start-first
         failure_action: rollback
         monitor: 30s
+        max_failure_ratio: 0
+      # Stateless: roll back start-first so the serving task stays up until the old release is healthy.
       rollback_config:
         parallelism: 1
-        order: stop-first
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
   app:
     image: "starci-next/app:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-    environment:
-      NODE_ENV: production
-      PORT: "3000"
-      HOSTNAME: 0.0.0.0
-      NEXT_PUBLIC_SITE_URL: https://starci-next.example.invalid
-    networks: [app]
+    networks:
+      edge:
+        aliases: [next-production-app]
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
       timeout: 5s
-      start_period: 20s
+      start_period: 30s
       retries: 3
     deploy:
       replicas: 1
       placement:
-        constraints: ["node.labels.starci-next == production"]
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "1", memory: 768M}
+        reservations: {memory: 128M}
+      labels:
+        traefik.enable: "true"
+        traefik.swarm.network: edge
+        traefik.http.routers.next-production-app.rule: "Host(`next.starci.org`)"
+        traefik.http.routers.next-production-app.priority: "10"
+        traefik.http.routers.next-production-app.entrypoints: websecure
+        traefik.http.routers.next-production-app.tls.certresolver: cf
+        traefik.http.routers.next-production-app.service: next-production-app
+        traefik.http.services.next-production-app.loadbalancer.server.port: "3000"
       update_config:
         parallelism: 1
         order: start-first
         failure_action: rollback
         monitor: 30s
+        max_failure_ratio: 0
+      # Stateless: roll back start-first so the serving task stays up until the old release is healthy.
       rollback_config:
         parallelism: 1
-        order: stop-first
+        order: start-first
       restart_policy:
         condition: on-failure
         delay: 5s
-  landing:
-    image: "starci-next/landing:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+  # The one-off actions of the cli app (migrate, seed, data) in this environment: its task applies the TypeORM migrations when it starts (idempotent by
+  # TypeORM's own ledger), marks itself healthy, then idles so `starci app stack task <name>` (deploy.tasks) can run a declared command inside it with
+  # the same database grant. It serves no traffic and joins only the stack's own overlay.
+  cli:
+    image: "starci-next/cli:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    entrypoint: ["/bin/sh", "-c", "node be/dist/apps/cli/src/main.js migrate run && touch /tmp/migrated && exec sleep infinity"]
+    networks: [app]
+    healthcheck:
+      test: ["CMD", "test", "-f", "/tmp/migrated"]
+      interval: 15s
+      timeout: 5s
+      start_period: 120s
+      retries: 3
+    deploy:
+      replicas: 1
+      placement:
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "1", memory: 512M}
+        reservations: {memory: 64M}
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        monitor: 30s
+        max_failure_ratio: 0
+      # Stateless: roll back start-first so the serving task stays up until the old release is healthy.
+      rollback_config:
+        parallelism: 1
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+  postgres:
+    image: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
     environment:
-      NODE_ENV: production
-      PORT: "3002"
-      HOSTNAME: 0.0.0.0
-      NEXT_PUBLIC_APP_URL: https://starci-next.example.invalid
-    networks: [app]
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    configs:
+      - source: postgres-roles
+        target: /docker-entrypoint-initdb.d/10-roles.sh
+        mode: 0555
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      app:
+        aliases: [next-production-postgres]
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3002/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
-      interval: 30s
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "127.0.0.1"]
+      interval: 10s
       timeout: 5s
-      start_period: 20s
-      retries: 3
+      start_period: 30s
+      retries: 5
     deploy:
       replicas: 1
       placement:
-        constraints: ["node.labels.starci-next == production"]
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "2", memory: 1536M}
+        reservations: {memory: 256M}
       update_config:
         parallelism: 1
-        order: start-first
+        order: stop-first
         failure_action: rollback
         monitor: 30s
+        max_failure_ratio: 0
+      # Owns a single-host volume and is single-writer: never two at once, so rollback stays stop-first.
       rollback_config:
         parallelism: 1
         order: stop-first
       restart_policy:
         condition: on-failure
         delay: 5s
-  ingress:
-    image: caddy:2.10.2@sha256:c3d7ee5d2b11f9dc54f947f68a734c84e9c9666c92c88a7f30b9cba5da182adb
+  # The identity provider of this environment: Keycloak in production mode on its own database (keycloak on next-production-postgres), https only with the
+  # sealed certificate of the `keycloak` member (CN and SAN next-production-keycloak); the core api trusts that certificate (HTTP_TRUSTED_CA_FILE) and is the only
+  # caller. No host routes to it: no browser follows it (social sign-in is not configured). The realm is the config object realm (redirects of this host).
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
+    entrypoint:
+      - bash
+      - -c
+      - |
+        set -eu
+        export KC_DB_PASSWORD="$$(cat /run/secrets/KEYCLOAK_DB_PASSWORD)"
+        export KC_CLIENT_SECRET="$$(cat /run/secrets/IDENTITY_KEYCLOAK_CLIENT_SECRET)"
+        export KC_BOOTSTRAP_ADMIN_PASSWORD="$$(head -c 24 /dev/urandom | base64 | tr -d '/+=')"
+        exec /opt/keycloak/bin/kc.sh start --import-realm
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://next-production-postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_HOSTNAME: https://next-production-keycloak:8443
+      KC_HTTP_ENABLED: "false"
+      KC_HTTPS_PORT: "8443"
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      JAVA_OPTS_KC_HEAP: "-XX:MaxRAMPercentage=65"
     configs:
-      - source: ingress-config
-        target: /etc/caddy/Caddyfile
-    ports:
-      - { target: 80, published: 80, protocol: tcp, mode: ingress }
-      - { target: 443, published: 443, protocol: tcp, mode: ingress }
-    volumes:
-      - ingress-data:/data
-      - ingress-config-data:/config
-    networks: [app]
+      - source: realm
+        target: /opt/keycloak/data/import/realm-starci-next-identity.json
+        mode: 0444
+    networks:
+      app:
+        aliases: [next-production-keycloak]
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
-      interval: 30s
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8443"]
+      interval: 15s
       timeout: 5s
-      retries: 3
+      start_period: 180s
+      retries: 5
     deploy:
       replicas: 1
       placement:
-        constraints: ["node.labels.starci-next == production"]
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "2", memory: 1536M}
+        reservations: {memory: 512M}
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        monitor: 30s
+        max_failure_ratio: 0
+      # Stateless: roll back start-first so the serving task stays up until the old release is healthy.
+      rollback_config:
+        parallelism: 1
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+  storage:
+    image: ghcr.io/starci183/starci-next-storage:4bcd28a52d86373411dbbe804de4645165bfd250@sha256:f76ca42d53175892404dbd6a88bf0debf764f35c8b15d4ff0e6663b83c5a67ce
+    environment:
+      STATICS_PREFIX: statics
+      STATICS_PUBLIC: download
+    volumes:
+      - storage-data:/data
+    networks:
+      app:
+        aliases: [next-production-storage]
+      edge:
+        aliases: [next-production-storage]
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/statics-ready && wget -q -O /dev/null http://127.0.0.1:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 5
+    deploy:
+      replicas: 1
+      placement:
+        constraints: ["node.role == manager"]
+      resources:
+        limits: {cpus: "1", memory: 1G}
+        reservations: {memory: 128M}
+      labels:
+        traefik.enable: "true"
+        traefik.swarm.network: edge
+        # The object store's public route (PROJECT-STACKS-15): the S3 API port only, never the console (9001).
+        traefik.http.routers.next-production-storage.rule: "Host(`minio.next.starci.org`)"
+        traefik.http.routers.next-production-storage.entrypoints: websecure
+        traefik.http.routers.next-production-storage.tls.certresolver: cf
+        traefik.http.routers.next-production-storage.service: next-production-storage
+        traefik.http.services.next-production-storage.loadbalancer.server.port: "9000"
       update_config:
         parallelism: 1
         order: stop-first
         failure_action: rollback
         monitor: 30s
+        max_failure_ratio: 0
+      # Owns a single-host volume and is single-writer: never two at once, so rollback stays stop-first.
       rollback_config:
         parallelism: 1
         order: stop-first
@@ -184,50 +275,30 @@ services:
 networks:
   app:
     driver: overlay
-secrets:
-  primary-db-url:
+  edge:
     external: true
-    name: "starci-next-production-primary-db-url-v1"
-  keycloak-client-secret:
-    external: true
-    name: "starci-next-production-keycloak-client-secret-v1"
-  identity-session-encryption-key:
-    external: true
-    name: "starci-next-production-identity-session-encryption-key-v1"
-  mail-password:
-    external: true
-    name: "starci-next-production-mail-password-v1"
-  payos-checksum-key:
-    external: true
-    name: "starci-next-production-payos-checksum-key-v1"
-  payos-api-key:
-    external: true
-    name: "starci-next-production-payos-api-key-v1"
-  sepay-ipn-secret-key:
-    external: true
-    name: "starci-next-production-sepay-ipn-secret-key-v1"
-  sepay-signing-secret-key:
-    external: true
-    name: "starci-next-production-sepay-signing-secret-key-v1"
-  openrouter-api-key:
-    external: true
-    name: "starci-next-production-openrouter-api-key-v1"
-  relay-manifest-signing-key:
-    external: true
-    name: "starci-next-production-relay-manifest-signing-key-v1"
-  storage-access-key-id:
-    external: true
-    name: "starci-next-production-storage-access-key-id-v1"
-  storage-secret-access-key:
-    external: true
-    name: "starci-next-production-storage-secret-access-key-v1"
-configs:
-  ingress-config:
-    file: ./Caddyfile
+    name: edge
 volumes:
-  ingress-data:
+  postgres-data:
     external: true
-    name: "starci-next-production-ingress-data"
-  ingress-config-data:
+    name: "next-production-postgres-data"
+  storage-data:
     external: true
-    name: "starci-next-production-ingress-config-data"
+    name: "next-production-storage-data"
+# The custody members of environments.production.secrets, one versioned external secret each; the services' per-key grants come from the override.
+secrets:
+  db: { external: true, name: next-production-custody-db-v1 }
+  keycloak-client-secret: { external: true, name: next-production-custody-keycloak-client-secret-v1 }
+  identity-session-encryption-key: { external: true, name: next-production-custody-identity-session-encryption-key-v1 }
+  keycloak: { external: true, name: next-production-custody-keycloak-v1 }
+  relay: { external: true, name: next-production-custody-relay-v1 }
+  storage: { external: true, name: next-production-custody-storage-v1 }
+  vps: { external: true, name: next-production-custody-vps-v1 }
+# The non-secret files (deploy.configs), each a config object named by the digest of its content.
+configs:
+  realm:
+    external: true
+    name: ${REALM_CONFIG}
+  postgres-roles:
+    external: true
+    name: ${POSTGRES_ROLES_CONFIG}

@@ -329,16 +329,11 @@ jobs:
         if: steps.deps.outputs.cache-hit != 'true'
       - name: build be
         run: npm run build:be
-      - name: build fe app
-        run: npm run codegen --silent && npx --no-install turbo run build --filter=./fe/apps/app
+      - name: build fe
+        run: npm run build:fe
         env:
-          NEXT_PUBLIC_SITE_URL: "https://starci-next.example.invalid"
-          NEXT_PUBLIC_STATICS_URL: "https://storage.starci-next.example.invalid/starci-next-production/statics"
-      - name: build fe landing
-        run: npm run codegen --silent && npx --no-install turbo run build --filter=./fe/apps/landing
-        env:
-          NEXT_PUBLIC_APP_URL: "https://starci-next.example.invalid"
-          NEXT_PUBLIC_STATICS_URL: "https://storage.starci-next.example.invalid/starci-next-production/statics"
+          NEXT_PUBLIC_SITE_URL: "https://next.starci.org"
+          NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"
       - name: build cache save
         if: always()
         uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0

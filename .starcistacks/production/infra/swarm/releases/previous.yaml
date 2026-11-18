@@ -3,4 +3,3 @@ environment: production
 status: no-previous-release
 release: null
 verification: null
-# Before moving current, retain the last accepted release here for rollback.

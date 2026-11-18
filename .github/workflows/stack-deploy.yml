@@ -155,8 +155,8 @@ jobs:
             echo "${service}=${ref}" >> "$GITHUB_OUTPUT"
           done <<'LIST'
           app app
+          cli cli
           core core
-          landing landing
           LIST
       - name: CI run of the commit
         id: ci
@@ -188,15 +188,15 @@ jobs:
           OPERATION: ${{ inputs.operation }}
           CI_RUN: ${{ steps.ci.outputs.run }}
           IMAGE_APP: ${{ steps.images.outputs.app }}
+          IMAGE_CLI: ${{ steps.images.outputs.cli }}
           IMAGE_CORE: ${{ steps.images.outputs.core }}
-          IMAGE_LANDING: ${{ steps.images.outputs.landing }}
         run: |
           again=()
           [[ "$OPERATION" != redeploy ]] || again=(--redeploy)
           npx --no-install starci app stack deploy --env "$STACK_ENVIRONMENT" \
             --image "app=$IMAGE_APP" \
+            --image "cli=$IMAGE_CLI" \
             --image "core=$IMAGE_CORE" \
-            --image "landing=$IMAGE_LANDING" \
             --sha "$GITHUB_SHA" --ci-run "$CI_RUN" "${again[@]}" --execute
       - name: disconnect from the swarm manager
         env:
