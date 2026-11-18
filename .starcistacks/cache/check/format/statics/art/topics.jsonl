@@ -1,9 +1,0 @@
-{"findings":[],"hash":"d8283cfdcc28eb3e43c2dec28727fbbba5dd9e760778eb1f0c4e85150437efca","path":"statics/art/topics/api-reliability.webp","step":"prettier"}
-{"findings":[],"hash":"5d5a552b135bb9fefffb61ae47b9a686541fb8074474a6d1f519a3dde1f1ea62","path":"statics/art/topics/backend-framework.webp","step":"prettier"}
-{"findings":[],"hash":"5d18b3e58b5472971507080850ddab4b87b6bac75365c3ccf7a2069d3de4e5db","path":"statics/art/topics/cloud-networking.webp","step":"prettier"}
-{"findings":[],"hash":"408909e91b6e56cae207f61a29740a147d41d7145f599b7af77a6b9ed50b6cc3","path":"statics/art/topics/communication-patterns.webp","step":"prettier"}
-{"findings":[],"hash":"048a4915f48a9ee2b2e8e698c2f4a6ca4d46e4285df06d8e1929d952f7a91fee","path":"statics/art/topics/databases.webp","step":"prettier"}
-{"findings":[],"hash":"1cfc6e39136c25c19d885f130fe7178050efb531052a05b65c096793a8e8bbb1","path":"statics/art/topics/kubernetes.webp","step":"prettier"}
-{"findings":[],"hash":"c17535a6eec60744d0f10222e0bd62a898d40f95cde75b80f0258e53026b2a46","path":"statics/art/topics/llm-agents.webp","step":"prettier"}
-{"findings":[],"hash":"ba651be3034a8badb1a311afdc8f7af8ce31e9c8961202efa3fcb12ea7282c19","path":"statics/art/topics/server-state.webp","step":"prettier"}
-{"findings":[],"hash":"2d4eeb2dbb2a10fbc2c998bfa09f073af59f550fedc17d3bd68c9aac4ac344ab","path":"statics/art/topics/testing-strategy.webp","step":"prettier"}

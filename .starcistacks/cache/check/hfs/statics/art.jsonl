@@ -15,12 +15,3 @@
 {"data":{},"findings":[],"hash":"f368c395a235d1bab0b2df1ee0c3412c109867c03106adfbc4796ea4c4e204d6","path":"statics/art/steps/reflect.webp","step":"file-rules"}
 {"data":{},"findings":[],"hash":"521ee981430f98c49e42d349a5bfaa3cb93a4a30d92fcbec5b18f42dc6b03197","path":"statics/art/steps/understand.webp","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c175ef902190acf870b98932a22b1bfdb3e411ad7e7fa8f33b16b9f966f23f40","path":"statics/art/teacher-3d.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"8ed257b4be87ad1b599447d953c1ee57dd9e65eda93f6f59306f9babc764a79b","path":"statics/art/topics/api-reliability.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6e4cb9a9ff80c0c12ebd8a0a16014937f39d69dad1e0f2dde59168e6df7cba40","path":"statics/art/topics/backend-framework.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5998d67d501ae9cc3e7eb9eebdff314af17d485a8a7f6e17eeaed59a3b0fba21","path":"statics/art/topics/cloud-networking.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e16bdf52a2bd07098c72ed0f4926639538021d60ec6e83d615896c39c5a6bdc9","path":"statics/art/topics/communication-patterns.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"67436f131ebba6157b43f8f6250fedace5da1214ee02814ed5a8a8dad9673233","path":"statics/art/topics/databases.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5525f3a921cb61679caf064310619fbdfa0c44e62584c2a4358b316ca7489f45","path":"statics/art/topics/kubernetes.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"8d1f1b3bf549d6da821b6a2882d027216762e45515267e07bd972da9b53caa17","path":"statics/art/topics/llm-agents.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f7f0b61ae6b37e71a8f24addb748dd1fb9694daa578a0c344de576e95d1faada","path":"statics/art/topics/server-state.webp","step":"file-rules"}
-{"data":{},"findings":[],"hash":"c79d8c2a02c1f5483d86b1bb98014059d1b5830ec862e6ded2ca6e985f913690","path":"statics/art/topics/testing-strategy.webp","step":"file-rules"}

@@ -27,12 +27,3 @@
 {"findings":[],"hash":"7164408e85c4a4335c1465aa24537bea3525cb021629c4f4265fc72092908086","path":"gallery/pages/essentials/topic-free/explain.md","step":"prettier"}
 {"findings":[],"hash":"9353e8c930e401ba4e40749c2a7f85bfa48b38e29c11008bbbfb437207d978e8","path":"gallery/pages/essentials/topic-loading/explain.md","step":"prettier"}
 {"findings":[],"hash":"1a540c9e7114dce893187dc2d60e20b4084870a62dd7d35fe4692c3232be2a9d","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}
-{"findings":[],"hash":"696c563c9e1bd7bbb340845c47eb900b1f8ce2487a3f78c609722f3e6fe3279f","path":"gallery/pages/essentials/catalog/explain.md","step":"prettier"}
-{"findings":[],"hash":"3c944cbb890fd062a43346227b4dd72bd1393c000ebf56c136dcf90c88e5e072","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"prettier"}
-{"findings":[],"hash":"befbddf84b2991a94eaf62f6805cf49d7bad939584bb46436110224a3706da65","path":"gallery/pages/essentials/lesson-scenarios/explain.md","step":"prettier"}
-{"findings":[],"hash":"74b9ab31abf88918a0a57acda7529e343f69f1c50ab15db3e81636186666b46f","path":"gallery/pages/essentials/lesson-source/explain.md","step":"prettier"}
-{"findings":[],"hash":"7c4ab2b995de2b735e707cdf849ef7af3ee6ca79b120754cfb8534532217861f","path":"gallery/pages/essentials/lesson/explain.md","step":"prettier"}
-{"findings":[],"hash":"66b20f1d63157192512691339b2f1b808db42352d66726554fea3181aae58ba9","path":"gallery/pages/essentials/topic-api-reliability/explain.md","step":"prettier"}
-{"findings":[],"hash":"3fe1985d99e094c9d530d78c78d26a34239675364de7a2a74386cfd1931f63f0","path":"gallery/pages/essentials/topic-databases/explain.md","step":"prettier"}
-{"findings":[],"hash":"26262794d240f51e3e22e65c598a7516ddfa960fcabb306a1e909be42e6b74ce","path":"gallery/pages/essentials/topic-kubernetes/explain.md","step":"prettier"}
-{"findings":[],"hash":"7a63dd2e2fbc66613a8ee38382ae067567b261d80accf759d86f3c40b2f9d11d","path":"gallery/pages/essentials/topic/explain.md","step":"prettier"}
