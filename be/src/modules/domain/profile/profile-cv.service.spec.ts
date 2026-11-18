@@ -71,8 +71,24 @@ const build = async (world: World = {}) => {
         { itemId: "i2", itemType: "t", part: "practice", subject: "s", projectId: null, signedAt: "x" },
     ])
     experience.publicLines.mockResolvedValue([
-        { line: "Line one", part: "essentials", verificationCode: "AAAA-BBBB", signedAt: "2026-11-01T00:00:00.000Z" },
-        { line: "Line two", part: "practice", verificationCode: "CCCC-DDDD", signedAt: "2026-11-02T00:00:00.000Z" },
+        {
+            line: "Line one",
+            part: "essentials",
+            verificationCode: "AAAA-BBBB",
+            signedAt: "2026-11-01T00:00:00.000Z",
+            signerRole: "TEACHER",
+            subject: "Subject one",
+            evidence: [{ kind: "proved-lesson", count: null }],
+        },
+        {
+            line: "Line two",
+            part: "practice",
+            verificationCode: "CCCC-DDDD",
+            signedAt: "2026-11-02T00:00:00.000Z",
+            signerRole: "REVIEWER",
+            subject: "Subject two",
+            evidence: [{ kind: "practice-accepted", count: 12 }],
+        },
     ])
     const profiles = mock<ProfileService>()
     profiles.avatarUrlOf.mockResolvedValue("https://store.example/avatar")
@@ -196,12 +212,18 @@ describe("ProfileCvService publicCv", () => {
                     source: "essentials",
                     verificationCode: "AAAA-BBBB",
                     signedAt: "2026-11-01T00:00:00.000Z",
+                    signerRole: "TEACHER",
+                    subject: "Subject one",
+                    evidence: [{ kind: "proved-lesson", count: null }],
                 },
                 {
                     line: "Line two",
                     source: "practice",
                     verificationCode: "CCCC-DDDD",
                     signedAt: "2026-11-02T00:00:00.000Z",
+                    signerRole: "REVIEWER",
+                    subject: "Subject two",
+                    evidence: [{ kind: "practice-accepted", count: 12 }],
                 },
             ],
         })

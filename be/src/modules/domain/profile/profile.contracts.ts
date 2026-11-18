@@ -144,6 +144,14 @@ export interface PublicCvParams {
     readonly locale: ProfileLocale
 }
 
+/** One kind of proof under a public CV line. */
+export interface PublicCvEvidence {
+    /** How it was proved: ci-attested, cli-scenario, server-probe, proved-lesson or practice-accepted. */
+    readonly kind: string
+    /** How many problems were accepted when the proof is a count, else null. */
+    readonly count: number | null
+}
+
 /** One verified line a public CV shows. */
 export interface PublicCvLine {
     /** The signed line in the asked locale. */
@@ -154,6 +162,12 @@ export interface PublicCvLine {
     readonly verificationCode: string
     /** When it was signed, ISO 8601. */
     readonly signedAt: string
+    /** The role the signer signed with, TEACHER or REVIEWER; never a name. */
+    readonly signerRole: string
+    /** What the line is about, as a short label in the asked locale. */
+    readonly subject: string
+    /** The kinds of proof under the line, without references. */
+    readonly evidence: Array<PublicCvEvidence>
 }
 
 /** The public CV of a learner: who they are and the verified lines they show, nothing else. */

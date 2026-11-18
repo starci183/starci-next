@@ -1,52 +1,85 @@
 "use client"
 
-import { useLocale, useTranslations } from "next-intl"
-import { failureCodeOf, plainLineOf, useExperienceWords } from "@/hooks/experience"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryPublicCvSwr } from "@/hooks/swr"
-import { verifyPath } from "@/modules/routes"
-import { PUBLIC_CV_PLACEHOLDER, PublicCvBase } from "./component"
+import { useLocalizedPathname } from "@/hooks/locale"
+import { useOrigin } from "@/hooks/profile"
+import { usePublicCvLabels, usePublicCvView } from "@/hooks/publicCv"
+import type { PublicCv as PublicCvRead } from "@/hooks/swr"
+import { PUBLIC_CV_PLACEHOLDER, PublicCvBase, type PublicCvBaseProps } from "./component"
 
-/** What the route hands the block: the slug of the address. */
-type PublicCvProps = { readonly slug: string }
+/** What the route hands the block: the slug of the address and what the server already read, when it could. */
+type PublicCvProps = { readonly slug: string; readonly initial?: PublicCvRead | undefined }
 
-/** The codes a door answers for a link nobody owns, or whose owner keeps it private: both read as not found. */
-const NOT_FOUND_CODES: ReadonlySet<string> = new Set(["PROFILE_CV_NOT_FOUND", "HTTP_SECURITY_REQUEST_INVALID"])
-
-/** The public CV: reads one slug without a session and words the signed lines with their source and date. */
+/** The public CV: reads one slug without a session, filters and folds its signed lines, and holds the share sheet. */
 export const PublicCv = (props: PublicCvProps) => {
-    const t = useTranslations("app.publicCv")
-    const locale = useLocale()
-    const words = useExperienceWords()
-    const read = useQueryPublicCvSwr(decodeURIComponent(props.slug), locale)
-    const isNotFound = read.error !== undefined && NOT_FOUND_CODES.has(failureCodeOf(read.error))
+    const cv = usePublicCvView(props)
     return (
         <PublicCvBase
-            shape={isNotFound ? "notFound" : "read"}
+            shape={cv.shape}
             props={{
-                slot: mapSlot(slotOfSwr(read), (cv) => ({
-                    name: cv.displayName,
-                    avatarUrl: cv.avatarUrl ?? null,
-                    rows: cv.lines.map((line) => ({
-                        id: line.verificationCode,
-                        title: plainLineOf(line.line),
-                        description: t("signed", { date: words.date(line.signedAt) }),
-                        badges: [{ label: words.part(line.source), tone: "neutral" as const }],
-                        action: { label: t("verify"), href: verifyPath(line.verificationCode), endArrow: true },
-                    })),
-                })),
+                slot: cv.slot,
                 placeholder: PUBLIC_CV_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("notFoundTitle")),
-                labels: {
-                    title: t("title"),
-                    linesTitle: t("linesTitle"),
-                    note: t("note"),
-                    empty: t("empty"),
-                    notFoundTitle: t("notFoundTitle"),
-                    notFoundDescription: t("notFoundDescription"),
-                },
+                slotLabels: cv.slotLabels,
+                labels: cv.labels,
+                share: cv.shareLabels,
+                source: cv.source,
+                isShareOpen: cv.isShareOpen,
+                isPhone: cv.isPhone,
+                canShare: cv.canShare,
+                url: cv.url,
+                previewSrc: cv.previewSrc,
+                address: cv.url,
             }}
-            on={{ retry: () => void read.mutate() }}
+            on={{
+                retry: cv.retry,
+                chooseSource: cv.chooseSource,
+                showMore: cv.showMore,
+                setShareOpen: cv.setShareOpen,
+                shareNative: cv.shareNative,
+            }}
+        />
+    )
+}
+
+/** The inert callbacks of a page that has nothing to act on. */
+const NO_ACTIONS: PublicCvBaseProps["on"] = {
+    retry: () => undefined,
+    chooseSource: () => undefined,
+    showMore: () => undefined,
+    setShareOpen: () => undefined,
+    shareNative: () => undefined,
+}
+
+/** The not-found page of a public CV: one sentence for a wrong link and a private CV alike, with the address that was opened. */
+export const PublicCvMissing = () => {
+    const labels = usePublicCvLabels()
+    const origin = useOrigin()
+    const pathname = useLocalizedPathname()
+    return (
+        <PublicCvBase
+            shape="notFound"
+            props={{
+                slot: { isLoading: true },
+                placeholder: PUBLIC_CV_PLACEHOLDER,
+                slotLabels: { empty: labels.notFoundTitle, forbidden: "", error: "", retry: "" },
+                labels,
+                share: {
+                    title: "",
+                    closeLabel: "",
+                    linkLabel: "",
+                    previewTitle: "",
+                    previewAlt: "",
+                    other: "",
+                    targets: [],
+                },
+                source: "all",
+                isShareOpen: false,
+                isPhone: false,
+                canShare: false,
+                url: "",
+                previewSrc: "",
+                address: `${origin}${pathname}`,
+            }}
+            on={NO_ACTIONS}
         />
     )
 }

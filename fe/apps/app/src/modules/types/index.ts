@@ -206,3 +206,10 @@ export {
     IDENTITY_PLACEHOLDER,
     PLAN_PLACEHOLDER,
 } from "./profile"
+export type {
+    PublicCvLabels,
+    PublicCvLineView,
+    PublicCvScreenView,
+    PublicCvShareLabels,
+    PublicCvSourceView,
+} from "./publicCv"

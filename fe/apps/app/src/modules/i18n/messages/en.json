@@ -2296,14 +2296,71 @@
     },
     "publicCv": {
       "pageTitle": "Public CV",
-      "title": "CV verified by StarCi",
+      "metaTitle": "{name}'s verified CV",
+      "metaDescription": "{count, plural, one {# CV line} other {# CV lines}} signed by the teacher on StarCi Next, each with its own verification code.",
+      "signIn": "Sign in",
+      "verifiedBy": "CV verified by StarCi",
+      "share": "Share CV",
       "linesTitle": "Signed CV lines",
-      "note": "Only lines a teacher signed show. No scores and no reviewer names.",
-      "empty": "No CV line to show yet.",
-      "signed": "Signed on {date}",
+      "note": "Only lines the teacher has signed, newest first. No scores and no reviewer names.",
+      "empty": "There are no CV lines to show yet.",
+      "fewNote": "{name} is still learning. The CV updates when the teacher signs more lines, and the link stays the same.",
+      "allSources": "All sources",
+      "sourcesLabel": "Filter by source",
+      "more": "Show {count, plural, one {# more line} other {# more lines}}",
       "verify": "Verify",
-      "notFoundTitle": "No CV at this address",
-      "notFoundDescription": "The link may be wrong, or its owner keeps the CV private."
+      "aiGraded": "AI graded: passed",
+      "proof": "Practised: {kinds}",
+      "evidence": {
+        "ci-attested": "attested CI",
+        "cli-scenario": "CLI scenario run",
+        "server-probe": "server probe",
+        "proved-lesson": "concept proof",
+        "practice-accepted": "{count, plural, one {# problem} other {# problems}} Accepted",
+        "other": "StarCi evidence"
+      },
+      "signedTeacher": "Signed by the teacher {date}",
+      "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
+      "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",
+      "factsUpdated": "Updated {date}",
+      "whyTitle": "Why this CV can be trusted",
+      "stepsLabel": "The three steps every CV line went through",
+      "steps": {
+        "proved": {
+          "label": "Practised",
+          "description": "Real evidence: CI, CLI scenarios, server probes, Accepted problems."
+        },
+        "graded": {
+          "label": "AI graded",
+          "description": "The AI checks the evidence against the item's criteria and drafts the CV line. The AI never puts a line here by itself."
+        },
+        "signed": {
+          "label": "Teacher signed",
+          "description": "A StarCi teacher reads the evidence and signs each line. Only a signed line shows on the CV."
+        }
+      },
+      "whyNote": "This page shows no scores and no reviewer names.",
+      "footNote": "Every line has its own verification code. Open a code to see its source, its signing date and whether the line is still valid or was revoked.",
+      "footCta": "Make your own verified CV on StarCi Next",
+      "notFoundTitle": "There is no CV at this address",
+      "notFoundDescription": "The link may be wrong, or the owner keeps the CV private. Ask whoever sent you the link.",
+      "notFoundHome": "Back to StarCi Next",
+      "notFoundAddressLabel": "Address you opened",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyError": "Could not copy",
+      "shareTitle": "Share {name}'s CV",
+      "shareClose": "Close",
+      "shareLink": "CV link",
+      "sharePreview": "Preview shown when you paste the link",
+      "sharePreviewAlt": "Preview of {name}'s CV",
+      "shareOther": "Other apps",
+      "imageBrand": "StarCi Next",
+      "imageBadge": "Verified CV",
+      "imageGeneric": "CV verified by StarCi",
+      "imageTrail": "Practised → AI graded → Teacher signed",
+      "imageMore": "+{count} more",
+      "imageCount": "Signed lines: {count}"
     }
   }
 }

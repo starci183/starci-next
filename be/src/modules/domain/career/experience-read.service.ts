@@ -26,6 +26,7 @@ import {
     toVerifiedExperienceView,
 } from "./career.mapper"
 import type { CareerOptions } from "./career.options"
+import { isCvLineType, publicEvidenceOf, publicSubjectOf } from "./public-cv-line.policy"
 import { CareerError, CareerErrorCode } from "./errors/career.error"
 import type { DecisionRow, ItemRow, ReviewerRow } from "./persistence/career.rows"
 import {
@@ -132,14 +133,15 @@ export class ExperienceReadService {
 
     /**
      * The verified lines a learner shows publicly in one locale, newest signature first: nothing pending, returned or revoked, and
-     * nothing the learner keeps private; each line carries its public verification code and signing date, never a score or a
-     * reviewer.
+     * nothing the learner keeps private; each line carries its public verification code, signing date and signer role, its subject
+     * label and the kinds of proof under it, never a score, a reference or a reviewer name. Only CV-line items qualify, never a
+     * readiness signal.
      */
     async publicLines(learnerId: string, locale: ExperienceLocale): Promise<ReadonlyArray<PublicCvLineView>> {
         const rows: Array<ItemRow> = await this.entityManager.query(SELECT_PUBLIC_ITEMS, [learnerId, LIST_ROWS_MAX])
         return rows.flatMap((row): Array<PublicCvLineView> => {
             const line = row.line ?? row.draft_line
-            return line === null
+            return line === null || row.signer_role === null || !isCvLineType(row.item_type)
                 ? []
                 : [
                       {
@@ -147,6 +149,9 @@ export class ExperienceReadService {
                           part: row.part,
                           verificationCode: row.verification_code,
                           signedAt: (row.signed_at ?? row.updated_at).toISOString(),
+                          signerRole: row.signer_role,
+                          subject: publicSubjectOf(row.item_type, row.slot_values, locale),
+                          evidence: publicEvidenceOf(row.evidence, row.slot_values, locale),
                       },
                   ]
         })

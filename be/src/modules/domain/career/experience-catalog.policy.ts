@@ -14,6 +14,8 @@ export interface CatalogItem {
     readonly requiresProject: boolean
     /** The slots every template carries. */
     readonly slots: ReadonlyArray<string>
+    /** The slot whose value names what the item is about on a public CV (a concept, a project, a build, a pattern). */
+    readonly subjectSlot: string
     /** The questions an employer may ask about the line. */
     readonly defenseQuestions: ReadonlyArray<string>
 }
@@ -30,6 +32,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: true,
         slots: ["concept", "project", "language", "lesson"],
+        subjectSlot: "concept",
         defenseQuestions: [],
     },
     {
@@ -38,6 +41,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: true,
         slots: ["project", "stack", "concepts", "ci"],
+        subjectSlot: "project",
         defenseQuestions: ["Why this design for each concept?", "What breaks without it, and which test shows it?"],
     },
     {
@@ -46,6 +50,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: true,
         slots: ["project", "url"],
+        subjectSlot: "project",
         defenseQuestions: [],
     },
     {
@@ -54,6 +59,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: true,
         slots: ["project", "tool"],
+        subjectSlot: "project",
         defenseQuestions: [],
     },
     {
@@ -62,6 +68,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: true,
         slots: ["project", "tool"],
+        subjectSlot: "project",
         defenseQuestions: [],
     },
     {
@@ -70,6 +77,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: false,
         slots: ["bugClass", "lesson", "score"],
+        subjectSlot: "lesson",
         defenseQuestions: [],
     },
     {
@@ -78,6 +86,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: false,
         slots: ["build", "stages", "ci"],
+        subjectSlot: "build",
         defenseQuestions: [],
     },
     {
@@ -86,6 +95,7 @@ export const EXPERIENCE_CATALOG: ReadonlyArray<CatalogItem> = [
         output: "cv-line",
         requiresProject: false,
         slots: ["count", "pattern", "language"],
+        subjectSlot: "pattern",
         defenseQuestions: [],
     },
 ]

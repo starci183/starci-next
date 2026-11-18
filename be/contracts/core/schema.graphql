@@ -1721,15 +1721,23 @@ input ProjectsInput {
   locale: String! = "vi"
 }
 
+type PublicCvEvidenceType {
+  count: Int
+  kind: String!
+}
+
 input PublicCvInput {
   locale: String! = "vi"
   slug: String! @inputBounds(maxLength: 60)
 }
 
 type PublicCvLineType {
+  evidence: [PublicCvEvidenceType!]!
   line: String!
   signedAt: String!
+  signerRole: String!
   source: String!
+  subject: String!
   verificationCode: String!
 }
 

@@ -245,6 +245,17 @@ export interface VerifiedExperienceView {
     readonly signedAt: string
 }
 
+/** The public kinds of proof a CV line rests on; a kind names how it was proved, never the run, the lesson or the person. */
+export type PublicEvidenceKind = "ci-attested" | "cli-scenario" | "server-probe" | "proved-lesson" | "practice-accepted"
+
+/** One kind of proof under a public CV line; the count is set only when the proof is a number of accepted problems. */
+export interface PublicEvidenceView {
+    /** How it was proved. */
+    readonly kind: PublicEvidenceKind
+    /** How many problems were accepted, or null when the proof is not a count. */
+    readonly count: number | null
+}
+
 /** One verified line of a learner's public CV: only a verified item its learner shows publicly, in one locale. */
 export interface PublicCvLineView {
     /** The signed line in the asked locale. */
@@ -255,6 +266,12 @@ export interface PublicCvLineView {
     readonly verificationCode: string
     /** When it was signed. */
     readonly signedAt: string
+    /** The role the signer signed with; a reviewer's name is never public. */
+    readonly signerRole: SignerRole
+    /** What the item is about, as a short label in the asked locale. */
+    readonly subject: string
+    /** The kinds of proof the line rests on, without references. */
+    readonly evidence: ReadonlyArray<PublicEvidenceView>
 }
 
 /** What the practice capability knows about a learner and one pattern, as the experience engine reads it. */

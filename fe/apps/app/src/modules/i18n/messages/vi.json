@@ -2296,14 +2296,71 @@
     },
     "publicCv": {
       "pageTitle": "CV công khai",
-      "title": "CV đã xác minh bởi StarCi",
+      "metaTitle": "CV đã xác minh của {name}",
+      "metaDescription": "{count, plural, other {# dòng CV}} đã được thầy ký trên StarCi Next, mỗi dòng có mã xác minh riêng.",
+      "signIn": "Đăng nhập",
+      "verifiedBy": "CV đã xác minh bởi StarCi",
+      "share": "Chia sẻ CV",
       "linesTitle": "Dòng CV đã ký",
-      "note": "Chỉ hiện các dòng đã được thầy ký. Không hiện điểm số hay tên người duyệt.",
+      "note": "Chỉ hiện các dòng đã được thầy ký, mới ký trước. Không hiện điểm số hay tên người duyệt.",
       "empty": "Chưa có dòng CV nào để hiện.",
-      "signed": "Ký ngày {date}",
+      "fewNote": "{name} đang học tiếp. CV tự cập nhật khi thầy ký thêm dòng mới, liên kết vẫn giữ nguyên.",
+      "allSources": "Mọi nguồn",
+      "sourcesLabel": "Lọc theo nguồn",
+      "more": "Xem thêm {count, plural, other {# dòng}}",
       "verify": "Xác minh",
+      "aiGraded": "AI chấm đạt",
+      "proof": "Luyện xong: {kinds}",
+      "evidence": {
+        "ci-attested": "CI đã chứng thực",
+        "cli-scenario": "Kịch bản chạy qua CLI",
+        "server-probe": "Thăm dò máy chủ",
+        "proved-lesson": "Bài chứng minh khái niệm",
+        "practice-accepted": "{count, plural, other {# bài}} Accepted",
+        "other": "Bằng chứng StarCi"
+      },
+      "signedTeacher": "Thầy ký {date}",
+      "signedReviewer": "Người duyệt do thầy chỉ định ký {date}",
+      "factsCount": "{count, plural, other {# dòng đã ký}}",
+      "factsUpdated": "Cập nhật {date}",
+      "whyTitle": "Vì sao tin được CV này",
+      "stepsLabel": "Ba bước mỗi dòng CV đã qua",
+      "steps": {
+        "proved": {
+          "label": "Luyện xong",
+          "description": "Bằng chứng chạy thật: CI, kịch bản CLI, thăm dò máy chủ, bài Accepted."
+        },
+        "graded": {
+          "label": "AI chấm",
+          "description": "AI đối chiếu bằng chứng với tiêu chí của mục và soạn dòng CV. AI không tự đưa dòng nào lên đây."
+        },
+        "signed": {
+          "label": "Thầy ký",
+          "description": "Giảng viên StarCi đọc bằng chứng và ký từng dòng. Chỉ dòng đã ký mới hiện trên CV."
+        }
+      },
+      "whyNote": "Trang này không hiện điểm số hay tên người duyệt.",
+      "footNote": "Mỗi dòng có một mã xác minh riêng. Mở mã để xem nguồn, ngày ký và dòng đó còn hiệu lực hay đã bị thu hồi.",
+      "footCta": "Tạo CV đã xác minh của bạn trên StarCi Next",
       "notFoundTitle": "Không có CV ở địa chỉ này",
-      "notFoundDescription": "Liên kết có thể đã sai, hoặc chủ CV đang để riêng tư."
+      "notFoundDescription": "Liên kết có thể đã sai, hoặc chủ CV đang để riêng tư. Hãy hỏi lại người đã gửi liên kết cho bạn.",
+      "notFoundHome": "Về trang chủ StarCi Next",
+      "notFoundAddressLabel": "Địa chỉ đã mở",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "copyError": "Không sao chép được",
+      "shareTitle": "Chia sẻ CV của {name}",
+      "shareClose": "Đóng",
+      "shareLink": "Liên kết CV",
+      "sharePreview": "Ảnh xem trước khi dán liên kết",
+      "sharePreviewAlt": "Ảnh xem trước CV của {name}",
+      "shareOther": "Ứng dụng khác",
+      "imageBrand": "StarCi Next",
+      "imageBadge": "CV đã xác minh",
+      "imageGeneric": "CV đã xác minh bởi StarCi",
+      "imageTrail": "Luyện xong → AI chấm → Thầy ký",
+      "imageMore": "+{count} dòng nữa",
+      "imageCount": "{count} dòng đã ký"
     }
   }
 }

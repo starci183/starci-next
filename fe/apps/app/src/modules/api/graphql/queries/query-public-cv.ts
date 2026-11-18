@@ -3,7 +3,8 @@ import { createApolloClient } from "../clients"
 import type { PublicCvInput, PublicCvQuery, PublicCvQueryVariables } from "../__generated__/graphql"
 import type { InputVariables, QueryParams } from "../types"
 
-const query1: TypedDocumentNode<PublicCvQuery, PublicCvQueryVariables> = gql`
+/** The public CV document, shared by the browser read and the server read behind the page metadata. */
+export const publicCvDocument: TypedDocumentNode<PublicCvQuery, PublicCvQueryVariables> = gql`
     query PublicCv($input: PublicCvInput!) {
         publicCv(input: $input) {
             displayName
@@ -13,6 +14,12 @@ const query1: TypedDocumentNode<PublicCvQuery, PublicCvQueryVariables> = gql`
                 source
                 signedAt
                 verificationCode
+                signerRole
+                subject
+                evidence {
+                    kind
+                    count
+                }
             }
         }
     }
@@ -27,5 +34,5 @@ export const queryPublicCv = async ({
     signal,
 }: QueryParams<QueryPublicCvRequest>): Promise<ApolloClient.QueryResult<PublicCvQuery>> => {
     const variables: InputVariables<QueryPublicCvRequest> = { input: request }
-    return createApolloClient({ signal }).query({ query: query1, variables, fetchPolicy: "no-cache" })
+    return createApolloClient({ signal }).query({ query: publicCvDocument, variables, fetchPolicy: "no-cache" })
 }

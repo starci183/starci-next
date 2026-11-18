@@ -10,10 +10,14 @@ export const QUERY_PUBLIC_CV_SWR_KEY = "QUERY_PUBLIC_CV_SWR"
 /** The public CV as the public page reads it. */
 export type PublicCv = PublicCvQuery["publicCv"]
 
-/** Reads the public CV behind a slug in one locale; no sign-in is needed. */
-export const useQueryPublicCvSwr = (slug: string, locale: string): SWRResponse<PublicCv> =>
-    useSWR<PublicCv>(`${QUERY_PUBLIC_CV_SWR_KEY}:${slug}:${locale}`, async () => {
-        const { data } = await failing(() => queryPublicCv({ request: { slug, locale } }))
-        if (data === undefined) throw new Error("publicCv answered no data")
-        return data.publicCv
-    })
+/** Reads the public CV behind a slug in one locale; no sign-in is needed. The server read of the page, when it has one, shows first. */
+export const useQueryPublicCvSwr = (slug: string, locale: string, initial?: PublicCv): SWRResponse<PublicCv> =>
+    useSWR<PublicCv>(
+        `${QUERY_PUBLIC_CV_SWR_KEY}:${slug}:${locale}`,
+        async () => {
+            const { data } = await failing(() => queryPublicCv({ request: { slug, locale } }))
+            if (data === undefined) throw new Error("publicCv answered no data")
+            return data.publicCv
+        },
+        initial === undefined ? {} : { fallbackData: initial },
+    )

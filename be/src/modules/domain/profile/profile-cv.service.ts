@@ -53,6 +53,9 @@ export class ProfileCvService {
                 source: line.part,
                 verificationCode: line.verificationCode,
                 signedAt: line.signedAt,
+                signerRole: line.signerRole,
+                subject: line.subject,
+                evidence: line.evidence.map((entry) => ({ kind: entry.kind, count: entry.count })),
             })),
         }
     }
