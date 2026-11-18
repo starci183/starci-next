@@ -40,7 +40,7 @@ export const SignInPage = async (props: SignInPageProps): Promise<ReactElement> 
                 notice: noticeOf(props),
                 returnTo,
                 brand,
-                logoSrc: "/brand/starci-logo.png",
+                logoSrc: "/brand/logo.png",
                 homeHref,
             }}
         />
