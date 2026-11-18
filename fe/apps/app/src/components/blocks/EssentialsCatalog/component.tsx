@@ -8,6 +8,7 @@ import {
     SlotView,
     type CatalogNode,
 } from "@starci-next/ui"
+import { staticsUrl } from "@/modules/config"
 import type { CatalogFilters, CatalogLabels, CatalogView, DataSlot, SlotLabels } from "@/modules/types"
 
 /** What the reader does on the catalog; every argument is an atom. */
@@ -227,7 +228,7 @@ export const EssentialsCatalogBase = (props: EssentialsCatalogBaseProps) => {
                             slot={slot}
                             placeholder={placeholder}
                             labels={props.props.slotLabels}
-                            emptyArtwork={{ src: ART.remember.src, assetSlot: "essentials-empty" }}
+                            emptyArtwork={{ src: staticsUrl(ART.remember.key), assetSlot: "essentials-empty" }}
                             onRetry={props.on.retry}
                             render={(view, isLoading) => (
                                 <CatalogWell

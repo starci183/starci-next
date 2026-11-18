@@ -1,3 +1,4 @@
+import { staticsUrl } from "@/modules/config"
 import { variantsOfFiles, workspaceDownloadOf, workspaceLanguageLabelOf } from "@/modules/lesson-view"
 import type { LessonWorkbench } from "@/hooks/lesson"
 import {
@@ -92,7 +93,7 @@ const tabsOf = (input: StudyInput): StudyView["tabs"] => {
 /** The art served for a phase; the theory phase's piece is named after its step. */
 const imageOf = (phase: LessonPhase): string => {
     if (phase === "overview" || phase === "review") return ""
-    return `/art/steps/${phase === "explain" ? "understand" : phase}.webp`
+    return staticsUrl(`art/steps/${phase === "explain" ? "understand" : phase}.webp`)
 }
 
 /**

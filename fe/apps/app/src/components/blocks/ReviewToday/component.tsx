@@ -13,6 +13,7 @@ import {
     Text,
 } from "@starci/grammar/common"
 import { ART, SlotView, UpsellRow } from "@starci-next/ui"
+import { staticsUrl } from "@/modules/config"
 import type { DataSlot, ReviewTodayLabels, ReviewTodayScreen, SlotLabels } from "@/modules/types"
 
 /** The fake screen with the geometry of a settled one, drawn as a skeleton while the first read runs. */
@@ -105,7 +106,7 @@ const Rest = (props: PieceProps) => (
                 <Text as="p">{props.screen.doneBody}</Text>
             ) : (
                 <EmptyNotice
-                    artwork={{ src: ART.remember.src, alt: "", assetSlot: "review-empty" }}
+                    artwork={{ src: staticsUrl(ART.remember.key), alt: "", assetSlot: "review-empty" }}
                     message={props.base.labels.emptyTitle}
                     description={props.base.labels.emptyBody}
                 />

@@ -10,3 +10,10 @@ const required = (name: string, value: string | undefined): string => {
 
 /** The public origin of the app, the base of every absolute metadata URL; throws when `NEXT_PUBLIC_SITE_URL` is not set. */
 export const siteUrl = (): string => required("NEXT_PUBLIC_SITE_URL", process.env.NEXT_PUBLIC_SITE_URL)
+
+/** The public base of the repo-owned media: the full prefix of the statics in the project store (`<storage origin>/<bucket>/<prefix>`); throws when `NEXT_PUBLIC_STATICS_URL` is not set. */
+export const staticsBase = (): string =>
+    required("NEXT_PUBLIC_STATICS_URL", process.env.NEXT_PUBLIC_STATICS_URL).replace(/\/+$/u, "")
+
+/** The URL of one static from its staticsKey, the path under `statics/` (`art/topics/databases.webp`); code holds keys, never URLs. */
+export const staticsUrl = (key: string): string => `${staticsBase()}/${key}`

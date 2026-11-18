@@ -1,3 +1,4 @@
+import { staticsUrl } from "@/modules/config"
 import { topicPath } from "@/modules/routes"
 import type {
     CatalogLessonView,
@@ -9,8 +10,8 @@ import type {
 } from "@/modules/types"
 import { understoodOf } from "@/hooks/lessonStatus"
 
-/** The 3D cover of a chapter: one picture per topic id under public/art/topics. */
-export const topicCoverOf = (topicId: string): string => `/art/topics/${topicId}.webp`
+/** The 3D cover of a chapter: one picture per topic id under statics/art/topics. */
+export const topicCoverOf = (topicId: string): string => staticsUrl(`art/topics/${topicId}.webp`)
 
 /** How many rows of a topic's path a card previews that are not open yet. */
 const PREVIEW_PENDING_ROWS = 2
