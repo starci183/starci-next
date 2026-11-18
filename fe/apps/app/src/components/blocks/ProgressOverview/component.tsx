@@ -226,7 +226,6 @@ const Ready = (props: ReadyProps) => {
         <Stack gap="region">
             <Section
                 kind="figures"
-                ribbon
                 ariaLabel={props.labels.ribbonLabel}
                 items={props.view.ribbon}
                 isLoading={props.isLoading}

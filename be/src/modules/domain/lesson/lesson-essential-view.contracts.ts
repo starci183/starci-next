@@ -129,6 +129,8 @@ export interface LessonScenarioView extends Pick<
 > {
     /** The guard names the learner may switch off. */
     readonly guards: ReadonlyArray<string>
-    /** The hint shown when the run is red, or null. */
+    /** The hint shown when the run is red, or null. The lesson door sends it only after the learner's red run or their own ask. */
     readonly hint: string | null
+    /** True while the scenario has a hint the learner has not unlocked (no red run yet and not asked for): the text is withheld. */
+    readonly isHintLocked: boolean
 }

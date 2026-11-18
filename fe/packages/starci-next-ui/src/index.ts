@@ -1,14 +1,10 @@
 export { ART, ArtImage } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
-export type { CatalogCaseCard } from "./composites/CaseStudyBlock"
-export { CatalogAside } from "./composites/CatalogAside"
-export { CatalogContinue } from "./composites/CatalogContinue"
-export { CatalogIntro } from "./composites/CatalogIntro"
-export { CatalogSection } from "./composites/CatalogSection"
-export type { CatalogNode } from "./composites/CatalogSection"
+export { CatalogGroup } from "./composites/CatalogGroup"
+export { LessonList } from "./composites/LessonList"
+export { TopicAside } from "./composites/TopicAside"
 export { CatalogToolbar } from "./composites/CatalogToolbar"
-export type { CatalogToolbarLabels } from "./composites/CatalogToolbar"
 export type { ChoiceCardLabels } from "./composites/ChoiceCard"
 export { ErrorNotice } from "./composites/ErrorNotice"
 export { GlobalErrorNotice } from "./composites/GlobalErrorNotice"
@@ -50,11 +46,6 @@ export { AuthDetailsForm } from "./composites/AuthDetailsForm"
 export type { AuthDetailsLabels } from "./composites/AuthDetailsForm"
 export { AuthSocialButtons } from "./composites/AuthSocialButtons"
 export type { AuthSocialProvider } from "./composites/AuthSocialButtons"
-export { TopicAside } from "./composites/TopicAside"
-export type { TopicAsideEntry } from "./composites/TopicAside"
-export { TopicHero } from "./composites/TopicHero"
-export { TopicPath } from "./composites/TopicPath"
-export type { TopicPathRow } from "./composites/TopicPath"
 export { UpsellRow } from "./composites/UpsellRow"
 export { PracticeEditor } from "./composites/PracticeEditor"
 export type { PracticeEditorLabels, PracticeLanguageOption } from "./composites/PracticeEditor"
@@ -179,29 +170,42 @@ export type {
     WrittenDraftView,
 } from "./composites/StudyBody/types"
 export { FREE_PHASES, LESSON_PHASES } from "./composites/StudyBody/lesson"
-export {
-    EssentialApply,
-    EssentialArticle,
-    EssentialOpener,
-    EssentialPartIntro,
-    EssentialQuestion,
-    EssentialRetake,
-    EssentialScenarios,
-    EssentialSource,
-} from "./composites/EssentialParts"
+export { EssentialPartIntro } from "./composites/EssentialParts"
 export type {
-    ApplyPartView,
     ArticleSectionView,
-    CompareRowView,
     EssentialPartsLabels,
-    OpenerView,
-    QuestionCardView,
     QuestionLink,
     QuestionStatus,
-    ScenarioCardView,
-    ScenarioState,
-    ScenariosPartView,
-    SourcePartView,
 } from "./composites/EssentialParts"
+export { EssentialApply, EssentialApplyAside } from "./composites/EssentialApply"
+export type { ApplyLabels, ApplyPartView, ChallengeDetailView, RubricRowView } from "./composites/EssentialApply"
+export { EssentialScenarios } from "./composites/EssentialScenarios"
+export type {
+    ScenarioDetailView,
+    ScenarioHintView,
+    ScenarioRowView,
+    ScenarioState,
+    ScenariosLabels,
+    ScenariosPartView,
+} from "./composites/EssentialScenarios"
+export { EssentialSource, EssentialSourceAside, EssentialSourceDownload } from "./composites/EssentialSource"
+export type { SourceLabels, SourcePartView } from "./composites/EssentialSource"
+export {
+    LessonArticleBody,
+    LessonEssenceAside,
+    LessonOpenerHead,
+    LessonQuestion,
+    LessonResult,
+} from "./composites/LessonEssence"
+export type {
+    EssenceBarPart,
+    EssenceJourneyRow,
+    EssenceLabels,
+    EssenceQuestionView,
+    EssenceStage,
+    EssenceView,
+} from "./composites/LessonEssence"
+export { DoneIcon } from "./leaves/Icon"
+export { LessonLockedPart } from "./composites/LessonLockedPart"
 export { OutlineList } from "./composites/OutlineList"
 export type { OutlineEntry } from "./composites/OutlineList"

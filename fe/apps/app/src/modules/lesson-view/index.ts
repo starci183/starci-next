@@ -1,6 +1,10 @@
 import {
     CHALLENGE_LEVELS,
+    ESSENTIAL_PARTS,
+    LESSON_PART_COUNT,
     LESSON_PHASES,
+    type ChallengeLevel,
+    type ChallengeScoreView,
     type EssentialPart,
     type EssentialView,
     type OpenerScoreView,
@@ -10,6 +14,7 @@ import {
     type CatalogLessonView,
     type ExerciseFileView,
     type LessonDifficulty,
+    type LessonPartsView,
     type LessonView,
     type ProgressView,
     type SectionView,
@@ -18,8 +23,10 @@ import {
 } from "@/modules/types"
 import type {
     LessonOpenerScoresQuery,
+    LessonPartsProgressQuery,
     LessonProgressQuery,
     LessonQuery,
+    LessonChallengeScoresQuery,
     LessonScenarioRunsQuery,
     LessonsQuery,
     LessonTopicQuery,
@@ -199,6 +206,7 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
         invariant: scenario.invariant,
         guards: scenario.guards,
         hint: scenario.hint ?? "",
+        isHintLocked: scenario.isHintLocked,
     })),
     challenges: wire.challenges.flatMap((challenge) => {
         const level = CHALLENGE_LEVELS.find((each) => each === challenge.level)
@@ -338,6 +346,7 @@ export const lessonProgressOf = (wire: LessonProgressQuery): ProgressView => ({
     outcomes: wire.lessonProgress.outcomes.map((outcome) => ({ ...outcome, state: outcomeStateOf(outcome.state) })),
     total: wire.lessonProgress.attempts.total,
     completedAt: wire.lessonProgress.completedAt ?? "",
+    readSectionIds: wire.lessonProgress.readSectionIds,
     phases: wire.lessonProgress.phases.map((each) => ({ ...each, state: phaseStateOf(each.state) })),
     activities: wire.lessonProgress.activities.map((activity) => ({
         activityId: activity.activityId,
@@ -430,3 +439,71 @@ export const markdownForLanguage = (source: string, language: string): string =>
     }
     return lines.filter((_, index) => !removed.has(index)).join("\n")
 }
+
+/** The part number (1 to 4) the back end names as the one to continue; the first part not done when it names none, 0 when all four are. */
+const currentPartOf = (inProgressPart: string | null, doneParts: number): number => {
+    const named = (ESSENTIAL_PARTS as ReadonlyArray<string | null>).indexOf(inProgressPart)
+    if (named !== -1) return named + 1
+    return doneParts >= LESSON_PART_COUNT ? 0 : doneParts + 1
+}
+
+/** The state of a part the back end names; anything unknown reads as not started. */
+const partStateOf = (state: string): "none" | "doing" | "done" | "locked" =>
+    state === "doing" || state === "done" || state === "locked" ? state : "none"
+
+/** The four parts of each lesson of the answer, by lesson id: how many are finished, which to continue and the opener score. */
+export const lessonPartsOf = (wire: LessonPartsProgressQuery): Readonly<Record<string, LessonPartsView>> =>
+    Object.fromEntries(
+        wire.lessonPartsProgress.map((lesson) => {
+            const doneParts = lesson.parts.filter((part) => part.state === "done").length
+            return [
+                lesson.lessonId,
+                {
+                    parts: lesson.parts.map((part) => ({
+                        part: part.part,
+                        state: partStateOf(part.state),
+                        done: part.done,
+                        total: part.total,
+                    })),
+                    doneParts,
+                    currentPart: currentPartOf(lesson.inProgressPart, doneParts),
+                    isUnderWay: lesson.parts.some((part) => part.state === "doing"),
+                    isStarted:
+                        lesson.opener.answered > 0 ||
+                        lesson.parts.some((part) => part.state === "doing" || part.state === "done"),
+                    openerRight: lesson.opener.answered === 0 ? undefined : lesson.opener.latestCorrect,
+                    openerAnswered: lesson.opener.answered,
+                },
+            ]
+        }),
+    )
+
+/** The state of a rung the back end names; anything else is a contract break and stops here. */
+const challengeStateOf = (raw: string): ChallengeScoreView["state"] => {
+    if (raw === "locked" || raw === "open" || raw === "doing" || raw === "passed") return raw
+    throw new Error(`unknown challenge state ${raw}`)
+}
+
+/** The level of a rung the back end names; anything else is a contract break and stops here. */
+const challengeLevelOf = (raw: string): ChallengeLevel => {
+    const level = CHALLENGE_LEVELS.find((each) => each === raw)
+    if (level === undefined) throw new Error(`unknown challenge level ${raw}`)
+    return level
+}
+
+/** The score of each rung of the answer, in ladder order. */
+export const challengeScoresOf = (wire: LessonChallengeScoresQuery): ReadonlyArray<ChallengeScoreView> =>
+    wire.lessonChallengeScores.map((rung) => ({
+        challengeId: rung.challengeId,
+        level: challengeLevelOf(rung.level),
+        state: challengeStateOf(rung.state),
+        score: rung.score,
+        maxScore: rung.maxScore,
+        isLocked: rung.isLocked,
+        isPassed: rung.isPassed,
+        unlocksNext: rung.unlocksNext,
+        hiddenGreen: rung.hiddenGreen,
+        hiddenTotal: rung.hiddenTotal,
+        isCriticalMet: rung.isCriticalMet,
+        criteria: rung.criteria,
+    }))

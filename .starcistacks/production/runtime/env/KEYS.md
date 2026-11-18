@@ -51,11 +51,11 @@ This inventory declares names, consumers and mounted file paths. Scaffolding sea
 | `JUDGE0_TIMEOUT` | Core API most time one call to Judge0 may take (non-secret, default 10s) |
 | `JUDGE0_POLL_INTERVAL` | Core API wait between two reads of a batch that is still judging (non-secret, default 500ms) |
 | `JUDGE0_DEADLINE` | Core API most time a whole batch may take (non-secret, default 60s) |
-| `PRACTICE_FREE_PER_PATTERN` | Core API problems of each pattern open without Premium (non-secret, default 1) |
 | `PRACTICE_JUDGE_CONCURRENCY` | Core API most submissions judged at once on one instance (non-secret, default 4) |
 | `PRACTICE_SUBMISSIONS_PER_MINUTE` | Core API most runs and submits one learner may make in a minute (non-secret, default 10) |
 | `PRACTICE_MAX_SOURCE_BYTES` | Core API largest source a learner may send (non-secret, default 65536) |
 | `PRACTICE_WAIT` | Core API most time a run or submit waits for its verdict before answering still judging (non-secret, default 25s) |
+| `PRACTICE_SUBMISSIONS_PAGE` | Core API submissions a page of the learner submission history holds when the request names no limit (non-secret, default 20, at most 50) |
 | `ATTEMPT_COACH_DAILY_LIMIT` | Core API fair-use cap of AI gradings per learner per UTC day (default 100); no credits are shown to the learner |
 | `QDRANT_API_KEY` | Core API and CLI vector index client (optional: absent on a private network); the secret of the owner-provisioned Qdrant |
 

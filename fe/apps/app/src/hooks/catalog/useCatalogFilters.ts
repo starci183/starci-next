@@ -11,7 +11,7 @@ type CatalogFiltersHook = {
     readonly clear: () => void
 }
 
-/** Keeps the reader's choices in the aside and the toolbar of the catalog; the filtering itself is client-side. */
+/** Keeps the reader's choices on the tabs and the toolbar of the catalog; the filtering itself is client-side. */
 export const useCatalogFilters = (): CatalogFiltersHook => {
     const [filters, setFilters] = useState<CatalogFilters>(NO_FILTERS)
     return {

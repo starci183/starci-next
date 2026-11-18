@@ -28,7 +28,6 @@ const HubBody = (props: {
     <Stack gap="region">
         <Section
             kind="figures"
-            ribbon
             ariaLabel={props.hub.props.labels.figuresLabel}
             isLoading={props.isLoading}
             items={props.view.figures.map((figure) => ({

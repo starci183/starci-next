@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE } from "@starci-next/i18n/routing"
 import { GlobalErrorNotice } from "@starci-next/ui"
+import { staticsBase } from "@/modules/config"
 import messages from "@/modules/i18n/messages/vi.json"
 
 /** The public props of the landing's last-resort error page: the boundary hands it the retry. */
@@ -9,8 +10,13 @@ type LandingGlobalErrorPageProps = { readonly onRetry: () => void }
 export const LandingGlobalErrorPage = (props: LandingGlobalErrorPageProps) => (
     <GlobalErrorNotice
         lang={DEFAULT_LOCALE}
-        title={messages.landing.errors.global.title}
-        retryLabel={messages.landing.errors.global.retry}
+        words={{
+            title: messages.landing.errors.global.title,
+            description: messages.landing.errors.global.description,
+            home: messages.landing.errors.global.home,
+            retry: messages.landing.errors.global.retry,
+        }}
         onRetry={props.onRetry}
+        staticsBaseUrl={staticsBase()}
     />
 )

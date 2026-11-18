@@ -5,7 +5,7 @@ import { ReviewToday } from "@/components/blocks/ReviewToday"
 
 /** The document title of the page, from the catalog of the requested locale. */
 export const reviewTodayMetadata = async (): Promise<Metadata> => {
-    const t = await getTranslations("app.review.today")
+    const t = await getTranslations("app.review.hub")
     return { title: t("pageTitle") }
 }
 

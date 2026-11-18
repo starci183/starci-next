@@ -5,7 +5,7 @@ area: connect
 reviewed: 2026-11-17
 ---
 
-Route: `/connect` (ảnh chụp 1440, 1920, 390 đã có; phần "Mã truy cập của bạn" chụp ở trạng thái lỗi tải vì stack chạy không trả danh sách mã). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ConnectAi/` (`component.tsx` trang, `index.tsx` nối dữ liệu), dữ liệu từ `fe/apps/app/src/hooks/mcpConnect/`.
+Route: `/connect` (ảnh chụp 1440, 390 đã có; phần "Mã truy cập của bạn" chụp ở trạng thái lỗi tải vì stack chạy không trả danh sách mã). Grammar ở `node_modules/@starci/grammar/dist/core/`. Mã: `fe/apps/app/src/components/blocks/ConnectAi/` (`component.tsx` trang, `index.tsx` nối dữ liệu), dữ liệu từ `fe/apps/app/src/hooks/mcpConnect/`.
 
 ## Băng đầu trang (Kết nối Claude / ChatGPT, dòng phụ)
 
@@ -43,16 +43,15 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, 1920, 390, thanh lỗi "Không tải được phần này.": nền hồng tô kín chữ đỏ đậm và nút "Thử lại" đặc màu đỏ cam bão hoà, là điểm màu mạnh nhất trang và vượt cả nút chính; luật là "Thử lại" trung tính. Ở 390 nút rộng suốt hàng. Phần "Mã truy cập của bạn" không có đầu phần nên thanh lỗi trôi lơ lửng, không rõ lỗi của phần nào.
-- 1440, 1920, 390, nút "Tạo mã": tím rất nhạt chữ xám (tắt), tương phản thấp, icon dấu cộng mờ; không có lý do hiển thị vì sao nút tắt (ô tên đã có chữ "Claude" nhạt như placeholder).
-- 1440, 1920, 390, dòng phụ dưới tiêu đề: chữ nhỏ hơn 12 và ngả màu nâu cam, không phải xám trung tính; băng đầu trang cao với khoảng trống dưới dòng phụ.
-- 1440, 1920, 390, khối mã (địa chỉ MCP lặp ba lần, lệnh `claude mcp add`): nền xám tô kín, không viền; địa chỉ `http://localhost:3280/mcp` lặp lại ở ba chỗ trên cùng một trang.
-- 1440 và 390: lệnh `claude mcp add ... Bearer YOUR_` bị cắt ngang khối mã, phần "TOKEN" mất, không có dấu hiệu cuộn; ở 1920 hiện đủ.
-- 1440, 1920, 390, cột phụ: hai hàng "AI đọc và làm được gì" và "AI không bao giờ thấy" vẫn nằm trong khung viền bo góc như thẻ, trái luật aside không thẻ; dòng phụ bị cắt bằng dấu ba chấm ở cả ba độ rộng ("đọc và tìm ...", "đáp án của rubr..."), nội dung quan trọng bị mất. Tiêu đề "AI đọc và làm được gì" lặp y hệt tên hàng đầu tiên.
-- 1440, 1920, 390, đoạn ghi chú cuối cột phụ: xám nhạt cỡ 14, dài và dày chữ, tương phản thấp, không đầu phần.
-- 1440, 1920, 390, phần "Cách thêm connector": tiêu đề phần, tiêu đề nhóm (Claude, ChatGPT) và tên bước đều cỡ 14 gần như cùng độ đậm, phân cấp yếu; dòng giải thích 14 xám nhạt, tương phản thấp; trang rất dài và đặc chữ, không tách được việc "tạo mã" khỏi phần hướng dẫn.
-- 1440, 1920, 390, thanh trên: nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.
+- 1440, 390, thanh lỗi "Không tải được phần này.": nền hồng tô kín chữ đỏ đậm và nút "Thử lại" đặc màu đỏ cam bão hoà, là điểm màu mạnh nhất trang và vượt cả nút chính; luật là "Thử lại" trung tính. Ở 390 nút rộng suốt hàng. Phần "Mã truy cập của bạn" không có đầu phần nên thanh lỗi trôi lơ lửng, không rõ lỗi của phần nào.
+- 1440, 390, nút "Tạo mã": tím rất nhạt chữ xám (tắt), tương phản thấp, icon dấu cộng mờ; không có lý do hiển thị vì sao nút tắt (ô tên đã có chữ "Claude" nhạt như placeholder).
+- 1440, 390, dòng phụ dưới tiêu đề: chữ nhỏ hơn 12 và ngả màu nâu cam, không phải xám trung tính; băng đầu trang cao với khoảng trống dưới dòng phụ.
+- 1440, 390, khối mã (địa chỉ MCP lặp ba lần, lệnh `claude mcp add`): nền xám tô kín, không viền; địa chỉ `http://localhost:3280/mcp` lặp lại ở ba chỗ trên cùng một trang.
+- 1440 và 390: lệnh `claude mcp add ... Bearer YOUR_` bị cắt ngang khối mã, phần "TOKEN" mất, không có dấu hiệu cuộn.
+- 1440, 390, cột phụ: hai hàng "AI đọc và làm được gì" và "AI không bao giờ thấy" vẫn nằm trong khung viền bo góc như thẻ, trái luật aside không thẻ; dòng phụ bị cắt bằng dấu ba chấm ở cả ba độ rộng ("đọc và tìm ...", "đáp án của rubr..."), nội dung quan trọng bị mất. Tiêu đề "AI đọc và làm được gì" lặp y hệt tên hàng đầu tiên.
+- 1440, 390, đoạn ghi chú cuối cột phụ: xám nhạt cỡ 14, dài và dày chữ, tương phản thấp, không đầu phần.
+- 1440, 390, phần "Cách thêm connector": tiêu đề phần, tiêu đề nhóm (Claude, ChatGPT) và tên bước đều cỡ 14 gần như cùng độ đậm, phân cấp yếu; dòng giải thích 14 xám nhạt, tương phản thấp; trang rất dài và đặc chữ, không tách được việc "tạo mã" khỏi phần hướng dẫn.
+- 1440, 390, thanh trên: nút tròn tô xám, công tắc sáng tối tô xám, avatar đỏ bão hoà.
 - 390, thứ tự: cột phụ nằm trước việc chính (địa chỉ và tạo mã).
-- Sau 0.43.0, 1920: nút "Tạo mã" vô hiệu khi tên trống đã có `disabledReason` ("Nhập tên mã trước khi bấm Tạo mã.") nhưng chỉ lộ qua tooltip; ảnh thấy một nút xám không lời giải thích. Dòng "Chưa tải được danh sách mã." là trạng thái lỗi vì học viên mới chưa có mã nào cũng như dev stack chưa phục vụ danh sách; cần kiểm tra lại là lỗi thật hay rỗng.
 - Sau alpha.147 (2026-11-17), 1440 và 390 trên dev, học viên mới chưa có mã: lỗi đã sửa. Nguyên nhân gốc: khối `ConnectAi` truyền câu lỗi `tokensError` làm nhãn `empty` của slot, và một danh sách rỗng được gấp thành slot `isEmpty`, nên `SlotView` vẽ ngay thông báo rỗng với đúng câu lỗi, còn nhánh rỗng của thẻ danh sách (đầu phần, số 0, câu hướng dẫn) không bao giờ chạy; máy chủ vẫn trả `mcpTokens: []` hợp lệ. Nay danh sách rỗng là danh sách đã tải với 0 hàng (`settledListSlot`, dùng chung với màn thiết bị) và `tokensError` chỉ là nhãn lỗi thật. Ảnh đọc ở kích thước đầy đủ: đầu phần "Mã truy cập của bạn" có chip 0 và dòng "Bạn chưa có mã nào. Đặt tên cho mã (ví dụ Claude) rồi bấm Tạo mã." không còn thanh lỗi.
 - Sau alpha.147, 1440 và 390: nút "Tạo mã" vẫn xám khi tên trống và không có dòng giải thích trên màn hình có chuột (lý do nằm trong tooltip; trên màn cảm ứng Grammar hiện nó thành dòng phụ, ảnh này chụp bằng chuột nên không thấy). Ô tên có chữ "Claude" nhạt như placeholder, dễ đọc nhầm là đã nhập. Dòng phụ đầu trang vẫn nhỏ và ngả nâu cam; cột phụ vẫn cắt chữ bằng dấu ba chấm ("đọc và tìm tron...", "b..."); ở 1440 lệnh `claude mcp add` vẫn bị cắt ngang không dấu hiệu cuộn; ở 390 cột phụ vẫn đứng trước việc chính. Chưa sửa.

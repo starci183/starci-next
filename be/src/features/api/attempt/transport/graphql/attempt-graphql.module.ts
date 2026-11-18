@@ -4,6 +4,8 @@ import { ConfigurableModuleClass } from "./attempt-graphql.module-definition"
 import { LessonAttemptResolver } from "./lesson-attempt.resolver"
 import { LessonProgressResolver } from "./lesson-progress.resolver"
 import { LessonOpenerScoresResolver } from "./lesson-opener-scores.resolver"
+import { MarkLessonSectionReadResolver } from "./mark-lesson-section-read.resolver"
+import { RevealLessonHintResolver } from "./reveal-lesson-hint.resolver"
 import { SaveLessonSimulationResolver } from "./save-lesson-simulation.resolver"
 import { SubmitLessonAttemptResolver } from "./submit-lesson-attempt.resolver"
 
@@ -15,6 +17,8 @@ import { SubmitLessonAttemptResolver } from "./submit-lesson-attempt.resolver"
         LessonProgressResolver,
         LessonOpenerScoresResolver,
         SaveLessonSimulationResolver,
+        RevealLessonHintResolver,
+        MarkLessonSectionReadResolver,
     ],
 })
 /** The GraphQL transport of the attempt feature: submitting an answer, reading an attempt and reading the progress of a lesson. */

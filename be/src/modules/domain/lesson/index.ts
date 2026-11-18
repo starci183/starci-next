@@ -11,7 +11,7 @@
  * server before a submit.
  */
 export { LessonContentService } from "./lesson-content.service"
-export { LESSON_ERROR_KINDS } from "./errors/lesson.error"
+export { LESSON_ERROR_KINDS, LessonError, LessonErrorCode } from "./errors/lesson.error"
 export { LESSON_MESSAGES } from "./messages/lesson.messages"
 export { lessonEntities, lessonMigrations } from "./persistence/connection"
 export { LessonImportService } from "./lesson-import.service"
@@ -74,7 +74,7 @@ export type { LessonRunnable } from "./lesson-content.service"
 export type { LessonSourceArchive } from "./lesson-source-archive.policy"
 export { sourceArchiveOf } from "./lesson-source-archive.policy"
 export type { LessonSourceCode } from "./lesson-source-archive.policy"
-export { lessonRelayTaskId } from "./lesson-essential.contracts"
+export { challengeActivityId, lessonRelayTaskId } from "./lesson-essential.contracts"
 export type { LessonTopicCatalog, LessonTopicStep } from "./lesson-topic.contracts"
 export type { LessonTopicView } from "./lesson-topic-view.contracts"
 export type {

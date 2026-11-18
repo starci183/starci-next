@@ -15,16 +15,21 @@
     },
     "notFound": {
       "title": "Không tìm thấy trang",
-      "home": "Về trang chủ"
+      "home": "Về trang chủ",
+      "description": "Trang này không còn ở đây hoặc đường dẫn đã bị gõ sai. Hãy quay về trang chủ để tiếp tục."
     },
     "errors": {
       "page": {
         "title": "Đã xảy ra lỗi",
-        "retry": "Thử lại"
+        "retry": "Thử lại",
+        "description": "Có sự cố khi tải trang này. Bạn có thể thử lại hoặc quay về trang chủ.",
+        "home": "Về trang chủ"
       },
       "global": {
         "title": "Đã xảy ra lỗi nghiêm trọng",
-        "retry": "Thử lại"
+        "retry": "Thử lại",
+        "description": "Ứng dụng không thể tiếp tục. Hãy thử lại, hoặc quay về trang chủ.",
+        "home": "Về trang chủ"
       }
     }
   }

@@ -12,8 +12,6 @@ type ReviewGradeParams = {
     readonly work: ReviewCardWork
     readonly update: (change: (work: ReviewCardWork) => ReviewCardWork) => void
     readonly onGraded: (grade: ReviewGrade, result: ReviewGradeResultView) => void
-    /** Reads the item again, after the revision moved on. */
-    readonly reload: () => void
 }
 
 /** The grade of the item on screen. */
@@ -26,7 +24,7 @@ export type ReviewGradeAction = {
 
 /** Stores the self-grade of the revealed item; a failed save keeps the item on screen and can be retried. */
 export const useReviewGrade = (params: ReviewGradeParams): ReviewGradeAction => {
-    const { itemId, work, update, onGraded, reload } = params
+    const { itemId, work, update, onGraded } = params
     const grader = useMutateGradeReviewCardSwr()
     const grade = useCallback(
         (each: ReviewGrade) => {
@@ -42,11 +40,11 @@ export const useReviewGrade = (params: ReviewGradeParams): ReviewGradeAction => 
                 })
                 .then((result) => onGraded(each, result))
                 .catch((error: unknown) => {
-                    update((before) => ({ ...before, isGradeFailed: true }))
-                    if (isReviewRevisionConflict(error)) reload()
+                    const isConflict = isReviewRevisionConflict(error)
+                    update((before) => ({ ...before, isGradeFailed: !isConflict, isConflict }))
                 })
         },
-        [grader, itemId, onGraded, reload, update, work.clozeResults, work.flipped],
+        [grader, itemId, onGraded, update, work.clozeResults, work.flipped],
     )
     const retry = useCallback(() => {
         if (work.lastGrade !== undefined) grade(work.lastGrade)

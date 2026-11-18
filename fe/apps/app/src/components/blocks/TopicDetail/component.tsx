@@ -1,29 +1,41 @@
-import { Alert, Button, Page, type PageHeaderContent, Pane, PaneGrid, PaneSection, Stack } from "@starci/grammar/common"
+import {
+    Alert,
+    Button,
+    EmptyNotice,
+    Meter,
+    Page,
+    Pane,
+    PaneGrid,
+    PaneSection,
+    Stack,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import type { ReactNode } from "react"
-import { SlotView, TopicAside, TopicHero, TopicPath } from "@starci-next/ui"
+import { LessonList, SlotView, TopicAside } from "@starci-next/ui"
 import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modules/types"
 
 /** The fake topic with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
-    title: "xxxxxxxxxx",
-    group: "xxxxxxxx",
-    groupId: "placeholder",
-    description: "xxxxxxxxxxxxxxxx",
-    facts: ["xxxxxx", "xxxxxxxx"],
-    cover: "",
-    next: undefined,
-    note: "xxxxxxxx",
-    progress: "xxxxxxxxxx",
-    understood: 0,
+    title: "…",
+    description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
+    progress: { label: "…", percent: 0 },
+    notice: undefined,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,
-        title: "xxxxxxxxxx",
-        meta: "xxxxxxxx",
-        status: "xxxxxx",
-        href: "",
-        cta: "",
-        isOpen: false,
+        title: "xxxxxxxxxxxxxxxx",
+        problem: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        href: "/",
+        minutes: "xxxxxxx",
+        doneParts: 0,
+        partsLabel: "xxxxxx",
+        state: "todo",
+        badge: { label: "xxxxxxxx", tone: "neutral" },
+        isCurrent: false,
+        opener: "xxxxxxxx",
     })),
+    parts: [],
     prerequisites: [],
     related: [],
 }
@@ -35,10 +47,6 @@ export type TopicDetailBaseProps = {
         readonly placeholder: TopicScreenView
         readonly slotLabels: SlotLabels
         readonly labels: TopicLabels
-        /** The title of the progress block of the aside. */
-        readonly progressTitle: string
-        /** The destination of the plans page. */
-        readonly plansHref: string
         /** The destination of the catalog. */
         readonly catalogHref: string
         /** The new address of the lesson when the segment was an old lesson link; empty otherwise. */
@@ -51,9 +59,10 @@ export type TopicDetailBaseProps = {
 type TopicBodyProps = {
     readonly view: TopicScreenView
     readonly props: TopicDetailBaseProps["props"]
+    readonly isLoading: boolean
 }
 
-/** The page band: trail "catalog / topic", title and the muted facts (lessons, minutes, languages); the one command lives in the hero. */
+/** The page band: the trail, the title, what the topic is about, its facts and the one primary. */
 const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): PageHeaderContent => ({
     title: view.title,
     titleScale: "standard",
@@ -64,61 +73,43 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
             { id: "topic", label: view.title },
         ],
     },
-    meta: view.facts.join(" · "),
+    ...(view.description === "" ? {} : { description: view.description }),
+    meta: view.facts,
+    ...(view.primary === undefined
+        ? {}
+        : {
+              actions: (
+                  <Button intent="commit" href={view.primary.href}>
+                      {view.primary.label}
+                  </Button>
+              ),
+          }),
 })
 
-/** The cover's intrinsic size: every cover is 1200 by 800. */
-const COVER = { width: 1200, height: 800 } as const
-
-/** The well: the hero with the cover and the one command, then the lessons of the chapter as one list card. */
+/** The well: the bar of lessons done, the notice of a reader without Premium and the lessons of the topic. */
 const TopicMain = (props: TopicBodyProps) => (
-    <>
-        {props.view.cover === "" ? null : (
-            <TopicHero
-                title={props.view.title}
-                cover={{ src: props.view.cover, ...COVER }}
-                pitch={props.view.description}
-                note={props.view.note}
-                action={props.view.next}
-            />
-        )}
-        <TopicPath
-            label={props.props.labels.path}
-            emptyLabel={props.props.labels.pathEmpty}
-            ringsLabel={props.props.labels.ringsLabel}
-            doneLabel={props.props.labels.doneLabel}
-            rows={props.view.rows}
+    <Stack gap="region">
+        <Meter
+            label={props.view.progress.label}
+            value={props.view.progress.percent}
+            tone="foreground"
+            size="sm"
+            isLoading={props.isLoading}
         />
-    </>
+        {props.view.notice === undefined ? null : (
+            <Alert tone="accent" title={props.view.notice.title} description={props.view.notice.text} />
+        )}
+        <LessonList
+            ariaLabel={props.props.labels.list}
+            rows={props.view.rows}
+            isNumbered
+            isLoading={props.isLoading}
+            empty={<EmptyNotice message={props.props.labels.empty} frame="frameless" />}
+        />
+    </Stack>
 )
 
-/** The aside pane: progress, what to know first and the related topics, each shown only when the data carries it. */
-const TopicSide = (props: TopicBodyProps) => (
-    <TopicAside
-        progressLabel={props.props.progressTitle}
-        progress={{
-            label: props.view.progress === "" ? (props.view.facts[0] ?? "") : props.view.progress,
-            value: props.view.understood,
-            max: props.view.rows.length,
-            note: "",
-        }}
-        prerequisitesLabel={props.props.labels.prerequisites}
-        prerequisites={props.view.prerequisites}
-        relatedLabel={props.props.labels.related}
-        related={props.view.related}
-        upsell={
-            props.props.labels.upsell === undefined
-                ? undefined
-                : {
-                      note: props.props.labels.upsell.note,
-                      label: props.props.labels.upsell.label,
-                      href: props.props.plansHref,
-                  }
-        }
-    />
-)
-
-/** What the notice needs: the shared words and links. */
+/** What the notice of an old lesson link needs. */
 type MovedProps = { readonly props: TopicDetailBaseProps["props"] }
 
 /** The notice of an old lesson link, with the way to the lesson. */
@@ -132,22 +123,27 @@ const Moved = (props: MovedProps) =>
         </Stack>
     )
 
-/** What the aside needs besides the slot: the progress title and the plans link are in the shared props. */
-type AsideOfProps = { readonly slot: DataSlot<TopicScreenView>; readonly props: TopicDetailBaseProps["props"] }
-
 /** The aside pane's content: the settled topic's blocks; one empty loading section while the read has not settled (a pane always holds a section). */
-const asideOf = (input: AsideOfProps): ReactNode =>
-    "items" in input.slot ? (
-        <TopicSide view={input.slot.items} props={input.props} />
+const asideOf = (slot: DataSlot<TopicScreenView>, labels: TopicLabels): ReactNode =>
+    "items" in slot ? (
+        <TopicAside
+            partsTitle={labels.partsTitle}
+            partsNote={labels.partsNote}
+            parts={slot.items.parts}
+            prerequisitesTitle={labels.prerequisites}
+            prerequisites={slot.items.prerequisites}
+            relatedTitle={labels.related}
+            related={slot.items.related}
+        />
     ) : (
         <PaneSection isLoading>{null}</PaneSection>
     )
 
 /** The topic the band shows: the settled one, or the placeholder's geometry while it is not. */
-const bandViewOf = (input: AsideOfProps): TopicScreenView =>
-    "items" in input.slot ? input.slot.items : input.props.placeholder
+const bandViewOf = (slot: DataSlot<TopicScreenView>, props: TopicDetailBaseProps["props"]): TopicScreenView =>
+    "items" in slot ? slot.items : props.placeholder
 
-/** Draws a topic as the approved model: the band, the well with the lessons as one list card, and the aside pane with progress and neighbours. */
+/** Draws a topic as the approved page: the band, the well with the bar and the lessons, and (wide screens) the aside pane. */
 export const TopicDetailBase = (props: TopicDetailBaseProps) => {
     const own = props.props
     return (
@@ -155,13 +151,13 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
             chrome="panes"
             layout="workspace"
             isLoading={"isLoading" in own.slot}
-            header={headerOf(own, bandViewOf({ slot: own.slot, props: own }))}
+            header={headerOf(own, bandViewOf(own.slot, own))}
         >
             <PaneGrid
                 label={own.labels.pageTitle}
-                areas={{ base: ["aside", "main"], medium: ["main aside"] }}
-                columns={{ base: ["fill"], medium: ["fill", "standard"] }}
-                rows={{ base: ["auto", "fill"], medium: ["fill"] }}
+                areas={{ base: ["main"], wide: ["main aside"] }}
+                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+                rows={{ base: ["fill"], wide: ["fill"] }}
             >
                 <Pane area="main">
                     <PaneSection gap="section">
@@ -171,12 +167,12 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
                             placeholder={own.placeholder}
                             labels={own.slotLabels}
                             onRetry={props.on.retry}
-                            render={(each) => <TopicMain view={each} props={own} />}
+                            render={(each, isLoading) => <TopicMain view={each} props={own} isLoading={isLoading} />}
                         />
                     </PaneSection>
                 </Pane>
                 <Pane area="aside" surface>
-                    {asideOf({ slot: own.slot, props: own })}
+                    {asideOf(own.slot, own.labels)}
                 </Pane>
             </PaneGrid>
         </Page>

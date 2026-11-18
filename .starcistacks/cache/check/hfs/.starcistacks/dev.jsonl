@@ -1,9 +1,9 @@
 {"data":{},"findings":[],"hash":"77413dc6de1d42547b919ba296981377027ca24b6082d10464f44622d4c6b47b","path":".starcistacks/dev/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be7d4a045ca8426f88cf5d02d0f8df51ee8cfde57293a74135d98b2b3f955849","path":".starcistacks/dev/environment.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a4f7e75d4e5e1230ce3cad61355d4607e117642e94577b10cbb889316f8b6cd4","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
-{"data":{},"findings":[],"hash":"af768a3278e8e77162d2a4c2a7aafb83920506ca103746b309949b5c11f64890","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5f4ef198e62adb83e991aa7961a4e1d4047bc88587a52b2ce93870b3c91e6309","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d68176fb3d0c4286be573344922fbcee796b4028c82d6bb80f0af6a0eb2879bd","path":".starcistacks/dev/infra/compose/realm-starci-next-identity.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"822aeb35c0262b2c8f390d4edfc3be7810ad92b58b643f45d16b1c914ded866b","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f0c6648686c81980f3ee8beb61d1cb440e129f43f4ff6aa3fb0843d0f5a679ee","path":".starcistacks/dev/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0d43bdd3125bc6c4be0ff6bbf998ea66bcee1fa548bb00391c6aac5cb5c5c394","path":".starcistacks/dev/secrets/ai.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4056231a07c2533ff12a32d9045e2c008544ec417f65a2d49512ecd0ed0b58a1","path":".starcistacks/dev/secrets/db.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"53542d9265b4864a57913fdf8ede3f79ebb7d60cc9b215040e3973a72787400b","path":".starcistacks/dev/secrets/identity-session-encryption-key.enc.yaml","step":"file-rules"}

@@ -22,12 +22,12 @@ edited in the same change.
   `CAREER_REVIEW_NOTE_REQUIRED`); one enum, one kind map (not-found, conflict, invalid, forbidden) and one
   `<Capability>Error` class per capability, in `errors/`.
 - Queries are nouns (`lessons`, `lessonProgress`, `recallItem`), mutations verb-first (`submitLessonAttempt`, `submitPractice`).
-- Settings are environment keys prefixed by the capability (`PRACTICE_FREE_PER_PATTERN`,
+- Settings are environment keys prefixed by the capability (`PRACTICE_SUBMISSIONS_PAGE`,
   `PROJECT_FREE_PROJECTS`); a business number the owner may retune is a setting with a default, never a literal in code.
 
 ## Rules
 1. A premium refusal is the capability's own `*_PREMIUM_REQUIRED` code, read from the one entitlement question; no capability keeps a
-   second gate ([premium](premium.md)).
+   second gate ([premium](premium.md)). Practice and Review are free for every learner and ask no entitlement question.
 2. A learner's calendar day (streak, due dates, review deadlines) is a day in `Asia/Ho_Chi_Minh`. A
    fair-use cap and a Premium term are counted in UTC. Why: the learner lives by local days; caps and billing need one clock.
 3. Every learner-facing word exists in `vi` and `en`; Vietnamese is the first language and the product's own terms are Vietnamese

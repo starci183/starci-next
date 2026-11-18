@@ -3,3 +3,8 @@
 {"findings":[],"hash":"5876a3040ebcb2efb2dc7ed2bdaa2fa17a2ce4a3edeb2d72b62e6d91072c6f76","path":"gallery/index.html","step":"prettier"}
 {"findings":[],"hash":"53bf2bdb5010f72559a272416e0d9e575f3791a87fb77535ffab917886ae3a7a","path":"gallery/package.json","step":"prettier"}
 {"findings":[],"hash":"9775323f1ff31320863335d6234458f776edea68d5f3f8fdeac0485a8c3ed361","path":"gallery/vite.config.js","step":"prettier"}
+{"findings":[],"hash":"ddc9150f19ec6e51bd95ba4889ea5c12b25090c535b020c92dc70f3d1704ce85","path":"gallery/README.md","step":"prettier"}
+{"findings":[],"hash":"0b65de049af93828ac1c1ca8ea5ca829ef2f467817a3f786383ba61957bb53fa","path":"gallery/flows.json","step":"prettier"}
+{"findings":[],"hash":"f971418c26a16d19688a4981ec2eba522907c7fb888f3ce425edf87b1e3e0ed3","path":"gallery/index.html","step":"prettier"}
+{"findings":[],"hash":"1034c449b29ad87f13f85a403270d5b782e21e568d8314e1b2e6857ba5d05dad","path":"gallery/package.json","step":"prettier"}
+{"findings":[],"hash":"2d4b99780539e9969cfd222de752b92869ad806dfd779f54a8dce6c8a833fae0","path":"gallery/vite.config.js","step":"prettier"}

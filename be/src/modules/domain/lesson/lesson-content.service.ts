@@ -4,7 +4,7 @@ import { InjectEntitlementService, type EntitlementService, type EssentialPart }
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
-import { SELECT_PUBLISHED, SELECT_VERSION } from "./persistence/lesson.sql"
+import { SELECT_PUBLISHED, SELECT_VERSION, SELECT_VERSIONS_CONTENT } from "./persistence/lesson.sql"
 import type { LessonEssential } from "./lesson-essential.contracts"
 import type { LessonSourceArchive } from "./lesson-source-archive.policy"
 import { LessonSourceService } from "./lesson-source.service"
@@ -56,6 +56,30 @@ export class LessonContentService {
         const found = row === undefined ? null : findActivity(row.content.locales[params.locale], params.activityId)
         if (found === null) throw new LessonError({ code: LessonErrorCode.NotFound })
         return found
+    }
+
+    /**
+     * The prompts of many stored activities in one locale, read in one query for all their versions. The map key is
+     * `lessonId:version:activityId`; an activity that does not exist is left out.
+     */
+    async prompts(
+        refs: ReadonlyArray<Omit<LessonActivityParams, "locale">>,
+        locale: LessonLocale,
+    ): Promise<ReadonlyMap<string, string>> {
+        const prompts = new Map<string, string>()
+        if (refs.length === 0) return prompts
+        const versions = [...new Map(refs.map((ref) => [`${ref.lessonId}:${ref.version}`, ref])).values()]
+        const rows: Array<Pick<VersionRow, "lesson_id" | "version" | "content">> = await this.entityManager.query(
+            SELECT_VERSIONS_CONTENT,
+            [versions.map((ref) => ref.lessonId), versions.map((ref) => ref.version)],
+        )
+        const byVersion = new Map(rows.map((row) => [`${row.lesson_id}:${row.version}`, row]))
+        for (const ref of refs) {
+            const row = byVersion.get(`${ref.lessonId}:${ref.version}`)
+            const found = row === undefined ? null : findActivity(row.content.locales[locale], ref.activityId)
+            if (found !== null) prompts.set(`${ref.lessonId}:${ref.version}:${ref.activityId}`, found.activity.prompt)
+        }
+        return prompts
     }
 
     /**

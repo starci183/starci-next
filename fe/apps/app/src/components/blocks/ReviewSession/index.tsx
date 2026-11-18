@@ -16,8 +16,6 @@ export const ReviewSession = () => {
                 percent: view.percent,
                 labels: view.labels,
                 todayHref: APP_ROUTES.review,
-                hubHref: APP_ROUTES.home,
-                plansHref: APP_ROUTES.premium,
             }}
             on={{
                 setNote: view.setNote,
@@ -27,6 +25,7 @@ export const ReviewSession = () => {
                 grade: view.grade,
                 skip: view.skip,
                 retry: view.retry,
+                reload: view.reload,
             }}
         />
     )

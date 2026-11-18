@@ -15,6 +15,7 @@ export const PRACTICE_MESSAGES: MessageBundle = {
         "errors.PRACTICE_NOT_SAVED": "Không thể lưu lượt nộp; hãy thử lại.",
         "errors.PRACTICE_CONTENT_INVALID": "Thư mục bài tập có lỗi nên chưa nhập được.",
         "errors.PRACTICE_VERSION_IMMUTABLE": "Phiên bản bài tập này đã lưu với nội dung khác.",
+        "errors.PRACTICE_CURSOR_INVALID": "Con trỏ trang không hợp lệ.",
         "errors.PRACTICE_IMPORT_REJECTED": "Yêu cầu nhập bài tập không hợp lệ.",
     },
     en: {
@@ -30,6 +31,7 @@ export const PRACTICE_MESSAGES: MessageBundle = {
         "errors.PRACTICE_NOT_SAVED": "The submission could not be saved; try again.",
         "errors.PRACTICE_CONTENT_INVALID": "The problem folder has issues, so it was not imported.",
         "errors.PRACTICE_VERSION_IMMUTABLE": "This problem version is already stored with other content.",
+        "errors.PRACTICE_CURSOR_INVALID": "The page cursor is not valid.",
         "errors.PRACTICE_IMPORT_REJECTED": "The problem import request is not valid.",
     },
 }

@@ -27,16 +27,23 @@ export type ReviewSessionViewState = {
     readonly grade: (grade: ReviewGradeButton["grade"]) => void
     readonly skip: () => void
     readonly retry: () => void
+    readonly reload: () => void
 }
 
 /** What the body of the session shows: the read states first, then the item, the locked notice or the summary. */
-const slotOf = (session: ReviewSessionState, card: ReviewCard, words: ReviewWords): DataSlot<ReviewSessionScreen> => {
+const slotOf = (
+    session: ReviewSessionState,
+    card: ReviewCard,
+    words: ReviewWords,
+    reviewCount: number,
+): DataSlot<ReviewSessionScreen> => {
     if (session.today.error !== undefined) return { isError: true }
     if (session.data === undefined) return { isLoading: true }
     if (session.isDone) return session.total === 0 ? { isEmpty: true } : { items: summaryOf(session.tally, words) }
-    if (card.isLocked) return { items: { kind: "locked" } }
     if (card.item.error !== undefined) return { isError: true }
-    return card.item.data === undefined ? { isLoading: true } : { items: itemScreenOf(card.item.data, card, words) }
+    return card.item.data === undefined
+        ? { isLoading: true }
+        : { items: itemScreenOf(card.item.data, card, reviewCount, words) }
 }
 
 /** Walks the queue of today: the session, the item on screen and the words of both. */
@@ -47,10 +54,12 @@ export const useReviewSessionView = (): ReviewSessionViewState => {
     const slotLabels = useSlotLabels()(words.t("session.emptyTitle"))
     useDocumentTitle(words.t("session.pageTitle"))
     const position = Math.min(session.step + 1, session.total)
+    const minutes = Math.max(1, Math.ceil((session.total - session.step) / 2))
+    const reviewCount = session.data?.items.find((each) => each.itemId === session.itemId)?.reviewCount ?? 0
     return {
-        slot: slotOf(session, card, words),
+        slot: slotOf(session, card, words, reviewCount),
         slotLabels,
-        labels: sessionLabelsOf(words, words.t("session.progress", { position, total: session.total })),
+        labels: sessionLabelsOf(words, words.t("session.progress", { position, total: session.total, minutes })),
         percent: session.total === 0 ? 0 : Math.round((Math.min(session.step, session.total) / session.total) * 100),
         setNote: card.setNote,
         pick: card.pick,
@@ -58,6 +67,7 @@ export const useReviewSessionView = (): ReviewSessionViewState => {
         submitAnswer: card.submitAnswer,
         grade: card.gradeAction.grade,
         skip: session.onSkip,
+        reload: card.reloadCard,
         retry: () => {
             if (card.item.error !== undefined) void card.item.mutate()
             else if (session.today.error !== undefined) void session.today.mutate()

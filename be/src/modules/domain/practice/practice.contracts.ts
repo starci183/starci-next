@@ -311,6 +311,54 @@ export interface PracticeSubmissionView {
     readonly createdAt: Date
 }
 
+/** A read of one page of the graded submits of a learner in one pattern. */
+export interface PracticeSubmissionsParams extends PracticePatternParams {
+    /** The most submissions wanted, or null for the default. */
+    readonly limit: number | null
+    /** The cursor the page before answered, or null for the first page. */
+    readonly cursor: string | null
+}
+
+/** One graded submit in the history of a learner. */
+export interface PracticeSubmissionItemView {
+    /** The submission id. */
+    readonly id: string
+    /** The problem slug. */
+    readonly slug: string
+    /** The problem title in the locale. */
+    readonly problemTitle: string
+    /** The language. */
+    readonly language: PracticeLanguage
+    /** The verdict. */
+    readonly verdict: PracticeVerdict
+    /** How many tests passed. */
+    readonly passedCount: number
+    /** How many tests the submission has. */
+    readonly totalCount: number
+    /** The slowest test time in milliseconds, or null. */
+    readonly timeMs: number | null
+    /** The highest memory in kilobytes, or null. */
+    readonly memoryKb: number | null
+    /** When the submission was made. */
+    readonly submittedAt: Date
+}
+
+/** One page of the history, newest first. */
+export interface PracticeSubmissionsPageView {
+    /** The submits of the page. */
+    readonly items: ReadonlyArray<PracticeSubmissionItemView>
+    /** The cursor of the next page, or null on the last page. */
+    readonly next: string | null
+}
+
+/** The position a history page ends at: the instant of its last submit and its id. */
+export interface PracticeSubmissionsCursor {
+    /** The instant of the last submit, an ISO text with milliseconds. */
+    readonly submittedAt: string
+    /** The id of the last submit. */
+    readonly id: string
+}
+
 /** The readiness of a learner in one pattern: how many problems they got accepted. */
 export interface PracticeReadinessView {
     /** The pattern id. */

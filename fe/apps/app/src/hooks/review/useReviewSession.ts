@@ -9,6 +9,8 @@ import type { ReviewGrade, ReviewGradeResultView, ReviewTodayView } from "@/modu
 export type ReviewTally = {
     readonly reviewed: number
     readonly remembered: number
+    /** How many items were graded at each level. */
+    readonly byGrade: Readonly<Record<ReviewGrade, number>>
     /** The goal and the items left today, as the last stored grade answered them. */
     readonly last: Pick<ReviewGradeResultView, "goal" | "remainingToday"> | undefined
 }
@@ -39,7 +41,12 @@ export const useReviewSession = (): ReviewSessionState => {
     const today = useQueryReviewTodaySwr(useLocale(), true)
     const [step, setStep] = useState(0)
     const [returned, setReturned] = useState<ReadonlyArray<string>>([])
-    const [tally, setTally] = useState<ReviewTally>({ reviewed: 0, remembered: 0, last: undefined })
+    const [tally, setTally] = useState<ReviewTally>({
+        reviewed: 0,
+        remembered: 0,
+        byGrade: { AGAIN: 0, HARD: 0, GOOD: 0, EASY: 0 },
+        last: undefined,
+    })
     const base = openIdsOf(today.data)
     const queue = base === undefined ? undefined : [...base, ...returned]
     const itemId = queue?.[step]
@@ -48,6 +55,7 @@ export const useReviewSession = (): ReviewSessionState => {
             setTally((before) => ({
                 reviewed: before.reviewed + 1,
                 remembered: before.remembered + (grade === "GOOD" || grade === "EASY" ? 1 : 0),
+                byGrade: { ...before.byGrade, [grade]: before.byGrade[grade] + 1 },
                 last: { goal: result.goal, remainingToday: result.remainingToday },
             }))
             if (grade === "AGAIN" && itemId !== undefined) setReturned((before) => [...before, itemId])

@@ -46,6 +46,10 @@ export interface QueueRow extends StateRow {
     level: ReviewLevel | null
     /** The deck titles by locale. */
     deck_titles: Readonly<Record<ReviewLocale, string>> | null
+    /** The front by locale of a card; null for a retrieval item. */
+    front: Readonly<Record<ReviewLocale, ReviewCardFront>> | null
+    /** The cloze terms of a card by locale; only their count is read here, never the terms. */
+    cloze_counts: Readonly<Record<ReviewLocale, number>> | null
 }
 
 /** A card of the live version of its deck. */

@@ -38,6 +38,12 @@ LEFT JOIN lesson_topics t ON t.topic = v.topic
 WHERE v.lesson_id = $1::text AND v.version = $2::text
 LIMIT 1`
 
+/** Reads the content of several stored versions in one query ($1 lesson ids, $2 versions, matched by position). */
+export const SELECT_VERSIONS_CONTENT: ReturnType<typeof sql> = sql`SELECT v.lesson_id, v.version, v.content
+FROM lesson_versions v
+JOIN unnest($1::text[], $2::text[]) AS wanted(lesson_id, version)
+    ON wanted.lesson_id = v.lesson_id AND wanted.version = v.version`
+
 /** Reads the content hash and the topic path source a version was stored with ($1 lesson, $2 version). */
 export const SELECT_VERSION_HASH: ReturnType<typeof sql> = sql`SELECT content_hash, source_key
 FROM lesson_versions

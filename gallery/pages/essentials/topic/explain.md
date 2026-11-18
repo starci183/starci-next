@@ -1,50 +1,45 @@
 ---
-title: Bản chất / Chương (topic)
+title: Essentials (chủ đề)
 route: /essentials/[topic]
 area: essentials
-reviewed: 2026-11-17
+reviewed: 2026-11-18
 ---
 
-Route: `/essentials/[topic]` (topic "Backend framework (NestJS)"). Trang chương: dải đầu, một hero, danh sách bài và aside phải. Ảnh chụp ở 1440, 1920 và 390; khung (sidebar, thanh trên) thuộc lane khác. Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `TopicHero`, `TopicPath`, `TopicAside` trong `fe/packages/starci-next-ui/src/composites/`.
+Route: `/essentials/[topic]`. Một chủ đề: các bài theo thứ tự nên học và còn bao nhiêu bài là xong. Ảnh ở 1440, 1920 và 390. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html` (essentials-topic). Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `LessonList`. Trạng thái có thư mục riêng: `topic-first-visit`, `topic-free`, `topic-loading`.
 
-## Dải đầu trang: trail, tiêu đề, meta
+## Dải đầu: breadcrumb, tên, mô tả, dòng sự kiện, nút chính
 
-Vì sao: dải trắng sát lề trái, ngăn với thân trang bằng một đường kẻ 1px. Trail "Bản chất / Backend framework (NestJS)" (mục hiện tại đậm), tiêu đề 18/600, dòng 12 muted "1 bài · 65 phút · TypeScript". Không chip, không nút, không tab: lệnh duy nhất của trang nằm trong hero.
-Luật: `surface-layering` (luật 5: dải đầu sát trái, tiêu đề 18/600, mô tả 12 muted), `theme-and-type`.
-Grammar: `Page header { title, breadcrumbs, meta }` (`frame/Page/index.d.ts`, `frame/PageHeader/index.d.ts`).
+Vì sao: có breadcrumb "Essentials › <chủ đề>" vì đây là trang con; dưới tên là câu mô tả của chủ đề rồi dòng muted "6 bài · khoảng 135 phút đọc". Nút chính "Học tiếp: <bài> · phần N" (lần đầu "Bắt đầu bài 1", tài khoản miễn phí "Học tiếp phần 1"). Ở 390 nút xuống dưới và rộng cả hàng.
+Luật: ui/components/page-header (breadcrumbs, description, meta, actions), ui/components/button.
+Grammar: `Page header { breadcrumbs, title, description, meta, actions }`.
 
-## Hero: ảnh 3D, câu giới thiệu, nguồn, nút chính duy nhất
+## Thanh "2/6 bài xong"
 
-Vì sao: hero là một thẻ trắng viền hairline, không bóng, vì chương là một vật thật có ảnh bìa. Ảnh 3D trên nền tím nhạt ở bên trái (trang trí, `alt=""`), bên phải câu mô tả chương (500), dòng muted "Nguồn: ...", rồi đúng một nút chính "Bắt đầu: <bài>" bo tròn (pill) với icon play đứng đầu: nút chính duy nhất của màn hình. Nút trong ảnh có nền tím nhạt, chữ tối, không phải tím đặc như các nút chính khác (xem lỗi hình). Dưới 48rem ảnh xếp trên, chữ dưới, nút giữ nguyên.
-Luật: `surface-layering` (luật 6: một nút chính mỗi màn hình, chỉ nút chính cỡ md/lg có icon đứng đầu; thẻ cho vật thật), `theme-and-type` (luật 1 và 3: mặt trắng, nút pill, tím chỉ là tín hiệu).
-Grammar: `SurfaceCard` (children), `Grid kind="pair"`, `MediaFrame aspect="landscape" fit="cover"` + `Image alt=""`, `Button intent="commit" startContent={<Icon source={PlayGlyph} />}` (`composites/TopicHero/index.tsx`).
+Vì sao: một thanh màu chữ (đo lường không dùng tím) kèm "2/6 bài xong" và phần trăm; số bài xong đếm đúng số hàng "Đã xong" bên dưới.
+Luật: `theme-and-type` (đo lường dùng foreground).
+Grammar: `Progress label value valueText tone="foreground"`.
 
-## "Bài trong chương" (head, chip đếm, danh sách đánh số)
+## Danh sách bài: số, tên, bài toán, 4 vạch, nhãn, "Mở bài 3/5", thời lượng
 
-Vì sao: nhãn 14/500 trên mặt trắng kèm chip đếm xám 12 là head của Section; thân là danh sách các bài, mỗi hàng ngăn bằng hairline: số thứ tự đơn cách, tên bài (500), dòng 12 muted "độ khó · phút · trạng thái" hoặc "Bài nguồn đang chuyển sang dạng tương tác". Năm bài, chỉ bài 2 (Request lifecycle) mở, bốn bài còn lại đang chuyển nên hiện ổ khoá. Bài đang mở có sáu vòng pha (vòng 1 viền tím là pha hiện tại, năm vòng còn lại xám) và "0/6 pha"; ở 390 các vòng xuống dòng dưới tên. Cả danh sách vẫn nằm trong một khung bo viền hairline (SurfaceCard), không bóng. CHƯA RÕ: theo luật danh sách phẳng dưới Section head thì khung viền này thừa; cần Grammar bỏ viền của `SurfaceCard kind="list"` hoặc đổi sang `Section`.
-Luật: `surface-layering` (luật 1: danh sách là Section trên mặt trắng, không thẻ bao quanh; luật 3: nhãn khối là head của Section), `theme-and-type` (luật 6: chỉ 14 và 12).
-Grammar: `SurfaceCard kind="list" label fact items { leading.position, control, href }` (`composites/TopicPath/index.tsx`), `Stepper size="dense" completeMarker="check"` cho sáu vòng pha (`composite/Stepper`), icon khoá outline cho bài chưa chuyển xong.
+Vì sao: một danh sách phẳng đánh số; mỗi hàng có tên, một dòng bài toán, bốn vạch cho bốn phần, nhãn trạng thái, điểm mở bài (số câu đúng trong 5 câu mở bài, "—" khi chưa làm) và số phút. Hàng bài đang học tô xám nhẹ.
+Luật: ui/components/list-table, `surface-layering`.
+Grammar: `Section kind="list" items[ListRow { leading.position, detail: Meter segments={4}, badges, value, meta, state: "informative" }]` (`composites/LessonList`).
 
-## Aside: Tiến độ, Nên biết trước, Topic liên quan
+## Cột phải (chỉ 1440): mỗi bài có 4 phần, nên biết trước, liên quan
 
-Vì sao: pane phải rộng 320, trắng, ngăn với thân bằng đường kẻ trái, các khối ngăn nhau bằng hairline, không thẻ. "Tiến độ" có dòng tóm tắt "1 bài · 65 phút · TypeScript" kèm phần trăm, thanh Meter mảnh và dòng muted "0/n bài đã hiểu"; "Nên biết trước" là các câu điều kiện; "Topic liên quan" là các link chữ thường, không mũi tên. Thanh tiến độ tô 20% trong khi "0/5 bài đã hiểu": con số phần trăm lệch với dòng bên dưới (xem lỗi hình). Mockup có thêm "Chương này cho bạn" nhưng app chưa có dữ liệu nối bài với concept dự án nên lược bỏ.
-Luật: `surface-layering` (luật 4: aside không làm bằng thẻ, section và hàng có divider), `theme-and-type` (luật 8: link điều hướng phụ là `variant="plain"`).
-Grammar: `PaneGrid`, `Pane area="aside" surface`, `PaneSection rule="start"`, `Meter`, `Link variant="plain"` (`composites/TopicAside/index.tsx`).
-
-## Phone (390)
-
-Vì sao: dưới 48rem aside thành các khối đầu của trang (Tiến độ, Nên biết trước, Topic liên quan, mỗi khối ngăn hairline) rồi mới tới hero và danh sách; sidebar thu thành nút "Mở menu" ở đầu trang. Hero xếp ảnh trên, chữ dưới, nút rộng vừa chữ; hàng bài xuống dòng và sáu vòng pha nằm dưới tên.
-Luật: `surface-layering` (luật 4: dưới lg các khối aside là những khối đầu của trang).
-Grammar: `PaneGrid areas={{ base: ["aside", "main"], medium: ["main aside"] }}` (`frame/PaneGrid/index.d.ts`), `Grid kind="pair"` (`frame/Grid/index.d.ts`).
+Vì sao: hiện từ khổ rộng. "Mỗi bài có 4 phần" liệt kê Bản chất (miễn phí), Source, Kịch bản, Tự áp dụng; ba phần sau mờ nếu chưa có Premium, kèm dòng "Phần 2 đến 4 cần Premium". "Nên biết trước" lấy từ điều kiện của chủ đề, "Chủ đề liên quan" là các liên kết chữ. Khối "Chủ đề này dạy" của bản vẽ chưa có dữ liệu (xem Phản biện).
+Luật: ui/components/pane-grid (cột phụ ẩn ở khổ hẹp), `surface-layering` (aside là section có hairline, không thẻ).
+Grammar: `PaneGrid areas={{ base: ["main"], wide: ["main aside"] }}`, `Pane area="aside" surface`, `PaneSection rule="start"`, `Section kind="list"`.
 
 ## Phản biện
 
-Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
+Vì sao: tự phản biện lần chụp này; chỉ liệt kê điều còn lệch bản vẽ.
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440, hero: ảnh 3D chiếm hơn nửa thẻ trong khi cột chữ chỉ cao khoảng một phần ba, để trống bên dưới nút.
-- 1440, "Bài trong chương": bốn trên năm hàng chỉ là "Bài nguồn đang chuyển sang dạng tương tác" kèm ổ khoá, lặp nguyên một câu; chip đếm "5" nhưng chỉ một bài mở. Sáu vòng pha "1 2 3 4 5 6" 12 px rất nhỏ, vòng 1 viền tím nhạt gần như không thấy, và "0/6 pha" nằm lệch ngoài cùng, không căn thẳng với các số.
-- 1440, aside: "Topic liên quan" là link chữ thường, nhưng không có dấu hiệu là link (không mũi tên, không màu), dễ đọc nhầm thành văn bản.
-- 1920: Không thấy lỗi mới ở 1920; vẫn nguyên các lỗi trên, thêm ảnh hero phóng to rất lớn (gần 600px) và hàng bài kéo rất rộng nên "0/6 pha" cách xa tên bài.
-- 390: aside (Tiến độ, Nên biết trước, Topic liên quan) đứng trước hero, buộc học viên cuộn qua một màn rưỡi mới tới nút bắt đầu. Sáu vòng pha xuống dòng riêng nhưng "0/6 pha" nằm dưới, lệch phải khỏi các vòng; hàng Request lifecycle cao gấp rưỡi các hàng khác.
+- Đã đọc 1440 và 390 với dữ liệu mẫu qua core giả (xem catalog).
+- Header của Grammar đặt dòng sự kiện (meta) trên câu mô tả; bản vẽ đặt mô tả trước, sự kiện sau.
+- Nút chính nằm ở cuối hàng tiêu đề, trải qua cột phải ở 1440; bản vẽ cho cột phải bắt đầu dưới dải đầu.
+- Khối "Chủ đề này dạy" chưa có: lessonTopic không trả danh sách ý dạy; cần API (một trường teaches), nên cột phải chỉ có 4 phần, Nên biết trước, Chủ đề liên quan.
+- Thông báo gói miễn phí không có ổ khóa trong ô vuông như bản vẽ (Alert tone="accent" chỉ có dấu thông tin).
+- Hàng bài đang học không tô xám (như catalog); Meter bốn phần chưa có nấc đang làm.

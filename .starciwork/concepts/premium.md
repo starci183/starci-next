@@ -1,6 +1,6 @@
 # premium
 
-One Premium subscription, monthly or yearly, unlocks every part and the AI. Nothing is sold per course and nothing is an enrollment
+One Premium subscription, monthly or yearly, unlocks the paid parts and the AI. Nothing is sold per course and nothing is an enrollment
 (owner: the content is one part of the teacher's harness, not products sold one by one).
 
 ## Terms
@@ -20,7 +20,8 @@ One Premium subscription, monthly or yearly, unlocks every part and the AI. Noth
    | Harness (`/harness`: build, use, docs, doctor, trial, build e2e) | Free for everyone; no Premium gate anywhere in the capability. Proof and the CV line still need attested CI. |
    | Projects | Subscription only: `PROJECT_FREE_PROJECTS` and `PROJECT_FREE_MILESTONES` default 0; a free learner sees the pitch and the paywall, not a crippled tool. |
    | Essentials | Partial: free is Part 1 Bản chất (the five-question opener and the article) of every lesson; Premium is Part 2 Source, Part 3 Kịch bản, Part 4 Tự áp dụng, `source.tgz`, relay runs and challenges. The MCP follows the same gating. |
-   | Other parts | Review cards marked `isPremium: false`; the first problem of each practice pattern; one summary CV review. The AI, the public profile and the hiring bridge need Premium. |
+   | Practice and Review | Free for every learner: every problem of every pattern, every card, retrieval item and the daily queue; no count, no lock and no Premium gate. |
+   | Other parts | One summary CV review is free. The AI, the public profile and the hiring bridge need Premium. |
 
    The Essentials split is a setting of the entitlement module, `ENTITLEMENT_ESSENTIAL_FREE_PARTS` (comma-separated
    `1-essential,2-source,3-scenarios,4-apply` or `none`; default `1-essential`), asked in one place by part

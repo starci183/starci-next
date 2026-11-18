@@ -82,6 +82,7 @@ export const toEssentialView = (
                   invariant: scenario.invariant,
                   guards: scenario.guards.map((guard) => guard.name),
                   hint: scenario.hint ?? null,
+                  isHintLocked: false,
               }))
             : [],
         challenges: has("4-apply")

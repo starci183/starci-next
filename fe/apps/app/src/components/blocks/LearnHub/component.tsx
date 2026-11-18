@@ -14,6 +14,7 @@ import {
     type HubStreakView,
     type HubTodayRow,
 } from "@starci-next/ui"
+import { staticsBase } from "@/modules/config"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The hub as it is drawn, every word resolved. */
@@ -144,6 +145,7 @@ const HubWell = (props: WellProps) => (
             labels={props.props.labels.path}
             chooseHref={props.props.links.chooseHref}
             continueHref={props.props.links.continueHref}
+            staticsBase={staticsBase()}
             isLoading={props.isLoading}
         />
         <HubTodayCard

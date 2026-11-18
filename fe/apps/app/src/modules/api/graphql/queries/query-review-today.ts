@@ -21,6 +21,9 @@ const query1: TypedDocumentNode<ReviewTodayQuery, ReviewTodayQueryVariables> = g
                 deckTitle
                 lessonTitle
                 level
+                question
+                kind
+                reviewCount
                 dueOn
             }
         }

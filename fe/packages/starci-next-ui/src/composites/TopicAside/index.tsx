@@ -1,42 +1,40 @@
 import type { ReactNode } from "react"
-import { Link, Meter, PaneSection, Text } from "@starci/grammar/common"
+import { Link, PaneSection, Section, Text } from "@starci/grammar/common"
 
-/** One related entry of the aside. */
-export type TopicAsideEntry = {
+/** One entry of the aside: a name and, when it leads somewhere, its destination. */
+type TopicAsideEntry = {
     readonly id: string
     readonly title: string
     /** The destination, or empty for text only. */
     readonly href: string
 }
 
-/** The progress of the learner in the topic: a meter and its words. */
-type TopicAsideProgress = {
-    readonly label: string
-    readonly value: number
-    readonly max: number
-    /** The learner's own progress in words (Premium only); empty hides it. */
-    readonly note: string
+/** One of the four parts of a lesson as the aside lists it. */
+type TopicAsidePart = {
+    readonly id: string
+    readonly title: string
+    /** True when the reader's plan does not include the part. */
+    readonly isLocked: boolean
 }
 
-/** The aside of a topic page; a block with nothing in it is left out. */
+/** The aside pane of a topic page; a block with nothing in it is left out. */
 type TopicAsideProps = {
-    readonly progressLabel: string
-    readonly progress: TopicAsideProgress
-    readonly prerequisitesLabel: string
+    readonly partsTitle: string
+    readonly partsNote: string
+    readonly parts: ReadonlyArray<TopicAsidePart>
+    readonly prerequisitesTitle: string
     readonly prerequisites: ReadonlyArray<TopicAsideEntry>
-    readonly relatedLabel: string
+    readonly relatedTitle: string
     readonly related: ReadonlyArray<TopicAsideEntry>
-    /** The upsell for a reader without Premium: a muted line and a link; undefined hides it. */
-    readonly upsell: { readonly note: string; readonly label: string; readonly href: string } | undefined
 }
 
-/** A titled block of the aside: its name (14, 500) and its content. */
+/** A titled block of the aside: its name (14, 500) and its content, set off from the one above by a hairline. */
 type AsideBlockProps = { readonly title: string; readonly isFirst: boolean; readonly content: ReactNode }
 
-/** The entries of a block. */
+/** What the entries of a block need. */
 type EntriesProps = { readonly entries: ReadonlyArray<TopicAsideEntry> }
 
-/** One section of the aside pane, set off from the one above by a hairline; its name and content stand one step apart. */
+/** One section of the aside pane: its name and content stand one step apart. */
 const AsideBlock = (props: AsideBlockProps) => (
     <PaneSection {...(props.isFirst ? {} : { rule: "start" as const })}>
         <Text as="p" isStrong>
@@ -60,47 +58,38 @@ const Entries = (props: EntriesProps) =>
         ),
     )
 
-/** The aside pane of a topic: progress, what to know first, related topics and, without Premium, the way to Premium; each shown only when the data carries it. */
+/**
+ * The aside pane of a topic: the four parts every lesson has (the ones the reader's plan lacks are unavailable rows), what to know
+ * first and the related topics. Sections between hairlines, never cards.
+ */
 export const TopicAside = (props: TopicAsideProps) => (
     <>
         <AsideBlock
-            title={props.progressLabel}
+            title={props.partsTitle}
             isFirst
             content={
-                <>
-                    <Meter
-                        label={props.progress.label}
-                        value={props.progress.value}
-                        maxValue={Math.max(props.progress.max, 1)}
-                        size="sm"
-                    />
-                    {props.progress.note === "" ? null : (
-                        <Text size="sm" tone="muted">
-                            {props.progress.note}
-                        </Text>
-                    )}
-                    {props.upsell === undefined ? null : (
-                        <>
-                            <Text size="sm" tone="muted">
-                                {props.upsell.note}
-                            </Text>
-                            <Link variant="plain" href={props.upsell.href}>
-                                {props.upsell.label}
-                            </Link>
-                        </>
-                    )}
-                </>
+                <Section
+                    kind="list"
+                    ariaLabel={props.partsTitle}
+                    empty={props.partsNote}
+                    caption={props.partsNote}
+                    items={props.parts.map((part, index) => ({
+                        id: part.id,
+                        title: `${index + 1} · ${part.title}`,
+                        state: part.isLocked ? ("unavailable" as const) : ("neutral" as const),
+                    }))}
+                />
             }
         />
         {props.prerequisites.length === 0 ? null : (
             <AsideBlock
-                title={props.prerequisitesLabel}
+                title={props.prerequisitesTitle}
                 isFirst={false}
                 content={<Entries entries={props.prerequisites} />}
             />
         )}
         {props.related.length === 0 ? null : (
-            <AsideBlock title={props.relatedLabel} isFirst={false} content={<Entries entries={props.related} />} />
+            <AsideBlock title={props.relatedTitle} isFirst={false} content={<Entries entries={props.related} />} />
         )}
     </>
 )

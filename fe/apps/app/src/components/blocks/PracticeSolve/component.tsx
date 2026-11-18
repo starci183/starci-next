@@ -4,7 +4,6 @@ import {
     Badge,
     Button,
     Cluster,
-    Grid,
     Page,
     Section,
     Stack,
@@ -18,6 +17,7 @@ import {
     RichMarkdown,
     SlotView,
 } from "@starci-next/ui"
+import { HINTS_CLASS_NAME, PROBLEM_GRID_CLASS_NAME, STATEMENT_CLASS_NAME, WORK_CLASS_NAME } from "./classNames"
 import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
 /** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
@@ -87,7 +87,7 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageH
                 {
                     id: "submissions",
                     label: labels.tabs.submissions,
-                    ...(state.submissions.length === 0 ? {} : { count: state.submissions.length }),
+                    ...(state.submissionsTotal === 0 ? {} : { count: state.submissionsTotal }),
                 },
                 { id: "solution", label: labels.tabs.solution },
             ],
@@ -147,6 +147,16 @@ const Work = (props: PieceProps) => {
                     solutionAction: labels.solutionResultAction,
                 }}
             />
+        </Stack>
+    )
+}
+
+/** The hint ladder with the notice of a hint the door refused. */
+const Hints = (props: PieceProps) => {
+    const { labels, state } = props.screen.props
+    const { on } = props.screen
+    return (
+        <Stack gap="row">
             <PracticeHints
                 labels={{
                     title: labels.hintsTitle,
@@ -173,9 +183,8 @@ const Work = (props: PieceProps) => {
 const ProblemTab = (props: PieceProps) => {
     const { labels } = props.screen.props
     return (
-        <Grid
-            kind="pair"
-            leading={
+        <div className={PROBLEM_GRID_CLASS_NAME}>
+            <div className={STATEMENT_CLASS_NAME}>
                 <PracticeProblemPanel
                     markdown={props.view.markdown}
                     examples={props.view.examples}
@@ -189,9 +198,14 @@ const ProblemTab = (props: PieceProps) => {
                         diagramError: labels.diagramError,
                     }}
                 />
-            }
-            trailing={<Work {...props} />}
-        />
+            </div>
+            <div className={WORK_CLASS_NAME}>
+                <Work {...props} />
+            </div>
+            <div className={HINTS_CLASS_NAME}>
+                <Hints {...props} />
+            </div>
+        </div>
     )
 }
 
@@ -208,9 +222,23 @@ const SubmissionsTab = (props: PieceProps) => {
                 id: row.id,
                 title: row.title,
                 description: row.meta,
-                badges: [{ label: row.meta, tone: row.isAccepted ? ("success" as const) : ("danger" as const) }],
+                badges: [{ label: row.verdict, tone: row.isAccepted ? ("success" as const) : ("danger" as const) }],
             }))}
             empty={labels.submissionsEmpty}
+            {...(state.hasMoreSubmissions
+                ? {
+                      action: (
+                          <Button
+                              intent="neutral"
+                              size="sm"
+                              isPending={state.isLoadingMoreSubmissions}
+                              onPress={props.screen.on.moreSubmissions}
+                          >
+                              {labels.submissionsMore}
+                          </Button>
+                      ),
+                  }
+                : {})}
         />
     )
 }

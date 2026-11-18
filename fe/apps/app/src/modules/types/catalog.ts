@@ -1,153 +1,144 @@
-import type { CatalogCaseCard, CatalogNode, CatalogToolbarLabels } from "@starci-next/ui"
 import type { TopicView } from "./lesson"
 
-/** The groups of the approved tree, in the order the aside lists them (decision.essentials.categories). */
-export const LESSON_GROUPS = [
-    "backend",
-    "frontend",
-    "data",
-    "caching",
-    "messaging",
-    "realtime",
-    "distributed",
-    "security",
-    "testing",
-    "observability",
-    "infra",
-    "delivery",
-    "cloud",
-    "integrations",
-    "ai",
-    "casestudy",
-] as const
-
-/** How many source lessons each group of the approved tree has still to move into interactive lessons (decision.essentials.categories). */
-export const LESSON_GROUP_SOURCES: Readonly<Record<(typeof LESSON_GROUPS)[number], number>> = {
-    backend: 13,
-    frontend: 33,
-    data: 14,
-    caching: 4,
-    messaging: 10,
-    realtime: 4,
-    distributed: 18,
-    security: 25,
-    testing: 4,
-    observability: 26,
-    infra: 42,
-    delivery: 24,
-    cloud: 69,
-    integrations: 8,
-    ai: 12,
-    casestudy: 37,
-}
-
-/** The source lessons of every group together. */
-export const LESSON_SOURCE_TOTAL: number = Object.values(LESSON_GROUP_SOURCES).reduce((sum, each) => sum + each, 0)
-
-/** The topics the catalog read, by id: their path totals and sources, which the topic cards show. */
+/** The topics the catalog read, by id: the path of each names the order of its lessons. */
 export type CatalogTopics = Readonly<Record<string, TopicView>>
 
-/** One option of a filter. */
-type CatalogOptionView = { readonly id: string; readonly label: string }
+/** The four parts of a lesson a learner moves through, in order: essence, source, scenarios, apply. */
+export const LESSON_PART_COUNT = 4
 
-/** The catalog as the screen draws it: the aside, the filter options and the tree of lesson cards that match the filters. */
-export type CatalogView = {
-    /** The number of published lessons. */
+/** Where the learner stands on one lesson: nothing done, some part under way or finished, every part finished. */
+export type LessonState = "todo" | "doing" | "done"
+
+/** One part of a lesson as the batch read states it: its state and how many of its items are done. */
+export type LessonPartStandingView = {
+    readonly part: string
+    readonly state: "none" | "doing" | "done" | "locked"
+    readonly done: number
     readonly total: number
-    /** The facts under the intro (published lessons, groups), already in words. */
-    readonly facts: ReadonlyArray<string>
-    readonly groups: ReadonlyArray<{ readonly id: string; readonly label: string; readonly count: number }>
-    readonly languages: ReadonlyArray<CatalogOptionView>
-    readonly providers: ReadonlyArray<CatalogOptionView>
-    /** The sections that match the filters; empty when nothing matches. */
-    readonly tree: ReadonlyArray<CatalogNode>
-    /** The case-study collection, drawn before the groups while no filter hides it; undefined otherwise. */
-    readonly cases: CatalogCases | undefined
-    /** The lesson in progress, for a Premium learner; undefined when there is none. */
-    readonly resume: CatalogResume | undefined
 }
 
-/** The case-study collection of the catalog: its title, what it is and its announced case studies. */
-export type CatalogCases = {
-    readonly title: string
-    readonly meta: string
-    readonly pending: string
-    readonly cards: ReadonlyArray<CatalogCaseCard>
+/** The learner's progress in the four parts of one lesson, as the batch read gives it (one entry per lesson). */
+export type LessonPartsView = {
+    /** Each of the four parts with its state and counts, in tab order (essence, source, scenarios, apply). */
+    readonly parts: ReadonlyArray<LessonPartStandingView>
+    /** How many of the four parts are finished (the Meter's value). */
+    readonly doneParts: number
+    /** The first part that is not finished, 1 to 4; 0 when all four are finished. */
+    readonly currentPart: number
+    /** True while some part is under way (started, not finished). */
+    readonly isUnderWay: boolean
+    /** True once something was answered, run or pulled in any part. */
+    readonly isStarted: boolean
+    /** The five opener questions of part 1 answered right, or undefined while the opener is not taken. */
+    readonly openerRight: number | undefined
+    /** The opener questions answered of five. */
+    readonly openerAnswered: number
 }
 
-/** Where the learner stands on a lesson. */
-export type LessonStatus = "none" | "doing" | "understood" | "proved" | "free"
+/** What the status tabs filter by; "all" filters nothing. */
+export type CatalogStatusFilter = "all" | LessonState
 
-/** The lesson a Premium learner left half way, worded. */
-type CatalogResume = {
-    readonly title: string
-    readonly phaseLine: string
-    readonly href: string
-}
+/** What the plan select filters by: every lesson, the lessons whose free part 1 is still to do, the lessons that go on in Premium parts. */
+export type CatalogPlanFilter = "all" | "free" | "premium"
 
-/** What the reader chose in the aside and the toolbar; an empty text means no filter. */
+/** What the reader chose on the toolbar; an empty query and "all" mean no filter. */
 export type CatalogFilters = {
-    readonly group: string
-    readonly difficulty: string
+    readonly status: CatalogStatusFilter
     readonly query: string
-    readonly language: string
-    readonly provider: string
+    readonly topic: string
+    readonly plan: CatalogPlanFilter
 }
 
-/** The words the catalog view is built with, resolved by the block. */
-export type CatalogWords = {
-    readonly groups: Readonly<Record<string, string>>
-    readonly difficulty: Readonly<Record<string, string>>
-    /** Where the learner stands on a lesson, by status; "free" is said to a reader without Premium. */
-    readonly statuses: Readonly<Record<LessonStatus, string>>
-    readonly isPremium: boolean
-    /** The title of each phase, by phase id. */
-    readonly phases: Readonly<Record<string, string>>
-    readonly resume: (phase: string) => string
-    readonly understood: (done: number, total: number) => string
-    /** The empty choice of the language select: it says what it filters. */
-    readonly allLanguages: string
-    /** The empty choice of the cloud select: it says what it filters. */
-    readonly allProviders: string
-    readonly minutes: (minutes: number) => string
-    readonly count: (count: number) => string
-    readonly published: (count: number) => string
-    readonly groupCount: (count: number) => string
-    readonly topicOpen: (count: number) => string
-    /** "{open}/{total} lessons open" of a topic whose path is known. */
-    readonly openOfTotal: (open: number, total: number) => string
-    readonly topicCount: (count: number) => string
-    readonly matchCount: (count: number) => string
-    /** The chip of the intro: how many source lessons are being moved. */
-    readonly sources: (count: number) => string
-    /** The line under a group: how many source lessons are still to come. */
-    readonly pendingGroup: (count: number) => string
-    readonly source: (from: string) => string
-    /** The small kind line over a topic card's title. */
-    readonly topicKind: string
-    readonly soon: string
-    readonly languageNames: Readonly<Record<string, string>>
-    readonly providerNames: Readonly<Record<string, string>>
-    /** The words of each announced case study, by id. */
-    readonly cases: ReadonlyArray<{ readonly id: string; readonly title: string; readonly needs: string }>
-    readonly casesMeta: string
-    readonly casesPending: string
-    readonly caseBadge: string
+/** The tone of the state badge of a lesson row. */
+export type LessonBadgeTone = "success" | "warning" | "neutral"
+
+/** One lesson as its row draws it: every word already resolved. */
+export type LessonRowView = {
+    readonly id: string
+    readonly title: string
+    /** The one-line problem the lesson solves. */
+    readonly problem: string
+    readonly href: string
+    readonly minutes: string
+    /** How many of the four parts are finished. */
+    readonly doneParts: number
+    /** The words of the Meter (for example "2 of 4 parts"). */
+    readonly partsLabel: string
+    readonly state: LessonState
+    readonly badge: { readonly label: string; readonly tone: LessonBadgeTone }
+    /** True for the lesson the learner is on (the one the primary opens): its row is tinted. */
+    readonly isCurrent: boolean
+    /** The opener score (for example "Opener 3/5") on the topic page; empty on the catalog. */
+    readonly opener: string
+}
+
+/** One topic of the catalog: its head, its bar and the lessons that pass the filters. */
+export type CatalogGroupView = {
+    readonly id: string
+    readonly title: string
+    /** For example "2/6 lessons done". */
+    readonly progressLabel: string
+    readonly done: number
+    readonly total: number
+    readonly href: string
+    /** The lessons shown (the first three), in the topic's order. */
+    readonly lessons: ReadonlyArray<LessonRowView>
+    /** The link under the list when more lessons stand in the topic (for example "See all 6 lessons"); empty when none. */
+    readonly moreLabel: string
+}
+
+/** One option of a select. */
+export type CatalogOption = { readonly id: string; readonly label: string }
+
+/** The catalog as the screen draws it. */
+export type CatalogView = {
+    /** The fact line under the title (topics, lessons, lessons done). */
+    readonly facts: string
+    /** The one primary: continue, start or upgrade; undefined when the catalog holds no lesson. */
+    readonly primary: { readonly label: string; readonly href: string } | undefined
+    /** The count of each status tab; the three states add up to "all". */
+    readonly counts: Readonly<Record<CatalogStatusFilter, number>>
+    readonly topics: ReadonlyArray<CatalogOption>
+    readonly groups: ReadonlyArray<CatalogGroupView>
 }
 
 /** The words of the catalog screen that do not depend on its data. */
 export type CatalogLabels = {
-    readonly eyebrow: string
     readonly title: string
-    readonly description: string
-    readonly all: string
-    readonly asideLabel: string
-    readonly asideEmpty: string
-    readonly open: string
-    readonly upsell: { readonly label: string; readonly note: string } | undefined
-    readonly toolbar: CatalogToolbarLabels
-    readonly difficulties: ReadonlyArray<{ readonly id: string; readonly label: string }>
-    readonly resumeTitle: string
-    readonly resumeAction: string
-    readonly noResult: { readonly title: string; readonly text: string; readonly clear: string }
+    readonly breadcrumbs: string
+    readonly statusLabel: string
+    readonly statuses: ReadonlyArray<CatalogOption>
+    readonly search: string
+    readonly searchPlaceholder: string
+    readonly clearSearch: string
+    readonly topicSelect: string
+    readonly allTopics: string
+    readonly planSelect: string
+    readonly plans: ReadonlyArray<CatalogOption>
+    readonly viewTopic: string
+    readonly noResult: { readonly title: (query: string) => string; readonly text: string; readonly clear: string }
+    readonly empty: string
+}
+
+/** The words the catalog view is built with, resolved by the block. */
+export type CatalogWords = {
+    readonly isPremium: boolean
+    readonly minutes: (minutes: number) => string
+    readonly partsLabel: (done: number) => string
+    readonly facts: (topics: number, lessons: number, done: number) => string
+    readonly factsFirst: (topics: number, lessons: number) => string
+    readonly groupProgress: (done: number, total: number) => string
+    readonly viewAll: (count: number) => string
+    readonly state: {
+        readonly todo: string
+        readonly done: string
+        readonly free: string
+        readonly partDone: (part: number) => string
+        readonly doing: (part: number) => string
+    }
+    readonly resume: (title: string, part: number) => string
+    readonly start: (title: string) => string
+    readonly upgrade: string
+    /** The opener score of a lesson (for example "Opener 3/5"), or the line of a lesson whose opener is not taken. */
+    readonly opener: (right: number | undefined, total: number) => string
 }

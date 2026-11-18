@@ -52,7 +52,9 @@ ON CONFLICT (learner_id) DO UPDATE SET daily_goal = EXCLUDED.daily_goal, updated
  */
 export const SELECT_QUEUE: ReturnType<typeof sql> = sql`SELECT s.item_id, s.source, s.status, s.step::int AS step,
     s.due_on::text AS due_on, s.deck_id, s.lesson_id, s.activity_id, s.lesson_version, s.last_revision,
-    s.flipped_revision, c.level, d.titles AS deck_titles
+    s.flipped_revision, c.level, d.titles AS deck_titles, c.front,
+    jsonb_build_object('vi', jsonb_array_length(c.back -> 'vi' -> 'clozes'),
+        'en', jsonb_array_length(c.back -> 'en' -> 'clozes')) AS cloze_counts
 FROM review_states s
 LEFT JOIN review_decks d ON d.deck_id = s.deck_id
 LEFT JOIN review_cards c ON c.item_id = s.item_id AND c.version = d.live_version

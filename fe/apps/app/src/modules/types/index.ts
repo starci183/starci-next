@@ -10,9 +10,22 @@ export type {
     SlotRead,
     WrittenCardLabels,
 } from "@starci-next/ui"
-export { LESSON_GROUP_SOURCES, LESSON_GROUPS, LESSON_SOURCE_TOTAL } from "./catalog"
-export type { LessonStatus } from "./catalog"
-export type { CatalogFilters, CatalogLabels, CatalogTopics, CatalogView, CatalogWords } from "./catalog"
+export { LESSON_PART_COUNT } from "./catalog"
+export type {
+    CatalogFilters,
+    CatalogGroupView,
+    CatalogLabels,
+    CatalogOption,
+    CatalogTopics,
+    CatalogPlanFilter,
+    CatalogStatusFilter,
+    CatalogView,
+    CatalogWords,
+    LessonBadgeTone,
+    LessonPartsView,
+    LessonRowView,
+    LessonState,
+} from "./catalog"
 export type {
     ActivityView,
     AttemptAnswer,
@@ -26,7 +39,7 @@ export type {
     SimulationProgressView,
     SimulationView,
 } from "./lesson"
-export type { TopicLabels, TopicScreenView, TopicWords } from "./topic"
+export type { TopicAsideEntry, TopicLabels, TopicPartView, TopicScreenView, TopicWords } from "./topic"
 export { CHALLENGE_LEVELS, ESSENTIAL_PARTS } from "./essential"
 export type {
     ChallengeLevel,
@@ -37,6 +50,9 @@ export type {
     EssentialView,
     OpenerScoreView,
     ScenarioRunStatus,
+    ChallengeCriterionScoreView,
+    ChallengeScoreState,
+    ChallengeScoreView,
     ScenarioRunView,
 } from "./essential"
 export { DEFAULT_PRACTICE_LANGUAGE, PRACTICE_LANGUAGES } from "./practice"
@@ -63,17 +79,7 @@ export type {
     ReviewQueueItemView,
     ReviewTodayView,
 } from "./review"
-export type {
-    ReviewDeckCard,
-    ReviewDeckNote,
-    ReviewDecksLabels,
-    ReviewFilterOption,
-    ReviewGoalForm,
-    ReviewSessionScreen,
-    ReviewTodayLabels,
-    ReviewTodayRow,
-    ReviewTodayScreen,
-} from "./reviewView"
+export type { ReviewSessionScreen } from "./reviewView"
 export type {
     ExperienceCardView,
     ExperienceChip,
