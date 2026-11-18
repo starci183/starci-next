@@ -19,6 +19,14 @@ WORKDIR /app
 COPY --from=manifests /app ./
 RUN npm ci --ignore-scripts
 
+# The public browser configuration, inlined by next build. The landing has no deployed environment yet (no host is declared), so its image
+# defaults to the production origins; a deploy that declares it passes its own values with --build-arg.
+ARG NEXT_PUBLIC_APP_URL=https://next.starci.org
+ARG NEXT_PUBLIC_STATICS_URL=https://minio.next.starci.org/starci-next-production/statics
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+ENV NEXT_PUBLIC_STATICS_URL=$NEXT_PUBLIC_STATICS_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+
 COPY turbo.json ./
 COPY scripts scripts
 COPY fe/tsconfig.json fe/tsconfig.json
