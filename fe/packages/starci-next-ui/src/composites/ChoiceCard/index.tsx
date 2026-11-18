@@ -1,4 +1,4 @@
-import { Button, Cluster, EmptyNotice, Section, Stack, SurfaceCard } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, RadioGroup, Section, Stack } from "@starci/grammar/common"
 import { AttemptNotice } from "../../leaves/AttemptNotice"
 
 /** The words of a choice card, resolved by its block. */
@@ -105,50 +105,42 @@ export const ChoiceCard = (props: ChoiceCardProps) => {
     const isSettled = props.status === "graded" || props.status === "saved"
     if (props.status === "premium") {
         return (
-            <SurfaceCard ariaLabel={props.prompt}>
-                <EmptyNotice
-                    frame="frameless"
-                    message={props.labels.premium}
-                    actionIntent="neutral"
-                    actionLabel={props.labels.plans}
-                    actionHref={props.plansHref}
-                />
-            </SurfaceCard>
+            <EmptyNotice
+                frame="frameless"
+                message={props.labels.premium}
+                actionIntent="neutral"
+                actionLabel={props.labels.plans}
+                actionHref={props.plansHref}
+            />
         )
     }
     return (
         <Stack gap="row">
-            <SurfaceCard
-                kind="select"
-                selectionMode="single"
-                label={props.prompt}
-                items={props.options.map((option) => {
-                    const explanation = props.explanations[option.id]
-                    return {
-                        id: option.id,
-                        title: option.label,
-                        isDisabled: isBusy || isSettled,
-                        ...(explanation === undefined ? {} : { subtitle: explanation }),
-                    }
-                })}
-                value={props.pickedId === "" ? null : props.pickedId}
-                onChange={props.onPick}
-                footers={[
-                    {
-                        kind: "custom",
-                        children: (
-                            <FormFooter
-                                status={props.status}
-                                isSendFailed={props.isSendFailed}
-                                pickedId={props.pickedId}
-                                labels={props.labels}
-                                plansHref={props.plansHref}
-                                onSubmit={props.onSubmit}
-                            />
-                        ),
-                    },
-                ]}
-            />
+            <Section title={props.prompt}>
+                <RadioGroup
+                    label={props.prompt}
+                    isLabelHidden
+                    isDisabled={isBusy || isSettled}
+                    options={props.options.map((option) => {
+                        const explanation = props.explanations[option.id]
+                        return {
+                            value: option.id,
+                            label: option.label,
+                            ...(explanation === undefined ? {} : { description: explanation }),
+                        }
+                    })}
+                    value={props.pickedId === "" ? null : props.pickedId}
+                    onValueChange={props.onPick}
+                />
+                <FormFooter
+                    status={props.status}
+                    isSendFailed={props.isSendFailed}
+                    pickedId={props.pickedId}
+                    labels={props.labels}
+                    plansHref={props.plansHref}
+                    onSubmit={props.onSubmit}
+                />
+            </Section>
             {props.status === "graded" ? <Feedback isCorrect={props.isCorrect} labels={props.labels} /> : null}
         </Stack>
     )

@@ -30,6 +30,8 @@ type HubPathCardProps = {
     readonly chooseHref: string
     /** Where the learner continues the active path. */
     readonly continueHref: string
+    /** The public base of the statics (`NEXT_PUBLIC_STATICS_URL`), read once by the app; the artwork is `base/staticsKey`. */
+    readonly staticsBase: string
     readonly isLoading?: boolean
 }
 
@@ -41,9 +43,9 @@ type PathCopy = {
 }
 
 /** The first-run artwork at the card's start and the copy beside it. */
-const PathBody = (props: PathCopy) => (
+const PathBody = (props: PathCopy & { readonly artBase: string }) => (
     <Cluster gap="section" align="center">
-        <Mascot src={ART.journey.src} size="md" loading="eager" assetSlot="hub-path-journey" />
+        <Mascot src={`${props.artBase}/${ART.journey.key}`} size="md" loading="eager" assetSlot="hub-path-journey" />
         <Stack gap="row">
             <Stack gap="identity">
                 <Text isStrong>{props.title}</Text>
@@ -62,6 +64,7 @@ export const HubPathCard = (props: HubPathCardProps) => {
         return (
             <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
                 <PathBody
+                    artBase={props.staticsBase}
                     title={props.labels.emptyTitle}
                     line={props.labels.emptyBody}
                     commands={
@@ -76,6 +79,7 @@ export const HubPathCard = (props: HubPathCardProps) => {
     return (
         <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
             <PathBody
+                artBase={props.staticsBase}
                 title={view.title}
                 line={view.next.length === 0 ? "" : `${props.labels.nextLabel}: ${view.next.join(" / ")}`}
                 commands={

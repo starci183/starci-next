@@ -36,5 +36,4 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: hai mươi nút "Mở pattern" giống nhau trong khi cả hàng đã là liên kết; nút viền mảnh gần như vô hình.
 - 1440: số thứ tự đơn cách từ "10." trở đi rộng hơn nên tên lệch ba điểm ảnh so với hàng 1 đến 9.
 - 1440: hai mươi hàng đều "0/..." nên chỉ báo tiến độ không giúp chọn.
-- 1920: nội dung co vào giữa (x=480 đến 1696) trong khi tiêu đề trang sát trái x=288; lệch trục. Các lỗi lặp tiêu đề, nút lặp và lệch số thứ tự giữ nguyên.
 - 390: số thứ tự 10 trở đi vẫn đẩy tên lệch so với hàng 1 đến 9; nút "Mở pattern" chiếm khoảng 90px bên phải làm tên có ít chỗ.

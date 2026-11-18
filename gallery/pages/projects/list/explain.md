@@ -31,12 +31,10 @@ Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai
 Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
-- 1440 và 1920, cột Tiến độ: thanh tiến độ 0/9 chỉ là một vạch xám rất nhạt, gần như vô hình trên nền trắng; số "0/9" nằm lệch xuống dưới thanh và không cùng dòng với các cột khác.
-- 1440 và 1920, bảng: các ô Loại, Milestone, Tiến độ, CI căn dọc không đồng đều (chip "Ứng dụng" và "Chưa nối CI" thấp hơn tên dự án), hàng trông lệch.
-- 1440 và 1920, chip "Ứng dụng" có nền xám đặc (tô nền) thay vì nền trắng với đường kẻ; "Chưa nối CI" là chữ xám nhạt 12 độ tương phản thấp.
-- 1440 và 1920, dòng chú thích dưới bảng: chữ 12 màu muted có sắc nâu, tương phản thấp, khó đọc.
-- 1920, ribbon, tiêu đề bảng và bảng bị giới hạn bề rộng và canh giữa (bắt đầu ở x=480), còn dải đầu trang canh trái ở x=288: hai mép trái lệch nhau 192px.
-- 1920, nút "Tạo dự án" dính sát mép phải màn hình trong khi nội dung bên dưới bị thu hẹp ở giữa.
+- 1440, cột Tiến độ: thanh tiến độ 0/9 chỉ là một vạch xám rất nhạt, gần như vô hình trên nền trắng; số "0/9" nằm lệch xuống dưới thanh và không cùng dòng với các cột khác.
+- 1440, bảng: các ô Loại, Milestone, Tiến độ, CI căn dọc không đồng đều (chip "Ứng dụng" và "Chưa nối CI" thấp hơn tên dự án), hàng trông lệch.
+- 1440, chip "Ứng dụng" có nền xám đặc (tô nền) thay vì nền trắng với đường kẻ; "Chưa nối CI" là chữ xám nhạt 12 độ tương phản thấp.
+- 1440, dòng chú thích dưới bảng: chữ 12 màu muted có sắc nâu, tương phản thấp, khó đọc.
 - 390, bảng dự án: ẩn mất cột Loại, Milestone hiện tại và CI nên người dùng không thấy trạng thái CI hay milestone ở điện thoại; chỉ còn tiến độ.
 - 390, dải đầu trang: mô tả bị ép vào cột hẹp 4 dòng vì nút chiếm bên phải; nút "Tạo dự án" đứng lệch so với tiêu đề.
 - 390, chú thích "Không có dự án mẫu..." 12 muted xuống dòng sát mép dưới bảng, không có khoảng đệm với bảng.

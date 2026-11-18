@@ -5,7 +5,7 @@ area: projects
 reviewed: 2026-11-17
 ---
 
-Route: `/projects/<projectId>`, dành cho người đăng ký Premium. Trang dự án có hai pane ở 1440 và 1920: milestone, lần chạy, kinh nghiệm và địa chỉ deploy ở pane giữa; kho mã, chứng thực CI, máy của bạn, bí mật CI và thư mục starci/ ở aside bên phải. Ở 390 aside đứng trước pane giữa. Trang dùng các composite của starci-next-ui. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
+Route: `/projects/<projectId>`, dành cho người đăng ký Premium. Trang dự án có hai pane ở 1440: milestone, lần chạy, kinh nghiệm và địa chỉ deploy ở pane giữa; kho mã, chứng thực CI, máy của bạn, bí mật CI và thư mục starci/ ở aside bên phải. Ở 390 aside đứng trước pane giữa. Trang dùng các composite của starci-next-ui. Mã: `fe/apps/app/src/components/blocks/ProjectDetail/`. Grammar 0.40.1, đường dẫn trong `node_modules/@starci/grammar/dist/core/`.
 
 ## Dải đầu trang (đường dẫn, tên, chip trạng thái, dòng repo, "Cập nhật kết quả từ máy")
 
@@ -50,14 +50,14 @@ Luật: `surface-layering`, `theme-and-type`.
 Grammar: không phải vùng của màn hình; không có thành phần.
 
 - 1440, dải đầu trang: nút "Cập nhật kết quả từ máy" kết thúc ở x=1428, cách mép phải 12px, trong khi các trang khác chừa lề 32px; nút sát mép hơn lề nội dung.
-- 1440 và 1920, lề trái trang là 268 (đường dẫn, tiêu đề, danh sách) còn các trang Dự án khác là 288: không cùng lề với `projects/list`.
-- 1440 và 1920, "Lần chạy gần đây": bảng rỗng được bao trong một thẻ bo góc có viền, thân trống cao khoảng 120px; luật là bảng phẳng trên nền trang, không thẻ.
-- 1440 và 1920, "Địa chỉ đã triển khai": cả biểu mẫu được bao trong thẻ viền bo lớn; biểu mẫu không phải vật thật nên không cần thẻ.
-- 1440 và 1920, "Địa chỉ đã triển khai": ô nhập địa chỉ trống không placeholder; nút "Chạy kiểm tra" mờ gần như không thấy.
-- 1440 và 1920, "Milestone": thanh tiến độ 0 của mỗi hàng là vạch xám rất nhạt gần như vô hình; trạng thái "Chưa bắt đầu" là chữ xám 12 nằm lệch dòng so với tên và dòng tiến độ.
-- 1440 và 1920, "Milestone": mỗi hàng có ô biểu tượng thư mục nền xám (icon tile), 11 hàng giống hệt nhau, không mang thông tin.
-- 1440 và 1920, aside, thư mục starci/: các dòng `starci/`, `project.yaml start · health · test`, `e2e/`, `[concept].md` cách nhau như đoạn rời chứ không thành cây có thụt lề; tiêu đề "Test unit và integration" ngay sát dòng cuối của cây.
-- 1440 và 1920, aside: "Kho mã" là liên kết nhưng hiện chữ đen đậm như nhãn; chữ giải thích muted có sắc nâu, tương phản thấp.
+- 1440, lề trái trang là 268 (đường dẫn, tiêu đề, danh sách) còn các trang Dự án khác là 288: không cùng lề với `projects/list`.
+- 1440, "Lần chạy gần đây": bảng rỗng được bao trong một thẻ bo góc có viền, thân trống cao khoảng 120px; luật là bảng phẳng trên nền trang, không thẻ.
+- 1440, "Địa chỉ đã triển khai": cả biểu mẫu được bao trong thẻ viền bo lớn; biểu mẫu không phải vật thật nên không cần thẻ.
+- 1440, "Địa chỉ đã triển khai": ô nhập địa chỉ trống không placeholder; nút "Chạy kiểm tra" mờ gần như không thấy.
+- 1440, "Milestone": thanh tiến độ 0 của mỗi hàng là vạch xám rất nhạt gần như vô hình; trạng thái "Chưa bắt đầu" là chữ xám 12 nằm lệch dòng so với tên và dòng tiến độ.
+- 1440, "Milestone": mỗi hàng có ô biểu tượng thư mục nền xám (icon tile), 11 hàng giống hệt nhau, không mang thông tin.
+- 1440, aside, thư mục starci/: các dòng `starci/`, `project.yaml start · health · test`, `e2e/`, `[concept].md` cách nhau như đoạn rời chứ không thành cây có thụt lề; tiêu đề "Test unit và integration" ngay sát dòng cuối của cây.
+- 1440, aside: "Kho mã" là liên kết nhưng hiện chữ đen đậm như nhãn; chữ giải thích muted có sắc nâu, tương phản thấp.
 - 1440, aside hẹp làm các đoạn giải thích xuống 3 đến 4 dòng; khối "Thư mục starci/" kéo dài hơn pane trái.
 - 390, aside đứng trước danh sách Milestone nên nội dung chính bị đẩy xuống sau 5 khối cấu hình; thanh tiến độ của mỗi milestone nằm dưới hàng và canh trái lệch với tên.
 - 390, nút "Cập nhật kết quả từ máy" nằm dưới dòng repo; chip trạng thái "Chưa bắt đầu" nhỏ và sát tên.

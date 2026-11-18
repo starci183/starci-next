@@ -1,4 +1,4 @@
-{"findings":[],"hash":"0ba67b45879ff17871874b83e8f98a7b8d7b6765647e83abd457a00081e1a8af","path":"be/apps/cli/Dockerfile","step":"prettier"}
+{"findings":[],"hash":"a1927d0bd7f8d90f947dc7a78251c5ebc99c251561e80346e705d377f22a2964","path":"be/apps/cli/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"0f7d9b8fb9b55afde1909538a6a8785a242fac039adafe44612cb583923c1c4d","path":"be/apps/cli/src/app.module.ts","step":"prettier"}
 {"findings":[],"hash":"a7139d59d214397ab9021d5524081e41fd8e072459923a69d0c8a2530f462566","path":"be/apps/cli/src/cli.env.ts","step":"prettier"}
 {"findings":[],"hash":"d95cb8a518d4dd8737f022925919a22a27ce1e2d2df44eaa0391d08d380ff198","path":"be/apps/cli/src/cli.options.ts","step":"prettier"}

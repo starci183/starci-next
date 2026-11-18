@@ -34,7 +34,7 @@ export const AppLayout = async (props: AppLayoutProps): Promise<ReactElement> =>
             header={
                 <AppHeader
                     brand={t("brand")}
-                    logoSrc="/brand/starci-logo.png"
+                    logoSrc="/brand/logo.png"
                     premiumHref={premiumHref}
                     profileHref={hrefOf(APP_ROUTES.profile)}
                     signInHref={hrefOf(APP_ROUTES.signIn)}

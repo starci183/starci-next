@@ -1,4 +1,4 @@
-// Captures every screen of the app at 1440, 1920 and 390 into gallery/pages/<area>/<screen>/<width>.png.
+// Captures every screen of the app at 1440 and 390 into gallery/pages/<area>/<screen>/<width>.png.
 // Dynamic routes take the first link the list screen shows. usage: node scripts/gallery-capture.cjs <state.json> [area-filter]
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "D:/starci-tmp/pw-tool/node_modules/playwright")
 const fs = require("fs"),
@@ -230,9 +230,7 @@ const norm = (href) => {
                 await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
             await p.setViewportSize({
                 width: w,
-                height:
-                    Number(process.env.CAPTURE_HEIGHT) ||
-                    (w === 390 ? 844 : w === 1920 ? 1080 : w === 2560 ? 1440 : 900),
+                height: Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900),
             })
             const res = await p
                 .goto((s.origin || ENTRY) + route, { waitUntil: s.hold ? "commit" : "load" })
@@ -268,7 +266,7 @@ const norm = (href) => {
             await p.waitForTimeout(Number(process.env.CAPTURE_SETTLE) || 2500)
             {
                 // The shell is one viewport tall and its panes scroll on their own (stacked panes grow on a phone, Grammar 0.37.14): grow the viewport by what any scroller still holds beyond its box (up to 4 passes, the layout settles between them) so the shot shows the whole page.
-                let height = Number(process.env.CAPTURE_HEIGHT) || (w === 1920 ? 1080 : w === 390 ? 844 : 900)
+                let height = Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900)
                 for (let pass = 0; pass < 4; pass++) {
                     // next dev may reload the page (a late compile): wait for it to settle and measure again instead of failing the run.
                     const extra = await p

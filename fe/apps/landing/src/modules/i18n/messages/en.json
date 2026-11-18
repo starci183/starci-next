@@ -15,16 +15,21 @@
     },
     "notFound": {
       "title": "Page not found",
-      "home": "Return home"
+      "home": "Return home",
+      "description": "This page is no longer here, or the address was mistyped. Go back to the home page to continue."
     },
     "errors": {
       "page": {
         "title": "Something went wrong",
-        "retry": "Try again"
+        "retry": "Try again",
+        "description": "Something went wrong while loading this page. You can try again or go back to the home page.",
+        "home": "Return home"
       },
       "global": {
         "title": "The application could not continue",
-        "retry": "Try again"
+        "retry": "Try again",
+        "description": "The application could not continue. Try again, or go back to the home page.",
+        "home": "Return home"
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Badge, Cluster, FencedCodeBlock, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Cluster, FencedCodeBlock, Heading, Section, Stack, Text } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 
 /** One example of a problem. */
@@ -30,7 +30,7 @@ type PracticeProblemPanelProps = {
 
 /** The problem panel: pattern line, title, difficulty and limits, the statement from the data's markdown, then the examples. */
 export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
-    <SurfaceCard ariaLabel={props.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
+    <Section ariaLabel={props.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
         <Stack gap="section">
             <Text size="sm" tone="muted">
                 {props.eyebrow}
@@ -61,5 +61,5 @@ export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
                 </Stack>
             )}
         </Stack>
-    </SurfaceCard>
+    </Section>
 )

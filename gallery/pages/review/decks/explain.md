@@ -15,7 +15,7 @@ Grammar: `Page header={{ breadcrumbs, title, description }}` (`frame/Page/index.
 
 ## Cột trái "Lọc theo lộ trình"
 
-Vì sao: cột phụ phẳng, không thẻ: một `Section` có nhóm "Lộ trình" với các chip chọn (Tất cả, Kỹ sư AI, Backend fullstack, Founder, System design senior) và nhãn "Khoá" với ô chọn "Mọi khoá". Chip đang chọn xám có viền (tím không đánh dấu lựa chọn); ô chọn trắng viền 1px. Ở lg cột nằm bên trái; ở 390 cột xuống cuối trang, sau "Mục tiêu mỗi ngày", nên bộ lọc đến sau cả danh sách mà nó lọc. CHƯA RÕ: ở 1920 cả cột lọc và danh sách bị đẩy vào giữa, lệch trái so với đường dẫn.
+Vì sao: cột phụ phẳng, không thẻ: một `Section` có nhóm "Lộ trình" với các chip chọn (Tất cả, Kỹ sư AI, Backend fullstack, Founder, System design senior) và nhãn "Khoá" với ô chọn "Mọi khoá". Chip đang chọn xám có viền (tím không đánh dấu lựa chọn); ô chọn trắng viền 1px. Ở lg cột nằm bên trái; ở 390 cột xuống cuối trang, sau "Mục tiêu mỗi ngày", nên bộ lọc đến sau cả danh sách mà nó lọc.
 Luật: `surface-layering` (cột phụ không làm bằng thẻ), `theme-and-type` (chọn là xám, ô trắng viền 1px).
 Grammar: `Section` (`Rail` trong `ReviewDecks/component.tsx`), `ChipGroup`/`Badge` chọn, `Select` (`composite/Select`).
 
@@ -43,6 +43,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: chip chọn "Tất cả" nền xám có viền đậm hơn các chip khác, nhìn như nút nhấn.
 - 1440: đầu mục "Lọc theo lộ trình" và "Mục tiêu mỗi ngày" cùng cỡ với nhãn nhóm "Lộ trình", "Khoá", phân cấp mờ; cột lọc có khoảng trống rất dài bên dưới.
 - 1440: nút "Lưu mục tiêu": ô số rộng hết cột nên nút trừ cộng ở hai mép xa nhau.
-- 1920: cột lọc và danh sách bị đẩy vào giữa (lọc ở x≈268, thẻ ở x≈464) trong khi đường dẫn và tiêu đề sát trái x=160; hai trục trái lệch nhau. Các lỗi chip tô màu, "Một phần cần Premium" cho học viên Premium, mô tả cắt "…" giữ nguyên.
 - 390: bộ lọc rơi xuống cuối trang, sau cả mười lăm thẻ và "Mục tiêu mỗi ngày", nên lọc đến sau thứ nó lọc.
 - 390: mô tả thẻ cắt sau hai dòng bằng "…"; nút "Thêm" nằm dòng riêng nên thẻ cao, trang dài khoảng 3900px; chip độ khó sát tên bộ ở mép phải thẻ.

@@ -256,6 +256,7 @@ environments:
           env:
             PORT: "${port.app}"
             NEXT_PUBLIC_SITE_URL: "https://starci-next-app-dev.starci.org"
+            NEXT_PUBLIC_STATICS_URL: "https://starci-next-minio-dev.starci.org/starci-next-dev/statics"
             CORE_INTERNAL_ORIGIN: "http://127.0.0.1:${port.core}"
             # The hosts `next dev` serves its dev resources and HMR socket to besides localhost (allowedDevOrigins of next.config.ts).
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-app-dev.starci.org"
@@ -267,6 +268,7 @@ environments:
           env:
             PORT: "${port.landing}"
             NEXT_PUBLIC_APP_URL: "https://starci-next-app-dev.starci.org"
+            NEXT_PUBLIC_STATICS_URL: "https://starci-next-minio-dev.starci.org/starci-next-dev/statics"
             NEXT_DEV_ALLOWED_ORIGINS: "starci-next-dev.starci.org"
           health: {url: "http://localhost:${port.landing}/health/live"}
       ready:
@@ -434,11 +436,13 @@ environments:
           buildArgs:
             values:
               NEXT_PUBLIC_SITE_URL: "https://starci-next.example.invalid"
+              NEXT_PUBLIC_STATICS_URL: "https://storage.starci-next.example.invalid/starci-next-production/statics"
         landing:
           app: landing
           buildArgs:
             values:
               NEXT_PUBLIC_APP_URL: "https://starci-next.example.invalid"
+              NEXT_PUBLIC_STATICS_URL: "https://storage.starci-next.example.invalid/starci-next-production/statics"
       volumes:
         - starci-next-production-ingress-data
         - starci-next-production-ingress-config-data

@@ -49,6 +49,5 @@ Grammar: không phải vùng của màn hình; không có thành phần.
 - 1440: ba nút "Chạy thử", "Nộp bài", "Về mã khởi đầu" khác kiểu (viền mảnh, xám đặc).
 - 1440: ô "Ngôn ngữ" rộng hết cột mà chỉ chứa "Python"; đầu mục "Bài làm của bạn" cùng cỡ với nhãn "Ngôn ngữ", "Mã nguồn" nên không phân cấp.
 - 1440: cột phải "Các bài trong pattern": nhãn kỹ thuật bị cắt "tw…" và "in…" giữa chừng; chip "Chưa làm" và "Giải bài" xuống dòng riêng nên hàng rất cao; năm nút "Giải bài" lặp.
-- 1920: cột chính bị co vào giữa (x=466) trong khi đường dẫn sát trái x=280; giếng xám, cắt nhãn và nút khác kiểu giữ nguyên.
 - 390: mã nội dòng ([a, b], "start end", [0, 10^9]) bị bẻ thành ô rộng làm các mục gạch đầu dòng bẻ từng chữ lệch.
 - 390: ô mã cao khoảng 300px với dòng cuối bị cắt; ba nút trong một hàng khít; cột "Các bài trong pattern" nằm cuối trang với nhãn bị cắt "…" và nút "Giải bài" xuống dòng riêng.

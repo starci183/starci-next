@@ -1,0 +1,7 @@
+- advisory: GHSA-fc5q-39xc-vjpf
+  package: picomatch
+  via: ["@nestjs/graphql", "@parcel/watcher"]
+  reason: "Chưa có bản vá (latest 4.0.7 vẫn dính); thư viện đi gián tiếp, chỉ chạy lúc build/dev quét file."
+  approvedBy: owner
+  approvedAt: 2026-11-18T10:00:00+07:00
+  expires: 2026-12-02T10:00:00+07:00
