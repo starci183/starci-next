@@ -14,8 +14,7 @@ hosting: its services sit on its own overlay `app`, and the three public ones al
 (MinIO) keep their data on `next-staging-postgres-data` and `next-staging-storage-data`; no port is published. `cli` applies the TypeORM migrations when
 its task starts and idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
 
-The operator reaches the manager as `deploy-next` through the sealed member `vps` (the host listens on SSH port 9999: the operator machine's
-`~/.ssh/config` maps `Host 103.130.216.216` to `Port 9999`, and `Host sv-hk-1-next` to the same key for the docker transport (`ssh://sv-hk-1-next`)).
+The operator reaches the manager as `deploy-next` through the sealed member `vps`: the host listens on SSH port 9999, the member carries the port, and the harness's sealed transport passes the port, the key and the pinned host keys to ssh explicitly, so no `--ssh-cmd`, docker host override or `~/.ssh/config` alias is needed.
 
 | Operation | Command | Acceptance |
 | --- | --- | --- |
