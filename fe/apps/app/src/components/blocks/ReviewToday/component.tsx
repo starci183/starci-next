@@ -2,6 +2,7 @@ import {
     Badge,
     BarChart,
     Button,
+    Cluster,
     ChoiceChips,
     Dialog,
     EmptyNotice,
@@ -13,7 +14,6 @@ import {
     Section,
     Stack,
     Text,
-    TextAction,
     type ListRowData,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -131,16 +131,21 @@ const Rail = (props: PieceProps) => {
     return (
         <Stack gap="region">
             {view.state === "first" ? null : (
-                <Section
-                    title={labels.goalTitle}
-                    headingLevel={2}
-                    isLoading={props.isLoading}
-                    action={<TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>}
-                >
+                <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
                     <Stack gap="row">
-                        <Text isStrong isLoading={props.isLoading}>
-                            {view.goalLine}
-                        </Text>
+                        <Cluster gap="inline" justify="between" align="center" wrap>
+                            <Text isStrong isLoading={props.isLoading}>
+                                {view.goalLine}
+                            </Text>
+                            <Button
+                                intent="neutral"
+                                size="sm"
+                                onPress={props.screen.on.openGoal}
+                                isDisabled={props.isLoading}
+                            >
+                                {labels.goalChange}
+                            </Button>
+                        </Cluster>
                         <Progress label={labels.goalTitle} value={view.goalPercent} isLoading={props.isLoading} />
                         <Text size="xs" tone="muted" isLoading={props.isLoading}>
                             {view.streakLine}

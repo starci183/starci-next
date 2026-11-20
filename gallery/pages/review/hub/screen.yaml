@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: cea04254aff7dc75815eecc6b5e2ac01bcef2335d2bb792cb977dd13a9115024
+    sha256: 85e1726a2cb543b14ea166556a286db3f6607d551bef99ad7d0377344364be7d
   "1440":
     file: 1440.png
-    sha256: f7ea2518fb5c6f75f3df731b2160d086ae41347a2a731764354fe97b877e7cd2
+    sha256: de433b7b43bf11c0566df857947be801dae3bed686c9f2fa1622ae46b3d7698a
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -115,6 +115,33 @@ audit:
             số đến hạn.'
     - n: 2
       at: 2026-11-20T13:05:15.166Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Ở 390 chữ "Đổi" đè lên dòng "0 / 10 thẻ hôm nay" (chữ chồng nhau, nhãn không đọc được ở khối
+            Mục tiêu mỗi ngày). Dòng meta đầu trang vẫn ngắt xấu ("Miễn / phí") và "Quản lý →" vẫn
+            rơi xuống dòng riêng dưới tiêu đề. Đã sửa: "Đổi" về hàng tiêu đề kèm thanh tiến độ ở
+            1440.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:35.366Z
       lenses:
         order:
           verdict: open

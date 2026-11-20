@@ -915,6 +915,8 @@
         "tried": "Tried",
         "untried": "Not tried",
         "unavailable": "Not available in this state",
+      "pageError": "Progress could not be loaded",
+      "pageErrorText": "The server did not answer. Your progress is safe. Try again in a few seconds.",
         "progress": "Tried {tried}/{total} branches",
         "back": "Back one step"
       },
@@ -2434,6 +2436,7 @@
       },
       "firstVisit": {
         "title": "Nothing to measure yet, and that is normal",
+        "start": "Start",
         "text": "Every number here is work you really did. Study a lesson, solve a problem or review a card and the first one appears.",
         "essentials": {
           "title": "Essentials",

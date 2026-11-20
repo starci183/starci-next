@@ -7,10 +7,10 @@ summary: "Người không có vai duyệt mở đường dẫn của một mục
 shots:
   "390":
     file: 390.png
-    sha256: 95f72d7a87378214f16380ef3de6dfe5850c5bc3ac5ab444ebecc41a65b2c584
+    sha256: e33eb44af4963a6e62735fdf08606632399f1a4b51ae40d64ab2c01e8403c1e1
   "1440":
     file: 1440.png
-    sha256: b39c59df27557f0fc06bfc572ee65e7bd7f211cae274ab673b3f8db40709f287
+    sha256: 2c8a9793201bec5aac67db0071b29b343913a68c3aed3ba8ae53c7a74b8a5843
 code:
   - features/pages/ReviewItemPage
   - components/blocks/ReviewItem
@@ -66,6 +66,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:06:07.141Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Nút "Về hồ sơ" căn trái (x=288) trong khi ô icon và câu thông báo căn giữa: lệch nhau. Đã
+            sửa: có lối thoát.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:20.791Z
       lenses:
         order:
           verdict: open

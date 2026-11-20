@@ -1,8 +1,9 @@
 import type { ReactNode } from "react"
 import {
     Alert,
-    EmptyNotice,
     Grid,
+    Heading,
+    Illustration,
     Link,
     Meter,
     Page,
@@ -47,7 +48,10 @@ export const PROGRESS_PLACEHOLDER: ProgressPageView = {
         figures: { title: "xxxxxx", items: placeholderFigures("projects") },
         lists: [placeholderList("projects")],
     },
-    practice: null,
+    practice: {
+        figures: { title: "xxxxxx", items: placeholderFigures("practice") },
+        lists: [placeholderList("practice")],
+    },
     review: { figures: { title: "xxxxxx", items: placeholderFigures("review") }, lists: [] },
     activity: [1, 2, 3].map((index) => ({
         id: `a${index}`,
@@ -184,25 +188,39 @@ const ActivitySection = (props: ReadyProps) => (
     </Section>
 )
 
-/** The first visit: nothing is measured yet, which the page says once (an illustration, the words) with the three ways in as its numbered steps. */
-const FirstVisit = (props: ReadyProps) => {
-    const ways = props.view.firstVisit ?? []
-    const first = ways[0]
-    return (
-        <EmptyNotice
-            scope="page"
-            message={props.labels.firstVisitTitle}
-            description={props.labels.firstVisitText}
-            media={{ illustration: { staticsKey: "illustrations/empty/hoc-first-visit.png" } }}
-            steps={ways.map((way) => ({
-                id: way.id,
-                label: way.title,
-                ...(way.description === undefined ? {} : { description: String(way.description) }),
-            }))}
-            {...(first?.href === undefined ? {} : { actionLabel: first.title, actionHref: first.href })}
-        />
-    )
-}
+/** The first visit: nothing is measured yet, which the page says once, next to its picture, and each of the three ways in has its own command. */
+const FirstVisit = (props: ReadyProps) => (
+    <Grid
+        kind="pair"
+        leading={
+            <Stack gap="region">
+                <Stack gap="row">
+                    <Heading level={2} scale="standard">
+                        {props.labels.firstVisitTitle}
+                    </Heading>
+                    <Text as="p" tone="muted">
+                        {props.labels.firstVisitText}
+                    </Text>
+                </Stack>
+                <Section
+                    kind="list"
+                    ariaLabel={props.labels.firstVisitTitle}
+                    isLoading={props.isLoading}
+                    items={props.view.firstVisit ?? []}
+                    empty={<Text tone="muted">{props.labels.unavailable}</Text>}
+                />
+            </Stack>
+        }
+        trailing={
+            <Illustration
+                staticsKey="illustrations/empty/hoc-first-visit.png"
+                ratio="4:3"
+                loading="eager"
+                isLoading={props.isLoading}
+            />
+        }
+    />
+)
 
 /** The ready page: the ribbon on top, then Essentials, Harness, Projects, Luyện code and Ôn tập. */
 const Ready = (props: ReadyProps) => {
@@ -265,6 +283,7 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
+            errorDescription={labels.pageErrorText}
             header={(view, isLoading) => headerOf(labels, descriptionOf(labels, view, isLoading))}
             headerFallback={headerOf(labels, undefined)}
             aside={(view, isLoading) =>

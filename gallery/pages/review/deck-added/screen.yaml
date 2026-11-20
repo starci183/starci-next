@@ -8,10 +8,10 @@ summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ 
 shots:
   "390":
     file: 390.png
-    sha256: 867f9a19fdcf46b71502586f3717e342004d4e219bbd842261bad7e6a0db8a4e
+    sha256: 2d9f43a88ff694deb3ffbcee9587f32b93743c61851949efcf2d53a1c2f447eb
   "1440":
     file: 1440.png
-    sha256: f55c89efebfc31f48579d8e1009782615d60270660a7ae2146e15d16f18ed79f
+    sha256: f617fff61e326e2de453e0403cb9dd28872f3f9803bfddd3b613b7a1f4f96b55
 code:
   - features/pages/ReviewDeckPage
   - components/blocks/ReviewDeck
@@ -66,6 +66,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:54.270Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Mục "Bỏ bộ thẻ" nhưng nút "Bỏ khỏi hàng đợi" (hai thuật ngữ cho một việc, chưa sửa); meta vẫn
+            có nhãn tiếng Anh "fullstack mastery".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:09.225Z
       lenses:
         order:
           verdict: open

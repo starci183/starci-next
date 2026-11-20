@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: cea04254aff7dc75815eecc6b5e2ac01bcef2335d2bb792cb977dd13a9115024
+    sha256: 6d2ac49ca687c0c89971b909825ca7db9f27b0c54f686837616849d304e8518b
   "1440":
     file: 1440.png
-    sha256: 7f8f7fe1ebab4fcea5f7a961065b85c99cbf6d9bb4825f140159b9efa9280873
+    sha256: b3e90b90c2649e29855876f33a113f4127e918bc3850426ea04bc7b7485e064d
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -66,6 +66,32 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:17.599Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 chữ "Đổi" đè lên dòng "0 / 10 thẻ hôm nay" (chữ chồng nhau, nhãn không đọc được ở khối
+            Mục tiêu mỗi ngày). (nền sau hộp thoại).
+        actionable:
+          verdict: open
+          notes: Chip "Khác..." vẫn không mở ô nhập số, không thấy cách nhập số tuỳ ý dù mô tả nhắc "Đặt 0 nếu
+            muốn tạm dừng".
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:37.835Z
       lenses:
         order:
           verdict: open

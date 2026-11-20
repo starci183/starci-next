@@ -14,17 +14,17 @@ type ReviewAnswerProps = {
 export const ReviewAnswer = (props: ReviewAnswerProps) => {
     const markdownLabels = { diagram: props.labels.diagram, diagramError: props.labels.diagramError }
     return (
-        <Stack gap="row">
+        <Stack gap="section">
             {props.back.note === "" ? null : (
                 <Stack gap="identity">
                     <Sublabel>{props.labels.recalled}</Sublabel>
                     <Text>{props.back.note}</Text>
                 </Stack>
             )}
-            <Stack gap="identity">
+            <Stack gap="row">
                 <Sublabel>{props.labels.answerTitle}</Sublabel>
                 {props.back.parts.map((part) => (
-                    <Stack key={part.id} gap="identity">
+                    <Stack key={part.id} gap="inline">
                         {part.title === undefined ? null : <Sublabel>{part.title}</Sublabel>}
                         <RichMarkdown source={part.markdown} labels={markdownLabels} />
                     </Stack>

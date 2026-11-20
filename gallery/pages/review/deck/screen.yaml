@@ -8,10 +8,10 @@ summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ 
 shots:
   "390":
     file: 390.png
-    sha256: ba0b577d53cf7dddfbc05e92e2abda551294de5e3c6f0a11a9915aed15c3fdd5
+    sha256: c9364ea5c36bc188cbc93aa7ba147f996648ab67dac557989286f0e263b37550
   "1440":
     file: 1440.png
-    sha256: 9c40f4446b1508664ebc501a204d3e49f15104ae9e9adc8024619866a4447d3f
+    sha256: edd4eb93b24c58a80e244713dac12a767781145c5de7c6a2e7c03cc0c18a63af
 code:
   - features/pages/ReviewDeckPage
   - components/blocks/ReviewDeck
@@ -81,6 +81,31 @@ audit:
             tính 10" không giải thích.
     - n: 2
       at: 2026-11-20T13:05:48.134Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta vẫn còn nhãn tiếng Anh "fullstack mastery" trong khi các nhãn khác đã Việt hoá (Backend,
+            Kỹ sư AI, Người sáng lập).
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:03.978Z
       lenses:
         order:
           verdict: open

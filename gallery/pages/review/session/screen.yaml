@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: a419952e2d0f54c9e7ca1c22bcef20f8aeac76563d155594515c367a7f720008
+    sha256: e0f15b70eb1d17d03fd47f7099a31005d247fb946a532c4c853b6809cce33579
   "1440":
     file: 1440.png
-    sha256: c4e03e4c0454ab22d4bc8174c7d755571cb0491d289f62bfb89495b31397f7f5
+    sha256: b1ed1c926d608fb915bab9865e605aa65e26a29273616cdec0e9c513771c9269
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -89,6 +89,32 @@ audit:
             trí trong câu, nên không rõ đang điền gì.
     - n: 2
       at: 2026-11-20T13:05:23.716Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'Thẻ "Điền chỗ trống" nhưng câu hỏi không hiện chỗ trống nào; ba chip chỉ nằm dưới nhãn "Chỗ
+            trống 1", không gắn vào vị trí trong câu. Đã sửa: bỏ nút icon lạ, thay bằng dòng "Hoặc
+            nhấn phím Space".'
+    - n: 3
+      at: 2026-11-20T13:43:47.557Z
       lenses:
         order:
           verdict: open

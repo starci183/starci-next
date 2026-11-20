@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: b1e7169a03a16db4e44be5d6bf7a10852c125f870730fa30e335d312cf351800
+    sha256: d91d5beee8b8bcdbe2fe409fd792a7b29592caaa33e51e90b298973c5179ab25
   "1440":
     file: 1440.png
-    sha256: e0a979e6936396093945251346d5c4a02367cdce6825e65fd015d08f30be1ea6
+    sha256: b9f3da9fe9e4d7ae957eed8ddfe46ceb7b915b8a20f69ccace05ae5ee334e0dd
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -67,6 +67,32 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:18.907Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Ở 390 chữ "Đổi" đè lên dòng "0 / 10 thẻ hôm nay" (chữ chồng nhau, nhãn không đọc được ở khối
+            Mục tiêu mỗi ngày). Đã sửa: ô icon vùng rỗng hợp lệ (scope region), "Đổi" ở hàng tiêu đề
+            ở 1440.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:40.724Z
       lenses:
         order:
           verdict: open

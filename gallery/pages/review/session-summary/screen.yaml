@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: e246a01d24ef47d9b778733c7b34e0adbed564b68130977f070ffcc9b1d945de
+    sha256: 012fdb57f08fdae8ded99ecc9d719b6496897a9e9157bb6e54a63e6c4c92e754
   "1440":
     file: 1440.png
-    sha256: 386d2c372757ea7a19a8a39ac25078bcfa070602669d906926871a62ed47a075
+    sha256: 3372789bc0308fbe3c46687065a8ae970d43f306fb5ba5741f897d158b507779
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -68,6 +68,30 @@ audit:
             màn tổng kết nên không kiểm được.
     - n: 2
       at: 2026-11-20T13:05:29.104Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:53.642Z
       lenses:
         order:
           verdict: open

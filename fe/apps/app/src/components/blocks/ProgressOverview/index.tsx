@@ -15,7 +15,7 @@ export const ProgressOverview = () => {
             props={{
                 slot: page.slot,
                 placeholder: PROGRESS_PLACEHOLDER,
-                slotLabels: slotLabels(page.labels.unavailable),
+                slotLabels: { ...slotLabels(page.labels.unavailable), error: page.labels.pageError },
                 labels: page.labels,
             }}
             on={{ retry: page.retry }}

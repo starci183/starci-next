@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 40fdf314227a6dddf65b583a168e416bbaa8a9a2ffda4247c2f8f2f069b80c2f
+    sha256: 98228d4d2567cdad64ba48f3fbefe0c6c0109f3223bae827dcfae1ba5b1b5587
   "1440":
     file: 1440.png
-    sha256: ca1a8a2d5972ab1078f6440a81419be816db480821164257e815bc2435cc0865
+    sha256: e4c2b774ff7fc69b144cd69b22d7fb5cc022e1481d2d25af52ecbbdb8a1e0b30
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -66,6 +66,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:11.083Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 "Quản lý →" vẫn dính sát dòng "Bạn chưa thêm bộ thẻ nào" (không khoảng cách, xuống dòng
+            riêng).
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:28.003Z
       lenses:
         order:
           verdict: open

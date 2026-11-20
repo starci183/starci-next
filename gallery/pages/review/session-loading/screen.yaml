@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: c41b452170e6a884af72a365d3a4e6ac676e232b8f8f1ac8994ca55eec22e8f5
+    sha256: bc1fba1b3ac12bbe3cbc8530b275fb0d6c2699f6467fecd9de29add1ca545ac3
   "1440":
     file: 1440.png
-    sha256: da81df6257bd55e29ba0eaacb39ed6c4f59bec8091539623cb8b050dc82557a8
+    sha256: 2d63f29fd2116e985f7f41e511099db1865bd58bcb069dfffae582c589c86754
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -68,6 +68,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:22.390Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: 'Nút "Hiện đáp án" vẫn bật được và nhãn "Điều bạn nhớ" hiện thật trong lúc đang tải (nút nên
+            khoá). Đã sửa: hết chữ "xxxx".'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:45.413Z
       lenses:
         order:
           verdict: open

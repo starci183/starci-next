@@ -8,10 +8,10 @@ summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ 
 shots:
   "390":
     file: 390.png
-    sha256: 75619b25282ed1afc3a68eb0c5d9491c792b0e8970e48fe6dc553b1f990e7415
+    sha256: 0210982709c1c5d5264ad72e2026bfb09af0a2229100b003498b5c644edec029
   "1440":
     file: 1440.png
-    sha256: 4f74d5b43194752c90ef36625198691a43300361e81f2d2312b84264712fc818
+    sha256: 00c0785bf51a81dd4f089afcc5f05f43f09db5bedc0b0177796ca875b0d8cbcb
 code:
   - features/pages/ReviewDeckPage
   - components/blocks/ReviewDeck
@@ -69,6 +69,30 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:51.440Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:07.829Z
       lenses:
         order:
           verdict: open

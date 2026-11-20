@@ -1,4 +1,4 @@
-import { Button, Page } from "@starci/grammar/common"
+import { Button, Page, Stack } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
 
@@ -58,9 +58,11 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
         <SlotView
             slot={props.props.slot}
             forbiddenAction={
-                <Button intent="neutral" href={props.props.exitHref}>
-                    {props.props.exitLabel}
-                </Button>
+                <Stack gap="row" align="center">
+                    <Button intent="neutral" href={props.props.exitHref}>
+                        {props.props.exitLabel}
+                    </Button>
+                </Stack>
             }
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}

@@ -7,10 +7,10 @@ summary: Bộ xương của trang tiến độ khi đọc lần đầu.
 shots:
   "390":
     file: 390.png
-    sha256: afe4288b1868b4385d27a81497f37724b66683bdfad4d27a7233d84e1264b19c
+    sha256: 526b2872fb093e73fd83e66c3257c89a66b096a90cbc9abc4cbd8379e982b24c
   "1440":
     file: 1440.png
-    sha256: 2b6768a1e088d4c6d3867d2c1c7007455d48f1a5676a2c5ab391015d8ab1eb08
+    sha256: 98c6fbab6402729cc5958de7b5f949f6e45edcbd41de43266f88cead680b688a
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -67,6 +67,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:58.571Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Vẫn chữ "xxxxxx" đen làm nhãn số liệu và tiêu đề mục ở 1440 và 390; mục "Luyện code" hiện lỗi
+            giữa lúc các mục khác còn tải.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Chữ giữ chỗ "xxxxxx" thật còn đó.
+        states:
+          verdict: open
+          notes: Loading vẫn vẽ sai (chữ giữ chỗ thật) và trộn lỗi cục bộ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:13.722Z
       lenses:
         order:
           verdict: open

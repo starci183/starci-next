@@ -11,10 +11,10 @@ summary: "Route: `/progress` (ảnh chụp: học viên Premium, đã làm cả 
 shots:
   "390":
     file: 390.png
-    sha256: 5d2a44ade75428cacd1b4559d962f3a2bbc97a39b361281501c4d442d0d1072c
+    sha256: 3fe4ffaff840ca961256b451a972b1ffb7c484a3cb7483bc629cec831b10bc5f
   "1440":
     file: 1440.png
-    sha256: 79f7fdc01959ee424ea8b1254d759313bf65a9823c37c2d99625d60da475fd74
+    sha256: d61b0d16a54bde093f21d41562a46f3b1a5746ec116fa2788ab9166264abacd3
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -126,6 +126,34 @@ audit:
             khó tin.
     - n: 2
       at: 2026-11-20T13:05:55.685Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Ở 390 liên kết "Mở Essentials →", "Mở Ôn tập →", "Mở Luyện code →" rơi xuống dòng riêng dưới
+            tiêu đề mục thay vì cùng hàng. Đã sửa: danh sách 5 pattern + "Còn 15 pattern khác", lề
+            x=288, chỉ một nút Xem Premium.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Ảnh là tài khoản miễn phí ("Gói miễn phí", "Cần Premium", "Xem Premium"), không phải "Tiến
+            độ, đã Premium" của canvas/tên màn; không phân biệt được với progress/free.
+        truth:
+          verdict: open
+          notes: Mục Harness lỗi "Chưa tải được phần này" nằm ngay trong ảnh chuẩn (không có dữ liệu Harness);
+            cần ảnh có dữ liệu hoặc đánh dấu cần API.
+    - n: 3
+      at: 2026-11-20T13:44:10.817Z
       lenses:
         order:
           verdict: open

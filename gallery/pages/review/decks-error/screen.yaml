@@ -8,10 +8,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: ba9c214cf41cf685b0c508b22bab9a62b214fbbe11992bbbd0eaed921e7ceb09
+    sha256: d3ae40522ce247671c73bdefebfc893115644a27184a8a3b7c0481fab1484672
   "1440":
     file: 1440.png
-    sha256: b31b35908244e8a6519ac9c324606749d3767f82a5276c240681272bd6c75fd4
+    sha256: ea7ee04af2c04a2cbc2973d8fe51bf2107ea5e469329c08f53c83e71b94eddfe
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -66,6 +66,30 @@ audit:
             dùng "—".
     - n: 2
       at: 2026-11-20T13:05:44.548Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:00.332Z
       lenses:
         order:
           verdict: open

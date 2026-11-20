@@ -352,7 +352,7 @@
         "pageTitle": "Ôn tập",
         "errorTitle": "Không tải được",
         "errorText": "Không tải được hàng ôn hôm nay. Thẻ của bạn vẫn an toàn. Thử lại sau vài giây.",
-        "metaFree": "Miễn phí",
+        "metaFree": "Miễn phí",
         "metaNoDecks": "Chưa có bộ thẻ nào",
         "metaDue": "{due} thẻ đến hạn · {overdue} quá hạn",
         "metaGoal": "Mục tiêu {daily} thẻ/ngày",
@@ -429,7 +429,7 @@
         "review": "Ôn bộ này",
         "previewTitle": "Xem trước vài thẻ",
         "previewNote": "Chỉ hiện câu hỏi. Đáp án có khi bạn ôn.",
-        "removeTitle": "Bỏ bộ thẻ",
+        "removeTitle": "Bỏ khỏi hàng đợi",
         "removeText": "Thẻ của bộ này sẽ ngừng đến mỗi ngày. Lịch ôn đã có của bạn được giữ, thêm lại sau vẫn nối tiếp.",
         "remove": "Bỏ khỏi hàng đợi",
         "failed": "Chưa thêm hoặc bỏ được bộ thẻ. Thử lại sau ít giây."
@@ -915,6 +915,8 @@
         "tried": "Đã thử",
         "untried": "Chưa thử",
         "unavailable": "Không có ở trạng thái này",
+      "pageError": "Không tải được tiến độ",
+      "pageErrorText": "Máy chủ chưa trả lời. Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.",
         "progress": "Đã thử {tried}/{total} nhánh",
         "back": "Lùi một bước"
       },
@@ -2434,6 +2436,7 @@
       },
       "firstVisit": {
         "title": "Chưa có gì để đo, và đó là bình thường",
+        "start": "Bắt đầu",
         "text": "Mọi con số ở đây là việc bạn làm thật. Học một bài, luyện một bài hoặc ôn một thẻ là có số đầu tiên.",
         "essentials": {
           "title": "Essentials",

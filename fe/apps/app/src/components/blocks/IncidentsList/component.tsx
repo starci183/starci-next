@@ -1,4 +1,4 @@
-import { EmptyNotice, Page } from "@starci/grammar/common"
+import { Button, Grid, Heading, Illustration, Page, Stack, Text, type PageHeaderContent } from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -52,35 +52,72 @@ export type IncidentsListBaseProps = {
     readonly on: { readonly retry: () => void }
 }
 
+/** The page when no incident is written yet: the words and the way on beside the picture, so the page has no dead space. */
+const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: boolean }) => (
+    <Grid
+        kind="pair"
+        leading={
+            <Stack gap="region">
+                <Stack gap="row">
+                    <Heading level={2} scale="standard" isLoading={props.isLoading}>
+                        {props.labels.noneTitle}
+                    </Heading>
+                    <Text as="p" tone="muted" isLoading={props.isLoading}>
+                        {props.labels.noneBody}
+                    </Text>
+                </Stack>
+                <Stack gap="row" align="start">
+                    <Button intent="neutral" href="/essentials" isDisabled={props.isLoading}>
+                        {props.labels.noneAction}
+                    </Button>
+                </Stack>
+            </Stack>
+        }
+        trailing={
+            <Illustration
+                staticsKey="illustrations/empty/essentials-empty.png"
+                ratio="4:3"
+                loading="eager"
+                isLoading={props.isLoading}
+            />
+        }
+    />
+)
+
+/** The header of the page: the title, what it is and the facts of the read as its meta. */
+const headerOf = (labels: IncidentsLabels, meta: string | undefined): PageHeaderContent => ({
+    title: labels.title,
+    description: labels.description,
+    breadcrumbs: "root",
+    ...(meta === undefined ? {} : { meta }),
+})
+
 /**
  * Draws the incident list: the header with the facts as its meta, then the written incidents grouped by topic. With none written the
- * whole page says so (an illustration, the words, the way to Essentials).
+ * whole page says so (the words, the way to Essentials and a picture).
  */
 export const IncidentsListBase = (props: IncidentsListBaseProps) => {
     const { slot, placeholder, slotLabels, labels } = props.props
-    const meta = "items" in slot ? [...slot.items.facts, labels.runnerNote].join(" · ") : labels.runnerNote
     return (
-        <Page header={{ title: labels.title, description: labels.description, meta, breadcrumbs: "root" }}>
-            <SlotView
-                slot={slot}
-                placeholder={placeholder}
-                labels={slotLabels}
-                onRetry={props.on.retry}
-                render={(view, isLoading) =>
-                    view.groups.length === 0 ? (
-                        <EmptyNotice
-                            scope="page"
-                            message={labels.noneTitle}
-                            description={labels.noneBody}
-                            actionLabel={labels.noneAction}
-                            actionHref="/essentials"
-                            media={{ illustration: { staticsKey: "illustrations/empty/essentials-empty.png" } }}
-                        />
-                    ) : (
-                        <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
-                    )
-                }
-            />
-        </Page>
+        <SlotView<IncidentsScreenView, PageHeaderContent>
+            slot={slot}
+            placeholder={placeholder}
+            labels={slotLabels}
+            onRetry={props.on.retry}
+            header={(view) => headerOf(labels, [...view.facts, labels.runnerNote].join(" · "))}
+            headerFallback={headerOf(labels, undefined)}
+            render={(view, isLoading) =>
+                view.groups.length === 0 ? (
+                    <NoneYet labels={labels} isLoading={isLoading} />
+                ) : (
+                    <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
+                )
+            }
+            frame={(parts) => (
+                <Page header={parts.header} isLoading={parts.isLoading}>
+                    {parts.body}
+                </Page>
+            )}
+        />
     )
 }

@@ -176,9 +176,11 @@ export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
         <SlotView
             slot={props.props.slot}
             forbiddenAction={
-                <Button intent="neutral" href={props.props.exitHref}>
-                    {props.props.exitLabel}
-                </Button>
+                <Stack gap="row" align="center">
+                    <Button intent="neutral" href={props.props.exitHref}>
+                        {props.props.exitLabel}
+                    </Button>
+                </Stack>
             }
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}

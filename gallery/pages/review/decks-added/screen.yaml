@@ -8,10 +8,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: 365d4926b3fd687e1f768a4a8e1879df2d9519796d4df2524ce9d175dc65bb55
+    sha256: a0f78bf339ec608ea58faaecff7c6cefa67ef0f24113f592657b3b5ed629e283
   "1440":
     file: 1440.png
-    sha256: 3b9d29fada9ca637a7e2f28cda3d5c01a045a42db851e5b2d35f6ce0e885b754
+    sha256: 60fa3e42024e1aea3b6e618b4fda2d50a03a4037a469ffc9ca1473e9427ed858
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -71,6 +71,32 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:46.491Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Hàng đầu (Module 1) nền xám đặc cố định ở 1440 và 390 trong khi banner nói về bộ
+            NestJS/Thiết kế API: trạng thái hover/chọn dính, gây hiểu nhầm. Ở 390 cột tên chỉ ~110px
+            (tên ngắt 2 dòng) và meta bị cắt giữa chữ ("Back…").'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:02.272Z
       lenses:
         order:
           verdict: open

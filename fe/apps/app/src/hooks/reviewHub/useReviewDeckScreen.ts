@@ -102,7 +102,7 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
                 t("cards", { count: deck.cardCount }),
                 difficulties[deck.difficulty.toLowerCase()] ?? deck.difficulty,
                 ...deck.track.map(trackTitle),
-                deck.course.replace(/^\d+-/, "").replaceAll("-", " "),
+                trackTitle(deck.course.replace(/^\d+-/, "").replaceAll("-", " ")),
             ].join(" · "),
             description: deck.description,
             isAdded: deck.added,

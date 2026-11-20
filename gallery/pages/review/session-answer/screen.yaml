@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 36d2da2c52de6054d0eeafd1c5a8e88b1623ce81b570325f6ca3816939c00988
+    sha256: 38b5b8eeacbd6e8f8b58217907342399945aa94df9610635d7aed48a40237129
   "1440":
     file: 1440.png
-    sha256: 63cd8dabc13de461fd5d2b01c998be77f88b1b32a5e15148fb8787311c402eea
+    sha256: 17ca426bda8f2ecd0e03bd41aa5796cbb59c874ad1610143609bdcf4985c26ed
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -69,6 +69,33 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:27.852Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Phần đáp án vẫn là khối chữ liền: nhãn "Đáp án / Trả lời thẳng / Cơ chế / Bẫy thường gặp /
+            Đào sâu tiếp" cỡ 12 xám dính vào đoạn trên, không khoảng cách giữa các đoạn (1440
+            y375-770; 390 y480-960). Chữ đậm "container" trong thân là weight ngoài 400/500.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Đoạn "Đào sâu tiếp" vẫn bắt đầu bằng chữ thường "nếu cùng một service..."; lẫn thuật ngữ Anh
+            "unit-test, mock, loose coupling".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:51.852Z
       lenses:
         order:
           verdict: open

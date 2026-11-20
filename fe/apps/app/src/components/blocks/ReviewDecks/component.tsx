@@ -22,12 +22,19 @@ export type ReviewDecksBaseProps = {
 const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps, isLoading: boolean): ListRowData => ({
     id: deck.id,
     title: deck.title,
-    description: `${deck.facts}${deck.tracks.length === 0 ? "" : ` · ${deck.tracks.join(", ")}`}`,
+    description: deck.facts,
     href: deck.href,
     detail: (
-        <Text tone="muted" isLoading={isLoading}>
-            {deck.description}
-        </Text>
+        <Stack gap="identity">
+            {deck.tracks.length === 0 ? null : (
+                <Text size="xs" tone="muted" isLoading={isLoading}>
+                    {deck.tracks.join(", ")}
+                </Text>
+            )}
+            <Text tone="muted" isLoading={isLoading}>
+                {deck.description}
+            </Text>
+        </Stack>
     ),
     ...(deck.isAdded ? { badges: [{ label: props.props.labels.added, tone: "success" as const }] } : {}),
     action: {

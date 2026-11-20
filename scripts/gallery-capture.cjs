@@ -98,6 +98,22 @@ const earnProgress = async (p) => {
     await p.waitForTimeout(1500)
     await p.goto(ENTRY + "/progress", { waitUntil: "load" })
 }
+// The daily goal dialog with its last choice ("Khác...") picked, so the number field shows.
+const openGoalOther = async (p) => {
+    await p.waitForTimeout(2000)
+    await p
+        .getByRole("button", { name: /^Đổi$/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(1000)
+    await p
+        .getByRole("radio", { name: /Khác/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(800)
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -223,23 +239,9 @@ const SCREENS = [
         { holdOps: /"operationName":"AddReviewDeck"/, act: addDeck },
     ),
     S("review", "deck-added", "/review/decks", { act: openDeckThenAdd }),
-    S("review", "decks-added", "/review/decks", {
-        act: async (p) =>
-            p
-                .getByRole("button", { name: /Thêm bộ thẻ/ })
-                .first()
-                .click()
-                .catch(() => {}),
-    }),
+    S("review", "decks-added", "/review/decks", { act: addDeck }),
     S("review", "hub", "/review"),
-    S("review", "hub-goal", "/review", {
-        act: async (p) =>
-            p
-                .getByText("Đổi", { exact: true })
-                .first()
-                .click()
-                .catch(() => {}),
-    }),
+    S("review", "hub-goal", "/review", { act: openGoalOther }),
     S("review", "session", "/review/session"),
     S("review", "session-cloze", "/review/session", { act: pickCloze }),
     S("review", "session-answer", "/review/session", { act: flipCard }),

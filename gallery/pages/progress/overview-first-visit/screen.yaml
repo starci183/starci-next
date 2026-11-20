@@ -7,10 +7,10 @@ summary: "Chưa có gì để đo: trạng thái cả trang có minh hoạ, rồ
 shots:
   "390":
     file: 390.png
-    sha256: 80a733a2c6ccf7f4f575e16be325fad3818db2cad374e7b661350f047a8f7d6f
+    sha256: 8adb6b25e3a202c01704df430b3cc8853db9c6cc3f8094f1704181a242d6879e
   "1440":
     file: 1440.png
-    sha256: d12c72897816c9603d23a5dea6c97ce2a0e262157334ea4061caf31a5abe2223
+    sha256: 6afd9fd11eabdc907fe66f737323267ed2f5768dc3401f69613cfcbb6d3fad29
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -67,6 +67,32 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:56.999Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khối trạng thái rỗng cách header ~300px (1440 y210-500; 390 y270-580) và không có minh hoạ
+            first-run (Grammar empty-state first-run: scope page + illustration). Đã sửa: căn giữa
+            ngang, lề x=288."
+        actionable:
+          verdict: open
+          notes: Bước 2 "Luyện code" và bước 3 "Ôn tập" vẫn không có nút/liên kết để làm.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:12.248Z
       lenses:
         order:
           verdict: open

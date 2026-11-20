@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 96b4aec7dedef4c6c4f3c8474e06105c96c9848f887ee27ee7937cffe0740178
+    sha256: 59160da31fb00ec882f226aca8090c28d71360209c241c83b4b1c32ba3114869
   "1440":
     file: 1440.png
-    sha256: 3c83d8679a4f0b48671931d6225efbe3635ba58871f99c7b58ad0e35f09677bf
+    sha256: e91a28485feb38cfb6cd8d9c905700f806a51f0550f176f10cbce4abbb6e95ba
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -81,6 +81,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T13:05:25.087Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: '"Đúng rồi" chỉ là nhãn xanh 12 không có icon đúng/sai và không chuyển động; chip được chọn
+            chỉ đổi viền. Đã sửa: bỏ nút icon lạ.'
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:50.003Z
       lenses:
         order:
           verdict: open
