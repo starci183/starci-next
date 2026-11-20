@@ -125,8 +125,32 @@ audit:
           notes: ""
         states:
           verdict: pass
-          notes: "Bộ lọc Mọi nguồn hiện khi có từ 2 nguồn (Tabs filter có đếm), đúng ở 1440 và 390."
+          notes: Bộ lọc Mọi nguồn hiện khi có từ 2 nguồn (Tabs filter có đếm), đúng ở 1440 và 390.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T16:29:43.577Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
