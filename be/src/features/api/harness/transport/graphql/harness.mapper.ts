@@ -12,8 +12,8 @@ import type {
     HarnessTextView,
     HarnessTrapView,
 } from "@modules/domain/harness"
-import type { IdentityPrincipal } from "@modules/domain/identity"
-import type { ExecuteParams } from "@modules/platform/cqrs"
+import { toOptionalPrincipal, type IdentityPrincipal } from "@modules/domain/identity"
+import type { ExecuteParams, GuestExecuteParams } from "@modules/platform/cqrs"
 import type {
     BindHarnessBuildRequest,
     HarnessBuildRequest,
@@ -52,47 +52,47 @@ const authenticated = (identity: IdentityPrincipal): { readonly id: string; read
 
 /** Maps the locale input and the session to the message params. */
 export const toLocaleParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: HarnessLocaleInput,
-): ExecuteParams<HarnessLocaleRequest> => ({
+): GuestExecuteParams<HarnessLocaleRequest> => ({
     request: { locale: input.locale },
-    principal: authenticated(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the build input and the session to the message params. */
 export const toHarnessBuildParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: HarnessBuildInput,
-): ExecuteParams<HarnessBuildRequest> => ({
+): GuestExecuteParams<HarnessBuildRequest> => ({
     request: { locale: input.locale, id: input.id },
-    principal: authenticated(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the guides input and the session to the message params. */
 export const toHarnessGuidesParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: HarnessGuidesInput,
-): ExecuteParams<HarnessGuidesRequest> => ({
+): GuestExecuteParams<HarnessGuidesRequest> => ({
     request: { locale: input.locale, tool: input.tool },
-    principal: authenticated(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the guide input and the session to the message params. */
 export const toHarnessGuideParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: HarnessGuideInput,
-): ExecuteParams<HarnessGuideRequest> => ({
+): GuestExecuteParams<HarnessGuideRequest> => ({
     request: { locale: input.locale, tool: input.tool, slug: input.slug },
-    principal: authenticated(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the doc input and the session to the message params. */
 export const toHarnessDocParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: HarnessDocInput,
-): ExecuteParams<HarnessDocRequest> => ({
+): GuestExecuteParams<HarnessDocRequest> => ({
     request: { locale: input.locale, slug: input.slug },
-    principal: authenticated(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the doctor input and the session to the message params. */

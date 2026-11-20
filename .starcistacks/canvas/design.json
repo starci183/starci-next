@@ -7,6 +7,7 @@
     "cv",
     "devices",
     "essentials",
+    "guest",
     "harness",
     "incidents",
     "landing",
@@ -1306,6 +1307,56 @@
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
+    "guest/learn-home": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/header-menu": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/essentials-catalog": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/essentials-lesson": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/essentials-lesson-part1-end": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/lesson-locked": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/sign-in-modal": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/harness-hub": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/harness-guide": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
+    },
+    "guest/gate-projects": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T20:57:27+07:00",
+      "board": "https://claude.ai/artifact/UvCQD1jnFfJAuXCZLRsAgo"
     },
     "projects/new-created": {
       "status": "approved",

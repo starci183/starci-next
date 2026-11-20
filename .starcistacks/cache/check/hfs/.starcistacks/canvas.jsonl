@@ -43,6 +43,7 @@
 {"data":{},"findings":[],"hash":"d4ab1c34f4e19c8e4d6834fc06a96c38c9ee6c4253c5ef7af56642da0a966844","path":".starcistacks/canvas/briefs/49-progress-overview.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ea37536bf2432646c52dbc79ed2cda54f59274bb315585ea83ead0f0b9459999","path":".starcistacks/canvas/canvas.css","step":"file-rules"}
 {"data":{},"findings":[],"hash":"55ad8d829ea5c5ebe2fef2522a04ef5d4d8a0db1a61f055796efef3ef1f71a24","path":".starcistacks/canvas/design.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"5fd6e9eb0d38a7cbba477dfb953126ef6da35d60a38d44015a16daab30a0e0e9","path":".starcistacks/canvas/design.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2ab708c5065edc863ad6b980f7f8eb2acb2d47b8c92ab400876eb58e5d4fde0e","path":".starcistacks/canvas/pages/00-shared.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5e5ddc252122f4d39c2a17d13416dd3f2d0f05e08f2cb232cb50d8ea933c55e2","path":".starcistacks/canvas/pages/01-styles-shell-home-auth.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f529f892b565de64a6f2428b59f31c7e32937aa33da0fbc9444c49b9414f90ba","path":".starcistacks/canvas/pages/02-styles-essentials.html","step":"file-rules"}
@@ -96,5 +97,11 @@
 {"data":{},"findings":[],"hash":"95f6978cfba0b67566d7ca6fc655a3e555d2ebe69bd9835a23d856e9007d2f36","path":".starcistacks/canvas/pages/49-progress-overview.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0be3fcf949451ca8de1cdcc0eee8f4b3d4e65aaf235ef0195476fe6a9ffc2fd4","path":".starcistacks/canvas/pages/49b-incidents-list.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6f4e1f87a3b1bb65738513e125b66b46b097f48a69f23a6c554229c233c0a7e3","path":".starcistacks/canvas/pages/50-paths-choose.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"2ac91cae25d9d5ef5d17f198aeb6d19999f2a0c941e9ece8be41c2369699de49","path":".starcistacks/canvas/pages/51-guest-learn-home.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6eb832454914ee47f495fe0b88b1608c6caa8991008d9f8ee19efecebab672d9","path":".starcistacks/canvas/pages/52-guest-essentials.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"95cabc4171ef0dc75ed29947b82eda6a91cfa2deff8515d0d7fa746c263267dc","path":".starcistacks/canvas/pages/53-guest-lesson-locked.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7a500aa37d09882a053f22392d0d7b4bef2219c04c1d0650c2749837ee1623b2","path":".starcistacks/canvas/pages/54-guest-harness.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c8e256ff0d79fee46b5dfa0a3ba746a2e963e79e96df506d8d659b58c246f4d1","path":".starcistacks/canvas/pages/55-guest-header-menu.html","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1d7f73495be6083eca18193c701f1238763b9459724069bdd6cf47c877406579","path":".starcistacks/canvas/pages/56-guest-gate.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6b0b931b8bc30720844284a771cfb305de56c59b9f9c5a21b09e0846b0c616a4","path":".starcistacks/canvas/starci-next-design.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a09365c0424e5103b115d6a60d4476680ad15677ebb18840ae182df43a6ff91d","path":".starcistacks/canvas/tokens.css","step":"file-rules"}

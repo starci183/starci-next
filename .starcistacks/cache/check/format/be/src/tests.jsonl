@@ -95,14 +95,14 @@
 {"findings":[],"hash":"c85bf6febf95b1eb5797d81d156be818095ed71d157f263247262c737b949078","path":"be/src/tests/integration/judge0/judge0.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"6c881a90479e6a819342f0dc79ec733ef72b74a4fb3ed2cb1c5c9a9d7fd51c42","path":"be/src/tests/integration/keycloak/keycloak-social.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"0e52a9b0ec2d72bc8816b7de56c3e648e8fd1719383acbc22c7633e6db1dbb1b","path":"be/src/tests/integration/keycloak/keycloak.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"ba45ed03876035fb1ac12d409974688186aa18690f3aa240b7c0831b3917c7a9","path":"be/src/tests/integration/lesson/doors.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"e333cc84b4ed3ea9e20c6220e02fe70fc6b208980eed9c2dd062402edfdce7e4","path":"be/src/tests/integration/lesson/doors.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"9e3c2030530961e80b35061e5180111202b843dca86af6c11fa1746d1972a915","path":"be/src/tests/integration/lesson/import.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"edbdabf290f1e6fc1e6286aa4c0694710b48cb5784e24cdfc95ead765330510d","path":"be/src/tests/integration/mail/mail.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f42a21577617fe2c8d6b65f7fb9ede029b20dc55ff5dfbe3e2352e73acaf8b66","path":"be/src/tests/integration/notification/notification.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f0dbbd516370927927544d4b8140bd921dc302fff083a975d9fc2ab3eca05e76","path":"be/src/tests/integration/object-storage/object-storage.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"69afbf32e70fec81e2836486b40463e44709a7133c6fb2f9101e4ed46a527d7b","path":"be/src/tests/integration/path/path.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"16556ca5f7cba8c260cf88950fb1b4fb79530923309009edb752e14a2d1b10ec","path":"be/src/tests/integration/path/path.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"77f97552fa13683f782b8a5e7769f054fcd769000f5eccbf0f83bd50f37637d9","path":"be/src/tests/integration/payos/payos.integration-spec.ts","step":"prettier"}
-{"findings":[],"hash":"2eaffb40a972f4e713fbb370177e63e664901b9c2f65dbee337c51968bd48fa2","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
+{"findings":[],"hash":"1c20f95b34bc539cbb13d5465a2433079269cdde3ba8f7147177438386b9ab6c","path":"be/src/tests/integration/practice/doors.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"f53ab780e05e71bb951ce4c37f220d35001ca9352cdfc5e3d04e0b1c03d55998","path":"be/src/tests/integration/probe/probe.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"141784b6e7dee3c43a0969f72e5a8dec40b220e68ee0b84d4b729c6fbf515c15","path":"be/src/tests/integration/project/attestation.integration-spec.ts","step":"prettier"}
 {"findings":[],"hash":"60c8b83bf11755fdd143dbae31824139ee268ea275e914b6efdd0adb9c52c74f","path":"be/src/tests/integration/project/fixes.integration-spec.ts","step":"prettier"}

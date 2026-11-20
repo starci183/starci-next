@@ -43,10 +43,13 @@ import {
     SELECT_STATUS,
 } from "./persistence/practice.sql"
 
+/** The learner id a guest read stands under: the nil uuid belongs to no learner, so every standing of a guest comes back empty. */
+export const GUEST_LEARNER_ID = "00000000-0000-0000-0000-000000000000"
+
 @Injectable()
 /**
  * The learner reads of the practice capability: the patterns with the numbers of the viewer, the problems of a pattern, one
- * problem to open, the problem to do next and the readiness per pattern. Every problem is open to every signed-in learner;
+ * problem to open, the problem to do next and the readiness per pattern. Every problem is open to every learner and, to read, to a guest;
  * nothing a read returns holds a hidden test or a solution.
  */
 export class PracticeReadService {

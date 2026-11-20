@@ -1,6 +1,6 @@
-import type { IdentityPrincipal } from "@modules/domain/identity"
+import { toOptionalPrincipal, type IdentityPrincipal } from "@modules/domain/identity"
 import type { PathCatalogView } from "@modules/domain/path"
-import type { ExecuteParams } from "@modules/platform/cqrs"
+import type { ExecuteParams, GuestExecuteParams } from "@modules/platform/cqrs"
 import type { ChooseOutcomePathRequest, OutcomePathsRequest } from "../../application/outcome-paths.contracts"
 import type { ChooseOutcomePathInput } from "./dto/choose-outcome-path.input"
 import type { OutcomePathsInput } from "./dto/outcome-paths.input"
@@ -8,11 +8,11 @@ import type { OutcomePathsType } from "./dto/outcome-paths.type"
 
 /** Maps the paths input and the session to the message params. */
 export const toOutcomePathsParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: OutcomePathsInput,
-): ExecuteParams<OutcomePathsRequest> => ({
+): GuestExecuteParams<OutcomePathsRequest> => ({
     request: { locale: input.locale },
-    principal: { id: identity.subject, role: "authenticated" },
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the choose input and the session to the message params. */
