@@ -41,17 +41,34 @@ const navRowOf = (doc: HarnessDocNavItem): ListRowData => ({
 })
 
 /**
- * Draws one article of part 3 as three panes read once: the list of articles, the long markdown in anchored sections with its
- * diagrams, and the outline of this article. One read feeds all three, so an error draws one notice.
+ * Draws one article of part 3 as three panes of one read: the list of articles, the long markdown in anchored sections with its
+ * diagrams, and the outline of this article. One SlotView feeds the body and the aside, so a failure draws one notice.
  */
 export const HarnessDocBase = (props: HarnessDocBaseProps) => (
-    <Page chrome="panes" layout="workspace" header={props.props.header}>
-        <SlotView
-            slot={props.props.slot}
-            placeholder={props.props.placeholder}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(view, isLoading) => (
+    <SlotView
+        slot={props.props.slot}
+        placeholder={props.props.placeholder}
+        labels={props.props.slotLabels}
+        onRetry={props.on.retry}
+        render={(view, isLoading) => <DocBody view={view} doc={props} isLoading={isLoading} />}
+        aside={(view, isLoading) => (
+            <Section
+                kind="list"
+                title={props.props.labels.outlineTitle}
+                headingLevel={2}
+                isLoading={isLoading}
+                items={view.outline.map((entry, index) => ({
+                    id: entry.id,
+                    title: entry.label,
+                    leading: { position: index + 1 },
+                    href: entry.href,
+                }))}
+                empty={props.props.labels.outlineEmpty}
+            />
+        )}
+        asideFallback={null}
+        frame={({ body, aside, isLoading }) => (
+            <Page chrome="panes" layout="workspace" header={props.props.header}>
                 <PaneGrid
                     label={props.props.labels.outlineTitle}
                     areas={{ base: ["aside", "main", "nav"], wide: ["nav main aside"] }}
@@ -70,30 +87,14 @@ export const HarnessDocBase = (props: HarnessDocBaseProps) => (
                             />
                         </PaneSection>
                     </Pane>
-                    <Pane area="main" scroll label={view.title === "" ? props.props.labels.outlineTitle : view.title}>
-                        <PaneSection>
-                            <DocBody view={view} doc={props} isLoading={isLoading} />
-                        </PaneSection>
+                    <Pane area="main" scroll label={props.props.labels.outlineTitle}>
+                        <PaneSection>{body}</PaneSection>
                     </Pane>
                     <Pane area="aside" scroll label={props.props.labels.outlineTitle}>
-                        <PaneSection>
-                            <Section
-                                kind="list"
-                                title={props.props.labels.outlineTitle}
-                                headingLevel={2}
-                                isLoading={isLoading}
-                                items={view.outline.map((entry, index) => ({
-                                    id: entry.id,
-                                    title: entry.label,
-                                    leading: { position: index + 1 },
-                                    href: entry.href,
-                                }))}
-                                empty={props.props.labels.outlineEmpty}
-                            />
-                        </PaneSection>
+                        <PaneSection>{aside}</PaneSection>
                     </Pane>
                 </PaneGrid>
-            )}
-        />
-    </Page>
+            </Page>
+        )}
+    />
 )

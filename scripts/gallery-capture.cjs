@@ -27,6 +27,139 @@ const answerAs = async (p, n, isRight) => {
         .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
     await p.waitForTimeout(1200)
 }
+// ---- next-ux-career: harness, career (experience, verify), cv and profile. Reads are held, refused or answered by operation name on the page itself (setup).
+const gqlName = (route) => {
+    try {
+        return JSON.parse(route.request().postData() || "{}").operationName || ""
+    } catch {
+        return ""
+    }
+}
+const opHold = (re) => async (p) =>
+    p.route(/graphql/, (route) => (re.test(gqlName(route)) ? undefined : route.fallback()))
+const opRefuse = (re) => async (p) =>
+    p.route(/graphql/, (route) => (re.test(gqlName(route)) ? route.abort() : route.fallback()))
+const opAnswer = (re, data, errors) => async (p) =>
+    p.route(/graphql/, (route) =>
+        re.test(gqlName(route))
+            ? route.fulfill({ contentType: "application/json", body: JSON.stringify(errors ? { errors } : { data }) })
+            : route.fallback(),
+    )
+const many =
+    (...fns) =>
+    async (p) => {
+        for (const f of fns) await f(p)
+    }
+const CV_LINES = [
+    [
+        "Sửa lỗi gọi trùng lệnh thanh toán",
+        "essentials",
+        "Độ tin cậy của API · Phần 3",
+        "SC-7F3K",
+        "2026-11-12T08:00:00Z",
+    ],
+    ["Dựng pipeline đánh giá model", "harness", "Harness · Bản dựng 3", "HN-2D9Q", "2026-11-04T08:00:00Z"],
+    ["Booking API, cột mốc 2: đặt chỗ không trùng", "projects", "Dự án Booking API", "PJ-91LM", "2026-11-02T08:00:00Z"],
+    ["Luyện code: nhóm Hai con trỏ (5/5 bài)", "practice", "Luyện code", "PR-55QD", "2026-10-30T08:00:00Z"],
+    ["Cache hai tầng cho trang sản phẩm", "projects", "Dự án Shop API", "PJ-30AB", "2026-10-25T08:00:00Z"],
+    ["Hàng đợi retry có backoff", "essentials", "Essentials · Phần 4", "SC-41ZC", "2026-10-21T08:00:00Z"],
+].map(([line, source, subject, verificationCode, signedAt]) => ({
+    line,
+    source,
+    signedAt,
+    verificationCode,
+    signerRole: "TEACHER",
+    subject,
+    evidence: [{ kind: "lesson-proved", count: 4 }],
+}))
+const cvOf = (n) => ({ publicCv: { displayName: "Minh Nguyễn", avatarUrl: null, lines: CV_LINES.slice(0, n) } })
+const verifyOf = (state) => ({
+    verifyExperience: {
+        code: "SC-7F3K",
+        itemType: "essentials",
+        part: "essentials",
+        line: {
+            vi: "Sửa lỗi gọi trùng lệnh thanh toán bằng khóa idempotency, có kiểm thử kịch bản qua CLI.",
+            en: "Fixed duplicate payment calls with an idempotency key, covered by CLI scenario tests.",
+        },
+        state,
+        signerRole: "TEACHER",
+        signedAt: "2026-11-12T08:00:00Z",
+        revokedAt: state === "revoked" ? "2026-11-18T08:00:00Z" : null,
+        evidenceKinds: ["lesson-proved"],
+    },
+})
+const itemOf = (id, state, part, line, extra = {}) => ({
+    itemId: id,
+    verificationCode: state === "verified" ? "SC-" + id.slice(-4).toUpperCase() : null,
+    itemType: part,
+    part,
+    output: line,
+    subject: part === "harness" ? "Harness · Bản dựng 4" : "Độ tin cậy của API · Phần 3",
+    state,
+    line: state === "verified" || state === "pending-review" ? { vi: line, en: line } : null,
+    draftLine: state === "ai-graded" ? { vi: line, en: "Built and tested a harness for a coding agent." } : null,
+    evidence: [{ kind: "lesson-proved", ref: id, proofForm: "cli", at: "2026-11-10T08:00:00Z" }],
+    grade:
+        state === "ai-graded"
+            ? {
+                  result: "pass",
+                  criteria: [1, 2, 3, 4, 5].map((n) => ({
+                      criterion: "c" + n,
+                      level: n === 5 ? 0 : 1,
+                      evidenceQuote: "",
+                  })),
+              }
+            : null,
+    returnNote:
+        state === "returned" ? "Có một bài bạn đã xem lời giải. Hãy làm lại bài đó trước khi gửi lần nữa." : null,
+    returnCount: state === "returned" ? 1 : 0,
+    dueAt: state === "pending-review" ? "2026-11-18T08:00:00Z" : null,
+    signature: state === "verified" ? { role: "TEACHER", signedAt: "2026-11-12T08:00:00Z" } : null,
+    revokedAt: null,
+    shownPublicly: state === "verified",
+    defenseQuestions: state === "ai-graded" ? ["Vì sao chặn symlink?", "Retry có an toàn không?"] : [],
+    updatedAt: "2026-11-15T08:00:00Z",
+    ...extra,
+})
+const EXPERIENCE = {
+    myExperience: {
+        hiringMinVerified: 3,
+        items: [
+            itemOf(
+                "00000000-0000-4000-8000-00000000a001",
+                "verified",
+                "essentials",
+                "Sửa lỗi gọi trùng lệnh thanh toán",
+            ),
+            itemOf("00000000-0000-4000-8000-00000000a002", "verified", "harness", "Dựng pipeline đánh giá model", {
+                shownPublicly: false,
+            }),
+            itemOf(
+                "00000000-0000-4000-8000-00000000a003",
+                "pending-review",
+                "projects",
+                "Booking API, cột mốc 2: đặt chỗ không trùng",
+            ),
+            itemOf(
+                "00000000-0000-4000-8000-00000000a004",
+                "ai-graded",
+                "harness",
+                "Dựng và kiểm thử harness cho agent viết mã, đo bằng bộ kiểm tra tự động.",
+            ),
+            itemOf(
+                "00000000-0000-4000-8000-00000000a005",
+                "returned",
+                "practice",
+                "Luyện code: nhóm Hai con trỏ (5/5 bài)",
+            ),
+        ],
+    },
+}
+const stateShots = (area, screen, route, op) => [
+    S(area, screen + "-loading", route, { setup: opHold(op) }),
+    S(area, screen + "-error", route, { setup: opRefuse(op) }),
+]
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -121,8 +254,65 @@ const SCREENS = [
     S("projects", "concept", { from: "projects/milestone", match: /^\/projects\/[0-9a-f-]{36}\/[^/]+\/[^/]+$/ }),
     // A signed-in reader without Premium (CAPTURE_FREE_STATE) sees the pitch; without the file the shot falls back to the guest context.
     S("projects", "paywall", "/projects", { free: true }),
-    S("career", "experience", "/experience"),
-    S("career", "profile", "/profile"),
+    // ---- next-ux-career
+    S("harness", "hub", "/harness"),
+    ...stateShots("harness", "hub", "/harness", /^HarnessHub$/),
+    S("harness", "builds", "/harness/build"),
+    ...stateShots("harness", "builds", "/harness/build", /^HarnessBuilds$/),
+    S("harness", "build", "/harness/build/agent-cli"),
+    ...stateShots("harness", "build", "/harness/build/agent-cli", /^HarnessBuild$/),
+    S("harness", "use", "/harness/use"),
+    ...stateShots("harness", "use", "/harness/use", /^(HarnessGuides|HarnessDoctor|HarnessTrials)$/),
+    S("harness", "guide", "/harness/use/claude/hooks"),
+    ...stateShots("harness", "guide", "/harness/use/claude/hooks", /^HarnessGuide$/),
+    S("harness", "docs", "/harness/docs"),
+    ...stateShots("harness", "docs", "/harness/docs", /^HarnessDocs$/),
+    S("harness", "doc", "/harness/docs/overview"),
+    ...stateShots("harness", "doc", "/harness/docs/overview", /^HarnessDoc$/),
+    S("career", "experience", "/experience", { setup: opAnswer(/^MyExperience$/, EXPERIENCE) }),
+    S("career", "experience-first-visit", "/experience"),
+    ...stateShots("career", "experience", "/experience", /^MyExperience$/),
+    S("career", "verify", "/verify/SC-7F3K", {
+        guest: true,
+        setup: opAnswer(/^VerifyExperience$/, verifyOf("verified")),
+    }),
+    S("career", "verify-revoked", "/verify/SC-7F3K", {
+        guest: true,
+        setup: opAnswer(/^VerifyExperience$/, verifyOf("revoked")),
+    }),
+    S("career", "verify-not-found", "/verify/SC-0000", {
+        guest: true,
+        setup: opAnswer(/^VerifyExperience$/, null, [
+            { message: "not found", extensions: { code: "EXPERIENCE_VERIFICATION_NOT_FOUND" } },
+        ]),
+    }),
+    S("career", "verify-loading", "/verify/SC-7F3K", { guest: true, setup: opHold(/^VerifyExperience$/) }),
+    S("career", "verify-error", "/verify/SC-7F3K", { guest: true, setup: opRefuse(/^VerifyExperience$/) }),
+    S("cv", "public", "/cv/minh-nguyen", { guest: true, setup: opAnswer(/^PublicCv$/, cvOf(4)) }),
+    S("cv", "public-few-lines", "/cv/minh-nguyen", { guest: true, setup: opAnswer(/^PublicCv$/, cvOf(1)) }),
+    S("cv", "public-many-lines", "/cv/minh-nguyen", { guest: true, setup: opAnswer(/^PublicCv$/, cvOf(6)) }),
+    S("cv", "public-not-found", "/cv/khong-co", {
+        guest: true,
+        setup: opAnswer(/^PublicCv$/, null, [{ message: "not found", extensions: { code: "PROFILE_CV_NOT_FOUND" } }]),
+    }),
+    S("cv", "public-loading", "/cv/minh-nguyen", { guest: true, setup: opHold(/^PublicCv$/) }),
+    S("cv", "public-error", "/cv/minh-nguyen", { guest: true, setup: opRefuse(/^PublicCv$/) }),
+    S("cv", "public-share", "/cv/minh-nguyen", {
+        guest: true,
+        setup: opAnswer(/^PublicCv$/, cvOf(4)),
+        act: async (p) => {
+            await p
+                .getByRole("button", { name: "Chia sẻ CV" })
+                .first()
+                .click()
+                .catch(() => {})
+            await p.waitForTimeout(800)
+        },
+    }),
+    S("profile", "overview", "/profile"),
+    S("profile", "new", "/profile"),
+    S("profile", "edit", "/profile/edit"),
+    ...stateShots("profile", "edit", "/profile/edit", /^MyProfile$/),
     S("career", "review-queue", "/review-queue"),
     S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
     S("commerce", "premium", "/premium"),
@@ -224,6 +414,20 @@ const norm = (href) => {
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
+            // A dev server on another port is not an origin the core api accepts: present the stack's own origin on its api calls (CAPTURE_API_ORIGIN).
+            if (process.env.CAPTURE_API_ORIGIN)
+                await p.route(/\/(graphql|api)(\/|$|\?)/, async (route) => {
+                    try {
+                        await route.fulfill({
+                            response: await route.fetch({
+                                headers: { ...route.request().headers(), origin: process.env.CAPTURE_API_ORIGIN },
+                            }),
+                        })
+                    } catch {
+                        await route.abort().catch(() => {})
+                    }
+                })
+            if (s.setup) await s.setup(p)
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
             if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
             if (s.refuse)
