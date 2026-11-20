@@ -68,7 +68,6 @@ export type PathsChooseBaseProps = {
         readonly isPending: boolean
         /** The result of the last choice in words; empty when nothing happened. */
         readonly status: string
-        readonly signInHref: string
     }
     readonly on: {
         readonly retry: () => void
@@ -77,12 +76,16 @@ export type PathsChooseBaseProps = {
         readonly choose: (id: string) => void
         readonly confirm: () => void
         readonly cancel: () => void
+        /** Opens the sign-in dialog in place; the reader returns to this page. */
+        readonly signIn: () => void
     }
 }
 
 /** The sign-in command shown to a reader who is not signed in. */
-const SignInAction = (props: Pick<PathsChooseBaseProps["props"], "labels" | "signInHref">) => (
-    <Button intent="commit" href={props.signInHref}>
+const SignInAction = (
+    props: Pick<PathsChooseBaseProps["props"], "labels"> & Pick<PathsChooseBaseProps["on"], "signIn">,
+) => (
+    <Button intent="commit" onPress={props.signIn}>
         {props.labels.signedOut.action}
     </Button>
 )
@@ -102,7 +105,7 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 labels={{ ...slotLabels, forbidden: labels.signedOut.title }}
                 errorDescription={props.props.errorText}
                 forbiddenDescription={labels.signedOut.body}
-                forbiddenAction={<SignInAction labels={labels} signInHref={props.props.signInHref} />}
+                forbiddenAction={<SignInAction labels={labels} signIn={props.on.signIn} />}
                 onRetry={props.on.retry}
                 render={(view, isLoading) => (
                     <Stack gap="region">

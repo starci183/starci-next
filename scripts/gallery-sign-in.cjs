@@ -15,6 +15,14 @@ const lastMail = async (to) => {
 ;(async () => {
     const b = await chromium.launch()
     const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } })
+    // A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
+    if (process.env.CAPTURE_ORIGIN_AS)
+        await ctx.route(/\/(graphql|api\/)/, async (route) => {
+            const response = await route.fetch({
+                headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
+            })
+            await route.fulfill({ response })
+        })
     const p = await ctx.newPage()
     await p.goto(`${ENTRY}/vi/sign-in`, { waitUntil: "networkidle" })
     await p.getByLabel(/Email hoặc tên đăng nhập/).fill(cred.email)

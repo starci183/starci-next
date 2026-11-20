@@ -8,12 +8,8 @@ code:
   - features/pages/PathsChoosePage
   - components/blocks/PathsChoose
 shots:
-  "390":
-    file: 390.png
-    sha256: db08629a4203d4db74f659096e72f5b9d125332ddcd16b6bde9effa594fc52f6
-  "1440":
-    file: 1440.png
-    sha256: e23b66f97f09d027d952a49ba62af10481245bcd800adb3ed826237857e2d1be
+  "1440": { file: 1440.png, sha256: "" }
+  "390": { file: 390.png, sha256: "" }
 sections:
   - id: s1
     title: Cần đăng nhập
@@ -30,34 +26,4 @@ considered:
     chosen: true
     why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
       thẻ, chỉ SlotView rẽ nhánh tải"
-audit:
-  builder:
-    agent: next-ux-ess
-  auditor:
-    agent: next-ux-auditor
-  rounds:
-    - n: 1
-      at: 2026-11-20T12:55:30.693Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: open
-          notes: 'Ảnh là trang Đăng nhập chung, không phải khung canvas ("Cần đăng nhập để chọn lộ trình" + "Đăng nhập để lưu lộ trình bạn chọn và theo dõi tiến độ"); người dùng không biết vì sao bị đưa tới đây và danh sách lộ trình không hiện.'
-        truth:
-          verdict: open
-          notes: "Khung chưa đăng nhập của /paths/choose chưa đúng canvas."
-  escalate: null
+audit: null

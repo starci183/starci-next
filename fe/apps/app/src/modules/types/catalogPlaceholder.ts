@@ -8,7 +8,7 @@ export const CATALOG_PLACEHOLDER: CatalogView = {
     topics: [],
     groups: [1, 2].map((group) => ({
         id: `placeholder-${group}`,
-        title: "…",
+        title: "",
         progressLabel: "xxxxxxxxxx",
         done: 0,
         total: 1,

@@ -59,6 +59,13 @@ const SCREENS = [
     S("paths", "choose-loading", "/paths/choose", { hold: true, hit: "paths" }),
     S("paths", "choose-error", "/paths/choose", { refuse: true, hit: "paths" }),
     S("paths", "choose-signed-out", "/paths/choose", { guest: true }),
+    // The same screen with the sign-in modal open: a state shot of choose-signed-out (modal-1440.png, modal-390.png).
+    S("paths", "choose-signed-out-modal", "/paths/choose", {
+        guest: true,
+        clickMain: "Đăng nhập",
+        dirAs: "choose-signed-out",
+        prefix: "modal-",
+    }),
     S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
     S("essentials", "catalog", "/essentials"),
     // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
@@ -218,7 +225,7 @@ const norm = (href) => {
             }
         }
         resolved[`${s.area}/${s.screen}`] = route
-        const dir = path.join(PAGES, s.area, s.screen)
+        const dir = path.join(PAGES, s.area, s.dirAs || s.screen)
         fs.mkdirSync(dir, { recursive: true })
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
@@ -278,6 +285,15 @@ const norm = (href) => {
                     .catch(() => {})
                 await p.waitForTimeout(800)
             }
+            if (s.clickMain) {
+                await p
+                    .locator("main")
+                    .getByRole("button", { name: s.clickMain, exact: true })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(1500)
+            }
             if (s.clickText) {
                 await p
                     .getByRole("button", { name: s.clickText })
@@ -321,7 +337,7 @@ const norm = (href) => {
             }
             // The Next dev indicator (the round N badge) is not part of any screen.
             await p.addStyleTag({ content: "nextjs-portal{display:none!important}" }).catch(() => {})
-            await p.screenshot({ path: path.join(dir, `${w}.png`), fullPage: true })
+            await p.screenshot({ path: path.join(dir, `${s.prefix || ""}${w}.png`), fullPage: true })
             if (w === 1440) report.push(`${s.area}/${s.screen}: ${route} -> ${res?.status?.()} final ${norm(p.url())}`)
             await p.close()
         }

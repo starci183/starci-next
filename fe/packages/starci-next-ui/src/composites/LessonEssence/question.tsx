@@ -86,7 +86,7 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
     const isBusy = question.status === "pending" || question.status === "grading"
     return (
         <Stack gap="section">
-            <Text as="p" isStrong>
+            <Text as="p" isStrong isLoading={props.isLoading}>
                 {withInlineCode(question.prompt)}
             </Text>
             {isGraded ? (

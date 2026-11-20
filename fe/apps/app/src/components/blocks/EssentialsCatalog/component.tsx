@@ -54,6 +54,7 @@ const NoResult = (props: Pick<WellProps, "labels" | "filters" | "on">) => (
 const Toolbar = (props: WellProps) => (
     <CatalogToolbar
         labels={props.labels}
+        isLoading={props.isLoading}
         statuses={props.labels.statuses.map((each) => ({
             ...each,
             count: props.view.counts[each.id as CatalogStatusFilter],

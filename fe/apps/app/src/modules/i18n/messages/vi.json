@@ -719,8 +719,8 @@
         "notFound": "Lộ trình này không còn trong danh sách."
       },
       "signedOut": {
-        "title": "Đăng nhập để chọn mục tiêu",
-        "body": "Lộ trình bạn chọn được lưu theo tài khoản của bạn.",
+        "title": "Cần đăng nhập để chọn lộ trình",
+        "body": "Đăng nhập để lưu lộ trình bạn chọn và theo dõi tiến độ.",
         "action": "Đăng nhập"
       },
       "errorTitle": "Không tải được danh sách lộ trình",

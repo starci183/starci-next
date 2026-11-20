@@ -719,8 +719,8 @@
         "notFound": "This path is no longer in the list."
       },
       "signedOut": {
-        "title": "Sign in to choose a goal",
-        "body": "The path you choose is saved to your account.",
+        "title": "Sign in to choose a path",
+        "body": "Sign in to save the path you choose and follow your progress.",
         "action": "Sign in"
       },
       "errorTitle": "Could not load the paths",
