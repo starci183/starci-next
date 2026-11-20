@@ -171,8 +171,12 @@ const SCREENS = [
 // A screen may name the operations its held or refused read stands for (ops: a regexp over the operation names); else the Essentials reads.
 // The core API accepts one browser origin (the ingress); a lane's own next dev on another port sends its reads as that origin (CAPTURE_ORIGIN_AS=http://localhost:3280).
 const ORIGIN_AS = process.env.CAPTURE_ORIGIN_AS
-const spoof = (route) =>
-    route.continue(ORIGIN_AS ? { headers: { ...route.request().headers(), origin: ORIGIN_AS } } : undefined)
+const spoof = async (route) => {
+    if (!ORIGIN_AS) return route.continue()
+    // The page's own Origin cannot be changed in flight, so the read is made again from here with the accepted one and its answer handed back.
+    const answer = await route.fetch({ headers: { ...route.request().headers(), origin: ORIGIN_AS } })
+    return route.fulfill({ response: answer })
+}
 const isHeldRead = (route, s) => (s.ops ? s.ops.test(route.request().postData() ?? "") : isEssentialsRead(route))
 const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
 const norm = (href) => {

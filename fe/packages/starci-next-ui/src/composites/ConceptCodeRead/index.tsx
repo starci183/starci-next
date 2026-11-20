@@ -1,8 +1,6 @@
 import {
     Alert,
-    Badge,
     Button,
-    DataTable,
     EmptyNotice,
     Input,
     Section,
@@ -10,6 +8,7 @@ import {
     Text,
     Textarea,
     type BadgeTone,
+    type ListRowData,
 } from "@starci/grammar/common"
 import type { ConceptDraftView } from "../ConceptDrawer/types"
 
@@ -146,26 +145,18 @@ export const ConceptCodeRead = (props: ConceptCodeReadProps) => {
                     {props.issueWords === "" ? null : <Alert tone="negative" title={props.issueWords} />}
                 </Stack>
             </Section>
-            <Section title={labels.rubricTitle} headingLevel={2} isLoading={props.isLoading}>
-                <DataTable
-                    label={labels.rubricTitle}
-                    isLoading={props.isLoading}
-                    phone="table"
-                    columns={[
-                        { id: "criterion", label: labels.rubricTitle, isLabelHidden: true },
-                        { id: "verdict", label: labels.ciVerdict, isLabelHidden: true, width: "fit" },
-                    ]}
-                    rows={props.rubric.map((row) => ({ ...row }))}
-                    renderCell={(row, columnId) =>
-                        columnId === "criterion" ? (
-                            <Text>{row.text}</Text>
-                        ) : (
-                            <Badge tone={VERDICT_TONE[row.verdict]}>{props.verdictLabels[row.verdict]}</Badge>
-                        )
-                    }
-                    emptyContent={<EmptyNotice message={labels.rubricEmpty} mark="none" frame="frameless" />}
-                />
-            </Section>
+            <Section
+                kind="list"
+                title={labels.rubricTitle}
+                headingLevel={2}
+                isLoading={props.isLoading}
+                items={props.rubric.map((row): ListRowData => ({
+                    id: row.id,
+                    title: row.text,
+                    badges: [{ label: props.verdictLabels[row.verdict], tone: VERDICT_TONE[row.verdict] }],
+                }))}
+                empty={<EmptyNotice message={labels.rubricEmpty} mark="none" frame="frameless" />}
+            />
         </Stack>
     )
 }

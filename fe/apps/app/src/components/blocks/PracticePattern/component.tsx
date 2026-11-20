@@ -75,7 +75,9 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
             <Section title={labels.progressTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="inline">
                     <Progress label={labels.progressLabel} value={progress.percent} valueText={progress.text} />
-                    <Text tone="muted">{progress.text}</Text>
+                    <Text tone="muted" isLoading={props.isLoading}>
+                        {progress.text}
+                    </Text>
                 </Stack>
             </Section>
             {nextPattern === null ? null : (
@@ -106,7 +108,7 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
  */
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
-    const pageHeaderOf = (isLoading: boolean): PageHeaderContent => ({
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         meta: header.meta,
@@ -114,7 +116,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
             label: labels.breadcrumbs,
             items: [
                 { id: "practice", label: header.crumb, href: labels.catalogHref },
-                { id: "pattern", label: header.title, ...(isLoading ? { isLoading: true as const } : {}) },
+                { id: "pattern", label: header.title, ...(loading ? { isLoading: true as const } : {}) },
             ],
         },
         ...(header.action === null
@@ -128,7 +130,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
               }),
     })
     const fallback: PageHeaderContent = {
-        title: props.props.slotLabels.error,
+        title: header.title,
         titleScale: "standard",
         breadcrumbs: {
             label: labels.breadcrumbs,

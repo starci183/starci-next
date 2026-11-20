@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ca2973947766d466dde4b064719bdd0a164414d7a473e098a9f6128e5fb373f7
+    sha256: adc101d9a13017242792fab6271414402a07c35d034e6c0ef213b1e30f702b0e
   "1440":
     file: 1440.png
-    sha256: 1d03c8e65bd5bebdeef0f2cdcadff43c85eb81cc1ad14918efa23765df2712cb
+    sha256: 1359780378f1e07d0e99af23d694fb20c0d42ffd389bc7e22478a74f0361dcb8
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
@@ -52,6 +52,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:38.525Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dòng "Theo thứ tự nên học" còn lại dưới trạng thái không khớp (không còn danh sách để áp dụng
+            chú thích).
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:40.201Z
       lenses:
         order:
           verdict: open

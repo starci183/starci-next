@@ -26,6 +26,7 @@ export const DeployCard = (props: DeployCardProps) => {
                         intent="neutral"
                         isPending={busy.isProbing}
                         isDisabled={view.deployedUrl === "" || busy.isProbing}
+                        {...(view.deployedUrl === "" ? { disabledReason: labels.runProbesNeedsUrl } : {})}
                         onPress={props.on.runProbes}
                     >
                         {busy.isProbing ? labels.runningProbes : labels.runProbes}

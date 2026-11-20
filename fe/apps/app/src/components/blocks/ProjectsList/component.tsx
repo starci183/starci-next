@@ -1,7 +1,6 @@
-import { Badge, Button, Cluster, DataTable, EmptyNotice, Page, Section, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Page, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
 import { RowProgress, SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
-import type { ReactElement } from "react"
 
 /** One project as the table draws it, already in words. */
 export type ProjectRowView = {
@@ -122,72 +121,48 @@ const Ribbon = (props: BodyProps) => {
     )
 }
 
-/** One cell of the table: the project with its repo, its kind, its milestone, its progress and its deployment. */
-const cellOf = (row: ProjectRowView, columnId: string, progressLabel: string): ReactElement => {
-    switch (columnId) {
-        case "project":
-            return (
-                <Stack gap="identity">
-                    <Text isStrong>{row.name}</Text>
-                    {row.repo === "" ? null : (
-                        <Text size="xs" tone="muted">
-                            {row.repo}
-                        </Text>
-                    )}
-                </Stack>
-            )
-        case "kind":
-            return <Badge tone="neutral">{row.kindLabel}</Badge>
-        case "milestone":
-            return <Text>{row.milestone}</Text>
-        case "progress":
-            return (
-                <Cluster gap="inline" align="center">
-                    <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
-                    <Text tone="muted" tabular>
-                        {row.progress}
-                    </Text>
-                </Cluster>
-            )
-        default:
-            return <Badge tone={row.ciTone}>{row.ci}</Badge>
-    }
-}
+/** One project as a list row: name, repo and current milestone, the kind and the deployment as chips, the progress as the row's control; the whole row is the link. */
+const rowOf = (row: ProjectRowView, progressLabel: string): ListRowData => ({
+    id: row.id,
+    title: row.name,
+    description: [row.repo, row.milestone].filter((part) => part !== "").join(" · "),
+    href: row.href,
+    badges: [
+        { label: row.kindLabel, tone: "neutral" },
+        { label: row.ci, tone: row.ciTone },
+    ],
+    control: (
+        <Cluster gap="inline" align="center">
+            <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
+            <Text tone="muted" tabular>
+                {row.progress}
+            </Text>
+        </Cluster>
+    ),
+})
 
-/** The flat table of the learner's projects under its head; the read's failure and the empty list are drawn in its place. */
+/** The learner's projects as one flat list under its head; the empty list is drawn in its place. */
 const ListTable = (props: BodyProps) => {
     const { labels } = props.props
     return (
         <Section
+            kind="list"
             title={labels.listLabel}
             headingLevel={2}
             count={props.view.rows.length}
             caption={labels.note}
             isLoading={props.isLoading}
-        >
-            <DataTable
-                label={labels.listLabel}
-                isLoading={props.isLoading}
-                columns={[
-                    { id: "project", label: labels.columns.project },
-                    { id: "kind", label: labels.columns.kind, width: "fit", hideBelow: "tablet" },
-                    { id: "milestone", label: labels.columns.milestone, hideBelow: "tablet" },
-                    { id: "progress", label: labels.columns.progress, width: "fit" },
-                    { id: "ci", label: labels.columns.ci, width: "fit", hideBelow: "tablet" },
-                ]}
-                rows={props.view.rows.map((row) => ({ ...row }))}
-                renderCell={(row, columnId) => cellOf(row, columnId, labels.progressLabel)}
-                emptyContent={
-                    <EmptyNotice
-                        message={labels.emptyTitle}
-                        description={labels.emptyText}
-                        actionLabel={labels.create}
-                        actionHref={labels.createHref}
-                        frame="frameless"
-                    />
-                }
-            />
-        </Section>
+            items={props.view.rows.map((row) => rowOf(row, labels.progressLabel))}
+            empty={
+                <EmptyNotice
+                    message={labels.emptyTitle}
+                    description={labels.emptyText}
+                    actionLabel={labels.create}
+                    actionHref={labels.createHref}
+                    frame="frameless"
+                />
+            }
+        />
     )
 }
 

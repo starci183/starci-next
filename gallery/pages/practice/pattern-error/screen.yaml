@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ee7305f54e496ebe48de06a0631f91d424d58c5141fa273d3fbfd1efa69ac867
+    sha256: 592c000b38608a117062dc121cd875109e52d9e9881873223ee586fe400b3b0a
   "1440":
     file: 1440.png
-    sha256: 900e63d5a6d8eacbacf2b0f2fc3ffb069cd7e7adbafa374d57838a501b702479
+    sha256: 021ef4d41e55646d7b770d1f218df86cebbfa865bbd51afafb142951301afda9
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -40,6 +40,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:39.644Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Tiêu đề trang "Không tải được các bài của pattern." lặp y nguyên dòng trong banner lỗi ngay
+            dưới; tiêu đề nên là tên trang, banner mới mang thông báo.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:41.678Z
       lenses:
         order:
           verdict: open

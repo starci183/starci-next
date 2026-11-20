@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 5bbc67af01eb9ee7315c498d86ff528eb04d8c1f8484e604ef0415717fb98230
+    sha256: 95cb338cec28cdc7136ca4da21e7485ba3100be164329759336aff0ea4288471
   "1440":
     file: 1440.png
-    sha256: ced90d520b170395d35f585484e543909055fb2f4a91dae9f07925c552a63d14
+    sha256: 87740bf90a11b60131df3655276d5ffc4753ff4f61db07f0772b8a54b13f2208
 sections:
   - id: s1
     title: Concept của milestone
@@ -51,6 +51,35 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:52.500Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Bảng chạy tới x≈1420 ở 1440, vượt gutter nội dung 1408 (tiêu đề và hàng không thẳng lề với
+            phần còn lại). Cột "Bằng chứng" xếp test/e2e/probe mỗi dòng ~28px làm hàng cao. Ở 390 mô
+            tả và tên concept bị cắt giữa chữ không có dấu ba chấm ("...concept này c", "...không lộ
+            stack l").
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'Cột "Học ở" của canvas (Request/response, Idempotency, Outbox) thành "Chưa có bài" và mô tả
+            "Thầy đang soạn bài Bản chất này..." lặp ở cả 4 hàng: thiếu ánh xạ concept sang bài
+            Essentials, nên đánh dấu cần API (không phải lỗi dựng).'
+    - n: 2
+      at: 2026-11-20T14:02:54.908Z
       lenses:
         order:
           verdict: open

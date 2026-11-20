@@ -135,6 +135,32 @@ audit:
       at: 2026-11-20T13:48:46.956Z
       lenses:
         order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khung code dùng chữ không đều chiều rộng (font thường, không monospace) nên thụt đầu dòng và
+            căn cột khó đọc (1440 y400-730; 390 y985-1275); đoạn đáp án mẫu Ví dụ thì đúng
+            monospace: hai kiểu cho code. (Textarea thay CodeEditor đã chấp nhận: cần Grammar.)"
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:49.345Z
+      lenses:
+        order:
           verdict: open
           notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:

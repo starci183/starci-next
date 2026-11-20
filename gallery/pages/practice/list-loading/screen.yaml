@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 3c463870e72035a193aaab6e3c29fbfb71f81635b8bdd08a658cf43626dcc6ba
+    sha256: 2e1b65038b55dd3b4b4dc1582fe332299e54ba35d4c7af316bbe3fb5cb3e5044
   "1440":
     file: 1440.png
-    sha256: 1e47679f6c3d697c6eed6282fa16c72fed4de01e17dbe168db3690f37a73204a
+    sha256: 16c56b8a89161e613270226b689ffaec3712982d078613ddfeaf9f268de23556
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
@@ -41,6 +41,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:37.242Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
+            như số thật.
+        truth:
+          verdict: open
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
+            như số thật. Phải là skeleton.
+    - n: 2
+      at: 2026-11-20T14:02:38.571Z
       lenses:
         order:
           verdict: open

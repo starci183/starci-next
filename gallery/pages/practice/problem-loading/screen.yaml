@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 97f265fea02e2a77c9578103da04c1e1d80b0e65c7641f2c1488f6c831c187f1
+    sha256: eb8e942bb7948e4d650d2115135f1fba9ae3acc73716a848598848e160146b40
   "1440":
     file: 1440.png
-    sha256: b413d9df9834a55d6ec7d8e2b8f5eb5536e1c2e0b02fe20a537bc9685cea8804
+    sha256: 59019a79e95fae35b903dc442546bc17d3c8a4151f942e4ef416b6f473681290
 sections:
   - id: s1
     title: "Dải tiêu đề: đang tải"
@@ -61,6 +61,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:45.621Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:48.146Z
       lenses:
         order:
           verdict: open

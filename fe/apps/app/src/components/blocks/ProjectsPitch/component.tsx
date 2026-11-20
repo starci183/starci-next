@@ -1,13 +1,13 @@
 import {
     Badge,
     Button,
-    DataTable,
     EmptyNotice,
     Page,
     Section,
     Stack,
     Text,
     type BadgeTone,
+    type ListRowData,
 } from "@starci/grammar/common"
 
 /** One row of the sample concept table the pitch shows. */
@@ -56,22 +56,20 @@ export type ProjectsPitchBaseProps = {
     }
 }
 
-/** The sample concept table: concepts with the evidence they need and where each stands, flat on the page. */
+/** The sample concepts as rows: the concept, the evidence it needs and where each stands as a chip, flat on the page. */
 const SampleTable = (props: ProjectsPitchBaseProps["props"]) => (
-    <DataTable
-        label={props.labels.conceptsTitle}
-        columns={[
-            { id: "concept", label: props.labels.columns.concept },
-            { id: "evidence", label: props.labels.columns.evidence, hideBelow: "tablet" },
-            { id: "state", label: props.labels.columns.state, width: "fit" },
-        ]}
-        rows={props.sample}
-        renderCell={(row, columnId) => {
-            if (columnId === "concept") return <Text isStrong>{row.concept}</Text>
-            if (columnId === "evidence") return <Text>{row.slots}</Text>
-            return <Badge tone={row.stateTone}>{row.state}</Badge>
-        }}
-        emptyContent={<EmptyNotice message={props.labels.noTable} mark="none" frame="frameless" />}
+    <Section
+        kind="list"
+        title={props.labels.conceptsTitle}
+        headingLevel={2}
+        caption={props.labels.sampleNote}
+        items={props.sample.map((row): ListRowData => ({
+            id: row.id,
+            title: row.concept,
+            description: row.slots,
+            badges: [{ label: row.state, tone: row.stateTone }],
+        }))}
+        empty={<EmptyNotice message={props.labels.noTable} mark="none" frame="frameless" />}
     />
 )
 
@@ -97,11 +95,6 @@ export const ProjectsPitchBase = (props: ProjectsPitchBaseProps) => {
                 title: labels.title,
                 breadcrumbs: "root",
                 description: labels.description,
-                actions: (
-                    <Button intent="commit" href={labels.subscribeHref}>
-                        {labels.subscribe}
-                    </Button>
-                ),
             }}
         >
             <Stack gap="region">
@@ -112,14 +105,12 @@ export const ProjectsPitchBase = (props: ProjectsPitchBaseProps) => {
                     items={labels.steps.map((step, index) => ({
                         id: step.id,
                         title: step.title,
-                        description: step.text,
+                        detail: <Text tone="muted">{step.text}</Text>,
                         leading: { position: index + 1 },
                     }))}
                     empty={null}
                 />
-                <Section title={labels.conceptsTitle} headingLevel={2} caption={labels.sampleNote}>
-                    <SampleTable {...props.props} />
-                </Section>
+                <SampleTable {...props.props} />
                 <Section title={labels.cvTitle} headingLevel={2}>
                     <SampleCv {...props.props} />
                 </Section>
@@ -127,9 +118,16 @@ export const ProjectsPitchBase = (props: ProjectsPitchBaseProps) => {
                     title={labels.includedTitle}
                     headingLevel={2}
                     kind="list"
-                    items={labels.included.map((each) => ({ id: each.id, title: each.title, description: each.text }))}
+                    items={labels.included.map((each) => ({
+                        id: each.id,
+                        title: each.title,
+                        detail: <Text tone="muted">{each.text}</Text>,
+                    }))}
                     empty={null}
                 />
+                <Button intent="commit" href={labels.subscribeHref}>
+                    {labels.subscribe}
+                </Button>
             </Stack>
         </Page>
     )

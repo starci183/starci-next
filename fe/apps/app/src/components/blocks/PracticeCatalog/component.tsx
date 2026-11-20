@@ -64,7 +64,7 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
             title={labels.listTitle}
             headingLevel={2}
             count={props.rows.length}
-            caption={labels.listCaption}
+            {...(props.rows.length === 0 ? {} : { caption: labels.listCaption })}
             isLoading={props.isLoading}
             filter={
                 <>
@@ -110,11 +110,13 @@ const Rail = (props: PieceProps) => {
         <Stack gap="region">
             <Section title={labels.readinessTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="inline">
-                    <Text size="figure" isStrong tabular>
+                    <Text size="figure" isStrong tabular isLoading={props.isLoading}>
                         {`${readiness.accepted}`}
                     </Text>
-                    <Text>{labels.readinessUnit}</Text>
-                    <Text tone="muted">{labels.readinessText}</Text>
+                    <Text isLoading={props.isLoading}>{labels.readinessUnit}</Text>
+                    <Text tone="muted" isLoading={props.isLoading}>
+                        {labels.readinessText}
+                    </Text>
                 </Stack>
             </Section>
             {resume === null ? null : (

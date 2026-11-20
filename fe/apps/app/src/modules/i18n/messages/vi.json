@@ -1389,6 +1389,7 @@
         "deployedLabel": "Địa chỉ đã triển khai (http hoặc https công khai)",
         "saveDeployed": "Lưu địa chỉ",
         "runProbes": "Chạy kiểm tra",
+        "runProbesNeedsUrl": "Lưu địa chỉ đã triển khai trước khi chạy kiểm tra.",
         "runningProbes": "Đang kiểm tra...",
         "secretText": "Action ký kết quả bằng bí mật của dự án này. Đổi bí mật nếu nó bị lộ.",
         "rotate": "Đổi bí mật CI",

@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b403795e0d16c6a3a467d9e64550c786dfda5b7d9c4a2fd33612e54adb139f8d
+    sha256: 14ab6f967b441e01c34057e70c348b06a647d6fee6bd9101fc4e3b6807c42422
   "1440":
     file: 1440.png
-    sha256: 56374cce0a2b37fad3ef9d6420b653a6ce841a04e80cae363730f4f4fed2a9a1
+    sha256: e5734e7093daff7a15feaefa7bbba6da4c2801e41634d44db1520056e42d9f2c
 sections:
   - id: s1
     title: Ô bằng chứng
@@ -63,6 +63,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:48.082Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Bố cục hai cột lệch: cột phải ("AI đọc code") bắt đầu ngang tiêu đề "Probe" nhưng "Thang
+            chấm của AI" kéo một đường kẻ tới x≈1420 vượt gutter; nhiều khoảng trống 100-150px giữa
+            các khối; trạng thái "Chưa bắt đầu" ở đầu trang là chữ trơn trong khi trang milestone
+            dùng chip "Đang làm".'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:50.586Z
       lenses:
         order:
           verdict: open

@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: cc2efa1cfd947058a8b7202aa339bbaa8640d0b637bc38bb3cdc1d6056729b5c
+    sha256: 692faca27393e1f1492bc2a154a924de5d6fd42100df7ebd276620c8a460238f
   "1440":
     file: 1440.png
-    sha256: 9fdf6e4dbbf331d09a0fae4474c288517a6901b01b56bc44e24af6abbdaf2013
+    sha256: 92e3c98cde80b3f69ffae78fc9e90c93a9826ef3cfeb3b20a60178b4789e8e37
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -40,6 +40,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:42.386Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
+            như số thật.
+        truth:
+          verdict: open
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
+            như số thật. Phải là skeleton.
+    - n: 2
+      at: 2026-11-20T14:02:44.352Z
       lenses:
         order:
           verdict: open

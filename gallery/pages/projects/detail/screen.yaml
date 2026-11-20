@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c41e4ccb1d24ff729dded220d15c398d03377c19874bb951477ef5a5de203bc3
+    sha256: 7a47a479419668a2d194a2691e67cd30e634e60ec967d4f4ffedf0a1ca157c93
   "1440":
     file: 1440.png
-    sha256: 70f1923f9bd7cab3ce8586c9ee9cf53f4565ea510993d8873d2db97a926d89c3
+    sha256: 7554188cc133f6d00b16f943688df7b9034368cb65f9514866343fc1615f2b3d
 sections:
   - id: s1
     title: Dải tiêu đề
@@ -63,6 +63,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:49.340Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Bảng chạy tới x≈1420 ở 1440, vượt gutter nội dung 1408 (tiêu đề và hàng không thẳng lề với
+            phần còn lại). Liên kết đầu mục "Xem kinh nghiệm →" màu đen, khác các liên kết đầu mục
+            tím ở trang khác.
+        actionable:
+          verdict: open
+          notes: Nút "Chạy kiểm tra" bị khoá và ô "Địa chỉ đã triển khai" trống không nói cần nhập địa chỉ
+            trước; không có lý do nút khoá.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:52.086Z
       lenses:
         order:
           verdict: open

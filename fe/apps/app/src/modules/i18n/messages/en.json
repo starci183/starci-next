@@ -1389,6 +1389,7 @@
         "deployedLabel": "Deployed address (public http or https)",
         "saveDeployed": "Save address",
         "runProbes": "Run the probes",
+        "runProbesNeedsUrl": "Save the deployed address before running the probes.",
         "runningProbes": "Probing...",
         "secretText": "The Action signs its result with this project's secret. Rotate it if it leaks.",
         "rotate": "Rotate the CI secret",

@@ -1,9 +1,7 @@
-import type { ReactNode } from "react"
 import {
     Badge,
     type PageHeaderContent,
-    Cluster,
-    DataTable,
+    type ListRowData,
     EmptyNotice,
     Grid,
     Link,
@@ -16,7 +14,6 @@ import { MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
     DataSlot,
-    EvidenceChipView,
     EvidenceRunView,
     ProjectMilestoneLabels,
     ProjectMilestoneView,
@@ -83,122 +80,72 @@ type BodyProps = {
     readonly isLoading: boolean
 }
 
-/** One evidence slot of a concept as a small chip: its words, with the state in its tone. */
-type SlotChipProps = { readonly chip: EvidenceChipView }
+/** The evidence slots of a concept in words: each slot with its state ("test · đạt"). */
+const slotsOf = (concept: ConceptCardView): string =>
+    concept.chips.map((chip) => (chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`)).join(", ")
 
-/** One evidence slot of a concept as a small chip, as {@link SlotChipProps} says. */
-const SlotChip = (props: SlotChipProps) => (
-    <Badge tone={props.chip.tone}>
-        {props.chip.mark === "" ? props.chip.label : `${props.chip.label} · ${props.chip.mark}`}
-    </Badge>
-)
+/** One concept as a row that opens its evidence page: its name, its kind, its evidence slots and the lesson that teaches it; its state is the chip. */
+const conceptRowOf = (concept: ConceptCardView, props: BodyProps, isAllSoon: boolean): ListRowData => ({
+    id: concept.id,
+    title: concept.label,
+    description: [
+        isAllSoon || !concept.comingSoon ? concept.kindLabel : props.props.labels.comingSoon,
+        slotsOf(concept),
+        concept.lessonHref === "" ? "" : `${props.props.table.columns.lesson}: ${concept.lessonTitle}`,
+    ]
+        .filter((part) => part !== "")
+        .join(" · "),
+    href: props.props.conceptHrefs[concept.id] ?? "",
+    badges: [{ label: concept.stateLabel, tone: concept.stateTone }],
+})
 
-/** One cell of the concept table: the concept with its kind, the evidence slots it needs, its state and the lesson that teaches it. */
-const cellOf = (concept: ConceptCardView, columnId: string, props: BodyProps) => {
-    switch (columnId) {
-        case "concept":
-            return (
-                <Stack gap="identity">
-                    <Text isStrong>{concept.label}</Text>
-                    <Text size="xs" tone="muted">
-                        {concept.comingSoon ? props.props.labels.comingSoon : concept.kindLabel}
-                    </Text>
-                </Stack>
-            )
-        case "evidence":
-            return (
-                <Cluster gap="inline" wrap>
-                    {concept.chips.map((chip) => (
-                        <SlotChip key={chip.id} chip={chip} />
-                    ))}
-                </Cluster>
-            )
-        case "state":
-            return <Badge tone={concept.stateTone}>{concept.stateLabel}</Badge>
-        default:
-            return concept.lessonHref === "" ? (
-                <Text tone="muted">{props.props.table.noLesson}</Text>
-            ) : (
-                <Link variant="plain" href={concept.lessonHref}>
-                    {concept.lessonTitle}
-                </Link>
-            )
-    }
-}
-
-/** The table of the concepts of the milestone: a row per concept, each opening its evidence page; the legend of the two levels under it. */
+/** The concepts of the milestone as one list: a row per concept, each opening its evidence page; the legend of the two levels under the head. */
 const ConceptsTable = (props: BodyProps) => {
     const { labels, table } = props.props
+    const isAllSoon = props.view.concepts.length > 0 && props.view.concepts.every((concept) => concept.comingSoon)
     return (
         <Section
+            kind="list"
             title={labels.conceptsLabel}
             headingLevel={2}
             count={props.view.concepts.length}
             isLoading={props.isLoading}
-            caption={table.legend}
-        >
-            <DataTable
-                label={labels.conceptsLabel}
-                isLoading={props.isLoading}
-                columns={[
-                    { id: "concept", label: labels.columns.concept },
-                    { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
-                    { id: "state", label: table.columns.state, width: "fit" },
-                    { id: "lesson", label: table.columns.lesson, hideBelow: "desktop" },
-                ]}
-                rows={props.view.concepts.map((concept) => ({
-                    ...concept,
-                    href: props.props.conceptHrefs[concept.id] ?? "",
-                }))}
-                renderCell={(row, columnId) => cellOf(row, columnId, props)}
-                emptyContent={<EmptyNotice message={labels.runsEmpty} mark="none" frame="frameless" />}
-            />
-        </Section>
+            caption={isAllSoon ? `${table.legend} ${labels.comingSoon}` : table.legend}
+            items={props.view.concepts.map((concept) => conceptRowOf(concept, props, isAllSoon))}
+            empty={<EmptyNotice message={labels.runsEmpty} mark="none" frame="frameless" />}
+        />
     )
 }
 
-/** A table row: its id and the cell of each column by column id. */
-type CellsRow = { readonly id: string; readonly cells: Readonly<Record<string, ReactNode>> }
-
-/** The row of one evidence run in the runs table. */
-const runRowOf = (run: EvidenceRunView): CellsRow => ({
+/** One evidence run as a row: the concept, the slot and its level, the result as a chip and when it ran. */
+const runRowOf = (run: EvidenceRunView): ListRowData => ({
     id: run.id,
-    cells: {
-        concept: <Text isStrong>{run.concept}</Text>,
-        evidence: run.evidence,
-        result: <Badge tone={run.resultTone}>{run.resultLabel}</Badge>,
-        level: run.levelLabel,
-        when: run.when,
-    },
+    title: run.concept,
+    description: [run.evidence, run.levelLabel].filter((part) => part !== "").join(" · "),
+    badges: [{ label: run.resultLabel, tone: run.resultTone }],
+    meta: { text: run.when },
 })
 
 /** The recent evidence runs of the milestone, one row per slot that has a result. */
 const RunsTable = (props: BodyProps) => {
     const { labels } = props.props
     return (
-        <Section title={labels.runsLabel} headingLevel={2} count={props.view.runs.length} isLoading={props.isLoading}>
-            <DataTable
-                label={labels.runsLabel}
-                isLoading={props.isLoading}
-                columns={[
-                    { id: "concept", label: labels.columns.concept },
-                    { id: "evidence", label: labels.columns.evidence, hideBelow: "tablet" },
-                    { id: "result", label: labels.columns.result, width: "fit" },
-                    { id: "level", label: labels.columns.level, hideBelow: "tablet" },
-                    { id: "when", label: labels.columns.when, width: "fit" },
-                ]}
-                rows={props.view.runs.map((run) => runRowOf(run))}
-                renderCell={(row, columnId) => row.cells[columnId]}
-                emptyContent={
-                    <EmptyNotice
-                        message={labels.runsEmpty}
-                        description={labels.runsEmptyText}
-                        mark="none"
-                        frame="frameless"
-                    />
-                }
-            />
-        </Section>
+        <Section
+            kind="list"
+            title={labels.runsLabel}
+            headingLevel={2}
+            count={props.view.runs.length}
+            isLoading={props.isLoading}
+            items={props.view.runs.map((run) => runRowOf(run))}
+            empty={
+                <EmptyNotice
+                    message={labels.runsEmpty}
+                    description={labels.runsEmptyText}
+                    mark="none"
+                    frame="frameless"
+                />
+            }
+        />
     )
 }
 

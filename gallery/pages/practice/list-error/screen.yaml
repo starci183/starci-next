@@ -43,6 +43,30 @@ audit:
       at: 2026-11-20T13:48:31.440Z
       lenses:
         order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:35.524Z
+      lenses:
+        order:
           verdict: open
           notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:

@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: bb77abd814511bcdbe1059b99baf587d1416608c034d07764dfde92fd854a2b4
+    sha256: 0f159919cf887601918a509198e96664b583b052f88563b12f7208d03fad4be9
   "1440":
     file: 1440.png
-    sha256: 3b804d75c8a8316897585e8224eb44646010c4c78454b8caa2544280d0472238
+    sha256: baba2bb1e7ac157d3bddaa6fdf0391354edb8878274fb5c3b897690b9ead6799
 sections:
   - id: s1
     title: "Dải tiêu đề: Dự án của bạn"
@@ -62,6 +62,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T13:48:51.173Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Bảng chạy tới x≈1420 ở 1440, vượt gutter nội dung 1408 (tiêu đề và hàng không thẳng lề với
+            phần còn lại). Ở 390 bảng chỉ còn cột Dự án và Tiến độ, mất Loại, Milestone hiện tại, CI
+            mà không có nơi xem.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:53.586Z
       lenses:
         order:
           verdict: open

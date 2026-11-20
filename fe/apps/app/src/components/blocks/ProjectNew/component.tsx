@@ -153,6 +153,11 @@ const Form = (props: FormProps) => {
                     {labels.cancel}
                 </Button>
             </Cluster>
+            {state.name.trim() === "" && !props.props.isCreating ? (
+                <Text size="xs" tone="muted">
+                    {labels.submitNeedsName}
+                </Text>
+            ) : null}
         </Section>
     )
 }
