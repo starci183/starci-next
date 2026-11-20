@@ -124,24 +124,24 @@ audit:
       at: 2026-11-20T13:24:47.421Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiêu đề hỏi, lý do, hai nút"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hộp thoại gọn, hai nút 40px, một nút chính, nền mờ"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có Chưa, để tôi thử và Xem lời giải"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Biểu tượng cảnh báo warning-soft"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Accepted là từ vựng sản phẩm; không lộ id"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái xác nhận; loading và error ở màn problem"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Mới mở 0/3 gợi ý khớp dữ liệu"
   escalate: null

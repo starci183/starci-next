@@ -109,24 +109,24 @@ audit:
       at: 2026-11-20T13:24:39.726Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Ô tìm, tab, rồi thông báo không khớp"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Xoá bộ lọc đã là nút trung tính 40px; chỉ còn một nút chính ở đầu trang (1440 và 390)"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có Xoá bộ lọc và nút x trong ô tìm"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không có tác vụ chạy nền"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng; pattern là từ vựng sản phẩm"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Số đếm của bốn tab đã theo từ khoá (0/0/0/0) khớp chip Các pattern 0"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Số đếm nhất quán với danh sách rỗng"
   escalate: null

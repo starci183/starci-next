@@ -95,24 +95,24 @@ audit:
       at: 2026-11-20T13:24:41.077Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chỉ còn crumb Luyện code, tiêu đề, thông báo"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận); tiêu đề lấy từ câu lỗi nên trùng dòng đầu của thông báo, chấp nhận theo yêu cầu"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thử lại có sẵn"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Biểu tượng và danger-soft"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Hết tiêu đề Pattern chung và phụ đề lặp"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có thông báo và Thử lại"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lỗi từ API bị từ chối thật"
   escalate: null

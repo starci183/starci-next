@@ -94,24 +94,24 @@ audit:
       at: 2026-11-20T13:24:45.454Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khung và thứ tự giống bản thật"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hàng skeleton cùng hình khối"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đang tải"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Skeleton nhấp nháy"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Đường dẫn đã dùng skeleton crumb thay chữ Pattern cố định"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Số 0 trên 0 là giữ chỗ sau lớp skeleton của Section isLoading (chấp nhận)"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Số giữ chỗ đã nói rõ (chấp nhận)"
   escalate: null

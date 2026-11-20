@@ -100,24 +100,24 @@ audit:
       at: 2026-11-20T13:25:13.185Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Giá trị, ví dụ, Premium mở gì; một nút chính"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chữ cắt ba chấm ở 390 và bố cục mô tả là hành vi Grammar; copy đã duyệt (chấp nhận)"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Nút chính duy nhất Đăng ký Premium; khoá ở sidebar"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chip soft cho Đã chứng minh, Đang luyện, Chưa bắt đầu"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Copy paywall là bản đã duyệt (chấp nhận); từ kỹ thuật là từ vựng sản phẩm"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Màn cho người chưa có Premium"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Dữ liệu ví dụ ghi rõ là minh hoạ"
   escalate: null

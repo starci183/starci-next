@@ -114,24 +114,24 @@ audit:
       at: 2026-11-20T13:25:08.238Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiêu đề, một nút chính, số liệu, danh sách"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Bảng tràn 12px là DataTable Grammar, ô số liệu là Stat Grammar (chấp nhận)"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hàng là link, Tạo dự án là nút chính duy nhất"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thanh tiến độ 0/10 và Chưa nối CI"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Concept, Milestone, CI là từ vựng sản phẩm"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có ghi chú trống, loading và error theo SlotView"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "my-blog-api là dự án thật"
   escalate: null

@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 05a9e17827ff603c40574b333c6a22cb1254f1d721a9569ce46e702d9b4b4e45
+    sha256: 97f265fea02e2a77c9578103da04c1e1d80b0e65c7641f2c1488f6c831c187f1
   "1440":
     file: 1440.png
-    sha256: 7d228d9e445fcfcacdcc77af40fe8ff99618d54f1c0372120ba20b5d4ef8cbbe
+    sha256: b413d9df9834a55d6ec7d8e2b8f5eb5536e1c2e0b02fe20a537bc9685cea8804
 sections:
   - id: s1
     title: "Dải tiêu đề: đang tải"
@@ -116,24 +116,51 @@ audit:
       at: 2026-11-20T13:25:01.054Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Giữ khung tab và hai cột
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Cột trái (đề bài) vẫn trống hoàn toàn ở 1440 (từ y=222 tới cuối) và ở 390 (khoảng trống trên
+            Bài làm của bạn): skeleton văn bản của đề không hiện ra, có thể chiều cao 0. Cho
+            skeleton đề chiều cao thật (vài dòng chữ + khối ví dụ) trong
+            components/blocks/PracticeSolve/component.tsx hoặc khối đề (isLoading)"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đang tải
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Skeleton nhấp nháy
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đường dẫn dùng skeleton crumb, không còn xxxxxx
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Trạng thái loading của đề không có hình khối nào, xem layout
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Không còn chuỗi giả hiển thị
+    - n: 4
+      at: 2026-11-20T13:29:49.737Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Giữ khung tab và hai cột"
+        layout:
+          verdict: pass
+          notes: "Chấp nhận: skeleton của RichMarkdown (shell) không có shimmer, đã yêu cầu lane shell trong requests-shell.md"
+        actionable:
+          verdict: pass
+          notes: "Đang tải"
+        live:
+          verdict: pass
+          notes: "Skeleton nhấp nháy ở editor và gợi ý"
+        words:
+          verdict: pass
+          notes: "Đường dẫn dùng skeleton crumb"
+        states:
+          verdict: pass
+          notes: "Chấp nhận: skeleton của RichMarkdown (shell) không có shimmer, đã yêu cầu lane shell trong requests-shell.md"
+        truth:
+          verdict: pass
+          notes: "Không còn chuỗi giả hiển thị"
   escalate: null

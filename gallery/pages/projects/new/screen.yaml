@@ -107,24 +107,24 @@ audit:
       at: 2026-11-20T13:25:10.894Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khoảng cách đều (khoảng 21px từ ô tới nhãn kế tiếp)"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Ô Tên dự án có Ví dụ: my-blog-api, ô Repo GitHub có https://github.com/ban/du-an; địa chỉ deploy có chú thích bên dưới"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chưa có tác vụ chạy"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "deploy, probe, repo, test là từ vựng sản phẩm"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Nút vô hiệu khi thiếu trường; lỗi từng trường"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lệnh mẫu ghi rõ do học viên chạy"
   escalate: null

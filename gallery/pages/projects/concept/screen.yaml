@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 46e23ec7fd5838ea1afcfe7d1f0a70e2826507e860f17b413d72a15a5eb38990
+    sha256: b403795e0d16c6a3a467d9e64550c786dfda5b7d9c4a2fd33612e54adb139f8d
   "1440":
     file: 1440.png
-    sha256: a4981b3ea9c67134b9e4826fc38ea86c2352001439d1e05e384cd037e8d336d9
+    sha256: 56374cce0a2b37fad3ef9d6420b653a6ce841a04e80cae363730f4f4fed2a9a1
 sections:
   - id: s1
     title: Ô bằng chứng
@@ -119,24 +119,51 @@ audit:
       at: 2026-11-20T13:25:03.635Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Ô bằng chứng, probe, CI, AI đọc code, thang chấm, dòng CV
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Cột lệch hàng nhẹ và crumb bị cắt ở 390 do Grammar (chấp nhận); đường kẻ bảng thang chấm tràn
+            là DataTable Grammar
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chạy probe (vô hiệu có lý do), Hỏi Claude qua MCP
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chip Chưa bắt đầu
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Dòng CI GitHub ở 1440 vẫn ghi Chưa có run CI nào được ký (chữ run tiếng Anh): sửa chuỗi
+            ciEmpty ở fe/apps/app/src/modules/i18n/messages/vi.json dòng 1668 thành Chưa có lượt
+            chạy CI nào được ký. Câu Thầy đang soạn bài là trạng thái thật của seed (chấp nhận)"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có trạng thái trống từng phần
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Các ô trống đúng với concept chưa có bằng chứng
+    - n: 4
+      at: 2026-11-20T13:29:50.829Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ô bằng chứng, probe, CI, AI đọc code, thang chấm, dòng CV"
+        layout:
+          verdict: pass
+          notes: "Cột lệch nhẹ và đường kẻ bảng tràn do Grammar (chấp nhận)"
+        actionable:
+          verdict: pass
+          notes: "Chạy probe (vô hiệu có lý do), Hỏi Claude qua MCP"
+        live:
+          verdict: pass
+          notes: "Chip Chưa bắt đầu"
+        words:
+          verdict: fixed
+          notes: "Đã sửa thành Chưa có lượt chạy CI nào được ký; câu Thầy đang soạn bài là trạng thái thật của seed (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Có trạng thái trống từng phần"
+        truth:
+          verdict: pass
+          notes: "Các ô trống đúng với concept chưa có bằng chứng"
   escalate: null

@@ -191,24 +191,50 @@ audit:
       at: 2026-11-20T13:25:02.215Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tab, đề, vùng làm bài; Nộp bài là nút chính duy nhất
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Đề không còn lặp tiêu đề Chèn Khoảng trên thân (shot mới bắt đầu thẳng từ đoạn đề). Chữ đậm
+            thuộc RichMarkdown của lane shell, nút Mở gợi ý là ListRow action Grammar, gợi ý dưới
+            editor, Reset nhỏ, Textarea thường: đều chấp nhận"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chạy thử, Nộp bài, chọn ngôn ngữ, Reset, Mở gợi ý
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chưa nộp nên chưa có trạng thái chạy
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Việt hoá ổn; ô mã dùng font sans, cần Grammar CodeEditor (chấp nhận)
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có loading, error và hộp thoại xác nhận riêng
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đề, mã khởi đầu, 3 gợi ý khớp seed
+    - n: 4
+      at: 2026-11-20T13:29:51.984Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tab, đề, vùng làm bài; Nộp bài là nút chính duy nhất; ở 390 đề rồi editor rồi gợi ý"
+        layout:
+          verdict: pass
+          notes: "Đề không lặp tiêu đề; chữ đậm RichMarkdown, Mở gợi ý Grammar, Textarea thường đều chấp nhận"
+        actionable:
+          verdict: pass
+          notes: "Chạy thử, Nộp bài, chọn ngôn ngữ, Reset, Mở gợi ý"
+        live:
+          verdict: pass
+          notes: "Chưa nộp nên chưa có trạng thái chạy"
+        words:
+          verdict: pass
+          notes: "Việt hoá ổn; ô mã dùng font sans, cần Grammar CodeEditor (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Có loading, error và hộp thoại xác nhận riêng"
+        truth:
+          verdict: pass
+          notes: "Đề, mã khởi đầu, 3 gợi ý khớp seed"
   escalate: null

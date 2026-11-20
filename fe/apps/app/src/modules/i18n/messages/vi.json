@@ -1665,7 +1665,7 @@
         "probeRun": "Chạy probe",
         "probeRunning": "Đang chạy...",
         "ciTitle": "CI GitHub",
-        "ciEmpty": "Chưa có run CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
+        "ciEmpty": "Chưa có lượt chạy CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
         "ciRun": "Lượt chạy",
         "ciCommit": "Commit",
         "ciVerdict": "Kết quả",

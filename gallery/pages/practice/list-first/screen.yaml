@@ -105,24 +105,24 @@ audit:
       at: 2026-11-20T13:24:36.198Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Nút chính, ô tìm, tab lọc, danh sách; cột phụ xuống cuối ở 390"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chiều rộng cột số do Grammar (chấp nhận); bố cục sạch ở 1440 và 390"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hàng là link có chevron; một nút chính Bắt đầu với Mảng"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thanh tiến độ từng pattern hiện rõ"
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Accepted và pattern là từ vựng sản phẩm"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có shot loading, error, no-match riêng"
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "20 pattern, 96 bài, 0 Accepted khớp học viên mới"
   escalate: null

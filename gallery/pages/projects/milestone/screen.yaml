@@ -113,24 +113,48 @@ audit:
       at: 2026-11-20T13:25:09.732Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tên milestone, bảng concept, lần chạy, cách chứng minh
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Bố cục cột bằng chứng và cắt tên ở 390 là hành vi DataTable Grammar (chấp nhận)
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Hàng chưa là link do DataTable Grammar (chấp nhận, ghi cho Grammar)
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chip Đang làm và Chưa bắt đầu
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Câu Thầy đang soạn bài Bản chất này là trạng thái thật của seed (bài chưa soạn), chấp nhận
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Số 0/4 khớp seed
+    - n: 4
+      at: 2026-11-20T13:29:55.051Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tên milestone, bảng concept, lần chạy, cách chứng minh"
+        layout:
+          verdict: pass
+          notes: "Bố cục cột bằng chứng và cắt tên ở 390 do DataTable Grammar (chấp nhận)"
+        actionable:
+          verdict: pass
+          notes: "Hàng chưa là link do DataTable Grammar (chấp nhận)"
+        live:
+          verdict: pass
+          notes: "Chip Đang làm và Chưa bắt đầu"
+        words:
+          verdict: pass
+          notes: "Thầy đang soạn bài Bản chất này là trạng thái thật của seed (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn"
+        truth:
+          verdict: pass
+          notes: "Số 0/4 khớp seed"
   escalate: null

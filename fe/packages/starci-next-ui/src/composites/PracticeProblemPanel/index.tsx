@@ -25,7 +25,7 @@ type PracticeProblemPanelProps = {
 /** The problem panel: the statement from the markdown of the data, then the examples as input and output blocks. It stands on the page, never in a card. */
 export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
     <Stack gap="section">
-        <Section ariaLabel={props.labels.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
+        <Section ariaLabel={props.labels.title}>
             <RichMarkdown
                 source={props.markdown}
                 isLoading={props.isLoading === true}
