@@ -27,6 +27,40 @@ const answerAs = async (p, n, isRight) => {
         .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
     await p.waitForTimeout(1200)
 }
+// The review reads of the hub and the session; the deck commands the review entries press.
+const REVIEW_READS = /"operationName":"(ReviewToday|ReviewStats|Streak)"/
+const addDeck = async (p) =>
+    p
+        .getByRole("button", { name: /Thêm bộ thẻ/ })
+        .first()
+        .click()
+        .catch(() => {})
+const flipCard = async (p) => {
+    await p.waitForTimeout(2000)
+    await p
+        .getByRole("button", { name: /Hiện đáp án|Lật thẻ/ })
+        .first()
+        .click()
+        .catch(() => {})
+    await p.waitForTimeout(1500)
+}
+const gradeAll = async (p) => {
+    for (let n = 0; n < 40; n++) {
+        await p.waitForTimeout(1200)
+        if ((await p.getByRole("button", { name: /Về Ôn tập/ }).count()) > 0) return
+        await p
+            .getByRole("button", { name: /Hiện đáp án|Lật thẻ/ })
+            .first()
+            .click()
+            .catch(() => {})
+        await p.waitForTimeout(1200)
+        await p
+            .getByRole("button", { name: /^Tốt/ })
+            .first()
+            .click()
+            .catch(() => {})
+    }
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -107,13 +141,9 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
     S("essentials", "lesson-ladder-locked", LESSON + "?part=apply", { cookies: { rung: "mid" }, click: "Khó" }),
-    S("review", "hub", "/review"),
-    S("review", "decks", "/review/decks"),
-    S("review", "session", "/review/session"),
     S("practice", "list", "/practice"),
     S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
     S("practice", "pattern", "/practice/patterns/arrays"),
-    S("incidents", "list", "/incidents"),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
@@ -123,12 +153,64 @@ const SCREENS = [
     S("projects", "paywall", "/projects", { free: true }),
     S("career", "experience", "/experience"),
     S("career", "profile", "/profile"),
-    S("career", "review-queue", "/review-queue"),
-    S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
     S("commerce", "premium", "/premium"),
     S("commerce", "premium-result", "/premium/result"),
     S("devices", "list", "/devices"),
     S("connect", "ai", "/connect"),
+    // --- next-ux-review: review, progress, incidents and the review queue. The entries run in order against ONE learner: the first states are shot before any deck is added, then a deck is added and reviewed.
+    S("progress", "overview-first-visit", "/progress"),
+    S("progress", "overview-loading", "/progress", { holdOps: /"operationName":"LearnerProgress"/ }),
+    S("progress", "overview-error", "/progress", { refuseOps: /"operationName":"LearnerProgress"/ }),
+    S("review", "hub-first", "/review"),
+    S("review", "hub-loading", "/review", { holdOps: REVIEW_READS }),
+    S("review", "hub-error", "/review", { refuseOps: REVIEW_READS }),
+    S("review", "session-empty", "/review/session"),
+    S("review", "session-loading", "/review/session", { holdOps: REVIEW_READS }),
+    S("review", "decks", "/review/decks"),
+    S("review", "decks-none", "/review/decks", {
+        act: async (p) =>
+            p
+                .getByRole("tab", { name: /Đã thêm/ })
+                .first()
+                .click()
+                .catch(() => {}),
+    }),
+    S("review", "decks-loading", "/review/decks", { holdOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "decks-error", "/review/decks", { refuseOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "deck", { from: "/review/decks", match: /^\/review\/decks\/[^/]+$/ }),
+    S("review", "deck-missing", "/review/decks/00000000-0000-4000-8000-000000000000"),
+    S(
+        "review",
+        "deck-adding",
+        { from: "review/deck", append: "?r=1" },
+        { holdOps: /"operationName":"AddReviewDeck"/, act: addDeck },
+    ),
+    S("review", "deck-added", { from: "review/deck", append: "?r=1" }, { act: addDeck }),
+    S("review", "decks-added", "/review/decks", {
+        act: async (p) =>
+            p
+                .getByRole("button", { name: /Thêm bộ thẻ/ })
+                .first()
+                .click()
+                .catch(() => {}),
+    }),
+    S("review", "hub", "/review"),
+    S("review", "hub-goal", "/review", {
+        act: async (p) =>
+            p
+                .getByText("Đổi", { exact: true })
+                .first()
+                .click()
+                .catch(() => {}),
+    }),
+    S("review", "session", "/review/session"),
+    S("review", "session-answer", "/review/session", { act: flipCard }),
+    S("review", "session-summary", "/review/session", { act: gradeAll }),
+    S("review", "hub-done", "/review"),
+    S("progress", "overview", "/progress"),
+    S("incidents", "list-none", "/incidents"),
+    S("career", "review-queue-forbidden", "/review-queue"),
+    S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
 ]
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
 const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
@@ -208,7 +290,7 @@ const norm = (href) => {
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.cookies !== undefined
+                s.hold || s.refuse || s.holdOps || s.refuseOps || s.cookies !== undefined
                     ? await b.newContext({ storageState: stateFile })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
@@ -224,6 +306,25 @@ const norm = (href) => {
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
+            // A lane's own `next dev` port is not an allowed origin of the dev core: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its reads.
+            if (process.env.CAPTURE_ORIGIN_AS)
+                await p.route(/\/(graphql|api\/)/, (route) =>
+                    route
+                        .fetch({ headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS } })
+                        .then(
+                            (response) => route.fulfill({ response }),
+                            () => route.abort(),
+                        ),
+                )
+            // holdOps / refuseOps (a regex of GraphQL operation names) hold or refuse only those operations; everything else falls through to the routes before it.
+            if (s.holdOps)
+                await p.route(/graphql/, (route) =>
+                    s.holdOps.test(route.request().postData() ?? "") ? undefined : route.fallback(),
+                )
+            if (s.refuseOps)
+                await p.route(/graphql/, (route) =>
+                    s.refuseOps.test(route.request().postData() ?? "") ? route.abort() : route.fallback(),
+                )
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
             if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
             if (s.refuse)
