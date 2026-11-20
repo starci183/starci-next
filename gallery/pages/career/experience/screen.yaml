@@ -102,24 +102,24 @@ audit:
       at: 2026-11-20T16:47:04.171Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Tên mục ("Triển khai StarCi Shop tại https://shop...") nằm ngoài thẻ như dòng chữ rời phía trên thẻ, và ở 390 bị cắt bằng dấu ba chấm giữa câu ("...tại https://shop.dev.starci.test v..."), người dùng không đọc được hết tên; canvas đặt nguồn, trạng thái rồi tên trong cùng một thẻ.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: '"Thu hồi": cần API (revokeExperience chỉ dành cho thầy).'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Đã sửa: phụ đề là nhãn thật (StarCi Shop, Request lifecycle), nhãn "Dòng CV (tiếng Anh)".'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null
