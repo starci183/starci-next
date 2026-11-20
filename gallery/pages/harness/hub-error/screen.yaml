@@ -1,0 +1,23 @@
+schema: 1
+screen: harness/hub-error
+title: "Harness, tổng quan, lỗi tải"
+route: "/harness"
+area: harness
+summary: ""
+code:
+shots:
+  "1440": { file: 1440.png, sha256: 55e47ee1e73b0201a9362982c41a969a0a4009a2cac2cdd4f889f415feccbe95 }
+  "390": { file: 390.png, sha256: 0f70c7d0c1a238af4950961f2a4e5609dea2f10f9a5d15e7cb3e7fcdfacd9458 }
+sections:
+  - id: s1
+    title: "Nội dung chính"
+    shows: "Nội dung của màn như canvas đã duyệt"
+    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Giữ bố cục đã duyệt trên canvas"
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

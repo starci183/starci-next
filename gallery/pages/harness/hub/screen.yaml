@@ -1,0 +1,104 @@
+schema: 1
+screen: harness/hub
+title: Harness, tổng quan
+route: /harness
+area: harness
+summary: "Route: /harness. Grammar ở node_modules/@starci/grammar/dist/core/ (0.40.1). Mã:
+  fe/apps/app/src/components/blocks/HarnessHub/ (component.tsx trang), dữ liệu qua
+  fe/apps/app/src/hooks/harness/useHarnessHubScreen.ts. Dữ l"
+code:
+  - features/pages/HarnessHubPage
+  - components/blocks/HarnessHub
+shots:
+  "390":
+    file: 390.png
+    sha256: ea1ffad336f93debe88449d5d6bce7740e44d8d54da22039df45e80c57f7d159
+  "1440":
+    file: 1440.png
+    sha256: 3a85daaedc0c7c5951b2d949d05ad485c752a83ac122097d23e223a0872fc1bd
+sections:
+  - id: s1
+    title: Băng đầu trang (tiêu đề, dòng phụ, bốn tab)
+    shows: Harness là khu riêng, không nằm trong Essentials hay Projects, nên trang gốc không có đường
+      dẫn. Bốn tab gạch chân (Tổng quan, Build, Xài, Hiểu sâu) là liên kết thật, mở được ở tab mới
+      và dùng chung ở mọi trang của khu.
+    why: FE-FUNCTION-2 (băng do Page vẽ từ dữ liệu), page-header-left-sublabel-xs.md.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Dải số liệu tiến độ
+    shows: bốn con số (build xong, chặng đang luyện, chặng đã chứng minh, kiểm tra máy đạt) đứng thành
+      một dải full-width giữa hai đường kẻ mảnh, không thẻ, không nền. Học viên thấy mình đang ở đâu
+      trong một cái liếc, không phải mở từng phần.
+    why: FE-ERROR-1 (dải là một vùng đọc dữ liệu, loading vẽ lại đúng khung), FE-UI-1 (ribbon thay cho
+      thẻ số liệu).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Danh sách ba phần
+    shows: ba phần là ba hàng phẳng, mỗi hàng có số thứ tự, tên phần, một câu mô tả, các chủ đề trong
+      phần làm dòng meta, chip tiến độ ở cuối ("2 / 4 build xanh") và cả hàng là liên kết. Phần 1 có
+      kiểm thử nên chip xanh khi mọi build xong; phần 3 chỉ đếm bài vì không có kiểm thử.
+    why: FE-FUNCTION-4 (hàng nhận chữ đã dựng sẵn), table-heroui-native-section-head.md.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: Chọn công cụ (Claude Code hoặc Codex)
+    shows: chọn công cụ là chọn một giá trị cho cả khu (hướng dẫn, kiểm tra máy và bẫy thử đều theo nó),
+      nên dùng nhóm chip chọn một, không phải tab chuyển màn hình. Lựa chọn được nhớ riêng cho từng
+      học viên trong trình duyệt (fe/apps/app/src/modules/harness-tool).
+    why: FE-STORAGE (chỉ module chạm localStorage), FE-STATE-1.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:34.556Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

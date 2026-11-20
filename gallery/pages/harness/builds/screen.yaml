@@ -1,0 +1,79 @@
+schema: 1
+screen: harness/builds
+title: Harness, danh sách build
+route: /harness/build
+area: harness
+summary: 'Bộ lọc trạng thái là Tabs kind="filter" có số đếm (Tất cả, Đang luyện, Đã chứng minh, Chưa
+  bắt đầu), lọc ở trình duyệt. Route: /harness/build. Mã:
+  fe/apps/app/src/components/blocks/HarnessBuilds/, dữ liệu qua
+  fe/apps/app/src/hooks/harnessBuild/useHarnessBuildsScreen.ts.'
+code:
+  - features/pages/HarnessBuildsPage
+  - components/blocks/HarnessBuilds
+shots:
+  "390":
+    file: 390.png
+    sha256: 404164caffc1c8e67e6dcbb579a6877410a04f2f484502ae32f0c4e1241ee42f
+  "1440":
+    file: 1440.png
+    sha256: e880c8f02058a2b2e4e68e339eca6a6bd25dd98570534d288b91c044e888935b
+sections:
+  - id: s1
+    title: Băng đầu trang (Build, đường dẫn Harness / Build, bốn tab)
+    shows: tab Build đang chọn; tab là liên kết nên đổi phần không phải dựng lại cả khu.
+    why: FE-FUNCTION-2, page-header-left-sublabel-xs.md.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Danh sách các build
+    shows: 'mỗi build là một hàng phẳng: tên, một câu nói build làm ra gì, key AI cần có trong .env làm
+      dòng meta, hai chip ("3 / 5 chặng đã chứng minh" và "4 / 5 chặng đã chạy"). Cả hàng dẫn tới
+      trang build. Không thẻ vì build chỉ là một mục của danh sách.'
+    why: FE-ERROR-1 (loading, lỗi, rỗng nằm trong chính vùng danh sách), FE-UI-1.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bộ lọc trạng thái là Tabs kind="filter" có số đếm (Tất cả, Đang luyện, Đã chứng minh, Chưa
+      bắt đầu), lọc ở trình duyệt.
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:50.405Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

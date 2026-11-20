@@ -1,0 +1,23 @@
+schema: 1
+screen: harness/guide-error
+title: "Hướng dẫn Xài, lỗi tải"
+route: "/harness/use/[tool]/[guide]"
+area: harness
+summary: ""
+code:
+shots:
+  "1440": { file: 1440.png, sha256: 3c9196b756db7afe64b1ce555c88d8a29dca2f0428bcd21b5a49358c00f68f42 }
+  "390": { file: 390.png, sha256: e219312017c7f4241d9c253df462c4dfa9724c793b0dac21c223e1c160c2d773 }
+sections:
+  - id: s1
+    title: "Nội dung chính"
+    shows: "Nội dung của màn như canvas đã duyệt"
+    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Giữ bố cục đã duyệt trên canvas"
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

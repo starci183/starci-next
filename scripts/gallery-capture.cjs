@@ -156,9 +156,106 @@ const EXPERIENCE = {
         ],
     },
 }
-const stateShots = (area, screen, route, op) => [
-    S(area, screen + "-loading", route, { setup: opHold(op) }),
-    S(area, screen + "-error", route, { setup: opRefuse(op) }),
+// The dev core answers these reads with an internal error today: the shots use stand-in answers (capture mocks).
+const PROBES = [
+    ["Đã cài Claude Code 2.1 trở lên", "PASSED", "Phát hiện 2.1.4"],
+    ["Có CLAUDE.md ở gốc dự án", "PASSED", "42 dòng"],
+    ["Quyền deny cho file .env", "FAILED", "Thiếu Read(./.env) trong permissions.deny"],
+    ["Hook PreToolUse đã đăng ký", "PASSED", "1 hook, chạy được"],
+    ["Hook chặn --no-verify", "FAILED", "Hook có nhưng thoát mã 0 khi gặp --no-verify"],
+    ["Worktree song song", "SKIPPED", "Dự án chỉ có một worktree"],
+].map(([title, status, reason], i) => ({
+    id: "p" + i,
+    order: i,
+    title,
+    guide: "hooks",
+    fix: status === "FAILED" ? "Xem bài hướng dẫn" : "",
+    status,
+    reason,
+    at: "2026-11-20T07:32:00Z",
+}))
+const PROFILE_MOCK = {
+    myProfile: {
+        displayName: "Minh Nguyễn",
+        avatarUrl: null,
+        avatarUpdatedAt: null,
+        goal: { pathId: "backend-fullstack", title: "Backend fullstack" },
+        limits: { maxBytes: 2097152, contentTypes: ["image/png", "image/jpeg", "image/webp"], nameMax: 60 },
+    },
+}
+const CVLINK_MOCK = { myCvLink: { slug: "minh-nguyen", path: "/cv/minh-nguyen", isPublic: true, verifiedCount: 2 } }
+const GUIDE_MOCK = {
+    harnessGuide: {
+        tool: "claude",
+        slug: "hooks",
+        order: 2,
+        title: "Hook: luật máy cho Claude Code",
+        summary:
+            "Ba hook PreToolUse chặn git commit --no-verify, chạy test trước mỗi lần commit và chặn đọc file .env.",
+        sections: [
+            {
+                id: "khai-bao",
+                order: 1,
+                title: "Khai báo quyền deny",
+                body: "Mở file cấu hình của dự án rồi thêm quyền deny cho file .env.",
+                run: ['echo "Read(./.env)" >> .claude/deny.txt'],
+            },
+            {
+                id: "hook",
+                order: 2,
+                title: "Viết hook PreToolUse",
+                body: "Hook phải thoát với mã 2 khi gặp lệnh bị cấm.",
+                run: [],
+            },
+            {
+                id: "kiem-tra",
+                order: 3,
+                title: "Kiểm tra bằng doctor",
+                body: "Chạy doctor để xem điều kiện nào còn chưa đạt.",
+                run: ["npx starci-harness doctor"],
+            },
+        ],
+        probes: PROBES,
+    },
+}
+const DOCTOR_MOCK = { harnessDoctor: { tool: "claude", passed: 3, total: 6, probes: PROBES } }
+const TRIALS_MOCK = {
+    harnessTrials: [
+        {
+            id: "t1",
+            order: 1,
+            title: "Đọc file .env",
+            brief: "Agent cần biết biến môi trường",
+            tools: ["claude"],
+            budget: { maxUsd: 1, maxTurns: 20, timeoutSec: 300 },
+            last: {
+                tool: "claude",
+                verdict: "PASSED",
+                testsGreen: true,
+                shortcuts: [{ kind: "read-env", blocked: true }],
+                at: "2026-11-20T07:41:00Z",
+            },
+        },
+        {
+            id: "t2",
+            order: 2,
+            title: "Commit bỏ qua kiểm tra",
+            brief: "Agent bị ép dùng --no-verify",
+            tools: ["claude"],
+            budget: { maxUsd: 1, maxTurns: 20, timeoutSec: 300 },
+            last: null,
+        },
+    ],
+}
+const harnessFix = many(
+    opAnswer(/^HarnessGuide$/, GUIDE_MOCK),
+    opAnswer(/^HarnessDoctor$/, DOCTOR_MOCK),
+    opAnswer(/^HarnessTrials$/, TRIALS_MOCK),
+)
+const profileFix = many(opAnswer(/^MyProfile$/, PROFILE_MOCK), opAnswer(/^MyCvLink$/, CVLINK_MOCK))
+const stateShots = (area, screen, route, op, base) => [
+    S(area, screen + "-loading", route, { setup: many(base ?? (async () => {}), opHold(op)) }),
+    S(area, screen + "-error", route, { setup: many(base ?? (async () => {}), opRefuse(op)) }),
 ]
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
@@ -261,10 +358,10 @@ const SCREENS = [
     ...stateShots("harness", "builds", "/harness/build", /^HarnessBuilds$/),
     S("harness", "build", "/harness/build/agent-cli"),
     ...stateShots("harness", "build", "/harness/build/agent-cli", /^HarnessBuild$/),
-    S("harness", "use", "/harness/use"),
-    ...stateShots("harness", "use", "/harness/use", /^(HarnessGuides|HarnessDoctor|HarnessTrials)$/),
-    S("harness", "guide", "/harness/use/claude/hooks"),
-    ...stateShots("harness", "guide", "/harness/use/claude/hooks", /^HarnessGuide$/),
+    S("harness", "use", "/harness/use", { setup: harnessFix }),
+    ...stateShots("harness", "use", "/harness/use", /^(HarnessGuides|HarnessDoctor|HarnessTrials)$/, harnessFix),
+    S("harness", "guide", "/harness/use/claude/hooks", { setup: harnessFix }),
+    ...stateShots("harness", "guide", "/harness/use/claude/hooks", /^HarnessGuide$/, harnessFix),
     S("harness", "docs", "/harness/docs"),
     ...stateShots("harness", "docs", "/harness/docs", /^HarnessDocs$/),
     S("harness", "doc", "/harness/docs/overview"),
@@ -309,10 +406,10 @@ const SCREENS = [
             await p.waitForTimeout(800)
         },
     }),
-    S("profile", "overview", "/profile"),
-    S("profile", "new", "/profile"),
-    S("profile", "edit", "/profile/edit"),
-    ...stateShots("profile", "edit", "/profile/edit", /^MyProfile$/),
+    S("profile", "overview", "/profile", { setup: profileFix }),
+    S("profile", "new", "/profile", { setup: profileFix }),
+    S("profile", "edit", "/profile/edit", { setup: profileFix }),
+    ...stateShots("profile", "edit", "/profile/edit", /^MyProfile$/, many(opAnswer(/^MyCvLink$/, CVLINK_MOCK))),
     S("career", "review-queue", "/review-queue"),
     S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
     S("commerce", "premium", "/premium"),

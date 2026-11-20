@@ -1,0 +1,46 @@
+schema: 1
+screen: harness/use
+title: "Harness, phần Xài"
+route: "/harness/use"
+area: harness
+summary: "Chọn công cụ là ChoiceChips; công tắc một kiểu; nút một cỡ 40px. Route: /harness/use. Mã: fe/apps/app/src/components/blocks/HarnessUse/, dữ liệu qua fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts. Ba lần đọc độc lập (harnessGuides, harnessDoctor, harnessTrials), mỗi lần tự ch"
+code:
+  - features/pages/HarnessUsePage
+  - components/blocks/HarnessUse
+shots:
+  "1440": { file: 1440.png, sha256: 845fe259c29c5384846dc4f9ca09375462f7fbbbd86a1a490af08d91cdc9db47 }
+  "390": { file: 390.png, sha256: da16726efdd3963ceea3cd1d1bddc71228500dacd7422e21bb1eed98df1f014b }
+sections:
+  - id: s1
+    title: "Chọn công cụ"
+    shows: "cùng nhóm chọn với trang tổng quan và dùng chung lựa chọn đã nhớ; đổi công cụ là đổi cả ba danh sách bên dưới."
+    why: "FE-STORAGE, FE-STATE-1."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Danh sách hướng dẫn"
+    shows: "hướng dẫn của công cụ đang chọn là các hàng phẳng (tên, một câu, số phút đọc làm meta), cả hàng dẫn tới bài."
+    why: "FE-ERROR-1."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "Bảng kiểm tra máy (harness doctor)"
+    shows: 'ba phần xếp dọc: lệnh để chạy (có nút sao chép), công tắc nhỏ "Chỉ điều kiện chưa đạt", rồi mỗi điều kiện một hàng với chấm trạng thái. Điều kiện chưa đạt có nút "Xem cách sửa" dẫn tới đúng bài. Đầu mục ghi số điều kiện đạt và lần chạy gần nhất ("Chưa chạy" nếu học viên chưa từng chạy).'
+    why: "FE-ERROR-1, FE-DATA-SWR (kết quả đổi trên máy chủ nên đọc lại theo chu kỳ)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s4
+    title: "Bảng bẫy thử (trial)"
+    shows: "mỗi bẫy một dòng của bảng phẳng: tên và mô tả bẫy, những đường tắt agent đã đi (sửa file test, dùng --no-verify), kết luận (Sạch, Đi đường tắt, Chưa thử) và chi phí ước tính (số token) mà CLI hỏi xác nhận trước khi chạy. Lệnh chạy bẫy nằm ở chú thích dưới bảng."
+    why: "table-heroui-native-section-head.md."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Chọn công cụ là ChoiceChips; công tắc một kiểu; nút một cỡ 40px."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

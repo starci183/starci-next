@@ -1,0 +1,23 @@
+schema: 1
+screen: career/verify-not-found
+title: "Xác minh dòng CV, không tìm thấy"
+route: "/verify/[code]"
+area: career
+summary: ""
+code:
+shots:
+  "1440": { file: 1440.png, sha256: 9ff385f986bae1618cc24d187e57f86becab9a4189e5db7a5d0b351f08c66f19 }
+  "390": { file: 390.png, sha256: 61a5c0175d72b41c29186e0bad40ea2857c9930ed7f3bb374da7bebe116f04fb }
+sections:
+  - id: s1
+    title: "Nội dung chính"
+    shows: "Nội dung của màn như canvas đã duyệt"
+    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Giữ bố cục đã duyệt trên canvas"
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

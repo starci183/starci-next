@@ -1,0 +1,26 @@
+schema: 1
+screen: harness/builds-error
+title: "Build, danh sách, lỗi tải"
+route: "/harness/build"
+area: harness
+summary: ""
+code:
+shots:
+  "1440": { file: 1440.png, sha256: 17ee35615faf34322c86bdf10dfda65499520e8f6990eef46a17bb18acfeaa93 }
+  "390": { file: 390.png, sha256: 4f961a91a726a3ea3112a9086784657f407858d0cf2925b1dfa85bbcb9a4e04c }
+sections:
+  - id: s1
+    title: "Nội dung chính"
+    shows: "Nội dung của màn như canvas đã duyệt"
+    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Giữ bố cục đã duyệt trên canvas"
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: "Vẽ bộ lọc thành nhóm chip như canvas"
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit: null

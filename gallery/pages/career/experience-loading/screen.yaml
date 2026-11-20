@@ -1,0 +1,26 @@
+schema: 1
+screen: career/experience-loading
+title: "Kinh nghiệm, đang tải"
+route: "/experience"
+area: career
+summary: ""
+code:
+shots:
+  "1440": { file: 1440.png, sha256: b1e064d119840f5f8bcdc8cdd7da7844fe3db187f16ef760f2354d75d4bfc36c }
+  "390": { file: 390.png, sha256: a30949f71de57c9ec5d736917243056a25cd58e89d5355899c14d283ead73045 }
+sections:
+  - id: s1
+    title: "Nội dung chính"
+    shows: "Nội dung của màn như canvas đã duyệt"
+    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Giữ bố cục đã duyệt trên canvas"
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: "Vẽ bộ lọc thành nhóm chip như canvas"
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit: null

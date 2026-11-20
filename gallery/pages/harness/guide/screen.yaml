@@ -1,0 +1,53 @@
+schema: 1
+screen: harness/guide
+title: "Harness, một hướng dẫn"
+route: "/harness/use/[tool]/[guide]"
+area: harness
+summary: "Ba ngăn đọc một lần: danh sách hướng dẫn của công cụ, thân bài, mục lục kèm kết quả doctor; lỗi chỉ hiện một thông báo. Route: /harness/use/{tool}/{guide}. Mã: fe/apps/app/src/components/blocks/HarnessGuide/, dữ liệu qua fe/apps/app/src/hooks/harnessUse/useHarnessGuideScreen.ts. Markdown được cắt thành các mục theo tiêu đề cấp hai (sectio"
+code:
+  - features/pages/HarnessGuidePage
+  - components/blocks/HarnessGuide
+shots:
+  "1440": { file: 1440.png, sha256: cc8e083dc968a3dbc1167bfa831cb4ab469331b17f8f6ad6e98ba159583acef7 }
+  "390": { file: 390.png, sha256: a097890f0626801f66edccf510d0d207d204cd2bd24afe61376b80247d59568a }
+sections:
+  - id: s1
+    title: "Băng đầu trang (tên bài, dòng phụ, số phút đọc)"
+    shows: "đường dẫn Harness / Xài / tên bài, tab Xài đang chọn."
+    why: "FE-FUNCTION-2."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Thân bài (markdown có nút sao chép)"
+    shows: "mỗi tiêu đề cấp hai là một mục có neo; mọi khối mã và lệnh có nút Sao chép. Nội dung là markdown thật của bài, không dựng lại bằng tay."
+    why: "FE-FUNCTION-4, FE-ERROR-1 (vùng thân tự chờ và tự lỗi)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: 'Mục lục "Trong bài này"'
+    shows: "cột bên phải là danh sách phẳng có số thứ tự, bấm nhảy tới mục; ở màn hẹp cột này đứng trên thân bài."
+    why: "FE-FOLDER-2 (composite OutlineList dùng chung với trang bài giải thích)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s4
+    title: "Chuyển công cụ"
+    shows: "nhóm chip Claude Code và Codex đổi sang bài tương ứng của công cụ kia (cùng thứ tự trong danh sách) và nhớ lựa chọn cho học viên."
+    why: "FE-STORAGE."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s5
+    title: "Kết quả harness doctor"
+    shows: 'bảng điều kiện của đúng công cụ của bài, ưu tiên những điều kiện bài này sửa; có lệnh sao chép, công tắc nhỏ lọc điều kiện chưa đạt và nút "Xem cách sửa".'
+    why: "FE-ERROR-1."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Ba ngăn đọc một lần: danh sách hướng dẫn của công cụ, thân bài, mục lục kèm kết quả doctor; lỗi chỉ hiện một thông báo."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

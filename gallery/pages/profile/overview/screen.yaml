@@ -1,0 +1,53 @@
+schema: 1
+screen: profile/overview
+title: "Hồ sơ của bạn"
+route: "/profile"
+area: profile
+summary: "Không còn ngăn nền riêng ở cột bên; công tắc một kiểu. Route: /profile (ảnh chụp: học viên đã có hai dòng CV Đã xác minh, một máy nối, gói miễn phí). Mã: fe/apps/app/src/components/blocks/ProfileHub/. Trang sửa: profile/edit. Trạng thái khác: profile/new (học viên mới), prof"
+code:
+  - features/pages/ProfilePage
+  - components/blocks/ProfileHub
+shots:
+  "1440": { file: 1440.png, sha256: 7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e }
+  "390": { file: 390.png, sha256: 628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2 }
+sections:
+  - id: s1
+    title: "Mục tiêu"
+    shows: 'thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ (không có mục riêng ở thanh bên). Nút chính "Sửa hồ sơ" (với học viên mới là "Thêm ảnh và tên"). Dòng dưới tiêu đề: Học viên · gói · số mục đã xác minh trên ngưỡng giới thiệu việc làm.'
+    why: "Theo khung Grammar 0.50 của màn này."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Danh tính và liên kết CV"
+    shows: 'ảnh, tên, email và lộ trình mục tiêu. Liên kết CV tổng hợp (myCvLink) là hộp có Sao chép và công tắc "Cho người khác xem CV bằng liên kết này" (setCvVisibility); chưa có dòng đã xác minh thì chỉ nói khi nào liên kết xuất hiện.'
+    why: "Theo khung Grammar 0.50 của màn này."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "CV đã xác minh và tài khoản"
+    shows: "mỗi dòng là một mục Đã xác minh với người ký, ngày, bằng chứng, mã /verify/…, nút Sao chép và công tắc công khai riêng. Rỗng thì có chỉ dẫn và nút. Tài khoản gồm máy đã nối và gói, mỗi hàng một liên kết."
+    why: "Theo khung Grammar 0.50 của màn này."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s4
+    title: "Cột phải"
+    shows: 'tiến độ nhanh với "Xem tiến độ" và tóm tắt Kinh nghiệm với "Mở Kinh nghiệm"; ở 390 nằm cuối trang.'
+    why: "Theo khung Grammar 0.50 của màn này."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s5
+    title: "Sửa hồ sơ"
+    shows: 'trang con "Hồ sơ / Sửa". Ảnh gửi thẳng tới kho đối tượng và tự lưu; tên chờ "Lưu thay đổi" (Hủy trung tính); đang tải ảnh thì nút Lưu tắt; xóa ảnh hỏi xác nhận. Lưu xong quay về Hồ sơ với dòng "Đã cập nhật hồ sơ".'
+    why: "Theo khung Grammar 0.50 của màn này."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Không còn ngăn nền riêng ở cột bên; công tắc một kiểu."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null

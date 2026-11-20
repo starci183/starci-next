@@ -1,0 +1,39 @@
+schema: 1
+screen: profile/edit
+title: "Sửa hồ sơ"
+route: "/profile/edit"
+area: profile
+summary: 'Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên. Route: /profile/edit (trang con "Hồ sơ / Sửa"). Mã: fe/apps/app/src/components/blocks/ProfileEdit/. Giải thích đầy đủ nằm ở profile/overview, mục "Sửa hồ sơ". Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện'
+code:
+  - features/pages/ProfileEditPage
+  - components/blocks/ProfileEdit
+shots:
+  "1440": { file: 1440.png, sha256: 4bb2738b13736371944272946b402762c0c5365a4369033e6be2d556edd3ff1c }
+  "390": { file: 390.png, sha256: b273a849e1c2f10b499eec0fee4e157c26f1d93353d06d20d3bd4adc3409c6f5 }
+sections:
+  - id: s1
+    title: "Đầu trang: Hủy và Lưu thay đổi"
+    shows: 'Hủy là nút trung tính, "Lưu thay đổi" là nút chính duy nhất và tắt khi ảnh đang tải lên; lưu xong quay về Hồ sơ.'
+    why: "conventions.md (một nút chính mỗi trang)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Ảnh đại diện"
+    shows: "chọn ảnh (kiểm loại và dung lượng ở trình duyệt, giới hạn lấy từ máy chủ), gửi thẳng tới kho và tự lưu; xóa ảnh có xác nhận vì ảnh bị xóa khỏi kho."
+    why: "conventions.md (giới hạn lấy từ máy chủ, không viết cứng)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "Tên hiển thị và liên kết CV"
+    shows: "ô nhập tên có số ký tự trên giới hạn; liên kết CV với công tắc công khai để đặt ngay lúc sửa."
+    why: "verified-experience.md (trang công khai không lộ điểm số hay tên người duyệt)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit: null
