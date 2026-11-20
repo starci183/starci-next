@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c30982e23a727ca1ea2c319458a45c1ab3e01d5e1e7c9e6de90ccbc6f2bafe55
+    sha256: 69dc21039a1abb3ee303175041d985eb5e976fb2cfab49fc5f9311ae60ea7b7d
   "1440":
     file: 1440.png
-    sha256: b00d0285c9f89d1963b7ec096cad9993862b52ab0362dadce14fe9d5d9b5007d
+    sha256: 485dbf997740c0047918c8bf1a69b98dbc7bd039d86dbcc97b8dd9c7a237da2f
 sections:
   - id: s1
     title: Terminal
@@ -86,4 +86,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:38.927Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

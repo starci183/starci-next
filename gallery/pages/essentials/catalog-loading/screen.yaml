@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 913e46aca5a4667d08b649cf2db4e8ed787db59abac5a19504ce787a58eb2e85
+    sha256: 2488832ffd602d362cbb4b128fcc136c3f2f321133024bedd5a88fca73a802f1
   "1440":
     file: 1440.png
-    sha256: 5f8229860ef64bb40f9c94791694dfda5150e11eb9b1f5913d7076b077fefad7
+    sha256: 2fc57049ce751020652fd5fe8e2cec14ae487c66bbf12630868889ef84ac6d56
 sections:
   - id: s1
     title: Khung xám cùng hình dữ liệu
@@ -95,4 +95,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:20.201Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

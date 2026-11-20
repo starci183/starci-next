@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 6bfc08aa415c1fdcc09370233d6ad4b2b75def2d8a46208bf80fb60821bcee80
+    sha256: 33d9ce8137ff9ce047b21483ee1c3dae5ac2cf0df1a85c92a7be8a446f2a2db6
   "1440":
     file: 1440.png
-    sha256: 943b58c4b5efb9ee7be0bbc21c04ad0b7cc18da593ce2357f982c78fe35a1d63
+    sha256: 545b723b765494c59386ad2821f850eaef6ae1606d3a939f84b0ba14a67311d9
 sections:
   - id: s1
     title: Danh sách kịch bản
@@ -139,20 +139,49 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Khối "Sửa": lời nhắc hiện trong hộp mã cắt ngang ở 1440 ("...quá trình chết ng", "...outbox k") không xuống dòng cũng không cuộn.'
+          notes: 'Khối "Sửa": lời nhắc hiện trong hộp mã cắt ngang ở 1440 ("...quá trình chết ng", "...outbox
+            k") không xuống dòng cũng không cuộn. Còn lại: lề trái 268 của Page chrome=panes do
+            Grammar quyết định (cần Grammar).'
         actionable:
-          verdict: open
-          notes: '"Sao chép lời nhắc" là chữ trơn, không giống nút.'
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
         live:
           verdict: pass
           notes: ""
         words:
           verdict: open
-          notes: 'Nút "Check lại" lẫn tiếng Anh (nên "Chạy lại" hoặc "Kiểm tra lại").'
+          notes: 'Nút "Check lại" lẫn tiếng Anh (nên "Chạy lại" hoặc "Kiểm tra lại"). Còn lại: lời nhắc sửa
+            dài bị cắt ngang trong khối mã (Grammar chưa có cuộn hay xuống dòng, cần Grammar) và tên
+            kịch bản kebab, thẻ luật thô là dữ liệu core (cần API).'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:36.331Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

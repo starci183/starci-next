@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: eeddb43929b6da63f80f430924bb6779b6312411ad188a1cb855863888f2dcc5
+    sha256: 71422f327bca950fa682abbf91e8b2e372cde17ef026f4caa4c80a29fc8e804c
   "1440":
     file: 1440.png
-    sha256: c2f74991529206c8babdc2ff3cc4dd47b731a850492034c41db83bb86c6778ec
+    sha256: a71055e6dc534e8a6ff20b66bc494113d297c606bd19142915e0c00af344d019
 sections:
   - id: s1
     title: Khung xương của bài
@@ -87,4 +87,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:28.323Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

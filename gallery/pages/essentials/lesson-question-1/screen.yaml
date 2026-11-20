@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 062c4634a5b13ccd4ba6d0f7e50250c014dd68ce538d12a57bc4d41c67b7f2d8
+    sha256: b78727af8880f4374628950c511e4c5aafa7e3582966d6ea5404770c3c040868
   "1440":
     file: 1440.png
-    sha256: e1eee3af984baa1bffe4e1769f13b61d50943b2c3047d6b28974f78f1bb0f72e
+    sha256: fa460f571005d8364b23b6dcb1d85cb54e991f847feb22e7db641dc41c00cde2
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -139,7 +139,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ở 390 mô tả đầu bài dài 8 dòng nằm cạnh nút chính, ép cột mô tả hẹp và đẩy câu hỏi xuống dưới màn hình đầu."
+          notes: "Ở 390 mô tả đầu bài dài 8 dòng nằm cạnh nút chính, ép cột mô tả hẹp và đẩy câu hỏi xuống
+            dưới màn hình đầu. Còn lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần
+            Grammar)."
         actionable:
           verdict: pass
           notes: ""
@@ -155,4 +157,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:33.254Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

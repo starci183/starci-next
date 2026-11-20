@@ -10,12 +10,16 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9dbdc44e6d07c13a3de6f8eaef4a6042a1a3983205e462e6e24648a20303fa8d
+    sha256: bf52184f4dd8c9195d6fba16a79b03c015c1539387328ae363544e1f482cdb07
   "1440":
     file: 1440.png
-    sha256: 5992e08a3140d083d82dd4a37fc0c0eabfd1d68f17937047cac0daefe13a95a3
-  modal-1440: { file: modal-1440.png, sha256: "e5c3382691a6c61b11c5b3370dd13ba02030aecc02b1fa960c043929c1c777fd" }
-  modal-390: { file: modal-390.png, sha256: "6de7fbd851d38e3ff9c4680d46aeea9da15aef87bf0ab450689d72e5771a7ad7" }
+    sha256: d29fdb20b3195651a69b788fa50b9765a5957f1e410d0a06059704dfc9d82369
+  modal-1440:
+    file: modal-1440.png
+    sha256: e5c3382691a6c61b11c5b3370dd13ba02030aecc02b1fa960c043929c1c777fd
+  modal-390:
+    file: modal-390.png
+    sha256: 6de7fbd851d38e3ff9c4680d46aeea9da15aef87bf0ab450689d72e5771a7ad7
 sections:
   - id: s1
     title: Cần đăng nhập
@@ -45,8 +49,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Nút "Đăng nhập" căn trái (x=288) trong khi ô icon, tiêu đề và mô tả căn giữa: lệch nhau ở 1440 và 390. Đã đúng: thông báo tại chỗ, nút mở modal đăng nhập tại chỗ (modal-1440/390 đủ trường, nút Đăng nhập).'
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm
+            Xem thêm, một kiểu khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
         actionable:
           verdict: pass
           notes: ""
@@ -62,4 +67,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:40:04.711Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

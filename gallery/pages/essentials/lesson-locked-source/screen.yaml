@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 07ca9d4b1ecef29e4029512966e0671f03536ebbc08d55f3c6a95942c84b22b4
+    sha256: 070cc5534c1faad915eeb106588bfcb8cf3639dadbc73e0f9ebdfab28270b7da
   "1440":
     file: 1440.png
-    sha256: c97fc8d5aadb4934332491d14ac6a737a0e5538346a8fd06e1f44b7c797b61f8
+    sha256: 298a3b7471158ef742d13988a8ba027bdceba36def8bb97857ffe5dfc517af7e
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -124,4 +124,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:32.136Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

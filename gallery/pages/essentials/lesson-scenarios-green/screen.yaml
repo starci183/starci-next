@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: e0fbad0c00af3045ee926076f56c28b2ad0d87647fdadaa7eba50de3bb2eb439
+    sha256: 08333454e4897230728f2f4c037b49398e550372e856a649acdf90351a9b66c6
   "1440":
     file: 1440.png
-    sha256: ae3ae3b4c7db55cf59148945fb083ede7d0b60e3e0fa78430aeee8605fb60e4f
+    sha256: a4e4859433d90aa5b2c7bb2bfe94adff20f46f9b39c21a366886fc67d7842808
 sections:
   - id: s1
     title: Luật đã giữ
@@ -76,4 +76,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:37.733Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

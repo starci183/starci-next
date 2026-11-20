@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: a47a33d6a8e7bd85bc87fef1201cf00f50c7c2da5f3431c2a5176fb5f5100ca4
+    sha256: 0aa5d0e48090d27079497bf7c696ee36e479f12b59ac32e0e99fa80c109129f3
   "1440":
     file: 1440.png
-    sha256: aede7c595e142be1c38a3fa7f0ea3114bb3367a1b76a2ad0565bd982feb892c1
+    sha256: f2cddd6cf7f7279b10b40b888c993c4b703f47ce9f9541f19c5b074bb519c3e4
 sections:
   - id: s1
     title: Lộ trình đang theo
@@ -91,8 +91,9 @@ audit:
       at: 2026-11-20T14:09:50.575Z
       lenses:
         order:
-          verdict: open
-          notes: 'Canvas đặt "Làm tiếp kịch bản / Việc tiếp theo" lên đầu; code đặt "Lộ trình đang theo" (chưa chọn) trước "Hôm nay", và ở 390 "Hôm nay" nằm cuối sau chuỗi ngày, mục tiêu, kinh nghiệm, lộ trình.'
+          verdict: fixed
+          notes: "Vòng 3: danh sách việc hôm nay trước lời mời chọn mục tiêu, cả 390 (cột chính trước cột
+            phụ)."
         layout:
           verdict: pass
           notes: ""
@@ -111,4 +112,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:54.041Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

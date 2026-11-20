@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9ebb7a31d5b988a9b718e0f0546347b2c0029e0054367fcba807f4dcb338f8cb
+    sha256: 46bd7fb50b8807152bf9fb8c031817bd3bd44512ba751c37ee3381fdacdb476c
   "1440":
     file: 1440.png
-    sha256: f219e89ed5d069fc0f12fbbf4819443a0da64ae2c7722f364ae436df9da280d4
+    sha256: 7f521da28a8ea6c2bfa4458892bc98cda3d5f6791683c3ebbcbebf207c466709
 sections:
   - id: s1
     title: Thanh công cụ giữ nguyên
@@ -83,8 +83,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Nút chính "Bắt đầu: Cache phân tán: đọc nhanh mà không bán sai giá" quá dài: ở 390 xuống 2 dòng (trái DNA-COMMON-BUTTON-ONE-LINE), ở 1440 rộng ~390px; nên rút gọn ("Bắt đầu bài đầu"). Trạng thái không khớp vẽ ô icon + tiêu đề + mô tả + nút, trong khi Grammar empty-state scope "line" chỉ là một dòng 14/400 nhạt kèm nút nhỏ, không ô icon.'
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm
+            Xem thêm, một kiểu khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
         actionable:
           verdict: pass
           notes: ""
@@ -100,4 +101,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:21.345Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

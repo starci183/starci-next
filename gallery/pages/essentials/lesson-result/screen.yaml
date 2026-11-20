@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: dc4874843b1b0d0179978b0d3ea744c0af8ffc8dad99eb370a0964fd6e5b993f
+    sha256: 13728122d65751eccfae5215b2fbe105aa9ad643cb677b760cfb8f7f9c311318
   "1440":
     file: 1440.png
-    sha256: c062dd321ceeb61d817984744ac43e4aa129b9c4a52884574e802f58ed6029c8
+    sha256: 2beb3dd44cf9b0aa78b0bdb850a6bb1dca6e8ad037957fcab4a43c0823ef2456
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -121,7 +121,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ở 390 mô tả đầu bài dài 8 dòng nằm cạnh nút chính, ép cột mô tả hẹp và đẩy câu hỏi xuống dưới màn hình đầu."
+          notes: "Ở 390 mô tả đầu bài dài 8 dòng nằm cạnh nút chính, ép cột mô tả hẹp và đẩy câu hỏi xuống
+            dưới màn hình đầu. Còn lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần
+            Grammar)."
         actionable:
           verdict: pass
           notes: ""
@@ -132,9 +134,33 @@ audit:
           verdict: pass
           notes: ""
         states:
+          verdict: fixed
+          notes: "Vòng 3: chụp lại đúng trạng thái thật bằng học viên mới cho từng khung hình và từng bước."
+        truth:
+          verdict: fixed
+          notes: "Vòng 3: chụp từ học viên thật ở đúng trạng thái."
+    - n: 3
+      at: 2026-11-20T14:39:34.791Z
+      lenses:
+        order:
           verdict: open
-          notes: "Ảnh 390 không phải màn kết quả: là Câu 4/5 chưa trả lời; 1440 đúng (Đúng 2/5)."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: "Ảnh 390 không có điểm tổng kết nên không kiểm được."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

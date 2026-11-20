@@ -13,7 +13,7 @@ shots:
     sha256: 9de61f1b4937fe8284dd439423bc0e21e249b59a669968033a82a32be3a89f39
   "1440":
     file: 1440.png
-    sha256: 6f15899bdbd0374a313821ba4e5e2af72e3e862a197feff03dfa0e9a6f849eb3
+    sha256: be750c44314a057cc2aafa26669e589ff44ff57a937e0d46cb8c41395dd243f2
 sections:
   - id: s1
     title: Năm thẻ lộ trình
@@ -99,4 +99,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:58.582Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

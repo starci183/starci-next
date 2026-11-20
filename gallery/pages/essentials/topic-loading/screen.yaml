@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 303b5ac1487d7797231657b64b62d71647bc5e24e71b82c016b2dd885d008d1f
+    sha256: 5f79b5313e9a86471d1d1be4fc5ed68b84bd6add278f8b90480b3cf282fce147
   "1440":
     file: 1440.png
-    sha256: 78c12d33de93aafcfab220f8c0c3151beb0623212fef6ad02b09a4ef85279208
+    sha256: c91a57593d6d69cdcf381b83a2b8460567409f8486eb6055d294c5b634d97f59
 sections:
   - id: s1
     title: Khung xám cùng hình dữ liệu
@@ -84,12 +84,36 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Còn chữ "..." thật ở nhãn tiến độ đầu cột trái (1440 y250; 390 y368) trong lúc tải.'
+          verdict: fixed
+          notes: "Vòng 3: Kiểm tra lại thay Check lại, nhãn nút ngắn theo canvas."
         states:
-          verdict: open
-          notes: 'Loading vẫn có văn bản giữ chỗ "..." lẫn skeleton.'
+          verdict: fixed
+          notes: "Vòng 3: chụp lại đúng trạng thái thật bằng học viên mới cho từng khung hình và từng bước."
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:51.305Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

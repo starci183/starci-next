@@ -128,18 +128,43 @@ audit:
           verdict: pass
           notes: ""
         actionable:
-          verdict: open
-          notes: 'Cột phải "Nên biết trước" và "Chủ đề liên quan" (Độ tin cậy của API, Cơ sở dữ liệu) là chữ thường, không bấm được.'
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
         live:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Còn chữ "topic" tiếng Anh thô trong "(topic Backend framework)".'
+          verdict: fixed
+          notes: "Vòng 3: Kiểm tra lại thay Check lại, nhãn nút ngắn theo canvas."
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:46.622Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

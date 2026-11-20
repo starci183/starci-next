@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: a972d37081aae66e00335df02105cea42065144482bc7064570bd0b358d963f8
+    sha256: 7c7aaf94ebf2aab58fad6eed2493aec3be1769002944c19eb199c66c2285ea10
   "1440":
     file: 1440.png
-    sha256: ea8351ea169d6886470235246d37787d6da2403f01a355273be94f3b2ee226bf
+    sha256: afe3f60f9e828ff54701c7794808c2ddd07d6c5e7a38068a257ce9fff0a31207
 sections:
   - id: s1
     title: Terminal lỗi `up`
@@ -51,10 +51,13 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới; hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử.'
+          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới;
+            hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử. Còn
+            lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần Grammar).'
         actionable:
-          verdict: open
-          notes: 'Khối "Lệnh up báo lỗi" (port 5432 đã bị chiếm) chỉ in log thô, không có hướng xử lý (đổi cổng, dừng Postgres) hay nút thử lại.'
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
         live:
           verdict: pass
           notes: ""
@@ -67,4 +70,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:45.194Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

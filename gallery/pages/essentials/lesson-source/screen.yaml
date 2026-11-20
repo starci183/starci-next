@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: cb4e7070ed9ce9fb8d232d0251bac2a377f58d30a307e5fb02c7ca960bca377e
+    sha256: 0822c92633e1b6d16c235772f28e4f642f04cc413ceab04690969c00f2ebe07d
   "1440":
     file: 1440.png
-    sha256: 70f795e9317159e5acf44132070c2ed9a17571af6c1a888226c310647adbca2d
+    sha256: b59d74f9372fa0ac81acbbe313db49c2a925f3cfd0722101bac5cffc11126a10
 sections:
   - id: s1
     title: Lệnh chạy
@@ -55,7 +55,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới; hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử.'
+          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới;
+            hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử. Còn
+            lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần Grammar).'
         actionable:
           verdict: pass
           notes: ""
@@ -71,4 +73,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:42.615Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

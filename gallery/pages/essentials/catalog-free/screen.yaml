@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 5d042f496a70eeb6ad03eec69d347956113e0a8da3a77e5cbd1ecd4f51e94c8f
+    sha256: 7ce38c642ee8a921723584809cb006469b909975f6828e2c6e16db4a4cbc7d4b
   "1440":
     file: 1440.png
-    sha256: 29c6e137e12737beeae55a07d4425e104dd01cf35766604cf6b88edefd624afd
+    sha256: a6a6139a4f51e5be8215c1d0c783e528811503c2f9c0f9db101415e4e22058dc
 sections:
   - id: s1
     title: Nút chính
@@ -100,4 +100,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:19.084Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
