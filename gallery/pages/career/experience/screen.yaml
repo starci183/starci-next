@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: bb496c32d933da0a710432f3b47d7adc963d10ed633e993fd396cfb236908dd2
+    sha256: c6b0033a5e3f3d50726f0a75ea666c793e521dbea75bb77bbbee4808231e16f3
   "1440":
     file: 1440.png
-    sha256: 6b27b38f6f75804fbf4a42bd2150edb9afe1f7a7476d1f67e1c6bb415a6c6472
+    sha256: 02fd25ebaa7102884918d0ad38faf64302ccaac3bd01e77c41583074d0d56816
 sections:
   - id: s1
     title: Mục tiêu
@@ -97,20 +97,48 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ở 390 hai ô sửa dòng CV (Việt/Anh) quá thấp: chữ bị cắt dở dòng ngay trong ô, người dùng không đọc hết câu mà không cuộn trong ô."
+          notes: "Ở 390 hai ô sửa dòng CV (Việt/Anh) quá thấp: chữ bị cắt dở dòng ngay trong ô, người dùng
+            không đọc hết câu mà không cuộn trong ô."
         actionable:
           verdict: open
-          notes: 'Mục đã xác minh có công tắc Công khai và Sao chép liên kết nhưng thiếu nút Thu hồi của canvas 48 (tab "Đã thu hồi" có mà không có cách thu hồi).'
+          notes: Mục đã xác minh có công tắc Công khai và Sao chép liên kết nhưng thiếu nút Thu hồi của canvas
+            48 (tab "Đã thu hồi" có mà không có cách thu hồi).
         live:
           verdict: pass
           notes: ""
         words:
           verdict: open
-          notes: 'Hiện mã nguồn thô "dev-seed:deployed@dev-shop" / "dev-seed:request-lifecycle@dev-shop" / "dev-seed:milestone@dev-shop" thay vì tên chủ đề; nhãn tiếng Anh "CV line (English)" cạnh "Dòng CV (tiếng Việt)".'
+          notes: Hiện mã nguồn thô "dev-seed:deployed@dev-shop" / "dev-seed:request-lifecycle@dev-shop" /
+            "dev-seed:milestone@dev-shop" thay vì tên chủ đề; nhãn tiếng Anh "CV line (English)"
+            cạnh "Dòng CV (tiếng Việt)".
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T16:13:50.344Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
