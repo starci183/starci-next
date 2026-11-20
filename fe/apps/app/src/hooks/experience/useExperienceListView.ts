@@ -123,7 +123,8 @@ const cardOf = (item: ItemRead, context: ExperienceCardContext): ExperienceCardV
         stateTone: stateToneOf(item.state),
         dateText: dateTextOf(item, context),
         title: plain === "" ? item.subject : plain,
-        subtitle: plain === "" || plain === item.subject || isInternalRef(item.subject) ? undefined : item.subject,
+        subtitle:
+            plain === "" || item.subjectLabel === null || item.subjectLabel === plain ? undefined : item.subjectLabel,
         tags: tagsOf(item, context),
         returnNote: isReturned ? (item.returnNote ?? undefined) : undefined,
         note: noteOf(item, copy),
@@ -243,9 +244,6 @@ export type ExperienceCardState = Pick<
     ExperienceCardContext,
     "drafts" | "busy" | "failures" | "editing" | "copiedId" | "origin" | "confirmId" | "claimBusy"
 >
-
-/** Whether a subject is an internal reference (a key with a colon or an at sign) and not a name a learner reads: never shown. */
-const isInternalRef = (subject: string): boolean => /@|^[a-z0-9-]+:\S/iu.test(subject)
 
 /** The mapping of the learner's read to the list as it is drawn, in the reader's words. */
 export const useExperienceListView = (): ((

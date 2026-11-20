@@ -110,8 +110,10 @@ export interface ExperienceItemView {
     readonly part: ExperiencePart
     /** What a verified item feeds. */
     readonly output: ExperienceOutput
-    /** What it is about. */
+    /** What it is about: the internal key of the item, never shown to a person. */
     readonly subject: string
+    /** What it is about in words, from the slot the catalog names, or null when the slot is empty. */
+    readonly subjectLabel: string | null
     /** The project the evidence belongs to, or null. */
     readonly projectId: string | null
     /** Where it stands. */
@@ -184,6 +186,8 @@ export interface MyExperienceParams {
     readonly learnerId: string
     /** The state to list, or null for every item. */
     readonly state: ExperienceState | null
+    /** The language of the item labels; vi when absent. */
+    readonly locale?: ExperienceLocale
 }
 
 /** The item a producer created or regraded, or null when the evidence grants none. */

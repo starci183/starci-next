@@ -1,6 +1,7 @@
 import type {
     CareerSettings,
     ExperienceItemView,
+    ExperienceLocale,
     ReviewDecisionView,
     ReviewerView,
     ReviewQueueItemView,
@@ -8,6 +9,7 @@ import type {
     VerifiedExperienceView,
 } from "./career.contracts"
 import { catalogItemOf } from "./experience-catalog.policy"
+import { publicSubjectOf } from "./public-cv-line.policy"
 import type { DecisionRow, ItemRow, ReviewerRow } from "./persistence/career.rows"
 import { slaOf } from "./review-sla.policy"
 
@@ -18,8 +20,9 @@ const isoOrNull = (value: Date | null): string | null => (value === null ? null 
 const HANDLE_LENGTH = 6
 
 /** Maps a stored item to the view its learner reads. */
-export const toExperienceItemView = (row: ItemRow): ExperienceItemView => {
+export const toExperienceItemView = (row: ItemRow, locale: ExperienceLocale = "vi"): ExperienceItemView => {
     const catalog = catalogItemOf(row.item_type)
+    const label = publicSubjectOf(row.item_type, row.slot_values, locale)
     return {
         itemId: row.item_id,
         verificationCode: row.verification_code,
@@ -27,6 +30,7 @@ export const toExperienceItemView = (row: ItemRow): ExperienceItemView => {
         part: row.part,
         output: catalog.output,
         subject: row.subject,
+        subjectLabel: label === "" ? null : label,
         projectId: row.project_id,
         state: row.state,
         line: row.line,
