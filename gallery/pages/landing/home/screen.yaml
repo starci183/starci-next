@@ -1,0 +1,88 @@
+schema: 1
+screen: landing/home
+title: Trang giới thiệu StarCi Next
+route: /
+area: landing
+summary: 'Cửa vào công khai: thanh trên có thương hiệu, đổi ngôn ngữ và Đăng nhập; phần mở đầu nói
+  sản phẩm là gì, cho ai và MỘT nút chính "Mở ứng dụng"; danh sách ba khu vực.'
+code:
+  - features/layouts/LandingLayout
+  - features/pages/LandingPage
+  - components/blocks/LocaleSwitch
+shots:
+  "390":
+    file: 390.png
+    sha256: 3bf22290b595a37ee360c6580f3b47e52f55204905b7198b1a0a4c2ca4eff26a
+  "1440":
+    file: 1440.png
+    sha256: cd92bd60eadd8e418b4bf74fb22c79aa713b50675501397a39d1f27d9c22a8bb
+sections:
+  - id: s1
+    title: Thanh trên
+    shows: Logo và tên StarCi Next, nút đổi ngôn ngữ và nút phụ "Đăng nhập" dẫn sang ứng dụng.
+    why: Một thương hiệu cho cả hai ứng dụng; chỉ một nút chính trong cả trang.
+    actions:
+      - Đăng nhập
+      - Đổi ngôn ngữ
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Phần mở đầu
+    shows: Tiêu đề lớn, một câu dẫn và nút chính "Mở ứng dụng".
+    why: Khách lạ hiểu sản phẩm là gì và có đúng một việc để làm.
+    actions:
+      - Mở ứng dụng
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Ba khu vực
+    shows: Danh sách phẳng Essentials, Projects, Harness, mỗi hàng một dòng mô tả.
+    why: Cho thấy sản phẩm có gì mà không dựng thẻ hay hình trang trí.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas 07-landing đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh
+      hoạ trong thẻ."
+audit:
+  builder:
+    agent: next-ux-shell
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T19:09:23.674Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

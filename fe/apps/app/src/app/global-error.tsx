@@ -1,5 +1,6 @@
 "use client"
 
+import "./globals.css"
 import { AppGlobalErrorPage } from "@/features/pages/AppGlobalErrorPage"
 
 type GlobalErrorProps = { readonly reset: () => void }

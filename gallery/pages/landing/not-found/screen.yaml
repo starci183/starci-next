@@ -1,0 +1,66 @@
+schema: 1
+screen: landing/not-found
+title: Trang giới thiệu, không tìm thấy trang
+route: /{locale}/{địa chỉ không có}
+area: landing
+summary: "Địa chỉ không có trong trang giới thiệu: thanh thương hiệu còn nguyên, phần thân là trạng
+  thái trang dùng chung với một nút về trang chủ."
+code:
+  - app/[locale]/(pages)/not-found.tsx
+  - features/pages/LandingNotFoundPage
+shots:
+  "390":
+    file: 390.png
+    sha256: 6806635a034eefe98b267773a3da4eac8530847337725417dcfc97b858d3d4e6
+  "1440":
+    file: 1440.png
+    sha256: e2ce71145f5a1a9550b91f15b8d71a147d96e9c04bd4c146a7161df8ed939b47
+sections:
+  - id: s1
+    title: Trạng thái không tìm thấy
+    shows: Hình, tiêu đề, một câu giải thích và MỘT nút "Về trang chủ"; không có "Thử lại" vì đây không
+      phải lỗi mạng.
+    why: Cùng một thành phần dùng chung cho mọi nhóm tuyến.
+    actions:
+      - Về trang chủ
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas 07-landing đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh
+      hoạ trong thẻ."
+audit:
+  builder:
+    agent: next-ux-shell
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T19:09:24.767Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

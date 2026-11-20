@@ -177,6 +177,9 @@ const SCREENS = [
     S("auth", "sign-in-callback", "/sign-in/callback", { guest: true }),
     S("auth", "verify", "/verify/ABCD-2345-WXYZ", { guest: true }),
     S("landing", "home", "/", { guest: true, origin: LANDING }),
+    S("landing", "not-found", "/zz-no-such-page", { guest: true, origin: LANDING }),
+    // The error page needs a route that throws: a temporary page /zz-throw of the landing (not in the code) while shooting.
+    S("landing", "error", "/zz-throw", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
     S("learn", "not-found", "/zz-no-such-page"),
