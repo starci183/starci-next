@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9a32f609949a3b4820129cc20dbccc8ced1505b7888059f1f22f54a9cbf8823b
+    sha256: a37ff0538813dac31fb4ac89a5ef8a4a7323008b32bca299fca97b66420d9ae7
   "1440":
     file: 1440.png
-    sha256: 2333aaa0cde291b9386eedb3c0fb532150f2464aa746e640c8320a1948194f68
+    sha256: a8c3f4ca2e27cd6a5785e0425983d0c301950551df75d05d7715b8c9b0d8ce2f
 sections:
   - id: s1
     title: Nội dung chính
@@ -56,8 +56,34 @@ audit:
           notes: '"Hủy" khác "Huỷ" của canvas.'
         states:
           verdict: open
-          notes: 'Hai khối lỗi giống hệt "Không tải được phần này." xếp chồng (ảnh và danh tính); canvas profile/edit-error là một khối "Không tải được hồ sơ" với dòng "Thay đổi bạn chưa lưu vẫn ở trên trang này." và Thử lại.'
+          notes: Hai khối lỗi giống hệt "Không tải được phần này." xếp chồng (ảnh và danh tính); canvas
+            profile/edit-error là một khối "Không tải được hồ sơ" với dòng "Thay đổi bạn chưa lưu
+            vẫn ở trên trang này." và Thử lại.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:08.805Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7cfd38de26c8558c3a9264f89b23c5f44ab1c62e802487f4f6a2067f69759b61
+    sha256: b76eec18d3d3ee3d1a649b74e8dc1f9d31f7e490464b8bdc964128a97605ab6a
   "1440":
     file: 1440.png
-    sha256: 1dd9fdb410931c72049ed16462eda3cea416f82c0bf7c60bc255efd883d02740
+    sha256: 23e4b39f2e1ac41435a937742750786bc190374684bbb594efbc47349bcce8d9
 sections:
   - id: s1
     title: Mục tiêu
@@ -97,20 +97,50 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính "Thêm ảnh và tên" chạm mép phải x≈1428, lệch gutter 1408.'
+          notes: 'Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính "Thêm ảnh và tên" chạm
+            mép phải x≈1428, lệch gutter 1408.'
         actionable:
           verdict: open
-          notes: '"Chọn lộ trình" là chữ đậm trơn cạnh dòng meta, không dạng bấm được; canvas là liên kết "Đổi lộ trình".'
+          notes: '"Chọn lộ trình" là chữ đậm trơn cạnh dòng meta, không dạng bấm được; canvas là liên kết "Đổi
+            lộ trình".'
         live:
           verdict: pass
           notes: ""
         words:
           verdict: open
-          notes: 'Email "gallery-ess-0006@example.test" xuất hiện hai lần liền nhau (làm tên và làm meta); ở 390 dòng meta ngắt "Lộ trình mục tiêu: Chưa / chọn lộ trình".'
+          notes: 'Email "gallery-ess-0006@example.test" xuất hiện hai lần liền nhau (làm tên và làm meta); ở
+            390 dòng meta ngắt "Lộ trình mục tiêu: Chưa / chọn lộ trình".'
         states:
           verdict: open
-          notes: 'Ảnh chụp là tài khoản rỗng (0/3, "Chưa có dòng CV nào"), không phải trạng thái có dữ liệu (2/3 đã xác minh) của canvas profile/overview.'
+          notes: Ảnh chụp là tài khoản rỗng (0/3, "Chưa có dòng CV nào"), không phải trạng thái có dữ liệu
+            (2/3 đã xác minh) của canvas profile/overview.
         truth:
           verdict: open
-          notes: 'Tên hiển thị là địa chỉ email (lỗi đã biết: tên lấy từ email tài khoản), canvas là "Minh Nguyễn".'
+          notes: 'Tên hiển thị là địa chỉ email (lỗi đã biết: tên lấy từ email tài khoản), canvas là "Minh
+            Nguyễn".'
+    - n: 2
+      at: 2026-11-20T14:16:13.889Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

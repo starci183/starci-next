@@ -62,10 +62,12 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ảnh minh hoạ có nền vuông xám nhạt lộ ra trên nền trắng (1440 ~x640-800,y283-441; 390 ~x136-254,y272-392)."
+          notes: Ảnh minh hoạ có nền vuông xám nhạt lộ ra trên nền trắng (1440 ~x640-800,y283-441; 390
+            ~x136-254,y272-392).
         actionable:
           verdict: open
-          notes: 'Canvas có ô địa chỉ "next.starci.vn/cv/ten-khong-co" với nút Sao chép để người dùng đối chiếu; code không có.'
+          notes: Canvas có ô địa chỉ "next.starci.vn/cv/ten-khong-co" với nút Sao chép để người dùng đối
+            chiếu; code không có.
         live:
           verdict: pass
           notes: ""
@@ -78,4 +80,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:07.368Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

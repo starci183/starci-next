@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4f961a91a726a3ea3112a9086784657f407858d0cf2925b1dfa85bbcb9a4e04c
+    sha256: 7f7bd3f60a1cea68db063296b41116abd1d705587e4d8eb700aa70c5e59526cd
   "1440":
     file: 1440.png
-    sha256: 17ee35615faf34322c86bdf10dfda65499520e8f6990eef46a17bb18acfeaa93
+    sha256: ff417fcaaf25bceae2ff396ac507c0d66db3c4ce99b6f10d0423bdf49ce27a79
 sections:
   - id: s1
     title: Nội dung chính
@@ -61,8 +61,34 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/builds-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại.'
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/builds-error có tên mục
+            không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn
+            nguyên. Thử lại sau vài giây.") và nút Thử lại.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:29.304Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

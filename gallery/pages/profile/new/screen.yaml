@@ -72,7 +72,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
         actionable:
           verdict: open
           notes: '"Chọn lộ trình" là chữ đậm trơn không giống liên kết.'
@@ -81,11 +82,36 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: "Email lặp hai lần liền nhau."
+          notes: Email lặp hai lần liền nhau.
         states:
           verdict: open
-          notes: 'Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.'
+          notes: Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên
+            mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.
         truth:
           verdict: open
-          notes: 'Tên hiển thị là email "gallery-ess-0006@example.test" (lỗi đã biết), canvas là "minh".'
+          notes: Tên hiển thị là email "gallery-ess-0006@example.test" (lỗi đã biết), canvas là "minh".
+    - n: 2
+      at: 2026-11-20T14:16:12.512Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

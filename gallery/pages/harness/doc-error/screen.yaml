@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 2e724bd03548b7ed32645f752e5e7281c9e1ed7f8e886d8b91629d02a89ceb0f
+    sha256: 451a20eca944ec50827f49c11d4af09985e630e17cd3f40faf76a5ea78aed7be
   "1440":
     file: 1440.png
-    sha256: 8fe62ce4ecdd2cc6027e989ed6055bad1a65391d09bce503f971c9e0fdd1db85
+    sha256: f964910fe96f058d6ea13dcad7ff5615cc3149b367ee89bc5ba05403e6c91e2f
 sections:
   - id: s1
     title: Nội dung chính
@@ -44,7 +44,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực."
         actionable:
           verdict: pass
           notes: ""
@@ -56,8 +57,33 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Lỗi chỉ ghi "Không tải được phần này."; canvas có tên bài, giải thích và Thử lại. Tiêu đề trang "Bài giải thích" chung.'
+          notes: Lỗi chỉ ghi "Không tải được phần này."; canvas có tên bài, giải thích và Thử lại. Tiêu đề
+            trang "Bài giải thích" chung.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:33.819Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

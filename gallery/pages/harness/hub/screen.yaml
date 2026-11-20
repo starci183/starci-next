@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 0adee37e868d97773c95f9be76c96ef432f9eb0e91215ce3f25243ae88875165
+    sha256: 5cfdbb4278540e684cc98e958ed77f1a4578b6acef1df79e8727c23338aee2f5
   "1440":
     file: 1440.png
-    sha256: 4c07bb112b2ae50a4ea531c2a10d7736c2611c12bd5ef0b8ada292b43be91e64
+    sha256: e12c314ecf1717d795abe5819689c34cf636c4807138100c7fff115313e0c6ba
 sections:
   - id: s1
     title: Băng đầu trang (tiêu đề, dòng phụ, bốn tab)
@@ -85,10 +85,11 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Mô tả mỗi phần bị cắt giữa chữ ở 390 và dòng meta "AI agent · MCP server · Cha..." cắt ở cả 1440 và 390. Canvas có nút chính "Tiếp tục build dở"; code không có nút chính nào.'
+          notes: Mô tả mỗi phần bị cắt giữa chữ ở 390 và dòng meta "AI agent · MCP server · Cha..." cắt ở cả
+            1440 và 390. Canvas có nút chính "Tiếp tục build dở"; code không có nút chính nào.
         actionable:
           verdict: open
-          notes: 'Không có hành động chính "Tiếp tục build dở" như canvas harness/hub; chỉ các dòng chevron.'
+          notes: Không có hành động chính "Tiếp tục build dở" như canvas harness/hub; chỉ các dòng chevron.
         live:
           verdict: pass
           notes: ""
@@ -100,5 +101,30 @@ audit:
           notes: ""
         truth:
           verdict: open
-          notes: 'Tab "Build / Xài / Hiểu sâu" không có số đếm như canvas (Build 5, Xài 8, Docs 12); tab "Hiểu sâu" thay "Docs" nên tên và số đếm khác canvas.'
+          notes: Tab "Build / Xài / Hiểu sâu" không có số đếm như canvas (Build 5, Xài 8, Docs 12); tab "Hiểu
+            sâu" thay "Docs" nên tên và số đếm khác canvas.
+    - n: 2
+      at: 2026-11-20T14:15:49.856Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

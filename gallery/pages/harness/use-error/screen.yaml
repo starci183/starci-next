@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: bc5b87ff29cd17f5d70b1c5d39f39baabc64b5bbea1b41a3ff28673e04919e9e
+    sha256: eb502729e6f84aaf42d32b1a665272d0f5f9c401b3f0626aede360d606c5a8eb
   "1440":
     file: 1440.png
-    sha256: c6b0b4ab792052a236f09c1b3f38f3e359a36c54d75beaa176f60df9ab2ca592
+    sha256: f7c43db779363ada203dd1625cefb34f30557efdddb6571e72452a6e74aa2956
 sections:
   - id: s1
     title: Nội dung chính
@@ -56,8 +56,34 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Ba khối lỗi giống hệt "Không tải được phần này." xếp chồng (mỗi phần một khối); canvas harness/use-error gộp một khối có tiêu đề "Không tải được kết quả kiểm tra" và dòng giải thích.'
+          notes: Ba khối lỗi giống hệt "Không tải được phần này." xếp chồng (mỗi phần một khối); canvas
+            harness/use-error gộp một khối có tiêu đề "Không tải được kết quả kiểm tra" và dòng giải
+            thích.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:51.800Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

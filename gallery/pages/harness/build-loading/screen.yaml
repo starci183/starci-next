@@ -45,7 +45,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>". Khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông khi tải.'
+          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build /
+            <tên build>". Khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông khi
+            tải.
         actionable:
           verdict: pass
           notes: ""
@@ -61,4 +63,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:25.826Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

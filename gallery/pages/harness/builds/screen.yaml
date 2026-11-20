@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 404164caffc1c8e67e6dcbb579a6877410a04f2f484502ae32f0c4e1241ee42f
+    sha256: 00c3a17d250a74450873597b131bc49de5e04b0ef7dba5531504bcd8f9be0408
   "1440":
     file: 1440.png
-    sha256: e880c8f02058a2b2e4e68e339eca6a6bd25dd98570534d288b91c044e888935b
+    sha256: 730ef24992936fb41920721458a57db4011a2f9761d55dba4bdd8022ba817e6a
 sections:
   - id: s1
     title: Băng đầu trang (Build, đường dẫn Harness / Build, bốn tab)
@@ -60,7 +60,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Ở 390 dải Tabs kind="filter" bị cắt ở "Đã chứng minh 0 ›" (tab Chưa bắt đầu ẩn sau mũi tên), hàng 2 lệch lề so với hàng 1 (x=44 so với x=36) và số liệu "0 / 5 chặng đã chứng minh · 0 / 5 chặng đã chạy" căn giữa lạ. Ở 1440 mô tả bị cắt "…xác ..." giữa chữ; cột "ANTHROPIC_API_KEY / OP..." bị cắt.'
+          notes: Ở 390 dải Tabs kind="filter" bị cắt ở "Đã chứng minh 0 ›" (tab Chưa bắt đầu ẩn sau mũi tên),
+            hàng 2 lệch lề so với hàng 1 (x=44 so với x=36) và số liệu "0 / 5 chặng đã chứng minh ·
+            0 / 5 chặng đã chạy" căn giữa lạ. Ở 1440 mô tả bị cắt "…xác ..." giữa chữ; cột
+            "ANTHROPIC_API_KEY / OP..." bị cắt.
         actionable:
           verdict: pass
           notes: ""
@@ -69,11 +72,37 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Cột key hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." thay vì "Anthropic hoặc OpenAI" như canvas.'
+          notes: Cột key hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." thay vì "Anthropic hoặc
+            OpenAI" như canvas.
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: open
-          notes: 'Thiếu "Cần key" và trạng thái (Đang luyện / Đã chứng minh) từng bản build như canvas; hàng chỉ có hai số "chặng đã chứng minh / đã chạy".'
+          notes: Thiếu "Cần key" và trạng thái (Đang luyện / Đã chứng minh) từng bản build như canvas; hàng
+            chỉ có hai số "chặng đã chứng minh / đã chạy".
+    - n: 2
+      at: 2026-11-20T14:15:32.526Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 06337a0053d4275ea577f399c7ca085d4ac536955fe0c3a3157040d775ce87d4
+    sha256: 990379764a788e4c89919eaa64293abc9f28de765d71a6e30af7d8f1f0bfd8a1
   "1440":
     file: 1440.png
-    sha256: 290fe036cccbd1c38dc6d07df4ed89e45ce29f6077532afe175f4bd04175d943
+    sha256: 7bdaff288706f07cc178f76b33732b6714108428bf5891e8273ccb81f19a14d3
 sections:
   - id: s1
     title: Chọn công cụ
@@ -84,7 +84,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Công tắc "Chỉ điều kiện chưa đạt" vẫn hiện khi bảng doctor rỗng (0/0), bảng "Bẫy thử agent" rỗng chiếm khối cao; ở 390 tiêu đề "Kiểm tra máy với harness doc…" bị cắt.'
+          notes: Công tắc "Chỉ điều kiện chưa đạt" vẫn hiện khi bảng doctor rỗng (0/0), bảng "Bẫy thử agent"
+            rỗng chiếm khối cao; ở 390 tiêu đề "Kiểm tra máy với harness doc…" bị cắt.
         actionable:
           verdict: pass
           notes: ""
@@ -93,11 +94,38 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`", "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã. Mô tả hướng dẫn kết thúc bằng "..." giữa câu.'
+          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`",
+            "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã. Mô tả hướng dẫn kết thúc
+            bằng "..." giữa câu.'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: open
-          notes: 'Doctor "0/0 đạt · Chưa chạy" và bẫy thử "0" là chưa có dữ liệu máy: không đánh dấu cần API; canvas dùng dữ liệu 6/9 đạt.'
+          notes: 'Doctor "0/0 đạt · Chưa chạy" và bẫy thử "0" là chưa có dữ liệu máy: không đánh dấu cần API;
+            canvas dùng dữ liệu 6/9 đạt.'
+    - n: 2
+      at: 2026-11-20T14:15:54.981Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

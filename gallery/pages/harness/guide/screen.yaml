@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 723d2c2c25a79dcdd90f94714c14a3a234614422d5e36caddadea558d82bcdf8
+    sha256: 4aad1c860e76c59f3e8b93e155b9faec6f0cc8ade7cd07f8ab932c1e846907ac
   "1440":
     file: 1440.png
-    sha256: d66a0f59dea0c2f1c3cb570ca2c6f78e0452a016320c26fe773faef285025a53
+    sha256: 19749545c6a6c8034ff94a4e89f88f9ca7459b47a14df609d49cf243ab6f21de
 sections:
   - id: s1
     title: Băng đầu trang (tên bài, dòng phụ, số phút đọc)
@@ -90,10 +90,12 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Ở 390 danh sách "Trong bài này" (8 mục) nằm ngay dưới tab, đẩy thân bài xuống dưới màn hình đầu; người đọc phải cuộn qua mục lục mới tới nội dung.'
+          notes: Ở 390 danh sách "Trong bài này" (8 mục) nằm ngay dưới tab, đẩy thân bài xuống dưới màn hình
+            đầu; người đọc phải cuộn qua mục lục mới tới nội dung.
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực."
         actionable:
           verdict: pass
           notes: ""
@@ -102,11 +104,36 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`", "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã.'
+          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`",
+            "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã.'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:44.943Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

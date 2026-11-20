@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: d521d3a3d7e240388fcf8bc8d0d330fe131b9fed1f68ccbf86b799521cc59f08
+    sha256: 249d350fff2d3850e9bef58384d7eb74034ea773ae8da477b61208de51e2eada
   "1440":
     file: 1440.png
-    sha256: 21bd89b8b0f1175ad80eb1b0bb7fb878efd5a4ead8561603845f5dce9774ea26
+    sha256: db119c6c29d080cc86c9ec59639e4bce2b35e7e6ad9003cfe3c3036e4ab6261a
 sections:
   - id: s1
     title: Nội dung chính
@@ -44,7 +44,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực."
         actionable:
           verdict: pass
           notes: ""
@@ -60,4 +61,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:34.994Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

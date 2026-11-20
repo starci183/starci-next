@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 04958250a101d331e0d053280682eb9d70cea90f13dfe8029789f6f15dab4892
+    sha256: f606cca21e20449b9b38d1d6c7eceb8db2a1a83303aca0bce8342903dd749c93
   "1440":
     file: 1440.png
-    sha256: 7fcd1c0d6a55a06cb397d96ae1f5bcf95a0b6da22172e1dbb3c95f802452129d
+    sha256: d97a948fc133a897ea298d73c9f00dea999d77ef2bb4e5071a954d5ab631ad49
 sections:
   - id: s1
     title: Nội dung chính
@@ -45,7 +45,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>".'
+          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build /
+            <tên build>".
         actionable:
           verdict: pass
           notes: ""
@@ -57,8 +58,35 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/build-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại. Canvas còn nút phụ "Về danh sách Build"; code không có.'
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/build-error có tên mục
+            không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn
+            nguyên. Thử lại sau vài giây.") và nút Thử lại. Canvas còn nút phụ "Về danh sách Build";
+            code không có.
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:23.886Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
