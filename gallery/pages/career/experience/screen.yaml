@@ -93,24 +93,24 @@ audit:
       at: 2026-11-20T16:05:54.145Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 390 hai ô sửa dòng CV (Việt/Anh) quá thấp: chữ bị cắt dở dòng ngay trong ô, người dùng không đọc hết câu mà không cuộn trong ô."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Mục đã xác minh có công tắc Công khai và Sao chép liên kết nhưng thiếu nút Thu hồi của canvas 48 (tab "Đã thu hồi" có mà không có cách thu hồi).'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Hiện mã nguồn thô "dev-seed:deployed@dev-shop" / "dev-seed:request-lifecycle@dev-shop" / "dev-seed:milestone@dev-shop" thay vì tên chủ đề; nhãn tiếng Anh "CV line (English)" cạnh "Dòng CV (tiếng Việt)".'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null
