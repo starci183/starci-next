@@ -29,6 +29,8 @@ export type RubricRowView = {
 export type ChallengeDetailView = {
     readonly id: string
     readonly heading: string
+    /** The name of the rung (Dễ, Vừa...): the score beside it is this rung's. */
+    readonly level: string
     readonly brief: string
     readonly state: RungState
     readonly stateLabel: string
@@ -54,8 +56,9 @@ export type ApplyPartView = {
 
 /** The words of the right column of the apply part. */
 export type ApplyAsideLabels = {
-    readonly score: string
     readonly scoreNote: (max: number) => string
+    /** The title of the score block: names the rung it belongs to. */
+    readonly scoreOf: (level: string) => string
     readonly cvTitle: string
     readonly cvNote: string
     readonly cvNone: string

@@ -507,9 +507,13 @@
       }
     },
     "essentials/lesson-ladder": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "c6eaeaaa63d18f69eee14383edb56a4080f5ab60f8a08fb800d846e3f1e18047",
+        "1440": "eb6463f9fc341ec3737ae6f21dad2d6bd6b6d9879eddfe65fc1bdd22ee290aea"
+      }
     },
     "essentials/lesson-ladder-locked": {
       "status": "built",

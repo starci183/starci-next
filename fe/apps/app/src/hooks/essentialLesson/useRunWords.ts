@@ -33,7 +33,7 @@ export const useRunWords = (): RunWords => {
             locked: t("apply.rungs.locked"),
             open: t("apply.rungs.open"),
             doing: (score, max) => t("apply.rungs.doing", { score, max }),
-            passed: t("apply.rungs.passed"),
+            passed: (score, max) => t("apply.rungs.passed", { score, max }),
         },
         hiddenGreen: (green, total, score, max) => t("apply.hiddenGreen", { green, total, score, max }),
         applyPrimary: {

@@ -1199,14 +1199,14 @@
             "locked": "Mở sau khi xong mức trước",
             "open": "Sẵn sàng",
             "doing": "Đang luyện · {score}/{max}",
-            "passed": "Đã xanh"
+            "passed": "Đã xanh · {score}/{max}"
           },
           "primary": {
             "run": "Chạy mức {level}",
             "rerun": "Chạy lại mức {level}"
           },
           "aside": {
-            "score": "Điểm của bạn",
+            "scoreOf": "Điểm mức {level}",
             "scoreNote": "Qua mức khi mọi kịch bản ẩn xanh. Tổng {max} điểm.",
             "cvTitle": "Dòng hồ sơ",
             "cvNote": "Hiện ở hồ sơ công khai của bạn như một dòng đã xác minh.",
