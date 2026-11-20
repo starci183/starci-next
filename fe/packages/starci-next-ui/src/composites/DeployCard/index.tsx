@@ -6,7 +6,7 @@ export const DeployCard = (props: DeployCardProps) => {
     const { labels, busy, fields, view } = props
     return (
         <Section title={labels.deployTitle} isLoading={props.isLoading}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 <Text tone="muted">{labels.deployText}</Text>
                 {fields.issueWords === "" ? null : <Alert tone="negative" title={fields.issueWords} />}
                 <Input
@@ -18,7 +18,7 @@ export const DeployCard = (props: DeployCardProps) => {
                     isDisabled={busy.isSaving}
                     onValueChange={props.on.deployed}
                 />
-                <Cluster gap="inline" wrap align="center">
+                <Cluster gap="identity" wrap align="center">
                     <Button intent="neutral" isPending={busy.isSaving} onPress={props.on.saveDeployed}>
                         {labels.saveDeployed}
                     </Button>
@@ -26,11 +26,17 @@ export const DeployCard = (props: DeployCardProps) => {
                         intent="neutral"
                         isPending={busy.isProbing}
                         isDisabled={view.deployedUrl === "" || busy.isProbing}
+                        {...(view.deployedUrl === "" ? { disabledReason: labels.runProbesNeedsUrl } : {})}
                         onPress={props.on.runProbes}
                     >
                         {busy.isProbing ? labels.runningProbes : labels.runProbes}
                     </Button>
                 </Cluster>
+                {view.deployedUrl === "" ? (
+                    <Text size="xs" tone="muted">
+                        {labels.runProbesNeedsUrl}
+                    </Text>
+                ) : null}
             </Stack>
         </Section>
     )

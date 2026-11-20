@@ -1,5 +1,5 @@
 import { QueryHandler } from "@nestjs/cqrs"
-import { PracticeReadService, type PracticePatternView } from "@modules/domain/practice"
+import { GUEST_LEARNER_ID, PracticeReadService, type PracticePatternView } from "@modules/domain/practice"
 import { ICQRSHandler } from "@modules/platform/cqrs"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { ListPracticePatternsQuery } from "./list-practice-patterns.query"
@@ -18,6 +18,9 @@ export class ListPracticePatternsHandler extends ICQRSHandler<
     }
 
     protected override process(query: ListPracticePatternsQuery): Promise<ReadonlyArray<PracticePatternView>> {
-        return this.reads.patterns({ learnerId: query.params.principal.id, locale: query.params.request.locale })
+        return this.reads.patterns({
+            learnerId: query.params.principal?.id ?? GUEST_LEARNER_ID,
+            locale: query.params.request.locale,
+        })
     }
 }

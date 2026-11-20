@@ -20,6 +20,29 @@ export interface HarnessStoreItem {
     readonly packFiles: ReadonlyArray<HarnessFile> | null
 }
 
+/** The localized fields each stored kind must carry, as the read views index them by locale (harness.contracts.ts). */
+const LOCALIZED_FIELDS: Readonly<Record<HarnessStoredKind, ReadonlyArray<string>>> = {
+    build: ["title", "summary"],
+    guide: ["title", "summary"],
+    doc: ["title", "summary"],
+    probe: ["title", "fix"],
+    trap: ["title", "brief"],
+    "doctor-pack": [],
+}
+
+const isLocalized = (value: unknown): boolean =>
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as Record<string, unknown>)["vi"] === "string" &&
+    typeof (value as Record<string, unknown>)["en"] === "string"
+
+/** The localized fields a stored record of a kind lacks: empty when the record is the contract's shape. */
+export const missingLocalizedOf = (kind: string, content: unknown): ReadonlyArray<string> => {
+    const fields = LOCALIZED_FIELDS[kind as HarnessStoredKind] ?? []
+    if (typeof content !== "object" || content === null) return fields
+    return fields.filter((field) => !isLocalized((content as Record<string, unknown>)[field]))
+}
+
 const withoutKeys = (record: object, keys: ReadonlyArray<string>): Record<string, unknown> =>
     Object.fromEntries(Object.entries(record).filter(([key]) => !keys.includes(key)))
 

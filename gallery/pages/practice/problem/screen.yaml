@@ -1,0 +1,184 @@
+schema: 1
+screen: practice/problem
+title: Giải bài, mở đề, chưa nộp
+route: /practice/[slug]
+area: practice
+summary: "Mục tiêu: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt, xem lời giải khi muốn."
+code:
+  - features/pages/PracticeSolvePage
+  - components/blocks/PracticeSolve
+  - starci-next-ui composites PracticeEditor, PracticeHints, PracticeProblemPanel, PracticeResult
+shots:
+  "390":
+    file: 390.png
+    sha256: 961735a3b9d6b8bb94db5a9af64a393989dbdc5afada8a979975619d6f65c94e
+  "1440":
+    file: 1440.png
+    sha256: 3f806de1e8a98acb9e034d772aa72a9984076210a0d61fc649c9fa6fc696490c
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Chứa nhiều nước nhất"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Nộp bài" ("Chạy thử" trung tính); đang chấm
+      thì xám kèm lý do; Accepted thì "Bài tiếp theo".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Đầu vào
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s3
+    title: Đầu ra
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s4
+    title: Ví dụ
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s5
+    title: Gợi ý
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s6
+    title: Bài làm của bạn
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s7
+    title: Kết quả
+    shows: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt,
+      xem lời giải khi muốn."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s8
+    title: Phần tử còn thiếu
+    shows: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
+    why: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ);
+      danh sách ở GRAMMAR-GAPS.md.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Gợi ý nằm dưới đề ở 1440 như bản vẽ
+    chosen: false
+    why: Grid kind=pair chỉ có hai ô; gợi ý đi cùng cột mã để thứ tự ở 390 vẫn là đề, mã, kết quả, gợi
+      ý. Chủ chấp nhận lệch bản vẽ 1440 (giới hạn Grammar)
+  - option: Nút Về mã khởi đầu cao 40px ở đầu mục
+    chosen: false
+    why: Nút trong đầu mục Section bắt buộc là neutral cỡ nhỏ (starci-grammar/section-head-action). Chủ
+      chấp nhận (giới hạn Grammar)
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:46.956Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khung code dùng chữ không đều chiều rộng (font thường, không monospace) nên thụt đầu dòng và
+            căn cột khó đọc (1440 y400-730; 390 y985-1275); đoạn đáp án mẫu Ví dụ thì đúng
+            monospace: hai kiểu cho code. (Textarea thay CodeEditor đã chấp nhận: cần Grammar.)"
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:49.345Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Khung code chưa monospace: cần Grammar (Textarea chưa có font mã) theo ruling."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

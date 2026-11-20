@@ -57,6 +57,18 @@ type ChosenOutcomePathType {
   chosenAt: String!
 }
 
+input ClaimGuestProgressInput {
+  answers: [GradeGuestOpenerInput!]! @inputBounds(maxItems: 60)
+  sections: [MarkLessonSectionReadInput!]! @inputBounds(maxItems: 200)
+}
+
+type ClaimGuestProgressType {
+  answersClaimed: Int!
+  answersSkipped: Int!
+  sectionsClaimed: Int!
+  sectionsSkipped: Int!
+}
+
 input ClaimPracticeExperienceInput {
   patternId: String! @inputBounds(maxLength: 40)
 }
@@ -162,6 +174,14 @@ input ExplainProjectConceptInput {
 input FlipRecallCardInput {
   itemId: String! @inputBounds(maxLength: 300)
   locale: String! = "vi"
+}
+
+input GradeGuestOpenerInput {
+  activityId: String! @inputBounds(maxLength: 200)
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+  optionId: String! @inputBounds(maxLength: 200)
+  version: String! @inputBounds(maxLength: 100)
 }
 
 input GradeRecallCardInput {
@@ -1091,6 +1111,7 @@ type Mutation {
   bindHarnessBuild(input: BindHarnessBuildInput!): HarnessBuildBindingType!
   checkReviewCloze(input: CheckRecallClozeInput!): RecallClozeResultType!
   chooseOutcomePath(input: ChooseOutcomePathInput!): ChosenOutcomePathType!
+  claimGuestProgress(input: ClaimGuestProgressInput!): ClaimGuestProgressType!
   claimPracticeExperience(input: ClaimPracticeExperienceInput!): ExperienceItemType!
   confirmAvatarUpload(input: ConfirmAvatarUploadInput!): ProfileType!
   confirmRelayDevice(input: RelayUserCodeInput!): RelayDeviceType!
@@ -1848,6 +1869,7 @@ type PublicCvType {
 
 type Query {
   experienceReviewers: [ReviewerType!]!
+  gradeGuestOpener(input: GradeGuestOpenerInput!): LessonAttemptResultType!
   harnessBuild(input: HarnessBuildInput!): HarnessBuildType!
   harnessBuilds(input: HarnessLocaleInput!): [HarnessBuildSummaryType!]!
   harnessDoc(input: HarnessDocInput!): HarnessDocType!

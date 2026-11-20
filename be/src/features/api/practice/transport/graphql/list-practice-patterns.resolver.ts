@@ -1,6 +1,6 @@
 import { Args, Query, Resolver } from "@nestjs/graphql"
 import type { QueryBus } from "@nestjs/cqrs"
-import { CurrentPrincipal, type IdentityPrincipal } from "@modules/domain/identity"
+import { MaybePrincipal, Public, PublicReason, type IdentityPrincipal } from "@modules/domain/identity"
 import { InjectQueryBus } from "@modules/platform/cqrs"
 import { ListPracticePatternsQuery } from "../../application/list-practice-patterns.query"
 import { PracticePatternsInput } from "./dto/practice-patterns.input"
@@ -9,14 +9,15 @@ import { toListPracticePatternsParams } from "./list-practice-patterns.mapper"
 import { toPracticePatternTypes } from "./practice-view.mapper"
 
 @Resolver()
-/** GraphQL door of the pattern list; it needs a session and no Premium. */
+/** GraphQL door of the pattern list; a guest may read it (statement and standing-free), no Premium. */
 export class ListPracticePatternsResolver {
     constructor(@InjectQueryBus() private readonly queryBus: QueryBus) {}
 
     /** Lists the patterns that have problems, with the counts and the lock state of the viewer. */
+    @Public({ reason: PublicReason.GuestRead })
     @Query(() => [PracticePatternType], { name: "practicePatterns" })
     async practicePatterns(
-        @CurrentPrincipal() identity: IdentityPrincipal,
+        @MaybePrincipal() identity: IdentityPrincipal | undefined,
         @Args("input") input: PracticePatternsInput,
     ): Promise<Array<PracticePatternType>> {
         const result = await this.queryBus.execute(

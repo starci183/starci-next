@@ -20,9 +20,9 @@ export class PathService {
         @InjectClock() private readonly clock: Clock,
     ) {}
 
-    /** The five paths in the asked locale with the id of the one the learner follows, or null. */
-    async catalog(learnerId: string, locale: PathLocale): Promise<PathCatalogView> {
-        const row = await this.choiceOf(learnerId)
+    /** The five paths in the asked locale with the id of the one the learner follows, or null (a guest follows none). */
+    async catalog(learnerId: string | undefined, locale: PathLocale): Promise<PathCatalogView> {
+        const row = learnerId === undefined ? null : await this.choiceOf(learnerId)
         return {
             activePathId: row === null ? null : row.active_path_id,
             paths: PATH_DEFINITIONS.map((definition) => viewOf(definition, locale)),

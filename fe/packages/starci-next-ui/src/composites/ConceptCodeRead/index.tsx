@@ -1,15 +1,14 @@
 import {
     Alert,
-    Badge,
     Button,
-    Cluster,
-    DataTable,
+    EmptyNotice,
     Input,
     Section,
     Stack,
     Text,
     Textarea,
     type BadgeTone,
+    type ListRowData,
 } from "@starci/grammar/common"
 import type { ConceptDraftView } from "../ConceptDrawer/types"
 
@@ -104,32 +103,28 @@ const Field = (props: FieldProps) =>
 const Forms = (props: ConceptCodeReadProps) => {
     const { labels, isBusy } = props
     return (
-        <Stack gap="row">
-            <Stack gap="row">
-                <Text isStrong>{labels.pointerTitle}</Text>
-                <Field field="location" label={labels.location} props={props} />
-                <Field field="endpoint" label={labels.endpoint} props={props} />
-                <Field field="sampleBody" label={labels.sampleBody} props={props} />
-                <Cluster gap="inline" wrap>
+        <Stack gap="section">
+            <Section title={labels.pointerTitle} headingLevel={3}>
+                <Stack gap="inline">
+                    <Field field="location" label={labels.location} props={props} />
+                    <Field field="endpoint" label={labels.endpoint} props={props} />
+                    <Field field="sampleBody" label={labels.sampleBody} props={props} />
                     <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
                         {isBusy ? labels.savingPointer : labels.savePointer}
                     </Button>
-                </Cluster>
-            </Stack>
+                </Stack>
+            </Section>
             {props.concept.needsCodeRead ? (
-                <Stack gap="row">
-                    <Text isStrong>{labels.explainTitle}</Text>
-                    <Text size="sm" tone="muted">
-                        {labels.explainText}
-                    </Text>
-                    <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
-                    <Field field="explanation" label={labels.explanation} rows={3} props={props} />
-                    <Cluster gap="inline" wrap>
+                <Section title={labels.explainTitle} headingLevel={3}>
+                    <Stack gap="inline">
+                        <Text tone="muted">{labels.explainText}</Text>
+                        <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
+                        <Field field="explanation" label={labels.explanation} rows={3} props={props} />
                         <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
                             {isBusy ? labels.explaining : labels.explain}
                         </Button>
-                    </Cluster>
-                </Stack>
+                    </Stack>
+                </Section>
             ) : null}
         </Stack>
     )
@@ -141,31 +136,27 @@ export const ConceptCodeRead = (props: ConceptCodeReadProps) => {
     return (
         <Stack gap="region">
             <Section title={labels.codeTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
-                    {props.concept.comingSoon ? <Text tone="muted">{labels.comingSoon}</Text> : <Forms {...props} />}
+                <Stack gap="inline">
+                    {props.concept.comingSoon ? (
+                        <EmptyNotice message={labels.comingSoon} mark="none" frame="frameless" />
+                    ) : (
+                        <Forms {...props} />
+                    )}
                     {props.issueWords === "" ? null : <Alert tone="negative" title={props.issueWords} />}
                 </Stack>
             </Section>
-            <Section title={labels.rubricTitle} headingLevel={2} isLoading={props.isLoading}>
-                <DataTable
-                    label={labels.rubricTitle}
-                    isLoading={props.isLoading}
-                    phone="table"
-                    columns={[
-                        { id: "criterion", label: labels.rubricTitle, isLabelHidden: true },
-                        { id: "verdict", label: labels.ciVerdict, isLabelHidden: true, width: "fit" },
-                    ]}
-                    rows={props.rubric.map((row) => ({ ...row }))}
-                    renderCell={(row, columnId) =>
-                        columnId === "criterion" ? (
-                            <Text>{row.text}</Text>
-                        ) : (
-                            <Badge tone={VERDICT_TONE[row.verdict]}>{props.verdictLabels[row.verdict]}</Badge>
-                        )
-                    }
-                    emptyContent={<Text tone="muted">{labels.rubricEmpty}</Text>}
-                />
-            </Section>
+            <Section
+                kind="list"
+                title={labels.rubricTitle}
+                headingLevel={2}
+                isLoading={props.isLoading}
+                items={props.rubric.map((row): ListRowData => ({
+                    id: row.id,
+                    title: row.text,
+                    badges: [{ label: props.verdictLabels[row.verdict], tone: VERDICT_TONE[row.verdict] }],
+                }))}
+                empty={<EmptyNotice message={labels.rubricEmpty} mark="none" frame="frameless" />}
+            />
         </Stack>
     )
 }

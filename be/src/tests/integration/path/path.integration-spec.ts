@@ -120,18 +120,26 @@ describe("outcome path doors (integration)", () => {
         await doors.reset()
     })
 
-    it.each([
-        [PATHS, { input: { locale: "vi" } }],
-        [CHOOSE, { input: { pathId: "founder" } }],
-    ])("refuses a caller with no session", async (query, variables) => {
-        const answer = await doors.ask(query, variables)
+    it("answers the five paths to a guest who follows none", async () => {
+        const answer = await doors.ask<PathsBody>(PATHS, { input: { locale: "vi" } })
 
-        expect(answer.data ?? null).toBeNull()
-        expect(answer.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
-            kind: "unauthenticated",
-        })
+        expect(answer.errors).toBeUndefined()
+        expect(answer.data?.outcomePaths.paths).toHaveLength(5)
+        expect(answer.data?.outcomePaths.activePathId).toBeNull()
     })
+
+    it.each([[CHOOSE, { input: { pathId: "founder" } }]])(
+        "refuses a caller with no session",
+        async (query, variables) => {
+            const answer = await doors.ask(query, variables)
+
+            expect(answer.data ?? null).toBeNull()
+            expect(answer.errors?.[0]?.extensions).toMatchObject({
+                code: "IDENTITY_SESSION_REQUIRED",
+                kind: "unauthenticated",
+            })
+        },
+    )
 
     it("lists the five paths in the stable order with a done outcome and no active path for a new learner", async () => {
         const { cookie } = await doors.signIn(nextLearner(), false)

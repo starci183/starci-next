@@ -474,10 +474,10 @@
           "done": "{accepted}/{total} bài Accepted · đã xong"
         },
         "filters": {
-          "all": "Tất cả {count}",
-          "doing": "Đang làm {count}",
-          "new": "Chưa bắt đầu {count}",
-          "done": "Đã xong {count}"
+          "all": "Tất cả",
+          "doing": "Đang làm",
+          "new": "Chưa bắt đầu",
+          "done": "Đã xong"
         }
       },
       "pattern": {
@@ -1300,7 +1300,6 @@
         "emptyText": "Mang dự án đầu tiên của bạn vào: đề tài nào, ngôn ngữ nào cũng được, rồi thêm thư mục starci/ bằng một lệnh.",
         "listLabel": "Dự án của bạn",
         "progressLabel": "Concept đã chứng minh",
-        "errorTitle": "Không tải được dự án",
         "ribbonLabel": "Tổng quan dự án",
         "figures": {
           "proved": "Concept đã chứng minh",
@@ -1332,6 +1331,8 @@
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
         "repo": "Repo GitHub",
+        "namePlaceholder": "Ví dụ: my-blog-api",
+        "repoPlaceholder": "https://github.com/ban/du-an",
         "submit": "Tạo dự án",
         "submitting": "Đang tạo...",
         "submitNeedsName": "Đặt tên dự án trước khi tạo.",
@@ -1381,13 +1382,14 @@
         "sync": "Cập nhật kết quả từ máy",
         "syncing": "Đang cập nhật...",
         "ciNone": "Chưa có lần chạy CI nào. Thêm GitHub Action của StarCi và đẩy code lên.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Lần chạy gần nhất · commit {commit}",
         "ciPassed": "Đạt",
         "ciFailed": "Chưa đạt",
         "probeText": "Ứng dụng HTTP chạy được bằng Docker. StarCi gọi địa chỉ công khai của bạn với health và các probe chung cho từng concept.",
         "deployedLabel": "Địa chỉ đã triển khai (http hoặc https công khai)",
         "saveDeployed": "Lưu địa chỉ",
         "runProbes": "Chạy kiểm tra",
+        "runProbesNeedsUrl": "Lưu địa chỉ đã triển khai trước khi chạy kiểm tra.",
         "runningProbes": "Đang kiểm tra...",
         "secretText": "Action ký kết quả bằng bí mật của dự án này. Đổi bí mật nếu nó bị lộ.",
         "rotate": "Đổi bí mật CI",
@@ -1664,8 +1666,8 @@
         "probeRun": "Chạy probe",
         "probeRunning": "Đang chạy...",
         "ciTitle": "CI GitHub",
-        "ciEmpty": "Chưa có run CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
-        "ciRun": "Run",
+        "ciEmpty": "Chưa có lượt chạy CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
+        "ciRun": "Lượt chạy",
         "ciCommit": "Commit",
         "ciVerdict": "Kết quả",
         "ciWhen": "Lúc",

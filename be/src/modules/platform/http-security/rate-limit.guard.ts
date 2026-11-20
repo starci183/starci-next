@@ -31,11 +31,14 @@ export enum RateBucket {
      * never delays a payment confirmation and a provider's retries never lock learners out of sign-in.
      */
     Webhook = "webhook",
+    /** The grading of a free choice for a guest: strict, in a window of its own, so a guest answering never delays a sign-in and a sign-in flood never blocks a guest. */
+    GuestGrade = "guest-grade",
 }
 
 /** The per-window limit of a tier, or of the bucket a door names inside it. */
 const limitOf = (tier: RateTier, bucket: RateBucket | undefined, limits: HttpSecurityOptions["rateLimit"]): number => {
     if (bucket === RateBucket.Webhook) return limits.webhookLimit
+    if (bucket === RateBucket.GuestGrade) return limits.strictLimit
     if (tier === RateTier.Strict) return limits.strictLimit
     return limits.defaultLimit
 }

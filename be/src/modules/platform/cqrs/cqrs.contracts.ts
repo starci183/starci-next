@@ -16,6 +16,14 @@ export interface ExecuteParams<T> {
     readonly principal: Principal
 }
 
+/** The params of a read a guest may ask: the caller when the request carries a session, else absent (a guest). */
+export interface GuestExecuteParams<T> {
+    /** The request mapped by the transport. */
+    readonly request: T
+    /** The caller established by the guard, absent for a guest. */
+    readonly principal?: Principal | undefined
+}
+
 /** The params of a public operation (no caller is identified): the request as the transport mapped it. */
 export interface PublicExecuteParams<T> {
     /** The request mapped by the transport. */

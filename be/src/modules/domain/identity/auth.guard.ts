@@ -5,8 +5,8 @@ import { requestOf } from "@modules/platform/http-security"
 import { unwrapOutcome } from "@modules/platform/primitives"
 import { admit } from "./admission.policy"
 import type { CredentialMetadata } from "./credential.contracts"
-import { IdentityError } from "./errors/identity.error"
-import type { PublicMetadata } from "./identity.contracts"
+import { IdentityError, IdentityErrorCode } from "./errors/identity.error"
+import { PublicReason, type PublicMetadata } from "./identity.contracts"
 import { CREDENTIAL_KEY, PUBLIC_KEY } from "./identity.decorators"
 import { SessionService } from "./session.service"
 import { readIdentityCookie } from "./session-http.policy"
@@ -30,6 +30,10 @@ export class AuthGuard implements CanActivate {
         const metadata = this.reflector.getAllAndOverride<PublicMetadata | undefined>(PUBLIC_KEY, targets)
         const credential =
             required === undefined ? undefined : { required, principal: requestOf(context).credentialPrincipal }
+        if (metadata?.reason === PublicReason.GuestRead && required === undefined) {
+            await this.admitGuestOrLearner(requestOf(context))
+            return true
+        }
         const admission = admit(metadata, credential)
         if (admission.kind === "refused" && required === undefined && metadata === undefined) {
             const request = requestOf(context)
@@ -41,5 +45,22 @@ export class AuthGuard implements CanActivate {
         }
         unwrapOutcome(admission, IdentityError)
         return true
+    }
+
+    /** Sets the principal when the request carries a current session; a missing, expired or revoked session is a guest. */
+    private async admitGuestOrLearner(request: ReturnType<typeof requestOf>): Promise<void> {
+        delete request.identityPrincipal
+        try {
+            request.identityPrincipal = (
+                await this.sessions.require(readIdentityCookie(request.headers.cookie, IDENTITY_SESSION_COOKIE))
+            ).identity
+        } catch (error) {
+            if (
+                error instanceof IdentityError &&
+                (error.code === IdentityErrorCode.SessionRequired || error.code === IdentityErrorCode.Unauthenticated)
+            )
+                return
+            throw error
+        }
     }
 }
