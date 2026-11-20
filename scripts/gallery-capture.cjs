@@ -48,6 +48,95 @@ const originFix = async (ctx) => {
         }
     })
 }
+// The review reads of the hub and the session; the deck commands the review entries press.
+const REVIEW_READS = /"operationName":"(ReviewToday|ReviewStats|Streak)"/
+const tap = (p, name) =>
+    p
+        .getByRole("button", { name })
+        .first()
+        .click({ timeout: 1500 })
+        .then(() => true)
+        .catch(() => false)
+const addDeck = async (p) => {
+    await p.waitForTimeout(2000)
+    await tap(p, /Thêm bộ thẻ/)
+    await p.waitForTimeout(3000)
+    await p.mouse.move(2, 2)
+    await p.waitForTimeout(1500)
+}
+// Opens the first deck of the list: the screen is shot on the deck page.
+const openDeck = async (p) => {
+    await p.waitForTimeout(2500)
+    await p
+        .locator('a[href*="/review/decks/"]')
+        .first()
+        .click({ timeout: 4000 })
+        .catch(() => {})
+    await p.waitForTimeout(2500)
+}
+const openDeckThenAdd = async (p) => {
+    await openDeck(p)
+    await addDeck(p)
+}
+// A cloze card asks for a choice per blank before it checks: pick the first choice of every blank.
+const pickCloze = async (p) => {
+    const groups = p.getByRole("radiogroup")
+    const n = await groups.count()
+    for (let i = 0; i < n; i++)
+        await groups
+            .nth(i)
+            .getByRole("radio")
+            .first()
+            .click({ timeout: 1500 })
+            .catch(() => {})
+}
+const flipCard = async (p) => {
+    await p.waitForTimeout(2000)
+    await pickCloze(p)
+    if (!(await tap(p, /Hiện đáp án/))) {
+        await p
+            .locator("textarea")
+            .first()
+            .fill("Gõ nhanh điều nhớ được")
+            .catch(() => {})
+        await tap(p, /Gửi và xem đáp án mẫu/)
+    }
+    await p.waitForTimeout(1500)
+}
+const gradeAll = async (p) => {
+    for (let n = 0; n < 40; n++) {
+        await p.waitForTimeout(1000)
+        if ((await p.getByRole("button", { name: /Hiện đáp án|Gửi và xem đáp án mẫu|^Tốt/ }).count()) === 0 && n > 0)
+            return
+        await flipCard(p)
+        await tap(p, /^Tốt/)
+    }
+}
+// A free learner who has reviewed one card (Ôn tập is free), so the progress page shows the free view and not the first visit.
+const earnProgress = async (p) => {
+    await addDeck(p)
+    await p.goto(ENTRY + "/review/session", { waitUntil: "load" })
+    await flipCard(p)
+    await tap(p, /^Tốt/)
+    await p.waitForTimeout(1500)
+    await p.goto(ENTRY + "/progress", { waitUntil: "load" })
+}
+// The daily goal dialog with its last choice ("Khác...") picked, so the number field shows.
+const openGoalOther = async (p) => {
+    await p.waitForTimeout(2000)
+    await p
+        .getByRole("button", { name: /^Đổi$/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(1000)
+    await p
+        .getByRole("radio", { name: /Khác/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(800)
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -143,9 +232,6 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
     S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
-    S("review", "hub", "/review"),
-    S("review", "decks", "/review/decks"),
-    S("review", "session", "/review/session"),
     // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
     S("practice", "list-first", "/practice"),
@@ -186,7 +272,6 @@ const SCREENS = [
         { from: "practice/problem", append: "#s" },
         { refuse: true, ops: /"operationName":"Practice/ },
     ),
-    S("incidents", "list", "/incidents"),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
@@ -196,12 +281,52 @@ const SCREENS = [
     S("projects", "paywall", "/projects", { free: true }),
     S("career", "experience", "/experience"),
     S("career", "profile", "/profile"),
-    S("career", "review-queue", "/review-queue"),
-    S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
     S("commerce", "premium", "/premium"),
     S("commerce", "premium-result", "/premium/result"),
     S("devices", "list", "/devices"),
     S("connect", "ai", "/connect"),
+    // --- next-ux-review: review, progress, incidents and the review queue. The entries run in order against ONE learner: the first states are shot before any deck is added, then a deck is added and reviewed.
+    S("progress", "overview-first-visit", "/progress"),
+    S("progress", "overview-loading", "/progress", { holdOps: /"operationName":"LearnerProgress"/ }),
+    S("progress", "overview-page-error", "/progress", { refuseOps: /"operationName":"LearnerProgress"/ }),
+    S("review", "hub-first", "/review"),
+    S("review", "hub-loading", "/review", { holdOps: REVIEW_READS }),
+    S("review", "hub-error", "/review", { refuseOps: REVIEW_READS }),
+    S("review", "session-empty", "/review/session"),
+    S("review", "session-loading", "/review/session", { holdOps: REVIEW_READS }),
+    S("review", "decks", "/review/decks"),
+    S("review", "decks-none", "/review/decks", {
+        act: async (p) =>
+            p
+                .getByRole("tab", { name: /Đã thêm/ })
+                .first()
+                .click()
+                .catch(() => {}),
+    }),
+    S("review", "decks-loading", "/review/decks", { holdOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "decks-error", "/review/decks", { refuseOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "deck", "/review/decks", { act: openDeck }),
+    S("review", "deck-missing", "/review/decks/00000000-0000-4000-8000-000000000000"),
+    S(
+        "review",
+        "deck-adding",
+        { from: "review/deck", append: "?r=1" },
+        { holdOps: /"operationName":"AddReviewDeck"/, act: addDeck },
+    ),
+    S("review", "deck-added", "/review/decks", { act: openDeckThenAdd }),
+    S("review", "decks-added", "/review/decks", { act: addDeck }),
+    S("review", "hub", "/review"),
+    S("review", "hub-goal", "/review", { act: openGoalOther }),
+    S("review", "session", "/review/session"),
+    S("review", "session-cloze", "/review/session", { act: pickCloze }),
+    S("review", "session-answer", "/review/session", { act: flipCard }),
+    S("review", "session-summary", "/review/session", { act: gradeAll }),
+    S("review", "hub-done", "/review"),
+    S("progress", "overview", "/progress"),
+    S("progress", "free", "/review/decks", { free: true, act: earnProgress }),
+    S("incidents", "list-none", "/incidents"),
+    S("career", "review-queue-forbidden", "/review-queue"),
+    S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
 ]
 // Seeded states (scripts/gallery-seed.mjs, run first; it writes manifest.json and a storage state per gallery learner into GALLERY_STATES, default .tmp-gallery-states):
 // a screen the manifest names is shot as that learner on the dev stack's real data, not through a stand-in core. Keep the seed running with --hold so its devices stay online.
@@ -340,7 +465,13 @@ const norm = (href) => {
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.cookies !== undefined || s.state !== undefined || s.learnerState !== undefined
+                s.hold ||
+                s.refuse ||
+                s.holdOps ||
+                s.refuseOps ||
+                s.cookies !== undefined ||
+                s.state !== undefined ||
+                s.learnerState !== undefined
                     ? await b.newContext({
                           storageState: s.learnerState
                               ? s.learnerState
@@ -366,6 +497,25 @@ const norm = (href) => {
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
+            // A lane's own `next dev` port is not an allowed origin of the dev core: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its reads.
+            if (process.env.CAPTURE_ORIGIN_AS)
+                await p.route(/\/(graphql|api\/)/, (route) =>
+                    route
+                        .fetch({ headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS } })
+                        .then(
+                            (response) => route.fulfill({ response }),
+                            () => route.abort(),
+                        ),
+                )
+            // holdOps / refuseOps (a regex of GraphQL operation names) hold or refuse only those operations; everything else falls through to the routes before it.
+            if (s.holdOps)
+                await p.route(/graphql/, (route) =>
+                    s.holdOps.test(route.request().postData() ?? "") ? undefined : route.fallback(),
+                )
+            if (s.refuseOps)
+                await p.route(/graphql/, (route) =>
+                    s.refuseOps.test(route.request().postData() ?? "") ? route.abort() : route.fallback(),
+                )
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
             if (s.hold) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? undefined : spoof(route)))
             if (s.refuse) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? route.abort() : spoof(route)))

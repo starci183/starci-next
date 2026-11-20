@@ -46,6 +46,8 @@ export type ReviewHubView = {
     readonly moreLine: string
     readonly goalDaily: number
     readonly goalLine: string
+    /** 0 to 100, how much of the daily goal is done. */
+    readonly goalPercent: number
     readonly streakLine: string
     readonly decks: ReadonlyArray<ReviewHubDeck>
     readonly bars: ReadonlyArray<{
@@ -132,7 +134,7 @@ export type ReviewHubScreen = {
 /** The same-shape day the skeleton draws while the first read runs. */
 export const REVIEW_HUB_PLACEHOLDER: ReviewHubView = {
     state: "due",
-    figures: [1, 2, 3].map((n) => ({ id: `placeholder-${n}`, term: "xxxxxxxx", value: "xx" })),
+    figures: [1, 2, 3].map((n) => ({ id: `placeholder-${n}`, term: "", value: "xx" })),
     rows: [1, 2, 3].map((n) => ({
         id: `placeholder-${n}`,
         title: "xxxxxxxxxxxxxxxxxxxxxxxx",
@@ -144,9 +146,10 @@ export const REVIEW_HUB_PLACEHOLDER: ReviewHubView = {
     moreLine: "xxxxxxxx",
     goalDaily: 10,
     goalLine: "xxxxxxxx",
+    goalPercent: 0,
     streakLine: "xxxxxxxxxxxxxxxx",
     decks: [1, 2].map((n) => ({ id: `placeholder-${n}`, title: "xxxxxxxxxx", description: "xx", href: "/" })),
-    bars: [1, 2, 3, 4].map((n) => ({ id: `placeholder-${n}`, label: "xxxx", value: 50, valueLabel: "xx%" })),
+    bars: [1, 2, 3, 4].map((n) => ({ id: `placeholder-${n}`, label: "", value: 50, valueLabel: "" })),
 }
 
 /** The goal values the dialog and the first-visit chips offer. */
@@ -207,6 +210,8 @@ export const useReviewHubScreen = (): ReviewHubScreen => {
             moreLine: t("listMore", { count: data.items.length }),
             goalDaily: data.goal.daily,
             goalLine: t("goalLine", { done: data.goal.done, daily: data.goal.daily }),
+            goalPercent:
+                data.goal.daily === 0 ? 0 : Math.min(100, Math.round((data.goal.done / data.goal.daily) * 100)),
             streakLine: t("streakLine", { days: current }),
             decks: mine.map((deck) => ({
                 id: deck.deckId,

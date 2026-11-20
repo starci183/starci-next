@@ -23,9 +23,6 @@ const partRowsOf = (t: ProgressTranslate, parts: Essentials["parts"]): ReadonlyA
                 isDot: true,
             },
         ],
-        ...(part.access === "locked"
-            ? { action: { label: t("essentials.upgrade"), href: APP_ROUTES.premium, endArrow: true } }
-            : {}),
     }))
 }
 

@@ -1,0 +1,140 @@
+schema: 1
+screen: career/review-queue-forbidden
+title: Hàng chờ duyệt, không có quyền
+route: /review-queue
+area: career
+summary: Người không phải người duyệt hay thầy thấy thông báo không có quyền, giữ khung ứng dụng.
+shots:
+  "390":
+    file: 390.png
+    sha256: b6bc3e984cddbf1a9c39d8aa9204404a228fea9c03bf7a2aac7359042bff59d1
+  "1440":
+    file: 1440.png
+    sha256: e156866adf8359c1811f4ca43d7574c24e2f274c531cd6f83dc9b34bcfbc0f09
+code:
+  - features/pages/ReviewQueuePage
+  - components/blocks/ReviewQueue
+sections:
+  - id: s1
+    title: Vùng chính
+    shows: Vùng chính
+    why: Người không phải người duyệt hay thầy thấy thông báo không có quyền, giữ khung ứng dụng.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:58.016Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Header không có breadcrumb trong khi trang "Một mục cần duyệt" cùng nhóm có breadcrumb (không
+            nhất quán); ô icon hộp thư không hợp ngữ cảnh không có quyền; chỉ một dòng, không giải
+            thích.
+        actionable:
+          verdict: open
+          notes: Trang cấm truy cập không có nút/liên kết đi tiếp.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:06:05.533Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Nút "Về hồ sơ" căn trái (x=288) trong khi ô icon và câu thông báo căn giữa. Đã sửa: có lối
+            thoát.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:19.536Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:29.225Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

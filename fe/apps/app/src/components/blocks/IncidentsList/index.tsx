@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { authoredCountOf, incidentGroupsOf, useIncidentWords } from "@/hooks/incidents"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryIncidentsSwr } from "@/hooks/swr"
+import { staticsBase } from "@/modules/config"
 import { INCIDENTS_PLACEHOLDER, IncidentsListBase } from "./component"
 
 /** The connected incident list: reads the live Essentials lessons with the status of their incident and words every row. */
@@ -24,11 +25,15 @@ export const IncidentsList = () => {
                 })),
                 placeholder: INCIDENTS_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
+                staticsBaseUrl: staticsBase(),
                 labels: {
                     title: t("title"),
                     description: t("description"),
                     runnerNote: t("runnerNote"),
                     empty: t("empty"),
+                    noneTitle: t("noneTitle"),
+                    noneBody: t("noneBody"),
+                    noneAction: t("noneAction"),
                 },
             }}
             on={{ retry: () => void read.mutate() }}

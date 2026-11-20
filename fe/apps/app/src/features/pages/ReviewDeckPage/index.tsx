@@ -12,7 +12,16 @@ export const reviewDeckMetadata = async (): Promise<Metadata> => {
     return { title: t("pageTitle") }
 }
 
+/** The segment of the address holds a deck id that may contain a slash, so it arrives percent-encoded: the read wants it decoded. */
+const decodedDeckId = (segment: string): string => {
+    try {
+        return decodeURIComponent(segment)
+    } catch {
+        return segment
+    }
+}
+
 /** The page of one deck: a server owner that mounts the block that reads it. */
 export const ReviewDeckPage = (props: ReviewDeckPageProps): ReactElement => (
-    <ReviewDeck key={props.deckId} deckId={props.deckId} />
+    <ReviewDeck key={props.deckId} deckId={decodedDeckId(props.deckId)} />
 )

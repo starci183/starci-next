@@ -1,18 +1,19 @@
 import type { ReactNode } from "react"
 import {
     Alert,
-    Button,
+    Grid,
+    Heading,
+    Illustration,
+    StaticsProvider,
     Link,
     Meter,
     Page,
-    Pane,
-    PaneGrid,
-    PaneSection,
     Section,
     Stack,
     Text,
     Timeline,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type {
@@ -29,14 +30,14 @@ import type {
 
 /** The fake figures with the geometry of settled ones. */
 const placeholderFigures = (id: string): ReadonlyArray<ProgressFigureView> =>
-    [1, 2, 3, 4].map((index) => ({ id: `${id}-${index}`, term: "xxxxxx", value: 0 }))
+    [1, 2, 3, 4].map((index) => ({ id: `${id}-${index}`, term: "", value: 0 }))
 
 /** The fake list with the geometry of a settled one. */
 const placeholderList = (id: string): ProgressListView => ({
     id,
-    title: "xxxxxx",
-    rows: [1, 2].map((index) => ({ id: `${id}-${index}`, title: "xxxxxxxxxxxx", description: "xxxxxxxxxxxxxxxx" })),
-    empty: "xxxxxx",
+    title: "",
+    rows: [1, 2].map((index) => ({ id: `${id}-${index}`, title: "", description: "" })),
+    empty: "",
 })
 
 /** The fake progress with the geometry of a settled one. */
@@ -45,16 +46,19 @@ export const PROGRESS_PLACEHOLDER: ProgressPageView = {
     essentials: { lists: [placeholderList("essentials-parts")] },
     harness: { lists: [placeholderList("harness-builds")] },
     projects: {
-        figures: { title: "xxxxxx", items: placeholderFigures("projects") },
+        figures: { title: "", items: placeholderFigures("projects") },
         lists: [placeholderList("projects")],
     },
-    practice: null,
-    review: { figures: { title: "xxxxxx", items: placeholderFigures("review") }, lists: [] },
+    practice: {
+        figures: { title: "", items: placeholderFigures("practice") },
+        lists: [placeholderList("practice")],
+    },
+    review: { figures: { title: "", items: placeholderFigures("review") }, lists: [] },
     activity: [1, 2, 3].map((index) => ({
         id: `a${index}`,
-        title: "xxxxxxxxxxxx",
+        title: "",
         at: "2026-01-01T00:00:00.000Z",
-        when: "xxxx",
+        when: "",
     })),
     firstVisit: null,
     isFree: false,
@@ -67,6 +71,8 @@ export type ProgressOverviewBaseProps = {
         readonly placeholder: ProgressPageView
         readonly slotLabels: SlotLabels
         readonly labels: ProgressLabels
+        /** Where the statics (the first-visit picture) are served from. */
+        readonly staticsBaseUrl: string
     }
     readonly on: { readonly retry: () => void }
 }
@@ -140,14 +146,7 @@ type BlockSectionProps = {
 /** A part whose source failed: its title, the words and a retry, so one failed source never hides the rest. */
 const UnavailableSection = (props: BlockSectionProps) => (
     <Section title={props.title} headingLevel={2}>
-        <Stack gap="row">
-            <Text tone="muted">{props.unavailable}</Text>
-            <div>
-                <Button intent="neutral" size="sm" onPress={props.onRetry}>
-                    {props.retry}
-                </Button>
-            </div>
-        </Stack>
+        <Alert tone="negative" title={props.unavailable} action={{ label: props.retry, onAction: props.onRetry }} />
     </Section>
 )
 
@@ -192,24 +191,38 @@ const ActivitySection = (props: ReadyProps) => (
     </Section>
 )
 
-/** The first visit: nothing is measured yet, which is said once, and the three ways in follow the two zeros. */
+/** The first visit: nothing is measured yet, which the page says once, next to its picture, and each of the three ways in has its own command. */
 const FirstVisit = (props: ReadyProps) => (
-    <Stack gap="region">
-        <Alert tone="informative" title={props.labels.firstVisitTitle} description={props.labels.firstVisitText} />
-        <Section
-            kind="figures"
-            ariaLabel={props.labels.ribbonLabel}
-            items={props.view.ribbon}
-            isLoading={props.isLoading}
-        />
-        <Section
-            kind="list"
-            ariaLabel={props.labels.firstVisitTitle}
-            isLoading={props.isLoading}
-            items={props.view.firstVisit ?? []}
-            empty={<Text tone="muted">{props.labels.unavailable}</Text>}
-        />
-    </Stack>
+    <Grid
+        kind="pair"
+        leading={
+            <Stack gap="region">
+                <Stack gap="row">
+                    <Heading level={2} scale="standard">
+                        {props.labels.firstVisitTitle}
+                    </Heading>
+                    <Text as="p" tone="muted">
+                        {props.labels.firstVisitText}
+                    </Text>
+                </Stack>
+                <Section
+                    kind="list"
+                    ariaLabel={props.labels.firstVisitTitle}
+                    isLoading={props.isLoading}
+                    items={props.view.firstVisit ?? []}
+                    empty={<Text tone="muted">{props.labels.unavailable}</Text>}
+                />
+            </Stack>
+        }
+        trailing={
+            <Illustration
+                staticsKey="illustrations/empty/hoc-first-visit.png"
+                ratio="4:3"
+                loading="eager"
+                isLoading={props.isLoading}
+            />
+        }
+    />
 )
 
 /** The ready page: the ribbon on top, then Essentials, Harness, Projects, Luyện code and Ôn tập. */
@@ -232,20 +245,32 @@ const Ready = (props: ReadyProps) => {
             <BlockSection {...common} view={props.view.essentials} title={props.labels.essentialsTitle} />
             <BlockSection {...common} view={props.view.harness} title={props.labels.harnessTitle} />
             <BlockSection {...common} view={props.view.projects} title={props.labels.projectsTitle} />
-            <BlockSection {...common} view={props.view.practice} title={props.labels.practiceTitle} />
             <BlockSection {...common} view={props.view.review} title={props.labels.reviewTitle} />
+            <BlockSection {...common} view={props.view.practice} title={props.labels.practiceTitle} />
         </Stack>
     )
 }
 
 /** The page description by what the learner has: free, first visit or the full line. */
-const descriptionOf = (labels: ProgressLabels, slot: DataSlot<ProgressPageView>): string | undefined => {
-    if ("isLoading" in slot) return labels.loading
-    if (!("items" in slot)) return undefined
-    const view = slot.items
+const descriptionOf = (labels: ProgressLabels, view: ProgressPageView, isLoading: boolean): string => {
+    if (isLoading) return labels.loading
     if (view.firstVisit !== null) return labels.descriptionFirst
     return view.isFree ? labels.descriptionFree : labels.description
 }
+
+/** The header of the page: the title, the trail to the profile and, once the read settles, the line that says what the learner has. */
+const headerOf = (labels: ProgressLabels, description: string | undefined): PageHeaderContent => ({
+    title: labels.title,
+    titleScale: "standard",
+    breadcrumbs: {
+        label: labels.crumbLabel,
+        items: [
+            { id: "profile", label: labels.crumbProfile, href: labels.crumbHref },
+            { id: "progress", label: labels.crumbSelf },
+        ],
+    },
+    ...(description === undefined ? {} : { description }),
+})
 
 /**
  * Draws Progress (the page across the whole app): a ribbon of figures, then Essentials (the parts the plan opens and a meter row per
@@ -255,56 +280,35 @@ const descriptionOf = (labels: ProgressLabels, slot: DataSlot<ProgressPageView>)
  */
 export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
     const labels = props.props.labels
-    const slot = props.props.slot
-    const description = descriptionOf(labels, slot)
-    const hasAside = "isLoading" in slot || ("items" in slot && slot.items.firstVisit === null)
-    const drawn = (render: (ready: ReadyProps) => ReactNode) => (
-        <SlotView
-            slot={slot}
+    return (
+        <SlotView<ProgressPageView, PageHeaderContent, ReactNode>
+            slot={props.props.slot}
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
-            render={(view, isLoading) => render({ view, labels, onRetry: props.on.retry, isLoading })}
+            errorDescription={labels.pageErrorText}
+            header={(view, isLoading) => headerOf(labels, descriptionOf(labels, view, isLoading))}
+            headerFallback={headerOf(labels, undefined)}
+            aside={(view, isLoading) =>
+                view.firstVisit === null ? (
+                    <ActivitySection view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
+                ) : null
+            }
+            asideFallback={null}
+            render={(view, isLoading) => (
+                <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
+                    <Ready view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
+                </StaticsProvider>
+            )}
+            frame={(parts) => (
+                <Page header={parts.header}>
+                    {parts.aside === null ? (
+                        parts.body
+                    ) : (
+                        <Grid kind="main-rail" primary={parts.body} rail={parts.aside} />
+                    )}
+                </Page>
+            )}
         />
-    )
-    return (
-        <Page
-            chrome="panes"
-            header={{
-                title: labels.title,
-                titleScale: "standard",
-                breadcrumbs: {
-                    label: labels.crumbLabel,
-                    items: [
-                        { id: "profile", label: labels.crumbProfile, href: labels.crumbHref },
-                        { id: "progress", label: labels.crumbSelf },
-                    ],
-                },
-                ...(description === undefined ? {} : { description }),
-            }}
-        >
-            <PaneGrid
-                label={labels.title}
-                areas={{ base: ["main", "aside"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: hasAside ? ["fill", "standard"] : ["fill"] }}
-            >
-                <Pane area="main" scroll label={labels.title}>
-                    <PaneSection>
-                        {drawn((ready) => (
-                            <Ready {...ready} />
-                        ))}
-                    </PaneSection>
-                </Pane>
-                {hasAside ? (
-                    <Pane area="aside" surface scroll label={labels.activityTitle}>
-                        <PaneSection>
-                            {drawn((ready) => (
-                                <ActivitySection {...ready} />
-                            ))}
-                        </PaneSection>
-                    </Pane>
-                ) : null}
-            </PaneGrid>
-        </Page>
     )
 }

@@ -255,6 +255,7 @@
         "pageTitle": "Review session",
         "root": "Review",
         "progress": "{position}/{total} cards · About {minutes} min left",
+        "progressDone": "{total}/{total} cards · Done",
         "progressLabel": "Session progress",
         "sourceCard": "Deck · {deck}",
         "sourceRetrieval": "Essentials lesson · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Easy",
         "interval": "{days, plural, =0 {today} one {# day} other {# days}}",
         "shortcuts": "Shortcuts: Space to show the answer, 1 to 4 to grade",
+        "spaceHint": "Or press Space",
         "lessonLine": "From lesson {lesson}",
         "saveFailedTitle": "Could not save the grade",
         "saveFailedBody": "The card is still here and has not moved on. Try again.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Pick a deck",
         "emptyBack": "Back to Review"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend fullstack",
+        "ai-engineer": "AI engineer",
+        "founder": "Founder",
+        "system-design-senior": "Senior system design",
+        "fullstack mastery": "Fullstack mastery"
+      },
       "decks": {
         "pageTitle": "Review decks",
         "emptyTitle": "No deck yet.",
@@ -318,6 +327,8 @@
         "filterLabel": "Filter by added",
         "trackLabel": "Filter by path",
         "allTracks": "Every path",
+        "scrollPrevious": "Scroll left",
+        "scrollNext": "Scroll right",
         "add": "Add deck",
         "added": "Added",
         "remove": "Remove from queue",
@@ -332,9 +343,9 @@
         "meta": "{total} decks · {added} added · Up to {goal} cards a day by your goal",
         "cards": "{count} cards",
         "filters": {
-          "all": "All {count}",
-          "added": "Added {count}",
-          "new": "Not added {count}"
+          "all": "All",
+          "added": "Added",
+          "new": "Not added"
         }
       },
       "hub": {
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Deck",
         "notFound": "This deck was not found.",
+        "backToDecks": "Back to the decks",
         "errorText": "The deck may have been renamed. Go back to the list to pick again.",
         "breadcrumbs": "Breadcrumb",
         "root": "Review",
@@ -734,7 +746,9 @@
       "empty": "There are no lessons to list incidents for yet.",
       "factLessons": "{count} lessons",
       "factAuthored": "{count} incidents open",
-      "soon": "Coming soon",
+      "noneTitle": "No incident to practise yet",
+      "noneBody": "Incidents tied to Essentials lessons open one by one. Learn a lesson first; its incident shows here once it is ready.",
+      "noneAction": "Go to Essentials",
       "open": "Open",
       "cta": "Open incident",
       "meta": "{difficulty} · {minutes} min"
@@ -1748,6 +1762,8 @@
       "queue": {
         "pageTitle": "Experience review",
         "title": "Experience review",
+        "itemTitle": "One item to review",
+        "backToProfile": "Back to profile",
         "forbiddenTitle": "Only the teacher and reviewers can open this page",
         "listLabel": "Review queue",
         "count": "{count} items",
@@ -1809,7 +1825,6 @@
         },
         "revokeLabel": "Reason for the revoke (required)",
         "revoke": "Revoke",
-        "back": "Back to the queue",
         "dueAt": "Due {date}",
         "preview": "Preview",
         "gradeTitle": "AI grade",
@@ -2334,6 +2349,8 @@
       "title": "Your progress",
       "description": "Read from Essentials, Harness, Projects, Practice and Review",
       "unavailable": "This part could not be loaded.",
+      "pageError": "Progress could not be loaded",
+      "pageErrorText": "The server did not answer. Your progress is safe. Try again in a few seconds.",
       "ribbon": {
         "label": "Progress summary",
         "proved": "Concepts proved",
@@ -2350,7 +2367,6 @@
         "openerNone": "No opener question answered yet.",
         "unlocked": "Open",
         "locked": "Needs Premium",
-        "upgrade": "See Premium",
         "part": {
           "essence": "Part 1 · Essence",
           "source": "Part 2 · Source",
@@ -2421,10 +2437,12 @@
         "doing": "Patterns in progress",
         "done": "Patterns done",
         "accepted": "{done} problems Accepted",
-        "empty": "No patterns yet."
+        "empty": "No patterns yet.",
+        "more": "{count} more patterns. Open Practice to see them all."
       },
       "firstVisit": {
         "title": "Nothing to measure yet, and that is normal",
+        "start": "Start",
         "text": "Every number here is work you really did. Study a lesson, solve a problem or review a card and the first one appears.",
         "essentials": {
           "title": "Essentials",

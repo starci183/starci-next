@@ -1,4 +1,4 @@
-import { Badge, Button, Cluster, Grid, Heading, Link, Page, Section, Stack, Tabs, Text } from "@starci/grammar/common"
+import { Button, Grid, Page, Section, Stack, Tabs } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -9,14 +9,7 @@ import {
     type ReviewPanelActions,
     type ReviewPanelDecision,
 } from "@starci-next/ui"
-import type {
-    DataSlot,
-    ReviewerRowView,
-    ReviewPanelLabels,
-    ReviewQueueRowView,
-    ReviewQueueScreenView,
-    SlotLabels,
-} from "@/modules/types"
+import type { DataSlot, ReviewerRowView, ReviewPanelLabels, ReviewQueueScreenView, SlotLabels } from "@/modules/types"
 
 /** The fake queue with the geometry of a settled one. */
 export const REVIEW_QUEUE_PLACEHOLDER: ReviewQueueScreenView = {
@@ -62,6 +55,8 @@ export type ReviewQueueBaseProps = {
         readonly slot: DataSlot<ReviewQueueScreenView>
         readonly placeholder: ReviewQueueScreenView
         readonly slotLabels: SlotLabels
+        readonly exitLabel: string
+        readonly exitHref: string
         readonly labels: ReviewQueueLabels
         readonly panelLabels: ReviewPanelLabels
         readonly tab: string
@@ -71,13 +66,6 @@ export type ReviewQueueBaseProps = {
         /** The teacher's reassign form under a pending item, or undefined. */
         readonly assign: AssignItemCardProps | undefined
     }
-    readonly on: ReviewQueueActions
-}
-
-/** What a queue row draws. */
-type QueueRowProps = {
-    readonly row: ReviewQueueRowView
-    readonly labels: ReviewQueueLabels
     readonly on: ReviewQueueActions
 }
 
@@ -98,63 +86,44 @@ type ReviewerListProps = {
 /** What the queue body draws once read. */
 type QueueBodyProps = { readonly view: ReviewQueueScreenView; readonly base: ReviewQueueBaseProps }
 
-/** One row: the item, the learner handle and part, the SLA badge, preview and open. */
-const QueueRow = (props: QueueRowProps) => (
-    <Stack gap="row">
-        <Cluster gap="inline" justify="between" align="center">
-            <Text isStrong>{props.row.title}</Text>
-            <Badge tone={props.row.slaTone}>{props.row.sla}</Badge>
-        </Cluster>
-        <Text size="sm" tone="muted">
-            {props.row.meta}
-        </Text>
-        <Cluster gap="inline" wrap align="center">
-            <Button
-                size="sm"
-                intent={props.row.isSelected ? "commit" : "neutral"}
-                onPress={() => props.on.preview(props.row.itemId)}
-            >
-                {props.labels.preview}
-            </Button>
-            <Link variant="plain" href={props.row.href}>
-                {props.labels.open}
-            </Link>
-        </Cluster>
-    </Stack>
-)
-
 /** The rail: the rows of the tab. */
 const QueueList = (props: QueueListProps) => (
-    <Section title={props.labels.listLabel} headingLevel={2} fact={props.view.count}>
-        <Stack gap="row">
-            {props.view.rows.length === 0 ? <Text tone="muted">{props.labels.empty}</Text> : null}
-            {props.view.rows.map((row) => (
-                <QueueRow key={row.itemId} row={row} labels={props.labels} on={props.on} />
-            ))}
-        </Stack>
-    </Section>
+    <Section
+        kind="list"
+        title={props.labels.listLabel}
+        headingLevel={2}
+        fact={props.view.count}
+        items={props.view.rows.map((row) => ({
+            id: row.itemId,
+            title: row.title,
+            description: row.meta,
+            badges: [{ label: row.sla, tone: row.slaTone }],
+            onPress: () => props.on.preview(row.itemId),
+            ...(row.isSelected ? { edgeTone: "accent" as const } : {}),
+        }))}
+        empty={props.labels.empty}
+    />
 )
 
 /** The reviewer appointments the teacher sees on the Reviewers tab. */
 const ReviewerList = (props: ReviewerListProps) => (
-    <Section title={props.labels.reviewersLabel} headingLevel={2}>
-        <Stack gap="row">
-            {props.rows.length === 0 ? <Text tone="muted">{props.labels.reviewersEmpty}</Text> : null}
-            {props.rows.map((row) => (
-                <Cluster key={row.id} gap="inline" wrap align="center" justify="between">
-                    <Stack gap="identity">
-                        <Text isStrong>{row.title}</Text>
-                        <Text size="sm" tone="muted">
-                            {row.meta}
-                        </Text>
-                    </Stack>
-                    <Button size="sm" intent="neutral" onPress={() => props.on.endReviewer(row.id)}>
-                        {props.labels.endReviewer}
-                    </Button>
-                </Cluster>
-            ))}
-        </Stack>
-    </Section>
+    <Section
+        kind="list"
+        title={props.labels.reviewersLabel}
+        headingLevel={2}
+        items={props.rows.map((row) => ({
+            id: row.id,
+            title: row.title,
+            description: row.meta,
+            action: {
+                label: props.labels.endReviewer,
+                intent: "neutral" as const,
+                press: () => props.on.endReviewer(row.id),
+            },
+            actionPlacement: "end" as const,
+        }))}
+        empty={props.labels.reviewersEmpty}
+    />
 )
 
 /** The rail of rows beside the review panel of the chosen row. */
@@ -177,15 +146,12 @@ const QueueGrid = (props: QueueBodyProps) => (
     />
 )
 
-/** The queue once read: the title, the tabs, then the queue grid or the reviewer list. */
+/** The queue once read: the filter tabs, then the queue grid or the reviewer list. */
 const QueueBody = (props: QueueBodyProps) => (
     <Stack gap="region">
-        <Heading level={1} scale="title">
-            {props.base.props.labels.title}
-        </Heading>
         <Tabs
             label={props.base.props.labels.tabsLabel}
-            kind="views"
+            kind="filter"
             items={props.view.tabs}
             selectedKey={props.base.props.tab}
             onSelect={props.base.on.selectTab}
@@ -206,9 +172,16 @@ const QueueBody = (props: QueueBodyProps) => (
  * role gets the forbidden slot.
  */
 export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
-    <Page>
+    <Page header={{ title: props.props.labels.title, titleScale: "standard", breadcrumbs: "root" }}>
         <SlotView
             slot={props.props.slot}
+            forbiddenAction={
+                <Stack gap="row" align="center">
+                    <Button intent="neutral" href={props.props.exitHref}>
+                        {props.props.exitLabel}
+                    </Button>
+                </Stack>
+            }
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}

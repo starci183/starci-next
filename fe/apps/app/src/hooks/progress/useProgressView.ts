@@ -40,18 +40,21 @@ const invitationsOf = (t: ProgressTranslate): NonNullable<ProgressPageView["firs
         title: t("firstVisit.essentials.title"),
         description: t("firstVisit.essentials.text"),
         href: APP_ROUTES.essentials,
+        action: { label: t("firstVisit.start"), href: APP_ROUTES.essentials, endArrow: true },
     },
     {
         id: "practice",
         title: t("firstVisit.practice.title"),
         description: t("firstVisit.practice.text"),
         href: APP_ROUTES.practice,
+        action: { label: t("firstVisit.start"), href: APP_ROUTES.practice, endArrow: true },
     },
     {
         id: "review",
         title: t("firstVisit.review.title"),
         description: t("firstVisit.review.text"),
         href: APP_ROUTES.review,
+        action: { label: t("firstVisit.start"), href: APP_ROUTES.review, endArrow: true },
     },
 ]
 
@@ -89,6 +92,8 @@ const labelsOf = (t: ProgressTranslate): ProgressLabels => ({
     activityLabel: t("activity.label"),
     activityEmpty: t("activity.empty"),
     unavailable: t("unavailable"),
+    pageError: t("pageError"),
+    pageErrorText: t("pageErrorText"),
     retry: t("retry"),
     firstVisitTitle: t("firstVisit.title"),
     firstVisitText: t("firstVisit.text"),
