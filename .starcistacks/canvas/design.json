@@ -1038,8 +1038,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "14ab6f967b441e01c34057e70c348b06a647d6fee6bd9101fc4e3b6807c42422",
-        "1440": "e5734e7093daff7a15feaefa7bbba6da4c2801e41634d44db1520056e42d9f2c"
+        "390": "dc069c4cea65587aa36887b1f806ac460767372585afc7d1e79c810b27ceda9d",
+        "1440": "854f1a4d457797cb6954be3e1ccd16f059473b345227173ba17782fea1d9435e"
       }
     },
     "projects/concept-ai-limit-reached": {
@@ -1107,8 +1107,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "7a47a479419668a2d194a2691e67cd30e634e60ec967d4f4ffedf0a1ca157c93",
-        "1440": "7554188cc133f6d00b16f943688df7b9034368cb65f9514866343fc1615f2b3d"
+        "390": "e49c7807cbfba85f8f06d7bb27a844dfbc7d6b736256687f7633d0695418c414",
+        "1440": "2a55a831bc435500a51eff52ebb247d7d08169d567e3aaa52f4d98ae3bfcc5aa"
       }
     },
     "projects/detail-loading": {
@@ -1155,8 +1155,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "95cb338cec28cdc7136ca4da21e7485ba3100be164329759336aff0ea4288471",
-        "1440": "87740bf90a11b60131df3655276d5ffc4753ff4f61db07f0772b8a54b13f2208"
+        "390": "6e82a5ebc2e227986741156e450f8a93d9cd1fc79ff7567f4f4890a7651115c6",
+        "1440": "b1e728c79c72c064b98a80f7ccec0d31c724a6160242d84f8e60c5653cc62b80"
       }
     },
     "projects/milestone-done": {

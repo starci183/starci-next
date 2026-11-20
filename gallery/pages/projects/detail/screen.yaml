@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7a47a479419668a2d194a2691e67cd30e634e60ec967d4f4ffedf0a1ca157c93
+    sha256: e49c7807cbfba85f8f06d7bb27a844dfbc7d6b736256687f7633d0695418c414
   "1440":
     file: 1440.png
-    sha256: 7554188cc133f6d00b16f943688df7b9034368cb65f9514866343fc1615f2b3d
+    sha256: 2a55a831bc435500a51eff52ebb247d7d08169d567e3aaa52f4d98ae3bfcc5aa
 sections:
   - id: s1
     title: Dải tiêu đề
@@ -90,6 +90,32 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T14:02:52.086Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: Nút "Chạy kiểm tra" vẫn khoá, ô "Địa chỉ đã triển khai" trống, không có dòng nói cần nhập và
+            lưu địa chỉ trước (canvas projects/detail có trạng thái repo-chưa-nối kèm lý do); "Xem
+            kinh nghiệm →" màu đen khác các liên kết đầu mục tím.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:15:02.572Z
       lenses:
         order:
           verdict: open

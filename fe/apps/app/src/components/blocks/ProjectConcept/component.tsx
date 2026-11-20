@@ -241,7 +241,11 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
                     },
                     title: view.concept.label,
                     meta: view.concept.proofLine,
-                    status: <Badge tone={view.concept.stateTone}>{view.concept.stateLabel}</Badge>,
+                    status: (
+                        <Badge isDot tone={view.concept.stateTone}>
+                            {view.concept.stateLabel}
+                        </Badge>
+                    ),
                 }
             }}
             headerFallback={{
@@ -256,18 +260,18 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
             render={(data, loading) => {
                 const body = { ...props, view: data, isLoading: loading }
                 return (
-                    <Stack gap="region">
+                    <Stack gap="section">
                         <Slots {...body} />
                         <Grid
                             kind="pair"
                             leading={
-                                <Stack gap="region">
+                                <Stack gap="section">
                                     <Probe {...body} />
                                     <Ci {...body} />
                                 </Stack>
                             }
                             trailing={
-                                <Stack gap="region">
+                                <Stack gap="section">
                                     <ConceptCodeRead
                                         concept={data.concept}
                                         labels={labels}

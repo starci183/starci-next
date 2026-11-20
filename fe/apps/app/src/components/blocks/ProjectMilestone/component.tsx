@@ -226,7 +226,11 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
                     },
                     title: view.title,
                     meta: view.intro,
-                    status: <Badge tone={view.stateTone}>{view.stateLabel}</Badge>,
+                    status: (
+                        <Badge isDot tone={view.stateTone}>
+                            {view.stateLabel}
+                        </Badge>
+                    ),
                 }
             }}
             headerFallback={{

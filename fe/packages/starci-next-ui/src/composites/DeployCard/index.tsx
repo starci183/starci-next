@@ -32,6 +32,11 @@ export const DeployCard = (props: DeployCardProps) => {
                         {busy.isProbing ? labels.runningProbes : labels.runProbes}
                     </Button>
                 </Cluster>
+                {view.deployedUrl === "" ? (
+                    <Text size="xs" tone="muted">
+                        {labels.runProbesNeedsUrl}
+                    </Text>
+                ) : null}
             </Stack>
         </Section>
     )
