@@ -3,6 +3,7 @@ screen: landing/error
 title: Trang giới thiệu, đã xảy ra lỗi
 route: /{locale}/{trang lỗi}
 area: landing
+app: landing
 summary: 'Một trang của trang giới thiệu bị lỗi khi vẽ: thanh thương hiệu còn nguyên, phần thân là
   trạng thái lỗi dùng chung với "Về trang chủ" và "Thử lại".'
 code:

@@ -3,6 +3,7 @@ screen: landing/home
 title: Trang giới thiệu StarCi Next
 route: /
 area: landing
+app: landing
 summary: 'Cửa vào công khai: thanh trên có thương hiệu, đổi ngôn ngữ và Đăng nhập; phần mở đầu nói
   sản phẩm là gì, cho ai và MỘT nút chính "Mở ứng dụng"; danh sách ba khu vực.'
 code:

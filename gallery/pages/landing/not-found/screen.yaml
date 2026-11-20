@@ -3,6 +3,7 @@ screen: landing/not-found
 title: Trang giới thiệu, không tìm thấy trang
 route: /{locale}/{địa chỉ không có}
 area: landing
+app: landing
 summary: "Địa chỉ không có trong trang giới thiệu: thanh thương hiệu còn nguyên, phần thân là trạng
   thái trang dùng chung với một nút về trang chủ."
 code:
