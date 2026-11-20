@@ -95,7 +95,7 @@ export const learningModules = (options: CoreOptions): Array<DynamicModule> => [
         dailyGradingLimit: options.attempt.dailyGradingLimit,
         coach: AiCoachClient,
     }),
-    IncidentModule.register({ isGlobal: true }),
+    IncidentModule.register({ isGlobal: true, ...options.incident }),
     Judge0Module.register({ isGlobal: true, judge0: options.judge0 }),
 ]
 

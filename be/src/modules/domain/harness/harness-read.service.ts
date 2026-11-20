@@ -93,7 +93,7 @@ export class HarnessReadService {
 
     /** The three parts with the learner's counts. */
     async hub(
-        learnerId: string,
+        learnerId: string | undefined,
         locale: HarnessLocale,
         buildRuns: ReadonlyArray<HarnessRunRow>,
         doctorRows: ReadonlyArray<HarnessRunRow>,
@@ -118,7 +118,7 @@ export class HarnessReadService {
 
     /** Every live build with the learner's stage states. */
     async builds(
-        learnerId: string,
+        learnerId: string | undefined,
         locale: HarnessLocale,
         buildRuns: ReadonlyArray<HarnessRunRow>,
     ): Promise<ReadonlyArray<HarnessBuildSummaryView>> {
@@ -127,7 +127,7 @@ export class HarnessReadService {
 
     /** One build with its stages and steps; an unknown id is HARNESS_NOT_FOUND. */
     async build(
-        learnerId: string,
+        learnerId: string | undefined,
         locale: HarnessLocale,
         id: string,
         buildRuns: ReadonlyArray<HarnessRunRow>,
@@ -283,14 +283,16 @@ export class HarnessReadService {
     }
 
     private async buildViews(
-        learnerId: string,
+        learnerId: string | undefined,
         locale: HarnessLocale,
         buildRuns: ReadonlyArray<HarnessRunRow>,
     ): Promise<ReadonlyArray<HarnessBuildView>> {
         const [builds, proofs, bindings] = await Promise.all([
             this.records<StoredBuild>("build"),
-            this.proofs(learnerId),
-            this.entityManager.query(SELECT_BINDINGS, [learnerId]) as Promise<Array<BindingRow>>,
+            learnerId === undefined ? Promise.resolve([]) : this.proofs(learnerId),
+            learnerId === undefined
+                ? Promise.resolve([])
+                : (this.entityManager.query(SELECT_BINDINGS, [learnerId]) as Promise<Array<BindingRow>>),
         ])
         return builds.map((build) =>
             buildViewOf(

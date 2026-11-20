@@ -34,6 +34,7 @@ export const admit = (
         case PublicReason.CatalogRead:
         case PublicReason.ProtocolBearer:
         case PublicReason.ProbeSink:
+        case PublicReason.GuestRead:
             return ok(metadata.reason)
         case undefined:
         default:

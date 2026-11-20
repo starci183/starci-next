@@ -52,4 +52,6 @@ export interface CoreOptions {
     readonly realtime: CoreEnv["realtime"]
     /** Parsed mcp settings: the token limit, the lesson checkouts, the public endpoint and the local embedder. */
     readonly mcp: CoreEnv["mcp"]
+    /** Parsed incident settings: the lessons whose tier-2 incident is written. */
+    readonly incident: CoreEnv["incident"]
 }

@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common"
 import { AttemptApiModule } from "../../attempt.module"
 import { ConfigurableModuleClass } from "./attempt-graphql.module-definition"
+import { ClaimGuestProgressResolver } from "./claim-guest-progress.resolver"
+import { GradeGuestOpenerResolver } from "./grade-guest-opener.resolver"
 import { LessonAttemptResolver } from "./lesson-attempt.resolver"
 import { LessonProgressResolver } from "./lesson-progress.resolver"
 import { LessonOpenerScoresResolver } from "./lesson-opener-scores.resolver"
@@ -19,6 +21,8 @@ import { SubmitLessonAttemptResolver } from "./submit-lesson-attempt.resolver"
         SaveLessonSimulationResolver,
         RevealLessonHintResolver,
         MarkLessonSectionReadResolver,
+        GradeGuestOpenerResolver,
+        ClaimGuestProgressResolver,
     ],
 })
 /** The GraphQL transport of the attempt feature: submitting an answer, reading an attempt and reading the progress of a lesson. */

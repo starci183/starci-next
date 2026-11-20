@@ -52,7 +52,7 @@ const runsOf = (t: Translate, project: ProjectRead): ProjectDetailView["runs"] =
                   {
                       id: `ci-${ci.runId}`,
                       kind: t("detail.runCi"),
-                      detail: t("detail.ciRun", { runId: ci.runId, commit: ci.commit }),
+                      detail: t("detail.ciRun", { commit: ci.commit }),
                       verdict: verdictOf(t, ci.passed),
                       at: ci.at,
                   },
@@ -101,7 +101,7 @@ export const projectDetailViewOf = (t: Translate, project: ProjectRead): Project
             ci === null
                 ? { label: t("detail.ciNotAttested"), tone: "muted" }
                 : { label: t("detail.ciAttested"), tone: ci.passed ? "success" : "warning" },
-        ciLine: ci === null ? t("detail.ciNone") : t("detail.ciRun", { runId: ci.runId, commit: ci.commit }),
+        ciLine: ci === null ? t("detail.ciNone") : t("detail.ciRun", { commit: ci.commit }),
         deployedUrl: project.deployedUrl ?? "",
     }
 }

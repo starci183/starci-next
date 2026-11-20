@@ -15,6 +15,6 @@ export class GetOutcomePathsHandler extends ICQRSHandler<GetOutcomePathsQuery, P
     }
 
     protected override process(query: GetOutcomePathsQuery): Promise<PathCatalogView> {
-        return this.paths.catalog(query.params.principal.id, query.params.request.locale)
+        return this.paths.catalog(query.params.principal?.id, query.params.request.locale)
     }
 }

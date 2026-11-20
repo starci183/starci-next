@@ -1,5 +1,5 @@
 import { QueryHandler } from "@nestjs/cqrs"
-import { PracticeReadService, type PracticeProblemView } from "@modules/domain/practice"
+import { GUEST_LEARNER_ID, PracticeReadService, type PracticeProblemView } from "@modules/domain/practice"
 import { ICQRSHandler } from "@modules/platform/cqrs"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { GetPracticeProblemQuery } from "./get-practice-problem.query"
@@ -16,7 +16,7 @@ export class GetPracticeProblemHandler extends ICQRSHandler<GetPracticeProblemQu
 
     protected override process(query: GetPracticeProblemQuery): Promise<PracticeProblemView> {
         return this.reads.problem({
-            learnerId: query.params.principal.id,
+            learnerId: query.params.principal?.id ?? GUEST_LEARNER_ID,
             slug: query.params.request.slug,
             locale: query.params.request.locale,
         })

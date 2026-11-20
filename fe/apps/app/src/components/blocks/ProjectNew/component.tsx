@@ -26,6 +26,8 @@ export type ProjectNewLabels = {
     readonly trackLabel: string
     readonly name: string
     readonly repo: string
+    readonly namePlaceholder: string
+    readonly repoPlaceholder: string
     readonly deployed: string
     readonly deployedHint: string
     readonly submit: string
@@ -76,6 +78,7 @@ type FieldProps = {
     readonly id: keyof ProjectNewState
     readonly label: string
     readonly description?: string
+    readonly placeholder?: string
     readonly props: ProjectNewBaseProps["props"]
     readonly on: ProjectNewBaseProps["on"]
 }
@@ -91,6 +94,7 @@ const TextField = (props: FieldProps) => (
         isDisabled={props.props.isCreating}
         onValueChange={(value) => props.on.set(props.id, value)}
         {...(props.description === undefined ? {} : { description: props.description })}
+        {...(props.placeholder === undefined ? {} : { placeholder: props.placeholder })}
     />
 )
 
@@ -126,31 +130,34 @@ const Form = (props: FormProps) => {
     const { labels, state } = props.props
     return (
         <Section title={labels.infoLabel} headingLevel={2}>
-            <Stack gap="row">
-                <TextField id="name" label={labels.name} {...props} />
-                <Choice id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
-                {state.kind === "agent" ? (
-                    <Choice id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
-                ) : null}
-                <TextField id="repoUrl" label={labels.repo} {...props} />
-                <TextField id="deployedUrl" label={labels.deployed} description={labels.deployedHint} {...props} />
-                {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
-                <Cluster gap="inline" wrap>
-                    <Button
-                        intent="commit"
-                        startGlyph="plus"
-                        isPending={props.props.isCreating}
-                        isDisabled={state.name.trim() === "" || props.props.isCreating}
-                        disabledReason={props.props.isCreating ? labels.submitting : labels.submitNeedsName}
-                        onPress={props.on.submit}
-                    >
-                        {props.props.isCreating ? labels.submitting : labels.submit}
-                    </Button>
-                    <Button intent="neutral" href={props.props.projectsHref}>
-                        {labels.cancel}
-                    </Button>
-                </Cluster>
-            </Stack>
+            <TextField id="name" label={labels.name} placeholder={labels.namePlaceholder} {...props} />
+            <Choice id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
+            {state.kind === "agent" ? (
+                <Choice id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
+            ) : null}
+            <TextField id="repoUrl" label={labels.repo} placeholder={labels.repoPlaceholder} {...props} />
+            <TextField id="deployedUrl" label={labels.deployed} description={labels.deployedHint} {...props} />
+            {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
+            <Cluster gap="identity" wrap>
+                <Button
+                    intent="commit"
+                    startGlyph="plus"
+                    isPending={props.props.isCreating}
+                    isDisabled={state.name.trim() === "" || props.props.isCreating}
+                    disabledReason={props.props.isCreating ? labels.submitting : labels.submitNeedsName}
+                    onPress={props.on.submit}
+                >
+                    {props.props.isCreating ? labels.submitting : labels.submit}
+                </Button>
+                <Button intent="neutral" href={props.props.projectsHref}>
+                    {labels.cancel}
+                </Button>
+            </Cluster>
+            {state.name.trim() === "" && !props.props.isCreating ? (
+                <Text size="xs" tone="muted">
+                    {labels.submitNeedsName}
+                </Text>
+            ) : null}
         </Section>
     )
 }
@@ -158,16 +165,14 @@ const Form = (props: FormProps) => {
 /** The init panel: the commands to run in the learner's own repository, as a terminal, and the line that says what StarCi does and does not touch. */
 const InitPanel = (props: InitPanelProps) => (
     <Section title={props.labels.initTitle} headingLevel={2}>
-        <Stack gap="row">
+        <Stack gap="inline">
             <Terminal
                 label={props.labels.initTitle}
                 lines={props.labels.initLog.map((line) =>
                     line.replaceAll("{name}", props.name.trim() === "" ? "my-project" : props.name.trim()),
                 )}
             />
-            <Text size="sm" tone="muted">
-                {props.labels.initNote}
-            </Text>
+            <Text tone="muted">{props.labels.initNote}</Text>
         </Stack>
     </Section>
 )
@@ -178,25 +183,21 @@ type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: Proje
 /** The section shown after the create: the secret once, and the way into the project. */
 const Created = (props: CreatedProps) => (
     <Section title={props.labels.createdTitle} headingLevel={2}>
-        <Stack gap="row">
-            <Alert tone="informative" title={props.labels.createdText} />
-            <Input
-                id="project-secret"
-                name="secret"
-                label={props.labels.secretLabel}
-                kind="text"
-                value={props.created.secret}
-                isReadOnly
-                isCopyable
-                copyLabel={props.labels.copy}
-                copiedLabel={props.labels.copied}
-            />
-            <Cluster gap="inline" wrap>
-                <Button intent="commit" href={props.created.href}>
-                    {props.labels.openProject}
-                </Button>
-            </Cluster>
-        </Stack>
+        <Alert tone="informative" title={props.labels.createdText} />
+        <Input
+            id="project-secret"
+            name="secret"
+            label={props.labels.secretLabel}
+            kind="text"
+            value={props.created.secret}
+            isReadOnly
+            isCopyable
+            copyLabel={props.labels.copy}
+            copiedLabel={props.labels.copied}
+        />
+        <Button intent="commit" href={props.created.href}>
+            {props.labels.openProject}
+        </Button>
     </Section>
 )
 

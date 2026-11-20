@@ -153,6 +153,19 @@ export class LessonContentService {
         throw new LessonError({ code: LessonErrorCode.PremiumRequired })
     }
 
+    /**
+     * The question `requireAccess` asks, for a guest who holds nothing: only content free for everyone passes (a free Essentials part,
+     * or a phase or mark the teacher left free), anything else needs Premium. It reads no learner.
+     */
+    requireGuestAccess(params: Omit<LessonAccessParams, "learnerId">): void {
+        if (params.part !== undefined) {
+            if (this.entitlement.openEssentialParts(false).includes(params.part)) return
+            throw new LessonError({ code: LessonErrorCode.PremiumRequired })
+        }
+        if (!needsPremium(params.phase, params.isPremium)) return
+        throw new LessonError({ code: LessonErrorCode.PremiumRequired })
+    }
+
     /** Whether the learner may read one part of an Essentials lesson: the same question `requireAccess` asks, answered as a flag. */
     mayReadPart(learnerId: string, part: EssentialPart): Promise<boolean> {
         return this.entitlement.mayReadEssentialPart(learnerId, part)

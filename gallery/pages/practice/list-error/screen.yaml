@@ -1,0 +1,90 @@
+schema: 1
+screen: practice/list-error
+title: Luyện code, lỗi tải
+route: /practice
+area: practice
+summary: "Trạng thái của màn này: lỗi tải. Mục tiêu: chọn một pattern rồi vào làm bài."
+code:
+  - features/pages/PracticeCatalogPage
+  - components/blocks/PracticeCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 02de57109ac31e69ee08569d6ef115800f93cc71b3e6a2709926832edbdd6003
+  "1440":
+    file: 1440.png
+    sha256: db4149e48eedb4c12ef0c15daf2edbeee574088a9b2dc03cc0a53d2aad1ebdde
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Luyện code"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu
+      tiên); lần đầu "Bắt đầu với Mảng".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:31.440Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:35.524Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

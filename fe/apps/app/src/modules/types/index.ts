@@ -133,7 +133,6 @@ export type {
     ProjectDetailView,
     ProjectMilestoneLabels,
     ProjectMilestoneView,
-    ProjectsAsideLabels,
     ReviewAnswerPart,
     ReviewBackView,
     ReviewGradeButton,

@@ -486,10 +486,10 @@
           "done": "{accepted}/{total} Accepted · done"
         },
         "filters": {
-          "all": "All {count}",
-          "doing": "In progress {count}",
-          "new": "Not started {count}",
-          "done": "Done {count}"
+          "all": "All",
+          "doing": "In progress",
+          "new": "Not started",
+          "done": "Done"
         }
       },
       "pattern": {
@@ -1314,7 +1314,6 @@
         "emptyText": "Bring in your first project: any topic, any language, then add the starci/ folder with one command.",
         "listLabel": "Your projects",
         "progressLabel": "Concepts proved",
-        "errorTitle": "Projects could not be loaded",
         "ribbonLabel": "Projects overview",
         "figures": {
           "proved": "Concepts proved",
@@ -1346,6 +1345,8 @@
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
         "repo": "GitHub repo",
+        "namePlaceholder": "For example: my-blog-api",
+        "repoPlaceholder": "https://github.com/you/project",
         "submit": "Create project",
         "submitting": "Creating...",
         "submitNeedsName": "Name the project before you create it.",
@@ -1395,13 +1396,14 @@
         "sync": "Refresh results from your machine",
         "syncing": "Refreshing...",
         "ciNone": "No CI run yet. Add the StarCi GitHub Action and push.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Latest run · commit {commit}",
         "ciPassed": "Passed",
         "ciFailed": "Failed",
         "probeText": "HTTP apps that run with Docker. StarCi calls your public address with health and the generic probes of each concept.",
         "deployedLabel": "Deployed address (public http or https)",
         "saveDeployed": "Save address",
         "runProbes": "Run the probes",
+        "runProbesNeedsUrl": "Save the deployed address before running the probes.",
         "runningProbes": "Probing...",
         "secretText": "The Action signs its result with this project's secret. Rotate it if it leaks.",
         "rotate": "Rotate the CI secret",

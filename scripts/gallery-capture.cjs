@@ -196,9 +196,46 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
     S("essentials", "lesson-ladder-locked", LESSON + "?part=apply", { cookies: { rung: "mid" }, click: "Khó" }),
+    // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
-    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S("practice", "list-first", "/practice"),
+    S("practice", "list-nomatch", "/practice", {
+        act: async (p) => {
+            await p.getByPlaceholder(/Tìm pattern/).fill("cây khoảng")
+            await p.waitForTimeout(1200)
+        },
+    }),
+    S("practice", "list-loading", "/practice", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "list-error", "/practice", { refuse: true, ops: /"operationName":"Practice/ }),
     S("practice", "pattern", "/practice/patterns/arrays"),
+    S("practice", "pattern-first", "/practice/patterns/arrays"),
+    S("practice", "pattern-loading", "/practice/patterns/arrays", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "pattern-error", "/practice/patterns/arrays", { refuse: true, ops: /"operationName":"Practice/ }),
+    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S(
+        "practice",
+        "problem-confirm",
+        { from: "practice/problem", append: "#s" },
+        {
+            act: async (p) => {
+                await p.getByRole("tab", { name: "Lời giải" }).click()
+                await p.getByRole("button", { name: "Xem lời giải" }).first().click()
+                await p.waitForTimeout(800)
+            },
+        },
+    ),
+    S(
+        "practice",
+        "problem-loading",
+        { from: "practice/problem", append: "#s" },
+        { hold: true, ops: /"operationName":"Practice/ },
+    ),
+    S(
+        "practice",
+        "problem-error",
+        { from: "practice/problem", append: "#s" },
+        { refuse: true, ops: /"operationName":"Practice/ },
+    ),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
@@ -255,7 +292,60 @@ const SCREENS = [
     S("career", "review-queue-forbidden", "/review-queue"),
     S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
 ]
+// Seeded states (scripts/gallery-seed.mjs, run first; it writes manifest.json and a storage state per gallery learner into GALLERY_STATES, default .tmp-gallery-states):
+// a screen the manifest names is shot as that learner on the dev stack's real data, not through a stand-in core. Keep the seed running with --hold so its devices stay online.
+const STATES_DIR = path.resolve(process.env.GALLERY_STATES || path.join(__dirname, "..", ".tmp-gallery-states"))
+const SEEDED = (() => {
+    try {
+        return JSON.parse(fs.readFileSync(path.join(STATES_DIR, "manifest.json"), "utf8"))
+    } catch {
+        return undefined
+    }
+})()
+if (SEEDED) {
+    for (const [id, seeded] of Object.entries(SEEDED.screens)) {
+        const [area, screen] = id.split("/")
+        if (!screen || /[ (]/.test(screen)) continue
+        const route = seeded.route.split(" ")[0]
+        const extra = {
+            learnerState: path.join(STATES_DIR, seeded.learner + ".json"),
+            ...(id === "career/review-queue-reviewers" ? { click: "Người duyệt" } : {}),
+            ...(id === "review/session-conflict"
+                ? {
+                      act: async (p) => {
+                          await p
+                              .getByRole("button", { name: /Hiện đáp án/ })
+                              .first()
+                              .click()
+                          await p.waitForTimeout(1500)
+                          // The second device: another session of the same learner grades the same card "good" first.
+                          require("child_process").spawnSync(
+                              process.execPath,
+                              [path.join(__dirname, "gallery-seed.mjs"), "--grade-elsewhere", "--out", STATES_DIR],
+                              { stdio: "inherit" },
+                          )
+                          await p.getByRole("button", { name: /^Lại/ }).first().click()
+                          await p.waitForTimeout(1500)
+                      },
+                  }
+                : {}),
+        }
+        const at = SCREENS.findIndex((each) => each.area === area && each.screen === screen)
+        if (at === -1) SCREENS.push(S(area, screen, route, extra))
+        else SCREENS[at] = S(area, screen, route, extra)
+    }
+}
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
+// A screen may name the operations its held or refused read stands for (ops: a regexp over the operation names); else the Essentials reads.
+// The core API accepts one browser origin (the ingress); a lane's own next dev on another port sends its reads as that origin (CAPTURE_ORIGIN_AS=http://localhost:3280).
+const ORIGIN_AS = process.env.CAPTURE_ORIGIN_AS
+const spoof = async (route) => {
+    if (!ORIGIN_AS) return route.continue()
+    // The page's own Origin cannot be changed in flight, so the read is made again from here with the accepted one and its answer handed back.
+    const answer = await route.fetch({ headers: { ...route.request().headers(), origin: ORIGIN_AS } })
+    return route.fulfill({ response: answer })
+}
+const isHeldRead = (route, s) => (s.ops ? s.ops.test(route.request().postData() ?? "") : isEssentialsRead(route))
 const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
 const norm = (href) => {
     try {
@@ -286,6 +376,7 @@ const norm = (href) => {
         ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
         : undefined
     await first?.routeWebSocket(/_next\/hmr/, hmrQuiet)
+    if (ORIGIN_AS) for (const c of [user, guest, free, first]) await c?.route(/graphql/, spoof)
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await free?.routeWebSocket(/_next\/hmr/, hmrQuiet)
@@ -333,8 +424,13 @@ const norm = (href) => {
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.holdOps || s.refuseOps || s.cookies !== undefined
-                    ? await b.newContext({ storageState: stateFile })
+                s.hold ||
+                s.refuse ||
+                s.holdOps ||
+                s.refuseOps ||
+                s.cookies !== undefined ||
+                s.learnerState !== undefined
+                    ? await b.newContext({ storageState: s.learnerState ?? stateFile })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
             if (s.cookies !== undefined && process.env.CAPTURE_MOCK)
@@ -345,6 +441,7 @@ const norm = (href) => {
                         ([name, value]) => ({ name, value, domain: "localhost", path: "/" }),
                     ),
                 )
+            if (ORIGIN_AS) await fresh?.route(/graphql/, spoof)
             await fresh?.routeWebSocket(/_next\/hmr/, hmrQuiet)
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
@@ -369,9 +466,8 @@ const norm = (href) => {
                     s.refuseOps.test(route.request().postData() ?? "") ? route.abort() : route.fallback(),
                 )
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
-            if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
-            if (s.refuse)
-                await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
+            if (s.hold) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? undefined : spoof(route)))
+            if (s.refuse) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? route.abort() : spoof(route)))
             await p.setViewportSize({
                 width: w,
                 height: Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900),

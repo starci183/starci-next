@@ -16,8 +16,8 @@ export const ExperienceCard = (props: ExperienceCardProps) => (
         title={props.labels.expTitle}
         headingLevel={2}
         action={
-            <Link variant="plain" href={props.labels.experienceHref}>
-                {`${props.labels.expLink} →`}
+            <Link variant="head" href={props.labels.experienceHref}>
+                {props.labels.expLink}
             </Link>
         }
         isLoading={props.isLoading}
