@@ -1,5 +1,6 @@
 {"data":{},"findings":[],"hash":"bbc029d1e6c693b784d21faf2ac692e5a2b2b92cd2949ecd5b9e9cfa913a4c77","path":"gallery/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6332476b884372b8262faf422c457779a89f55b3b1350c59cc1902b67039947","path":"gallery/flows.json","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"gallery/flows.json names \"profile/overview\", \"profile/edit\", \"harness/hub\", \"harness/builds\", \"harness/build\", \"harness/use\", and 3 more, which are not screen folders of gallery/pages/ (PROJECT-GALLERY-2)","path":"gallery/flows.json","rule":"HFS_APP_GALLERY_LINKS"}],"hash":"c16a62a5b26936171f5476e9f842293382c08316219091ad3a7c1f998aeb2926","path":"gallery/flows.json","step":"hfs"}
 {"data":{},"findings":[],"hash":"2b70b649c4632fbea617e95fd42729ad60be02caa9d7fe371387eeca08d6393a","path":"gallery/index.html","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1fd7316681060bf75dcf867afd5a30ae0e590b588df2787d1e20be57b3c03db5","path":"gallery/package-lock.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d9acc98afd3249c1fa1a905ac6bc873331fb0a8843b48afdacb57c814e0f5651","path":"gallery/package.json","step":"file-rules"}
