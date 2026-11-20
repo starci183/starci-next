@@ -61,7 +61,7 @@ export const ExperienceList = () => {
     const t = useTranslations("app.experience")
     const locale = useLocale()
     const viewOf = useExperienceListView()
-    const read = useQueryMyExperienceSwr(undefined)
+    const read = useQueryMyExperienceSwr(undefined, locale === "en" ? "en" : "vi")
     const progress = useQueryLearnerProgressSwr(locale)
     const submit = useMutateSubmitExperienceSwr()
     const show = useMutateShowExperienceSwr()

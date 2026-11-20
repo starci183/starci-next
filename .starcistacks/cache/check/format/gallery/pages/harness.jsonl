@@ -1,6 +1,6 @@
 {"findings":[],"hash":"e8402df233cf68e9ecd9a0bbec6a60bed8b9390de504b00134d285710391b7c6","path":"gallery/pages/harness/build-error/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"8a05592f0d5cf934b02f5e0c071399244e8a434880cc68e7898720b8e1b8954d","path":"gallery/pages/harness/build-loading/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"9704db79cb85ecd4e683a519606f83aa78a58fe393808e9819ac0a3ee826c461","path":"gallery/pages/harness/build/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"e1d02d1e5f15ca76171f1f0bd31edc9bfb5b463727a3c251146c6b374134edce","path":"gallery/pages/harness/build/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"5008a53bb7a1cdfed38956fb0c2555463597ca7fea8bb8d3b798c4373810a654","path":"gallery/pages/harness/builds-error/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"c6ef785dd7ca0188df5f282d136490c93a8ceed6030be614174064d5000957f8","path":"gallery/pages/harness/builds-loading/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"30ecc8ea0b73b4ef1df7f26da1e9ff9a2c7eb46e0f8fb04c45c8eab309115933","path":"gallery/pages/harness/builds/screen.yaml","step":"prettier"}

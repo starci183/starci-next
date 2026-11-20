@@ -158,6 +158,7 @@ const experienceOf = (part: string, itemId: string): MyExperience["items"][numbe
     part: part === "practice" ? "practice" : "essentials",
     output: "cv-line",
     subject: "subject",
+    subjectLabel: null,
     projectId: null,
     state: "verified",
     line: { vi: "Dong vi", en: "Line en" },

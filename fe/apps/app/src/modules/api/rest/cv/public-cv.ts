@@ -22,14 +22,20 @@ type Answer = {
 
 /**
  * Reads the public CV of a link on the server, for the page metadata, the preview image and the HTTP status of a missing CV. It goes
- * through the app's own `/graphql` door (the ingress in production, the dev proxy otherwise), with no session. A slow or failing core
+ * through the app's own `/graphql` door (the ingress in production, the dev proxy otherwise), with no session and with the site's own
+ * origin, which the core requires of every read. A slow or failing core
  * is `unavailable`, never a thrown error, so the page still draws and reads in the browser. One request shares one read.
  */
 export const readPublicCv = cache(async (slug: string, locale: string): Promise<PublicCvRead> => {
     try {
         const response = await fetch(`${siteUrl()}/graphql`, {
             method: "POST",
-            headers: { "content-type": "application/json", "accept-language": locale },
+            headers: {
+                "content-type": "application/json",
+                "accept-language": locale,
+                // The core accepts a read from the site's own origin only: a server-side read has no browser to send it, so it names it.
+                origin: new URL(siteUrl()).origin,
+            },
             body: JSON.stringify({ query: print(publicCvDocument), variables: { input: { slug, locale } } }),
             signal: AbortSignal.timeout(TIMEOUT_MS),
             cache: "no-store",

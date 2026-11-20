@@ -1,0 +1,141 @@
+schema: 1
+screen: cv/public-few-lines
+title: CV công khai, ít dòng
+route: /cv/{slug}
+area: cv
+summary: "Route: /cv/{slug} (ảnh chụp: một dòng đã ký). Mã:
+  fe/apps/app/src/components/blocks/PublicCv/. Màn đủ nằm ở cv/public."
+code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
+shots:
+  "390":
+    file: 390.png
+    sha256: 908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c
+  "1440":
+    file: 1440.png
+    sha256: 63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb
+sections:
+  - id: s1
+    title: Chủ CV
+    shows: như cv/public; dòng sự kiện nói "1 dòng đã ký".
+    why: verified-experience.md điều 7.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Dòng CV đã ký
+    shows: một dòng vẫn đủ vết tin cậy và liên kết xác minh. Dưới danh sách một dòng chữ xám nói CV tự
+      cập nhật khi thầy ký thêm; không đếm hay nói số dòng còn chờ. Không có chip nguồn dưới 8 dòng.
+      Khi CV công khai mà chưa có dòng nào, danh sách nói "Chưa có dòng CV nào để hiện." và phần còn
+      lại như đây.
+    why: verified-experience.md điều 4 (dòng chờ không bao giờ công khai).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Vì sao tin được CV này
+    shows: cột giải thích giữ nguyên để trang không trông trống.
+    why: verified-experience.md điều 3 và 7.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
+      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career-2
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T15:43:34.184Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển
+            dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng
+            CV phải lên trước ở cả hai độ rộng.
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T15:55:16.223Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T16:05:57.253Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

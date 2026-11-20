@@ -14,6 +14,7 @@ const query1: TypedDocumentNode<MyExperienceQuery, MyExperienceQueryVariables> =
                 part
                 output
                 subject
+                subjectLabel
                 state
                 line {
                     vi

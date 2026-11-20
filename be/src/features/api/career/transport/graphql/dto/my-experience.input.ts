@@ -20,4 +20,10 @@ export class MyExperienceInput {
     @IsOptional()
     @IsIn(EXPERIENCE_STATES)
     state: ExperienceState | null = null
+
+    /** The language of the labels the items carry; vi when left out. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsIn(["vi", "en"])
+    locale: "vi" | "en" | null = null
 }

@@ -13,14 +13,17 @@ export const QUERY_MY_EXPERIENCE_SWR_KEY = "QUERY_MY_EXPERIENCE_SWR"
 export type MyExperienceView = MyExperienceQuery["myExperience"]
 
 /** Reads the signed-in learner's experience items, optionally of one state; a failure stays the read's error. */
-export const useQueryMyExperienceSwr = (state: string | undefined): SWRResponse<MyExperienceView> => {
+export const useQueryMyExperienceSwr = (
+    state: string | undefined,
+    locale: "vi" | "en" = "vi",
+): SWRResponse<MyExperienceView> => {
     const viewer = viewerKey(QUERY_MY_EXPERIENCE_SWR_KEY, useViewerId())
     return useSWR<MyExperienceView>(
-        viewer === null ? null : [...viewer, state ?? "all"],
+        viewer === null ? null : [...viewer, state ?? "all", locale],
         async () =>
             (
                 await answeredData(
-                    failing(() => queryMyExperience({ request: { state: state ?? null } })),
+                    failing(() => queryMyExperience({ request: { state: state ?? null, locale } })),
                     "myExperience",
                 )
             ).myExperience,
