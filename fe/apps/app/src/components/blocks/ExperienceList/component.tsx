@@ -98,6 +98,7 @@ type ExperienceCardProps = {
     readonly card: ExperienceCardView
     readonly labels: ExperienceListLabels
     readonly on: ExperienceListActions
+    readonly isLoading: boolean
 }
 
 /** Props for {@link ExperienceListBase}. */
@@ -220,7 +221,7 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
 
 /** One item as a thin-bordered card. */
 const ExperienceCard = (props: ExperienceCardProps) => (
-    <SurfaceCard label={props.card.title} headingLevel={3} height="fill">
+    <SurfaceCard label={props.card.title} headingLevel={3} height="fill" isLoading={props.isLoading}>
         <ExperienceCardBody {...props} />
     </SurfaceCard>
 )
@@ -292,7 +293,13 @@ const Items = (props: ReadyProps) => (
         ) : (
             <Stack gap="row">
                 {props.view.cards.map((card) => (
-                    <ExperienceCard key={card.itemId} card={card} labels={props.labels} on={props.on} />
+                    <ExperienceCard
+                        key={card.itemId}
+                        card={card}
+                        labels={props.labels}
+                        on={props.on}
+                        isLoading={props.isLoading}
+                    />
                 ))}
             </Stack>
         )}
