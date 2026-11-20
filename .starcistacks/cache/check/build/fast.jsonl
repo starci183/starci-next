@@ -1,3 +1,1 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"f831155903e74b7a109126b71ca16f41edd80f8048a164cfefdf70fc581eae0d","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"634d337bd280c5787d6f1a2f192444bc341c1fc5136ba439de1d40ee0efbdd0b","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"6faa17d4ed6dcafa3f0fd4dac1ff1b4ba885671b285914d007f4861d50a687d5","path":"fast/typecheck","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"5c016b420f9c71d3947a47c4ea51e2ae3b387cc697c68c28b1e1edde0c52e20f","path":"fast/typecheck","step":"ci-step"}
