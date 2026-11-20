@@ -1,6 +1,5 @@
 import {
     Button,
-    ChoiceChips,
     EmptyNotice,
     Grid,
     Meter,
@@ -8,6 +7,7 @@ import {
     SearchField,
     Section,
     Stack,
+    Tabs,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -48,11 +48,8 @@ const HeaderAction = (props: {
 
 /** The first-visit lead: the way in, before the list. */
 const FirstVisit = (props: { readonly title: string; readonly text: string }) => (
-    <Section ariaLabel={props.title}>
-        <Stack gap="row">
-            <Text isStrong>{props.title}</Text>
-            <Text tone="muted">{props.text}</Text>
-        </Stack>
+    <Section title={props.title} headingLevel={2}>
+        <Text tone="muted">{props.text}</Text>
     </Section>
 )
 
@@ -80,14 +77,12 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                         clearLabel={labels.clearFilters}
                         isLoading={props.isLoading}
                     />
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.filterLabel}
-                        isLabelHidden
-                        options={filterOptions}
-                        value={filter}
-                        onValueChange={on.setFilter}
-                        empty={labels.noMatchTitle}
-                        isLoading={props.isLoading}
+                        items={filterOptions.map((each) => ({ id: each.value, label: each.label, count: each.count }))}
+                        selectedKey={filter}
+                        onSelect={on.setFilter}
                     />
                 </>
             }
@@ -98,6 +93,7 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                     description={labels.noMatchText}
                     actionLabel={labels.clearFilters}
                     onAction={on.clearFilters}
+                    mark="none"
                     frame="frameless"
                 />
             }
@@ -115,29 +111,32 @@ const Rail = (props: PieceProps) => {
                     <Text size="figure" isStrong tabular>
                         {`${readiness.accepted}`}
                     </Text>
-                    <Text tone="muted">{labels.readinessUnit}</Text>
-                    <Text size="sm" tone="muted">
-                        {labels.readinessText}
-                    </Text>
+                    <Text>{labels.readinessUnit}</Text>
+                    <Text tone="muted">{labels.readinessText}</Text>
                 </Stack>
             </Section>
             {resume === null ? null : (
-                <Section title={labels.resumeTitle} headingLevel={2} isLoading={props.isLoading}>
-                    <Stack gap="row">
-                        <Text isStrong>{resume.title}</Text>
-                        <Text size="sm" tone="muted">
-                            {resume.description}
-                        </Text>
-                        <Button intent="neutral" size="sm" href={resume.href} endArrow>
-                            {labels.resumeAction}
-                        </Button>
-                    </Stack>
-                </Section>
+                <Section
+                    kind="list"
+                    title={labels.resumeTitle}
+                    headingLevel={2}
+                    isLoading={props.isLoading}
+                    items={[
+                        {
+                            id: "resume",
+                            title: resume.title,
+                            description: resume.description,
+                            action: { label: labels.resumeAction, href: resume.href, endArrow: true },
+                            actionPlacement: "below",
+                        },
+                    ]}
+                    empty={resume.title}
+                />
             )}
             <Section title={labels.gradingTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="row">
                     {labels.grading.map((line) => (
-                        <Text key={line} size="sm" tone="muted">
+                        <Text key={line} tone="muted">
                             {line}
                         </Text>
                     ))}

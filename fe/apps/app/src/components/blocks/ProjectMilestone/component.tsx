@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Badge, Cluster, DataTable, Grid, Link, Page, Section, Stack, Text } from "@starci/grammar/common"
+import { Badge, Cluster, DataTable, EmptyNotice, Grid, Link, Page, Section, Stack, Text } from "@starci/grammar/common"
 import { MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
@@ -139,7 +139,7 @@ const ConceptsTable = (props: BodyProps) => {
                     href: props.props.conceptHrefs[concept.id] ?? "",
                 }))}
                 renderCell={(row, columnId) => cellOf(row, columnId, props)}
-                emptyContent={<Text tone="muted">{labels.runsEmpty}</Text>}
+                emptyContent={<EmptyNotice message={labels.runsEmpty} mark="none" frame="frameless" />}
             />
         </Section>
     )
@@ -178,12 +178,12 @@ const RunsTable = (props: BodyProps) => {
                 rows={props.view.runs.map((run) => runRowOf(run))}
                 renderCell={(row, columnId) => row.cells[columnId]}
                 emptyContent={
-                    <Stack gap="identity">
-                        <Text isStrong>{labels.runsEmpty}</Text>
-                        <Text size="sm" tone="muted">
-                            {labels.runsEmptyText}
-                        </Text>
-                    </Stack>
+                    <EmptyNotice
+                        message={labels.runsEmpty}
+                        description={labels.runsEmptyText}
+                        mark="none"
+                        frame="frameless"
+                    />
                 }
             />
         </Section>
@@ -213,11 +213,9 @@ const HowToProve = (props: HowToProveProps) => (
         trailing={
             <Section title={props.labels.ciTitle} headingLevel={2}>
                 <Stack gap="inline">
-                    <Text size="sm" tone="muted">
-                        {props.labels.ciText}
-                    </Text>
-                    <Link href={props.labels.ciHref} variant="plain">
-                        {`${props.labels.ciLink} →`}
+                    <Text tone="muted">{props.labels.ciText}</Text>
+                    <Link href={props.labels.ciHref} variant="head">
+                        {props.labels.ciLink}
                     </Link>
                 </Stack>
             </Section>

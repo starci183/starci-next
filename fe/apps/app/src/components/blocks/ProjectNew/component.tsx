@@ -165,9 +165,7 @@ const InitPanel = (props: InitPanelProps) => (
                     line.replaceAll("{name}", props.name.trim() === "" ? "my-project" : props.name.trim()),
                 )}
             />
-            <Text size="sm" tone="muted">
-                {props.labels.initNote}
-            </Text>
+            <Text tone="muted">{props.labels.initNote}</Text>
         </Stack>
     </Section>
 )

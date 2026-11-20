@@ -474,10 +474,10 @@
           "done": "{accepted}/{total} bài Accepted · đã xong"
         },
         "filters": {
-          "all": "Tất cả {count}",
-          "doing": "Đang làm {count}",
-          "new": "Chưa bắt đầu {count}",
-          "done": "Đã xong {count}"
+          "all": "Tất cả",
+          "doing": "Đang làm",
+          "new": "Chưa bắt đầu",
+          "done": "Đã xong"
         }
       },
       "pattern": {
@@ -1300,7 +1300,6 @@
         "emptyText": "Mang dự án đầu tiên của bạn vào: đề tài nào, ngôn ngữ nào cũng được, rồi thêm thư mục starci/ bằng một lệnh.",
         "listLabel": "Dự án của bạn",
         "progressLabel": "Concept đã chứng minh",
-        "errorTitle": "Không tải được dự án",
         "ribbonLabel": "Tổng quan dự án",
         "figures": {
           "proved": "Concept đã chứng minh",
@@ -1381,7 +1380,7 @@
         "sync": "Cập nhật kết quả từ máy",
         "syncing": "Đang cập nhật...",
         "ciNone": "Chưa có lần chạy CI nào. Thêm GitHub Action của StarCi và đẩy code lên.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Lần chạy gần nhất · commit {commit}",
         "ciPassed": "Đạt",
         "ciFailed": "Chưa đạt",
         "probeText": "Ứng dụng HTTP chạy được bằng Docker. StarCi gọi địa chỉ công khai của bạn với health và các probe chung cho từng concept.",

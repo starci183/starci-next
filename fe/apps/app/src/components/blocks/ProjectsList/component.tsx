@@ -28,16 +28,14 @@ export type ProjectsFiguresView = {
     readonly cvLines: number
 }
 
-/** The projects as they are drawn: the ribbon figures and the table rows, already in words, and whether the read failed. */
+/** The projects as they are drawn: the ribbon figures and the table rows, already in words. */
 export type ProjectsListView = {
-    readonly outcome: "ready" | "failed"
     readonly figures: ProjectsFiguresView
     readonly rows: ReadonlyArray<ProjectRowView>
 }
 
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECTS_LIST_PLACEHOLDER: ProjectsListView = {
-    outcome: "ready",
     figures: { proved: 0, practising: 0, milestonesDone: 0, milestonesTotal: 0, cvLines: 0 },
     rows: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
@@ -79,7 +77,6 @@ export type ProjectsListLabels = {
     readonly progressLabel: string
     readonly emptyTitle: string
     readonly emptyText: string
-    readonly errorTitle: string
     readonly note: string
 }
 
@@ -99,7 +96,6 @@ type BodyProps = {
     readonly props: ProjectsListBaseProps["props"]
     readonly view: ProjectsListView
     readonly isLoading: boolean
-    readonly onRetry: () => void
 }
 
 /** The ribbon over the list: the four figures of the learner, in one band between two hairlines. */
@@ -141,14 +137,14 @@ const cellOf = (row: ProjectRowView, columnId: string, progressLabel: string): R
                 </Stack>
             )
         case "kind":
-            return <Badge tone={row.isAgent ? "accent" : "neutral"}>{row.kindLabel}</Badge>
+            return <Badge tone="neutral">{row.kindLabel}</Badge>
         case "milestone":
             return <Text>{row.milestone}</Text>
         case "progress":
             return (
                 <Cluster gap="inline" align="center">
                     <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
-                    <Text size="sm" tone="muted" tabular>
+                    <Text tone="muted" tabular>
                         {row.progress}
                     </Text>
                 </Cluster>
@@ -161,24 +157,13 @@ const cellOf = (row: ProjectRowView, columnId: string, progressLabel: string): R
 /** The flat table of the learner's projects under its head; the read's failure and the empty list are drawn in its place. */
 const ListTable = (props: BodyProps) => {
     const { labels } = props.props
-    const isFailed = props.view.outcome === "failed"
     return (
         <Section
             title={labels.listLabel}
             headingLevel={2}
-            {...(isFailed ? {} : { count: props.view.rows.length })}
+            count={props.view.rows.length}
             caption={labels.note}
             isLoading={props.isLoading}
-            {...(isFailed
-                ? {
-                      error: {
-                          message: labels.errorTitle,
-                          description: props.props.slotLabels.error,
-                          actionLabel: props.props.slotLabels.retry,
-                          onAction: props.onRetry,
-                      },
-                  }
-                : {})}
         >
             <DataTable
                 label={labels.listLabel}
@@ -230,8 +215,8 @@ export const ProjectsListBase = (props: ProjectsListBaseProps) => (
             onRetry={props.on.retry}
             render={(view, isLoading) => (
                 <Stack gap="region">
-                    <Ribbon props={props.props} view={view} isLoading={isLoading} onRetry={props.on.retry} />
-                    <ListTable props={props.props} view={view} isLoading={isLoading} onRetry={props.on.retry} />
+                    <Ribbon props={props.props} view={view} isLoading={isLoading} />
+                    <ListTable props={props.props} view={view} isLoading={isLoading} />
                 </Stack>
             )}
         />

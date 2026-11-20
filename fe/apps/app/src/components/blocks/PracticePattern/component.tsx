@@ -74,9 +74,7 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
             <Section title={labels.progressTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="row">
                     <Progress label={labels.progressLabel} value={progress.percent} valueText={progress.text} />
-                    <Text size="sm" tone="muted">
-                        {progress.text}
-                    </Text>
+                    <Text tone="muted">{progress.text}</Text>
                 </Stack>
             </Section>
             {nextPattern === null ? null : (

@@ -4,6 +4,7 @@ import {
     Badge,
     Button,
     Cluster,
+    Grid,
     Page,
     Section,
     Stack,
@@ -17,7 +18,6 @@ import {
     RichMarkdown,
     SlotView,
 } from "@starci-next/ui"
-import { HINTS_CLASS_NAME, PROBLEM_GRID_CLASS_NAME, STATEMENT_CLASS_NAME, WORK_CLASS_NAME } from "./classNames"
 import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
 /** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
@@ -179,12 +179,13 @@ const Hints = (props: PieceProps) => {
     )
 }
 
-/** The statement beside the work: two columns at the desktop width, stacked in the order statement, code, result, hints on a phone. */
+/** The statement beside the work: two columns at the desktop width; the work column holds the editor, the result and the hints, so a phone reads statement, code, result, hints. */
 const ProblemTab = (props: PieceProps) => {
     const { labels } = props.screen.props
     return (
-        <div className={PROBLEM_GRID_CLASS_NAME}>
-            <div className={STATEMENT_CLASS_NAME}>
+        <Grid
+            kind="pair"
+            leading={
                 <PracticeProblemPanel
                     markdown={props.view.markdown}
                     examples={props.view.examples}
@@ -198,14 +199,14 @@ const ProblemTab = (props: PieceProps) => {
                         diagramError: labels.diagramError,
                     }}
                 />
-            </div>
-            <div className={WORK_CLASS_NAME}>
-                <Work {...props} />
-            </div>
-            <div className={HINTS_CLASS_NAME}>
-                <Hints {...props} />
-            </div>
-        </div>
+            }
+            trailing={
+                <Stack gap="region">
+                    <Work {...props} />
+                    <Hints {...props} />
+                </Stack>
+            }
+        />
     )
 }
 
@@ -230,7 +231,6 @@ const SubmissionsTab = (props: PieceProps) => {
                       action: (
                           <Button
                               intent="neutral"
-                              size="sm"
                               isPending={state.isLoadingMoreSubmissions}
                               onPress={props.screen.on.moreSubmissions}
                           >

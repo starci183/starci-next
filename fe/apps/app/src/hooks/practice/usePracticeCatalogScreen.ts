@@ -80,7 +80,7 @@ export type PracticeCatalogScreen = {
         readonly isFirstVisit: boolean
         readonly query: string
         readonly filter: PracticeCatalogFilter
-        readonly filterOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly filterOptions: ReadonlyArray<{ readonly value: string; readonly label: string; readonly count: number }>
     }
     readonly on: {
         readonly retry: () => void
@@ -225,7 +225,8 @@ export const usePracticeCatalogScreen = (): PracticeCatalogScreen => {
             filter,
             filterOptions: FILTERS.map((each) => ({
                 value: each,
-                label: t(`filters.${each}`, { count: countOf(each) }),
+                label: t(`filters.${each}`),
+                count: countOf(each),
             })),
         },
         on: {

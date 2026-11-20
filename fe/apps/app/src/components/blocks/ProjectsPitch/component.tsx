@@ -1,4 +1,4 @@
-import { Badge, Button, DataTable, Page, Section, Stack, Text, type BadgeTone } from "@starci/grammar/common"
+import { Badge, Button, DataTable, EmptyNotice, Page, Section, Stack, Text, type BadgeTone } from "@starci/grammar/common"
 
 /** One row of the sample concept table the pitch shows. */
 export type PitchSampleRow = {
@@ -61,7 +61,7 @@ const SampleTable = (props: ProjectsPitchBaseProps["props"]) => (
             if (columnId === "evidence") return <Text>{row.slots}</Text>
             return <Badge tone={row.stateTone}>{row.state}</Badge>
         }}
-        emptyContent={<Text tone="muted">{props.labels.noTable}</Text>}
+        emptyContent={<EmptyNotice message={props.labels.noTable} mark="none" frame="frameless" />}
     />
 )
 
@@ -71,9 +71,7 @@ const SampleCv = (props: ProjectsPitchBaseProps["props"]) => (
         <Text isStrong>{props.cv.role}</Text>
         <Badge tone="success">{props.cv.badge}</Badge>
         <Text>{props.cv.text}</Text>
-        <Text size="sm" tone="muted">
-            {props.cv.evidence}
-        </Text>
+        <Text tone="muted">{props.cv.evidence}</Text>
     </Stack>
 )
 

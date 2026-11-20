@@ -474,10 +474,10 @@
           "done": "{accepted}/{total} Accepted · done"
         },
         "filters": {
-          "all": "All {count}",
-          "doing": "In progress {count}",
-          "new": "Not started {count}",
-          "done": "Done {count}"
+          "all": "All",
+          "doing": "In progress",
+          "new": "Not started",
+          "done": "Done"
         }
       },
       "pattern": {
@@ -1300,7 +1300,6 @@
         "emptyText": "Bring in your first project: any topic, any language, then add the starci/ folder with one command.",
         "listLabel": "Your projects",
         "progressLabel": "Concepts proved",
-        "errorTitle": "Projects could not be loaded",
         "ribbonLabel": "Projects overview",
         "figures": {
           "proved": "Concepts proved",
@@ -1381,7 +1380,7 @@
         "sync": "Refresh results from your machine",
         "syncing": "Refreshing...",
         "ciNone": "No CI run yet. Add the StarCi GitHub Action and push.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Latest run · commit {commit}",
         "ciPassed": "Passed",
         "ciFailed": "Failed",
         "probeText": "HTTP apps that run with Docker. StarCi calls your public address with health and the generic probes of each concept.",

@@ -34,7 +34,7 @@ export const PracticeEditor = (props: PracticeEditorProps) => (
         headingLevel={2}
         isLoading={props.isLoading === true}
         action={
-            <Button intent="dismiss" size="sm" onPress={props.onReset}>
+            <Button intent="dismiss" onPress={props.onReset}>
                 {props.labels.reset}
             </Button>
         }
@@ -51,9 +51,7 @@ export const PracticeEditor = (props: PracticeEditorProps) => (
                         if (next !== null) props.onLanguage(next)
                     }}
                 />
-                <Text size="sm" tone="muted">
-                    {props.labels.judgeNote}
-                </Text>
+                <Text tone="muted">{props.labels.judgeNote}</Text>
             </Cluster>
             <Textarea
                 label={props.labels.code}

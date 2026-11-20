@@ -4,6 +4,7 @@ import {
     Button,
     Cluster,
     DescriptionList,
+    EmptyNotice,
     Grid,
     Link,
     Page,
@@ -88,12 +89,7 @@ const Slots = (props: BodyProps) => {
                 </Cluster>
                 {concept.rejection === undefined ? null : <Alert tone="negative" title={concept.rejection.text} />}
                 {concept.aiQuestion === "" ? null : (
-                    <Text>
-                        <Text as="span" isStrong>
-                            {labels.questionLabel}
-                        </Text>{" "}
-                        {concept.aiQuestion}
-                    </Text>
+                    <Text>{`${labels.questionLabel}: ${concept.aiQuestion}`}</Text>
                 )}
                 {concept.lessonHref === "" ? null : (
                     <Link variant="plain" href={concept.lessonHref}>
@@ -124,7 +120,11 @@ const Probe = (props: BodyProps) => {
         >
             <Stack gap="row">
                 {lines.length === 0 ? (
-                    <Text tone="muted">{view.deployedUrl === "" ? labels.probeNoDeploy : labels.probeEmpty}</Text>
+                    <EmptyNotice
+                        message={view.deployedUrl === "" ? labels.probeNoDeploy : labels.probeEmpty}
+                        mark="none"
+                        frame="frameless"
+                    />
                 ) : (
                     <Terminal label={labels.probeTitle} lines={lines} />
                 )}
@@ -150,7 +150,7 @@ const Ci = (props: BodyProps) => {
     return (
         <Section title={labels.ciTitle} headingLevel={2} isLoading={props.isLoading}>
             {ci === undefined ? (
-                <Text tone="muted">{labels.ciEmpty}</Text>
+                <EmptyNotice message={labels.ciEmpty} mark="none" frame="frameless" />
             ) : (
                 <DescriptionList
                     density="compact"
@@ -179,16 +179,14 @@ const CvPreview = (props: BodyProps) => {
         <Section title={labels.cvTitle} headingLevel={2} isLoading={props.isLoading} caption={labels.cvNote}>
             <Stack gap="row">
                 {cv === undefined ? (
-                    <Text tone="muted">{labels.cvEmpty}</Text>
+                    <EmptyNotice message={labels.cvEmpty} mark="none" frame="frameless" />
                 ) : (
                     <Stack gap="identity">
                         <Badge tone={cv.isProved ? "success" : "muted"}>
                             {cv.isProved ? labels.cvVerified : labels.cvPreview}
                         </Badge>
                         <Text>{cv.text}</Text>
-                        <Text size="sm" tone="muted">
-                            {cv.evidence}
-                        </Text>
+                        <Text tone="muted">{cv.evidence}</Text>
                     </Stack>
                 )}
                 <Cluster gap="inline" wrap>

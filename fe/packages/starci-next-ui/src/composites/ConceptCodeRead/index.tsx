@@ -4,6 +4,7 @@ import {
     Button,
     Cluster,
     DataTable,
+    EmptyNotice,
     Input,
     Section,
     Stack,
@@ -105,31 +106,31 @@ const Forms = (props: ConceptCodeReadProps) => {
     const { labels, isBusy } = props
     return (
         <Stack gap="row">
-            <Stack gap="row">
-                <Text isStrong>{labels.pointerTitle}</Text>
-                <Field field="location" label={labels.location} props={props} />
-                <Field field="endpoint" label={labels.endpoint} props={props} />
-                <Field field="sampleBody" label={labels.sampleBody} props={props} />
-                <Cluster gap="inline" wrap>
-                    <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
-                        {isBusy ? labels.savingPointer : labels.savePointer}
-                    </Button>
-                </Cluster>
-            </Stack>
-            {props.concept.needsCodeRead ? (
+            <Section title={labels.pointerTitle} headingLevel={3}>
                 <Stack gap="row">
-                    <Text isStrong>{labels.explainTitle}</Text>
-                    <Text size="sm" tone="muted">
-                        {labels.explainText}
-                    </Text>
-                    <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
-                    <Field field="explanation" label={labels.explanation} rows={3} props={props} />
+                    <Field field="location" label={labels.location} props={props} />
+                    <Field field="endpoint" label={labels.endpoint} props={props} />
+                    <Field field="sampleBody" label={labels.sampleBody} props={props} />
                     <Cluster gap="inline" wrap>
-                        <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
-                            {isBusy ? labels.explaining : labels.explain}
+                        <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
+                            {isBusy ? labels.savingPointer : labels.savePointer}
                         </Button>
                     </Cluster>
                 </Stack>
+            </Section>
+            {props.concept.needsCodeRead ? (
+                <Section title={labels.explainTitle} headingLevel={3}>
+                    <Stack gap="row">
+                        <Text tone="muted">{labels.explainText}</Text>
+                        <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
+                        <Field field="explanation" label={labels.explanation} rows={3} props={props} />
+                        <Cluster gap="inline" wrap>
+                            <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
+                                {isBusy ? labels.explaining : labels.explain}
+                            </Button>
+                        </Cluster>
+                    </Stack>
+                </Section>
             ) : null}
         </Stack>
     )
@@ -142,7 +143,7 @@ export const ConceptCodeRead = (props: ConceptCodeReadProps) => {
         <Stack gap="region">
             <Section title={labels.codeTitle} headingLevel={2} isLoading={props.isLoading}>
                 <Stack gap="row">
-                    {props.concept.comingSoon ? <Text tone="muted">{labels.comingSoon}</Text> : <Forms {...props} />}
+                    {props.concept.comingSoon ? <EmptyNotice message={labels.comingSoon} mark="none" frame="frameless" /> : <Forms {...props} />}
                     {props.issueWords === "" ? null : <Alert tone="negative" title={props.issueWords} />}
                 </Stack>
             </Section>
@@ -163,7 +164,7 @@ export const ConceptCodeRead = (props: ConceptCodeReadProps) => {
                             <Badge tone={VERDICT_TONE[row.verdict]}>{props.verdictLabels[row.verdict]}</Badge>
                         )
                     }
-                    emptyContent={<Text tone="muted">{labels.rubricEmpty}</Text>}
+                    emptyContent={<EmptyNotice message={labels.rubricEmpty} mark="none" frame="frameless" />}
                 />
             </Section>
         </Stack>
