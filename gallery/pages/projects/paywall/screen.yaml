@@ -32,3 +32,4 @@ considered:
   - option: "Vẽ lại theo mã đang chạy với luật Grammar 0.50"
     chosen: true
     why: 'Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11'
+audit: null
