@@ -2176,7 +2176,8 @@
         "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này.",
         "errorTitle": "Không tải được bản build này",
         "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
-        "backToBuilds": "Về danh sách Build"
+        "backToBuilds": "Về danh sách Build",
+        "moreSteps": "và {n} bước nữa"
       },
       "use": {
         "title": "Xài",
