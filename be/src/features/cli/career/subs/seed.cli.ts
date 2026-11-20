@@ -6,7 +6,7 @@ export const DEV_SEED_SIGNER = "00000000-0000-4000-8000-00000000d0d0"
 
 /** The options of `cli career seed`. */
 export interface SeedExperienceOptions {
-    /** The learner (Keycloak subject) the samples belong to. */
+    /** The learner (the account id, auth.users.id) the samples belong to. */
     readonly learner: string
     /** The signer of the verified sample. */
     readonly signer: string
@@ -25,8 +25,12 @@ export class SeedExperienceCli extends CommandRunner {
         super()
     }
 
-    /** `--learner <subject>`: the Keycloak subject of the learner. */
-    @Option({ flags: "--learner <subject>", description: "The Keycloak subject of the learner", required: true })
+    /** `--learner <subject>`: the account id (auth.users.id) of the learner. */
+    @Option({
+        flags: "--learner <subject>",
+        description: "The account id (auth.users.id) of the learner",
+        required: true,
+    })
     parseLearner(value: string): string {
         return value
     }

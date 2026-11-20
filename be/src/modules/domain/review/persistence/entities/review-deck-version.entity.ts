@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_deck_versions")
 /** One immutable version of a deck. */
 export class ReviewDeckVersionEntity {
     /** The deck. */
-    @PrimaryColumn({ name: "deck_id", type: "text" })
+    @Column({ name: "deck_id", type: "text" })
     deckId!: string
 
     /** The version: the source ref. */
-    @PrimaryColumn({ name: "version", type: "text" })
+    @Column({ name: "version", type: "text" })
     version!: string
 
     /** The SHA-256 over the path and hash of every source file. */
@@ -22,4 +22,8 @@ export class ReviewDeckVersionEntity {
     /** When it was stored. */
     @Column({ name: "imported_at", type: "timestamptz" })
     importedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

@@ -82,11 +82,10 @@ export const useProfileEdit = (): ProfileEditState => {
         contentTypes: ["image/png", "image/jpeg", "image/webp"],
         nameMax: 60,
     }
-    const accountName = session.session?.displayName ?? session.session?.email ?? ""
     const identitySlot = mapSlot(slotOfSwr(identity.read), (data) => {
         const name = identity.draft ?? data.displayName ?? ""
         return {
-            shownName: data.displayName ?? accountName,
+            shownName: data.displayName ?? "",
             nameValue: name,
             email: session.session?.email ?? "",
             avatarUrl: data.avatarUrl,

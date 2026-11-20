@@ -1,7 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
-import { useSession } from "@/hooks/auth"
+import { useSession, useViewerRoles } from "@/hooks/auth"
 import {
     SIGNER_ROLES,
     signerRoleOf,
@@ -22,7 +22,7 @@ type ReviewItemProps = { readonly itemId: string }
 export const ReviewItem = (props: ReviewItemProps) => {
     const t = useTranslations("app.experience.queue")
     const session = useSession()
-    const role = signerRoleOf(session.session?.roles)
+    const role = signerRoleOf(useViewerRoles())
     const views = useReviewQueueViews(role === SIGNER_ROLES.teacher)
     const read = useQueryReviewItemSwr(props.itemId, role !== undefined)
     const decision = useReviewDecision(props.itemId, () => read.mutate())

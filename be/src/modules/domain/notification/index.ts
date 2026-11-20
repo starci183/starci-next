@@ -25,4 +25,4 @@ export { InjectNotificationProducer, NOTIFICATION_PRODUCER } from "./notificatio
 export type { NotificationProducerPort } from "./notification.port"
 export { NotificationInboxService } from "./notification-inbox.service"
 export { NotificationService } from "./notification.service"
-export { notificationEntities, notificationMigrations } from "./persistence/connection"
+export { notificationEntities } from "./persistence/entities"

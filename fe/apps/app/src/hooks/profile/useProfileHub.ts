@@ -82,7 +82,6 @@ export const useProfileHub = (): ProfileHubState => {
     const devices = useQueryRelayDevicesSwr(isSignedIn)
     const premium = useQueryMyPremiumSwr(isSignedIn)
     const limits = profile.data?.limits ?? { maxBytes: 2 * 1024 * 1024, nameMax: 60 }
-    const accountName = session.session?.displayName ?? session.session?.email ?? ""
     const verified = (experience.data?.items ?? []).filter((item) => item.state === "verified").length
     const isNew = profile.data !== undefined && profile.data.displayName === null && profile.data.avatarUrl === null
     const metaLine =
@@ -103,7 +102,7 @@ export const useProfileHub = (): ProfileHubState => {
         isCvLinkBusy: visibility.isMutating,
         views: {
             identity: slotOf(profile, (data) => ({
-                shownName: data.displayName ?? (accountName === "" ? t("identity.nameLabel") : accountName),
+                shownName: data.displayName ?? t("identity.nameLabel"),
                 nameValue: data.displayName ?? "",
                 email: session.session?.email ?? "",
                 avatarUrl: data.avatarUrl,

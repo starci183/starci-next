@@ -3,32 +3,27 @@ import { ClockModule } from "@modules/platform/clock"
 import { CONFIG_ERROR_KINDS } from "@modules/platform/config"
 import { CqrsModule } from "@modules/platform/cqrs"
 import { DATABASE_ERROR_KINDS, DatabaseModule } from "@modules/platform/database"
+import { PRIMARY_ENTITIES } from "@modules/platform/database/entities"
 import { ERRORS_MESSAGES, ErrorsModule } from "@modules/platform/errors"
-import {
-    HTTP_SECURITY_ERROR_KINDS,
-    HTTP_SECURITY_MESSAGES,
-    HttpSecurityModule,
-    httpSecurityEntities,
-    httpSecurityMigrations,
-} from "@modules/platform/http-security"
+import { HTTP_SECURITY_ERROR_KINDS, HTTP_SECURITY_MESSAGES, HttpSecurityModule } from "@modules/platform/http-security"
 import { I18nModule } from "@modules/platform/i18n"
 import { HTTP_ERROR_KINDS, HTTP_MESSAGES, HttpModule } from "@modules/platform/http"
 import { IdsModule } from "@modules/platform/ids"
 import { IDEMPOTENCY_ERROR_KINDS, IDEMPOTENCY_MESSAGES } from "@modules/platform/idempotency"
-import { INBOX_ERROR_KINDS, INBOX_MESSAGES, inboxEntities, inboxMigrations } from "@modules/platform/inbox"
+import { INBOX_ERROR_KINDS, INBOX_MESSAGES } from "@modules/platform/inbox"
 import { LoggingModule } from "@modules/platform/logging"
 import { REALTIME_ERROR_KINDS, RealtimeModule } from "@modules/platform/realtime"
 import { RetryModule } from "@modules/platform/retry"
 import type { CoreOptions } from "../core.options"
-import { careerAreaEntities, careerAreaErrorKinds, careerAreaMessages, careerAreaMigrations } from "./career"
-import { commerceAreaEntities, commerceAreaErrorKinds, commerceAreaMessages, commerceAreaMigrations } from "./commerce"
-import { identityAreaEntities, identityAreaErrorKinds, identityAreaMessages, identityAreaMigrations } from "./identity"
+import { careerAreaErrorKinds, careerAreaMessages } from "./career"
+import { commerceAreaErrorKinds, commerceAreaMessages } from "./commerce"
+import { identityAreaErrorKinds, identityAreaMessages } from "./identity"
 import { integrationsErrorKinds, integrationsMessages } from "./integrations"
-import { learningAreaEntities, learningAreaErrorKinds, learningAreaMessages, learningAreaMigrations } from "./learning"
+import { learningAreaErrorKinds, learningAreaMessages } from "./learning"
 
 /**
  * The platform area of the core app: every platform capability, registered once and app-wide, over the catalogs the area groups
- * export (their error kinds, message bundles, entities and migrations), and the realtime hub the device socket reads. A
+ * export (their error kinds and message bundles) and the one entity list PRIMARY_ENTITIES, and the realtime hub the device socket reads. A
  * composition group holds one area's module list and nothing else (no logic, no environment read); `app.module.ts` spreads it
  * into its imports.
  */
@@ -75,26 +70,7 @@ export const platformModules = (options: CoreOptions): Array<DynamicModule> => [
     HttpSecurityModule.register({ isGlobal: true, ...options.httpSecurity }),
     DatabaseModule.register({
         isGlobal: true,
-        connections: [
-            {
-                ...options.database,
-                entities: [
-                    ...httpSecurityEntities,
-                    ...inboxEntities,
-                    ...identityAreaEntities,
-                    ...commerceAreaEntities,
-                    ...learningAreaEntities,
-                    ...careerAreaEntities,
-                ],
-                migrations: [
-                    ...httpSecurityMigrations,
-                    ...inboxMigrations,
-                    ...identityAreaMigrations,
-                    ...commerceAreaMigrations,
-                    ...learningAreaMigrations,
-                    ...careerAreaMigrations,
-                ],
-            },
-        ],
+        connections: [options.database],
+        entities: PRIMARY_ENTITIES,
     }),
 ]

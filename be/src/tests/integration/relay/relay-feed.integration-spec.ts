@@ -54,7 +54,7 @@ const runTask = async ({ world, doors, relay, primary, paired, presenceOf, strea
         () => presenceOf(device.deviceId),
         (row) => row?.online === false,
     )
-    const listed = await doors().post<DevicesBody>("/graphql", { query: DEVICES }, { cookie: device.cookie })
+    const listed = await doors().post<DevicesBody>("/graphql", { query: DEVICES }, { authorization: device.bearer })
     expect(listed.body.data.relayDevices[0]).toMatchObject({ online: false })
     expect(listed.body.data.relayDevices[0]?.lastSeenAt).not.toBeNull()
 
@@ -71,7 +71,7 @@ const revoked = async ({ doors, relay, paired }: RelayContext): Promise<void> =>
     await doors().post(
         "/graphql",
         { query: REVOKE, variables: { input: { id: device.deviceId } } },
-        { cookie: device.cookie },
+        { authorization: device.bearer },
     )
 
     const upload = await relay()

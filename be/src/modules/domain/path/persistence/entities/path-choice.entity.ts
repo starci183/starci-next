@@ -1,11 +1,11 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import type { PathHistoryRow } from "../path.rows"
 
 @Entity("path_choices")
 /** The outcome path one learner follows now, and the paths they followed before. */
 export class PathChoiceEntity {
     /** The learner. */
-    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    @Column({ name: "learner_id", type: "uuid" })
     learnerId!: string
 
     /** The path followed now. */
@@ -19,4 +19,8 @@ export class PathChoiceEntity {
     /** Every choice the learner made, oldest first. */
     @Column({ name: "history", type: "jsonb" })
     history!: Array<PathHistoryRow>
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

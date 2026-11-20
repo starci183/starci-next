@@ -9,7 +9,7 @@
  */
 export { MCP_ERROR_KINDS, McpError, McpErrorCode } from "./errors/mcp.error"
 export { MCP_MESSAGES } from "./messages/mcp.messages"
-export { mcpEntities, mcpMigrations } from "./persistence/connection"
+export { mcpEntities } from "./persistence/entities"
 export { McpHarnessService } from "./mcp-harness.service"
 export type { McpHarnessReindexReport } from "./mcp-harness.service"
 export { McpIndexModule } from "./mcp-index.module"

@@ -114,7 +114,7 @@ SELECT * FROM changed`
 
 /** Appends one row to the audit trail ($1 item, $2 action, $3 actor, $4 role, $5 from, $6 to, $7 note, $8 snapshot, $9 at). */
 export const INSERT_DECISION: ReturnType<typeof sql> = sql`INSERT INTO career_review_decisions (
-    item_id, action, actor_id, actor_role, from_state, to_state, note, snapshot, at
+    career_experience_item_id, action, actor_id, actor_role, from_state, to_state, note, snapshot, at
 ) VALUES ($1::uuid, $2::text, $3::uuid, $4::text, $5::text, $6::text, $7::text, $8::jsonb, $9::timestamptz)
 RETURNING decision_id`
 
@@ -145,7 +145,7 @@ LIMIT $1::int`
 /** The audit trail of an item, oldest first ($1 item, $2 limit). */
 export const SELECT_DECISIONS: ReturnType<typeof sql> = sql`SELECT action, actor_role, from_state, to_state, note, at
 FROM career_review_decisions
-WHERE item_id = $1::uuid
+WHERE career_experience_item_id = $1::uuid
 ORDER BY at, decision_id
 LIMIT $2::int`
 

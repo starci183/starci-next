@@ -42,8 +42,9 @@ export const isForbidden = (error: unknown): boolean =>
     isPremiumRequired(error) || (error instanceof ApiFailure && error.kind === "forbidden")
 
 /** The stable code every door answers when the request carries no valid session (contract.identity.session-contract). */
-const SESSION_REQUIRED_CODE = "IDENTITY_SESSION_REQUIRED"
+const SESSION_REQUIRED_CODES: ReadonlySet<string> = new Set(["IDENTITY_UNAUTHENTICATED", "IDENTITY_SESSION_REQUIRED"])
 
 /** True when the failure says the reader has no valid session: the stable code or the kind `unauthenticated`, never the status. */
 export const isUnauthenticated = (error: unknown): boolean =>
-    error instanceof ApiFailure && (error.code === SESSION_REQUIRED_CODE || error.kind === "unauthenticated")
+    error instanceof ApiFailure &&
+    ((error.code !== undefined && SESSION_REQUIRED_CODES.has(error.code)) || error.kind === "unauthenticated")

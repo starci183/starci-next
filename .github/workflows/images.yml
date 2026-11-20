@@ -56,6 +56,14 @@ jobs:
             file: fe/apps/app/Dockerfile
             deployed: true
             args: true
+          - name: db
+            file: .starcistacks/images/db/Dockerfile
+            deployed: true
+            args: false
+          - name: storage
+            file: .starcistacks/images/storage/Dockerfile
+            deployed: true
+            args: false
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: release tag matches package version
@@ -145,5 +153,7 @@ jobs:
           core core false
           cli cli false
           app app false
+          db db false
+          storage storage false
           LIST
           echo "refs=$refs" >> "$GITHUB_OUTPUT"

@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_cards")
 /** One flashcard of a deck version: the public front and the hidden back. */
 export class ReviewCardEntity {
     /** The item id, card:deck/n. */
-    @PrimaryColumn({ name: "item_id", type: "text" })
+    @Column({ name: "item_id", type: "text" })
     itemId!: string
 
     /** The deck version. */
-    @PrimaryColumn({ name: "version", type: "text" })
+    @Column({ name: "version", type: "text" })
     version!: string
 
     /** The deck. */
@@ -34,4 +34,8 @@ export class ReviewCardEntity {
     /** The hidden back by locale: answer markdown and cloze terms. */
     @Column({ name: "back", type: "jsonb" })
     back!: unknown
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

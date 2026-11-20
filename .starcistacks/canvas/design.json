@@ -20,60 +20,80 @@
     "review"
   ],
   "pages": {
+    "auth/confirm": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/confirm-expired": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
     "auth/forgot": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
-    "auth/forgot-new-password": {
+    "auth/forgot-sent": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/forgot-sign-in-after-reset": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/reset": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/reset-error": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/reset-expired": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/sent": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/sent-not-confirmed": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
+    },
+    "auth/sent-resent": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/sign-in": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/sign-in-callback": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/sign-in-error": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/sign-in-github-confirming": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/sign-in-sending-code": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/sign-in-wrong-password": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/sign-up": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/sign-up-validation-error": {
       "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "approvedAt": "2026-11-20T21:44:10+07:00",
+      "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
     "auth/verify": {
       "status": "approved",

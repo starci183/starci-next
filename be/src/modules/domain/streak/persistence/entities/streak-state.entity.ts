@@ -1,11 +1,11 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import type { StreakCounter, StreakReminder } from "../../streak.contracts"
 
 @Entity("streak_states")
 /** The streak of one learner up to the last closed day: counters, freezes, goal, reminder and badges. */
 export class StreakStateEntity {
     /** The learner. */
-    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    @Column({ name: "learner_id", type: "uuid" })
     learnerId!: string
 
     /** The streak up to the last closed day. */
@@ -51,4 +51,8 @@ export class StreakStateEntity {
     /** When the state last changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

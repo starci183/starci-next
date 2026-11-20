@@ -37,8 +37,6 @@ namespaces:
     - key: forgotLink
       reason: read through the translator that the AuthPanel block hands to its copy helpers
   app.auth.field:
-    - key: identifier
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: email
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: password
@@ -62,32 +60,20 @@ namespaces:
     - key: terms
       reason: read through the translator that the AuthPanel block hands to its copy helpers
   app.auth.social:
-    - key: facebook
+    - key: google
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: github
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: facebookName
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: githubName
+    - key: googleName
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: or
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: redirecting
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-  app.auth.code:
+  app.auth.sent:
     - key: title
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: subtitle
+    - key: subtitleConfirm
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: subtitleNoEmail
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: label
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: lifetime
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: submit
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: submitReset
+    - key: subtitleReset
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: resend
       reason: read through the translator that the AuthPanel block hands to its copy helpers
@@ -96,38 +82,47 @@ namespaces:
   app.auth.notice:
     - key: credentials
       reason: read through the translator that the AuthPanel block hands to its copy helpers
+    - key: rateLimited
+      reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: signedOut
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: passwordReset
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: codeResent
+    - key: linkResent
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: challengeExpired
+    - key: notConfirmed
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: socialFailed
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: unavailable
       reason: read through the translator that the AuthPanel block hands to its copy helpers
   app.auth.error:
-    - key: username
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: emailRegistered
+    - key: email
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: password
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: mismatch
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: code
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: codeAttempts
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: codeShort
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
-  app.signInCallback:
+  app.auth.confirm.working:
     - key: title
-      reason: read by the callback page metadata and body through its translator
-    - key: status
-      reason: read by the callback page metadata and body through its translator
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+    - key: text
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+  app.auth.confirm.done:
+    - key: title
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+    - key: text
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+  app.auth.confirm.invalid:
+    - key: title
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+    - key: text
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+  app.auth.confirm.unavailable:
+    - key: title
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
+    - key: text
+      reason: the ConfirmEmail block reads the title and text of the verdict it reached
   app.connectAi:
     - key: pageHeading
       reason: read through the translator that the ConnectAi block maps over its label and step keys

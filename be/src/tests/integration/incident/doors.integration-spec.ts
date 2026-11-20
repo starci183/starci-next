@@ -1,4 +1,4 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { persistDemoLesson, persistDemoTopic } from "../../fixtures/builders/lesson.builder"
 import { identityDoors, type IdentityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
@@ -36,11 +36,11 @@ const INCIDENTS_QUERY = `query Incidents($input: IncidentsInput!) {
 
 const askOf =
     (doors: IdentityDoors) =>
-    <T>(variables: object, cookie?: string) =>
+    <T>(variables: object, bearer?: string) =>
         doors.post<GraphqlBody<T>>(
             "/graphql",
             { query: INCIDENTS_QUERY, variables },
-            cookie === undefined ? {} : { cookie },
+            bearer === undefined ? {} : { authorization: bearer },
         )
 
 /**
@@ -63,15 +63,15 @@ describe("incident list door (integration)", () => {
 
         expect(answer.body.data ?? null).toBeNull()
         expect(answer.body.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
+            code: "IDENTITY_UNAUTHENTICATED",
             kind: "unauthenticated",
         })
     })
 
     it("lists a live lesson as a coming-soon incident in the asked locale", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const answer = await askOf(doors())<IncidentsBody>({ input: { locale: "en" } }, cookie)
+        const answer = await askOf(doors())<IncidentsBody>({ input: { locale: "en" } }, bearer)
 
         expect(answer.body.errors).toBeUndefined()
         expect(answer.body.data?.incidents.find((row) => row.lessonId === "demo-lesson")).toMatchObject({
@@ -84,10 +84,10 @@ describe("incident list door (integration)", () => {
     })
 
     it("narrows the list to a topic", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const inTopic = await askOf(doors())<IncidentsBody>({ input: { locale: "vi", topic: "demo-topic" } }, cookie)
-        const elsewhere = await askOf(doors())<IncidentsBody>({ input: { locale: "vi", topic: "kubernetes" } }, cookie)
+        const inTopic = await askOf(doors())<IncidentsBody>({ input: { locale: "vi", topic: "demo-topic" } }, bearer)
+        const elsewhere = await askOf(doors())<IncidentsBody>({ input: { locale: "vi", topic: "kubernetes" } }, bearer)
 
         expect(inTopic.body.data?.incidents.map((row) => row.lessonId)).toContain("demo-lesson")
         expect(elsewhere.body.data?.incidents.map((row) => row.lessonId)).not.toContain("demo-lesson")

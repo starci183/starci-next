@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("project_concepts")
 /** Where a project shows one concept: the code location, the endpoint the probes aim at and the sample body they send. */
 export class ProjectConceptEntity {
     /** The project. */
-    @PrimaryColumn({ name: "project_id", type: "uuid" })
+    @Column({ name: "project_id", type: "uuid" })
     projectId!: string
 
     /** The concept id (a Essentials lesson id). */
-    @PrimaryColumn({ name: "concept_id", type: "text" })
+    @Column({ name: "concept_id", type: "text" })
     conceptId!: string
 
     /** The code location the learner points to, else null. */
@@ -26,4 +26,8 @@ export class ProjectConceptEntity {
     /** When it last changed. */
     @Column({ name: "updated_at", type: "timestamptz" })
     updatedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

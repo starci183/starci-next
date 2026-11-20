@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("project_ci_runs")
 /** One signed CI delivery, kept once per run id so a replay adds nothing. */
 export class ProjectCiRunEntity {
     /** The project. */
-    @PrimaryColumn({ name: "project_id", type: "uuid" })
+    @Column({ name: "project_id", type: "uuid" })
     projectId!: string
 
     /** The CI run id. */
-    @PrimaryColumn({ name: "run_id", type: "text" })
+    @Column({ name: "run_id", type: "text" })
     runId!: string
 
     /** The commit the run tested. */
@@ -26,4 +26,8 @@ export class ProjectCiRunEntity {
     /** When StarCi received it. */
     @Column({ name: "received_at", type: "timestamptz" })
     receivedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

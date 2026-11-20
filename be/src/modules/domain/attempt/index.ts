@@ -23,7 +23,7 @@ export { AttemptOpenerService } from "./attempt-opener.service"
 export type { OpenerQuestionScoreView, OpenerScoreView } from "./attempt-opener.service"
 export { AttemptService } from "./attempt.service"
 export { AttemptSimulationService } from "./attempt-simulation.service"
-export { attemptEntities, attemptMigrations } from "./persistence/connection"
+export { attemptEntities } from "./persistence/entities"
 export type {
     AttemptAnswer,
     AttemptKind,

@@ -1,4 +1,4 @@
--- DEMO-ONLY Ôn tập decks for the dev stack (connection `primary`). Run after `npm run migrate` with `npm run cli -- seed run`.
+-- DEMO-ONLY Ôn tập decks for the dev stack (connection `primary`). The stack up seed step applies it after `db migrate` (sql/ entry of dev/seeds/seeds.yaml, mode upsert).
 -- A dev subset of the teacher's flashcard decks of starci-lab/data at commit 231d8cc57 (Fullstack 0 and 1, System Design 0), exactly as
 -- `cli review import --dir <data checkout> --ref 231d8cc57` stores them. Idempotent: a stored version is left as it is.
 

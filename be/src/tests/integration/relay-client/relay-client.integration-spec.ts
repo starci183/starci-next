@@ -1,5 +1,5 @@
 import { RelayRefusalCode } from "@modules/integrations/relay-client"
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { RelayClientHolder, relayClientModules } from "../../world/relay-client-world.options"
 import { useTestWorld } from "../../world/use-test-world"
@@ -56,11 +56,11 @@ describe("relay-client (integration)", () => {
             (match) => match !== null,
         )
         const userCode = line?.[1] ?? ""
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
         const confirmed = await doors().post<{ readonly errors?: ReadonlyArray<unknown> }>(
             "/graphql",
             { query: CONFIRM, variables: { input: { userCode } } },
-            { cookie },
+            { authorization: bearer },
         )
         await login
 

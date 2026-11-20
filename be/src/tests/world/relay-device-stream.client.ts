@@ -1,6 +1,6 @@
 import { io, type Socket } from "socket.io-client"
 import { TestWorldError, TestWorldErrorCode, type TestApi } from "@starci/test-world"
-import { learnersOf } from "../fixtures/builders/identity.builder"
+import { learnersOf } from "../fixtures/builders/learner.builder"
 import { RELAY_DEVICE_PRESENCE } from "../fixtures/persistence/relay.sql"
 import { identityDoors, type IdentityDoors } from "./identity-doors.client"
 import type { useTestWorld } from "./use-test-world"
@@ -134,9 +134,9 @@ export const connect = (baseUrl: string, deviceToken: string, after?: string): P
 /** The booted core world a relay spec drives: what `useTestWorld({ modules: identityModules, apps: ["core"] })` answers. */
 export type RelayWorld = ReturnType<typeof useTestWorld>
 
-/** A paired device: its id, its token and the session cookie of the learner it belongs to. */
+/** A paired device: its id, its token and the session bearer of the learner it belongs to. */
 export interface PairedDevice {
-    readonly cookie: string
+    readonly bearer: string
     readonly deviceId: string
     readonly deviceToken: string
 }
@@ -189,19 +189,19 @@ export const relayContext = (world: RelayWorld, learnerPrefix: string): RelayCon
     afterEach(() => open.splice(0).forEach((socket) => socket.disconnect()))
 
     const paired = async (): Promise<PairedDevice> => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
         const pairing = (
             await doors().post<PairingStart>("/api/relay/devices/start", { deviceName: "Laptop", platform: "linux" })
         ).body
         const confirmed = await doors().post<ConfirmBody>(
             "/graphql",
             { query: CONFIRM, variables: { input: { userCode: pairing.userCode } } },
-            { cookie },
+            { authorization: bearer },
         )
         const token = await doors().post<DeviceTokenBody>("/api/relay/devices/token", {
             deviceCode: pairing.deviceCode,
         })
-        return { cookie, deviceId: confirmed.body.data.confirmRelayDevice.id, deviceToken: token.body.deviceToken }
+        return { bearer, deviceId: confirmed.body.data.confirmRelayDevice.id, deviceToken: token.body.deviceToken }
     }
     const presenceOf = async (deviceId: string): Promise<PresenceRow | undefined> =>
         (await primary().query<Array<PresenceRow>>(RELAY_DEVICE_PRESENCE, [deviceId]))[0]

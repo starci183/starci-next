@@ -1,5 +1,4 @@
-export { useGetIdentitySessionSwr } from "./useGetIdentitySessionSwr"
-export type { GetIdentitySessionHook } from "./useGetIdentitySessionSwr"
+export { useGetAuthConfirmSwr } from "./useGetAuthConfirmSwr"
 export { useGetLessonAttemptSwr } from "./useGetLessonAttemptSwr"
 export { useGetLessonProgressSwr } from "./useGetLessonProgressSwr"
 export { useGetLessonLanguagesSwr } from "./useGetLessonLanguagesSwr"

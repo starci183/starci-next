@@ -1,17 +1,17 @@
 /**
  * The declaration of the test world: selection and overrides only. The service list and the image versions come from the stack
- * definition (`.starcistacks/dev`); the library runs the Postgres of every connection real behind toxiproxy, migrates it once per
+ * definition (`.starcistacks/dev`); the library runs the Postgres of every connection real behind toxiproxy, applies db/bootstrap.sql and db/migrations once per
  * run through the cli app and boots the api apps in process.
  */
 import { defineTestWorld, type TestWorldApi } from "@starci/test-world"
 import { judge0Fake } from "./fakes/judge0/judge0.client"
-import { oidcIssuerFake } from "./fakes/oidc-issuer/oidc-issuer.client"
 import { openrouterFake } from "./fakes/openrouter/openrouter.client"
 import { payosFake } from "./fakes/payos/payos.client"
 import { qdrantFake } from "./fakes/qdrant/qdrant.client"
 import { AppModule as CoreApp } from "../../../apps/core/src/app.module"
 import { WORLD_BUCKET } from "./object-storage-world.options"
-import { cliOptionsOf, coreOptionsOf, migrateCli, platformBase } from "./test-apps.options"
+import { coreOptionsOf, platformBase } from "./test-apps.options"
+import { bootstrap } from "./migrate"
 
 const world: TestWorldApi = defineTestWorld({
     stack: ".starcistacks/dev",
@@ -21,7 +21,6 @@ const world: TestWorldApi = defineTestWorld({
         minio: { buckets: [WORLD_BUCKET] },
     },
     fakes: {
-        idp: oidcIssuerFake(),
         payos: payosFake(),
         openrouter: openrouterFake(),
         judge0: judge0Fake(),
@@ -30,7 +29,7 @@ const world: TestWorldApi = defineTestWorld({
     apps: {
         core: { module: CoreApp, options: coreOptionsOf, rawBody: true },
     },
-    migrate: { module: migrateCli, options: cliOptionsOf },
+    migrate: { module: bootstrap, options: (w) => ({ url: w.db["primary"]?.url ?? "" }) },
     modules: { base: platformBase },
 })
 

@@ -1,10 +1,10 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("mcp_access_tokens")
 /** One personal access token of a learner's AI client: its name and the digest of the secret, never the secret. */
 export class McpTokenEntity {
     /** The token id. */
-    @PrimaryColumn({ name: "token_id", type: "uuid" })
+    @Column({ name: "token_id", type: "uuid" })
     tokenId!: string
 
     /** The learner the token acts for. */
@@ -34,4 +34,8 @@ export class McpTokenEntity {
     /** When it was revoked, or null while it works. */
     @Column({ name: "revoked_at", type: "timestamptz", nullable: true })
     revokedAt!: Date | null
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

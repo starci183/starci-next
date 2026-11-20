@@ -1,4 +1,4 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { attemptDoors } from "../../world/attempt-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
@@ -44,20 +44,20 @@ describe("career doors (integration)", () => {
         const answer = await doors.ask(query, variables)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
+            code: "IDENTITY_UNAUTHENTICATED",
             kind: "unauthenticated",
         })
     })
 
     it("lists no item for a new learner and refuses them the review queue and the decisions", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const mine = await doors.ask<MyExperienceBody>(MY_EXPERIENCE, { input: {} }, cookie)
-        const queue = await doors.ask(REVIEW_QUEUE, { input: { tab: "pending" } }, cookie)
+        const mine = await doors.ask<MyExperienceBody>(MY_EXPERIENCE, { input: {} }, bearer)
+        const queue = await doors.ask(REVIEW_QUEUE, { input: { tab: "pending" } }, bearer)
         const decide = await doors.ask(
             DECIDE,
             { input: { decisions: [{ itemId: UNKNOWN_ITEM, verdict: "approve" }] } },
-            cookie,
+            bearer,
         )
 
         expect(mine.data?.myExperience).toEqual({ hiringMinVerified: 3, items: [] })
@@ -70,8 +70,8 @@ describe("career doors (integration)", () => {
         const premium = await doors.signIn(nextLearner(), true)
         const input = { input: { itemId: UNKNOWN_ITEM, line: LINE } }
 
-        const refused = await doors.ask(SUBMIT, input, free.cookie)
-        const missing = await doors.ask(SUBMIT, input, premium.cookie)
+        const refused = await doors.ask(SUBMIT, input, free.bearer)
+        const missing = await doors.ask(SUBMIT, input, premium.bearer)
 
         expect(refused.errors?.[0]?.extensions).toMatchObject({ code: "CAREER_PREMIUM_REQUIRED", kind: "forbidden" })
         expect(missing.errors?.[0]?.extensions).toMatchObject({ code: "CAREER_ITEM_NOT_FOUND", kind: "not-found" })

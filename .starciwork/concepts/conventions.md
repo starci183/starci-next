@@ -9,7 +9,7 @@ edited in the same change.
   purchase, entitlement, streak, hub, relay, content…). It owns its tables, its error class and its ports.
 - **Door**: a GraphQL query or mutation under `be/src/features/api/<capability>/`. *Not to confuse with* a REST route, which exists only
   for a probe, an auth handshake, a signed webhook or a byte transfer.
-- **Learner**: any signed-in identity with no operator role; `learner_id` is the verified subject.
+- **Learner**: any signed-in identity with no operator role; `learner_id` is the account id.
 - **Part** (owner's word "shard"): one learning area of the program; see [learning-program](learning-program.md).
 
 ## Naming

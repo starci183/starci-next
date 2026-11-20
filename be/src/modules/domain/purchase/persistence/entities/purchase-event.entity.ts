@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("purchase_events")
 /**
@@ -7,7 +7,7 @@ import { Column, Entity, PrimaryColumn } from "typeorm"
  */
 export class PurchaseEventEntity {
     /** The event's own identifier. */
-    @PrimaryColumn({ name: "event_id", type: "uuid" })
+    @Column({ name: "event_id", type: "uuid" })
     eventId!: string
 
     /** The purchase the event records; null only for a refused or voided delivery that names no persisted order. */
@@ -48,4 +48,8 @@ export class PurchaseEventEntity {
     /** The instant the event was recorded. */
     @Column({ name: "created_at", type: "timestamptz" })
     createdAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

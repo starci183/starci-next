@@ -1,7 +1,7 @@
 export { SwrSideEffects } from "./SwrSideEffects"
 export {
+    useGetAuthConfirmSwr,
     useGetEssentialsSwr,
-    useGetIdentitySessionSwr,
     useGetLessonAttemptSwr,
     useGetLessonLanguagesSwr,
     useGetLessonProgressSwr,
@@ -36,16 +36,9 @@ export {
     useMutateCreateMcpTokenSwr,
     useMutateRevokeMcpTokenSwr,
     useMutateSubmitReviewRetrievalSwr,
-    usePostIdentityChallengeResendSwr,
-    usePostIdentityPasswordResetSwr,
-    usePostIdentityPasswordResetVerifySwr,
-    usePostIdentitySignInSwr,
-    usePostIdentitySignInVerifySwr,
-    usePostIdentitySignOutSwr,
-    usePostIdentitySignUpSwr,
-    usePostIdentitySignUpVerifySwr,
-    usePostIdentitySocialExchangeSwr,
-    usePostIdentitySocialStartSwr,
+    usePostAuthDoorSwr,
+    usePostAuthSignInSwr,
+    usePostAuthSignOutSwr,
     usePostLessonAttemptSwr,
     useQueryExperienceReviewersSwr,
     useQueryMyExperienceSwr,
@@ -67,6 +60,7 @@ export {
     usePutAvatarSwr,
     useQueryOutcomePathsSwr,
     useQueryMyPremiumSwr,
+    useQueryViewerRolesSwr,
     useQueryRelayDevicesSwr,
     useQueryLessonOpenerScoresSwr,
     useQueryLessonPartsProgressSwr,
@@ -140,4 +134,4 @@ export type {
     McpConnection,
     CreatedMcpToken,
 } from "./api"
-export type { GraphQLResponse, IdentityChallenge, SocialProvider } from "@/modules/api"
+export type { GraphQLResponse } from "@/modules/api"

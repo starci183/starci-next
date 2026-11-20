@@ -7,7 +7,7 @@ export type ExperienceOutput = "cv-line" | "readiness"
 /** Where an item stands: practising, ai-graded, pending review, verified, returned, revoked. */
 export type ExperienceState = "practising" | "ai-graded" | "pending-review" | "verified" | "returned" | "revoked"
 
-/** The role a signer signs with, asserted by Keycloak. */
+/** The role a signer signs with, asserted by the app-owned auth (the roles of the signed-in account). */
 export type SignerRole = "TEACHER" | "REVIEWER"
 
 /** Who made a decision of the audit trail. */
@@ -302,7 +302,7 @@ export interface ClaimPracticeExperienceParams {
     readonly patternId: string
 }
 
-/** The caller of a signer door: the verified session's subject and Keycloak roles. */
+/** The caller of a signer door: the verified session's account id (the learner id) and roles. */
 export interface Signer {
     /** The provider subject. */
     readonly subject: string

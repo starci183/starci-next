@@ -21,7 +21,8 @@ export const APP_ROUTES = {
     reviewQueue: "/review-queue",
     reviewSession: "/review/session",
     signIn: "/sign-in",
-    signInCallback: "/sign-in/callback",
+    signInConfirm: "/sign-in/confirm",
+    signInReset: "/sign-in/reset",
 } as const
 
 /** The longest return path the identity doors accept. */
@@ -45,6 +46,7 @@ interface SignInQuery {
     readonly returnTo?: string
     readonly signedOut?: boolean
     readonly social?: "failed"
+    readonly reset?: boolean
 }
 
 /** The query string of a sign-in link, or an empty string when it carries nothing. */
@@ -53,6 +55,7 @@ export const signInSearch = (query: SignInQuery): string => {
     if (query.returnTo !== undefined) params.set("returnTo", query.returnTo)
     if (query.signedOut === true) params.set("signedOut", "1")
     if (query.social !== undefined) params.set("error", "social")
+    if (query.reset === true) params.set("reset", "1")
     const text = params.toString()
     return text === "" ? "" : `?${text}`
 }

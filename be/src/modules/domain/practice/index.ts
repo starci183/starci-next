@@ -27,7 +27,7 @@ export {
 } from "./practice-wire.mapper"
 export { PracticeHistoryService } from "./practice-history.service"
 export { StreakServiceClient } from "./practice-streak.client"
-export { practiceEntities, practiceMigrations } from "./persistence/connection"
+export { practiceEntities } from "./persistence/entities"
 export type {
     PracticeContent,
     PracticeDifficulty,

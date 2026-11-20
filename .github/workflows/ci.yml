@@ -127,6 +127,10 @@ jobs:
         run: npx --no-install starci app audit --omit-dev --level=high
       - name: format
         run: npx --no-install starci app check --gate format --env prod
+      - name: boot proof
+        run: npx --no-install starci app check --gate wiring --env prod
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
       - name: typecheck
         run: npm run typecheck
         env:
@@ -332,6 +336,9 @@ jobs:
       - name: build fe
         run: npm run build:fe
         env:
+          NEXT_PUBLIC_API_URL: "https://api.next.starci.org"
+          NEXT_PUBLIC_AUTH_GOOGLE: "false"
+          NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:3201"
           NEXT_PUBLIC_SITE_URL: "https://next.starci.org"
           NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"
       - name: build cache save
@@ -342,6 +349,10 @@ jobs:
             .turbo
             fe/apps/*/.next/cache
           key: ${{ runner.os }}-node22-build-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+      - name: database migration checks
+        run: npm run db:lint && npx starci app db drift
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
 
   images:
     needs: plan

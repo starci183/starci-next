@@ -15,7 +15,7 @@ import { careerSettingsOf } from "./review-sla.policy"
 @Injectable()
 /**
  * The reviewer appointments (data.career.reviewer): only the teacher appoints, rescopes or ends a reviewer, and every change keeps
- * the ended appointment for the audit. A reviewer also needs the Keycloak role REVIEWER to sign; the appointment gives the scope.
+ * the ended appointment for the audit. A reviewer also needs the account role REVIEWER to sign; the appointment gives the scope.
  */
 export class ReviewerService {
     private readonly defaultCapacity: number

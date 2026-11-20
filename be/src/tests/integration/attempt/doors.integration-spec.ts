@@ -1,4 +1,4 @@
-import { learnersOf } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { SECRET } from "../../fixtures/builders/lesson.builder"
 import {
     ATTEMPT,
@@ -43,15 +43,15 @@ describe("lesson attempt doors, access and release (integration)", () => {
 
         expect(answer.data ?? null).toBeNull()
         expect(answer.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
+            code: "IDENTITY_UNAUTHENTICATED",
             kind: "unauthenticated",
         })
     })
 
     it("answers LESSON_PREMIUM_REQUIRED to a learner without Premium and leaks no answer, option or explanation", async () => {
-        const { cookie, subject } = await doors.signIn(nextLearner(), false)
+        const { bearer, subject } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, cookie)
+        const answer = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, bearer)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "LESSON_PREMIUM_REQUIRED", kind: "forbidden" })
         expect(JSON.stringify(answer)).not.toContain(SECRET)
@@ -60,12 +60,12 @@ describe("lesson attempt doors, access and release (integration)", () => {
     })
 
     it("releases the correctness and every explanation only after the submit, and shows the same on a later read", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), true)
-        const before = await doors.ask<ProgressBody>(PROGRESS, { input: { lessonId: "demo-lesson" } }, cookie)
+        const { bearer } = await doors.signIn(nextLearner(), true)
+        const before = await doors.ask<ProgressBody>(PROGRESS, { input: { lessonId: "demo-lesson" } }, bearer)
 
-        const submitted = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--2") }, cookie)
+        const submitted = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--2") }, bearer)
         const attempt = submitted.data?.submitLessonAttempt
-        const read = await doors.ask<AttemptReadBody>(ATTEMPT, { input: { attemptId: attempt?.attemptId } }, cookie)
+        const read = await doors.ask<AttemptReadBody>(ATTEMPT, { input: { attemptId: attempt?.attemptId } }, bearer)
 
         expect(JSON.stringify(before)).not.toContain(SECRET)
         expect(before.data?.lessonProgress).toMatchObject({ version: null, phase: "challenge", outcomes: UNTOUCHED })
@@ -84,18 +84,18 @@ describe("lesson attempt doors, access and release (integration)", () => {
     it("does not show the attempt of one learner to another", async () => {
         const owner = await doors.signIn(nextLearner(), true)
         const stranger = await doors.signIn(nextLearner(), true)
-        const submitted = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, owner.cookie)
+        const submitted = await doors.ask<SubmitBody>(SUBMIT, { input: choiceInput("demo--predict--1") }, owner.bearer)
         const attemptId = submitted.data?.submitLessonAttempt.attemptId
 
-        const read = await doors.ask<AttemptReadBody>(ATTEMPT, { input: { attemptId } }, stranger.cookie)
+        const read = await doors.ask<AttemptReadBody>(ATTEMPT, { input: { attemptId } }, stranger.bearer)
 
         expect(read.errors?.[0]?.extensions).toMatchObject({ code: "ATTEMPT_NOT_FOUND", kind: "not-found" })
     })
 
     it("answers LESSON_NOT_FOUND over the progress door for an unknown lesson", async () => {
-        const { cookie } = await doors.signIn(nextLearner(), false)
+        const { bearer } = await doors.signIn(nextLearner(), false)
 
-        const answer = await doors.ask(PROGRESS, { input: { lessonId: "no-such-lesson" } }, cookie)
+        const answer = await doors.ask(PROGRESS, { input: { lessonId: "no-such-lesson" } }, bearer)
 
         expect(answer.errors?.[0]?.extensions).toMatchObject({ code: "LESSON_NOT_FOUND", kind: "not-found" })
     })

@@ -2,38 +2,45 @@
 title: Đăng nhập
 route: /sign-in
 area: auth
-reviewed: 2026-11-17
+reviewed: 2026-11-20
 ---
 
-Route: `/sign-in`. Màn đăng nhập không dùng khung chung: thanh bên và thanh trên ẩn ở đây, trang tự vẽ thương hiệu ở giữa. Trang trắng, thẻ đăng nhập chỉ có viền 1px, không bóng. Ở 1440 thẻ rộng cố định giữa trang, ở 390 thẻ chiếm gần hết bề ngang. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
+**Concept: Đăng nhập.** Mục tiêu: vào lại để học tiếp bằng email và mật khẩu. Thao tác: cổng đăng nhập của API (`POST /auth/login` email + mật khẩu, kết quả là phiên trong bộ nhớ và cookie làm mới httpOnly của API; `POST /auth/logout` ở menu avatar); GraphQL `viewerRoles` sau khi có phiên. Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực, phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu. Cùng thẻ này nằm trong modal khi người học bấm Đăng nhập ở đầu trang. Hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: Đăng nhập chỉ còn email và mật khẩu; không còn mã 6 số sau khi nhập mật khẩu: phiên mở ngay tại chỗ, thẻ đóng lại (modal giữ nguyên chỗ người học đang đứng). Bỏ nút Facebook và GitHub. Nút Google chỉ hiện khi hệ thống đã cấu hình Google; chưa cấu hình thì không có nút nào, không có nút chết. Tài khoản cũ từ hệ thống trước không có mật khẩu: dùng Quên mật khẩu một lần, nhận email có liên kết và đặt mật khẩu. Lưu ý xung đột: không có.
 
-## Khung (không có thanh bên, thanh trên)
+## Khung vào app
 
-Vì sao: người chưa đăng nhập chưa có điều hướng nào để dùng, nên `AppHeader` và `AppSidebar` trả về rỗng trên `/sign-in`. Chỉ còn nút tròn đổi ngôn ngữ ở góc phải trên nền trắng, không có chrome nào khác.
-Luật: `theme-and-type` (trang trắng, không bóng), `locale-switch-round-dropdown.md`, `signed-out-header-avatar-modal.md` (ở trang khác, "Đăng nhập" là hộp thoại).
-Grammar: `WorkspaceShell` (khung chung `frame/WorkspaceShell/index.d.ts`); code `fe/apps/app/src/components/blocks/AppSidebar/index.tsx`, `AppHeader/index.tsx`.
+Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
 
-## Thương hiệu giữa trang
+Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).
 
-Vì sao: logo và tên "StarCi Next" đậm đặt cạnh nhau, căn giữa phía trên thẻ, không mũi tên ↗.
-Luật: `theme-and-type`, `verify-against-visualize.md`.
-Grammar: `IdentityLockup` (`composite/IdentityLockup`); code `fe/apps/app/src/components/blocks/AuthPanel`.
+Grammar: `EntryFrame`, `Form`
 
-## Thẻ đăng nhập (form)
+## Học bản chất, để vibe-code mà không mất kiểm soát.
 
-Vì sao: thẻ đăng nhập là một vật thật (khung đăng nhập), nên là một trong số ít chỗ còn thẻ: viền 1px, nền trắng, không bóng. Trong thẻ: tiêu đề "Đăng nhập" và dòng phụ muted, hai nút mạng xã hội viền (trung tính, dạng viên thuốc), vạch "hoặc", ô email hoặc tên đăng nhập và ô mật khẩu (trắng, viền 1px, có "Hiện mật khẩu"), liên kết "Quên mật khẩu?" và MỘT nút chính "Đăng nhập", cuối thẻ "Chưa có tài khoản? Đăng ký". "Quên mật khẩu?" và "Đăng ký" là `TextAction` màu foreground, nên màu accent trên màn chỉ còn nút chính. Ghi chú lỗi ảnh: nút chính vẽ nền tím nhạt với chữ đen, nhạt hơn một nút chính đặc.
-Luật: `surface-layering` (thẻ chỉ cho vật thật, một nút chính), `theme-and-type` (ô trắng viền 1px, accent chỉ là tín hiệu), `red-budget-links-foreground` (owner 2026-11-10).
-Grammar: `SurfaceCard measure="formCompact"`, `Heading`, `Button intent="neutral"` (nút mạng xã hội) và `Button intent="commit"`, `TextField`, `TextAction` (`fe/apps/app/src/components/blocks/AuthPanel/component.tsx`).
+Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
 
-## Phản biện
+Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
 
-Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
-Luật: `surface-layering`, `theme-and-type`.
-Grammar: không phải vùng của màn hình; không có thành phần.
+Grammar: `Stack`, `Heading`, `Text`
 
-- 1440, 390, thẻ đăng nhập: bo góc rất lớn (khoảng 24px), lớn hơn hẳn nút và ô nhập, nhìn không cùng một họ bo góc.
-- 1440, 390, logo và nút đổi ngôn ngữ: logo nằm trên một ô vuông xám nhạt, nút ngôn ngữ là hình tròn tô xám; cả hai là nền tô màu thay vì viền 1px (surface-layering). Nút ngôn ngữ cũng trôi một mình ở góc phải, xa hẳn khối giữa trang.
-- 1440, 390, "Quên mật khẩu?": chữ đen đậm, không gạch chân, không có dấu hiệu là liên kết, lại đậm ngang nhãn ô nên đọc như một nhãn; nằm lẻ một dòng giữa ô mật khẩu và nút, cách nút xa hơn mọi khoảng cách khác trong form.
-- 1440, 390, placeholder và "Hiện mật khẩu": chữ xám nhạt cỡ 12 trên nền trắng, tương phản thấp.
-- 1440, 390, "Chưa có tài khoản? Đăng ký": câu hỏi xám nhạt, "Đăng ký" đen đậm không gạch chân, liên kết không rõ ràng; vùng này cách nút khoảng 44px, thừa trống so với phần còn lại.
-- 1440: cả cột chỉ chiếm khoảng 450px giữa trang trắng, nửa dưới màn trống; tên thương hiệu 14px cạnh logo 44px, logo trội hơn chữ.
+## Thẻ biểu mẫu
+
+Vì sao: một thẻ cho đăng nhập, đăng ký và quên mật khẩu; chỉ đổi ruột thẻ.
+
+Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).
+
+Grammar: `Form`, `Field`, `Input`, `Button`, `Link`
+
+## Thay đổi so với bản đã duyệt:
+
+Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.
+
+Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+
+Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.
+
+– Đăng nhập chỉ còn email và mật khẩu; không còn mã 6 số sau khi nhập mật khẩu: phiên mở ngay tại chỗ, thẻ đóng lại (modal giữ nguyên chỗ người học đang đứng).
+
+– Bỏ nút Facebook và GitHub. Nút Google chỉ hiện khi hệ thống đã cấu hình Google; chưa cấu hình thì không có nút nào, không có nút chết.
+
+– Tài khoản cũ từ hệ thống trước không có mật khẩu: dùng Quên mật khẩu một lần, nhận email có liên kết và đặt mật khẩu.

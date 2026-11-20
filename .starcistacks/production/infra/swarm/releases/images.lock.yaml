@@ -1,9 +1,7 @@
-# The app images of a production release (core, app, cli) are built by `starci app stack build --env production --push --execute` from a tagged commit
+# The app images of a production release (core, app, cli, db, storage) are built by `starci app stack build --env production --push --execute` from a tagged commit
 # and pinned by digest in the release record the deploy stores on the manager; this lock names the third-party images the stack source pins itself.
 schema: starci/images-lock@1
 environment: production
 status: per-release
 images:
-  postgres: postgres:16@sha256:1a6ab3f5345eb6dbe04a1349529caabdb0ab09293a09590fad07b2246bfa4b54
-  keycloak: quay.io/keycloak/keycloak:26.4.7@sha256:9409c59bdfb65dbffa20b11e6f18b8abb9281d480c7ca402f51ed3d5977e6007
-  storage: ghcr.io/starci183/starci-next-storage:4bcd28a52d86373411dbbe804de4645165bfd250@sha256:f76ca42d53175892404dbd6a88bf0debf764f35c8b15d4ff0e6663b83c5a67ce
+  redis: redis:7@sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f

@@ -1,18 +1,18 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("review_answers")
 /** The written answer of a learner to a retrieval item, stored before the sample answer shows. */
 export class ReviewAnswerEntity {
     /** The learner. */
-    @PrimaryColumn({ name: "learner_id", type: "uuid" })
+    @Column({ name: "learner_id", type: "uuid" })
     learnerId!: string
 
     /** The item. */
-    @PrimaryColumn({ name: "item_id", type: "text" })
+    @Column({ name: "item_id", type: "text" })
     itemId!: string
 
     /** The revision. */
-    @PrimaryColumn({ name: "revision", type: "integer" })
+    @Column({ name: "revision", type: "integer" })
     revision!: number
 
     /** The answer. */
@@ -22,4 +22,8 @@ export class ReviewAnswerEntity {
     /** When it was stored. */
     @Column({ name: "submitted_at", type: "timestamptz" })
     submittedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

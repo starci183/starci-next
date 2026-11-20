@@ -4,16 +4,12 @@ import { ConfigurableModuleClass } from "./cli.module-definition"
 import { EntitlementCliModule } from "./entitlement/entitlement.module"
 import { DataCliModule } from "./data/data.module"
 import { McpCliModule } from "./mcp/mcp.module"
-import { MigrateModule } from "./migrate/migrate.module"
-import { SeedModule } from "./seed/seed.module"
 import { LessonCliModule } from "./lesson/lesson.module"
 import { PracticeCliModule } from "./practice/practice.module"
 import { ReviewCliModule } from "./review/review.module"
 
 @Module({
     imports: [
-        MigrateModule.register({}),
-        SeedModule.register({}),
         LessonCliModule.register({}),
         PracticeCliModule.register({}),
         ReviewCliModule.register({}),

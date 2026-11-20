@@ -41,7 +41,7 @@ the browser checks it, the server signs a 300 KB `image/png` upload, the bytes g
 
 ## Don't / Instead
 - Don't copy a lesson, project or experience state into a progress table; read the capability.
-- Don't let the browser name the bucket or the key; the server builds the key from the verified subject.
+- Don't let the browser name the bucket or the key; the server builds the key from the verified account id.
 - Don't show Projects numbers to a learner without a subscription to make the page look fuller.
 
 ## Where

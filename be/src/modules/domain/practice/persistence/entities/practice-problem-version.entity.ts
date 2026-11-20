@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm"
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
 import type {
     PracticeContent,
     PracticeExample,
@@ -11,11 +11,11 @@ import type {
 /** One immutable version of a problem: its public text, starter codes and examples, and the hidden tests and solutions that never leave the server. */
 export class PracticeProblemVersionEntity {
     /** The problem id, its slug. */
-    @PrimaryColumn({ name: "problem_id", type: "text" })
+    @Column({ name: "problem_id", type: "text" })
     problemId!: string
 
     /** The version label, the git sha the import ran with. */
-    @PrimaryColumn({ name: "version", type: "text" })
+    @Column({ name: "version", type: "text" })
     version!: string
 
     /** The SHA-256 over the source files. */
@@ -85,4 +85,8 @@ export class PracticeProblemVersionEntity {
     /** When the version was imported. */
     @Column({ name: "imported_at", type: "timestamptz" })
     importedAt!: Date
+
+    /** The surrogate key; the former key is the unique `<table>_natural_key`. */
+    @PrimaryGeneratedColumn("uuid", { name: "id" })
+    id!: string
 }

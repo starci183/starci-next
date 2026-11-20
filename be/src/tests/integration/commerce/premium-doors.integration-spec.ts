@@ -1,7 +1,7 @@
 import { persistPendingPurchase } from "../../fixtures/builders/commerce.builder"
-import { learnersOf, type SessionBody } from "../../fixtures/builders/identity.builder"
+import { learnersOf } from "../../fixtures/builders/learner.builder"
 import { PURCHASE_ID_BY_ORDER } from "../../fixtures/persistence/commerce-purchase.sql"
-import { identityDoors } from "../../world/identity-doors.client"
+import { identityDoors, subjectOfBearer } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
@@ -41,10 +41,15 @@ describe("premium doors (integration)", () => {
 
     beforeEach(() => doors().reset())
 
-    const ask = async (cookie: string, query: string, variables?: unknown): Promise<GraphqlReply> =>
-        (await doors().post<GraphqlReply>("/graphql", { query, variables }, cookie === "" ? {} : { cookie })).body
-    const subjectOf = async (cookie: string): Promise<string> =>
-        (await doors().get<SessionBody>("/api/identity/session", { cookie })).body.identity.subject
+    const ask = async (bearer: string, query: string, variables?: unknown): Promise<GraphqlReply> =>
+        (
+            await doors().post<GraphqlReply>(
+                "/graphql",
+                { query, variables },
+                bearer === "" ? {} : { authorization: bearer },
+            )
+        ).body
+    const subjectOf = (bearer: string): Promise<string> => Promise.resolve(subjectOfBearer(bearer))
     const orderIdOf = async (orderCode: string): Promise<string> => {
         const rows: Array<{ purchase_id: string }> =
             (await world.db.primary?.query(PURCHASE_ID_BY_ORDER, ["sepay", orderCode])) ?? []
@@ -57,7 +62,7 @@ describe("premium doors (integration)", () => {
         const mine = await ask("", MINE)
 
         expect([start, order, mine].map((reply) => refusalOf(reply)?.code)).toEqual(
-            Array(3).fill("IDENTITY_SESSION_REQUIRED"),
+            Array(3).fill("IDENTITY_UNAUTHENTICATED"),
         )
     })
 
@@ -79,11 +84,11 @@ describe("premium doors (integration)", () => {
     })
 
     it("commerce/names-refused-by-code: an unknown plan or rail is refused and a fresh learner is not Premium", async () => {
-        const cookie = await doors().signIn(nextLearner())
+        const bearer = await doors().signIn(nextLearner())
 
-        const plan = await ask(cookie, START, { input: { plan: "weekly" } })
-        const rail = await ask(cookie, START, { input: { plan: "monthly", rail: "paypal" } })
-        const mine = await ask(cookie, MINE)
+        const plan = await ask(bearer, START, { input: { plan: "weekly" } })
+        const rail = await ask(bearer, START, { input: { plan: "monthly", rail: "paypal" } })
+        const mine = await ask(bearer, MINE)
 
         expect([refusalOf(plan)?.code, refusalOf(rail)?.code]).toEqual([
             "PURCHASE_PLAN_UNKNOWN",

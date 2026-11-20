@@ -10,9 +10,8 @@ hosting: its services sit on its own overlay `app`, and the three public ones al
 | https://api.next.starci.org | core (3001): MCP, the learner CLI, payment webhooks |
 | https://minio.next.starci.org | storage, the S3 port only (9000); statics are public-read under `starci-next-production/statics` |
 
-`postgres` (PostgreSQL 16: the databases `starci_next` and `keycloak`), `keycloak` (production mode, https on the overlay only) and `storage`
-(MinIO) keep their data on `next-production-postgres-data` and `next-production-storage-data`; no port is published. `cli` applies the TypeORM migrations when
-its task starts and idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
+`db` (the app's own PostgreSQL 17 with pgvector and pgmq, the database `starci_next`), `redis` (the BullMQ queue, AOF) and `storage`
+(MinIO) keep their data on `next-production-db-data` (filled from the PostgreSQL 16 volume `next-production-postgres-data`, left untouched for rollback), `next-production-redis-data` and `next-production-storage-data`; no port is published. `starci app db migrate` applies db/migrations/*.sql at deploy; `cli` idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
 
 The operator reaches the manager as `deploy-next` through the sealed member `vps`: the host listens on SSH port 9999, the member carries the port, and the harness's sealed transport passes the port, the key and the pinned host keys to ssh explicitly, so no `--ssh-cmd`, docker host override or `~/.ssh/config` alias is needed.
 

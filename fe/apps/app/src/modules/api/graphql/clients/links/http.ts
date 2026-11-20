@@ -1,18 +1,16 @@
 import { HttpLink } from "@apollo/client"
-
-/**
- * The same-origin GraphQL door of the back end. Every door of the product is reached on the app's own origin (the identity doors
- * the same way), so the HttpOnly session cookie travels without CORS and there is no API origin to configure.
- */
-const GRAPHQL_DOOR = "/graphql"
+import { graphqlUrl } from "@/modules/config"
 
 /** The window an operation may take before it is aborted. */
 const TIMEOUT_MS = 10_000
 
-/** Terminal link: the HTTP transport to the back end GraphQL door, aborted by the caller's signal or after the window. */
+/**
+ * Terminal link: the HTTP transport to the GraphQL door of the back end api (its own origin, `NEXT_PUBLIC_API_URL`), aborted by the
+ * caller's signal or after the window. The Bearer access token is attached by the link before it; the refresh cookie is never sent here.
+ */
 export const createHttpLink = (signal: AbortSignal | undefined): HttpLink =>
     new HttpLink({
-        uri: GRAPHQL_DOOR,
-        credentials: "same-origin",
+        uri: graphqlUrl,
+        credentials: "omit",
         fetchOptions: { signal: signal ?? AbortSignal.timeout(TIMEOUT_MS) },
     })

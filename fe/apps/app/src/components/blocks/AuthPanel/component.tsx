@@ -1,16 +1,9 @@
-import { Alert, Cluster, Heading, RelativeTime, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
-import type { AuthNoticeTone, AuthRetry } from "@/modules/types"
-import {
-    AuthCodeForm,
-    AuthDetailsForm,
-    AuthSocialButtons,
-    type AuthCodeLabels,
-    type AuthDetailsLabels,
-    type AuthSocialProvider,
-} from "@starci-next/ui"
+import { Alert, Button, Cluster, Heading, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
+import type { AuthNoticeTone } from "@/modules/types"
+import { AuthDetailsForm, AuthSocialButtons, type AuthDetailsLabels } from "@starci-next/ui"
 
-/** The drawings of the card, in the order the owner approved them: the three detail forms and the emailed code step. */
-export const AUTH_PANEL_SHAPES = ["signIn", "signUp", "forgot", "code"] as const
+/** The drawings of the card: the three detail forms and the note that the emailed link was sent. */
+export const AUTH_PANEL_SHAPES = ["signIn", "signUp", "forgot", "sent"] as const
 
 /** One drawing of the sign-in card. */
 export type AuthPanelShape = (typeof AUTH_PANEL_SHAPES)[number]
@@ -25,59 +18,54 @@ export interface AuthPanelBaseProps {
         /** True when the social buttons and their divider are drawn (the sign-in and sign-up details). */
         readonly hasSocial: boolean
         readonly social: {
-            readonly facebookLabel: string
-            readonly githubLabel: string
+            readonly googleLabel: string
             readonly dividerLabel: string
-            readonly pendingProvider: AuthSocialProvider | undefined
+            readonly isPending: boolean
             readonly pendingLabel: string
         }
         readonly details: AuthDetailsLabels
-        readonly code: AuthCodeLabels
+        readonly sent: {
+            readonly resend: string
+            readonly anotherEmail: string
+        }
         /** True inside the sign-in modal: the dialog is the surface, so the card and its page-level heading are not drawn. */
         readonly isEmbedded: boolean
-        /** The countdown of a rate-limited answer, drawn under the notice; undefined when none runs. */
-        readonly retry: AuthRetry | undefined
-        readonly isReset: boolean
         readonly isPending: boolean
         readonly isTermsAccepted: boolean
         readonly isRefused: boolean
         readonly emailError: string | undefined
         readonly passwordError: string | undefined
         readonly confirmError: string | undefined
-        readonly codeError: string | undefined
         readonly promptQuestion: string
         readonly promptAction: string
     }
     readonly on: {
         readonly submitDetails: (input: FormData) => void
-        readonly submitCode: (input: FormData) => void
-        readonly codeChange: () => void
         readonly resend: () => void
         readonly anotherEmail: () => void
         readonly forgot: () => void
         readonly terms: (isAccepted: boolean) => void
-        readonly social: (provider: AuthSocialProvider) => void
+        readonly social: () => void
         readonly prompt: () => void
     }
 }
 
-/** The form of the shape: the emailed code step, or the details form of the mode. */
+/** The form of the shape: the sent note with its resend and other-email actions, or the details form of the mode. */
 const Body = (props: AuthPanelBaseProps) => {
     switch (props.shape) {
-        case "code":
+        case "sent":
             return (
-                <AuthCodeForm
-                    labels={props.props.code}
-                    isReset={props.props.isReset}
-                    isPending={props.props.isPending}
-                    codeError={props.props.codeError}
-                    passwordError={props.props.passwordError}
-                    confirmError={props.props.confirmError}
-                    onSubmit={props.on.submitCode}
-                    onCodeChange={props.on.codeChange}
-                    onResend={props.on.resend}
-                    onAnotherEmail={props.on.anotherEmail}
-                />
+                <Stack gap="row">
+                    <Button
+                        intent="alternative"
+                        width="fill"
+                        isPending={props.props.isPending}
+                        onPress={props.on.resend}
+                    >
+                        {props.props.sent.resend}
+                    </Button>
+                    <TextAction onPress={props.on.anotherEmail}>{props.props.sent.anotherEmail}</TextAction>
+                </Stack>
             )
         case "signIn":
         case "signUp":
@@ -111,18 +99,6 @@ const Content = (props: AuthPanelBaseProps) => (
         </Stack>
         {props.props.notice === undefined ? null : (
             <Alert tone={props.props.notice.tone} title={props.props.notice.title} />
-        )}
-        {props.props.retry === undefined ? null : (
-            <RelativeTime
-                mode="countdown"
-                format="digital"
-                dateTime={props.props.retry.until}
-                locale={props.props.retry.locale}
-                template={props.props.retry.template}
-                expiredLabel={props.props.retry.expired}
-                size="sm"
-                tone="muted"
-            />
         )}
         {props.props.hasSocial ? (
             <AuthSocialButtons {...props.props.social} isDisabled={props.props.isPending} onChoose={props.on.social} />

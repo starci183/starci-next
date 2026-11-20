@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { useState } from "react"
-import { useSession } from "@/hooks/auth"
+import { useSession, useViewerRoles } from "@/hooks/auth"
 import {
     SIGNER_ROLES,
     signerRoleOf,
@@ -27,7 +27,7 @@ const REVIEWERS_TAB = "reviewers"
 export const ReviewQueue = () => {
     const t = useTranslations("app.experience.queue")
     const session = useSession()
-    const role = signerRoleOf(session.session?.roles)
+    const role = signerRoleOf(useViewerRoles())
     const isTeacher = role === SIGNER_ROLES.teacher
     const [tab, setTab] = useState("pending")
     const [selected, setSelected] = useState<string>()

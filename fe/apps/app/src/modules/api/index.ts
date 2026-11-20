@@ -91,20 +91,6 @@ export type {
     UpdateProjectInput,
     UpdateProjectMutation,
 } from "./graphql/__generated__/graphql"
-export { readSession, signOutSession } from "./rest/identity/session"
-export type { IdentitySession } from "./rest/identity/session"
-export {
-    requestPasswordReset,
-    resendCode,
-    signIn,
-    signUp,
-    verifyPasswordReset,
-    verifySignIn,
-    verifySignUp,
-} from "./rest/identity/credentials"
-export type { IdentityChallenge } from "./rest/identity/credentials"
-export { exchangeSocialCode, startSocialSignIn } from "./rest/identity/social"
-export type { SocialProvider } from "./rest/identity/social"
 export { putAvatar } from "./rest/storage/avatar"
 export type { AvatarPutTarget } from "./rest/storage/avatar"
 export { PUBLIC_CV_NOT_FOUND_CODES } from "./rest/cv/public-cv-codes"

@@ -1,12 +1,11 @@
 import { Button, Checkbox, Form, Input, Stack, TextAction } from "@starci/grammar/common"
 
-/** The three detail forms: sign in, create an account, ask for a reset code. */
+/** The three detail forms: sign in, create an account, ask for a reset link. */
 type AuthDetailsShape = "signIn" | "signUp" | "forgot"
 
 /** The words of the details form, resolved by the connected block. */
 export interface AuthDetailsLabels {
     readonly form: string
-    readonly identifier: string
     readonly email: string
     readonly password: string
     readonly newPassword: string
@@ -98,7 +97,7 @@ const PasswordField = (props: PasswordFieldProps) => (
 /** What the credential fields need: the whole form but its submit and pending flag. */
 type FieldsProps = Omit<AuthDetailsFormProps, "onSubmit" | "isPending">
 
-/** The credential fields of the shape: identifier and password, email and password pair with terms, or the email alone. */
+/** The credential fields of the shape: email and password, email and password pair with terms, or the email alone. */
 const Fields = (props: FieldsProps) => {
     const isSignUp = props.shape === "signUp"
     return (
@@ -106,9 +105,9 @@ const Fields = (props: FieldsProps) => {
             <Input
                 id="auth-email"
                 name="email"
-                label={props.shape === "signIn" ? props.labels.identifier : props.labels.email}
+                label={props.labels.email}
                 placeholder={props.labels.emailPlaceholder}
-                kind={props.shape === "signIn" ? "text" : "email"}
+                kind="email"
                 isRequired
                 isInvalid={props.emailError !== undefined}
                 errorMessage={props.emailError}

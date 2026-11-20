@@ -1,10 +1,11 @@
 import { Module, type DynamicModule } from "@nestjs/common"
 import { APP_FILTER, APP_GUARD } from "@nestjs/core"
 import { AuthGuard, CredentialGuard } from "@modules/domain/identity"
+import { passportKit } from "@modules/integrations/passport"
 import { ErrorsFilter } from "@modules/platform/errors"
 import { OriginGuard, RateLimitGuard } from "@modules/platform/http-security"
 import { platformModules } from "./compose/platform"
-import { integrationsModules } from "./compose/integrations"
+import { integrationsModules, integrationsProviders } from "./compose/integrations"
 import { identityModules } from "./compose/identity"
 import { commerceModules } from "./compose/commerce"
 import { learningModules } from "./compose/learning"
@@ -20,12 +21,13 @@ import type { CoreOptions } from "./core.options"
 export class AppModule {
     /** Builds the module from options parsed once at boot; nothing here reads the environment. */
     static register(options: CoreOptions): DynamicModule {
+        const passport = passportKit(options.passport)
         return {
             module: AppModule,
             imports: [
                 ...platformModules(options),
                 ...integrationsModules(options),
-                ...identityModules(options),
+                ...identityModules(passport.verify),
                 ...commerceModules(options),
                 ...learningModules(options),
                 ...careerModules(options),
@@ -35,6 +37,7 @@ export class AppModule {
                 ...realtimeModules(),
             ],
             providers: [
+                ...integrationsProviders(options, passport.verify),
                 { provide: APP_FILTER, useClass: ErrorsFilter },
                 { provide: APP_GUARD, useClass: RateLimitGuard },
                 { provide: APP_GUARD, useClass: OriginGuard },

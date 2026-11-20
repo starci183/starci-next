@@ -2,37 +2,45 @@
 title: Đăng ký
 route: /sign-in
 area: auth
+reviewed: 2026-11-20
 ---
 
-Route: `/sign-in` (chế độ Đăng ký, bấm "Đăng ký"). Cùng khung với `auth/sign-in`: không thanh bên, không thanh trên; trang trắng, thẻ chỉ có viền 1px.
+**Concept: Đăng ký.** Mục tiêu: tạo tài khoản bằng email và mật khẩu. Thao tác: `POST /auth/signup` (email, mật khẩu, ngôn ngữ); API gửi email có liên kết xác nhận và luôn trả thành công, kể cả khi email đã có tài khoản. Bố cục: như màn Đăng nhập. Nút chính: "Đăng ký", chỉ bật khi đã tick điều khoản. Lọc: không có. Khác bản hiện tại: không còn ô mã 6 số; sau khi bấm Đăng ký người học thấy màn "Kiểm tra email của bạn". Không còn báo "email này đã có tài khoản" (API không tiết lộ). Không còn nút xã hội trừ Google khi đã cấu hình. Lưu ý xung đột: không có.
 
-## Khung (không có thanh bên, thanh trên)
+## Khung vào app
 
-Vì sao: người chưa đăng nhập chưa có điều hướng nào, nên `AppHeader` và `AppSidebar` trả về rỗng; chỉ còn nút tròn đổi ngôn ngữ ở góc phải trên nền trắng.
-Luật: `theme-and-type`, `locale-switch-round-dropdown.md`, `signed-out-header-avatar-modal.md`.
-Grammar: `WorkspaceShell` (`frame/WorkspaceShell/index.d.ts`); code `fe/apps/app/src/components/blocks/AppSidebar/index.tsx`, `AppHeader/index.tsx`.
+Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
 
-## Thương hiệu giữa trang
+Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).
 
-Vì sao: logo và tên "StarCi Next" đậm, căn giữa phía trên thẻ, như `auth/sign-in`.
-Luật: `theme-and-type`, `verify-against-visualize.md`.
-Grammar: `IdentityLockup` (`composite/IdentityLockup`); code `fe/apps/app/src/components/blocks/AuthPanel`.
+Grammar: `EntryFrame`, `Form`
 
-## Thẻ đăng ký (form)
+## Học bản chất, để vibe-code mà không mất kiểm soát.
 
-Vì sao: thẻ đăng ký là khung đăng nhập nên vẫn là thẻ (viền 1px, không bóng). Trong thẻ: tiêu đề "Tạo tài khoản", hai nút mạng xã hội viền, vạch "hoặc", ô email, ô mật khẩu kèm dòng gợi ý "Từ 6 đến 256 ký tự", ô nhập lại mật khẩu, hộp kiểm đồng ý điều khoản và MỘT nút chính "Đăng ký". Nút chính ở trạng thái tắt (nhạt) cho tới khi tích đồng ý, đúng với ảnh. Hộp kiểm chưa tích là ô vuông viền; khi tích mới dùng màu accent. Cuối thẻ "Đã có tài khoản? Đăng nhập". Ghi chú lỗi ảnh: dòng điều khoản ở 1440 xuống dòng và để lại chữ "tư" mồ côi; ở 390 hộp kiểm nằm lệch xuống so với dòng đầu của nhãn.
-Luật: `surface-layering` (thẻ chỉ cho vật thật, một nút chính), `theme-and-type` (ô trắng viền 1px, accent chỉ cho điều khiển đã chọn và nút chính).
-Grammar: `SurfaceCard measure="formCompact"`, `TextField`, `Checkbox`, `Button intent="commit" isDisabled`, `TextAction` (`fe/apps/app/src/components/blocks/AuthPanel/component.tsx`).
+Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
 
-## Phản biện
+Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
 
-Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
-Luật: `surface-layering`, `theme-and-type`.
-Grammar: không phải vùng của màn hình; không có thành phần.
+Grammar: `Stack`, `Heading`, `Text`
 
-- 1440: dòng điều khoản xuống dòng và để chữ "tư" mồ côi ở dòng hai; ở 390 dòng không còn mồ côi nhưng nhãn vẫn đậm và dài.
-- 1440, 390, hộp kiểm đồng ý: nhãn đậm ngang nhãn ô nhập, "Điều khoản sử dụng" và "Chính sách quyền riêng tư" không có dấu hiệu là liên kết (không gạch chân, không màu); hộp kiểm dính sát nút chính bên dưới (khoảng 12px) trong khi các ô khác cách nhau rộng hơn.
-- 1440, 390, dòng gợi ý "Từ 6 đến 256 ký tự": nhỏ hơn 12px và xám nhạt, tương phản thấp.
-- 1440, 390, thẻ: bo góc khoảng 24px lớn hơn nút và ô nhập.
-- 1440, 390, logo trên ô vuông xám nhạt và nút ngôn ngữ tròn tô xám: nền tô thay vì viền 1px; nút ngôn ngữ trôi riêng ở góc phải.
-- 1440, 390, placeholder, "Hiện mật khẩu" xám nhạt cỡ 12, tương phản thấp; "Đăng nhập" ở cuối thẻ không gạch chân, như một nhãn đậm.
+## Thẻ biểu mẫu
+
+Vì sao: cùng thẻ với đăng nhập; thêm ô nhập lại mật khẩu và điều khoản.
+
+Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).
+
+Grammar: `Form`, `Input` kind `newPassword`, `Checkbox`, `Button`
+
+## Thay đổi so với bản đã duyệt:
+
+Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.
+
+Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+
+Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.
+
+– Mật khẩu từ 8 đến 72 ký tự (giới hạn của API), không còn 6 đến 256.
+
+– Không còn mã 6 số; xác nhận bằng liên kết trong email.
+
+– Bỏ báo email đã đăng ký.

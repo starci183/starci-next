@@ -1,13 +1,15 @@
-import { learnersOf, type RefusalBody } from "../../fixtures/builders/identity.builder"
+import { randomBytes } from "node:crypto"
+import { learnersOf, type RefusalBody } from "../../fixtures/builders/learner.builder"
 import { identityDoors } from "../../world/identity-doors.client"
 import { identityModules } from "../../world/identity-world.options"
 import { useTestWorld } from "../../world/use-test-world"
 
-const VERIFY = { challenge: "c", code: "123456" }
+/** A password generated for the run: no secret literal exists. */
+const PASSWORD = randomBytes(12).toString("hex")
 
 /**
  * identity door refusals (integration): every door refuses a missing or foreign Origin, malformed and unexpected bodies
- * are refused before any provider call, and the strict rate tier answers 429 before the door runs.
+ * are refused before any account is read, and the strict rate tier answers 429 before the door runs.
  */
 describe("identity door refusals (integration)", () => {
     const world = useTestWorld({ modules: identityModules, apps: ["core"] })
@@ -17,16 +19,14 @@ describe("identity door refusals (integration)", () => {
     beforeEach(() => doors().reset())
 
     it.each([
-        ["/api/identity/sign-in", { identifier: "a", password: "b" }],
-        ["/api/identity/sign-in/verify", VERIFY],
-        ["/api/identity/challenge/resend", { challenge: "c" }],
-        ["/api/identity/sign-up", { email: "a@starci.test", password: "secret", acceptTerms: true }],
-        ["/api/identity/sign-up/verify", VERIFY],
-        ["/api/identity/password-reset", { email: "a@starci.test" }],
-        ["/api/identity/password-reset/verify", { ...VERIFY, password: "secret" }],
-        ["/api/identity/social/start", { provider: "github" }],
-        ["/api/identity/social/exchange", { code: "c", state: "s" }],
-        ["/api/identity/session/sign-out", undefined],
+        ["/auth/login", { email: "a@starci.test", password: PASSWORD }],
+        ["/auth/signup", { email: "a@starci.test", password: PASSWORD }],
+        ["/auth/resend", { email: "a@starci.test" }],
+        ["/auth/confirm", { token: "t".repeat(32) }],
+        ["/auth/forgot", { email: "a@starci.test" }],
+        ["/auth/reset", { token: "t".repeat(32), password: PASSWORD }],
+        ["/auth/refresh", undefined],
+        ["/auth/logout", undefined],
     ])("refuses %s without an allowed Origin", async (path, body) => {
         const core = world.apps.core?.api
         const absent = await core?.post<RefusalBody>(path, body)
@@ -36,21 +36,18 @@ describe("identity door refusals (integration)", () => {
         expect([foreign?.status, foreign?.body.code]).toEqual([403, "HTTP_SECURITY_ORIGIN_REJECTED"])
     })
 
-    it("refuses malformed or unexpected bodies before any provider call", async () => {
-        const calls = (await doors().idp.requests()).length
+    it("refuses malformed or unexpected bodies", async () => {
+        const missing = await doors().post<RefusalBody>("/auth/login", {})
+        const extra = await doors().post<RefusalBody>("/auth/login", { ...nextLearner(), admin: true })
+        const token = await doors().post<RefusalBody>("/auth/confirm", { token: "short" })
 
-        const missing = await doors().post<RefusalBody>("/api/identity/sign-in", {})
-        const extra = await doors().post<RefusalBody>("/api/identity/sign-in", { ...nextLearner(), admin: true })
-        const code = await doors().post<RefusalBody>("/api/identity/sign-in/verify", { ...VERIFY, code: "12345a" })
-
-        expect([missing, extra, code].map((r) => [r.status, r.body.code])).toEqual(
+        expect([missing, extra, token].map((r) => [r.status, r.body.code])).toEqual(
             Array(3).fill([400, "HTTP_SECURITY_REQUEST_INVALID"]),
         )
-        await expect(doors().idp.requests()).resolves.toHaveLength(calls)
     })
 
     it("rate limits the strict tier before the door runs", async () => {
-        const results = await Promise.all(Array.from({ length: 31 }, () => doors().post("/api/identity/sign-in", {})))
+        const results = await Promise.all(Array.from({ length: 31 }, () => doors().post("/auth/login", {})))
         const statuses = results.map((result) => result.status)
 
         expect(statuses.filter((status) => status === 400)).toHaveLength(30)

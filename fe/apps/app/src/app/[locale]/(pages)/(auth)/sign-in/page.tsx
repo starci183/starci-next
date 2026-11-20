@@ -11,8 +11,8 @@ type PageProps = {
 
 /** The locale sign-in slot: it mounts the product identity sign-in page and nothing else. */
 const Page = async (props: PageProps): Promise<ReactElement> => {
-    const { returnTo, signedOut, error } = await props.searchParams
-    return <SignInPage returnTo={returnTo} signedOut={signedOut} error={error} />
+    const { returnTo, signedOut, error, auth, reset } = await props.searchParams
+    return <SignInPage returnTo={returnTo} signedOut={signedOut} error={error} auth={auth} reset={reset} />
 }
 
 export default Page

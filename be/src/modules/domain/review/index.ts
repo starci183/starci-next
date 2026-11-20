@@ -13,7 +13,7 @@
  */
 export { REVIEW_ERROR_KINDS } from "./errors/review.error"
 export { REVIEW_MESSAGES } from "./messages/review.messages"
-export { reviewEntities, reviewMigrations } from "./persistence/connection"
+export { reviewEntities } from "./persistence/entities"
 export { ReviewDeckService } from "./review-deck.service"
 export { ReviewGradeService } from "./review-grade.service"
 export { ReviewImportService } from "./review-import.service"

@@ -106,14 +106,13 @@
       },
       "forgot": {
         "title": "Quên mật khẩu",
-        "subtitle": "Nhập email đã đăng ký, chúng tôi sẽ gửi mã để đặt lại mật khẩu.",
-        "submit": "Gửi mã",
+        "subtitle": "Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết để đặt mật khẩu mới.",
+        "submit": "Gửi liên kết",
         "promptQuestion": "Nhớ ra mật khẩu?",
         "promptAction": "Đăng nhập"
       },
       "forgotLink": "Quên mật khẩu?",
       "field": {
-        "identifier": "Email hoặc tên đăng nhập",
         "email": "Email",
         "password": "Mật khẩu",
         "newPassword": "Mật khẩu mới",
@@ -127,49 +126,59 @@
         "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư"
       },
       "social": {
-        "facebook": "Tiếp tục với Facebook",
-        "github": "Tiếp tục với GitHub",
-        "facebookName": "Facebook",
-        "githubName": "GitHub",
+        "google": "Tiếp tục với Google",
+        "googleName": "Google",
         "or": "hoặc",
         "redirecting": "Đang chuyển sang {provider}…"
       },
-      "code": {
-        "title": "Xác minh email",
-        "subtitle": "Nhập mã 6 số vừa gửi tới {email}.",
-        "subtitleNoEmail": "Nhập mã 6 số vừa gửi tới email của bạn.",
-        "label": "Mã xác minh",
-        "lifetime": "Mã có hiệu lực trong {minutes} phút.",
-        "submit": "Xác minh",
-        "submitReset": "Đặt lại mật khẩu",
-        "resend": "Gửi lại mã",
-        "anotherEmail": "Dùng email khác"
-      },
       "notice": {
         "rateLimited": "Bạn thao tác quá nhanh, hãy thử lại sau.",
-        "rateLimitedIn": "Thử lại sau {time}",
-        "rateLimitedOver": "Bạn có thể thử lại ngay bây giờ.",
-        "credentials": "Email, tên đăng nhập hoặc mật khẩu không đúng. Hãy thử lại.",
+        "credentials": "Email hoặc mật khẩu không đúng. Hãy thử lại.",
         "signedOut": "Bạn đã đăng xuất.",
         "passwordReset": "Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới.",
-        "codeResent": "Đã gửi lại mã.",
-        "challengeExpired": "Mã đã hết hạn. Hãy nhập lại thông tin để nhận mã mới.",
-        "socialFailed": "Chưa đăng nhập được bằng tài khoản mạng xã hội. Hãy thử lại.",
-        "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau."
+        "socialFailed": "Chưa đăng nhập được bằng Google. Hãy thử lại.",
+        "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau.",
+        "linkResent": "Đã gửi lại email.",
+        "notConfirmed": "Email này chưa được xác nhận. Hãy mở liên kết đã gửi, hoặc gửi lại."
       },
       "error": {
-        "username": "Tên đăng nhập cần từ 3 đến 100 ký tự.",
-        "emailRegistered": "Email này đã có tài khoản. Hãy đăng nhập.",
+        "email": "Hãy nhập địa chỉ email hợp lệ.",
         "password": "Mật khẩu cần từ {min} đến {max} ký tự.",
-        "mismatch": "Mật khẩu nhập lại chưa khớp.",
-        "code": "Mã chưa đúng. Hãy kiểm tra lại.",
-        "codeShort": "Hãy nhập đủ 6 số của mã.",
-        "codeAttempts": "Mã chưa đúng. Bạn còn {count} lần thử."
+        "mismatch": "Mật khẩu nhập lại chưa khớp."
+      },
+      "sent": {
+        "title": "Kiểm tra email của bạn",
+        "subtitleConfirm": "Chúng tôi đã gửi một liên kết tới {email}. Hãy mở liên kết để xác nhận email.",
+        "subtitleReset": "Nếu {email} có tài khoản, chúng tôi đã gửi liên kết để đặt mật khẩu mới.",
+        "resend": "Gửi lại email",
+        "anotherEmail": "Dùng email khác"
+      },
+      "reset": {
+        "title": "Đặt mật khẩu mới",
+        "subtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
+        "submit": "Đặt mật khẩu",
+        "invalid": "Liên kết này không còn hiệu lực. Hãy xin liên kết mới.",
+        "again": "Về trang đăng nhập"
+      },
+      "confirm": {
+        "signIn": "Đăng nhập",
+        "working": {
+          "title": "Đang xác nhận email",
+          "text": "Vui lòng chờ trong giây lát."
+        },
+        "done": {
+          "title": "Đã xác nhận email",
+          "text": "Tài khoản đã được kích hoạt. Bạn có thể đăng nhập ngay."
+        },
+        "invalid": {
+          "title": "Liên kết không còn hiệu lực",
+          "text": "Liên kết đã dùng, hết hạn hoặc chưa đầy đủ. Hãy đăng nhập để nhận liên kết mới."
+        },
+        "unavailable": {
+          "title": "Chưa thể thực hiện",
+          "text": "Chưa xác nhận được email lúc này."
+        }
       }
-    },
-    "signInCallback": {
-      "title": "Đang đăng nhập",
-      "status": "Đang hoàn tất đăng nhập…"
     },
     "plans": {
       "title": "Premium",
@@ -1888,7 +1897,7 @@
         "endReviewer": "Kết thúc",
         "appointTitle": "Chỉ định người duyệt",
         "reviewerSubject": "Mã tài khoản người duyệt",
-        "reviewerSubjectHint": "Mã tài khoản Keycloak (subject) của người đã có vai trò Người duyệt.",
+        "reviewerSubjectHint": "Mã tài khoản của người đã có vai trò Người duyệt.",
         "partsLabel": "Phần được duyệt",
         "capacityLabel": "Số mục tối đa cùng lúc",
         "appoint": "Chỉ định",

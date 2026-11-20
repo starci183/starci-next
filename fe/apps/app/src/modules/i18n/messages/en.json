@@ -106,14 +106,13 @@
       },
       "forgot": {
         "title": "Forgot password",
-        "subtitle": "Enter your registered email and we will send a code to reset your password.",
-        "submit": "Send code",
+        "subtitle": "Enter your registered email and we will send a link to set a new password.",
+        "submit": "Send link",
         "promptQuestion": "Remembered your password?",
         "promptAction": "Sign in"
       },
       "forgotLink": "Forgot password?",
       "field": {
-        "identifier": "Email or username",
         "email": "Email",
         "password": "Password",
         "newPassword": "New password",
@@ -127,49 +126,59 @@
         "terms": "I agree to the Terms of Use and the Privacy Policy"
       },
       "social": {
-        "facebook": "Continue with Facebook",
-        "github": "Continue with GitHub",
-        "facebookName": "Facebook",
-        "githubName": "GitHub",
+        "google": "Continue with Google",
+        "googleName": "Google",
         "or": "or",
         "redirecting": "Redirecting to {provider}…"
       },
-      "code": {
-        "title": "Verify your email",
-        "subtitle": "Enter the 6-digit code we just sent to {email}.",
-        "subtitleNoEmail": "Enter the 6-digit code we just sent to your email.",
-        "label": "Verification code",
-        "lifetime": "The code is valid for {minutes} minutes.",
-        "submit": "Verify",
-        "submitReset": "Reset password",
-        "resend": "Resend code",
-        "anotherEmail": "Use another email"
-      },
       "notice": {
         "rateLimited": "You are doing that too fast, please try again later.",
-        "rateLimitedIn": "Try again in {time}",
-        "rateLimitedOver": "You can try again now.",
-        "credentials": "The email, username or password is incorrect. Please try again.",
+        "credentials": "The email or password is incorrect. Please try again.",
         "signedOut": "You have signed out.",
         "passwordReset": "Your password was reset. Sign in with the new password.",
-        "codeResent": "A new code was sent.",
-        "challengeExpired": "The code has expired. Enter your details again to get a new one.",
-        "socialFailed": "We could not sign you in with that account. Please try again.",
-        "unavailable": "This is unavailable right now. Please try again shortly."
+        "socialFailed": "We could not sign you in with Google. Please try again.",
+        "unavailable": "This is unavailable right now. Please try again shortly.",
+        "linkResent": "The email was sent again.",
+        "notConfirmed": "This email is not confirmed yet. Open the link we sent, or send it again."
       },
       "error": {
-        "username": "A username needs 3 to 100 characters.",
-        "emailRegistered": "This email already has an account. Sign in instead.",
+        "email": "Enter a valid email address.",
         "password": "The password needs {min} to {max} characters.",
-        "mismatch": "The passwords do not match.",
-        "code": "That code is not right. Check it and try again.",
-        "codeShort": "Enter all 6 digits of the code.",
-        "codeAttempts": "That code is not right. You have {count} attempts left."
+        "mismatch": "The passwords do not match."
+      },
+      "sent": {
+        "title": "Check your email",
+        "subtitleConfirm": "We sent a link to {email}. Open it to confirm your email and finish.",
+        "subtitleReset": "If {email} has an account, we sent a link to set a new password.",
+        "resend": "Send the email again",
+        "anotherEmail": "Use another email"
+      },
+      "reset": {
+        "title": "Set a new password",
+        "subtitle": "Choose a new password for your account.",
+        "submit": "Set password",
+        "invalid": "This link is no longer valid. Ask for a new one.",
+        "again": "Back to sign in"
+      },
+      "confirm": {
+        "signIn": "Sign in",
+        "working": {
+          "title": "Confirming your email",
+          "text": "One moment while we confirm your email."
+        },
+        "done": {
+          "title": "Email confirmed",
+          "text": "Your account is active. You can sign in now."
+        },
+        "invalid": {
+          "title": "This link is no longer valid",
+          "text": "The link was used, expired or incomplete. Sign in to get a new one."
+        },
+        "unavailable": {
+          "title": "Not available",
+          "text": "We could not confirm your email right now."
+        }
       }
-    },
-    "signInCallback": {
-      "title": "Signing in",
-      "status": "Finishing sign-in…"
     },
     "plans": {
       "title": "Premium",
@@ -1888,7 +1897,7 @@
         "endReviewer": "End",
         "appointTitle": "Appoint a reviewer",
         "reviewerSubject": "Reviewer account id",
-        "reviewerSubjectHint": "The Keycloak subject of an account that holds the Reviewer role.",
+        "reviewerSubjectHint": "The account id of an account that holds the Reviewer role.",
         "partsLabel": "Parts they review",
         "capacityLabel": "Most items at once",
         "appoint": "Appoint",

@@ -41,12 +41,10 @@ export {
     ReviewGlyph,
     SunGlyph,
 } from "./leaves/Icon"
-export { AuthCodeForm } from "./composites/AuthCodeForm"
-export type { AuthCodeLabels } from "./composites/AuthCodeForm"
 export { AuthDetailsForm } from "./composites/AuthDetailsForm"
 export type { AuthDetailsLabels } from "./composites/AuthDetailsForm"
 export { AuthSocialButtons } from "./composites/AuthSocialButtons"
-export type { AuthSocialProvider } from "./composites/AuthSocialButtons"
+
 export { UpsellRow } from "./composites/UpsellRow"
 export { PracticeEditor } from "./composites/PracticeEditor"
 export type { PracticeEditorLabels, PracticeLanguageOption } from "./composites/PracticeEditor"

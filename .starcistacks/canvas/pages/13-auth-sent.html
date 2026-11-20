@@ -1,0 +1,176 @@
+<section class="page" id="auth-sent" data-pid="auth/sent" data-route="/sign-in" data-title="Đã gửi email">
+  <h2>Đã gửi email</h2>
+  <div class="pid">gallery: auth/sent</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đã gửi email · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Đã gửi email · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đã gửi email · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đã gửi email.</b> Mục tiêu: báo người học mở email để hoàn tất đăng ký. Thao tác: <code>POST /auth/resend</code> (email, ngôn ngữ) cho nút Gửi lại; liên kết trong email mở trang xác nhận. Bố cục: cùng thẻ với đăng nhập, thay ruột bằng một dòng giải thích và hai hành động. Nút chính: "Gửi lại email". Lọc: không có. Khác bản hiện tại: thay cho màn nhập mã 6 số; không còn ô mã, đếm lần thử hay hạn 10 phút. Lưu ý xung đột: không có.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.</p>
+      <p>Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).</p>
+      <p>Grammar: <code>Stack</code>, <code>Heading</code>, <code>Text</code></p>
+      <h4>Báo đã gửi</h4>
+      <p>Vì sao: người học cần biết đã gửi tới đâu và làm gì nếu không thấy.</p>
+      <p>Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).</p>
+      <p>Grammar: <code>Heading</code>, <code>Text</code>, <code>Button</code> intent <code>alternative</code>, <code>TextAction</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.</p>
+      <p>Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).</p>
+      <p>Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.</p>
+      <p>– Thay màn nhập mã 6 số bằng màn "Kiểm tra email của bạn".</p>
+      <p>– Gửi lại email có thông báo xanh "Đã gửi lại email".</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sent-resent" data-pid="auth/sent-resent" data-route="/sign-in" data-title="Đã gửi email, gửi lại">
+  <h2>Đã gửi email, gửi lại</h2>
+  <div class="pid">gallery: auth/sent-resent</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đã gửi email, gửi lại · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<div class="al o"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><b>Đã gửi lại email</b></div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Đã gửi email, gửi lại · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<div class="al o"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><b>Đã gửi lại email</b></div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đã gửi email, gửi lại · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đã gửi email, gửi lại.</b> Trạng thái của màn này: vừa gửi lại email. Mục tiêu: báo người học mở email. Thao tác: <code>POST /auth/resend</code> (email, ngôn ngữ) cho nút Gửi lại; liên kết trong email mở trang xác nhận. Bố cục: như màn Đã gửi email, thêm một Alert xanh trên nút. Nút chính: "Gửi lại email". Lọc: không có. Khác bản hiện tại: thay cho "Đã gửi lại mã". Lưu ý xung đột: không có.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.</p>
+      <p>Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).</p>
+      <p>Grammar: <code>Stack</code>, <code>Heading</code>, <code>Text</code></p>
+      <h4>Thông báo</h4>
+      <p>Vì sao: xác nhận việc gửi lại đã chạy.</p>
+      <p>Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).</p>
+      <p>Grammar: <code>Alert</code> tone <code>affirmative</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.</p>
+      <p>Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).</p>
+      <p>Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.</p>
+      <p>– Thông báo nói về email, không còn nói về mã.</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sent-not-confirmed" data-pid="auth/sent-not-confirmed" data-route="/sign-in" data-title="Chưa xác nhận email">
+  <h2>Chưa xác nhận email</h2>
+  <div class="pid">gallery: auth/sent-not-confirmed</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Chưa xác nhận email · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<div class="al w"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><div><b>Email này chưa được xác nhận</b>Mở liên kết chúng tôi đã gửi, hoặc gửi lại.</div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Chưa xác nhận email · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Kiểm tra email của bạn</h1><div class="sb">Chúng tôi đã gửi một liên kết tới <b class="f2">nam@vidu.vn</b>. Hãy mở liên kết để xác nhận email.</div></div>
+<div class="al w"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><div><b>Email này chưa được xác nhận</b>Mở liên kết chúng tôi đã gửi, hoặc gửi lại.</div></div>
+<span class="btn secondary block lg">Gửi lại email</span>
+<div class="sw"><a class="u b5" style="color:var(--fg)">Dùng email khác</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Chưa xác nhận email · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Chưa xác nhận email.</b> Trạng thái của màn này: đăng nhập đúng mật khẩu nhưng email chưa xác nhận (<code>IDENTITY_EMAIL_NOT_CONFIRMED</code>). Mục tiêu: đưa người học tới việc còn thiếu. Thao tác: <code>POST /auth/resend</code> (email, ngôn ngữ) cho nút Gửi lại; liên kết trong email mở trang xác nhận. Bố cục: như màn Đã gửi email, thêm một Alert vàng. Nút chính: "Gửi lại email". Lọc: không có. Khác bản hiện tại: trạng thái mới, trước đây không có bước xác nhận email riêng. Lưu ý xung đột: không có.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.</p>
+      <p>Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).</p>
+      <p>Grammar: <code>Stack</code>, <code>Heading</code>, <code>Text</code></p>
+      <h4>Thông báo</h4>
+      <p>Vì sao: người học đã nhập đúng mật khẩu, chỉ thiếu bước xác nhận.</p>
+      <p>Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).</p>
+      <p>Grammar: <code>Alert</code> tone <code>cautionary</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.</p>
+      <p>Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).</p>
+      <p>Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.</p>
+      <p>– Màn mới.</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-confirm" data-pid="auth/confirm" data-route="/sign-in/confirm" data-title="Xác nhận email">
+  <h2>Xác nhận email</h2>
+  <div class="pid">gallery: auth/confirm</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Xác nhận email · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Đã xác nhận email</h1><div class="sb">Tài khoản đã được kích hoạt. Bạn có thể đăng nhập ngay.</div></div>
+<span class="btn primary block lg">Đăng nhập</span></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Xác nhận email · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đã xác nhận email</h1><div class="sb">Tài khoản đã được kích hoạt. Bạn có thể đăng nhập ngay.</div></div>
+<span class="btn primary block lg">Đăng nhập</span></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Xác nhận email · route: /sign-in/confirm · area: auth</div>
+      <p class="intro"><b>Concept: Xác nhận email.</b> Mục tiêu: người học bấm liên kết trong email và biết tài khoản đã hoạt động. Thao tác: <code>POST /auth/confirm</code> (token trong địa chỉ), gọi một lần khi mở trang; liên kết trong email là <code>/auth/confirm?token=…</code> và được chuyển tới trang này. Bố cục: logo, nút đổi ngôn ngữ và một thẻ ở giữa. Lúc đang xác nhận thẻ chỉ có vòng quay. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: trang mới. Lưu ý xung đột: không có.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.</p>
+      <p>Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).</p>
+      <p>Grammar: <code>Stack</code>, <code>Heading</code>, <code>Text</code></p>
+      <h4>Kết quả xác nhận</h4>
+      <p>Vì sao: một câu nói rõ kết quả và một nút đi tiếp.</p>
+      <p>Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).</p>
+      <p>Grammar: <code>SurfaceCard</code>, <code>Heading</code>, <code>Button</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.</p>
+      <p>Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).</p>
+      <p>Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.</p>
+      <p>– Trang mới.</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-confirm-expired" data-pid="auth/confirm-expired" data-route="/sign-in/confirm" data-title="Xác nhận email, liên kết hết hạn">
+  <h2>Xác nhận email, liên kết hết hạn</h2>
+  <div class="pid">gallery: auth/confirm-expired</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Xác nhận email, liên kết hết hạn · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Liên kết không còn hiệu lực</h1><div class="sb">Liên kết đã dùng, hết hạn hoặc chưa đầy đủ. Hãy đăng nhập để nhận liên kết mới.</div></div>
+<span class="btn primary block lg">Đăng nhập</span></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Xác nhận email, liên kết hết hạn · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Liên kết không còn hiệu lực</h1><div class="sb">Liên kết đã dùng, hết hạn hoặc chưa đầy đủ. Hãy đăng nhập để nhận liên kết mới.</div></div>
+<span class="btn primary block lg">Đăng nhập</span></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Xác nhận email, liên kết hết hạn · route: /sign-in/confirm · area: auth</div>
+      <p class="intro"><b>Concept: Xác nhận email, liên kết hết hạn.</b> Trạng thái của màn này: liên kết đã dùng, hết hạn hoặc thiếu token (<code>IDENTITY_RESET_TOKEN_INVALID</code>). Mục tiêu: chỉ đường để lấy liên kết mới. Thao tác: <code>POST /auth/confirm</code>; lấy liên kết mới bằng <code>POST /auth/resend</code> sau khi đăng nhập. Bố cục: như màn Xác nhận email. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: trang mới. Lưu ý xung đột: không có.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.</p>
+      <p>Luật: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).</p>
+      <p>Grammar: <code>Stack</code>, <code>Heading</code>, <code>Text</code></p>
+      <h4>Kết quả xác nhận</h4>
+      <p>Vì sao: người học cần biết liên kết hỏng và bước kế tiếp.</p>
+      <p>Luật: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css của app).</p>
+      <p>Grammar: <code>SurfaceCard</code>, <code>Heading</code>, <code>Button</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>Vì sao: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu bằng liên kết trong email.</p>
+      <p>Luật: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).</p>
+      <p>Grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên.</p>
+      <p>– Trang mới.</p>
+    </div>
+  </div>
+</section>

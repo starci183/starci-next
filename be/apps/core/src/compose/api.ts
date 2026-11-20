@@ -1,9 +1,10 @@
 import type { DynamicModule, Type } from "@nestjs/common"
+import { AuthHttpModule } from "@features/api/auth"
 import { AttemptGraphqlModule } from "@features/api/attempt"
 import { CareerGraphqlModule } from "@features/api/career"
 import { CommerceGraphqlModule } from "@features/api/commerce"
 import { HubGraphqlModule } from "@features/api/hub"
-import { IdentityHttpModule } from "@features/api/identity"
+import { IdentityGraphqlModule } from "@features/api/identity"
 import { IncidentGraphqlModule } from "@features/api/incident"
 import { LessonGraphqlModule, LessonHttpModule } from "@features/api/lesson"
 import { McpGraphqlModule, McpHttpModule } from "@features/api/mcp"
@@ -23,7 +24,8 @@ import { GraphqlModule } from "@modules/platform/graphql"
 export const apiModules = (): Array<Type<unknown> | DynamicModule> => [
     GraphqlModule.register({ isGlobal: true }),
     CommerceGraphqlModule.register({}),
-    IdentityHttpModule.register({}),
+    AuthHttpModule.register({}),
+    IdentityGraphqlModule.register({}),
     LessonGraphqlModule.register({}),
     LessonHttpModule.register({}),
     AttemptGraphqlModule.register({}),
