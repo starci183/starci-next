@@ -110,8 +110,7 @@
 {"findings":[],"hash":"e8b4a3a0caecd50fc1a2074c83614a94cdaaebc95cb8e9ccccd92a44007b3f58","path":"fe/packages/starci-next-ui/src/frames/BarWide/classNames.ts","step":"prettier"}
 {"findings":[],"hash":"246f02ef92bb8166096d9e2867276c31571dce3aaaa916347de6cef10a09de2b","path":"fe/packages/starci-next-ui/src/frames/BarWide/index.tsx","step":"prettier"}
 {"findings":[],"hash":"93188a29eae680503f4bbb6bced667c743ae0a2d329ffb739cc951e663e4ee98","path":"fe/packages/starci-next-ui/src/frames/SiteShell/index.tsx","step":"prettier"}
-{"findings":[],"hash":"01d4d5031423c9562a2fb7aef5501bca4758ef1326be6e53acb0c103d8cc5fb2","path":"fe/packages/starci-next-ui/src/index.ts","step":"prettier"}
-{"findings":[],"hash":"51f016513e11961671618ec76ae37c2eab9d7da16339125160b3a35369014524","path":"fe/packages/starci-next-ui/src/index.ts","step":"prettier"}
+{"findings":[],"hash":"9128f37fb0af4c92f33dc035eaa63b8b9df578762cb29b0c151789f3f2de6e54","path":"fe/packages/starci-next-ui/src/index.ts","step":"prettier"}
 {"findings":[],"hash":"d27f8f69d99ad7ee9ca47eeb3d06a594f6bc115aa333c69d01eb78633f65e1dc","path":"fe/packages/starci-next-ui/src/leaves/Art/index.tsx","step":"prettier"}
 {"findings":[],"hash":"67f9a9a30db1b3002b3c87fb8376d719bb6176e32d700be07b8dc4223018fb8e","path":"fe/packages/starci-next-ui/src/leaves/AttemptNotice/index.tsx","step":"prettier"}
 {"findings":[],"hash":"8d584f181e541b2cd9ad2133392680f0d6c0eeb17156eaf81bdf5da2a4e4d5b9","path":"fe/packages/starci-next-ui/src/leaves/Icon/index.tsx","step":"prettier"}
