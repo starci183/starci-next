@@ -39,6 +39,8 @@ const tap = (p, name) =>
 const addDeck = async (p) => {
     await p.waitForTimeout(2000)
     await tap(p, /Thêm bộ thẻ/)
+    await p.waitForTimeout(3000)
+    await p.mouse.move(2, 2)
     await p.waitForTimeout(1500)
 }
 // Opens the first deck of the list: the screen is shot on the deck page.

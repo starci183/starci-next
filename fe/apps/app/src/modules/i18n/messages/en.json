@@ -915,8 +915,6 @@
         "tried": "Tried",
         "untried": "Not tried",
         "unavailable": "Not available in this state",
-      "pageError": "Progress could not be loaded",
-      "pageErrorText": "The server did not answer. Your progress is safe. Try again in a few seconds.",
         "progress": "Tried {tried}/{total} branches",
         "back": "Back one step"
       },
@@ -2344,6 +2342,8 @@
       "title": "Your progress",
       "description": "Read from Essentials, Harness, Projects, Practice and Review",
       "unavailable": "This part could not be loaded.",
+      "pageError": "Progress could not be loaded",
+      "pageErrorText": "The server did not answer. Your progress is safe. Try again in a few seconds.",
       "ribbon": {
         "label": "Progress summary",
         "proved": "Concepts proved",

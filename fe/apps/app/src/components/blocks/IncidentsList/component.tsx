@@ -1,4 +1,14 @@
-import { Button, Grid, Heading, Illustration, Page, Stack, Text, type PageHeaderContent } from "@starci/grammar/common"
+import {
+    Button,
+    Grid,
+    Heading,
+    Illustration,
+    Page,
+    Stack,
+    StaticsProvider,
+    Text,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -10,16 +20,16 @@ export type IncidentsScreenView = {
 
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const INCIDENTS_PLACEHOLDER: IncidentsScreenView = {
-    facts: ["xxxxxx", "xxxxxxxx"],
+    facts: ["", ""],
     groups: [
         {
             id: "placeholder",
-            label: "xxxxxxxxxx",
+            label: "",
             rows: [1, 2, 3].map((index) => ({
                 id: `placeholder-${index}`,
-                title: "xxxxxxxxxx",
-                description: "xxxxxxxx",
-                badge: "xxxxxx",
+                title: "",
+                description: "",
+                badge: "",
                 badgeTone: "success" as const,
                 href: "",
                 cta: "",
@@ -48,6 +58,8 @@ export type IncidentsListBaseProps = {
         readonly placeholder: IncidentsScreenView
         readonly slotLabels: SlotLabels
         readonly labels: IncidentsLabels
+        /** Where the statics (the empty-page picture) are served from. */
+        readonly staticsBaseUrl: string
     }
     readonly on: { readonly retry: () => void }
 }
@@ -87,7 +99,7 @@ const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: 
 /** The header of the page: the title, what it is and the facts of the read as its meta. */
 const headerOf = (labels: IncidentsLabels, meta: string | undefined): PageHeaderContent => ({
     title: labels.title,
-    description: labels.description,
+    description: `${labels.description} ${labels.runnerNote}`,
     breadcrumbs: "root",
     ...(meta === undefined ? {} : { meta }),
 })
@@ -104,11 +116,13 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
             placeholder={placeholder}
             labels={slotLabels}
             onRetry={props.on.retry}
-            header={(view) => headerOf(labels, [...view.facts, labels.runnerNote].join(" · "))}
+            header={(view) => headerOf(labels, view.facts.join(" · "))}
             headerFallback={headerOf(labels, undefined)}
             render={(view, isLoading) =>
                 view.groups.length === 0 ? (
-                    <NoneYet labels={labels} isLoading={isLoading} />
+                    <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
+                        <NoneYet labels={labels} isLoading={isLoading} />
+                    </StaticsProvider>
                 ) : (
                     <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
                 )

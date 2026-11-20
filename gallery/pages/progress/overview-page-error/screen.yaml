@@ -7,10 +7,10 @@ summary: "Không đọc được tiến độ: khung báo lỗi và nút Thử l
 shots:
   "390":
     file: 390.png
-    sha256: 407554995e2ded54b8caacab7615d8a9c2e325ba2bdd94f05fe9c13c8ac20918
+    sha256: db4cde005269ed300643ee17a71700c60ecac916b5fa23dee5712e0bb3abf928
   "1440":
     file: 1440.png
-    sha256: ca54f4dcd4fe1d3cedee3452a145de50f032fca1ed68874b27d2cbe738c03dc0
+    sha256: d595f5b979dc198d9fac4da44a64dea3f2eea495b13760702f74e47ca03d8f5b
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -91,6 +91,31 @@ audit:
           notes: ""
     - n: 3
       at: 2026-11-20T13:44:15.214Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lộ khoá i18n thô "app.progress.pageError" và "app.progress.pageErrorText" (1440); thiếu bản
+            dịch.
+        states:
+          verdict: open
+          notes: Lỗi cấp trang hiện khoá dịch thay cho câu chữ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:25.386Z
       lenses:
         order:
           verdict: open

@@ -739,7 +739,7 @@
     "incidents": {
       "pageTitle": "Sự cố",
       "title": "Sự cố",
-      "description": "Mỗi sự cố là một lỗi thật trong repo của thầy, viết như triệu chứng ở production. Bạn tìm lỗi, sửa cho các flow xanh, rồi nộp kèm giải thích.",
+      "description": "Mỗi sự cố là một lỗi thật trong kho mã của thầy, viết như triệu chứng ở môi trường thật. Bạn tìm lỗi, sửa cho các luồng chạy qua, rồi nộp kèm giải thích.",
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
@@ -915,8 +915,6 @@
         "tried": "Đã thử",
         "untried": "Chưa thử",
         "unavailable": "Không có ở trạng thái này",
-      "pageError": "Không tải được tiến độ",
-      "pageErrorText": "Máy chủ chưa trả lời. Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.",
         "progress": "Đã thử {tried}/{total} nhánh",
         "back": "Lùi một bước"
       },
@@ -2344,6 +2342,8 @@
       "title": "Tiến độ của bạn",
       "description": "Đọc từ Essentials, Harness, Projects, Luyện code và Ôn tập",
       "unavailable": "Chưa tải được phần này.",
+      "pageError": "Không tải được tiến độ",
+      "pageErrorText": "Máy chủ chưa trả lời. Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.",
       "ribbon": {
         "label": "Tóm tắt tiến độ",
         "proved": "Khái niệm đã chứng minh",

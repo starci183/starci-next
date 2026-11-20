@@ -4,6 +4,7 @@ import {
     Grid,
     Heading,
     Illustration,
+    StaticsProvider,
     Link,
     Meter,
     Page,
@@ -29,14 +30,14 @@ import type {
 
 /** The fake figures with the geometry of settled ones. */
 const placeholderFigures = (id: string): ReadonlyArray<ProgressFigureView> =>
-    [1, 2, 3, 4].map((index) => ({ id: `${id}-${index}`, term: "xxxxxx", value: 0 }))
+    [1, 2, 3, 4].map((index) => ({ id: `${id}-${index}`, term: "", value: 0 }))
 
 /** The fake list with the geometry of a settled one. */
 const placeholderList = (id: string): ProgressListView => ({
     id,
-    title: "xxxxxx",
-    rows: [1, 2].map((index) => ({ id: `${id}-${index}`, title: "xxxxxxxxxxxx", description: "xxxxxxxxxxxxxxxx" })),
-    empty: "xxxxxx",
+    title: "",
+    rows: [1, 2].map((index) => ({ id: `${id}-${index}`, title: "", description: "" })),
+    empty: "",
 })
 
 /** The fake progress with the geometry of a settled one. */
@@ -45,19 +46,19 @@ export const PROGRESS_PLACEHOLDER: ProgressPageView = {
     essentials: { lists: [placeholderList("essentials-parts")] },
     harness: { lists: [placeholderList("harness-builds")] },
     projects: {
-        figures: { title: "xxxxxx", items: placeholderFigures("projects") },
+        figures: { title: "", items: placeholderFigures("projects") },
         lists: [placeholderList("projects")],
     },
     practice: {
-        figures: { title: "xxxxxx", items: placeholderFigures("practice") },
+        figures: { title: "", items: placeholderFigures("practice") },
         lists: [placeholderList("practice")],
     },
-    review: { figures: { title: "xxxxxx", items: placeholderFigures("review") }, lists: [] },
+    review: { figures: { title: "", items: placeholderFigures("review") }, lists: [] },
     activity: [1, 2, 3].map((index) => ({
         id: `a${index}`,
-        title: "xxxxxxxxxxxx",
+        title: "",
         at: "2026-01-01T00:00:00.000Z",
-        when: "xxxx",
+        when: "",
     })),
     firstVisit: null,
     isFree: false,
@@ -70,6 +71,8 @@ export type ProgressOverviewBaseProps = {
         readonly placeholder: ProgressPageView
         readonly slotLabels: SlotLabels
         readonly labels: ProgressLabels
+        /** Where the statics (the first-visit picture) are served from. */
+        readonly staticsBaseUrl: string
     }
     readonly on: { readonly retry: () => void }
 }
@@ -293,7 +296,9 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
             }
             asideFallback={null}
             render={(view, isLoading) => (
-                <Ready view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
+                <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
+                    <Ready view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
+                </StaticsProvider>
             )}
             frame={(parts) => (
                 <Page header={parts.header}>
