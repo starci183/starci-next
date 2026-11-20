@@ -1,0 +1,101 @@
+schema: 1
+screen: projects/new
+title: Tạo dự án, form trống
+route: /projects/new
+area: projects
+summary: "Mục tiêu: đặt tên, chọn loại, nối repo và địa chỉ deploy rồi tạo dự án."
+code:
+  - features/pages/ProjectNewPage
+  - components/blocks/ProjectNew
+shots:
+  "390":
+    file: 390.png
+    sha256: 7c5b84edfbadf19265a5b4a5b83db026b87e42d0478bb674c70cffe89a3f20f6
+  "1440":
+    file: 1440.png
+    sha256: dfeda8e9f7059f24ce2fc9d3d736d0cf287ad82d80d2a1f7411955f403743803
+sections:
+  - id: s1
+    title: Biểu mẫu
+    shows: tên, loại (RadioGroup), repo, địa chỉ deploy; một nút chính "Tạo dự án" tắt kèm lý do cho tới
+      khi có tên.
+    why: RadioGroup cho giá trị chọn một, không dùng segmented control.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Chạy trong repo của bạn
+    shows: lệnh khởi tạo trong terminal và một dòng nói StarCi không áp kiến trúc lên repo.
+    why: terminal là mã nên dùng chữ mono.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:53.884Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: Nút "Tạo dự án" bị khoá nhưng không có dòng giải thích; canvas projects/new có dòng "Đặt tên
+            dự án trước khi tạo." dưới nút để nói vì sao khoá.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:56.290Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

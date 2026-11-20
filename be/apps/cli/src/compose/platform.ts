@@ -15,6 +15,7 @@ import { practiceEntities, practiceMigrations } from "@modules/domain/practice"
 import { reviewEntities, reviewMigrations } from "@modules/domain/review"
 import { relayEntities, relayMigrations } from "@modules/domain/relay"
 import { mcpEntities, mcpMigrations } from "@modules/domain/mcp"
+import { profileEntities, profileMigrations } from "@modules/domain/profile"
 import { ClockModule } from "@modules/platform/clock"
 import {
     DatabaseModule,
@@ -51,6 +52,7 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...notificationEntities,
         ...relayEntities,
         ...mcpEntities,
+        ...profileEntities,
     ],
     migrations: [
         ...httpSecurityMigrations,
@@ -71,6 +73,7 @@ const primaryConnectionOf = (primary: DatabaseConnectionConfig): DatabaseConnect
         ...notificationMigrations,
         ...relayMigrations,
         ...mcpMigrations,
+        ...profileMigrations,
     ],
 })
 

@@ -18,6 +18,12 @@ export class GetHarnessGuideHandler extends ICQRSHandler<GetHarnessGuideQuery, H
 
     protected override async process(query: GetHarnessGuideQuery): Promise<HarnessGuideView> {
         const { tool, slug, locale } = query.params.request
-        return this.harness.guide(tool, slug, locale, await this.relay.doctorResults(query.params.principal.id))
+        const learnerId = query.params.principal?.id
+        return this.harness.guide(
+            tool,
+            slug,
+            locale,
+            learnerId === undefined ? [] : await this.relay.doctorResults(learnerId),
+        )
     }
 }

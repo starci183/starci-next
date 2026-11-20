@@ -25,6 +25,11 @@ export enum PublicReason {
     ProtocolBearer = "protocol-bearer",
     /** The sink of a server probe: its unguessable per-run id is the capability, open only while that run waits. */
     ProbeSink = "probe-sink",
+    /**
+     * A read of free content that a guest may make: the door takes the session when the request carries a valid one and answers
+     * as a guest (no principal) when it does not. It never creates a session and never answers a learner's private data.
+     */
+    GuestRead = "guest-read",
 }
 
 /** The metadata `@Public` attaches to a door. */

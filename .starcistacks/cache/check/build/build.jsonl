@@ -1,4 +1,2 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"aa9ed6fd3396b073ee4bd4028d5d88600ad1cebb2159db62ef64fddd71761cb4","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"01298f17157e14b03597bb822cb22d2ed0740a7403e2c4f1023dd99f8c7e99dd","path":"build/build fe","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"9f60164d92f5e9c939ec9d6dff00bb8f712e30377896396809dfbf01431d4bbf","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"74bbe952be7b9f10b8bdf6369fc113f062d03373ee6a73640fc5eaf83ea865a4","path":"build/build fe","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"7f6787cfbc50940dc7d7d9f137bfa5612d44caa9ff7b5d188be959f15ef293ee","path":"build/build be","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"45a69b52aad14f84093a7f99bf512005c1eee76194e8b91946e3e7e3856778e6","path":"build/build fe","step":"ci-step"}

@@ -52,6 +52,11 @@ export const CurrentCredential: (...dataOrPipes: Array<unknown>) => ParameterDec
     },
 )
 
+/** The caller of a `GuestRead` door: the signed-in learner when the request carries a session, else undefined (a guest). */
+export const MaybePrincipal: (...dataOrPipes: Array<unknown>) => ParameterDecorator = createParamDecorator(
+    (_data: unknown, context: ExecutionContext): IdentityPrincipal | undefined => requestOf(context).identityPrincipal,
+)
+
 /** The signed-in caller `AuthGuard` established; a door that reaches it without session admission is unauthenticated. */
 export const CurrentPrincipal: (...dataOrPipes: Array<unknown>) => ParameterDecorator = createParamDecorator(
     (_data: unknown, context: ExecutionContext): IdentityPrincipal => {

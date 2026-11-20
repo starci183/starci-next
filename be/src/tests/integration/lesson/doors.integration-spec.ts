@@ -150,14 +150,11 @@ describe("lesson catalog and refusals (integration)", () => {
     it.each([
         [CATALOG_QUERY, { input: { locale: "vi" } }],
         [LESSON_QUERY, { input: { id: "demo-lesson", locale: "vi" } }],
-    ])("refuses a caller with no session", async (query, variables) => {
+    ])("answers a caller with no session as a guest", async (query, variables) => {
         const answer = await askOf(doors())(query, variables)
 
-        expect(answer.body.data ?? null).toBeNull()
-        expect(answer.body.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
-            kind: "unauthenticated",
-        })
+        expect(answer.body.errors).toBeUndefined()
+        expect(answer.body.data ?? null).not.toBeNull()
     })
 
     it("lists the live lessons titled in the asked locale and narrowed by each filter", async () => {

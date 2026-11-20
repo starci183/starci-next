@@ -1,0 +1,102 @@
+schema: 1
+screen: practice/list-nomatch
+title: Luyện code, không khớp bộ lọc
+route: /practice
+area: practice
+summary: "Trạng thái của màn này: không khớp bộ lọc. Mục tiêu: chọn một pattern rồi vào làm bài."
+code:
+  - features/pages/PracticeCatalogPage
+  - components/blocks/PracticeCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: adc101d9a13017242792fab6271414402a07c35d034e6c0ef213b1e30f702b0e
+  "1440":
+    file: 1440.png
+    sha256: 1359780378f1e07d0e99af23d694fb20c0d42ffd389bc7e22478a74f0361dcb8
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Luyện code"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu
+      tiên); lần đầu "Bắt đầu với Mảng".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Không có pattern nào khớp
+    shows: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:38.525Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dòng "Theo thứ tự nên học" còn lại dưới trạng thái không khớp (không còn danh sách để áp dụng
+            chú thích).
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:40.201Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null
