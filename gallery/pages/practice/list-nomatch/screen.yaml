@@ -51,82 +51,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:45:53.460Z
+      at: 2026-11-20T13:48:38.525Z
       lenses:
         order:
-          verdict: pass
-          notes: Thứ tự giống list-first
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: Cùng lệch cột số như list-first (hàng 10+ lệch 2px so với hàng 1-9)
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: Không có nút Xoá tìm kiếm cho trạng thái không khớp (không thấy trong shot)
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Không có tác vụ chạy nền
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Cùng Accepted tiếng Anh như list-first
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
           verdict: open
-          notes: "Shot SAI trạng thái: ô tìm trống và cả 20 pattern vẫn hiện, giống hệt list-first, không có
-            trạng thái không khớp. Chụp lại sau khi gõ chuỗi không tồn tại và thấy thông báo trống
-            trong vùng danh sách"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: Shot không chứng minh được trạng thái không khớp; trùng ảnh với list-first
-    - n: 2
-      at: 2026-11-20T13:02:24.330Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tìm kiếm, tab, rồi thông báo không khớp; đã chụp lại thật với từ khoá cây khoảng
-        layout:
-          verdict: open
-          notes: "Hai nút chính cùng lúc: Bắt đầu với Mảng ở đầu trang và Xoá bộ lọc màu tím (luật 10: một nút
-            chính mỗi view); nút Xoá bộ lọc chỉ cao khoảng 32px, không phải 40px; thông báo là hai
-            dòng chữ thường, không dùng EmptyNotice. Đổi Xoá bộ lọc thành nút trung tính 40px trong
-            components/blocks/PracticeCatalog/component.tsx"
-        actionable:
-          verdict: pass
-          notes: Có Xoá bộ lọc và nút x trong ô tìm (xem layout về kiểu nút)
-        live:
-          verdict: pass
-          notes: Không có tác vụ chạy nền
-        words:
-          verdict: pass
-          notes: Pattern, Accepted là từ vựng sản phẩm; câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng
-        states:
-          verdict: open
-          notes: "Đếm sai trong lúc lọc: nhãn Các pattern ghi 0 nhưng tab Tất cả vẫn 20, Chưa bắt đầu 20 (đếm
-            tab không theo từ khoá, mâu thuẫn). Đếm tab theo cùng bộ lọc hoặc ẩn đếm. File
-            hooks/practice (usePracticeCatalogScreen) và PracticeCatalog/component.tsx"
-        truth:
-          verdict: open
-          notes: Số đếm tab 20/0/20/0 không khớp với danh sách rỗng ngay bên dưới
-    - n: 3
-      at: 2026-11-20T13:24:39.726Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Ô tìm, tab, rồi thông báo không khớp"
-        layout:
-          verdict: fixed
-          notes: "Xoá bộ lọc đã là nút trung tính 40px; chỉ còn một nút chính ở đầu trang (1440 và 390)"
-        actionable:
-          verdict: pass
-          notes: "Có Xoá bộ lọc và nút x trong ô tìm"
-        live:
-          verdict: pass
-          notes: "Không có tác vụ chạy nền"
-        words:
-          verdict: pass
-          notes: "Câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng; pattern là từ vựng sản phẩm"
-        states:
-          verdict: fixed
-          notes: "Số đếm của bốn tab đã theo từ khoá (0/0/0/0) khớp chip Các pattern 0"
-        truth:
-          verdict: fixed
-          notes: "Số đếm nhất quán với danh sách rỗng"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

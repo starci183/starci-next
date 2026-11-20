@@ -62,110 +62,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:04.171Z
+      at: 2026-11-20T13:48:49.340Z
       lenses:
         order:
-          verdict: pass
-          notes: Tên và chip trạng thái, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải là kết nối CI và
-            máy
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: Nút Lưu địa chỉ, Kết nối máy, Đổi bí mật CI cao khoảng 32px, không phải 40px (1440 và 390);
-            bảng Lần chạy gần đây tràn 12px mỗi bên (x=276-1068 so với cột 288-1056); Xem kinh
-            nghiệm kèm mũi tên chữ, khác link nơi khác. File
-            components/blocks/ProjectDetail/component.tsx
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: "Ba nút nhỏ trên (xem layout); còn lại ổn: Cập nhật kết quả từ máy, địa chỉ có Lưu và Chạy
-            kiểm tra"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Chưa bắt đầu, Chưa có chữ ký, Đang luyện bằng chip có chấm
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: "Lẫn tiếng Anh: Test unit và integration, probe, Action, OIDC, Docker, key, idempotency,
-            Milestone"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Có trạng thái trống cho lần chạy và nhãn trống cho kinh nghiệm
-        truth:
-          verdict: pass
-          notes: Số 0/4, 0/2, 0/4 và dự án my-blog-api khớp seed
-    - n: 2
-      at: 2026-11-20T13:02:34.351Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy
-        layout:
           verdict: open
-          notes: "Xem kinh nghiệm → là chữ đen kèm mũi tên chữ, khác kiểu link/nút nơi khác trên trang (Kho mã
-            dùng link tím có biểu tượng); dùng cùng một kiểu link trong
-            components/blocks/ProjectDetail/component.tsx. Nút Lưu địa chỉ, Kết nối máy đo lại cao
-            38-40px: rút lại ý kiến nút 32px. Bảng lần chạy tràn 12px là DataTable Grammar (chấp
-            nhận)"
-        actionable:
-          verdict: pass
-          notes: Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI
-        live:
-          verdict: pass
-          notes: Chip trạng thái có chấm
-        words:
-          verdict: pass
-          notes: Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm (chấp nhận)
-        states:
-          verdict: pass
-          notes: Có trạng thái trống cho lần chạy và kinh nghiệm
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Số 0/4, 0/2, 0/4 khớp seed; cây starci/ đã dùng FencedCodeBlock
-    - n: 3
-      at: 2026-11-20T13:25:05.664Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy
-        layout:
-          verdict: pass
-          notes: Kiểu link Xem kinh nghiệm thuộc ExperienceCard của lane career, bảng tràn 12px là DataTable
-            Grammar (chấp nhận)
-        actionable:
-          verdict: pass
-          notes: Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI
-        live:
-          verdict: pass
-          notes: Chip trạng thái có chấm
-        words:
-          verdict: pass
-          notes: Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm
-        states:
-          verdict: pass
-          notes: Có trạng thái trống cho lần chạy và kinh nghiệm
-        truth:
-          verdict: pass
-          notes: Số 0/4, 0/2, 0/4 khớp seed
-    - n: 4
-      at: 2026-11-20T13:29:53.817Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy (390 xếp một cột)"
-        layout:
-          verdict: pass
-          notes: "Kiểu link Xem kinh nghiệm thuộc ExperienceCard lane career, bảng tràn do DataTable Grammar (chấp nhận)"
-        actionable:
-          verdict: pass
-          notes: "Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI"
-        live:
-          verdict: pass
-          notes: "Chip trạng thái có chấm"
-        words:
-          verdict: pass
-          notes: "Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm"
-        states:
-          verdict: pass
-          notes: "Có trạng thái trống cho lần chạy và kinh nghiệm"
-        truth:
-          verdict: pass
-          notes: "Số 0/4, 0/2, 0/4 khớp seed"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

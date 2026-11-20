@@ -50,81 +50,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:08.489Z
+      at: 2026-11-20T13:48:53.884Z
       lenses:
         order:
-          verdict: pass
-          notes: Tên, loại, repo, địa chỉ deploy, rồi nút; khối giải thích ở cột phải
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: "Khoảng cách dọc không đều: sau nhóm Loại dự án chỉ 30px tới nhãn Repo GitHub, trong khi các
-            trường khác cách nhau 78px. Nhóm radio sát nhãn kế tiếp. File
-            components/blocks/ProjectNew/component.tsx"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng owner/repo (chỉ ô địa chỉ có chú
-            thích); nút Tạo dự án xám vô hiệu mà không nói thiếu trường nào
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Chưa có tác vụ chạy; khối lệnh mô phỏng terminal
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: "Trộn tiếng Anh: deploy, probe, repo, test; Huỷ nên đồng nhất cách bỏ dấu với phần còn lại"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Nút bị vô hiệu khi thiếu trường; lỗi từng trường theo Field
-        truth:
-          verdict: pass
-          notes: Lệnh mẫu ghi rõ do học viên chạy
-    - n: 2
-      at: 2026-11-20T13:02:38.051Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải
-        layout:
-          verdict: fixed
-          notes: "Đo lại: khoảng từ cuối mỗi ô tới nhãn kế tiếp đều khoảng 21px, kể cả sau nhóm radio; nhận
-            định khoảng cách không đều ở vòng 1 là sai, đã rút lại"
-        actionable:
           verdict: open
-          notes: Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng (ví dụ owner/repo); chỉ ô địa chỉ có
-            chú thích. Thêm placeholder trong components/blocks/ProjectNew/component.tsx và nói lý
-            do Tạo dự án đang vô hiệu
-        live:
-          verdict: pass
-          notes: Chưa có tác vụ chạy; khối lệnh mô phỏng
-        words:
-          verdict: pass
-          notes: deploy, probe, repo, test là từ vựng sản phẩm; Huỷ giữ theo bộ chữ hiện có
-        states:
-          verdict: pass
-          notes: Nút vô hiệu khi thiếu trường; lỗi từng trường
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Lệnh mẫu ghi rõ do học viên chạy
-    - n: 3
-      at: 2026-11-20T13:25:10.894Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải"
-        layout:
-          verdict: pass
-          notes: "Khoảng cách đều (khoảng 21px từ ô tới nhãn kế tiếp)"
-        actionable:
-          verdict: fixed
-          notes: "Ô Tên dự án có Ví dụ: my-blog-api, ô Repo GitHub có https://github.com/ban/du-an; địa chỉ deploy có chú thích bên dưới"
-        live:
-          verdict: pass
-          notes: "Chưa có tác vụ chạy"
-        words:
-          verdict: pass
-          notes: "deploy, probe, repo, test là từ vựng sản phẩm"
-        states:
-          verdict: pass
-          notes: "Nút vô hiệu khi thiếu trường; lỗi từng trường"
-        truth:
-          verdict: pass
-          notes: "Lệnh mẫu ghi rõ do học viên chạy"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

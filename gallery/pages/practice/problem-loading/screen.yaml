@@ -60,107 +60,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:01.557Z
+      at: 2026-11-20T13:48:45.621Z
       lenses:
         order:
-          verdict: pass
-          notes: Giữ khung tab và hai cột
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: "Cột trái (đề bài) trống hoàn toàn ở 1440, ở 390 đề cũng biến mất: không có skeleton cho đề.
-            Thêm skeleton đề trong PracticeSolve"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: Đang tải
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Skeleton nhấp nháy
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Đường dẫn hiện chữ giữ chỗ xxxxxx / xxxxxxxxxxxxxx như chữ thật (1440 và 390); thay bằng
-            skeleton thanh. File components/blocks/PracticeSolve/component.tsx hoặc hook
-            usePracticeSolveScreen
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
           verdict: open
-          notes: Cột trái không có skeleton; đường dẫn lộ xxxxxx; tab Đề bài vẫn có gạch chân dù chưa có nội
-            dung
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: Chuỗi xxxxxx là dữ liệu giả hiển thị cho người dùng
-    - n: 2
-      at: 2026-11-20T13:02:30.759Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Giữ khung tab và hai cột
-        layout:
-          verdict: open
-          notes: Cột trái (đề bài) vẫn trống hoàn toàn ở 1440 và 390 trong lúc tải; thêm skeleton đề trong
-            components/blocks/PracticeSolve/component.tsx cạnh skeleton editor
-        actionable:
-          verdict: pass
-          notes: Đang tải
-        live:
-          verdict: pass
-          notes: Skeleton nhấp nháy
-        words:
-          verdict: fixed
-          notes: Đường dẫn đã dùng skeleton crumb thay chữ xxxxxx
-        states:
-          verdict: open
-          notes: Cột trái đề bài không có skeleton (như layout); các phần còn lại ổn
-        truth:
-          verdict: fixed
-          notes: Không còn chuỗi giả xxxxxx hiển thị
-    - n: 3
-      at: 2026-11-20T13:25:01.054Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Giữ khung tab và hai cột
-        layout:
-          verdict: open
-          notes: "Cột trái (đề bài) vẫn trống hoàn toàn ở 1440 (từ y=222 tới cuối) và ở 390 (khoảng trống trên
-            Bài làm của bạn): skeleton văn bản của đề không hiện ra, có thể chiều cao 0. Cho
-            skeleton đề chiều cao thật (vài dòng chữ + khối ví dụ) trong
-            components/blocks/PracticeSolve/component.tsx hoặc khối đề (isLoading)"
-        actionable:
-          verdict: pass
-          notes: Đang tải
-        live:
-          verdict: pass
-          notes: Skeleton nhấp nháy
-        words:
-          verdict: pass
-          notes: Đường dẫn dùng skeleton crumb, không còn xxxxxx
-        states:
-          verdict: open
-          notes: Trạng thái loading của đề không có hình khối nào, xem layout
-        truth:
-          verdict: pass
-          notes: Không còn chuỗi giả hiển thị
-    - n: 4
-      at: 2026-11-20T13:29:49.737Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Giữ khung tab và hai cột"
-        layout:
-          verdict: pass
-          notes: "Chấp nhận: skeleton của RichMarkdown (shell) không có shimmer, đã yêu cầu lane shell trong requests-shell.md"
-        actionable:
-          verdict: pass
-          notes: "Đang tải"
-        live:
-          verdict: pass
-          notes: "Skeleton nhấp nháy ở editor và gợi ý"
-        words:
-          verdict: pass
-          notes: "Đường dẫn dùng skeleton crumb"
-        states:
-          verdict: pass
-          notes: "Chấp nhận: skeleton của RichMarkdown (shell) không có shimmer, đã yêu cầu lane shell trong requests-shell.md"
-        truth:
-          verdict: pass
-          notes: "Không còn chuỗi giả hiển thị"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

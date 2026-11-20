@@ -61,78 +61,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:00.402Z
+      at: 2026-11-20T13:48:44.540Z
       lenses:
         order:
-          verdict: pass
-          notes: Đường dẫn, tiêu đề, thông báo lỗi
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: Đường dẫn ghi Không tải được đề vào chỗ tên bài, tiêu đề trang là Luyện code lặp lại; lỗi cấp
-            trang nên dùng ErrorNotice có minh hoạ theo luật 8, hiện chỉ là một dải mỏng và phần còn
-            lại của trang trống
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: Nút Thử lại trong thông báo lỗi cao khoảng 28px, không phải 40px (1440 và 390)
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Biểu tượng và danger-soft
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Đường dẫn Không tải được đề đặt câu lỗi vào chỗ tên bài
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Có lỗi và Thử lại, ghi chú bản nháp còn nguyên
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Lỗi do API chặn, câu bản nháp vẫn còn trên trình duyệt đúng hành vi
-    - n: 2
-      at: 2026-11-20T13:02:29.415Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Chỉ còn đường dẫn Luyện code, tiêu đề lỗi, rồi thông báo
-        layout:
-          verdict: fixed
-          notes: Tiêu đề là Không tải được đề, đường dẫn chỉ còn Luyện code; chiều cao Thử lại và minh hoạ lỗi
-            trang gửi lane shell (chấp nhận)
-        actionable:
-          verdict: pass
-          notes: Thử lại có sẵn
-        live:
-          verdict: pass
-          notes: Biểu tượng và danger-soft
-        words:
-          verdict: fixed
-          notes: Hết đặt câu lỗi vào chỗ tên bài trong đường dẫn
-        states:
-          verdict: pass
-          notes: Có lỗi và Thử lại, ghi chú bản nháp còn nguyên
-        truth:
-          verdict: pass
-          notes: Lỗi do API chặn thật
-    - n: 3
-      at: 2026-11-20T13:24:59.684Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Crumb Luyện code, tiêu đề lỗi, thông báo"
-        layout:
-          verdict: pass
-          notes: "Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)"
-        actionable:
-          verdict: pass
-          notes: "Thử lại có sẵn"
-        live:
-          verdict: pass
-          notes: "Biểu tượng và danger-soft"
-        words:
-          verdict: pass
-          notes: "Không còn đặt câu lỗi vào chỗ tên bài"
-        states:
-          verdict: pass
-          notes: "Có lỗi và Thử lại, ghi chú bản nháp còn nguyên"
-        truth:
-          verdict: pass
-          notes: "Lỗi do API chặn thật"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

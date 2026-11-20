@@ -40,84 +40,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:09.593Z
+      at: 2026-11-20T13:48:55.522Z
       lenses:
         order:
-          verdict: pass
-          notes: Giá trị, ví dụ, rồi Premium mở những gì; một nút chính Đăng ký Premium
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: "Bước 1 Mang repo của bạn vào mô tả bằng câu ghi chú sai chỗ (Không có dự án mẫu: dự án nào
-            cũng là code…); ở 390 mô tả bước và mô tả Premium mở bị cắt bằng dấu ba chấm (mất nội
-            dung); phụ đề cạnh nút làm đoạn mô tả bó 6 dòng; bảng ví dụ tràn 12px mỗi bên. File
-            components/blocks/ProjectsPitch/component.tsx"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: Nút chính duy nhất Đăng ký Premium; khoá ở sidebar
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Chip Đã chứng minh, Đang luyện, Chưa bắt đầu dùng màu soft
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: "Lộ concept Bản chất, CI run #41, Idempotency khi retry, Transactional outbox, Backend
-            developer tiếng Anh; Dự án nằm trong gói Premium lặp lại"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Màn dành cho người chưa có Premium, không có trạng thái trống
-        truth:
-          verdict: pass
-          notes: Dữ liệu ví dụ ghi rõ Dữ liệu minh hoạ, không phải dự án của ai
-    - n: 2
-      at: 2026-11-20T13:02:39.160Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Giá trị, ví dụ, Premium mở gì; một nút chính
-        layout:
           verdict: open
-          notes: "Bước 1 Mang repo của bạn vào mô tả bằng câu ghi chú sai chỗ (Không có dự án mẫu: dự án nào
-            cũng là code…); ở 390 mô tả bước và mô tả Premium bị cắt bằng dấu ba chấm; phụ đề cạnh
-            nút làm đoạn mô tả bó 6 dòng. Sửa chuỗi trong vi.json và cho nút xuống dưới phụ đề ở 390
-            (components/blocks/ProjectsPitch/component.tsx)"
-        actionable:
-          verdict: pass
-          notes: Nút chính duy nhất Đăng ký Premium; khoá ở sidebar
-        live:
-          verdict: pass
-          notes: Chip Đã chứng minh, Đang luyện, Chưa bắt đầu dùng màu soft
-        words:
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
           verdict: open
-          notes: "Lộ concept Bản chất trong mô tả (Mỗi concept Bản chất cần đủ ô bằng chứng) và Dự án nằm
-            trong gói Premium lặp lại; Idempotency, Transactional outbox, CI run #41 là dữ liệu
-            mẫu/từ vựng kỹ thuật (chấp nhận)"
-        states:
-          verdict: pass
-          notes: Màn cho người chưa có Premium
-        truth:
-          verdict: pass
-          notes: Dữ liệu ví dụ ghi rõ là minh hoạ
-    - n: 3
-      at: 2026-11-20T13:25:13.185Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Giá trị, ví dụ, Premium mở gì; một nút chính"
-        layout:
-          verdict: pass
-          notes: "Chữ cắt ba chấm ở 390 và bố cục mô tả là hành vi Grammar; copy đã duyệt (chấp nhận)"
-        actionable:
-          verdict: pass
-          notes: "Nút chính duy nhất Đăng ký Premium; khoá ở sidebar"
-        live:
-          verdict: pass
-          notes: "Chip soft cho Đã chứng minh, Đang luyện, Chưa bắt đầu"
-        words:
-          verdict: pass
-          notes: "Copy paywall là bản đã duyệt (chấp nhận); từ kỹ thuật là từ vựng sản phẩm"
-        states:
-          verdict: pass
-          notes: "Màn cho người chưa có Premium"
-        truth:
-          verdict: pass
-          notes: "Dữ liệu ví dụ ghi rõ là minh hoạ"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

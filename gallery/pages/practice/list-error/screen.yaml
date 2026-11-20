@@ -40,78 +40,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:45:49.918Z
+      at: 2026-11-20T13:48:31.440Z
       lenses:
         order:
-          verdict: pass
-          notes: Tiêu đề trang rồi thông báo lỗi ngay đầu vùng nội dung
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: "Thông báo lỗi là một dải mỏng, phần còn lại của trang trống: lỗi cấp trang nên dùng
-            ErrorNotice có minh hoạ theo luật 8, hiện chỉ là một dải mỏng và phần còn lại của trang
-            trống. File components/blocks/PracticeCatalog/component.tsx dòng ~169"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: Nút Thử lại trong thông báo lỗi cao khoảng 28px, không phải 40px (1440 và 390)
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Biểu tượng cảnh báo và màu danger-soft
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Không tải được danh sách pattern lẫn tiếng Anh; đề xuất danh sách chủ đề luyện
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Có lỗi kèm Thử lại, giữ tiêu đề và sidebar
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Lỗi do chặn API thật, ghi chú tiến độ còn nguyên
-    - n: 2
-      at: 2026-11-20T13:02:20.058Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tiêu đề, rồi thông báo lỗi ngay đầu vùng nội dung
-        layout:
-          verdict: pass
-          notes: Chiều cao nút Thử lại và minh hoạ lỗi trang đã gửi cho lane shell (requests-shell.md), chấp
-            nhận
-        actionable:
-          verdict: pass
-          notes: Thử lại có sẵn; chiều cao nút thuộc ErrorNotice dùng chung (chấp nhận)
-        live:
-          verdict: pass
-          notes: Biểu tượng và danger-soft
-        words:
-          verdict: pass
-          notes: Pattern là từ vựng sản phẩm
-        states:
-          verdict: pass
-          notes: Lỗi kèm Thử lại, giữ tiêu đề và sidebar
-        truth:
-          verdict: pass
-          notes: Lỗi do chặn API thật
-    - n: 3
-      at: 2026-11-20T13:24:34.723Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Tiêu đề rồi thông báo lỗi đầu vùng nội dung"
-        layout:
-          verdict: pass
-          notes: "Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)"
-        actionable:
-          verdict: pass
-          notes: "Thử lại có sẵn"
-        live:
-          verdict: pass
-          notes: "Biểu tượng và danger-soft"
-        words:
-          verdict: pass
-          notes: "Pattern là từ vựng sản phẩm"
-        states:
-          verdict: pass
-          notes: "Lỗi kèm Thử lại, giữ tiêu đề và sidebar"
-        truth:
-          verdict: pass
-          notes: "Lỗi do chặn API thật"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

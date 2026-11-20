@@ -39,80 +39,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:45:55.091Z
+      at: 2026-11-20T13:48:39.644Z
       lenses:
         order:
-          verdict: pass
-          notes: Đường dẫn, tên, thông báo lỗi
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: Tiêu đề trang là Pattern chung và phụ đề Không tải được lặp lại thông báo bên dưới; lỗi cấp
-            trang nên dùng ErrorNotice có minh hoạ theo luật 8, hiện chỉ là một dải mỏng và phần còn
-            lại của trang trống
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
           verdict: open
-          notes: Nút Thử lại trong thông báo lỗi cao khoảng 28px, không phải 40px (1440 và 390)
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Biểu tượng và danger-soft
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Pattern chung ở tiêu đề; pattern tiếng Anh trong lỗi
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Có thông báo và Thử lại
-        truth:
-          verdict: pass
-          notes: Lỗi từ API bị từ chối thật
-    - n: 2
-      at: 2026-11-20T13:02:25.636Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Đường dẫn, tên, thông báo lỗi
-        layout:
-          verdict: pass
-          notes: Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)
-        actionable:
-          verdict: pass
-          notes: Thử lại có sẵn
-        live:
-          verdict: pass
-          notes: Biểu tượng và danger-soft
-        words:
           verdict: open
-          notes: Tiêu đề Pattern và phụ đề Không tải được lặp lại thông báo bên dưới, trong khi problem-error
-            đã đổi tiêu đề thành Không tải được đề. Đổi tiêu đề thành Không tải được các bài và bỏ
-            phụ đề, đường dẫn chỉ còn Luyện code, trong
-            components/blocks/PracticePattern/component.tsx
-        states:
-          verdict: pass
-          notes: Có thông báo và Thử lại
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Lỗi từ API bị từ chối thật
-    - n: 3
-      at: 2026-11-20T13:24:41.077Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Chỉ còn crumb Luyện code, tiêu đề, thông báo"
-        layout:
-          verdict: pass
-          notes: "Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận); tiêu đề lấy từ câu lỗi nên trùng dòng đầu của thông báo, chấp nhận theo yêu cầu"
-        actionable:
-          verdict: pass
-          notes: "Thử lại có sẵn"
-        live:
-          verdict: pass
-          notes: "Biểu tượng và danger-soft"
-        words:
-          verdict: fixed
-          notes: "Hết tiêu đề Pattern chung và phụ đề lặp"
-        states:
-          verdict: pass
-          notes: "Có thông báo và Thử lại"
-        truth:
-          verdict: pass
-          notes: "Lỗi từ API bị từ chối thật"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

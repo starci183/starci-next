@@ -73,75 +73,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T13:02:10.516Z
+      at: 2026-11-20T13:48:43.433Z
       lenses:
         order:
-          verdict: pass
-          notes: Tiêu đề hỏi, lý do, hai nút; 1440 nút phụ trái nút chính phải, 390 nút chính trên
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
-          verdict: pass
-          notes: Hộp thoại gọn, hai nút cao 40px, một nút chính; nền mờ giữ trang phía sau
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: Có lối rút lui Chưa, để tôi thử và lối đi tiếp Xem lời giải
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Biểu tượng cảnh báo màu warning-soft
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
-          verdict: pass
-          notes: Accepted là từ vựng sản phẩm; câu giải thích đủ rõ, không lộ id
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Đây là trạng thái xác nhận; loading và error ở màn problem
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: Mới mở 0/3 gợi ý khớp dữ liệu học viên
-    - n: 2
-      at: 2026-11-20T13:04:09.771Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tiêu đề hỏi, lý do, hai nút; 1440 nút phụ trái nút chính phải, 390 nút chính trên
-        layout:
-          verdict: pass
-          notes: Hộp thoại gọn, hai nút cao 40px, một nút chính; nền mờ giữ trang phía sau
-        actionable:
-          verdict: pass
-          notes: Có lối rút lui Chưa, để tôi thử và lối đi tiếp Xem lời giải
-        live:
-          verdict: pass
-          notes: Biểu tượng cảnh báo màu warning-soft
-        words:
-          verdict: pass
-          notes: Accepted là từ vựng sản phẩm; câu giải thích đủ rõ, không lộ id
-        states:
-          verdict: pass
-          notes: Đây là trạng thái xác nhận; loading và error ở màn problem
-        truth:
-          verdict: pass
-          notes: Mới mở 0/3 gợi ý khớp dữ liệu học viên
-    - n: 3
-      at: 2026-11-20T13:24:47.421Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Tiêu đề hỏi, lý do, hai nút"
-        layout:
-          verdict: pass
-          notes: "Hộp thoại gọn, hai nút 40px, một nút chính, nền mờ"
-        actionable:
-          verdict: pass
-          notes: "Có Chưa, để tôi thử và Xem lời giải"
-        live:
-          verdict: pass
-          notes: "Biểu tượng cảnh báo warning-soft"
-        words:
-          verdict: pass
-          notes: "Accepted là từ vựng sản phẩm; không lộ id"
-        states:
-          verdict: pass
-          notes: "Trạng thái xác nhận; loading và error ở màn problem"
-        truth:
-          verdict: pass
-          notes: "Mới mở 0/3 gợi ý khớp dữ liệu"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -61,77 +61,27 @@ audit:
     agent: next-ux-auditor
   rounds:
     - n: 1
-      at: 2026-11-20T12:46:05.911Z
+      at: 2026-11-20T13:48:51.173Z
       lenses:
         order:
-          verdict: pass
-          notes: Tiêu đề, một nút chính, bốn số liệu, danh sách dự án
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: "Bảng dự án tràn ngoài cột nội dung: hairline và hàng chạy x=276-1420 trong khi cột là
-            288-1408 (rộng thêm 12px mỗi bên, tiêu đề Dự án và CI lệch). Bốn ô số liệu còn viền kẻ,
-            dáng thẻ thay vì danh sách phẳng. File components/blocks/ProjectsList/component.tsx"
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: Hàng dự án là link, Tạo dự án là nút chính duy nhất
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: Có thanh tiến độ 0/10 và trạng thái Chưa nối CI
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Concept, Milestone, CI, repo tiếng Anh dày trong nhãn số liệu và cột; nên Khái niệm, Mốc
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
-          verdict: pass
-          notes: Có ghi chú trống, loading và error theo SlotView
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: my-blog-api là dự án thật của học viên; ghi chú không có dự án mẫu
-    - n: 2
-      at: 2026-11-20T13:02:35.451Z
-      lenses:
-        order:
-          verdict: pass
-          notes: Tiêu đề, một nút chính, số liệu, danh sách
-        layout:
-          verdict: pass
-          notes: Bảng tràn 12px là hành vi DataTable của Grammar (chấp nhận); ô số liệu là Stat của Grammar
-        actionable:
-          verdict: pass
-          notes: Hàng là link, Tạo dự án là nút chính duy nhất
-        live:
-          verdict: pass
-          notes: Thanh tiến độ 0/10 và Chưa nối CI
-        words:
-          verdict: pass
-          notes: Concept, Milestone, CI là từ vựng sản phẩm (chấp nhận)
-        states:
-          verdict: pass
-          notes: Có ghi chú trống, loading và error theo SlotView
-        truth:
-          verdict: pass
-          notes: my-blog-api là dự án thật
-    - n: 3
-      at: 2026-11-20T13:25:08.238Z
-      lenses:
-        order:
-          verdict: pass
-          notes: "Tiêu đề, một nút chính, số liệu, danh sách"
-        layout:
-          verdict: pass
-          notes: "Bảng tràn 12px là DataTable Grammar, ô số liệu là Stat Grammar (chấp nhận)"
-        actionable:
-          verdict: pass
-          notes: "Hàng là link, Tạo dự án là nút chính duy nhất"
-        live:
-          verdict: pass
-          notes: "Thanh tiến độ 0/10 và Chưa nối CI"
-        words:
-          verdict: pass
-          notes: "Concept, Milestone, CI là từ vựng sản phẩm"
-        states:
-          verdict: pass
-          notes: "Có ghi chú trống, loading và error theo SlotView"
-        truth:
-          verdict: pass
-          notes: "my-blog-api là dự án thật"
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
