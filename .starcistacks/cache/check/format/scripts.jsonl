@@ -1,6 +1,5 @@
 {"findings":[],"hash":"4e2203a7925eb14fd3458a6d82dfd5f7b475a9c5c22a95a80262924793ad6d16","path":"scripts/codegen.mjs","step":"prettier"}
-{"findings":[],"hash":"0581306aa83bc79b01ae5b038ddc63781bd4d34d45186191227966146c14734d","path":"scripts/gallery-capture.cjs","step":"prettier"}
-{"findings":[],"hash":"bd596f14ba2e8d28bdc1dcb62c65a7a88e98417ea71a403f792cb64bf32d44b6","path":"scripts/gallery-capture.cjs","step":"prettier"}
+{"findings":[],"hash":"17e6fdb5991658f73e9096b902a07d5b5163e0f263a0da04812fb8e9ff6b3a74","path":"scripts/gallery-capture.cjs","step":"prettier"}
 {"findings":[],"hash":"2f319129133433e7596e6670dd546b63222df1e776fc1ff98b110fc2da1ddd6d","path":"scripts/gallery-seed.mjs","step":"prettier"}
 {"findings":[],"hash":"de6eecad5d5b48a7625fdf404ce520f238066122994c1852bed83e6a4da0772e","path":"scripts/gallery-sign-in.cjs","step":"prettier"}
 {"findings":[],"hash":"8853de3ef887edf1a8873a9999e5aa856df10da1d92fdcba4c6dc7fefb5d4baa","path":"scripts/relay-manifest-key.mjs","step":"prettier"}
