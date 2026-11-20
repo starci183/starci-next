@@ -1187,10 +1187,6 @@
             "doing": "Practising · {score}/{max}",
             "passed": "Green"
           },
-          "lock": {
-            "title": "{level} opens after {below}",
-            "text": "{below} stands at {score}/{max}. This level opens when every hidden scenario of {below} is green."
-          },
           "primary": {
             "run": "Run {level}",
             "rerun": "Run {level} again"

@@ -35,10 +35,6 @@ export const useRunWords = (): RunWords => {
             doing: (score, max) => t("apply.rungs.doing", { score, max }),
             passed: t("apply.rungs.passed"),
         },
-        lock: {
-            title: (level, below) => t("apply.lock.title", { level, below }),
-            text: (below, score, max) => t("apply.lock.text", { below, score, max }),
-        },
         hiddenGreen: (green, total, score, max) => t("apply.hiddenGreen", { green, total, score, max }),
         applyPrimary: {
             run: (level) => t("apply.primary.run", { level }),

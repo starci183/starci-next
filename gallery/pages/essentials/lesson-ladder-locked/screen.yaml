@@ -132,10 +132,8 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: fixed
-          notes: "Vòng 5 (theo ruling của main): bậc chưa mở là hàng thường không bấm được (không onPress,
-            không mũi tên), tông mờ unavailable, lý do khóa là chữ meta; không còn hàng tô xám
-            dính."
+          verdict: pass
+          notes: "Kiểm lại 1440 và 390 (commit 0e7b6661): hàng khoá (Vừa, Khó, Siêu khó) mờ, không chevron, lý do khoá là chữ meta, không còn hàng xám dính; hàng Dễ vẫn có chevron và bấm được. Đạt."
         actionable:
           verdict: pass
           notes: ""
@@ -151,4 +149,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-  escalate: "ruled by main: locked rung non-pressable"
+  escalate: null

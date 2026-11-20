@@ -39,11 +39,6 @@ export type ChallengeDetailView = {
     readonly terminal: ReadonlyArray<string>
     readonly score: number
     readonly maxScore: number
-    /** True while a locked rung is on screen: only the way to open it is shown. */
-    readonly isLocked: boolean
-    /** The title and the text that say how a locked rung opens. */
-    readonly lockTitle: string
-    readonly lockText: string
     /** The current step of the proof chain: 0 run on the machine, 1 push, 2 CI, 3 OIDC, 4 proved. */
     readonly proofStep: number
 }

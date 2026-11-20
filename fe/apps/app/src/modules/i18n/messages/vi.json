@@ -1187,10 +1187,6 @@
             "doing": "Đang luyện · {score}/{max}",
             "passed": "Đã xanh"
           },
-          "lock": {
-            "title": "{level} mở sau khi xong mức {below}",
-            "text": "Mức {below} đang {score}/{max}. Mức này mở khi mọi kịch bản ẩn của mức {below} đều xanh."
-          },
           "primary": {
             "run": "Chạy mức {level}",
             "rerun": "Chạy lại mức {level}"

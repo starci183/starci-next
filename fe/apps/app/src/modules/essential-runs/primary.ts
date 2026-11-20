@@ -135,12 +135,11 @@ const scenariosPrimary = (input: PrimaryInput): EssentialPrimary | undefined => 
     })
 }
 
-/** The primary command of Apply for the rung on screen; none while the rung is locked. */
+/** The primary command of Apply for the rung on screen. */
 const applyPrimary = (input: PrimaryInput): EssentialPrimary | undefined => {
     const challenge = input.apply.challenge
     const rung = input.essential?.challenges.find((each) => each.id === challenge?.id)
-    if (challenge === undefined || challenge.isLocked || rung === undefined || input.lesson === undefined)
-        return undefined
+    if (challenge === undefined || rung === undefined || input.lesson === undefined) return undefined
     return applyPrimaryOf({
         labels: input.labels,
         level: rung.level,

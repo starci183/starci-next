@@ -10,7 +10,7 @@ export const EssentialApplyAside = (props: EssentialApplyAsideProps) => {
     const challenge = part.challenge
     return (
         <Stack gap="section">
-            {challenge === undefined || challenge.isLocked ? null : (
+            {challenge === undefined ? null : (
                 <Section title={labels.aside.score} headingLevel={2}>
                     <Stack gap="inline">
                         <Text as="p" size="figure" isStrong tabular>
