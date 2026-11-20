@@ -47,7 +47,7 @@ const mailedToken = async (since, kind) => {
         for (const message of list.messages ?? []) {
             if (new Date(message.Created).getTime() < since) continue
             const full = await (await fetch(new URL(`/api/v1/message/${message.ID}`, MAIL))).json()
-            const token = new RegExp(`/auth/${kind}\?token=([A-Za-z0-9_-]+)`).exec(
+            const token = new RegExp(`/auth/${kind}\\?token=([A-Za-z0-9_-]+)`).exec(
                 `${full.HTML ?? ""} ${full.Text ?? ""}`,
             )?.[1]
             if (token) return token
