@@ -3,9 +3,7 @@ screen: cv/public-not-found
 title: CV công khai, không có hoặc riêng tư
 route: /cv/{slug}
 area: cv
-summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã:
-  fe/apps/app/src/components/blocks/PublicCv/, app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx.
-  Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là ảnh chu"
+summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã: fe/apps/app/src/components/blocks/PublicCv/, app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx. Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là ảnh chu"
 code:
   - features/pages/PublicCvPage
   - components/blocks/PublicCv
@@ -19,9 +17,7 @@ shots:
 sections:
   - id: s1
     title: Không có CV ở địa chỉ này
-    shows: slug sai, slug sai mẫu và CV để riêng tư cho cùng một câu, để người ngoài không đoán được ai
-      có CV; nhắc hỏi lại người gửi liên kết; hiện lại địa chỉ đã mở để người xem thấy chỗ gõ sai.
-      Không có nút thử lại vì đây không phải lỗi mạng.
+    shows: slug sai, slug sai mẫu và CV để riêng tư cho cùng một câu, để người ngoài không đoán được ai có CV; nhắc hỏi lại người gửi liên kết; hiện lại địa chỉ đã mở để người xem thấy chỗ gõ sai. Không có nút thử lại vì đây không phải lỗi mạng.
     why: verified-experience.md điều 4 (chỉ CV mà học viên bật Công khai mới hiện) và điều 7.
     actions: []
     states:
@@ -42,12 +38,10 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
-      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
 audit:
   builder:
     agent: next-ux-career
@@ -62,12 +56,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Ảnh minh hoạ có nền vuông xám nhạt lộ ra trên nền trắng (1440 ~x640-800,y283-441; 390
-            ~x136-254,y272-392).
+          notes: Ảnh minh hoạ có nền vuông xám nhạt lộ ra trên nền trắng (1440 ~x640-800,y283-441; 390 ~x136-254,y272-392).
         actionable:
           verdict: open
-          notes: Canvas có ô địa chỉ "next.starci.vn/cv/ten-khong-co" với nút Sao chép để người dùng đối
-            chiếu; code không có.
+          notes: Canvas có ô địa chỉ "next.starci.vn/cv/ten-khong-co" với nút Sao chép để người dùng đối chiếu; code không có.
         live:
           verdict: pass
           notes: ""
@@ -104,28 +96,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 3
-      at: 2026-11-20T14:52:32.757Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

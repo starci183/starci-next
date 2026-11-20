@@ -3,8 +3,7 @@ screen: harness/hub-loading
 title: Harness, tổng quan, đang tải
 route: /harness
 area: harness
-summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và
-  luật Grammar 0.50."
+summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
   - features/pages/HarnessHubPage
   - components/blocks/HarnessHub
@@ -29,8 +28,7 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -85,28 +83,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 3
-      at: 2026-11-20T14:52:13.866Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

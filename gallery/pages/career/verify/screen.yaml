@@ -28,12 +28,10 @@ sections:
 considered:
   - option: Mục thông tin công khai là Section chứa DescriptionList; trạng thái tải truyền xuống từng phần.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
   - option: Hiện Chủ CV trên trang xác minh
     chosen: false
-    why: "Cần API: lõi chưa trả tên chủ CV ở trang xác minh công khai (ghi trong FOLLOWUPS); không tự
-      dựng."
+    why: "Cần API: lõi chưa trả tên chủ CV ở trang xác minh công khai (ghi trong FOLLOWUPS); không tự dựng."
 audit:
   builder:
     agent: next-ux-career
@@ -48,9 +46,7 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas
-            career/verify có; nội dung dính mép trên y=32. Không có tiêu đề trang; bảng "Thông tin
-            công khai" thiếu Chủ CV, Người ký, Ngày ký như canvas.
+          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội dung dính mép trên y=32. Không có tiêu đề trang; bảng "Thông tin công khai" thiếu Chủ CV, Người ký, Ngày ký như canvas.
         actionable:
           verdict: pass
           notes: ""
@@ -59,15 +55,13 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Dòng "Bằng chứng: Bằng chứng StarCi" lặp từ, "Phần học: Dự án" cụt; canvas ghi "Nguồn:
-            Essentials · Độ tin cậy của API".'
+          notes: 'Dòng "Bằng chứng: Bằng chứng StarCi" lặp từ, "Phần học: Dự án" cụt; canvas ghi "Nguồn: Essentials · Độ tin cậy của API".'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: open
-          notes: Mã xác minh hiện "9C2E-F88F-B6BA" trong khi ruling giữ dạng SC-xxxx; thiếu Chủ CV và Ngày ký
-            của canvas nên không kiểm được tính thật.
+          notes: Mã xác minh hiện "9C2E-F88F-B6BA" trong khi ruling giữ dạng SC-xxxx; thiếu Chủ CV và Ngày ký của canvas nên không kiểm được tính thật.
     - n: 2
       at: 2026-11-20T14:16:05.816Z
       lenses:
@@ -85,8 +79,7 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Dòng "Bằng chứng: Bằng chứng StarCi" lặp từ và "Phần học: Dự án" cụt; canvas có Nguồn, Chủ
-            CV, Người ký, Ngày ký (thiếu; cần API cho tên chủ CV công khai).'
+          notes: 'Dòng "Bằng chứng: Bằng chứng StarCi" lặp từ và "Phần học: Dự án" cụt; canvas có Nguồn, Chủ CV, Người ký, Ngày ký (thiếu; cần API cho tên chủ CV công khai).'
         states:
           verdict: pass
           notes: ""
@@ -117,28 +110,4 @@ audit:
         truth:
           verdict: pass
           notes: '"Chủ CV": cần API (đã chấp nhận).'
-    - n: 4
-      at: 2026-11-20T15:02:24.012Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -3,10 +3,7 @@ screen: harness/docs
 title: Harness, danh sách bài giải thích
 route: /harness/docs
 area: harness
-summary: "Ô lọc theo tên bài (SearchField) trong hàng lọc của danh sách; không có bài khớp thì nói
-  rõ. Route: /harness/docs. Mã: fe/apps/app/src/components/blocks/HarnessDocs/, dữ liệu qua
-  fe/apps/app/src/hooks/harnessDocs/useHarnessDocsScreen.ts. Mã nguồn màn hình nay nằm trong nhóm
-  tuyến (pages); giao diện không đổi."
+summary: "Ô lọc theo tên bài (SearchField) trong hàng lọc của danh sách; không có bài khớp thì nói rõ. Route: /harness/docs. Mã: fe/apps/app/src/components/blocks/HarnessDocs/, dữ liệu qua fe/apps/app/src/hooks/harnessDocs/useHarnessDocsScreen.ts. Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện không đổi."
 code:
   - features/pages/HarnessDocsPage
   - components/blocks/HarnessDocs
@@ -20,8 +17,7 @@ shots:
 sections:
   - id: s1
     title: Băng đầu trang và danh sách bài
-    shows: phần Hiểu sâu chỉ để đọc, không kiểm thử, nên danh sách chỉ có tên bài, một câu tóm và số
-      phút đọc, không chip tiến độ. Hàng phẳng, cả hàng là liên kết.
+    shows: phần Hiểu sâu chỉ để đọc, không kiểm thử, nên danh sách chỉ có tên bài, một câu tóm và số phút đọc, không chip tiến độ. Hàng phẳng, cả hàng là liên kết.
     why: FE-ERROR-1, FE-UI-1.
     actions: []
     states:
@@ -32,12 +28,10 @@ sections:
 considered:
   - option: Ô lọc theo tên bài (SearchField) trong hàng lọc của danh sách; không có bài khớp thì nói rõ.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
-      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
 audit:
   builder:
     agent: next-ux-career
@@ -67,8 +61,7 @@ audit:
           notes: ""
         truth:
           verdict: open
-          notes: 'Canvas harness/docs có số thứ tự, thời lượng ("6 phút"), badge "Đã đọc" và dòng "Đọc tiếp:
-            Probe và trap"; code chỉ có tên và mô tả: tiến độ đọc là cần API.'
+          notes: 'Canvas harness/docs có số thứ tự, thời lượng ("6 phút"), badge "Đã đọc" và dòng "Đọc tiếp: Probe và trap"; code chỉ có tên và mô tả: tiến độ đọc là cần API.'
     - n: 2
       at: 2026-11-20T14:15:40.300Z
       lenses:
@@ -93,28 +86,4 @@ audit:
         truth:
           verdict: pass
           notes: "Tiến độ đọc (Đã đọc, phút đọc): cần API."
-    - n: 3
-      at: 2026-11-20T14:52:07.954Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

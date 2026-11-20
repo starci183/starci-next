@@ -3,8 +3,7 @@ screen: career/verify-error
 title: Xác minh dòng CV, lỗi tải
 route: /verify/[code]
 area: career
-summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
-  Grammar 0.50."
+summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
   - features/pages/VerifyPage
   - components/blocks/VerifyExperience
@@ -29,8 +28,7 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -45,8 +43,7 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas
-            career/verify có; nội dung dính mép trên y=32.
+          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội dung dính mép trên y=32.
         actionable:
           verdict: pass
           notes: ""
@@ -58,8 +55,7 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: Lỗi chỉ ghi "Không tải được phần này."; canvas có tiêu đề "Không tải được kết quả xác minh"
-            và dòng giải thích.
+          notes: Lỗi chỉ ghi "Không tải được phần này."; canvas có tiêu đề "Không tải được kết quả xác minh" và dòng giải thích.
         truth:
           verdict: pass
           notes: ""
@@ -87,28 +83,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 3
-      at: 2026-11-20T14:52:27.103Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

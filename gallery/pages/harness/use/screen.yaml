@@ -3,10 +3,7 @@ screen: harness/use
 title: Harness, phần Xài
 route: /harness/use
 area: harness
-summary: "Chọn công cụ là ChoiceChips; công tắc một kiểu; nút một cỡ 40px. Route: /harness/use. Mã:
-  fe/apps/app/src/components/blocks/HarnessUse/, dữ liệu qua
-  fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts. Ba lần đọc độc lập (harnessGuides,
-  harnessDoctor, harnessTrials), mỗi lần tự ch"
+summary: "Chọn công cụ là ChoiceChips; công tắc một kiểu; nút một cỡ 40px. Route: /harness/use. Mã: fe/apps/app/src/components/blocks/HarnessUse/, dữ liệu qua fe/apps/app/src/hooks/harnessUse/useHarnessUseScreen.ts. Ba lần đọc độc lập (harnessGuides, harnessDoctor, harnessTrials), mỗi lần tự ch"
 code:
   - features/pages/HarnessUsePage
   - components/blocks/HarnessUse
@@ -20,8 +17,7 @@ shots:
 sections:
   - id: s1
     title: Chọn công cụ
-    shows: cùng nhóm chọn với trang tổng quan và dùng chung lựa chọn đã nhớ; đổi công cụ là đổi cả ba
-      danh sách bên dưới.
+    shows: cùng nhóm chọn với trang tổng quan và dùng chung lựa chọn đã nhớ; đổi công cụ là đổi cả ba danh sách bên dưới.
     why: FE-STORAGE, FE-STATE-1.
     actions: []
     states:
@@ -31,8 +27,7 @@ sections:
     needsApi: []
   - id: s2
     title: Danh sách hướng dẫn
-    shows: hướng dẫn của công cụ đang chọn là các hàng phẳng (tên, một câu, số phút đọc làm meta), cả
-      hàng dẫn tới bài.
+    shows: hướng dẫn của công cụ đang chọn là các hàng phẳng (tên, một câu, số phút đọc làm meta), cả hàng dẫn tới bài.
     why: FE-ERROR-1.
     actions: []
     states:
@@ -42,10 +37,7 @@ sections:
     needsApi: []
   - id: s3
     title: Bảng kiểm tra máy (harness doctor)
-    shows: 'ba phần xếp dọc: lệnh để chạy (có nút sao chép), công tắc nhỏ "Chỉ điều kiện chưa đạt", rồi
-      mỗi điều kiện một hàng với chấm trạng thái. Điều kiện chưa đạt có nút "Xem cách sửa" dẫn tới
-      đúng bài. Đầu mục ghi số điều kiện đạt và lần chạy gần nhất ("Chưa chạy" nếu học viên chưa
-      từng chạy).'
+    shows: 'ba phần xếp dọc: lệnh để chạy (có nút sao chép), công tắc nhỏ "Chỉ điều kiện chưa đạt", rồi mỗi điều kiện một hàng với chấm trạng thái. Điều kiện chưa đạt có nút "Xem cách sửa" dẫn tới đúng bài. Đầu mục ghi số điều kiện đạt và lần chạy gần nhất ("Chưa chạy" nếu học viên chưa từng chạy).'
     why: FE-ERROR-1, FE-DATA-SWR (kết quả đổi trên máy chủ nên đọc lại theo chu kỳ).
     actions: []
     states:
@@ -55,9 +47,7 @@ sections:
     needsApi: []
   - id: s4
     title: Bảng bẫy thử (trial)
-    shows: "mỗi bẫy một dòng của bảng phẳng: tên và mô tả bẫy, những đường tắt agent đã đi (sửa file
-      test, dùng --no-verify), kết luận (Sạch, Đi đường tắt, Chưa thử) và chi phí ước tính (số
-      token) mà CLI hỏi xác nhận trước khi chạy. Lệnh chạy bẫy nằm ở chú thích dưới bảng."
+    shows: "mỗi bẫy một dòng của bảng phẳng: tên và mô tả bẫy, những đường tắt agent đã đi (sửa file test, dùng --no-verify), kết luận (Sạch, Đi đường tắt, Chưa thử) và chi phí ước tính (số token) mà CLI hỏi xác nhận trước khi chạy. Lệnh chạy bẫy nằm ở chú thích dưới bảng."
     why: table-heroui-native-section-head.md.
     actions: []
     states:
@@ -68,8 +58,7 @@ sections:
 considered:
   - option: Chọn công cụ là ChoiceChips; công tắc một kiểu; nút một cỡ 40px.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -84,8 +73,7 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Công tắc "Chỉ điều kiện chưa đạt" vẫn hiện khi bảng doctor rỗng (0/0), bảng "Bẫy thử agent"
-            rỗng chiếm khối cao; ở 390 tiêu đề "Kiểm tra máy với harness doc…" bị cắt.
+          notes: Công tắc "Chỉ điều kiện chưa đạt" vẫn hiện khi bảng doctor rỗng (0/0), bảng "Bẫy thử agent" rỗng chiếm khối cao; ở 390 tiêu đề "Kiểm tra máy với harness doc…" bị cắt.
         actionable:
           verdict: pass
           notes: ""
@@ -94,16 +82,13 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`",
-            "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã. Mô tả hướng dẫn kết thúc
-            bằng "..." giữa câu.'
+          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`", "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã. Mô tả hướng dẫn kết thúc bằng "..." giữa câu.'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: open
-          notes: 'Doctor "0/0 đạt · Chưa chạy" và bẫy thử "0" là chưa có dữ liệu máy: không đánh dấu cần API;
-            canvas dùng dữ liệu 6/9 đạt.'
+          notes: 'Doctor "0/0 đạt · Chưa chạy" và bẫy thử "0" là chưa có dữ liệu máy: không đánh dấu cần API; canvas dùng dữ liệu 6/9 đạt.'
     - n: 2
       at: 2026-11-20T14:15:54.981Z
       lenses:
@@ -128,28 +113,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 3
-      at: 2026-11-20T14:52:20.183Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

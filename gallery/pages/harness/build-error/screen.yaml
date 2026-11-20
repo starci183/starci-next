@@ -3,8 +3,7 @@ screen: harness/build-error
 title: Chi tiết build, lỗi tải
 route: /harness/build/[build]
 area: harness
-summary: "Trạng thái của màn: Chi tiết build, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
-  Grammar 0.50."
+summary: "Trạng thái của màn: Chi tiết build, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
   - features/pages/HarnessBuildPage
   - components/blocks/HarnessBuild
@@ -29,8 +28,7 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -45,8 +43,7 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build /
-            <tên build>".
+          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>".
         actionable:
           verdict: pass
           notes: ""
@@ -58,10 +55,7 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/build-error có tên mục
-            không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn
-            nguyên. Thử lại sau vài giây.") và nút Thử lại. Canvas còn nút phụ "Về danh sách Build";
-            code không có.
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/build-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại. Canvas còn nút phụ "Về danh sách Build"; code không có.
         truth:
           verdict: pass
           notes: ""
@@ -113,28 +107,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 4
-      at: 2026-11-20T15:01:46.396Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -3,10 +3,7 @@ screen: harness/build
 title: Harness, một build
 route: /harness/build/[build]
 area: harness
-summary: "Chặng đang khóa nói bằng Alert thông tin, không còn chữ in đậm tự dựng. Route:
-  /harness/build/{build}?stage={stage}. Mã: fe/apps/app/src/components/blocks/HarnessBuild/, dữ liệu
-  qua fe/apps/app/src/hooks/harnessBuild/useHarnessBuildScreen.ts (harnessBuild.shared.ts dựng
-  view). Kết quả e2e đư"
+summary: "Chặng đang khóa nói bằng Alert thông tin, không còn chữ in đậm tự dựng. Route: /harness/build/{build}?stage={stage}. Mã: fe/apps/app/src/components/blocks/HarnessBuild/, dữ liệu qua fe/apps/app/src/hooks/harnessBuild/useHarnessBuildScreen.ts (harnessBuild.shared.ts dựng view). Kết quả e2e đư"
 code:
   - features/pages/HarnessBuildPage
   - components/blocks/HarnessBuild
@@ -20,8 +17,7 @@ shots:
 sections:
   - id: s1
     title: Băng đầu trang (tên build, mô tả, chip e2e)
-    shows: dòng meta "e2e 9 / 20" là con số học viên theo dõi khi làm; đường dẫn Harness / Build / tên
-      build cho lối quay lại.
+    shows: dòng meta "e2e 9 / 20" là con số học viên theo dõi khi làm; đường dẫn Harness / Build / tên build cho lối quay lại.
     why: FE-FUNCTION-2, page-header-left-sublabel-xs.md.
     actions: []
     states:
@@ -31,9 +27,7 @@ sections:
     needsApi: []
   - id: s2
     title: Danh sách các chặng
-    shows: các chặng nằm đầu trang, mỗi chặng một hàng phẳng với chip kết quả (Xanh, Đỏ, Chưa chạy) và
-      số ca đạt làm meta. Hàng chặng đang mở được tô nhẹ. Chọn chặng là một liên kết (?stage=), nên
-      mở thẳng được từ lệnh của CLI.
+    shows: các chặng nằm đầu trang, mỗi chặng một hàng phẳng với chip kết quả (Xanh, Đỏ, Chưa chạy) và số ca đạt làm meta. Hàng chặng đang mở được tô nhẹ. Chọn chặng là một liên kết (?stage=), nên mở thẳng được từ lệnh của CLI.
     why: FE-ERROR-1, FE-UI-1.
     actions: []
     states:
@@ -43,10 +37,7 @@ sections:
     needsApi: []
   - id: s3
     title: Kết nối repo để chứng minh
-    shows: 'kết quả chạy trên máy học viên chỉ là "đang luyện"; muốn "đã chứng minh" thì build phải chạy
-      trong CI có chữ ký của repo GitHub của họ. Chưa kết nối: một ô nhập owner/repo và nút "Kết nối
-      repo" (không cần Project). Đã kết nối: tên repo và audience mà workflow phải xin trong token
-      OIDC, có nút sao chép. Mục cũng liệt kê key cần có trong .env.'
+    shows: 'kết quả chạy trên máy học viên chỉ là "đang luyện"; muốn "đã chứng minh" thì build phải chạy trong CI có chữ ký của repo GitHub của họ. Chưa kết nối: một ô nhập owner/repo và nút "Kết nối repo" (không cần Project). Đã kết nối: tên repo và audience mà workflow phải xin trong token OIDC, có nút sao chép. Mục cũng liệt kê key cần có trong .env.'
     why: FE-ERROR-1, FE-DATA-COMMAND (ghi qua hook lệnh, đọc lại build sau khi ghi).
     actions: []
     states:
@@ -56,8 +47,7 @@ sections:
     needsApi: []
   - id: s4
     title: Lệnh tải source mẫu
-    shows: một lệnh một dòng, sao chép được, kèm dòng nhắc key AI nằm trong .env trên máy học viên và
-      không gửi lên StarCi.
+    shows: một lệnh một dòng, sao chép được, kèm dòng nhắc key AI nằm trong .env trên máy học viên và không gửi lên StarCi.
     why: FE-I18N-1 (mọi chữ đến từ catalog), FE-UI-1.
     actions: []
     states:
@@ -67,8 +57,7 @@ sections:
     needsApi: []
   - id: s5
     title: Ca e2e của chặng
-    shows: bảng phẳng ba cột (ca, kết quả, lý do), chip màu theo kết quả, cột lý do ẩn ở màn hẹp. Công
-      tắc nhỏ "Chỉ ca chưa xanh" nằm trên bảng để việc còn lại nổi lên.
+    shows: bảng phẳng ba cột (ca, kết quả, lý do), chip màu theo kết quả, cột lý do ẩn ở màn hẹp. Công tắc nhỏ "Chỉ ca chưa xanh" nằm trên bảng để việc còn lại nổi lên.
     why: table-heroui-native-section-head.md, FE-FUNCTION-4.
     actions: []
     states:
@@ -78,8 +67,7 @@ sections:
     needsApi: []
   - id: s6
     title: Lần chạy e2e gần nhất
-    shows: khối log đen trình bày đúng những gì terminal của học viên in ra (dấu ✓, ✗, ·), để học viên
-      đối chiếu với máy mình.
+    shows: khối log đen trình bày đúng những gì terminal của học viên in ra (dấu ✓, ✗, ·), để học viên đối chiếu với máy mình.
     why: FE-ERROR-1.
     actions: []
     states:
@@ -89,8 +77,7 @@ sections:
     needsApi: []
   - id: s7
     title: Hướng dẫn từng bước
-    shows: mỗi bước một mục có tiêu đề đánh số, thân là markdown có khối mã sao chép được. Chặng đang
-      khóa không hiện bước, chỉ nói khi nào mở.
+    shows: mỗi bước một mục có tiêu đề đánh số, thân là markdown có khối mã sao chép được. Chặng đang khóa không hiện bước, chỉ nói khi nào mở.
     why: FE-FUNCTION-4, no-nested-label của Grammar (bước là mục con của mục "Hướng dẫn từng bước").
     actions: []
     states:
@@ -101,8 +88,7 @@ sections:
 considered:
   - option: Chặng đang khóa nói bằng Alert thông tin, không còn chữ in đậm tự dựng.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -114,9 +100,7 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: Trang dài ~17.000px ở 1440 và ~19.400px ở 390 vì hướng dẫn từng chặng chép nguyên vào trang;
-            lệnh chạy và nối repo nằm dưới danh sách chặng, đầu trang không có nút "Tiếp tục chặng
-            3" như canvas.
+          notes: Trang dài ~17.000px ở 1440 và ~19.400px ở 390 vì hướng dẫn từng chặng chép nguyên vào trang; lệnh chạy và nối repo nằm dưới danh sách chặng, đầu trang không có nút "Tiếp tục chặng 3" như canvas.
         layout:
           verdict: open
           notes: Ở 390 mô tả chặng bị cắt "…chờ đúng retry-after khi ..." giữa chữ.
@@ -159,28 +143,4 @@ audit:
         truth:
           verdict: pass
           notes: ""
-    - n: 3
-      at: 2026-11-20T14:51:54.343Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
