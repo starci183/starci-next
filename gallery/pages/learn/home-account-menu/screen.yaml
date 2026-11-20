@@ -2,6 +2,7 @@ schema: 1
 screen: learn/home-account-menu
 title: Menu tài khoản (avatar)
 route: /
+app: app
 area: learn
 summary: 'Route: `/` (mở menu avatar trên thanh trên). Ảnh chụp với học viên đã Premium nên dòng gói
   đọc "Gói của bạn"; học viên chưa Premium thấy "Nâng cấp Premium" ở cùng vị trí. Khung chung xem

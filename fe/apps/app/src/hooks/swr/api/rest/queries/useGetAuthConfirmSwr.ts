@@ -1,6 +1,7 @@
 "use client"
 
 import useSWR from "swr"
+import { isLinkInvalid } from "@starci/auth/client"
 import { sendEmailDoor, type AuthFailure } from "@/modules/auth"
 
 /** Cache identity of the confirmation; the token is part of the key, so one link is spent once per page. */
@@ -18,9 +19,17 @@ export type GetAuthConfirmHook = {
  */
 const spent = new Map<string, Promise<{ readonly failure: AuthFailure | undefined }>>()
 
-/** The one spend of a token: the first call sends it, every later call answers the same promise. */
+/**
+ * The one spend of a token: the first call sends it, every later call answers the same promise. An unreachable back end forgets
+ * the spend, so opening the link again (without a reload) tries once more; a spent or invalid link stays remembered.
+ */
 const spendOnce = (token: string): Promise<{ readonly failure: AuthFailure | undefined }> => {
-    const running = spent.get(token) ?? sendEmailDoor("confirm", { token }).then((failure) => ({ failure }))
+    const known = spent.get(token)
+    if (known !== undefined) return known
+    const running = sendEmailDoor("confirm", { token }).then((failure) => {
+        if (failure !== undefined && !isLinkInvalid(failure.code)) spent.delete(token)
+        return { failure }
+    })
     spent.set(token, running)
     return running
 }

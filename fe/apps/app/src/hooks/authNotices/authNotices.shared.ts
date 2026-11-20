@@ -41,6 +41,6 @@ export const fieldErrorsOf = (state: AuthState, t: Translator): FieldErrors => {
             problem?.kind === "password" || fields?.password === true
                 ? t("error.password", { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH })
                 : undefined,
-        confirmError: problem?.kind === "mismatch" || fields?.mismatch === true ? t("error.mismatch") : undefined,
+        confirmError: fields?.mismatch === true ? t("error.mismatch") : undefined,
     }
 }

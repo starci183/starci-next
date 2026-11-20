@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { getLocale, getTranslations } from "next-intl/server"
 import { appI18n } from "@/modules/i18n"
-import { APP_ROUTES, signInSearch } from "@/modules/routes"
+import { APP_ROUTES } from "@/modules/routes"
 import { SignInResetPageBase } from "./component"
 import type { ReactElement } from "react"
 
@@ -23,7 +23,8 @@ export const SignInResetPage = async (props: SignInResetPageProps): Promise<Reac
             props={{
                 token: typeof props.token === "string" ? props.token : undefined,
                 signInHref,
-                doneHref: signInHref + signInSearch({ reset: true }),
+                // The sign-in page reads reset=1 as "the password was just reset" (its one-off notice).
+                doneHref: `${signInHref}?reset=1`,
             }}
         />
     )

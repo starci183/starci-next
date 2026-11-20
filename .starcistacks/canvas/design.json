@@ -151,8 +151,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "e33eb44af4963a6e62735fdf08606632399f1a4b51ae40d64ab2c01e8403c1e1",
-        "1440": "2c8a9793201bec5aac67db0071b29b343913a68c3aed3ba8ae53c7a74b8a5843"
+        "390": "59762851b91bb5315bd5533deff50bed64c0f575f1b17621785f33cf7ae9cd35",
+        "1440": "893f6e14f45ddfdf61a3b488b9642901934498c6c1f9123991882b421b492c71"
       }
     },
     "career/review-item-loading": {
@@ -180,8 +180,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "b6bc3e984cddbf1a9c39d8aa9204404a228fea9c03bf7a2aac7359042bff59d1",
-        "1440": "e156866adf8359c1811f4ca43d7574c24e2f274c531cd6f83dc9b34bcfbc0f09"
+        "390": "b61c369343011cb0d4fd463ea90f734f0cd776caee01096331e333648424b0e5",
+        "1440": "e6370b2fa94b5ab64895066471a75dfa86d6d4485068153b6e86227b99a5567f"
       }
     },
     "career/review-queue-loading": {
@@ -283,12 +283,18 @@
     "commerce/premium-qr-expired": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "cần API: the QR payment state (expiresAt) is not returned by startPremiumCheckout, so the expired QR cannot be drawn"
+      }
     },
     "commerce/premium-qr-payment": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "cần API: startPremiumCheckout returns only a gateway redirect; the approved page pays by VietQR on the page (QR string, bank, account, transfer note, expiresAt), and Grammar has no QrCode leaf yet"
+      }
     },
     "commerce/premium-result": {
       "status": "built",
@@ -302,7 +308,10 @@
     "commerce/premium-result-expired": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: no app door can age a pending order past its 24 h lapse on dev (needs a waited-out order or an app-controlled clock)"
+      }
     },
     "commerce/premium-result-failed": {
       "status": "built",
@@ -709,7 +718,10 @@
     "essentials/lesson-scenarios-stuck": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending content: the outbox-idempotency lesson ships no scenario hints, so the stuck state is drawn the same as the red run on dev"
+      }
     },
     "essentials/lesson-source": {
       "status": "built",
@@ -1057,8 +1069,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "3742e199025cc8b4ecdffa8022627259b9c874f9e5153ac6a42d19e3dafccad4",
-        "1440": "64ed7b9a9bd019ee9f53c70df3784023d361af912f6246bc1601b46510515ee6"
+        "390": "93780901539dd7f1ca2837df8d9d860c419e1407369a95d836d93cd325e472c9",
+        "1440": "b41cd25b75603bc4aad335106e8f3d497c6ad7b2161c2eccd3846ad2ef1eab8e"
       }
     },
     "landing/error": {
@@ -1210,7 +1222,10 @@
     "practice/list": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: needs a judged submission on dev (Judge0 is not part of the dev stack), so no learner has an Accepted problem to show progress on the catalog"
+      }
     },
     "practice/list-error": {
       "status": "built",
@@ -1226,8 +1241,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "05a4b188b9f19b855fc4c26dc3b90a0d67715f2aa20466c1af36124336d0026e",
-        "1440": "5c6c986397ca0795d44712ddd06b30b7e418ad252c2b5d773993eb1b51fbacb5"
+        "390": "71b1c89b3bd4f585c7fbae45cfbfaf3391aa73eb9749c0c6c852aea96d4acaf1",
+        "1440": "ba2818ee6afa323d27fd2f6dea2cd2f7560892d01ab2e01edd17bfb421c8d7eb"
       }
     },
     "practice/list-loading": {
@@ -1251,20 +1266,26 @@
     "practice/pattern": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: needs a judged submission on dev (Judge0 is not part of the dev stack), so no learner has an Accepted problem to show progress in a pattern"
+      }
     },
     "practice/pattern-empty": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending content: every pattern of the dev catalog holds problems, so no pattern is empty"
+      }
     },
     "practice/pattern-error": {
       "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "592c000b38608a117062dc121cd875109e52d9e9881873223ee586fe400b3b0a",
-        "1440": "021ef4d41e55646d7b770d1f218df86cebbfa865bbd51afafb142951301afda9"
+        "390": "a58f83ba19e0020d50b3640c5faa1e1edeeb815c068fee131dac27d8a5d8927b",
+        "1440": "da9a2980aed7454f0ae5580ed68f2ed357f41d10e0154e70ccecb49ce57a0e01"
       }
     },
     "practice/pattern-first": {
@@ -1272,8 +1293,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "f9a0f453214b892b11450d55c6e7af411a04f3c5db209f1eec2996e350a1d224",
-        "1440": "96e138547c704d713ae2c556504bf3437e20b84c901e73aebe0c3a80133640ec"
+        "390": "480396ecdbc94bf3fc6a3b79ccc92ae1f5151028ddb6ce6df423a0dea77f9301",
+        "1440": "e6828435a6c2863464132cff665e3e13accc46edbaccb6768416644d3ad6611d"
       }
     },
     "practice/pattern-loading": {
@@ -1281,8 +1302,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "692faca27393e1f1492bc2a154a924de5d6fd42100df7ebd276620c8a460238f",
-        "1440": "92e3c98cde80b3f69ffae78fc9e90c93a9826ef3cfeb3b20a60178b4789e8e37"
+        "390": "aa83126ad42b9a387e1ebe575b238a5a38aa6fc9a558fa944286544deac78476",
+        "1440": "51d0b8aaa1f13c6eff4fae03b98d48a469eb8e93cd3e8cdaa7a5360a7758b268"
       }
     },
     "practice/problem": {
@@ -1297,12 +1318,18 @@
     "practice/problem-accepted": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: needs a judged submission on dev (Judge0 is not part of the dev stack), so no Accepted verdict exists"
+      }
     },
     "practice/problem-compile": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: needs a judged submission on dev (Judge0 is not part of the dev stack), so no compile-error verdict exists"
+      }
     },
     "practice/problem-confirm": {
       "status": "built",
@@ -1325,7 +1352,10 @@
     "practice/problem-judging": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "pending": {
+        "reason": "pending seed: needs a judged submission on dev (Judge0 is not part of the dev stack), so no submission is being judged"
+      }
     },
     "practice/problem-loading": {
       "status": "built",

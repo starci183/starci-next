@@ -23,7 +23,10 @@ export const IncidentsList = () => {
                     ],
                     groups: incidentGroupsOf(rows, words),
                 })),
-                placeholder: INCIDENTS_PLACEHOLDER,
+                placeholder: {
+                    ...INCIDENTS_PLACEHOLDER,
+                    facts: [t("factLessons", { count: 0 }), t("factAuthored", { count: 0 })],
+                },
                 slotLabels: useSlotLabels()(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
                 staticsBaseUrl: staticsBase(),
                 labels: {

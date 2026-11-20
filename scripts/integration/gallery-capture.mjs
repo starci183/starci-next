@@ -185,6 +185,17 @@ const revokeAllTokens = async (p) => {
 // The auth board states play the doors through the product's own form; the emailed-link states read the link from the loopback mail sink (CAPTURE_MAIL).
 const CORE = process.env.CAPTURE_CORE || "http://localhost:3201"
 const MAIL = process.env.CAPTURE_MAIL || "http://localhost:3292"
+// These states create accounts and read a mail sink: refuse anything but loopback.
+for (const [name, value] of [
+    ["CAPTURE_CORE", CORE],
+    ["CAPTURE_MAIL", MAIL],
+])
+    if (!["localhost", "127.0.0.1", "[::1]", "::1"].includes(new URL(value).hostname)) {
+        console.error(
+            `gallery-capture: refusing ${name}=${value}: the auth states sign learners up on a loopback stack only`,
+        )
+        process.exit(1)
+    }
 // A confirmed learner for the wrong-password shot: GALLERY_STATES/cred.json ({ email }), the one gallery-sign-in made.
 const knownEmail = () => {
     try {
@@ -231,11 +242,12 @@ const openMode = async (p, name) => {
 }
 // Signs a learner up through the core door (the account stays unconfirmed) and answers the address.
 const signUpAtCore = async (email) => {
-    await fetch(CORE + "/auth/signup", {
+    const answer = await fetch(CORE + "/auth/signup", {
         method: "POST",
         headers: { "content-type": "application/json", origin: process.env.CAPTURE_ORIGIN_AS || ENTRY },
         body: JSON.stringify({ email, password: STAND_IN_PASSWORD, language: "vi" }),
     })
+    if (!answer.ok) throw new Error(`sign-up refused (${answer.status}) for the stand-in learner`)
     return email
 }
 // The token of the newest link of a kind (confirm or reset) the mail sink holds for an address.
@@ -305,7 +317,9 @@ const AUTH_STATES = [
         act: async (p) => {
             const email = await signUpAtCore(freshEmail())
             const token = await mailedToken(email, "confirm")
-            await p.goto(ENTRY + "/sign-in/confirm?token=" + (token ?? "no-mail"), { waitUntil: "load" })
+            // No mail means no real link: fail the shot instead of saving an "invalid link" page as auth/confirm.
+            if (token === undefined) throw new Error("no confirmation mail reached the sink")
+            await p.goto(ENTRY + "/sign-in/confirm?token=" + token, { waitUntil: "load" })
             await p.waitForTimeout(3000)
         },
     }),
@@ -546,9 +560,12 @@ const SCREENS = [
         },
     }),
     S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
+    // The seeded learner with three verified lines (gallery-seed cv-multi); its slug is in the seed manifest (learners.cv-multi.cv.slug).
+    S("cv", "public-many-lines", "/cv/learner-4", { guest: true }),
+    S("cv", "public-loading", "/cv/learner-4", { guest: true, hold: true, ops: /"operationName":"PublicCv"/ }),
     S("profile", "overview", "/profile"),
     S("profile", "new", "/profile", {
-        learnerState: "D:/starci-lanes/next-gallery-seed/.tmp-gallery-states/review-nothing.json",
+        learnerState: learnerOf("review-nothing"),
     }),
     S("profile", "edit", "/profile/edit"),
     S("profile", "edit-loading", "/profile/edit", { hold: true, ops: /"operationName":"MyProfile"/ }),
@@ -965,8 +982,14 @@ const norm = (href) => {
             if (s.reshape)
                 await p.route(/graphql/, async (route) => {
                     if (!s.reshape.ops.test(route.request().postData() ?? "")) return route.fallback()
-                    const response = await route.fetch()
-                    return route.fulfill({ response, json: s.reshape.map(await response.json()) })
+                    try {
+                        const response = await route.fetch(
+                            ORIGIN_AS ? { headers: { ...route.request().headers(), origin: ORIGIN_AS } } : undefined,
+                        )
+                        return route.fulfill({ response, json: s.reshape.map(await response.json()) })
+                    } catch {
+                        // the page closed while the read was in flight
+                    }
                 })
             if (s.refuseOps)
                 await p.route(/graphql/, (route) =>

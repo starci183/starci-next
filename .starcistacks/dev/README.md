@@ -30,12 +30,12 @@ Keep real sealed members under `.starcistacks/dev/secrets/*.enc`, add them to th
 
 ## Signing in (the app-owned auth)
 
-The core api signs its own access tokens (passport kit, sealed `AUTH_JWT_PRIVATE_KEY` of member `auth`) and serves the JWKS; there is no external identity provider. Sign-up, verify and password reset send emailed codes to Mailpit.
+The core api signs its own access tokens (passport kit, sealed `AUTH_JWT_PRIVATE_KEY` of member `auth`) and serves the JWKS; there is no external identity provider. Sign-up and password reset send an emailed link to Mailpit.
 
-1. Open `http://localhost:3280/sign-in` (or any protected page: a signed-out read of Essentials, a topic or a lesson sends you there with `returnTo`).
-2. Choose sign up, enter an email and a password of at least 6 characters, and submit.
-3. Open Mailpit at `http://localhost:8025`, open the newest mail to that address and read the six-digit code.
-4. Enter the code: the session cookie is set and you land on the page you came from. Signing in later asks for the password, then a new emailed code the same way.
+1. Open `http://localhost:3280/sign-in` (or any protected page: a signed-out read sends you there with `returnTo`).
+2. Choose "Đăng ký", enter an email and a password of 8 to 72 characters, accept the terms and submit.
+3. Open Mailpit at `http://localhost:3292`, open the newest mail to that address and open its link (`/auth/confirm?token=…`, which lands on `/sign-in/confirm`).
+4. The page says the email is confirmed; sign in with the email and password. A forgotten password goes the same way: "Quên mật khẩu?" sends a link to `/sign-in/reset`.
 
 ## Dự án: chạy trên máy học viên
 
