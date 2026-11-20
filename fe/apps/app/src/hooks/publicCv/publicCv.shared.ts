@@ -2,7 +2,7 @@ import type { PublicCv } from "@/hooks/swr"
 import type { PublicCvSourceView } from "@/modules/types"
 
 /** The source chips appear from this many lines (below it a filter only hides what a short page already shows). */
-export const PUBLIC_CV_FILTER_FROM = 8
+export const PUBLIC_CV_FILTER_FROM = 3
 
 /** How many lines show before "Xem thêm": ten, six on a phone. */
 export const PUBLIC_CV_LIMIT = { wide: 10, phone: 6 } as const
