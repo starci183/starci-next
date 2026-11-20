@@ -17,6 +17,7 @@ import { randomBytes, randomUUID } from "node:crypto"
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
 import https from "node:https"
+import pg from "pg"
 import { createRequire } from "node:module"
 
 const LOOPBACK = new Set(["localhost", "127.0.0.1", "[::1]", "::1"])
@@ -870,6 +871,89 @@ if (want("cv-multi")) {
     log(
         `cv-multi: ${signed.length} verified lines (${signed.map((item) => item.part).join(", ")}); cv ${cv?.setCvVisibility.path ?? "not set"}`,
     )
+}
+
+// ---------------------------------------------------------------------------------------------------------------- commerce
+
+/** The purchase rows of a learner, read only (the dev database, as simulate-sepay-ipn.mjs reads them): the checkout door answers no id when the provider refuses. */
+const purchasesOf = async (learner) => {
+    const db = new pg.Client({ connectionString: readFileSync(siblingFile("PRIMARY_DB_URL"), "utf8").trim() })
+    await db.connect()
+    try {
+        const { rows } = await db.query(
+            "select purchase_id, order_code, status, rail, amount_vnd from purchases where learner_id = $1 order by created_at desc",
+            [learner.subject],
+        )
+        return rows
+    } finally {
+        await db.end()
+    }
+}
+const CHECKOUT = `mutation StartPremiumCheckout($input: StartPremiumCheckoutInput!) { startPremiumCheckout(input: $input) { orderId rail } }`
+
+// premium/result of a failed order: the payOS rail refuses the dev sandbox placeholder merchant, so the app itself closes the purchase as failed.
+if (want("orders-failed")) {
+    const learner = await signIn("orders-failed")
+    if (!(await purchasesOf(learner)).some((row) => row.status === "failed"))
+        await gql({ jar: learner.jar }, CHECKOUT, { input: { plan: "monthly", rail: "payos" } }).catch((error) => {
+            if (error.code !== "PURCHASE_CHECKOUT_REFUSED") throw error
+        })
+    const failed = (await purchasesOf(learner)).find((row) => row.status === "failed")
+    if (failed === undefined) fail("orders-failed: no failed purchase")
+    remember(learner, { "commerce/premium-result-failed": `/premium/result?order=${failed.purchase_id}` })
+    log(`${learner.email}: failed order ${failed.order_code}`)
+}
+
+// premium/result of an active order: checkout on the sepay rail, then the paid IPN the gateway would post (the dev secrets are placeholders, so
+// the same simulation as simulate-sepay-ipn.mjs: the webhook door authenticates the x-secret-key header).
+if (want("orders-active")) {
+    const learner = await signIn("orders-active")
+    let paid = (await purchasesOf(learner)).find((row) => row.status === "paid")
+    if (paid === undefined) {
+        const started = await gql({ jar: learner.jar }, CHECKOUT, { input: { plan: "monthly", rail: "sepay" } })
+        const order = (await purchasesOf(learner)).find(
+            (row) => row.purchase_id === started.startPremiumCheckout.orderId,
+        )
+        const answer = await call(undefined, CORE, "/webhooks/sepay", {
+            method: "POST",
+            headers: { "x-secret-key": readFileSync(siblingFile("SEPAY_IPN_SECRET_KEY"), "utf8").trim() },
+            body: {
+                timestamp: Math.floor(Date.now() / 1000),
+                notification_type: "ORDER_PAID",
+                order: {
+                    order_invoice_number: order.order_code,
+                    order_amount: String(order.amount_vnd),
+                    order_status: "CAPTURED",
+                    order_currency: "VND",
+                },
+                transaction: {
+                    transaction_id: `dev-sim-${randomUUID()}`,
+                    transaction_type: "PAYMENT",
+                    payment_method: "BANK_TRANSFER",
+                    transaction_status: "APPROVED",
+                    transaction_amount: String(order.amount_vnd),
+                    transaction_currency: "VND",
+                },
+            },
+        })
+        if (answer.status !== 200 && answer.status !== 204)
+            fail(`orders-active: the webhook door refused the IPN (${answer.status})`)
+        for (let attempt = 0; attempt < 20 && paid === undefined; attempt++) {
+            paid = (await purchasesOf(learner)).find((row) => row.status === "paid")
+            if (paid === undefined) await sleep(500)
+        }
+    }
+    if (paid === undefined) fail("orders-active: the order did not settle")
+    remember(learner, { "commerce/premium-result-active": `/premium/result?order=${paid.purchase_id}` })
+    log(`${learner.email}: active order ${paid.order_code}`)
+}
+
+// devices/list-limit-reached: a free learner (no Premium) with exactly one paired device, the free plan's limit.
+if (want("devices-free-limit")) {
+    const learner = await signIn("devices-free-limit")
+    await pairDevice(learner, { name: "May Gallery duy nhat", platform: "windows", online: false })
+    remember(learner, { "devices/list-limit-reached": "/devices" })
+    log(`${learner.email}: one device on the free plan`)
 }
 
 // ---------------------------------------------------------------------------------------------------------------- projects
