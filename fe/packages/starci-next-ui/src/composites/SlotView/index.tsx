@@ -55,6 +55,28 @@ export type SlotViewProps<T> = {
     readonly onRetry?: () => void
     /** The ready tree, drawn once with the placeholder while the first read loads (`render(placeholder, true)`). */
     readonly render: (data: T, isLoading: boolean) => ReactNode
+    /**
+     * The page header of the same read: drawn with the settled view, or with the placeholder and `isLoading` true while the first read
+     * loads, so the block never branches on the slot itself. Any other status draws `headerFallback`.
+     */
+    readonly header?: (data: T, isLoading: boolean) => ReactNode
+    /** The header of a read that is forbidden, failed or settled empty (the title alone, usually). */
+    readonly headerFallback?: ReactNode
+    /** The aside of the same read, drawn like `header`; any other status draws `asideFallback`. */
+    readonly aside?: (data: T, isLoading: boolean) => ReactNode
+    /** The aside of a read that is forbidden, failed or settled empty. */
+    readonly asideFallback?: ReactNode
+    /** Puts the header, the aside and the status body into the page (`Page`, `Grid`): without it they are returned side by side. */
+    readonly frame?: (parts: SlotParts) => ReactNode
+}
+
+/** What `frame` receives: the header and aside of the read, the body its status draws and whether the first read is loading. */
+export type SlotParts = {
+    readonly header: ReactNode
+    readonly aside: ReactNode
+    readonly body: ReactNode
+    /** True while the first read loads (the header, aside and body then draw the placeholder): hand it to `Page isLoading`. */
+    readonly isLoading: boolean
 }
 
 /** The words under a notice, when the block supplies them. */
@@ -103,9 +125,28 @@ const emptyNotice = (props: Pick<SlotViewProps<unknown>, "emptyDescription" | "e
  */
 export const SlotView = <T,>(props: SlotViewProps<T>): ReactNode => {
     const { slot } = props
-    if ("isLoading" in slot) return props.render(props.placeholder, true)
-    if ("isForbidden" in slot) return forbiddenNotice(props)
-    if ("isError" in slot) return errorNotice(props)
-    if ("isEmpty" in slot) return emptyNotice(props)
-    return props.render(slot.items, false)
+    const part = (
+        make: ((data: T, isLoading: boolean) => ReactNode) | undefined,
+        fallback: ReactNode,
+        data: T | undefined,
+        isLoading: boolean,
+    ): ReactNode => (data === undefined || make === undefined ? (fallback ?? null) : make(data, isLoading))
+    const parts = (body: ReactNode, data: T | undefined, isLoading: boolean): ReactNode => {
+        const header = part(props.header, props.headerFallback, data, isLoading)
+        const aside = part(props.aside, props.asideFallback, data, isLoading)
+        return props.frame === undefined ? (
+            <>
+                {header}
+                {body}
+                {aside}
+            </>
+        ) : (
+            props.frame({ header, aside, body, isLoading })
+        )
+    }
+    if ("isLoading" in slot) return parts(props.render(props.placeholder, true), props.placeholder, true)
+    if ("isForbidden" in slot) return parts(forbiddenNotice(props), undefined, false)
+    if ("isError" in slot) return parts(errorNotice(props), undefined, false)
+    if ("isEmpty" in slot) return parts(emptyNotice(props), undefined, false)
+    return parts(props.render(slot.items, false), slot.items, false)
 }
