@@ -123,7 +123,8 @@
         "confirmPlaceholder": "Nhập lại mật khẩu",
         "reveal": "Hiện mật khẩu",
         "hide": "Ẩn mật khẩu",
-        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư"
+        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư",
+        "termsRequired": "Đồng ý điều khoản để đăng ký"
       },
       "social": {
         "google": "Tiếp tục với Google",
@@ -133,13 +134,15 @@
       },
       "notice": {
         "rateLimited": "Bạn thao tác quá nhanh, hãy thử lại sau.",
-        "credentials": "Email hoặc mật khẩu không đúng. Hãy thử lại.",
+        "credentials": "Email hoặc mật khẩu chưa đúng",
         "signedOut": "Bạn đã đăng xuất.",
         "passwordReset": "Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới.",
         "socialFailed": "Chưa đăng nhập được bằng Google. Hãy thử lại.",
         "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau.",
         "linkResent": "Đã gửi lại email.",
-        "notConfirmed": "Email này chưa được xác nhận. Hãy mở liên kết đã gửi, hoặc gửi lại."
+        "notConfirmed": "Email này chưa được xác nhận",
+        "credentialsDetail": "Kiểm tra lại, hoặc đặt lại mật khẩu.",
+        "notConfirmedDetail": "Mở liên kết chúng tôi đã gửi, hoặc gửi lại."
       },
       "error": {
         "email": "Hãy nhập địa chỉ email hợp lệ.",
@@ -148,8 +151,8 @@
       },
       "sent": {
         "title": "Kiểm tra email của bạn",
-        "subtitleConfirm": "Chúng tôi đã gửi một liên kết tới {email}. Hãy mở liên kết để xác nhận email.",
-        "subtitleReset": "Nếu {email} có tài khoản, chúng tôi đã gửi liên kết để đặt mật khẩu mới.",
+        "subtitleConfirm": "Chúng tôi đã gửi một liên kết tới <b>{email}</b>. Hãy mở liên kết để xác nhận email.",
+        "subtitleReset": "Nếu <b>{email}</b> có tài khoản, chúng tôi đã gửi liên kết để đặt mật khẩu mới.",
         "resend": "Gửi lại email",
         "anotherEmail": "Dùng email khác"
       },
@@ -193,7 +196,8 @@
         "harness": {
           "name": "Harness",
           "text": "Dùng Claude Code và Codex cho đúng. Miễn phí."
-        }
+        },
+        "areas": "Ba khu vực học"
       }
     },
     "plans": {

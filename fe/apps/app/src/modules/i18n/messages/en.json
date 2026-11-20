@@ -123,7 +123,8 @@
         "confirmPlaceholder": "Confirm your password",
         "reveal": "Show password",
         "hide": "Hide password",
-        "terms": "I agree to the Terms of Use and the Privacy Policy"
+        "terms": "I agree to the Terms of Use and the Privacy Policy",
+        "termsRequired": "Accept the terms to sign up"
       },
       "social": {
         "google": "Continue with Google",
@@ -133,13 +134,15 @@
       },
       "notice": {
         "rateLimited": "You are doing that too fast, please try again later.",
-        "credentials": "The email or password is incorrect. Please try again.",
+        "credentials": "The email or password is not right",
         "signedOut": "You have signed out.",
         "passwordReset": "Your password was reset. Sign in with the new password.",
         "socialFailed": "We could not sign you in with Google. Please try again.",
         "unavailable": "This is unavailable right now. Please try again shortly.",
         "linkResent": "The email was sent again.",
-        "notConfirmed": "This email is not confirmed yet. Open the link we sent, or send it again."
+        "notConfirmed": "This email is not confirmed yet",
+        "credentialsDetail": "Check them again, or reset your password.",
+        "notConfirmedDetail": "Open the link we sent, or send it again."
       },
       "error": {
         "email": "Enter a valid email address.",
@@ -148,8 +151,8 @@
       },
       "sent": {
         "title": "Check your email",
-        "subtitleConfirm": "We sent a link to {email}. Open it to confirm your email and finish.",
-        "subtitleReset": "If {email} has an account, we sent a link to set a new password.",
+        "subtitleConfirm": "We sent a link to <b>{email}</b>. Open it to confirm your email and finish.",
+        "subtitleReset": "If <b>{email}</b> has an account, we sent a link to set a new password.",
         "resend": "Send the email again",
         "anotherEmail": "Use another email"
       },
@@ -193,7 +196,8 @@
         "harness": {
           "name": "Harness",
           "text": "Use Claude Code and Codex properly. Free."
-        }
+        },
+        "areas": "Three areas to learn"
       }
     },
     "plans": {

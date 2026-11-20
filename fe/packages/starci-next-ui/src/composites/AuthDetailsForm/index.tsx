@@ -18,6 +18,8 @@ export interface AuthDetailsLabels {
     readonly hide: string
     readonly terms: string
     readonly forgotLink: string
+    /** Why the sign-up submit waits: the terms are not accepted yet. */
+    readonly termsRequired: string
     readonly submit: string
 }
 
@@ -83,7 +85,9 @@ type PasswordFieldProps = {
 const PasswordLabelRow = (props: { readonly labels: AuthDetailsLabels; readonly onForgot: () => void }) => (
     <Cluster gap="inline" justify="between">
         <Text>{props.labels.password}</Text>
-        <TextAction onPress={props.onForgot}>{props.labels.forgotLink}</TextAction>
+        <TextAction appearance="inline" onPress={props.onForgot}>
+            {props.labels.forgotLink}
+        </TextAction>
     </Cluster>
 )
 
@@ -122,7 +126,8 @@ const Fields = (props: FieldsProps) => {
                 label={props.labels.email}
                 placeholder={props.labels.emailPlaceholder}
                 kind="email"
-                isRequired
+                // Sign-in draws its password label itself (the reset link beside it), so neither field marks required there; the submit checks the address.
+                isRequired={props.shape !== "signIn"}
                 isInvalid={props.emailError !== undefined}
                 errorMessage={props.emailError}
             />
@@ -158,6 +163,9 @@ export const AuthDetailsForm = (props: AuthDetailsFormProps) => (
                 width="fill"
                 isPending={props.isPending}
                 isDisabled={props.shape === "signUp" && !props.isTermsAccepted}
+                {...(props.shape === "signUp" && !props.isTermsAccepted
+                    ? { disabledReason: props.labels.termsRequired }
+                    : {})}
             >
                 {props.labels.submit}
             </Button>

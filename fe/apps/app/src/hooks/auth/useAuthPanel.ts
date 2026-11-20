@@ -70,12 +70,18 @@ export const useAuthPanel = (input: AuthPanelInput): AuthPanelHook => {
         const email = fieldOf(form, "email").trim().toLowerCase()
         const password = fieldOf(form, "password")
         patch({ problem: undefined, notice: undefined })
-        if (!EMAIL_PATTERN.test(email)) patch({ problem: { kind: "email" } })
+        if (state.mode === "signUp") {
+            // Every wrong field is marked at once, so one submit shows all that needs fixing.
+            const wrong = {
+                email: !EMAIL_PATTERN.test(email),
+                password: !passwordFits(password),
+                mismatch: password !== fieldOf(form, "confirm"),
+            }
+            if (wrong.email || wrong.password || wrong.mismatch) patch({ problem: { kind: "fields", ...wrong } })
+            else void send("signup", { email, password, language }, email)
+        } else if (!EMAIL_PATTERN.test(email)) patch({ problem: { kind: "email" } })
         else if (state.mode === "forgot") void send("forgot", { email, language }, email)
-        else if (state.mode === "signIn") void signIn(email, password)
-        else if (!passwordFits(password)) patch({ problem: { kind: "password" } })
-        else if (password !== fieldOf(form, "confirm")) patch({ problem: { kind: "mismatch" } })
-        else void send("signup", { email, password, language }, email)
+        else void signIn(email, password)
     }
     const resend = (): void => {
         const email = state.sentTo

@@ -16,6 +16,8 @@ export type AuthProblem =
     | { readonly kind: "password" }
     | { readonly kind: "mismatch" }
     | { readonly kind: "rateLimited" }
+    /** Sign-up checks every field on submit: each flag marks a field that is wrong. */
+    | { readonly kind: "fields"; readonly email: boolean; readonly password: boolean; readonly mismatch: boolean }
 
 /** Everything the screen draws that changes: mode, step, the address the link went to, the notice and the refusal. */
 export interface AuthState {

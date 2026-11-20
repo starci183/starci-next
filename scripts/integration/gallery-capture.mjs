@@ -307,7 +307,15 @@ const AUTH_STATES = [
             await p.waitForTimeout(3000)
         },
     }),
-    S("auth", "forgot", "/sign-in", { guest: true, act: async (p) => openMode(p, "Quên mật khẩu?") }),
+    S("auth", "forgot", "/sign-in", {
+        guest: true,
+        // The form at rest: the mode switch focuses the email field, so the shot drops the focus.
+        act: async (p) => {
+            await openMode(p, "Quên mật khẩu?")
+            await p.evaluate(() => document.activeElement?.blur())
+            await p.waitForTimeout(400)
+        },
+    }),
     S("auth", "forgot-sent", "/sign-in", {
         guest: true,
         act: async (p) => {
@@ -723,7 +731,17 @@ const SCREENS = [
     S("review", "hub-done", "/review"),
     S("progress", "overview", "/progress"),
     S("progress", "free", "/review/decks", { free: true, act: earnProgress }),
-    S("incidents", "list-none", "/incidents"),
+    // Dev now holds a written incident: list is the real answer; list-none is that answer with no incident written yet.
+    S("incidents", "list", "/incidents"),
+    S("incidents", "list-none", "/incidents", {
+        reshape: {
+            ops: /"operationName":"Incidents"/,
+            map: (body) => ({
+                ...body,
+                data: { incidents: (body.data?.incidents ?? []).map((row) => ({ ...row, incidentAvailable: false })) },
+            }),
+        },
+    }),
     S("career", "review-queue-forbidden", "/review-queue"),
     S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
 ]
@@ -939,6 +957,13 @@ const norm = (href) => {
                 await p.route(/graphql/, (route) =>
                     s.holdOps.test(route.request().postData() ?? "") ? undefined : route.fallback(),
                 )
+            // reshape { ops, map }: the real answer of those operations, passed through map (a state the dev data no longer holds, drawn from its own shape).
+            if (s.reshape)
+                await p.route(/graphql/, async (route) => {
+                    if (!s.reshape.ops.test(route.request().postData() ?? "")) return route.fallback()
+                    const response = await route.fetch()
+                    return route.fulfill({ response, json: s.reshape.map(await response.json()) })
+                })
             if (s.refuseOps)
                 await p.route(/graphql/, (route) =>
                     s.refuseOps.test(route.request().postData() ?? "") ? route.abort() : route.fallback(),

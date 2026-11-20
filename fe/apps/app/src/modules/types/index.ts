@@ -96,7 +96,7 @@ export type {
 } from "./experience"
 export { CATALOG_PLACEHOLDER } from "./catalogPlaceholder"
 export type { AppHeaderLanguage, AppHeaderTheme, AppHeaderAccountShape, AppHeaderBaseProps } from "./appHeader"
-export type { AuthNoticeTone, FieldErrors } from "./authNotice"
+export type { AuthNoticeTone, AuthNoticeView, FieldErrors } from "./authNotice"
 export { FREE_PHASES, LESSON_PHASES } from "@starci-next/ui"
 export type {
     AttemptStatus,

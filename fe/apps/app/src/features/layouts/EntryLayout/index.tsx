@@ -1,4 +1,4 @@
-import { EntryFrame, Heading, Stack, Text } from "@starci/grammar/common"
+import { EntryFrame, Heading, Section, Stack, Text } from "@starci/grammar/common"
 import { BrandLockup } from "@starci-next/ui"
 import { getLocale, getTranslations } from "next-intl/server"
 import type { ReactNode, ReactElement } from "react"
@@ -36,21 +36,21 @@ export const EntryLayout = async (props: EntryLayoutProps): Promise<ReactElement
             intro={
                 <Stack gap="section">
                     {lockup}
-                    <Heading level={2} scale="standard">
+                    <Heading level={2} scale="title">
                         {t("headline")}
                     </Heading>
                     <Text tone="muted">{t("lead")}</Text>
-                    <Stack gap="row">
-                        <Text>
-                            <strong>{t("essentials.name")}</strong> {t("essentials.text")}
-                        </Text>
-                        <Text>
-                            <strong>{t("projects.name")}</strong> {t("projects.text")}
-                        </Text>
-                        <Text>
-                            <strong>{t("harness.name")}</strong> {t("harness.text")}
-                        </Text>
-                    </Stack>
+                    <Section
+                        kind="list"
+                        layout="settings"
+                        ariaLabel={t("areas")}
+                        items={(["essentials", "projects", "harness"] as const).map((area) => ({
+                            id: area,
+                            title: t(`${area}.name`),
+                            description: t(`${area}.text`),
+                        }))}
+                        empty={null}
+                    />
                 </Stack>
             }
         >

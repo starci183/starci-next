@@ -1,5 +1,6 @@
 import { Alert, Button, Cluster, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
-import type { AuthNoticeTone } from "@/modules/types"
+import type { ReactNode } from "react"
+import type { AuthNoticeView } from "@/modules/types"
 import { AuthCardHeading, AuthDetailsForm, AuthSocialButtons, type AuthDetailsLabels } from "@starci-next/ui"
 
 /** The drawings of the card: the three detail forms and the note that the emailed link was sent. */
@@ -13,8 +14,9 @@ export interface AuthPanelBaseProps {
     readonly shape: AuthPanelShape
     readonly props: {
         readonly title: string
-        readonly subtitle: string
-        readonly notice: { readonly tone: AuthNoticeTone; readonly title: string } | undefined
+        /** The support line; on the sent note it sets the address strong. */
+        readonly subtitle: ReactNode
+        readonly notice: AuthNoticeView | undefined
         /** True when the social buttons and their divider are drawn (the sign-in and sign-up details). */
         readonly hasSocial: boolean
         readonly social: {
@@ -64,7 +66,11 @@ const Body = (props: AuthPanelBaseProps) => {
                     >
                         {props.props.sent.resend}
                     </Button>
-                    <TextAction onPress={props.on.anotherEmail}>{props.props.sent.anotherEmail}</TextAction>
+                    <Cluster gap="inline" justify="center">
+                        <TextAction appearance="inline" onPress={props.on.anotherEmail}>
+                            {props.props.sent.anotherEmail}
+                        </TextAction>
+                    </Cluster>
                 </Stack>
             )
         case "signIn":
@@ -88,7 +94,7 @@ const Body = (props: AuthPanelBaseProps) => {
     }
 }
 
-/** The card's content: the title, the support line, the one notice, the social buttons, the form of its shape and the line that switches mode. */
+/** The card's content: the title, the support line, the one notice, the social buttons, the form of its shape and, on a details form, the line that switches mode (the sent note has none, as on the board). */
 const Content = (props: AuthPanelBaseProps) => (
     <Stack gap="section">
         <AuthCardHeading
@@ -97,18 +103,26 @@ const Content = (props: AuthPanelBaseProps) => (
             level={props.props.isEmbedded ? 2 : 1}
         />
         {props.props.notice === undefined ? null : (
-            <Alert tone={props.props.notice.tone} title={props.props.notice.title} />
+            <Alert
+                tone={props.props.notice.tone}
+                title={props.props.notice.title}
+                description={props.props.notice.description}
+            />
         )}
         {props.props.hasSocial ? (
             <AuthSocialButtons {...props.props.social} isDisabled={props.props.isPending} onChoose={props.on.social} />
         ) : null}
         <Body {...props} />
-        <Cluster gap="inline" justify="center">
-            <Text size="sm" tone="muted">
-                {props.props.promptQuestion}
-            </Text>
-            <TextAction onPress={props.on.prompt}>{props.props.promptAction}</TextAction>
-        </Cluster>
+        {props.shape === "sent" ? null : (
+            <Cluster gap="inline" justify="center">
+                <Text size="sm" tone="muted">
+                    {props.props.promptQuestion}
+                </Text>
+                <TextAction appearance="inline" onPress={props.on.prompt}>
+                    {props.props.promptAction}
+                </TextAction>
+            </Cluster>
+        )}
     </Stack>
 )
 

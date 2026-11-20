@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { Text } from "@starci/grammar/common"
 import { useState } from "react"
 import {
     PASSWORD_MAX_LENGTH,
@@ -47,7 +48,14 @@ const headingOf = (state: AuthState, t: Translator) => {
     const prompt = state.mode === "forgot" ? modeCopyOf("forgot", t) : modeCopyOf("signUp", t)
     return {
         title: t("sent.title"),
-        subtitle: t(state.mode === "forgot" ? "sent.subtitleReset" : "sent.subtitleConfirm", { email }),
+        subtitle: t.rich(state.mode === "forgot" ? "sent.subtitleReset" : "sent.subtitleConfirm", {
+            email,
+            b: (chunks) => (
+                <Text as="span" isStrong>
+                    {chunks}
+                </Text>
+            ),
+        }),
         promptQuestion: prompt.promptQuestion,
         promptAction: prompt.promptAction,
     }
@@ -70,6 +78,7 @@ const detailsLabelsOf = (state: AuthState, t: Translator): AuthPanelBaseProps["p
         hide: t("field.hide"),
         terms: t("field.terms"),
         forgotLink: t("forgotLink"),
+        termsRequired: t("field.termsRequired"),
         submit: copy.submit,
     }
 }
