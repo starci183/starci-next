@@ -1,0 +1,155 @@
+schema: 1
+screen: review/session-cloze
+title: Phiên ôn, điền chỗ trống
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
+  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+shots:
+  "390":
+    file: 390.png
+    sha256: 59160da31fb00ec882f226aca8090c28d71360209c241c83b4b1c32ba3114869
+  "1440":
+    file: 1440.png
+    sha256: e91a28485feb38cfb6cd8d9c905700f806a51f0550f176f10cbce4abbb6e95ba
+code:
+  - features/pages/ReviewSessionPage
+  - components/blocks/ReviewSession
+sections:
+  - id: s1
+    title: Điền chỗ trống
+    shows: Điền chỗ trống
+    why: Chọn phương án rồi kiểm tra ngay; kết quả nói bằng chữ.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Đầu trang
+    shows: Đầu trang
+    why: 'Đầu trang (tên, dòng số liệu, một nút chính) đi qua `SlotView` cùng nội dung: tiêu đề giữ
+      nguyên khi đọc lỗi hay rỗng. Đường dẫn Ôn tập / Phiên ôn nằm trong `Page header`; khi chưa có
+      thẻ nào, nút chính "Chọn bộ thẻ" đứng ở đầu trang.'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:35.197Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Thông báo "Chưa đúng..." là nhãn amber
+            nhỏ (~20px) chèn giữa chip và ô ghi nhớ, đẩy bố cục.'
+        actionable:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm.'
+        live:
+          verdict: open
+          notes: Đáp án sai chỉ đổi viền chip và một nhãn amber, không có icon trạng thái (sai/đúng) và không
+            chuyển động; chip chọn chỉ đổi viền, khó thấy.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:25.087Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: '"Đúng rồi" chỉ là nhãn xanh 12 không có icon đúng/sai và không chuyển động; chip được chọn
+            chỉ đổi viền. Đã sửa: bỏ nút icon lạ.'
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:50.003Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:01.640Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

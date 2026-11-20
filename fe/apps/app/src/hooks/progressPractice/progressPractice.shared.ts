@@ -3,6 +3,9 @@ import { APP_ROUTES, practicePatternPath } from "@/modules/routes"
 import type { ProgressBlockView, ProgressRowView } from "@/modules/types"
 import type { ProgressTranslate } from "@/hooks/progressWords"
 
+/** The patterns the progress page lists before it points to the practice page for the rest. */
+const SHOWN_PATTERNS = 5
+
 type Practice = NonNullable<LearnerProgress["practice"]>
 
 /** The row of one pattern: the problems Accepted of all, a thin meter and the whole row a link to the pattern. */
@@ -36,7 +39,10 @@ export const practiceOf = (t: ProgressTranslate, data: LearnerProgress["practice
             {
                 id: "practice-patterns",
                 title: t("practice.title"),
-                rows: data.patterns.map((pattern) => patternRowOf(t, pattern)),
+                rows: data.patterns.slice(0, SHOWN_PATTERNS).map((pattern) => patternRowOf(t, pattern)),
+                ...(data.patterns.length > SHOWN_PATTERNS
+                    ? { caption: t("practice.more", { count: data.patterns.length - SHOWN_PATTERNS }) }
+                    : {}),
                 empty: t("practice.empty"),
             },
         ],

@@ -62,6 +62,9 @@ export type ProgressPageView = {
 /** The fixed words of the progress page. */
 export type ProgressLabels = {
     readonly title: string
+    /** The title and the words of the whole page failing to read. */
+    readonly pageError: string
+    readonly pageErrorText: string
     readonly description: string
     readonly descriptionFree: string
     readonly descriptionFirst: string

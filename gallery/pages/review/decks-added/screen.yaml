@@ -1,0 +1,147 @@
+schema: 1
+screen: review/decks-added
+title: Bộ thẻ, vừa thêm một bộ
+route: /review/decks
+area: review
+summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh
+  "Thêm bộ thẻ" ngang hàng. '
+shots:
+  "390":
+    file: 390.png
+    sha256: 5b9fce7417b08a447969d7c46b016165efcb4d1767f90cc827cb062cfcf967ad
+  "1440":
+    file: 1440.png
+    sha256: 479a4ee1ea88d8422806b7cca1818dbb577688e4c748008a7f5bf1b811bfe535
+code:
+  - features/pages/ReviewDecksPage
+  - components/blocks/ReviewDecks
+sections:
+  - id: s1
+    title: Thông báo thêm
+    shows: Thông báo thêm
+    why: Thông báo xanh nói đã thêm bao nhiêu thẻ mới, có "Hoàn tác" gọi lại removeReviewDeck.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:43.865Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dải lọc theo canvas (một dải Tabs có cả nhóm trạng thái và nhóm lộ trình) nhưng ở 390 tràn
+            thành 2 hàng và hàng hai bị cắt ("foun"), không cuộn rõ; canvas dùng nhãn lộ trình Việt
+            (Backend, Kỹ sư AI, System design). Hàng đầu nền xám đặc (trạng thái hover/chọn dính) ở
+            1440. Ở 390 mỗi hàng đã thêm có chip "Đã thêm" + nút "Bỏ khỏi hàng đợi" làm cột tên chỉ
+            còn ~110px, tên ngắt 2-3 dòng.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta/tab hiện slug thô "backend-fullstack, ai-engineer, founder, system-design-senior" (id kỹ
+            thuật tiếng Anh) thay vì tên lộ trình tiếng Việt. Cũng lẫn "bỏ khỏi hàng đợi" với "bỏ bộ
+            thẻ" ở trang chi tiết.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:46.491Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Hàng đầu (Module 1) nền xám đặc cố định ở 1440 và 390 trong khi banner nói về bộ
+            NestJS/Thiết kế API: trạng thái hover/chọn dính, gây hiểu nhầm. Ở 390 cột tên chỉ ~110px
+            (tên ngắt 2 dòng) và meta bị cắt giữa chữ ("Back…").'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:02.272Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 1440 hàng đầu (Module 1) vẫn nền xám đặc cố định (trạng thái hover/chọn dính) trong khi
+            banner nói về bộ khác.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:12.939Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,4 +1,4 @@
-import { Alert, Button, Cluster, Stack, Text } from "@starci/grammar/common"
+import { Alert, Button, Cluster, Stack, Sublabel, Text } from "@starci/grammar/common"
 import { RichMarkdown } from "../RichMarkdown"
 import type { ReviewBackView, ReviewItemCommands, ReviewItemScreen, ReviewSessionLabels } from "../ReviewItemCard/types"
 
@@ -14,33 +14,23 @@ type ReviewAnswerProps = {
 export const ReviewAnswer = (props: ReviewAnswerProps) => {
     const markdownLabels = { diagram: props.labels.diagram, diagramError: props.labels.diagramError }
     return (
-        <Stack gap="row">
+        <Stack gap="section">
             {props.back.note === "" ? null : (
                 <Stack gap="identity">
-                    <Text size="sm" tone="muted" isStrong>
-                        {props.labels.recalled}
-                    </Text>
+                    <Sublabel>{props.labels.recalled}</Sublabel>
                     <Text>{props.back.note}</Text>
                 </Stack>
             )}
-            <Stack gap="identity">
-                <Text size="sm" tone="muted" isStrong>
-                    {props.labels.answerTitle}
-                </Text>
+            <Stack gap="row">
+                <Sublabel>{props.labels.answerTitle}</Sublabel>
                 {props.back.parts.map((part) => (
-                    <Stack key={part.id} gap="identity">
-                        {part.title === undefined ? null : (
-                            <Text size="sm" tone="muted">
-                                {part.title}
-                            </Text>
-                        )}
+                    <Stack key={part.id} gap="inline">
+                        {part.title === undefined ? null : <Sublabel>{part.title}</Sublabel>}
                         <RichMarkdown source={part.markdown} labels={markdownLabels} />
                     </Stack>
                 ))}
             </Stack>
-            <Text size="sm" tone="muted" isStrong>
-                {props.labels.rateQuestion}
-            </Text>
+            <Sublabel>{props.labels.rateQuestion}</Sublabel>
             <Cluster gap="inline" wrap label={props.labels.rateGroup}>
                 {props.back.grades.map((each) => (
                     <Stack key={each.grade} gap="identity" align="center">
@@ -65,7 +55,7 @@ export const ReviewAnswer = (props: ReviewAnswerProps) => {
                     action={{ label: props.labels.retry, onAction: props.on.retry }}
                 />
             ) : null}
-            <Text size="sm" tone="muted">
+            <Text size="xs" tone="muted">
                 {props.labels.shortcuts}
             </Text>
         </Stack>

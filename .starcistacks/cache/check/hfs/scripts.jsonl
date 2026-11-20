@@ -1,6 +1,7 @@
 {"data":{},"findings":[],"hash":"de36deda271272df8cacb4c33b48342e65e5ccd5f0abc3d3626c3b5fa644c60b","path":"scripts/codegen.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"3c23a2135bdf1b97a07811732dcd6efc01a5c3bfef79c3ab8b589ed919c97eb4","path":"scripts/gallery-capture.cjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8c4829b38f475da9b10ce58d748b7b486c702bf714112f567f116f679228dd76","path":"scripts/gallery-capture.cjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ca3f80439e063aa7c1ea1a9d9f6147f5c2ab3e211567f275c8b47ae729a74490","path":"scripts/gallery-capture.cjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d1b7177044c8a8d9480a7335c703c3f98e2dd289e47ef13e6fc2cd14fa29d9b3","path":"scripts/gallery-seed.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b9289ba36f61d84a7aafa57772617d555da8c88e1aae592a06f73e6fad33951","path":"scripts/gallery-sign-in.cjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4cf1b50ca486cbdd1d1681a18e19b73d7d8d30cd806a3da903a91a0a1bc75af5","path":"scripts/relay-manifest-key.mjs","step":"file-rules"}

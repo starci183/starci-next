@@ -1,0 +1,164 @@
+schema: 1
+screen: review/session
+title: Phiên ôn, câu hỏi
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
+  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+shots:
+  "390":
+    file: 390.png
+    sha256: e0f15b70eb1d17d03fd47f7099a31005d247fb946a532c4c853b6809cce33579
+  "1440":
+    file: 1440.png
+    sha256: b1ed1c926d608fb915bab9865e605aa65e26a29273616cdec0e9c513771c9269
+code:
+  - features/pages/ReviewSessionPage
+  - components/blocks/ReviewSession
+sections:
+  - id: s1
+    title: Dải đầu trang
+    shows: Dải đầu trang
+    why: Đường dẫn Ôn tập / Phiên ôn, dải "4/8 thẻ" với thời gian còn lại và thanh tiến độ.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thẻ câu hỏi
+    shows: Thẻ câu hỏi
+    why: Thẻ câu hỏi là vật thật nên có viền; có nguồn, loại câu hỏi và lần ôn.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Đáp án và chấm
+    shows: Đáp án và chấm
+    why: Điều bạn nhớ cạnh đáp án, bốn nút chấm, mỗi nút một khoảng hẹn dưới nó; Tốt là mặc định.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:32.596Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Câu hỏi chính cỡ 14, không có bậc
+            heading 16/500 so với nhãn "Chỗ trống 1" và "Điều bạn nhớ".'
+        actionable:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Không biết nút làm gì.'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Thẻ dạng "Điền chỗ trống" nhưng câu hỏi không hiện chỗ trống nào; các chip không gắn vào vị
+            trí trong câu, nên không rõ đang điền gì.
+    - n: 2
+      at: 2026-11-20T13:05:23.716Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'Thẻ "Điền chỗ trống" nhưng câu hỏi không hiện chỗ trống nào; ba chip chỉ nằm dưới nhãn "Chỗ
+            trống 1", không gắn vào vị trí trong câu. Đã sửa: bỏ nút icon lạ, thay bằng dòng "Hoặc
+            nhấn phím Space".'
+    - n: 3
+      at: 2026-11-20T13:43:47.557Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:00.443Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -8,7 +8,6 @@ export const useIncidentWords = (): IncidentWords => {
     const t = useTranslations("app.incidents")
     const lessons = useTranslations("app.essentials")
     return {
-        soon: t("soon"),
         open: t("open"),
         cta: t("cta"),
         difficulty: {

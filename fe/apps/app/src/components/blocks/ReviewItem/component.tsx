@@ -1,4 +1,4 @@
-import { Link, Page, Stack } from "@starci/grammar/common"
+import { Button, Page, Stack } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
 
@@ -26,7 +26,10 @@ export type ReviewItemBaseProps = {
         readonly slot: DataSlot<ReviewPreviewView>
         readonly placeholder: ReviewPreviewView
         readonly slotLabels: SlotLabels
+        readonly exitLabel: string
+        readonly exitHref: string
         readonly panelLabels: ReviewPanelLabels
+        readonly title: string
         readonly backLabel: string
         readonly backHref: string
         readonly decision: ReviewPanelDecision
@@ -39,25 +42,39 @@ export type ReviewItemBaseProps = {
  * and Revoke for the teacher on a verified item. A reader with no signer role gets the forbidden slot.
  */
 export const ReviewItemBase = (props: ReviewItemBaseProps) => (
-    <Page>
-        <Stack gap="region">
-            <Link variant="plain" href={props.props.backHref}>
-                {props.props.backLabel}
-            </Link>
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(item) => (
-                    <ReviewPanel
-                        item={item}
-                        labels={props.props.panelLabels}
-                        decision={props.props.decision}
-                        on={props.on}
-                    />
-                )}
-            />
-        </Stack>
+    <Page
+        header={{
+            title: props.props.title,
+            titleScale: "standard",
+            breadcrumbs: {
+                label: props.props.backLabel,
+                items: [
+                    { id: "queue", label: props.props.backLabel, href: props.props.backHref },
+                    { id: "item", label: props.props.title },
+                ],
+            },
+        }}
+    >
+        <SlotView
+            slot={props.props.slot}
+            forbiddenAction={
+                <Stack gap="row" align="center">
+                    <Button intent="neutral" href={props.props.exitHref}>
+                        {props.props.exitLabel}
+                    </Button>
+                </Stack>
+            }
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            onRetry={props.on.retry}
+            render={(item) => (
+                <ReviewPanel
+                    item={item}
+                    labels={props.props.panelLabels}
+                    decision={props.props.decision}
+                    on={props.on}
+                />
+            )}
+        />
     </Page>
 )
