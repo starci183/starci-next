@@ -62,7 +62,7 @@ const Entries = (props: EntriesProps) =>
                 {entry.title}
             </Text>
         ) : (
-            <Link variant="plain" key={entry.id} href={entry.href}>
+            <Link key={entry.id} href={entry.href}>
                 {entry.title}
             </Link>
         ),

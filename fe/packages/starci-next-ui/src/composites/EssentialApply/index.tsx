@@ -22,6 +22,12 @@ const rungTone = (state: RungState) => {
     return "muted" as const
 }
 
+/** The row state of a rung: a rung that is not open is the dim unavailable row, never tinted; the open rung on screen is the one tinted row. */
+const rungRowState = (state: RungState, isSelected: boolean) => {
+    if (state === "locked") return { state: "unavailable" as const }
+    return isSelected ? { state: "informative" as const } : {}
+}
+
 /** The step state a step of the proof chain takes from the current one. */
 const stepStateOf = (index: number, current: number): StepperStepState => {
     if (index < current) return "complete"
@@ -135,7 +141,7 @@ export const EssentialApply = (props: EssentialApplyProps) => {
                     description: rung.title,
                     badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
                     onPress: () => props.onSelect(rung.id),
-                    ...(rung.id === part.selectedId ? { state: "informative" as const } : {}),
+                    ...rungRowState(rung.state, rung.id === part.selectedId),
                 }))}
             />
             {challenge === undefined ? null : (
