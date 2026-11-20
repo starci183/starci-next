@@ -6,7 +6,6 @@ import {
     CopyField,
     Divider,
     Drawer,
-    EmptyNotice,
     Grid,
     Heading,
     Image,
@@ -19,7 +18,7 @@ import {
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
-import { BrandLockup, ExperienceGlyph, SlotView } from "@starci-next/ui"
+import { BrandLockup, ExperienceGlyph, NotFoundNotice, SlotView } from "@starci-next/ui"
 import { LocaleSwitch } from "@/components/blocks/LocaleSwitch"
 import type {
     DataSlot,
@@ -53,9 +52,6 @@ export const PUBLIC_CV_PLACEHOLDER: PublicCvScreenView = {
     growNote: "",
 }
 
-/** The distinct words of the page, by shape: what the page asks of its address, shown again when the CV is missing. */
-type NotFoundProps = { readonly address: string }
-
 /** Props for {@link PublicCvBase}. */
 export type PublicCvBaseProps = {
     /** A link StarCi never issued, or one its owner turned private, draws the not-found notice instead of the slot. */
@@ -72,7 +68,9 @@ export type PublicCvBaseProps = {
         readonly canShare: boolean
         readonly url: string
         readonly previewSrc: string
-    } & NotFoundProps
+        /** Where the statics are served from: the not-found notice's illustration. */
+        readonly staticsBaseUrl: string
+    }
     readonly on: {
         readonly retry: () => void
         readonly chooseSource: (source: string) => void
@@ -311,26 +309,15 @@ const Foot = (props: { readonly labels: PublicCvLabels }) => (
     </Stack>
 )
 
-/** A link nobody owns or whose owner keeps private reads the same: one sentence, the address, the way home. */
-const NotFound = (props: { readonly labels: PublicCvLabels; readonly address: string }) => (
-    <Stack gap="row" align="center">
-        <EmptyNotice
-            scope="page"
-            message={props.labels.notFoundTitle}
-            description={props.labels.notFoundDescription}
-            actionIntent="neutral"
-            actionLabel={props.labels.notFoundHome}
-            actionHref={props.labels.homeHref}
-        />
-        <CopyField
-            label={props.labels.notFoundAddressLabel}
-            isLabelHidden
-            value={props.address}
-            copyLabel={props.labels.copy}
-            copiedLabel={props.labels.copied}
-            copyErrorLabel={props.labels.copyError}
-        />
-    </Stack>
+/** A link nobody owns or whose owner keeps private reads the same: the shared not-found notice, with its words. */
+const NotFound = (props: { readonly labels: PublicCvLabels; readonly staticsBaseUrl: string }) => (
+    <NotFoundNotice
+        title={props.labels.notFoundTitle}
+        description={props.labels.notFoundDescription}
+        homeLabel={props.labels.notFoundHome}
+        homeHref={props.labels.homeHref}
+        staticsBaseUrl={props.staticsBaseUrl}
+    />
 )
 
 /**
@@ -343,7 +330,7 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
         <Stack gap="region">
             <TopBar labels={props.props.labels} />
             {props.shape === "notFound" ? (
-                <NotFound labels={props.props.labels} address={props.props.address} />
+                <NotFound labels={props.props.labels} staticsBaseUrl={props.props.staticsBaseUrl} />
             ) : (
                 <SlotView
                     slot={props.props.slot}

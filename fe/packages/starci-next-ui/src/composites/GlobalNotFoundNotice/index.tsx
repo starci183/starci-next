@@ -1,4 +1,5 @@
-import { EmptyNotice, GrammarRoot, StaticsProvider } from "@starci/grammar/common"
+import { GrammarRoot } from "@starci/grammar/common"
+import { NotFoundNotice } from "../NotFoundNotice"
 
 /** The document language, the words of the missing address and its way home. */
 type GlobalNotFoundNoticeProps = {
@@ -15,21 +16,18 @@ type GlobalNotFoundNoticeProps = {
     readonly staticsBaseUrl: string
 }
 
-/** An address no locale segment caught: the whole document, drawn here because the root has no layout that would have drawn it. */
+/** An address no locale segment caught: the shared not-found notice inside the whole document, drawn here because the root has no layout that would have drawn it. */
 export const GlobalNotFoundNotice = (props: GlobalNotFoundNoticeProps) => (
     <html lang={props.lang}>
         <body>
             <GrammarRoot>
-                <StaticsProvider baseUrl={props.staticsBaseUrl}>
-                    <EmptyNotice
-                        scope="page"
-                        message={props.words.title}
-                        description={props.words.description}
-                        media={{ illustration: { staticsKey: "illustrations/errors/not-found.png" } }}
-                        actionLabel={props.words.home}
-                        actionHref={props.homeHref}
-                    />
-                </StaticsProvider>
+                <NotFoundNotice
+                    title={props.words.title}
+                    description={props.words.description}
+                    homeLabel={props.words.home}
+                    homeHref={props.homeHref}
+                    staticsBaseUrl={props.staticsBaseUrl}
+                />
             </GrammarRoot>
         </body>
     </html>

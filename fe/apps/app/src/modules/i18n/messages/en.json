@@ -2488,7 +2488,6 @@
       "notFoundTitle": "There is no CV at this address",
       "notFoundDescription": "The link may be wrong, or the owner keeps the CV private. Ask whoever sent you the link.",
       "notFoundHome": "Back to StarCi Next",
-      "notFoundAddressLabel": "Address you opened",
       "copy": "Copy",
       "copied": "Copied",
       "copyError": "Could not copy",

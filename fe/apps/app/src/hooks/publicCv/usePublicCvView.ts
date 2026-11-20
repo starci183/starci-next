@@ -58,7 +58,6 @@ export const usePublicCvLabels = (): PublicCvLabels => {
         notFoundTitle: t("notFoundTitle"),
         notFoundDescription: t("notFoundDescription"),
         notFoundHome: t("notFoundHome"),
-        notFoundAddressLabel: t("notFoundAddressLabel"),
         copy: t("copy"),
         copied: t("copied"),
         copyError: t("copyError"),
