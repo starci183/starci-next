@@ -102,7 +102,21 @@ const SCREENS = [
                 .catch(() => {})
         },
     }),
-    S("essentials", "lesson-free-end", LESSON, { state: "FEND", act: async (p) => playOpener(p, "RWRRW", true) }),
+    S("essentials", "lesson-free-end", LESSON, {
+        state: "FEND",
+        act: async (p) => {
+            await playOpener(p, "RWRRW", true)
+            for (const name of [/Đọc bài viết/, /Làm lại 5 câu/]) {
+                await p
+                    .getByRole("button", { name })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(900)
+            }
+            await playOpener(p, "RRRRR", true)
+        },
+    }),
     S("essentials", "lesson-locked-source", LESSON + "?part=source", {
         free: true,
         cookies: { plan: "free", seed: "RWRRW" },
@@ -351,6 +365,7 @@ const norm = (href) => {
                     .first()
                     .click()
                     .catch(() => {})
+                await p.mouse.move(2, 2)
                 await p.waitForTimeout(1000)
             }
             if (s.click) {

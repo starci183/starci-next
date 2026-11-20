@@ -57,6 +57,8 @@ export type SourceLabels = {
     readonly machineNone: string
     readonly machineNoneNote: string
     readonly upFailed: string
+    /** What to do after a failed up: fix the cause the lines name, then run the command again. */
+    readonly upFix: string
     readonly architecture: string
     readonly diagram: string
     readonly diagramError: string

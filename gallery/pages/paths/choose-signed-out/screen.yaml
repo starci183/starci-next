@@ -42,24 +42,24 @@ audit:
       at: 2026-11-20T14:10:30.364Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút "Đăng nhập" căn trái (x=288) trong khi ô icon, tiêu đề và mô tả căn giữa: lệch nhau ở 1440 và 390. Đã đúng: thông báo tại chỗ, nút mở modal đăng nhập tại chỗ (modal-1440/390 đủ trường, nút Đăng nhập).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

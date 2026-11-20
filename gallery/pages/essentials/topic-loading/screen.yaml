@@ -72,24 +72,24 @@ audit:
       at: 2026-11-20T14:09:48.135Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Còn chữ "..." thật ở nhãn tiến độ đầu cột trái (1440 y250; 390 y368) trong lúc tải.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Loading vẫn có văn bản giữ chỗ "..." lẫn skeleton.'
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

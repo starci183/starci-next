@@ -758,8 +758,8 @@
           "partDone": "Xong phần {part}",
           "doing": "Đang học · phần {part}"
         },
-        "resume": "Học tiếp: {title} · phần {part}",
-        "start": "Bắt đầu: {title}",
+        "resume": "Học tiếp",
+        "start": "Bắt đầu học",
         "upgrade": "Nâng cấp Premium",
         "opener": "Mở bài {right}/{total}",
         "openerNone": "—",
@@ -936,7 +936,7 @@
         "progress": "{done}/{total} bài xong",
         "startFirst": "Bắt đầu bài 1",
         "resumePart": "Học tiếp phần {part}",
-        "resume": "Học tiếp: {title} · phần {part}",
+        "resume": "Học tiếp",
         "noticeTitle": "Gói miễn phí học được phần 1 của mọi bài",
         "noticeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
         "partsTitle": "Mỗi bài có 4 phần",
@@ -1091,6 +1091,7 @@
           "machineNone": "Chưa thấy máy nào kết nối",
           "machineNoneNote": "Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.",
           "upFailed": "Lệnh up báo lỗi",
+          "upFix": "Sửa theo dòng báo lỗi ở trên rồi chạy lại lệnh up.",
           "architecture": "Kiến trúc",
           "diagram": "Sơ đồ kiến trúc",
           "diagramError": "Không vẽ được sơ đồ",
@@ -1147,7 +1148,7 @@
           },
           "primary": {
             "run": "Chạy kịch bản",
-            "check": "Check lại",
+            "check": "Kiểm tra lại",
             "next": "Kịch bản tiếp theo",
             "running": "Đang chạy",
             "failed": "Không gửi được yêu cầu tới máy của bạn"
@@ -1289,7 +1290,9 @@
           }
         },
         "errorTitle": "Không tải được bài",
-        "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ."
+        "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ.",
+        "more": "Xem thêm",
+        "less": "Thu gọn"
       }
     },
     "projects": {

@@ -10,13 +10,7 @@ summary: "Route: `/essentials/[topic]/[lesson]?part=scenarios`. Trạng thái: l
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
-shots:
-  "390":
-    file: 390.png
-    sha256: c7788cb4985f003ca934e524de8e320bca70964ce7be15fe77cd64b50e90855c
-  "1440":
-    file: 1440.png
-    sha256: b3290e3843fa57abac0e90fc031231e331de886160f7ea79a71524c3da488331
+pending-seed: "cần nội dung: gợi ý kịch bản. Bài chưa có gợi ý nào nên trạng thái bí không khác trạng thái đỏ; chụp lại khi bài có gợi ý (lane gallery-seed không dựng được)."
 sections:
   - id: s1
     title: Sửa
@@ -46,34 +40,4 @@ considered:
   - option: Chưa thấy lệch mới ngoài các mục của màn Kịch bản chính.
     chosen: false
     why: Ghi nhận ở lần chụp trước, chưa làm
-audit:
-  builder:
-    agent: next-ux-ess
-  auditor:
-    agent: next-ux-auditor
-  rounds:
-    - n: 1
-      at: 2026-11-20T14:10:25.331Z
-      lenses:
-        order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-        truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-  escalate: null
+audit: null

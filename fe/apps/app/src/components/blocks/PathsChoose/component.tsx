@@ -1,4 +1,4 @@
-import { AlertDialog, Button, Grid, Page, Stack, Text } from "@starci/grammar/common"
+import { AlertDialog, Button, Cluster, Grid, Page, Stack, Text } from "@starci/grammar/common"
 import {
     OutcomePathCard,
     OutcomePathDialog,
@@ -85,9 +85,11 @@ export type PathsChooseBaseProps = {
 const SignInAction = (
     props: Pick<PathsChooseBaseProps["props"], "labels"> & Pick<PathsChooseBaseProps["on"], "signIn">,
 ) => (
-    <Button intent="commit" onPress={props.signIn}>
-        {props.labels.signedOut.action}
-    </Button>
+    <Cluster gap="inline" justify="center">
+        <Button intent="commit" onPress={props.signIn}>
+            {props.labels.signedOut.action}
+        </Button>
+    </Cluster>
 )
 
 /**

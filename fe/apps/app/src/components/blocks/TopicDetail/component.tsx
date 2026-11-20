@@ -16,12 +16,12 @@ import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modul
 
 /** The fake topic with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
-    title: "…",
+    title: "",
     trail: [],
     description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
     primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
-    progress: { label: "…", percent: 0 },
+    progress: { label: "", percent: 0 },
     notice: undefined,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,

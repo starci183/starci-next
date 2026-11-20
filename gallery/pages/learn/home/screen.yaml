@@ -92,23 +92,23 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Canvas đặt "Làm tiếp kịch bản / Việc tiếp theo" lên đầu; code đặt "Lộ trình đang theo" (chưa chọn) trước "Hôm nay", và ở 390 "Hôm nay" nằm cuối sau chuỗi ngày, mục tiêu, kinh nghiệm, lộ trình.'
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

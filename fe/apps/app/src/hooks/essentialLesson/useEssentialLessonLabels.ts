@@ -15,6 +15,8 @@ export type EssentialPageLabels = {
     readonly errorTitle: string
     readonly errorText: string
     readonly soon: string
+    readonly more: string
+    readonly less: string
 }
 
 /** Every word of the four-part lesson page that is not a part's own: the page and the prose a part opens with. */
@@ -39,6 +41,8 @@ export const useEssentialLessonLabels = (): {
             errorTitle: t("errorTitle"),
             errorText: t("errorText"),
             soon: t("soon"),
+            more: t("more"),
+            less: t("less"),
         },
         parts: {
             markdown: journey.markdown,

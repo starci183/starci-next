@@ -32,9 +32,7 @@ const primaryOf = (rows: ReturnType<typeof orderedOf>, input: TopicInput): Topic
     const current = currentOf(rows)
     if (current !== undefined)
         return {
-            label: input.catalogWords.isPremium
-                ? input.words.resume(current.lesson.title, current.parts.currentPart)
-                : input.words.resumePart(1),
+            label: input.catalogWords.isPremium ? input.words.resume() : input.words.resumePart(1),
             href: currentPathOf(current),
         }
     const next = rows.find((each) => each.state !== "done") ?? rows[0]

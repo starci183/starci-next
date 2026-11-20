@@ -80,24 +80,24 @@ audit:
       at: 2026-11-20T14:09:05.721Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút chính "Bắt đầu: Cache phân tán: đọc nhanh mà không bán sai giá" quá dài: ở 390 xuống 2 dòng (trái DNA-COMMON-BUTTON-ONE-LINE), ở 1440 rộng ~390px; nên rút gọn ("Bắt đầu bài đầu"). Trạng thái không khớp vẽ ô icon + tiêu đề + mô tả + nút, trong khi Grammar empty-state scope "line" chỉ là một dòng 14/400 nhạt kèm nút nhỏ, không ô icon.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

@@ -119,7 +119,7 @@ const Fix = (props: FixProps) => {
                         showLanguage={false}
                         label={labels.fixPrompt}
                         action={
-                            <Button intent="neutral" onPress={() => onCopy(scenario.fixPrompt)}>
+                            <Button intent="neutral" size="sm" onPress={() => onCopy(scenario.fixPrompt)}>
                                 {labels.fixCopy}
                             </Button>
                         }
@@ -171,7 +171,8 @@ type ScenarioDetailProps = {
 /** The detail of the scenario on screen: machine, fault, live result, verdict, hint, fix and the way to ask the AI of the learner. */
 export const ScenarioDetail = (props: ScenarioDetailProps) => {
     const { scenario, labels } = props
-    const lines = [`$ ${scenario.command}`, ...(scenario.output.length === 0 ? [labels.noRun] : scenario.output)]
+    const emptyLine = scenario.state === "running" ? scenario.stateLabel : labels.noRun
+    const lines = [`$ ${scenario.command}`, ...(scenario.output.length === 0 ? [emptyLine] : scenario.output)]
     const isRed = scenario.state === "failed" || scenario.state === "guarded"
     return (
         <Stack gap="section">
@@ -179,7 +180,7 @@ export const ScenarioDetail = (props: ScenarioDetailProps) => {
                 <Stack gap="inline">
                     <RichMarkdown source={scenario.fault} labels={labels.markdown} />
                     <MachineLine machine={props.part.machine} labels={labels} />
-                    <Terminal label={scenario.title} lines={lines} isLoading={scenario.state === "running"} />
+                    <Terminal label={scenario.title} lines={lines} />
                     <Verdict scenario={scenario} labels={labels} />
                     <Hint scenarioId={scenario.id} hint={scenario.hint} labels={labels} onReveal={props.onReveal} />
                 </Stack>

@@ -117,24 +117,24 @@ audit:
       at: 2026-11-20T14:09:09.196Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Phần bài viết hiện chữ nghiêng ("Senior hỏi: ...", "Mid trả lời: ...") ở 1440: trái luật không in nghiêng; mục "1. Bản chất" bị lặp lại ngay dưới thành tiêu đề cùng chữ.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh 390 không phải trạng thái bài viết: là Câu 4/5 chưa trả lời, nút "Câu tiếp theo" khoá.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 không khớp tên màn (article)."
   escalate: null

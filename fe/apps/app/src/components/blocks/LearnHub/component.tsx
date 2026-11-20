@@ -137,8 +137,8 @@ type WellProps = {
 }
 
 /** The well: the active path (or the invitation to choose a goal), then today as ONE list card; each card names itself on the well above it. */
-const HubWell = (props: WellProps) => (
-    <Stack gap="region">
+const HubWell = (props: WellProps) => {
+    const path = (
         <HubPathCard
             view={props.view.path}
             labels={props.props.labels.path}
@@ -146,6 +146,8 @@ const HubWell = (props: WellProps) => (
             continueHref={props.props.links.continueHref}
             isLoading={props.isLoading}
         />
+    )
+    const today = (
         <HubTodayCard
             label={props.props.labels.todayLabel}
             count={props.view.today.length}
@@ -154,8 +156,10 @@ const HubWell = (props: WellProps) => (
             emptyLabel={props.props.labels.todayEmpty}
             isLoading={props.isLoading}
         />
-    </Stack>
-)
+    )
+    /** A learner with no goal yet sees the day's tasks first; the invitation to choose a goal follows them. */
+    return <Stack gap="region">{props.view.path === undefined ? [today, path] : [path, today]}</Stack>
+}
 
 /** What the aside is drawn from. */
 type RailProps = {
@@ -225,9 +229,9 @@ export const LearnHubBase = (props: LearnHubBaseProps) => {
                 >
                     <PaneGrid
                         label={own.labels.pageTitle}
-                        areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                        areas={{ base: ["main", "aside"], wide: ["main aside"] }}
                         columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-                        rows={{ base: ["auto", "fill"], wide: ["fill"] }}
+                        rows={{ base: ["fill", "auto"], wide: ["fill"] }}
                     >
                         <Pane area="main" scroll label={own.labels.pageTitle} content="cards">
                             <PaneSection>{body}</PaneSection>

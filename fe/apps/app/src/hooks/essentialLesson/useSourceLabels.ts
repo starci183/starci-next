@@ -13,6 +13,7 @@ export const useSourceLabels = (): SourceLabels => {
         machineNone: t("machineNone"),
         machineNoneNote: t("machineNoneNote"),
         upFailed: t("upFailed"),
+        upFix: t("upFix"),
         architecture: t("architecture"),
         diagram: t("diagram"),
         diagramError: t("diagramError"),

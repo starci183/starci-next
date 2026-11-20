@@ -135,24 +135,24 @@ audit:
       at: 2026-11-20T14:10:20.659Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Khối "Sửa": lời nhắc hiện trong hộp mã cắt ngang ở 1440 ("...quá trình chết ng", "...outbox k") không xuống dòng cũng không cuộn.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Sao chép lời nhắc" là chữ trơn, không giống nút.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút "Check lại" lẫn tiếng Anh (nên "Chạy lại" hoặc "Kiểm tra lại").'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

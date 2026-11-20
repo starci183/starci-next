@@ -758,8 +758,8 @@
           "partDone": "Part {part} done",
           "doing": "Studying · part {part}"
         },
-        "resume": "Continue: {title} · part {part}",
-        "start": "Start: {title}",
+        "resume": "Continue",
+        "start": "Start learning",
         "upgrade": "Upgrade to Premium",
         "opener": "Opener {right}/{total}",
         "openerNone": "—",
@@ -936,7 +936,7 @@
         "progress": "{done}/{total} lessons done",
         "startFirst": "Start lesson 1",
         "resumePart": "Continue part {part}",
-        "resume": "Continue: {title} · part {part}",
+        "resume": "Continue",
         "noticeTitle": "The free plan covers part 1 of every lesson",
         "noticeText": "Source, scenarios that run on your machine and the apply ladder belong to Premium.",
         "partsTitle": "Every lesson has 4 parts",
@@ -1091,6 +1091,7 @@
           "machineNone": "No machine connected yet",
           "machineNoneNote": "Run the commands below in a terminal, sign in once, then come back to this page. It picks the machine up when the CLI reports.",
           "upFailed": "The up command failed",
+          "upFix": "Fix what the lines above name, then run the up command again.",
           "architecture": "Architecture",
           "diagram": "Architecture diagram",
           "diagramError": "The diagram could not be drawn",
@@ -1289,7 +1290,9 @@
           }
         },
         "errorTitle": "Could not load the lesson",
-        "errorText": "Check your connection and try again. Your scores and progress are kept."
+        "errorText": "Check your connection and try again. Your scores and progress are kept.",
+        "more": "Show more",
+        "less": "Show less"
       }
     },
     "projects": {

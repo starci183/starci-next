@@ -47,24 +47,24 @@ audit:
       at: 2026-11-20T14:10:29.056Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới; hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Khối "Lệnh up báo lỗi" (port 5432 đã bị chiếm) chỉ in log thô, không có hướng xử lý (đổi cổng, dừng Postgres) hay nút thử lại.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

@@ -117,24 +117,24 @@ audit:
       at: 2026-11-20T14:09:23.116Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 390 mô tả đầu bài dài 8 dòng nằm cạnh nút chính, ép cột mô tả hẹp và đẩy câu hỏi xuống dưới màn hình đầu."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 không phải màn kết quả: là Câu 4/5 chưa trả lời; 1440 đúng (Đúng 2/5)."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 không có điểm tổng kết nên không kiểm được."
   escalate: null

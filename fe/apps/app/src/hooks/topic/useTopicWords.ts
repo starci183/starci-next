@@ -11,7 +11,7 @@ export const useTopicWords = (): TopicWords => {
         progress: (done, total) => t("progress", { done, total }),
         startFirst: t("startFirst"),
         resumePart: (part) => t("resumePart", { part }),
-        resume: (title, part) => t("resume", { title, part }),
+        resume: () => t("resume"),
         notice: { title: t("noticeTitle"), text: t("noticeText") },
         parts: [
             { id: "essence", title: t("parts.essence"), isFree: true },

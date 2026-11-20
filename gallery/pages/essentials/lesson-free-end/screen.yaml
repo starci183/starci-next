@@ -117,24 +117,24 @@ audit:
       at: 2026-11-20T14:09:12.353Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Cuối phần 1 của gói miễn phí không có nút "Nâng cấp Premium": nút chính ở đầu trang là "Đọc bài viết", banner "Bạn xong phần 1 / ... thuộc Premium" không có hành động.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 là trang Đăng nhập chung, không phải trạng thái cuối phần 1."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 không khớp tên màn (lộ form đăng nhập)."
   escalate: null

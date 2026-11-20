@@ -47,6 +47,7 @@ const NoResult = (props: Pick<WellProps, "labels" | "filters" | "on">) => (
         actionLabel={props.labels.noResult.clear}
         onAction={props.on.clear}
         frame="frameless"
+        mark="none"
     />
 )
 

@@ -57,7 +57,7 @@ export type TopicWords = {
     readonly progress: (done: number, total: number) => string
     readonly startFirst: string
     readonly resumePart: (part: number) => string
-    readonly resume: (title: string, part: number) => string
+    readonly resume: () => string
     readonly notice: { readonly title: string; readonly text: string }
     readonly parts: ReadonlyArray<{ readonly id: string; readonly title: string; readonly isFree: boolean }>
 }
