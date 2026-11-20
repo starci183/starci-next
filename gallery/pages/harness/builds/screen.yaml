@@ -16,7 +16,7 @@ shots:
     sha256: c72a0f23d8fbf184b92bfdfead86b98ae98f62f089c64a621a5815d325461052
   "1440":
     file: 1440.png
-    sha256: 7add0c6d49d826d4303eb0479cb6aa36ed41aadf8d8335c0e76423c487cc7739
+    sha256: 104978958bf301d982c9dda20e5499ec241697299aa8ca822a9ac57577963cde
 sections:
   - id: s1
     title: Băng đầu trang (Build, đường dẫn Harness / Build, bốn tab)
@@ -126,8 +126,33 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Ảnh 1440 là trạng thái rỗng "Chưa có build nào." còn ảnh 390 là danh sách 2 build: hai ảnh không cùng trạng thái, 1440 không thể hiện danh sách đã sửa (cột key, tab lọc).'
+          notes: 'Ảnh 1440 là trạng thái rỗng "Chưa có build nào." còn ảnh 390 là danh sách 2 build: hai ảnh
+            không cùng trạng thái, 1440 không thể hiện danh sách đã sửa (cột key, tab lọc).'
         truth:
           verdict: open
-          notes: "Ảnh 1440 rỗng mâu thuẫn dữ liệu của 390 (2 build)."
+          notes: Ảnh 1440 rỗng mâu thuẫn dữ liệu của 390 (2 build).
+    - n: 4
+      at: 2026-11-20T15:01:54.071Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -58,9 +58,10 @@ considered:
     chosen: true
     why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
       filter, chọn giá trị là ChoiceChips hoặc Select."
-  - option: "Hiện tên học viên mới bằng tên nhập sẵn"
+  - option: Hiện tên học viên mới bằng tên nhập sẵn
     chosen: false
-    why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên; sửa ở lõi, không phải ở app."
+    why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên;
+      sửa ở lõi, không phải ở app."
 audit:
   builder:
     agent: next-ux-career
@@ -141,5 +142,30 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo sau)."
+          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo
+            sau)."
+    - n: 4
+      at: 2026-11-20T15:02:30.959Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

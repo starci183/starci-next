@@ -615,7 +615,7 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
         "390": "c72a0f23d8fbf184b92bfdfead86b98ae98f62f089c64a621a5815d325461052",
-        "1440": "7add0c6d49d826d4303eb0479cb6aa36ed41aadf8d8335c0e76423c487cc7739"
+        "1440": "104978958bf301d982c9dda20e5499ec241697299aa8ca822a9ac57577963cde"
       }
     },
     "harness/builds-empty": {
@@ -664,8 +664,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "249d350fff2d3850e9bef58384d7eb74034ea773ae8da477b61208de51e2eada",
-        "1440": "db119c6c29d080cc86c9ec59639e4bce2b35e7e6ad9003cfe3c3036e4ab6261a"
+        "390": "ce6a2bb86f72efc3654e71564955b480674d671f80b5dfe6c14bf2354d905ba7",
+        "1440": "cbf4b14d8a7d1ee3189cc3726efd8dcd60738225008a83c32c7881ba0da90fce"
       }
     },
     "harness/doc-not-found": {
@@ -728,8 +728,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "aa0b80b74260ce181eb86b6a43a1b7a8f71575509c32fc1468ab2cff76a6c9c7",
-        "1440": "14d6d8ba4b8288ec7730052f494ec1052ad1a6d31ce8176aeba3ff490f384498"
+        "390": "f919ae02811f524d6061ee5f518fa826b8aca3203dd570d97e35cc6b4e5e3545",
+        "1440": "1a2f804ec3482121a1ca17c4629000c51af9062fbf9e775dade58394003ec7e4"
       }
     },
     "harness/guide-not-found": {
@@ -1088,8 +1088,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "d725dbada7200e01d838d54b195749c0116d5d686cad526fc574013d087bd4ee",
-        "1440": "c0d67d2d9e4a5bc3882843b0f7e3b18fd5d4ad7563a83419132428800f136e77"
+        "390": "264b57068728ce7caf9f38ca5640d13b9c9b71092e40df41ff31a4fca9278533",
+        "1440": "b3b9abeac4872fad960abbfd45039db61a9be624ef77d632cb2fc4427f39895d"
       }
     },
     "profile/new": {

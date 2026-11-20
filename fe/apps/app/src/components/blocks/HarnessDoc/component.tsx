@@ -22,7 +22,7 @@ const DocBody = (props: RegionProps) => (
             <Stack gap="row">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
                     <Text key={line} as="p" isLoading>
-                        {"x"}
+                        {"x".repeat(72)}
                     </Text>
                 ))}
             </Stack>
