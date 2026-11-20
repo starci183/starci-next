@@ -144,7 +144,7 @@ CREATE TABLE public.harness_contents (
     pack_sha256 text,
     imported_at timestamp with time zone NOT NULL,
     CONSTRAINT ck_harness_contents_kind CHECK ((kind = ANY (ARRAY['build'::text, 'guide'::text, 'doc'::text, 'probe'::text, 'trap'::text, 'doctor-pack'::text]))),
-    CONSTRAINT ck_harness_contents_status CHECK ((status IN ('published', 'superseded')))
+    CONSTRAINT ck_harness_contents_status CHECK (((status)::text = ANY (ARRAY[('published'::character varying)::text, ('superseded'::character varying)::text])))
 );
 
 --
@@ -190,8 +190,8 @@ CREATE TABLE public.identity_challenges (
     expires_at timestamp with time zone NOT NULL,
     consumed_at timestamp with time zone,
     CONSTRAINT identity_challenges_attempts_left_check CHECK ((attempts_left >= 0)),
-    CONSTRAINT identity_challenges_locale_check CHECK ((locale IN ('vi', 'en'))),
-    CONSTRAINT identity_challenges_purpose_check CHECK ((purpose IN ('sign-in', 'sign-up', 'password-reset')))
+    CONSTRAINT identity_challenges_locale_check CHECK (((locale)::text = ANY (ARRAY[('vi'::character varying)::text, ('en'::character varying)::text]))),
+    CONSTRAINT identity_challenges_purpose_check CHECK (((purpose)::text = ANY (ARRAY[('sign-in'::character varying)::text, ('sign-up'::character varying)::text, ('password-reset'::character varying)::text])))
 );
 
 --
@@ -263,12 +263,12 @@ CREATE TABLE public.lesson_attempts (
     updated_at timestamp with time zone NOT NULL,
     CONSTRAINT ck_lesson_attempts_failure CHECK ((((status)::text = 'failed'::text) = (failure_code IS NOT NULL))),
     CONSTRAINT ck_lesson_attempts_graded_at CHECK ((((status)::text = 'graded'::text) = (graded_at IS NOT NULL))),
-    CONSTRAINT ck_lesson_attempts_kind CHECK ((kind IN ('choice', 'simulation', 'explain', 'exercise'))),
-    CONSTRAINT ck_lesson_attempts_locale CHECK ((locale IN ('vi', 'en'))),
-    CONSTRAINT ck_lesson_attempts_phase CHECK ((phase IN ('challenge', 'predict', 'explore', 'explain', 'apply', 'reflect'))),
+    CONSTRAINT ck_lesson_attempts_kind CHECK (((kind)::text = ANY (ARRAY[('choice'::character varying)::text, ('simulation'::character varying)::text, ('explain'::character varying)::text, ('exercise'::character varying)::text]))),
+    CONSTRAINT ck_lesson_attempts_locale CHECK (((locale)::text = ANY (ARRAY[('vi'::character varying)::text, ('en'::character varying)::text]))),
+    CONSTRAINT ck_lesson_attempts_phase CHECK (((phase)::text = ANY (ARRAY[('challenge'::character varying)::text, ('predict'::character varying)::text, ('explore'::character varying)::text, ('explain'::character varying)::text, ('apply'::character varying)::text, ('reflect'::character varying)::text]))),
     CONSTRAINT ck_lesson_attempts_result CHECK ((((status)::text = 'graded'::text) = (result IS NOT NULL))),
     CONSTRAINT ck_lesson_attempts_revision CHECK ((revision >= 1)),
-    CONSTRAINT ck_lesson_attempts_status CHECK ((status IN ('saved', 'grading', 'graded', 'failed')))
+    CONSTRAINT ck_lesson_attempts_status CHECK (((status)::text = ANY (ARRAY[('saved'::character varying)::text, ('grading'::character varying)::text, ('graded'::character varying)::text, ('failed'::character varying)::text])))
 );
 
 --
@@ -384,9 +384,9 @@ CREATE TABLE public.lesson_versions (
     lesson_group text NOT NULL,
     topic text NOT NULL,
     source_key text,
-    CONSTRAINT ck_lesson_versions_difficulty CHECK ((difficulty IN ('foundation', 'intermediate', 'advanced'))),
+    CONSTRAINT ck_lesson_versions_difficulty CHECK (((difficulty)::text = ANY (ARRAY[('foundation'::character varying)::text, ('intermediate'::character varying)::text, ('advanced'::character varying)::text]))),
     CONSTRAINT ck_lesson_versions_minutes CHECK ((minutes_read > 0)),
-    CONSTRAINT ck_lesson_versions_status CHECK ((status IN ('published', 'superseded')))
+    CONSTRAINT ck_lesson_versions_status CHECK (((status)::text = ANY (ARRAY[('published'::character varying)::text, ('superseded'::character varying)::text])))
 );
 
 --
@@ -485,7 +485,7 @@ CREATE TABLE public.practice_pattern_intros (
     locale character varying(8) NOT NULL,
     intro text NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    CONSTRAINT ck_practice_pattern_intros_locale CHECK ((locale IN ('vi', 'en')))
+    CONSTRAINT ck_practice_pattern_intros_locale CHECK (((locale)::text = ANY (ARRAY[('vi'::character varying)::text, ('en'::character varying)::text])))
 );
 
 --
@@ -512,9 +512,9 @@ CREATE TABLE public.practice_problem_versions (
     source_hashes jsonb NOT NULL,
     imported_at timestamp with time zone NOT NULL,
     explanations jsonb DEFAULT '{"en": "", "vi": ""}'::jsonb NOT NULL,
-    CONSTRAINT ck_practice_problem_versions_difficulty CHECK ((difficulty IN ('easy', 'medium', 'hard'))),
+    CONSTRAINT ck_practice_problem_versions_difficulty CHECK (((difficulty)::text = ANY (ARRAY[('easy'::character varying)::text, ('medium'::character varying)::text, ('hard'::character varying)::text]))),
     CONSTRAINT ck_practice_problem_versions_limits CHECK (((time_limit_ms > 0) AND (memory_limit_kb > 0))),
-    CONSTRAINT ck_practice_problem_versions_status CHECK ((status IN ('published', 'superseded')))
+    CONSTRAINT ck_practice_problem_versions_status CHECK (((status)::text = ANY (ARRAY[('published'::character varying)::text, ('superseded'::character varying)::text])))
 );
 
 --
@@ -551,9 +551,9 @@ CREATE TABLE public.practice_submissions (
     updated_at timestamp with time zone NOT NULL,
     finished_at timestamp with time zone,
     CONSTRAINT ck_practice_submissions_counts CHECK (((passed_count >= 0) AND (total_count >= 0) AND (passed_count <= total_count))),
-    CONSTRAINT ck_practice_submissions_kind CHECK ((kind IN ('run', 'submit'))),
-    CONSTRAINT ck_practice_submissions_language CHECK ((language IN ('cpp', 'java', 'javascript', 'python', 'typescript'))),
-    CONSTRAINT ck_practice_submissions_verdict CHECK ((verdict IN ('queued', 'running', 'accepted', 'wrong-answer', 'time-limit-exceeded', 'compile-error', 'runtime-error', 'internal-error')))
+    CONSTRAINT ck_practice_submissions_kind CHECK (((kind)::text = ANY (ARRAY[('run'::character varying)::text, ('submit'::character varying)::text]))),
+    CONSTRAINT ck_practice_submissions_language CHECK (((language)::text = ANY (ARRAY[('cpp'::character varying)::text, ('java'::character varying)::text, ('javascript'::character varying)::text, ('python'::character varying)::text, ('typescript'::character varying)::text]))),
+    CONSTRAINT ck_practice_submissions_verdict CHECK (((verdict)::text = ANY (ARRAY[('queued'::character varying)::text, ('running'::character varying)::text, ('accepted'::character varying)::text, ('wrong-answer'::character varying)::text, ('time-limit-exceeded'::character varying)::text, ('compile-error'::character varying)::text, ('runtime-error'::character varying)::text, ('internal-error'::character varying)::text])))
 );
 
 --
@@ -598,7 +598,7 @@ CREATE TABLE public.project_ci_runs (
     passed boolean NOT NULL,
     received_at timestamp with time zone NOT NULL,
     attestation character varying(16) DEFAULT 'signed-only'::character varying NOT NULL,
-    CONSTRAINT ck_project_ci_runs_attestation CHECK ((attestation IN ('attested', 'signed-only')))
+    CONSTRAINT ck_project_ci_runs_attestation CHECK (((attestation)::text = ANY (ARRAY[('attested'::character varying)::text, ('signed-only'::character varying)::text])))
 );
 
 --
@@ -630,8 +630,8 @@ CREATE TABLE public.project_evidence (
     commit_sha text,
     detail jsonb NOT NULL,
     at timestamp with time zone NOT NULL,
-    CONSTRAINT ck_project_evidence_slot CHECK ((slot IN ('test', 'e2e', 'probe', 'code-read'))),
-    CONSTRAINT ck_project_evidence_source CHECK ((source IN ('relay', 'ci', 'ci-signed', 'server-probe', 'ai')))
+    CONSTRAINT ck_project_evidence_slot CHECK (((slot)::text = ANY (ARRAY[('test'::character varying)::text, ('e2e'::character varying)::text, ('probe'::character varying)::text, ('code-read'::character varying)::text]))),
+    CONSTRAINT ck_project_evidence_source CHECK (((source)::text = ANY (ARRAY[('relay'::character varying)::text, ('ci'::character varying)::text, ('ci-signed'::character varying)::text, ('server-probe'::character varying)::text, ('ai'::character varying)::text])))
 );
 
 --
@@ -677,8 +677,8 @@ CREATE TABLE public.projects (
     updated_at timestamp with time zone NOT NULL,
     github_repository text,
     github_repository_id text,
-    CONSTRAINT ck_projects_kind CHECK ((kind IN ('app', 'agent'))),
-    CONSTRAINT ck_projects_track CHECK (((track IS NULL) OR (track IN ('claude', 'openclaw', 'hermes'))))
+    CONSTRAINT ck_projects_kind CHECK (((kind)::text = ANY (ARRAY[('app'::character varying)::text, ('agent'::character varying)::text]))),
+    CONSTRAINT ck_projects_track CHECK (((track IS NULL) OR ((track)::text = ANY (ARRAY[('claude'::character varying)::text, ('openclaw'::character varying)::text, ('hermes'::character varying)::text]))))
 );
 
 --
@@ -813,7 +813,7 @@ CREATE TABLE public.review_cards (
     langs text,
     front jsonb NOT NULL,
     back jsonb NOT NULL,
-    CONSTRAINT ck_review_cards_level CHECK ((level IN ('junior', 'middle', 'senior', 'staff')))
+    CONSTRAINT ck_review_cards_level CHECK (((level)::text = ANY (ARRAY[('junior'::character varying)::text, ('middle'::character varying)::text, ('senior'::character varying)::text, ('staff'::character varying)::text])))
 );
 
 --
@@ -869,7 +869,7 @@ CREATE TABLE public.review_reviews (
     cloze_correct boolean,
     answered_at timestamp with time zone NOT NULL,
     answered_on date NOT NULL,
-    CONSTRAINT ck_review_reviews_grade CHECK ((grade IN ('again', 'hard', 'good', 'easy')))
+    CONSTRAINT ck_review_reviews_grade CHECK (((grade)::text = ANY (ARRAY[('again'::character varying)::text, ('hard'::character varying)::text, ('good'::character varying)::text, ('easy'::character varying)::text])))
 );
 
 --
@@ -906,9 +906,9 @@ CREATE TABLE public.review_states (
     flipped_revision integer NOT NULL,
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    CONSTRAINT ck_review_states_added_by CHECK ((added_by IN ('deck', 'lesson', 'track'))),
-    CONSTRAINT ck_review_states_source CHECK ((source IN ('flashcard', 'retrieval'))),
-    CONSTRAINT ck_review_states_status CHECK ((status IN ('new', 'learning', 'review', 'done', 'suspended')))
+    CONSTRAINT ck_review_states_added_by CHECK (((added_by)::text = ANY (ARRAY[('deck'::character varying)::text, ('lesson'::character varying)::text, ('track'::character varying)::text]))),
+    CONSTRAINT ck_review_states_source CHECK (((source)::text = ANY (ARRAY[('flashcard'::character varying)::text, ('retrieval'::character varying)::text]))),
+    CONSTRAINT ck_review_states_status CHECK (((status)::text = ANY (ARRAY[('new'::character varying)::text, ('learning'::character varying)::text, ('review'::character varying)::text, ('done'::character varying)::text, ('suspended'::character varying)::text])))
 );
 
 --
