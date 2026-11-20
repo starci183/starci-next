@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 6655fc3be29a153d54b11f9d244bb9a53868934c98996041ff5a47d0b85afbf5
+    sha256: d6b6e39d74a30324a35f99e90ef2edc77ccc6a41282af60ed23e4d4e1f82712e
   "1440":
     file: 1440.png
-    sha256: 227d01de08704319e77e83d78e4db47f0107f44187d0a76d9bf557d1cb661a6e
+    sha256: f57e493046a766ef29dbd36b04cc7653a135940f408ec11b90706e5fcb2140cb
 sections:
   - id: s1
     title: Thông báo mức khóa
@@ -107,8 +107,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Hàng "Khó" vẫn nền xám đặc cố định ở 1440 và 390 (trạng thái hover/chọn dính) dù chưa mở; ba hàng khoá có chevron như bấm được.'
+          verdict: fixed
+          notes: "Vòng 4: bậc chưa mở là hàng mờ (unavailable), không tô xám; mũi tên cuối hàng do Grammar vẽ
+            cho hàng bấm được (cần Grammar nếu muốn bỏ)."
         actionable:
           verdict: pass
           notes: ""
@@ -124,4 +125,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 4
+      at: 2026-11-20T14:49:06.599Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

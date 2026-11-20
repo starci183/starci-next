@@ -17,7 +17,7 @@ shots:
     sha256: e2839283fb296f6bdc5e98069079e8d62d99d1a3da8f2480fbda4d5ce8af7ae3
   "1440":
     file: 1440.png
-    sha256: 127206f6317bfb340b2a94f8fe644cea852c117b4f4275be34a0e2c958e45ffa
+    sha256: cb39ceb34f9c027ec99905bc1edb02af37c6aee53fdfdd61094c1e0699ec115b
 sections:
   - id: s1
     title: "Dải đầu: breadcrumb, tên, mô tả, dòng sự kiện, nút chính"
@@ -153,8 +153,9 @@ audit:
           verdict: pass
           notes: ""
         actionable:
-          verdict: open
-          notes: 'Cột phải "Nên biết trước" và "Chủ đề liên quan" vẫn là chữ thường, không bấm được (lần thứ ba).'
+          verdict: fixed
+          notes: "Vòng 4: các mục Nên biết trước (có điểm đến) và Chủ đề liên quan là liên kết thường có gạch
+            chân; mục chỉ là câu chữ (không có chủ đề đích) vẫn là chữ, cần API để gắn chủ đề."
         live:
           verdict: pass
           notes: ""
@@ -167,4 +168,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 4
+      at: 2026-11-20T14:49:05.380Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

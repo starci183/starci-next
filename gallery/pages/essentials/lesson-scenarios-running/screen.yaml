@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 8f4e43e91d69a4287de269bc982324e68be76c0b06540f8a59de2d38d51077bc
+    sha256: 1f2a7191017e403b990b758271568acf89a9d44f007eccbac5ee928be965870e
   "1440":
     file: 1440.png
-    sha256: 78d2c2ebc1f7f5c7ce011aa1ef061c98c5a6d423a1fa0b8b788dd47988d84392
+    sha256: 735a0472645ec5b5fb6ec380a274b696607eda5394ce006c1cafe55d72e29997
 sections:
   - id: s1
     title: Terminal đang chạy
@@ -85,8 +85,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Khối kết quả đang chạy vẫn là ô xám sáng gradient trong hộp đen, lạc tông; nên có dòng "Đang chạy..." hoặc skeleton cùng tông.'
+          verdict: fixed
+          notes: "Vòng 4: hộp kết quả đang chạy hiện dòng lệnh và dòng 'Đang chạy' thật thay cho khung xương
+            sáng (đã dựng lại bản dựng giao diện)."
         actionable:
           verdict: pass
           notes: ""
@@ -102,4 +103,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:49:09.362Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
