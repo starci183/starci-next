@@ -1,0 +1,130 @@
+<section class="page" id="auth-sign-in" data-pid="auth/sign-in" data-route="/sign-in" data-title="Đăng nhập">
+  <h2>Đăng nhập</h2>
+  <div class="pid">gallery: auth/sign-in</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng nhập · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Đăng nhập</h1><div class="sb">Chào mừng quay lại. Học tiếp từ chỗ đang dở.</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span class="ph">ban@email.com</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span><a class="u s12 f2">Quên mật khẩu?</a></label><div class="input "><span class="ph">Nhập mật khẩu</span><span class="mut s12">Hiện</span></div></div>
+<span class="btn primary block lg">Đăng nhập</span>
+<div class="sw">Chưa có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng ký</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Đăng nhập · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đăng nhập</h1><div class="sb">Chào mừng quay lại. Học tiếp từ chỗ đang dở.</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span class="ph">ban@email.com</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span><a class="u s12 f2">Quên mật khẩu?</a></label><div class="input "><span class="ph">Nhập mật khẩu</span><span class="mut s12">Hiện</span></div></div>
+<span class="btn primary block lg">Đăng nhập</span>
+<div class="sw">Chưa có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng ký</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng nhập · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng nhập.</b> Mục tiêu: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu. Thao tác: REST /api/identity: social/start rồi social/exchange (nút xã hội), sign-in (email + mật khẩu, server gửi mã 6 số) rồi sign-in/verify ở màn mã; GET session để biết đã đăng nhập chưa; sign-out ở menu avatar. cần API: thêm provider google cho social/start và social/exchange (Keycloak IdP google). Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực (danh sách phẳng), phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu, bỏ viền thẻ. Hai nút xã hội, đường "hoặc dùng email", hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập"; lúc đang gửi nút xám kèm lý do. Lọc: không có. Khác bản hiện tại: GitHub đứng đầu vì người học là dev; lỗi sai email hoặc mật khẩu là một Alert đỏ nhạt, không nói ô nào sai. Lưu ý xung đột: backend chỉ có provider facebook và github; bản vẽ dùng GitHub và Google, bỏ Facebook (chờ chủ sản phẩm chốt). Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Divider, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng này phục vụ mục tiêu của trang: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu.</p>
+      <p>Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>Section</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: nút đăng nhập xã hội có logo nhà cung cấp (bản vẽ dùng ô chữ GH, G)</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sign-in-wrong-password" data-pid="auth/sign-in-wrong-password" data-route="/sign-in" data-title="Đăng nhập, sai mật khẩu">
+  <h2>Đăng nhập, sai mật khẩu</h2>
+  <div class="pid">gallery: auth/sign-in-wrong-password</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng nhập, sai mật khẩu · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đăng nhập</h1><div class="sb">Chào mừng quay lại. Học tiếp từ chỗ đang dở.</div></div>
+<div class="al e"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg><div><b>Email hoặc mật khẩu chưa đúng</b>Kiểm tra lại, hoặc đặt lại mật khẩu.</div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span>nam@vidu.vn</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span><a class="u s12 f2">Quên mật khẩu?</a></label><div class="input err"><span>••••••••</span><span class="mut s12">Hiện</span></div></div>
+<span class="btn primary block lg">Đăng nhập</span>
+<div class="sw">Chưa có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng ký</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng nhập, sai mật khẩu · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng nhập, sai mật khẩu.</b> Trạng thái của màn này: sai mật khẩu. Mục tiêu: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu. Thao tác: REST /api/identity: social/start rồi social/exchange (nút xã hội), sign-in (email + mật khẩu, server gửi mã 6 số) rồi sign-in/verify ở màn mã; GET session để biết đã đăng nhập chưa; sign-out ở menu avatar. cần API: thêm provider google cho social/start và social/exchange (Keycloak IdP google). Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực (danh sách phẳng), phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu, bỏ viền thẻ. Hai nút xã hội, đường "hoặc dùng email", hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập"; lúc đang gửi nút xám kèm lý do. Lọc: không có. Khác bản hiện tại: GitHub đứng đầu vì người học là dev; lỗi sai email hoặc mật khẩu là một Alert đỏ nhạt, không nói ô nào sai. Lưu ý xung đột: backend chỉ có provider facebook và github; bản vẽ dùng GitHub và Google, bỏ Facebook (chờ chủ sản phẩm chốt). Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Divider, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: nút đăng nhập xã hội có logo nhà cung cấp (bản vẽ dùng ô chữ GH, G)</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sign-in-sending-code" data-pid="auth/sign-in-sending-code" data-route="/sign-in" data-title="Đăng nhập, đang gửi mã">
+  <h2>Đăng nhập, đang gửi mã</h2>
+  <div class="pid">gallery: auth/sign-in-sending-code</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng nhập, đang gửi mã · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đăng nhập</h1><div class="sb">Chào mừng quay lại. Học tiếp từ chỗ đang dở.</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span>nam@vidu.vn</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span><a class="u s12 f2">Quên mật khẩu?</a></label><div class="input "><span class="ph">Nhập mật khẩu</span><span class="mut s12">Hiện</span></div></div>
+<div><span class="btn dis block lg"><span class="spin"></span>Đang gửi mã…</span><div class="why" style="margin-top:6px;text-align:center">Đang kiểm tra thông tin, chờ vài giây</div></div>
+<div class="sw">Chưa có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng ký</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng nhập, đang gửi mã · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng nhập, đang gửi mã.</b> Trạng thái của màn này: đang gửi mã. Mục tiêu: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu. Thao tác: REST /api/identity: social/start rồi social/exchange (nút xã hội), sign-in (email + mật khẩu, server gửi mã 6 số) rồi sign-in/verify ở màn mã; GET session để biết đã đăng nhập chưa; sign-out ở menu avatar. cần API: thêm provider google cho social/start và social/exchange (Keycloak IdP google). Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực (danh sách phẳng), phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu, bỏ viền thẻ. Hai nút xã hội, đường "hoặc dùng email", hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập"; lúc đang gửi nút xám kèm lý do. Lọc: không có. Khác bản hiện tại: GitHub đứng đầu vì người học là dev; lỗi sai email hoặc mật khẩu là một Alert đỏ nhạt, không nói ô nào sai. Lưu ý xung đột: backend chỉ có provider facebook và github; bản vẽ dùng GitHub và Google, bỏ Facebook (chờ chủ sản phẩm chốt). Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Divider, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: nút đăng nhập xã hội có logo nhà cung cấp (bản vẽ dùng ô chữ GH, G)</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sign-in-github-confirming" data-pid="auth/sign-in-github-confirming" data-route="/sign-in" data-title="Đăng nhập GitHub, đang xác nhận">
+  <h2>Đăng nhập GitHub, đang xác nhận</h2>
+  <div class="pid">gallery: auth/sign-in-github-confirming</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng nhập GitHub, đang xác nhận · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx" style="align-items:center;text-align:center;gap:14px"><span class="spin" style="width:28px;height:28px;border-width:3px"></span><h1>Đang xác nhận với GitHub</h1><p class="f2">Chờ vài giây, bạn sẽ được đưa về trang Học.</p></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng nhập GitHub, đang xác nhận · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng nhập GitHub, đang xác nhận.</b> Trạng thái của màn này: đang xác nhận. Mục tiêu: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu. Thao tác: REST /api/identity: social/start rồi social/exchange (nút xã hội), sign-in (email + mật khẩu, server gửi mã 6 số) rồi sign-in/verify ở màn mã; GET session để biết đã đăng nhập chưa; sign-out ở menu avatar. cần API: thêm provider google cho social/start và social/exchange (Keycloak IdP google). Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực (danh sách phẳng), phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu, bỏ viền thẻ. Hai nút xã hội, đường "hoặc dùng email", hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập"; lúc đang gửi nút xám kèm lý do. Lọc: không có. Khác bản hiện tại: GitHub đứng đầu vì người học là dev; lỗi sai email hoặc mật khẩu là một Alert đỏ nhạt, không nói ô nào sai. Lưu ý xung đột: backend chỉ có provider facebook và github; bản vẽ dùng GitHub và Google, bỏ Facebook (chờ chủ sản phẩm chốt). Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Divider, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: nút đăng nhập xã hội có logo nhà cung cấp (bản vẽ dùng ô chữ GH, G)</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-sign-in-error" data-pid="auth/sign-in-error" data-route="/sign-in" data-title="Đăng nhập GitHub, lỗi">
+  <h2>Đăng nhập GitHub, lỗi</h2>
+  <div class="pid">gallery: auth/sign-in-error</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Đăng nhập GitHub, lỗi · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx" style="align-items:center;text-align:center;gap:14px"><div class="bigic" style="background:var(--err-bg);color:var(--err)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg></div><h1>Không xác nhận được với GitHub</h1><p class="f2">Phiên đăng nhập đã hết hạn hoặc bạn đã từ chối quyền. Thử lại hoặc dùng email.</p><span class="btn primary block lg">Thử lại với GitHub</span><span class="btn secondary block">Dùng email</span></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Đăng nhập GitHub, lỗi · route: /sign-in · area: auth</div>
+      <p class="intro"><b>Concept: Đăng nhập GitHub, lỗi.</b> Trạng thái của màn này: lỗi. Mục tiêu: vào lại để học tiếp bằng GitHub, Google hoặc email và mật khẩu. Thao tác: REST /api/identity: social/start rồi social/exchange (nút xã hội), sign-in (email + mật khẩu, server gửi mã 6 số) rồi sign-in/verify ở màn mã; GET session để biết đã đăng nhập chưa; sign-out ở menu avatar. cần API: thêm provider google cho social/start và social/exchange (Keycloak IdP google). Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái giới thiệu ba khu vực (danh sách phẳng), phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu, bỏ viền thẻ. Hai nút xã hội, đường "hoặc dùng email", hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng chuyển sang Đăng ký. Nút chính: "Đăng nhập"; lúc đang gửi nút xám kèm lý do. Lọc: không có. Khác bản hiện tại: GitHub đứng đầu vì người học là dev; lỗi sai email hoặc mật khẩu là một Alert đỏ nhạt, không nói ô nào sai. Lưu ý xung đột: backend chỉ có provider facebook và github; bản vẽ dùng GitHub và Google, bỏ Facebook (chờ chủ sản phẩm chốt). Phần tử Grammar của màn: EntryFrame, Form, Field, Input, Button, Alert, Divider, Link.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: nút đăng nhập xã hội có logo nhà cung cấp (bản vẽ dùng ô chữ GH, G)</p>
+    </div>
+  </div>
+</section>

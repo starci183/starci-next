@@ -1,0 +1,11 @@
+# Kịch bản  (gallery: essentials/lesson-scenarios, route /essentials/[topic]/[lesson]?part=scenarios)
+Mục tiêu: chạy từng kịch bản lỗi trên máy mình, thấy đỏ, hiểu vì sao, nhờ AI sửa rồi check lại tới khi xanh.
+Thao tác: lesson(id).essential.scenarios (title, fault, command, expected, invariant, guards, hint); lệnh starci-next check --scenario chạy qua relay (relayCheckStarted, relayCheckResult do CLI gửi); lessonScenarioRuns(lessonId) đọc lại (status, why, output, guardsOff, commit); lessonProgress cho số xanh; MCP StarCi (my_runs, read_file) cho khung hỏi Claude. cần API: subscription (hoặc polling) cho relayCheckStarted/relayCheckResult tới app; khóa gợi ý ở server tới lần đỏ đầu; requestRun từ app (hiện chỉ MCP có).
+Dữ liệu: số liệu minh họa (tên, số tiền, ngày dd/mm/yyyy) nằm trong các khung của pages/22-essentials-lesson-scenarios.html; trường thật theo các thao tác ở trên.
+Trạng thái: các màn đã vẽ: essentials/lesson-scenarios (Kịch bản, chạy đỏ, có gợi ý và hỏi Claude; 1440 và 390); essentials/lesson-scenarios-not-run-hints-locked (Kịch bản, chưa chạy: gợi ý còn khóa; chỉ 390); essentials/lesson-scenarios-running (Kịch bản, đang chạy; chỉ 390); essentials/lesson-scenarios-green (Kịch bản, xanh; chỉ 390); essentials/lesson-scenarios-ask-claude (Kịch bản, bí: hỏi Claude; chỉ 390); essentials/lesson-scenarios-no-online-device (Kịch bản, chưa có máy trực tuyến; chỉ 390). Trạng thái của bảng PROJECT-GALLERY-6 không vẽ: empty, loading, error, no-match, detail, first-visit, editing (trang không chạm tới, hoặc chưa được vẽ khi duyệt; thêm khi code nếu trang thật sự chạm tới).
+Quyền: học viên đã đăng nhập; không có phân quyền riêng ngoài cổng Premium của khu vực (concepts/premium.md).
+Grammar: Tabs, Section kind="list", ListRow, Badge, Terminal, Alert, Switch, MessageBubble, CopyField. cần Grammar: dòng gọi tool MCP trong khung chat (ToolCallLine).
+Hành động chính: theo trạng thái: "Chạy kịch bản" khi chưa chạy, "Check lại" khi đỏ, "Kịch bản tiếp theo" khi xanh; không có máy trực tuyến thì nút xám kèm lý do.
+Lọc: không có.
+Việc đổi: kịch bản chạy trên máy học viên qua CLI, không mô phỏng trong trình duyệt.
+Xung đột: trạng thái "đang chạy" cần tín hiệu thời gian thực từ relayCheckStarted tới app.

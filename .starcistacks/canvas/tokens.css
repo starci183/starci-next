@@ -1,0 +1,15 @@
+/* StarCi Next design canvas tokens: the app Grammar look (white theme, brand.css of fe/apps/app) with the violet accent. */
+:root{--bg:#fff;--fg:#171717;--fg2:#525252;--muted:#737373;--faint:#a3a3a3;--border:#e5e5e5;--border-strong:#d4d4d4;--sep:#f0f0f0;--hover:#fafafa;--fill:#f5f5f5;--selected:#f2f2f2;--accent:oklch(51% 0.24 285);--accent-foreground:oklch(99.1% 0 0);--accent-ring:color-mix(in oklab,var(--accent) 22%,transparent);--accent-soft:oklch(95.5% 0.03 287);--accent-text:#6a3cf2;--ok-bg:#dcfce7;--ok:#166534;--warn-bg:#fef3c7;--warn:#92400e;--err-bg:#fee2e2;--err:#991b1b;--info-bg:#dbeafe;--info:#1e40af;--r:8px;--r-card:12px;--shadow-pop:0 8px 24px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 Inter,system-ui,sans-serif}
+.input{height:36px;border:1px solid var(--border);border-radius:var(--r);padding:0 12px;display:flex;align-items:center;background:#fff;min-width:200px}
+.input.focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}.input.error{border-color:var(--accent)}
+.btn{height:36px;border-radius:var(--r);padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-weight:500;border:1px solid transparent;background:none}
+.btn.primary{background:var(--accent);color:#fff}.btn.secondary{background:#fff;border-color:var(--border)}.btn.ghost:hover,.btn.ghost.hover{background:var(--fill)}.btn.danger{color:var(--accent-text);border-color:#fecdd6;background:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:16px}
+.badge{display:inline-flex;align-items:center;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:500}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-warn{background:var(--warn-bg);color:var(--warn)}.b-err{background:var(--err-bg);color:var(--err)}.b-info{background:var(--info-bg);color:var(--info)}.b-neutral{background:var(--fill);color:var(--fg2)}.b-count{background:var(--accent);color:#fff;border-radius:999px;padding:0 7px}
+.nav-item{display:flex;gap:8px;align-items:center;padding:6px 10px;border-radius:6px}.nav-item.selected{background:var(--selected);font-weight:500;box-shadow:inset 2px 0 0 var(--accent);border-radius:0 6px 6px 0}
+table.t{width:100%;border-collapse:collapse}table.t th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}table.t td{padding:10px 12px;border-bottom:1px solid var(--sep)}table.t tr:hover td{background:var(--hover)}
+.ribbon{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.ribbon>div{flex:1;padding:14px 20px}.ribbon>div+div{border-left:1px solid var(--border)}.ribbon .k{font-size:12px;color:var(--muted)}.ribbon .v{font-size:22px;font-weight:600}
+.pop{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-pop)}
+.cap{font-size:11px;color:var(--faint);margin-top:4px}

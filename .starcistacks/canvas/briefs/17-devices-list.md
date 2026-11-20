@@ -1,0 +1,11 @@
+# Máy của bạn  (gallery: devices/list, route /devices)
+Mục tiêu: nối máy học viên để chạy kịch bản Essentials và build Harness bằng npx @starci/next, và cấp token cho Claude Code hoặc Codex.
+Thao tác: relayDevices (name, platform, pairedAt, lastSeenAt, online), relayPairing(userCode) xem trước máy, confirmRelayDevice, revokeRelayDevice; giới hạn 1 máy (miễn phí), 2 máy (Premium), vượt thì lỗi DeviceLimit. Tab MCP: mcpConnectInfo (endpoint, tokenLimit 5), mcpTokens, createMcpToken (trả secret một lần), revokeMcpToken. cần API: không có.
+Dữ liệu: số liệu minh họa (tên, số tiền, ngày dd/mm/yyyy) nằm trong các khung của pages/17-devices-list.html; trường thật theo các thao tác ở trên.
+Trạng thái: các màn đã vẽ: devices/list (Máy của bạn; 1440 và 390); devices/list-empty (Máy của bạn, chưa nối máy nào; 1440 và 390); devices/list-enter-code-dialog (Máy của bạn, hộp thoại: nhập mã; chỉ 390); devices/list-preview-device-dialog (Máy của bạn, hộp thoại: xem trước máy; chỉ 390); devices/list-code-invalid-dialog (Máy của bạn, hộp thoại: mã sai hoặc hết hạn; chỉ 390); devices/list-limit-reached (Máy của bạn, đã đủ giới hạn; chỉ 390); devices/list-offline-device (Máy của bạn, máy ngoại tuyến; chỉ 390); devices/list-mcp-tokens (Máy của bạn, Claude Code &amp; MCP; 1440 và 390); devices/list-mcp-token-created (Máy của bạn, Claude Code &amp; MCP, token vừa tạo; chỉ 390); devices/list-mcp-no-token (Máy của bạn, Claude Code &amp; MCP, chưa có token; chỉ 390); devices/list-error (Máy của bạn, lỗi tải; chỉ 390). Trạng thái của bảng PROJECT-GALLERY-6 không vẽ: loading, no-match, detail, first-visit, editing (trang không chạm tới, hoặc chưa được vẽ khi duyệt; thêm khi code nếu trang thật sự chạm tới).
+Quyền: relayDevices (name, platform, pairedAt, lastSeenAt, online), relayPairing(userCode) xem trước máy, confirmRelayDevice, revokeRelayDevice; giới hạn 1 máy (miễn phí), 2 máy (Premium), vượt thì lỗi DeviceLimit.
+Grammar: Tabs, Dialog, Drawer, CopyField, MarkdownArticle (khối lệnh), StatusDot, Badge, Alert. cần Grammar: không có.
+Hành động chính: "Kết nối máy" (hộp thoại nhập mã, xem trước máy, xác nhận).
+Lọc: không có.
+Việc đổi: bỏ thẻ và ngăn kéo; gộp connect/ai vào tab MCP; bỏ "mức chứng minh" vì dự án giờ chứng minh bằng CI OIDC.
+Xung đột: không.
