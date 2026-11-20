@@ -26,17 +26,27 @@ type TopicAsideProps = {
     readonly prerequisites: ReadonlyArray<TopicAsideEntry>
     readonly relatedTitle: string
     readonly related: ReadonlyArray<TopicAsideEntry>
+    /** The first read is running: every block draws as a skeleton. */
+    readonly isLoading?: boolean
 }
 
 /** A titled block of the aside: its name (14, 500) and its content, set off from the one above by a hairline. */
-type AsideBlockProps = { readonly title: string; readonly isFirst: boolean; readonly content: ReactNode }
+type AsideBlockProps = {
+    readonly title: string
+    readonly isFirst: boolean
+    readonly content: ReactNode
+    readonly isLoading: boolean
+}
 
 /** What the entries of a block need. */
 type EntriesProps = { readonly entries: ReadonlyArray<TopicAsideEntry> }
 
 /** One section of the aside pane: its name and content stand one step apart. */
 const AsideBlock = (props: AsideBlockProps) => (
-    <PaneSection {...(props.isFirst ? {} : { rule: "start" as const })}>
+    <PaneSection
+        {...(props.isFirst ? {} : { rule: "start" as const })}
+        {...(props.isLoading ? { isLoading: true } : {})}
+    >
         <Text as="p" isStrong>
             {props.title}
         </Text>
@@ -67,9 +77,11 @@ export const TopicAside = (props: TopicAsideProps) => (
         <AsideBlock
             title={props.partsTitle}
             isFirst
+            isLoading={props.isLoading === true}
             content={
                 <Section
                     kind="list"
+                    isLoading={props.isLoading === true}
                     ariaLabel={props.partsTitle}
                     empty={props.partsNote}
                     caption={props.partsNote}
@@ -85,11 +97,17 @@ export const TopicAside = (props: TopicAsideProps) => (
             <AsideBlock
                 title={props.prerequisitesTitle}
                 isFirst={false}
+                isLoading={props.isLoading === true}
                 content={<Entries entries={props.prerequisites} />}
             />
         )}
         {props.related.length === 0 ? null : (
-            <AsideBlock title={props.relatedTitle} isFirst={false} content={<Entries entries={props.related} />} />
+            <AsideBlock
+                title={props.relatedTitle}
+                isFirst={false}
+                isLoading={props.isLoading === true}
+                content={<Entries entries={props.related} />}
+            />
         )}
     </>
 )

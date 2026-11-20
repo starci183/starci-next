@@ -27,6 +27,16 @@ const answerAs = async (p, n, isRight) => {
         .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
     await p.waitForTimeout(1200)
 }
+// A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
+const originFix = async (ctx) => {
+    if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
+    await ctx.route(/\/(graphql|api\/)/, async (route) => {
+        const response = await route.fetch({
+            headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
+        })
+        await route.fulfill({ response })
+    })
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -170,6 +180,7 @@ const norm = (href) => {
         })
         ws.onMessage((m) => up.send(m))
     }
+    for (const c of [user, guest, free]) await originFix(c)
     const first = process.env.CAPTURE_FIRST_STATE
         ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
         : undefined

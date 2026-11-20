@@ -65,7 +65,7 @@ export type EssentialLessonView = {
     /** The part the page opens the lesson on again ("Học tiếp"): the first part not done. */
     readonly nextPartHref: string
     /** True when the lesson carries none of the four parts yet. */
-    readonly isEmpty: boolean
+    readonly hasNoPart: boolean
     /** True when the part on screen needs Premium the learner lacks: only its words and the Subscribe link are shown. */
     readonly isLocked: boolean
     /** The prose a part opens with (its own section), when the lesson has one. */
@@ -144,7 +144,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     lockedParts: [],
     parts: [],
     nextPartHref: "/",
-    isEmpty: false,
+    hasNoPart: false,
     isLocked: false,
     intro: undefined,
     essence: {
@@ -310,7 +310,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                             state: stateOf(id),
                         }
                     }),
-                    isEmpty: lesson.essential === undefined,
+                    hasNoPart: lesson.essential === undefined,
                     isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
                     intro: partSectionOf(lesson, part),
                     essence,
