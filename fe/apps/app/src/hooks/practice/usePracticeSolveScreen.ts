@@ -150,7 +150,8 @@ export const PRACTICE_SOLVE_PLACEHOLDER: PracticeSolveView = {
     patternTitle: "xxxxxx",
     patternHref: "/",
     meta: "xxxxxxxx · xxxxxxxx · xxxxxxxx",
-    markdown: "",
+    markdown:
+        "xxxxxxxx xxxxxxx xxxxxxxxx xxxxxx xxxxxxxx xxxxxxx xxxxxxxxx xxxxxx xxxxxxxx xxxxxxx xxxxxxxxx xxxxxxx xxxxxx xxxxxxxxx xxxxxxxx xxxxxxx",
     examples: [],
     hintsTotal: 3,
     nextHref: null,
@@ -230,7 +231,7 @@ export const usePracticeSolveScreen = (slug: string): PracticeSolveScreen => {
         ]
             .filter((part) => part !== "")
             .join(" · "),
-        markdown: each.statementMarkdown,
+        markdown: each.statementMarkdown.replace(/^#\s+.*\n+/, ""),
         examples: each.examples,
         hintsTotal: each.hintsTotal,
         nextHref: each.nextSlug === null ? null : practiceProblemPath(each.nextSlug),

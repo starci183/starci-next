@@ -1,7 +1,6 @@
-import { Badge, Button, Cluster, DataTable, EmptyNotice, Page, Section, Stack, Text } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Page, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
 import { RowProgress, SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
-import type { ReactElement } from "react"
 
 /** One project as the table draws it, already in words. */
 export type ProjectRowView = {
@@ -28,16 +27,14 @@ export type ProjectsFiguresView = {
     readonly cvLines: number
 }
 
-/** The projects as they are drawn: the ribbon figures and the table rows, already in words, and whether the read failed. */
+/** The projects as they are drawn: the ribbon figures and the table rows, already in words. */
 export type ProjectsListView = {
-    readonly outcome: "ready" | "failed"
     readonly figures: ProjectsFiguresView
     readonly rows: ReadonlyArray<ProjectRowView>
 }
 
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECTS_LIST_PLACEHOLDER: ProjectsListView = {
-    outcome: "ready",
     figures: { proved: 0, practising: 0, milestonesDone: 0, milestonesTotal: 0, cvLines: 0 },
     rows: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
@@ -79,7 +76,6 @@ export type ProjectsListLabels = {
     readonly progressLabel: string
     readonly emptyTitle: string
     readonly emptyText: string
-    readonly errorTitle: string
     readonly note: string
 }
 
@@ -99,7 +95,6 @@ type BodyProps = {
     readonly props: ProjectsListBaseProps["props"]
     readonly view: ProjectsListView
     readonly isLoading: boolean
-    readonly onRetry: () => void
 }
 
 /** The ribbon over the list: the four figures of the learner, in one band between two hairlines. */
@@ -126,83 +121,48 @@ const Ribbon = (props: BodyProps) => {
     )
 }
 
-/** One cell of the table: the project with its repo, its kind, its milestone, its progress and its deployment. */
-const cellOf = (row: ProjectRowView, columnId: string, progressLabel: string): ReactElement => {
-    switch (columnId) {
-        case "project":
-            return (
-                <Stack gap="identity">
-                    <Text isStrong>{row.name}</Text>
-                    {row.repo === "" ? null : (
-                        <Text size="xs" tone="muted">
-                            {row.repo}
-                        </Text>
-                    )}
-                </Stack>
-            )
-        case "kind":
-            return <Badge tone={row.isAgent ? "accent" : "neutral"}>{row.kindLabel}</Badge>
-        case "milestone":
-            return <Text>{row.milestone}</Text>
-        case "progress":
-            return (
-                <Cluster gap="inline" align="center">
-                    <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
-                    <Text size="sm" tone="muted" tabular>
-                        {row.progress}
-                    </Text>
-                </Cluster>
-            )
-        default:
-            return <Badge tone={row.ciTone}>{row.ci}</Badge>
-    }
-}
+/** One project as a list row: name, repo and current milestone, the kind and the deployment as chips, the progress as the row's control; the whole row is the link. */
+const rowOf = (row: ProjectRowView, progressLabel: string): ListRowData => ({
+    id: row.id,
+    title: row.name,
+    description: [row.repo, row.milestone].filter((part) => part !== "").join(" · "),
+    href: row.href,
+    badges: [
+        { label: row.kindLabel, tone: "neutral" },
+        { label: row.ci, tone: row.ciTone },
+    ],
+    control: (
+        <Cluster gap="inline" align="center">
+            <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
+            <Text tone="muted" tabular>
+                {row.progress}
+            </Text>
+        </Cluster>
+    ),
+})
 
-/** The flat table of the learner's projects under its head; the read's failure and the empty list are drawn in its place. */
+/** The learner's projects as one flat list under its head; the empty list is drawn in its place. */
 const ListTable = (props: BodyProps) => {
     const { labels } = props.props
-    const isFailed = props.view.outcome === "failed"
     return (
         <Section
+            kind="list"
             title={labels.listLabel}
             headingLevel={2}
-            {...(isFailed ? {} : { count: props.view.rows.length })}
+            count={props.view.rows.length}
             caption={labels.note}
             isLoading={props.isLoading}
-            {...(isFailed
-                ? {
-                      error: {
-                          message: labels.errorTitle,
-                          description: props.props.slotLabels.error,
-                          actionLabel: props.props.slotLabels.retry,
-                          onAction: props.onRetry,
-                      },
-                  }
-                : {})}
-        >
-            <DataTable
-                label={labels.listLabel}
-                isLoading={props.isLoading}
-                columns={[
-                    { id: "project", label: labels.columns.project },
-                    { id: "kind", label: labels.columns.kind, width: "fit", hideBelow: "tablet" },
-                    { id: "milestone", label: labels.columns.milestone, hideBelow: "tablet" },
-                    { id: "progress", label: labels.columns.progress, width: "fit" },
-                    { id: "ci", label: labels.columns.ci, width: "fit", hideBelow: "tablet" },
-                ]}
-                rows={props.view.rows.map((row) => ({ ...row }))}
-                renderCell={(row, columnId) => cellOf(row, columnId, labels.progressLabel)}
-                emptyContent={
-                    <EmptyNotice
-                        message={labels.emptyTitle}
-                        description={labels.emptyText}
-                        actionLabel={labels.create}
-                        actionHref={labels.createHref}
-                        frame="frameless"
-                    />
-                }
-            />
-        </Section>
+            items={props.view.rows.map((row) => rowOf(row, labels.progressLabel))}
+            empty={
+                <EmptyNotice
+                    message={labels.emptyTitle}
+                    description={labels.emptyText}
+                    actionLabel={labels.create}
+                    actionHref={labels.createHref}
+                    frame="frameless"
+                />
+            }
+        />
     )
 }
 
@@ -230,8 +190,8 @@ export const ProjectsListBase = (props: ProjectsListBaseProps) => (
             onRetry={props.on.retry}
             render={(view, isLoading) => (
                 <Stack gap="region">
-                    <Ribbon props={props.props} view={view} isLoading={isLoading} onRetry={props.on.retry} />
-                    <ListTable props={props.props} view={view} isLoading={isLoading} onRetry={props.on.retry} />
+                    <Ribbon props={props.props} view={view} isLoading={isLoading} />
+                    <ListTable props={props.props} view={view} isLoading={isLoading} />
                 </Stack>
             )}
         />

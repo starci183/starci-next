@@ -1,0 +1,94 @@
+schema: 1
+screen: projects/paywall
+title: Dự án, chưa có Premium
+route: /projects (không có Premium)
+area: projects
+summary: "Mục tiêu: người chưa đăng ký hiểu Dự án chứng minh gì và đăng ký."
+code:
+  - features/layouts/ProjectsLayout
+  - components/blocks/ProjectsPitch
+shots:
+  "390":
+    file: 390.png
+    sha256: 1c3e668e568276ffbf92bbbb17c4979dcf194b461b1255b8d2c711dd39e7ce7b
+  "1440":
+    file: 1440.png
+    sha256: bc6b1854447d9e1ef6a9e9ece6e8495d1774f86c9d43089bf281c428b20cb88e
+sections:
+  - id: s1
+    title: Giới thiệu Dự án
+    shows: ba bước từ repo đến dòng CV, ví dụ một milestone và dòng CV, những gì Premium mở; một nút
+      chính "Đăng ký Premium".
+    why: không có công cụ rút gọn, không minh họa trong vùng làm việc.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:55.522Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Bảng chạy tới x≈1420 ở 1440, vượt gutter 1408. Mô tả bước 1-3 và ba mục Premium bị cắt "..."
+            giữa câu (1440 bước 2; 390 cả ba bước). Canvas projects/paywall chỉ có một câu ngắn mỗi
+            bước ("Một lệnh thêm thư mục starci/ và mẫu CI vào repo."), code lặp thêm "Không có dự
+            án mẫu..." làm dài và bị cắt.
+        actionable:
+          verdict: open
+          notes: Chỉ có một nút "Đăng ký Premium" ở đầu trang; hết trang dài ~1350px (2550px ở 390) không có
+            nút lặp lại cuối trang.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:02:57.735Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

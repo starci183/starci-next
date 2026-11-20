@@ -4,6 +4,7 @@ import {
     Button,
     Cluster,
     DescriptionList,
+    EmptyNotice,
     Grid,
     Link,
     Page,
@@ -11,6 +12,7 @@ import {
     Stack,
     Terminal,
     Text,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { ConceptCodeRead, MissingNotice, SlotView } from "@starci-next/ui"
 import type { ConceptDraftView, DataSlot, ProjectConceptLabels, ProjectConceptView, SlotLabels } from "@/modules/types"
@@ -78,8 +80,8 @@ const Slots = (props: BodyProps) => {
     const { labels } = props.props
     return (
         <Section title={labels.slotsTitle} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
-                <Cluster gap="inline" wrap>
+            <Stack gap="inline">
+                <Cluster gap="identity" wrap>
                     {concept.chips.map((chip) => (
                         <Badge key={chip.id} tone={chip.tone}>
                             {chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`}
@@ -87,14 +89,7 @@ const Slots = (props: BodyProps) => {
                     ))}
                 </Cluster>
                 {concept.rejection === undefined ? null : <Alert tone="negative" title={concept.rejection.text} />}
-                {concept.aiQuestion === "" ? null : (
-                    <Text>
-                        <Text as="span" isStrong>
-                            {labels.questionLabel}
-                        </Text>{" "}
-                        {concept.aiQuestion}
-                    </Text>
-                )}
+                {concept.aiQuestion === "" ? null : <Text>{`${labels.questionLabel}: ${concept.aiQuestion}`}</Text>}
                 {concept.lessonHref === "" ? null : (
                     <Link variant="plain" href={concept.lessonHref}>
                         {`${labels.lesson}: ${concept.lessonTitle}`}
@@ -122,13 +117,17 @@ const Probe = (props: BodyProps) => {
             headingLevel={2}
             isLoading={props.isLoading}
         >
-            <Stack gap="row">
+            <Stack gap="inline">
                 {lines.length === 0 ? (
-                    <Text tone="muted">{view.deployedUrl === "" ? labels.probeNoDeploy : labels.probeEmpty}</Text>
+                    <EmptyNotice
+                        message={view.deployedUrl === "" ? labels.probeNoDeploy : labels.probeEmpty}
+                        mark="none"
+                        frame="frameless"
+                    />
                 ) : (
                     <Terminal label={labels.probeTitle} lines={lines} />
                 )}
-                <Cluster gap="inline" wrap>
+                <Cluster gap="identity" wrap>
                     <Button
                         intent="neutral"
                         isPending={props.props.isProbing}
@@ -150,7 +149,7 @@ const Ci = (props: BodyProps) => {
     return (
         <Section title={labels.ciTitle} headingLevel={2} isLoading={props.isLoading}>
             {ci === undefined ? (
-                <Text tone="muted">{labels.ciEmpty}</Text>
+                <EmptyNotice message={labels.ciEmpty} mark="none" frame="frameless" />
             ) : (
                 <DescriptionList
                     density="compact"
@@ -177,21 +176,19 @@ const CvPreview = (props: BodyProps) => {
     const { cv } = props.view
     return (
         <Section title={labels.cvTitle} headingLevel={2} isLoading={props.isLoading} caption={labels.cvNote}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 {cv === undefined ? (
-                    <Text tone="muted">{labels.cvEmpty}</Text>
+                    <EmptyNotice message={labels.cvEmpty} mark="none" frame="frameless" />
                 ) : (
                     <Stack gap="identity">
                         <Badge tone={cv.isProved ? "success" : "muted"}>
                             {cv.isProved ? labels.cvVerified : labels.cvPreview}
                         </Badge>
                         <Text>{cv.text}</Text>
-                        <Text size="sm" tone="muted">
-                            {cv.evidence}
-                        </Text>
+                        <Text tone="muted">{cv.evidence}</Text>
                     </Stack>
                 )}
-                <Cluster gap="inline" wrap>
+                <Cluster gap="identity" wrap>
                     <Button intent="neutral" href={labels.askClaudeHref}>
                         {labels.askClaude}
                     </Button>
@@ -219,66 +216,80 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
             </Page>
         )
     }
-    const isReady = "items" in slot
-    const view = isReady ? slot.items : props.props.placeholder
-    const loadingCrumb = isReady ? {} : { isLoading: true as const }
     return (
-        <Page
-            header={{
-                breadcrumbs: {
-                    label: labels.crumbTrail,
-                    items: [
-                        { id: "projects", label: labels.crumbRoot, href: labels.crumbRootHref },
-                        { id: "project", label: view.projectName, href: labels.projectHref, ...loadingCrumb },
-                        { id: "milestone", label: view.milestoneTitle, href: labels.milestoneHref, ...loadingCrumb },
-                        { id: "concept", label: view.concept.label, ...loadingCrumb },
-                    ],
-                },
-                title: view.concept.label,
-                meta: view.concept.proofLine,
-                status: <Badge tone={view.concept.stateTone}>{view.concept.stateLabel}</Badge>,
+        <SlotView<ProjectConceptView, PageHeaderContent>
+            slot={slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            onRetry={props.on.retry}
+            header={(view, loading) => {
+                const loadingCrumb = loading ? { isLoading: true as const } : {}
+                return {
+                    breadcrumbs: {
+                        label: labels.crumbTrail,
+                        items: [
+                            { id: "projects", label: labels.crumbRoot, href: labels.crumbRootHref },
+                            { id: "project", label: view.projectName, href: labels.projectHref, ...loadingCrumb },
+                            {
+                                id: "milestone",
+                                label: view.milestoneTitle,
+                                href: labels.milestoneHref,
+                                ...loadingCrumb,
+                            },
+                            { id: "concept", label: view.concept.label, ...loadingCrumb },
+                        ],
+                    },
+                    title: view.concept.label,
+                    meta: view.concept.proofLine,
+                    status: (
+                        <Badge isDot tone={view.concept.stateTone}>
+                            {view.concept.stateLabel}
+                        </Badge>
+                    ),
+                }
             }}
-            isLoading={!isReady}
-        >
-            <SlotView
-                slot={slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(data, loading) => {
-                    const body = { ...props, view: data, isLoading: loading }
-                    return (
-                        <Stack gap="region">
-                            <Slots {...body} />
-                            <Grid
-                                kind="pair"
-                                leading={
-                                    <Stack gap="region">
-                                        <Probe {...body} />
-                                        <Ci {...body} />
-                                    </Stack>
-                                }
-                                trailing={
-                                    <Stack gap="region">
-                                        <ConceptCodeRead
-                                            concept={data.concept}
-                                            labels={labels}
-                                            draft={props.props.draft}
-                                            rubric={data.rubric}
-                                            verdictLabels={labels.verdict}
-                                            isBusy={props.props.isBusy}
-                                            isLoading={loading}
-                                            issueWords={props.props.issueWords}
-                                            on={props.on}
-                                        />
-                                    </Stack>
-                                }
-                            />
-                            <CvPreview {...body} />
-                        </Stack>
-                    )
-                }}
-            />
-        </Page>
+            headerFallback={{
+                breadcrumbs: { label: labels.crumbTrail, items: [{ id: "projects", label: labels.crumbRoot }] },
+                title: labels.crumbRoot,
+            }}
+            frame={({ header, isLoading, body }) => (
+                <Page isLoading={isLoading} header={header}>
+                    {body}
+                </Page>
+            )}
+            render={(data, loading) => {
+                const body = { ...props, view: data, isLoading: loading }
+                return (
+                    <Stack gap="section">
+                        <Slots {...body} />
+                        <Grid
+                            kind="pair"
+                            leading={
+                                <Stack gap="section">
+                                    <Probe {...body} />
+                                    <Ci {...body} />
+                                </Stack>
+                            }
+                            trailing={
+                                <Stack gap="section">
+                                    <ConceptCodeRead
+                                        concept={data.concept}
+                                        labels={labels}
+                                        draft={props.props.draft}
+                                        rubric={data.rubric}
+                                        verdictLabels={labels.verdict}
+                                        isBusy={props.props.isBusy}
+                                        isLoading={loading}
+                                        issueWords={props.props.issueWords}
+                                        on={props.on}
+                                    />
+                                </Stack>
+                            }
+                        />
+                        <CvPreview {...body} />
+                    </Stack>
+                )
+            }}
+        />
     )
 }

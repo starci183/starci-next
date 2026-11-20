@@ -1,0 +1,102 @@
+schema: 1
+screen: practice/pattern-first
+title: Pattern, lần đầu
+route: /practice/patterns/[patternId]
+area: practice
+summary: "Trạng thái của màn này: lần đầu. Mục tiêu: chọn bài trong một pattern."
+code:
+  - features/pages/PracticePatternPage
+  - components/blocks/PracticePattern
+shots:
+  "390":
+    file: 390.png
+    sha256: f9a0f453214b892b11450d55c6e7af411a04f3c5db209f1eec2996e350a1d224
+  "1440":
+    file: 1440.png
+    sha256: 96e138547c704d713ae2c556504bf3437e20b84c901e73aebe0c3a80133640ec
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Hai con trỏ"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo"; lần đầu "Làm bài đầu tiên".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Các bài trong pattern
+    shows: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:41.350Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: "Thẻ chủ đề tiếng Anh thô (Arrays, Sorting, Greedy, Two pointers, Dynamic programming...)
+            trong khi canvas practice/pattern-first dùng nhãn Việt (hai con trỏ, mảng, sắp xếp, tham
+            lam): cần API."
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: "Nhãn chủ đề tiếng Anh thô: cần API."
+    - n: 2
+      at: 2026-11-20T14:02:43.116Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: "Thẻ chủ đề tiếng Anh (Arrays, Sorting...): cần API theo ruling, không tính lỗi build."
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

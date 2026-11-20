@@ -18,7 +18,7 @@ export { NotFoundNotice } from "./composites/NotFoundNotice"
 export type { SimulationCardLabels, SimulationStep } from "./branches/SimulationCard"
 export { WalkProvider } from "./branches/WalkProvider"
 export { SlotView } from "./composites/SlotView"
-export type { DataSlot, SlotLabels, SlotRead } from "./composites/SlotView"
+export type { DataSlot, SlotLabels, SlotParts, SlotRead } from "./composites/SlotView"
 export type { WrittenCardLabels } from "./composites/WrittenCard"
 export { BarWide } from "./frames/BarWide"
 export { SiteShell } from "./frames/SiteShell"
@@ -90,7 +90,6 @@ export { AssignItemCard } from "./composites/AssignItemCard"
 export type { AssignItemCardProps } from "./composites/AssignItemCard"
 export { MissingNotice } from "./composites/MissingNotice"
 export { RowProgress } from "./composites/RowProgress"
-export { ConceptDrawer } from "./composites/ConceptDrawer"
 export { ConceptCodeRead } from "./composites/ConceptCodeRead"
 export type { ConceptCodeReadLabels, ConceptRubricRow } from "./composites/ConceptCodeRead"
 export { ConnectDrawer } from "./composites/ConnectDrawer"
@@ -101,7 +100,6 @@ export { LessonStepper } from "./composites/LessonStepper"
 export { MilestonesCard } from "./composites/MilestonesCard"
 export { ProbesCard } from "./composites/ProbesCard"
 export { ProjectAside } from "./composites/ProjectAside"
-export { ProjectsAside } from "./composites/ProjectsAside"
 export { ReviewItemCard } from "./composites/ReviewItemCard"
 export { ReviewSummaryCard } from "./composites/ReviewSummaryCard"
 export { RunsCard } from "./composites/RunsCard"
@@ -129,7 +127,6 @@ export type {
     ProjectDetailLabels,
     ProjectDetailView,
 } from "./composites/ProjectAside/types"
-export type { ProjectsAsideLabels } from "./composites/ProjectsAside/types"
 export type {
     ReviewAnswerPart,
     ReviewBackView,

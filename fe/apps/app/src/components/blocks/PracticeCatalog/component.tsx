@@ -1,6 +1,5 @@
 import {
     Button,
-    ChoiceChips,
     EmptyNotice,
     Grid,
     Meter,
@@ -8,8 +7,10 @@ import {
     SearchField,
     Section,
     Stack,
+    Tabs,
     Text,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { PracticeCatalogScreen, PracticePatternItemView } from "@/hooks/practice"
@@ -48,11 +49,8 @@ const HeaderAction = (props: {
 
 /** The first-visit lead: the way in, before the list. */
 const FirstVisit = (props: { readonly title: string; readonly text: string }) => (
-    <Section ariaLabel={props.title}>
-        <Stack gap="row">
-            <Text isStrong>{props.title}</Text>
-            <Text tone="muted">{props.text}</Text>
-        </Stack>
+    <Section title={props.title} headingLevel={2}>
+        <Text tone="muted">{props.text}</Text>
     </Section>
 )
 
@@ -66,7 +64,7 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
             title={labels.listTitle}
             headingLevel={2}
             count={props.rows.length}
-            caption={labels.listCaption}
+            {...(props.rows.length === 0 ? {} : { caption: labels.listCaption })}
             isLoading={props.isLoading}
             filter={
                 <>
@@ -80,14 +78,12 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                         clearLabel={labels.clearFilters}
                         isLoading={props.isLoading}
                     />
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.filterLabel}
-                        isLabelHidden
-                        options={filterOptions}
-                        value={filter}
-                        onValueChange={on.setFilter}
-                        empty={labels.noMatchTitle}
-                        isLoading={props.isLoading}
+                        items={filterOptions.map((each) => ({ id: each.value, label: each.label, count: each.count }))}
+                        selectedKey={filter}
+                        onSelect={on.setFilter}
                     />
                 </>
             }
@@ -98,6 +94,8 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                     description={labels.noMatchText}
                     actionLabel={labels.clearFilters}
                     onAction={on.clearFilters}
+                    actionIntent="neutral"
+                    mark="none"
                     frame="frameless"
                 />
             }
@@ -111,33 +109,38 @@ const Rail = (props: PieceProps) => {
     return (
         <Stack gap="region">
             <Section title={labels.readinessTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
-                    <Text size="figure" isStrong tabular>
+                <Stack gap="inline">
+                    <Text size="figure" isStrong tabular isLoading={props.isLoading}>
                         {`${readiness.accepted}`}
                     </Text>
-                    <Text tone="muted">{labels.readinessUnit}</Text>
-                    <Text size="sm" tone="muted">
+                    <Text isLoading={props.isLoading}>{labels.readinessUnit}</Text>
+                    <Text tone="muted" isLoading={props.isLoading}>
                         {labels.readinessText}
                     </Text>
                 </Stack>
             </Section>
             {resume === null ? null : (
-                <Section title={labels.resumeTitle} headingLevel={2} isLoading={props.isLoading}>
-                    <Stack gap="row">
-                        <Text isStrong>{resume.title}</Text>
-                        <Text size="sm" tone="muted">
-                            {resume.description}
-                        </Text>
-                        <Button intent="neutral" size="sm" href={resume.href} endArrow>
-                            {labels.resumeAction}
-                        </Button>
-                    </Stack>
-                </Section>
+                <Section
+                    kind="list"
+                    title={labels.resumeTitle}
+                    headingLevel={2}
+                    isLoading={props.isLoading}
+                    items={[
+                        {
+                            id: "resume",
+                            title: resume.title,
+                            description: resume.description,
+                            action: { label: labels.resumeAction, href: resume.href, endArrow: true },
+                            actionPlacement: "below",
+                        },
+                    ]}
+                    empty={resume.title}
+                />
             )}
             <Section title={labels.gradingTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     {labels.grading.map((line) => (
-                        <Text key={line} size="sm" tone="muted">
+                        <Text key={line} tone="muted">
                             {line}
                         </Text>
                     ))}
@@ -153,36 +156,37 @@ const Rail = (props: PieceProps) => {
  */
 export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
     const { header, labels, isFirstVisit } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        breadcrumbs: "root",
+        meta: header.meta,
+        ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                breadcrumbs: "root",
-                meta: header.meta,
-                ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.errorDescription}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
-                                <PatternList screen={props} isLoading={isLoading} rows={rows} />
-                            </Stack>
-                        }
-                        rail={<Rail screen={props} isLoading={isLoading} />}
-                    />
-                )}
-            />
-        </Page>
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={props.props.errorDescription}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
+                            <PatternList screen={props} isLoading={isLoading} rows={rows} />
+                        </Stack>
+                    }
+                    rail={<Rail screen={props} isLoading={isLoading} />}
+                />
+            )}
+            frame={({ body, isLoading }) => (
+                <Page isLoading={isLoading} header={pageHeader}>
+                    {body}
+                </Page>
+            )}
+        />
     )
 }

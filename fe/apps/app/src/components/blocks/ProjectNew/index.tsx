@@ -55,6 +55,8 @@ export const ProjectNew = () => {
                     trackLabel: t("new.trackLabel"),
                     name: t("new.name"),
                     repo: t("new.repo"),
+                    namePlaceholder: t("new.namePlaceholder"),
+                    repoPlaceholder: t("new.repoPlaceholder"),
                     deployed: t("new.deployed"),
                     deployedHint: t("new.deployedHint"),
                     initTitle: t("new.initTitle"),

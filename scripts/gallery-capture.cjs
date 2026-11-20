@@ -110,9 +110,46 @@ const SCREENS = [
     S("review", "hub", "/review"),
     S("review", "decks", "/review/decks"),
     S("review", "session", "/review/session"),
+    // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
-    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S("practice", "list-first", "/practice"),
+    S("practice", "list-nomatch", "/practice", {
+        act: async (p) => {
+            await p.getByPlaceholder(/Tìm pattern/).fill("cây khoảng")
+            await p.waitForTimeout(1200)
+        },
+    }),
+    S("practice", "list-loading", "/practice", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "list-error", "/practice", { refuse: true, ops: /"operationName":"Practice/ }),
     S("practice", "pattern", "/practice/patterns/arrays"),
+    S("practice", "pattern-first", "/practice/patterns/arrays"),
+    S("practice", "pattern-loading", "/practice/patterns/arrays", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "pattern-error", "/practice/patterns/arrays", { refuse: true, ops: /"operationName":"Practice/ }),
+    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S(
+        "practice",
+        "problem-confirm",
+        { from: "practice/problem", append: "#s" },
+        {
+            act: async (p) => {
+                await p.getByRole("tab", { name: "Lời giải" }).click()
+                await p.getByRole("button", { name: "Xem lời giải" }).first().click()
+                await p.waitForTimeout(800)
+            },
+        },
+    ),
+    S(
+        "practice",
+        "problem-loading",
+        { from: "practice/problem", append: "#s" },
+        { hold: true, ops: /"operationName":"Practice/ },
+    ),
+    S(
+        "practice",
+        "problem-error",
+        { from: "practice/problem", append: "#s" },
+        { refuse: true, ops: /"operationName":"Practice/ },
+    ),
     S("incidents", "list", "/incidents"),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
@@ -174,6 +211,16 @@ if (SEEDED) {
     }
 }
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
+// A screen may name the operations its held or refused read stands for (ops: a regexp over the operation names); else the Essentials reads.
+// The core API accepts one browser origin (the ingress); a lane's own next dev on another port sends its reads as that origin (CAPTURE_ORIGIN_AS=http://localhost:3280).
+const ORIGIN_AS = process.env.CAPTURE_ORIGIN_AS
+const spoof = async (route) => {
+    if (!ORIGIN_AS) return route.continue()
+    // The page's own Origin cannot be changed in flight, so the read is made again from here with the accepted one and its answer handed back.
+    const answer = await route.fetch({ headers: { ...route.request().headers(), origin: ORIGIN_AS } })
+    return route.fulfill({ response: answer })
+}
+const isHeldRead = (route, s) => (s.ops ? s.ops.test(route.request().postData() ?? "") : isEssentialsRead(route))
 const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
 const norm = (href) => {
     try {
@@ -204,6 +251,7 @@ const norm = (href) => {
         ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
         : undefined
     await first?.routeWebSocket(/_next\/hmr/, hmrQuiet)
+    if (ORIGIN_AS) for (const c of [user, guest, free, first]) await c?.route(/graphql/, spoof)
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await free?.routeWebSocket(/_next\/hmr/, hmrQuiet)
@@ -263,14 +311,14 @@ const norm = (href) => {
                         ([name, value]) => ({ name, value, domain: "localhost", path: "/" }),
                     ),
                 )
+            if (ORIGIN_AS) await fresh?.route(/graphql/, spoof)
             await fresh?.routeWebSocket(/_next\/hmr/, hmrQuiet)
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
-            if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
-            if (s.refuse)
-                await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
+            if (s.hold) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? undefined : spoof(route)))
+            if (s.refuse) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? route.abort() : spoof(route)))
             await p.setViewportSize({
                 width: w,
                 height: Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900),

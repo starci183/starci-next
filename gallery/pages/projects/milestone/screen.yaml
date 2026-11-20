@@ -1,0 +1,130 @@
+schema: 1
+screen: projects/milestone
+title: Milestone, đang làm
+route: /projects/[projectId]/[milestoneId]
+area: projects
+summary: "Mục tiêu: xem concept nào của milestone đã chứng minh, vào trang bằng chứng."
+code:
+  - features/pages/ProjectMilestonePage
+  - components/blocks/ProjectMilestone
+shots:
+  "390":
+    file: 390.png
+    sha256: 6e82a5ebc2e227986741156e450f8a93d9cd1fc79ff7567f4f4890a7651115c6
+  "1440":
+    file: 1440.png
+    sha256: b1e728c79c72c064b98a80f7ccec0d31c724a6160242d84f8e60c5653cc62b80
+sections:
+  - id: s1
+    title: Concept của milestone
+    shows: "bảng concept: tên và loại, các ô bằng chứng (test, e2e, probe, AI đọc code) có trạng thái,
+      trạng thái concept, bài học dạy nó; mỗi hàng mở trang bằng chứng."
+    why: trạng thái bằng chữ trong Badge, không chỉ bằng màu.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Lần chạy bằng chứng và cách chứng minh
+    shows: bảng các lần chạy gần đây, bốn bước chứng minh và nhắc CI có chữ ký.
+    why: danh sách phẳng; chỗ trống là một dòng chữ phẳng.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:48:52.500Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Bảng chạy tới x≈1420 ở 1440, vượt gutter nội dung 1408 (tiêu đề và hàng không thẳng lề với
+            phần còn lại). Cột "Bằng chứng" xếp test/e2e/probe mỗi dòng ~28px làm hàng cao. Ở 390 mô
+            tả và tên concept bị cắt giữa chữ không có dấu ba chấm ("...concept này c", "...không lộ
+            stack l").
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'Cột "Học ở" của canvas (Request/response, Idempotency, Outbox) thành "Chưa có bài" và mô tả
+            "Thầy đang soạn bài Bản chất này..." lặp ở cả 4 hàng: thiếu ánh xạ concept sang bài
+            Essentials, nên đánh dấu cần API (không phải lỗi dựng).'
+    - n: 2
+      at: 2026-11-20T14:02:54.908Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: 'Cột "Học ở" (concept sang bài Essentials) chưa có: cần API; câu "Thầy đang soạn bài..." đã
+            gộp một dòng.'
+    - n: 3
+      at: 2026-11-20T14:15:05.034Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: 'Cột "Học ở" (concept sang bài Essentials) chưa có: cần API.'
+  escalate: null

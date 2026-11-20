@@ -103,7 +103,7 @@ export const PracticeResult = (props: PracticeResultProps) => {
     const tone = state.kind === "pending" ? "informative" : state.tone
     return (
         <Section title={labels.title} headingLevel={2}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 <Alert tone={tone} title={state.title} description={state.description} />
                 {state.kind === "settled" && state.compileOutput !== "" ? (
                     <FencedCodeBlock label={labels.compileOutput} code={state.compileOutput} />

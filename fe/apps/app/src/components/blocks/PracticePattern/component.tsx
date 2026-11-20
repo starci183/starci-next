@@ -10,6 +10,7 @@ import {
     Stack,
     Text,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
@@ -72,9 +73,9 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
     return (
         <Stack gap="region">
             <Section title={labels.progressTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     <Progress label={labels.progressLabel} value={progress.percent} valueText={progress.text} />
-                    <Text size="sm" tone="muted">
+                    <Text tone="muted" isLoading={props.isLoading}>
                         {progress.text}
                     </Text>
                 </Stack>
@@ -107,54 +108,65 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
  */
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
+        title: header.title,
+        titleScale: "standard",
+        meta: header.meta,
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "practice", label: header.crumb, href: labels.catalogHref },
+                { id: "pattern", label: header.title, ...(loading ? { isLoading: true as const } : {}) },
+            ],
+        },
+        ...(header.action === null
+            ? {}
+            : {
+                  actions: (
+                      <Button intent="commit" href={header.action.href}>
+                          {header.action.label}
+                      </Button>
+                  ),
+              }),
+    })
+    const fallback: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [{ id: "practice", label: header.crumb, href: labels.catalogHref }],
+        },
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                meta: header.meta,
-                breadcrumbs: {
-                    label: labels.breadcrumbs,
-                    items: [
-                        { id: "practice", label: header.crumb, href: labels.catalogHref },
-                        { id: "pattern", label: header.title },
-                    ],
-                },
-                ...(header.action === null
-                    ? {}
-                    : {
-                          actions: (
-                              <Button intent="commit" href={header.action.href}>
-                                  {header.action.label}
-                              </Button>
-                          ),
-                      }),
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.errorDescription}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                {intro === "" ? null : (
-                                    <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
-                                        <Text as="p">{intro}</Text>
-                                    </Section>
-                                )}
-                                <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
-                            </Stack>
-                        }
-                        rail={<Rail screen={props.props} isLoading={isLoading} />}
-                    />
-                )}
-            />
-        </Page>
+        <SlotView<readonly PracticeProblemItem[], PageHeaderContent>
+            header={(_rows, loading) => pageHeaderOf(loading)}
+            headerFallback={fallback}
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={props.props.errorDescription}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            {intro === "" ? null : (
+                                <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
+                                    <Text as="p">{intro}</Text>
+                                </Section>
+                            )}
+                            <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
+                        </Stack>
+                    }
+                    rail={<Rail screen={props.props} isLoading={isLoading} />}
+                />
+            )}
+            frame={({ header, body, isLoading }) => (
+                <Page isLoading={isLoading} header={header}>
+                    {body}
+                </Page>
+            )}
+        />
     )
 }

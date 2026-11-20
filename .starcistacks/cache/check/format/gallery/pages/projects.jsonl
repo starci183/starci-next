@@ -1,6 +1,6 @@
-{"findings":[],"hash":"ebc9ea7fcf903d98ee75381b557a58161afebed405797699488fabbd8bfd59f0","path":"gallery/pages/projects/concept/explain.md","step":"prettier"}
-{"findings":[],"hash":"71e535daaa31f7a6e203c70585ea5e88256e66cad8ac20866287b6076795f9fe","path":"gallery/pages/projects/detail/explain.md","step":"prettier"}
-{"findings":[],"hash":"115b2ecf2f04330ef6e52d29d788f6d6c7d7af1c5a8f7da11b678df965cad279","path":"gallery/pages/projects/list/explain.md","step":"prettier"}
-{"findings":[],"hash":"fb33d9fe8ae5e120535f9b0de93735aae1f387fe211d27009bb5373dae4d35ae","path":"gallery/pages/projects/milestone/explain.md","step":"prettier"}
-{"findings":[],"hash":"3a8d2d9945f7be34fc3597a5f9aa41f7a6cf9eb2aea8e5265e8be9064b9728d5","path":"gallery/pages/projects/new/explain.md","step":"prettier"}
-{"findings":[],"hash":"baa1f80eb8c384dac0fa4613433d68615efd0d1074a86ff1968f360b71e9992d","path":"gallery/pages/projects/paywall/explain.md","step":"prettier"}
+{"findings":[],"hash":"4ca02207ca5321bf63766c09aa7d0260ff6cfbaff6c096cf42a6e009f3f7cbfb","path":"gallery/pages/projects/concept/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"da182735f25e3a73d9cfb3c7e7619f6a9fa1c32391c6bc3752c7ad015419ff21","path":"gallery/pages/projects/detail/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"ae6e062f81a92eea7baf13fa4d55125302871dc4c6179330a16904fb11843efb","path":"gallery/pages/projects/list/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"8b07b74286aeaf20d004338a597831657268d61fdd5242d1917ff0e80450369c","path":"gallery/pages/projects/milestone/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"79ccc3c7feb70b52868a6b1c200763218cbc034176dbf32486064afadffe62f2","path":"gallery/pages/projects/new/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"058b8be5db079f3a5cbcc0547d7323451b1e5b20e7b5a1d223fc1862f362bf81","path":"gallery/pages/projects/paywall/screen.yaml","step":"prettier"}

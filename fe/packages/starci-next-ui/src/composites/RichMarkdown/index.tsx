@@ -20,10 +20,12 @@ type RichMarkdownProps = {
     readonly measure?: MarkdownProps["measure"]
     /** Draws the code body of a fence (syntax highlighting). */
     readonly renderCode?: (code: MarkdownCode) => ReactNode
+    /** The first read has no data yet: the body draws as skeleton geometry and the placeholder words never show. */
+    readonly isLoading?: boolean
 }
 
 /** What every piece is drawn with: the words, the line length and the code drawing of the body. */
-type Context = Omit<RichMarkdownProps, "source">
+type Context = Omit<RichMarkdownProps, "source" | "isLoading">
 
 /** A list of pieces and the context to draw them in. */
 type PiecesProps = { readonly nodes: ReadonlyArray<RichNode>; readonly context: Context }
@@ -99,12 +101,28 @@ const Piece = (props: PieceProps) => {
     )
 }
 
+/** The body while the first read loads: three skeleton lines, never the placeholder words. */
+const MarkdownSkeleton = () => (
+    <Stack gap="row">
+        <Text as="p" isLoading>
+            {" "}
+        </Text>
+        <Text as="p" isLoading>
+            {" "}
+        </Text>
+        <Text as="p" isLoading>
+            {" "}
+        </Text>
+    </Stack>
+)
+
 /**
  * The one reader of every lesson, problem, hint and answer text. Plain markdown goes to the grammar's `Markdown`; a `:::name`
  * container (accordion, panel, muted) becomes the matching grammar part, read from the data with no per-lesson code.
  */
 export const RichMarkdown = (props: RichMarkdownProps) => {
-    const { source, ...context } = props
+    const { source, isLoading, ...context } = props
+    if (isLoading === true) return <MarkdownSkeleton />
     return (
         <Stack gap="row">
             <Pieces nodes={parseDirectives(source)} context={context} />

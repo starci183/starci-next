@@ -1,32 +1,44 @@
 ---
 title: Pattern, các bài
-route: /practice/patterns/{id}
+route: /practice/patterns/[patternId]
 area: practice
-reviewed: 2026-11-18
+reviewed: 2026-11-20
 ---
 
-Route: `/practice/patterns/{id}`. Một pattern: đoạn "Khi nào dùng", các bài với độ khó, nhãn và trạng thái, tiến độ pattern và pattern kế tiếp. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
+Mục tiêu: chọn bài trong một pattern.
 
-## Băng đầu trang
+## Dải tiêu đề: Hai con trỏ
 
-Vì sao: Đường dẫn Luyện code / pattern, dòng "2/5 bài Accepted" và nút chính "Làm bài tiếp theo".
-Luật: `surface-layering`, `theme-and-type`
-Grammar: `Page header={{ title, meta, breadcrumbs, actions }}` (`frame/PageHeader`).
+Vì sao: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo"; lần đầu "Làm bài đầu tiên".
+Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+Grammar: PageHeader
 
-## Danh sách phẳng
+## Khi nào dùng
 
-Vì sao: Cả hàng là liên kết: số thứ tự, tên, chấm độ khó bằng `Badge isDot`, nhãn kỹ thuật giữ nguyên chữ, badge trạng thái.
-Luật: `surface-layering` (danh sách là Section, không thẻ)
-Grammar: `Section kind="list"` với `ListRow` (`composite/ListRow`).
+Vì sao: vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern.
+Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).
+Grammar: Section kind="list"
 
-## Cột phải
+## Các bài trong pattern
 
-Vì sao: Tiến độ pattern bằng `Progress` và hàng pattern kế tiếp.
-Luật: `surface-layering`
-Grammar: `Grid kind="main-rail"` với `Section` (`frame/Grid`).
+Vì sao: vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern.
+Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).
+Grammar: Section kind="list"
 
-## Phản biện
+## Tiến độ pattern
 
-Vì sao: Chưa thấy chỗ lệch so với bản vẽ ở lần chụp này; chủ dự án duyệt rồi mới sửa tiếp.
-Luật: `PROJECT-GALLERY-6`
-Grammar: không đổi Grammar; chỗ lệch được ghi lại để chủ dự án quyết.
+Vì sao: vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern.
+Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).
+Grammar: Section kind="list"
+
+## Pattern kế tiếp
+
+Vì sao: vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern.
+Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).
+Grammar: Section kind="list"
+
+## Chưa chụp
+
+Vì sao: màn này chưa chụp được trên kho dev; cần tiến độ trong một pattern (bài Accepted, bài đã nộp chưa qua); cùng lý do với practice/list.
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`
