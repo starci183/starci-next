@@ -1,0 +1,97 @@
+schema: 1
+screen: essentials/lesson-source-up-failed
+title: Bài Essentials · Source, lệnh up báo lỗi
+route: /essentials/[topic]/[lesson]?part=source
+area: essentials
+summary: "Route: `/essentials/[topic]/[lesson]?part=source`. Trạng thái: CLI relay một lần chạy `up`
+  thất bại (check id `up`). Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane
+  build-01 và lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 7c7aaf94ebf2aab58fad6eed2493aec3be1769002944c19eb199c66c2285ea10
+  "1440":
+    file: 1440.png
+    sha256: afe3f60f9e828ff54701c7794808c2ddd07d6c5e7a38068a257ce9fff0a31207
+sections:
+  - id: s1
+    title: Terminal lỗi `up`
+    shows: "dưới hai lệnh là một Terminal thứ hai ghi dòng lỗi và cách sửa (ví dụ cổng 5440 đang dùng,
+      chạy lại với --port-offset). Dữ liệu là lần chạy `up` failed trong lessonScenarioRuns; khoảng
+      trống API: CLI cần báo kết quả `up` (xem báo cáo)."
+    why: "`ui/components/data-views.md`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Chưa có API chính thức cho kết quả `up`; trang đọc check id `up` nếu CLI gửi.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T14:10:29.056Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Hai kiểu nút "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới;
+            hai kiểu khối mã (nền đen, nền sáng tô cú pháp) trái luật một kiểu cho một phần tử. Còn
+            lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần Grammar).'
+        actionable:
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:39:45.194Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

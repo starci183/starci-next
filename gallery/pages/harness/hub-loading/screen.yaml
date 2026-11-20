@@ -1,0 +1,86 @@
+schema: 1
+screen: harness/hub-loading
+title: Harness, tổng quan, đang tải
+route: /harness
+area: harness
+summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessHubPage
+  - components/blocks/HarnessHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 7d17700af87a7a120a0abdc8dd3913d71c2729638a40e37b482290a9b06f0ada
+  "1440":
+    file: 1440.png
+    sha256: fb05252ee89740f78f3f085ad3c764463ed82e92fd229a8d968f9bee74b64c8a
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:27.122Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:48.210Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

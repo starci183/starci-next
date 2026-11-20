@@ -1,0 +1,113 @@
+schema: 1
+screen: harness/build-loading
+title: Chi tiết build, đang tải
+route: /harness/build/[build]
+area: harness
+summary: "Trạng thái của màn: Chi tiết build, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessBuildPage
+  - components/blocks/HarnessBuild
+shots:
+  "390":
+    file: 390.png
+    sha256: 75f726886e02a061862af40d4d54e14c26b6cf390291b920362c50cd3a0c5a8d
+  "1440":
+    file: 1440.png
+    sha256: 3c4b50c3099198bda1a6fc88b85b5a5c56a9cccac6e33d928150420102844d5a
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Khung xương tối của Terminal đổi sang màu nhạt
+    chosen: false
+    why: "Cần Grammar: Terminal vẽ khung xương nền tối của chính nó khi tải (ghi trong FOLLOWUPS); app không tự vẽ lại."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:11.906Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>". Khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông khi tải.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:25.826Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Breadcrumb vẫn lặp "Harness / Build / Build"; khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:52.941Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Ô e2e đen với skeleton sáng: cần Grammar (đã chấp nhận)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

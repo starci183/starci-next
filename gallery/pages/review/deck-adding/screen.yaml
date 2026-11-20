@@ -1,0 +1,142 @@
+schema: 1
+screen: review/deck-adding
+title: Một bộ thẻ, đang thêm
+route: /review/decks/{id}
+area: review
+summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ có gì trước khi thêm và quản
+  lý sau khi thêm. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 0210982709c1c5d5264ad72e2026bfb09af0a2229100b003498b5c644edec029
+  "1440":
+    file: 1440.png
+    sha256: 00c0785bf51a81dd4f089afcc5f05f43f09db5bedc0b0177796ca875b0d8cbcb
+code:
+  - features/pages/ReviewDeckPage
+  - components/blocks/ReviewDeck
+sections:
+  - id: s1
+    title: Trạng thái
+    shows: Trạng thái
+    why: 'Đang thêm: nút chính xám kèm "Đang thêm…".'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:47.821Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dải lọc theo canvas (một dải Tabs có cả nhóm trạng thái và nhóm lộ trình) nhưng ở 390 tràn
+            thành 2 hàng và hàng hai bị cắt ("foun"), không cuộn rõ; canvas dùng nhãn lộ trình Việt
+            (Backend, Kỹ sư AI, System design). Hàng đang thêm nền xám đặc cả hàng; ở 390 tên bộ thẻ
+            ngắt 2 dòng.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta/tab hiện slug thô "backend-fullstack, ai-engineer, founder, system-design-senior" (id kỹ
+            thuật tiếng Anh) thay vì tên lộ trình tiếng Việt.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:51.440Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:07.829Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:19.119Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

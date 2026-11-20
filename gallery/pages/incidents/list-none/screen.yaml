@@ -1,0 +1,141 @@
+schema: 1
+screen: incidents/list-none
+title: Sự cố, chưa có sự cố nào
+route: /incidents
+area: incidents
+summary: "Chưa có sự cố nào được viết: trạng thái cả trang có minh hoạ, thay cho danh sách toàn Sắp có."
+shots:
+  "390":
+    file: 390.png
+    sha256: 3742e199025cc8b4ecdffa8022627259b9c874f9e5153ac6a42d19e3dafccad4
+  "1440":
+    file: 1440.png
+    sha256: 64ed7b9a9bd019ee9f53c70df3784023d361af912f6246bc1601b46510515ee6
+code:
+  - features/pages/IncidentsPage
+  - components/blocks/IncidentsList
+sections:
+  - id: s1
+    title: Vùng chính
+    shows: Vùng chính
+    why: "Chưa có sự cố nào được viết: trạng thái cả trang có minh hoạ, thay cho danh sách toàn Sắp có."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:56.936Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Header: dòng meta 12 và đoạn mô tả 14 dính nhau (y134/y156), đoạn mô tả dài ~850px không
+            giới hạn bề rộng; trạng thái rỗng nổi giữa trang cách header ~400px (1440) và ~420px
+            (390)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Lẫn thuật ngữ Anh/thô: "repo", "production", "flow xanh"; "Chạy sự cố cần thiết bị đã kết
+            nối — sắp có" chưa rõ.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:06:03.447Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dòng meta 12 và đoạn mô tả 14 vẫn dính nhau (y134/y156); trạng thái rỗng nổi giữa trang cách
+            header ~400px (1440 và 390).
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Vẫn lẫn "repo", "production", "flow xanh".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:18.285Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dòng meta 12 và đoạn mô tả 14 vẫn dính nhau (y134/y156), đoạn mô tả dài ~850px.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Vẫn lẫn "repo", "production", "flow xanh".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:27.818Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

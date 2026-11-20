@@ -14,7 +14,6 @@ import {
     type HubStreakView,
     type HubTodayRow,
 } from "@starci-next/ui"
-import { staticsBase } from "@/modules/config"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The hub as it is drawn, every word resolved. */
@@ -138,16 +137,17 @@ type WellProps = {
 }
 
 /** The well: the active path (or the invitation to choose a goal), then today as ONE list card; each card names itself on the well above it. */
-const HubWell = (props: WellProps) => (
-    <Stack gap="region">
+const HubWell = (props: WellProps) => {
+    const path = (
         <HubPathCard
             view={props.view.path}
             labels={props.props.labels.path}
             chooseHref={props.props.links.chooseHref}
             continueHref={props.props.links.continueHref}
-            staticsBase={staticsBase()}
             isLoading={props.isLoading}
         />
+    )
+    const today = (
         <HubTodayCard
             label={props.props.labels.todayLabel}
             count={props.view.today.length}
@@ -156,8 +156,10 @@ const HubWell = (props: WellProps) => (
             emptyLabel={props.props.labels.todayEmpty}
             isLoading={props.isLoading}
         />
-    </Stack>
-)
+    )
+    /** A learner with no goal yet sees the day's tasks first; the invitation to choose a goal follows them. */
+    return <Stack gap="region">{props.view.path === undefined ? [today, path] : [path, today]}</Stack>
+}
 
 /** What the aside is drawn from. */
 type RailProps = {
@@ -188,66 +190,59 @@ const HubRail = (props: RailProps) => (
     </Stack>
 )
 
-/** What the aside draws: the settled hub, the placeholder while the first read runs, nothing when the read failed or was refused (the well says why). */
-const railViewOf = (props: LearnHubBaseProps["props"]): { view: HubScreenView; isLoading: boolean } | undefined => {
-    if ("items" in props.slot) return { view: props.slot.items, isLoading: false }
-    if ("isLoading" in props.slot) return { view: props.placeholder, isLoading: true }
-    return undefined
-}
-
 /**
  * Draws the learn hub the way the approved page is drawn: the white band (title, the 12 muted sublabel, the guide), the well with the
  * active path and today as two separate cards, and the white aside with the streak, the weekly goal and the experience. Data status
  * (loading, empty, error with retry, signed out) belongs to the slot.
  */
 export const LearnHubBase = (props: LearnHubBaseProps) => {
-    const rail = railViewOf(props.props)
+    const own = props.props
     return (
-        <Page
-            chrome="panes"
-            layout="workspace"
-            header={{
-                breadcrumbs: "root",
-                title: props.props.labels.pageTitle,
-                description: props.props.labels.pageDescription,
-                actions: (
-                    <Guide
-                        labels={props.props.labels.guide}
-                        isOpen={props.props.isGuideOpen}
-                        onOpenChange={props.on.guideOpenChange}
-                    />
-                ),
-            }}
-        >
-            <PaneGrid
-                label={props.props.labels.pageTitle}
-                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-                rows={{ base: ["auto", "fill"], wide: ["fill"] }}
-            >
-                <Pane area="main" scroll label={props.props.labels.pageTitle} content="cards">
-                    <PaneSection>
-                        <SlotView
-                            slot={props.props.slot}
-                            placeholder={props.props.placeholder}
-                            labels={{ ...props.props.slotLabels, forbidden: props.props.labels.signedOut.title }}
-                            forbiddenDescription={props.props.labels.signedOut.body}
-                            forbiddenAction={<SignInAction labels={props.props.labels} links={props.props.links} />}
-                            onRetry={props.on.retry}
-                            render={(view, isLoading) => (
-                                <HubWell view={view} isLoading={isLoading} props={props.props} />
-                            )}
-                        />
-                    </PaneSection>
-                </Pane>
-                <Pane area="aside" surface scroll label={props.props.labels.streak.title}>
-                    {rail === undefined ? null : (
-                        <PaneSection>
-                            <HubRail view={rail.view} isLoading={rail.isLoading} props={props.props} on={props.on} />
-                        </PaneSection>
-                    )}
-                </Pane>
-            </PaneGrid>
-        </Page>
+        <SlotView<HubScreenView>
+            slot={own.slot}
+            placeholder={own.placeholder}
+            labels={{ ...own.slotLabels, forbidden: own.labels.signedOut.title }}
+            forbiddenDescription={own.labels.signedOut.body}
+            forbiddenAction={<SignInAction labels={own.labels} links={own.links} />}
+            onRetry={props.on.retry}
+            aside={(view, isLoading) => (
+                <PaneSection>
+                    <HubRail view={view} isLoading={isLoading} props={own} on={props.on} />
+                </PaneSection>
+            )}
+            frame={({ aside, body }) => (
+                <Page
+                    chrome="panes"
+                    layout="workspace"
+                    header={{
+                        breadcrumbs: "root",
+                        title: own.labels.pageTitle,
+                        description: own.labels.pageDescription,
+                        actions: (
+                            <Guide
+                                labels={own.labels.guide}
+                                isOpen={own.isGuideOpen}
+                                onOpenChange={props.on.guideOpenChange}
+                            />
+                        ),
+                    }}
+                >
+                    <PaneGrid
+                        label={own.labels.pageTitle}
+                        areas={{ base: ["main", "aside"], wide: ["main aside"] }}
+                        columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+                        rows={{ base: ["fill", "auto"], wide: ["fill"] }}
+                    >
+                        <Pane area="main" scroll label={own.labels.pageTitle} content="cards">
+                            <PaneSection>{body}</PaneSection>
+                        </Pane>
+                        <Pane area="aside" surface scroll label={own.labels.streak.title}>
+                            {aside}
+                        </Pane>
+                    </PaneGrid>
+                </Page>
+            )}
+            render={(view, isLoading) => <HubWell view={view} isLoading={isLoading} props={own} />}
+        />
     )
 }

@@ -1,0 +1,141 @@
+schema: 1
+screen: progress/overview-page-error
+title: Tiến độ, cả trang lỗi
+route: /progress
+area: progress
+summary: "Không đọc được tiến độ: khung báo lỗi và nút Thử lại; tiêu đề giữ nguyên."
+shots:
+  "390":
+    file: 390.png
+    sha256: db4cde005269ed300643ee17a71700c60ecac916b5fa23dee5712e0bb3abf928
+  "1440":
+    file: 1440.png
+    sha256: d595f5b979dc198d9fac4da44a64dea3f2eea495b13760702f74e47ca03d8f5b
+code:
+  - features/pages/ProgressPage
+  - components/blocks/ProgressOverview
+sections:
+  - id: s1
+    title: Vùng chính
+    shows: Vùng chính
+    why: "Không đọc được tiến độ: khung báo lỗi và nút Thử lại; tiêu đề giữ nguyên."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:54.316Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Banner lỗi chỉ rộng ~570px (x268-836) ở 1440, không full-width như các banner lỗi trang khác
+            (hub-error, decks-error rộng 1120px); lề x=268 lệch 288.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lỗi cấp trang nhưng chữ "Không tải được phần này" là copy của một mục, không nói trang tiến
+            độ.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:59.832Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Lỗi cấp trang vẫn dùng "Không tải được phần này", không nói trang tiến độ. Đã sửa: banner
+            full-width và lề x=288.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:15.214Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lộ khoá i18n thô "app.progress.pageError" và "app.progress.pageErrorText" (1440); thiếu bản
+            dịch.
+        states:
+          verdict: open
+          notes: Lỗi cấp trang hiện khoá dịch thay cho câu chữ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:25.386Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -28,7 +28,7 @@ export const useScenariosLabels = (): ScenariosLabels => {
         fixNote: t("fixNote"),
         fixPrompt: t("fixPrompt"),
         fixCopy: t("fixCopy"),
-        guardTitle: (rule) => t("guardTitle", { rule }),
+        guardTitle: t("guardTitle"),
         guardNote: (flag) => t("guardNote", { flag }),
         flow: t("flow"),
         ask: {

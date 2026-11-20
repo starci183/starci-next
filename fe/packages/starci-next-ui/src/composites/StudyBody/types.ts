@@ -229,8 +229,6 @@ export type StudyView = {
         readonly value: number
         readonly state: OutcomeState
     }>
-    /** The art of the phase, served from `statics/art/steps`; empty for the overview. */
-    readonly imageSrc: string
     /** The question or headline after the phase name in the band's title; empty falls back to the phase name alone. */
     readonly headline: string
     /** The six steps of the band's stepper. */

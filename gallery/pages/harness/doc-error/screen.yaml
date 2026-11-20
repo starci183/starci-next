@@ -1,0 +1,86 @@
+schema: 1
+screen: harness/doc-error
+title: Bài Docs, lỗi tải
+route: /harness/docs/[doc]
+area: harness
+summary: "Trạng thái của màn: Bài Docs, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessDocPage
+  - components/blocks/HarnessDoc
+shots:
+  "390":
+    file: 390.png
+    sha256: 451a20eca944ec50827f49c11d4af09985e630e17cd3f40faf76a5ea78aed7be
+  "1440":
+    file: 1440.png
+    sha256: f964910fe96f058d6ea13dcad7ff5615cc3149b367ee89bc5ba05403e6c91e2f
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:17.389Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này."; canvas có tên bài, giải thích và Thử lại. Tiêu đề trang "Bài giải thích" chung.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:33.819Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

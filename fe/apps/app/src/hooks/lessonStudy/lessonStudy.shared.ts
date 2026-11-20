@@ -1,4 +1,3 @@
-import { staticsUrl } from "@/modules/config"
 import { variantsOfFiles, workspaceDownloadOf, workspaceLanguageLabelOf } from "@/modules/lesson-view"
 import type { LessonWorkbench } from "@/hooks/lesson"
 import {
@@ -90,12 +89,6 @@ const tabsOf = (input: StudyInput): StudyView["tabs"] => {
     return sections.map((section) => ({ id: section.id, label: section.title }))
 }
 
-/** The art served for a phase; the theory phase's piece is named after its step. */
-const imageOf = (phase: LessonPhase): string => {
-    if (phase === "overview" || phase === "review") return ""
-    return staticsUrl(`art/steps/${phase === "explain" ? "understand" : phase}.webp`)
-}
-
 /**
  * The study screen of a lesson on one phase, from the lesson and the learner's work.
  * `headline` is the title of the open section (the question the phase asks).
@@ -129,7 +122,6 @@ export const studyOf = (input: StudyInput): StudyView => {
         outcomes: outcomesOf(lesson, input.progress),
         compare: compare.rows,
         compareScore: compare.score,
-        imageSrc: imageOf(phase),
         headline: open?.title ?? "",
         stepper: stepperOf(lesson, phase, input.progress, (each) => isPhaseLocked(lesson, each)),
         sectionIndex: open === undefined || sections.length < 2 ? 0 : sections.indexOf(open) + 1,

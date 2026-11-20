@@ -1,0 +1,89 @@
+schema: 1
+screen: harness/docs-error
+title: Docs, mục lục, lỗi tải
+route: /harness/docs
+area: harness
+summary: "Trạng thái của màn: Docs, mục lục, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessDocsPage
+  - components/blocks/HarnessDocs
+shots:
+  "390":
+    file: 390.png
+    sha256: 4a91af4222bc32f59cc9fba7661f0fba3aa93bc3406aee06d8f95b470239bec9
+  "1440":
+    file: 1440.png
+    sha256: cf23bc9efcf3762b6466d5909e7554eedc5e5c4f8014ab923d07b89679ad7c2a
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:20.275Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/docs-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:38.039Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

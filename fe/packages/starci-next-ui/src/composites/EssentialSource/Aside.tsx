@@ -14,7 +14,7 @@ export const EssentialSourceAside = (props: EssentialSourceAsideProps) => (
             <Section title={props.labels.aside.inSource} headingLevel={2}>
                 <Stack gap="identity">
                     {props.source.files.map((file) => (
-                        <Text key={file.id} mono size="sm" tone="muted">
+                        <Text key={file.id} mono tone="muted">
                             {file.path}
                         </Text>
                     ))}
@@ -22,14 +22,10 @@ export const EssentialSourceAside = (props: EssentialSourceAsideProps) => (
             </Section>
         )}
         <Section title={props.labels.aside.notIncludedTitle} headingLevel={2}>
-            <Text tone="muted" size="sm">
-                {props.labels.aside.notIncluded}
-            </Text>
+            <Text tone="muted">{props.labels.aside.notIncluded}</Text>
         </Section>
         <Section title={props.labels.aside.needsTitle} headingLevel={2}>
-            <Text tone="muted" size="sm">
-                {props.labels.aside.needs}
-            </Text>
+            <Text tone="muted">{props.labels.aside.needs}</Text>
         </Section>
     </Stack>
 )

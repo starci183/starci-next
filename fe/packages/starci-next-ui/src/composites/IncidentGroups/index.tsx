@@ -1,4 +1,4 @@
-import { EmptyNotice, Section, Stack } from "@starci/grammar/common"
+import { Section, Stack } from "@starci/grammar/common"
 
 /** One lesson row of the incident list, already in words. */
 export type IncidentRowView = {
@@ -8,7 +8,7 @@ export type IncidentRowView = {
     readonly description: string
     /** The status badge words (the incident is open, or coming soon). */
     readonly badge: string
-    readonly badgeTone: "success" | "muted"
+    readonly badgeTone: "success"
     /** Where an authored incident opens; empty while it is coming soon (the row then links nowhere). */
     readonly href: string
     /** The words of the row action; used only with a destination. */
@@ -30,28 +30,26 @@ type IncidentGroupsProps = {
     readonly isLoading?: boolean
 }
 
-/** The incident list: one card of rows per topic, each row a lesson with its incident status; coming-soon rows are not links. */
-export const IncidentGroups = (props: IncidentGroupsProps) =>
-    props.groups.length === 0 ? (
-        <EmptyNotice message={props.emptyLabel} />
-    ) : (
-        <Stack gap="region">
-            {props.groups.map((group) => (
-                <Section
-                    key={group.id}
-                    kind="list"
-                    title={group.label}
-                    empty={props.emptyLabel}
-                    {...(props.isLoading === true ? { isLoading: true } : {})}
-                    items={group.rows.map((row) => ({
-                        id: row.id,
-                        title: row.title,
-                        ...(row.description === "" ? {} : { description: row.description }),
-                        badges: [{ label: row.badge, tone: row.badgeTone }] as const,
-                        ...(row.href === "" ? {} : { href: row.href, action: { label: row.cta, href: row.href } }),
-                    }))}
-                    headingLevel={2}
-                />
-            ))}
-        </Stack>
-    )
+/** The incident list: one flat list per topic, each row a lesson with a written incident and the command that opens it. */
+export const IncidentGroups = (props: IncidentGroupsProps) => (
+    <Stack gap="region">
+        {props.groups.map((group) => (
+            <Section
+                key={group.id}
+                kind="list"
+                title={group.label}
+                empty={props.emptyLabel}
+                {...(props.isLoading === true ? { isLoading: true } : {})}
+                items={group.rows.map((row) => ({
+                    id: row.id,
+                    title: row.title,
+                    description: row.description,
+                    badges: [{ label: row.badge, tone: row.badgeTone }] as const,
+                    href: row.href,
+                    action: { label: row.cta, href: row.href },
+                }))}
+                headingLevel={2}
+            />
+        ))}
+    </Stack>
+)

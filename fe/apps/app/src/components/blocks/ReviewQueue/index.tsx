@@ -13,6 +13,7 @@ import {
 } from "@/hooks/experience"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryReviewQueueSwr } from "@/hooks/swr"
+import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot, ReviewQueueScreenView } from "@/modules/types"
 import { REVIEW_QUEUE_PLACEHOLDER, ReviewQueueBase } from "./component"
 
@@ -48,6 +49,8 @@ export const ReviewQueue = () => {
                 slot: slotOf(),
                 placeholder: REVIEW_QUEUE_PLACEHOLDER,
                 slotLabels: { ...useSlotLabels()(t("empty")), forbidden: t("forbiddenTitle") },
+                exitLabel: t("backToProfile"),
+                exitHref: APP_ROUTES.profile,
                 labels: {
                     title: t("title"),
                     listLabel: t("listLabel"),

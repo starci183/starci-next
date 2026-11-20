@@ -34,6 +34,7 @@ export const useProjectDetailLabels = (): ProjectDetailLabels => {
         deployedLabel: t("detail.deployedLabel"),
         saveDeployed: t("detail.saveDeployed"),
         runProbes: t("detail.runProbes"),
+        runProbesNeedsUrl: t("detail.runProbesNeedsUrl"),
         runningProbes: t("detail.runningProbes"),
         sync: t("detail.sync"),
         syncing: t("detail.syncing"),

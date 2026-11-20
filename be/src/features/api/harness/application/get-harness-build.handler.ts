@@ -17,8 +17,9 @@ export class GetHarnessBuildHandler extends ICQRSHandler<GetHarnessBuildQuery, H
     }
 
     protected override async process(query: GetHarnessBuildQuery): Promise<HarnessBuildView> {
-        const learnerId = query.params.principal.id
+        const learnerId = query.params.principal?.id
         const { locale, id } = query.params.request
+        if (learnerId === undefined) return this.harness.build(undefined, locale, id, [])
         return this.harness.build(learnerId, locale, id, await this.relay.buildResults(learnerId))
     }
 }

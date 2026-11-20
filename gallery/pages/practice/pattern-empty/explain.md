@@ -1,20 +1,26 @@
 ---
 title: Pattern chưa có bài
-route: /practice/patterns/{id}
+route: /practice/patterns/[patternId]
 area: practice
-reviewed: 2026-11-18
+reviewed: 2026-11-20
 ---
 
-Route: `/practice/patterns/{id}`. Một pattern: đoạn "Khi nào dùng", các bài với độ khó, nhãn và trạng thái, tiến độ pattern và pattern kế tiếp.
+Trạng thái của màn này: chưa có bài. Mục tiêu: chọn bài trong một pattern.
 
-## Trạng thái
+## Dải tiêu đề: Hai con trỏ
 
-Vì sao: Pattern chưa có bài: thông báo rỗng với nút về danh sách pattern.
-Luật: `FE-ERROR-1` (chỉ `SlotView` rẽ nhánh), `grammar-slot-interface`
-Grammar: `SlotView` với `Alert`, `EmptyNotice` và `isLoading` của Section, ListRow.
+Vì sao: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo"; lần đầu "Làm bài đầu tiên".
+Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+Grammar: PageHeader
 
-## Phản biện
+## Pattern này chưa có bài
 
-Vì sao: Chưa thấy chỗ lệch so với bản vẽ ở lần chụp này; chủ dự án duyệt rồi mới sửa tiếp.
-Luật: `PROJECT-GALLERY-6`
-Grammar: không đổi Grammar; chỗ lệch được ghi lại để chủ dự án quyết.
+Vì sao: vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern.
+Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).
+Grammar: Section kind="list"
+
+## Chưa chụp
+
+Vì sao: màn này chưa chụp được trên kho dev; cần một pattern chưa có bài; kho dev seed mọi pattern đều có bài. Mở được bằng một pattern rỗng trong seed hoặc một mock của practiceProblems.
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`

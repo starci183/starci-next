@@ -17,6 +17,8 @@ export type SlotLabels = {
     readonly forbidden: string
     /** The notice of a read that failed. */
     readonly error: string
+    /** The sentence under the failure notice: what happened and what the learner still has. */
+    readonly errorDescription?: string
     /** The words on the control that reads again after a failure. */
     readonly retry: string
 }
@@ -105,7 +107,7 @@ const errorNotice = (props: Pick<SlotViewProps<unknown>, "errorDescription" | "l
     <Alert
         tone="negative"
         title={props.labels.error}
-        {...descriptionOf(props.errorDescription)}
+        {...descriptionOf(props.errorDescription ?? props.labels.errorDescription)}
         {...(props.onRetry === undefined ? {} : { action: { label: props.labels.retry, onAction: props.onRetry } })}
     />
 )

@@ -1,0 +1,141 @@
+schema: 1
+screen: review/session-summary
+title: Phiên ôn, tổng kết
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
+  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+shots:
+  "390":
+    file: 390.png
+    sha256: 012fdb57f08fdae8ded99ecc9d719b6496897a9e9157bb6e54a63e6c4c92e754
+  "1440":
+    file: 1440.png
+    sha256: 3372789bc0308fbe3c46687065a8ae970d43f306fb5ba5741f897d158b507779
+code:
+  - features/pages/ReviewSessionPage
+  - components/blocks/ReviewSession
+sections:
+  - id: s1
+    title: Tổng kết
+    shows: Tổng kết
+    why: Bốn mức đã chấm, mục tiêu và số mục còn lại hôm nay; nút chính "Về Ôn tập". Chuỗi ngày và số
+      thẻ ngày mai chưa có trong dữ liệu chấm nên chưa hiện.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:37.601Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: 'Ảnh 390 sai màn: là trạng thái "Không có thẻ nào để ôn" chứ không phải tổng kết; cần chụp
+            lại 390.'
+        truth:
+          verdict: open
+          notes: Header "10/10 thẻ · Còn khoảng 1 phút" ở trạng thái đã xong (mâu thuẫn). Ảnh 390 không phải
+            màn tổng kết nên không kiểm được.
+    - n: 2
+      at: 2026-11-20T13:05:29.104Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:53.642Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:04.191Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

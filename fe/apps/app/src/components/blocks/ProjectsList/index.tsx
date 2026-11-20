@@ -25,9 +25,7 @@ export const ProjectsList = () => {
     // The milestone names come from the catalog read: a row is drawn once it has arrived, never with the raw milestone code in its place.
     const settled =
         catalog.data === undefined && catalog.error === undefined ? loadingSlot<ProjectsRead>() : slotOfSwr(read)
-    const failed = "isError" in settled || "isForbidden" in settled
     const mapped = mapSlot(settled, (projects) => ({
-        outcome: "ready" as const,
         figures: projectsFiguresOf(projects),
         rows: projectRowsOf(projects, titles, {
             kind: { app: t("kind.app"), agent: t("kind.agent") },
@@ -37,15 +35,7 @@ export const ProjectsList = () => {
         }),
     }))
     const slot: DataSlot<ProjectsListView> =
-        failed || "isEmpty" in mapped
-            ? {
-                  items: {
-                      outcome: failed ? "failed" : "ready",
-                      figures: PROJECTS_LIST_PLACEHOLDER.figures,
-                      rows: [],
-                  },
-              }
-            : mapped
+        "isEmpty" in mapped ? { items: { figures: PROJECTS_LIST_PLACEHOLDER.figures, rows: [] } } : mapped
     return (
         <ProjectsListBase
             props={{
@@ -75,7 +65,6 @@ export const ProjectsList = () => {
                     progressLabel: t("list.progressLabel"),
                     emptyTitle: t("list.emptyTitle"),
                     emptyText: t("list.emptyText"),
-                    errorTitle: t("list.errorTitle"),
                     note: t("list.note"),
                 },
             }}

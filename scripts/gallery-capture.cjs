@@ -12,20 +12,130 @@ const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(","
 const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra })
 // The lesson the Essentials lesson screens open, and the learner's pick of the n-th opener answer (the wrong one or the right one, by the option's place in the stand-in sample).
 const LESSON = "/essentials/api-reliability/outbox-idempotency"
-const answerAs = async (p, n, isRight) => {
-    await p
-        .getByRole("button", { name: new RegExp("^Câu " + n + "$") })
+// Plays the five opener questions of a lesson through the product: picks[i] is "R" (the second option) or "W" (the first); "Câu tiếp theo" moves on and "Xem kết quả" ends the opener.
+const playOpener = async (p, picks, isFinished) => {
+    for (let i = 0; i < picks.length; i++) {
+        const options = p.getByRole("radio")
+        if ((await options.count()) > 0) {
+            const at = picks[i] === "R" ? 1 : 0
+            await options
+                .nth(at)
+                .check({ force: true })
+                .catch(() => options.nth(at).click({ force: true }))
+            await p.waitForTimeout(1800)
+        }
+        if (i < picks.length - 1 || isFinished) {
+            await p
+                .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
+                .first()
+                .click()
+                .catch(() => {})
+            await p.waitForTimeout(900)
+        }
+    }
+}
+// A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
+const originFix = async (ctx) => {
+    if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
+    await ctx.route(/\/(graphql|api\/)/, async (route) => {
+        try {
+            const response = await route.fetch({
+                headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
+            })
+            await route.fulfill({ response })
+        } catch {
+            // the page closed while the call was in flight
+        }
+    })
+}
+// The review reads of the hub and the session; the deck commands the review entries press.
+const REVIEW_READS = /"operationName":"(ReviewToday|ReviewStats|Streak)"/
+const tap = (p, name) =>
+    p
+        .getByRole("button", { name })
         .first()
-        .click()
+        .click({ timeout: 1500 })
+        .then(() => true)
+        .catch(() => false)
+const addDeck = async (p) => {
+    await p.waitForTimeout(2000)
+    await tap(p, /Thêm bộ thẻ/)
+    await p.waitForTimeout(3000)
+    await p.mouse.move(2, 2)
+    await p.waitForTimeout(1500)
+}
+// Opens the first deck of the list: the screen is shot on the deck page.
+const openDeck = async (p) => {
+    await p.waitForTimeout(2500)
+    await p
+        .locator('a[href*="/review/decks/"]')
+        .first()
+        .click({ timeout: 4000 })
         .catch(() => {})
-    await p.waitForTimeout(600)
-    const options = p.getByRole("radio")
-    if ((await options.count()) === 0) return
-    await options
-        .nth(isRight ? 1 : 0)
-        .check({ force: true })
-        .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
-    await p.waitForTimeout(1200)
+    await p.waitForTimeout(2500)
+}
+const openDeckThenAdd = async (p) => {
+    await openDeck(p)
+    await addDeck(p)
+}
+// A cloze card asks for a choice per blank before it checks: pick the first choice of every blank.
+const pickCloze = async (p) => {
+    const groups = p.getByRole("radiogroup")
+    const n = await groups.count()
+    for (let i = 0; i < n; i++)
+        await groups
+            .nth(i)
+            .getByRole("radio")
+            .first()
+            .click({ timeout: 1500 })
+            .catch(() => {})
+}
+const flipCard = async (p) => {
+    await p.waitForTimeout(2000)
+    await pickCloze(p)
+    if (!(await tap(p, /Hiện đáp án/))) {
+        await p
+            .locator("textarea")
+            .first()
+            .fill("Gõ nhanh điều nhớ được")
+            .catch(() => {})
+        await tap(p, /Gửi và xem đáp án mẫu/)
+    }
+    await p.waitForTimeout(1500)
+}
+const gradeAll = async (p) => {
+    for (let n = 0; n < 40; n++) {
+        await p.waitForTimeout(1000)
+        if ((await p.getByRole("button", { name: /Hiện đáp án|Gửi và xem đáp án mẫu|^Tốt/ }).count()) === 0 && n > 0)
+            return
+        await flipCard(p)
+        await tap(p, /^Tốt/)
+    }
+}
+// A free learner who has reviewed one card (Ôn tập is free), so the progress page shows the free view and not the first visit.
+const earnProgress = async (p) => {
+    await addDeck(p)
+    await p.goto(ENTRY + "/review/session", { waitUntil: "load" })
+    await flipCard(p)
+    await tap(p, /^Tốt/)
+    await p.waitForTimeout(1500)
+    await p.goto(ENTRY + "/progress", { waitUntil: "load" })
+}
+// The daily goal dialog with its last choice ("Khác...") picked, so the number field shows.
+const openGoalOther = async (p) => {
+    await p.waitForTimeout(2000)
+    await p
+        .getByRole("button", { name: /^Đổi$/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(1000)
+    await p
+        .getByRole("radio", { name: /Khác/ })
+        .first()
+        .click({ timeout: 3000 })
+        .catch(() => {})
+    await p.waitForTimeout(800)
 }
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
@@ -35,50 +145,65 @@ const SCREENS = [
     S("landing", "home", "/", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
+    S("learn", "not-found", "/zz-no-such-page"),
+    // The error page needs a route that throws: a temporary page /zz-throw (not in the code) while shooting.
+    S("learn", "error", "/zz-throw"),
     S("paths", "choose", "/paths/choose"),
-    S("essentials", "catalog", "/essentials"),
+    S("paths", "choose-loading", "/paths/choose", { hold: true, hit: "paths" }),
+    S("paths", "choose-error", "/paths/choose", { refuse: true, hit: "paths" }),
+    S("paths", "choose-signed-out", "/paths/choose", { guest: true }),
+    // The same screen with the sign-in modal open: a state shot of choose-signed-out (modal-1440.png, modal-390.png).
+    S("paths", "choose-signed-out-modal", "/paths/choose", {
+        guest: true,
+        clickMain: "Đăng nhập",
+        dirAs: "choose-signed-out",
+        prefix: "modal-",
+    }),
+    S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
+    S("essentials", "catalog", "/essentials", { state: "STU" }),
     // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
-    S("essentials", "catalog-first-visit", "/essentials", { first: true }),
+    S("essentials", "catalog-first-visit", "/essentials", { state: "P2" }),
     S("essentials", "catalog-no-match", "/essentials", {
         fill: { sel: 'input[type="search"], input[placeholder*="Tìm"]', text: "kafka exactly" },
     }),
     S("essentials", "catalog-loading", "/essentials", { hold: true }),
     S("essentials", "catalog-error", "/essentials", { refuse: true }),
     S("essentials", "catalog-free", "/essentials", { free: true }),
-    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }),
-    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { first: true }),
+    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }, { state: "STU" }),
+    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { state: "P2" }),
     S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
     S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
+    S("essentials", "topic-error", { from: "essentials/topic", append: "?s=1" }, { refuse: true }),
     // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
-    S("essentials", "lesson", LESSON, { cookies: { seed: "R" }, act: async (p) => answerAs(p, 2, false) }),
-    S("essentials", "lesson-question-1", LESSON, { cookies: { seed: "" } }),
-    S("essentials", "lesson-result", LESSON, {
-        cookies: { seed: "RWRR" },
+    S("essentials", "lesson", LESSON, { state: "LES", act: async (p) => playOpener(p, "RW", false) }),
+    S("essentials", "lesson-question-1", LESSON, { state: "P2" }),
+    S("essentials", "lesson-loading", LESSON, { hold: true }),
+    S("essentials", "lesson-error", LESSON, { refuse: true }),
+    S("essentials", "lesson-result", LESSON, { state: "RES", act: async (p) => playOpener(p, "RWRRW", true) }),
+    S("essentials", "lesson-article", LESSON, {
+        state: "ART",
         act: async (p) => {
-            await answerAs(p, 5, true)
+            await playOpener(p, "RWRRW", true)
             await p
-                .getByRole("button", { name: "Xem kết quả" })
+                .getByRole("button", { name: /Đọc bài viết/ })
                 .first()
                 .click()
                 .catch(() => {})
         },
     }),
-    S("essentials", "lesson-article", LESSON, { cookies: { seed: "RWRRW" } }),
     S("essentials", "lesson-free-end", LESSON, {
-        free: true,
-        cookies: { plan: "free", seed: "RWRRW" },
+        state: "FEND",
         act: async (p) => {
-            await p
-                .getByRole("button", { name: "Làm lại 5 câu" })
-                .first()
-                .click()
-                .catch(() => {})
-            for (let n = 1; n <= 5; n++) await answerAs(p, n, true)
-            await p
-                .getByRole("button", { name: "Xem kết quả" })
-                .first()
-                .click()
-                .catch(() => {})
+            await playOpener(p, "RWRRW", true)
+            for (const name of [/Đọc bài viết/, /Làm lại 5 câu/]) {
+                await p
+                    .getByRole("button", { name })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(900)
+            }
+            await playOpener(p, "RRRRR", true)
         },
     }),
     S("essentials", "lesson-locked-source", LESSON + "?part=source", {
@@ -106,14 +231,47 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-stuck", LESSON + "?part=scenarios", { cookies: { scn: "stuck" } }),
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
-    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply", { cookies: { rung: "mid" }, click: "Khó" }),
-    S("review", "hub", "/review"),
-    S("review", "decks", "/review/decks"),
-    S("review", "session", "/review/session"),
+    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
+    // practice: the disposable learner has no progress, so the plain screens are the first-visit ones; the held, refused and searched states stand on that.
     S("practice", "list", "/practice"),
-    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S("practice", "list-first", "/practice"),
+    S("practice", "list-nomatch", "/practice", {
+        act: async (p) => {
+            await p.getByPlaceholder(/Tìm pattern/).fill("cây khoảng")
+            await p.waitForTimeout(1200)
+        },
+    }),
+    S("practice", "list-loading", "/practice", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "list-error", "/practice", { refuse: true, ops: /"operationName":"Practice/ }),
     S("practice", "pattern", "/practice/patterns/arrays"),
-    S("incidents", "list", "/incidents"),
+    S("practice", "pattern-first", "/practice/patterns/arrays"),
+    S("practice", "pattern-loading", "/practice/patterns/arrays", { hold: true, ops: /"operationName":"Practice/ }),
+    S("practice", "pattern-error", "/practice/patterns/arrays", { refuse: true, ops: /"operationName":"Practice/ }),
+    S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S(
+        "practice",
+        "problem-confirm",
+        { from: "practice/problem", append: "#s" },
+        {
+            act: async (p) => {
+                await p.getByRole("tab", { name: "Lời giải" }).click()
+                await p.getByRole("button", { name: "Xem lời giải" }).first().click()
+                await p.waitForTimeout(800)
+            },
+        },
+    ),
+    S(
+        "practice",
+        "problem-loading",
+        { from: "practice/problem", append: "#s" },
+        { hold: true, ops: /"operationName":"Practice/ },
+    ),
+    S(
+        "practice",
+        "problem-error",
+        { from: "practice/problem", append: "#s" },
+        { refuse: true, ops: /"operationName":"Practice/ },
+    ),
     S("projects", "list", "/projects"),
     S("projects", "new", "/projects/new"),
     S("projects", "detail", { from: "/projects", match: /^\/projects\/[0-9a-f-]{36}$/ }),
@@ -121,17 +279,162 @@ const SCREENS = [
     S("projects", "concept", { from: "projects/milestone", match: /^\/projects\/[0-9a-f-]{36}\/[^/]+\/[^/]+$/ }),
     // A signed-in reader without Premium (CAPTURE_FREE_STATE) sees the pitch; without the file the shot falls back to the guest context.
     S("projects", "paywall", "/projects", { free: true }),
-    S("career", "experience", "/experience"),
-    S("career", "profile", "/profile"),
-    S("career", "review-queue", "/review-queue"),
-    S("career", "review-item", "/review-queue/00000000-0000-4000-8000-000000000001"),
+    // ---- next-ux-career (real dev data only; a read is only held or refused, never answered)
+    S("harness", "hub", "/harness"),
+    S("harness", "hub-loading", "/harness", { hold: true, ops: /"operationName":"HarnessHub"/ }),
+    S("harness", "hub-error", "/harness", { refuse: true, ops: /"operationName":"HarnessHub"/ }),
+    S("harness", "builds", "/harness/build"),
+    S("harness", "builds-loading", "/harness/build", { hold: true, ops: /"operationName":"HarnessBuilds"/ }),
+    S("harness", "builds-error", "/harness/build", { refuse: true, ops: /"operationName":"HarnessBuilds"/ }),
+    S("harness", "build", "/harness/build/agent-cli"),
+    S("harness", "build-loading", "/harness/build/agent-cli", { hold: true, ops: /"operationName":"HarnessBuild"/ }),
+    S("harness", "build-error", "/harness/build/agent-cli", { refuse: true, ops: /"operationName":"HarnessBuild"/ }),
+    S("harness", "guide", "/harness/use/claude/hooks"),
+    S("harness", "guide-loading", "/harness/use/claude/hooks", { hold: true, ops: /"operationName":"HarnessGuide"/ }),
+    S("harness", "guide-error", "/harness/use/claude/hooks", { refuse: true, ops: /"operationName":"HarnessGuide"/ }),
+    S("harness", "docs", "/harness/docs"),
+    S("harness", "docs-loading", "/harness/docs", { hold: true, ops: /"operationName":"HarnessDocs"/ }),
+    S("harness", "docs-error", "/harness/docs", { refuse: true, ops: /"operationName":"HarnessDocs"/ }),
+    S("harness", "doc", "/harness/docs/overview"),
+    S("harness", "doc-loading", "/harness/docs/overview", { hold: true, ops: /"operationName":"HarnessDoc"/ }),
+    S("harness", "doc-error", "/harness/docs/overview", { refuse: true, ops: /"operationName":"HarnessDoc"/ }),
+    S("harness", "use", "/harness/use"),
+    S("harness", "use-loading", "/harness/use", {
+        hold: true,
+        ops: /"operationName":"(HarnessGuides|HarnessDoctor|HarnessTrials)"/,
+    }),
+    S("harness", "use-error", "/harness/use", {
+        refuse: true,
+        ops: /"operationName":"(HarnessGuides|HarnessDoctor|HarnessTrials)"/,
+    }),
+    S("career", "experience-first-visit", "/experience"),
+    S("career", "experience-loading", "/experience", { hold: true, ops: /"operationName":"MyExperience"/ }),
+    S("career", "experience-error", "/experience", { refuse: true, ops: /"operationName":"MyExperience"/ }),
+    S("career", "verify", "/verify/9C2E-F88F-B6BA", { guest: true }),
+    S("career", "verify-not-found", "/verify/SC-0000", { guest: true }),
+    S("career", "verify-loading", "/verify/SC-0000", {
+        guest: true,
+        hold: true,
+        ops: /"operationName":"VerifyExperience"/,
+    }),
+    S("career", "verify-error", "/verify/SC-0000", {
+        guest: true,
+        refuse: true,
+        ops: /"operationName":"VerifyExperience"/,
+    }),
+    S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
+    S("profile", "overview", "/profile"),
+    S("profile", "new", "/profile", {
+        learnerState: "D:/starci-lanes/next-gallery-seed/.tmp-gallery-states/review-nothing.json",
+    }),
+    S("profile", "edit", "/profile/edit"),
+    S("profile", "edit-loading", "/profile/edit", { hold: true, ops: /"operationName":"MyProfile"/ }),
+    S("profile", "edit-error", "/profile/edit", { refuse: true, ops: /"operationName":"MyProfile"/ }),
     S("commerce", "premium", "/premium"),
     S("commerce", "premium-result", "/premium/result"),
     S("devices", "list", "/devices"),
     S("connect", "ai", "/connect"),
+    // --- next-ux-review: review, progress, incidents and the review queue. The entries run in order against ONE learner: the first states are shot before any deck is added, then a deck is added and reviewed.
+    S("progress", "overview-first-visit", "/progress"),
+    S("progress", "overview-loading", "/progress", { holdOps: /"operationName":"LearnerProgress"/ }),
+    S("progress", "overview-page-error", "/progress", { refuseOps: /"operationName":"LearnerProgress"/ }),
+    S("review", "hub-first", "/review"),
+    S("review", "hub-loading", "/review", { holdOps: REVIEW_READS }),
+    S("review", "hub-error", "/review", { refuseOps: REVIEW_READS }),
+    S("review", "session-empty", "/review/session"),
+    S("review", "session-loading", "/review/session", { holdOps: REVIEW_READS }),
+    S("review", "decks", "/review/decks"),
+    S("review", "decks-none", "/review/decks", {
+        act: async (p) =>
+            p
+                .getByRole("tab", { name: /Đã thêm/ })
+                .first()
+                .click()
+                .catch(() => {}),
+    }),
+    S("review", "decks-loading", "/review/decks", { holdOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "decks-error", "/review/decks", { refuseOps: /"operationName":"ReviewDecks"/ }),
+    S("review", "deck", "/review/decks", { act: openDeck }),
+    S("review", "deck-missing", "/review/decks/00000000-0000-4000-8000-000000000000"),
+    S(
+        "review",
+        "deck-adding",
+        { from: "review/deck", append: "?r=1" },
+        { holdOps: /"operationName":"AddReviewDeck"/, act: addDeck },
+    ),
+    S("review", "deck-added", "/review/decks", { act: openDeckThenAdd }),
+    S("review", "decks-added", "/review/decks", { act: addDeck }),
+    S("review", "hub", "/review"),
+    S("review", "hub-goal", "/review", { act: openGoalOther }),
+    S("review", "session", "/review/session"),
+    S("review", "session-cloze", "/review/session", { act: pickCloze }),
+    S("review", "session-answer", "/review/session", { act: flipCard }),
+    S("review", "session-summary", "/review/session", { act: gradeAll }),
+    S("review", "hub-done", "/review"),
+    S("progress", "overview", "/progress"),
+    S("progress", "free", "/review/decks", { free: true, act: earnProgress }),
+    S("incidents", "list-none", "/incidents"),
+    S("career", "review-queue-forbidden", "/review-queue"),
+    S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
 ]
+// Seeded states (scripts/gallery-seed.mjs, run first; it writes manifest.json and a storage state per gallery learner into GALLERY_STATES, default .tmp-gallery-states):
+// a screen the manifest names is shot as that learner on the dev stack's real data, not through a stand-in core. Keep the seed running with --hold so its devices stay online.
+const STATES_DIR = path.resolve(process.env.GALLERY_STATES || path.join(__dirname, "..", ".tmp-gallery-states"))
+const SEEDED = (() => {
+    try {
+        return JSON.parse(fs.readFileSync(path.join(STATES_DIR, "manifest.json"), "utf8"))
+    } catch {
+        return undefined
+    }
+})()
+if (SEEDED) {
+    for (const [id, seeded] of Object.entries(SEEDED.screens)) {
+        const [area, screen] = id.split("/")
+        if (!screen || /[ (]/.test(screen)) continue
+        const route = seeded.route.split(" ")[0]
+        const extra = {
+            learnerState: path.join(STATES_DIR, seeded.learner + ".json"),
+            ...(id === "career/review-queue-reviewers" ? { click: "Người duyệt" } : {}),
+            ...(id === "review/session-conflict"
+                ? {
+                      act: async (p) => {
+                          await p
+                              .getByRole("button", { name: /Hiện đáp án/ })
+                              .first()
+                              .click()
+                          await p.waitForTimeout(1500)
+                          // The second device: another session of the same learner grades the same card "good" first.
+                          require("child_process").spawnSync(
+                              process.execPath,
+                              [path.join(__dirname, "gallery-seed.mjs"), "--grade-elsewhere", "--out", STATES_DIR],
+                              { stdio: "inherit" },
+                          )
+                          await p.getByRole("button", { name: /^Lại/ }).first().click()
+                          await p.waitForTimeout(1500)
+                      },
+                  }
+                : {}),
+        }
+        const at = SCREENS.findIndex((each) => each.area === area && each.screen === screen)
+        if (at === -1) SCREENS.push(S(area, screen, route, extra))
+        else SCREENS[at] = S(area, screen, route, extra)
+    }
+}
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
-const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
+const isEssentialsRead = (route, hit) =>
+    (hit === "paths" ? /"operationName":"OutcomePaths"/ : /"operationName":"(Lessons|LessonTopic|Lesson)"/).test(
+        route.request().postData() ?? "",
+    )
+// A screen may name the operations its held or refused read stands for (ops: a regexp over the operation names); else the Essentials reads.
+// The core API accepts one browser origin (the ingress); a lane's own next dev on another port sends its reads as that origin (CAPTURE_ORIGIN_AS=http://localhost:3280).
+const ORIGIN_AS = process.env.CAPTURE_ORIGIN_AS
+const spoof = async (route) => {
+    if (!ORIGIN_AS) return route.continue()
+    // The page's own Origin cannot be changed in flight, so the read is made again from here with the accepted one and its answer handed back.
+    const answer = await route.fetch({ headers: { ...route.request().headers(), origin: ORIGIN_AS } })
+    return route.fulfill({ response: answer })
+}
+const isHeldRead = (route, s) => (s.ops ? s.ops.test(route.request().postData() ?? "") : isEssentialsRead(route, s.hit))
 const norm = (href) => {
     try {
         const u = new URL(href, ENTRY)
@@ -157,10 +460,13 @@ const norm = (href) => {
         })
         ws.onMessage((m) => up.send(m))
     }
+    for (const c of [user, guest, free]) await originFix(c)
     const first = process.env.CAPTURE_FIRST_STATE
         ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
         : undefined
+    await originFix(first)
     await first?.routeWebSocket(/_next\/hmr/, hmrQuiet)
+    if (ORIGIN_AS) for (const c of [user, guest, free, first]) await c?.route(/graphql/, spoof)
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await free?.routeWebSocket(/_next\/hmr/, hmrQuiet)
@@ -203,13 +509,28 @@ const norm = (href) => {
             }
         }
         resolved[`${s.area}/${s.screen}`] = route
-        const dir = path.join(PAGES, s.area, s.screen)
+        const dir = path.join(PAGES, s.area, s.dirAs || s.screen)
         fs.mkdirSync(dir, { recursive: true })
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.cookies !== undefined
-                    ? await b.newContext({ storageState: stateFile })
+                s.hold ||
+                s.refuse ||
+                s.holdOps ||
+                s.refuseOps ||
+                s.cookies !== undefined ||
+                s.state !== undefined ||
+                s.learnerState !== undefined
+                    ? await b.newContext({
+                          storageState: s.learnerState
+                              ? s.learnerState
+                              : s.state
+                                ? (process.env["CAPTURE_STATE_" + s.state + "_" + w] ??
+                                  process.env["CAPTURE_STATE_" + s.state])
+                                : s.free && process.env.CAPTURE_FREE_STATE
+                                  ? process.env.CAPTURE_FREE_STATE
+                                  : stateFile,
+                      })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
             if (s.cookies !== undefined && process.env.CAPTURE_MOCK)
@@ -220,14 +541,33 @@ const norm = (href) => {
                         ([name, value]) => ({ name, value, domain: "localhost", path: "/" }),
                     ),
                 )
+            await originFix(fresh)
             await fresh?.routeWebSocket(/_next\/hmr/, hmrQuiet)
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
+            // A lane's own `next dev` port is not an allowed origin of the dev core: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its reads.
+            if (process.env.CAPTURE_ORIGIN_AS)
+                await p.route(/\/(graphql|api\/)/, (route) =>
+                    route
+                        .fetch({ headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS } })
+                        .then(
+                            (response) => route.fulfill({ response }),
+                            () => route.abort(),
+                        ),
+                )
+            // holdOps / refuseOps (a regex of GraphQL operation names) hold or refuse only those operations; everything else falls through to the routes before it.
+            if (s.holdOps)
+                await p.route(/graphql/, (route) =>
+                    s.holdOps.test(route.request().postData() ?? "") ? undefined : route.fallback(),
+                )
+            if (s.refuseOps)
+                await p.route(/graphql/, (route) =>
+                    s.refuseOps.test(route.request().postData() ?? "") ? route.abort() : route.fallback(),
+                )
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
-            if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
-            if (s.refuse)
-                await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
+            if (s.hold) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? undefined : spoof(route)))
+            if (s.refuse) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? route.abort() : spoof(route)))
             await p.setViewportSize({
                 width: w,
                 height: Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900),
@@ -254,6 +594,24 @@ const norm = (href) => {
                     .fill(s.fill.text)
                     .catch(() => {})
                 await p.waitForTimeout(800)
+            }
+            if (s.clickMain) {
+                await p
+                    .locator("main")
+                    .getByRole("button", { name: s.clickMain, exact: true })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(1500)
+            }
+            if (s.clickText) {
+                await p
+                    .getByRole("button", { name: s.clickText })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.mouse.move(2, 2)
+                await p.waitForTimeout(1000)
             }
             if (s.click) {
                 await p
@@ -290,7 +648,7 @@ const norm = (href) => {
             }
             // The Next dev indicator (the round N badge) is not part of any screen.
             await p.addStyleTag({ content: "nextjs-portal{display:none!important}" }).catch(() => {})
-            await p.screenshot({ path: path.join(dir, `${w}.png`), fullPage: true })
+            await p.screenshot({ path: path.join(dir, `${s.prefix || ""}${w}.png`), fullPage: true })
             if (w === 1440) report.push(`${s.area}/${s.screen}: ${route} -> ${res?.status?.()} final ${norm(p.url())}`)
             await p.close()
         }

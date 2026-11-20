@@ -10,6 +10,8 @@ import {
     useQueryReviewTodaySwr,
 } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { navigation } from "@starci-next/i18n/navigation"
+import { useTrackTitle } from "./useTrackTitle"
 import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -68,7 +70,7 @@ export const REVIEW_DECK_PLACEHOLDER: ReviewDeckView = {
     meta: "xx · xxxxxx · xxxxxx",
     description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     isAdded: false,
-    figures: [1, 2, 3].map((n) => ({ id: `placeholder-${n}`, term: "xxxxxxxx", value: "xx" })),
+    figures: [1, 2, 3].map((n) => ({ id: `placeholder-${n}`, term: "", value: "xx" })),
     samples: [1, 2, 3].map((n) => ({ id: `placeholder-${n}`, question: "xxxxxxxxxxxxxxxxxxxxxxxx", kind: "xxxxxx" })),
 }
 
@@ -77,6 +79,8 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
     const locale = useLocale()
     const t = useTranslations("app.review.deck")
     const word = useTranslations("app.review.difficulty")
+    const trackTitle = useTrackTitle()
+    const router = navigation.useRouter()
     const slotLabels = useSlotLabels()(t("notFound"))
     const read = useQueryReviewDeckSwr(deckId, locale)
     const today = useQueryReviewTodaySwr(locale)
@@ -97,8 +101,8 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
             meta: [
                 t("cards", { count: deck.cardCount }),
                 difficulties[deck.difficulty.toLowerCase()] ?? deck.difficulty,
-                ...deck.track,
-                deck.course.replace(/^\d+-/, "").replaceAll("-", " "),
+                ...deck.track.map(trackTitle),
+                trackTitle(deck.course.replace(/^\d+-/, "").replaceAll("-", " ")),
             ].join(" · "),
             description: deck.description,
             isAdded: deck.added,
@@ -110,7 +114,7 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
                       { id: "again", term: t("figureAgain"), value: `${progress.needsReview}` },
                   ]
                 : [
-                      { id: "total", term: t("figureTotal"), value: `${progress.total}` },
+                      { id: "total", term: t("figureTotal"), value: `${deck.cardCount}` },
                       { id: "learned", term: t("figureLearned"), value: `${progress.learned}` },
                       { id: "perDay", term: t("figurePerDay"), value: `${data.estimatedNewPerDay}` },
                   ],
@@ -133,7 +137,7 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
         props: {
             slot: mapSlot(slotOfSwr(read), viewOf),
             placeholder: REVIEW_DECK_PLACEHOLDER,
-            slotLabels: { ...slotLabels, error: t("notFound") },
+            slotLabels: { ...slotLabels, error: t("notFound"), retry: t("backToDecks") },
             labels: {
                 breadcrumbs: t("breadcrumbs"),
                 root: t("root"),
@@ -153,7 +157,7 @@ export const useReviewDeckScreen = (deckId: string): ReviewDeckScreen => {
             isFailed,
         },
         on: {
-            retry: () => void read.mutate(),
+            retry: () => router.push(APP_ROUTES.reviewDecks),
             add: () => settle(adder.trigger({ deckId })),
             remove: () => settle(remover.trigger({ deckId })),
         },

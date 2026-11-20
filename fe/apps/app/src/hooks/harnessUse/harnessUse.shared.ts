@@ -68,8 +68,8 @@ export type HarnessUseWords = {
 /** The row of one guide. */
 export const guideItemOf = (guide: HarnessGuideRowView): HarnessGuideItemView => ({
     slug: guide.slug,
-    title: guide.title,
-    summary: guide.summary,
+    title: guide.title.replaceAll("`", ""),
+    summary: guide.summary.replaceAll("`", ""),
     href: harnessGuidePath(guide.tool, guide.slug),
 })
 

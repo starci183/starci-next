@@ -144,6 +144,28 @@ export interface SubmitAttemptParams {
     readonly answer: AttemptAnswer
 }
 
+/** One choice a guest answers: graded on the spot and never stored, or carried into the account after the first sign-in. */
+export interface GuestChoiceAnswer {
+    /** The lesson. */
+    readonly lessonId: string
+    /** The version the guest studied. */
+    readonly version: string
+    /** The activity (an opener question or another choice of a free part). */
+    readonly activityId: string
+    /** The option picked. */
+    readonly optionId: string
+    /** The locale of the text and of the feedback. */
+    readonly locale: LessonLocale
+}
+
+/** What merging the answers of a guest into an account did. */
+export interface GuestClaimView {
+    /** The answers stored and graded for the learner. */
+    readonly claimed: number
+    /** The answers left out: already answered by the learner, not free, not a choice, or no longer in the lesson. */
+    readonly skipped: number
+}
+
 /** One attempt of one learner to read. */
 export interface AttemptLookupParams {
     /** The learner who asks. */

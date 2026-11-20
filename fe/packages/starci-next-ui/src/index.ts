@@ -90,7 +90,6 @@ export { AssignItemCard } from "./composites/AssignItemCard"
 export type { AssignItemCardProps } from "./composites/AssignItemCard"
 export { MissingNotice } from "./composites/MissingNotice"
 export { RowProgress } from "./composites/RowProgress"
-export { ConceptDrawer } from "./composites/ConceptDrawer"
 export { ConceptCodeRead } from "./composites/ConceptCodeRead"
 export type { ConceptCodeReadLabels, ConceptRubricRow } from "./composites/ConceptCodeRead"
 export { ConnectDrawer } from "./composites/ConnectDrawer"
@@ -101,7 +100,6 @@ export { LessonStepper } from "./composites/LessonStepper"
 export { MilestonesCard } from "./composites/MilestonesCard"
 export { ProbesCard } from "./composites/ProbesCard"
 export { ProjectAside } from "./composites/ProjectAside"
-export { ProjectsAside } from "./composites/ProjectsAside"
 export { ReviewItemCard } from "./composites/ReviewItemCard"
 export { ReviewSummaryCard } from "./composites/ReviewSummaryCard"
 export { RunsCard } from "./composites/RunsCard"
@@ -129,7 +127,6 @@ export type {
     ProjectDetailLabels,
     ProjectDetailView,
 } from "./composites/ProjectAside/types"
-export type { ProjectsAsideLabels } from "./composites/ProjectsAside/types"
 export type {
     ReviewAnswerPart,
     ReviewBackView,
@@ -208,5 +205,3 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export { OutlineList } from "./composites/OutlineList"
-export type { OutlineEntry } from "./composites/OutlineList"

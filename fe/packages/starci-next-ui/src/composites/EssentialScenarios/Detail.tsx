@@ -26,9 +26,7 @@ const MachineLine = (props: MachineLineProps) =>
             <Badge isDot tone="success">
                 {props.labels.machineOnline(props.machine)}
             </Badge>
-            <Text tone="muted" size="sm">
-                {props.labels.relayNote}
-            </Text>
+            <Text tone="muted">{props.labels.relayNote}</Text>
         </Cluster>
     )
 
@@ -53,10 +51,8 @@ const Verdict = (props: VerdictProps) => {
             title={labels.why}
             description={
                 <Stack gap="identity">
-                    {scenario.why === "" ? null : <Text size="sm">{scenario.why}</Text>}
-                    {scenario.ruleId === "" ? null : (
-                        <Text size="sm">{`${scenario.ruleId} · ${scenario.ruleText} · ${labels.ruleBroken}`}</Text>
-                    )}
+                    {scenario.why === "" ? null : <Text>{scenario.why}</Text>}
+                    {scenario.ruleText === "" ? null : <Text>{`${scenario.ruleText} · ${labels.ruleBroken}`}</Text>}
                 </Stack>
             }
         />
@@ -92,10 +88,8 @@ const Hint = (props: HintProps) => {
             title={labels.hintTitle}
             description={
                 <Stack gap="identity">
-                    <Text size="sm">{hint.text}</Text>
-                    <Text size="sm" tone="muted">
-                        {labels.hintNote}
-                    </Text>
+                    <Text>{hint.text}</Text>
+                    <Text tone="muted">{labels.hintNote}</Text>
                 </Stack>
             }
         />
@@ -117,9 +111,7 @@ const Fix = (props: FixProps) => {
     return (
         <Section title={labels.fixTitle} headingLevel={3}>
             <Stack gap="inline">
-                <Text tone="muted" size="sm">
-                    {labels.fixNote}
-                </Text>
+                <Text tone="muted">{labels.fixNote}</Text>
                 {scenario.state === "failed" ? (
                     <FencedCodeBlock
                         code={scenario.fixPrompt}
@@ -135,7 +127,7 @@ const Fix = (props: FixProps) => {
                 ) : null}
                 {guard === undefined ? null : (
                     <Switch
-                        label={labels.guardTitle(guard.ruleId)}
+                        label={labels.guardTitle}
                         description={labels.guardNote(guard.flag)}
                         isSelected={guard.isOff}
                         onSelectedChange={(isOff) => onGuard(guard.flag, isOff)}
@@ -159,9 +151,7 @@ type AskProps = {
 const AskClaude = (props: AskProps) => (
     <Section title={props.labels.ask.title} headingLevel={3} fact={props.labels.ask.badge}>
         <Stack gap="inline">
-            <Text tone="muted" size="sm">
-                {props.labels.ask.note}
-            </Text>
+            <Text tone="muted">{props.labels.ask.note}</Text>
             <Link href={props.connectHref}>{props.labels.ask.connect}</Link>
         </Stack>
     </Section>
@@ -181,7 +171,8 @@ type ScenarioDetailProps = {
 /** The detail of the scenario on screen: machine, fault, live result, verdict, hint, fix and the way to ask the AI of the learner. */
 export const ScenarioDetail = (props: ScenarioDetailProps) => {
     const { scenario, labels } = props
-    const lines = [`$ ${scenario.command}`, ...(scenario.output.length === 0 ? [labels.noRun] : scenario.output)]
+    const emptyLine = scenario.state === "running" ? scenario.stateLabel : labels.noRun
+    const lines = [`$ ${scenario.command}`, ...(scenario.output.length === 0 ? [emptyLine] : scenario.output)]
     const isRed = scenario.state === "failed" || scenario.state === "guarded"
     return (
         <Stack gap="section">
@@ -189,7 +180,7 @@ export const ScenarioDetail = (props: ScenarioDetailProps) => {
                 <Stack gap="inline">
                     <RichMarkdown source={scenario.fault} labels={labels.markdown} />
                     <MachineLine machine={props.part.machine} labels={labels} />
-                    <Terminal label={scenario.title} lines={lines} isLoading={scenario.state === "running"} />
+                    <Terminal label={scenario.title} lines={lines} />
                     <Verdict scenario={scenario} labels={labels} />
                     <Hint scenarioId={scenario.id} hint={scenario.hint} labels={labels} onReveal={props.onReveal} />
                 </Stack>

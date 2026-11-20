@@ -20,7 +20,6 @@ export const STUDY_PLACEHOLDER: StudyView = {
     outcomes: [],
     compare: [],
     compareScore: "",
-    imageSrc: "",
     headline: "xxxxxxxxxx",
     stepper: LESSON_PHASES.filter((phase) => phase !== "overview" && phase !== "review").map((phase) => ({
         phase,

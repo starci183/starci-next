@@ -1,4 +1,4 @@
-import { Button, Page, Progress, Stack } from "@starci/grammar/common"
+import { Button, Page, Progress, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import { ReviewItemCard, ReviewSummaryCard, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
@@ -55,44 +55,57 @@ const Body = (props: BodyProps) => {
     return <ReviewItemCard item={props.screen} labels={props.props.labels} isLoading={props.isLoading} on={props.on} />
 }
 
+/** The header of the session: the title, the progress words and the way back to Ôn tập. */
+const headerOf = (props: ReviewSessionBaseProps): PageHeaderContent => ({
+    title: props.props.labels.pageTitle,
+    titleScale: "standard",
+    meta: props.props.labels.progressText,
+    breadcrumbs: {
+        label: props.props.labels.root,
+        items: [
+            { id: "review", label: props.props.labels.root, href: props.props.todayHref },
+            { id: "session", label: props.props.labels.pageTitle },
+        ],
+    },
+})
+
+/** The way back to Ôn tập under a question, until the summary offers its own. */
+const Exit = (props: BodyProps) =>
+    props.screen.kind === "summary" ? null : (
+        <Button intent="neutral" href={props.props.todayHref}>
+            {props.props.labels.emptyBack}
+        </Button>
+    )
+
 /** The review session: progress, then one item at a time, or the summary. */
 export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
-    <Page
-        header={{
-            title: props.props.labels.pageTitle,
-            titleScale: "standard",
-            meta: props.props.labels.progressText,
-            breadcrumbs: {
-                label: props.props.labels.root,
-                items: [
-                    { id: "review", label: props.props.labels.root, href: props.props.todayHref },
-                    { id: "session", label: props.props.labels.pageTitle },
-                ],
-            },
-        }}
-        measure="reading"
-    >
-        <Stack gap="region">
-            <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.labels.saveFailedBody}
-                emptyDescription={props.props.labels.emptyText}
-                onRetry={props.on.retry}
-                render={(screen, isLoading) => <Body {...props} screen={screen} isLoading={isLoading} />}
-            />
-            {"isEmpty" in props.props.slot ? (
+    <SlotView<ReviewSessionScreen, PageHeaderContent>
+        slot={props.props.slot}
+        placeholder={props.props.placeholder}
+        labels={props.props.slotLabels}
+        errorDescription={props.props.labels.saveFailedBody}
+        emptyDescription={props.props.labels.emptyText}
+        onRetry={props.on.retry}
+        header={() => headerOf(props)}
+        headerFallback={{
+            ...headerOf(props),
+            actions: (
                 <Button intent="commit" href={props.props.labels.decksHref}>
                     {props.props.labels.emptyDecks}
                 </Button>
-            ) : null}
-            {"items" in props.props.slot && props.props.slot.items.kind === "summary" ? null : (
-                <Button intent="neutral" href={props.props.todayHref}>
-                    {props.props.labels.emptyBack}
-                </Button>
-            )}
-        </Stack>
-    </Page>
+            ),
+        }}
+        render={(screen, isLoading) => (
+            <Stack gap="region">
+                <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
+                <Body {...props} screen={screen} isLoading={isLoading} />
+                <Exit {...props} screen={screen} isLoading={isLoading} />
+            </Stack>
+        )}
+        frame={(parts) => (
+            <Page header={parts.header} isLoading={parts.isLoading} measure="reading">
+                {parts.body}
+            </Page>
+        )}
+    />
 )

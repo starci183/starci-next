@@ -4,6 +4,7 @@ import {
     Badge,
     Button,
     Cluster,
+    Grid,
     Page,
     Section,
     Stack,
@@ -17,7 +18,6 @@ import {
     RichMarkdown,
     SlotView,
 } from "@starci-next/ui"
-import { HINTS_CLASS_NAME, PROBLEM_GRID_CLASS_NAME, STATEMENT_CLASS_NAME, WORK_CLASS_NAME } from "./classNames"
 import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
 /** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
@@ -63,8 +63,9 @@ const HeaderActions = (props: { readonly screen: PracticeSolveBaseProps; readonl
 }
 
 /** The page header: the trail, the title, the facts line, the commands and the three tabs. */
-const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageHeaderContent => {
+const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoading: boolean): PageHeaderContent => {
     const { labels, state, catalogHref } = props.props
+    const loadingCrumb = isLoading ? { isLoading: true as const } : {}
     return {
         title: view.title,
         titleScale: "standard",
@@ -73,8 +74,8 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageH
             label: labels.breadcrumbs,
             items: [
                 { id: "practice", label: labels.catalog, href: catalogHref },
-                { id: "pattern", label: view.patternTitle, href: view.patternHref },
-                { id: "problem", label: view.title },
+                { id: "pattern", label: view.patternTitle, href: view.patternHref, ...loadingCrumb },
+                { id: "problem", label: view.title, ...loadingCrumb },
             ],
         },
         actions: <HeaderActions screen={props} view={view} />,
@@ -179,12 +180,13 @@ const Hints = (props: PieceProps) => {
     )
 }
 
-/** The statement beside the work: two columns at the desktop width, stacked in the order statement, code, result, hints on a phone. */
+/** The statement beside the work: two columns at the desktop width; the work column holds the editor, the result and the hints, so a phone reads statement, code, result, hints. */
 const ProblemTab = (props: PieceProps) => {
     const { labels } = props.screen.props
     return (
-        <div className={PROBLEM_GRID_CLASS_NAME}>
-            <div className={STATEMENT_CLASS_NAME}>
+        <Grid
+            kind="pair"
+            leading={
                 <PracticeProblemPanel
                     markdown={props.view.markdown}
                     examples={props.view.examples}
@@ -198,14 +200,14 @@ const ProblemTab = (props: PieceProps) => {
                         diagramError: labels.diagramError,
                     }}
                 />
-            </div>
-            <div className={WORK_CLASS_NAME}>
-                <Work {...props} />
-            </div>
-            <div className={HINTS_CLASS_NAME}>
-                <Hints {...props} />
-            </div>
-        </div>
+            }
+            trailing={
+                <Stack gap="region">
+                    <Work {...props} />
+                    <Hints {...props} />
+                </Stack>
+            }
+        />
     )
 }
 
@@ -230,7 +232,6 @@ const SubmissionsTab = (props: PieceProps) => {
                       action: (
                           <Button
                               intent="neutral"
-                              size="sm"
                               isPending={state.isLoadingMoreSubmissions}
                               onPress={props.screen.on.moreSubmissions}
                           >
@@ -248,11 +249,11 @@ const SolutionTab = (props: PieceProps) => {
     const { labels, state } = props.screen.props
     return (
         <Section title={labels.solutionTitle} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 {state.solution === null ? (
                     <>
                         <Alert tone="neutral" title={labels.solutionText} />
-                        <Cluster gap="inline">
+                        <Cluster gap="identity">
                             <Button
                                 intent="neutral"
                                 isPending={state.isSolutionPending}
@@ -283,48 +284,46 @@ const SolutionTab = (props: PieceProps) => {
  */
 export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
     const { slot, placeholder, labels, state } = props.props
-    const view = "items" in slot ? slot.items : placeholder
-    const hasView = "items" in slot || "isLoading" in slot
-    const header: PageHeaderContent = hasView
-        ? headerOf(props, view)
-        : {
-              title: labels.catalog,
-              titleScale: "standard",
-              breadcrumbs: {
-                  label: labels.breadcrumbs,
-                  items: [
-                      { id: "practice", label: labels.catalog, href: props.props.catalogHref },
-                      { id: "problem", label: labels.loadFailedCrumb },
-                  ],
-              },
-          }
+    const fallback: PageHeaderContent = {
+        title: labels.loadFailedCrumb,
+        titleScale: "standard",
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [{ id: "practice", label: labels.catalog, href: props.props.catalogHref }],
+        },
+    }
     return (
-        <Page header={header} isLoading={"isLoading" in slot}>
-            <SlotView
-                slot={slot}
-                placeholder={placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={labels.loadFailedNote}
-                onRetry={props.on.retry}
-                render={(each, isLoading) => {
-                    const piece: PieceProps = { screen: props, view: each, isLoading }
-                    if (state.tab === "submissions") return <SubmissionsTab {...piece} />
-                    return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />
-                }}
-            />
-            <AlertDialog
-                title={labels.confirmTitle}
-                description={state.confirmText}
-                tone="cautionary"
-                confirmLabel={labels.confirmAction}
-                cancelLabel={labels.confirmCancel}
-                isOpen={state.isConfirmOpen}
-                onOpenChange={(isOpen) => {
-                    if (!isOpen) props.on.cancelSolution()
-                }}
-                onConfirm={props.on.confirmSolution}
-                onCancel={props.on.cancelSolution}
-            />
-        </Page>
+        <SlotView<PracticeSolveView, PageHeaderContent>
+            slot={slot}
+            placeholder={placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={labels.loadFailedNote}
+            onRetry={props.on.retry}
+            header={(view, loading) => headerOf(props, view, loading)}
+            headerFallback={fallback}
+            frame={({ header, isLoading, body }) => (
+                <Page header={header} isLoading={isLoading}>
+                    {body}
+                    <AlertDialog
+                        title={labels.confirmTitle}
+                        description={state.confirmText}
+                        tone="cautionary"
+                        confirmLabel={labels.confirmAction}
+                        cancelLabel={labels.confirmCancel}
+                        isOpen={state.isConfirmOpen}
+                        onOpenChange={(isOpen) => {
+                            if (!isOpen) props.on.cancelSolution()
+                        }}
+                        onConfirm={props.on.confirmSolution}
+                        onCancel={props.on.cancelSolution}
+                    />
+                </Page>
+            )}
+            render={(each, isLoading) => {
+                const piece: PieceProps = { screen: props, view: each, isLoading }
+                if (state.tab === "submissions") return <SubmissionsTab {...piece} />
+                return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />
+            }}
+        />
     )
 }

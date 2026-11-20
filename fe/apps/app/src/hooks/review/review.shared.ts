@@ -114,6 +114,7 @@ export const sessionLabelsOf = (words: ReviewWords, progressText: string): Revie
         rateQuestion: t("session.rateQuestion"),
         rateGroup: t("session.rateGroup"),
         shortcuts: t("session.shortcuts"),
+        spaceHint: t("session.spaceHint"),
         saveFailedTitle: t("session.saveFailedTitle"),
         saveFailedBody: t("session.saveFailedBody"),
         retry: t("session.retry"),

@@ -14,7 +14,7 @@ export { parsePracticeConfig } from "./practice.config"
 export { PracticeHintService } from "./practice-hint.service"
 export { PracticeImportService } from "./practice-import.service"
 export { PracticeModule } from "./practice.module"
-export { PracticeReadService } from "./practice-read.service"
+export { GUEST_LEARNER_ID, PracticeReadService } from "./practice-read.service"
 export { PracticeSolutionService } from "./practice-solution.service"
 export { PracticeSubmissionService } from "./practice-submission.service"
 export {

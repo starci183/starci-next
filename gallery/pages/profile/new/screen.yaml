@@ -1,0 +1,133 @@
+schema: 1
+screen: profile/new
+title: Hồ sơ của học viên mới
+route: /profile
+area: profile
+summary: "Như profile/overview, học viên mới. Route: /profile (ảnh chụp: học viên mới, chưa có ảnh, chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích ở profile/overview. Mã nguồn màn hình nay nằm trong nhóm tuyến (page"
+code:
+  - features/pages/ProfilePage
+  - components/blocks/ProfileHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 958739ffc3b08d31f22d261130a7751d27e965730d50dea080c05a5f68bb8555
+  "1440":
+    file: 1440.png
+    sha256: dcde12c5c8b9a343908b74d2db51e87816c774c74acb7fc32bf6990fc642cb3d
+sections:
+  - id: s1
+    title: Danh tính khi chưa có ảnh
+    shows: Avatar vẽ hình mầm sinh từ tên (chưa có ảnh nên không có nút "Xoá ảnh"); nút duy nhất là "Tải ảnh lên". Chưa chọn lộ trình thì dòng mục tiêu ghi "Chưa chọn lộ trình" và liên kết đổi thành "Chọn lộ trình".
+    why: learning-program.md (lộ trình là tùy chọn, không phần nào bị chặn vì chưa chọn).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Dòng CV và liên kết xác minh khi rỗng
+    shows: vùng CV nói thẳng điều cần làm ("Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên") thay vì một danh sách trống; vùng liên kết nói liên kết xuất hiện khi một mục được xác minh. Đếm "0/3 mục Đã xác minh" vẫn hiện để học viên biết ngưỡng.
+    why: verified-experience.md điều 4, unhandled-case-tells-customer.md (không để trống im lặng).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Tài khoản khi chưa có gì
+    shows: máy và token rỗng mỗi bảng một câu ngắn ("Chưa nối máy nào.", "Chưa có token nào.") và vẫn giữ liên kết quản lý để học viên đi nối; gói ghi "Miễn phí" và "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", liên kết "Quản lý gói" dẫn tới trang Premium.
+    why: premium.md (bậc miễn phí), COOK 2026-11-17 mục access (Harness miễn phí cho mọi người).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Như profile/overview, học viên mới.
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Hiện tên học viên mới bằng tên nhập sẵn
+    chosen: false
+    why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên; sửa ở lõi, không phải ở app."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:51.082Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
+        actionable:
+          verdict: open
+          notes: '"Chọn lộ trình" là chữ đậm trơn không giống liên kết.'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Email lặp hai lần liền nhau.
+        states:
+          verdict: open
+          notes: Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.
+        truth:
+          verdict: open
+          notes: Tên hiển thị là email "gallery-ess-0006@example.test" (lỗi đã biết), canvas là "minh".
+    - n: 2
+      at: 2026-11-20T14:16:12.512Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: '"Chọn lộ trình" vẫn là chữ đậm trơn, không giống liên kết (ở overview đã là liên kết tím).'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new.
+        truth:
+          verdict: open
+          notes: Tên hiển thị là email (lỗi đã biết).
+    - n: 3
+      at: 2026-11-20T14:52:39.664Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo sau)."
+  escalate: null

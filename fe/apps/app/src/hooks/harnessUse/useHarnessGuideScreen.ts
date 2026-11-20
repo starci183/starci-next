@@ -1,7 +1,6 @@
 "use client"
 
 import type { PageHeaderContent } from "@starci/grammar/common"
-import type { OutlineEntry } from "@starci-next/ui"
 import { navigation } from "@starci-next/i18n/navigation"
 import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
@@ -20,6 +19,7 @@ import { HARNESS_ROUTES, harnessGuidePath } from "@/modules/routes"
 import {
     HARNESS_TOOLS,
     type DataSlot,
+    type HarnessOutlineEntry,
     type HarnessSectionView,
     type HarnessTool,
     type SlotLabels,
@@ -33,11 +33,23 @@ export type HarnessGuidePageView = {
     readonly summary: string
     readonly tool: HarnessTool
     readonly sections: ReadonlyArray<HarnessSectionView>
-    readonly outline: ReadonlyArray<OutlineEntry>
+    readonly outline: ReadonlyArray<HarnessOutlineEntry>
+    /** The newest `harness doctor` result of the guide's tool, read with the guide. */
+    readonly doctor: HarnessDoctorPanelView
+}
+
+/** One guide of the list beside the one on screen. */
+export type HarnessGuideNavItem = {
+    readonly id: string
+    readonly title: string
+    readonly href: string
+    readonly isCurrent: boolean
 }
 
 /** The words of the guide page. */
 export type HarnessGuideLabels = {
+    readonly navTitle: string
+    readonly navEmpty: string
     readonly outlineTitle: string
     readonly outlineEmpty: string
     readonly toolDescription: string
@@ -55,8 +67,7 @@ export type HarnessGuideScreen = {
         readonly header: PageHeaderContent
         readonly guide: DataSlot<HarnessGuidePageView>
         readonly guidePlaceholder: HarnessGuidePageView
-        readonly doctor: DataSlot<HarnessDoctorPanelView>
-        readonly doctorPlaceholder: HarnessDoctorPanelView
+        readonly guides: ReadonlyArray<HarnessGuideNavItem>
         readonly slotLabels: SlotLabels
         readonly labels: HarnessGuideLabels
         readonly common: HarnessCommonLabels
@@ -65,7 +76,6 @@ export type HarnessGuideScreen = {
     }
     readonly on: {
         readonly retryGuide: () => void
-        readonly retryDoctor: () => void
         readonly chooseTool: (value: string) => void
         readonly setOnlyFailing: (isOnlyFailing: boolean) => void
     }
@@ -82,6 +92,7 @@ export const HARNESS_GUIDE_PLACEHOLDER: HarnessGuidePageView = {
         markdown: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     })),
     outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "xxxxxxxxxxxxxxxx", href: `#o${n}` })),
+    doctor: HARNESS_DOCTOR_PLACEHOLDER,
 }
 
 /** What the route hands the guide page: the tool and the guide in the address. */
@@ -124,26 +135,33 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         props: {
             header: harnessHeaderOf(common, {
                 active: "use",
-                title: guide.data?.title ?? t("title"),
-                ...(guide.data === undefined ? {} : { description: guide.data.summary }),
+                title: (guide.data?.title ?? t("title")).replaceAll("`", ""),
+                ...(guide.data === undefined ? {} : { description: guide.data.summary.replaceAll("`", "") }),
                 trail: [[common.tabs.use, HARNESS_ROUTES.use]],
             }),
-            guide: mapSlot(slotOfSwr(guide), (each): HarnessGuidePageView => ({
-                title: each?.title ?? "",
-                summary: each?.summary ?? "",
-                tool: each?.tool ?? tool,
-                sections: each?.sections ?? [],
-                outline: outlineOf(each?.sections ?? []),
-            })),
-            guidePlaceholder: HARNESS_GUIDE_PLACEHOLDER,
-            doctorPlaceholder: HARNESS_DOCTOR_PLACEHOLDER,
-            doctor: mapSlot(slotOfSwr(guide), (each): HarnessDoctorPanelView => {
+            guide: mapSlot(slotOfSwr(guide), (each): HarnessGuidePageView => {
                 const probes = each?.probes ?? []
                 const ranAt = probes.reduce((newest, probe) => (probe.at > newest ? probe.at : newest), "")
-                return doctorPanelOf({ tool, command: doctorCommandOf(tool), ranAt, probes }, words)
+                return {
+                    title: each?.title ?? "",
+                    summary: (each?.summary ?? "").replaceAll("`", ""),
+                    tool: each?.tool ?? tool,
+                    sections: each?.sections ?? [],
+                    outline: outlineOf(each?.sections ?? []),
+                    doctor: doctorPanelOf({ tool, command: doctorCommandOf(tool), ranAt, probes }, words),
+                }
             }),
-            slotLabels: slotLabels(t("missing")),
+            guidePlaceholder: HARNESS_GUIDE_PLACEHOLDER,
+            guides: (own.data ?? []).map((each) => ({
+                id: each.slug,
+                title: each.title.replaceAll("`", ""),
+                href: harnessGuidePath(tool, each.slug),
+                isCurrent: each.slug === route.slug,
+            })),
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
+                navTitle: t("navTitle"),
+                navEmpty: t("navEmpty"),
                 outlineTitle: t("outlineTitle"),
                 outlineEmpty: t("outlineEmpty"),
                 toolDescription: t("toolDescription"),
@@ -160,7 +178,6 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         },
         on: {
             retryGuide: () => void guide.mutate(),
-            retryDoctor: () => void guide.mutate(),
             chooseTool: (value) => {
                 const next = toolOf(value)
                 choose(next)

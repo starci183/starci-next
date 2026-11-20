@@ -1,4 +1,4 @@
-{"data":{},"findings":[],"hash":"77413dc6de1d42547b919ba296981377027ca24b6082d10464f44622d4c6b47b","path":".starcistacks/dev/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bdd552a299fc0d8822ef5e4be09b90251907801477ae82ce14f073b0b03067c3","path":".starcistacks/dev/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"be7d4a045ca8426f88cf5d02d0f8df51ee8cfde57293a74135d98b2b3f955849","path":".starcistacks/dev/environment.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a4f7e75d4e5e1230ce3cad61355d4607e117642e94577b10cbb889316f8b6cd4","path":".starcistacks/dev/infra/compose/Caddyfile","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5f4ef198e62adb83e991aa7961a4e1d4047bc88587a52b2ce93870b3c91e6309","path":".starcistacks/dev/infra/compose/compose.yaml","step":"file-rules"}

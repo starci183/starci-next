@@ -1,0 +1,128 @@
+schema: 1
+screen: essentials/catalog-no-match
+title: Essentials (danh mục), không khớp bộ lọc
+route: /essentials
+area: essentials
+summary: "Trạng thái không khớp: ô tìm có chữ không bài nào chứa. Ảnh ở 1440, 1920 và 390."
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 46bd7fb50b8807152bf9fb8c031817bd3bd44512ba751c37ee3381fdacdb476c
+  "1440":
+    file: 1440.png
+    sha256: 7f521da28a8ea6c2bfa4458892bc98cda3d5f6791683c3ebbcbebf207c466709
+sections:
+  - id: s1
+    title: Thanh công cụ giữ nguyên
+    shows: tab, ô tìm (còn chữ vừa gõ) và hai ô chọn đứng yên để học viên sửa bộ lọc ngay.
+    why: ui/composition-sections (toolbar không đổi theo kết quả).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thông báo không khớp
+    shows: một thông báo giữa trang nêu đúng chữ đã tìm, gợi ý cách tìm theo bài toán và nút "Xóa bộ
+      lọc" trả về trạng thái ban đầu.
+    why: ui/components/empty-state (nói điều gì thiếu và cách thoát).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:56.904Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:05.721Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm
+            Xem thêm, một kiểu khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:21.345Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

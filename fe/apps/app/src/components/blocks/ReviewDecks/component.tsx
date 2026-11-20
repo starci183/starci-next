@@ -1,4 +1,14 @@
-import { Alert, ChoiceChips, EmptyNotice, Page, Section, Stack, type ListRowData } from "@starci/grammar/common"
+import {
+    Alert,
+    EmptyNotice,
+    Page,
+    Section,
+    Stack,
+    Tabs,
+    Text,
+    type ListRowData,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
@@ -9,12 +19,23 @@ export type ReviewDecksBaseProps = {
 }
 
 /** One deck as a row: its name and one sentence, the cards, difficulty and tracks, the state and the one command; the row opens the deck. */
-const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps): ListRowData => ({
+const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps, isLoading: boolean): ListRowData => ({
     id: deck.id,
     title: deck.title,
-    description: `${deck.facts}${deck.tracks.length === 0 ? "" : ` · ${deck.tracks.join(", ")}`}`,
+    description: deck.facts,
     href: deck.href,
-    detail: deck.description,
+    detail: (
+        <Stack gap="identity">
+            {deck.tracks.length === 0 ? null : (
+                <Text size="xs" tone="muted" isLoading={isLoading}>
+                    {deck.tracks.join(", ")}
+                </Text>
+            )}
+            <Text tone="muted" isLoading={isLoading}>
+                {deck.description}
+            </Text>
+        </Stack>
+    ),
     ...(deck.isAdded ? { badges: [{ label: props.props.labels.added, tone: "success" as const }] } : {}),
     action: {
         label: deck.isAdded ? props.props.labels.remove : props.props.labels.add,
@@ -55,27 +76,27 @@ const DeckList = (
             isLoading={props.isLoading}
             filter={
                 <>
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.filterLabel}
-                        isLabelHidden
-                        options={filterOptions}
-                        value={filter}
-                        onValueChange={props.on.setFilter}
-                        empty={labels.noMatch}
-                        isLoading={props.isLoading}
+                        items={filterOptions}
+                        selectedKey={filter}
+                        onSelect={props.on.setFilter}
+                        scrollPreviousLabel={labels.scrollPrevious}
+                        scrollNextLabel={labels.scrollNext}
                     />
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.trackLabel}
-                        isLabelHidden
-                        options={trackOptions}
-                        value={track}
-                        onValueChange={props.on.setTrack}
-                        empty={labels.noMatch}
-                        isLoading={props.isLoading}
+                        items={trackOptions}
+                        selectedKey={track}
+                        onSelect={props.on.setTrack}
+                        scrollPreviousLabel={labels.scrollPrevious}
+                        scrollNextLabel={labels.scrollNext}
                     />
                 </>
             }
-            items={props.rows.map((row) => rowOf(row, props))}
+            items={props.rows.map((row) => rowOf(row, props, props.isLoading))}
             empty={
                 <EmptyNotice
                     message={labels.emptyAdded}
@@ -95,35 +116,36 @@ const DeckList = (
  */
 export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
     const { header, labels } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        meta: header.meta,
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "review", label: labels.root, href: header.rootHref },
+                { id: "decks", label: header.title },
+            ],
+        },
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                meta: header.meta,
-                breadcrumbs: {
-                    label: labels.breadcrumbs,
-                    items: [
-                        { id: "review", label: labels.root, href: header.rootHref },
-                        { id: "decks", label: header.title },
-                    ],
-                },
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={labels.errorText}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Stack gap="section">
-                        <Note {...props} />
-                        <DeckList {...props} rows={rows} isLoading={isLoading} />
-                    </Stack>
-                )}
-            />
-        </Page>
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={labels.errorText}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Stack gap="section">
+                    <Note {...props} />
+                    <DeckList {...props} rows={rows} isLoading={isLoading} />
+                </Stack>
+            )}
+            frame={(parts) => (
+                <Page isLoading={parts.isLoading} header={pageHeader}>
+                    {parts.body}
+                </Page>
+            )}
+        />
     )
 }

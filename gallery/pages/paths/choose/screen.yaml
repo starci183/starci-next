@@ -1,0 +1,126 @@
+schema: 1
+screen: paths/choose
+title: Chọn mục tiêu, chưa theo lộ trình nào
+route: /paths/choose
+area: paths
+summary: Năm thẻ lộ trình đầu ra để chọn một mục tiêu; mỗi thẻ có Xem lộ trình và Chọn lộ trình.
+code:
+  - features/pages/PathsChoosePage
+  - components/blocks/PathsChoose
+shots:
+  "390":
+    file: 390.png
+    sha256: 9de61f1b4937fe8284dd439423bc0e21e249b59a669968033a82a32be3a89f39
+  "1440":
+    file: 1440.png
+    sha256: be750c44314a057cc2aafa26669e589ff44ff57a937e0d46cb8c41395dd243f2
+sections:
+  - id: s1
+    title: Năm thẻ lộ trình
+    shows: "Mỗi lộ trình là một vật thật có thể chọn: tên, lời hứa, kết quả đạt được, các phần và quy
+      mô; lệnh Xem lộ trình và Chọn lộ trình là nút trung tính 40px, thẻ lộ trình hiện tại chỉ thêm
+      nhãn."
+    why: ui/components/card.md, một nút chính mỗi view
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Hộp chi tiết và hộp xác nhận đổi
+    shows: Xem lộ trình mở hộp thoại với kết quả, tiêu chí kiểm và các chặng; đổi lộ trình mở hộp xác
+      nhận.
+    why: ui/components/dialog-drawer.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:25.868Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Lẫn tiếng Anh/viết tắt: "milestone concept", "CI có chữ ký xanh", "e2e", "agent", "eval".
+            Còn lại: câu mô tả lộ trình (milestone concept, e2e) là dữ liệu của core (cần API).'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:58.064Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:58.582Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

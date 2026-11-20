@@ -1,25 +1,34 @@
 "use client"
 
 import type { PageHeaderContent } from "@starci/grammar/common"
-import type { OutlineEntry } from "@starci-next/ui"
 import { useLocale, useTranslations } from "next-intl"
 import { harnessHeaderOf, outlineOf, useHarnessCommonLabels, type HarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryHarnessDocSwr } from "@/hooks/swr"
+import { useQueryHarnessDocSwr, useQueryHarnessDocsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
-import { HARNESS_ROUTES } from "@/modules/routes"
-import type { DataSlot, HarnessSectionView, SlotLabels } from "@/modules/types"
+import { HARNESS_ROUTES, harnessDocPath } from "@/modules/routes"
+import type { DataSlot, HarnessOutlineEntry, HarnessSectionView, SlotLabels } from "@/modules/types"
 
 /** One article as drawn: its sections and its outline. */
 export type HarnessDocPageView = {
     readonly title: string
     readonly summary: string
     readonly sections: ReadonlyArray<HarnessSectionView>
-    readonly outline: ReadonlyArray<OutlineEntry>
+    readonly outline: ReadonlyArray<HarnessOutlineEntry>
+}
+
+/** One article of the list beside the one on screen. */
+export type HarnessDocNavItem = {
+    readonly id: string
+    readonly title: string
+    readonly href: string
+    readonly isCurrent: boolean
 }
 
 /** The words of the article page. */
 export type HarnessDocLabels = {
+    readonly navTitle: string
+    readonly navEmpty: string
     readonly outlineTitle: string
     readonly outlineEmpty: string
 }
@@ -32,6 +41,7 @@ export type HarnessDocScreen = {
         readonly placeholder: HarnessDocPageView
         readonly slotLabels: SlotLabels
         readonly labels: HarnessDocLabels
+        readonly docs: ReadonlyArray<HarnessDocNavItem>
         readonly common: HarnessCommonLabels
     }
     readonly on: { readonly retry: () => void }
@@ -59,26 +69,38 @@ export const useHarnessDocScreen = (route: DocRoute): HarnessDocScreen => {
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
     const read = useQueryHarnessDocSwr(route.slug, locale)
+    const list = useQueryHarnessDocsSwr(locale)
     useDocumentTitle(read.data?.title)
     return {
         props: {
             header: harnessHeaderOf(common, {
                 active: "docs",
-                title: read.data?.title ?? t("title"),
-                ...(read.data === undefined ? {} : { description: read.data.summary }),
+                title: (read.data?.title ?? t("title")).replaceAll("`", ""),
+                ...(read.data === undefined ? {} : { description: read.data.summary.replaceAll("`", "") }),
                 trail: [[common.tabs.docs, HARNESS_ROUTES.docs]],
             }),
             slot: mapSlot(slotOfSwr(read), (doc): HarnessDocPageView => ({
                 title: doc?.title ?? "",
-                summary: doc?.summary ?? "",
+                summary: (doc?.summary ?? "").replaceAll("`", ""),
                 sections: doc?.sections ?? [],
                 outline: outlineOf(doc?.sections ?? []),
             })),
             placeholder: HARNESS_DOC_PLACEHOLDER,
-            slotLabels: slotLabels(t("missing")),
-            labels: { outlineTitle: t("outlineTitle"), outlineEmpty: t("outlineEmpty") },
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
+            labels: {
+                navTitle: t("navTitle"),
+                navEmpty: t("navEmpty"),
+                outlineTitle: t("outlineTitle"),
+                outlineEmpty: t("outlineEmpty"),
+            },
+            docs: (list.data ?? []).map((doc) => ({
+                id: doc.slug,
+                title: doc.title.replaceAll("`", ""),
+                href: harnessDocPath(doc.slug),
+                isCurrent: doc.slug === route.slug,
+            })),
             common,
         },
-        on: { retry: () => void read.mutate() },
+        on: { retry: () => void Promise.all([read.mutate(), list.mutate()]) },
     }
 }

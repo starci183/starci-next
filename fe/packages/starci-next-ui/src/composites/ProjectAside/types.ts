@@ -75,6 +75,7 @@ export type ProjectDetailLabels = {
     readonly deployedLabel: string
     readonly saveDeployed: string
     readonly runProbes: string
+    readonly runProbesNeedsUrl: string
     readonly runningProbes: string
     readonly sync: string
     readonly syncing: string

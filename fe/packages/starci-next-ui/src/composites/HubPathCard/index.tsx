@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
-import { Button, Cluster, Icon, Mascot, Section, Stack, Text } from "@starci/grammar/common"
-import { ART } from "../../leaves/Art"
+import { Button, Cluster, Icon, Section, Stack, Text } from "@starci/grammar/common"
 import { PlayGlyph } from "../../leaves/Icon"
 
 /** The active path of the learner, already in words. */
@@ -30,8 +29,6 @@ type HubPathCardProps = {
     readonly chooseHref: string
     /** Where the learner continues the active path. */
     readonly continueHref: string
-    /** The public base of the statics (`NEXT_PUBLIC_STATICS_URL`), read once by the app; the artwork is `base/staticsKey`. */
-    readonly staticsBase: string
     readonly isLoading?: boolean
 }
 
@@ -42,10 +39,9 @@ type PathCopy = {
     readonly commands: ReactNode
 }
 
-/** The first-run artwork at the card's start and the copy beside it. */
-const PathBody = (props: PathCopy & { readonly artBase: string }) => (
+/** The copy of the card: a title, one muted line and the commands. No artwork inside a card (illustrations only on empty regions). */
+const PathBody = (props: PathCopy) => (
     <Cluster gap="section" align="center">
-        <Mascot src={`${props.artBase}/${ART.journey.key}`} size="md" loading="eager" assetSlot="hub-path-journey" />
         <Stack gap="row">
             <Stack gap="identity">
                 <Text isStrong>{props.title}</Text>
@@ -64,7 +60,6 @@ export const HubPathCard = (props: HubPathCardProps) => {
         return (
             <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
                 <PathBody
-                    artBase={props.staticsBase}
                     title={props.labels.emptyTitle}
                     line={props.labels.emptyBody}
                     commands={
@@ -79,7 +74,6 @@ export const HubPathCard = (props: HubPathCardProps) => {
     return (
         <Section title={props.labels.eyebrow} {...loading} headingLevel={2}>
             <PathBody
-                artBase={props.staticsBase}
                 title={view.title}
                 line={view.next.length === 0 ? "" : `${props.labels.nextLabel}: ${view.next.join(" / ")}`}
                 commands={

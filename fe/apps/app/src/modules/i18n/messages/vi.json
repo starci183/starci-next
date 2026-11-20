@@ -255,6 +255,7 @@
         "pageTitle": "Phiên ôn tập",
         "root": "Ôn tập",
         "progress": "{position}/{total} thẻ · Còn khoảng {minutes} phút",
+        "progressDone": "{total}/{total} thẻ · Đã xong",
         "progressLabel": "Tiến độ phiên ôn",
         "sourceCard": "Bộ thẻ · {deck}",
         "sourceRetrieval": "Bài Essentials · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Dễ",
         "interval": "{days, plural, =0 {hôm nay} other {# ngày}}",
         "shortcuts": "Phím tắt: Space để hiện đáp án, 1 đến 4 để chấm",
+        "spaceHint": "Hoặc nhấn phím Space",
         "lessonLine": "Từ bài {lesson}",
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Chọn bộ thẻ",
         "emptyBack": "Về Ôn tập"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend",
+        "ai-engineer": "Kỹ sư AI",
+        "founder": "Người sáng lập",
+        "system-design-senior": "System design",
+        "fullstack mastery": "Fullstack thành thạo"
+      },
       "decks": {
         "pageTitle": "Bộ thẻ ôn tập",
         "emptyTitle": "Chưa có bộ thẻ nào.",
@@ -318,6 +327,8 @@
         "filterLabel": "Lọc theo việc đã thêm",
         "trackLabel": "Lọc theo lộ trình",
         "allTracks": "Mọi lộ trình",
+        "scrollPrevious": "Cuộn sang trái",
+        "scrollNext": "Cuộn sang phải",
         "add": "Thêm bộ thẻ",
         "added": "Đã thêm",
         "remove": "Bỏ khỏi hàng đợi",
@@ -332,16 +343,16 @@
         "meta": "{total} bộ · {added} đã thêm · Mỗi ngày tối đa {goal} thẻ theo mục tiêu của bạn",
         "cards": "{count} thẻ",
         "filters": {
-          "all": "Tất cả {count}",
-          "added": "Đã thêm {count}",
-          "new": "Chưa thêm {count}"
+          "all": "Tất cả",
+          "added": "Đã thêm",
+          "new": "Chưa thêm"
         }
       },
       "hub": {
         "pageTitle": "Ôn tập",
         "errorTitle": "Không tải được",
         "errorText": "Không tải được hàng ôn hôm nay. Thẻ của bạn vẫn an toàn. Thử lại sau vài giây.",
-        "metaFree": "Miễn phí",
+        "metaFree": "Miễn phí",
         "metaNoDecks": "Chưa có bộ thẻ nào",
         "metaDue": "{due} thẻ đến hạn · {overdue} quá hạn",
         "metaGoal": "Mục tiêu {daily} thẻ/ngày",
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Bộ thẻ",
         "notFound": "Không tìm thấy bộ thẻ này.",
+        "backToDecks": "Về danh sách bộ thẻ",
         "errorText": "Bộ thẻ có thể đã đổi tên. Về danh sách để chọn lại.",
         "breadcrumbs": "Đường dẫn",
         "root": "Ôn tập",
@@ -417,7 +429,7 @@
         "review": "Ôn bộ này",
         "previewTitle": "Xem trước vài thẻ",
         "previewNote": "Chỉ hiện câu hỏi. Đáp án có khi bạn ôn.",
-        "removeTitle": "Bỏ bộ thẻ",
+        "removeTitle": "Bỏ khỏi hàng đợi",
         "removeText": "Thẻ của bộ này sẽ ngừng đến mỗi ngày. Lịch ôn đã có của bạn được giữ, thêm lại sau vẫn nối tiếp.",
         "remove": "Bỏ khỏi hàng đợi",
         "failed": "Chưa thêm hoặc bỏ được bộ thẻ. Thử lại sau ít giây."
@@ -474,10 +486,10 @@
           "done": "{accepted}/{total} bài Accepted · đã xong"
         },
         "filters": {
-          "all": "Tất cả {count}",
-          "doing": "Đang làm {count}",
-          "new": "Chưa bắt đầu {count}",
-          "done": "Đã xong {count}"
+          "all": "Tất cả",
+          "doing": "Đang làm",
+          "new": "Chưa bắt đầu",
+          "done": "Đã xong"
         }
       },
       "pattern": {
@@ -687,9 +699,9 @@
         "prove": "Chứng minh và kết nối"
       },
       "kind": {
-        "build": "XÂY SẢN PHẨM",
-        "agent": "AGENT & LLM",
-        "job": "VIỆC LÀM"
+        "build": "Xây sản phẩm",
+        "agent": "Agent và LLM",
+        "job": "Việc làm"
       },
       "meta": "{steps} bước · khoảng {weeks} tuần",
       "card": {
@@ -719,20 +731,24 @@
         "notFound": "Lộ trình này không còn trong danh sách."
       },
       "signedOut": {
-        "title": "Đăng nhập để chọn mục tiêu",
-        "body": "Lộ trình bạn chọn được lưu theo tài khoản của bạn.",
+        "title": "Cần đăng nhập để chọn lộ trình",
+        "body": "Đăng nhập để lưu lộ trình bạn chọn và theo dõi tiến độ.",
         "action": "Đăng nhập"
-      }
+      },
+      "errorTitle": "Không tải được danh sách lộ trình",
+      "errorText": "Kiểm tra kết nối rồi thử lại."
     },
     "incidents": {
       "pageTitle": "Sự cố",
       "title": "Sự cố",
-      "description": "Mỗi sự cố là một lỗi thật trong repo của thầy, viết như triệu chứng ở production. Bạn tìm lỗi, sửa cho các flow xanh, rồi nộp kèm giải thích.",
+      "description": "Mỗi sự cố là một lỗi thật trong kho mã của thầy, viết như triệu chứng ở môi trường thật. Bạn tìm lỗi, sửa cho các luồng chạy qua, rồi nộp kèm giải thích.",
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
       "factAuthored": "{count} sự cố đã mở",
-      "soon": "Sắp có",
+      "noneTitle": "Chưa có sự cố nào để luyện",
+      "noneBody": "Sự cố gắn với bài Essentials sẽ mở dần. Học bài trước, sự cố sẽ hiện ở đây khi sẵn sàng.",
+      "noneAction": "Đi tới Essentials",
       "open": "Đã mở",
       "cta": "Mở sự cố",
       "meta": "{difficulty} · {minutes} phút"
@@ -756,8 +772,8 @@
           "partDone": "Xong phần {part}",
           "doing": "Đang học · phần {part}"
         },
-        "resume": "Học tiếp: {title} · phần {part}",
-        "start": "Bắt đầu: {title}",
+        "resume": "Học tiếp",
+        "start": "Bắt đầu học",
         "upgrade": "Nâng cấp Premium",
         "opener": "Mở bài {right}/{total}",
         "openerNone": "—",
@@ -777,7 +793,9 @@
         "planPremium": "Cần Premium",
         "noResultTitle": "Không có bài nào khớp \"{query}\"",
         "noResultText": "Thử tên bài toán như \"email gửi trùng\", hoặc bỏ bộ lọc chủ đề.",
-        "clear": "Xóa bộ lọc"
+        "clear": "Xóa bộ lọc",
+        "errorTitle": "Không tải được danh mục",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "difficulty": {
         "foundation": "Nền tảng",
@@ -932,7 +950,7 @@
         "progress": "{done}/{total} bài xong",
         "startFirst": "Bắt đầu bài 1",
         "resumePart": "Học tiếp phần {part}",
-        "resume": "Học tiếp: {title} · phần {part}",
+        "resume": "Học tiếp",
         "noticeTitle": "Gói miễn phí học được phần 1 của mọi bài",
         "noticeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
         "partsTitle": "Mỗi bài có 4 phần",
@@ -946,7 +964,9 @@
         "prerequisites": "Nên biết trước",
         "related": "Chủ đề liên quan",
         "moved": "Bài này đã chuyển vào một chủ đề. Địa chỉ cũ không còn dùng.",
-        "movedOpen": "Mở bài"
+        "movedOpen": "Mở bài",
+        "errorTitle": "Không tải được chủ đề",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "attempt": {
         "saved": "Đã lưu câu trả lời của bạn.",
@@ -1085,6 +1105,7 @@
           "machineNone": "Chưa thấy máy nào kết nối",
           "machineNoneNote": "Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.",
           "upFailed": "Lệnh up báo lỗi",
+          "upFix": "Sửa theo dòng báo lỗi ở trên rồi chạy lại lệnh up.",
           "architecture": "Kiến trúc",
           "diagram": "Sơ đồ kiến trúc",
           "diagramError": "Không vẽ được sơ đồ",
@@ -1123,7 +1144,7 @@
           "fixTitle": "Sửa",
           "fixNote": "Bạn không phải gõ code. Nhờ AI của bạn (Claude, ChatGPT hoặc agent trong IDE) sửa trong thư mục source, rồi check lại.",
           "fixPrompt": "Lời nhắc cho AI",
-          "guardTitle": "Tắt luật {rule}",
+          "guardTitle": "Tắt luật đang kiểm",
           "guardNote": "--guard {flag} để thấy hệ thống vỡ khi thiếu nó",
           "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {
@@ -1141,7 +1162,7 @@
           },
           "primary": {
             "run": "Chạy kịch bản",
-            "check": "Check lại",
+            "check": "Kiểm tra lại",
             "next": "Kịch bản tiếp theo",
             "running": "Đang chạy",
             "failed": "Không gửi được yêu cầu tới máy của bạn"
@@ -1179,10 +1200,6 @@
             "open": "Sẵn sàng",
             "doing": "Đang luyện · {score}/{max}",
             "passed": "Đã xanh"
-          },
-          "lock": {
-            "title": "{level} mở sau khi xong mức {below}",
-            "text": "Mức {below} đang {score}/{max}. Mức này mở khi mọi kịch bản ẩn của mức {below} đều xanh."
           },
           "primary": {
             "run": "Chạy mức {level}",
@@ -1247,7 +1264,6 @@
           },
           "shell": {
             "nextQuestion": "Câu tiếp theo",
-            "questionNumber": "Câu {n}",
             "seeResult": "Xem kết quả",
             "readArticle": "Đọc bài viết",
             "retake": "Làm lại 5 câu",
@@ -1282,7 +1298,11 @@
               "three": "Đã chứng minh khi CI của GitHub ký xác nhận, rồi thành dòng trên hồ sơ"
             }
           }
-        }
+        },
+        "errorTitle": "Không tải được bài",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ.",
+        "more": "Xem thêm",
+        "less": "Thu gọn"
       }
     },
     "projects": {
@@ -1300,7 +1320,6 @@
         "emptyText": "Mang dự án đầu tiên của bạn vào: đề tài nào, ngôn ngữ nào cũng được, rồi thêm thư mục starci/ bằng một lệnh.",
         "listLabel": "Dự án của bạn",
         "progressLabel": "Concept đã chứng minh",
-        "errorTitle": "Không tải được dự án",
         "ribbonLabel": "Tổng quan dự án",
         "figures": {
           "proved": "Concept đã chứng minh",
@@ -1332,6 +1351,8 @@
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
         "repo": "Repo GitHub",
+        "namePlaceholder": "Ví dụ: my-blog-api",
+        "repoPlaceholder": "https://github.com/ban/du-an",
         "submit": "Tạo dự án",
         "submitting": "Đang tạo...",
         "submitNeedsName": "Đặt tên dự án trước khi tạo.",
@@ -1381,13 +1402,14 @@
         "sync": "Cập nhật kết quả từ máy",
         "syncing": "Đang cập nhật...",
         "ciNone": "Chưa có lần chạy CI nào. Thêm GitHub Action của StarCi và đẩy code lên.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Lần chạy gần nhất · commit {commit}",
         "ciPassed": "Đạt",
         "ciFailed": "Chưa đạt",
         "probeText": "Ứng dụng HTTP chạy được bằng Docker. StarCi gọi địa chỉ công khai của bạn với health và các probe chung cho từng concept.",
         "deployedLabel": "Địa chỉ đã triển khai (http hoặc https công khai)",
         "saveDeployed": "Lưu địa chỉ",
         "runProbes": "Chạy kiểm tra",
+        "runProbesNeedsUrl": "Lưu địa chỉ đã triển khai trước khi chạy kiểm tra.",
         "runningProbes": "Đang kiểm tra...",
         "secretText": "Action ký kết quả bằng bí mật của dự án này. Đổi bí mật nếu nó bị lộ.",
         "rotate": "Đổi bí mật CI",
@@ -1664,8 +1686,8 @@
         "probeRun": "Chạy probe",
         "probeRunning": "Đang chạy...",
         "ciTitle": "CI GitHub",
-        "ciEmpty": "Chưa có run CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
-        "ciRun": "Run",
+        "ciEmpty": "Chưa có lượt chạy CI nào được ký. Đẩy code lên GitHub để Action gửi kết quả.",
+        "ciRun": "Lượt chạy",
         "ciCommit": "Commit",
         "ciVerdict": "Kết quả",
         "ciWhen": "Lúc",
@@ -1735,11 +1757,13 @@
         "server-probe": "Probe của server",
         "graded-session": "Phiên đã chấm",
         "judge": "Judge0 Accepted",
-        "other": "Bằng chứng StarCi"
+        "other": "Đã được StarCi kiểm tra"
       },
       "queue": {
         "pageTitle": "Duyệt kinh nghiệm",
         "title": "Duyệt kinh nghiệm",
+        "itemTitle": "Một mục cần duyệt",
+        "backToProfile": "Về hồ sơ",
         "forbiddenTitle": "Chỉ thầy và người duyệt được mở trang này",
         "listLabel": "Hàng chờ duyệt",
         "count": "{count} mục",
@@ -1801,7 +1825,6 @@
         },
         "revokeLabel": "Lý do thu hồi (bắt buộc)",
         "revoke": "Thu hồi",
-        "back": "Về hàng chờ",
         "dueAt": "Hạn duyệt {date}",
         "preview": "Xem trước",
         "gradeTitle": "AI chấm",
@@ -1834,7 +1857,12 @@
         "part": "Phần học",
         "evidence": "Bằng chứng",
         "code": "Mã xác minh",
-        "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
+        "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn.",
+        "factsTitle": "Thông tin công khai",
+        "errorTitle": "Không tải được kết quả xác minh",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "signer": "Người ký",
+        "signedOn": "Ngày ký"
       },
       "loading": "Đang tải…",
       "crumb": {
@@ -1895,7 +1923,9 @@
       "gradePass": "Đạt",
       "gradeFail": "Chưa đạt",
       "defenseChip": "{count} câu bảo vệ",
-      "signerChip": "{role} ký"
+      "signerChip": "{role} ký",
+      "errorTitle": "Không tải được danh sách kinh nghiệm",
+      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
     },
     "devices": {
       "pageTitle": "Thiết bị",
@@ -2028,7 +2058,7 @@
         "overview": "Tổng quan",
         "build": "Build",
         "use": "Xài",
-        "docs": "Hiểu sâu"
+        "docs": "Docs"
       },
       "tools": {
         "label": "Công cụ của bạn",
@@ -2090,7 +2120,9 @@
             "topics": "Bản chất LLM · Vòng lặp agent · Context · Thiết kế harness",
             "progress": "{count} bài"
           }
-        }
+        },
+        "errorTitle": "Không tải được tiến độ",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "builds": {
         "title": "Build",
@@ -2098,7 +2130,18 @@
         "listTitle": "Các build",
         "empty": "Chưa có build nào.",
         "practising": "{n} / {total} chặng đã chạy",
-        "proved": "{n} / {total} chặng đã chứng minh"
+        "proved": "{n} / {total} chặng đã chứng minh",
+        "noMatch": "Không có bản build nào ở trạng thái này.",
+        "filterLabel": "Lọc theo trạng thái",
+        "filter": {
+          "all": "Tất cả",
+          "practising": "Đang luyện",
+          "proved": "Đã chứng minh",
+          "todo": "Chưa bắt đầu"
+        },
+        "errorTitle": "Không tải được danh sách build",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "needsKey": "Cần key AI của bạn"
       },
       "build": {
         "title": "Build",
@@ -2130,7 +2173,10 @@
         "repoBind": "Kết nối repo",
         "repoFailed": "Không kết nối được repo này. Kiểm tra tên có dạng owner/repo.",
         "repoAudienceLabel": "Audience của workflow",
-        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này."
+        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này.",
+        "errorTitle": "Không tải được bản build này",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "backToBuilds": "Về danh sách Build"
       },
       "use": {
         "title": "Xài",
@@ -2157,7 +2203,9 @@
         "costColumn": "Chi phí ước tính",
         "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
         "shortcutBlocked": "{label} (bị chặn)",
-        "budget": "Tối đa {usd}"
+        "budget": "Tối đa {usd}",
+        "errorTitle": "Không tải được phần Xài",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "guide": {
         "title": "Hướng dẫn",
@@ -2173,19 +2221,33 @@
         "doctorCommandDescription": "Chạy trong repo của bạn, kết quả về đây.",
         "doctorEmpty": "Không có điều kiện nào để hiển thị.",
         "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
-        "onlyFailingDescription": "Ẩn các điều kiện đã đạt"
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt",
+        "navTitle": "Hướng dẫn",
+        "navEmpty": "Chưa có hướng dẫn nào.",
+        "errorTitle": "Không tải được bài hướng dẫn",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "docs": {
-        "title": "Hiểu sâu",
+        "title": "Docs",
         "description": "Bài giải thích dài, có sơ đồ, không có kiểm thử. Đọc để hiểu agent chạy ra sao.",
         "listTitle": "Các bài",
-        "empty": "Chưa có bài nào."
+        "empty": "Chưa có bài nào.",
+        "noMatch": "Không có bài nào khớp. Thử một từ khác.",
+        "filterLabel": "Lọc theo tên bài",
+        "filterPlaceholder": "Lọc theo tên bài",
+        "clearLabel": "Xóa bộ lọc",
+        "errorTitle": "Không tải được mục lục Docs",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "doc": {
         "title": "Bài giải thích",
         "missing": "Không tìm thấy bài này.",
         "outlineTitle": "Trong bài này",
-        "outlineEmpty": "Bài chưa có mục nào."
+        "outlineEmpty": "Bài chưa có mục nào.",
+        "navTitle": "Docs",
+        "navEmpty": "Chưa có bài nào.",
+        "errorTitle": "Không tải được bài này",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "proofs": {
         "none": "Chưa luyện",
@@ -2281,9 +2343,17 @@
         "meta": "Thay đổi chưa lưu",
         "open": "Sửa hồ sơ",
         "openNew": "Thêm ảnh và tên",
-        "cancel": "Hủy",
+        "cancel": "Huỷ",
         "save": "Lưu thay đổi",
-        "unsaved": "Thay đổi chưa lưu"
+        "unsaved": "Thay đổi chưa lưu",
+        "goal": {
+          "label": "Lộ trình mục tiêu",
+          "hint": "Dùng để gợi ý bài kế tiếp. Không khóa phần nào.",
+          "placeholder": "Chọn lộ trình"
+        },
+        "errorTitle": "Không tải được hồ sơ",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "clean": "Sửa ảnh, tên hiển thị và lộ trình mục tiêu"
       },
       "crumb": {
         "label": "Đường dẫn",
@@ -2326,6 +2396,8 @@
       "title": "Tiến độ của bạn",
       "description": "Đọc từ Essentials, Harness, Projects, Luyện code và Ôn tập",
       "unavailable": "Chưa tải được phần này.",
+      "pageError": "Không tải được tiến độ",
+      "pageErrorText": "Máy chủ chưa trả lời. Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.",
       "ribbon": {
         "label": "Tóm tắt tiến độ",
         "proved": "Khái niệm đã chứng minh",
@@ -2342,7 +2414,6 @@
         "openerNone": "Chưa trả lời câu mở bài nào.",
         "unlocked": "Đã mở",
         "locked": "Cần Premium",
-        "upgrade": "Xem Premium",
         "part": {
           "essence": "Phần 1 · Bản chất",
           "source": "Phần 2 · Source",
@@ -2413,10 +2484,12 @@
         "doing": "Pattern đang làm",
         "done": "Pattern đã xong",
         "accepted": "{done} bài Accepted",
-        "empty": "Chưa có pattern nào."
+        "empty": "Chưa có pattern nào.",
+        "more": "Còn {count} pattern khác. Mở Luyện code để xem hết."
       },
       "firstVisit": {
         "title": "Chưa có gì để đo, và đó là bình thường",
+        "start": "Bắt đầu",
         "text": "Mọi con số ở đây là việc bạn làm thật. Học một bài, luyện một bài hoặc ôn một thẻ là có số đầu tiên.",
         "essentials": {
           "title": "Essentials",

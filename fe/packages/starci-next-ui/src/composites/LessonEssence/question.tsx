@@ -1,4 +1,5 @@
 import { Alert, Cluster, Link, RadioGroup, Section, Stack, Stepper, Text } from "@starci/grammar/common"
+import { withInlineCode } from "./inline"
 import type { EssenceBarPart, EssenceLabels, EssenceQuestionView, EssenceView } from "./types"
 
 /** What the answer bar needs. */
@@ -29,9 +30,7 @@ export type LessonOpenerHeadProps = {
 /** The eyebrow of the opener and the five-answer bar with the position line under it. */
 export const LessonOpenerHead = (props: LessonOpenerHeadProps) => (
     <Stack gap="inline">
-        <Text size="sm" tone="muted">
-            {props.labels.opener.eyebrow}
-        </Text>
+        <Text tone="muted">{props.labels.opener.eyebrow}</Text>
         <AnswerBar label={props.labels.opener.barLabel} bar={props.view.bar} isLoading={props.isLoading} />
     </Stack>
 )
@@ -63,7 +62,7 @@ const Why = (props: WhyProps) =>
                 <Text as="span" isStrong>
                     {props.labels.why}
                 </Text>{" "}
-                {props.question.explanation}
+                {withInlineCode(props.question.explanation)}
             </Text>
             {props.question.isCorrect || props.question.links.length === 0 ? null : (
                 <Cluster gap="identity" label={props.labels.readMore}>
@@ -87,8 +86,8 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
     const isBusy = question.status === "pending" || question.status === "grading"
     return (
         <Stack gap="section">
-            <Text as="p" isStrong>
-                {question.prompt}
+            <Text as="p" isStrong isLoading={props.isLoading}>
+                {withInlineCode(question.prompt)}
             </Text>
             {isGraded ? (
                 <Section
@@ -97,7 +96,7 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
                     empty={labels.opener.empty}
                     items={question.choices.map((choice, position) => ({
                         id: choice.id,
-                        title: choice.label,
+                        title: choice.label.replaceAll("`", ""),
                         leading: { position: position + 1 },
                         ...markOf(question, choice.id, labels.opener),
                     }))}
@@ -109,7 +108,7 @@ export const LessonQuestion = (props: LessonQuestionProps) => {
                     appearance="rows"
                     options={question.choices.map((choice) => ({
                         value: choice.id,
-                        label: choice.label,
+                        label: withInlineCode(choice.label),
                         isDisabled: isBusy,
                     }))}
                     value={question.pickedId === "" ? null : question.pickedId}

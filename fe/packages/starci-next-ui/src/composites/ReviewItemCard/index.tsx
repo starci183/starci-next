@@ -5,7 +5,6 @@ import {
     ChoiceChips,
     Cluster,
     Heading,
-    Kbd,
     Stack,
     SurfaceCard,
     Text,
@@ -40,7 +39,7 @@ const Cloze = (props: {
                         empty={null}
                     />
                     {each.result === undefined ? null : (
-                        <Badge tone={each.result === "correct" ? "success" : "warning"}>
+                        <Badge tone={each.result === "correct" ? "success" : "warning"} isDot>
                             {each.result === "correct" ? props.labels.clozeCorrect : props.labels.clozeWrong}
                         </Badge>
                     )}
@@ -64,6 +63,7 @@ const Notices = (props: { readonly issue: ReviewItemScreen["issue"]; readonly la
 /** The answer box before the flip: the optional note of what the learner remembers, then the one command that shows the answer. */
 const Recall = (props: {
     readonly item: ReviewItemScreen
+    readonly isLoading: boolean
     readonly labels: ReviewSessionLabels
     readonly on: Pick<ReviewItemCommands, "setNote" | "flip" | "submitAnswer" | "skip">
 }) => {
@@ -90,13 +90,17 @@ const Recall = (props: {
                     <Button
                         intent="commit"
                         isPending={props.item.isFlipping}
-                        isDisabled={isRetrieval && props.item.note.trim() === ""}
+                        isDisabled={props.isLoading || (isRetrieval && props.item.note.trim() === "")}
                         onPress={isRetrieval ? props.on.submitAnswer : props.on.flip}
                     >
                         {isRetrieval ? props.labels.revealRetrieval : props.labels.flip}
                     </Button>
                 )}
-                {isRetrieval ? null : <Kbd keys={["space"]} />}
+                {isRetrieval ? null : (
+                    <Text size="xs" tone="muted">
+                        {props.labels.spaceHint}
+                    </Text>
+                )}
             </Cluster>
         </Stack>
     )
@@ -108,11 +112,11 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <Badge tone="muted">{props.item.sourceLine}</Badge>
-                <Text size="sm" tone="muted">
+                <Text size="xs" tone="muted" isLoading={props.isLoading}>
                     {props.item.kindLine}
                 </Text>
             </Cluster>
-            <Heading level={2} scale="standard">
+            <Heading level={2} scale="standard" isLoading={props.isLoading}>
                 {props.item.question}
             </Heading>
             {props.item.isConflict ? (
@@ -125,7 +129,7 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
             ) : props.item.back === undefined ? (
                 <Stack gap="inline">
                     <Cloze item={props.item} labels={props.labels} onPick={props.on.pick} />
-                    <Recall item={props.item} labels={props.labels} on={props.on} />
+                    <Recall item={props.item} labels={props.labels} on={props.on} isLoading={props.isLoading} />
                 </Stack>
             ) : (
                 <ReviewAnswer item={props.item} labels={props.labels} on={props.on} back={props.item.back} />

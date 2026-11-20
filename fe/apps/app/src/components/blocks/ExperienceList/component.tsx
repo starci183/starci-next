@@ -3,7 +3,6 @@ import {
     AlertDialog,
     Badge,
     Button,
-    ChoiceChips,
     Cluster,
     EmptyNotice,
     Page,
@@ -11,6 +10,7 @@ import {
     Stack,
     Switch,
     SurfaceCard,
+    Tabs,
     Text,
     Textarea,
     type ListRowData,
@@ -22,7 +22,7 @@ import type { DataSlot, ExperienceCardView, ExperienceListView, SlotLabels } fro
 export const EXPERIENCE_PLACEHOLDER: ExperienceListView = {
     meta: "xxxxxx",
     tabs: [{ id: "all", label: "xxxxxx", count: 0 }],
-    sources: [{ id: "all", label: "xxxxxx" }],
+    sources: [{ id: "all", label: "xxxxxx", count: 0 }],
     cards: [1, 2].map((index) => ({
         itemId: `placeholder-${index}`,
         source: "xxxxxx",
@@ -98,6 +98,7 @@ type ExperienceCardProps = {
     readonly card: ExperienceCardView
     readonly labels: ExperienceListLabels
     readonly on: ExperienceListActions
+    readonly isLoading: boolean
 }
 
 /** Props for {@link ExperienceListBase}. */
@@ -107,6 +108,13 @@ export type ExperienceListBaseProps = {
         readonly placeholder: ExperienceListView
         readonly slotLabels: SlotLabels
         readonly labels: ExperienceListLabels
+        /** The event line under the title; undefined while nothing is known. */
+        readonly meta: string | undefined
+        /** The state tabs of the header, only once the list is settled and holds an item. */
+        readonly tabs:
+            ReadonlyArray<{ readonly id: string; readonly label: string; readonly count: number }> | undefined
+        /** The CV line a send is confirmed with. */
+        readonly confirmLine: string | undefined
         readonly tab: string
         readonly source: string
         readonly isConfirmOpen: boolean
@@ -140,12 +148,10 @@ const CardEdit = (props: ExperienceCardProps) => {
                 ))}
             </Cluster>
             <Cluster gap="inline" wrap align="center">
-                <Button intent="commit" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
+                <Button intent="neutral" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
                     {card.edit.sendLabel}
                 </Button>
-                <Text size="sm" tone="muted">
-                    {labels.sendHint}
-                </Text>
+                <Text tone="muted">{labels.sendHint}</Text>
             </Cluster>
         </Stack>
     )
@@ -159,17 +165,14 @@ const CardVerified = (props: ExperienceCardProps) => {
     return (
         <Cluster gap="inline" wrap align="center">
             <Switch
-                kind="compact"
                 label={verified.isShown ? labels.shown : labels.hidden}
                 isLabelHidden
                 isSelected={verified.isShown}
                 isDisabled={card.isBusy}
                 onSelectedChange={() => on.toggleShown(card.itemId)}
             />
-            <Text size="sm" tone="muted">
-                {verified.isShown ? labels.shown : labels.hidden}
-            </Text>
-            <Button intent="neutral" size="sm" onPress={() => on.copyLink(card.itemId, verified.url)}>
+            <Text tone="muted">{verified.isShown ? labels.shown : labels.hidden}</Text>
+            <Button intent="neutral" onPress={() => on.copyLink(card.itemId, verified.url)}>
                 {verified.isCopied ? labels.copiedLink : labels.copyLink}
             </Button>
         </Cluster>
@@ -186,18 +189,15 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     <Badge tone="neutral">{card.source}</Badge>
                     <Badge tone={card.stateTone}>{card.state}</Badge>
                 </Cluster>
-                <Text size="sm" tone="muted">
+                <Text tone="muted" isLoading={props.isLoading}>
                     {card.dateText}
                 </Text>
             </Cluster>
-            <Stack gap="identity">
-                <Text isStrong>{card.title}</Text>
-                {card.subtitle === undefined ? null : (
-                    <Text size="sm" tone="muted">
-                        {card.subtitle}
-                    </Text>
-                )}
-            </Stack>
+            {card.subtitle === undefined ? null : (
+                <Text tone="muted" isLoading={props.isLoading}>
+                    {card.subtitle}
+                </Text>
+            )}
             {card.returnNote === undefined ? null : (
                 <Alert tone="cautionary" title={labels.returnedNote} description={card.returnNote} />
             )}
@@ -210,15 +210,11 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     ))}
                 </Cluster>
             )}
-            {card.note === undefined ? null : (
-                <Text size="sm" tone="muted">
-                    {card.note}
-                </Text>
-            )}
+            {card.note === undefined ? null : <Text tone="muted">{card.note}</Text>}
             <CardEdit {...props} />
             {card.isReturned && !card.isEditing ? (
                 <div>
-                    <Button intent="neutral" size="sm" onPress={() => on.startEdit(card.itemId)}>
+                    <Button intent="neutral" onPress={() => on.startEdit(card.itemId)}>
                         {labels.reopen}
                     </Button>
                 </div>
@@ -231,7 +227,13 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
 
 /** One item as a thin-bordered card. */
 const ExperienceCard = (props: ExperienceCardProps) => (
-    <SurfaceCard ariaLabel={props.card.title} height="fill">
+    <SurfaceCard
+        {...(props.isLoading
+            ? { ariaLabel: props.labels.title }
+            : { label: props.card.title, headingLevel: 3 as const })}
+        height="fill"
+        isLoading={props.isLoading}
+    >
         <ExperienceCardBody {...props} />
     </SurfaceCard>
 )
@@ -291,19 +293,31 @@ const Claims = (props: ReadyProps) => (
 /** The list: the source chips, then the cards of the chosen tab and source, then the patterns ready to claim. */
 const Items = (props: ReadyProps) => (
     <Stack gap="region">
-        <ChoiceChips
-            label={props.labels.sourcesLabel}
-            options={props.view.sources.map((source) => ({ value: source.id, label: source.label }))}
-            value={props.source}
-            onValueChange={props.on.selectSource}
-            empty={null}
-        />
+        {props.isLoading ? null : (
+            <Tabs
+                kind="filter"
+                label={props.labels.sourcesLabel}
+                items={props.view.sources.map((source) => ({
+                    id: source.id,
+                    label: source.label,
+                    count: source.count,
+                }))}
+                selectedKey={props.source}
+                onSelect={props.on.selectSource}
+            />
+        )}
         {props.view.cards.length === 0 ? (
             <EmptyTab {...props} />
         ) : (
             <Stack gap="row">
                 {props.view.cards.map((card) => (
-                    <ExperienceCard key={card.itemId} card={card} labels={props.labels} on={props.on} />
+                    <ExperienceCard
+                        key={card.itemId}
+                        card={card}
+                        labels={props.labels}
+                        on={props.on}
+                        isLoading={props.isLoading}
+                    />
                 ))}
             </Stack>
         )}
@@ -311,28 +325,13 @@ const Items = (props: ReadyProps) => (
     </Stack>
 )
 
-/** The words under the title: the event line, or that the list is loading. */
-const metaOf = (props: ExperienceListBaseProps["props"]): string | undefined => {
-    if ("items" in props.slot) return props.slot.items.meta
-    return "isLoading" in props.slot ? props.labels.loading : undefined
-}
-
-/** The state tabs of the page header, only once the list is settled and holds an item. */
-const tabsOf = (props: ExperienceListBaseProps["props"]) =>
-    "items" in props.slot && props.slot.items.ways === undefined
-        ? props.slot.items.tabs.map((tab) => ({ id: tab.id, label: tab.label, count: tab.count }))
-        : undefined
-
 /**
  * Draws Experience the way the canvas does: the trail Hồ sơ / Kinh nghiệm, the event line, the state tabs with their counts, the source
  * chips, then the item cards. A returned card shows the teacher's note first; an AI-graded card opens the line in both languages and sends
  * it for review after a confirm (a sent line is locked); a verified card carries the profile switch and the copy command.
  */
 export const ExperienceListBase = (props: ExperienceListBaseProps) => {
-    const { labels } = props.props
-    const meta = metaOf(props.props)
-    const tabs = tabsOf(props.props)
-    const confirmLine = "items" in props.props.slot ? props.props.slot.items.confirmLine : undefined
+    const { labels, meta, tabs, confirmLine } = props.props
     return (
         <Page
             header={{

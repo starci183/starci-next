@@ -1,0 +1,142 @@
+schema: 1
+screen: review/hub-loading
+title: Ôn tập, đang tải
+route: /review
+area: review
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
+  không có thẻ khoá. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 80e92400f02f2f454ef0a4f7c9e20bff3a24d893308805619e75615ca1a97f8e
+  "1440":
+    file: 1440.png
+    sha256: acd14f1c1d9aa9a3001e73a1b2398714f1d9ae940ba1b5c79ebdca38e51c8cae
+code:
+  - features/pages/ReviewTodayPage
+  - components/blocks/ReviewToday
+sections:
+  - id: s1
+    title: Trạng thái
+    shows: Trạng thái
+    why: Đang tải bằng khung xám cùng hình dạng.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:24.788Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton. Tiêu đề mục và "Đổi" hiện thật trong lúc
+            tải; thiếu skeleton cho nút "Bắt đầu ôn" ở header.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+        states:
+          verdict: open
+          notes: Loading có ở 1440 và 390 nhưng vẽ sai (chữ "xxxx" thật), một số tiêu đề hiện thật trong lúc
+            tải; cần skeleton đúng chuẩn.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:12.401Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:30.608Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:51:52.101Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

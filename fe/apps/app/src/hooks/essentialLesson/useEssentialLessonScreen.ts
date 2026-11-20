@@ -50,6 +50,8 @@ export type EssentialLessonView = {
     readonly id: string
     readonly title: string
     readonly topic: { readonly title: string; readonly href: string }
+    /** The crumbs after the catalog (the topic, then the lesson); empty until the lesson is read, so no placeholder word reaches the trail. */
+    readonly trail: ReadonlyArray<{ readonly id: string; readonly label: string; readonly href?: string }>
     readonly difficulty: string
     /** The one line under the subtitle: "Bài 3/6 trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng". */
     readonly facts: string
@@ -65,7 +67,7 @@ export type EssentialLessonView = {
     /** The part the page opens the lesson on again ("Học tiếp"): the first part not done. */
     readonly nextPartHref: string
     /** True when the lesson carries none of the four parts yet. */
-    readonly isEmpty: boolean
+    readonly hasNoPart: boolean
     /** True when the part on screen needs Premium the learner lacks: only its words and the Subscribe link are shown. */
     readonly isLocked: boolean
     /** The prose a part opens with (its own section), when the lesson has one. */
@@ -118,6 +120,7 @@ export type EssentialLessonScreen = {
         readonly slot: DataSlot<EssentialLessonView>
         readonly placeholder: EssentialLessonView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly page: EssentialPageLabels
         readonly labels: EssentialPartsLabels
         readonly essence: EssenceLabels
@@ -135,6 +138,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     id: "placeholder",
     title: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     topic: { title: "xxxxxxxxxxxx", href: "/" },
+    trail: [],
     difficulty: "xxxxxx",
     facts: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     subtitle: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -144,7 +148,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     lockedParts: [],
     parts: [],
     nextPartHref: "/",
-    isEmpty: false,
+    hasNoPart: false,
     isLocked: false,
     intro: undefined,
     essence: {
@@ -175,14 +179,8 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
             isFlagged: false,
             isRead: false,
         })),
-        articleEyebrow: "xxxxxxxxxxxx",
-        sections: [1, 2, 3].map((n) => ({
-            id: `s${n}`,
-            title: "xxxxxxxxxxxxxxxxxxxxx",
-            markdown: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-            isLocked: false,
-            isFlagged: false,
-        })),
+        articleEyebrow: "",
+        sections: [],
         journey: [],
         isFree: false,
     },
@@ -283,6 +281,10 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     id: lesson.id,
                     title: lesson.title,
                     topic: { title: lesson.topic.title, href: topicPath(lesson.topic.id) },
+                    trail: [
+                        { id: "topic", label: lesson.topic.title, href: topicPath(lesson.topic.id) },
+                        { id: "lesson", label: lesson.title },
+                    ],
                     difficulty: difficulty[lesson.difficulty],
                     facts: [
                         place === -1 || topic === undefined
@@ -310,7 +312,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                             state: stateOf(id),
                         }
                     }),
-                    isEmpty: lesson.essential === undefined,
+                    hasNoPart: lesson.essential === undefined,
                     isLocked: lesson.essential !== undefined && view.lockedParts.includes(part),
                     intro: partSectionOf(lesson, part),
                     essence,
@@ -320,7 +322,8 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                 }
             }),
             placeholder: ESSENTIAL_PLACEHOLDER,
-            slotLabels: slotLabels(page.empty),
+            slotLabels: { ...slotLabels(page.empty), error: page.errorTitle },
+            errorText: page.errorText,
             page,
             labels: parts,
             essence: essenceLabels,

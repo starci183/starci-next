@@ -1,0 +1,140 @@
+schema: 1
+screen: review/deck-added
+title: Một bộ thẻ, đã thêm
+route: /review/decks/{id}
+area: review
+summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ có gì trước khi thêm và quản
+  lý sau khi thêm. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 2d9f43a88ff694deb3ffbcee9587f32b93743c61851949efcf2d53a1c2f447eb
+  "1440":
+    file: 1440.png
+    sha256: f617fff61e326e2de453e0403cb9dd28872f3f9803bfddd3b613b7a1f4f96b55
+code:
+  - features/pages/ReviewDeckPage
+  - components/blocks/ReviewDeck
+sections:
+  - id: s1
+    title: Vùng bỏ bộ thẻ
+    shows: Vùng bỏ bộ thẻ
+    why: Đã thêm thì có vùng "Bỏ bộ thẻ" nói lịch ôn được giữ.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:49.407Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Mục "Bỏ bộ thẻ" nhưng nút "Bỏ khỏi hàng đợi": hai thuật ngữ cho một việc. Meta vẫn chứa slug
+            "backend-fullstack · ai-engineer · founder · fullstack mastery".'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:54.270Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Mục "Bỏ bộ thẻ" nhưng nút "Bỏ khỏi hàng đợi" (hai thuật ngữ cho một việc, chưa sửa); meta vẫn
+            có nhãn tiếng Anh "fullstack mastery".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:09.225Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:20.407Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

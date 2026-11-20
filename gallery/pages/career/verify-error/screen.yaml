@@ -1,0 +1,86 @@
+schema: 1
+screen: career/verify-error
+title: Xác minh dòng CV, lỗi tải
+route: /verify/[code]
+area: career
+summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/VerifyPage
+  - components/blocks/VerifyExperience
+shots:
+  "390":
+    file: 390.png
+    sha256: 94e9547655f018370337a6282044a0f06c1e86ce8fafe6ec88ffc9b8a53bbbe8
+  "1440":
+    file: 1440.png
+    sha256: 163996c07543e538e7bd7334933754d6184f0253ce3b270f5884b3d728131a35
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:35.778Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội dung dính mép trên y=32.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này."; canvas có tiêu đề "Không tải được kết quả xác minh" và dòng giải thích.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:00.859Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

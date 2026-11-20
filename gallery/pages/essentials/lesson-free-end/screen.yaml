@@ -1,0 +1,165 @@
+schema: 1
+screen: essentials/lesson-free-end
+title: Bản chất · tài khoản miễn phí, cuối phần 1
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Route: `/essentials/[topic]/[lesson]`. Tài khoản miễn phí đọc hết phần 1, làm lại năm câu
+  và thấy điểm trước, sau; ba tab sau có ổ khóa; nút chính là "Nâng cấp Premium". Code:
+  `fe/apps/app/src/components/blocks/EssentialLesson/` (vỏ trang, `parts/partEssence.tsx`,
+  `parts/partLocked.tsx`), hook `fe/apps/app/src/hooks/essence/`, composite
+  `fe/packages/starci-next-ui/src/composites/LessonEssence/` và `LessonLockedPart/`'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 08ded541a471e0b44223c90df7dc0abf5d5f39d6141ef793aaf92fdfd73de60e
+  "1440":
+    file: 1440.png
+    sha256: eb4baadd965347e49279abf8faacf56f0148a2aa8ed0a48b1150c0d17071d757
+sections:
+  - id: s1
+    title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
+    shows: 'đường dẫn Essentials, chủ đề, bài; tên bài; một câu bài toán nghiệp vụ; dòng sự kiện "Bài
+      3/6 trong chủ đề · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng" (số bài lấy từ đường đi của
+      chủ đề). Nút chính duy nhất do phần đang mở giao cho dải: Câu tiếp theo, Câu n, Xem kết quả,
+      Đọc bài viết, Làm lại 5 câu, Nâng cấp Premium. Bốn tab phần nằm trên đường kẻ đáy; phần đang
+      dở có chip đếm số đã xong, phần xong có dấu tích, phần cần Premium có ổ khóa; nhãn tab luôn
+      hiện chữ.'
+    why: "`app.essentials.essential` trong thông điệp; `ui/components/page-header.md` (một nút chính ở
+      cuối hàng tiêu đề); `ui/components/tabs.md` (tab trang có đếm)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Kết quả năm câu
+    shows: 'thanh năm đoạn đủ màu, "Đúng 3/5", một câu nói mục nào được đánh dấu "nên đọc kỹ", mục lục,
+      hai nút phụ "Đọc bài viết" và "Xem lại 5 câu". Làm lại xong thì thêm dòng "Làm lại: 5/5 (trước
+      3/5)". Tài khoản miễn phí thấy thêm thông báo "Bạn xong phần 1" nói source, kịch bản và mức tự
+      áp dụng thuộc Premium, và nút chính ở dải đầu đổi thành "Nâng cấp Premium".'
+    why: "`premium.md` (phần 1 miễn phí, phần 2 đến 4 cần Premium); `ui/components/toast-alert.md`
+      (thông báo giải thích, không chặn)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Cột phải (chỉ từ 1440)
+    shows: '"Bài này gồm 4 phần" liệt kê bốn phần (phần xong có dấu tích, phần cần Premium là hàng không
+      mở được) và "Cuối bài": nhắc làm lại 5 câu để thấy điểm trước và sau. Dưới 70rem cột này ẩn;
+      mục lục không nằm ở cột phải mà nằm trong thân (xem Phản biện).'
+    why: "`ui/composition.md` (cột phải là các khối phẳng ngăn bằng đường kẻ, không thẻ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: "Đường dẫn: dải đầu đặt dòng sự kiện trên câu bài toán, còn bản vẽ đặt dưới; `PageHeader` cố
+      định thứ tự `meta` rồi `description`. Cần Grammar cho phép đổi thứ tự, chưa sửa."
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Thanh năm đoạn: `Stepper kind="bar"` tô đoạn đúng bằng màu nhấn (tím), không phải xanh; chỉ
+      đoạn sai có màu đỏ. Bản vẽ muốn xanh/đỏ (GRAMMAR-GAPS #3). Dùng phần tử gần nhất, ghi vào báo
+      cáo.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Đáp án có hàng số "1." đến "4." thay cho vòng chữ A đến D của bản vẽ: `ListRow` chỉ có số
+      thứ tự (không có chữ cái); cần Grammar nếu chủ muốn chữ cái.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:02.768Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các
+            trang khác (lề trái x=268 thay vì 288). Hai nút giống nhau "Đọc bài viết" (header
+            primary + pill outline). Còn lại: lề trái x=268 và gutter phải của Page chrome=panes do
+            Grammar quyết định, ứng dụng không chỉnh được (cần Grammar).'
+        actionable:
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: fixed
+          notes: "Vòng 2: dữ liệu thật từ dev stack, không số giả khi đang tải."
+    - n: 2
+      at: 2026-11-20T14:09:12.353Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: fixed
+          notes: "Vòng 3: chụp lại đúng trạng thái thật bằng học viên mới cho từng khung hình và từng bước."
+        truth:
+          verdict: fixed
+          notes: "Vòng 3: chụp từ học viên thật ở đúng trạng thái."
+    - n: 3
+      at: 2026-11-20T14:39:26.102Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

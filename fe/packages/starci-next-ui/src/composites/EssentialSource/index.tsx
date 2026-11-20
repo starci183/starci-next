@@ -4,6 +4,7 @@ import {
     Button,
     Cluster,
     DataTable,
+    FencedCodeBlock,
     MermaidDiagram,
     Section,
     Stack,
@@ -45,11 +46,9 @@ type WalkEntryProps = { readonly entry: CodeWalkView; readonly why: string }
 const WalkEntry = (props: WalkEntryProps) => (
     <Section title={props.entry.title} headingLevel={3} fact={props.entry.location}>
         <Stack gap="inline">
-            <Cluster gap="identity">
-                <Badge tone="accent">{props.entry.invariantId}</Badge>
-            </Cluster>
+            {props.entry.rule === "" ? null : <Text tone="muted">{props.entry.rule}</Text>}
             <HighlightedCode code={props.entry.snippet} language="typescript" />
-            {props.entry.why === "" ? null : <Text size="sm">{`${props.why}: ${props.entry.why}`}</Text>}
+            {props.entry.why === "" ? null : <Text>{`${props.why}: ${props.entry.why}`}</Text>}
         </Stack>
     </Section>
 )
@@ -75,20 +74,23 @@ export const EssentialSource = (props: EssentialSourceProps) => {
             <Section title={labels.pullTitle} headingLevel={2} isLoading={isLoading}>
                 <Stack gap="inline">
                     <MachineLine machine={source.machine} labels={labels} />
-                    <Cluster gap="identity" justify="between">
-                        <Text tone="muted" size="sm">
-                            {labels.pullNote}
-                        </Text>
-                        <Button intent="neutral" size="sm" onPress={() => props.onCopy(source.pullCommand)}>
-                            {labels.copy}
-                        </Button>
-                    </Cluster>
-                    <Terminal
+                    <Text tone="muted">{labels.pullNote}</Text>
+                    <FencedCodeBlock
+                        code={source.pullCommand}
+                        language="bash"
+                        showLanguage={false}
                         label={labels.pullTitle}
-                        lines={source.pullCommand.split("\n").map((line) => `$ ${line}`)}
+                        action={
+                            <Button intent="neutral" size="sm" onPress={() => props.onCopy(source.pullCommand)}>
+                                {labels.copy}
+                            </Button>
+                        }
                     />
                     {source.upFailure.length === 0 ? null : (
-                        <Terminal title={labels.upFailed} lines={source.upFailure} />
+                        <>
+                            <Terminal title={labels.upFailed} lines={source.upFailure} />
+                            <Text tone="muted">{labels.upFix}</Text>
+                        </>
                     )}
                 </Stack>
             </Section>

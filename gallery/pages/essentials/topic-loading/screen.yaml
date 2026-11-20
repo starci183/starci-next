@@ -1,0 +1,119 @@
+schema: 1
+screen: essentials/topic-loading
+title: Essentials (chủ đề), đang tải
+route: /essentials/[topic]
+area: essentials
+summary: Trang chủ đề khi lần đọc đầu chưa trả lời. Ảnh ở 1440, 1920 và 390.
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: 5f79b5313e9a86471d1d1be4fc5ed68b84bd6add278f8b90480b3cf282fce147
+  "1440":
+    file: 1440.png
+    sha256: c91a57593d6d69cdcf381b83a2b8460567409f8486eb6055d294c5b634d97f59
+sections:
+  - id: s1
+    title: Khung xám cùng hình dữ liệu
+    shows: đầu trang, thanh tiến độ và các hàng thành khung xám; cột phải ở 1440 là một vùng rỗng đang
+      tải.
+    why: ui/loading (STATE-8).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:21.098Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
+        states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:48.135Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 3: Kiểm tra lại thay Check lại, nhãn nút ngắn theo canvas."
+        states:
+          verdict: fixed
+          notes: "Vòng 3: chụp lại đúng trạng thái thật bằng học viên mới cho từng khung hình và từng bước."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:51.305Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,5 +1,5 @@
-import { toPrincipal, type IdentityPrincipal } from "@modules/domain/identity"
-import type { ExecuteParams } from "@modules/platform/cqrs"
+import { toOptionalPrincipal, type IdentityPrincipal } from "@modules/domain/identity"
+import type { GuestExecuteParams } from "@modules/platform/cqrs"
 import type { LessonCatalogItemView } from "@modules/domain/lesson"
 import type { ListLessonsRequest } from "../../application/list-lessons.contracts"
 import type { LessonCatalogItemType } from "./dto/lesson-catalog-item.type"
@@ -7,9 +7,9 @@ import type { LessonsInput } from "./dto/lessons.input"
 
 /** Maps the catalog input and the session to the message params. */
 export const toListLessonsParams = (
-    identity: IdentityPrincipal,
+    identity: IdentityPrincipal | undefined,
     input: LessonsInput,
-): ExecuteParams<ListLessonsRequest> => ({
+): GuestExecuteParams<ListLessonsRequest> => ({
     request: {
         locale: input.locale,
         group: input.group,
@@ -20,7 +20,7 @@ export const toListLessonsParams = (
         provider: input.provider,
         q: input.q,
     },
-    principal: toPrincipal(identity),
+    principal: toOptionalPrincipal(identity),
 })
 
 /** Maps the catalog items to their GraphQL type; the schema lists every field a learner may read. */

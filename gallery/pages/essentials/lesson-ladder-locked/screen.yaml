@@ -1,0 +1,152 @@
+schema: 1
+screen: essentials/lesson-ladder-locked
+title: Bài Essentials · Tự áp dụng, mức Khó còn khóa
+route: /essentials/[topic]/[lesson]?part=apply
+area: essentials
+summary: "Route: `/essentials/[topic]/[lesson]?part=apply`. Trạng thái: học viên chọn mức Khó khi
+  mức Vừa chưa xong. Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và
+  lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 6c1c3ff995cec60c53d982d9d1a5d61c975ee18f2db108d0100bc7cd920315c6
+  "1440":
+    file: 1440.png
+    sha256: 46e1122ccedf24f103aefea533e3cf4c1930bf4e95fbf2b6f2dc102a620da45a
+sections:
+  - id: s1
+    title: Thông báo mức khóa
+    shows: thay chi tiết mức bằng một thông báo nói mức nào mở sau mức nào, mức dưới đang bao nhiêu điểm
+      và điều kiện mở theo backend (mọi kịch bản ẩn của mức dưới xanh). Không có nút chính khi mức
+      khóa.
+    why: "`learner-cli-relay`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Bản vẽ có ổ khóa trong thông báo (Alert không có ô biểu tượng khóa); điều kiện 80/100 trong
+      bản vẽ được thay bằng luật của backend.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:04.233Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Cột phải "Dòng hồ sơ" chạm mép phải x≈1423 không gutter; hàng "Khó" nền xám đặc (hover/chọn
+            dính); ba hàng khoá dùng chữ 12 "Mở sau khi xong mức trước" kèm chevron như bấm được,
+            không có icon khoá. Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch
+            gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Còn lại: lề trái x=268 và
+            gutter phải của Page chrome=panes do Grammar quyết định, ứng dụng không chỉnh được (cần
+            Grammar).'
+        actionable:
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:14.114Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Hàng "Khó" nền xám đặc cố định ở 1440 và 390 (hover/chọn dính); cột phải "Dòng hồ sơ" bắt
+            đầu sát mép x=1121, không lề trái; ba hàng khoá có chevron như bấm được nhưng không có
+            icon khoá. Còn lại: lề trái 268 của Page chrome=panes do Grammar quyết định (cần
+            Grammar).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:27.213Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 4: bậc chưa mở là hàng mờ (unavailable), không tô xám; mũi tên cuối hàng do Grammar vẽ
+            cho hàng bấm được (cần Grammar nếu muốn bỏ)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T14:49:06.599Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Kiểm lại 1440 và 390 (commit 0e7b6661): hàng khoá (Vừa, Khó, Siêu khó) mờ, không chevron, lý do khoá là chữ meta, không còn hàng xám dính; hàng Dễ vẫn có chevron và bấm được. Đạt."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

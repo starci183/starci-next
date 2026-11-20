@@ -34,7 +34,7 @@ type HubGoalEditorProps = {
 export const HubGoalEditor = (props: HubGoalEditorProps) => {
     if (!props.state.isOpen) {
         return (
-            <Button intent="neutral" size="sm" onPress={() => props.onOpenChange(true)}>
+            <Button intent="neutral" onPress={() => props.onOpenChange(true)}>
                 {props.labels.open}
             </Button>
         )
@@ -50,10 +50,10 @@ export const HubGoalEditor = (props: HubGoalEditorProps) => {
                 width="fill"
             />
             <Cluster gap="inline">
-                <Button intent="neutral" size="sm" onPress={props.onSave} isPending={props.state.isPending}>
+                <Button intent="neutral" onPress={props.onSave} isPending={props.state.isPending}>
                     {props.labels.save}
                 </Button>
-                <Button intent="neutral" size="sm" onPress={() => props.onOpenChange(false)}>
+                <Button intent="neutral" onPress={() => props.onOpenChange(false)}>
                     {props.labels.cancel}
                 </Button>
             </Cluster>

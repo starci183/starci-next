@@ -1,4 +1,4 @@
-import { AlertDialog, Button, Grid, Page, Stack, Text } from "@starci/grammar/common"
+import { AlertDialog, Button, Cluster, Grid, Page, Stack, Text } from "@starci/grammar/common"
 import {
     OutcomePathCard,
     OutcomePathDialog,
@@ -57,6 +57,7 @@ export type PathsChooseBaseProps = {
         readonly slot: DataSlot<PathsScreenView>
         readonly placeholder: PathsScreenView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly labels: PathsLabels
         /** The path whose dialog is open. */
         readonly openId: string | undefined
@@ -67,7 +68,6 @@ export type PathsChooseBaseProps = {
         readonly isPending: boolean
         /** The result of the last choice in words; empty when nothing happened. */
         readonly status: string
-        readonly signInHref: string
     }
     readonly on: {
         readonly retry: () => void
@@ -76,14 +76,20 @@ export type PathsChooseBaseProps = {
         readonly choose: (id: string) => void
         readonly confirm: () => void
         readonly cancel: () => void
+        /** Opens the sign-in dialog in place; the reader returns to this page. */
+        readonly signIn: () => void
     }
 }
 
 /** The sign-in command shown to a reader who is not signed in. */
-const SignInAction = (props: Pick<PathsChooseBaseProps["props"], "labels" | "signInHref">) => (
-    <Button intent="commit" href={props.signInHref}>
-        {props.labels.signedOut.action}
-    </Button>
+const SignInAction = (
+    props: Pick<PathsChooseBaseProps["props"], "labels"> & Pick<PathsChooseBaseProps["on"], "signIn">,
+) => (
+    <Cluster gap="inline" justify="center">
+        <Button intent="commit" onPress={props.signIn}>
+            {props.labels.signedOut.action}
+        </Button>
+    </Cluster>
 )
 
 /**
@@ -99,14 +105,13 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 slot={slot}
                 placeholder={placeholder}
                 labels={{ ...slotLabels, forbidden: labels.signedOut.title }}
+                errorDescription={props.props.errorText}
                 forbiddenDescription={labels.signedOut.body}
-                forbiddenAction={<SignInAction labels={labels} signInHref={props.props.signInHref} />}
+                forbiddenAction={<SignInAction labels={labels} signIn={props.on.signIn} />}
                 onRetry={props.on.retry}
                 render={(view, isLoading) => (
                     <Stack gap="region">
-                        <Text size="sm" tone="muted">
-                            {[labels.stages.join(" · "), labels.note].join(" — ")}
-                        </Text>
+                        <Text tone="muted">{[labels.stages.join(" · "), labels.note].join(" — ")}</Text>
                         {status === "" ? null : (
                             <Text as="p" live="polite">
                                 {status}

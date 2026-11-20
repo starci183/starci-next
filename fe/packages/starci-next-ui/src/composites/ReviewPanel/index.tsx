@@ -3,9 +3,8 @@ import {
     Badge,
     Cluster,
     EmptyNotice,
-    Heading,
-    Stack,
     Section,
+    Stack,
     SurfaceCard,
     Text,
     type BadgeTone,
@@ -76,64 +75,75 @@ type ReviewCardProps = {
     readonly on: ReviewPanelActions
 }
 
-/** The evidence, the AI grade and the defense questions of an item. */
+/** The evidence, the AI grade and the defense questions of an item, each a list under its own title. */
 const ReviewFacts = (props: ReviewPartProps) => (
-    <Stack gap="row">
-        <Heading level={2} scale="standard">
-            {props.labels.evidenceTitle}
-        </Heading>
-        {props.item.evidence.map((evidence) => (
-            <Cluster key={evidence.id} gap="inline" justify="between">
-                <Text>{evidence.label}</Text>
-                <Text size="sm" tone="muted">
-                    {evidence.ref}
-                </Text>
-            </Cluster>
-        ))}
-        <Heading level={2} scale="standard">
-            {props.labels.gradeTitle}
-        </Heading>
-        {props.item.criteria.map((criterion) => (
-            <Cluster key={criterion.id} gap="inline" justify="between">
-                <Text>{criterion.criterion}</Text>
-                <Badge tone={criterion.tone}>{criterion.level}</Badge>
-            </Cluster>
-        ))}
-        {props.item.defense.map((question) => (
-            <Text key={question} size="sm">
-                {`${props.labels.defenseTitle}: ${question}`}
-            </Text>
-        ))}
-    </Stack>
+    <>
+        {props.item.evidence.length === 0 ? null : (
+            <Section
+                kind="list"
+                title={props.labels.evidenceTitle}
+                headingLevel={2}
+                count={props.item.evidence.length}
+                items={props.item.evidence.map((evidence) => ({
+                    id: evidence.id,
+                    title: evidence.label,
+                    meta: { text: evidence.ref },
+                }))}
+                empty={null}
+            />
+        )}
+        {props.item.criteria.length === 0 ? null : (
+            <Section
+                kind="list"
+                title={props.labels.gradeTitle}
+                headingLevel={2}
+                count={props.item.criteria.length}
+                items={props.item.criteria.map((criterion) => ({
+                    id: criterion.id,
+                    title: criterion.criterion,
+                    badges: [{ label: criterion.level, tone: criterion.tone }],
+                }))}
+                empty={null}
+            />
+        )}
+        {props.item.defense.length === 0 ? null : (
+            <Section
+                kind="list"
+                title={props.labels.defenseTitle}
+                headingLevel={2}
+                count={props.item.defense.length}
+                items={props.item.defense.map((question) => ({ id: question, title: question }))}
+                empty={null}
+            />
+        )}
+    </>
 )
 
 /** The audit trail of an item, oldest first. */
 const ReviewHistory = (props: ReviewPartProps) => (
-    <Section title={props.labels.historyTitle} headingLevel={2}>
-        <Stack gap="row">
-            {props.item.history.map((row) => (
-                <Stack key={row.id} gap="identity">
-                    <Text size="sm">{row.text}</Text>
-                    {row.note === undefined ? null : (
-                        <Text size="sm" tone="muted">
-                            {row.note}
-                        </Text>
-                    )}
-                </Stack>
-            ))}
-        </Stack>
-    </Section>
+    <Section
+        kind="list"
+        title={props.labels.historyTitle}
+        headingLevel={2}
+        count={props.item.history.length}
+        items={props.item.history.map((row) => ({
+            id: row.id,
+            title: row.text,
+            ...(row.note === undefined ? {} : { description: row.note }),
+        }))}
+        empty={null}
+    />
 )
 
 /** The item a signer decides: part, learner, state, the line in both locales, its facts, the decision and its history. */
 const ReviewItemCard = (props: ReviewCardProps) => (
-    <Stack gap="section">
+    <Stack gap="region">
         <SurfaceCard ariaLabel={props.item.part}>
             <Stack gap="row">
                 <Cluster gap="inline" wrap justify="between" align="center">
                     <Cluster gap="identity" align="center">
                         <Badge tone="neutral">{props.item.part}</Badge>
-                        <Text size="sm" tone="muted">
+                        <Text size="xs" tone="muted">
                             {props.item.who}
                         </Text>
                     </Cluster>
@@ -141,17 +151,17 @@ const ReviewItemCard = (props: ReviewCardProps) => (
                         {props.item.state}
                     </Badge>
                 </Cluster>
-                <Text size="sm" tone="muted">
+                <Text size="xs" tone="muted">
                     {props.labels.aiLine}
                 </Text>
                 <Text as="p">{props.item.line}</Text>
                 <Text as="p" tone="muted">
                     {props.item.lineEn}
                 </Text>
-                {props.item.due === undefined ? null : <Text size="sm">{props.item.due}</Text>}
-                <ReviewFacts item={props.item} labels={props.labels} />
+                {props.item.due === undefined ? null : <Text tone="muted">{props.item.due}</Text>}
             </Stack>
         </SurfaceCard>
+        <ReviewFacts item={props.item} labels={props.labels} />
         <ReviewDecisionCard
             isOpen={props.item.isOpen}
             canRevoke={props.item.canRevoke}

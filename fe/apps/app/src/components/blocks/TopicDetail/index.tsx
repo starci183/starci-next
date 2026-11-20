@@ -37,7 +37,8 @@ export const TopicDetail = (props: TopicDetailProps) => {
                           )
                         : loadingSlot(),
                 placeholder: TOPIC_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("empty")),
+                slotLabels: { ...useSlotLabels()(t("empty")), error: t("errorTitle") },
+                errorText: t("errorText"),
                 labels: useTopicLabels(),
                 catalogHref: APP_ROUTES.essentials,
                 movedTo,

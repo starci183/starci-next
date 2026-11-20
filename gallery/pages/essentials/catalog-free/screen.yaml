@@ -1,0 +1,127 @@
+schema: 1
+screen: essentials/catalog-free
+title: Essentials (danh mục), tài khoản miễn phí
+route: /essentials
+area: essentials
+summary: Danh mục cho tài khoản chưa có Premium. Ảnh ở 1440, 1920 và 390.
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 7ce38c642ee8a921723584809cb006469b909975f6828e2c6e16db4a4cbc7d4b
+  "1440":
+    file: 1440.png
+    sha256: a6a6139a4f51e5be8215c1d0c783e528811503c2f9c0f9db101415e4e22058dc
+sections:
+  - id: s1
+    title: Nút chính
+    shows: '"Nâng cấp Premium" thay cho "Học tiếp"; đây là nút chính duy nhất của trang.'
+    why: ui/components/button, premium (một lối tới gói).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Nhãn của hàng bài
+    shows: mọi hàng ghi "Phần 1 miễn phí" thay cho nhãn trạng thái, vì gói miễn phí học trọn phần 1 của
+      mọi bài; bốn vạch vẫn cho thấy tiến độ thật.
+    why: premium (phần 1 miễn phí, phần 2 đến 4 cần Premium).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:54.042Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:02.296Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:19.084Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

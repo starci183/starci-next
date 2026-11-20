@@ -1,0 +1,113 @@
+schema: 1
+screen: paths/choose-error
+title: Chọn mục tiêu, lỗi tải
+route: /paths/choose
+area: paths
+summary: "Đọc danh sách lộ trình thất bại: thông báo lỗi có nút Thử lại."
+code:
+  - features/pages/PathsChoosePage
+  - components/blocks/PathsChoose
+shots:
+  "390":
+    file: 390.png
+    sha256: bf776d6c62e05bcbc559b1f1c0ce49b1d3df5792d5d950c477086cabd7a5fde4
+  "1440":
+    file: 1440.png
+    sha256: 42831da4111ea5ccf263cc64d4a4d235f853caf00ecc1fc8619b05704942ff33
+sections:
+  - id: s1
+    title: Thông báo lỗi
+    shows: Một nút chính Thử lại.
+    why: ui/components/toast-alert.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:28.373Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
+        states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:10:00.862Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:40:01.535Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -255,6 +255,7 @@
         "pageTitle": "Review session",
         "root": "Review",
         "progress": "{position}/{total} cards · About {minutes} min left",
+        "progressDone": "{total}/{total} cards · Done",
         "progressLabel": "Session progress",
         "sourceCard": "Deck · {deck}",
         "sourceRetrieval": "Essentials lesson · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Easy",
         "interval": "{days, plural, =0 {today} one {# day} other {# days}}",
         "shortcuts": "Shortcuts: Space to show the answer, 1 to 4 to grade",
+        "spaceHint": "Or press Space",
         "lessonLine": "From lesson {lesson}",
         "saveFailedTitle": "Could not save the grade",
         "saveFailedBody": "The card is still here and has not moved on. Try again.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Pick a deck",
         "emptyBack": "Back to Review"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend fullstack",
+        "ai-engineer": "AI engineer",
+        "founder": "Founder",
+        "system-design-senior": "Senior system design",
+        "fullstack mastery": "Fullstack mastery"
+      },
       "decks": {
         "pageTitle": "Review decks",
         "emptyTitle": "No deck yet.",
@@ -318,6 +327,8 @@
         "filterLabel": "Filter by added",
         "trackLabel": "Filter by path",
         "allTracks": "Every path",
+        "scrollPrevious": "Scroll left",
+        "scrollNext": "Scroll right",
         "add": "Add deck",
         "added": "Added",
         "remove": "Remove from queue",
@@ -332,9 +343,9 @@
         "meta": "{total} decks · {added} added · Up to {goal} cards a day by your goal",
         "cards": "{count} cards",
         "filters": {
-          "all": "All {count}",
-          "added": "Added {count}",
-          "new": "Not added {count}"
+          "all": "All",
+          "added": "Added",
+          "new": "Not added"
         }
       },
       "hub": {
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Deck",
         "notFound": "This deck was not found.",
+        "backToDecks": "Back to the decks",
         "errorText": "The deck may have been renamed. Go back to the list to pick again.",
         "breadcrumbs": "Breadcrumb",
         "root": "Review",
@@ -474,10 +486,10 @@
           "done": "{accepted}/{total} Accepted · done"
         },
         "filters": {
-          "all": "All {count}",
-          "doing": "In progress {count}",
-          "new": "Not started {count}",
-          "done": "Done {count}"
+          "all": "All",
+          "doing": "In progress",
+          "new": "Not started",
+          "done": "Done"
         }
       },
       "pattern": {
@@ -687,9 +699,9 @@
         "prove": "Prove and connect"
       },
       "kind": {
-        "build": "BUILD A PRODUCT",
-        "agent": "AGENT & LLM",
-        "job": "GET A JOB"
+        "build": "Build a product",
+        "agent": "Agent and LLM",
+        "job": "Get a job"
       },
       "meta": "{steps} steps · about {weeks} weeks",
       "card": {
@@ -719,10 +731,12 @@
         "notFound": "This path is no longer in the list."
       },
       "signedOut": {
-        "title": "Sign in to choose a goal",
-        "body": "The path you choose is saved to your account.",
+        "title": "Sign in to choose a path",
+        "body": "Sign in to save the path you choose and follow your progress.",
         "action": "Sign in"
-      }
+      },
+      "errorTitle": "Could not load the paths",
+      "errorText": "Check your connection and try again."
     },
     "incidents": {
       "pageTitle": "Incidents",
@@ -732,7 +746,9 @@
       "empty": "There are no lessons to list incidents for yet.",
       "factLessons": "{count} lessons",
       "factAuthored": "{count} incidents open",
-      "soon": "Coming soon",
+      "noneTitle": "No incident to practise yet",
+      "noneBody": "Incidents tied to Essentials lessons open one by one. Learn a lesson first; its incident shows here once it is ready.",
+      "noneAction": "Go to Essentials",
       "open": "Open",
       "cta": "Open incident",
       "meta": "{difficulty} · {minutes} min"
@@ -756,8 +772,8 @@
           "partDone": "Part {part} done",
           "doing": "Studying · part {part}"
         },
-        "resume": "Continue: {title} · part {part}",
-        "start": "Start: {title}",
+        "resume": "Continue",
+        "start": "Start learning",
         "upgrade": "Upgrade to Premium",
         "opener": "Opener {right}/{total}",
         "openerNone": "—",
@@ -777,7 +793,9 @@
         "planPremium": "Needs Premium",
         "noResultTitle": "No lesson matches \"{query}\"",
         "noResultText": "Try a problem such as \"duplicate email\", or drop the topic filter.",
-        "clear": "Clear filters"
+        "clear": "Clear filters",
+        "errorTitle": "Could not load the catalog",
+        "errorText": "Check your connection and try again. Your progress is kept."
       },
       "difficulty": {
         "foundation": "Foundation",
@@ -932,7 +950,7 @@
         "progress": "{done}/{total} lessons done",
         "startFirst": "Start lesson 1",
         "resumePart": "Continue part {part}",
-        "resume": "Continue: {title} · part {part}",
+        "resume": "Continue",
         "noticeTitle": "The free plan covers part 1 of every lesson",
         "noticeText": "Source, scenarios that run on your machine and the apply ladder belong to Premium.",
         "partsTitle": "Every lesson has 4 parts",
@@ -946,7 +964,9 @@
         "prerequisites": "Good to know first",
         "related": "Related topics",
         "moved": "This lesson moved into a topic. The old address is no longer used.",
-        "movedOpen": "Open lesson"
+        "movedOpen": "Open lesson",
+        "errorTitle": "Could not load the topic",
+        "errorText": "Check your connection and try again. Your progress is kept."
       },
       "attempt": {
         "saved": "Your answer was saved.",
@@ -1085,6 +1105,7 @@
           "machineNone": "No machine connected yet",
           "machineNoneNote": "Run the commands below in a terminal, sign in once, then come back to this page. It picks the machine up when the CLI reports.",
           "upFailed": "The up command failed",
+          "upFix": "Fix what the lines above name, then run the up command again.",
           "architecture": "Architecture",
           "diagram": "Architecture diagram",
           "diagramError": "The diagram could not be drawn",
@@ -1123,7 +1144,7 @@
           "fixTitle": "Fix",
           "fixNote": "You do not type code. Ask your own AI (Claude, ChatGPT or an IDE agent) to fix it in the source folder, then check again.",
           "fixPrompt": "Prompt for your AI",
-          "guardTitle": "Turn rule {rule} off",
+          "guardTitle": "Turn the checked rule off",
           "guardNote": "--guard {flag} to see the system break without it",
           "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {
@@ -1179,10 +1200,6 @@
             "open": "Ready",
             "doing": "Practising · {score}/{max}",
             "passed": "Green"
-          },
-          "lock": {
-            "title": "{level} opens after {below}",
-            "text": "{below} stands at {score}/{max}. This level opens when every hidden scenario of {below} is green."
           },
           "primary": {
             "run": "Run {level}",
@@ -1247,7 +1264,6 @@
           },
           "shell": {
             "nextQuestion": "Next question",
-            "questionNumber": "Question {n}",
             "seeResult": "See the result",
             "readArticle": "Read the article",
             "retake": "Answer the 5 again",
@@ -1282,7 +1298,11 @@
               "three": "Proved when GitHub CI signs it, then it becomes a line on your profile"
             }
           }
-        }
+        },
+        "errorTitle": "Could not load the lesson",
+        "errorText": "Check your connection and try again. Your scores and progress are kept.",
+        "more": "Show more",
+        "less": "Show less"
       }
     },
     "projects": {
@@ -1300,7 +1320,6 @@
         "emptyText": "Bring in your first project: any topic, any language, then add the starci/ folder with one command.",
         "listLabel": "Your projects",
         "progressLabel": "Concepts proved",
-        "errorTitle": "Projects could not be loaded",
         "ribbonLabel": "Projects overview",
         "figures": {
           "proved": "Concepts proved",
@@ -1332,6 +1351,8 @@
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
         "repo": "GitHub repo",
+        "namePlaceholder": "For example: my-blog-api",
+        "repoPlaceholder": "https://github.com/you/project",
         "submit": "Create project",
         "submitting": "Creating...",
         "submitNeedsName": "Name the project before you create it.",
@@ -1381,13 +1402,14 @@
         "sync": "Refresh results from your machine",
         "syncing": "Refreshing...",
         "ciNone": "No CI run yet. Add the StarCi GitHub Action and push.",
-        "ciRun": "Run {runId} · commit {commit}",
+        "ciRun": "Latest run · commit {commit}",
         "ciPassed": "Passed",
         "ciFailed": "Failed",
         "probeText": "HTTP apps that run with Docker. StarCi calls your public address with health and the generic probes of each concept.",
         "deployedLabel": "Deployed address (public http or https)",
         "saveDeployed": "Save address",
         "runProbes": "Run the probes",
+        "runProbesNeedsUrl": "Save the deployed address before running the probes.",
         "runningProbes": "Probing...",
         "secretText": "The Action signs its result with this project's secret. Rotate it if it leaks.",
         "rotate": "Rotate the CI secret",
@@ -1735,11 +1757,13 @@
         "server-probe": "Server probe",
         "graded-session": "Graded session",
         "judge": "Judge0 Accepted",
-        "other": "StarCi evidence"
+        "other": "Checked by StarCi"
       },
       "queue": {
         "pageTitle": "Experience review",
         "title": "Experience review",
+        "itemTitle": "One item to review",
+        "backToProfile": "Back to profile",
         "forbiddenTitle": "Only the teacher and reviewers can open this page",
         "listLabel": "Review queue",
         "count": "{count} items",
@@ -1801,7 +1825,6 @@
         },
         "revokeLabel": "Reason for the revoke (required)",
         "revoke": "Revoke",
-        "back": "Back to the queue",
         "dueAt": "Due {date}",
         "preview": "Preview",
         "gradeTitle": "AI grade",
@@ -1834,7 +1857,12 @@
         "part": "Part",
         "evidence": "Evidence",
         "code": "Verification code",
-        "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
+        "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code.",
+        "factsTitle": "Public details",
+        "errorTitle": "Could not load the verification",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "signer": "Signed by",
+        "signedOn": "Signed on"
       },
       "loading": "Loading…",
       "crumb": {
@@ -1895,7 +1923,9 @@
       "gradePass": "Pass",
       "gradeFail": "Not yet",
       "defenseChip": "{count} defense questions",
-      "signerChip": "Signed by {role}"
+      "signerChip": "Signed by {role}",
+      "errorTitle": "Could not load your experience",
+      "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
     },
     "devices": {
       "pageTitle": "Devices",
@@ -2090,7 +2120,9 @@
             "topics": "How LLMs work · The agent loop · Context · Harness design",
             "progress": "{count} articles"
           }
-        }
+        },
+        "errorTitle": "Could not load your progress",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
       },
       "builds": {
         "title": "Build",
@@ -2098,7 +2130,18 @@
         "listTitle": "Builds",
         "empty": "There are no builds yet.",
         "practising": "{n} / {total} stages run",
-        "proved": "{n} / {total} stages proved"
+        "proved": "{n} / {total} stages proved",
+        "noMatch": "No build in this state.",
+        "filterLabel": "Filter by state",
+        "filter": {
+          "all": "All",
+          "practising": "In practice",
+          "proved": "Proved",
+          "todo": "Not started"
+        },
+        "errorTitle": "Could not load the builds",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "needsKey": "Needs your AI key"
       },
       "build": {
         "title": "Build",
@@ -2130,7 +2173,10 @@
         "repoBind": "Connect repo",
         "repoFailed": "Could not connect this repo. Check the name looks like owner/repo.",
         "repoAudienceLabel": "Workflow audience",
-        "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience."
+        "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience.",
+        "errorTitle": "Could not load this build",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "backToBuilds": "Back to the builds"
       },
       "use": {
         "title": "Use",
@@ -2157,7 +2203,9 @@
         "costColumn": "Estimated cost",
         "trialCommand": "Run a trap: harness trial TRAP_NAME --tool claude or codex. The CLI asks you to confirm the cost before it runs.",
         "shortcutBlocked": "{label} (blocked)",
-        "budget": "Up to {usd}"
+        "budget": "Up to {usd}",
+        "errorTitle": "Could not load the Use part",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
       },
       "guide": {
         "title": "Guide",
@@ -2173,19 +2221,33 @@
         "doctorCommandDescription": "Run it in your repo and the result comes back here.",
         "doctorEmpty": "There are no conditions to show.",
         "onlyFailingLabel": "Failed conditions only",
-        "onlyFailingDescription": "Hide the conditions that passed"
+        "onlyFailingDescription": "Hide the conditions that passed",
+        "navTitle": "Guides",
+        "navEmpty": "No guides yet.",
+        "errorTitle": "Could not load this guide",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
       },
       "docs": {
         "title": "Deep dive",
         "description": "Long explainers with diagrams and no tests. Read them to see how an agent really runs.",
         "listTitle": "Articles",
-        "empty": "There are no articles yet."
+        "empty": "There are no articles yet.",
+        "noMatch": "No article matches. Try another word.",
+        "filterLabel": "Filter by title",
+        "filterPlaceholder": "Filter by title",
+        "clearLabel": "Clear filter",
+        "errorTitle": "Could not load the Docs list",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
       },
       "doc": {
         "title": "Article",
         "missing": "This article was not found.",
         "outlineTitle": "In this article",
-        "outlineEmpty": "This article has no sections yet."
+        "outlineEmpty": "This article has no sections yet.",
+        "navTitle": "Docs",
+        "navEmpty": "No articles yet.",
+        "errorTitle": "Could not load this article",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
       },
       "proofs": {
         "none": "Not practised",
@@ -2283,7 +2345,15 @@
         "openNew": "Add photo and name",
         "cancel": "Cancel",
         "save": "Save changes",
-        "unsaved": "Changes not saved"
+        "unsaved": "Changes not saved",
+        "goal": {
+          "label": "Goal path",
+          "hint": "Used to suggest the next lesson. It locks nothing.",
+          "placeholder": "Choose a path"
+        },
+        "errorTitle": "Could not load your profile",
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "clean": "Edit your photo, name and goal path"
       },
       "crumb": {
         "label": "Breadcrumb",
@@ -2326,6 +2396,8 @@
       "title": "Your progress",
       "description": "Read from Essentials, Harness, Projects, Practice and Review",
       "unavailable": "This part could not be loaded.",
+      "pageError": "Progress could not be loaded",
+      "pageErrorText": "The server did not answer. Your progress is safe. Try again in a few seconds.",
       "ribbon": {
         "label": "Progress summary",
         "proved": "Concepts proved",
@@ -2342,7 +2414,6 @@
         "openerNone": "No opener question answered yet.",
         "unlocked": "Open",
         "locked": "Needs Premium",
-        "upgrade": "See Premium",
         "part": {
           "essence": "Part 1 · Essence",
           "source": "Part 2 · Source",
@@ -2413,10 +2484,12 @@
         "doing": "Patterns in progress",
         "done": "Patterns done",
         "accepted": "{done} problems Accepted",
-        "empty": "No patterns yet."
+        "empty": "No patterns yet.",
+        "more": "{count} more patterns. Open Practice to see them all."
       },
       "firstVisit": {
         "title": "Nothing to measure yet, and that is normal",
+        "start": "Start",
         "text": "Every number here is work you really did. Study a lesson, solve a problem or review a card and the first one appears.",
         "essentials": {
           "title": "Essentials",
