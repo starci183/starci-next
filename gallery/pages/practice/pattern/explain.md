@@ -39,5 +39,6 @@ Grammar: Section kind="list"
 
 ## Chưa chụp
 
-Màn này chưa chụp được trên kho dev: cần tiến độ trong một pattern (bài Accepted, bài đã nộp chưa qua); cùng lý do với practice/list.
-Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Vì sao: màn này chưa chụp được trên kho dev; cần tiến độ trong một pattern (bài Accepted, bài đã nộp chưa qua); cùng lý do với practice/list.
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`

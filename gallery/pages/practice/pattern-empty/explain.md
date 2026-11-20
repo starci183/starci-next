@@ -21,5 +21,6 @@ Grammar: Section kind="list"
 
 ## Chưa chụp
 
-Màn này chưa chụp được trên kho dev: cần một pattern chưa có bài; kho dev seed mọi pattern đều có bài. Mở được bằng một pattern rỗng trong seed hoặc một mock của practiceProblems.
-Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Vì sao: màn này chưa chụp được trên kho dev; cần một pattern chưa có bài; kho dev seed mọi pattern đều có bài. Mở được bằng một pattern rỗng trong seed hoặc một mock của practiceProblems.
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`

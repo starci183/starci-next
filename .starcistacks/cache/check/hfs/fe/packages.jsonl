@@ -86,7 +86,7 @@
 {"data":{},"findings":[],"hash":"9104d91dca06c2e35368401105ef829fecf4e6630106e93e47bfb69eadbc8df3","path":"fe/packages/starci-next-ui/src/composites/PhaseNav/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f331c4f4992ceed9494dbc226c8d3f655444a31a0c911e3f0e71d544fda2d4ec","path":"fe/packages/starci-next-ui/src/composites/PracticeEditor/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"04c541fb87b093ea3ddfb66d7d30af2ff19e418f85396187d124bb586895e9b1","path":"fe/packages/starci-next-ui/src/composites/PracticeHints/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4e7459eb3519e62315494dc53e7f53e0c4e745ecb66b50a43ef323e3215848c1","path":"fe/packages/starci-next-ui/src/composites/PracticeProblemPanel/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c07ce876458dea0d89680a08477e5b80c9831c2c3cf2edcbc5e0cac6923feeea","path":"fe/packages/starci-next-ui/src/composites/PracticeProblemPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8171ac4abff92eef6b0de6e201d0d0912bd713bf21dd44cc117e055bb77bd29e","path":"fe/packages/starci-next-ui/src/composites/PracticeResult/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0fd773d2dd6b476a1a08c24f48ed058b5916e6871ed88c332238ba3b90aae57d","path":"fe/packages/starci-next-ui/src/composites/ProbesCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"598dabbac3081dac914daef5830ab4f987ce59101bb74b946adacec6ed2821ce","path":"fe/packages/starci-next-ui/src/composites/ProjectAside/index.tsx","step":"file-rules"}

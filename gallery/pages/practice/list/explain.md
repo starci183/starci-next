@@ -39,5 +39,6 @@ Grammar: Section kind="list" có filter
 
 ## Chưa chụp
 
-Màn này chưa chụp được trên kho dev: cần một người học đã có bài Accepted và một bài làm dở (practiceReadiness, practiceNext, resume); người học dùng một lần của kho dev chưa có tiến độ. Mở được khi seed một người học có lịch sử nộp bài.
-Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Vì sao: màn này chưa chụp được trên kho dev; cần một người học đã có bài Accepted và một bài làm dở (practiceReadiness, practiceNext, resume); người học dùng một lần của kho dev chưa có tiến độ. Mở được khi seed một người học có lịch sử nộp bài.
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`

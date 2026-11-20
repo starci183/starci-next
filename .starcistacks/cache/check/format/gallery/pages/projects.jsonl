@@ -1,6 +1,6 @@
-{"findings":[],"hash":"21bc90160d1a99fbdf3ca8db194cdac71f3e547e3d16f6d0ffa1e849372d723c","path":"gallery/pages/projects/concept/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"c7682df87cee162ecebf97a4d0b95714a360d84f3907aac28a4d4cefbf9203ad","path":"gallery/pages/projects/detail/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"865c93224d2f84dedb574b94424f110da8c618ef0714adf58c08163a1a841042","path":"gallery/pages/projects/list/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"8043f106dbf8d6aa77541c55a78b91ead818cde224fb4feece3857e7d1483284","path":"gallery/pages/projects/milestone/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"69da30d78fe872590116eb0f311c03f52fc1d1a979f53f8008051b826f278e12","path":"gallery/pages/projects/new/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"77abb4b6ff665f9584fc6d6ec853e4e476106e3089cbb46e089cb668f66691d3","path":"gallery/pages/projects/paywall/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"38f4552106f58370b25b01063f61ef4cbb7df2426e7d8c162153f28b7ee8e14a","path":"gallery/pages/projects/concept/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"e7323d2ceed24e786787a5ab0d073a7802a941b9f7787be3d912def792199556","path":"gallery/pages/projects/detail/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"d4d2264cecf5f83e31e6f41df7639eb537c86f0a0b55e289011c260aa09d1551","path":"gallery/pages/projects/list/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"a0df15e0ef96feac0f92355b96cbcfeda465f0fa52f03181f0411fa45fb63ffc","path":"gallery/pages/projects/milestone/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"b4c30f118b000ad72ac9189cbcd48b0707dc8249d32157c5cb43efd7c9a01bd1","path":"gallery/pages/projects/new/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"ad9a59cbbccd5558e5fdf09a413ccfe18bcd151c55d8a7b49209efd62a82b8d5","path":"gallery/pages/projects/paywall/screen.yaml","step":"prettier"}

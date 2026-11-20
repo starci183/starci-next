@@ -27,5 +27,6 @@ Grammar: cần Grammar: ô soạn mã có tô màu cú pháp và thụt dòng (h
 
 ## Chưa chụp
 
-Màn này chưa chụp được trên kho dev: cần máy chấm trả verdict đang chạy; kho dev không có máy chấm. Mở được bằng mock của practiceSubmission (queued, running).
-Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Vì sao: màn này chưa chụp được trên kho dev; cần máy chấm trả verdict đang chạy; kho dev không có máy chấm. Mở được bằng mock của practiceSubmission (queued, running).
+Luật: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs kind="filter", EmptyNotice mark="none").
+Grammar: `SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`
