@@ -6,7 +6,6 @@ import {
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
     useAuthPanel,
-    useSessionRefresh,
     useSignedInGuard,
     type AuthMode,
     type AuthState,
@@ -78,17 +77,17 @@ const detailsLabelsOf = (state: AuthState, t: Translator): AuthPanelBaseProps["p
 /** The card of the sign-in screen: its state machine over the auth doors, drawn by its pure twin. */
 export const AuthPanel = (props: AuthPanelProps) => {
     const t = useTranslations("app.auth")
-    const refresh = useSessionRefresh()
     const setSignInOpen = useSignInModalStore((state) => state.setOpen)
     const panel = useAuthPanel({
         mode: props.mode,
         notice: props.notice,
         destination: props.destination,
         returnTo: props.returnTo,
-        onSignedIn: () =>
-            void refresh().then(() => {
-                if (props.presentation === "modal") setSignInOpen(false)
-            }),
+        // The session change remounts the viewer cache (every read starts afresh): the modal closes in place, the page leaves with a full navigation.
+        onSignedIn: () => {
+            if (props.presentation === "modal") setSignInOpen(false)
+            else window.location.assign(props.destination)
+        },
     })
     const [isTermsAccepted, setIsTermsAccepted] = useState(false)
     const isSignedOut = useSignedInGuard(props.destination, props.presentation === "page")
