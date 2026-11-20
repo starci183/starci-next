@@ -3,4 +3,4 @@
 {"findings":[],"hash":"0f3291a4ca42efd6317d3af13d851ede9ff190692b6885ab1f136754b3044d43","path":"gallery/pages/cv/public-many-lines/explain.md","step":"prettier"}
 {"findings":[],"hash":"b4562247d2600efc13603862036ffeca88309b1633dc8f02bacc39e7fb627c4d","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"4d9f0521d4ce621e69d75bfe3847075d51e1dc30d02b16dde14997739d3f0f78","path":"gallery/pages/cv/public-share/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"fd3599ac15dfbab3092f0f762750bd4f2a50fac59a015def3bc47dc2646aba80","path":"gallery/pages/cv/public/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"18b47a8f757fc88ca8954c4ab56c2b6f797e1237c37501c4a3684c2a172c836b","path":"gallery/pages/cv/public/screen.yaml","step":"prettier"}

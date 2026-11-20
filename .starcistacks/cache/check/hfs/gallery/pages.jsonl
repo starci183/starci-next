@@ -13,7 +13,7 @@
 {"data":{},"findings":[],"hash":"01ea6816a5d9bafc8dfb950102c78e9b755b3eec51345f255187c8f1622845d3","path":"gallery/pages/career/verify-error/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"99adeabdbc8d638be186e34acd9ef43db1eec77e65cdb6153257619585c85064","path":"gallery/pages/career/verify-loading/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"137d9ea541562918f997f4fa9a320000a80b41c19646ab02092db2db6d0885e3","path":"gallery/pages/career/verify-not-found/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f49e356d9426bdf89bf54f3a637f692e9bad7613ee53892817c4fe801dfc5baf","path":"gallery/pages/career/verify-revoked/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7d97fe810f49f0627a0c918e76bc82a67bd6479b4bc7b0d077aa1d43d09938d5","path":"gallery/pages/career/verify-revoked/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f4dc94841117787ab527296b38265d37a1074b6181e8dd28c7a7d8765ad938b9","path":"gallery/pages/career/verify/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6ae0654fe6b1aea080e613d4d9abd2526bf46b1ac9fd392f0e1a16b67af8388a","path":"gallery/pages/commerce/premium-result/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2e272cc027eab8cefb5902609d6d303b7e77f4eb202127b902e91a62696288bd","path":"gallery/pages/commerce/premium/explain.md","step":"file-rules"}
@@ -23,7 +23,7 @@
 {"data":{},"findings":[],"hash":"7add7a06abdcc92c20ceb642c987c4b9d3023ad71e84190124c82111365e54b7","path":"gallery/pages/cv/public-many-lines/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"896f539f02bf64c1ed085d39d30b18920c48ccd39af881dda99729e50143583c","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ca0c55037e0f3d888bb83ffaa848f66a067c4de81539a162a665bc81e2802a21","path":"gallery/pages/cv/public-share/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b06aeead8bdc63e1a02b4eb7941ba3c31f43e6f9195f21c1dcc00e4f4172a07f","path":"gallery/pages/cv/public/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"20dd52e53b1482f179ed3150add550f689d972247551bbb2b83ac84f67331538","path":"gallery/pages/cv/public/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bccd19737262c8ae179d80f466e9a632df04a5eac8c171818fdf818e349f5f7a","path":"gallery/pages/devices/list/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4f663f006ae43973aceef8d1c90e1f9661e48c08759ac514a27b77ec56102b66","path":"gallery/pages/essentials/catalog-error/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"165e2434146d90057ce946058037f1233255633f0ec05805a677270babebec98","path":"gallery/pages/essentials/catalog-first-visit/screen.yaml","step":"file-rules"}

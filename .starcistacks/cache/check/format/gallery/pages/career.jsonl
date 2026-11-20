@@ -9,5 +9,5 @@
 {"findings":[],"hash":"5ad6f6dccf646bb45726467f9147773ca4fbc4b9beb3d39d46f73e136dd7ac58","path":"gallery/pages/career/verify-error/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"2a4385524787e81f5433c2652717890b8083fe018acb2de764fcbc899a2f8b68","path":"gallery/pages/career/verify-loading/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"70f81ecfcc2de2d8e0b9aa43c90e01d1c86e7dfd22e6357f78d774402357ef08","path":"gallery/pages/career/verify-not-found/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"7ee9ffeaeea3f01722b0c8188ce75bbd759939229ea0d4f7d4ae93f8f2f39384","path":"gallery/pages/career/verify-revoked/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"61abf868334252f08ce9bee5a5332d50c6e6817f57af2222cc1c78457ad0d583","path":"gallery/pages/career/verify-revoked/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"64786e69dc66cf3df7e37356a6f0f051251dba8ef1982bbb49fd6a17e25636f6","path":"gallery/pages/career/verify/screen.yaml","step":"prettier"}
