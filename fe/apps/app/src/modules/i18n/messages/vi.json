@@ -1819,7 +1819,6 @@
         },
         "revokeLabel": "Lý do thu hồi (bắt buộc)",
         "revoke": "Thu hồi",
-        "back": "Về hàng chờ",
         "dueAt": "Hạn duyệt {date}",
         "preview": "Xem trước",
         "gradeTitle": "AI chấm",
@@ -2362,7 +2361,6 @@
         "openerNone": "Chưa trả lời câu mở bài nào.",
         "unlocked": "Đã mở",
         "locked": "Cần Premium",
-        "upgrade": "Xem Premium",
         "part": {
           "essence": "Phần 1 · Bản chất",
           "source": "Phần 2 · Source",

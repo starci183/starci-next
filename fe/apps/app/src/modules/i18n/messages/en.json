@@ -1819,7 +1819,6 @@
         },
         "revokeLabel": "Reason for the revoke (required)",
         "revoke": "Revoke",
-        "back": "Back to the queue",
         "dueAt": "Due {date}",
         "preview": "Preview",
         "gradeTitle": "AI grade",
@@ -2362,7 +2361,6 @@
         "openerNone": "No opener question answered yet.",
         "unlocked": "Open",
         "locked": "Needs Premium",
-        "upgrade": "See Premium",
         "part": {
           "essence": "Part 1 · Essence",
           "source": "Part 2 · Source",
