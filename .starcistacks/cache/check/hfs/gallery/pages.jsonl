@@ -97,9 +97,9 @@
 {"data":{},"findings":[],"hash":"51a3866714b3ea4008b03f82c0a87831c9da7feaf739829fc1e38d372a2e22a1","path":"gallery/pages/harness/use/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1622c1a1e04a826a70335ce67b5b972ad442306fa6daa315201efc698ba8918d","path":"gallery/pages/incidents/list-none/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6300079bebebc2c5ad788cc8e407258cba560b562ce1e68adaca29ce219aaa02","path":"gallery/pages/incidents/list/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b4e51834bf270aa2c60c78dfb1d2228a3f9edf9b81cc614aa041dcc43bbeb059","path":"gallery/pages/landing/error/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e23b35fd580db0ab8a8afdd75d52f4f6ead0e591e61f831c4636f1b4b33cf6b4","path":"gallery/pages/landing/home/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"3c9d0c1a77bb4862db7165c4b1a60daddf1863cf0b8e854fa29086c5952f3d8e","path":"gallery/pages/landing/not-found/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4739253d8c09975415e36fc355f025419a89c1416835c50ff3bf86fbdf91f2ed","path":"gallery/pages/landing/error/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6571d5472087f3887f1048e05d0e4732c2b295e9700c0c67b8558d1556ec497f","path":"gallery/pages/landing/home/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ef513191b38c2374c42ebb2f29e88b90351b40900743577ead1f99e834a9da39","path":"gallery/pages/landing/not-found/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"77823f0fd3509165dd6fd908783766c5994472e3f3f7318419b0b42793d6c972","path":"gallery/pages/learn/error/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b02fa38e130cf2183597b7f80027feae6c33f415d10cf18f945d63d2e88bdbf","path":"gallery/pages/learn/home-account-menu/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"476a80d57a16564ccde6778dadee0f8333d243e1bfe8895822ed2aa4acbd3ff5","path":"gallery/pages/learn/home/screen.yaml","step":"file-rules"}

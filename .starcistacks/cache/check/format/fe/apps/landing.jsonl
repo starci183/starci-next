@@ -7,6 +7,7 @@
 {"findings":[],"hash":"3bc7a1060770200353c064020c0bb121a45bda53f884538865c86b862bf4fe74","path":"fe/apps/landing/src/app/[locale]/(pages)/loading.tsx","step":"prettier"}
 {"findings":[],"hash":"20509da6d628718721e0b3eaed0587cf3d1e2f972335722a4b42df7e98583f39","path":"fe/apps/landing/src/app/[locale]/(pages)/not-found.tsx","step":"prettier"}
 {"findings":[],"hash":"a5f5605ff6f79ab85b7f5a31033ead66378aad26e0934f28d48417924f464b2a","path":"fe/apps/landing/src/app/[locale]/(pages)/page.tsx","step":"prettier"}
+{"findings":[],"hash":"f958a9abdef68560709880f6bf1af356f878560e633584bf33b8368df0e23446","path":"fe/apps/landing/src/app/[locale]/(pages)/zz-throw/page.tsx","step":"prettier"}
 {"findings":[],"hash":"0241eca56a8437a28f9eb84995af37bb0133e9a86d126fd28b3784b20b4a000b","path":"fe/apps/landing/src/app/[locale]/[...rest]/page.tsx","step":"prettier"}
 {"findings":[],"hash":"04441aa97793b3958bdcfe935cd1e34d9de9d2bc4a067248dc865a3f24aa9f78","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"prettier"}
 {"findings":[],"hash":"68303943a5e2ee028bdb16ac15f094c65fe9b3f834650f61127397ccb4128811","path":"fe/apps/landing/src/app/[locale]/not-found.tsx","step":"prettier"}
@@ -23,14 +24,14 @@
 {"findings":[],"hash":"a741f33b426637b3530870d7b3ba992fe01d1b1f7c0b85a7d7ce8aa8573bf7b3","path":"fe/apps/landing/src/features/pages/LandingGlobalNotFoundPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"ef480a6dc57eb40bcca97631dea78fa051ac746a895df0eefcee7fd47f967fe0","path":"fe/apps/landing/src/features/pages/LandingLoadingPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"b9b96bc09b9e4a2897af1a383681697df0b92e7a7e67041bdad8bf4b19a6cab5","path":"fe/apps/landing/src/features/pages/LandingNotFoundPage/index.tsx","step":"prettier"}
-{"findings":[],"hash":"626e784eeb66a2ce93eff6d1059f52aa812b65b721a41d70ad3bbcaa20568089","path":"fe/apps/landing/src/features/pages/LandingPage/component.tsx","step":"prettier"}
-{"findings":[],"hash":"9d041f94347b4243ee3a24ef8d5338993d8f72dd6f2973d9357b17eb5b59362d","path":"fe/apps/landing/src/features/pages/LandingPage/index.tsx","step":"prettier"}
+{"findings":[],"hash":"c09a3aa77f50eac15e57046f0966a5c1ec7c63d5f00c51739cf9ccf18f74c26c","path":"fe/apps/landing/src/features/pages/LandingPage/component.tsx","step":"prettier"}
+{"findings":[],"hash":"d3f7301c16697d507bf06e3f08a3c4550a7f6f431dac16b2cfe4c30b16a46778","path":"fe/apps/landing/src/features/pages/LandingPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"17f2e24bcaf3529145179917e0d5851b0c64dd061a749e650133b6a121730265","path":"fe/apps/landing/src/hooks/locale/index.ts","step":"prettier"}
 {"findings":[],"hash":"706ca16568f7559f95b9ae83c55d9c65873a500e1a3ce97c821bb6ac9be58918","path":"fe/apps/landing/src/hooks/locale/useLocaleSwitch.ts","step":"prettier"}
 {"findings":[],"hash":"1ae82e52b25915d04d5bdc593afb63741a0b37df743ec0ef782f3406d2408936","path":"fe/apps/landing/src/modules/config/index.ts","step":"prettier"}
 {"findings":[],"hash":"bec4f9a9f7b384b2e4162c66c991f40c21ed173b3797083f4c6d58bfd2734513","path":"fe/apps/landing/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"74fca478263f1878a9a3f012eb0b54d6c0991a3c154569a9992168b375ec5c81","path":"fe/apps/landing/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"1827e40c68428ba150d41d6e988461aaf389999371e0a356ea00f0dbaf3ca30e","path":"fe/apps/landing/src/modules/i18n/messages/vi.json","step":"prettier"}
+{"findings":[],"hash":"2de5c215adf63b5e72149b2d5780c27f588101066207e5ccb333a8a05297cd95","path":"fe/apps/landing/src/modules/i18n/messages/en.json","step":"prettier"}
+{"findings":[],"hash":"97a5ebf042833771d1f4f8d87fdc63891ee77b821a5cb64abbae425cfd2bf3e5","path":"fe/apps/landing/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"8e1c1c3ab7d1460c28b35141c89d4f5547501cab6c9c41e9eedfad1184048546","path":"fe/apps/landing/src/modules/i18n/request.ts","step":"prettier"}
 {"findings":[],"hash":"06f1412d3c40ea02f14bd6da5f2b8a107f5f49935c0a083ee891af0a7c22ac93","path":"fe/apps/landing/src/modules/routes/index.ts","step":"prettier"}
 {"findings":[],"hash":"e6bc8b34cdf18975fb4e8f13cb9e393a9d01d9f49e6cb47915d2dae131a13fd2","path":"fe/apps/landing/src/modules/types/ambient/styles.d.ts","step":"prettier"}
