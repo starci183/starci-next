@@ -2,7 +2,6 @@ import {
     Alert,
     Badge,
     Button,
-    Cluster,
     DataTable,
     EmptyNotice,
     Input,
@@ -105,30 +104,26 @@ const Field = (props: FieldProps) =>
 const Forms = (props: ConceptCodeReadProps) => {
     const { labels, isBusy } = props
     return (
-        <Stack gap="row">
+        <Stack gap="section">
             <Section title={labels.pointerTitle} headingLevel={3}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     <Field field="location" label={labels.location} props={props} />
                     <Field field="endpoint" label={labels.endpoint} props={props} />
                     <Field field="sampleBody" label={labels.sampleBody} props={props} />
-                    <Cluster gap="inline" wrap>
-                        <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
-                            {isBusy ? labels.savingPointer : labels.savePointer}
-                        </Button>
-                    </Cluster>
+                    <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.savePointer}>
+                        {isBusy ? labels.savingPointer : labels.savePointer}
+                    </Button>
                 </Stack>
             </Section>
             {props.concept.needsCodeRead ? (
                 <Section title={labels.explainTitle} headingLevel={3}>
-                    <Stack gap="row">
+                    <Stack gap="inline">
                         <Text tone="muted">{labels.explainText}</Text>
                         <Field field="excerpt" label={labels.excerpt} rows={8} props={props} />
                         <Field field="explanation" label={labels.explanation} rows={3} props={props} />
-                        <Cluster gap="inline" wrap>
-                            <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
-                                {isBusy ? labels.explaining : labels.explain}
-                            </Button>
-                        </Cluster>
+                        <Button intent="neutral" isPending={isBusy} isDisabled={isBusy} onPress={props.on.explain}>
+                            {isBusy ? labels.explaining : labels.explain}
+                        </Button>
                     </Stack>
                 </Section>
             ) : null}
@@ -142,8 +137,12 @@ export const ConceptCodeRead = (props: ConceptCodeReadProps) => {
     return (
         <Stack gap="region">
             <Section title={labels.codeTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
-                    {props.concept.comingSoon ? <EmptyNotice message={labels.comingSoon} mark="none" frame="frameless" /> : <Forms {...props} />}
+                <Stack gap="inline">
+                    {props.concept.comingSoon ? (
+                        <EmptyNotice message={labels.comingSoon} mark="none" frame="frameless" />
+                    ) : (
+                        <Forms {...props} />
+                    )}
                     {props.issueWords === "" ? null : <Alert tone="negative" title={props.issueWords} />}
                 </Stack>
             </Section>

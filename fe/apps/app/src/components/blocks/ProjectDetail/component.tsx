@@ -1,4 +1,4 @@
-import { Badge, Button, Page, Pane, PaneGrid, PaneSection } from "@starci/grammar/common"
+import { Badge, Button, Grid, Page, Stack } from "@starci/grammar/common"
 import {
     DeployCard,
     ExperienceCard,
@@ -145,36 +145,31 @@ export const ProjectDetailBase = (props: ProjectDetailBaseProps) => {
     }
     const view = "items" in slot ? slot.items : undefined
     return (
-        <Page chrome="panes" layout="workspace" isLoading={"isLoading" in slot} header={headerOf(props, view)}>
+        <Page isLoading={"isLoading" in slot} header={headerOf(props, view)}>
             <SlotView
                 slot={slot}
                 placeholder={props.props.placeholder}
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
                 render={(settled, loading) => (
-                    <PaneGrid
-                        label={labels.pageTitle}
-                        areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-                        columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-                    >
-                        <Pane area="main" scroll label={labels.milestones}>
-                            <PaneSection gap="section">
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
                                 <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
-                            </PaneSection>
-                        </Pane>
-                        <Pane area="aside" label={labels.asideRepo}>
-                            <PaneSection>
-                                <ProjectAside
-                                    view={settled}
-                                    labels={labels}
-                                    isLoading={loading}
-                                    fields={props.props.fields}
-                                    busy={props.props.busy}
-                                    on={props.on}
-                                />
-                            </PaneSection>
-                        </Pane>
-                    </PaneGrid>
+                            </Stack>
+                        }
+                        rail={
+                            <ProjectAside
+                                view={settled}
+                                labels={labels}
+                                isLoading={loading}
+                                fields={props.props.fields}
+                                busy={props.props.busy}
+                                on={props.on}
+                            />
+                        }
+                    />
                 )}
             />
         </Page>

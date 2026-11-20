@@ -1,0 +1,38 @@
+schema: 1
+screen: practice/list-nomatch
+title: "Luyện code, không khớp bộ lọc"
+route: "/practice"
+area: practice
+summary: 'Trạng thái của màn này: không khớp bộ lọc. Mục tiêu: chọn một pattern rồi vào làm bài. Thao tác: practicePatterns (patternId, title, problemCount, acceptedCount) và practiceReadiness (số bài Accepted cho mức sẵn sàng đi làm). Luyện code miễn phí cho mọi học viên. cần API: bỏ khóa Luyện code khỏi practicePatterns; practiceNext (bài kế và bài đang dở). Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Dải đầu (20 pattern · 96 bài · 14 Accepted); thanh lọc (tìm theo tên, bốn tab lọc có đếm); danh sách phẳng, cả hàng là liên kết, có thanh tiến độ mảnh trong hàng. Cột phải 1440: mức sẵn sàng, bài đang làm dở, ba dòng nói cách chấm; 390 xuống dưới. Nút chính: "Làm bài tiếp theo" (bài chưa Accepted đầu tiên); lần đầu "Bắt đầu với Mảng". Lọc: ô tìm và chip trạng thái có đếm. Khác bản hiện tại: bỏ nút "Mở pattern" lặp 20 lần, thêm lọc và tiến độ trên hàng, nút chính lên dải đầu. Lưu ý xung đột: practicePatterns còn locked và freeCount; Luyện code miễn phí nên giao diện bỏ qua và không có chip Premium. Phần tử Grammar của màn: PageHeader, Section kind="list" có filter, ListRow (detail chứa Meter), Tabs kind="filter", SearchField.'
+code:
+  - "features/pages/PracticeCatalogPage"
+  - "components/blocks/PracticeCatalog"
+shots:
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Luyện code"
+    shows: 'tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu tiên); lần đầu "Bắt đầu với Mảng".'
+    why: "một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look)."
+    actions: []
+    states:
+      loading: "Khối xám cùng hình khối, do SlotView giữ"
+      empty: null
+      error: "Thông báo lỗi của SlotView, có Thử lại"
+    needsApi: []
+  - id: s2
+    title: "Không có pattern nào khớp"
+    shows: "vùng này phục vụ mục tiêu của trang: chọn một pattern rồi vào làm bài."
+    why: "danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look)."
+    actions: []
+    states:
+      loading: "Khối xám cùng hình khối, do SlotView giữ"
+      empty: null
+      error: "Thông báo lỗi của SlotView, có Thử lại"
+    needsApi: []
+considered:
+  - option: "Giữ bản vẽ cũ của ngày 17/11"
+    chosen: false
+    why: "Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã"
+  - option: "Vẽ lại theo mã đang chạy với luật Grammar 0.50"
+    chosen: true
+    why: 'Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11'

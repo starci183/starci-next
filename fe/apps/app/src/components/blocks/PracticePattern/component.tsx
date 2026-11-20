@@ -72,7 +72,7 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
     return (
         <Stack gap="region">
             <Section title={labels.progressTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     <Progress label={labels.progressLabel} value={progress.percent} valueText={progress.text} />
                     <Text tone="muted">{progress.text}</Text>
                 </Stack>

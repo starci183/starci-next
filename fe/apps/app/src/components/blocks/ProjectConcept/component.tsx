@@ -79,8 +79,8 @@ const Slots = (props: BodyProps) => {
     const { labels } = props.props
     return (
         <Section title={labels.slotsTitle} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
-                <Cluster gap="inline" wrap>
+            <Stack gap="inline">
+                <Cluster gap="identity" wrap>
                     {concept.chips.map((chip) => (
                         <Badge key={chip.id} tone={chip.tone}>
                             {chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`}
@@ -88,9 +88,7 @@ const Slots = (props: BodyProps) => {
                     ))}
                 </Cluster>
                 {concept.rejection === undefined ? null : <Alert tone="negative" title={concept.rejection.text} />}
-                {concept.aiQuestion === "" ? null : (
-                    <Text>{`${labels.questionLabel}: ${concept.aiQuestion}`}</Text>
-                )}
+                {concept.aiQuestion === "" ? null : <Text>{`${labels.questionLabel}: ${concept.aiQuestion}`}</Text>}
                 {concept.lessonHref === "" ? null : (
                     <Link variant="plain" href={concept.lessonHref}>
                         {`${labels.lesson}: ${concept.lessonTitle}`}
@@ -118,7 +116,7 @@ const Probe = (props: BodyProps) => {
             headingLevel={2}
             isLoading={props.isLoading}
         >
-            <Stack gap="row">
+            <Stack gap="inline">
                 {lines.length === 0 ? (
                     <EmptyNotice
                         message={view.deployedUrl === "" ? labels.probeNoDeploy : labels.probeEmpty}
@@ -128,7 +126,7 @@ const Probe = (props: BodyProps) => {
                 ) : (
                     <Terminal label={labels.probeTitle} lines={lines} />
                 )}
-                <Cluster gap="inline" wrap>
+                <Cluster gap="identity" wrap>
                     <Button
                         intent="neutral"
                         isPending={props.props.isProbing}
@@ -177,7 +175,7 @@ const CvPreview = (props: BodyProps) => {
     const { cv } = props.view
     return (
         <Section title={labels.cvTitle} headingLevel={2} isLoading={props.isLoading} caption={labels.cvNote}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 {cv === undefined ? (
                     <EmptyNotice message={labels.cvEmpty} mark="none" frame="frameless" />
                 ) : (
@@ -189,7 +187,7 @@ const CvPreview = (props: BodyProps) => {
                         <Text tone="muted">{cv.evidence}</Text>
                     </Stack>
                 )}
-                <Cluster gap="inline" wrap>
+                <Cluster gap="identity" wrap>
                     <Button intent="neutral" href={labels.askClaudeHref}>
                         {labels.askClaude}
                     </Button>

@@ -1,4 +1,14 @@
-import { Badge, Button, DataTable, EmptyNotice, Page, Section, Stack, Text, type BadgeTone } from "@starci/grammar/common"
+import {
+    Badge,
+    Button,
+    DataTable,
+    EmptyNotice,
+    Page,
+    Section,
+    Stack,
+    Text,
+    type BadgeTone,
+} from "@starci/grammar/common"
 
 /** One row of the sample concept table the pitch shows. */
 export type PitchSampleRow = {

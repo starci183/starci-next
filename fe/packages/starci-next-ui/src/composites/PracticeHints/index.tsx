@@ -69,7 +69,7 @@ export const PracticeHints = (props: PracticeHintsProps) => {
             kind="list"
             title={props.labels.title}
             headingLevel={2}
-            description={props.labels.note}
+            caption={props.labels.note}
             isLoading={props.isLoading === true}
             items={rows}
             empty={props.labels.note}

@@ -126,7 +126,7 @@ const Form = (props: FormProps) => {
     const { labels, state } = props.props
     return (
         <Section title={labels.infoLabel} headingLevel={2}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 <TextField id="name" label={labels.name} {...props} />
                 <Choice id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
                 {state.kind === "agent" ? (
@@ -135,7 +135,7 @@ const Form = (props: FormProps) => {
                 <TextField id="repoUrl" label={labels.repo} {...props} />
                 <TextField id="deployedUrl" label={labels.deployed} description={labels.deployedHint} {...props} />
                 {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
-                <Cluster gap="inline" wrap>
+                <Cluster gap="identity" wrap>
                     <Button
                         intent="commit"
                         startGlyph="plus"
@@ -158,7 +158,7 @@ const Form = (props: FormProps) => {
 /** The init panel: the commands to run in the learner's own repository, as a terminal, and the line that says what StarCi does and does not touch. */
 const InitPanel = (props: InitPanelProps) => (
     <Section title={props.labels.initTitle} headingLevel={2}>
-        <Stack gap="row">
+        <Stack gap="inline">
             <Terminal
                 label={props.labels.initTitle}
                 lines={props.labels.initLog.map((line) =>
@@ -176,7 +176,7 @@ type CreatedProps = { readonly labels: ProjectNewLabels; readonly created: Proje
 /** The section shown after the create: the secret once, and the way into the project. */
 const Created = (props: CreatedProps) => (
     <Section title={props.labels.createdTitle} headingLevel={2}>
-        <Stack gap="row">
+        <Stack gap="inline">
             <Alert tone="informative" title={props.labels.createdText} />
             <Input
                 id="project-secret"
@@ -189,11 +189,9 @@ const Created = (props: CreatedProps) => (
                 copyLabel={props.labels.copy}
                 copiedLabel={props.labels.copied}
             />
-            <Cluster gap="inline" wrap>
-                <Button intent="commit" href={props.created.href}>
-                    {props.labels.openProject}
-                </Button>
-            </Cluster>
+            <Button intent="commit" href={props.created.href}>
+                {props.labels.openProject}
+            </Button>
         </Stack>
     </Section>
 )

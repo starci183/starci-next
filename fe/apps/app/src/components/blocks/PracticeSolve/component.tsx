@@ -248,11 +248,11 @@ const SolutionTab = (props: PieceProps) => {
     const { labels, state } = props.screen.props
     return (
         <Section title={labels.solutionTitle} headingLevel={2} isLoading={props.isLoading}>
-            <Stack gap="row">
+            <Stack gap="inline">
                 {state.solution === null ? (
                     <>
                         <Alert tone="neutral" title={labels.solutionText} />
-                        <Cluster gap="inline">
+                        <Cluster gap="identity">
                             <Button
                                 intent="neutral"
                                 isPending={state.isSolutionPending}

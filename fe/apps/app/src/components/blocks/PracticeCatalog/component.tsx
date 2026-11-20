@@ -107,7 +107,7 @@ const Rail = (props: PieceProps) => {
     return (
         <Stack gap="region">
             <Section title={labels.readinessTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     <Text size="figure" isStrong tabular>
                         {`${readiness.accepted}`}
                     </Text>
@@ -134,7 +134,7 @@ const Rail = (props: PieceProps) => {
                 />
             )}
             <Section title={labels.gradingTitle} headingLevel={2} isLoading={props.isLoading}>
-                <Stack gap="row">
+                <Stack gap="inline">
                     {labels.grading.map((line) => (
                         <Text key={line} tone="muted">
                             {line}
