@@ -14,8 +14,8 @@
 // Refuses anything but the loopback dev core, the loopback mail sink, the dev custody and a loopback database.
 import { spawnSync } from "node:child_process"
 import { randomBytes, randomUUID } from "node:crypto"
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
-import { join, resolve } from "node:path"
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { dirname, join, resolve } from "node:path"
 import pg from "pg"
 
 const LOOPBACK = new Set(["localhost", "127.0.0.1", "[::1]", "::1"])
@@ -90,7 +90,30 @@ const devSecretFile = (slug, key) => {
 }
 let dbUrlPath
 /** The dev custody file of the database url (member db, key PRIMARY_DB_URL), opened on first use. */
-const dbUrlFile = () => (dbUrlPath ??= devSecretFile("db", "PRIMARY_DB_URL"))
+/**
+ * The dev database url of the back end (the app_be role): the sealed member key when it is there, else the file `stack up` materializes beside the
+ * members of the db custody (its directory is the one of the real db key DB_OWNER_PASSWORD). Opened on first use.
+ */
+const dbUrlFile = () => {
+    if (dbUrlPath !== undefined) return dbUrlPath
+    const owner = devSecretFile("db", "DB_OWNER_PASSWORD")
+    const sealed = spawnSync("npx starci app secret get --env dev db PRIMARY_DB_URL --to-file", {
+        encoding: "utf8",
+        shell: true,
+    })
+    const named = /^[A-Z0-9_]+_FILE=([^\r\n]+)/m.exec(`${sealed.stdout ?? ""}\n${sealed.stderr ?? ""}`)
+    const materialized = join(dirname(owner), "PRIMARY_DB_URL")
+    dbUrlPath = sealed.status === 0 && named ? named[1].trim() : materialized
+    if (!existsSync(dbUrlPath)) fail("could not open the dev database url (start the dev stack first)")
+    return dbUrlPath
+}
+/** The dev database url of the database OWNER (the role named like the database, password of the sealed DB_OWNER_PASSWORD): auth.users is reachable only by it. */
+const ownerUrl = () => {
+    const url = new URL(readFileSync(dbUrlFile(), "utf8").trim())
+    url.username = url.pathname.replace(/^\//, "")
+    url.password = encodeURIComponent(readFileSync(devSecretFile("db", "DB_OWNER_PASSWORD"), "utf8").trim())
+    return url.href
+}
 /** Refuses a database that is not on loopback (the dev stack's database never is anything else). */
 const requireLoopbackDatabase = () => {
     if (!LOOPBACK.has(new URL(readFileSync(dbUrlFile(), "utf8").trim()).hostname))
@@ -245,13 +268,14 @@ const cli = (verbArgs) => {
             ...process.env,
             NODE_ENV: "development",
             PRIMARY_DB_URL_FILE: dbUrlFile(),
+            PRIMARY_DB_SCHEMA: process.env.PRIMARY_DB_SCHEMA ?? "public",
             ENTITLEMENT_DEV_GRANT: "true",
             CAREER_DEV_SEED: "true",
         },
     })
     if (run.status !== 0)
         fail(
-            `cli ${verbArgs.slice(0, 2).join(" ")} failed (exit ${run.status}): ${`${run.stderr}${run.stdout}`.slice(-500)}`,
+            `cli ${verbArgs.slice(0, 2).join(" ")} failed (exit ${run.status}): ${`${run.stderr}${run.stdout}`.slice(-1500)}`,
         )
     return run.stdout
 }
@@ -260,14 +284,14 @@ const cli = (verbArgs) => {
 
 /** Gives a learner an account role (teacher or reviewer): roles live in auth.users.raw_user_meta_data.roles and identity reads them on every request. Loopback database only. */
 const grantRole = async (subject, roleName) => {
-    const url = readFileSync(dbUrlFile(), "utf8").trim()
+    const url = ownerUrl()
     if (!LOOPBACK.has(new URL(url).hostname)) fail("refusing: the dev database is not on loopback")
     const client = new pg.Client({ connectionString: url })
     await client.connect()
     try {
         const done = await client.query(
             "update auth.users set raw_user_meta_data = coalesce(raw_user_meta_data, '{}'::jsonb) || jsonb_build_object('roles', (select coalesce(jsonb_agg(distinct r), '[]'::jsonb) from jsonb_array_elements_text(coalesce(raw_user_meta_data->'roles', '[]'::jsonb) || to_jsonb($2::text)) as r)) where id = $1::uuid",
-            [subject, roleName.toLowerCase()],
+            [subject, roleName.toUpperCase()],
         )
         if (done.rowCount !== 1) fail(`no account ${subject} to give the role ${roleName}`)
     } finally {

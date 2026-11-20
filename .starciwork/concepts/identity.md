@@ -8,7 +8,7 @@ provider stands between the learner and the product.
   existed before the app owned its sign-in kept their old subject as that id.
 - **Access token**: a short-lived token the app signs (public keys at `/auth/jwks`), sent as a bearer on GraphQL and REST.
 - **Refresh cookie**: the HttpOnly `refresh_token` cookie of the auth doors; `GET /auth/session` answers a fresh access token from it.
-- **Roles**: `teacher` and `reviewer`, the operator roles, kept in the account's `raw_user_meta_data.roles` and read on every request.
+- **Roles**: `TEACHER` and `REVIEWER`, the operator roles, kept in the account's `raw_user_meta_data.roles` and read on every request.
   *Not to confuse with* PREMIUM, an entitlement ([premium](premium.md)). A learner needs no role.
 
 ## Rules

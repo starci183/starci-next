@@ -8,7 +8,8 @@
 // Refuses anything but a loopback core, the dev environment's custody and a loopback database. Prints no secret.
 import { spawnSync } from "node:child_process"
 import { randomUUID } from "node:crypto"
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
+import { dirname, join } from "node:path"
 import pg from "pg"
 
 const LOOPBACK = new Set(["localhost", "127.0.0.1", "[::1]", "::1"])
@@ -47,7 +48,20 @@ const devSecretFile = (slug, key) => {
 const secretFile = devSecretFile("sepay", "SEPAY_IPN_SECRET_KEY")
 const secretKey = readFileSync(secretFile, "utf8").trim()
 // The database URL is the sealed dev one `stack up` materializes beside the other dev secret files; only a loopback host is accepted.
-const dbUrl = readFileSync(devSecretFile("db", "PRIMARY_DB_URL"), "utf8").trim()
+// The back end's url (app_be): the sealed member key when present, else the file `stack up` materializes beside the db custody members.
+const sealedDb = spawnSync("npx starci app secret get --env dev db PRIMARY_DB_URL --to-file", {
+    encoding: "utf8",
+    shell: true,
+})
+const sealedPath = /^[A-Z0-9_]+_FILE=([^\r\n]+)/m
+    .exec(`${sealedDb.stdout ?? ""}\n${sealedDb.stderr ?? ""}`)?.[1]
+    ?.trim()
+const dbUrlPath =
+    sealedDb.status === 0 && sealedPath
+        ? sealedPath
+        : join(dirname(devSecretFile("db", "DB_OWNER_PASSWORD")), "PRIMARY_DB_URL")
+if (!existsSync(dbUrlPath)) fail("could not open the dev database url (start the dev stack first)")
+const dbUrl = readFileSync(dbUrlPath, "utf8").trim()
 if (!LOOPBACK.has(new URL(dbUrl).hostname)) fail("refusing: the dev database is not on loopback")
 
 const orderCode = option("--order-code")
