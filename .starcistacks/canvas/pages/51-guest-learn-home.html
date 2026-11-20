@@ -1,0 +1,64 @@
+<style data-lane="next-guest-free">
+/* next-guest-free, Phase A (2026-11-20): guest header, quiet save prompt, sign-in dialog and guest gate. Scoped to .GF so no approved frame changes. */
+.GF .sn-sh{position:relative}
+.GF .gf-av{color:var(--fg2)}
+.GF .gf-menu{position:absolute;top:60px;right:16px;width:240px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-pop);padding:6px 0;z-index:4}
+.GF .m .gf-menu{top:56px;right:8px}
+.GF .gf-ml{font-size:12px;color:var(--muted);padding:8px 16px 4px}
+.GF .gf-mi{height:40px;display:flex;align-items:center;padding:0 16px;font-size:14px;background:var(--fill)}
+.GF .gf-q{margin-top:20px;padding:12px 0 0;border-top:1px solid var(--sep);display:block;font-size:14px;color:var(--fg2);max-width:760px}
+.GF .gf-q u{color:var(--fg);text-decoration:underline;text-underline-offset:3px;font-weight:500}
+.GF .gf-scrim{position:absolute;inset:0;background:rgba(0,0,0,.28);z-index:3;display:grid;place-items:start center;grid-template-columns:minmax(0,1fr);padding-top:110px}
+.GF .m .gf-scrim{padding:56px 16px 0}
+.GF .gf-dlg{width:416px;max-width:100%;background:#fff;border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--shadow-pop);padding:20px;display:flex;flex-direction:column;gap:14px}
+.GF .gf-dh{display:flex;align-items:center;justify-content:space-between}.GF .gf-dh h3{font-size:18px;font-weight:500;margin:0}
+.GF .gf-x{width:40px;height:40px;display:grid;place-items:center;color:var(--fg2);border-radius:999px;margin:-8px -8px -8px 0}
+.GF .gf-sb{font-size:14px;color:var(--muted);margin-top:-6px}
+.GF .gf-soc{display:flex;flex-direction:column;gap:10px}
+.GF .gf-b2,.GF .gf-b1{height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:500;width:100%}
+.GF .gf-b2{background:#fff;border:1px solid var(--border);color:var(--fg)}
+.GF .gf-b1{background:var(--accent);color:#fff}
+.GF .gf-gl{font-size:12px;font-weight:500;color:var(--fg2)}
+.GF .gf-or{font-size:12px;color:var(--muted);text-align:center}
+.GF .gf-f{display:flex;flex-direction:column;gap:6px}.GF .gf-f label{font-size:16px;display:flex;justify-content:space-between;align-items:baseline}.GF .gf-f label u{font-size:12px;color:var(--fg2)}
+.GF .gf-in{height:40px;border:1px solid var(--border);border-radius:var(--r);padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--faint)}
+.GF .gf-mut{font-size:12px;color:var(--muted)}
+.GF .gf-sw{font-size:14px;text-align:center;color:var(--fg2)}.GF .gf-sw u{color:var(--fg);font-weight:500}
+.GF .gf-keep{font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--sep);padding-top:12px}
+.GF .gf-list>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:12px 16px;border-top:1px solid var(--sep)}
+.GF .gf-list>div:last-child{border-bottom:1px solid var(--sep)}.GF .gf-list b{font-weight:500;display:block}.GF .gf-list .s{font-size:12px;color:var(--muted);display:block;margin-top:2px}
+.GF .gf-list u{white-space:nowrap;font-size:14px;color:var(--fg);text-underline-offset:3px}
+.GF .gf-gate{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:96px 24px 64px;max-width:520px;margin:0 auto}
+.GF .m .gf-gate{padding:64px 16px 40px}
+.GF .gf-gate h1{margin:0}.GF .gf-gate p{margin:0;color:var(--fg2);font-size:14px}
+.GF .gf-gate .gf-ill{width:96px;height:96px;border-radius:999px;background:var(--fill);display:grid;place-items:center;color:var(--fg2);margin-bottom:8px}
+.GF .gf-gate .gf-b1{width:auto;padding:0 20px;margin-top:8px}
+.GF .gf-gate .gf-lk{font-size:14px;color:var(--fg2);text-decoration:underline;text-underline-offset:3px}
+</style>
+<section class="page" id="guest-learn-home" data-pid="guest/learn-home" data-route="/" data-title="Học, khách">
+  <h2>Học, khách</h2>
+  <div class="pid">gallery: guest/learn-home</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Học, khách · 1440</div><div class="scr w1440 zoom L1 GF SN"><div class="sn-sh sn-d"><header class="sn-tb"><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b><span>Khách</span></div><div class="sn-sp"></div><span class="sn-rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span><span class="sn-rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></span><span class="sn-av gf-av" title="Khách"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span></header><div class="sn-bd"><nav class="sn-sd"><div class="nav-item sn-ni selected"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V20h14V9.5"/></svg><span>Học</span></div><div class="sn-gl">Khu vực học</div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5V21"/></svg><span>Essentials</span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Projects</span><span class="sn-n" title="Cần đăng nhập"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg></span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2-3 2"/><path d="M13 15h4"/></svg><span>Harness</span></div><div class="sn-gl">Luyện</div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M13.5 5l-3 14"/></svg><span>Luyện code</span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3-3"/><path d="M20 15H7l3 3"/></svg><span>Ôn tập</span><span class="sn-n" title="Cần đăng nhập"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg></span></div><div class="sn-gl">Của bạn</div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg><span>Hồ sơ</span><span class="sn-n" title="Cần đăng nhập"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12v9H6z"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg></span></div></nav><div class="sn-mn"><div class="hd"><div class="tx"><h1>Học</h1><div class="fx">Khách<i>·</i>Học không cần tài khoản</div></div><div class="acts"><span class="btn primary">Bắt đầu: Idempotency key</span></div></div><div class="cn"><div class="col"><section class="sec"><div class="st"><h2>Việc tiếp theo</h2><span class="r">Essentials</span></div>
+<div style="border-top:1px solid var(--border);padding:20px 0 0;display:flex;flex-direction:column;gap:14px">
+<div class="s12 mut">Cụm “Hệ thống phân tán” · Bài 1 · Phần 1 · Bản chất</div>
+<h3 style="font-size:18px;font-weight:500;line-height:1.35">Idempotency key: khách bấm Thanh toán hai lần, sao kê có hai khoản thu</h3>
+<p class="f2" style="max-width:640px">Năm câu hỏi mở bài chấm ngay, rồi đọc bài 18 phút. Phần 1 của mọi bài là miễn phí, bạn không cần tài khoản.</p></div></section>
+<section class="sec"><div class="st"><h2>Ba khu vực</h2></div><div class="gf-list">
+<div><span><b>Essentials</b><span class="s">Phần 1 của mọi bài miễn phí. Phần 2 đến 4 thuộc gói Premium.</span></span><u>Vào Essentials</u></div>
+<div><span><b>Harness</b><span class="s">Miễn phí cho mọi người: build mẫu, hướng dẫn dùng Claude Code và Codex, docs.</span></span><u>Vào Harness</u></div>
+<div><span><b>Projects</b><span class="s">Dự án trên repo của bạn, cần tài khoản Premium.</span></span><u>Xem Projects</u></div></div>
+<div class="gf-q">Học khi chưa đăng nhập: điểm được giữ trên máy này. <u>Đăng nhập</u> để lưu lâu dài và giữ chuỗi ngày.</div></section></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Học, khách · 390</div><div class="scr w390 L1 m GF SN"><div class="sn-sh m"><header class="sn-tb"><span class="sn-rnd sn-ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b></div><div class="sn-sp"></div><span class="sn-av gf-av" title="Khách"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></span></header><div class="hd"><div class="tx"><h1>Học</h1><div class="fx">Khách<i>·</i>Học không cần tài khoản</div></div><div class="acts"><span class="btn primary" style="width:100%;justify-content:center">Bắt đầu: Idempotency key</span></div></div><div class="cn"><div class="col"><section class="sec"><div class="st"><h2>Việc tiếp theo</h2><span class="r">Essentials</span></div>
+<div style="border-top:1px solid var(--border);padding:20px 0 0;display:flex;flex-direction:column;gap:14px"><div class="s12 mut">Cụm “Hệ thống phân tán” · Bài 1 · Phần 1</div>
+<h3 style="font-size:18px;font-weight:500;line-height:1.35">Idempotency key: khách bấm Thanh toán hai lần, sao kê có hai khoản thu</h3>
+<p class="f2">Năm câu hỏi mở bài chấm ngay, rồi đọc bài 18 phút. Phần 1 miễn phí, không cần tài khoản.</p></div></section>
+<section class="sec"><div class="st"><h2>Ba khu vực</h2></div><div class="gf-list"><div><span><b>Essentials</b><span class="s">Phần 1 của mọi bài miễn phí.</span></span></div><div><span><b>Harness</b><span class="s">Miễn phí cho mọi người.</span></span></div><div><span><b>Projects</b><span class="s">Cần tài khoản Premium.</span></span></div></div>
+<div class="gf-q">Điểm giữ trên máy này. <u>Đăng nhập</u> để lưu lâu dài.</div></section></div></div></div></div></div>
+    <div class="note"><h4>Thay đổi so với bản đã duyệt:</h4><p>- Mới: khách vào thẳng "/" thay vì bị chuyển sang trang đăng nhập.</p><p>- Không có chuỗi ngày, mục tiêu tuần, kinh nghiệm, máy: các khối cần tài khoản không vẽ thay vì vẽ rỗng.</p><p>- Một nút chính "Bắt đầu: Idempotency key"; lời mời lưu tiến độ là một dòng chữ nhỏ cuối trang, không phải nút, không phải khung.</p><p>- Thanh trên: avatar khách thay cho nút đăng nhập; thanh bên khóa Projects, Ôn tập, Hồ sơ.</p>
+      <div class="fm">title: Học, khách · route: / · area: guest</div>
+      <p class="intro"><b>Concept: Học, khách.</b> Khách (chưa có phiên): xem mọi thứ miễn phí mà không bị chuyển sang trang đăng nhập; "Đăng nhập" luôn mở hộp đăng nhập ngay tại chỗ, đóng lại là về đúng chỗ đang học. Thao tác: không cần phiên; đọc lessons, lessonTopic (chỉ phần miễn phí), harnessHub; không gọi learnerHub, streak, myPremium. Nút chính: "Bắt đầu" trỏ bài đầu của Essentials (hoặc "Học tiếp" nếu máy này đã có tiến độ khách). Phần tử Grammar: WorkspaceShell, PageHeader, Section kind="list".</p>
+    </div>
+  </div>
+</section>

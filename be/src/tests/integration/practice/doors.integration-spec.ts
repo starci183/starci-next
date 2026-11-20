@@ -54,14 +54,11 @@ const setup = () => {
 describe("practice doors, access and reads (integration)", () => {
     const { doors, nextLearner } = setup()
 
-    it("refuses a caller with no session", async () => {
-        const answer = await doors.ask(PATTERNS, input)
+    it("answers the pattern list to a caller with no session as a guest", async () => {
+        const answer = await doors.ask<{ practicePatterns: ReadonlyArray<PracticePatternBody> }>(PATTERNS, input)
 
-        expect(answer.data ?? null).toBeNull()
-        expect(answer.errors?.[0]?.extensions).toMatchObject({
-            code: "IDENTITY_SESSION_REQUIRED",
-            kind: "unauthenticated",
-        })
+        expect(answer.errors).toBeUndefined()
+        expect(answer.data?.practicePatterns.length ?? 0).toBeGreaterThan(0)
     })
 
     it("lists the patterns and problems, every one open, for a learner without Premium", async () => {

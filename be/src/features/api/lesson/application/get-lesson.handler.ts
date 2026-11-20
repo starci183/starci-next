@@ -39,7 +39,16 @@ export class GetLessonHandler extends ICQRSHandler<GetLessonQuery, LessonView> {
     }
 
     protected override async process(query: GetLessonQuery): Promise<LessonView> {
-        const learnerId = query.params.principal.id
+        const learnerId = query.params.principal?.id
+        if (learnerId === undefined) {
+            // A guest reads as a reader without Premium and owns no runs or hint uses: every hint stays withheld.
+            const guestView = await this.lessons.read({
+                id: query.params.request.id,
+                locale: query.params.request.locale,
+                isPremium: false,
+            })
+            return withHeldHints(guestView, new Set())
+        }
         const view = await this.lessons.find({
             id: query.params.request.id,
             locale: query.params.request.locale,

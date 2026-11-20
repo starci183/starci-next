@@ -51,3 +51,9 @@
 {"findings":[],"hash":"96140a7f2179823e6d756dcd7a88b21966b9a5c51c1434b719c636a65d2ad680","path":".starcistacks/canvas/pages/49-progress-overview.html","step":"prettier"}
 {"findings":[],"hash":"4d2ec9121b0562880df71cfc1fd29b06808298e26a4ceafd3ddf66c1cb553dda","path":".starcistacks/canvas/pages/49b-incidents-list.html","step":"prettier"}
 {"findings":[],"hash":"f8ad8785ed6f17fa173943bb788439b257b1a3da60f7bdd5a25c44f77308a2dd","path":".starcistacks/canvas/pages/50-paths-choose.html","step":"prettier"}
+{"findings":[],"hash":"2c1ee8fa3a82961393d1d3d45c8ca6a6c5b3528b86445b9f1cc787a1ef738dd7","path":".starcistacks/canvas/pages/51-guest-learn-home.html","step":"prettier"}
+{"findings":[],"hash":"afce03362bcc64875701d0d1bdef56de5e7ee9bb0eb2fb5e6396809fd894eef5","path":".starcistacks/canvas/pages/52-guest-essentials.html","step":"prettier"}
+{"findings":[],"hash":"87edf2143934f4757050c0b770a4d37259f5d81767672cab1a82c1e4b9b0cef4","path":".starcistacks/canvas/pages/53-guest-lesson-locked.html","step":"prettier"}
+{"findings":[],"hash":"1f4d0730b241c791844ebbcb5b0e8a9c9dd248e778055c3416237888283d874e","path":".starcistacks/canvas/pages/54-guest-harness.html","step":"prettier"}
+{"findings":[],"hash":"a7d504d6082ba4706507d4ca4abeb2ced5e5bb10862ada0534033ec759ae3707","path":".starcistacks/canvas/pages/55-guest-header-menu.html","step":"prettier"}
+{"findings":[],"hash":"6f3ab2d7965607f35015f7a9f4bda1b4513483eb6e952196a5e5c54d9fd33f5d","path":".starcistacks/canvas/pages/56-guest-gate.html","step":"prettier"}

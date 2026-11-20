@@ -16,6 +16,7 @@ export { AiCoachClient } from "./ai-coach.client"
 export { parseAttemptConfig } from "./attempt.config"
 export { AttemptModule } from "./attempt.module"
 export { AttemptReadService } from "./attempt-read.service"
+export { AttemptGuestService, GUEST_CLAIM_MAX } from "./attempt-guest.service"
 export { AttemptMarkService } from "./attempt-mark.service"
 export type { HintUsesByLesson } from "./attempt-mark.service"
 export { AttemptOpenerService } from "./attempt-opener.service"
@@ -29,6 +30,8 @@ export type {
     AttemptResult,
     AttemptStatus,
     AttemptView,
+    GuestChoiceAnswer,
+    GuestClaimView,
     CoachGrade,
     CoachGradeRequest,
     LessonProgressView,
