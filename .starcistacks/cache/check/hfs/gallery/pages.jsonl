@@ -15,16 +15,39 @@
 {"data":{},"findings":[],"hash":"137d9ea541562918f997f4fa9a320000a80b41c19646ab02092db2db6d0885e3","path":"gallery/pages/career/verify-not-found/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7d97fe810f49f0627a0c918e76bc82a67bd6479b4bc7b0d077aa1d43d09938d5","path":"gallery/pages/career/verify-revoked/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f4dc94841117787ab527296b38265d37a1074b6181e8dd28c7a7d8765ad938b9","path":"gallery/pages/career/verify/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"6ae0654fe6b1aea080e613d4d9abd2526bf46b1ac9fd392f0e1a16b67af8388a","path":"gallery/pages/commerce/premium-result/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"2e272cc027eab8cefb5902609d6d303b7e77f4eb202127b902e91a62696288bd","path":"gallery/pages/commerce/premium/explain.md","step":"file-rules"}
-{"data":{},"findings":[],"hash":"750ddea9b011414b0495375ba90c0431ae20ddce2361fef1f9f06aebcc590de1","path":"gallery/pages/connect/ai/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"f8d4722df7bc729921fdaaf745089f7e6d2619815efc0f0a8a838b195895f05c","path":"gallery/pages/commerce/premium-checkout-error/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cf835c80aedba6a2066285c869183fa6b76c10b936aed5505e0617d419ddc7b2","path":"gallery/pages/commerce/premium-has-premium/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c6080cc3224eb23536f180855fbece0b045a90e4aeb4eb05f71caa258c9c5f52","path":"gallery/pages/commerce/premium-loading/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"6b2d7e66acdccaddf6fa128e553358a84cb06b2c4f9c64a83fb4044410b99da8","path":"gallery/pages/commerce/premium-qr-expired/explain.md","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"gallery/pages/commerce/premium-qr-expired/explain.md has no \"## <region name>\": every region of the screen needs one, with \"Vì sao:\", \"Luật:\" and \"Grammar:\" lines (PROJECT-GALLERY-2)","path":"gallery/pages/commerce/premium-qr-expired/explain.md","rule":"HFS_APP_GALLERY_REGION_INCOMPLETE"}],"hash":"e299146e4b4d16b75459f24373fef2bae3e94d2f2dfedc8b567004cc6041683b","path":"gallery/pages/commerce/premium-qr-expired/explain.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"faa3fc2618f0ab1d994f21b61c5d31041570d8c064acaab7a070b7c0c09fe04d","path":"gallery/pages/commerce/premium-qr-payment/explain.md","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"gallery/pages/commerce/premium-qr-payment/explain.md has no \"## <region name>\": every region of the screen needs one, with \"Vì sao:\", \"Luật:\" and \"Grammar:\" lines (PROJECT-GALLERY-2)","path":"gallery/pages/commerce/premium-qr-payment/explain.md","rule":"HFS_APP_GALLERY_REGION_INCOMPLETE"}],"hash":"0a18e1fb4ed2b2206c6821db37817745f2c2e44c9597d230d77a1cad87ba6ed4","path":"gallery/pages/commerce/premium-qr-payment/explain.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"dc3c86122ab3823f24525371577ef962f3cf3124b3c296f0fd293bb2a9648b87","path":"gallery/pages/commerce/premium-result-expired/explain.md","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"gallery/pages/commerce/premium-result-expired/explain.md has no \"## <region name>\": every region of the screen needs one, with \"Vì sao:\", \"Luật:\" and \"Grammar:\" lines (PROJECT-GALLERY-2)","path":"gallery/pages/commerce/premium-result-expired/explain.md","rule":"HFS_APP_GALLERY_REGION_INCOMPLETE"}],"hash":"b0c13ec5299af6a79864c504dd2f5c9164267679c8f16c99b506fe83fdc7e218","path":"gallery/pages/commerce/premium-result-expired/explain.md","step":"hfs"}
+{"data":{},"findings":[],"hash":"46728d0db7f0c72b7a93bf28135fafd742b6800240af5f0627456d87d43256c6","path":"gallery/pages/commerce/premium-result-failed/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"75d53e73a0794cea0c2d08876fda88dc5398acf8a97d469d08b35c4a1b8f4a01","path":"gallery/pages/commerce/premium-result-unlocked/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8830617fef77d0fb66e62ffc523aefd6ca859d696fb54216deaa37cde55598a7","path":"gallery/pages/commerce/premium-result/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e3c6f7b1c06b1ad557089821d20e3cc5e39aac2ab8cb094635bd33960befe98d","path":"gallery/pages/commerce/premium/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"798e310b605a3e86281866172e0bc7c517ffca3f615ba24e9711ccf48d67fcf6","path":"gallery/pages/connect/ai-token-created/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1941191d2463e3fadbea1f628d9096766d7c4b3cbe47bbab3d848db1096ae53e","path":"gallery/pages/connect/ai-tokens-error/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0fa4c45e485cbaef7f64fcd8ffbc48bbb9f823fed81247f60b9c096dcd29b82e","path":"gallery/pages/connect/ai/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"67d498a10d1a2bfc6866574fdd566ac93943344fdf0bdc49d8c93678e0607332","path":"gallery/pages/cv/public-few-lines/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f968f24e874e8139258ecb28afb6e005b0cc8d50c6d4475a348b9bd23811ae68","path":"gallery/pages/cv/public-loading/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7add7a06abdcc92c20ceb642c987c4b9d3023ad71e84190124c82111365e54b7","path":"gallery/pages/cv/public-many-lines/explain.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"896f539f02bf64c1ed085d39d30b18920c48ccd39af881dda99729e50143583c","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ca0c55037e0f3d888bb83ffaa848f66a067c4de81539a162a665bc81e2802a21","path":"gallery/pages/cv/public-share/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"20dd52e53b1482f179ed3150add550f689d972247551bbb2b83ac84f67331538","path":"gallery/pages/cv/public/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"bccd19737262c8ae179d80f466e9a632df04a5eac8c171818fdf818e349f5f7a","path":"gallery/pages/devices/list/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ca941fa1ee34ddc1f681996b76c5e970f1ab814c1d5817ef49c1b81f869cc8fe","path":"gallery/pages/devices/list-code-invalid-dialog/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9b1ee65d52f5ba44607f4bd439270c99447f7d09c7004fe0faacae280362f6b5","path":"gallery/pages/devices/list-empty/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d7e13ddf2256b361ae8e5b96b5cc4d22c13980f7f9c710d4d6e7ec52a0ebfcdc","path":"gallery/pages/devices/list-enter-code-dialog/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"d098558b2268e0e270e53cbc6f095b0e8eda8fde41ec6bdc625544dcbbeb2614","path":"gallery/pages/devices/list-error/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"319ac203a820079a3ebe51ef1c71bef29e27cebddc54901865fe2b5ba4ee5bd9","path":"gallery/pages/devices/list-limit-reached/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8b9e9fe7d53b6e66789fd11ba3776a0d35088d1bb119bc52bfa9678ba22eee0b","path":"gallery/pages/devices/list-mcp-no-token/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"091ef3ef3c398c7affe8e7bb2bcdcfbeba33d5cbe43625712c0c302defa919e9","path":"gallery/pages/devices/list-mcp-token-created/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"da5d41cb98cbdf2ad502dfa7255119e3a30206ac88de3855fcd27a61f3b38c24","path":"gallery/pages/devices/list-mcp-tokens/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"bfcfe9854e3cd26c4027f531c0dfa1b8b031069e6e3aa99110f757cc494f0281","path":"gallery/pages/devices/list-offline-device/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"18e0b1b3b0a160a0c2d406095a02526af13aa6991c6960325a87d555a6de2556","path":"gallery/pages/devices/list-preview-device-dialog/screen.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"62d6af5041c3de5b4523bb76c55eb976a93f7a19308f414589a4aa8bf1d8ac4f","path":"gallery/pages/devices/list/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4f663f006ae43973aceef8d1c90e1f9661e48c08759ac514a27b77ec56102b66","path":"gallery/pages/essentials/catalog-error/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"165e2434146d90057ce946058037f1233255633f0ec05805a677270babebec98","path":"gallery/pages/essentials/catalog-first-visit/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6ad255387c40ba762f2067a1c1a82904fb4cc9b86926514d161330fe3ef078bb","path":"gallery/pages/essentials/catalog-free/screen.yaml","step":"file-rules"}
