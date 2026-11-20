@@ -1,0 +1,41 @@
+schema: 1
+screen: essentials/lesson-scenarios-not-run
+title: "Bài Essentials · Kịch bản, chưa chạy: gợi ý còn khóa"
+route: "/essentials/[topic]/[lesson]?part=scenarios"
+area: essentials
+summary: >-
+  Route: `/essentials/[topic]/[lesson]?part=scenarios`. Trạng thái: chưa có lần chạy nào của kịch bản đang chọn. Terminal ghi `chưa chạy lần nào`; khối Gợi ý khóa nói mở sau lần chạy đỏ đầu; nút chính là Chạy kịch bản. Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane.
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+pending-seed: "một học viên có máy trực tuyến nhưng chưa chạy kịch bản nào. Chưa chụp được trên dev stack; chụp lại khi lane next-gallery-seed công bố seed"
+sections:
+  - id: s1
+    title: "Terminal"
+    shows: "xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên."
+    why: "`ui/loading.md`, `ui/components/toast-alert.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Gợi ý khóa"
+    shows: "xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên."
+    why: "`ui/loading.md`, `ui/components/toast-alert.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "Nút chính"
+    shows: "xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên."
+    why: "`ui/loading.md`, `ui/components/toast-alert.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)"
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: "Chưa thấy lệch mới ngoài các mục của màn Kịch bản chính."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+audit: null

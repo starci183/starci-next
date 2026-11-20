@@ -1,0 +1,63 @@
+schema: 1
+screen: essentials/lesson-loading
+title: Bài Essentials, đang tải
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: "Đang đọc bài: đầu bài, bốn tab và thân vẽ bằng hình dạng giữ chỗ."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 106d1cef7cc3b8f9532c110fca6b413ec08a46c2417b87236ffb0e241f345080
+  "1440":
+    file: 1440.png
+    sha256: cdca3defad47f8eb30dd83a705b07f25ba88eaa6800520f0a123742360b51b70
+sections:
+  - id: s1
+    title: Khung xương của bài
+    shows: Chỉ SlotView rẽ nhánh theo trạng thái tải, khối con nhận isLoading.
+    why: ui/loading.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:05.562Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,75 @@
+schema: 1
+screen: essentials/lesson-ladder
+title: "Bài Essentials · phần 4 Tự áp dụng"
+route: "/essentials/[topic]/[lesson]?part=apply"
+area: essentials
+summary: >-
+  Route: `/essentials/[topic]/[lesson]?part=apply`. Mục tiêu: tự áp dụng qua bốn mức Dễ, Vừa, Khó, Siêu khó; mỗi mức chỉ mở khi mức dưới xong. Dữ liệu: lesson(id).essential.challenges, lessonChallengeScores (điểm 100 theo từng mục, isLocked và isPassed do backend trả, trang không tính lại; luật mở mức: mọi kịch bản ẩn của mức dưới đều xanh), submitLessonAttempt cho câu chốt thiết kế. Nút chính: Chạy lại mức Vừa (sao ch
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+pending-seed: "một học viên có điểm các bậc tự áp dụng (mức Vừa đang luyện, Khó chưa mở). Chưa chụp được trên dev stack; chụp lại khi lane next-gallery-seed công bố seed"
+sections:
+  - id: s1
+    title: "Bốn mức, mở lần lượt"
+    shows: "danh sách phẳng bốn hàng: tên mức, một dòng đề, nhãn trạng thái (Đã xanh, Đang luyện · 70/100, Mở sau khi xong mức trước); hàng đang chọn tô xám theo bản vẽ (chưa có trong Grammar). Khóa do lessonChallengeScores.isLocked trả, trang không tính lại."
+    why: "`learner-cli-relay` (RELAY_CHALLENGE_LOCKED), `ui/components/list-table.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Chi tiết mức: đề và Terminal"
+    shows: "đề bài, rồi Terminal ghi lệnh chạy ẩn, số kịch bản ẩn đạt, điểm và từng kịch bản ✓ ✗."
+    why: "`ui/components/data-views.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "Thang điểm · 100"
+    shows: "mỗi tiêu chí một hàng: nội dung, điểm đạt trên điểm tối đa (20/20), chip Trọng yếu, mép xanh hoặc đỏ theo đạt hay không; tổng khớp 100."
+    why: "`ui/components/list-table.md` (verdict)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s4
+    title: "Chốt thiết kế"
+    shows: "câu chọn chấm ngay của mức, dùng cùng thẻ câu hỏi của Bản chất."
+    why: "`essentials` luật 2."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s5
+    title: "Từ Đang luyện tới Đã chứng minh"
+    shows: "chuỗi năm bước: chạy ẩn trên máy, đẩy lên GitHub, CI chạy kịch bản ẩn, GitHub ký OIDC, Đã chứng minh; chỉ CI có chữ ký mới chứng minh, bước hiện tại là chạy trên máy."
+    why: "`learner-cli-relay`, `verified-experience`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s6
+    title: "Cột phải: Điểm của bạn, Dòng hồ sơ"
+    shows: "điểm lớn trên tối đa kèm thanh, và dòng hồ sơ sẽ có (chưa có tới khi CI chứng minh; backend chưa có bằng chứng OIDC cho bài)."
+    why: "`profile-progress`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s7
+    title: "Nút chính"
+    shows: "Chạy lại mức Vừa: sao chép lệnh `starci-next run <bài> --challenge <mức>` cho terminal của học viên."
+    why: "`ui/components/button.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)"
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: "Ngưỡng 80/100 và mục trọng yếu của bản vẽ (QUESTIONS #1) không phải luật mở mức: backend mở khi mọi kịch bản ẩn của mức dưới xanh; lời trên trang theo backend."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+  - option: "Hàng mức đang chọn không có nền xám (ListRow không có tint)."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+  - option: "Nhãn Đã chứng minh chưa bao giờ hiện vì backend chưa có bằng chứng OIDC cho bài."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+audit: null

@@ -1,0 +1,76 @@
+schema: 1
+screen: paths/choose
+title: Chọn mục tiêu, chưa theo lộ trình nào
+route: /paths/choose
+area: paths
+summary: Năm thẻ lộ trình đầu ra để chọn một mục tiêu; mỗi thẻ có Xem lộ trình và Chọn lộ trình.
+code:
+  - features/pages/PathsChoosePage
+  - components/blocks/PathsChoose
+shots:
+  "390":
+    file: 390.png
+    sha256: 994b064b0aee5986cf3161ba44b32904b0c55a22328e1a2a0b08ca4cb1150f80
+  "1440":
+    file: 1440.png
+    sha256: db9a6d215c1f44a77e314e61090bfbbb5997192527e5e63141274e0ae100a490
+sections:
+  - id: s1
+    title: Năm thẻ lộ trình
+    shows: "Mỗi lộ trình là một vật thật có thể chọn: tên, lời hứa, kết quả đạt được, các phần và quy
+      mô; lệnh Xem lộ trình và Chọn lộ trình là nút trung tính 40px, thẻ lộ trình hiện tại chỉ thêm
+      nhãn."
+    why: ui/components/card.md, một nút chính mỗi view
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Hộp chi tiết và hộp xác nhận đổi
+    shows: Xem lộ trình mở hộp thoại với kết quả, tiêu chí kiểm và các chặng; đổi lộ trình mở hộp xác
+      nhận.
+    why: ui/components/dialog-drawer.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:25.868Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,111 @@
+schema: 1
+screen: essentials/lesson-article
+title: Bản chất · đang đọc bài viết
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: 'Route: `/essentials/[topic]/[lesson]`. Học viên đã làm xong năm câu từ lần trước: vào
+  thẳng bài viết; nút chính "Làm lại 5 câu". Code:
+  `fe/apps/app/src/components/blocks/EssentialLesson/` (vỏ trang, `parts/partEssence.tsx`,
+  `parts/partLocked.tsx`), hook `fe/apps/app/src/hooks/essence/`, composite
+  `fe/packages/starci-next-ui/src/composites/LessonEssence/` và `LessonLockedPart/`.'
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: c2663d07ab2dcaea7b8c78e57e83ab45cad23bb1a3fccd560083fa2a647ab3ef
+  "1440":
+    file: 1440.png
+    sha256: 81f07d8d8c4c65099dbde2521e49208c75fdd0eb10b76c778b44becd416b967a
+sections:
+  - id: s1
+    title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
+    shows: 'đường dẫn Essentials, chủ đề, bài; tên bài; một câu bài toán nghiệp vụ; dòng sự kiện "Bài
+      3/6 trong chủ đề · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng" (số bài lấy từ đường đi của
+      chủ đề). Nút chính duy nhất do phần đang mở giao cho dải: Câu tiếp theo, Câu n, Xem kết quả,
+      Đọc bài viết, Làm lại 5 câu, Nâng cấp Premium. Bốn tab phần nằm trên đường kẻ đáy; phần đang
+      dở có chip đếm số đã xong, phần xong có dấu tích, phần cần Premium có ổ khóa; nhãn tab luôn
+      hiện chữ.'
+    why: "`app.essentials.essential` trong thông điệp; `ui/components/page-header.md` (một nút chính ở
+      cuối hàng tiêu đề); `ui/components/tabs.md` (tab trang có đếm)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Bài viết và mục lục
+    shows: 'dưới câu hỏi (hoặc một mình khi đã làm xong): dòng "Bài viết · 20 phút đọc", mục lục sáu mục
+      (mục mà câu sai trỏ tới mang nhãn "Nên đọc kỹ", hết nhãn khi đã đánh dấu đọc), rồi từng mục là
+      markdown với neo `#section-<id>` để liên kết từ lời giải nhảy tới.'
+    why: '`ui/composition.md` (đọc dài là Section phẳng, không thẻ); `essentials.md` (mục đánh dấu "nên
+      đọc kỹ").'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Cột phải (chỉ từ 1440)
+    shows: '"Bài này gồm 4 phần" liệt kê bốn phần (phần xong có dấu tích, phần cần Premium là hàng không
+      mở được) và "Cuối bài": nhắc làm lại 5 câu để thấy điểm trước và sau. Dưới 70rem cột này ẩn;
+      mục lục không nằm ở cột phải mà nằm trong thân (xem Phản biện).'
+    why: "`ui/composition.md` (cột phải là các khối phẳng ngăn bằng đường kẻ, không thẻ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: "Đường dẫn: dải đầu đặt dòng sự kiện trên câu bài toán, còn bản vẽ đặt dưới; `PageHeader` cố
+      định thứ tự `meta` rồi `description`. Cần Grammar cho phép đổi thứ tự, chưa sửa."
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Thanh năm đoạn: `Stepper kind="bar"` tô đoạn đúng bằng màu nhấn (tím), không phải xanh; chỉ
+      đoạn sai có màu đỏ. Bản vẽ muốn xanh/đỏ (GRAMMAR-GAPS #3). Dùng phần tử gần nhất, ghi vào báo
+      cáo.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Đáp án có hàng số "1." đến "4." thay cho vòng chữ A đến D của bản vẽ: `ListRow` chỉ có số
+      thứ tự (không có chữ cái); cần Grammar nếu chủ muốn chữ cái.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:59.959Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,116 @@
+schema: 1
+screen: essentials/topic
+title: Essentials (chủ đề)
+route: /essentials/[topic]
+area: essentials
+summary: "Route: `/essentials/[topic]`. Một chủ đề: các bài theo thứ tự nên học và còn bao nhiêu bài
+  là xong. Ảnh ở 1440, 1920 và 390. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html`
+  (essentials-topic). Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper
+  `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `LessonList`. Trạng thái có thư mục
+  riêng: `topic-first-visit`, `topic-free`,"
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: cdf3f908c89842869ead1f856bceca8953031e049e7e9d847862ad9af1f76a8f
+  "1440":
+    file: 1440.png
+    sha256: 2fddf331c1286f13391384e785c981e84d1541415f9c7b2844f28f298f821c0e
+sections:
+  - id: s1
+    title: "Dải đầu: breadcrumb, tên, mô tả, dòng sự kiện, nút chính"
+    shows: 'có breadcrumb "Essentials › <chủ đề>" vì đây là trang con; dưới tên là câu mô tả của chủ đề
+      rồi dòng muted "6 bài · khoảng 135 phút đọc". Nút chính "Học tiếp: <bài> · phần N" (lần đầu
+      "Bắt đầu bài 1", tài khoản miễn phí "Học tiếp phần 1"). Ở 390 nút xuống dưới và rộng cả hàng.'
+    why: ui/components/page-header (breadcrumbs, description, meta, actions), ui/components/button.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thanh "2/6 bài xong"
+    shows: một thanh màu chữ (đo lường không dùng tím) kèm "2/6 bài xong" và phần trăm; số bài xong đếm
+      đúng số hàng "Đã xong" bên dưới.
+    why: "`theme-and-type` (đo lường dùng foreground)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: 'Danh sách bài: số, tên, bài toán, 4 vạch, nhãn, "Mở bài 3/5", thời lượng'
+    shows: một danh sách phẳng đánh số; mỗi hàng có tên, một dòng bài toán, bốn vạch cho bốn phần, nhãn
+      trạng thái, điểm mở bài (số câu đúng trong 5 câu mở bài, "—" khi chưa làm) và số phút. Hàng
+      bài đang học tô xám nhẹ.
+    why: ui/components/list-table, `surface-layering`.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: "Cột phải (chỉ 1440): mỗi bài có 4 phần, nên biết trước, liên quan"
+    shows: hiện từ khổ rộng. "Mỗi bài có 4 phần" liệt kê Bản chất (miễn phí), Source, Kịch bản, Tự áp
+      dụng; ba phần sau mờ nếu chưa có Premium, kèm dòng "Phần 2 đến 4 cần Premium". "Nên biết
+      trước" lấy từ điều kiện của chủ đề, "Chủ đề liên quan" là các liên kết chữ. Khối "Chủ đề này
+      dạy" của bản vẽ chưa có dữ liệu (xem Phản biện).
+    why: ui/components/pane-grid (cột phụ ẩn ở khổ hẹp), `surface-layering` (aside là section có
+      hairline, không thẻ).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc 1440 và 390 với dữ liệu mẫu qua core giả (xem catalog).
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: Header của Grammar đặt dòng sự kiện (meta) trên câu mô tả; bản vẽ đặt mô tả trước, sự kiện sau.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: Nút chính nằm ở cuối hàng tiêu đề, trải qua cột phải ở 1440; bản vẽ cho cột phải bắt đầu
+      dưới dải đầu.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:16.628Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

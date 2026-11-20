@@ -1,0 +1,68 @@
+schema: 1
+screen: essentials/catalog-loading
+title: Essentials (danh mục), đang tải
+route: /essentials
+area: essentials
+summary: "Trạng thái đang tải: lần đọc đầu chưa trả lời. Ảnh ở 1440, 1920 và 390."
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 4c03b640fa01df7154ff76a87654f326c80b9bd87319b46582803097eb057bf6
+  "1440":
+    file: 1440.png
+    sha256: 3e6c6ac4fbc13bcc35db34633e4fbd4ba0eafbf7f90b62737c6ca8ac3b5449f4
+sections:
+  - id: s1
+    title: Khung xám cùng hình dữ liệu
+    shows: cùng cây với danh mục nhưng nhận dữ liệu giả cùng hình, nên khi dữ liệu về không có gì nhảy;
+      tiêu đề, dòng sự kiện, nút chính, thanh, hàng đều thành khung.
+    why: "ui/loading (STATE-8: mọi lá và hợp phần nhận `isLoading`, chỉ SlotView rẽ nhánh)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:55.520Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

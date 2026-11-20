@@ -1,0 +1,77 @@
+schema: 1
+screen: essentials/topic-first-visit
+title: Essentials (chủ đề), lần đầu vào chủ đề
+route: /essentials/[topic]
+area: essentials
+summary: Trang chủ đề khi học viên chưa học bài nào của chủ đề. Ảnh ở 1440, 1920 và 390.
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: 999c1a21fa2c3e1fcc46ec0d1d0023a8b357a18258d15c996df97b35b9d60083
+  "1440":
+    file: 1440.png
+    sha256: b035b5c9c98075551f0bd58291bcbfe9cc460f8d360a846ca2414d709b6cf963
+sections:
+  - id: s1
+    title: Nút chính
+    shows: '"Bắt đầu bài 1" trỏ vào phần 1 của bài đầu tiên.'
+    why: ui/components/button.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thanh tiến độ và hàng bài
+    shows: '"0/n bài xong" 0%, mọi hàng "Chưa học", bốn vạch trống.'
+    why: "`theme-and-type` (số đo dùng foreground)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:18.839Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

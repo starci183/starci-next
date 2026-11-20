@@ -1,0 +1,88 @@
+schema: 1
+screen: essentials/topic-free
+title: Essentials (chủ đề), tài khoản miễn phí
+route: /essentials/[topic]
+area: essentials
+summary: Trang chủ đề cho tài khoản chưa có Premium. Ảnh ở 1440, 1920 và 390.
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: e87fce0762df862765d37ff8d47814db8ba9d0dfbfef0fcd00ec45f2e3b9c64d
+  "1440":
+    file: 1440.png
+    sha256: 5158e6dcb104b2c34898e9499ea9098b8c2fe64f3f4c71fd949d6562088befbd
+sections:
+  - id: s1
+    title: Nút chính
+    shows: '"Học tiếp phần 1" (chỉ phần 1 mở cho gói miễn phí).'
+    why: premium, ui/components/button.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thông báo gói
+    shows: một thông báo nói thẳng gói miễn phí học được phần 1 của mọi bài, còn Source, kịch bản và tự
+      áp dụng thuộc Premium.
+    why: ui/components/toast-alert (thông báo nói rõ điều chưa vào được).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Nhãn của hàng bài
+    shows: '"Phần 1 miễn phí" thay nhãn trạng thái.'
+    why: premium.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:19.936Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

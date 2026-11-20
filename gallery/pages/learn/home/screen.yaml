@@ -1,0 +1,86 @@
+schema: 1
+screen: learn/home
+title: Học, đã đăng nhập
+route: /
+area: learn
+summary: "Trang Học: lộ trình đang theo hoặc lời mời chọn mục tiêu, danh sách việc hôm nay, và cột
+  phụ có chuỗi ngày, mục tiêu tuần và kinh nghiệm."
+code:
+  - features/pages/AppHomePage
+  - components/blocks/LearnHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 72eef7687e1643dc5808966a84969d3e2e45c0f97fc3abc35a10dbf86648a50b
+  "1440":
+    file: 1440.png
+    sha256: 6df5821a6b9f35ece751b44b280d3914b69f07d63431ba7d6068aa84d8835535
+sections:
+  - id: s1
+    title: Lộ trình đang theo
+    shows: Một phần phẳng có tên, một dòng nói bạn đang ở đâu và một nút chính (Chọn mục tiêu hoặc Tiếp
+      tục); không minh họa trong thẻ.
+    why: ui/composition.md, một nút chính mỗi view
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Hôm nay
+    shows: Danh sách phẳng các việc nên làm hôm nay, mỗi hàng dẫn tới đúng việc.
+    why: ui/components/list-table.md (hàng px-4 py-3, vạch kẻ đầy đủ)
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Chuỗi ngày, mục tiêu tuần, kinh nghiệm
+    shows: "Cột phụ: chuỗi ngày học, mục tiêu tuần có nút Đổi mục tiêu tuần (nút 40px) và số kinh nghiệm
+      đã xác minh."
+    why: ui/composition.md (cột phụ là các phần phẳng)
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:44.581Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

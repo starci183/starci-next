@@ -184,6 +184,7 @@ const norm = (href) => {
     const first = process.env.CAPTURE_FIRST_STATE
         ? await b.newContext({ storageState: process.env.CAPTURE_FIRST_STATE })
         : undefined
+    await originFix(first)
     await first?.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await user.routeWebSocket(/_next\/hmr/, hmrQuiet)
     await guest.routeWebSocket(/_next\/hmr/, hmrQuiet)
@@ -233,7 +234,10 @@ const norm = (href) => {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
                 s.hold || s.refuse || s.cookies !== undefined
-                    ? await b.newContext({ storageState: stateFile })
+                    ? await b.newContext({
+                          storageState:
+                              s.free && process.env.CAPTURE_FREE_STATE ? process.env.CAPTURE_FREE_STATE : stateFile,
+                      })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
             if (s.cookies !== undefined && process.env.CAPTURE_MOCK)
@@ -244,6 +248,7 @@ const norm = (href) => {
                         ([name, value]) => ({ name, value, domain: "localhost", path: "/" }),
                     ),
                 )
+            await originFix(fresh)
             await fresh?.routeWebSocket(/_next\/hmr/, hmrQuiet)
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)

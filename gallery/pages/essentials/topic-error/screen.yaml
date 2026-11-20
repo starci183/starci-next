@@ -1,0 +1,64 @@
+schema: 1
+screen: essentials/topic-error
+title: Chủ đề, lỗi tải
+route: /essentials/[topic]
+area: essentials
+summary: "Đọc chủ đề thất bại: thân trang là thông báo lỗi có nút Thử lại, đường dẫn và tên chủ đề
+  vẫn hiện."
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: 8c891bed9dbab7fe686bb6eabe6ade95f9c4dc06c84bae6026b2b681676616c6
+  "1440":
+    file: 1440.png
+    sha256: d5d96ce3a4a76025b10db127fd3bff12686fd891d0a68025b41732c0569f22a5
+sections:
+  - id: s1
+    title: Thông báo lỗi
+    shows: SlotView thay thân trang bằng lỗi có một nút Thử lại, không minh họa trong vùng.
+    why: ui/loading.md, ui/components/toast-alert.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:17.721Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

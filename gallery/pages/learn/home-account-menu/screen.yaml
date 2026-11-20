@@ -1,0 +1,118 @@
+schema: 1
+screen: learn/home-account-menu
+title: Menu tài khoản (avatar)
+route: /
+area: learn
+summary: 'Route: `/` (mở menu avatar trên thanh trên). Ảnh chụp với học viên đã Premium nên dòng gói
+  đọc "Gói của bạn"; học viên chưa Premium thấy "Nâng cấp Premium" ở cùng vị trí. Khung chung xem
+  `learn/home/explain.md`. Menu là lớp nổi nên là chỗ duy nhất có bóng và góc bo lớn; nền trắng, nằm
+  đè lên trang.'
+code:
+  - features/pages/AppHomePage
+  - components/blocks/LearnHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 99b2390e3e7fbb6384ffd63d06d63b1ef81ef465c4da7dd0e5c2c76714fa2f2a
+  "1440":
+    file: 1440.png
+    sha256: 166988fe3e2ebd55bdf113c7e1d52fa2f3097a27f9c67de202c6691b2cd1e78e
+sections:
+  - id: s1
+    title: Hàng danh tính
+    shows: 'đầu menu cho biết đang đăng nhập là ai (email) và gói hiện tại (dòng 12 mờ "Premium" / "Chưa
+      có Premium"). Là một hàng không dẫn đi đâu. Ghi chú lỗi ảnh: ở 390 email dài bị bẻ giữa chữ
+      ("gallery-" / "theme@example.test") và menu che dòng phụ của dải tiêu đề.'
+    why: "`surface-layering`, `type-scale-14-12.md`; plan in the avatar menu, no sidebar footer (owner
+      2026-11-10)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Lệnh gói
+    shows: 'hành động đầu tiên sau danh tính. Chưa Premium: "Nâng cấp Premium"; đã Premium: "Gói của
+      bạn" (như ảnh); cả hai là liên kết thật tới trang Premium, chữ foreground thường, không
+      accent.'
+    why: "`surface-layering` (liên kết điều hướng không ↗), `theme-and-type` (liên kết phụ là plain,
+      không accent)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Hồ sơ và Đăng xuất
+    shows: trang cá nhân rồi lệnh đăng xuất (tone danger, chữ đỏ). Khách chưa đăng nhập chỉ có "Đăng
+      nhập" mở hộp thoại tại chỗ.
+    why: "`signed-out-header-avatar-modal.md`, `theme-and-type` (lỗi và nguy hiểm dùng `--danger`)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: Nhãn nhóm "Tài khoản"
+    shows: '`DropdownMenuSection` của Grammar luôn vẽ tiêu đề nhóm (12 mờ); nhãn "Tài khoản" đặt tên cho
+      nhóm gồm hàng danh tính, lệnh gói, hồ sơ cho trình đọc màn hình. Giữ hay bỏ là quyết định của
+      chủ sản phẩm.'
+    why: "`surface-layering` (nhãn nhóm 12, weight 500, mờ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: '1440, 390, vị trí menu: lớp nổi dính ngay dưới avatar, mép trên khoảng y=60 chạm vạch kẻ
+      dưới thanh trên và che nút "Xem hướng dẫn" (chỉ còn thấy chữ "n" lọt ra ở 1440) cùng dòng phụ
+      của dải tiêu đề ở 390; không có khoảng thở giữa trigger và menu.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: '1440, 390, bóng và góc bo: góc bo rất lớn (khoảng 20px) và bóng mềm lan rộng, lớn hơn mọi
+      chỗ khác; đúng luật "lớp nổi mới có bóng" nhưng góc bo không cùng họ với nút và ô.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: '390, hàng email: bị bẻ giữa chữ ("gallery-" / "theme@example.test"), xuống hai dòng và làm
+      hàng cao hơn các hàng khác.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:23.591Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

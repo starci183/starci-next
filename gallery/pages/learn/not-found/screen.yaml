@@ -1,0 +1,79 @@
+schema: 1
+screen: learn/not-found
+title: Ứng dụng học, không tìm thấy trang
+route: /{locale}/{đường dẫn không có}
+area: learn
+summary: "Route: mọi địa chỉ dưới một ngôn ngữ mà không trang nào nhận (ảnh chụp:
+  `/vi/khong-co-trang-nay`). Mã: `fe/apps/app/src/app/[locale]/[...rest]/page.tsx` gọi `notFound()`,
+  `app/[locale]/not-found.tsx` vẽ trang; `app/not-found.tsx` là bản gốc cho địa chỉ không thuộc ngôn
+  ngữ nào. Trả HTTP 404."
+code:
+  - features/pages/AppHomePage
+  - components/blocks/LearnHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 94ea2b56f5a3a00def93d8bc2caf94708dae8f235dfc5188f9b4c3bf59b5acc1
+  "1440":
+    file: 1440.png
+    sha256: 15f3a5d64190a6cf200287d1b8637691ce9e3ff5020eccf2228d88510da00301
+sections:
+  - id: s1
+    title: Khung trang trống
+    shows: trang này nằm ngoài nhóm có thanh điều hướng của ứng dụng, nên chỉ có phần thân trắng giữa
+      màn hình; người gõ sai không thấy menu và chỉ có một đường về trang chủ.
+    why: "`surface-layering` (chrome trắng, phẳng, chỉ đường kẻ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Trạng thái không tìm thấy
+    shows: một trạng thái cấp trang, có hình minh hoạ, một câu nói trang không còn ở đây hoặc đường dẫn
+      gõ sai, và MỘT nút "Về trang chủ"; không có nút thử lại vì đây không phải lỗi mạng. Chữ theo
+      ngôn ngữ của địa chỉ.
+    why: "`surface-layering` (một nút chính)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:24.758Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

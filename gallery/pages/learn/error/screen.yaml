@@ -1,0 +1,78 @@
+schema: 1
+screen: learn/error
+title: Ứng dụng học, đã xảy ra lỗi
+route: /{locale}/{trang lỗi}
+area: learn
+summary: "Route: bất kỳ trang nào dưới một ngôn ngữ mà việc vẽ trang ném lỗi (ảnh chụp dùng một
+  trang thử ném lỗi tạm, không nằm trong mã). Mã: `fe/apps/app/src/app/[locale]/error.tsx`,
+  `features/pages/AppErrorPage`. Bản cuối cùng khi chính khung lỗi: `app/global-error.tsx`,
+  `AppGlobalErrorPage`."
+code:
+  - features/pages/AppHomePage
+  - components/blocks/LearnHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 6cd4235f6a3c270df06905845ec443fb8396bea1f889c9cd9f85ce945533e7ed
+  "1440":
+    file: 1440.png
+    sha256: 77722d37123711609fb7dc337a4aca771c2525b835849ce8be776088a810cc01
+sections:
+  - id: s1
+    title: Khung trang trống
+    shows: lỗi thay cả phần thân của trang nên không còn thanh điều hướng; chỉ có trạng thái lỗi giữa
+      màn hình.
+    why: "`surface-layering`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Trạng thái lỗi
+    shows: một trạng thái cấp trang có hình, câu nói có sự cố khi tải trang này, nút chính "Về trang
+      chủ" và một nút phụ "Thử lại" để vẽ lại ngay; lỗi này có thể qua đi nên cần thử lại.
+    why: "`surface-layering` (một nút chính, một nút phụ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:22.308Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

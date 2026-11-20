@@ -1,0 +1,89 @@
+schema: 1
+screen: essentials/catalog-first-visit
+title: Essentials (danh mục), lần đầu
+route: /essentials
+area: essentials
+summary: "Trạng thái lần đầu của `/essentials`: học viên chưa học bài nào. Cùng cây với danh mục;
+  khác ở dữ liệu. Ảnh ở 1440, 1920 và 390."
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: ccf24233dc9d91cb08ab1a3416279c3c08cffe94ea40d3e14a69d0ed12139865
+  "1440":
+    file: 1440.png
+    sha256: e632ec99f4feda09af65bac9be86785d21a9a9012d44001060fa9a8f466c0ec3
+sections:
+  - id: s1
+    title: Dải đầu và nút chính
+    shows: 'dòng sự kiện ghi "bạn chưa học bài nào" và nút chính là "Bắt đầu: <bài đầu tiên>" vì chưa có
+      bài dở.'
+    why: ui/components/page-header, ui/components/button (một nút chính).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Tab và đếm
+    shows: Đang học 0, Đã xong 0, Chưa học bằng tổng; ba trạng thái vẫn cộng lại bằng Tất cả.
+    why: ui/components/tabs (count chip).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Hàng bài và thanh tiến độ
+    shows: bốn vạch của mọi bài là rãnh trống, nhãn "Chưa học", thanh của nhóm 0/n.
+    why: ui/components/list-table, `theme-and-type` (số đo dùng foreground).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:52.727Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

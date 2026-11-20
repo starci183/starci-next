@@ -1,0 +1,78 @@
+schema: 1
+screen: essentials/catalog-no-match
+title: Essentials (danh mục), không khớp bộ lọc
+route: /essentials
+area: essentials
+summary: "Trạng thái không khớp: ô tìm có chữ không bài nào chứa. Ảnh ở 1440, 1920 và 390."
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 9d3c4a58b856797af205595ef923cc49f876722a6c600f69b98d3d10a55cba6d
+  "1440":
+    file: 1440.png
+    sha256: 8af04451b2a465e0656eb414ee838bf96a8add17cecead056a031d505d93a09c
+sections:
+  - id: s1
+    title: Thanh công cụ giữ nguyên
+    shows: tab, ô tìm (còn chữ vừa gõ) và hai ô chọn đứng yên để học viên sửa bộ lọc ngay.
+    why: ui/composition-sections (toolbar không đổi theo kết quả).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thông báo không khớp
+    shows: một thông báo giữa trang nêu đúng chữ đã tìm, gợi ý cách tìm theo bài toán và nút "Xóa bộ
+      lọc" trả về trạng thái ban đầu.
+    why: ui/components/empty-state (nói điều gì thiếu và cách thoát).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc ba khổ với dữ liệu mẫu qua core giả; các lệch của trang chính (Meter nấc đang làm,
+      thanh nhóm, hàng tô xám) vẫn áp dụng ở đây.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:56.904Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

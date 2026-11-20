@@ -1,0 +1,81 @@
+schema: 1
+screen: essentials/lesson-source-no-device
+title: Bài Essentials · Source, chưa thấy máy nào kết nối
+route: /essentials/[topic]/[lesson]?part=source
+area: essentials
+summary: "Route: `/essentials/[topic]/[lesson]?part=source`. Trạng thái: relayDevices trả danh sách
+  rỗng. Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và lane bài học;
+  ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: c38881cc0d3b66aef15d9592d03adb716da9066599b27af579287957b0596c97
+  "1440":
+    file: 1440.png
+    sha256: 5d703767bd83f6070ff9ddc0ce2184b5536673379048a51b1d5c1c0b6fa5da8b
+sections:
+  - id: s1
+    title: Dòng máy
+    shows: một chip chấm xanh ghi tên máy trực tuyến lấy từ relayDevices; khi không có máy nào, một
+      thông báo vàng nói thẳng chưa thấy máy, bảo chạy lệnh đăng nhập một lần và trang tự nhận khi
+      CLI báo về.
+    why: "`ui/components/toast-alert.md` (Alert nói trạng thái, không thẻ trong thẻ), `theme-and-type`
+      (tông vàng là cảnh báo)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Khối lệnh
+    shows: vẫn hiện hai lệnh để học viên chạy; trang tự nhận máy khi CLI báo về (đọc lại định kỳ).
+    why: "`ui/loading.md` (trạng thái không chặn nội dung)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Thông báo vàng ở trên cùng của khối, đúng khung; chưa thấy lệch.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:15.360Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,63 @@
+schema: 1
+screen: paths/choose-error
+title: Chọn mục tiêu, lỗi tải
+route: /paths/choose
+area: paths
+summary: "Đọc danh sách lộ trình thất bại: thông báo lỗi có nút Thử lại."
+code:
+  - features/pages/PathsChoosePage
+  - components/blocks/PathsChoose
+shots:
+  "390":
+    file: 390.png
+    sha256: 8889cc1435397bef54f198e6c027382e03adaac37614fe1acbb48ac622dd82d8
+  "1440":
+    file: 1440.png
+    sha256: b4e139d4bf6c11f5cc0402db08d31256d913f1492b1684297556cb32d474ffac
+sections:
+  - id: s1
+    title: Thông báo lỗi
+    shows: Một nút chính Thử lại.
+    why: ui/components/toast-alert.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:28.373Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,82 @@
+schema: 1
+screen: essentials/lesson-scenarios
+title: "Bài Essentials · phần 3 Kịch bản"
+route: "/essentials/[topic]/[lesson]?part=scenarios"
+area: essentials
+summary: >-
+  Route: `/essentials/[topic]/[lesson]?part=scenarios`. Mục tiêu: chạy từng kịch bản lỗi trên máy mình, thấy đỏ, hiểu vì sao, nhờ AI sửa rồi check lại tới khi xanh. Dữ liệu: lesson(id).essential.scenarios, lessonScenarioRuns (đọc lại mỗi 2 giây khi một lần chạy còn đang chạy), requestLessonRun (nút Chạy kịch bản), revealLessonHint (gợi ý khóa tới lần đỏ đầu), relayDevices. Nút chính theo trạng thái: Chạy kịch bản, Chec
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+pending-seed: "một học viên có lần chạy kịch bản đỏ trên máy trực tuyến (CLI đã đăng ký, lần chạy gần nhất thất bại). Chưa chụp được trên dev stack; chụp lại khi lane next-gallery-seed công bố seed"
+sections:
+  - id: s1
+    title: "Danh sách kịch bản"
+    shows: "cột trái (1440) là danh sách phẳng năm kịch bản, mỗi hàng id, một dòng lỗi và nhãn trạng thái (Xanh, Đỏ, Chưa chạy), đếm xanh ở đầu, một dòng quy trình ở cuối; ở 390 danh sách lên trước chi tiết."
+    why: "`ui/components/list-table.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s2
+    title: "Dòng máy"
+    shows: "một chip chấm xanh ghi tên máy trực tuyến lấy từ relayDevices; khi không có máy nào, một thông báo vàng nói thẳng chưa thấy máy, bảo chạy lệnh đăng nhập một lần và trang tự nhận khi CLI báo về."
+    why: "`ui/components/toast-alert.md` (Alert nói trạng thái, không thẻ trong thẻ), `theme-and-type` (tông vàng là cảnh báo)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s3
+    title: "Kết quả chạy"
+    shows: "Terminal tối: dòng lệnh rồi các dòng kết quả relay gửi về (✓ ✗); trong lúc chạy Terminal ở trạng thái đang tải."
+    why: "`ui/loading.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s4
+    title: "Vì sao sai / Luật đã giữ"
+    shows: "khối đỏ nêu thông điệp của lần chạy và luật bị phá (id, lời); khi xanh là khối xanh nêu luật đã giữ."
+    why: "`ui/components/toast-alert.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s5
+    title: "Gợi ý"
+    shows: "khóa tới lần chạy đỏ đầu tiên (server giữ nội dung); mở thì ghi chú dùng gợi ý thì bài ghi có hỗ trợ; có nút Xem gợi ý khi đã chạy mà chưa đỏ (revealLessonHint)."
+    why: "`premium` (server từ chối, UI không giấu), `essentials` luật 3."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s6
+    title: "Sửa"
+    shows: "một đoạn nói học viên không gõ code, lời nhắc sao chép cho AI của họ (có nút Sao chép lời nhắc) và công tắc --guard tắt một luật để thấy hệ thống vỡ."
+    why: "`essentials` (học viên chỉ đạo AI)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s7
+    title: "Bí? Hỏi Claude"
+    shows: "app không chứa khung chat: khung này nói Claude của học viên đọc lần chạy và code qua connector StarCi (my_runs, read_file) và dẫn tới trang nối connector. Đây là khoảng trống so với bản vẽ (cuộc trò chuyện có dòng gọi tool)."
+    why: "`mcp` concept (AI của học viên, không phải của app)."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+  - id: s8
+    title: "Nút chính"
+    shows: "theo trạng thái: Chạy kịch bản (requestLessonRun), Check lại khi đỏ, Kịch bản tiếp theo khi xanh; xám kèm lý do khi không có máy trực tuyến."
+    why: "`ui/components/button.md`."
+    actions: []
+    states: { loading: null, empty: null, error: null }
+    needsApi: []
+considered:
+  - option: "Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)"
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: "Hàng kịch bản đang chọn không có nền xám như bản vẽ (ListRow chưa có tint)."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+  - option: "Không có cuộc trò chuyện Claude trong trang: chỉ lời nhắc và liên kết tới connector."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+  - option: "Tên kịch bản không in đậm mono như bản vẽ (Grammar không có biến thể)."
+    chosen: false
+    why: "Ghi nhận ở lần chụp trước, chưa làm"
+audit: null

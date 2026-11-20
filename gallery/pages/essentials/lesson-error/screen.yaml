@@ -1,0 +1,63 @@
+schema: 1
+screen: essentials/lesson-error
+title: Bài Essentials, lỗi tải
+route: /essentials/[topic]/[lesson]
+area: essentials
+summary: "Đọc bài thất bại: thông báo lỗi có Thử lại thay cho thân bài."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 8c891bed9dbab7fe686bb6eabe6ade95f9c4dc06c84bae6026b2b681676616c6
+  "1440":
+    file: 1440.png
+    sha256: e60e6cc7bfadbff272160c3864f7b984b37a6f39c95461fa3649c5dbe95bbbdb
+sections:
+  - id: s1
+    title: Thông báo lỗi
+    shows: Một nút chính Thử lại; không minh họa trong vùng.
+    why: ui/components/toast-alert.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:01.458Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

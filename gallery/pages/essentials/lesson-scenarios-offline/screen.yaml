@@ -1,0 +1,79 @@
+schema: 1
+screen: essentials/lesson-scenarios-offline
+title: Bài Essentials · Kịch bản, chưa có máy trực tuyến
+route: /essentials/[topic]/[lesson]?part=scenarios
+area: essentials
+summary: "Route: `/essentials/[topic]/[lesson]?part=scenarios`. Trạng thái: relayDevices rỗng. Thông
+  báo vàng thay dòng máy; nút Chạy kịch bản xám, lý do nằm dưới nút (RELAY_DEVICE_OFFLINE không cần
+  gọi vì trang biết trước). Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane
+  build-01 và lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: b881444ac2e6de5f3301fa93e1472d70519426c980beabc8b0795e9cb9c40d55
+  "1440":
+    file: 1440.png
+    sha256: 8ec1df5264c416105fcd2d7933d28a5aee64f6cd324be89450c56409783bafd3
+sections:
+  - id: s1
+    title: Dòng máy
+    shows: xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên.
+    why: "`ui/loading.md`, `ui/components/toast-alert.md`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Nút chính xám
+    shows: xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên.
+    why: "`ui/loading.md`, `ui/components/toast-alert.md`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Chưa thấy lệch mới ngoài các mục của màn Kịch bản chính.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:14.190Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,71 @@
+schema: 1
+screen: essentials/lesson-ladder-locked
+title: Bài Essentials · Tự áp dụng, mức Khó còn khóa
+route: /essentials/[topic]/[lesson]?part=apply
+area: essentials
+summary: "Route: `/essentials/[topic]/[lesson]?part=apply`. Trạng thái: học viên chọn mức Khó khi
+  mức Vừa chưa xong. Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và
+  lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane."
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 212b5a7ac6027c19c1392c1191a71a2f61da074796bba36658ec18cfbd687308
+  "1440":
+    file: 1440.png
+    sha256: 8a77a263fdd1c1e69b8dcd3d42531221e703e9397df088ff3c724cd01033859b
+sections:
+  - id: s1
+    title: Thông báo mức khóa
+    shows: thay chi tiết mức bằng một thông báo nói mức nào mở sau mức nào, mức dưới đang bao nhiêu điểm
+      và điều kiện mở theo backend (mọi kịch bản ẩn của mức dưới xanh). Không có nút chính khi mức
+      khóa.
+    why: "`learner-cli-relay`."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Bản vẽ có ổ khóa trong thông báo (Alert không có ô biểu tượng khóa); điều kiện 80/100 trong
+      bản vẽ được thay bằng luật của backend.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:04.233Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

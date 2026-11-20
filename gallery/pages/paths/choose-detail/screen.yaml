@@ -1,0 +1,63 @@
+schema: 1
+screen: paths/choose-detail
+title: Chọn mục tiêu, hộp chi tiết lộ trình
+route: /paths/choose
+area: paths
+summary: "Hộp thoại Xem lộ trình: kết quả đạt được, tiêu chí kiểm và các chặng."
+code:
+  - features/pages/PathsChoosePage
+  - components/blocks/PathsChoose
+shots:
+  "390":
+    file: 390.png
+    sha256: 4d3a7b53cfe1b1580acb5761d866824d943ba3115f4fe5cd5edd3eacf061bc60
+  "1440":
+    file: 1440.png
+    sha256: c0ca6fd90b4c0781c17c0e828bdab58af814a0d940bd21558cf2097b4d59ae4e
+sections:
+  - id: s1
+    title: Hộp chi tiết
+    shows: Một nút chính Chọn lộ trình, Đóng là nút phụ.
+    why: ui/components/dialog-drawer.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:27.078Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
