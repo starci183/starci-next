@@ -75,5 +75,5 @@ export const applyHttpSecurity = (app: INestApplication, options: HttpSecurityOp
     server.disable("x-powered-by")
     server.set("trust proxy", edge.trustProxy)
     app.use(securityHeaders)
-    app.enableCors({ origin: origins })
+    app.enableCors({ origin: origins, credentials: true })
 }
