@@ -35,7 +35,14 @@ const SCREENS = [
     S("landing", "home", "/", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
+    S("learn", "not-found", "/zz-no-such-page"),
+    // The error page needs a route that throws: a temporary page /zz-throw (not in the code) while shooting.
+    S("learn", "error", "/zz-throw"),
     S("paths", "choose", "/paths/choose"),
+    S("paths", "choose-loading", "/paths/choose", { hold: true, hit: "paths" }),
+    S("paths", "choose-error", "/paths/choose", { refuse: true, hit: "paths" }),
+    S("paths", "choose-signed-out", "/paths/choose", { guest: true }),
+    S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
     S("essentials", "catalog", "/essentials"),
     // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
     S("essentials", "catalog-first-visit", "/essentials", { first: true }),
@@ -49,9 +56,12 @@ const SCREENS = [
     S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { first: true }),
     S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
     S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
+    S("essentials", "topic-error", { from: "essentials/topic", append: "?s=1" }, { refuse: true }),
     // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
     S("essentials", "lesson", LESSON, { cookies: { seed: "R" }, act: async (p) => answerAs(p, 2, false) }),
     S("essentials", "lesson-question-1", LESSON, { cookies: { seed: "" } }),
+    S("essentials", "lesson-loading", LESSON, { hold: true }),
+    S("essentials", "lesson-error", LESSON, { refuse: true }),
     S("essentials", "lesson-result", LESSON, {
         cookies: { seed: "RWRR" },
         act: async (p) => {
@@ -131,7 +141,10 @@ const SCREENS = [
     S("connect", "ai", "/connect"),
 ]
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
-const isEssentialsRead = (route) => /"operationName":"(Lessons|LessonTopic)"/.test(route.request().postData() ?? "")
+const isEssentialsRead = (route, hit) =>
+    (hit === "paths" ? /"operationName":"OutcomePaths"/ : /"operationName":"(Lessons|LessonTopic|Lesson)"/).test(
+        route.request().postData() ?? "",
+    )
 const norm = (href) => {
     try {
         const u = new URL(href, ENTRY)
@@ -225,9 +238,10 @@ const norm = (href) => {
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
-            if (s.hold) await p.route(/graphql/, (route) => (isEssentialsRead(route) ? undefined : route.continue()))
+            if (s.hold)
+                await p.route(/graphql/, (route) => (isEssentialsRead(route, s.hit) ? undefined : route.continue()))
             if (s.refuse)
-                await p.route(/graphql/, (route) => (isEssentialsRead(route) ? route.abort() : route.continue()))
+                await p.route(/graphql/, (route) => (isEssentialsRead(route, s.hit) ? route.abort() : route.continue()))
             await p.setViewportSize({
                 width: w,
                 height: Number(process.env.CAPTURE_HEIGHT) || (w === 390 ? 844 : 900),
@@ -254,6 +268,14 @@ const norm = (href) => {
                     .fill(s.fill.text)
                     .catch(() => {})
                 await p.waitForTimeout(800)
+            }
+            if (s.clickText) {
+                await p
+                    .getByRole("button", { name: s.clickText })
+                    .first()
+                    .click()
+                    .catch(() => {})
+                await p.waitForTimeout(1000)
             }
             if (s.click) {
                 await p

@@ -44,7 +44,7 @@ const OutcomesSection = (props: LessonAsideProps) => {
         return (
             <Section title={labels.progress.outcomes} headingLevel={2}>
                 <Stack gap="inline">
-                    <Text size="sm" tone="muted" startContent={<LockIcon label={labels.rail.locked} />}>
+                    <Text tone="muted" startContent={<LockIcon label={labels.rail.locked} />}>
                         {labels.rail.outcomesLocked}
                     </Text>
                     <Link variant="plain" href={props.plansHref}>

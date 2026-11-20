@@ -26,9 +26,7 @@ const MachineLine = (props: MachineLineProps) =>
             <Badge isDot tone="success">
                 {props.labels.machineOnline(props.machine)}
             </Badge>
-            <Text tone="muted" size="sm">
-                {props.labels.relayNote}
-            </Text>
+            <Text tone="muted">{props.labels.relayNote}</Text>
         </Cluster>
     )
 
@@ -53,10 +51,8 @@ const Verdict = (props: VerdictProps) => {
             title={labels.why}
             description={
                 <Stack gap="identity">
-                    {scenario.why === "" ? null : <Text size="sm">{scenario.why}</Text>}
-                    {scenario.ruleId === "" ? null : (
-                        <Text size="sm">{`${scenario.ruleId} · ${scenario.ruleText} · ${labels.ruleBroken}`}</Text>
-                    )}
+                    {scenario.why === "" ? null : <Text>{scenario.why}</Text>}
+                    {scenario.ruleText === "" ? null : <Text>{`${scenario.ruleText} · ${labels.ruleBroken}`}</Text>}
                 </Stack>
             }
         />
@@ -92,10 +88,8 @@ const Hint = (props: HintProps) => {
             title={labels.hintTitle}
             description={
                 <Stack gap="identity">
-                    <Text size="sm">{hint.text}</Text>
-                    <Text size="sm" tone="muted">
-                        {labels.hintNote}
-                    </Text>
+                    <Text>{hint.text}</Text>
+                    <Text tone="muted">{labels.hintNote}</Text>
                 </Stack>
             }
         />
@@ -117,9 +111,7 @@ const Fix = (props: FixProps) => {
     return (
         <Section title={labels.fixTitle} headingLevel={3}>
             <Stack gap="inline">
-                <Text tone="muted" size="sm">
-                    {labels.fixNote}
-                </Text>
+                <Text tone="muted">{labels.fixNote}</Text>
                 {scenario.state === "failed" ? (
                     <FencedCodeBlock
                         code={scenario.fixPrompt}
@@ -127,7 +119,7 @@ const Fix = (props: FixProps) => {
                         showLanguage={false}
                         label={labels.fixPrompt}
                         action={
-                            <Button intent="neutral" size="sm" onPress={() => onCopy(scenario.fixPrompt)}>
+                            <Button intent="neutral" onPress={() => onCopy(scenario.fixPrompt)}>
                                 {labels.fixCopy}
                             </Button>
                         }
@@ -135,7 +127,7 @@ const Fix = (props: FixProps) => {
                 ) : null}
                 {guard === undefined ? null : (
                     <Switch
-                        label={labels.guardTitle(guard.ruleId)}
+                        label={labels.guardTitle}
                         description={labels.guardNote(guard.flag)}
                         isSelected={guard.isOff}
                         onSelectedChange={(isOff) => onGuard(guard.flag, isOff)}
@@ -159,9 +151,7 @@ type AskProps = {
 const AskClaude = (props: AskProps) => (
     <Section title={props.labels.ask.title} headingLevel={3} fact={props.labels.ask.badge}>
         <Stack gap="inline">
-            <Text tone="muted" size="sm">
-                {props.labels.ask.note}
-            </Text>
+            <Text tone="muted">{props.labels.ask.note}</Text>
             <Link href={props.connectHref}>{props.labels.ask.connect}</Link>
         </Stack>
     </Section>

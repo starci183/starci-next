@@ -66,11 +66,7 @@ export const PrimaryAction = (props: { readonly primary: EssentialPrimary | unde
             >
                 {primary.label}
             </Button>
-            {primary.reason === "" ? null : (
-                <Text tone="muted" size="sm">
-                    {primary.reason}
-                </Text>
-            )}
+            {primary.reason === "" ? null : <Text tone="muted">{primary.reason}</Text>}
         </Stack>
     )
 }

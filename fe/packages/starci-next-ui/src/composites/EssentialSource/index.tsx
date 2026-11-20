@@ -45,11 +45,9 @@ type WalkEntryProps = { readonly entry: CodeWalkView; readonly why: string }
 const WalkEntry = (props: WalkEntryProps) => (
     <Section title={props.entry.title} headingLevel={3} fact={props.entry.location}>
         <Stack gap="inline">
-            <Cluster gap="identity">
-                <Badge tone="accent">{props.entry.invariantId}</Badge>
-            </Cluster>
+            {props.entry.rule === "" ? null : <Text tone="muted">{props.entry.rule}</Text>}
             <HighlightedCode code={props.entry.snippet} language="typescript" />
-            {props.entry.why === "" ? null : <Text size="sm">{`${props.why}: ${props.entry.why}`}</Text>}
+            {props.entry.why === "" ? null : <Text>{`${props.why}: ${props.entry.why}`}</Text>}
         </Stack>
     </Section>
 )
@@ -76,10 +74,8 @@ export const EssentialSource = (props: EssentialSourceProps) => {
                 <Stack gap="inline">
                     <MachineLine machine={source.machine} labels={labels} />
                     <Cluster gap="identity" justify="between">
-                        <Text tone="muted" size="sm">
-                            {labels.pullNote}
-                        </Text>
-                        <Button intent="neutral" size="sm" onPress={() => props.onCopy(source.pullCommand)}>
+                        <Text tone="muted">{labels.pullNote}</Text>
+                        <Button intent="neutral" onPress={() => props.onCopy(source.pullCommand)}>
                             {labels.copy}
                         </Button>
                     </Cluster>

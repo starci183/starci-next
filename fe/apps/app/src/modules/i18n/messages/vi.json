@@ -1123,7 +1123,7 @@
           "fixTitle": "Sửa",
           "fixNote": "Bạn không phải gõ code. Nhờ AI của bạn (Claude, ChatGPT hoặc agent trong IDE) sửa trong thư mục source, rồi check lại.",
           "fixPrompt": "Lời nhắc cho AI",
-          "guardTitle": "Tắt luật {rule}",
+          "guardTitle": "Tắt luật đang kiểm",
           "guardNote": "--guard {flag} để thấy hệ thống vỡ khi thiếu nó",
           "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {

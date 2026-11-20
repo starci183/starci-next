@@ -1123,7 +1123,7 @@
           "fixTitle": "Fix",
           "fixNote": "You do not type code. Ask your own AI (Claude, ChatGPT or an IDE agent) to fix it in the source folder, then check again.",
           "fixPrompt": "Prompt for your AI",
-          "guardTitle": "Turn rule {rule} off",
+          "guardTitle": "Turn the checked rule off",
           "guardNote": "--guard {flag} to see the system break without it",
           "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {

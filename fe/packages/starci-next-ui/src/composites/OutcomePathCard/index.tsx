@@ -47,7 +47,7 @@ type OutcomePathCardProps = {
 /** The command that follows the path; the path already followed offers none. */
 const ChooseAction = (props: Pick<OutcomePathCardProps, "path" | "hasActive" | "labels" | "isPending" | "onChoose">) =>
     props.path.isCurrent ? null : (
-        <Button intent="neutral" size="sm" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
+        <Button intent="neutral" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
             {props.hasActive ? props.labels.switchTo : props.labels.choose}
         </Button>
     )
@@ -61,10 +61,9 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         ariaLabel={props.path.title}
         height="fill"
         {...(props.isLoading === true ? { isLoading: true } : {})}
-        {...(props.path.isCurrent ? { emphasis: "accent" as const } : {})}
         actions={
             <Cluster gap="row">
-                <Button intent="neutral" size="sm" onPress={() => props.onView(props.path.id)}>
+                <Button intent="neutral" onPress={() => props.onView(props.path.id)}>
                     {props.labels.view}
                 </Button>
                 <ChooseAction {...props} />
@@ -83,8 +82,8 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
             </Cluster>
             {props.path.isCurrent ? <Badge tone="accent">{props.labels.current}</Badge> : null}
             <Text as="p">{props.path.pitch}</Text>
-            <Text as="p" size="sm">
-                <Text as="span" size="sm" isStrong>
+            <Text as="p">
+                <Text as="span" isStrong>
                     {`${props.labels.doneLabel}: `}
                 </Text>
                 {props.path.done}
@@ -96,9 +95,7 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
                     </Badge>
                 ))}
             </Cluster>
-            <Text size="sm" tone="muted">
-                {props.path.meta}
-            </Text>
+            <Text tone="muted">{props.path.meta}</Text>
         </Stack>
     </SurfaceCard>
 )

@@ -22,24 +22,18 @@ export const EssentialApplyAside = (props: EssentialApplyAsideProps) => {
                             maxValue={challenge.maxScore}
                             isLabelHidden
                         />
-                        <Text tone="muted" size="sm">
-                            {labels.aside.scoreNote(challenge.maxScore)}
-                        </Text>
+                        <Text tone="muted">{labels.aside.scoreNote(challenge.maxScore)}</Text>
                     </Stack>
                 </Section>
             )}
             <Section title={labels.aside.cvTitle} headingLevel={2}>
                 <Stack gap="inline">
                     {part.cvLine === "" ? (
-                        <Text tone="muted" size="sm">
-                            {labels.aside.cvNone}
-                        </Text>
+                        <Text tone="muted">{labels.aside.cvNone}</Text>
                     ) : (
                         <Badge tone="success">{part.cvLine}</Badge>
                     )}
-                    <Text tone="muted" size="sm">
-                        {labels.aside.cvNote}
-                    </Text>
+                    <Text tone="muted">{labels.aside.cvNote}</Text>
                 </Stack>
             </Section>
         </Stack>

@@ -3,7 +3,6 @@ import {
     Badge,
     Button,
     Icon as GlyphIcon,
-    Mascot,
     Page,
     Pane,
     PaneGrid,
@@ -83,13 +82,6 @@ const bandOf = (props: BandProps): PageHeaderContent => {
         breadcrumbs,
         title: titleOf(props),
         titleScale: "standard",
-        ...(study.imageSrc === ""
-            ? {}
-            : {
-                  mark: (
-                      <Mascot src={study.imageSrc} size="lg" loading="eager" assetSlot={`lesson-step-${study.phase}`} />
-                  ),
-              }),
         meta: metaOf(props),
         description: <LessonStepper study={study} env={env} />,
     }

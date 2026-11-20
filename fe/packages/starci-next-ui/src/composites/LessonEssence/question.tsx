@@ -29,9 +29,7 @@ export type LessonOpenerHeadProps = {
 /** The eyebrow of the opener and the five-answer bar with the position line under it. */
 export const LessonOpenerHead = (props: LessonOpenerHeadProps) => (
     <Stack gap="inline">
-        <Text size="sm" tone="muted">
-            {props.labels.opener.eyebrow}
-        </Text>
+        <Text tone="muted">{props.labels.opener.eyebrow}</Text>
         <AnswerBar label={props.labels.opener.barLabel} bar={props.view.bar} isLoading={props.isLoading} />
     </Stack>
 )

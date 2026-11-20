@@ -104,9 +104,7 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 onRetry={props.on.retry}
                 render={(view, isLoading) => (
                     <Stack gap="region">
-                        <Text size="sm" tone="muted">
-                            {[labels.stages.join(" · "), labels.note].join(" — ")}
-                        </Text>
+                        <Text tone="muted">{[labels.stages.join(" · "), labels.note].join(" — ")}</Text>
                         {status === "" ? null : (
                             <Text as="p" live="polite">
                                 {status}
