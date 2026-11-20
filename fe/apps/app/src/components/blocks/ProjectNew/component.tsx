@@ -26,6 +26,8 @@ export type ProjectNewLabels = {
     readonly trackLabel: string
     readonly name: string
     readonly repo: string
+    readonly namePlaceholder: string
+    readonly repoPlaceholder: string
     readonly deployed: string
     readonly deployedHint: string
     readonly submit: string
@@ -76,6 +78,7 @@ type FieldProps = {
     readonly id: keyof ProjectNewState
     readonly label: string
     readonly description?: string
+    readonly placeholder?: string
     readonly props: ProjectNewBaseProps["props"]
     readonly on: ProjectNewBaseProps["on"]
 }
@@ -91,6 +94,7 @@ const TextField = (props: FieldProps) => (
         isDisabled={props.props.isCreating}
         onValueChange={(value) => props.on.set(props.id, value)}
         {...(props.description === undefined ? {} : { description: props.description })}
+        {...(props.placeholder === undefined ? {} : { placeholder: props.placeholder })}
     />
 )
 
@@ -126,12 +130,12 @@ const Form = (props: FormProps) => {
     const { labels, state } = props.props
     return (
         <Section title={labels.infoLabel} headingLevel={2}>
-            <TextField id="name" label={labels.name} {...props} />
+            <TextField id="name" label={labels.name} placeholder={labels.namePlaceholder} {...props} />
             <Choice id="kind" label={labels.kindLabel} options={props.props.kinds} {...props} />
             {state.kind === "agent" ? (
                 <Choice id="track" label={labels.trackLabel} options={props.props.tracks} {...props} />
             ) : null}
-            <TextField id="repoUrl" label={labels.repo} {...props} />
+            <TextField id="repoUrl" label={labels.repo} placeholder={labels.repoPlaceholder} {...props} />
             <TextField id="deployedUrl" label={labels.deployed} description={labels.deployedHint} {...props} />
             {props.props.issueWords === "" ? null : <Alert tone="negative" title={props.props.issueWords} />}
             <Cluster gap="identity" wrap>

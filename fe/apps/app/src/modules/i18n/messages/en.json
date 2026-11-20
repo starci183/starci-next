@@ -1331,6 +1331,8 @@
         "trackOpenclaw": "OpenClaw",
         "trackHermes": "Hermes Agent",
         "repo": "GitHub repo",
+        "namePlaceholder": "For example: my-blog-api",
+        "repoPlaceholder": "https://github.com/you/project",
         "submit": "Create project",
         "submitting": "Creating...",
         "submitNeedsName": "Name the project before you create it.",

@@ -136,10 +136,12 @@ export const usePracticeCatalogScreen = (): PracticeCatalogScreen => {
     useDocumentTitle(t("pageTitle"))
     const patterns = read.data ?? []
     const stateById = new Map(patterns.map((pattern) => [pattern.patternId, stateOf(pattern)]))
+    const searched = foldOf(query.trim())
+    const matchesSearch = (title: string): boolean => searched === "" || foldOf(title).includes(searched)
     const countOf = (each: PracticeCatalogFilter): number =>
-        each === "all"
-            ? patterns.length
-            : patterns.filter((pattern) => stateById.get(pattern.patternId) === each).length
+        patterns.filter(
+            (pattern) => (each === "all" || stateById.get(pattern.patternId) === each) && matchesSearch(pattern.title),
+        ).length
     const items = patterns.map((pattern, index): PracticePatternItemView => ({
         id: pattern.patternId,
         title: pattern.title,

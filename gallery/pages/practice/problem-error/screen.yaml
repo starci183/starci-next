@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: cd1328d8e78df3caa0e1cb8fea6406063d903ad3a8d8319d1a056957197ee62f
+    sha256: 7de9ebe906dfe05be7f4c44ac57ea2cd85704386a5f8aa2fd6a06d466bbf4391
   "1440":
     file: 1440.png
-    sha256: bf0f8f306f37521e35b120b43a3c9347284af6f93838e5bf6ebdbb0062fd521e
+    sha256: 1c029ecc6509c85efcd0c659b6b6a00adc454b309de4f02fc4eff71fe42e5444
 sections:
   - id: s1
     title: "Dải tiêu đề: Không tải được đề"
@@ -64,24 +64,50 @@ audit:
       at: 2026-11-20T12:46:00.402Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đường dẫn, tiêu đề, thông báo lỗi
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Đường dẫn ghi Không tải được đề vào chỗ tên bài, tiêu đề trang là Luyện code lặp lại; lỗi cấp
+            trang nên dùng ErrorNotice có minh hoạ theo luật 8, hiện chỉ là một dải mỏng và phần còn
+            lại của trang trống
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Nút Thử lại trong thông báo lỗi cao khoảng 28px, không phải 40px (1440 và 390)
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Biểu tượng và danger-soft
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Đường dẫn Không tải được đề đặt câu lỗi vào chỗ tên bài
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có lỗi và Thử lại, ghi chú bản nháp còn nguyên
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Lỗi do API chặn, câu bản nháp vẫn còn trên trình duyệt đúng hành vi
+    - n: 2
+      at: 2026-11-20T13:02:29.415Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Chỉ còn đường dẫn Luyện code, tiêu đề lỗi, rồi thông báo"
+        layout:
+          verdict: fixed
+          notes: "Tiêu đề là Không tải được đề, đường dẫn chỉ còn Luyện code; chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)"
+        actionable:
+          verdict: pass
+          notes: "Thử lại có sẵn"
+        live:
+          verdict: pass
+          notes: "Biểu tượng và danger-soft"
+        words:
+          verdict: fixed
+          notes: "Hết đặt câu lỗi vào chỗ tên bài trong đường dẫn"
+        states:
+          verdict: pass
+          notes: "Có lỗi và Thử lại, ghi chú bản nháp còn nguyên"
+        truth:
+          verdict: pass
+          notes: "Lỗi do API chặn thật"
   escalate: null

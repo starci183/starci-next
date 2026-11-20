@@ -106,7 +106,7 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
  */
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (isLoading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         meta: header.meta,
@@ -114,7 +114,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
             label: labels.breadcrumbs,
             items: [
                 { id: "practice", label: header.crumb, href: labels.catalogHref },
-                { id: "pattern", label: header.title },
+                { id: "pattern", label: header.title, ...(isLoading ? { isLoading: true as const } : {}) },
             ],
         },
         ...(header.action === null
@@ -126,9 +126,19 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
                       </Button>
                   ),
               }),
+    })
+    const fallback: PageHeaderContent = {
+        title: props.props.slotLabels.error,
+        titleScale: "standard",
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [{ id: "practice", label: header.crumb, href: labels.catalogHref }],
+        },
     }
     return (
-        <SlotView
+        <SlotView<readonly PracticeProblemItem[], PageHeaderContent>
+            header={(_rows, loading) => pageHeaderOf(loading)}
+            headerFallback={fallback}
             slot={props.props.slot}
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
@@ -150,8 +160,8 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
                     rail={<Rail screen={props.props} isLoading={isLoading} />}
                 />
             )}
-            frame={({ body, isLoading }) => (
-                <Page isLoading={isLoading} header={pageHeader}>
+            frame={({ header, body, isLoading }) => (
+                <Page isLoading={isLoading} header={header}>
                     {body}
                 </Page>
             )}

@@ -135,24 +135,53 @@ audit:
       at: 2026-11-20T12:45:45.109Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tab Đề bài, Bài nộp, Lời giải; đề rồi vùng làm bài; Nộp bài là nút chính duy nhất
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Chữ đậm trong đề (khoảng không giao nhau, gộp các khoảng bị giao nhau) là 600 trở lên, trái
+            luật weight 400/500 (RichMarkdown strong, thuộc lane shell); tiêu đề Chèn Khoảng lặp
+            ngay trên thân đề dù đã có H1; nút Mở gợi ý cao khoảng 32px, không phải 40px (1440 và
+            390). File components/blocks/PracticeSolve/component.tsx. Chấp nhận: gợi ý dưới editor,
+            Reset nhỏ, Textarea thường"
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Nút Mở gợi ý nhỏ hơn 40px (xem layout); còn lại ổn: Chạy thử, Nộp bài, chọn ngôn ngữ, Reset"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chưa nộp nên chưa có trạng thái chạy; Chạy thử và Nộp bài có đường chạy riêng
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Việt hoá ổn; ghi chú: ô mã dùng font sans thay vì mono, đợi CodeEditor, cần Grammar (đã chấp
+            nhận)"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có loading và error riêng
         truth:
+          verdict: pass
+          notes: Đề, mã khởi đầu và 3 gợi ý khớp dữ liệu seed
+    - n: 2
+      at: 2026-11-20T13:02:31.965Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tab, đề, vùng làm bài; Nộp bài là nút chính duy nhất"
+        layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Tiêu đề Chèn Khoảng lặp ngay trên thân đề (đã có H1 ở đầu trang): bỏ tiêu đề đầu trong nội dung markdown hoặc ẩn trong components/blocks/PracticeSolve/component.tsx. Chữ đậm 600 trong đề thuộc RichMarkdown của lane shell, nút Mở gợi ý là ListRow action của Grammar (chấp nhận). Gợi ý dưới editor, Reset nhỏ, Textarea thường đã chấp nhận"
+        actionable:
+          verdict: pass
+          notes: "Chạy thử, Nộp bài, chọn ngôn ngữ, Reset, Mở gợi ý"
+        live:
+          verdict: pass
+          notes: "Chưa nộp nên chưa có trạng thái chạy"
+        words:
+          verdict: pass
+          notes: "Việt hoá ổn; ô mã dùng font sans, cần Grammar CodeEditor (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Có loading, error và hộp thoại xác nhận riêng"
+        truth:
+          verdict: pass
+          notes: "Đề, mã khởi đầu, 3 gợi ý khớp seed"
   escalate: null

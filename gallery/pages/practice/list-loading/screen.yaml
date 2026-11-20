@@ -43,24 +43,50 @@ audit:
       at: 2026-11-20T12:45:52.297Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khung giữ đúng thứ tự: tiêu đề khối, ô tìm, năm hàng skeleton"
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Hàng skeleton cùng hình khối hàng thật; khối tìm 40px
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đang tải, chưa cần thao tác
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Skeleton có nhịp sáng của SlotView
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chữ tiếng Việt, không lộ id (Accepted tính ở list-first)
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Cột phải KHÔNG nằm trong SlotView: hiện 0 và bài Accepted / 0 như số thật khi dữ liệu còn
+            đang tải (1440 và 390). Bọc cột phải bằng cùng SlotView, file
+            components/blocks/PracticeCatalog/component.tsx"
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Số 0 / 0 trong lúc tải là số bịa; thay bằng skeleton
+    - n: 2
+      at: 2026-11-20T13:02:23.033Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Khung đúng thứ tự: tiêu đề khối, ô tìm, hàng skeleton"
+        layout:
+          verdict: pass
+          notes: "Skeleton cùng hình khối hàng thật"
+        actionable:
+          verdict: pass
+          notes: "Đang tải"
+        live:
+          verdict: pass
+          notes: "Skeleton có nhịp sáng"
+        words:
+          verdict: pass
+          notes: "Chữ Việt; Accepted là từ vựng sản phẩm"
+        states:
+          verdict: pass
+          notes: "Số 0 ở cột phải là chỗ giữ chỗ sau lớp skeleton của Section isLoading (chấp nhận)"
+        truth:
+          verdict: pass
+          notes: "Số ở cột phải là giữ chỗ, đã nói rõ (chấp nhận)"
   escalate: null

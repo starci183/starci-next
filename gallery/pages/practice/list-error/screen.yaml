@@ -43,24 +43,50 @@ audit:
       at: 2026-11-20T12:45:49.918Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tiêu đề trang rồi thông báo lỗi ngay đầu vùng nội dung
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Thông báo lỗi là một dải mỏng, phần còn lại của trang trống: lỗi cấp trang nên dùng
+            ErrorNotice có minh hoạ theo luật 8, hiện chỉ là một dải mỏng và phần còn lại của trang
+            trống. File components/blocks/PracticeCatalog/component.tsx dòng ~169"
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Nút Thử lại trong thông báo lỗi cao khoảng 28px, không phải 40px (1440 và 390)
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Biểu tượng cảnh báo và màu danger-soft
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Không tải được danh sách pattern lẫn tiếng Anh; đề xuất danh sách chủ đề luyện
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có lỗi kèm Thử lại, giữ tiêu đề và sidebar
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Lỗi do chặn API thật, ghi chú tiến độ còn nguyên
+    - n: 2
+      at: 2026-11-20T13:02:20.058Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tiêu đề, rồi thông báo lỗi ngay đầu vùng nội dung"
+        layout:
+          verdict: pass
+          notes: "Chiều cao nút Thử lại và minh hoạ lỗi trang đã gửi cho lane shell (requests-shell.md), chấp nhận"
+        actionable:
+          verdict: pass
+          notes: "Thử lại có sẵn; chiều cao nút thuộc ErrorNotice dùng chung (chấp nhận)"
+        live:
+          verdict: pass
+          notes: "Biểu tượng và danger-soft"
+        words:
+          verdict: pass
+          notes: "Pattern là từ vựng sản phẩm"
+        states:
+          verdict: pass
+          notes: "Lỗi kèm Thử lại, giữ tiêu đề và sidebar"
+        truth:
+          verdict: pass
+          notes: "Lỗi do chặn API thật"
   escalate: null

@@ -123,7 +123,7 @@
 {"data":{},"findings":[],"hash":"2cb0a1554b555e330e64b0c96b56d428d385e5d8414112619d2be5b54542469b","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4b52dcd9fe959a1a54b0ea90e4b70209b0bc1f784d8d020b38de4f6ec4b89280","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"131d87ef2c8cce4c602922e581944614d774e94414e9f669bdf30b5629a8a9c7","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"950c96c6806cffb3527c52b1b04e65570ff8c234c58c670df596add948e7a58e","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"64e44074a52e0be29b5bc4c548416a95bd1291861d63182e352be50cf892d561","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d84dd1af51500211a077a390a50c9e8005e84690db6645b515723804b8474584","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"409ebb2de75ef71b25017e3dc9da5fa947476245b793bf26bd1e17baa92b8f9d","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d53aaad23176e3fac96578fec12961f10adbe02215e6501e2b30e86998ff5a89","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"file-rules"}

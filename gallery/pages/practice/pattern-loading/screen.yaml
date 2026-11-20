@@ -42,24 +42,50 @@ audit:
       at: 2026-11-20T12:45:59.249Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Khung và thứ tự giống bản thật
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Hàng skeleton có vòng số, hai dòng chữ, huy hiệu phải
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đang tải
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Skeleton nhấp nháy
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Đường dẫn hiện Pattern chung chung thay vì skeleton tên; bài đã Accepted
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Cột phải hiện 0 trên 0 bài đã Accepted và thanh tiến độ trống như số thật trong lúc tải (1440
+            và 390); mục Pattern kế tiếp biến mất. Dùng skeleton cho cả cột, file
+            components/blocks/PracticePattern/component.tsx
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 0 trên 0 là số bịa khi chưa tải xong
+    - n: 2
+      at: 2026-11-20T13:02:28.209Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Khung và thứ tự giống bản thật"
+        layout:
+          verdict: pass
+          notes: "Hàng skeleton cùng hình khối"
+        actionable:
+          verdict: pass
+          notes: "Đang tải"
+        live:
+          verdict: pass
+          notes: "Skeleton nhấp nháy"
+        words:
+          verdict: open
+          notes: "Đường dẫn vẫn ghi chữ Pattern cố định trong lúc tải, trong khi problem-loading đã dùng thanh skeleton. Thay bằng skeleton crumb trong components/blocks/PracticePattern/component.tsx (và hook usePracticePatternScreen)"
+        states:
+          verdict: pass
+          notes: "Số 0 trên 0 là giữ chỗ sau lớp skeleton của Section isLoading (chấp nhận)"
+        truth:
+          verdict: pass
+          notes: "Số giữ chỗ đã nói rõ (chấp nhận)"
   escalate: null

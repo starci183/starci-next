@@ -1,2 +1,2 @@
 {"data":{"verdict":"green"},"findings":[],"hash":"aa9ed6fd3396b073ee4bd4028d5d88600ad1cebb2159db62ef64fddd71761cb4","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"0c8836d2305d054b3a2b639ec4c7b179a344b15cea6b4674f91edc4b4c47ab93","path":"build/build fe","step":"ci-step"}
+{"data":{"verdict":"red"},"findings":[{"column":0,"line":0,"message":".github/workflows/ci.yml build / build fe (npm run build:fe) failed locally as it would in CI (exit 1)","path":".github/workflows/ci.yml","rule":"CI_PARITY_STEP_FAILED"}],"hash":"3dcfce506c3cae588019860b07c6be150507891c12fe5363c6a174d11ab20d50","path":"build/build fe","step":"ci-step"}

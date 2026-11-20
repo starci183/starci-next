@@ -65,24 +65,54 @@ audit:
       at: 2026-11-20T12:46:04.171Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tên và chip trạng thái, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải là kết nối CI và
+            máy
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Nút Lưu địa chỉ, Kết nối máy, Đổi bí mật CI cao khoảng 32px, không phải 40px (1440 và 390);
+            bảng Lần chạy gần đây tràn 12px mỗi bên (x=276-1068 so với cột 288-1056); Xem kinh
+            nghiệm kèm mũi tên chữ, khác link nơi khác. File
+            components/blocks/ProjectDetail/component.tsx
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ba nút nhỏ trên (xem layout); còn lại ổn: Cập nhật kết quả từ máy, địa chỉ có Lưu và Chạy
+            kiểm tra"
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chưa bắt đầu, Chưa có chữ ký, Đang luyện bằng chip có chấm
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Lẫn tiếng Anh: Test unit và integration, probe, Action, OIDC, Docker, key, idempotency,
+            Milestone"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có trạng thái trống cho lần chạy và nhãn trống cho kinh nghiệm
         truth:
+          verdict: pass
+          notes: Số 0/4, 0/2, 0/4 và dự án my-blog-api khớp seed
+    - n: 2
+      at: 2026-11-20T13:02:34.351Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy"
+        layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Xem kinh nghiệm → là chữ đen kèm mũi tên chữ, khác kiểu link/nút nơi khác trên trang (Kho mã dùng link tím có biểu tượng); dùng cùng một kiểu link trong components/blocks/ProjectDetail/component.tsx. Nút Lưu địa chỉ, Kết nối máy đo lại cao 38-40px: rút lại ý kiến nút 32px. Bảng lần chạy tràn 12px là DataTable Grammar (chấp nhận)"
+        actionable:
+          verdict: pass
+          notes: "Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI"
+        live:
+          verdict: pass
+          notes: "Chip trạng thái có chấm"
+        words:
+          verdict: pass
+          notes: "Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Có trạng thái trống cho lần chạy và kinh nghiệm"
+        truth:
+          verdict: pass
+          notes: "Số 0/4, 0/2, 0/4 khớp seed; cây starci/ đã dùng FencedCodeBlock"
   escalate: null

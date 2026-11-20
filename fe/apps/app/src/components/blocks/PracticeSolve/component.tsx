@@ -63,8 +63,9 @@ const HeaderActions = (props: { readonly screen: PracticeSolveBaseProps; readonl
 }
 
 /** The page header: the trail, the title, the facts line, the commands and the three tabs. */
-const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageHeaderContent => {
+const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoading: boolean): PageHeaderContent => {
     const { labels, state, catalogHref } = props.props
+    const loadingCrumb = isLoading ? { isLoading: true as const } : {}
     return {
         title: view.title,
         titleScale: "standard",
@@ -73,8 +74,8 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView): PageH
             label: labels.breadcrumbs,
             items: [
                 { id: "practice", label: labels.catalog, href: catalogHref },
-                { id: "pattern", label: view.patternTitle, href: view.patternHref },
-                { id: "problem", label: view.title },
+                { id: "pattern", label: view.patternTitle, href: view.patternHref, ...loadingCrumb },
+                { id: "problem", label: view.title, ...loadingCrumb },
             ],
         },
         actions: <HeaderActions screen={props} view={view} />,
@@ -284,14 +285,11 @@ const SolutionTab = (props: PieceProps) => {
 export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
     const { slot, placeholder, labels, state } = props.props
     const fallback: PageHeaderContent = {
-        title: labels.catalog,
+        title: labels.loadFailedCrumb,
         titleScale: "standard",
         breadcrumbs: {
             label: labels.breadcrumbs,
-            items: [
-                { id: "practice", label: labels.catalog, href: props.props.catalogHref },
-                { id: "problem", label: labels.loadFailedCrumb },
-            ],
+            items: [{ id: "practice", label: labels.catalog, href: props.props.catalogHref }],
         },
     }
     return (
@@ -301,7 +299,7 @@ export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={labels.loadFailedNote}
             onRetry={props.on.retry}
-            header={(view) => headerOf(props, view)}
+            header={(view, loading) => headerOf(props, view, loading)}
             headerFallback={fallback}
             frame={({ header, isLoading, body }) => (
                 <Page header={header} isLoading={isLoading}>

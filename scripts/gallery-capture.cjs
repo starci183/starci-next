@@ -114,7 +114,10 @@ const SCREENS = [
     S("practice", "list", "/practice"),
     S("practice", "list-first", "/practice"),
     S("practice", "list-nomatch", "/practice", {
-        fill: { sel: 'input[type="search"], input[placeholder*="Tìm"]', text: "cây khoảng" },
+        act: async (p) => {
+            await p.getByPlaceholder(/Tìm pattern/).fill("cây khoảng")
+            await p.waitForTimeout(1200)
+        },
     }),
     S("practice", "list-loading", "/practice", { hold: true, ops: /"operationName":"Practice/ }),
     S("practice", "list-error", "/practice", { refuse: true, ops: /"operationName":"Practice/ }),
@@ -123,6 +126,18 @@ const SCREENS = [
     S("practice", "pattern-loading", "/practice/patterns/arrays", { hold: true, ops: /"operationName":"Practice/ }),
     S("practice", "pattern-error", "/practice/patterns/arrays", { refuse: true, ops: /"operationName":"Practice/ }),
     S("practice", "problem", { from: "/practice/patterns/arrays", match: /^\/practice\/(?!patterns)[^/]+$/ }),
+    S(
+        "practice",
+        "problem-confirm",
+        { from: "practice/problem", append: "#s" },
+        {
+            act: async (p) => {
+                await p.getByRole("tab", { name: "Lời giải" }).click()
+                await p.getByRole("button", { name: "Xem lời giải" }).first().click()
+                await p.waitForTimeout(800)
+            },
+        },
+    ),
     S(
         "practice",
         "problem-loading",

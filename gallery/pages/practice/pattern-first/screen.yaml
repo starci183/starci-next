@@ -53,24 +53,51 @@ audit:
       at: 2026-11-20T12:45:56.466Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tiêu đề, nút chính Làm bài đầu tiên, danh sách bài, rồi tiến độ và pattern kế tiếp
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Tên bài viết hoa mỗi chữ (Chèn Khoảng, Dãy Liên Tiếp Dài Nhất) trái luật sentence case; sửa
+            dữ liệu hiển thị, không viết hoa mỗi chữ
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Hàng là link, nút chính duy nhất, Pattern kế tiếp có chevron
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Huy hiệu độ khó có chấm màu, trạng thái Chưa làm từng bài
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Thẻ Arrays, Sorting, Greedy, Two pointers, Hashing, Dynamic programming, Kadane, Prefix sum,
+            Intervals lộ tiếng Anh; Accepted. Dùng nhãn tiếng Việt
+            (hooks/practice/usePracticePatternScreen.ts và dữ liệu)
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có shot loading và error
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 5 bài, 0/5 Accepted, Chuỗi là pattern kế tiếp, khớp seed
+    - n: 2
+      at: 2026-11-20T13:02:26.948Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tiêu đề, nút chính Làm bài đầu tiên, danh sách bài, tiến độ"
+        layout:
+          verdict: pass
+          notes: "Bố cục sạch; chữ hoa mỗi chữ trong tên bài là dữ liệu bài (chấp nhận)"
+        actionable:
+          verdict: pass
+          notes: "Hàng là link; nút chính duy nhất"
+        live:
+          verdict: pass
+          notes: "Huy hiệu độ khó và trạng thái từng bài"
+        words:
+          verdict: pass
+          notes: "Thẻ kỹ thuật tiếng Anh và Accepted là từ vựng sản phẩm/dữ liệu (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Có shot loading và error"
+        truth:
+          verdict: pass
+          notes: "5 bài, 0/5, Chuỗi kế tiếp khớp seed"
   escalate: null

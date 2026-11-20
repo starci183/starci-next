@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 05a4b188b9f19b855fc4c26dc3b90a0d67715f2aa20466c1af36124336d0026e
+    sha256: b478d3c391d5b65e8b5e108d0b72ef28c4e73c309578e2dae42e08bd7eb1f2f1
   "1440":
     file: 1440.png
-    sha256: 5c6c986397ca0795d44712ddd06b30b7e418ad252c2b5d773993eb1b51fbacb5
+    sha256: f7a2304e055d1a325708288079855f81abe4a782ca118e22493dcb902b252d0f
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
@@ -54,24 +54,50 @@ audit:
       at: 2026-11-20T12:45:53.460Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Thứ tự giống list-first
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Cùng lệch cột số như list-first (hàng 10+ lệch 2px so với hàng 1-9)
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Không có nút Xoá tìm kiếm cho trạng thái không khớp (không thấy trong shot)
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Không có tác vụ chạy nền
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Cùng Accepted tiếng Anh như list-first
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Shot SAI trạng thái: ô tìm trống và cả 20 pattern vẫn hiện, giống hệt list-first, không có
+            trạng thái không khớp. Chụp lại sau khi gõ chuỗi không tồn tại và thấy thông báo trống
+            trong vùng danh sách"
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Shot không chứng minh được trạng thái không khớp; trùng ảnh với list-first
+    - n: 2
+      at: 2026-11-20T13:02:24.330Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tìm kiếm, tab, rồi thông báo không khớp; đã chụp lại thật với từ khoá cây khoảng"
+        layout:
+          verdict: open
+          notes: "Hai nút chính cùng lúc: Bắt đầu với Mảng ở đầu trang và Xoá bộ lọc màu tím (luật 10: một nút chính mỗi view); nút Xoá bộ lọc chỉ cao khoảng 32px, không phải 40px; thông báo là hai dòng chữ thường, không dùng EmptyNotice. Đổi Xoá bộ lọc thành nút trung tính 40px trong components/blocks/PracticeCatalog/component.tsx"
+        actionable:
+          verdict: pass
+          notes: "Có Xoá bộ lọc và nút x trong ô tìm (xem layout về kiểu nút)"
+        live:
+          verdict: pass
+          notes: "Không có tác vụ chạy nền"
+        words:
+          verdict: pass
+          notes: "Pattern, Accepted là từ vựng sản phẩm; câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng"
+        states:
+          verdict: open
+          notes: "Đếm sai trong lúc lọc: nhãn Các pattern ghi 0 nhưng tab Tất cả vẫn 20, Chưa bắt đầu 20 (đếm tab không theo từ khoá, mâu thuẫn). Đếm tab theo cùng bộ lọc hoặc ẩn đếm. File hooks/practice (usePracticeCatalogScreen) và PracticeCatalog/component.tsx"
+        truth:
+          verdict: open
+          notes: "Số đếm tab 20/0/20/0 không khớp với danh sách rỗng ngay bên dưới"
   escalate: null

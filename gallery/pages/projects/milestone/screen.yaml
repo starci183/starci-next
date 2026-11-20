@@ -53,24 +53,53 @@ audit:
       at: 2026-11-20T12:46:07.367Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tên milestone, bảng concept, lần chạy bằng chứng, cách chứng minh
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Bảng tràn ngoài cột 12px mỗi bên (x=276-1420 so với 288-1408); ô Bằng chứng xếp test, e2e,
+            probe thành cột dọc làm mỗi hàng cao 100px; ở 390 cột Bằng chứng và Học ở biến mất, tên
+            concept bị cắt (Hợp đồng lỗi nhất quán, không lộ stack l). Dùng chip ngang. File
+            components/blocks/ProjectMilestone/component.tsx
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Hàng concept không có chevron hay link rõ; cột Học ở chỉ ghi Chưa có bài, không đường dẫn
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có chip Đang làm và Chưa bắt đầu
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Lộ Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone
+            (modules/i18n/messages/vi.json dòng 1498; Bản chất là tên bài, không phải loại bài);
+            relay, probe, OIDC, e2e tiếng Anh; Chưa bắt đầu và Chưa có bài lệch cỡ
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn
         truth:
+          verdict: pass
+          notes: Số 0/4 concept khớp seed
+    - n: 2
+      at: 2026-11-20T13:02:36.696Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tên milestone, bảng concept, lần chạy, cách chứng minh"
+        layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ô Bằng chứng xếp test, e2e, probe thành cột dọc làm mỗi hàng cao khoảng 100px; ở 390 hai cột Bằng chứng và Học ở biến mất và tên concept bị cắt (Hợp đồng lỗi nhất quán, không lộ stack l). Xếp chip ngang và cho tên xuống dòng trong components/blocks/ProjectMilestone/component.tsx. Bảng tràn 12px là DataTable Grammar (chấp nhận)"
+        actionable:
+          verdict: open
+          notes: "Hàng concept không có chevron hay link; cột Học ở chỉ ghi Chưa có bài. Làm hàng thành link tới trang concept trong ProjectMilestone/component.tsx"
+        live:
+          verdict: pass
+          notes: "Chip Đang làm và Chưa bắt đầu"
+        words:
+          verdict: open
+          notes: "Mỗi hàng lộ câu Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone (modules/i18n/messages/vi.json dòng 1498, chữ Bản chất là tên bài đúng ra phải là tên phần học hoặc bỏ câu giữ chỗ); relay, OIDC là từ vựng kỹ thuật (chấp nhận)"
+        states:
+          verdict: pass
+          notes: "Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn"
+        truth:
+          verdict: pass
+          notes: "Số 0/4 khớp seed"
   escalate: null

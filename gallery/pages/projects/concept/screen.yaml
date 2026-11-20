@@ -65,24 +65,51 @@ audit:
       at: 2026-11-20T12:46:03.035Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Ô bằng chứng, probe, CI GitHub, AI đọc code, thang chấm, dòng CV
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Hai cột không thẳng hàng: CI GitHub bên trái (y=515) so với Thang chấm của AI bên phải
+            (y=467); hairline thang chấm dài x=848-1420 tràn khỏi cột; ở 390 đường dẫn bị cắt (Vòng
+            đời request và res). File components/blocks/ProjectConcept/component.tsx"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chạy probe (vô hiệu khi chưa có địa chỉ, có lời giải thích), Hỏi Claude qua MCP
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chip Chưa bắt đầu ở đầu trang
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Lộ Thầy đang soạn bài Bản chất này (vi.json dòng 1498); run CI, probe, Action, MCP tiếng Anh;
+            Chưa có run CI nào được ký lẫn Anh-Việt
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Có trạng thái trống cho từng phần
         truth:
+          verdict: pass
+          notes: Các ô trống đúng với concept chưa có bằng chứng
+    - n: 2
+      at: 2026-11-20T13:02:33.020Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Ô bằng chứng, probe, CI, AI đọc code, thang chấm, dòng CV"
+        layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Hai cột lệch hàng (CI GitHub y=515 so với Thang chấm của AI y=467) và ở 390 đường dẫn bị cắt (Vòng đời request và res): cho đường dẫn xuống dòng hoặc rút gọn tên giữa, xếp hai cột cùng nhịp trong components/blocks/ProjectConcept/component.tsx"
+        actionable:
+          verdict: pass
+          notes: "Chạy probe (vô hiệu có lý do), Hỏi Claude qua MCP"
+        live:
+          verdict: pass
+          notes: "Chip Chưa bắt đầu"
+        words:
+          verdict: open
+          notes: "Lộ Thầy đang soạn bài Bản chất này (vi.json dòng 1498); câu Chưa có run CI nào được ký lẫn Anh-Việt, đổi run thành lượt chạy"
+        states:
+          verdict: pass
+          notes: "Có trạng thái trống từng phần"
+        truth:
+          verdict: pass
+          notes: "Các ô trống đúng với concept chưa có bằng chứng"
   escalate: null

@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4fea72636ac223d304c51e5df9b2a87f518590fc8c6b2f867f2bcb8b777bebd5
+    sha256: 2b58108239050b9ad8846ba374a03ce6dcc25dc93c0e52b153c6c034addce2a2
   "1440":
     file: 1440.png
-    sha256: cba6639ce795493adb3b1b4de517cda79af923b1042b6814394400d05a08ec77
+    sha256: 3e7c53d7217f974ec4eb5f9c28b512bffc6fcf25c8e0a6daedc61fa8d751d665
 sections:
   - id: s1
     title: "Dải tiêu đề: đang tải"
@@ -63,24 +63,52 @@ audit:
       at: 2026-11-20T12:46:01.557Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Giữ khung tab và hai cột
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Cột trái (đề bài) trống hoàn toàn ở 1440, ở 390 đề cũng biến mất: không có skeleton cho đề.
+            Thêm skeleton đề trong PracticeSolve"
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đang tải
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Skeleton nhấp nháy
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Đường dẫn hiện chữ giữ chỗ xxxxxx / xxxxxxxxxxxxxx như chữ thật (1440 và 390); thay bằng
+            skeleton thanh. File components/blocks/PracticeSolve/component.tsx hoặc hook
+            usePracticeSolveScreen
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Cột trái không có skeleton; đường dẫn lộ xxxxxx; tab Đề bài vẫn có gạch chân dù chưa có nội
+            dung
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Chuỗi xxxxxx là dữ liệu giả hiển thị cho người dùng
+    - n: 2
+      at: 2026-11-20T13:02:30.759Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Giữ khung tab và hai cột"
+        layout:
+          verdict: open
+          notes: "Cột trái (đề bài) vẫn trống hoàn toàn ở 1440 và 390 trong lúc tải; thêm skeleton đề trong components/blocks/PracticeSolve/component.tsx cạnh skeleton editor"
+        actionable:
+          verdict: pass
+          notes: "Đang tải"
+        live:
+          verdict: pass
+          notes: "Skeleton nhấp nháy"
+        words:
+          verdict: fixed
+          notes: "Đường dẫn đã dùng skeleton crumb thay chữ xxxxxx"
+        states:
+          verdict: open
+          notes: "Cột trái đề bài không có skeleton (như layout); các phần còn lại ổn"
+        truth:
+          verdict: fixed
+          notes: "Không còn chuỗi giả xxxxxx hiển thị"
   escalate: null

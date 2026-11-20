@@ -94,6 +94,7 @@ const PatternList = (props: PieceProps & { readonly rows: ReadonlyArray<Practice
                     description={labels.noMatchText}
                     actionLabel={labels.clearFilters}
                     onAction={on.clearFilters}
+                    actionIntent="neutral"
                     mark="none"
                     frame="frameless"
                 />

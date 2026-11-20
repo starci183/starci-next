@@ -89,7 +89,7 @@
 {"data":{},"findings":[],"hash":"4e7459eb3519e62315494dc53e7f53e0c4e745ecb66b50a43ef323e3215848c1","path":"fe/packages/starci-next-ui/src/composites/PracticeProblemPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8171ac4abff92eef6b0de6e201d0d0912bd713bf21dd44cc117e055bb77bd29e","path":"fe/packages/starci-next-ui/src/composites/PracticeResult/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0fd773d2dd6b476a1a08c24f48ed058b5916e6871ed88c332238ba3b90aae57d","path":"fe/packages/starci-next-ui/src/composites/ProbesCard/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ae75c2490d5bd948efdde748c11325ce475b41c6124b6c940ca9b64b1190831e","path":"fe/packages/starci-next-ui/src/composites/ProjectAside/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"598dabbac3081dac914daef5830ab4f987ce59101bb74b946adacec6ed2821ce","path":"fe/packages/starci-next-ui/src/composites/ProjectAside/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fe7a852cdbfb6ea2f524af2dfee14e6e0a346b23eaeca8608cb0f21532cc3c80","path":"fe/packages/starci-next-ui/src/composites/ProjectAside/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9599d5f48c08143c0c05187bef1ab18fbe608ba4bb6754ad38df073e3cf6feea","path":"fe/packages/starci-next-ui/src/composites/ReflectCompare/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"793559df55305e797b029004d901815146e72551e210b523507ae3ea3f9ac554","path":"fe/packages/starci-next-ui/src/composites/ResultCard/index.tsx","step":"file-rules"}

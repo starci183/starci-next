@@ -53,24 +53,51 @@ audit:
       at: 2026-11-20T12:46:08.489Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Tên, loại, repo, địa chỉ deploy, rồi nút; khối giải thích ở cột phải
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Khoảng cách dọc không đều: sau nhóm Loại dự án chỉ 30px tới nhãn Repo GitHub, trong khi các
+            trường khác cách nhau 78px. Nhóm radio sát nhãn kế tiếp. File
+            components/blocks/ProjectNew/component.tsx"
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng owner/repo (chỉ ô địa chỉ có chú
+            thích); nút Tạo dự án xám vô hiệu mà không nói thiếu trường nào
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chưa có tác vụ chạy; khối lệnh mô phỏng terminal
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Trộn tiếng Anh: deploy, probe, repo, test; Huỷ nên đồng nhất cách bỏ dấu với phần còn lại"
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Nút bị vô hiệu khi thiếu trường; lỗi từng trường theo Field
         truth:
+          verdict: pass
+          notes: Lệnh mẫu ghi rõ do học viên chạy
+    - n: 2
+      at: 2026-11-20T13:02:38.051Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải"
+        layout:
+          verdict: fixed
+          notes: "Đo lại: khoảng từ cuối mỗi ô tới nhãn kế tiếp đều khoảng 21px, kể cả sau nhóm radio; nhận định khoảng cách không đều ở vòng 1 là sai, đã rút lại"
+        actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng (ví dụ owner/repo); chỉ ô địa chỉ có chú thích. Thêm placeholder trong components/blocks/ProjectNew/component.tsx và nói lý do Tạo dự án đang vô hiệu"
+        live:
+          verdict: pass
+          notes: "Chưa có tác vụ chạy; khối lệnh mô phỏng"
+        words:
+          verdict: pass
+          notes: "deploy, probe, repo, test là từ vựng sản phẩm; Huỷ giữ theo bộ chữ hiện có"
+        states:
+          verdict: pass
+          notes: "Nút vô hiệu khi thiếu trường; lỗi từng trường"
+        truth:
+          verdict: pass
+          notes: "Lệnh mẫu ghi rõ do học viên chạy"
   escalate: null
