@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 994b064b0aee5986cf3161ba44b32904b0c55a22328e1a2a0b08ca4cb1150f80
+    sha256: 9de61f1b4937fe8284dd439423bc0e21e249b59a669968033a82a32be3a89f39
   "1440":
     file: 1440.png
-    sha256: db9a6d215c1f44a77e314e61090bfbbb5997192527e5e63141274e0ae100a490
+    sha256: 6f15899bdbd0374a313821ba4e5e2af72e3e862a197feff03dfa0e9a6f849eb3
 sections:
   - id: s1
     title: Năm thẻ lộ trình
@@ -56,8 +56,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Trái luật 8 và canvas đã duyệt (bỏ minh hoạ trong thẻ): mỗi thẻ có ảnh mascot tròn. Nhãn nhỏ viết hoa "XÂY SẢN PHẨM / AGENT & LLM / VIỆC LÀM" trái luật 4 (không ALL CAPS) và canvas. Ở 1440 lưới 4+1 để lẻ thẻ thứ năm.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -66,11 +67,36 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Lẫn tiếng Anh/viết tắt: "milestone concept", "CI có chữ ký xanh", "e2e", "agent", "eval".'
+          notes: 'Lẫn tiếng Anh/viết tắt: "milestone concept", "CI có chữ ký xanh", "e2e", "agent", "eval".
+            Còn lại: câu mô tả lộ trình (milestone concept, e2e) là dữ liệu của core (cần API).'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:58.064Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

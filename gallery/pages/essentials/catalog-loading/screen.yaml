@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4c03b640fa01df7154ff76a87654f326c80b9bd87319b46582803097eb057bf6
+    sha256: 913e46aca5a4667d08b649cf2db4e8ed787db59abac5a19504ce787a58eb2e85
   "1440":
     file: 1440.png
-    sha256: 3e6c6ac4fbc13bcc35db34633e4fbd4ba0eafbf7f90b62737c6ca8ac3b5449f4
+    sha256: 5f8229860ef64bb40f9c94791694dfda5150e11eb9b1f5913d7076b077fefad7
 sections:
   - id: s1
     title: Khung xám cùng hình dữ liệu
@@ -49,7 +49,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Tiêu đề nhóm hiện "…" chữ thật thay vì skeleton; số đếm trên tab hiện "0" lúc đang tải (giả).'
+          notes: 'Tiêu đề nhóm hiện "…" chữ thật thay vì skeleton; số đếm trên tab hiện "0" lúc đang tải
+            (giả). Còn lại: số đếm 0 trên tab trạng thái do CatalogToolbar của lane shell (đã ghi
+            requests-shell.md).'
         actionable:
           verdict: pass
           notes: ""
@@ -57,12 +59,40 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: '"..." literal làm tiêu đề nhóm.'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: 'Loading ở 1440 và 390 có skeleton hàng nhưng tab hiện số đếm 0 và tiêu đề "…" như dữ liệu thật.'
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: open
-          notes: 'Số đếm "Tất cả 0 / Đang học 0 / Chưa học 0 / Đã xong 0" hiện trong lúc tải như số thật.'
+          notes: 'Số đếm "Tất cả 0 / Đang học 0 / Chưa học 0 / Đã xong 0" hiện trong lúc tải như số thật. Còn
+            lại: số đếm 0 trên tab trạng thái do CatalogToolbar của lane shell (đã ghi
+            requests-shell.md).'
+    - n: 2
+      at: 2026-11-20T14:09:03.872Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

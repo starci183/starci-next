@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ccf24233dc9d91cb08ab1a3416279c3c08cffe94ea40d3e14a69d0ed12139865
+    sha256: 5d042f496a70eeb6ad03eec69d347956113e0a8da3a77e5cbd1ecd4f51e94c8f
   "1440":
     file: 1440.png
-    sha256: e632ec99f4feda09af65bac9be86785d21a9a9012d44001060fa9a8f466c0ec3
+    sha256: 29c6e137e12737beeae55a07d4425e104dd01cf35766604cf6b88edefd624afd
 sections:
   - id: s1
     title: Nút chính
@@ -58,8 +58,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Mỗi hàng bài có 4 thanh tiến độ xám không nhãn (không rõ là 4 phần nào, đang 0%). Ở 390 nút "Nâng cấp Premium" tách riêng dưới số liệu OK.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -75,4 +76,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:02.296Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

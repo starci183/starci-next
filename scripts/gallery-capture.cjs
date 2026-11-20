@@ -38,10 +38,14 @@ const playOpener = async (p, picks, isFinished) => {
 const originFix = async (ctx) => {
     if (!process.env.CAPTURE_ORIGIN_AS || !ctx) return
     await ctx.route(/\/(graphql|api\/)/, async (route) => {
-        const response = await route.fetch({
-            headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
-        })
-        await route.fulfill({ response })
+        try {
+            const response = await route.fetch({
+                headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
+            })
+            await route.fulfill({ response })
+        } catch {
+            // the page closed while the call was in flight
+        }
     })
 }
 const SCREENS = [
@@ -67,7 +71,7 @@ const SCREENS = [
         prefix: "modal-",
     }),
     S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
-    S("essentials", "catalog", "/essentials"),
+    S("essentials", "catalog", "/essentials", { state: "STU" }),
     // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
     S("essentials", "catalog-first-visit", "/essentials", { state: "P2" }),
     S("essentials", "catalog-no-match", "/essentials", {
@@ -76,20 +80,21 @@ const SCREENS = [
     S("essentials", "catalog-loading", "/essentials", { hold: true }),
     S("essentials", "catalog-error", "/essentials", { refuse: true }),
     S("essentials", "catalog-free", "/essentials", { free: true }),
-    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }),
+    S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }, { state: "STU" }),
     S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { state: "P2" }),
     S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
     S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
     S("essentials", "topic-error", { from: "essentials/topic", append: "?s=1" }, { refuse: true }),
     // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
-    S("essentials", "lesson", LESSON, { state: "P3", act: async (p) => playOpener(p, "RW", false) }),
+    S("essentials", "lesson", LESSON, { state: "LES", act: async (p) => playOpener(p, "RW", false) }),
     S("essentials", "lesson-question-1", LESSON, { state: "P2" }),
     S("essentials", "lesson-loading", LESSON, { hold: true }),
     S("essentials", "lesson-error", LESSON, { refuse: true }),
-    S("essentials", "lesson-result", LESSON, { state: "P3", act: async (p) => playOpener(p, "RWRRW", true) }),
+    S("essentials", "lesson-result", LESSON, { state: "RES", act: async (p) => playOpener(p, "RWRRW", true) }),
     S("essentials", "lesson-article", LESSON, {
-        state: "P3",
+        state: "ART",
         act: async (p) => {
+            await playOpener(p, "RWRRW", true)
             await p
                 .getByRole("button", { name: /Đọc bài viết/ })
                 .first()
@@ -97,7 +102,7 @@ const SCREENS = [
                 .catch(() => {})
         },
     }),
-    S("essentials", "lesson-free-end", LESSON, { state: "F2", act: async (p) => playOpener(p, "RWRRW", true) }),
+    S("essentials", "lesson-free-end", LESSON, { state: "FEND", act: async (p) => playOpener(p, "RWRRW", true) }),
     S("essentials", "lesson-locked-source", LESSON + "?part=source", {
         free: true,
         cookies: { plan: "free", seed: "RWRRW" },
@@ -278,7 +283,8 @@ const norm = (href) => {
                           storageState: s.learnerState
                               ? s.learnerState
                               : s.state
-                                ? process.env["CAPTURE_STATE_" + s.state]
+                                ? (process.env["CAPTURE_STATE_" + s.state + "_" + w] ??
+                                  process.env["CAPTURE_STATE_" + s.state])
                                 : s.free && process.env.CAPTURE_FREE_STATE
                                   ? process.env.CAPTURE_FREE_STATE
                                   : stateFile,

@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 3adf72a4986690c3760679ee5091ed6613bc8fd2ec4f1c3a8c4d46a6851cb81f
+    sha256: a62ca1c1007ea42b7430ef640080b5e7db314bfa1d9891d2bd1ff839958d10bc
   "1440":
     file: 1440.png
-    sha256: 103fd137e370349cff453e849564a8d802d392c16c536192536545f68a61e2e7
+    sha256: a0bc1f709c7e0cdec6262d49cc68568ca3ace7786e22e374a8ad0143ca5acc17
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -110,20 +110,50 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Ở 390 mô tả đầu bài dài ~8 dòng bị nút "Câu 3" ép bên phải, câu hỏi bị đẩy xuống dưới màn hình đầu. Hai liên kết "Đọc kỹ mục 2.2 ..." và "Xem tận mắt ở kịch bản ..." dính liền một dòng, không phân tách.'
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các
+            trang khác (lề trái x=268 thay vì 288). Ở 390 mô tả đầu bài dài ~8 dòng bị nút "Câu 3"
+            ép bên phải, câu hỏi bị đẩy xuống dưới màn hình đầu. Hai liên kết "Đọc kỹ mục 2.2 ..."
+            và "Xem tận mắt ở kịch bản ..." dính liền một dòng, không phân tách. Còn lại: lề trái
+            x=268 và gutter phải của Page chrome=panes do Grammar quyết định, ứng dụng không chỉnh
+            được (cần Grammar).'
         actionable:
           verdict: pass
           notes: ""
         live:
-          verdict: open
-          notes: 'Kết quả đúng/sai chỉ là vạch màu bên trái hàng và chữ 12 "Bạn chọn / Đáp án đúng", không có icon đúng/sai; vạch tiến độ đỏ/tím không có chú thích.'
+          verdict: fixed
+          notes: "Vòng 2: trạng thái kết quả hiện đúng bước thật."
         words:
-          verdict: open
-          notes: 'Chữ mã trong câu hỏi và đáp án hiện nguyên dấu backtick (`paid`, `SELECT`, `in_flight`) thay vì vẽ thành mã: markup thô lộ ra. Nút chính ghi "Câu 2" (1440)/"Câu 3" (390), khi đang ở "Câu 1/5": nhãn không rõ (canvas: "Câu tiếp theo").'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:07.922Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

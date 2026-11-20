@@ -1,31 +1,74 @@
 schema: 1
 screen: essentials/lesson-source
-title: "Source, đã pull"
-route: "/essentials/[topic]/[lesson]?part=source"
+title: Source, đã pull
+route: /essentials/[topic]/[lesson]?part=source
 area: essentials
-summary: >-
-  Phần Source của bài: máy trực tuyến, lệnh pull và up, sơ đồ kiến trúc, đọc code theo từng luật bằng lời, và cây tệp.
+summary: "Phần Source của bài: máy trực tuyến, lệnh pull và up, sơ đồ kiến trúc, đọc code theo từng
+  luật bằng lời, và cây tệp."
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
-pending-seed: "một học viên có máy trực tuyến đã kéo source (relay manifest và lệnh pull). Chưa chụp được trên dev stack; chụp lại khi lane next-gallery-seed công bố seed"
+shots:
+  "390":
+    file: 390.png
+    sha256: cb4e7070ed9ce9fb8d232d0251bac2a377f58d30a307e5fb02c7ca960bca377e
+  "1440":
+    file: 1440.png
+    sha256: 70f795e9317159e5acf44132070c2ed9a17571af6c1a888226c310647adbca2d
 sections:
   - id: s1
-    title: "Lệnh chạy"
-    shows: "Hai lệnh pull và up trong một Terminal; nút Sao chép 40px."
-    why: "ui/components/data-views.md"
+    title: Lệnh chạy
+    shows: Hai lệnh pull và up trong một Terminal; nút Sao chép 40px.
+    why: ui/components/data-views.md
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: "Kiến trúc và đọc code"
-    shows: "Sơ đồ, bảng thành phần với luật bằng lời (không hiện mã luật) và các đoạn code kèm lý do."
-    why: "ui/components/data-views.md"
+    title: Kiến trúc và đọc code
+    shows: Sơ đồ, bảng thành phần với luật bằng lời (không hiện mã luật) và các đoạn code kèm lý do.
+    why: ui/components/data-views.md
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)"
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
     chosen: true
-    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ nhánh tải"
-audit: null
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T14:10:27.665Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

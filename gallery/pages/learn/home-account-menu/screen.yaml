@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 99b2390e3e7fbb6384ffd63d06d63b1ef81ef465c4da7dd0e5c2c76714fa2f2a
+    sha256: bffed7a623237bb5ca6d5b9407a7c106c02975c9949fd609a2f8064ce5b318fe
   "1440":
     file: 1440.png
-    sha256: 166988fe3e2ebd55bdf113c7e1d52fa2f3097a27f9c67de202c6691b2cd1e78e
+    sha256: 41f87261f013da02a0115cdfd3a1bb10dd0398703c99ba974d251dc8f28fee54
 sections:
   - id: s1
     title: Hàng danh tính
@@ -98,8 +98,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Ở 390 email "career-gallery@starci.test" ngắt giữa từ ("career-/gallery@...") trong menu; menu chồng lên tiêu đề trang (chấp nhận được).'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -107,12 +108,38 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Ảnh 1440 hiện "xxxxxxxxxx" thật.'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: 'Ảnh 1440 chụp lúc trang đang tải (chữ "xxxx", skeleton) dưới menu.'
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:53.145Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

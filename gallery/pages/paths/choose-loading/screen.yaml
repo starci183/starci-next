@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 6697cb62bf862b884c9cc0321fa9a8229355ed12d6567f7167124805939c0098
+    sha256: c435b488d19ec8f59a6196ee38b37ef14d2778cca2dbbe1c0ac45540f62284ec
   "1440":
     file: 1440.png
-    sha256: c1cac2c1052d7bec47be926c678e97786e4781b8e47e98e60a8ccfb01e9a533f
+    sha256: 57568abdbf68df0296b451c720c27714573b7abf610e304918019f8074014ead
 sections:
   - id: s1
     title: Khung xương
@@ -43,21 +43,48 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
-          verdict: open
-          notes: 'Nút "Xem lộ trình" và "Chọn lộ trình" vẫn bật khi thẻ đang tải.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
         live:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ.'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: 'Loading vẽ sai: chữ "xxxx" thật trong thẻ; nút bật.'
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:10:02.544Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

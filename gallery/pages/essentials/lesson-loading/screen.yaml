@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 106d1cef7cc3b8f9532c110fca6b413ec08a46c2417b87236ffb0e241f345080
+    sha256: eeddb43929b6da63f80f430924bb6779b6312411ad188a1cb855863888f2dcc5
   "1440":
     file: 1440.png
-    sha256: cdca3defad47f8eb30dd83a705b07f25ba88eaa6800520f0a123742360b51b70
+    sha256: c2f74991529206c8babdc2ff3cc4dd47b731a850492034c41db83bb86c6778ec
 sections:
   - id: s1
     title: Khung xương của bài
@@ -43,8 +43,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Breadcrumb, tab, câu hỏi và hàng danh sách là chữ "xxxx" thật; ở 390 breadcrumb tràn ra ngoài mép.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -52,12 +53,38 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ.'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ. Cột phải đã hiện chữ thật "Phần 2 đến 4 cần Premium."'
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:15.778Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

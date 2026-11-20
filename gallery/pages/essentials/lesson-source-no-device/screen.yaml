@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c38881cc0d3b66aef15d9592d03adb716da9066599b27af579287957b0596c97
+    sha256: 7cda41c07b0075655afd9910ff867d59bca3f37430d01c06180ae427ff5780e4
   "1440":
     file: 1440.png
-    sha256: 5d703767bd83f6070ff9ddc0ce2184b5536673379048a51b1d5c1c0b6fa5da8b
+    sha256: 8d24072d25a41f4e9cbe03e4d7f0c2c4fc3fc9df64faacac94880dfecee6158f
 sections:
   - id: s1
     title: Dòng máy
@@ -62,7 +62,12 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Hai kiểu "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới; hai kiểu khối mã (nền đen, nền sáng có tô màu cú pháp). Cột phải "Không có trong source / Cần có" chạm mép phải x≈1433 không gutter. Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288).'
+          notes: 'Hai kiểu "Sao chép": nút pill ở đầu khối lệnh và chữ trơn "Sao chép" ở khối bash dưới; hai
+            kiểu khối mã (nền đen, nền sáng có tô màu cú pháp). Cột phải "Không có trong source /
+            Cần có" chạm mép phải x≈1433 không gutter. Ở 1440 nội dung và nút chính ở đầu trang chạm
+            mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Còn
+            lại: lề trái x=268 và gutter phải của Page chrome=panes do Grammar quyết định, ứng dụng
+            không chỉnh được (cần Grammar).'
         actionable:
           verdict: pass
           notes: ""
@@ -71,11 +76,37 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Chú thích trong khối mã bằng tiếng Anh ("# Step 1: get the lesson source at the commit StarCi signed").'
+          notes: 'Chú thích trong khối mã bằng tiếng Anh ("# Step 1: get the lesson source at the commit
+            StarCi signed"). Còn lại: tên kịch bản (kebab) và thẻ luật thô trong lý do sai là dữ
+            liệu của core (cần API).'
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:33.788Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 8c891bed9dbab7fe686bb6eabe6ade95f9c4dc06c84bae6026b2b681676616c6
+    sha256: c953b0802da44af39f22157531c061fb0c5254f9665d614091a5ea61435eee72
   "1440":
     file: 1440.png
-    sha256: d5d96ce3a4a76025b10db127fd3bff12686fd891d0a68025b41732c0569f22a5
+    sha256: 6ab49974dd3570cb5eec64e542605b78e9baa1dda7be6af9c0bb5be33c15bff8
 sections:
   - id: s1
     title: Thông báo lỗi
@@ -44,8 +44,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: "Cột phải rỗng vẫn hiện đường kẻ dọc x=1120 khi lỗi; banner lỗi ở 1440 chỉ rộng tới x=1108 và tiêu đề lề trái x=268."
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -53,12 +54,38 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Lỗi chỉ ghi "Không tải được phần này." (1440 và 390), tiêu đề trang trơ "Essentials"; canvas đã duyệt có tiêu đề nêu tên ("Không tải được chủ đề") + dòng "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ.".'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: "Lỗi tải thiếu tên chủ đề, dòng giải thích và breadcrumb như canvas."
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:41.348Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

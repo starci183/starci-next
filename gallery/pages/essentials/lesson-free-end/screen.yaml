@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b2aa011250df06e256c6b797ae0c41272bf8634e809d1e38457850ce50642be1
+    sha256: db08629a4203d4db74f659096e72f5b9d125332ddcd16b6bde9effa594fc52f6
   "1440":
     file: 1440.png
-    sha256: 9816aa461e1106033397c055b078c8878714569f2fe06667937b90cdb6ad789e
+    sha256: 3f7551596c34ae5b4c4a4c68fb73c90607aca289235cf97e130cc702fe237154
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -93,10 +93,13 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Hai nút giống nhau "Đọc bài viết" (header primary + pill outline).'
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các
+            trang khác (lề trái x=268 thay vì 288). Hai nút giống nhau "Đọc bài viết" (header
+            primary + pill outline). Còn lại: lề trái x=268 và gutter phải của Page chrome=panes do
+            Grammar quyết định, ứng dụng không chỉnh được (cần Grammar).'
         actionable:
-          verdict: open
-          notes: 'Cuối phần 1 của tài khoản miễn phí không có nút "Nâng cấp Premium" (canvas có): chỉ có "Đọc bài viết" ở header (nút chính) và lặp lại "Đọc bài viết" ở hàng dưới; banner "Bạn xong phần 1" không có hành động.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
         live:
           verdict: pass
           notes: ""
@@ -104,9 +107,34 @@ audit:
           verdict: pass
           notes: ""
         states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: fixed
+          notes: "Vòng 2: dữ liệu thật từ dev stack, không số giả khi đang tải."
+    - n: 2
+      at: 2026-11-20T14:09:12.353Z
+      lenses:
+        order:
           verdict: open
-          notes: "Ảnh 390 là Câu 1/5 chưa trả lời, không phải trạng thái cuối phần 1."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: 'Ảnh 390 không khớp tên màn (không có "Đúng 4/5").'
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

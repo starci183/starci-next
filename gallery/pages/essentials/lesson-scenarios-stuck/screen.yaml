@@ -1,34 +1,79 @@
 schema: 1
 screen: essentials/lesson-scenarios-stuck
 title: "Bài Essentials · Kịch bản, bí: hỏi Claude"
-route: "/essentials/[topic]/[lesson]?part=scenarios"
+route: /essentials/[topic]/[lesson]?part=scenarios
 area: essentials
-summary: >-
-  Route: `/essentials/[topic]/[lesson]?part=scenarios`. Trạng thái: lần chạy đỏ, học viên bí. Khối Sửa (lời nhắc cho AI) và khối Bí? Hỏi Claude dẫn tới connector đều hiện; Gợi ý mở. Khung (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và lane bài học; ảnh chụp ở 1440, 1920 và 390, trang cuộn trong từng pane.
+summary: "Route: `/essentials/[topic]/[lesson]?part=scenarios`. Trạng thái: lần chạy đỏ, học viên
+  bí. Khối Sửa (lời nhắc cho AI) và khối Bí? Hỏi Claude dẫn tới connector đều hiện; Gợi ý mở. Khung
+  (thanh trên, thanh bên, đầu bài và tab bốn phần) thuộc lane build-01 và lane bài học; ảnh chụp ở
+  1440, 1920 và 390, trang cuộn trong từng pane."
 code:
   - features/pages/LessonPage
   - components/blocks/EssentialLesson
-pending-seed: "một học viên có lần chạy đỏ liên tiếp để mở khối Bí? Hỏi Claude. Chưa chụp được trên dev stack; chụp lại khi lane next-gallery-seed công bố seed"
+shots:
+  "390":
+    file: 390.png
+    sha256: c7788cb4985f003ca934e524de8e320bca70964ce7be15fe77cd64b50e90855c
+  "1440":
+    file: 1440.png
+    sha256: b3290e3843fa57abac0e90fc031231e331de886160f7ea79a71524c3da488331
 sections:
   - id: s1
-    title: "Sửa"
-    shows: "xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên."
+    title: Sửa
+    shows: xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên.
     why: "`ui/loading.md`, `ui/components/toast-alert.md`."
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: "Bí? Hỏi Claude"
-    shows: "xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên."
+    title: Bí? Hỏi Claude
+    shows: xem mục cùng tên của màn Kịch bản chính; ở trạng thái này vùng này đổi như mô tả ở trên.
     why: "`ui/loading.md`, `ui/components/toast-alert.md`."
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)"
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
     chosen: true
-    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ nhánh tải"
-  - option: "Chưa thấy lệch mới ngoài các mục của màn Kịch bản chính."
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Chưa thấy lệch mới ngoài các mục của màn Kịch bản chính.
     chosen: false
-    why: "Ghi nhận ở lần chụp trước, chưa làm"
-audit: null
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T14:10:25.331Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

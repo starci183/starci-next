@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 999c1a21fa2c3e1fcc46ec0d1d0023a8b357a18258d15c996df97b35b9d60083
+    sha256: ffce5f04db54c4c203e65c416de2297ab4cc379b4273b8dc934efac6d22fb837
   "1440":
     file: 1440.png
-    sha256: b035b5c9c98075551f0bd58291bcbfe9cc460f8d360a846ca2414d709b6cf963
+    sha256: ded4bf249a623d7e3583b6897115e46beac91fefc9c500ade9f8ec0eedf84323
 sections:
   - id: s1
     title: Nút chính
@@ -58,10 +58,12 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ô icon hộp thư + một dòng, cột phải rỗng còn đường kẻ dọc."
+          notes: "Ô icon hộp thư + một dòng, cột phải rỗng còn đường kẻ dọc. Còn lại: lề trái x=268 và gutter
+            phải của Page chrome=panes do Grammar quyết định, ứng dụng không chỉnh được (cần
+            Grammar)."
         actionable:
-          verdict: open
-          notes: "Thông báo không có nút nào (Nâng cấp Premium / Về danh mục) nên người dùng bị kẹt."
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
         live:
           verdict: pass
           notes: ""
@@ -69,9 +71,34 @@ audit:
           verdict: pass
           notes: ""
         states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: fixed
+          notes: "Vòng 2: dữ liệu thật từ dev stack, không số giả khi đang tải."
+    - n: 2
+      at: 2026-11-20T14:09:44.111Z
+      lenses:
+        order:
           verdict: open
-          notes: 'Ảnh sai trạng thái: hiện "Phần này không nằm trong gói của bạn." (bị khoá) thay vì chủ đề lần đầu (canvas: 0/6 bài xong, "Bắt đầu bài 1").'
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: "Nội dung ảnh mâu thuẫn tên màn (first-visit nhưng là bị khoá), tài khoản chưa có Premium."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

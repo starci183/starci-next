@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9d3c4a58b856797af205595ef923cc49f876722a6c600f69b98d3d10a55cba6d
+    sha256: 9ebb7a31d5b988a9b718e0f0546347b2c0029e0054367fcba807f4dcb338f8cb
   "1440":
     file: 1440.png
-    sha256: 8af04451b2a465e0656eb414ee838bf96a8add17cecead056a031d505d93a09c
+    sha256: f219e89ed5d069fc0f12fbbf4819443a0da64ae2c7722f364ae436df9da280d4
 sections:
   - id: s1
     title: Thanh công cụ giữ nguyên
@@ -58,8 +58,9 @@ audit:
           verdict: pass
           notes: ""
         layout:
-          verdict: open
-          notes: 'Trạng thái "không khớp bộ lọc" vẽ ô icon + tiêu đề + mô tả + nút (Grammar empty-state scope "line": chỉ một dòng 14/400 nhạt, không ô icon, nút nhỏ sau dòng). Ở 390 nút chính "Bắt đầu: Cache phân tán..." chạy ra ngoài mép phải.'
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
         actionable:
           verdict: pass
           notes: ""
@@ -75,4 +76,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:05.721Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 212b5a7ac6027c19c1392c1191a71a2f61da074796bba36658ec18cfbd687308
+    sha256: 9f050df939436b6be3a95d7ee0d8bc9e488d61f64345b7379d803005b07b1594
   "1440":
     file: 1440.png
-    sha256: 8a77a263fdd1c1e69b8dcd3d42531221e703e9397df088ff3c724cd01033859b
+    sha256: 49f84e58eb7bb4150d019df596f308bbecea4c188ca878f70999ca59c4b25942
 sections:
   - id: s1
     title: Thông báo mức khóa
@@ -52,10 +52,15 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Cột phải "Dòng hồ sơ" chạm mép phải x≈1423 không gutter; hàng "Khó" nền xám đặc (hover/chọn dính); ba hàng khoá dùng chữ 12 "Mở sau khi xong mức trước" kèm chevron như bấm được, không có icon khoá. Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288).'
+          notes: 'Cột phải "Dòng hồ sơ" chạm mép phải x≈1423 không gutter; hàng "Khó" nền xám đặc (hover/chọn
+            dính); ba hàng khoá dùng chữ 12 "Mở sau khi xong mức trước" kèm chevron như bấm được,
+            không có icon khoá. Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch
+            gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Còn lại: lề trái x=268 và
+            gutter phải của Page chrome=panes do Grammar quyết định, ứng dụng không chỉnh được (cần
+            Grammar).'
         actionable:
-          verdict: open
-          notes: "Hàng mức khoá vẫn có chevron nhưng không có hành động; không rõ chạm vào làm gì."
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
         live:
           verdict: pass
           notes: ""
@@ -68,4 +73,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:14.114Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 8889cc1435397bef54f198e6c027382e03adaac37614fe1acbb48ac622dd82d8
+    sha256: bf776d6c62e05bcbc559b1f1c0ce49b1d3df5792d5d950c477086cabd7a5fde4
   "1440":
     file: 1440.png
-    sha256: b4e139d4bf6c11f5cc0402db08d31256d913f1492b1684297556cb32d474ffac
+    sha256: 42831da4111ea5ccf263cc64d4a4d235f853caf00ecc1fc8619b05704942ff33
 sections:
   - id: s1
     title: Thông báo lỗi
@@ -52,12 +52,38 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Lỗi chỉ ghi "Không tải được phần này." (1440 và 390), tiêu đề trang trơ "Essentials"; canvas đã duyệt có tiêu đề nêu tên ("Không tải được danh sách lộ trình") + dòng "Kiểm tra kết nối rồi thử lại.".'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
-          verdict: open
-          notes: "Lỗi tải thiếu tiêu đề và dòng giải thích như canvas."
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:10:00.862Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

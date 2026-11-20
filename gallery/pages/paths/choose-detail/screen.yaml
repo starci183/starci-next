@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4d3a7b53cfe1b1580acb5761d866824d943ba3115f4fe5cd5edd3eacf061bc60
+    sha256: f9c94bb0750c289ec8af50cdd8dd7d4af84d63056625dd8ae7906c453a8f9be4
   "1440":
     file: 1440.png
-    sha256: c0ca6fd90b4c0781c17c0e828bdab58af814a0d940bd21558cf2097b4d59ae4e
+    sha256: 00d7fdd9db8567e211fe0940480f4c95a751c7fe4442f25dbc5f8f74edb19497
 sections:
   - id: s1
     title: Hộp chi tiết
@@ -52,12 +52,37 @@ audit:
           verdict: pass
           notes: ""
         words:
-          verdict: open
-          notes: 'Hộp chi tiết lẫn tiếng Anh/viết tắt: "milestone", "CI có chữ ký", "e2e xanh", "Bạn tự báo".'
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:59.368Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

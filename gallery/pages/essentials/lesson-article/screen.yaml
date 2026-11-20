@@ -14,10 +14,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c2663d07ab2dcaea7b8c78e57e83ab45cad23bb1a3fccd560083fa2a647ab3ef
+    sha256: ddc3fc8372d7cc673f905b563778bbfe75a2791d71a4b8109d4617a281936a93
   "1440":
     file: 1440.png
-    sha256: 81f07d8d8c4c65099dbde2521e49208c75fdd0eb10b76c778b44becd416b967a
+    sha256: 48102f726947e44645732f0e62ca2dde2fdf8751d5ed72f949fdc22f066489b1
 sections:
   - id: s1
     title: Dải đầu bài (đường dẫn, tên bài, bài toán, dòng sự kiện, nút chính, bốn tab)
@@ -92,7 +92,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Nút chính bị khoá nằm lẻ ở góc phải đầu trang, xa câu hỏi; ở 390 mô tả 8 dòng đẩy câu hỏi xuống."
+          notes: "Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các
+            trang khác (lề trái x=268 thay vì 288). Nút chính bị khoá nằm lẻ ở góc phải đầu trang,
+            xa câu hỏi; ở 390 mô tả 8 dòng đẩy câu hỏi xuống. Còn lại: lề trái x=268 và gutter phải
+            của Page chrome=panes do Grammar quyết định, ứng dụng không chỉnh được (cần Grammar)."
         actionable:
           verdict: pass
           notes: ""
@@ -100,12 +103,38 @@ audit:
           verdict: pass
           notes: ""
         words:
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
+        states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: fixed
+          notes: "Vòng 2: dữ liệu thật từ dev stack, không số giả khi đang tải."
+    - n: 2
+      at: 2026-11-20T14:09:09.196Z
+      lenses:
+        order:
           verdict: open
-          notes: "Chữ mã trong câu hỏi và đáp án hiện nguyên dấu backtick (`paid`, `SELECT`, `in_flight`) thay vì vẽ thành mã: markup thô lộ ra."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
           verdict: open
-          notes: 'Ảnh không phải trạng thái "đang đọc bài viết" của canvas: hiện Câu 5/5 chưa trả lời với nút "Câu tiếp theo" bị khoá, không có "Làm lại 5 câu"/bài viết đang đọc.'
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
           verdict: open
-          notes: "Ảnh mâu thuẫn tên màn (article) nhưng là câu hỏi mở bài."
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
