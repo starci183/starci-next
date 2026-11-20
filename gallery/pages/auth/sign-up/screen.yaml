@@ -10,15 +10,17 @@ summary: '**Concept: Đăng ký.** Mục tiêu: tạo tài khoản bằng email 
   người học thấy màn "Kiểm tra email của bạn". Không còn báo "email này đã có tài khoản" (API không
   tiết lộ). Không còn nút xã hội trừ Google khi đã cấu hình. Lưu ý xung đột: không có.'
 code:
-  - app/[locale]/(pages)/(auth)/sign-in/page.tsx
+  - app/[locale]/(pages)/(entry)/sign-in/page.tsx
   - features/pages/SignInPage/
+  - components/blocks/AuthPanel/
+  - features/layouts/EntryLayout/
 shots:
   "390":
     file: 390.png
-    sha256: ba738eb067b13ebd4977c1c049f2e5a73420f50296062c3eb610d7ca3a064507
+    sha256: 94516142aeb93285c5252f43f8ae558f4b4175918b9be22ce4fa1dbef54700cc
   "1440":
     file: 1440.png
-    sha256: 384a9c942f121504339064636542e351c7d38d684993dfd46d785dbd0dc2cbfb
+    sha256: b1ff2024d33707ff036789d9e2cbedef074f764b2d2bb74278bcf5d2846dd64e
 sections:
   - id: khung-vao-app
     title: Khung vào app
@@ -45,7 +47,19 @@ sections:
     grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Mật khẩu từ 8 đến 72 ký tự
       (giới hạn của API), không còn 6 đến 256. – Không còn mã 6 số; xác nhận bằng liên kết trong
       email. – Bỏ báo email đã đăng ký.
-considered: []
+considered:
+  - option: "Pass lens khi mục còn lại chỉ là khoảng trống Grammar đã ghi (#11, #12, #13), nêu tên trong
+      notes"
+    chosen: true
+    why: Luật lane "chỉ dùng Grammar, thiếu thì ghi cần Grammar"; app đã làm hết phần của mình, ba
+      khoảng trống đã có hàng trong GRAMMAR-GAPS.
+  - option: Giữ lens open đến hết vòng 4 rồi chuyển chủ sản phẩm vì khoảng trống Grammar
+    chosen: false
+    why: Builder không sửa được trong app; chủ sản phẩm đã thấy các khoảng trống trong GRAMMAR-GAPS.
+  - option: Giữ layout open vì ảnh 390 không thấy dòng phụ disabledReason
+    chosen: false
+    why: Dòng phụ do Grammar vẽ theo loại con trỏ, không theo bề rộng; bước chụp không có giả lập cảm
+      ứng nên không thể hiện. Đã thấy tooltip ở vòng 3, chứng tỏ disabledReason có.
 audit:
   builder:
     agent: mig-auth-fe
@@ -60,7 +74,11 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Ở 1440 canvas đã duyệt (2026-11-20) là hai cột: bên trái phần giới thiệu "Học bản chất, để vibe-code..." cùng ba khu vực Essentials, Projects, Harness, bên phải thẻ biểu mẫu; code chỉ vẽ một thẻ ở giữa trên nền trắng trống (không có phần giới thiệu), 390 thì đúng (chỉ thẻ). Dòng đồng ý "Điều khoản sử dụng và Chính sách quyền riêng tư" ngắt chữ lẻ "tư" xuống dòng riêng ở 1440 và hộp chọn ~16px nhỏ hơn mức chạm 44 ở 390.'
+          notes: 'Ở 1440 canvas đã duyệt (2026-11-20) là hai cột: bên trái phần giới thiệu "Học bản chất, để
+            vibe-code..." cùng ba khu vực Essentials, Projects, Harness, bên phải thẻ biểu mẫu; code
+            chỉ vẽ một thẻ ở giữa trên nền trắng trống (không có phần giới thiệu), 390 thì đúng (chỉ
+            thẻ). Dòng đồng ý "Điều khoản sử dụng và Chính sách quyền riêng tư" ngắt chữ lẻ "tư"
+            xuống dòng riêng ở 1440 và hộp chọn ~16px nhỏ hơn mức chạm 44 ở 390.'
         actionable:
           verdict: pass
           notes: ""
@@ -72,8 +90,122 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: "Thiếu trạng thái lỗi kiểm tra (sign-up-validation-error của canvas)."
+          notes: Thiếu trạng thái lỗi kiểm tra (sign-up-validation-error của canvas).
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T21:36:04.015Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Cần Grammar (GRAMMAR-GAPS #11): ở 1440 EntryFrame split không có biến thể không ảnh, nên
+            logo, tên và phần giới thiệu dồn xuống chân ô trái (từ y≈590), nửa trên ô trái trống;
+            canvas đã duyệt đặt logo và tên ở góc trên trái, giới thiệu canh giữa theo chiều dọc, có
+            hairline dọc giữa hai ô. Chờ biến thể context="intro". Sửa ở app: tiêu đề "Học bản chất,
+            để vibe-code mà không mất kiểm soát." đang là chữ thân ~14px đậm, canvas là Heading lớn
+            hai dòng; ba khu vực Essentials, Projects, Harness viết liền trong đoạn văn ("Essentials
+            Kiến thức..."), canvas và luật của mục là danh sách phẳng có hàng hairline, cột tên và
+            cột mô tả. Sửa ở app: liên kết "Đăng nhập" vẽ chữ đen đậm, không gạch chân; canvas và
+            Grammar Link variant="inline" gạch chân lúc nghỉ (COLOR-3), dùng variant inline. Dòng
+            đồng ý: chữ lẻ "tư" của vòng 1 đã hết, nay "quyền riêng tư" xuống dòng thứ hai (nhãn hộp
+            chọn, chấp nhận); "Điều khoản sử dụng" và "Chính sách quyền riêng tư" in đậm như liên
+            kết nhưng không gạch chân: là liên kết thì dùng Link inline, không là liên kết thì bỏ
+            đậm. Checklist: nút và ô ở 1440 cao 40px; ở 390 nút 40px nhưng ô nhập đo được ~42px
+            (Input của Grammar tăng cỡ chữ ở phone, cần Grammar xác nhận); không nhãn nút nào xuống
+            dòng ở 390; trang vào app không có TopBar, chỉ một nút đổi ngôn ngữ 40px nên không có
+            tràn; vùng chạm: nút, ô nhập đạt 44 theo touch floor của Grammar, còn liên kết chữ "Đăng
+            nhập" chỉ cao ~20px và Grammar Link không có vùng chạm mở rộng ở 390 (cần Grammar).'
+        actionable:
+          verdict: open
+          notes: 'Nút "Đăng ký" tắt (xám) khi chưa tick điều khoản mà không nói lý do ở cả 1440 và 390;
+            Grammar Button có disabledReason (tooltip ở 1440, dòng phụ dưới nút trên màn cảm ứng):
+            đặt "Đồng ý điều khoản để đăng ký".'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: fixed
+          notes: Đã có ảnh lỗi nhập (auth/sign-up-validation-error).
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-auth-…@example.test là tài
+            khoản dùng một lần do bước chụp tạo."
+    - n: 3
+      at: 2026-11-20T21:52:30.886Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Đã sửa ở app: tiêu đề giới thiệu là Heading cỡ title (24px), ba khu vực là Section
+            kind="list" layout="settings" với hàng hairline, đúng luật của mục. Sửa ở app hoặc bước
+            chụp: tooltip lý do tắt "Đồng ý điều khoản để đăng ký" đang mở trong ảnh nghỉ ở cả 1440
+            và 390 và che mất chữ "Chính sách quyền riêng tư" của chính dòng phải tick. Chụp lại với
+            con trỏ ngoài nút; ở 390 chụp với giả lập cảm ứng để Grammar hiện dòng phụ dưới nút thay
+            vì tooltip. Checklist: nút 40px ở cả hai cỡ; không nhãn nút nào xuống dòng ở 390; không
+            có TopBar, chỉ một nút đổi ngôn ngữ 40px nên không tràn. Còn lại chỉ là mục cần Grammar,
+            không chặn lens: (1) GRAMMAR-GAPS #11, ở 1440 logo và giới thiệu vẫn ở nửa dưới ô trái
+            thay vì logo góc trên trái và giới thiệu canh giữa, chờ EntryFrame context="intro"; (2)
+            ô nhập ở 390 đo được ~42px trong khi nút 40px (Input của Grammar), cần ghi thành một
+            hàng GRAMMAR-GAPS. (3) TextAction appearance="inline" cao 40px (control-min-size), dưới
+            mức chạm 44 ở 390; cần ghi thành một hàng GRAMMAR-GAPS. Không gạch chân lúc nghỉ là đúng
+            Grammar: đây là thao tác đổi chế độ tại chỗ, không phải liên kết tới trang khác, nên
+            luật COLOR-3 của Link không áp dụng.'
+        actionable:
+          verdict: fixed
+          notes: Nút Đăng ký tắt có disabledReason "Đồng ý điều khoản để đăng ký".
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-auth-…@example.test là tài
+            khoản dùng một lần do bước chụp tạo."
+    - n: 4
+      at: 2026-11-20T21:58:38.420Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: 'Đã sửa: ảnh nghỉ không còn tooltip lý do tắt, dòng "Tôi đồng ý với Điều khoản sử dụng và
+            Chính sách quyền riêng tư" đọc trọn ở 1440 và 390. Ảnh 390 không có dòng phụ lý do dưới
+            nút vì bước chụp không giả lập cảm ứng; Grammar Button tự hiện dòng này bằng media query
+            (hover: none) / (pointer: coarse), nên đây là giới hạn của bước chụp, không phải lỗi
+            màn. Nên thêm giả lập cảm ứng cho ảnh 390 sau này. Checklist: nút 40px ở cả hai cỡ;
+            không nhãn nút nào xuống dòng ở 390; không có TopBar, chỉ một nút đổi ngôn ngữ 40px nên
+            không tràn. Chỉ còn mục cần Grammar, không chặn lens: GRAMMAR-GAPS #11 (ở 1440 logo và
+            giới thiệu ở nửa dưới ô trái), #12 (ô nhập ở 390 ~42px), #13 (vùng chạm 44 của
+            TextAction ở 390).'
+        actionable:
+          verdict: pass
+          notes: 'Nút Đăng ký tắt có disabledReason "Đồng ý điều khoản để đăng ký".'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-…@example.test là tài khoản
+            dùng một lần do bước chụp tạo."
   escalate: null

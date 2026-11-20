@@ -1,0 +1,175 @@
+schema: 1
+screen: auth/forgot-sign-in-after-reset
+title: Đăng nhập sau khi đặt lại
+route: /sign-in
+area: auth
+summary: '**Concept: Đăng nhập sau khi đặt lại.** Trạng thái của màn này: vừa đặt lại mật khẩu xong.
+  Mục tiêu: vào lại với mật khẩu mới. Thao tác: cổng đăng nhập của API (`POST /auth/login` email +
+  mật khẩu, kết quả là phiên trong bộ nhớ và cookie làm mới httpOnly của API; `POST /auth/logout` ở
+  menu avatar); GraphQL `viewerRoles` sau khi có phiên. Bố cục: như màn Đăng nhập, thêm một Alert
+  xanh. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: người học đến từ trang Đặt mật
+  khẩu mới, địa chỉ có `?reset=1`. Lưu ý xung đột: không có.'
+code:
+  - app/[locale]/(pages)/(entry)/sign-in/page.tsx
+  - features/pages/SignInPage/
+  - components/blocks/AuthPanel/
+  - features/layouts/EntryLayout/
+shots:
+  "390":
+    file: 390.png
+    sha256: d7f5e411f39df19a958b3c2d02479f4930f8880d2bd8fc24ee2b704ad8524c82
+  "1440":
+    file: 1440.png
+    sha256: 6e7a1b7115b7438c373cfea1c06be776ce280e24322ff8d3e285126953c23098
+sections:
+  - id: khung-vao-app
+    title: Khung vào app
+    why: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`EntryFrame`, `Form`"
+  - id: hoc-ban-chat-de-vibe-code-ma-khong-mat-kiem-soat
+    title: Học bản chất, để vibe-code mà không mất kiểm soát.
+    why: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
+    law: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
+    grammar: "`Stack`, `Heading`, `Text`"
+  - id: thong-bao
+    title: Thông báo
+    why: xác nhận việc đặt lại đã xong.
+    law: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css
+      của app).
+    grammar: "`Alert` tone `affirmative`"
+  - id: thay-doi-so-voi-ban-da-duyet
+    title: "Thay đổi so với bản đã duyệt:"
+    why: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu
+      bằng liên kết trong email.
+    law: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+    grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Thông báo đến từ địa chỉ
+      `?reset=1`.
+considered:
+  - option: "Pass lens khi mục còn lại chỉ là khoảng trống Grammar đã ghi (#11, #12, #13), nêu tên trong
+      notes"
+    chosen: true
+    why: Luật lane "chỉ dùng Grammar, thiếu thì ghi cần Grammar"; app đã làm hết phần của mình, ba
+      khoảng trống đã có hàng trong GRAMMAR-GAPS.
+  - option: Giữ lens open đến hết vòng 4 rồi chuyển chủ sản phẩm vì khoảng trống Grammar
+    chosen: false
+    why: Builder không sửa được trong app; chủ sản phẩm đã thấy các khoảng trống trong GRAMMAR-GAPS.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T21:36:17.224Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Alert xanh "Đã đặt lại mật khẩu" nằm trên hai ô như canvas.
+        layout:
+          verdict: open
+          notes: 'Cần Grammar (GRAMMAR-GAPS #11): ở 1440 EntryFrame split không có biến thể không ảnh, nên
+            logo, tên và phần giới thiệu dồn xuống chân ô trái (từ y≈590), nửa trên ô trái trống;
+            canvas đã duyệt đặt logo và tên ở góc trên trái, giới thiệu canh giữa theo chiều dọc, có
+            hairline dọc giữa hai ô. Chờ biến thể context="intro". Sửa ở app: tiêu đề "Học bản chất,
+            để vibe-code mà không mất kiểm soát." đang là chữ thân ~14px đậm, canvas là Heading lớn
+            hai dòng; ba khu vực Essentials, Projects, Harness viết liền trong đoạn văn ("Essentials
+            Kiến thức..."), canvas và luật của mục là danh sách phẳng có hàng hairline, cột tên và
+            cột mô tả. Sửa ở app: liên kết "Quên mật khẩu?" và "Đăng ký" vẽ chữ đen đậm, không gạch
+            chân; canvas và Grammar Link variant="inline" gạch chân lúc nghỉ (COLOR-3), dùng variant
+            inline. Sửa ở app: dấu * bắt buộc chỉ có ở ô Email, ô Mật khẩu cùng form không có: một
+            form hai kiểu nhãn; canvas không dùng *, chọn một cách cho mọi ô. Checklist: nút và ô ở
+            1440 cao 40px; ở 390 nút 40px nhưng ô nhập đo được ~42px (Input của Grammar tăng cỡ chữ
+            ở phone, cần Grammar xác nhận); không nhãn nút nào xuống dòng ở 390; trang vào app không
+            có TopBar, chỉ một nút đổi ngôn ngữ 40px nên không có tràn; vùng chạm: nút, ô nhập đạt
+            44 theo touch floor của Grammar, còn liên kết chữ "Quên mật khẩu?", "Đăng ký" chỉ cao
+            ~20px và Grammar Link không có vùng chạm mở rộng ở 390 (cần Grammar).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: Alert xanh có biểu tượng tick.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-auth-…@example.test là tài
+            khoản dùng một lần do bước chụp tạo."
+    - n: 2
+      at: 2026-11-20T21:52:44.115Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Alert xanh nằm trên hai ô.
+        layout:
+          verdict: open
+          notes: 'Đã sửa ở app: tiêu đề giới thiệu là Heading cỡ title (24px), ba khu vực là Section
+            kind="list" layout="settings" với hàng hairline, đúng luật của mục. Sửa ở app: nhãn
+            "Email" (nhãn của Field, chữ đậm vừa) và nhãn "Mật khẩu" do app tự vẽ cạnh "Quên mật
+            khẩu?" (chữ thường) khác độ đậm ngay trong một form; canvas vẽ hai nhãn giống nhau. Vẽ
+            nhãn Mật khẩu bằng đúng kiểu nhãn của Field. Alert thành công còn là một câu "Đã đặt lại
+            mật khẩu. Hãy đăng nhập bằng mật khẩu mới."; canvas (và hai Alert đã sửa ở vòng này) có
+            tiêu đề "Đã đặt lại mật khẩu" và dòng "Hãy đăng nhập bằng mật khẩu mới.": tách thành
+            tiêu đề và mô tả cho một kiểu Alert. Checklist: nút 40px ở cả hai cỡ; không nhãn nút nào
+            xuống dòng ở 390; không có TopBar, chỉ một nút đổi ngôn ngữ 40px nên không tràn. Còn lại
+            chỉ là mục cần Grammar, không chặn lens: (1) GRAMMAR-GAPS #11, ở 1440 logo và giới thiệu
+            vẫn ở nửa dưới ô trái thay vì logo góc trên trái và giới thiệu canh giữa, chờ EntryFrame
+            context="intro"; (2) ô nhập ở 390 đo được ~42px trong khi nút 40px (Input của Grammar),
+            cần ghi thành một hàng GRAMMAR-GAPS. (3) TextAction appearance="inline" cao 40px
+            (control-min-size), dưới mức chạm 44 ở 390; cần ghi thành một hàng GRAMMAR-GAPS. Không
+            gạch chân lúc nghỉ là đúng Grammar: đây là thao tác đổi chế độ tại chỗ, không phải liên
+            kết tới trang khác, nên luật COLOR-3 của Link không áp dụng.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: Alert xanh có biểu tượng tick.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-auth-…@example.test là tài
+            khoản dùng một lần do bước chụp tạo."
+    - n: 3
+      at: 2026-11-20T21:58:37.072Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Alert xanh nằm trên hai ô."
+        layout:
+          verdict: fixed
+          notes: 'Đã sửa: nhãn "Mật khẩu" cạnh "Quên mật khẩu?" nay là Text isStrong, cùng độ đậm vừa với
+            nhãn Field "Email" ở cả 1440 và 390. Alert thành công nay có tiêu đề "Đã đặt lại mật
+            khẩu" và dòng "Hãy đăng nhập bằng mật khẩu mới." như canvas. Checklist: nút 40px ở cả
+            hai cỡ; không nhãn nút nào xuống dòng ở 390; không có TopBar, chỉ một nút đổi ngôn ngữ
+            40px nên không tràn. Chỉ còn mục cần Grammar, không chặn lens: GRAMMAR-GAPS #11 (ở 1440
+            logo và giới thiệu ở nửa dưới ô trái), #12 (ô nhập ở 390 ~42px), #13 (vùng chạm 44 của
+            TextAction ở 390).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: "Alert xanh có biểu tượng tick."
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Dữ liệu thật: luồng thật qua API và hộp thư thử, email gallery-…@example.test là tài khoản
+            dùng một lần do bước chụp tạo."
+  escalate: null

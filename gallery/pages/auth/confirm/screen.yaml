@@ -1,0 +1,131 @@
+schema: 1
+screen: auth/confirm
+title: Xác nhận email
+route: /sign-in/confirm
+area: auth
+summary: '**Concept: Xác nhận email.** Mục tiêu: người học bấm liên kết trong email và biết tài
+  khoản đã hoạt động. Thao tác: `POST /auth/confirm` (token trong địa chỉ), gọi một lần khi mở
+  trang; liên kết trong email là `/auth/confirm?token=…` và được chuyển tới trang này. Bố cục: logo,
+  nút đổi ngôn ngữ và một thẻ ở giữa. Lúc đang xác nhận thẻ chỉ có vòng quay. Nút chính: "Đăng
+  nhập". Lọc: không có. Khác bản hiện tại: trang mới. Lưu ý xung đột: không có.'
+code:
+  - app/[locale]/(pages)/(entry)/sign-in/confirm/page.tsx
+  - features/pages/SignInConfirmPage/
+  - components/blocks/ConfirmEmail/
+  - features/layouts/EntryLayout/
+shots:
+  "390":
+    file: 390.png
+    sha256: 02e5b9c4f6e10a79c411d80fb216b2aee4cc63f016eae260062dd15c72012ef8
+  "1440":
+    file: 1440.png
+    sha256: 3cbf2459543200521f253332f5755edf18d42f2d9ef31fb20abab25f099239d2
+sections:
+  - id: khung-vao-app
+    title: Khung vào app
+    why: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`EntryFrame`, `Form`"
+  - id: hoc-ban-chat-de-vibe-code-ma-khong-mat-kiem-soat
+    title: Học bản chất, để vibe-code mà không mất kiểm soát.
+    why: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
+    law: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
+    grammar: "`Stack`, `Heading`, `Text`"
+  - id: ket-qua-xac-nhan
+    title: Kết quả xác nhận
+    why: một câu nói rõ kết quả và một nút đi tiếp.
+    law: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css
+      của app).
+    grammar: "`SurfaceCard`, `Heading`, `Button`"
+  - id: thay-doi-so-voi-ban-da-duyet
+    title: "Thay đổi so với bản đã duyệt:"
+    why: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu
+      bằng liên kết trong email.
+    law: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+    grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Trang mới.
+considered:
+  - option: "Để lens layout open chỉ vì khoảng trống Grammar đã ghi (GRAMMAR-GAPS #11) rồi chuyển chủ
+      sản phẩm sau vòng 4"
+    chosen: false
+    why: Builder không sửa được trong app; giữ open chỉ làm cổng đỏ vì việc của hàng Grammar, còn chủ
+      sản phẩm đã thấy khoảng trống trong GRAMMAR-GAPS.
+  - option: Pass lens khi mục còn lại chỉ là khoảng trống Grammar, ghi tên khoảng trống trong notes
+    chosen: true
+    why: 'Đúng luật lane "chỉ dùng Grammar, thiếu thì ghi cần Grammar": app đã làm hết phần của mình,
+      phần thiếu có hàng chờ ở Grammar và được nêu tên.'
+  - option: Đòi gạch chân lúc nghỉ cho Quên mật khẩu?, Đăng ký, Đăng nhập, Dùng email khác
+    chosen: false
+    why: Đây là TextAction đổi chế độ thẻ tại chỗ, không phải Link tới trang khác; Grammar chỉ gạch chân
+      Link lúc nghỉ (COLOR-3).
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T21:36:11.949Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Cần Grammar (GRAMMAR-GAPS #11): ở 1440 EntryFrame split không có biến thể không ảnh, nên
+            logo, tên và phần giới thiệu dồn xuống chân ô trái (từ y≈590), nửa trên ô trái trống;
+            canvas đã duyệt đặt logo và tên ở góc trên trái, giới thiệu canh giữa theo chiều dọc, có
+            hairline dọc giữa hai ô. Chờ biến thể context="intro". Sửa ở app: tiêu đề "Học bản chất,
+            để vibe-code mà không mất kiểm soát." đang là chữ thân ~14px đậm, canvas là Heading lớn
+            hai dòng; ba khu vực Essentials, Projects, Harness viết liền trong đoạn văn ("Essentials
+            Kiến thức..."), canvas và luật của mục là danh sách phẳng có hàng hairline, cột tên và
+            cột mô tả. Checklist: nút và ô ở 1440 cao 40px; ở 390 nút 40px nhưng ô nhập đo được
+            ~42px (Input của Grammar tăng cỡ chữ ở phone, cần Grammar xác nhận); không nhãn nút nào
+            xuống dòng ở 390; trang vào app không có TopBar, chỉ một nút đổi ngôn ngữ 40px nên không
+            có tràn; vùng chạm: nút, ô nhập đạt 44 theo touch floor của Grammar.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: Thẻ thành công không có biểu tượng; canvas cũng không vẽ nên không chặn.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: Lỗi có ảnh riêng (confirm-expired); vòng quay lúc đang xác nhận không có mã gallery.
+        truth:
+          verdict: pass
+          notes: Xác nhận thật qua liên kết trong hộp thư thử.
+    - n: 2
+      at: 2026-11-20T21:52:38.877Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: 'Đã sửa ở app: tiêu đề giới thiệu là Heading cỡ title (24px), ba khu vực là Section
+            kind="list" layout="settings" với hàng hairline, đúng luật của mục. Checklist: nút
+            40px ở cả hai cỡ; không nhãn nút nào xuống dòng ở 390; không có TopBar, chỉ một nút đổi
+            ngôn ngữ 40px nên không tràn. Còn lại chỉ là mục cần Grammar, không chặn lens: (1)
+            GRAMMAR-GAPS #11, ở 1440 logo và giới thiệu vẫn ở nửa dưới ô trái thay vì logo góc trên
+            trái và giới thiệu canh giữa, chờ EntryFrame context="intro"; (2) ô nhập ở 390 đo được
+            ~42px trong khi nút 40px (Input của Grammar), cần ghi thành một hàng GRAMMAR-GAPS.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: "Thẻ thành công không có biểu tượng; canvas cũng không vẽ."
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Lỗi có ảnh riêng (confirm-expired)."
+        truth:
+          verdict: pass
+          notes: "Xác nhận thật qua liên kết trong hộp thư thử."
+  escalate: null
