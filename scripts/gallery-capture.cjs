@@ -211,7 +211,9 @@ const SCREENS = [
     S("career", "verify", "/verify/9C2E-F88F-B6BA", { guest: true }),
     S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
     S("profile", "overview", "/profile"),
-    S("profile", "new", "/profile"),
+    S("profile", "new", "/profile", {
+        learnerState: "D:/starci-lanes/next-gallery-seed/.tmp-gallery-states/review-nothing.json",
+    }),
     S("profile", "edit", "/profile/edit"),
     ...stateShots("profile", "edit", "/profile/edit", /^MyProfile$/),
     S("career", "review-queue", "/review-queue"),
@@ -370,19 +372,6 @@ const norm = (href) => {
             const p = await (
                 fresh ?? (s.free ? (free ?? guest) : s.guest ? guest : s.first ? (first ?? user) : user)
             ).newPage()
-            // A dev server on another port is not an origin the core api accepts: present the stack's own origin on its api calls (CAPTURE_ORIGIN_AS).
-            if (process.env.CAPTURE_ORIGIN_AS)
-                await p.route(/\/(graphql|api)(\/|$|\?)/, async (route) => {
-                    try {
-                        await route.fulfill({
-                            response: await route.fetch({
-                                headers: { ...route.request().headers(), origin: process.env.CAPTURE_ORIGIN_AS },
-                            }),
-                        })
-                    } catch {
-                        await route.abort().catch(() => {})
-                    }
-                })
             if (s.setup) await s.setup(p)
             // A held read never answers, so the first load stays a skeleton; a refused read fails at once.
             if (s.hold) await p.route(/graphql/, (route) => (isHeldRead(route, s) ? undefined : spoof(route)))

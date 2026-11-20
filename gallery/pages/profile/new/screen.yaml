@@ -94,24 +94,24 @@ audit:
       at: 2026-11-20T14:16:12.512Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Chọn lộ trình" vẫn là chữ đậm trơn, không giống liên kết (ở overview đã là liên kết tím).'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Tên hiển thị là email (lỗi đã biết)."
   escalate: null

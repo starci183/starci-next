@@ -101,7 +101,10 @@ export const useProfileEdit = (): ProfileEditState => {
     const back = (): void => router.push(APP_ROUTES.profile)
     return {
         pageTitle: t("edit.title"),
-        labels: labelsOf(t, profileIssueWordsOf(t, identity.issue, limits), limits.maxBytes),
+        labels: {
+            ...labelsOf(t, profileIssueWordsOf(t, identity.issue, limits), limits.maxBytes),
+            editMeta: identity.draft !== undefined || goalDraft !== undefined ? t("edit.unsaved") : t("edit.clean"),
+        },
         accept: limits.contentTypes.join(","),
         slotLabels: useSlotLabels()(t("cv.empty"), { title: t("edit.errorTitle"), text: t("edit.errorText") }),
         identity: identitySlot,

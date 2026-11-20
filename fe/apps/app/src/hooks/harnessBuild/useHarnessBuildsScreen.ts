@@ -102,7 +102,7 @@ export const useHarnessBuildsScreen = (): HarnessBuildsScreen => {
                         id: build.id,
                         title: build.title,
                         summary: build.summary,
-                        keys: build.keys.join(" · "),
+                        keys: build.keys.length === 0 ? "" : t("needsKey"),
                         practising: t("practising", { n: build.practisingStages, total: build.stageCount }),
                         proved: t("proved", { n: build.provedStages, total: build.stageCount }),
                         isDone: build.stageCount > 0 && build.provedStages === build.stageCount,

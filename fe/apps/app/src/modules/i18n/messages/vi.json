@@ -1737,7 +1737,7 @@
         "server-probe": "Probe của server",
         "graded-session": "Phiên đã chấm",
         "judge": "Judge0 Accepted",
-        "other": "Bằng chứng StarCi"
+        "other": "Đã được StarCi kiểm tra"
       },
       "queue": {
         "pageTitle": "Duyệt kinh nghiệm",
@@ -1839,7 +1839,9 @@
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn.",
         "factsTitle": "Thông tin công khai",
         "errorTitle": "Không tải được kết quả xác minh",
-        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "signer": "Người ký",
+        "signedOn": "Ngày ký"
       },
       "loading": "Đang tải…",
       "crumb": {
@@ -2117,7 +2119,8 @@
           "todo": "Chưa bắt đầu"
         },
         "errorTitle": "Không tải được danh sách build",
-        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "needsKey": "Cần key AI của bạn"
       },
       "build": {
         "title": "Build",
@@ -2151,7 +2154,8 @@
         "repoAudienceLabel": "Audience của workflow",
         "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này.",
         "errorTitle": "Không tải được bản build này",
-        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "backToBuilds": "Về danh sách Build"
       },
       "use": {
         "title": "Xài",
@@ -2327,7 +2331,8 @@
           "placeholder": "Chọn lộ trình"
         },
         "errorTitle": "Không tải được hồ sơ",
-        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+        "clean": "Sửa ảnh, tên hiển thị và lộ trình mục tiêu"
       },
       "crumb": {
         "label": "Đường dẫn",

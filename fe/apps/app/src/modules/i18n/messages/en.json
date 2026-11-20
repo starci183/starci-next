@@ -1737,7 +1737,7 @@
         "server-probe": "Server probe",
         "graded-session": "Graded session",
         "judge": "Judge0 Accepted",
-        "other": "StarCi evidence"
+        "other": "Checked by StarCi"
       },
       "queue": {
         "pageTitle": "Experience review",
@@ -1839,7 +1839,9 @@
         "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code.",
         "factsTitle": "Public details",
         "errorTitle": "Could not load the verification",
-        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "signer": "Signed by",
+        "signedOn": "Signed on"
       },
       "loading": "Loading…",
       "crumb": {
@@ -2117,7 +2119,8 @@
           "todo": "Not started"
         },
         "errorTitle": "Could not load the builds",
-        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "needsKey": "Needs your AI key"
       },
       "build": {
         "title": "Build",
@@ -2151,7 +2154,8 @@
         "repoAudienceLabel": "Workflow audience",
         "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience.",
         "errorTitle": "Could not load this build",
-        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "backToBuilds": "Back to the builds"
       },
       "use": {
         "title": "Use",
@@ -2327,7 +2331,8 @@
           "placeholder": "Choose a path"
         },
         "errorTitle": "Could not load your profile",
-        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+        "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+        "clean": "Edit your photo, name and goal path"
       },
       "crumb": {
         "label": "Breadcrumb",

@@ -231,7 +231,20 @@ const MainRegion = (props: RegionProps) => {
  * copyable code blocks.
  */
 export const HarnessBuildBase = (props: HarnessBuildBaseProps) => (
-    <Page header={props.props.header}>
+    <Page
+        header={{
+            ...props.props.header,
+            ...(props.props.backLabel === ""
+                ? {}
+                : {
+                      actions: (
+                          <Button intent="neutral" href={props.props.backHref}>
+                              {props.props.backLabel}
+                          </Button>
+                      ),
+                  }),
+        }}
+    >
         <SlotView
             slot={props.props.slot}
             placeholder={props.props.placeholder}

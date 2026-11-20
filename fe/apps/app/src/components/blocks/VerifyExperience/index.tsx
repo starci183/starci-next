@@ -40,12 +40,17 @@ export const VerifyExperience = (props: VerifyExperienceProps) => {
                             term: t("evidence"),
                             value: view.evidenceKinds.map((kind) => words.evidence(kind)).join(", "),
                         },
+                        { term: t("signer"), value: words.role(view.signerRole) },
+                        { term: t("signedOn"), value: words.date(view.signedAt) },
                         { term: t("code"), value: view.code },
                     ],
                 })),
                 placeholder: {
                     ...VERIFICATION_PLACEHOLDER,
-                    facts: [t("part"), t("evidence"), t("code")].map((term) => ({ term, value: "xxxxxxxx" })),
+                    facts: [t("part"), t("evidence"), t("signer"), t("signedOn"), t("code")].map((term) => ({
+                        term,
+                        value: "xxxxxxxx",
+                    })),
                 },
                 slotLabels: useSlotLabels()(t("notFoundTitle"), { title: t("errorTitle"), text: t("errorText") }),
                 note: t("note"),
