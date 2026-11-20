@@ -34,7 +34,6 @@ const noticeOf = (props: SignInPageProps): "signedOut" | "socialFailed" | "passw
 export const SignInPage = async (props: SignInPageProps): Promise<ReactElement> => {
     const locale = await getLocale()
     const returnTo = returnToOf(props.returnTo)
-    const brand = (await getTranslations("app.shell"))("brand")
     const homeHref = appI18n.navigation.getPathname({ href: APP_ROUTES.home, locale })
     return (
         <SignInPageBase
@@ -42,9 +41,6 @@ export const SignInPage = async (props: SignInPageProps): Promise<ReactElement> 
                 destination: returnTo ?? homeHref,
                 notice: noticeOf(props),
                 returnTo,
-                brand,
-                logoSrc: "/brand/logo.png",
-                homeHref,
             }}
         />
     )

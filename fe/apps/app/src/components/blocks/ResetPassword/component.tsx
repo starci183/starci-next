@@ -1,4 +1,5 @@
-import { Alert, Button, Form, Heading, Input, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, Form, Input, Stack, SurfaceCard } from "@starci/grammar/common"
+import { AuthCardHeading } from "@starci-next/ui"
 
 /** Props for {@link ResetPasswordBase}. */
 export interface ResetPasswordBaseProps {
@@ -78,12 +79,7 @@ const Body = (props: ResetPasswordBaseProps) => {
 export const ResetPasswordBase = (props: ResetPasswordBaseProps) => (
     <SurfaceCard ariaLabel={props.props.title} measure="formCompact">
         <Stack gap="section">
-            <Stack gap="identity">
-                <Heading level={1} scale="standard">
-                    {props.props.title}
-                </Heading>
-                <Text tone="muted">{props.props.subtitle}</Text>
-            </Stack>
+            <AuthCardHeading title={props.props.title} subtitle={props.props.subtitle} level={1} />
             <Body {...props} />
         </Stack>
     </SurfaceCard>

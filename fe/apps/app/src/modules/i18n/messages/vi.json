@@ -92,7 +92,7 @@
       },
       "signIn": {
         "title": "Đăng nhập",
-        "subtitle": "Tiếp tục hành trình học cùng StarCi Next.",
+        "subtitle": "Chào mừng quay lại. Học tiếp từ chỗ đang dở.",
         "submit": "Đăng nhập",
         "promptQuestion": "Chưa có tài khoản?",
         "promptAction": "Đăng ký"
@@ -123,7 +123,7 @@
         "confirmPlaceholder": "Nhập lại mật khẩu",
         "reveal": "Hiện mật khẩu",
         "hide": "Ẩn mật khẩu",
-        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư"
+        "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư"
       },
       "social": {
         "google": "Tiếp tục với Google",
@@ -177,6 +177,22 @@
         "unavailable": {
           "title": "Chưa thể thực hiện",
           "text": "Chưa xác nhận được email lúc này."
+        }
+      },
+      "entry": {
+        "headline": "Học bản chất, để vibe-code mà không mất kiểm soát.",
+        "lead": "AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.",
+        "essentials": {
+          "name": "Essentials",
+          "text": "Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn."
+        },
+        "projects": {
+          "name": "Projects",
+          "text": "Dự án trên repo của bạn, được kiểm bằng CI và đọc mã."
+        },
+        "harness": {
+          "name": "Harness",
+          "text": "Dùng Claude Code và Codex cho đúng. Miễn phí."
         }
       }
     },

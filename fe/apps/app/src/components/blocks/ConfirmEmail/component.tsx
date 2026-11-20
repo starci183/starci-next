@@ -1,4 +1,5 @@
-import { Alert, Button, Heading, Spinner, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Alert, Button, Spinner, Stack, SurfaceCard } from "@starci/grammar/common"
+import { AuthCardHeading } from "@starci-next/ui"
 
 /** Props for {@link ConfirmEmailBase}. */
 export interface ConfirmEmailBaseProps {
@@ -18,10 +19,7 @@ export interface ConfirmEmailBaseProps {
 export const ConfirmEmailBase = (props: ConfirmEmailBaseProps) => (
     <SurfaceCard ariaLabel={props.props.title} measure="formCompact">
         <Stack gap="section">
-            <Heading level={1} scale="standard">
-                {props.props.title}
-            </Heading>
-            <Text tone="muted">{props.props.text}</Text>
+            <AuthCardHeading title={props.props.title} subtitle={props.props.text} level={1} />
             {props.props.isWorking ? <Spinner label={props.props.text} /> : null}
             {props.props.failureTitle === undefined ? null : <Alert tone="negative" title={props.props.failureTitle} />}
             {props.props.isWorking ? null : (

@@ -1,4 +1,4 @@
-import { Button, Checkbox, Form, Input, Stack, TextAction } from "@starci/grammar/common"
+import { Button, Checkbox, Cluster, Form, Input, Stack, Text, TextAction } from "@starci/grammar/common"
 
 /** The three detail forms: sign in, create an account, ask for a reset link. */
 type AuthDetailsShape = "signIn" | "signUp" | "forgot"
@@ -75,23 +75,37 @@ type PasswordFieldProps = {
     readonly isSignUp: boolean
     readonly isInvalid: boolean
     readonly error: string | undefined
+    /** Sign-in only: the "forgot password" action drawn beside the label of the field. */
+    readonly onForgot: (() => void) | undefined
 }
+
+/** The label row of the sign-in password field: the label and, beside it, the way to a reset. */
+const PasswordLabelRow = (props: { readonly labels: AuthDetailsLabels; readonly onForgot: () => void }) => (
+    <Cluster gap="inline" justify="between">
+        <Text>{props.labels.password}</Text>
+        <TextAction onPress={props.onForgot}>{props.labels.forgotLink}</TextAction>
+    </Cluster>
+)
 
 /** The password field: a new password with its rule hint on sign-up, the current one otherwise. */
 const PasswordField = (props: PasswordFieldProps) => (
-    <Input
-        id="auth-password"
-        name="password"
-        label={props.labels.password}
-        placeholder={props.labels.passwordPlaceholder}
-        kind={props.isSignUp ? "newPassword" : "password"}
-        description={props.isSignUp ? props.labels.passwordHint : undefined}
-        revealLabel={props.labels.reveal}
-        hideLabel={props.labels.hide}
-        isRequired
-        isInvalid={props.isInvalid}
-        errorMessage={props.error}
-    />
+    <Stack gap="identity">
+        {props.onForgot === undefined ? null : <PasswordLabelRow labels={props.labels} onForgot={props.onForgot} />}
+        <Input
+            id="auth-password"
+            name="password"
+            label={props.labels.password}
+            isLabelHidden={props.onForgot !== undefined}
+            placeholder={props.labels.passwordPlaceholder}
+            kind={props.isSignUp ? "newPassword" : "password"}
+            description={props.isSignUp ? props.labels.passwordHint : undefined}
+            revealLabel={props.labels.reveal}
+            hideLabel={props.labels.hide}
+            isRequired
+            isInvalid={props.isInvalid}
+            errorMessage={props.error}
+        />
+    </Stack>
 )
 
 /** What the credential fields need: the whole form but its submit and pending flag. */
@@ -118,6 +132,7 @@ const Fields = (props: FieldsProps) => {
                     isSignUp={isSignUp}
                     isInvalid={props.passwordError !== undefined || props.isRefused}
                     error={props.passwordError}
+                    onForgot={props.shape === "signIn" ? props.onForgot : undefined}
                 />
             )}
             {isSignUp ? (
@@ -127,9 +142,6 @@ const Fields = (props: FieldsProps) => {
                     confirmError={props.confirmError}
                     onTermsChange={props.onTermsChange}
                 />
-            ) : null}
-            {props.shape === "signIn" ? (
-                <TextAction onPress={props.onForgot}>{props.labels.forgotLink}</TextAction>
             ) : null}
         </>
     )

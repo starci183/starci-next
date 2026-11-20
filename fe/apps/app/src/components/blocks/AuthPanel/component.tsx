@@ -1,6 +1,6 @@
-import { Alert, Button, Cluster, Heading, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
+import { Alert, Button, Cluster, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
 import type { AuthNoticeTone } from "@/modules/types"
-import { AuthDetailsForm, AuthSocialButtons, type AuthDetailsLabels } from "@starci-next/ui"
+import { AuthCardHeading, AuthDetailsForm, AuthSocialButtons, type AuthDetailsLabels } from "@starci-next/ui"
 
 /** The drawings of the card: the three detail forms and the note that the emailed link was sent. */
 export const AUTH_PANEL_SHAPES = ["signIn", "signUp", "forgot", "sent"] as const
@@ -91,12 +91,11 @@ const Body = (props: AuthPanelBaseProps) => {
 /** The card's content: the title, the support line, the one notice, the social buttons, the form of its shape and the line that switches mode. */
 const Content = (props: AuthPanelBaseProps) => (
     <Stack gap="section">
-        <Stack gap="identity">
-            <Heading level={props.props.isEmbedded ? 2 : 1} scale="standard">
-                {props.props.title}
-            </Heading>
-            <Text tone="muted">{props.props.subtitle}</Text>
-        </Stack>
+        <AuthCardHeading
+            title={props.props.title}
+            subtitle={props.props.subtitle}
+            level={props.props.isEmbedded ? 2 : 1}
+        />
         {props.props.notice === undefined ? null : (
             <Alert tone={props.props.notice.tone} title={props.props.notice.title} />
         )}

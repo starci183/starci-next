@@ -92,7 +92,7 @@
       },
       "signIn": {
         "title": "Sign in",
-        "subtitle": "Continue your learning journey with StarCi Next.",
+        "subtitle": "Welcome back. Pick up where you left off.",
         "submit": "Sign in",
         "promptQuestion": "No account yet?",
         "promptAction": "Sign up"
@@ -123,7 +123,7 @@
         "confirmPlaceholder": "Confirm your password",
         "reveal": "Show password",
         "hide": "Hide password",
-        "terms": "I agree to the Terms of Use and the Privacy Policy"
+        "terms": "I agree to the Terms of Use and the Privacy Policy"
       },
       "social": {
         "google": "Continue with Google",
@@ -177,6 +177,22 @@
         "unavailable": {
           "title": "Not available",
           "text": "We could not confirm your email right now."
+        }
+      },
+      "entry": {
+        "headline": "Learn the essentials, so you can vibe-code without losing control.",
+        "lead": "AI can write the code. StarCi Next teaches what AI does not do for you: why systems break, and how to spot when AI-written code is wrong.",
+        "essentials": {
+          "name": "Essentials",
+          "text": "Knowledge built around real problems, with scenarios you run on your own machine."
+        },
+        "projects": {
+          "name": "Projects",
+          "text": "Projects on your own repo, checked by CI and a code read."
+        },
+        "harness": {
+          "name": "Harness",
+          "text": "Use Claude Code and Codex properly. Free."
         }
       }
     },

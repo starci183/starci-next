@@ -41,6 +41,7 @@ export {
     ReviewGlyph,
     SunGlyph,
 } from "./leaves/Icon"
+export { AuthCardHeading } from "./composites/AuthCardHeading"
 export { AuthDetailsForm } from "./composites/AuthDetailsForm"
 export type { AuthDetailsLabels } from "./composites/AuthDetailsForm"
 export { AuthSocialButtons } from "./composites/AuthSocialButtons"

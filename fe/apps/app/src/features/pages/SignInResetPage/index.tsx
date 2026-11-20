@@ -17,16 +17,11 @@ type SignInResetPageProps = { readonly token: string | ReadonlyArray<string> | u
 /** The page the emailed reset link opens: a server owner that settles the frame and mounts the card that sets the new password. */
 export const SignInResetPage = async (props: SignInResetPageProps): Promise<ReactElement> => {
     const locale = await getLocale()
-    const brand = (await getTranslations("app.shell"))("brand")
-    const homeHref = appI18n.navigation.getPathname({ href: APP_ROUTES.home, locale })
     const signInHref = appI18n.navigation.getPathname({ href: APP_ROUTES.signIn, locale })
     return (
         <SignInResetPageBase
             props={{
                 token: typeof props.token === "string" ? props.token : undefined,
-                brand,
-                logoSrc: "/brand/logo.png",
-                homeHref,
                 signInHref,
                 doneHref: signInHref + signInSearch({ reset: true }),
             }}
