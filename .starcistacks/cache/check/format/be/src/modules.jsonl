@@ -266,12 +266,13 @@
 {"findings":[],"hash":"2bd68d9d25dcf96049d8ca2d1bb0a0bda511bf05a10435a4a77778a361dcd90d","path":"be/src/modules/domain/incident/incident-authored.policy.ts","step":"prettier"}
 {"findings":[],"hash":"1516e3452aaf88082e813bec7881ed80e0083fa5c271e3b99256395ef515de77","path":"be/src/modules/domain/incident/incident-read.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"5a1779aac89d89491cec3f5e7bcc45a79fbfcffdc483aa667b8ab7810aa97e3b","path":"be/src/modules/domain/incident/incident-read.service.ts","step":"prettier"}
+{"findings":[],"hash":"bb2ee8a70fdceaccec8670f2ab3b8c04dd812004f086b30d964888f3064d20d7","path":"be/src/modules/domain/incident/incident.config.ts","step":"prettier"}
 {"findings":[],"hash":"6bf5ffc3f307eb9323f908771777eb4eedebbbaa25b1b8c125b08818d40ac25f","path":"be/src/modules/domain/incident/incident.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"cabf854fc4964649ddda599bba028bc46a10a3eac76b9c291c24024f0c8eab09","path":"be/src/modules/domain/incident/incident.decorators.ts","step":"prettier"}
 {"findings":[],"hash":"10b053626f17292f1e166807112a59d8d529d928e8df7e398f70bdc025a913f1","path":"be/src/modules/domain/incident/incident.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"c480d0e1b8a4a3c4f92b90d0f03cbf370b592fabd88f8ac6e53876f529f6c715","path":"be/src/modules/domain/incident/incident.module.ts","step":"prettier"}
 {"findings":[],"hash":"765f916b6f0d07f2665c405f6e0016e0f1e7e2cefdb029e6696e0e400dd43960","path":"be/src/modules/domain/incident/incident.options.ts","step":"prettier"}
-{"findings":[],"hash":"79e8fd9cc87b48ae47a992da4c9f3ea40047e9eaba7b3fe31d924a130feeab3f","path":"be/src/modules/domain/incident/index.ts","step":"prettier"}
+{"findings":[],"hash":"a62493745aeb5ec594e5eb5932a0f653508a843ce430845e92549f1f994044d9","path":"be/src/modules/domain/incident/index.ts","step":"prettier"}
 {"findings":[],"hash":"560dbbf58d84ae533c30fe7cd9d5f4f9f8e6007fb960bb0667a6d2a26f4d209c","path":"be/src/modules/domain/lesson/errors/lesson.error.ts","step":"prettier"}
 {"findings":[],"hash":"cefc3c299cd15f85c2f5b93745eccd1770555a7a89b6c106c2d65738266571d2","path":"be/src/modules/domain/lesson/index.ts","step":"prettier"}
 {"findings":[],"hash":"3df548dd2ca58492eba1ade84622b0a3f314555c3f0bdf6dd6047fedb55c4335","path":"be/src/modules/domain/lesson/lesson-access.policy.spec.ts","step":"prettier"}
