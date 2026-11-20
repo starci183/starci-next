@@ -101,13 +101,9 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "career/experience": {
-      "status": "built",
+      "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
-      "shots": {
-        "390": "c6b0033a5e3f3d50726f0a75ea666c793e521dbea75bb77bbbee4808231e16f3",
-        "1440": "02fd25ebaa7102884918d0ad38faf64302ccaac3bd01e77c41583074d0d56816"
-      }
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "career/experience-confirm-send-teacher": {
       "status": "approved",
