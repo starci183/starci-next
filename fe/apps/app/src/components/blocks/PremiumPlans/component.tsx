@@ -1,5 +1,20 @@
-import { Alert, Button, RadioGroup, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
-import { Icon, SlotView } from "@starci-next/ui"
+import {
+    Alert,
+    Badge,
+    Button,
+    DataTable,
+    DescriptionList,
+    Page,
+    Pane,
+    PaneGrid,
+    PaneSection,
+    RadioGroup,
+    Section,
+    Stack,
+    Text,
+    type DataTableRow,
+} from "@starci/grammar/common"
+import { DoneIcon, LockIcon, SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The drawings of the plans screen: the settled reader, a reader who already holds Premium and one who is not signed in. */
@@ -13,36 +28,59 @@ export interface PlanOption {
     readonly name: string
     readonly priceText: string
     readonly note: string
+    /** The short offer tag of the plan ("Tiết kiệm 2 tháng"), or undefined. */
+    readonly tag: string | undefined
 }
 
-/** One checkout rail the reader may pay on. */
-export interface RailOption {
+/** One row of the free-versus-Premium comparison: a learning area, what it holds and what each plan gives. */
+export interface ComparisonRow extends DataTableRow {
+    readonly title: string
+    readonly text: string
+    /** `yes` or `locked` draw the mark; any other text is the value itself (a machine count). */
+    readonly free: string
+    readonly premium: string
+}
+
+/** One quick question and its answer. */
+export interface FaqRow {
     readonly id: string
-    readonly name: string
-    readonly hint: string | undefined
+    readonly question: string
+    readonly answer: string
 }
 
 /** Blank widths that give the skeleton its box: non-breaking spaces carry no readable text into the page or the accessibility tree. */
-const SKELETON_NAME = " ".repeat(18)
-const SKELETON_PRICE = " ".repeat(12)
-const SKELETON_NOTE = " ".repeat(30)
+const SKELETON_NAME = " ".repeat(18)
+const SKELETON_PRICE = " ".repeat(12)
+const SKELETON_NOTE = " ".repeat(30)
 
 /** Two offers of the same shape as the read: the skeleton draws the ready tree from them. */
 export const PLANS_PLACEHOLDER: ReadonlyArray<PlanOption> = [
-    { id: "placeholder-a", name: SKELETON_NAME, priceText: SKELETON_PRICE, note: SKELETON_NOTE },
-    { id: "placeholder-b", name: SKELETON_NAME, priceText: SKELETON_PRICE, note: SKELETON_NOTE },
+    { id: "placeholder-a", name: SKELETON_NAME, priceText: SKELETON_PRICE, note: SKELETON_NOTE, tag: undefined },
+    { id: "placeholder-b", name: SKELETON_NAME, priceText: SKELETON_PRICE, note: SKELETON_NOTE, tag: undefined },
 ]
 
 /** The words the screen shows, resolved by the connected half. */
 export interface PremiumPlansLabels {
-    readonly includesTitle: string
-    readonly benefits: ReadonlyArray<string>
-    readonly expiryNote: string
+    readonly title: string
+    /** The one line under the title: the reader's current plan and what stays free. */
+    readonly meta: string
+    readonly compareTitle: string
+    readonly compareLabel: string
+    readonly areaColumn: string
+    readonly freeColumn: string
+    readonly premiumColumn: string
+    readonly yes: string
+    readonly locked: string
+    readonly faqTitle: string
     readonly planLegend: string
-    readonly railLegend: string
     readonly summaryLabel: string
-    readonly failureTitle: string
+    readonly payWithLabel: string
+    readonly payWithValue: string
+    readonly renewLabel: string
+    readonly renewValue: string
+    readonly totalLabel: string
     readonly payNote: string
+    readonly failureTitle: string
     readonly startLabel: string
     readonly startingLabel: string
     readonly startUnavailable: string
@@ -55,9 +93,9 @@ export interface PremiumPlansBaseProps {
     readonly props: {
         readonly plans: DataSlot<ReadonlyArray<PlanOption>>
         readonly slotLabels: SlotLabels
-        readonly rails: ReadonlyArray<RailOption>
+        readonly comparison: ReadonlyArray<ComparisonRow>
+        readonly faq: ReadonlyArray<FaqRow>
         readonly selectedPlan: string
-        readonly selectedRail: string
         readonly isStarting: boolean
         readonly isStartAvailable: boolean
         /** The resolved reason the last start did not reach the gateway, or undefined. */
@@ -68,7 +106,6 @@ export interface PremiumPlansBaseProps {
     }
     readonly on: {
         readonly selectPlan: (id: string) => void
-        readonly selectRail: (id: string) => void
         readonly retry: () => void
         readonly start: () => void
         /** Opens the sign-in modal: buying needs a session, the plans do not. */
@@ -76,59 +113,54 @@ export interface PremiumPlansBaseProps {
     }
 }
 
-/** What the includes card reads: only the words. */
-interface IncludesProps {
+/** What a comparison cell reads: the value and the two marks' words. */
+interface MarkProps {
+    readonly value: string
     readonly labels: PremiumPlansLabels
 }
 
-const Includes = (props: IncludesProps) => (
-    <Section title={props.labels.includesTitle} headingLevel={2}>
-        <Stack gap="row">
-            {props.labels.benefits.map((benefit) => (
-                <Text key={benefit} startContent={<Icon />}>
-                    {benefit}
-                </Text>
-            ))}
-            <Text size="sm" tone="muted">
-                {props.labels.expiryNote}
+const Mark = (props: MarkProps) => {
+    if (props.value === "yes")
+        return <Text startContent={<DoneIcon label={props.labels.yes} />}>{props.labels.yes}</Text>
+    if (props.value === "locked")
+        return (
+            <Text tone="muted" startContent={<LockIcon label={props.labels.locked} />}>
+                {props.labels.locked}
             </Text>
-        </Stack>
-    </Section>
-)
+        )
+    return <Text>{props.value}</Text>
+}
 
-/** What the commit reads: the drawing, the start flags and the words. */
+/** The commit of the plan card: sign in for a signed-out reader, else start the checkout. */
 interface CommitProps {
     readonly shape: PremiumPlansShape
     readonly isStarting: boolean
     readonly isStartAvailable: boolean
+    readonly priceText: string
     readonly labels: PremiumPlansLabels
     readonly onStart: () => void
     readonly onSignIn: () => void
 }
 
 const Commit = (props: CommitProps) => {
-    switch (props.shape) {
-        case "signedOut":
-            return (
-                <Button intent="commit" width="fill-narrow" onPress={props.onSignIn}>
-                    {props.labels.signInLabel}
-                </Button>
-            )
-        case "ready":
-        case "premium":
-            return (
-                <Button
-                    intent="commit"
-                    width="fill-narrow"
-                    isPending={props.isStarting}
-                    onPress={props.onStart}
-                    isDisabled={!props.isStartAvailable}
-                    disabledReason={props.labels.startUnavailable}
-                >
-                    {props.isStarting ? props.labels.startingLabel : props.labels.startLabel}
-                </Button>
-            )
-    }
+    if (props.shape === "signedOut")
+        return (
+            <Button intent="commit" width="fill" onPress={props.onSignIn}>
+                {props.labels.signInLabel}
+            </Button>
+        )
+    return (
+        <Button
+            intent="commit"
+            width="fill"
+            isPending={props.isStarting}
+            onPress={props.onStart}
+            isDisabled={!props.isStartAvailable}
+            disabledReason={props.labels.startUnavailable}
+        >
+            {props.isStarting ? props.labels.startingLabel : `${props.labels.startLabel} ${props.priceText}`.trim()}
+        </Button>
+    )
 }
 
 /** What the choices read: the whole screen's inputs, the offers the slot settled on and whether they are the skeleton's. */
@@ -137,73 +169,148 @@ type ChoicesProps = PremiumPlansBaseProps & { readonly plans: ReadonlyArray<Plan
 const Choices = (props: ChoicesProps) => {
     const { labels } = props.props
     const chosen = props.plans.find((plan) => plan.id === props.props.selectedPlan) ?? props.plans[0]
-    const rail = props.props.rails.find((one) => one.id === props.props.selectedRail)
     return (
-        <Stack gap="section">
-            <RadioGroup
-                label={labels.planLegend}
-                appearance="rows"
-                orientation="horizontal"
-                isLoading={props.isLoading}
-                value={props.props.selectedPlan}
-                onValueChange={props.on.selectPlan}
-                options={props.plans.map((plan) => ({
-                    value: plan.id,
-                    label: `${plan.name} · ${plan.priceText}`,
-                    description: plan.note,
-                }))}
-            />
-            <RadioGroup
-                label={labels.railLegend}
-                appearance="rows"
-                orientation="horizontal"
-                value={props.props.selectedRail}
-                onValueChange={props.on.selectRail}
-                options={props.props.rails.map((one) => ({ value: one.id, label: one.name, description: one.hint }))}
-            />
-            <SurfaceCard ariaLabel={labels.summaryLabel} isLoading={props.isLoading}>
-                <Stack gap="row">
-                    <Text tone="muted" isLoading={props.isLoading}>
-                        {`${chosen?.name ?? ""} · ${rail?.name ?? ""}`}
-                    </Text>
-                    <Text isStrong isLoading={props.isLoading}>
-                        {chosen?.priceText ?? ""}
-                    </Text>
-                    <Text size="sm" tone="muted">
-                        {labels.payNote}
-                    </Text>
-                    <Commit
-                        shape={props.shape}
-                        isStarting={props.props.isStarting}
-                        isStartAvailable={props.props.isStartAvailable}
-                        labels={labels}
-                        onStart={props.on.start}
-                        onSignIn={props.on.signIn}
-                    />
-                </Stack>
-            </SurfaceCard>
-        </Stack>
+        <Section title={labels.planLegend} headingLevel={2}>
+            <Stack gap="section">
+                <RadioGroup
+                    label={labels.planLegend}
+                    isLabelHidden
+                    appearance="rows"
+                    isLoading={props.isLoading}
+                    value={props.props.selectedPlan}
+                    onValueChange={props.on.selectPlan}
+                    options={props.plans.map((plan) => ({
+                        value: plan.id,
+                        label: (
+                            <Stack gap="identity">
+                                <Text isStrong>{`${plan.name} · ${plan.priceText}`}</Text>
+                                {plan.tag === undefined ? null : <Badge tone="success">{plan.tag}</Badge>}
+                            </Stack>
+                        ),
+                        description: plan.note,
+                    }))}
+                />
+                <DescriptionList
+                    isLoading={props.isLoading}
+                    items={[
+                        { id: "pay", term: labels.payWithLabel, description: labels.payWithValue },
+                        { id: "renew", term: labels.renewLabel, description: labels.renewValue },
+                        {
+                            id: "total",
+                            term: labels.totalLabel,
+                            description: <Text isStrong>{chosen?.priceText ?? ""}</Text>,
+                        },
+                    ]}
+                />
+                <Text size="sm" tone="muted">
+                    {labels.payNote}
+                </Text>
+                <Commit
+                    shape={props.shape}
+                    isStarting={props.props.isStarting}
+                    isStartAvailable={props.props.isStartAvailable}
+                    priceText={chosen?.priceText ?? ""}
+                    labels={labels}
+                    onStart={props.on.start}
+                    onSignIn={props.on.signIn}
+                />
+            </Stack>
+        </Section>
     )
 }
 
+/** The comparison of what each plan holds, as one flat table; a phone keeps the three columns. */
+const Comparison = (props: PremiumPlansBaseProps) => {
+    const { labels } = props.props
+    return (
+        <Section title={labels.compareTitle} headingLevel={2}>
+            <DataTable<ComparisonRow>
+                label={labels.compareLabel}
+                phone="table"
+                rows={props.props.comparison}
+                emptyContent={null}
+                columns={[
+                    { id: "area", label: labels.areaColumn, isRowHeader: true },
+                    { id: "free", label: labels.freeColumn, width: "fit" },
+                    { id: "premium", label: labels.premiumColumn, width: "fit" },
+                ]}
+                renderCell={(row, columnId) => {
+                    if (columnId === "free") return <Mark value={row.free} labels={labels} />
+                    if (columnId === "premium") return <Mark value={row.premium} labels={labels} />
+                    return (
+                        <Stack gap="identity">
+                            <Text isStrong>{row.title}</Text>
+                            <Text size="sm" tone="muted" overflow="wrap">
+                                {row.text}
+                            </Text>
+                        </Stack>
+                    )
+                }}
+            />
+        </Section>
+    )
+}
+
+/** The quick questions: each question over its answer, the answer in full. */
+const Faq = (props: PremiumPlansBaseProps) => (
+    <Section title={props.props.labels.faqTitle} headingLevel={2}>
+        <DescriptionList
+            layout="stacked"
+            isDivided
+            items={props.props.faq.map((row) => ({ id: row.id, term: row.question, description: row.answer }))}
+        />
+    </Section>
+)
+
 /**
- * Draws the Premium plans screen from atoms: what Premium includes, then the server-priced plans with their rail and one commit. The plans read draws its status through SlotView.
+ * Draws the Premium plans screen: the comparison of free and Premium and the quick questions in the main pane, and the plan card
+ * (the choice of plan, its summary and one commit) in the side pane. The plans read draws its status through SlotView.
  */
 export const PremiumPlansBase = (props: PremiumPlansBaseProps) => (
-    <Stack gap="section">
-        {props.props.notice === undefined ? null : (
-            <Alert tone="informative" title={props.props.notice.title} description={props.props.notice.description} />
-        )}
-        {props.props.failureText === undefined ? null : (
-            <Alert tone="negative" title={props.props.labels.failureTitle} description={props.props.failureText} />
-        )}
-        <Includes labels={props.props.labels} />
-        <SlotView
-            slot={props.props.plans}
-            placeholder={PLANS_PLACEHOLDER}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(plans, isLoading) => <Choices {...props} plans={plans} isLoading={isLoading} />}
-        />
-    </Stack>
+    <Page
+        chrome="panes"
+        header={{ breadcrumbs: "root", title: props.props.labels.title, meta: props.props.labels.meta }}
+    >
+        <PaneGrid
+            label={props.props.labels.title}
+            areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+            columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+        >
+            <Pane area="main" scroll label={props.props.labels.compareTitle}>
+                <PaneSection>
+                    <Stack gap="section">
+                        <Comparison {...props} />
+                        <Faq {...props} />
+                    </Stack>
+                </PaneSection>
+            </Pane>
+            <Pane area="aside" surface scroll label={props.props.labels.planLegend}>
+                <PaneSection>
+                    <Stack gap="section">
+                        {props.props.notice === undefined ? null : (
+                            <Alert
+                                tone="informative"
+                                title={props.props.notice.title}
+                                description={props.props.notice.description}
+                            />
+                        )}
+                        {props.props.failureText === undefined ? null : (
+                            <Alert
+                                tone="negative"
+                                title={props.props.labels.failureTitle}
+                                description={props.props.failureText}
+                            />
+                        )}
+                        <SlotView
+                            slot={props.props.plans}
+                            placeholder={PLANS_PLACEHOLDER}
+                            labels={props.props.slotLabels}
+                            onRetry={props.on.retry}
+                            render={(plans, isLoading) => <Choices {...props} plans={plans} isLoading={isLoading} />}
+                        />
+                    </Stack>
+                </PaneSection>
+            </Pane>
+        </PaneGrid>
+    </Page>
 )

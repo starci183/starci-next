@@ -30,24 +30,24 @@ const SHAPE_OF_STATUS = new Map<string, CheckoutResultShape>([
 /** The translator of this block's catalog namespace. */
 type ResultTranslator = ReturnType<typeof useTranslations<"app.checkoutResult">>
 
-/** The words of each drawing: heading, status and body. */
+/** The words of each drawing: heading, status (the state in the band) and body. */
 const copiesOf = (t: ResultTranslator) => ({
     verifying: { title: t("verifyingTitle"), status: t("verifyingStatus"), body: t("verifyingBody") },
-    active: { title: t("activeTitle"), status: t("activeStatus"), body: t("activeBodyPlain") },
+    active: { title: t("activeTitle"), status: t("activeStatus"), body: t("activeBody") },
     failed: { title: t("failedTitle"), status: t("failedStatus"), body: t("failedBody") },
     expired: { title: t("expiredTitle"), status: t("expiredStatus"), body: t("expiredBody") },
     notFound: { title: t("notFoundTitle"), status: t("notFoundStatus"), body: t("notFoundBody") },
     signedOut: { title: t("signedOutTitle"), status: t("signedOutStatus"), body: t("signedOutBody") },
 })
 
-/** The onward destinations of each drawing: failed retries, expired and missing orders return to the plans, signed-out signs in. */
+/** The onward destinations of each drawing, one per state: a pending order only leads back to Học, a paid one on to Projects, the rest to the plans. */
 const actionsOf = (t: ResultTranslator) => {
     const plans: ResultAction = { label: t("plansLabel"), href: APP_ROUTES.premium }
     return {
-        verifying: { commit: undefined, neutral: plans },
-        active: { commit: { label: t("continueLabel"), href: APP_ROUTES.essentials }, neutral: plans },
+        verifying: { commit: undefined, neutral: { label: t("homeLabel"), href: APP_ROUTES.home } },
+        active: { commit: { label: t("projectsLabel"), href: APP_ROUTES.projects }, neutral: undefined },
         failed: { commit: { label: t("retryLabel"), href: APP_ROUTES.premium }, neutral: undefined },
-        expired: { commit: plans, neutral: undefined },
+        expired: { commit: { label: t("newOrderLabel"), href: APP_ROUTES.premium }, neutral: undefined },
         notFound: { commit: plans, neutral: undefined },
         signedOut: { commit: { label: t("signInLabel"), href: APP_ROUTES.signIn }, neutral: undefined },
     }
@@ -75,10 +75,16 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
         ["sepay", t("railSepay")],
         ["payos", t("railPayos")],
     ])
-    const viewOf = (shape: CheckoutResultShape, facts: ReadonlyArray<ResultFact>, body?: string): ResultView => ({
+    const dateOf = (iso: string): string => format.dateTime(new Date(iso), { dateStyle: "medium" })
+    const viewOf = (
+        shape: CheckoutResultShape,
+        facts: ReadonlyArray<ResultFact>,
+        order?: { readonly code: string | undefined; readonly plan: string },
+    ): ResultView => ({
         title: copies[shape].title,
-        statusTitle: copies[shape].status,
-        body: body ?? copies[shape].body,
+        body: copies[shape].body,
+        meta: order === undefined ? copies[shape].status : `${order.plan} · ${copies[shape].status}`,
+        orderCrumb: order?.code === undefined ? undefined : t("orderCrumb", { code: order.code }),
         facts,
         ...actions[shape],
     })
@@ -88,23 +94,24 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
         order,
         (found) => {
             const shape = orderShape(found.status)
+            const plan = planNames.get(found.plan) ?? t("planOther")
+            const until = found.premiumUntil
+            // The app's own order code is the sepay one (SE-35); a payOS order carries the gateway's bare number, a second format, so it shows no code until the core has one of its own.
+            const code = found.rail === "sepay" ? found.orderCode : undefined
             const facts: ReadonlyArray<ResultFact> = [
-                { id: "plan", term: t("factPlan"), description: planNames.get(found.plan) ?? t("planOther") },
+                ...(code === undefined ? [] : [{ id: "code", term: t("factCode"), description: code }]),
+                { id: "plan", term: t("factPlan"), description: plan },
                 {
                     id: "amount",
                     term: t("factAmount"),
                     description: format.number(found.amountVnd, { style: "currency", currency: "VND" }),
                 },
                 { id: "rail", term: t("factRail"), description: railNames.get(found.rail) ?? found.rail },
-                { id: "code", term: t("factCode"), description: found.orderCode },
-                { id: "status", term: t("factStatus"), description: copies[shape].status },
+                ...(shape === "active" && until
+                    ? [{ id: "until", term: t("factUntil"), description: dateOf(until) }]
+                    : []),
             ]
-            const until = found.premiumUntil
-            const body =
-                shape === "active" && until
-                    ? t("activeBody", { date: format.dateTime(new Date(until), { dateStyle: "medium" }) })
-                    : undefined
-            return { shape, view: viewOf(shape, facts, body) }
+            return { shape, view: viewOf(shape, facts, { code, plan }) }
         },
     )
     const fixed = (shape: CheckoutResultShape) => ({ items: { shape, view: viewOf(shape, []) } })
@@ -112,8 +119,8 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
     const withoutOrder = (): DataSlot<{ readonly shape: CheckoutResultShape; readonly view: ResultView }> => {
         if (mine.data === undefined && mine.error === undefined) return loadingSlot()
         if (premiumUntil === undefined || premiumUntil === null) return fixed("notFound")
-        const date = format.dateTime(new Date(premiumUntil), { dateStyle: "medium" })
-        return { items: { shape: "active", view: viewOf("active", [], t("activeBody", { date })) } }
+        const facts = [{ id: "until", term: t("factUntil"), description: dateOf(premiumUntil) }]
+        return { items: { shape: "active", view: viewOf("active", facts) } }
     }
     const picked = (): DataSlot<{ readonly shape: CheckoutResultShape; readonly view: ResultView }> => {
         if (session.status === "signed-out") return fixed("signedOut")
@@ -127,7 +134,10 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
         <CheckoutResultBase
             shape={"items" in slot ? slot.items.shape : "verifying"}
             props={{
-                ariaLabel: t("title"),
+                pageTitle: t("title"),
+                trailLabel: t("trailLabel"),
+                plansLabel: t("premiumCrumb"),
+                plansHref: APP_ROUTES.premium,
                 view: mapSlot(slot, (item) => item.view),
                 slotLabels: slotLabels(t("unavailableBody")),
             }}

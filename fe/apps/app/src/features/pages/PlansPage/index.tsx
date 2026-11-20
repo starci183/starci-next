@@ -9,8 +9,5 @@ export const plansMetadata = async (): Promise<Metadata> => {
     return { title: t("documentTitle") }
 }
 
-/** The Premium plans page: a server owner that resolves its words and composes the plans block, which reads the offers. */
-export const PlansPage = async (): Promise<ReactElement> => {
-    const t = await getTranslations("app.plans")
-    return <PlansPageBase props={{ title: t("title"), description: t("description") }} />
-}
+/** The Premium plans page: a server owner that composes the plans block, which reads the offers. */
+export const PlansPage = (): ReactElement => <PlansPageBase />

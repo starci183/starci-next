@@ -172,67 +172,116 @@
       "status": "Finishing sign-in…"
     },
     "plans": {
-      "title": "Learn without limits with Premium",
+      "title": "Premium",
       "documentTitle": "Premium",
-      "description": "Pay once per term. No automatic renewal, no automatic charge.",
       "empty": "No Premium plans are available right now.",
-      "includesTitle": "What Premium includes",
-      "benefitContent": "Unlock all content that is currently a preview",
-      "expiryNote": "When it ends you return to the preview straight away, with no grace period. Renew whenever you like.",
       "planLegend": "Choose a plan",
-      "railLegend": "Pay with",
       "summaryLabel": "Payment summary",
       "monthlyName": "Premium monthly",
-      "monthlyNote": "Use it for 1 month. Buy again when it ends if you wish.",
+      "monthlyNote": "One month, buy again when needed",
       "yearlyName": "Premium yearly",
       "yearlyNote": "The price of 10 months.",
       "otherName": "Premium",
       "otherNote": "One Premium term, not renewed automatically.",
       "railSepay": "SePay",
       "railPayos": "payOS",
-      "railDefault": "Default",
       "payNote": "You will go to the payment gateway's page. Premium is activated when the gateway confirms it received the money.",
-      "startLabel": "Continue to payment",
+      "startLabel": "Pay",
       "startingLabel": "Creating payment",
       "startUnavailable": "Payment is not ready yet.",
       "signInLabel": "Sign in to continue",
-      "railLast": "Last used",
       "failureTitle": "Could not start the payment",
       "failureSession": "Your session has ended. Sign in again.",
-      "failureRefused": "The payment could not be created, try again.",
-      "failureOther": "Something went wrong, try again later.",
+      "failureRefused": "The payment could not be created and you have not been charged. Press Pay to try again.",
+      "failureOther": "The payment could not be created and you have not been charged. Press Pay to try again.",
       "premiumTitle": "You are Premium until {date}",
       "premiumDescription": "Buying more now adds on from {date}, so no day is lost.",
       "payNoteExtend": "Adds time from {date}. Premium is extended when the gateway confirms it received the money.",
-      "extendLabel": "Extend Premium",
-      "unavailable": "The Premium plans could not be loaded. Please try again."
+      "extendLabel": "Extend",
+      "unavailable": "The Premium plans could not be loaded. Please try again.",
+      "metaFree": "Current plan: Free · Harness and part 1 of Essentials stay free",
+      "metaPremium": "Premium until {date}",
+      "compareTitle": "What Premium unlocks",
+      "compareLabel": "Free and Premium compared",
+      "areaColumn": "Area",
+      "freeColumn": "Free",
+      "premiumColumn": "Premium",
+      "yes": "Yes",
+      "locked": "Locked",
+      "area": {
+        "harness": {
+          "title": "Harness",
+          "text": "Build, Use with Claude Code & Codex, Docs"
+        },
+        "essentials1": {
+          "title": "Essentials, part 1",
+          "text": "Five opener questions, then the full reading of the cluster"
+        },
+        "essentials2": {
+          "title": "Essentials, parts 2 to 4",
+          "text": "Source with a diagram, CLI scenarios, ask Claude through MCP, the apply ladder"
+        },
+        "projects": {
+          "title": "Projects",
+          "text": "A project on your own repo, four languages, about 10 checks: CI OIDC, server probes, AI code read"
+        },
+        "practice": {
+          "title": "Practice, Review, Experience",
+          "text": "Practice problems, review cards and the experience profile"
+        },
+        "devices": {
+          "title": "CLI machines",
+          "text": "Machines that run scenarios at the same time",
+          "free": "1 machine",
+          "premium": "2 machines"
+        }
+      },
+      "faqTitle": "Quick questions",
+      "faq": {
+        "pay": {
+          "question": "How do I pay?",
+          "answer": "Bank transfer through the payment gateway. Premium opens by itself when the money arrives, usually within seconds."
+        },
+        "renew": {
+          "question": "Does it renew by itself?",
+          "answer": "No. Each purchase adds time to the current end date."
+        },
+        "expire": {
+          "question": "What happens when it ends?",
+          "answer": "You return to the free plan; your progress and verified experience stay."
+        }
+      },
+      "yearlyTag": "Save 2 months",
+      "payWithLabel": "Pay with",
+      "payWithValue": "Payment gateway · {rail}",
+      "renewLabel": "Auto-renew",
+      "renewValue": "No",
+      "totalLabel": "Total"
     },
     "checkoutResult": {
-      "title": "Premium payment result",
+      "title": "Payment result",
       "plansLabel": "Back to plans",
       "signInLabel": "Sign in",
-      "verifyingTitle": "Verifying your payment",
-      "verifyingStatus": "Pending",
-      "verifyingBody": "Waiting for the payment gateway to confirm it received the money. You can close this page; Premium is still activated once the confirmation arrives.",
-      "activeTitle": "Premium is active",
-      "activeStatus": "Paid",
-      "activeBody": "You are Premium until {date}. Thank you for supporting StarCi Next.",
-      "failedTitle": "Payment was not successful",
+      "verifyingTitle": "Confirming the payment",
+      "verifyingStatus": "Waiting for the money",
+      "verifyingBody": "The money has not arrived yet. This page updates by itself; you can close the tab and Premium still opens when it arrives.",
+      "activeTitle": "Premium is open",
+      "activeStatus": "Confirmed",
+      "activeBody": "Projects, parts 2 to 4 of Essentials and the second machine are ready.",
+      "failedTitle": "The payment did not go through",
       "failedStatus": "Failed",
-      "failedBody": "The transaction was cancelled or did not succeed, so Premium has not been activated.",
-      "expiredTitle": "This payment order has expired",
+      "failedBody": "The transaction was cancelled or failed, so Premium has not been activated.",
+      "expiredTitle": "The payment order has expired",
       "expiredStatus": "Expired",
-      "expiredBody": "This order can no longer be used. Create a new one from the plans page. If you already transferred money for this order, Premium is still activated when the gateway confirms it.",
+      "expiredBody": "The order passed its time and no money has arrived. If you already transferred, the order code below helps us look it up.",
       "signedOutTitle": "Sign in to see the result",
       "signedOutStatus": "Not signed in",
       "signedOutBody": "The payment result is only shown to signed-in learners.",
-      "activeBodyPlain": "Your Premium is active. Thank you for supporting StarCi Next.",
       "notFoundTitle": "Payment order not found",
       "notFoundStatus": "No order",
       "notFoundBody": "We could not find this order in your account. Go back to the plans page to create a new one.",
       "unavailableBody": "The order status could not be read from the server. Reload the page in a few minutes; your payment is not affected.",
-      "continueLabel": "Continue learning",
-      "retryLabel": "Try paying again",
+      "retryLabel": "Try again",
       "planMonthly": "Premium monthly",
       "planYearly": "Premium yearly",
       "planOther": "Premium",
@@ -242,7 +291,13 @@
       "factAmount": "Amount",
       "factRail": "Gateway",
       "factCode": "Order code",
-      "factStatus": "Status"
+      "trailLabel": "Breadcrumb",
+      "premiumCrumb": "Premium",
+      "orderCrumb": "Order {code}",
+      "homeLabel": "Back to Learn",
+      "projectsLabel": "Open Projects",
+      "newOrderLabel": "Create a new order",
+      "factUntil": "Premium until"
     },
     "review": {
       "levels": {
@@ -1929,60 +1984,113 @@
     },
     "devices": {
       "pageTitle": "Devices",
-      "codeLabel": "The code in your terminal",
+      "codeLabel": "The 8-character code on the machine",
       "codePlaceholder": "ABCD-1234",
-      "codeHint": "Only confirm a code you just ran yourself. Check the device name and system before you confirm.",
-      "previewTitle": "The device to connect",
-      "confirm": "Confirm this device",
+      "confirm": "Confirm the connection",
       "confirming": "Confirming…",
-      "confirmed": "{name} is connected. Your terminal will say so.",
       "devicesEmpty": "No device is connected yet.",
-      "devicesLimit": "Premium: up to 2 devices. Free plan: 1 device.",
       "online": "Online",
       "offline": "Offline",
-      "lastSeen": "{platform} · {when}",
+      "lastSeen": "{platform} · paired {paired} · seen {when}",
       "revoke": "Revoke",
-      "rulesTitle": "What the CLI may do",
+      "rulesTitle": "What the CLI does",
       "closeLabel": "Close",
       "allowed": "Allowed",
       "denied": "Never",
       "pageHeading": "Your machines",
-      "pageSub": "Run code lessons on your own machine, results come back here",
+      "pageSub": "The CLI runs lessons with code on your machine",
       "connect": "Connect a machine",
       "connectTitle": "Connect a machine",
       "pairedTitle": "Paired machines",
       "emptyTitle": "No machine is paired yet",
-      "emptyText": "Do three steps and the machine shows here; you can revoke it any time.",
-      "levelsTitle": "Proof levels",
-      "practiceTitle": "Practising",
-      "practiceText": "Results run on your machine through the CLI. They help you practise and do not count towards a milestone.",
-      "proofTitle": "Proved",
-      "proofText": "Signed CI or a server rerun.",
+      "emptyText": "Essentials scenarios run through the CLI on your machine. Follow the three steps above.",
       "platform": {
         "windows": "Windows",
         "macos": "macOS",
         "linux": "Linux"
       },
       "step": {
-        "install": "Install the StarCi CLI",
-        "installNote": "Or run it with npx. The client source is public and releases are signed.",
-        "login": "Sign in on your machine",
-        "loginNote": "The terminal prints an 8-character code and a link to this page.",
-        "confirm": "Enter the code and confirm",
-        "confirmNote": "Once confirmed, the device shows under Your devices and can be revoked at any time."
+        "run": "Run the CLI on the machine",
+        "runNote": "Node.js must be installed on the machine.",
+        "login": "Sign in on the machine",
+        "loginNote": "The CLI prints an 8-character code that is valid for a few minutes.",
+        "confirm": "Enter the code here",
+        "confirmNote": "Press Connect a machine, enter the code, check the machine name and confirm."
       },
       "rule": {
-        "manifest": "Runs only the commands of the task manifest StarCi signed",
-        "ask": "Shows each command and asks you before it runs",
-        "results": "Sends test results, logs and the diffs you choose",
-        "noSecrets": "Never sends the whole repo, .env files or secret keys",
-        "noShell": "Never opens a remote shell and never edits your files"
+        "run": {
+          "text": "Runs Essentials scenarios on your machine"
+        },
+        "send": {
+          "text": "Sends the run results back to StarCi Next"
+        },
+        "relay": {
+          "text": "Hands context to Claude through MCP when you are stuck"
+        },
+        "prove": {
+          "text": "Proves a project",
+          "note": "CI OIDC and server probes prove it"
+        },
+        "files": {
+          "text": "Reads files outside the lesson folder"
+        }
       },
       "error": {
-        "codeNotFound": "The code is wrong or has expired. Run starci-next login again.",
-        "deviceLimit": "You have connected as many devices as your plan allows. Revoke one and try again.",
-        "other": "That did not go through; please try again."
-      }
+        "codeNotFound": "The code is wrong or has expired. Run npx @starci/next again for a new one.",
+        "deviceLimit": "You have paired as many machines as your plan allows. Revoke one and try again.",
+        "other": "Could not confirm; try again."
+      },
+      "mcpSub": "MCP for Claude Code and Codex",
+      "devicesTab": "Paired machines",
+      "mcpTab": "Claude Code & MCP",
+      "tabsLabel": "Parts of the machines page",
+      "connectNewTitle": "Connect a new machine",
+      "previewName": "Machine name",
+      "previewSystem": "System",
+      "previewExpires": "Code expires",
+      "previewHint": "Confirm only if this is the machine you just ran the CLI on.",
+      "cancel": "Cancel",
+      "limitTitle": "The free plan pairs 1 machine",
+      "limitText": "Revoke an old machine or upgrade to Premium to pair up to 2.",
+      "plansLabel": "See Premium",
+      "metaDevices": "{count} / {limit} machines · {plan} · {text}",
+      "planFree": "Free plan",
+      "planPremium": "Premium",
+      "metaMcp": "{count} / {limit} tokens · {text}",
+      "captionFree": "The free plan pairs 1 machine. Premium pairs up to 2.",
+      "captionLeft": "{left} place left. The Premium plan pairs up to 2 machines.",
+      "captionFull": "Both machines are paired. Revoke one to pair another.",
+      "pairedAt": "{platform} · paired {paired}",
+      "mcpAskTitle": "Ask Claude when stuck",
+      "mcpAskText": "When a scenario will not pass and you are stuck, Claude Code or Codex on your machine reads the task and the run results through MCP to suggest a fix. Add the StarCi Next MCP server once for each tool.",
+      "mcpClaudeLabel": "Claude Code",
+      "mcpClaudeCommand": "claude mcp add --transport http starci {endpoint} --header \"Authorization: Bearer YOUR_TOKEN\"",
+      "mcpCodexLabel": "Codex",
+      "mcpCodexCommand": "codex mcp add starci --url {endpoint} --bearer-token-env-var STARCI_TOKEN",
+      "mcpTokensTitle": "MCP tokens",
+      "mcpTokensEmpty": "No token yet. Create one and paste it into the command above.",
+      "mcpTokensCaption": "{count} / {limit} tokens. Revoking a token stops it at once.",
+      "mcpCreate": "Create a token",
+      "mcpCreateTitle": "Create an MCP token",
+      "mcpCreateHint": "Name it after the tool so it is easy to revoke.",
+      "mcpNameLabel": "Token name",
+      "mcpNamePlaceholder": "Claude Code on MacBook",
+      "mcpCreating": "Creating…",
+      "mcpCreatedTitle": "Copy the token now",
+      "mcpCreatedHint": "The token shows only once. If you lose it, revoke it and create another.",
+      "mcpDismiss": "I saved the token",
+      "mcpError": {
+        "limit": "You already have 5 tokens. Revoke one and try again.",
+        "name": "The token name is not valid (1 to 60 characters).",
+        "other": "That did not work. Try again later."
+      },
+      "tokenUsed": "…{hint} · created {created} · used {when}",
+      "tokenNeverUsed": "…{hint} · created {created} · never used",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyFailed": "Could not copy",
+      "devicesError": "The machine list could not be loaded",
+      "devicesErrorHint": "Check your connection and try again."
     },
     "connectAi": {
       "pageTitle": "Connect Claude / ChatGPT",
@@ -2048,7 +2156,11 @@
           "title": "Use it in a chat",
           "note": "Start a new chat, switch on the StarCi Next connector and name the lesson you study, for example: explain why the double-spend scenario is red on my machine."
         }
-      }
+      },
+      "oauthTitle": "About sign-in",
+      "copy": "Copy",
+      "copied": "Copied",
+      "copyFailed": "Could not copy"
     },
     "harness": {
       "pageTitle": "Harness",

@@ -8,6 +8,9 @@ import { useDocumentTitle } from "@/hooks/title"
 import type { DevicesPairStep } from "@/modules/types"
 import { CONNECT_AI_PLACEHOLDER, ConnectAiBase, type ConnectAiLabels, type ConnectAiToken } from "./component"
 
+/** The moment relative times are counted from (next-intl asks for it explicitly). */
+const NOW = (): Date => new Date()
+
 type Translate = ReturnType<typeof useTranslations>
 
 /** The keys of the fixed words, in the catalogue under `app.connectAi`. */
@@ -32,8 +35,12 @@ const LABEL_KEYS = [
     "canText",
     "cannotTitle",
     "cannotText",
+    "oauthTitle",
     "oauthNote",
     "guidesTitle",
+    "copy",
+    "copied",
+    "copyFailed",
 ] as const
 
 const labelsOf = (t: Translate): ConnectAiLabels =>
@@ -56,7 +63,7 @@ export const ConnectAi = () => {
             detail:
                 token.lastUsedAt === null
                     ? t("neverUsed", { hint: token.hint })
-                    : t("lastUsed", { hint: token.hint, when: format.relativeTime(new Date(token.lastUsedAt)) }),
+                    : t("lastUsed", { hint: token.hint, when: format.relativeTime(new Date(token.lastUsedAt), NOW()) }),
             isRevoking: connect.revokingId === token.id,
         }))
     const stepsOf = (guide: "claude" | "chatgpt", keys: ReadonlyArray<string>): ReadonlyArray<DevicesPairStep> =>

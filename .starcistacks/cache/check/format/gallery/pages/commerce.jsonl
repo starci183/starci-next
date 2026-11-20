@@ -1,2 +1,7 @@
-{"findings":[],"hash":"98fd038178bdd91e3babad0bf685269f4002135e8cb351f63da3e3ba9724b749","path":"gallery/pages/commerce/premium-result/explain.md","step":"prettier"}
-{"findings":[],"hash":"41fc620aee3117ea070308b55fbf6013ff68ef9d22e6065cca1e92db64494c6c","path":"gallery/pages/commerce/premium/explain.md","step":"prettier"}
+{"findings":[],"hash":"86569b17cdb24dfe6cda87f39246bfba2e304b69a441425e1724a465f11ddb1e","path":"gallery/pages/commerce/premium-checkout-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"a8b324be2ce36072ab5d0287b832144241f31e39ee760cd5d761be5547927e5c","path":"gallery/pages/commerce/premium-has-premium/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"8704148119ad86be47199e78dcda60173e33825c9699b05a363085147ca1af4e","path":"gallery/pages/commerce/premium-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"de1b75be46903b026ca042decb1712be3d1e887bf27005f73477189125a0cdb6","path":"gallery/pages/commerce/premium-result-failed/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"8feb9709c4824e8d7d9ad2242fee22d1d8cdc35861bfadef2c1efabd14116b97","path":"gallery/pages/commerce/premium-result-unlocked/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"4c03904e124f98c3415f63c57b624a398a5dea93027e07cab721bcbd04f71ee2","path":"gallery/pages/commerce/premium-result/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"76f7bb8c95a899506873fc526031c078b931323ab6e1bb88ddef2700e297fa22","path":"gallery/pages/commerce/premium/screen.yaml","step":"prettier"}

@@ -92,7 +92,6 @@ export { MissingNotice } from "./composites/MissingNotice"
 export { RowProgress } from "./composites/RowProgress"
 export { ConceptCodeRead } from "./composites/ConceptCodeRead"
 export type { ConceptCodeReadLabels, ConceptRubricRow } from "./composites/ConceptCodeRead"
-export { ConnectDrawer } from "./composites/ConnectDrawer"
 export { DeployCard } from "./composites/DeployCard"
 export { ExperienceCard } from "./composites/ExperienceCard"
 export { LessonAside } from "./composites/LessonAside"
@@ -113,13 +112,7 @@ export type {
     ProjectMilestoneLabels,
     ProjectMilestoneView,
 } from "./composites/ConceptDrawer/types"
-export type {
-    DevicesPairDevice,
-    DevicesPairLabels,
-    DevicesPairPreview,
-    DevicesPairRule,
-    DevicesPairStep,
-} from "./composites/ConnectDrawer/types"
+export type { DevicesPairStep } from "./composites/StepRows"
 export type {
     ChipView,
     ProjectDetailBusy,

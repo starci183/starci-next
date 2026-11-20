@@ -1,6 +1,4 @@
-import { Page } from "@starci/grammar/common"
 import { CheckoutResult } from "@/components/blocks/CheckoutResult"
-import { CENTER_CLASS_NAME } from "./classNames"
 
 /** Props for {@link CheckoutResultPageBase}. */
 export type CheckoutResultPageBaseProps = {
@@ -8,11 +6,7 @@ export type CheckoutResultPageBaseProps = {
     readonly props: { readonly orderId: string | undefined }
 }
 
-/** Draws the checkout result route: one Page with no header band and the result card centred, as the sign-in surface does. */
+/** Draws the checkout result route: the result block, which owns its Page and header band. */
 export const CheckoutResultPageBase = (props: CheckoutResultPageBaseProps) => (
-    <Page>
-        <div className={CENTER_CLASS_NAME}>
-            <CheckoutResult orderId={props.props.orderId} />
-        </div>
-    </Page>
+    <CheckoutResult orderId={props.props.orderId} />
 )

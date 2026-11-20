@@ -1,0 +1,161 @@
+schema: 1
+screen: commerce/premium-result
+title: Kết quả thanh toán, đang xác nhận
+route: /premium/result?order=<mã đơn>
+area: commerce
+summary: "Kết quả của một đơn vừa tạo: chưa thấy tiền về, trang tự cập nhật và chỉ có nút trung tính
+  về trang Học."
+shots:
+  "390":
+    file: 390.png
+    sha256: f38a36df8ac5e38e542f501658fd82210ab2692d659bb03efa660390ad00aaa6
+  "1440":
+    file: 1440.png
+    sha256: 6b6b6d6fe228cc873636b5928ab49cacc5237b19e57a6d3af09e9a8d71069ca2
+code:
+  - features/pages/CheckoutResultPage
+  - components/blocks/CheckoutResult
+sections:
+  - id: header
+    title: Dải đầu trang
+    shows: "Đường dẫn Premium, Đơn <mã>, tên trang Kết quả thanh toán và một dòng: gói, trạng thái của
+      đơn."
+    why: Nói rõ đơn nào đang ở trạng thái nào; địa chỉ quay về không bao giờ được coi là bằng chứng đã
+      trả.
+    actions: []
+    states:
+      loading: Dải đầu giữ khung, chữ là khối xám
+      empty: null
+      error: Tên trang giữ nguyên
+    needsApi: []
+  - id: notice
+    title: Thông báo trạng thái
+    shows: "Biểu tượng, tiêu đề Đang xác nhận thanh toán và một câu: có thể đóng tab, Premium vẫn mở khi
+      tiền về."
+    why: Một cột giữa, một thông báo, không thẻ lồng thẻ; trạng thái do máy chủ trả lời.
+    actions: []
+    states:
+      loading: Khung thông báo là khối xám
+      empty: null
+      error: Thông báo lỗi đọc đơn kèm nút Thử lại
+    needsApi: []
+  - id: facts
+    title: Thông tin đơn
+    shows: Mã đơn, gói, số tiền, cổng và (khi đã mở) Premium đến ngày nào, dạng danh sách phẳng có kẻ.
+      Tên cổng là dữ liệu máy chủ (một đơn đi qua payOS đọc payOS). Mã đơn chỉ hiện với đơn sepay
+      (SE-35); đơn payOS không hiện mã vì mã của core là số của cổng, một định dạng thứ hai.
+    why: Có mã đơn để tra khi cần hỗ trợ.
+    actions: []
+    states:
+      loading: Giá trị là khối xám
+      empty: null
+      error: null
+    needsApi:
+      - "cần API: một mã đơn của ứng dụng cho mọi cổng (payOS hiện trả số trần của cổng), để đơn
+        payOS cũng hiện mã"
+  - id: action
+    title: Nút đi tiếp
+    shows: "Đúng một nút theo trạng thái: đã mở thì Mở Projects, thất bại thì Thử lại, hết hạn thì Tạo
+      đơn mới, đang chờ thì Về trang Học (trung tính)."
+    why: Một nút chính mỗi màn hình; đang chờ không có nút chính vì chưa có việc gì để làm.
+    actions:
+      - Mở Projects
+      - Thử lại
+      - Tạo đơn mới
+      - Về trang Học
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
+      công cụ"
+  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    chosen: true
+    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
+      cần Grammar
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:07.207Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: Trạng thái "Đang xác nhận thanh toán" dùng ô icon hộp thư tĩnh, không có spinner hay chuyển
+            động báo đang chờ tiền về dù chữ nói trang tự cập nhật.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: Mã đơn khác nhau giữa 1440 (SE-30) và 390 (SE-31) vì tạo đơn mới mỗi lần chụp (đã nêu).
+    - n: 2
+      at: 2026-11-20T16:54:26.849Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Spinner căn giữa nhưng tiêu đề "Đang xác nhận thanh toán" và đoạn mô tả căn trái ở 1440 và
+            390 (các trạng thái khác căn giữa tiêu đề dưới biểu tượng); chữ tiêu đề cũng nhạt như
+            nội dung, không phải tiêu đề 16/500.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T16:59:07.037Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Đã sửa: spinner, tiêu đề đậm và đoạn giải thích cùng căn giữa ở 1440 và 390."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,8 +1,8 @@
 import {
     Alert,
     Button,
-    Divider,
-    FencedCodeBlock,
+    CopyField,
+    DescriptionList,
     Input,
     Page,
     Pane,
@@ -53,8 +53,12 @@ export type ConnectAiLabels = {
     readonly canText: string
     readonly cannotTitle: string
     readonly cannotText: string
+    readonly oauthTitle: string
     readonly oauthNote: string
     readonly guidesTitle: string
+    readonly copy: string
+    readonly copied: string
+    readonly copyFailed: string
 }
 
 /** Props for {@link ConnectAiBase}. */
@@ -139,7 +143,14 @@ const CreateCard = (props: ConnectAiBaseProps) => {
                 <Text size="sm" tone="muted">
                     {view.labels.endpointHint}
                 </Text>
-                <FencedCodeBlock code={view.endpoint} language="text" />
+                <CopyField
+                    label={view.labels.endpointTitle}
+                    isLabelHidden
+                    value={view.endpoint}
+                    copyLabel={view.labels.copy}
+                    copiedLabel={view.labels.copied}
+                    copyErrorLabel={view.labels.copyFailed}
+                />
                 <Input
                     id="mcp-token-name"
                     name="name"
@@ -160,16 +171,22 @@ const CreateCard = (props: ConnectAiBaseProps) => {
                 </Button>
                 {view.notice === "" ? null : <Alert tone="negative" title={view.notice} />}
                 {view.createdSecret === undefined ? null : (
-                    <Stack gap="row">
-                        <Alert tone="informative" title={view.labels.createdTitle} />
-                        <FencedCodeBlock code={view.createdSecret} language="text" />
-                        <Text size="sm" tone="muted">
-                            {view.labels.createdHint}
-                        </Text>
-                        <Button intent="neutral" onPress={props.on.dismissCreated}>
-                            {view.labels.dismiss}
-                        </Button>
-                    </Stack>
+                    <Alert
+                        tone="cautionary"
+                        title={view.labels.createdTitle}
+                        description={view.labels.createdHint}
+                        action={{ label: view.labels.dismiss, onAction: props.on.dismissCreated }}
+                        form={
+                            <CopyField
+                                label={view.labels.createdTitle}
+                                isLabelHidden
+                                value={view.createdSecret}
+                                copyLabel={view.labels.copy}
+                                copiedLabel={view.labels.copied}
+                                copyErrorLabel={view.labels.copyFailed}
+                            />
+                        }
+                    />
                 )}
             </Stack>
         </Section>
@@ -184,23 +201,17 @@ const Guide = (props: { readonly guide: ConnectAiGuide }) => (
     </Stack>
 )
 
-/** The aside: what the AI can read and do, what it never gets, and the sign-in note. */
+/** The aside: what the AI can read and do, what it never gets, and how sign-in works today; each answer in full. */
 const Aside = (props: { readonly labels: ConnectAiLabels }) => (
-    <Stack gap="section">
-        <Section
-            title={props.labels.canTitle}
-            kind="list"
-            items={[
-                { id: "can", title: props.labels.canTitle, description: props.labels.canText },
-                { id: "cannot", title: props.labels.cannotTitle, description: props.labels.cannotText },
-            ]}
-            empty={null}
-        />
-        <Divider />
-        <Text size="sm" tone="muted">
-            {props.labels.oauthNote}
-        </Text>
-    </Stack>
+    <DescriptionList
+        layout="stacked"
+        isDivided
+        items={[
+            { id: "can", term: props.labels.canTitle, description: props.labels.canText },
+            { id: "cannot", term: props.labels.cannotTitle, description: props.labels.cannotText },
+            { id: "sign-in", term: props.labels.oauthTitle, description: props.labels.oauthNote },
+        ]}
+    />
 )
 
 /** The connect screen: the endpoint and the tokens, the setup steps for Claude and ChatGPT, and what the AI may and may not do. */
@@ -213,7 +224,7 @@ export const ConnectAiBase = (props: ConnectAiBaseProps) => {
         >
             <PaneGrid
                 label={view.labels.tokensTitle}
-                areas={{ base: ["aside", "main"], wide: ["main aside"] }}
+                areas={{ base: ["main", "aside"], wide: ["main aside"] }}
                 columns={{ base: ["fill"], wide: ["fill", "standard"] }}
             >
                 <Pane area="main" scroll label={view.labels.tokensTitle}>
@@ -221,11 +232,13 @@ export const ConnectAiBase = (props: ConnectAiBaseProps) => {
                         <Stack gap="section">
                             <CreateCard {...props} />
                             <TokensCard {...props} />
-                            <Divider />
-                            <Text isStrong>{view.labels.guidesTitle}</Text>
-                            {view.guides.map((guide) => (
-                                <Guide key={guide.id} guide={guide} />
-                            ))}
+                            <Section title={view.labels.guidesTitle} headingLevel={2}>
+                                <Stack gap="section">
+                                    {view.guides.map((guide) => (
+                                        <Guide key={guide.id} guide={guide} />
+                                    ))}
+                                </Stack>
+                            </Section>
                         </Stack>
                     </PaneSection>
                 </Pane>

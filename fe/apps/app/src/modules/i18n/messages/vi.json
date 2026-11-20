@@ -172,67 +172,116 @@
       "status": "Đang hoàn tất đăng nhập…"
     },
     "plans": {
-      "title": "Học không giới hạn với Premium",
+      "title": "Premium",
       "documentTitle": "Premium",
-      "description": "Trả một lần cho mỗi kỳ. Không tự gia hạn, không tự trừ tiền.",
       "empty": "Hiện chưa có gói Premium nào.",
-      "includesTitle": "Premium gồm những gì",
-      "benefitContent": "Mở toàn bộ nội dung đang là bản xem trước",
-      "expiryNote": "Hết hạn là quay về bản xem trước ngay, không có thời gian ân hạn. Gia hạn bất cứ lúc nào.",
       "planLegend": "Chọn gói",
-      "railLegend": "Thanh toán qua",
       "summaryLabel": "Tóm tắt thanh toán",
       "monthlyName": "Premium hằng tháng",
-      "monthlyNote": "Dùng 1 tháng. Hết hạn thì mua tiếp nếu muốn.",
+      "monthlyNote": "Một tháng, mua lại khi cần",
       "yearlyName": "Premium hằng năm",
       "yearlyNote": "Bằng giá 10 tháng.",
       "otherName": "Premium",
       "otherNote": "Một kỳ Premium, không tự gia hạn.",
       "railSepay": "SePay",
       "railPayos": "payOS",
-      "railDefault": "Mặc định",
       "payNote": "Bạn sẽ sang trang của cổng thanh toán. Premium được kích hoạt khi cổng xác nhận đã nhận tiền.",
-      "startLabel": "Tiếp tục thanh toán",
+      "startLabel": "Thanh toán",
       "startingLabel": "Đang tạo thanh toán",
       "startUnavailable": "Thanh toán chưa sẵn sàng.",
       "signInLabel": "Đăng nhập để tiếp tục",
-      "railLast": "Dùng lần trước",
       "failureTitle": "Chưa bắt đầu được thanh toán",
       "failureSession": "Phiên đăng nhập đã hết. Hãy đăng nhập lại.",
-      "failureRefused": "Chưa tạo được thanh toán, hãy thử lại.",
-      "failureOther": "Có lỗi xảy ra, hãy thử lại sau.",
+      "failureRefused": "Chưa tạo được thanh toán và bạn chưa bị trừ tiền. Bấm Thanh toán để thử lại.",
+      "failureOther": "Chưa tạo được thanh toán và bạn chưa bị trừ tiền. Bấm Thanh toán để thử lại.",
       "premiumTitle": "Bạn đang là Premium đến {date}",
       "premiumDescription": "Mua thêm bây giờ sẽ cộng tiếp từ ngày {date}, không mất ngày nào.",
       "payNoteExtend": "Cộng thêm từ ngày {date}. Premium được gia hạn khi cổng thanh toán xác nhận đã nhận tiền.",
-      "extendLabel": "Gia hạn thêm",
-      "unavailable": "Chưa tải được các gói Premium. Hãy thử lại."
+      "extendLabel": "Gia hạn",
+      "unavailable": "Chưa tải được các gói Premium. Hãy thử lại.",
+      "metaFree": "Gói hiện tại: Miễn phí · Harness và phần 1 của Essentials luôn miễn phí",
+      "metaPremium": "Premium đến {date}",
+      "compareTitle": "Premium mở khóa gì",
+      "compareLabel": "So sánh gói Miễn phí và Premium",
+      "areaColumn": "Phần học",
+      "freeColumn": "Miễn phí",
+      "premiumColumn": "Premium",
+      "yes": "Có",
+      "locked": "Khóa",
+      "area": {
+        "harness": {
+          "title": "Harness",
+          "text": "Build, Xài với Claude Code & Codex, Docs"
+        },
+        "essentials1": {
+          "title": "Essentials, phần 1",
+          "text": "Năm câu hỏi mở bài rồi bài đọc đầy đủ của cụm"
+        },
+        "essentials2": {
+          "title": "Essentials, phần 2 đến 4",
+          "text": "Source kèm sơ đồ, kịch bản chạy bằng CLI, hỏi Claude qua MCP, bậc tự áp dụng"
+        },
+        "projects": {
+          "title": "Projects",
+          "text": "Dự án trên repo của bạn, bốn ngôn ngữ, khoảng 10 check: CI OIDC, probe server, AI đọc mã"
+        },
+        "practice": {
+          "title": "Luyện code, Ôn tập, Kinh nghiệm",
+          "text": "Bài luyện, thẻ ôn và hồ sơ kinh nghiệm"
+        },
+        "devices": {
+          "title": "Máy kết nối CLI",
+          "text": "Số máy chạy kịch bản cùng lúc",
+          "free": "1 máy",
+          "premium": "2 máy"
+        }
+      },
+      "faqTitle": "Hỏi nhanh",
+      "faq": {
+        "pay": {
+          "question": "Thanh toán thế nào?",
+          "answer": "Chuyển khoản qua cổng thanh toán. Tiền về là Premium tự mở, thường trong vài giây."
+        },
+        "renew": {
+          "question": "Có tự gia hạn không?",
+          "answer": "Không. Mỗi lần mua cộng thêm thời hạn vào ngày hết hạn hiện tại."
+        },
+        "expire": {
+          "question": "Hết hạn thì sao?",
+          "answer": "Bạn quay về gói miễn phí, tiến độ và kinh nghiệm đã xác minh vẫn còn."
+        }
+      },
+      "yearlyTag": "Tiết kiệm 2 tháng",
+      "payWithLabel": "Thanh toán",
+      "payWithValue": "Cổng thanh toán · {rail}",
+      "renewLabel": "Tự gia hạn",
+      "renewValue": "Không",
+      "totalLabel": "Tổng"
     },
     "checkoutResult": {
-      "title": "Kết quả thanh toán Premium",
+      "title": "Kết quả thanh toán",
       "plansLabel": "Về trang gói",
       "signInLabel": "Đăng nhập",
-      "verifyingTitle": "Đang xác minh thanh toán",
-      "verifyingStatus": "Đang chờ",
-      "verifyingBody": "Đang chờ cổng thanh toán xác nhận đã nhận tiền. Bạn có thể đóng trang, Premium vẫn được kích hoạt khi có xác nhận.",
-      "activeTitle": "Premium đã được kích hoạt",
-      "activeStatus": "Đã thanh toán",
-      "activeBody": "Bạn là Premium đến {date}. Cảm ơn bạn đã ủng hộ StarCi Next.",
+      "verifyingTitle": "Đang xác nhận thanh toán",
+      "verifyingStatus": "Đang chờ tiền về",
+      "verifyingBody": "Chưa thấy tiền về. Trang tự cập nhật, bạn có thể đóng tab, Premium vẫn mở khi tiền về.",
+      "activeTitle": "Premium đã mở",
+      "activeStatus": "Đã xác nhận",
+      "activeBody": "Projects, phần 2 đến 4 của Essentials và máy thứ hai đã sẵn sàng.",
       "failedTitle": "Thanh toán không thành công",
       "failedStatus": "Thất bại",
       "failedBody": "Giao dịch đã bị huỷ hoặc không thành công, nên Premium chưa được kích hoạt.",
       "expiredTitle": "Đơn thanh toán đã hết hạn",
       "expiredStatus": "Hết hạn",
-      "expiredBody": "Đơn này không còn dùng được. Hãy tạo đơn mới từ trang gói. Nếu bạn đã chuyển tiền cho đơn này, Premium vẫn được kích hoạt khi cổng xác nhận.",
+      "expiredBody": "Đơn quá hạn mà chưa thấy tiền về. Nếu bạn đã chuyển, mã đơn bên dưới giúp chúng tôi tra lại.",
       "signedOutTitle": "Đăng nhập để xem kết quả",
       "signedOutStatus": "Chưa đăng nhập",
       "signedOutBody": "Kết quả thanh toán chỉ hiện cho người đã đăng nhập.",
-      "activeBodyPlain": "Premium của bạn đã hoạt động. Cảm ơn bạn đã ủng hộ StarCi Next.",
       "notFoundTitle": "Không tìm thấy đơn thanh toán",
       "notFoundStatus": "Không có đơn",
       "notFoundBody": "Chúng tôi không tìm thấy đơn này trong tài khoản của bạn. Hãy quay lại trang gói để tạo đơn mới.",
       "unavailableBody": "Chưa đọc được trạng thái đơn từ máy chủ. Hãy tải lại trang sau ít phút; thanh toán của bạn không bị ảnh hưởng.",
-      "continueLabel": "Tiếp tục học",
-      "retryLabel": "Thử thanh toán lại",
+      "retryLabel": "Thử lại",
       "planMonthly": "Premium hằng tháng",
       "planYearly": "Premium hằng năm",
       "planOther": "Premium",
@@ -242,7 +291,13 @@
       "factAmount": "Số tiền",
       "factRail": "Cổng",
       "factCode": "Mã đơn",
-      "factStatus": "Trạng thái"
+      "trailLabel": "Đường dẫn",
+      "premiumCrumb": "Premium",
+      "orderCrumb": "Đơn {code}",
+      "homeLabel": "Về trang Học",
+      "projectsLabel": "Mở Projects",
+      "newOrderLabel": "Tạo đơn mới",
+      "factUntil": "Premium đến"
     },
     "review": {
       "levels": {
@@ -1929,60 +1984,113 @@
     },
     "devices": {
       "pageTitle": "Thiết bị",
-      "codeLabel": "Mã trên terminal của bạn",
+      "codeLabel": "Mã 8 ký tự trên máy",
       "codePlaceholder": "ABCD-1234",
-      "codeHint": "Chỉ xác nhận mã do chính bạn vừa chạy. Kiểm tra tên máy và hệ điều hành trước khi bấm.",
-      "previewTitle": "Máy sẽ được nối",
-      "confirm": "Xác nhận máy này",
+      "confirm": "Xác nhận kết nối",
       "confirming": "Đang xác nhận…",
-      "confirmed": "Đã nối {name}. Terminal sẽ báo đã kết nối.",
       "devicesEmpty": "Chưa có máy nào được nối.",
-      "devicesLimit": "Premium: tối đa 2 máy. Gói miễn phí: 1 máy.",
       "online": "Đang kết nối",
       "offline": "Ngoại tuyến",
-      "lastSeen": "{platform} · {when}",
+      "lastSeen": "{platform} · nối {paired} · thấy {when}",
       "revoke": "Thu hồi",
-      "rulesTitle": "CLI được phép làm gì",
+      "rulesTitle": "CLI làm được gì",
       "closeLabel": "Đóng",
       "allowed": "Được",
       "denied": "Không",
       "pageHeading": "Máy của bạn",
-      "pageSub": "Chạy bài có code trên máy của bạn, kết quả về đây",
+      "pageSub": "CLI chạy bài có code trên máy bạn",
       "connect": "Kết nối máy",
       "connectTitle": "Kết nối máy",
       "pairedTitle": "Máy đã nối",
       "emptyTitle": "Chưa có máy nào được nối",
-      "emptyText": "Làm ba bước, máy hiện ở đây và thu hồi được bất cứ lúc nào.",
-      "levelsTitle": "Mức chứng minh",
-      "practiceTitle": "Đang luyện",
-      "practiceText": "Kết quả chạy trên máy qua CLI, giúp bạn luyện, chưa tính vào milestone.",
-      "proofTitle": "Đã chứng minh",
-      "proofText": "CI có chữ ký hoặc server chạy lại.",
+      "emptyText": "Kịch bản của Essentials chạy qua CLI trên máy bạn. Làm theo ba bước ở trên.",
       "platform": {
         "windows": "Windows",
         "macos": "macOS",
         "linux": "Linux"
       },
       "step": {
-        "install": "Cài StarCi CLI",
-        "installNote": "Hoặc chạy thẳng bằng npx. Mã nguồn client công khai, bản phát hành có chữ ký.",
+        "run": "Chạy CLI trên máy",
+        "runNote": "Cần Node.js đã cài trên máy.",
         "login": "Đăng nhập trên máy",
-        "loginNote": "Terminal in ra một mã 8 ký tự và đường dẫn tới trang này.",
-        "confirm": "Nhập mã và xác nhận",
-        "confirmNote": "Sau khi xác nhận, máy hiện trong Thiết bị của bạn và thu hồi được bất cứ lúc nào."
+        "loginNote": "CLI in ra mã 8 ký tự, mã chỉ có hiệu lực ít phút.",
+        "confirm": "Nhập mã ở đây",
+        "confirmNote": "Bấm Kết nối máy, nhập mã, kiểm tra tên máy rồi xác nhận."
       },
       "rule": {
-        "manifest": "Chỉ chạy lệnh có trong manifest của bài, đã được StarCi ký",
-        "ask": "Hiện từng lệnh và hỏi bạn trước khi chạy",
-        "results": "Gửi kết quả test, log và diff bạn chọn",
-        "noSecrets": "Không gửi cả repo, không gửi .env hay khoá bí mật",
-        "noShell": "Không mở shell từ xa, không tự sửa file"
+        "run": {
+          "text": "Chạy kịch bản của Essentials trên máy bạn"
+        },
+        "send": {
+          "text": "Gửi kết quả chạy về StarCi Next"
+        },
+        "relay": {
+          "text": "Chuyển ngữ cảnh cho Claude qua MCP khi bạn kẹt"
+        },
+        "prove": {
+          "text": "Chứng minh dự án",
+          "note": "CI OIDC và probe server chứng minh"
+        },
+        "files": {
+          "text": "Đọc file ngoài thư mục bài"
+        }
       },
       "error": {
-        "codeNotFound": "Mã không đúng hoặc đã hết hạn. Hãy chạy lại starci-next login.",
+        "codeNotFound": "Mã không đúng hoặc đã hết hạn. Chạy lại npx @starci/next để lấy mã mới.",
         "deviceLimit": "Bạn đã nối đủ số máy cho phép. Hãy thu hồi một máy rồi thử lại.",
         "other": "Chưa xác nhận được; hãy thử lại."
-      }
+      },
+      "mcpSub": "MCP cho Claude Code và Codex",
+      "devicesTab": "Máy đã nối",
+      "mcpTab": "Claude Code & MCP",
+      "tabsLabel": "Các phần của trang máy",
+      "connectNewTitle": "Kết nối máy mới",
+      "previewName": "Tên máy",
+      "previewSystem": "Hệ điều hành",
+      "previewExpires": "Mã hết hạn",
+      "previewHint": "Chỉ xác nhận nếu đây đúng là máy bạn vừa chạy CLI.",
+      "cancel": "Hủy",
+      "limitTitle": "Gói miễn phí nối được 1 máy",
+      "limitText": "Thu hồi máy cũ hoặc nâng cấp Premium để nối tối đa 2 máy.",
+      "plansLabel": "Xem Premium",
+      "metaDevices": "{count} / {limit} máy · {plan} · {text}",
+      "planFree": "Gói miễn phí",
+      "planPremium": "Premium",
+      "metaMcp": "{count} / {limit} token · {text}",
+      "captionFree": "Gói miễn phí nối được 1 máy. Premium nối được tối đa 2 máy.",
+      "captionLeft": "Còn {left} chỗ trống. Gói Premium nối được tối đa 2 máy.",
+      "captionFull": "Đã nối đủ 2 máy. Thu hồi một máy để nối máy khác.",
+      "pairedAt": "{platform} · nối {paired}",
+      "mcpAskTitle": "Hỏi Claude khi kẹt",
+      "mcpAskText": "Khi kịch bản chưa qua và bạn kẹt, Claude Code hoặc Codex trên máy đọc đề bài và kết quả chạy qua MCP để gợi ý. Thêm máy chủ MCP của StarCi Next một lần cho mỗi công cụ.",
+      "mcpClaudeLabel": "Claude Code",
+      "mcpClaudeCommand": "claude mcp add --transport http starci {endpoint} --header \"Authorization: Bearer YOUR_TOKEN\"",
+      "mcpCodexLabel": "Codex",
+      "mcpCodexCommand": "codex mcp add starci --url {endpoint} --bearer-token-env-var STARCI_TOKEN",
+      "mcpTokensTitle": "Token MCP",
+      "mcpTokensEmpty": "Chưa có token nào. Tạo một token rồi dán vào lệnh ở trên.",
+      "mcpTokensCaption": "{count} / {limit} token. Thu hồi một token là nó ngừng chạy ngay.",
+      "mcpCreate": "Tạo token",
+      "mcpCreateTitle": "Tạo token MCP",
+      "mcpCreateHint": "Đặt tên theo công cụ để dễ thu hồi.",
+      "mcpNameLabel": "Tên token",
+      "mcpNamePlaceholder": "Claude Code trên MacBook",
+      "mcpCreating": "Đang tạo…",
+      "mcpCreatedTitle": "Sao chép token ngay bây giờ",
+      "mcpCreatedHint": "Token chỉ hiện một lần. Mất thì thu hồi và tạo cái mới.",
+      "mcpDismiss": "Tôi đã lưu token",
+      "mcpError": {
+        "limit": "Bạn đã tạo đủ 5 token. Thu hồi một token rồi tạo lại.",
+        "name": "Tên token không hợp lệ (1 đến 60 ký tự).",
+        "other": "Chưa xử lý được. Hãy thử lại sau."
+      },
+      "tokenUsed": "…{hint} · tạo {created} · dùng {when}",
+      "tokenNeverUsed": "…{hint} · tạo {created} · chưa dùng",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "copyFailed": "Chưa sao chép được",
+      "devicesError": "Chưa tải được danh sách máy",
+      "devicesErrorHint": "Kiểm tra mạng rồi thử lại."
     },
     "connectAi": {
       "pageTitle": "Kết nối Claude / ChatGPT",
@@ -2048,7 +2156,11 @@
           "title": "Dùng trong cuộc trò chuyện",
           "note": "Mở cuộc trò chuyện mới, bật connector StarCi Next và nói tên bài bạn đang học, ví dụ: giải thích vì sao kịch bản double-spend đỏ trên máy tôi."
         }
-      }
+      },
+      "oauthTitle": "Về đăng nhập",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "copyFailed": "Chưa sao chép được"
     },
     "harness": {
       "pageTitle": "Harness",

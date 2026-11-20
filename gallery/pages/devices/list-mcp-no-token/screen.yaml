@@ -1,0 +1,110 @@
+schema: 1
+screen: devices/list-mcp-no-token
+title: "Máy của bạn, Claude Code & MCP, chưa có token"
+route: "/devices"
+area: devices
+summary: "Tab Claude Code & MCP khi chưa có token nào."
+shots:
+  "390":
+    file: 390.png
+    sha256: f5fd3d2681af01191cb762c3e1b29c0f8855af9557d7863acc80ef14b10076f3
+  "1440":
+    file: 1440.png
+    sha256: fac5f0b9680d6556d0b7f7332a0bbebd16f8a632721070443bf9aef9fcc1a046
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: "Dải đầu trang và hai phần"
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: "Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần thứ hai cùng một việc nối công cụ, không còn trang riêng."
+    actions: ["Kết nối máy"]
+    states:
+      loading: "Dải đầu giữ khung, chữ là khối xám"
+      empty: null
+      error: "Chỉ còn tên trang"
+    needsApi: []
+  - id: body
+    title: "Hỏi Claude khi kẹt và Token MCP"
+    shows: "Lời giải thích, lệnh cho Claude Code và Codex có nút sao chép, phần Token MCP trống với câu hướng dẫn và nút Tạo token."
+    why: "Lệnh đứng trước token vì học viên cần biết dán vào đâu."
+    actions: ["Sao chép", "Tạo token"]
+    states:
+      loading: "Hàng là khối xám giữ đúng khung"
+      empty: "Chưa có token nào. Tạo một token rồi dán vào lệnh ở trên."
+      error: "Thông báo lỗi kèm nút Thử lại"
+    needsApi: []
+  - id: aside
+    title: "CLI làm được gì"
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: "Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh vì dự án giờ chứng minh bằng CI OIDC."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
+    chosen: true
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:18.021Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: 'Ảnh không phải trạng thái chưa có token: hiện 2 / 5 token với hai dòng "Claude Code trên
+            MacBook" (canvas: 0 / 5, hướng dẫn thêm máy chủ MCP rồi Tạo token).'
+        truth:
+          verdict: open
+          notes: Dữ liệu ảnh mâu thuẫn tên màn (no-token nhưng có 2 token), cả 1440 và 390.
+    - n: 2
+      at: 2026-11-20T16:54:38.741Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: 'Đã sửa: 0 / 5 token, dòng "Chưa có token nào" và nút Tạo token.'
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

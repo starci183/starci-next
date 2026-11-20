@@ -1,5 +1,6 @@
 import { FencedCodeBlock, Stack, Text } from "@starci/grammar/common"
-import type { DevicesPairStep } from "../ConnectDrawer/types"
+/** One install or sign-in step of a setup guide: its title, the command to run when it has one, and the line under it. */
+export type DevicesPairStep = { readonly title: string; readonly command: string | undefined; readonly note: string }
 
 /** What the step rows need: the steps. */
 type StepRowsProps = {

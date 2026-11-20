@@ -1,0 +1,110 @@
+schema: 1
+screen: devices/list-mcp-token-created
+title: "Máy của bạn, Claude Code & MCP, token vừa tạo"
+route: "/devices"
+area: devices
+summary: "Tab Claude Code & MCP ngay sau khi tạo token: token hiện một lần trong khối cảnh báo."
+shots:
+  "390":
+    file: 390.png
+    sha256: 992f3a2461504212d546668b1675844368cf42883b70edce7fd425c44e8fde18
+  "1440":
+    file: 1440.png
+    sha256: f13c42e04b7987eff7febb92b7edd33c6153921ddb4c116dd8738760758f13bb
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: "Dải đầu trang và hai phần"
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: "Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần thứ hai cùng một việc nối công cụ, không còn trang riêng."
+    actions: ["Kết nối máy"]
+    states:
+      loading: "Dải đầu giữ khung, chữ là khối xám"
+      empty: null
+      error: "Chỉ còn tên trang"
+    needsApi: []
+  - id: body
+    title: "Token MCP"
+    shows: "Khối cảnh báo Sao chép token ngay bây giờ với token và nút sao chép, nút Tôi đã lưu token, rồi danh sách token."
+    why: "Token chỉ hiện một lần nên cảnh báo nằm ngay chỗ vừa tạo."
+    actions: ["Sao chép", "Tôi đã lưu token", "Thu hồi", "Tạo token"]
+    states:
+      loading: "Hàng là khối xám giữ đúng khung"
+      empty: null
+      error: "Thông báo lỗi kèm nút Thử lại"
+    needsApi: []
+  - id: aside
+    title: "CLI làm được gì"
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: "Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh vì dự án giờ chứng minh bằng CI OIDC."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
+    chosen: true
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:19.150Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: "Hai ảnh khác dữ liệu: 1440 là 3 / 5 token (3 dòng) còn 390 là 4 / 5 token (4 dòng), nên
+            không cùng một trạng thái; cần chụp cả hai từ một học viên."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:40.048Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: "Đã sửa: 1 / 5 ở cả hai độ rộng."
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

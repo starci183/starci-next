@@ -1,0 +1,110 @@
+schema: 1
+screen: devices/list-error
+title: "Máy của bạn, lỗi tải"
+route: "/devices"
+area: devices
+summary: "Trang máy khi danh sách máy không đọc được: chỉ còn tên trang và thông báo lỗi kèm nút Thử lại."
+shots:
+  "390":
+    file: 390.png
+    sha256: bc236d1aa862ce2db9d7b78cb759d0457012a2b28f07ec8796db1c5739f5c305
+  "1440":
+    file: 1440.png
+    sha256: aab0a8c585c98dc55414b06fe635cb777ae3163dbff902eab4b104ddb31e860b
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: "Dải đầu trang và hai phần"
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: "Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần thứ hai cùng một việc nối công cụ, không còn trang riêng."
+    actions: ["Kết nối máy"]
+    states:
+      loading: "Dải đầu giữ khung, chữ là khối xám"
+      empty: null
+      error: "Chỉ còn tên trang"
+    needsApi: []
+  - id: body
+    title: "Thông báo lỗi"
+    shows: "Khối lỗi Không tải được kèm nút Thử lại thay cho nội dung."
+    why: "Lỗi không giả làm trống."
+    actions: ["Thử lại"]
+    states:
+      loading: "Hàng là khối xám giữ đúng khung"
+      empty: null
+      error: "Thông báo lỗi kèm nút Thử lại"
+    needsApi: []
+  - id: aside
+    title: "CLI làm được gì"
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: "Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh vì dự án giờ chứng minh bằng CI OIDC."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
+    chosen: true
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:11.910Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." cho cả khối máy; canvas có "Chưa tải được danh sách
+            máy / Kiểm tra mạng rồi thử lại." và vẫn giữ dải tab; tiêu đề trang mất dòng số máy.
+        states:
+          verdict: open
+          notes: Khi lỗi mất cả dải tab Máy đã nối / Claude Code & MCP và dòng meta (1 / 2 máy) mà canvas giữ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:36.090Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: 'Đã sửa: giữ tab, thông báo "Chưa tải được danh sách máy / Kiểm tra mạng rồi thử lại."; dòng meta bỏ số máy vì chưa biết (chấp nhận).'
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null
