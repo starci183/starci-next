@@ -1,0 +1,76 @@
+schema: 1
+screen: auth/confirm-expired
+title: Xác nhận email, liên kết hết hạn
+route: /sign-in/confirm
+area: auth
+summary: '**Concept: Xác nhận email, liên kết hết hạn.** Trạng thái của màn này: liên kết đã dùng,
+  hết hạn hoặc thiếu token (`IDENTITY_RESET_TOKEN_INVALID`). Mục tiêu: chỉ đường để lấy liên kết
+  mới. Thao tác: `POST /auth/confirm`; lấy liên kết mới bằng `POST /auth/resend` sau khi đăng nhập.
+  Bố cục: như màn Xác nhận email. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: trang
+  mới. Lưu ý xung đột: không có.'
+code:
+  - app/[locale]/(pages)/(auth)/sign-in/confirm/page.tsx
+  - features/pages/SignInConfirmPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: dce5b20f3ec1cdafc77224ef22c4e1626f6135591ee5d208fb28346ce24a64f0
+  "1440":
+    file: 1440.png
+    sha256: 3939670e1815a71d176aec9ed45eb3d5f3ede7b22387400459991d4dcc843850
+sections:
+  - id: khung-vao-app
+    title: Khung vào app
+    why: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`EntryFrame`, `Form`"
+  - id: hoc-ban-chat-de-vibe-code-ma-khong-mat-kiem-soat
+    title: Học bản chất, để vibe-code mà không mất kiểm soát.
+    why: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
+    law: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
+    grammar: "`Stack`, `Heading`, `Text`"
+  - id: ket-qua-xac-nhan
+    title: Kết quả xác nhận
+    why: người học cần biết liên kết hỏng và bước kế tiếp.
+    law: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css
+      của app).
+    grammar: "`SurfaceCard`, `Heading`, `Button`"
+  - id: thay-doi-so-voi-ban-da-duyet
+    title: "Thay đổi so với bản đã duyệt:"
+    why: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu
+      bằng liên kết trong email.
+    law: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+    grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Trang mới.
+considered: []
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T20:51:00.298Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

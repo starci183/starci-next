@@ -1,0 +1,33 @@
+schema: 1
+screen: incidents/list
+title: Sự cố, danh sách các sự cố đã viết
+route: /incidents
+area: incidents
+summary: 'Route: `/incidents`. Mã: `fe/apps/app/src/components/blocks/IncidentsList/component.tsx`.
+  Danh sách chỉ liệt kê các sự cố đã viết, gom theo chủ đề. Dev chưa có sự cố nào được viết nên màn
+  này chưa chụp được: hôm nay trang hiện trạng thái "chưa có sự cố nào", xem `incidents/list-none`.'
+code:
+  - app/[locale]/(pages)/(app)/incidents/page.tsx
+  - features/pages/IncidentsPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: tên trang, mô tả và dòng số liệu (số bài, số sự cố đã mở, điều kiện cần thiết bị đã kết nối)
+      nằm trong dải đầu, không còn một dòng chữ nhạt ghép bằng dấu chấm giữa.
+    law: "`page-header-left-sublabel-xs.md`, `type-scale-14-12.md`."
+    grammar: "`Page header={{ title, description, meta, breadcrumbs }}`."
+  - id: cac-nhom-theo-chu-de
+    title: Các nhóm theo chủ đề
+    why: mỗi chủ đề là một `Section` danh sách phẳng; mỗi hàng là một bài có sự cố đã mở, huy hiệu "Đã
+      mở" và một lệnh "Mở sự cố" cao 40px; cả hàng là liên kết. Bài chưa có sự cố không hiện.
+    law: "`rows-in-card.md`, một kiểu cho một hàng."
+    grammar: '`Section kind="list"` với `ListRow badges action`.'
+considered: []
+audit: null

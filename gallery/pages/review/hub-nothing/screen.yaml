@@ -1,0 +1,36 @@
+schema: 1
+screen: review/hub-nothing
+title: Ôn tập, không có gì đến hạn
+route: /review
+area: review
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
+  không có thẻ khoá."
+code:
+  - app/[locale]/(pages)/(app)/review/page.tsx
+  - features/pages/ReviewTodayPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: dau-trang
+    title: Đầu trang
+    why: 'Đầu trang (tên, dòng số liệu, một nút chính) đi qua `SlotView` cùng nội dung: tiêu đề giữ
+      nguyên khi đọc lỗi hay rỗng. Dòng số liệu và nút chính "Chọn bộ thẻ" giữ như trước.'
+    law: "`grammar-slot-interface` (chỉ `SlotView` rẽ nhánh)."
+    grammar: "`SlotView` với `header`, `headerFallback` và `frame` đặt `Page`."
+  - id: trang-thai
+    title: Trạng thái
+    why: 'Không có gì đến hạn: nút chính "Chọn bộ thẻ" và đường tới Essentials.'
+    law: "`FE-ERROR-1` (chỉ `SlotView` rẽ nhánh), `grammar-slot-interface`"
+    grammar: "`SlotView` với `Alert`, `EmptyNotice` và `isLoading` của Section, ListRow."
+  - id: phan-bien
+    title: Phản biện
+    why: Chưa thấy chỗ lệch so với bản vẽ ở lần chụp này; chủ dự án duyệt rồi mới sửa tiếp.
+    law: "`PROJECT-GALLERY-6`"
+    grammar: không đổi Grammar; chỗ lệch được ghi lại để chủ dự án quyết.
+considered: []
+audit: null

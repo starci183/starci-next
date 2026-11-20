@@ -1,0 +1,47 @@
+schema: 1
+screen: practice/problem-accepted
+title: Giải bài, Accepted
+route: /practice/[slug]
+area: practice
+summary: "Trạng thái của màn này: Accepted. Mục tiêu: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý
+  khi kẹt, xem lời giải khi muốn."
+code:
+  - app/[locale]/(pages)/(app)/practice/[slug]/page.tsx
+  - features/pages/PracticeSolvePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: null
+  "1440":
+    file: 1440.png
+    sha256: null
+sections:
+  - id: dai-tieu-de-chua-nhieu-nuoc-nhat
+    title: "Dải tiêu đề: Chứa nhiều nước nhất"
+    why: tên trang, dòng sự kiện và đúng một nút chính. "Nộp bài" ("Chạy thử" trung tính); đang chấm thì
+      xám kèm lý do; Accepted thì "Bài tiếp theo".
+    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    grammar: PageHeader
+  - id: loi-giai-mau
+    title: Lời giải mẫu
+    why: "vùng này phục vụ mục tiêu của trang: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt, xem
+      lời giải khi muốn."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: Section kind="list"
+  - id: phan-tu-con-thieu
+    title: Phần tử còn thiếu
+    why: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
+    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ);
+      danh sách ở GRAMMAR-GAPS.md.
+    grammar: "cần Grammar: ô soạn mã có tô màu cú pháp và thụt dòng (hiện chỉ có Textarea)"
+  - id: chua-chup
+    title: Chưa chụp
+    why: màn này chưa chụp được trên kho dev; cần một lần nộp Accepted; không có máy chấm trong kho dev.
+      Mở được bằng mock của practiceSubmission (accepted).
+    law: không dựng dữ liệu giả cho ảnh chụp (chỉ treo hoặc từ chối một lần đọc). Trạng thái design.json
+      giữ nguyên approved. Mã của màn đã theo bản vẽ đã duyệt (Section kind="list", SlotView, Tabs
+      kind="filter", EmptyNotice mark="none").
+    grammar: '`SlotView`, `Section kind="list"`, `Tabs kind="filter"`, `EmptyNotice mark="none"`'
+considered: []
+audit: null

@@ -1,0 +1,78 @@
+schema: 1
+screen: auth/reset
+title: Đặt mật khẩu mới
+route: /sign-in/reset
+area: auth
+summary: '**Concept: Đặt mật khẩu mới.** Mục tiêu: đặt mật khẩu mới từ liên kết trong email. Thao
+  tác: `POST /auth/reset` (token trong địa chỉ, mật khẩu mới); API đặt mật khẩu, xác nhận email và
+  kết thúc mọi phiên đang mở; liên kết trong email là `/auth/reset?token=…` và được chuyển tới trang
+  này. Bố cục: logo, nút đổi ngôn ngữ và một thẻ ở giữa. Nút chính: "Đặt mật khẩu"; xong thì về màn
+  Đăng nhập kèm thông báo xanh. Lọc: không có. Khác bản hiện tại: trang mới. Lưu ý xung đột: không
+  có.'
+code:
+  - app/[locale]/(pages)/(auth)/sign-in/reset/page.tsx
+  - features/pages/SignInResetPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: fa45fbe82977ec1027c501ed1b137c1bd15eb78ed341c579ba9f6fdcb3b17f17
+  "1440":
+    file: 1440.png
+    sha256: 310006ee36ba07109c58fc65ececda16498a8425803b8662d2ced2b5b629cf2e
+sections:
+  - id: khung-vao-app
+    title: Khung vào app
+    why: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`EntryFrame`, `Form`"
+  - id: hoc-ban-chat-de-vibe-code-ma-khong-mat-kiem-soat
+    title: Học bản chất, để vibe-code mà không mất kiểm soát.
+    why: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
+    law: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
+    grammar: "`Stack`, `Heading`, `Text`"
+  - id: the-mat-khau-moi
+    title: Thẻ mật khẩu mới
+    why: hai ô và một nút; không cần email vì token đã nói tài khoản nào.
+    law: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css
+      của app).
+    grammar: "`Form`, `Input` kind `newPassword`, `Button`"
+  - id: thay-doi-so-voi-ban-da-duyet
+    title: "Thay đổi so với bản đã duyệt:"
+    why: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu
+      bằng liên kết trong email.
+    law: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+    grammar: không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Trang mới, thay cho bước mật
+      khẩu mới trong màn nhập mã.
+considered: []
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T20:51:01.794Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,0 +1,88 @@
+schema: 1
+screen: auth/sign-in
+title: Đăng nhập
+route: /sign-in
+area: auth
+summary: '**Concept: Đăng nhập.** Mục tiêu: vào lại để học tiếp bằng email và mật khẩu. Thao tác:
+  cổng đăng nhập của API (`POST /auth/login` email + mật khẩu, kết quả là phiên trong bộ nhớ và
+  cookie làm mới httpOnly của API; `POST /auth/logout` ở menu avatar); GraphQL `viewerRoles` sau khi
+  có phiên. Bố cục: không có khung ứng dụng, chỉ logo, tên và nút đổi ngôn ngữ. 1440 chia đôi: trái
+  giới thiệu ba khu vực, phải là thẻ biểu mẫu; 390 chỉ còn biểu mẫu. Cùng thẻ này nằm trong modal
+  khi người học bấm Đăng nhập ở đầu trang. Hai ô, "Quên mật khẩu?" cùng hàng nhãn mật khẩu, dòng
+  chuyển sang Đăng ký. Nút chính: "Đăng nhập". Lọc: không có. Khác bản hiện tại: Đăng nhập chỉ còn
+  email và mật khẩu; không còn mã 6 số sau khi nhập mật khẩu: phiên mở ngay tại chỗ, thẻ đóng lại
+  (modal giữ nguyên chỗ người học đang đứng). Bỏ nút Facebook và GitHub. Nút Google chỉ hiện khi hệ
+  thống đã cấu hình Google; chưa cấu hình thì không có nút nào, không có nút chết. Tài khoản cũ từ
+  hệ thống trước không có mật khẩu: dùng Quên mật khẩu một lần, nhận email có liên kết và đặt mật
+  khẩu. Lưu ý xung đột: không có.'
+code:
+  - app/[locale]/(pages)/(auth)/sign-in/page.tsx
+  - features/pages/SignInPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: d0467819f27e6c1ad4714c629b57298270ea68a081d78ee7ec86ee51ccc0db65
+  "1440":
+    file: 1440.png
+    sha256: 9d86b16391546e3e8996e2bd1aa6e88fa613f5572bed0c20e2a82872e47504ed
+sections:
+  - id: khung-vao-app
+    title: Khung vào app
+    why: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`EntryFrame`, `Form`"
+  - id: hoc-ban-chat-de-vibe-code-ma-khong-mat-kiem-soat
+    title: Học bản chất, để vibe-code mà không mất kiểm soát.
+    why: vùng giới thiệu nằm ở 1440 để người học biết mình đang vào đâu; 390 bỏ vùng này.
+    law: danh sách nằm phẳng trên nền với hàng hairline, không viền ngoài (brand.css của app).
+    grammar: "`Stack`, `Heading`, `Text`"
+  - id: the-bieu-mau
+    title: Thẻ biểu mẫu
+    why: một thẻ cho đăng nhập, đăng ký và quên mật khẩu; chỉ đổi ruột thẻ.
+    law: nhãn ô 16/400, ô nhập và nút cùng cao 40px, lỗi là một dòng dưới ô hoặc một Alert (brand.css
+      của app).
+    grammar: "`Form`, `Field`, `Input`, `Button`, `Link`"
+  - id: thay-doi-so-voi-ban-da-duyet
+    title: "Thay đổi so với bản đã duyệt:"
+    why: luồng đăng nhập chuyển sang tài khoản do chính ứng dụng quản lý, xác nhận và đặt lại mật khẩu
+      bằng liên kết trong email.
+    law: chủ sản phẩm duyệt lại mọi thay đổi so với bản đã duyệt trước khi code (PROJECT-GALLERY-7).
+    grammar: "không thêm phần tử mới; dùng lại các phần tử đã nêu ở trên. – Đăng nhập chỉ còn email và
+      mật khẩu; không còn mã 6 số sau khi nhập mật khẩu: phiên mở ngay tại chỗ, thẻ đóng lại (modal
+      giữ nguyên chỗ người học đang đứng). – Bỏ nút Facebook và GitHub. Nút Google chỉ hiện khi hệ
+      thống đã cấu hình Google; chưa cấu hình thì không có nút nào, không có nút chết. – Tài khoản
+      cũ từ hệ thống trước không có mật khẩu: dùng Quên mật khẩu một lần, nhận email có liên kết và
+      đặt mật khẩu."
+considered: []
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T20:50:56.697Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
