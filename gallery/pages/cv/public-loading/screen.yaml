@@ -1,42 +1,89 @@
 schema: 1
 screen: cv/public-loading
-title: "CV công khai, đang tải"
-route: "/cv/{slug}"
+title: CV công khai, đang tải
+route: /cv/{slug}
 area: cv
 summary: "Route: /cv/{slug} (ảnh chụp: đang đọc). Mã: fe/apps/app/src/components/blocks/PublicCv/."
 code:
   - features/pages/PublicCvPage
   - components/blocks/PublicCv
 shots:
-  "1440": { file: 1440.png, sha256: 32ebd5ef04fc7724356853e463c0a3cf30e86ae8efd78e20eb9e64e58e1bceb8 }
-  "390": { file: 390.png, sha256: 12e0f0682f7ff899d08091d7224338f46b2a55b56f1f7f46b1be144b9abd7c98 }
+  "390":
+    file: 390.png
+    sha256: 12e0f0682f7ff899d08091d7224338f46b2a55b56f1f7f46b1be144b9abd7c98
+  "1440":
+    file: 1440.png
+    sha256: 32ebd5ef04fc7724356853e463c0a3cf30e86ae8efd78e20eb9e64e58e1bceb8
 sections:
   - id: s1
-    title: "Chủ CV"
-    shows: "khung xương đúng chỗ avatar, tên, dòng sự kiện và nút, để trang không nhảy khi dữ liệu tới. Nút Chia sẻ chưa bấm được cho tới khi biết CV có thật, để không chia sẻ một liên kết không có CV."
-    why: "một vùng đang tải đi qua SlotView, chỉ nó rẽ nhánh; lá và vùng ghép chỉ nhận isLoading."
+    title: Chủ CV
+    shows: khung xương đúng chỗ avatar, tên, dòng sự kiện và nút, để trang không nhảy khi dữ liệu tới.
+      Nút Chia sẻ chưa bấm được cho tới khi biết CV có thật, để không chia sẻ một liên kết không có
+      CV.
+    why: một vùng đang tải đi qua SlotView, chỉ nó rẽ nhánh; lá và vùng ghép chỉ nhận isLoading.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: "Dòng CV đã ký"
-    shows: 'ba dòng xương với ba vạch (câu, nguồn, vết tin cậy), giữ tiêu đề "Dòng CV đã ký" thật.'
-    why: "như trên."
+    title: Dòng CV đã ký
+    shows: ba dòng xương với ba vạch (câu, nguồn, vết tin cậy), giữ tiêu đề "Dòng CV đã ký" thật.
+    why: như trên.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s3
-    title: "Vì sao tin được CV này"
-    shows: "khối giải thích cũng là khung xương vì nó đi cùng CV; không vẽ khi kết quả là không có CV."
-    why: "như trên."
+    title: Vì sao tin được CV này
+    shows: khối giải thích cũng là khung xương vì nó đi cùng CV; không vẽ khi kết quả là không có CV.
+    why: như trên.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Giữ bố cục đã duyệt trên canvas"
+  - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-  - option: "Vẽ bộ lọc thành nhóm chip như canvas"
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
-audit: null
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
+      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:43.356Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,25 +1,64 @@
 schema: 1
 screen: career/verify-error
-title: "Xác minh dòng CV, lỗi tải"
-route: "/verify/[code]"
+title: Xác minh dòng CV, lỗi tải
+route: /verify/[code]
 area: career
-summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
+  Grammar 0.50."
 code:
   - features/pages/VerifyPage
   - components/blocks/VerifyExperience
 shots:
-  "1440": { file: 1440.png, sha256: 9ff385f986bae1618cc24d187e57f86becab9a4189e5db7a5d0b351f08c66f19 }
-  "390": { file: 390.png, sha256: 61a5c0175d72b41c29186e0bad40ea2857c9930ed7f3bb374da7bebe116f04fb }
+  "390":
+    file: 390.png
+    sha256: 61a5c0175d72b41c29186e0bad40ea2857c9930ed7f3bb374da7bebe116f04fb
+  "1440":
+    file: 1440.png
+    sha256: 9ff385f986bae1618cc24d187e57f86becab9a4189e5db7a5d0b351f08c66f19
 sections:
   - id: s1
-    title: "Nội dung chính"
-    shows: "Nội dung của màn như canvas đã duyệt"
-    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Giữ bố cục đã duyệt trên canvas"
+  - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-audit: null
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:35.778Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

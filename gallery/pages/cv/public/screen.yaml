@@ -1,63 +1,127 @@
 schema: 1
 screen: cv/public
-title: "CV công khai, đã tải"
-route: "/cv/{slug}"
+title: CV công khai, đã tải
+route: /cv/{slug}
 area: cv
-summary: "Route: /cv/{slug} (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn nguồn). Mã: fe/apps/app/src/components/blocks/PublicCv/. Trạng thái khác: cv/public-few-lines, cv/public-many-lines, cv/public-not-fou"
+summary: "Route: /cv/{slug} (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn
+  nguồn). Mã: fe/apps/app/src/components/blocks/PublicCv/. Trạng thái khác: cv/public-few-lines,
+  cv/public-many-lines, cv/public-not-fou"
 code:
   - features/pages/PublicCvPage
   - components/blocks/PublicCv
 shots:
-  "1440": { file: 1440.png, sha256: 5a3d38a7f2430c5b0c3a4f96a12518b0d3a7ff60fd67fa51e3216f21ecca3898 }
-  "390": { file: 390.png, sha256: 9c0bc2c830894853eade06e2fb528c29fb0f2f00900373071bb7482703968ab1 }
+  "390":
+    file: 390.png
+    sha256: 9c0bc2c830894853eade06e2fb528c29fb0f2f00900373071bb7482703968ab1
+  "1440":
+    file: 1440.png
+    sha256: 5a3d38a7f2430c5b0c3a4f96a12518b0d3a7ff60fd67fa51e3216f21ecca3898
 sections:
   - id: s1
-    title: "Thanh trên công khai"
-    shows: "người xem chưa đăng nhập; chỉ cần biết đây là StarCi và đổi ngôn ngữ (dòng CV đọc theo ngôn ngữ đang chọn)."
-    why: "route nằm trong nhóm (auth), không có phiên và không có thanh bên của app."
+    title: Thanh trên công khai
+    shows: người xem chưa đăng nhập; chỉ cần biết đây là StarCi và đổi ngôn ngữ (dòng CV đọc theo ngôn
+      ngữ đang chọn).
+    why: route nằm trong nhóm (auth), không có phiên và không có thanh bên của app.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: "Chủ CV"
-    shows: 'nhà tuyển dụng thấy ngay CV của ai và ai bảo đảm: ảnh hoặc chữ đầu, tên, dấu "CV đã xác minh bởi StarCi", dòng sự kiện (số dòng đã ký, ngày ký mới nhất); không email, không gói, không lộ trình. Nút chính "Chia sẻ CV".'
-    why: "verified-experience.md điều 7 (chỉ hiện vai trò người ký và ngày, không hiện tên người duyệt)."
+    title: Chủ CV
+    shows: 'nhà tuyển dụng thấy ngay CV của ai và ai bảo đảm: ảnh hoặc chữ đầu, tên, dấu "CV đã xác minh
+      bởi StarCi", dòng sự kiện (số dòng đã ký, ngày ký mới nhất); không email, không gói, không lộ
+      trình. Nút chính "Chia sẻ CV".'
+    why: verified-experience.md điều 7 (chỉ hiện vai trò người ký và ngày, không hiện tên người duyệt).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s3
-    title: "Dòng CV đã ký"
-    shows: 'mỗi dòng là câu CV, nguồn, chủ đề và vết tin cậy Luyện xong, AI chấm, Thầy ký, kèm liên kết "Xác minh" và mã tới /verify/{mã}. Chỉ dòng Đã xác minh mà học viên bật Công khai, mới ký trước; dòng bị thu hồi biến mất.'
-    why: "verified-experience.md điều 4 và 10 (chỉ mục Đã xác minh lên CV; số bài luyện là bằng chứng, không tự thành dòng CV)."
+    title: Dòng CV đã ký
+    shows: mỗi dòng là câu CV, nguồn, chủ đề và vết tin cậy Luyện xong, AI chấm, Thầy ký, kèm liên kết
+      "Xác minh" và mã tới /verify/{mã}. Chỉ dòng Đã xác minh mà học viên bật Công khai, mới ký
+      trước; dòng bị thu hồi biến mất.
+    why: verified-experience.md điều 4 và 10 (chỉ mục Đã xác minh lên CV; số bài luyện là bằng chứng,
+      không tự thành dòng CV).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s4
-    title: "Vì sao tin được CV này"
-    shows: "giải thích một lần ba tín hiệu mà mỗi dòng mang (Luyện xong, AI chấm, Thầy ký), và nói trang không hiện điểm số hay tên người duyệt."
-    why: 'verified-experience.md điều 3 (AI không tự xác minh, nên "AI chấm" là một bước của vết, không có điểm) và điều 7.'
+    title: Vì sao tin được CV này
+    shows: giải thích một lần ba tín hiệu mà mỗi dòng mang (Luyện xong, AI chấm, Thầy ký), và nói trang
+      không hiện điểm số hay tên người duyệt.
+    why: verified-experience.md điều 3 (AI không tự xác minh, nên "AI chấm" là một bước của vết, không
+      có điểm) và điều 7.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s5
-    title: "Chân trang xác minh"
-    shows: "nói cách đọc mã xác minh và mời người xem tạo CV của họ."
-    why: 'verified-experience.md điều 6 (dòng bị thu hồi hiện "đã thu hồi" ở trang xác minh).'
+    title: Chân trang xác minh
+    shows: nói cách đọc mã xác minh và mời người xem tạo CV của họ.
+    why: verified-experience.md điều 6 (dòng bị thu hồi hiện "đã thu hồi" ở trang xác minh).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s6
-    title: "Điểm còn mở"
-    shows: "hai điều chưa chắc, chờ chủ sản phẩm hoặc người kiểm."
-    why: "Theo khung Grammar 0.50 của màn này."
+    title: Điểm còn mở
+    shows: hai điều chưa chắc, chờ chủ sản phẩm hoặc người kiểm.
+    why: Theo khung Grammar 0.50 của màn này.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Giữ bố cục đã duyệt trên canvas"
+  - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-  - option: "Vẽ bộ lọc thành nhóm chip như canvas"
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
-audit: null
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
+      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:40.002Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

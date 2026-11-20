@@ -1,39 +1,91 @@
 schema: 1
 screen: profile/new
-title: "Hồ sơ của học viên mới"
-route: "/profile"
+title: Hồ sơ của học viên mới
+route: /profile
 area: profile
-summary: "Như profile/overview, học viên mới. Route: /profile (ảnh chụp: học viên mới, chưa có ảnh, chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích ở profile/overview. Mã nguồn màn hình nay nằm trong nhóm tuyến (page"
+summary: "Như profile/overview, học viên mới. Route: /profile (ảnh chụp: học viên mới, chưa có ảnh,
+  chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích
+  ở profile/overview. Mã nguồn màn hình nay nằm trong nhóm tuyến (page"
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
-  "1440": { file: 1440.png, sha256: 7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e }
-  "390": { file: 390.png, sha256: 628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2 }
+  "390":
+    file: 390.png
+    sha256: 628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2
+  "1440":
+    file: 1440.png
+    sha256: 7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e
 sections:
   - id: s1
-    title: "Danh tính khi chưa có ảnh"
-    shows: 'Avatar vẽ hình mầm sinh từ tên (chưa có ảnh nên không có nút "Xoá ảnh"); nút duy nhất là "Tải ảnh lên". Chưa chọn lộ trình thì dòng mục tiêu ghi "Chưa chọn lộ trình" và liên kết đổi thành "Chọn lộ trình".'
-    why: "learning-program.md (lộ trình là tùy chọn, không phần nào bị chặn vì chưa chọn)."
+    title: Danh tính khi chưa có ảnh
+    shows: Avatar vẽ hình mầm sinh từ tên (chưa có ảnh nên không có nút "Xoá ảnh"); nút duy nhất là "Tải
+      ảnh lên". Chưa chọn lộ trình thì dòng mục tiêu ghi "Chưa chọn lộ trình" và liên kết đổi thành
+      "Chọn lộ trình".
+    why: learning-program.md (lộ trình là tùy chọn, không phần nào bị chặn vì chưa chọn).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: "Dòng CV và liên kết xác minh khi rỗng"
-    shows: 'vùng CV nói thẳng điều cần làm ("Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên") thay vì một danh sách trống; vùng liên kết nói liên kết xuất hiện khi một mục được xác minh. Đếm "0/3 mục Đã xác minh" vẫn hiện để học viên biết ngưỡng.'
-    why: "verified-experience.md điều 4, unhandled-case-tells-customer.md (không để trống im lặng)."
+    title: Dòng CV và liên kết xác minh khi rỗng
+    shows: vùng CV nói thẳng điều cần làm ("Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản
+      chất để có dòng đầu tiên") thay vì một danh sách trống; vùng liên kết nói liên kết xuất hiện
+      khi một mục được xác minh. Đếm "0/3 mục Đã xác minh" vẫn hiện để học viên biết ngưỡng.
+    why: verified-experience.md điều 4, unhandled-case-tells-customer.md (không để trống im lặng).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s3
-    title: "Tài khoản khi chưa có gì"
-    shows: 'máy và token rỗng mỗi bảng một câu ngắn ("Chưa nối máy nào.", "Chưa có token nào.") và vẫn giữ liên kết quản lý để học viên đi nối; gói ghi "Miễn phí" và "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", liên kết "Quản lý gói" dẫn tới trang Premium.'
-    why: "premium.md (bậc miễn phí), COOK 2026-11-17 mục access (Harness miễn phí cho mọi người)."
+    title: Tài khoản khi chưa có gì
+    shows: máy và token rỗng mỗi bảng một câu ngắn ("Chưa nối máy nào.", "Chưa có token nào.") và vẫn
+      giữ liên kết quản lý để học viên đi nối; gói ghi "Miễn phí" và "Phần 1 của mỗi bài Bản chất và
+      toàn bộ Harness là miễn phí", liên kết "Quản lý gói" dẫn tới trang Premium.
+    why: premium.md (bậc miễn phí), COOK 2026-11-17 mục access (Harness miễn phí cho mọi người).
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Như profile/overview, học viên mới."
+  - option: Như profile/overview, học viên mới.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-audit: null
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:51.082Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

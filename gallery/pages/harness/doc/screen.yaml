@@ -1,32 +1,78 @@
 schema: 1
 screen: harness/doc
-title: "Harness, một bài giải thích"
-route: "/harness/docs/[doc]"
+title: Harness, một bài giải thích
+route: /harness/docs/[doc]
 area: harness
-summary: "Ba ngăn đọc một lần: danh sách bài, thân bài, mục lục bài; lỗi chỉ hiện một thông báo. Route: /harness/docs/{doc}. Mã: fe/apps/app/src/components/blocks/HarnessDoc/, dữ liệu qua fe/apps/app/src/hooks/harnessDocs/useHarnessDocScreen.ts. Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện không đổi"
+summary: "Ba ngăn đọc một lần: danh sách bài, thân bài, mục lục bài; lỗi chỉ hiện một thông báo.
+  Route: /harness/docs/{doc}. Mã: fe/apps/app/src/components/blocks/HarnessDoc/, dữ liệu qua
+  fe/apps/app/src/hooks/harnessDocs/useHarnessDocScreen.ts. Mã nguồn màn hình nay nằm trong nhóm
+  tuyến (pages); giao diện không đổi"
 code:
   - features/pages/HarnessDocPage
   - components/blocks/HarnessDoc
 shots:
-  "1440": { file: 1440.png, sha256: 8a70034fb59b7a033041757d1b319949ff9d1bae5f7608386edeaee370e0e8f0 }
-  "390": { file: 390.png, sha256: 9a7d896d16d6db51db465045e3d167064e909dcea6605f73740dd90059a6481f }
+  "390":
+    file: 390.png
+    sha256: 9a7d896d16d6db51db465045e3d167064e909dcea6605f73740dd90059a6481f
+  "1440":
+    file: 1440.png
+    sha256: 8a70034fb59b7a033041757d1b319949ff9d1bae5f7608386edeaee370e0e8f0
 sections:
   - id: s1
-    title: "Thân bài dài (markdown, bảng, sơ đồ)"
-    shows: 'bài dài được cắt thành các mục theo tiêu đề cấp hai, mỗi mục có neo; bảng cuộn ngang trong khung riêng, sơ đồ mermaid được vẽ và có tên cho trình đọc màn hình ("Sơ đồ 1").'
-    why: "FE-ERROR-1, FE-FUNCTION-4."
+    title: Thân bài dài (markdown, bảng, sơ đồ)
+    shows: bài dài được cắt thành các mục theo tiêu đề cấp hai, mỗi mục có neo; bảng cuộn ngang trong
+      khung riêng, sơ đồ mermaid được vẽ và có tên cho trình đọc màn hình ("Sơ đồ 1").
+    why: FE-ERROR-1, FE-FUNCTION-4.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
   - id: s2
-    title: 'Mục lục "Trong bài này"'
-    shows: "bài dài cần chỗ nhảy; cột phải liệt kê mọi mục và đứng trên thân bài ở màn hẹp. Không có công cụ để chọn vì bài là kiến thức chung."
-    why: "FE-FOLDER-2."
+    title: Mục lục "Trong bài này"
+    shows: bài dài cần chỗ nhảy; cột phải liệt kê mọi mục và đứng trên thân bài ở màn hẹp. Không có công
+      cụ để chọn vì bài là kiến thức chung.
+    why: FE-FOLDER-2.
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
   - option: "Ba ngăn đọc một lần: danh sách bài, thân bài, mục lục bài; lỗi chỉ hiện một thông báo."
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-audit: null
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:16.360Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

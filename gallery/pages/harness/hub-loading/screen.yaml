@@ -1,25 +1,64 @@
 schema: 1
 screen: harness/hub-loading
-title: "Harness, tổng quan, đang tải"
-route: "/harness"
+title: Harness, tổng quan, đang tải
+route: /harness
 area: harness
-summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và
+  luật Grammar 0.50."
 code:
   - features/pages/HarnessHubPage
   - components/blocks/HarnessHub
 shots:
-  "1440": { file: 1440.png, sha256: b061114706944465cb318b279e815eb19b3c65e710ae67caf9fa874f402619f6 }
-  "390": { file: 390.png, sha256: eaad7681a6d6b62e57831b713e73a55144f987cc8e41cbe87587c099fbbb4e54 }
+  "390":
+    file: 390.png
+    sha256: eaad7681a6d6b62e57831b713e73a55144f987cc8e41cbe87587c099fbbb4e54
+  "1440":
+    file: 1440.png
+    sha256: b061114706944465cb318b279e815eb19b3c65e710ae67caf9fa874f402619f6
 sections:
   - id: s1
-    title: "Nội dung chính"
-    shows: "Nội dung của màn như canvas đã duyệt"
-    why: "Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50"
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
     actions: []
-    states: { loading: null, empty: null, error: null }
+    states:
+      loading: null
+      empty: null
+      error: null
     needsApi: []
 considered:
-  - option: "Giữ bố cục đã duyệt trên canvas"
+  - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
-audit: null
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:27.122Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
