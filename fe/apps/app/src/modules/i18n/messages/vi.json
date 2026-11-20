@@ -332,9 +332,9 @@
         "meta": "{total} bộ · {added} đã thêm · Mỗi ngày tối đa {goal} thẻ theo mục tiêu của bạn",
         "cards": "{count} thẻ",
         "filters": {
-          "all": "Tất cả {count}",
-          "added": "Đã thêm {count}",
-          "new": "Chưa thêm {count}"
+          "all": "Tất cả",
+          "added": "Đã thêm",
+          "new": "Chưa thêm"
         }
       },
       "hub": {
@@ -732,7 +732,9 @@
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
       "factAuthored": "{count} sự cố đã mở",
-      "soon": "Sắp có",
+      "noneTitle": "Chưa có sự cố nào để luyện",
+      "noneBody": "Sự cố gắn với bài Essentials sẽ mở dần. Học bài trước, sự cố sẽ hiện ở đây khi sẵn sàng.",
+      "noneAction": "Đi tới Essentials",
       "open": "Đã mở",
       "cta": "Mở sự cố",
       "meta": "{difficulty} · {minutes} phút"
@@ -1740,6 +1742,7 @@
       "queue": {
         "pageTitle": "Duyệt kinh nghiệm",
         "title": "Duyệt kinh nghiệm",
+        "itemTitle": "Một mục cần duyệt",
         "forbiddenTitle": "Chỉ thầy và người duyệt được mở trang này",
         "listLabel": "Hàng chờ duyệt",
         "count": "{count} mục",

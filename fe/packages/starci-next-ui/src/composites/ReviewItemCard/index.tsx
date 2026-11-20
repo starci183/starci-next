@@ -108,7 +108,7 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <Badge tone="muted">{props.item.sourceLine}</Badge>
-                <Text size="sm" tone="muted">
+                <Text size="xs" tone="muted">
                     {props.item.kindLine}
                 </Text>
             </Cluster>

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import {
-    Alert,
     Button,
+    EmptyNotice,
     Link,
     Meter,
     Page,
@@ -143,7 +143,7 @@ const UnavailableSection = (props: BlockSectionProps) => (
         <Stack gap="row">
             <Text tone="muted">{props.unavailable}</Text>
             <div>
-                <Button intent="neutral" size="sm" onPress={props.onRetry}>
+                <Button intent="neutral" onPress={props.onRetry}>
                     {props.retry}
                 </Button>
             </div>
@@ -192,15 +192,14 @@ const ActivitySection = (props: ReadyProps) => (
     </Section>
 )
 
-/** The first visit: nothing is measured yet, which is said once, and the three ways in follow the two zeros. */
+/** The first visit: nothing is measured yet, which the page says once (an illustration, the words), then the three ways in. */
 const FirstVisit = (props: ReadyProps) => (
     <Stack gap="region">
-        <Alert tone="informative" title={props.labels.firstVisitTitle} description={props.labels.firstVisitText} />
-        <Section
-            kind="figures"
-            ariaLabel={props.labels.ribbonLabel}
-            items={props.view.ribbon}
-            isLoading={props.isLoading}
+        <EmptyNotice
+            scope="page"
+            message={props.labels.firstVisitTitle}
+            description={props.labels.firstVisitText}
+            media={{ illustration: { staticsKey: "illustrations/empty/hoc-first-visit.png" } }}
         />
         <Section
             kind="list"
@@ -296,7 +295,7 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
                     </PaneSection>
                 </Pane>
                 {hasAside ? (
-                    <Pane area="aside" surface scroll label={labels.activityTitle}>
+                    <Pane area="aside" scroll label={labels.activityTitle}>
                         <PaneSection>
                             {drawn((ready) => (
                                 <ActivitySection {...ready} />

@@ -87,7 +87,7 @@ const Recall = (props: PieceProps) => {
                     empty={labels.recallEmpty}
                     isLoading={props.isLoading}
                 />
-                <Text size="sm" tone="muted">
+                <Text size="xs" tone="muted">
                     {labels.recallNote}
                 </Text>
             </Stack>
@@ -113,7 +113,7 @@ const First = (props: PieceProps) => {
                         onValueChange={props.screen.on.quickGoal}
                         empty={labels.goalFirstTitle}
                     />
-                    <Text size="sm" tone="muted">
+                    <Text size="xs" tone="muted">
                         {labels.goalFirstNote}
                     </Text>
                 </Stack>
@@ -132,7 +132,7 @@ const Rail = (props: PieceProps) => {
                 <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
                     <Stack gap="row">
                         <Text isStrong>{view.goalLine}</Text>
-                        <Text size="sm" tone="muted">
+                        <Text size="xs" tone="muted">
                             {view.streakLine}
                         </Text>
                         <TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>

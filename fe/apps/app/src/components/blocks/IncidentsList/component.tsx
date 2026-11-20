@@ -1,4 +1,4 @@
-import { Page, Stack, Text } from "@starci/grammar/common"
+import { EmptyNotice, Page } from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -20,7 +20,7 @@ export const INCIDENTS_PLACEHOLDER: IncidentsScreenView = {
                 title: "xxxxxxxxxx",
                 description: "xxxxxxxx",
                 badge: "xxxxxx",
-                badgeTone: "muted" as const,
+                badgeTone: "success" as const,
                 href: "",
                 cta: "",
             })),
@@ -35,6 +35,10 @@ export type IncidentsLabels = {
     /** The note that running an incident needs a connected device, which is not open yet. */
     readonly runnerNote: string
     readonly empty: string
+    /** The page-level state when no incident is written yet. */
+    readonly noneTitle: string
+    readonly noneBody: string
+    readonly noneAction: string
 }
 
 /** Props for {@link IncidentsListBase}. */
@@ -49,26 +53,33 @@ export type IncidentsListBaseProps = {
 }
 
 /**
- * Draws the incident list: the intro, then the Essentials lessons grouped by topic, each with the status of its tier-2 incident.
- * No incident is written yet, so every row says it is coming soon and links nowhere.
+ * Draws the incident list: the header with the facts as its meta, then the written incidents grouped by topic. With none written the
+ * whole page says so (an illustration, the words, the way to Essentials).
  */
 export const IncidentsListBase = (props: IncidentsListBaseProps) => {
     const { slot, placeholder, slotLabels, labels } = props.props
+    const meta = "items" in slot ? [...slot.items.facts, labels.runnerNote].join(" · ") : labels.runnerNote
     return (
-        <Page header={{ title: labels.title, description: labels.description, breadcrumbs: "root" }}>
+        <Page header={{ title: labels.title, description: labels.description, meta, breadcrumbs: "root" }}>
             <SlotView
                 slot={slot}
                 placeholder={placeholder}
                 labels={slotLabels}
                 onRetry={props.on.retry}
-                render={(view, isLoading) => (
-                    <Stack gap="region">
-                        <Text size="sm" tone="muted">
-                            {[...view.facts, labels.runnerNote].join(" · ")}
-                        </Text>
+                render={(view, isLoading) =>
+                    view.groups.length === 0 ? (
+                        <EmptyNotice
+                            scope="page"
+                            message={labels.noneTitle}
+                            description={labels.noneBody}
+                            actionLabel={labels.noneAction}
+                            actionHref="/essentials"
+                            media={{ illustration: { staticsKey: "illustrations/empty/essentials-empty.png" } }}
+                        />
+                    ) : (
                         <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
-                    </Stack>
-                )}
+                    )
+                }
             />
         </Page>
     )

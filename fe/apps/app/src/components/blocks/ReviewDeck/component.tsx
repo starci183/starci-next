@@ -1,14 +1,4 @@
-import {
-    Alert,
-    Badge,
-    Button,
-    Page,
-    Section,
-    Stack,
-    SurfaceCard,
-    Text,
-    type PageHeaderContent,
-} from "@starci/grammar/common"
+import { Alert, Button, Page, Section, Stack, Text, type PageHeaderContent } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { ReviewDeckScreen, ReviewDeckView } from "@/hooks/reviewHub"
 
@@ -42,23 +32,21 @@ const Primary = (props: ReviewDeckBaseProps) => {
     )
 }
 
-/** The sample questions: each is a real object, so it takes a card; the answers show when the learner reviews. */
+/** The sample questions as a flat list of rows; the answers show when the learner reviews. */
 const Preview = (props: ReviewDeckBaseProps & { readonly view: ReviewDeckView; readonly isLoading: boolean }) => (
-    <Section title={props.props.labels.previewTitle} headingLevel={2} isLoading={props.isLoading}>
-        <Stack gap="row">
-            {props.view.samples.map((card) => (
-                <SurfaceCard key={card.id} ariaLabel={card.question} isLoading={props.isLoading}>
-                    <Stack gap="row">
-                        <Text isStrong>{card.question}</Text>
-                        <Badge tone="muted">{card.kind}</Badge>
-                    </Stack>
-                </SurfaceCard>
-            ))}
-            <Text size="sm" tone="muted">
-                {props.props.labels.previewNote}
-            </Text>
-        </Stack>
-    </Section>
+    <Section
+        kind="list"
+        title={props.props.labels.previewTitle}
+        headingLevel={2}
+        isLoading={props.isLoading}
+        caption={props.props.labels.previewNote}
+        items={props.view.samples.map((card) => ({
+            id: card.id,
+            title: card.question,
+            description: card.kind,
+        }))}
+        empty={null}
+    />
 )
 
 /** The zone that removes an added deck: what happens to the schedule, and a quiet destructive command. */

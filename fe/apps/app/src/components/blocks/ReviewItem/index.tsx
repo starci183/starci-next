@@ -38,7 +38,8 @@ export const ReviewItem = (props: ReviewItemProps) => {
                 placeholder: REVIEW_ITEM_PLACEHOLDER,
                 slotLabels: { ...useSlotLabels()(t("empty")), forbidden: t("forbiddenTitle") },
                 panelLabels: useReviewPanelLabels(),
-                backLabel: t("back"),
+                title: t("itemTitle"),
+                backLabel: t("title"),
                 backHref: APP_ROUTES.reviewQueue,
                 decision,
             }}

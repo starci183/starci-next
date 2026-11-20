@@ -1,4 +1,4 @@
-import { Alert, ChoiceChips, EmptyNotice, Page, Section, Stack, type ListRowData } from "@starci/grammar/common"
+import { Alert, EmptyNotice, Page, Section, Stack, Tabs, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
@@ -55,23 +55,19 @@ const DeckList = (
             isLoading={props.isLoading}
             filter={
                 <>
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.filterLabel}
-                        isLabelHidden
-                        options={filterOptions}
-                        value={filter}
-                        onValueChange={props.on.setFilter}
-                        empty={labels.noMatch}
-                        isLoading={props.isLoading}
+                        items={filterOptions}
+                        selectedKey={filter}
+                        onSelect={props.on.setFilter}
                     />
-                    <ChoiceChips
+                    <Tabs
+                        kind="filter"
                         label={labels.trackLabel}
-                        isLabelHidden
-                        options={trackOptions}
-                        value={track}
-                        onValueChange={props.on.setTrack}
-                        empty={labels.noMatch}
-                        isLoading={props.isLoading}
+                        items={trackOptions}
+                        selectedKey={track}
+                        onSelect={props.on.setTrack}
                     />
                 </>
             }

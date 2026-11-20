@@ -332,9 +332,9 @@
         "meta": "{total} decks · {added} added · Up to {goal} cards a day by your goal",
         "cards": "{count} cards",
         "filters": {
-          "all": "All {count}",
-          "added": "Added {count}",
-          "new": "Not added {count}"
+          "all": "All",
+          "added": "Added",
+          "new": "Not added"
         }
       },
       "hub": {
@@ -732,7 +732,9 @@
       "empty": "There are no lessons to list incidents for yet.",
       "factLessons": "{count} lessons",
       "factAuthored": "{count} incidents open",
-      "soon": "Coming soon",
+      "noneTitle": "No incident to practise yet",
+      "noneBody": "Incidents tied to Essentials lessons open one by one. Learn a lesson first; its incident shows here once it is ready.",
+      "noneAction": "Go to Essentials",
       "open": "Open",
       "cta": "Open incident",
       "meta": "{difficulty} · {minutes} min"
@@ -1740,6 +1742,7 @@
       "queue": {
         "pageTitle": "Experience review",
         "title": "Experience review",
+        "itemTitle": "One item to review",
         "forbiddenTitle": "Only the teacher and reviewers can open this page",
         "listLabel": "Review queue",
         "count": "{count} items",

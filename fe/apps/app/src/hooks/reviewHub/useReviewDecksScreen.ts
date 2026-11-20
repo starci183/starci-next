@@ -57,9 +57,9 @@ export type ReviewDecksScreen = {
         readonly slotLabels: SlotLabels
         readonly labels: ReviewDecksLabels
         readonly filter: ReviewDecksFilter
-        readonly filterOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly filterOptions: ReadonlyArray<{ readonly id: string; readonly label: string; readonly count: number }>
         readonly track: string
-        readonly trackOptions: ReadonlyArray<{ readonly value: string; readonly label: string }>
+        readonly trackOptions: ReadonlyArray<{ readonly id: string; readonly label: string }>
         readonly note: ReviewDecksNote | null
         readonly decksHref: string
     }
@@ -169,15 +169,9 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
                 noMatch: t("noMatch"),
             },
             filter,
-            filterOptions: FILTERS.map((each) => ({
-                value: each,
-                label: t(`filters.${each}`, { count: countOf(each) }),
-            })),
+            filterOptions: FILTERS.map((each) => ({ id: each, label: t(`filters.${each}`), count: countOf(each) })),
             track,
-            trackOptions: [
-                { value: "all", label: t("allTracks") },
-                ...tracks.map((each) => ({ value: each, label: each })),
-            ],
+            trackOptions: [{ id: "all", label: t("allTracks") }, ...tracks.map((each) => ({ id: each, label: each }))],
             note,
             decksHref: APP_ROUTES.reviewDecks,
         },

@@ -29,6 +29,9 @@ export const IncidentsList = () => {
                     description: t("description"),
                     runnerNote: t("runnerNote"),
                     empty: t("empty"),
+                    noneTitle: t("noneTitle"),
+                    noneBody: t("noneBody"),
+                    noneAction: t("noneAction"),
                 },
             }}
             on={{ retry: () => void read.mutate() }}
