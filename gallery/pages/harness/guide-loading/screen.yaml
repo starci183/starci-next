@@ -1,0 +1,140 @@
+schema: 1
+screen: harness/guide-loading
+title: Hướng dẫn Xài, đang tải
+route: /harness/use/[tool]/[guide]
+area: harness
+summary: "Trạng thái của màn: Hướng dẫn Xài, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
+  Grammar 0.50."
+code:
+  - features/pages/HarnessGuidePage
+  - components/blocks/HarnessGuide
+shots:
+  "390":
+    file: 390.png
+    sha256: f919ae02811f524d6061ee5f518fa826b8aca3203dd570d97e35cc6b4e5e3545
+  "1440":
+    file: 1440.png
+    sha256: 1a2f804ec3482121a1ca17c4629000c51af9062fbf9e775dade58394003ec7e4
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:24.342Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách "Hướng dẫn" nằm sau khối doctor và công cụ, ngược với 1440 (cột trái).
+        layout:
+          verdict: open
+          notes: Ở 390 có khoảng trống ~230px giữa khối doctor skeleton và "Hướng dẫn" (y1190-1415), danh sách
+            Hướng dẫn rơi xuống cuối trang.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:43.505Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách Hướng dẫn nằm trước khối công cụ/doctor, thân bài không có skeleton.
+        layout:
+          verdict: open
+          notes: Ở 390 vẫn còn khoảng trống ~230px giữa skeleton danh sách và "Trong bài này"; thứ tự khác
+            1440.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:10.030Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 khoảng trống ~220px dưới tab trước "Trong bài này", danh sách Hướng dẫn rơi xuống cuối
+            trang (thứ tự khác 1440).
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: "Thân bài không có skeleton: cột giữa trống hoàn toàn ở 1440 và khoảng trống ~220px dưới tab
+            ở 390."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T15:02:04.219Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

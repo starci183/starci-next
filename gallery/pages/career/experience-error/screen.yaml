@@ -1,0 +1,89 @@
+schema: 1
+screen: career/experience-error
+title: Kinh nghiệm, lỗi tải
+route: /experience
+area: career
+summary: "Trạng thái của màn: Kinh nghiệm, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/ExperiencePage
+  - components/blocks/ExperienceList
+shots:
+  "390":
+    file: 390.png
+    sha256: 678e3a21a752a6020af74af16966332d4bc06cf12ef640ad8c93604bb45b4cd5
+  "1440":
+    file: 1440.png
+    sha256: 7643183cb5035745045dfc47ff7798222bc98be17fa538265462673fa8ee6e96
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:32.151Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas career/experience-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:57.060Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

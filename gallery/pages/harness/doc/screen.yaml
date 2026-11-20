@@ -1,0 +1,120 @@
+schema: 1
+screen: harness/doc
+title: Harness, một bài giải thích
+route: /harness/docs/[doc]
+area: harness
+summary: "Ba ngăn đọc một lần: danh sách bài, thân bài, mục lục bài; lỗi chỉ hiện một thông báo. Route: /harness/docs/{doc}. Mã: fe/apps/app/src/components/blocks/HarnessDoc/, dữ liệu qua fe/apps/app/src/hooks/harnessDocs/useHarnessDocScreen.ts. Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện không đổi"
+code:
+  - features/pages/HarnessDocPage
+  - components/blocks/HarnessDoc
+shots:
+  "390":
+    file: 390.png
+    sha256: c67dec5887d544938aa2625f4e1c77270cc67814e3399c968763ab6bcc2ed2d8
+  "1440":
+    file: 1440.png
+    sha256: 9a0f2789dea8f2cd8e408cf02893126d06aaaa1c47aaa8d8edaa6e92d11a0d18
+sections:
+  - id: s1
+    title: Thân bài dài (markdown, bảng, sơ đồ)
+    shows: bài dài được cắt thành các mục theo tiêu đề cấp hai, mỗi mục có neo; bảng cuộn ngang trong khung riêng, sơ đồ mermaid được vẽ và có tên cho trình đọc màn hình ("Sơ đồ 1").
+    why: FE-ERROR-1, FE-FUNCTION-4.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Mục lục "Trong bài này"
+    shows: bài dài cần chỗ nhảy; cột phải liệt kê mọi mục và đứng trên thân bài ở màn hẹp. Không có công cụ để chọn vì bài là kiến thức chung.
+    why: FE-FOLDER-2.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Ba ngăn đọc một lần: danh sách bài, thân bài, mục lục bài; lỗi chỉ hiện một thông báo."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:16.360Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách "Trong bài này" (8 mục) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu; breadcrumb bị cắt "…ra sa" ở 390.
+        layout:
+          verdict: open
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:36.714Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách "Docs" (11 bài) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu; breadcrumb cắt "...ra sa".
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:03.496Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

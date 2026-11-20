@@ -1,7 +1,6 @@
 import {
     Avatar,
     Button,
-    ChoiceChips,
     Cluster,
     CopyField,
     Divider,
@@ -15,6 +14,7 @@ import {
     Section,
     Stack,
     Stepper,
+    Tabs,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -91,7 +91,7 @@ const TopBar = (props: { readonly labels: PublicCvLabels }) => (
         />
         <Cluster gap="inline" align="center">
             <LocaleSwitch />
-            <Button intent="neutral" size="sm" href={props.labels.signInHref}>
+            <Button intent="neutral" href={props.labels.signInHref}>
                 {props.labels.signIn}
             </Button>
         </Cluster>
@@ -111,19 +111,17 @@ const ShareBody = (props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "
         />
         <Cluster gap="inline" wrap align="center">
             {props.share.targets.map((target) => (
-                <Button key={target.id} intent="neutral" size="sm" href={target.href} target="_blank" rel="noreferrer">
+                <Button key={target.id} intent="neutral" href={target.href} target="_blank" rel="noreferrer">
                     {target.label}
                 </Button>
             ))}
             {props.canShare ? (
-                <Button intent="neutral" size="sm" onPress={props.on.shareNative}>
+                <Button intent="neutral" onPress={props.on.shareNative}>
                     {props.share.other}
                 </Button>
             ) : null}
         </Cluster>
-        <Text size="sm" tone="muted">
-            {props.share.previewTitle}
-        </Text>
+        <Text tone="muted">{props.share.previewTitle}</Text>
         <Image src={props.previewSrc} alt={props.share.previewAlt} ratio="16:9" fit="cover" />
     </Stack>
 )
@@ -166,9 +164,10 @@ const ShareAction = (
 
 /** Who the CV belongs to: the avatar, the name, the shield line and the event line, then the one action. */
 const Hero = (
-    props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView },
+    props: PublicCvBaseProps["props"] &
+        Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView; readonly isLoading: boolean },
 ) => {
-    const isLoading = "isLoading" in props.slot
+    const { isLoading } = props
     return (
         <Stack gap="row">
             <Cluster gap="row" align="center" justify="between" wrap>
@@ -184,10 +183,10 @@ const Hero = (
                         <Heading level={1} isLoading={isLoading}>
                             {props.view.name}
                         </Heading>
-                        <Text tone="muted" size="sm" isLoading={isLoading}>
+                        <Text tone="muted" isLoading={isLoading}>
                             {props.labels.verifiedBy}
                         </Text>
-                        <Text tone="muted" size="sm" isLoading={isLoading}>
+                        <Text tone="muted" isLoading={isLoading}>
                             {props.view.facts}
                         </Text>
                     </Stack>
@@ -208,13 +207,13 @@ const rowOf = (line: PublicCvLineView, labels: PublicCvLabels, isLoading: boolea
     badges: [{ label: line.sourceLabel, tone: "neutral" }],
     detail: (
         <Cluster gap="inline" wrap align="center">
-            <Text size="sm" tone="muted" isLoading={isLoading}>
+            <Text tone="muted" isLoading={isLoading}>
                 {line.proofText}
             </Text>
-            <Text size="sm" tone="muted" isLoading={isLoading}>
+            <Text tone="muted" isLoading={isLoading}>
                 {labels.aiText}
             </Text>
-            <Text size="sm" isStrong isLoading={isLoading}>
+            <Text isStrong isLoading={isLoading}>
                 {line.signText}
             </Text>
         </Cluster>
@@ -226,24 +225,24 @@ const rowOf = (line: PublicCvLineView, labels: PublicCvLabels, isLoading: boolea
 const SourceChips = (
     props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView },
 ) => (
-    <ChoiceChips
+    <Tabs
+        kind="filter"
         label={props.labels.sourcesLabel}
-        isLabelHidden
-        options={[
-            { value: "all", label: `${props.labels.allSources} ${props.view.total}` },
-            ...props.view.sources.map((source) => ({ value: source.id, label: `${source.label} ${source.count}` })),
+        items={[
+            { id: "all", label: props.labels.allSources, count: props.view.total },
+            ...props.view.sources.map((source) => ({ id: source.id, label: source.label, count: source.count })),
         ]}
-        value={props.source}
-        onValueChange={props.on.chooseSource}
-        empty={null}
+        selectedKey={props.source}
+        onSelect={props.on.chooseSource}
     />
 )
 
 /** The signed lines, with the source filter and "Xem thêm"; a short list adds the line that says the CV keeps growing. */
 const LinesSection = (
-    props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView },
+    props: PublicCvBaseProps["props"] &
+        Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView; readonly isLoading: boolean },
 ) => {
-    const isLoading = "isLoading" in props.slot
+    const { isLoading } = props
     return (
         <Stack gap="row">
             <Section
@@ -262,11 +261,7 @@ const LinesSection = (
                     {props.view.moreLabel}
                 </Button>
             ) : null}
-            {props.view.growNote === "" ? null : (
-                <Text size="sm" tone="muted">
-                    {props.view.growNote}
-                </Text>
-            )}
+            {props.view.growNote === "" ? null : <Text tone="muted">{props.view.growNote}</Text>}
         </Stack>
     )
 }
@@ -287,9 +282,7 @@ const WhySection = (props: { readonly labels: PublicCvLabels; readonly isLoading
                 currentStepId="signed"
                 isLoading={props.isLoading}
             />
-            <Text size="sm" tone="muted">
-                {props.labels.whyNote}
-            </Text>
+            <Text tone="muted">{props.labels.whyNote}</Text>
         </Stack>
     </Section>
 )
@@ -299,9 +292,7 @@ const Foot = (props: { readonly labels: PublicCvLabels }) => (
     <Stack gap="row">
         <Divider />
         <Cluster gap="row" justify="between" wrap>
-            <Text size="sm" tone="muted">
-                {props.labels.footNote}
-            </Text>
+            <Text tone="muted">{props.labels.footNote}</Text>
             <Link variant="plain" href={props.labels.signInHref}>
                 {props.labels.footCta}
             </Link>
@@ -339,10 +330,12 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
                     onRetry={props.on.retry}
                     render={(view, isLoading) => (
                         <Stack gap="region">
-                            <Hero {...props.props} on={props.on} view={view} />
+                            <Hero {...props.props} on={props.on} view={view} isLoading={isLoading} />
                             <Grid
                                 kind="main-rail"
-                                primary={<LinesSection {...props.props} on={props.on} view={view} />}
+                                primary={
+                                    <LinesSection {...props.props} on={props.on} view={view} isLoading={isLoading} />
+                                }
                                 rail={<WhySection labels={props.props.labels} isLoading={isLoading} />}
                                 railWidth="standard"
                                 align="start"

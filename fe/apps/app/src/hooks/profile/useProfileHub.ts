@@ -4,7 +4,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { useSession } from "@/hooks/auth"
 import { useExperienceWords } from "@/hooks/experience"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import {
     useMutateSetCvVisibilitySwr,
     useMutateShowExperienceSwr,
@@ -114,7 +114,7 @@ export const useProfileHub = (): ProfileHubState => {
             })),
             cvLink: slotOf(cvLink, (data) => cvLinkOf(origin, data)),
             cv: slotOf(experience, (data) => cvOf({ t, words, locale, origin, copiedId, data })),
-            devices: slotOf(devices, (list) => devicesOf(t, format, list)),
+            devices: settledListSlot(slotOf(devices, (list) => devicesOf(t, format, list))),
             plan: slotOf(premium, (data) => planOf(t, words, data)),
             aside: slotOf(progress, (data) => asideOf(t, data, experience.data)),
         },

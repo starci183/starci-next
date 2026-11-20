@@ -44,3 +44,9 @@ Vì sao: hai điều chưa chắc, chờ chủ sản phẩm hoặc người ki�
 - Địa chỉ chia sẻ Zalo (`https://zalo.me/share?url=…`) chưa kiểm với Zalo; LinkedIn và Facebook dùng địa chỉ chia sẻ công khai của họ.
   Luật: `verified-experience.md` điều 1 (bằng chứng phải có dạng chứng minh) và điều 10.
   Grammar: không đổi.
+
+## Cập nhật 2026-11-20 (pending-seed)
+
+Vì sao: Trạng thái: chờ chụp lại. Dữ liệu thật đã có (CV của học viên gallery-career-states), nhưng lõi dev chưa chạy bản sửa không trả email làm tên hiển thị (profile-cv.policy publicNameOf); ảnh chụp lại sau khi lõi chạy bản sửa. Mã hiện tại: lọc theo nguồn là Tabs kind="filter" có số đếm, nút một cỡ 40px, isLoading đi từ SlotView xuống từng phần.
+Luật: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
+Grammar: `Section kind="list"` + `Tabs kind="filter"`, `Stepper`, `Button`, `Popover`

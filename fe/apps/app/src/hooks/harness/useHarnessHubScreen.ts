@@ -134,8 +134,15 @@ export const useHarnessHubScreen = (): HarnessHubScreen => {
         props: {
             header: harnessHeaderOf(common, { active: "overview", title: t("title"), description: t("description") }),
             slot,
-            placeholder: HARNESS_HUB_PLACEHOLDER,
-            slotLabels: slotLabels(t("empty")),
+            placeholder: {
+                ...HARNESS_HUB_PLACEHOLDER,
+                figures: (["builds", "practising", "proved", "checks"] as const).map((id) => ({
+                    id,
+                    term: t(`figures.${id}`),
+                    value: "xx",
+                })),
+            },
+            slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 figuresLabel: t("figuresLabel"),
                 partsTitle: t("partsTitle"),

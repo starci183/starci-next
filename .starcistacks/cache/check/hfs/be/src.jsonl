@@ -3380,11 +3380,11 @@
 {"data":{},"findings":[],"hash":"ef29bfebb9252b2b72525ab4b397fe5ae1a150afac25c0947dbcfe94264d5b6b","path":"be/src/modules/domain/profile/profile-avatar.policy.ts","step":"file-rules"}
 {"findings":[],"hash":"7615bb1b96a731d95da16a184bbf7764ceaad991028869b7ca8e7d6febdc303f","path":"be/src/modules/domain/profile/profile-avatar.policy.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"b03a9e26f19d1bfc41f8bb2e16b973e2558ae210a8d2350c5974bbcd53fcbdfe","path":"be/src/modules/domain/profile/profile-cv.policy.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"405f842546eadfc9281ca8fbc33a5354a9e65e2edd9aa06a5c53b04070ef0326","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"file-rules"}
-{"findings":[],"hash":"6bbc9e7291a379dd6acdaf541899bcaa59c5f1037b7187c1ebf7709b4a51d3ad","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"004eac97a1132f86c953b85a1b497a01a04923a6af656698fafd8df5769e9c10","path":"be/src/modules/domain/profile/profile-cv.service.spec.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"9ada8016c997a9d98b74a09c61e337c8922732017538d0c669f865d2d1539484","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"file-rules"}
-{"findings":[],"hash":"2d56671b083076f76f140d688d44567751b2720e2f672948e5c6e8295fe9d0b5","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"9d88908c7a4f1ce095906ed2f9575395b38cea96d92b87b0a1607ef40f260b60","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"file-rules"}
+{"findings":[],"hash":"e77966b455a2cba177b4db61bfe01bd52f06a138c08abe99242d2ae08fcacadd","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"926e34d22c054ac7260acdf3c29c4a1a5e8bcd1bd0773b717d87b8295ca38fc6","path":"be/src/modules/domain/profile/profile-cv.service.spec.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9a4549507696ede716e7bb15b8cc39c35ea8f5efed919e9678959e494175b478","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"file-rules"}
+{"findings":[],"hash":"cedaf68ce80eb590671fe47e2254ea6bbc1c7a5ed475d0885856cc4597cdfcb4","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"db0a9c6c327f6fcdd22c5a3de315468d43e4ba6829b1eeb7d90b30009ae0175f","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"file-rules"}
 {"findings":[],"hash":"bf3b606ca2d68ccf5b508e0772f41a8278abbef48dfe94eb67617b1ea9944c64","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"2bef214c30afd8b82e9564d316738ec46577e31aca322005ea6a1ac3c6b8cf4e","path":"be/src/modules/domain/profile/profile.config.ts","step":"file-rules"}

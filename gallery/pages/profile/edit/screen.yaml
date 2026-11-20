@@ -1,0 +1,130 @@
+schema: 1
+screen: profile/edit
+title: Sửa hồ sơ
+route: /profile/edit
+area: profile
+summary: 'Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên. Route: /profile/edit (trang con "Hồ sơ / Sửa"). Mã: fe/apps/app/src/components/blocks/ProfileEdit/. Giải thích đầy đủ nằm ở profile/overview, mục "Sửa hồ sơ". Mã nguồn màn hình nay nằm trong nhóm tuyến (pages); giao diện'
+code:
+  - features/pages/ProfileEditPage
+  - components/blocks/ProfileEdit
+shots:
+  "390":
+    file: 390.png
+    sha256: e2e0ad6bc1cc23a068febb34fce6918c10fc8f2ea3394c0b68a397e04cdf32cf
+  "1440":
+    file: 1440.png
+    sha256: 7c384edffcfd0956ae85012d42591803f0db466f52a37f3a4ad65621928936ab
+sections:
+  - id: s1
+    title: "Đầu trang: Hủy và Lưu thay đổi"
+    shows: Hủy là nút trung tính, "Lưu thay đổi" là nút chính duy nhất và tắt khi ảnh đang tải lên; lưu xong quay về Hồ sơ.
+    why: conventions.md (một nút chính mỗi trang).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Ảnh đại diện
+    shows: chọn ảnh (kiểm loại và dung lượng ở trình duyệt, giới hạn lấy từ máy chủ), gửi thẳng tới kho và tự lưu; xóa ảnh có xác nhận vì ảnh bị xóa khỏi kho.
+    why: conventions.md (giới hạn lấy từ máy chủ, không viết cứng).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Tên hiển thị và liên kết CV
+    shows: ô nhập tên có số ký tự trên giới hạn; liên kết CV với công tắc công khai để đặt ngay lúc sửa.
+    why: verified-experience.md (trang công khai không lộ điểm số hay tên người duyệt).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Thêm ô Lộ trình mục tiêu (Select) theo canvas; lưu cùng tên.
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:47.714Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: '"Hủy" khác "Huỷ" của canvas và phần còn lại của app (chính tả không thống nhất).'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Dòng "Thay đổi chưa lưu" hiện khi form còn nguyên giá trị đầu và "Lưu thay đổi" đã bật; ô Tên hiển thị trống dù tài khoản có tên (email).
+    - n: 2
+      at: 2026-11-20T14:16:11.196Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Dòng "Thay đổi chưa lưu" hiện khi form chưa sửa gì và "Lưu thay đổi" đã bật.
+    - n: 3
+      at: 2026-11-20T14:52:38.406Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

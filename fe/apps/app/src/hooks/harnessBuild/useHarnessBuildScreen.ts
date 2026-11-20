@@ -47,6 +47,9 @@ export type HarnessBuildScreen = {
         readonly slot: DataSlot<HarnessBuildScreenView>
         readonly placeholder: HarnessBuildScreenView
         readonly slotLabels: SlotLabels
+        /** The way back to the list, set only when the read failed; empty otherwise. */
+        readonly backLabel: string
+        readonly backHref: string
         readonly labels: HarnessBuildLabels
         readonly common: HarnessCommonLabels
         readonly isOnlyOpen: boolean
@@ -99,13 +102,15 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
                 ...(read.data === undefined
                     ? {}
                     : { description: read.data.summary, meta: t("e2e", { passed, total }) }),
-                trail: [[common.tabs.build, HARNESS_ROUTES.build]],
+                trail: read.data === undefined ? [] : [[common.tabs.build, HARNESS_ROUTES.build]],
             }),
+            backLabel: "isError" in slotOfSwr(read) ? t("backToBuilds") : "",
+            backHref: HARNESS_ROUTES.build,
             slot: mapSlot(slotOfSwr(read), (build) =>
                 build === undefined ? HARNESS_BUILD_PLACEHOLDER : buildViewOf(build, route.stage, words),
             ),
             placeholder: HARNESS_BUILD_PLACEHOLDER,
-            slotLabels: slotLabels(t("missing")),
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 stagesTitle: t("stagesTitle"),
                 pullLabel: t("pullLabel"),

@@ -5,7 +5,15 @@ import { InjectClock, type Clock } from "@modules/platform/clock"
 import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { eachInOrder } from "@modules/platform/primitives"
 import { ProfileError, ProfileErrorCode } from "./errors/profile.error"
-import { CV_SLUG_ATTEMPTS, cvPathOf, cvSlugBaseOf, cvSlugCandidateOf, isUniqueViolation } from "./profile-cv.policy"
+import {
+    CV_SLUG_ATTEMPTS,
+    cvPathOf,
+    cvSlugBaseOf,
+    cvSlugCandidateOf,
+    isEmailLike,
+    isUniqueViolation,
+    publicNameOf,
+} from "./profile-cv.policy"
 import type { CvLinkParams, CvLinkView, CvVisibilityParams, PublicCvParams, PublicCvView } from "./profile.contracts"
 import type { CvRow, PublicCvRow } from "./persistence/profile.rows"
 import { SELECT_CV, SELECT_PUBLIC_CV, SET_CV_PUBLIC, UPSERT_CV_SLUG } from "./persistence/profile.sql"
@@ -46,7 +54,7 @@ export class ProfileCvService {
         if (row === undefined) throw new ProfileError({ code: ProfileErrorCode.CvNotFound })
         const lines = await this.experience.publicLines(row.learner_id, params.locale)
         return {
-            displayName: row.display_name ?? row.account_name ?? row.cv_slug,
+            displayName: publicNameOf(row.display_name, row.account_name),
             avatarUrl: row.avatar_key === null ? null : await this.profiles.avatarUrlOf(row.avatar_key),
             lines: lines.map((line) => ({
                 line: line.line,
@@ -73,7 +81,8 @@ export class ProfileCvService {
                 ])
             return { ...held, cv_slug: held.cv_slug }
         }
-        const base = cvSlugBaseOf(held?.display_name ?? params.accountName ?? "")
+        const name = held?.display_name ?? params.accountName ?? ""
+        const base = cvSlugBaseOf(isEmailLike(name) ? "" : name)
         await this.storeSlug(params, base)
         const stored = await this.rowOf(params.learnerId)
         if (stored?.cv_slug === undefined || stored.cv_slug === null)

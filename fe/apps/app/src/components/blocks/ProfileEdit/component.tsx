@@ -8,11 +8,13 @@ import {
     Input,
     Page,
     Section,
+    Select,
     Stack,
     Switch,
     Text,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import type { ProfileEditGoal } from "@/hooks/profile"
 import {
     CV_LINK_PLACEHOLDER,
     IDENTITY_PLACEHOLDER,
@@ -30,6 +32,8 @@ export type ProfileEditBaseProps = {
         readonly slotLabels: SlotLabels
         readonly identity: DataSlot<ProfileIdentityView>
         readonly cvLink: DataSlot<ProfileCvLinkView>
+        readonly nameIdentity: DataSlot<ProfileIdentityView>
+        readonly goal: ProfileEditGoal
         /** The accepted types of the avatar picker, as a native `accept` list. */
         readonly accept: string
         readonly isSaving: boolean
@@ -40,6 +44,7 @@ export type ProfileEditBaseProps = {
     }
     readonly on: {
         readonly changeName: (value: string) => void
+        readonly changeGoal: (value: string | null) => void
         readonly save: () => void
         readonly cancel: () => void
         readonly uploadAvatar: (file: File) => void
@@ -102,7 +107,8 @@ const NameSection = (props: ProfileEditBaseProps) => {
     const { labels, slotLabels } = props.props
     return (
         <SlotView
-            slot={props.props.identity}
+            forbidden="hide"
+            slot={props.props.nameIdentity}
             placeholder={IDENTITY_PLACEHOLDER}
             labels={slotLabels}
             onRetry={props.on.retry}
@@ -117,6 +123,15 @@ const NameSection = (props: ProfileEditBaseProps) => {
                             description={`${identity.nameCount} · ${labels.nameHint}`}
                             value={identity.nameValue}
                             onValueChange={props.on.changeName}
+                        />
+                        <Select
+                            label={props.props.goal.label}
+                            description={props.props.goal.hint}
+                            placeholder={props.props.goal.placeholder}
+                            options={props.props.goal.options}
+                            value={props.props.goal.value}
+                            onValueChange={props.on.changeGoal}
+                            isLoading={isLoading || props.props.goal.isLoading}
                         />
                     </Stack>
                 </Section>
@@ -151,7 +166,6 @@ const CvLinkSection = (props: ProfileEditBaseProps) => {
                                 isLoading={isLoading}
                             />
                             <Switch
-                                kind="compact"
                                 label={labels.cvLinkSwitch}
                                 description={labels.cvLinkSwitchHint}
                                 isSelected={link.isPublic}
