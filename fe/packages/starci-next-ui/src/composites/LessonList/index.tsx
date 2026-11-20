@@ -36,9 +36,6 @@ type LessonListProps = {
     readonly empty: ReactNode
 }
 
-/** The width the four-part meter takes in a row: a row detail has no width of its own, and a full-width meter would stretch the four dashes across the row. */
-const METER_WIDTH = "6.5rem"
-
 /** One lesson row of the list; position 0 leaves the row unnumbered. */
 const itemOf = (row: LessonListRow, position: number, isLoading: boolean) => ({
     id: row.id,
@@ -46,19 +43,17 @@ const itemOf = (row: LessonListRow, position: number, isLoading: boolean) => ({
     description: row.problem,
     ...(position === 0 ? {} : { leading: { position } }),
     detail: (
-        <span style={{ display: "block", width: METER_WIDTH }}>
-            <Meter
-                label={row.partsLabel}
-                isLabelHidden
-                value={row.doneParts}
-                minValue={0}
-                maxValue={PART_SEGMENTS}
-                segments={PART_SEGMENTS}
-                size="sm"
-                tone="foreground"
-                isLoading={isLoading}
-            />
-        </span>
+        <Meter
+            label={row.partsLabel}
+            isLabelHidden
+            value={row.doneParts}
+            minValue={0}
+            maxValue={PART_SEGMENTS}
+            segments={PART_SEGMENTS}
+            size="sm"
+            tone="foreground"
+            isLoading={isLoading}
+        />
     ),
     badges: [{ label: row.badge.label, tone: row.badge.tone }] as const,
     ...(row.opener === "" ? {} : { value: row.opener }),

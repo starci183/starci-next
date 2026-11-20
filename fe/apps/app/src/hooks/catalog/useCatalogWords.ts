@@ -23,8 +23,8 @@ export const useCatalogWords = (): CatalogWords => {
             partDone: (part) => t("state.partDone", { part }),
             doing: (part) => t("state.doing", { part }),
         },
-        resume: (title, part) => t("resume", { title, part }),
-        start: (title) => t("start", { title }),
+        resume: () => t("resume"),
+        start: () => t("start"),
         upgrade: t("upgrade"),
         opener: (right, total) => (right === undefined ? t("openerNone") : t("opener", { right, total })),
     }

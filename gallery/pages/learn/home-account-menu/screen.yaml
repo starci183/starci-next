@@ -1,0 +1,170 @@
+schema: 1
+screen: learn/home-account-menu
+title: Menu tài khoản (avatar)
+route: /
+area: learn
+summary: 'Route: `/` (mở menu avatar trên thanh trên). Ảnh chụp với học viên đã Premium nên dòng gói
+  đọc "Gói của bạn"; học viên chưa Premium thấy "Nâng cấp Premium" ở cùng vị trí. Khung chung xem
+  `learn/home/explain.md`. Menu là lớp nổi nên là chỗ duy nhất có bóng và góc bo lớn; nền trắng, nằm
+  đè lên trang.'
+code:
+  - features/pages/AppHomePage
+  - components/blocks/LearnHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 3ea6a0aa45b27430a657b29e7ad3b785b438c53805514945578f509771943fd3
+  "1440":
+    file: 1440.png
+    sha256: f615f2abb85673c65c203fe85746b1e2c5107d8ba4e0ab3757a27d8586fdef0e
+sections:
+  - id: s1
+    title: Hàng danh tính
+    shows: 'đầu menu cho biết đang đăng nhập là ai (email) và gói hiện tại (dòng 12 mờ "Premium" / "Chưa
+      có Premium"). Là một hàng không dẫn đi đâu. Ghi chú lỗi ảnh: ở 390 email dài bị bẻ giữa chữ
+      ("gallery-" / "theme@example.test") và menu che dòng phụ của dải tiêu đề.'
+    why: "`surface-layering`, `type-scale-14-12.md`; plan in the avatar menu, no sidebar footer (owner
+      2026-11-10)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Lệnh gói
+    shows: 'hành động đầu tiên sau danh tính. Chưa Premium: "Nâng cấp Premium"; đã Premium: "Gói của
+      bạn" (như ảnh); cả hai là liên kết thật tới trang Premium, chữ foreground thường, không
+      accent.'
+    why: "`surface-layering` (liên kết điều hướng không ↗), `theme-and-type` (liên kết phụ là plain,
+      không accent)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Hồ sơ và Đăng xuất
+    shows: trang cá nhân rồi lệnh đăng xuất (tone danger, chữ đỏ). Khách chưa đăng nhập chỉ có "Đăng
+      nhập" mở hộp thoại tại chỗ.
+    why: "`signed-out-header-avatar-modal.md`, `theme-and-type` (lỗi và nguy hiểm dùng `--danger`)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: Nhãn nhóm "Tài khoản"
+    shows: '`DropdownMenuSection` của Grammar luôn vẽ tiêu đề nhóm (12 mờ); nhãn "Tài khoản" đặt tên cho
+      nhóm gồm hàng danh tính, lệnh gói, hồ sơ cho trình đọc màn hình. Giữ hay bỏ là quyết định của
+      chủ sản phẩm.'
+    why: "`surface-layering` (nhãn nhóm 12, weight 500, mờ)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: '1440, 390, vị trí menu: lớp nổi dính ngay dưới avatar, mép trên khoảng y=60 chạm vạch kẻ
+      dưới thanh trên và che nút "Xem hướng dẫn" (chỉ còn thấy chữ "n" lọt ra ở 1440) cùng dòng phụ
+      của dải tiêu đề ở 390; không có khoảng thở giữa trigger và menu.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: '1440, 390, bóng và góc bo: góc bo rất lớn (khoảng 20px) và bóng mềm lan rộng, lớn hơn mọi
+      chỗ khác; đúng luật "lớp nổi mới có bóng" nhưng góc bo không cùng họ với nút và ô.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: '390, hàng email: bị bẻ giữa chữ ("gallery-" / "theme@example.test"), xuống hai dòng và làm
+      hàng cao hơn các hàng khác.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:23.591Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
+        states:
+          verdict: fixed
+          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
+            dòng giải thích và Thử lại)."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:53.145Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm
+            Xem thêm, một kiểu khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:55.458Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

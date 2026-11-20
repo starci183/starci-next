@@ -13,8 +13,8 @@ export type ComponentRowView = {
 export type CodeWalkView = {
     readonly id: string
     readonly title: string
-    /** The rule id alone, for example "C1". */
-    readonly invariantId: string
+    /** The rule the snippet keeps, in words; empty when the lesson does not name it. */
+    readonly rule: string
     /** The place of the snippet, for example "wallet.service.ts:41". */
     readonly location: string
     readonly snippet: string
@@ -57,6 +57,8 @@ export type SourceLabels = {
     readonly machineNone: string
     readonly machineNoneNote: string
     readonly upFailed: string
+    /** What to do after a failed up: fix the cause the lines name, then run the command again. */
+    readonly upFix: string
     readonly architecture: string
     readonly diagram: string
     readonly diagramError: string

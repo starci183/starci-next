@@ -1,0 +1,195 @@
+schema: 1
+screen: essentials/topic
+title: Essentials (chủ đề)
+route: /essentials/[topic]
+area: essentials
+summary: "Route: `/essentials/[topic]`. Một chủ đề: các bài theo thứ tự nên học và còn bao nhiêu bài
+  là xong. Ảnh ở 1440, 1920 và 390. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html`
+  (essentials-topic). Code: `fe/apps/app/src/components/blocks/TopicDetail/component.tsx`, mapper
+  `fe/apps/app/src/hooks/topic/topic.shared.ts`, composite `LessonList`. Trạng thái có thư mục
+  riêng: `topic-first-visit`, `topic-free`,"
+code:
+  - features/pages/TopicPage
+  - components/blocks/TopicDetail
+shots:
+  "390":
+    file: 390.png
+    sha256: e2839283fb296f6bdc5e98069079e8d62d99d1a3da8f2480fbda4d5ce8af7ae3
+  "1440":
+    file: 1440.png
+    sha256: cb39ceb34f9c027ec99905bc1edb02af37c6aee53fdfdd61094c1e0699ec115b
+sections:
+  - id: s1
+    title: "Dải đầu: breadcrumb, tên, mô tả, dòng sự kiện, nút chính"
+    shows: 'có breadcrumb "Essentials › <chủ đề>" vì đây là trang con; dưới tên là câu mô tả của chủ đề
+      rồi dòng muted "6 bài · khoảng 135 phút đọc". Nút chính "Học tiếp: <bài> · phần N" (lần đầu
+      "Bắt đầu bài 1", tài khoản miễn phí "Học tiếp phần 1"). Ở 390 nút xuống dưới và rộng cả hàng.'
+    why: ui/components/page-header (breadcrumbs, description, meta, actions), ui/components/button.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thanh "2/6 bài xong"
+    shows: một thanh màu chữ (đo lường không dùng tím) kèm "2/6 bài xong" và phần trăm; số bài xong đếm
+      đúng số hàng "Đã xong" bên dưới.
+    why: "`theme-and-type` (đo lường dùng foreground)."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: 'Danh sách bài: số, tên, bài toán, 4 vạch, nhãn, "Mở bài 3/5", thời lượng'
+    shows: một danh sách phẳng đánh số; mỗi hàng có tên, một dòng bài toán, bốn vạch cho bốn phần, nhãn
+      trạng thái, điểm mở bài (số câu đúng trong 5 câu mở bài, "—" khi chưa làm) và số phút. Hàng
+      bài đang học tô xám nhẹ.
+    why: ui/components/list-table, `surface-layering`.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: "Cột phải (chỉ 1440): mỗi bài có 4 phần, nên biết trước, liên quan"
+    shows: hiện từ khổ rộng. "Mỗi bài có 4 phần" liệt kê Bản chất (miễn phí), Source, Kịch bản, Tự áp
+      dụng; ba phần sau mờ nếu chưa có Premium, kèm dòng "Phần 2 đến 4 cần Premium". "Nên biết
+      trước" lấy từ điều kiện của chủ đề, "Chủ đề liên quan" là các liên kết chữ. Khối "Chủ đề này
+      dạy" của bản vẽ chưa có dữ liệu (xem Phản biện).
+    why: ui/components/pane-grid (cột phụ ẩn ở khổ hẹp), `surface-layering` (aside là section có
+      hairline, không thẻ).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc 1440 và 390 với dữ liệu mẫu qua core giả (xem catalog).
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: Header của Grammar đặt dòng sự kiện (meta) trên câu mô tả; bản vẽ đặt mô tả trước, sự kiện sau.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: Nút chính nằm ở cuối hàng tiêu đề, trải qua cột phải ở 1440; bản vẽ cho cột phải bắt đầu
+      dưới dải đầu.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:55:16.628Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các
+            trang khác (lề trái x=268 thay vì 288). Ở 390 nút "Bắt đầu bài 1" nằm cạnh mô tả làm mô
+            tả ngắt 5 dòng hẹp. Mỗi hàng bài có 4 thanh tiến độ xám không nhãn (không rõ là 4 phần
+            nào, đang 0%). Còn lại: lề trái x=268 và gutter phải của Page chrome=panes do Grammar
+            quyết định, ứng dụng không chỉnh được (cần Grammar).'
+        actionable:
+          verdict: fixed
+          notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
+            trong câu hỏi hiện đúng dạng."
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:09:40.101Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: fixed
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
+            Premium."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: "Vòng 3: Kiểm tra lại thay Check lại, nhãn nút ngắn theo canvas."
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:46.622Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: fixed
+          notes: "Vòng 4: các mục Nên biết trước (có điểm đến) và Chủ đề liên quan là liên kết thường có gạch
+            chân; mục chỉ là câu chữ (không có chủ đề đích) vẫn là chữ, cần API để gắn chủ đề."
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: '"topic Backend framework" là chuỗi dữ liệu: cần API.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T14:49:05.380Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: 'Đã sửa: "Độ tin cậy của API" là liên kết; "Cơ sở dữ liệu" và các mục "Nên biết trước" không có đích để dạng chữ thường (cần API).'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

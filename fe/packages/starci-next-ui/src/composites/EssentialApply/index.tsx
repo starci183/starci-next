@@ -1,4 +1,4 @@
-import { Alert, Section, Stack, Stepper, Terminal, type StepperStepState } from "@starci/grammar/common"
+import { Section, Stack, Stepper, Terminal, type StepperStepState } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
@@ -95,14 +95,6 @@ const Detail = (props: DetailProps) => {
     )
 }
 
-/** The body under the ladder: the way to open a locked rung, or the detail of an open one. */
-const RungBody = (props: DetailProps) =>
-    props.challenge.isLocked ? (
-        <Alert tone="informative" title={props.challenge.lockTitle} description={props.challenge.lockText} />
-    ) : (
-        <Detail challenge={props.challenge} labels={props.labels} essence={props.essence} />
-    )
-
 /** What the apply part needs: the view, the words, the essence check already drawn and what the learner does. */
 type EssentialApplyProps = {
     readonly part: ApplyPartView
@@ -129,18 +121,26 @@ export const EssentialApply = (props: EssentialApplyProps) => {
                 headingLevel={2}
                 empty={labels.empty}
                 isLoading={props.isLoading === true}
-                items={part.rungs.map((rung) => ({
-                    id: rung.id,
-                    title: rung.level,
-                    description: rung.title,
-                    badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
-                    onPress: () => props.onSelect(rung.id),
-                    ...(rung.id === part.selectedId ? { state: "informative" as const } : {}),
-                }))}
+                items={part.rungs.map((rung) =>
+                    rung.state === "locked"
+                        ? {
+                              id: rung.id,
+                              title: rung.level,
+                              description: rung.title,
+                              state: "unavailable" as const,
+                              meta: { text: rung.stateLabel },
+                          }
+                        : {
+                              id: rung.id,
+                              title: rung.level,
+                              description: rung.title,
+                              badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
+                              onPress: () => props.onSelect(rung.id),
+                              ...(rung.id === part.selectedId ? { state: "informative" as const } : {}),
+                          },
+                )}
             />
-            {challenge === undefined ? null : (
-                <RungBody challenge={challenge} labels={labels} essence={props.essence} />
-            )}
+            {challenge === undefined ? null : <Detail challenge={challenge} labels={labels} essence={props.essence} />}
         </Stack>
     )
 }

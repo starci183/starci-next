@@ -13,7 +13,7 @@ import type { RunWords } from "./words"
 const orderedRungsOf = (essential: EssentialView): ReadonlyArray<EssentialChallengeView> =>
     CHALLENGE_LEVELS.flatMap((level) => essential.challenges.filter((each) => each.level === level))
 
-/** The rung on screen: the one the learner chose, else the first open one not yet green, else the last green one, else the first. */
+/** The rung on screen: the one the learner chose (a locked rung cannot be chosen), else the first open one not yet green, else the last green one, else the first. */
 const selectedRungOf = (
     essential: EssentialView,
     scores: ReadonlyArray<ChallengeScoreView>,
@@ -21,8 +21,10 @@ const selectedRungOf = (
 ): EssentialChallengeView | undefined => {
     const ordered = orderedRungsOf(essential)
     const stateOf = (rung: EssentialChallengeView) => scores.find((each) => each.challengeId === rung.id)?.state
+    const isLocked = (rung: EssentialChallengeView) =>
+        scores.find((each) => each.challengeId === rung.id)?.isLocked === true
     return (
-        ordered.find((each) => each.id === chosen) ??
+        ordered.find((each) => each.id === chosen && !isLocked(each)) ??
         ordered.find((each) => stateOf(each) === "doing" || stateOf(each) === "open") ??
         ordered.findLast((each) => stateOf(each) === "passed") ??
         ordered[0]
@@ -91,16 +93,10 @@ const stateLabelOf = (score: ChallengeScoreView | undefined, words: RunWords): s
     return score.state === "doing" ? words.rungLabels.doing(score.score, score.maxScore) : words.rungLabels.open
 }
 
-/** The rung on screen with its brief, terminal, rubric, essence check and the way to open it when it is locked. */
-const challengeDetailOf = (
-    input: ApplyInput,
-    rung: EssentialChallengeView,
-    below: EssentialChallengeView | undefined,
-): ChallengeDetailView => {
+/** The rung on screen with its brief, terminal, rubric, essence check and score. */
+const challengeDetailOf = (input: ApplyInput, rung: EssentialChallengeView): ChallengeDetailView => {
     const { words, scores } = input
     const score = scores.find((each) => each.challengeId === rung.id)
-    const belowScore = below === undefined ? undefined : scores.find((each) => each.challengeId === below.id)
-    const belowName = below === undefined ? "" : words.levels[below.level]
     return {
         id: rung.id,
         heading: `${words.levels[rung.level]} · ${rung.title}`,
@@ -112,9 +108,6 @@ const challengeDetailOf = (
         terminal: terminalOf(input.lesson.id, rung, score, input.runs, words),
         score: score?.score ?? 0,
         maxScore: score?.maxScore ?? 100,
-        isLocked: score?.isLocked === true,
-        lockTitle: words.lock.title(words.levels[rung.level], belowName),
-        lockText: words.lock.text(belowName, belowScore?.score ?? 0, belowScore?.maxScore ?? 100),
         proofStep: 0,
     }
 }
@@ -124,7 +117,6 @@ export const applyOf = (input: ApplyInput): ApplyPartView => {
     const { essential, scores, words } = input
     const ordered = orderedRungsOf(essential)
     const selected = selectedRungOf(essential, scores, input.chosen)
-    const below = selected === undefined ? undefined : ordered[ordered.indexOf(selected) - 1]
     return {
         rungs: ordered.map((rung) => {
             const score = scores.find((each) => each.challengeId === rung.id)
@@ -137,7 +129,7 @@ export const applyOf = (input: ApplyInput): ApplyPartView => {
             }
         }),
         selectedId: selected?.id ?? "",
-        challenge: selected === undefined ? undefined : challengeDetailOf(input, selected, below),
+        challenge: selected === undefined ? undefined : challengeDetailOf(input, selected),
         cvLine: "",
     }
 }

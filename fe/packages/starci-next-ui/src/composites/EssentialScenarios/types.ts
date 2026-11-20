@@ -92,7 +92,7 @@ export type ScenariosLabels = {
     readonly fixNote: string
     readonly fixPrompt: string
     readonly fixCopy: string
-    readonly guardTitle: (rule: string) => string
+    readonly guardTitle: string
     readonly guardNote: (flag: string) => string
     readonly flow: string
     readonly ask: ScenarioAskLabels

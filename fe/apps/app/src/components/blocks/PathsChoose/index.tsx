@@ -2,10 +2,10 @@
 
 import { useLocale } from "next-intl"
 import { useSession } from "@/hooks/auth"
+import { useSignInModalStore } from "@/hooks/zustand/signInModal"
 import { pathsScreenOf, usePathChoice, usePathsLabels, usePathWords } from "@/hooks/paths"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryOutcomePathsSwr } from "@/hooks/swr"
-import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot } from "@/modules/types"
 import { PATHS_PLACEHOLDER, PathsChooseBase, type PathsScreenView } from "./component"
 
@@ -21,6 +21,7 @@ export const PathsChoose = () => {
     const labels = usePathsLabels()
     const choice = usePathChoice(read)
     const session = useSession()
+    const setSignInOpen = useSignInModalStore((state) => state.setOpen)
     return (
         <PathsChooseBase
             props={{
@@ -29,17 +30,18 @@ export const PathsChoose = () => {
                     mapSlot(slotOfSwr(read), (paths) => pathsScreenOf(paths, words)),
                 ),
                 placeholder: PATHS_PLACEHOLDER,
-                slotLabels: useSlotLabels()(labels.empty),
+                slotLabels: { ...useSlotLabels()(labels.empty), error: labels.errorTitle },
+                errorText: labels.errorText,
                 labels,
                 openId: choice.openId,
                 confirmId: choice.confirmId,
                 hasActive: choice.hasActive,
                 isPending: choice.isPending,
                 status: choice.status,
-                signInHref: APP_ROUTES.signIn,
             }}
             on={{
                 retry: () => void read.mutate(),
+                signIn: () => setSignInOpen(true),
                 view: choice.view,
                 viewClose: choice.viewClose,
                 choose: choice.choose,

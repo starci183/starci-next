@@ -699,9 +699,9 @@
         "prove": "Prove and connect"
       },
       "kind": {
-        "build": "BUILD A PRODUCT",
-        "agent": "AGENT & LLM",
-        "job": "GET A JOB"
+        "build": "Build a product",
+        "agent": "Agent and LLM",
+        "job": "Get a job"
       },
       "meta": "{steps} steps · about {weeks} weeks",
       "card": {
@@ -731,10 +731,12 @@
         "notFound": "This path is no longer in the list."
       },
       "signedOut": {
-        "title": "Sign in to choose a goal",
-        "body": "The path you choose is saved to your account.",
+        "title": "Sign in to choose a path",
+        "body": "Sign in to save the path you choose and follow your progress.",
         "action": "Sign in"
-      }
+      },
+      "errorTitle": "Could not load the paths",
+      "errorText": "Check your connection and try again."
     },
     "incidents": {
       "pageTitle": "Incidents",
@@ -770,8 +772,8 @@
           "partDone": "Part {part} done",
           "doing": "Studying · part {part}"
         },
-        "resume": "Continue: {title} · part {part}",
-        "start": "Start: {title}",
+        "resume": "Continue",
+        "start": "Start learning",
         "upgrade": "Upgrade to Premium",
         "opener": "Opener {right}/{total}",
         "openerNone": "—",
@@ -791,7 +793,9 @@
         "planPremium": "Needs Premium",
         "noResultTitle": "No lesson matches \"{query}\"",
         "noResultText": "Try a problem such as \"duplicate email\", or drop the topic filter.",
-        "clear": "Clear filters"
+        "clear": "Clear filters",
+        "errorTitle": "Could not load the catalog",
+        "errorText": "Check your connection and try again. Your progress is kept."
       },
       "difficulty": {
         "foundation": "Foundation",
@@ -946,7 +950,7 @@
         "progress": "{done}/{total} lessons done",
         "startFirst": "Start lesson 1",
         "resumePart": "Continue part {part}",
-        "resume": "Continue: {title} · part {part}",
+        "resume": "Continue",
         "noticeTitle": "The free plan covers part 1 of every lesson",
         "noticeText": "Source, scenarios that run on your machine and the apply ladder belong to Premium.",
         "partsTitle": "Every lesson has 4 parts",
@@ -960,7 +964,9 @@
         "prerequisites": "Good to know first",
         "related": "Related topics",
         "moved": "This lesson moved into a topic. The old address is no longer used.",
-        "movedOpen": "Open lesson"
+        "movedOpen": "Open lesson",
+        "errorTitle": "Could not load the topic",
+        "errorText": "Check your connection and try again. Your progress is kept."
       },
       "attempt": {
         "saved": "Your answer was saved.",
@@ -1099,6 +1105,7 @@
           "machineNone": "No machine connected yet",
           "machineNoneNote": "Run the commands below in a terminal, sign in once, then come back to this page. It picks the machine up when the CLI reports.",
           "upFailed": "The up command failed",
+          "upFix": "Fix what the lines above name, then run the up command again.",
           "architecture": "Architecture",
           "diagram": "Architecture diagram",
           "diagramError": "The diagram could not be drawn",
@@ -1137,7 +1144,7 @@
           "fixTitle": "Fix",
           "fixNote": "You do not type code. Ask your own AI (Claude, ChatGPT or an IDE agent) to fix it in the source folder, then check again.",
           "fixPrompt": "Prompt for your AI",
-          "guardTitle": "Turn rule {rule} off",
+          "guardTitle": "Turn the checked rule off",
           "guardNote": "--guard {flag} to see the system break without it",
           "promptTemplate": "Scenario {scenario} (“{title}”) of lesson {lesson} is red.\nRule broken: {invariant}\n{why}\nUse the StarCi MCP (my_runs, list_scenarios, read_file) to see the latest\nrun and the related code. Fix the code so the scenario turns green without\nturning any guard off, explain why in a few lines, then run:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {
@@ -1193,10 +1200,6 @@
             "open": "Ready",
             "doing": "Practising · {score}/{max}",
             "passed": "Green"
-          },
-          "lock": {
-            "title": "{level} opens after {below}",
-            "text": "{below} stands at {score}/{max}. This level opens when every hidden scenario of {below} is green."
           },
           "primary": {
             "run": "Run {level}",
@@ -1261,7 +1264,6 @@
           },
           "shell": {
             "nextQuestion": "Next question",
-            "questionNumber": "Question {n}",
             "seeResult": "See the result",
             "readArticle": "Read the article",
             "retake": "Answer the 5 again",
@@ -1296,7 +1298,11 @@
               "three": "Proved when GitHub CI signs it, then it becomes a line on your profile"
             }
           }
-        }
+        },
+        "errorTitle": "Could not load the lesson",
+        "errorText": "Check your connection and try again. Your scores and progress are kept.",
+        "more": "Show more",
+        "less": "Show less"
       }
     },
     "projects": {

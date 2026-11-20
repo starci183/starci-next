@@ -11,11 +11,9 @@ const upFailureOf = (runs: ReadonlyArray<ScenarioRunView>): ReadonlyArray<string
     return run === undefined ? [] : run.output.split("\n").filter((line) => line !== "")
 }
 
-/** The rule of an invariant id in words: the id and its text, or the id alone when the lesson does not name it. */
-const ruleWordsOf = (essential: EssentialView, id: string): string => {
-    const text = essential.invariants.find((each) => each.id === id)?.text
-    return text === undefined ? id : `${id} · ${text}`
-}
+/** The rule of an invariant id in words: its text, or nothing when the lesson does not name it (an id is never shown). */
+const ruleWordsOf = (essential: EssentialView, id: string): string =>
+    essential.invariants.find((each) => each.id === id)?.text ?? ""
 
 /** The Source part: the machine, the commands, the architecture, the rules in words, the code walk and the files of the archive. */
 export const sourceOf = (
@@ -34,12 +32,15 @@ export const sourceOf = (
             id: component.name,
             name: component.name,
             port: component.port,
-            rules: component.invariants.map((id) => ruleWordsOf(essential, id)).join("; "),
+            rules: component.invariants
+                .map((id) => ruleWordsOf(essential, id))
+                .filter((words) => words !== "")
+                .join("; "),
         })),
         codeWalk: essential.codeWalk.map((entry) => ({
             id: entry.id,
             title: entry.title,
-            invariantId: entry.invariant,
+            rule: ruleWordsOf(essential, entry.invariant),
             location: `${entry.file}:${entry.line}`,
             snippet: entry.snippet,
             why: entry.why,

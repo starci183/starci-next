@@ -124,13 +124,12 @@ const primaryOf = (
 ): CatalogView["primary"] => {
     const { words } = input
     if (!words.isPremium) return { label: words.upgrade, href: input.plansHref }
-    if (current !== undefined)
-        return { label: words.resume(current.lesson.title, current.parts.currentPart), href: currentPathOf(current) }
+    if (current !== undefined) return { label: words.resume(), href: currentPathOf(current) }
     const next = standings.find((each) => each.state === "todo") ?? standings[0]
     return next === undefined
         ? undefined
         : {
-              label: words.start(next.lesson.title),
+              label: words.start(),
               href: lessonPartPath(next.lesson.topic.id, next.lesson.id, "essence"),
           }
 }

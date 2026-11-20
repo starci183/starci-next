@@ -26,7 +26,8 @@ export const EssentialsCatalog = () => {
                     catalogViewOf({ lessons, topics, parts, filters, words, plansHref: APP_ROUTES.premium }),
                 ),
                 placeholder: CATALOG_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("empty")),
+                slotLabels: { ...useSlotLabels()(t("empty")), error: t("errorTitle") },
+                errorText: t("errorText"),
                 labels: useCatalogLabels(),
                 filters,
             }}

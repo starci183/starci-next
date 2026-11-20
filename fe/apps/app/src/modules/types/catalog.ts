@@ -136,8 +136,8 @@ export type CatalogWords = {
         readonly partDone: (part: number) => string
         readonly doing: (part: number) => string
     }
-    readonly resume: (title: string, part: number) => string
-    readonly start: (title: string) => string
+    readonly resume: () => string
+    readonly start: () => string
     readonly upgrade: string
     /** The opener score of a lesson (for example "Opener 3/5"), or the line of a lesson whose opener is not taken. */
     readonly opener: (right: number | undefined, total: number) => string

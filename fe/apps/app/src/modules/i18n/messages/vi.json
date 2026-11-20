@@ -699,9 +699,9 @@
         "prove": "Chứng minh và kết nối"
       },
       "kind": {
-        "build": "XÂY SẢN PHẨM",
-        "agent": "AGENT & LLM",
-        "job": "VIỆC LÀM"
+        "build": "Xây sản phẩm",
+        "agent": "Agent và LLM",
+        "job": "Việc làm"
       },
       "meta": "{steps} bước · khoảng {weeks} tuần",
       "card": {
@@ -731,10 +731,12 @@
         "notFound": "Lộ trình này không còn trong danh sách."
       },
       "signedOut": {
-        "title": "Đăng nhập để chọn mục tiêu",
-        "body": "Lộ trình bạn chọn được lưu theo tài khoản của bạn.",
+        "title": "Cần đăng nhập để chọn lộ trình",
+        "body": "Đăng nhập để lưu lộ trình bạn chọn và theo dõi tiến độ.",
         "action": "Đăng nhập"
-      }
+      },
+      "errorTitle": "Không tải được danh sách lộ trình",
+      "errorText": "Kiểm tra kết nối rồi thử lại."
     },
     "incidents": {
       "pageTitle": "Sự cố",
@@ -770,8 +772,8 @@
           "partDone": "Xong phần {part}",
           "doing": "Đang học · phần {part}"
         },
-        "resume": "Học tiếp: {title} · phần {part}",
-        "start": "Bắt đầu: {title}",
+        "resume": "Học tiếp",
+        "start": "Bắt đầu học",
         "upgrade": "Nâng cấp Premium",
         "opener": "Mở bài {right}/{total}",
         "openerNone": "—",
@@ -791,7 +793,9 @@
         "planPremium": "Cần Premium",
         "noResultTitle": "Không có bài nào khớp \"{query}\"",
         "noResultText": "Thử tên bài toán như \"email gửi trùng\", hoặc bỏ bộ lọc chủ đề.",
-        "clear": "Xóa bộ lọc"
+        "clear": "Xóa bộ lọc",
+        "errorTitle": "Không tải được danh mục",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "difficulty": {
         "foundation": "Nền tảng",
@@ -946,7 +950,7 @@
         "progress": "{done}/{total} bài xong",
         "startFirst": "Bắt đầu bài 1",
         "resumePart": "Học tiếp phần {part}",
-        "resume": "Học tiếp: {title} · phần {part}",
+        "resume": "Học tiếp",
         "noticeTitle": "Gói miễn phí học được phần 1 của mọi bài",
         "noticeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
         "partsTitle": "Mỗi bài có 4 phần",
@@ -960,7 +964,9 @@
         "prerequisites": "Nên biết trước",
         "related": "Chủ đề liên quan",
         "moved": "Bài này đã chuyển vào một chủ đề. Địa chỉ cũ không còn dùng.",
-        "movedOpen": "Mở bài"
+        "movedOpen": "Mở bài",
+        "errorTitle": "Không tải được chủ đề",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "attempt": {
         "saved": "Đã lưu câu trả lời của bạn.",
@@ -1099,6 +1105,7 @@
           "machineNone": "Chưa thấy máy nào kết nối",
           "machineNoneNote": "Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.",
           "upFailed": "Lệnh up báo lỗi",
+          "upFix": "Sửa theo dòng báo lỗi ở trên rồi chạy lại lệnh up.",
           "architecture": "Kiến trúc",
           "diagram": "Sơ đồ kiến trúc",
           "diagramError": "Không vẽ được sơ đồ",
@@ -1137,7 +1144,7 @@
           "fixTitle": "Sửa",
           "fixNote": "Bạn không phải gõ code. Nhờ AI của bạn (Claude, ChatGPT hoặc agent trong IDE) sửa trong thư mục source, rồi check lại.",
           "fixPrompt": "Lời nhắc cho AI",
-          "guardTitle": "Tắt luật {rule}",
+          "guardTitle": "Tắt luật đang kiểm",
           "guardNote": "--guard {flag} để thấy hệ thống vỡ khi thiếu nó",
           "promptTemplate": "Kịch bản {scenario} (“{title}”) của bài {lesson} đang đỏ.\nLuật bị phá: {invariant}\n{why}\nDùng StarCi MCP (my_runs, list_scenarios, read_file) để xem lần chạy\ngần nhất và code liên quan. Sửa code để kịch bản xanh mà không tắt guard\nnào, giải thích ngắn vì sao, rồi chạy:\nstarci-next check {lesson} --scenario {scenario}",
           "ask": {
@@ -1155,7 +1162,7 @@
           },
           "primary": {
             "run": "Chạy kịch bản",
-            "check": "Check lại",
+            "check": "Kiểm tra lại",
             "next": "Kịch bản tiếp theo",
             "running": "Đang chạy",
             "failed": "Không gửi được yêu cầu tới máy của bạn"
@@ -1193,10 +1200,6 @@
             "open": "Sẵn sàng",
             "doing": "Đang luyện · {score}/{max}",
             "passed": "Đã xanh"
-          },
-          "lock": {
-            "title": "{level} mở sau khi xong mức {below}",
-            "text": "Mức {below} đang {score}/{max}. Mức này mở khi mọi kịch bản ẩn của mức {below} đều xanh."
           },
           "primary": {
             "run": "Chạy mức {level}",
@@ -1261,7 +1264,6 @@
           },
           "shell": {
             "nextQuestion": "Câu tiếp theo",
-            "questionNumber": "Câu {n}",
             "seeResult": "Xem kết quả",
             "readArticle": "Đọc bài viết",
             "retake": "Làm lại 5 câu",
@@ -1296,7 +1298,11 @@
               "three": "Đã chứng minh khi CI của GitHub ký xác nhận, rồi thành dòng trên hồ sơ"
             }
           }
-        }
+        },
+        "errorTitle": "Không tải được bài",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ.",
+        "more": "Xem thêm",
+        "less": "Thu gọn"
       }
     },
     "projects": {

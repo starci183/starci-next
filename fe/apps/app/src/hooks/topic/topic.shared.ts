@@ -32,9 +32,7 @@ const primaryOf = (rows: ReturnType<typeof orderedOf>, input: TopicInput): Topic
     const current = currentOf(rows)
     if (current !== undefined)
         return {
-            label: input.catalogWords.isPremium
-                ? input.words.resume(current.lesson.title, current.parts.currentPart)
-                : input.words.resumePart(1),
+            label: input.catalogWords.isPremium ? input.words.resume() : input.words.resumePart(1),
             href: currentPathOf(current),
         }
     const next = rows.find((each) => each.state !== "done") ?? rows[0]
@@ -53,6 +51,7 @@ export const topicScreenOf = (input: TopicInput): TopicScreenView => {
     const done = rows.filter((each) => each.state === "done").length
     return {
         title: input.topic.title,
+        trail: [{ id: "topic", label: input.topic.title }],
         description: input.topic.description,
         facts: input.words.facts(
             rows.length,

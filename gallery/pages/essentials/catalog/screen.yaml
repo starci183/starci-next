@@ -1,0 +1,204 @@
+schema: 1
+screen: essentials/catalog
+title: Essentials (danh mục)
+route: /essentials
+area: essentials
+summary: "Route: `/essentials`. Danh mục các bài cụm theo chủ đề: thấy mình đang ở đâu, vào đúng bài
+  đang dở hoặc chọn bài theo bài toán. Ảnh chụp ở 1440, 1920 và 390; khung (thanh trên, thanh bên)
+  thuộc lane khác. Bản vẽ được duyệt: `design/starci-next/pages/02-essentials.html`
+  (essentials-catalog). Code: `fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx`,
+  mapper `fe/apps/app/src/hooks/catalog/catalog.shared."
+code:
+  - features/pages/EssentialsCatalogPage
+  - components/blocks/EssentialsCatalog
+shots:
+  "390":
+    file: 390.png
+    sha256: 41c0000f710ae6f4df05373be95682f2b0c9ce885b702718c7bd4305696180d7
+  "1440":
+    file: 1440.png
+    sha256: 2bb95a52bccb18934f7caa550a132872f74b473bd159d00672139238c38359be
+sections:
+  - id: s1
+    title: "Dải đầu: tên trang, dòng sự kiện, nút chính"
+    shows: 'trang gốc của mục nên không có breadcrumb. Dưới tên là một dòng muted "5 chủ đề · 28 bài cụm
+      · bạn đã xong 6"; lần đầu dòng ghi "bạn chưa học bài nào". Nút chính duy nhất là "Học tiếp:
+      <bài> · phần N" trỏ thẳng tới phần đang dở của bài đang học; chưa học gì thì "Bắt đầu: <bài
+      đầu>"; tài khoản miễn phí đổi thành "Nâng cấp Premium". Ở 390 nút xuống dưới tên và rộng cả
+      hàng.'
+    why: ui/components/page-header (một nút chính ở cuối hàng tiêu đề), ui/components/button (một nút
+      chính mỗi vùng), `surface-layering`.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Tab trạng thái có đếm
+    shows: bốn tab Tất cả, Đang học, Chưa học, Đã xong lọc một danh sách đứng yên, mỗi tab có chip đếm;
+      ba trạng thái cộng lại bằng tổng "Tất cả" vì đếm trên mọi bài, không theo ô tìm. Số đếm và
+      thanh "2/6 bài xong" của từng nhóm cùng đọc một danh sách trạng thái nên không lệch.
+    why: ui/components/tabs (filter tabs có count, không "· N" trong nhãn), ui/composition-sections (bộ
+      lọc của vùng).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: "Thanh công cụ phẳng: ô tìm, chủ đề, gói"
+    shows: một hàng phẳng trên mặt trắng, không thẻ. Ô tìm lọc theo tên bài và dòng bài toán; chọn chủ
+      đề thu danh sách về một nhóm; chọn gói đặt "Phần 1 miễn phí" (bài chưa xong phần 1) hoặc "Cần
+      Premium" (đã xong phần 1, các phần sau thuộc Premium). Mỗi ô chọn có tiền tố "Chủ đề:", "Gói:"
+      để nói mình lọc gì.
+    why: ui/components/field (ô chọn có tiền tố thay nhãn), ui/composition-sections (toolbar phẳng,
+      không thẻ).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: 'Nhóm chủ đề: tên, "2/6 bài xong", thanh tiến độ, "Xem chủ đề"'
+    shows: 'mỗi chủ đề là một nhóm phẳng cách nhau bằng khoảng trắng. Head: tên nhóm, chip sự kiện "2/6
+      bài xong", liên kết "Xem chủ đề" ở cuối hàng; ngay dưới là thanh tiến độ màu chữ (đo lường
+      không dùng tím). Nhóm không còn bài nào khớp bộ lọc thì ẩn.'
+    why: ui/composition-sections (Section region có title, fact, action), `theme-and-type` (số đo dùng
+      foreground, tím chỉ là tín hiệu).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s5
+    title: "Hàng bài học: tên, bài toán, 4 vạch, nhãn, thời lượng"
+    shows: 'mỗi hàng là một bài cụm: tên (500), một dòng bài toán, bốn vạch là bốn phần (Bản chất,
+      Source, Kịch bản, Tự áp dụng; vạch đã xong tô đậm), nhãn trạng thái ở cuối ("Đã xong", "Đang
+      học · phần 3", "Xong phần 1", "Chưa học"; tài khoản miễn phí thấy "Phần 1 miễn phí"), rồi số
+      phút. Bài đang học tô xám nhẹ, không tím. Mỗi nhóm hiện 3 bài, còn lại sau "Xem cả n bài trong
+      chủ đề".'
+    why: ui/components/list-table (hàng danh sách, không bảng), ui/components/chip (nhãn trạng thái là
+      Badge có sắc), `surface-layering` (không thẻ trong thẻ).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s6
+    title: "Trạng thái: lần đầu, không khớp, đang tải, lỗi, tài khoản miễn phí"
+    shows: 'mỗi trạng thái có khung riêng cùng cây cấu trúc. Lần đầu: các Meter trống, mọi bài "Chưa
+      học", nút "Bắt đầu: …". Không khớp: thông báo "Không có bài nào khớp "…"" kèm "Xóa bộ lọc"
+      thay danh sách, thanh công cụ giữ nguyên. Đang tải: cùng cây với dữ liệu giả cùng hình, vẽ
+      thành khung xám. Lỗi: thông báo có "Thử lại". Miễn phí: nút "Nâng cấp Premium" và nhãn "Phần 1
+      miễn phí".'
+    why: "ui/loading (STATE-8: lá và hợp phần nhận `isLoading`, chỉ SlotView rẽ nhánh),
+      ui/components/empty-state."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
+      thẻ, chỉ SlotView rẽ nhánh tải"
+  - option: Đã đọc 1440, 1920 (cùng cây) và 390 với dữ liệu mẫu của bản vẽ (5 chủ đề, 28 bài) qua core
+      giả, vì stack dev chung chưa lên (CSDL và Keycloak tắt); hình chưa chụp trên dữ liệu thật hai
+      bài.
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Meter bốn phần chưa có nấc "đang làm" (nửa đậm) như bản vẽ: phần đang dở vẽ như phần chưa
+      làm; dùng Meter segments={4} gần nhất (xem GRAMMAR-GAPS #2).'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+  - option: 'Thanh tiến độ của nhóm đứng dưới head, không nằm cùng dòng sau chip "2/6 bài xong" như bản
+      vẽ: Section head không có chỗ cho một thanh.'
+    chosen: false
+    why: Ghi nhận ở lần chụp trước, chưa làm
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:50.022Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
+            thay chữ giữ chỗ."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:08:58.528Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:39:14.090Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

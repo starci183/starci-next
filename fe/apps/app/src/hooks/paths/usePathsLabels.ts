@@ -18,6 +18,8 @@ export const usePathsLabels = (): PathsLabelSet => {
         ],
         note: t("note"),
         empty: t("empty"),
+        errorTitle: t("errorTitle"),
+        errorText: t("errorText"),
         card: {
             current: t("card.current"),
             doneLabel: t("card.doneLabel"),

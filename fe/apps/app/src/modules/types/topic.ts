@@ -19,6 +19,8 @@ export type TopicPartView = {
 /** The topic screen as it is drawn: every word is already resolved. */
 export type TopicScreenView = {
     readonly title: string
+    /** The crumbs after the catalog: the topic's own name; empty until the topic is read, so no placeholder word reaches the trail. */
+    readonly trail: ReadonlyArray<{ readonly id: string; readonly label: string }>
     readonly description: string
     /** The fact line under the description (lessons and minutes). */
     readonly facts: string
@@ -55,7 +57,7 @@ export type TopicWords = {
     readonly progress: (done: number, total: number) => string
     readonly startFirst: string
     readonly resumePart: (part: number) => string
-    readonly resume: (title: string, part: number) => string
+    readonly resume: () => string
     readonly notice: { readonly title: string; readonly text: string }
     readonly parts: ReadonlyArray<{ readonly id: string; readonly title: string; readonly isFree: boolean }>
 }

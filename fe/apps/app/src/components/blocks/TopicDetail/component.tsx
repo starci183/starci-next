@@ -16,11 +16,12 @@ import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modul
 
 /** The fake topic with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
-    title: "…",
+    title: "",
+    trail: [],
     description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
     primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
-    progress: { label: "…", percent: 0 },
+    progress: { label: "", percent: 0 },
     notice: undefined,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,
@@ -46,6 +47,7 @@ export type TopicDetailBaseProps = {
         readonly slot: DataSlot<TopicScreenView>
         readonly placeholder: TopicScreenView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly labels: TopicLabels
         /** The destination of the catalog. */
         readonly catalogHref: string
@@ -68,10 +70,7 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
     titleScale: "standard",
     breadcrumbs: {
         label: props.labels.breadcrumbs,
-        items: [
-            { id: "essentials", label: props.labels.pageTitle, href: props.catalogHref },
-            { id: "topic", label: view.title },
-        ],
+        items: [{ id: "essentials", label: props.labels.pageTitle, href: props.catalogHref }, ...view.trail],
     },
     ...(view.description === "" ? {} : { description: view.description }),
     meta: view.facts,
@@ -79,7 +78,7 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
         ? {}
         : {
               actions: (
-                  <Button intent="commit" href={view.primary.href}>
+                  <Button intent="commit" width="wrap" href={view.primary.href}>
                       {view.primary.label}
                   </Button>
               ),
@@ -123,58 +122,61 @@ const Moved = (props: MovedProps) =>
         </Stack>
     )
 
-/** The aside pane's content: the settled topic's blocks; one empty loading section while the read has not settled (a pane always holds a section). */
-const asideOf = (slot: DataSlot<TopicScreenView>, labels: TopicLabels): ReactNode =>
-    "items" in slot ? (
-        <TopicAside
-            partsTitle={labels.partsTitle}
-            partsNote={labels.partsNote}
-            parts={slot.items.parts}
-            prerequisitesTitle={labels.prerequisites}
-            prerequisites={slot.items.prerequisites}
-            relatedTitle={labels.related}
-            related={slot.items.related}
-        />
-    ) : (
-        <PaneSection isLoading>{null}</PaneSection>
-    )
+/** The aside pane's content: the topic's blocks; they draw as skeletons while the first read runs. */
+const asideOf = (view: TopicScreenView, labels: TopicLabels, isLoading: boolean): ReactNode => (
+    <TopicAside
+        partsTitle={labels.partsTitle}
+        partsNote={labels.partsNote}
+        parts={view.parts}
+        prerequisitesTitle={labels.prerequisites}
+        prerequisites={view.prerequisites}
+        relatedTitle={labels.related}
+        related={view.related}
+        isLoading={isLoading}
+    />
+)
 
-/** The topic the band shows: the settled one, or the placeholder's geometry while it is not. */
-const bandViewOf = (slot: DataSlot<TopicScreenView>, props: TopicDetailBaseProps["props"]): TopicScreenView =>
-    "items" in slot ? slot.items : props.placeholder
-
-/** Draws a topic as the approved page: the band, the well with the bar and the lessons, and (wide screens) the aside pane. */
+/** Draws a topic as the approved page: the band, the well with the bar and the lessons, and (wide screens) the aside pane; every status comes from the slot. */
 export const TopicDetailBase = (props: TopicDetailBaseProps) => {
     const own = props.props
     return (
-        <Page
-            chrome="panes"
-            layout="workspace"
-            isLoading={"isLoading" in own.slot}
-            header={headerOf(own, bandViewOf(own.slot, own))}
-        >
-            <PaneGrid
-                label={own.labels.pageTitle}
-                areas={{ base: ["main"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-                rows={{ base: ["fill"], wide: ["fill"] }}
-            >
-                <Pane area="main">
-                    <PaneSection gap="section">
-                        <Moved props={own} />
-                        <SlotView
-                            slot={own.slot}
-                            placeholder={own.placeholder}
-                            labels={own.slotLabels}
-                            onRetry={props.on.retry}
-                            render={(each, isLoading) => <TopicMain view={each} props={own} isLoading={isLoading} />}
-                        />
-                    </PaneSection>
-                </Pane>
-                <Pane area="aside" surface>
-                    {asideOf(own.slot, own.labels)}
-                </Pane>
-            </PaneGrid>
-        </Page>
+        <SlotView<TopicScreenView, PageHeaderContent>
+            slot={own.slot}
+            placeholder={own.placeholder}
+            labels={own.slotLabels}
+            errorDescription={own.errorText}
+            onRetry={props.on.retry}
+            header={(view) => headerOf(own, view)}
+            headerFallback={{
+                title: own.labels.pageTitle,
+                breadcrumbs: {
+                    label: own.labels.breadcrumbs,
+                    items: [{ id: "essentials", label: own.labels.pageTitle }],
+                },
+            }}
+            aside={(view, isLoading) => asideOf(view, own.labels, isLoading)}
+            asideFallback={<PaneSection isLoading>{null}</PaneSection>}
+            frame={({ header, aside, body, isLoading }) => (
+                <Page chrome="panes" layout="workspace" isLoading={isLoading} header={header}>
+                    <PaneGrid
+                        label={own.labels.pageTitle}
+                        areas={{ base: ["main"], wide: ["main aside"] }}
+                        columns={{ base: ["fill"], wide: ["fill", "standard"] }}
+                        rows={{ base: ["fill"], wide: ["fill"] }}
+                    >
+                        <Pane area="main">
+                            <PaneSection gap="section" isLoading={isLoading}>
+                                <Moved props={own} />
+                                {body}
+                            </PaneSection>
+                        </Pane>
+                        <Pane area="aside" surface>
+                            {aside}
+                        </Pane>
+                    </PaneGrid>
+                </Page>
+            )}
+            render={(each, isLoading) => <TopicMain view={each} props={own} isLoading={isLoading} />}
+        />
     )
 }

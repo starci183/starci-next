@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 
 /** One outcome path as its card shows it, every word resolved. */
 export type OutcomePathView = {
@@ -45,9 +45,16 @@ type OutcomePathCardProps = {
 }
 
 /** The command that follows the path; the path already followed offers none. */
-const ChooseAction = (props: Pick<OutcomePathCardProps, "path" | "hasActive" | "labels" | "isPending" | "onChoose">) =>
+const ChooseAction = (
+    props: Pick<OutcomePathCardProps, "path" | "hasActive" | "labels" | "isPending" | "isLoading" | "onChoose">,
+) =>
     props.path.isCurrent ? null : (
-        <Button intent="neutral" size="sm" isPending={props.isPending} onPress={() => props.onChoose(props.path.id)}>
+        <Button
+            intent="neutral"
+            isPending={props.isPending}
+            isDisabled={props.isLoading === true}
+            onPress={() => props.onChoose(props.path.id)}
+        >
             {props.hasActive ? props.labels.switchTo : props.labels.choose}
         </Button>
     )
@@ -61,10 +68,13 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         ariaLabel={props.path.title}
         height="fill"
         {...(props.isLoading === true ? { isLoading: true } : {})}
-        {...(props.path.isCurrent ? { emphasis: "accent" as const } : {})}
         actions={
             <Cluster gap="row">
-                <Button intent="neutral" size="sm" onPress={() => props.onView(props.path.id)}>
+                <Button
+                    intent="neutral"
+                    isDisabled={props.isLoading === true}
+                    onPress={() => props.onView(props.path.id)}
+                >
                     {props.labels.view}
                 </Button>
                 <ChooseAction {...props} />
@@ -72,31 +82,32 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         }
     >
         <Stack gap="row">
-            <Cluster gap="inline" align="start" wrap={false}>
-                <Avatar name={props.path.title} seed={props.path.id} />
-                <Stack gap="identity">
-                    <Text size="xs" tone="muted">
-                        {props.path.kind}
-                    </Text>
-                    <Heading level={2}>{props.path.title}</Heading>
-                </Stack>
-            </Cluster>
+            <Stack gap="identity">
+                <Text size="xs" tone="muted" isLoading={props.isLoading === true}>
+                    {props.path.kind}
+                </Text>
+                <Heading level={2} isLoading={props.isLoading === true}>
+                    {props.path.title}
+                </Heading>
+            </Stack>
             {props.path.isCurrent ? <Badge tone="accent">{props.labels.current}</Badge> : null}
-            <Text as="p">{props.path.pitch}</Text>
-            <Text as="p" size="sm">
-                <Text as="span" size="sm" isStrong>
+            <Text as="p" isLoading={props.isLoading === true}>
+                {props.path.pitch}
+            </Text>
+            <Text as="p" isLoading={props.isLoading === true}>
+                <Text as="span" isStrong>
                     {`${props.labels.doneLabel}: `}
                 </Text>
                 {props.path.done}
             </Text>
             <Cluster gap="inline" wrap>
                 {props.path.parts.map((part) => (
-                    <Badge key={part} tone="neutral">
+                    <Badge key={part} tone="neutral" isLoading={props.isLoading === true}>
                         {part}
                     </Badge>
                 ))}
             </Cluster>
-            <Text size="sm" tone="muted">
+            <Text tone="muted" isLoading={props.isLoading === true}>
                 {props.path.meta}
             </Text>
         </Stack>

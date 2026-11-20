@@ -51,9 +51,7 @@ type LessonResultProps = {
 export const LessonResult = (props: LessonResultProps) => (
     <Stack gap="section">
         <Stack gap="inline">
-            <Text size="sm" tone="muted">
-                {props.labels.result.eyebrow}
-            </Text>
+            <Text tone="muted">{props.labels.result.eyebrow}</Text>
             <AnswerBar label={props.labels.opener.barLabel} bar={props.view.bar} isLoading={false} />
             <Text as="p" isStrong>
                 {props.view.resultTitle}
@@ -90,9 +88,7 @@ type LessonEssenceAsideProps = { readonly view: EssenceView; readonly labels: Es
 /** The article: its eyebrow, the contents, then every section in order, each its own anchor so a wrong answer can link to it. */
 export const LessonArticleBody = (props: LessonArticleBodyProps) => (
     <Stack gap="section">
-        <Text size="sm" tone="muted">
-            {props.view.articleEyebrow}
-        </Text>
+        {props.view.articleEyebrow === "" ? null : <Text tone="muted">{props.view.articleEyebrow}</Text>}
         <LessonToc view={props.view} labels={props.labels} />
         {props.view.sections.map((section) => (
             <Section key={section.id} title={section.title} headingLevel={2} id={`section-${section.id}`}>

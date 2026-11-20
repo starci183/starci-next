@@ -1,4 +1,4 @@
-{"findings":[],"hash":"f49f4d0d37fb051c47683249d317e297086b628cacc32ff620e094070c7c140b","path":"gallery/pages/learn/error/explain.md","step":"prettier"}
-{"findings":[],"hash":"b6d5238f83ef2a08ed34aff861933aabf2fa1f51cf538ca4d8e10a665d033349","path":"gallery/pages/learn/home-account-menu/explain.md","step":"prettier"}
-{"findings":[],"hash":"d10a3ae03e733d93baebc7ea92847a57c26f9a44ec3f1c8e71924e705184a065","path":"gallery/pages/learn/home/explain.md","step":"prettier"}
-{"findings":[],"hash":"1dc49fb01407aaee35dc644684420cc14967e362952063bb8bbc0b8f0b19fc2f","path":"gallery/pages/learn/not-found/explain.md","step":"prettier"}
+{"findings":[],"hash":"c0141dddcc9d4aabe836c45dcdcc7d9c0a8a4a9c17b91871316a0f4d6d412dfe","path":"gallery/pages/learn/error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"4f0c5a690f50395be1414be296708383222f3ed8c0069cca5fdf4f6228926146","path":"gallery/pages/learn/home-account-menu/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"eae59bb18ba0dab521d2483a77fd5815283e3c06a318e6aa3856d7b5c3d2f260","path":"gallery/pages/learn/home/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"1479f9b10efd48b7b20a83c40d712173c7765e7bce894439702ec3d14f2f6ca1","path":"gallery/pages/learn/not-found/screen.yaml","step":"prettier"}

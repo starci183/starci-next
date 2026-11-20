@@ -85,7 +85,7 @@ const PathBody = (props: PathBodyProps) => (
         </Stack>
         <Stack gap="row">
             <Heading level={3}>{props.labels.checksTitle}</Heading>
-            <Text as="p" size="sm" tone="muted">
+            <Text as="p" tone="muted">
                 {props.labels.checksNote}
             </Text>
             {props.path.checks.map((check) => (
