@@ -959,17 +959,17 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
+    "progress/free": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
     "progress/overview": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "progress/overview-first-visit": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "progress/overview-free": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
@@ -1194,7 +1194,7 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
-    "review/deck-not-found": {
+    "review/deck-missing": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
@@ -1204,12 +1204,7 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
-    "review/decks-deck-added": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "review/decks-empty": {
+    "review/decks-added": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
@@ -1224,22 +1219,17 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
+    "review/decks-none": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
     "review/hub": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
-    "review/hub-change-goal": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "review/hub-done-today": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "review/hub-empty": {
+    "review/hub-done": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
@@ -1249,7 +1239,12 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
-    "review/hub-first-visit": {
+    "review/hub-first": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
+    "review/hub-goal": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
@@ -1259,27 +1254,32 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
+    "review/hub-nothing": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
     "review/session": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
-    "review/session-answer-and-grade": {
+    "review/session-answer": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
+    "review/session-cloze": {
+      "status": "approved",
+      "approvedAt": "2026-11-20T18:18:52+07:00",
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+    },
+    "review/session-conflict": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "review/session-empty": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "review/session-fill-blank": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "review/session-grading-conflict": {
       "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
