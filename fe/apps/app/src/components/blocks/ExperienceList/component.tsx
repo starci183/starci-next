@@ -189,7 +189,9 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     <Badge tone="neutral">{card.source}</Badge>
                     <Badge tone={card.stateTone}>{card.state}</Badge>
                 </Cluster>
-                <Text tone="muted">{card.dateText}</Text>
+                <Text tone="muted" isLoading={props.isLoading}>
+                    {card.dateText}
+                </Text>
             </Cluster>
             {card.subtitle === undefined ? null : (
                 <Text tone="muted" isLoading={props.isLoading}>

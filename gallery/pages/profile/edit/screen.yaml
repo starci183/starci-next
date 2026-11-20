@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b273a849e1c2f10b499eec0fee4e157c26f1d93353d06d20d3bd4adc3409c6f5
+    sha256: de3111403d294fb845ce2e79d63877520f3c19b6b2166c74a8cffad7c35775b9
   "1440":
     file: 1440.png
-    sha256: 4bb2738b13736371944272946b402762c0c5365a4369033e6be2d556edd3ff1c
+    sha256: 79b67849395cf2653e1220aa24fd50fed071c5755555abc3151d68e127c4d075
 sections:
   - id: s1
     title: "Đầu trang: Hủy và Lưu thay đổi"

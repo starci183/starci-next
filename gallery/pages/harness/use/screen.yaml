@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: da16726efdd3963ceea3cd1d1bddc71228500dacd7422e21bb1eed98df1f014b
+    sha256: 06337a0053d4275ea577f399c7ca085d4ac536955fe0c3a3157040d775ce87d4
   "1440":
     file: 1440.png
-    sha256: 845fe259c29c5384846dc4f9ca09375462f7fbbbd86a1a490af08d91cdc9db47
+    sha256: 290fe036cccbd1c38dc6d07df4ed89e45ce29f6077532afe175f4bd04175d943
 sections:
   - id: s1
     title: Chọn công cụ

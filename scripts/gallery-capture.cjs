@@ -157,6 +157,21 @@ const SCREENS = [
     S("career", "verify-not-found", "/verify/SC-0000", { guest: true }),
     S("career", "verify-loading", "/verify/SC-0000", { guest: true, setup: opHold(/^VerifyExperience$/) }),
     S("career", "verify-error", "/verify/SC-0000", { guest: true, setup: opRefuse(/^VerifyExperience$/) }),
+    // The seeded learner of career-states shares one verified line (scripts/gallery-seed.mjs --only career-states,career-teacher): the CV is a public link, the verify page is the link of its line.
+    S("cv", "public", "/cv/gallery-career-states-example-test", { guest: true }),
+    S("cv", "public-few-lines", "/cv/gallery-career-states-example-test", { guest: true }),
+    S("cv", "public-share", "/cv/gallery-career-states-example-test", {
+        guest: true,
+        act: async (p) => {
+            await p
+                .getByRole("button", { name: "Chia sẻ CV" })
+                .first()
+                .click()
+                .catch(() => {})
+            await p.waitForTimeout(800)
+        },
+    }),
+    S("career", "verify", "/verify/9C2E-F88F-B6BA", { guest: true }),
     S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
     S("profile", "overview", "/profile"),
     S("profile", "new", "/profile"),

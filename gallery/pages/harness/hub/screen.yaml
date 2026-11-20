@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ea1ffad336f93debe88449d5d6bce7740e44d8d54da22039df45e80c57f7d159
+    sha256: 0adee37e868d97773c95f9be76c96ef432f9eb0e91215ce3f25243ae88875165
   "1440":
     file: 1440.png
-    sha256: 3a85daaedc0c7c5951b2d949d05ad485c752a83ac122097d23e223a0872fc1bd
+    sha256: 4c07bb112b2ae50a4ea531c2a10d7736c2611c12bd5ef0b8ada292b43be91e64
 sections:
   - id: s1
     title: Băng đầu trang (tiêu đề, dòng phụ, bốn tab)

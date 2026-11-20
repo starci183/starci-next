@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2
+    sha256: 7cfd38de26c8558c3a9264f89b23c5f44ab1c62e802487f4f6a2067f69759b61
   "1440":
     file: 1440.png
-    sha256: 7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e
+    sha256: 1dd9fdb410931c72049ed16462eda3cea416f82c0bf7c60bc255efd883d02740
 sections:
   - id: s1
     title: Danh tính khi chưa có ảnh

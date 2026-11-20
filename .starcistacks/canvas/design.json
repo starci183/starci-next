@@ -137,8 +137,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "a30949f71de57c9ec5d736917243056a25cd58e89d5355899c14d283ead73045",
-        "1440": "b1e064d119840f5f8bcdc8cdd7da7844fe3db187f16ef760f2354d75d4bfc36c"
+        "390": "0fec6c1a48737ded6e02c59a94d38c09461d31c60a219b358d1df007f507a06f",
+        "1440": "4a78a756fc2c32d48ae86b39a8f75de6b1bf3125428b96da113517b14561ba45"
       }
     },
     "career/review-item": {
@@ -192,9 +192,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "career/verify": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "b1bc83b1ba014a44b27905425f7656fe8a79e5a17b5f8b2201639c975db98a9c",
+        "1440": "873cd151279c2e6597359698a04fccfbbb919caec89b7b8489397580e4c3d44e"
+      }
     },
     "career/verify-error": {
       "status": "built",
@@ -210,8 +214,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "350a940e60b928d354877d58ec465f99022e97c5e2804a80ad0bf50e5c25fca0",
-        "1440": "d4fd164e916c9b9c554b6ecb5c0d3b519dc7d8c7e32a84b7618d650ec62fac04"
+        "390": "c2345f17c11377a42da48b827c958dc8893a3341e79ed8773d1159952557a8e0",
+        "1440": "d5e425f72ff3f5aaadd88dfc5dd8b082ee0e529ce65be6c1eafa5eb69f20a05c"
       }
     },
     "career/verify-not-found": {
@@ -219,8 +223,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "61a5c0175d72b41c29186e0bad40ea2857c9930ed7f3bb374da7bebe116f04fb",
-        "1440": "9ff385f986bae1618cc24d187e57f86becab9a4189e5db7a5d0b351f08c66f19"
+        "390": "5d9f8506c422f10284b2aa8a3f1c2960ecac7cd732e65cfb4a47ab2e9f98fe0b",
+        "1440": "c43c593692d8d59cbbe40639f036c5572d131e37d147408686872d346bb13f2f"
       }
     },
     "career/verify-revoked": {
@@ -294,9 +298,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "35172012adc532cc8d8f88f31db7fcc5cad0410f7aa09b82610dbd519760786a",
+        "1440": "41bd25c0d1591af59f022e91e1c005e1b117101828361883d0fc7a29962cdfc9"
+      }
     },
     "cv/public-error": {
       "status": "approved",
@@ -304,9 +312,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-few-lines": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "35172012adc532cc8d8f88f31db7fcc5cad0410f7aa09b82610dbd519760786a",
+        "1440": "84e5e42e6969c24c8ef527977285c003b7acfe83071b763f0c893fd8bf261ef7"
+      }
     },
     "cv/public-loading": {
       "status": "approved",
@@ -328,9 +340,13 @@
       }
     },
     "cv/public-share": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "197a5b4b3c5490c7dc69f6ab4ed506d003d3da0c652ea3049ba89e3db69620c3",
+        "1440": "4ae5d12e93ff65ae62f1910810e71b7aeed749187c1a370a04535be52b7f2da6"
+      }
     },
     "devices/list": {
       "status": "approved",
@@ -585,8 +601,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "ea9f12a3d9b4282603176d395a4e23a3a458acd0bc17967a1ff421f9055c831d",
-        "1440": "53548f5c4fdf2792932882833143a024800e9ececfb1cf041dcaab23c53e6574"
+        "390": "217e7131138b177cefbd5c53c8efd59480fe09747c662c1f183ad569a75988a6",
+        "1440": "35647de7316d702ebb864d1438f6d835d5d9209c22a4563677211bd27815f5b6"
       }
     },
     "harness/build-not-linked": {
@@ -632,8 +648,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "0547ba4c92eda234f4fbb284606d6d279540265f66f194d565aedf7aa464b201",
-        "1440": "f160a61d5121009528ed75f2264ae7bcfde1f250107625894f06b250f6043dc0"
+        "390": "f0bba9829d5484843aaa3b911594711ac73cc3a963cbf4523e89c53bb4b1bf70",
+        "1440": "6097357bb7fd484120b821367942bd53d4620af985009872f7959861e66d9d91"
       }
     },
     "harness/doc": {
@@ -659,8 +675,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "9e63c460dfbc52a7f137ec91d6ae31b0f3753cef65911f8dbc029f8b073a9d68",
-        "1440": "9c0cae98d25e1fbd40d44baf48e542be27633e599c22446423c93e95f8c91baa"
+        "390": "d521d3a3d7e240388fcf8bc8d0d330fe131b9fed1f68ccbf86b799521cc59f08",
+        "1440": "21bd89b8b0f1175ad80eb1b0bb7fb878efd5a4ead8561603845f5dce9774ea26"
       }
     },
     "harness/doc-not-found": {
@@ -691,8 +707,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "41b68d5a4e8d24849fb8d2e0e08b07e06a41ece77e14a4e51914a59d58619234",
-        "1440": "92f84fafc80fbe626e9646508d225d958abe106e28f2229113d874c8f198fe48"
+        "390": "2c868238d70403f274df70c0fcb679ed1768cbbdca52b24657a96424447782d2",
+        "1440": "499d0049851f04cecfe6eb610156f4b481cbb7672ab016c0d0cfbfc2095d8b75"
       }
     },
     "harness/docs-no-match": {
@@ -705,8 +721,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "a097890f0626801f66edccf510d0d207d204cd2bd24afe61376b80247d59568a",
-        "1440": "cc8e083dc968a3dbc1167bfa831cb4ab469331b17f8f6ad6e98ba159583acef7"
+        "390": "723d2c2c25a79dcdd90f94714c14a3a234614422d5e36caddadea558d82bcdf8",
+        "1440": "d66a0f59dea0c2f1c3cb570ca2c6f78e0452a016320c26fe773faef285025a53"
       }
     },
     "harness/guide-error": {
@@ -723,8 +739,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "a4b7cafbb3b8c2fc01a1d8bf77304b4a6ca225a927113f4c719a83cafb7fecd8",
-        "1440": "12e1502b4ab52f082e3ae4ae98ea19930d1959db9970a3243cb412d591585c1e"
+        "390": "5760ee382606918d31626285a0719a77ef74d6090e15677b38fb73933ec63934",
+        "1440": "ee58073e6a078b6ee210c81692384ec07894fa74ee3a078452cb7091ca4dfb48"
       }
     },
     "harness/guide-not-found": {
@@ -737,8 +753,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "ea1ffad336f93debe88449d5d6bce7740e44d8d54da22039df45e80c57f7d159",
-        "1440": "3a85daaedc0c7c5951b2d949d05ad485c752a83ac122097d23e223a0872fc1bd"
+        "390": "0adee37e868d97773c95f9be76c96ef432f9eb0e91215ce3f25243ae88875165",
+        "1440": "4c07bb112b2ae50a4ea531c2a10d7736c2611c12bd5ef0b8ada292b43be91e64"
       }
     },
     "harness/hub-error": {
@@ -760,8 +776,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "eaad7681a6d6b62e57831b713e73a55144f987cc8e41cbe87587c099fbbb4e54",
-        "1440": "b061114706944465cb318b279e815eb19b3c65e710ae67caf9fa874f402619f6"
+        "390": "7d17700af87a7a120a0abdc8dd3913d71c2729638a40e37b482290a9b06f0ada",
+        "1440": "fb05252ee89740f78f3f085ad3c764463ed82e92fd229a8d968f9bee74b64c8a"
       }
     },
     "harness/use": {
@@ -769,8 +785,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "da16726efdd3963ceea3cd1d1bddc71228500dacd7422e21bb1eed98df1f014b",
-        "1440": "845fe259c29c5384846dc4f9ca09375462f7fbbbd86a1a490af08d91cdc9db47"
+        "390": "06337a0053d4275ea577f399c7ca085d4ac536955fe0c3a3157040d775ce87d4",
+        "1440": "290fe036cccbd1c38dc6d07df4ed89e45ce29f6077532afe175f4bd04175d943"
       }
     },
     "harness/use-codex-no-doctor": {
@@ -792,7 +808,7 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "3fd19a70b08011c657b14ef3b7bdb56942d01a4728f5c355cd707463c6af08d8",
+        "390": "02f73b8dda6034b04fc492fee40cd425904f1a7740320303f1fd4733a097b707",
         "1440": "66c74bf06eda6a96934a0463b9bb54db128a1bda57970349c567533b2b4e8ef2"
       }
     },
@@ -1021,8 +1037,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "b273a849e1c2f10b499eec0fee4e157c26f1d93353d06d20d3bd4adc3409c6f5",
-        "1440": "4bb2738b13736371944272946b402762c0c5365a4369033e6be2d556edd3ff1c"
+        "390": "de3111403d294fb845ce2e79d63877520f3c19b6b2166c74a8cffad7c35775b9",
+        "1440": "79b67849395cf2653e1220aa24fd50fed071c5755555abc3151d68e127c4d075"
       }
     },
     "profile/edit-error": {
@@ -1030,8 +1046,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "6aaa5ed0d3f5fe430eeb871e7631168bb35fe0cefb53eb5b66495ce17bd12968",
-        "1440": "076777b13a0acbdabe620fd2873b799f3bbb6e9a0644bb1ba91603c7f7c1eed2"
+        "390": "9a32f609949a3b4820129cc20dbccc8ced1505b7888059f1f22f54a9cbf8823b",
+        "1440": "2333aaa0cde291b9386eedb3c0fb532150f2464aa746e640c8320a1948194f68"
       }
     },
     "profile/edit-loading": {
@@ -1039,8 +1055,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "8e19cd8bc61db40d2c8423cbf0e654c43fea78fb905f5ff08f8f9304ad432d09",
-        "1440": "ca5e440599e3053547a15a6a541e3f97ed23c70b212de600ce8a33f4d4c2a503"
+        "390": "0671b12f71331046ba383e314b1a59bd49628f42c7c1849bf3ec2f465ecd0a76",
+        "1440": "804f0c8af38174ce9d5a9529ba0dd3dc350f41ff0c606138b4a3262b2b673142"
       }
     },
     "profile/new": {
@@ -1048,8 +1064,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2",
-        "1440": "7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e"
+        "390": "7cfd38de26c8558c3a9264f89b23c5f44ab1c62e802487f4f6a2067f69759b61",
+        "1440": "1dd9fdb410931c72049ed16462eda3cea416f82c0bf7c60bc255efd883d02740"
       }
     },
     "profile/overview": {
@@ -1057,8 +1073,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "628d0da1d9479641d181ff3a8a4c40ff19296e397525d21ae57ae36e1af2f3e2",
-        "1440": "7397b9bd695e0a2fde61168ae7ab0621d34eb0425ecaf302d2e2297b49792a9e"
+        "390": "7cfd38de26c8558c3a9264f89b23c5f44ab1c62e802487f4f6a2067f69759b61",
+        "1440": "1dd9fdb410931c72049ed16462eda3cea416f82c0bf7c60bc255efd883d02740"
       }
     },
     "profile/overview-confirm-delete-photo": {
