@@ -103,7 +103,7 @@
 {"findings":[],"hash":"bf58048c5895a7b7f42afbaf10fa21d11c854a082ab7701f8c55759bb7fc07e7","path":"fe/packages/starci-next-ui/src/composites/RowProgress/index.tsx","step":"prettier"}
 {"findings":[],"hash":"9266ffbb58373733c6597d21d49a41bfe5d87b4a00d2cb8c0f8484554b39454f","path":"fe/packages/starci-next-ui/src/composites/RunsCard/index.tsx","step":"prettier"}
 {"findings":[],"hash":"42d66991d34557e9a9ca72ec49f2f171e13d6668a7c130e81f2b0aee03b58b1d","path":"fe/packages/starci-next-ui/src/composites/SimulationBlock/index.tsx","step":"prettier"}
-{"findings":[],"hash":"e02b66dc41412ac2b53f63b8a48615ab9263e546c02d331ab018cfe02a23b14b","path":"fe/packages/starci-next-ui/src/composites/SlotView/index.tsx","step":"prettier"}
+{"findings":[],"hash":"221222cbaa5af83cd3d6d474cf757d4bd149cc5a7d9a6e89b08d1000f9d36f91","path":"fe/packages/starci-next-ui/src/composites/SlotView/index.tsx","step":"prettier"}
 {"findings":[],"hash":"0588190a23c38e55ffbf62691643e0afc057ba77bbad9027e2a677a76d4b2fd2","path":"fe/packages/starci-next-ui/src/composites/StepRows/index.tsx","step":"prettier"}
 {"findings":[],"hash":"6d4fcd8699fd1d3b07d4de4811635b89a0b477bf59bcbe16874ae0b8b3e3e24c","path":"fe/packages/starci-next-ui/src/composites/StudyBody/index.tsx","step":"prettier"}
 {"findings":[],"hash":"5d8bf6bc4787223803119fafbbb09fa9601f003fdf2d336cddcc7c2271a1ad9a","path":"fe/packages/starci-next-ui/src/composites/StudyBody/lesson.ts","step":"prettier"}
