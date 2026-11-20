@@ -1,4 +1,13 @@
-import { Alert, EmptyNotice, Page, Section, Stack, Tabs, type ListRowData } from "@starci/grammar/common"
+import {
+    Alert,
+    EmptyNotice,
+    Page,
+    Section,
+    Stack,
+    Tabs,
+    type ListRowData,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
@@ -91,35 +100,36 @@ const DeckList = (
  */
 export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
     const { header, labels } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        meta: header.meta,
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "review", label: labels.root, href: header.rootHref },
+                { id: "decks", label: header.title },
+            ],
+        },
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                meta: header.meta,
-                breadcrumbs: {
-                    label: labels.breadcrumbs,
-                    items: [
-                        { id: "review", label: labels.root, href: header.rootHref },
-                        { id: "decks", label: header.title },
-                    ],
-                },
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={labels.errorText}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Stack gap="section">
-                        <Note {...props} />
-                        <DeckList {...props} rows={rows} isLoading={isLoading} />
-                    </Stack>
-                )}
-            />
-        </Page>
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={labels.errorText}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Stack gap="section">
+                    <Note {...props} />
+                    <DeckList {...props} rows={rows} isLoading={isLoading} />
+                </Stack>
+            )}
+            frame={(parts) => (
+                <Page isLoading={parts.isLoading} header={pageHeader}>
+                    {parts.body}
+                </Page>
+            )}
+        />
     )
 }

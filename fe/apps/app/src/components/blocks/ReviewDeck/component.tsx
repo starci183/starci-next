@@ -61,53 +61,62 @@ const Removal = (props: ReviewDeckBaseProps) => (
     </Section>
 )
 
+/** The trail of the page: Ôn tập, the decks and, once the deck is read, the deck itself. */
+const trailOf = (
+    props: ReviewDeckBaseProps,
+    title: string | undefined,
+): NonNullable<PageHeaderContent["breadcrumbs"]> => ({
+    label: props.props.labels.breadcrumbs,
+    items: [
+        { id: "review", label: props.props.labels.root, href: props.props.rootHref },
+        { id: "decks", label: props.props.labels.decks, href: props.props.decksHref },
+        ...(title === undefined ? [] : [{ id: "deck", label: title }]),
+    ],
+})
+
 /**
  * Draws one deck: the header with the trail, the facts and the one command (add it, or review it once added), the description, the
  * numbers, three sample questions, and for an added deck the zone that removes it from the queue.
  */
 export const ReviewDeckBase = (props: ReviewDeckBaseProps) => {
     const { slot, placeholder, labels } = props.props
-    const view = "items" in slot ? slot.items : placeholder
-    const hasView = "items" in slot || "isLoading" in slot
-    const header: PageHeaderContent = {
-        title: hasView ? view.title : labels.decks,
-        titleScale: "standard",
-        ...(hasView ? { meta: view.meta, actions: <Primary {...props} /> } : {}),
-        breadcrumbs: {
-            label: labels.breadcrumbs,
-            items: [
-                { id: "review", label: labels.root, href: props.props.rootHref },
-                { id: "decks", label: labels.decks, href: props.props.decksHref },
-                ...(hasView ? [{ id: "deck", label: view.title }] : []),
-            ],
-        },
-    }
     return (
-        <Page header={header} isLoading={"isLoading" in slot}>
-            <SlotView
-                slot={slot}
-                placeholder={placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={labels.errorText}
-                onRetry={props.on.retry}
-                render={(each, isLoading) => (
-                    <Stack gap="region">
-                        <Text as="p">{each.description}</Text>
-                        <Section
-                            kind="figures"
-                            ariaLabel={each.title}
-                            items={each.figures.map((figure) => ({
-                                id: figure.id,
-                                term: figure.term,
-                                value: figure.value,
-                            }))}
-                        />
-                        <Preview {...props} view={each} isLoading={isLoading} />
-                        {each.isAdded ? <Removal {...props} /> : null}
-                        {props.props.isFailed ? <Alert tone="negative" title={labels.failed} /> : null}
-                    </Stack>
-                )}
-            />
-        </Page>
+        <SlotView<ReviewDeckView, PageHeaderContent>
+            slot={slot}
+            placeholder={placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={labels.errorText}
+            onRetry={props.on.retry}
+            header={(view) => ({
+                title: view.title,
+                titleScale: "standard",
+                meta: view.meta,
+                actions: <Primary {...props} />,
+                breadcrumbs: trailOf(props, view.title),
+            })}
+            headerFallback={{ title: labels.decks, titleScale: "standard", breadcrumbs: trailOf(props, undefined) }}
+            render={(each, isLoading) => (
+                <Stack gap="region">
+                    <Text as="p">{each.description}</Text>
+                    <Section
+                        kind="figures"
+                        ariaLabel={each.title}
+                        items={each.figures.map((figure) => ({
+                            id: figure.id,
+                            term: figure.term,
+                            value: figure.value,
+                        }))}
+                    />
+                    <Preview {...props} view={each} isLoading={isLoading} />
+                    {each.isAdded ? <Removal {...props} /> : null}
+                    {props.props.isFailed ? <Alert tone="negative" title={labels.failed} /> : null}
+                </Stack>
+            )}
+            frame={(parts) => (
+                <Page header={parts.header} isLoading={parts.isLoading}>
+                    {parts.body}
+                </Page>
+            )}
+        />
     )
 }

@@ -13,6 +13,7 @@ import {
     Text,
     Timeline,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type {
@@ -238,13 +239,25 @@ const Ready = (props: ReadyProps) => {
 }
 
 /** The page description by what the learner has: free, first visit or the full line. */
-const descriptionOf = (labels: ProgressLabels, slot: DataSlot<ProgressPageView>): string | undefined => {
-    if ("isLoading" in slot) return labels.loading
-    if (!("items" in slot)) return undefined
-    const view = slot.items
+const descriptionOf = (labels: ProgressLabels, view: ProgressPageView, isLoading: boolean): string => {
+    if (isLoading) return labels.loading
     if (view.firstVisit !== null) return labels.descriptionFirst
     return view.isFree ? labels.descriptionFree : labels.description
 }
+
+/** The header of the page: the title, the trail to the profile and, once the read settles, the line that says what the learner has. */
+const headerOf = (labels: ProgressLabels, description: string | undefined): PageHeaderContent => ({
+    title: labels.title,
+    titleScale: "standard",
+    breadcrumbs: {
+        label: labels.crumbLabel,
+        items: [
+            { id: "profile", label: labels.crumbProfile, href: labels.crumbHref },
+            { id: "progress", label: labels.crumbSelf },
+        ],
+    },
+    ...(description === undefined ? {} : { description }),
+})
 
 /**
  * Draws Progress (the page across the whole app): a ribbon of figures, then Essentials (the parts the plan opens and a meter row per
@@ -254,56 +267,46 @@ const descriptionOf = (labels: ProgressLabels, slot: DataSlot<ProgressPageView>)
  */
 export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
     const labels = props.props.labels
-    const slot = props.props.slot
-    const description = descriptionOf(labels, slot)
-    const hasAside = "isLoading" in slot || ("items" in slot && slot.items.firstVisit === null)
-    const drawn = (render: (ready: ReadyProps) => ReactNode) => (
-        <SlotView
-            slot={slot}
+    return (
+        <SlotView<ProgressPageView, PageHeaderContent, ReactNode>
+            slot={props.props.slot}
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
-            render={(view, isLoading) => render({ view, labels, onRetry: props.on.retry, isLoading })}
-        />
-    )
-    return (
-        <Page
-            chrome="panes"
-            header={{
-                title: labels.title,
-                titleScale: "standard",
-                breadcrumbs: {
-                    label: labels.crumbLabel,
-                    items: [
-                        { id: "profile", label: labels.crumbProfile, href: labels.crumbHref },
-                        { id: "progress", label: labels.crumbSelf },
-                    ],
-                },
-                ...(description === undefined ? {} : { description }),
-            }}
-        >
-            <PaneGrid
-                label={labels.title}
-                areas={{ base: ["main", "aside"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: hasAside ? ["fill", "standard"] : ["fill"] }}
-            >
-                <Pane area="main" scroll label={labels.title}>
-                    <PaneSection>
-                        {drawn((ready) => (
-                            <Ready {...ready} />
-                        ))}
-                    </PaneSection>
-                </Pane>
-                {hasAside ? (
+            header={(view, isLoading) => headerOf(labels, descriptionOf(labels, view, isLoading))}
+            headerFallback={headerOf(labels, undefined)}
+            aside={(view, isLoading) =>
+                view.firstVisit === null ? (
                     <Pane area="aside" scroll label={labels.activityTitle}>
                         <PaneSection>
-                            {drawn((ready) => (
-                                <ActivitySection {...ready} />
-                            ))}
+                            <ActivitySection
+                                view={view}
+                                labels={labels}
+                                onRetry={props.on.retry}
+                                isLoading={isLoading}
+                            />
                         </PaneSection>
                     </Pane>
-                ) : null}
-            </PaneGrid>
-        </Page>
+                ) : null
+            }
+            asideFallback={null}
+            render={(view, isLoading) => (
+                <Ready view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
+            )}
+            frame={(parts) => (
+                <Page chrome="panes" header={parts.header}>
+                    <PaneGrid
+                        label={labels.title}
+                        areas={{ base: ["main", "aside"], wide: ["main aside"] }}
+                        columns={{ base: ["fill"], wide: parts.aside === null ? ["fill"] : ["fill", "standard"] }}
+                    >
+                        <Pane area="main" scroll label={labels.title}>
+                            <PaneSection>{parts.body}</PaneSection>
+                        </Pane>
+                        {parts.aside}
+                    </PaneGrid>
+                </Page>
+            )}
+        />
     )
 }
