@@ -3,7 +3,6 @@ import {
     AlertDialog,
     Badge,
     Button,
-    ChoiceChips,
     Cluster,
     EmptyNotice,
     Page,
@@ -11,6 +10,7 @@ import {
     Stack,
     Switch,
     SurfaceCard,
+    Tabs,
     Text,
     Textarea,
     type ListRowData,
@@ -22,7 +22,7 @@ import type { DataSlot, ExperienceCardView, ExperienceListView, SlotLabels } fro
 export const EXPERIENCE_PLACEHOLDER: ExperienceListView = {
     meta: "xxxxxx",
     tabs: [{ id: "all", label: "xxxxxx", count: 0 }],
-    sources: [{ id: "all", label: "xxxxxx" }],
+    sources: [{ id: "all", label: "xxxxxx", count: 0 }],
     cards: [1, 2].map((index) => ({
         itemId: `placeholder-${index}`,
         source: "xxxxxx",
@@ -140,12 +140,10 @@ const CardEdit = (props: ExperienceCardProps) => {
                 ))}
             </Cluster>
             <Cluster gap="inline" wrap align="center">
-                <Button intent="commit" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
+                <Button intent="neutral" isPending={card.isBusy} onPress={() => on.askSend(card.itemId)}>
                     {card.edit.sendLabel}
                 </Button>
-                <Text size="sm" tone="muted">
-                    {labels.sendHint}
-                </Text>
+                <Text tone="muted">{labels.sendHint}</Text>
             </Cluster>
         </Stack>
     )
@@ -159,17 +157,14 @@ const CardVerified = (props: ExperienceCardProps) => {
     return (
         <Cluster gap="inline" wrap align="center">
             <Switch
-                kind="compact"
                 label={verified.isShown ? labels.shown : labels.hidden}
                 isLabelHidden
                 isSelected={verified.isShown}
                 isDisabled={card.isBusy}
                 onSelectedChange={() => on.toggleShown(card.itemId)}
             />
-            <Text size="sm" tone="muted">
-                {verified.isShown ? labels.shown : labels.hidden}
-            </Text>
-            <Button intent="neutral" size="sm" onPress={() => on.copyLink(card.itemId, verified.url)}>
+            <Text tone="muted">{verified.isShown ? labels.shown : labels.hidden}</Text>
+            <Button intent="neutral" onPress={() => on.copyLink(card.itemId, verified.url)}>
                 {verified.isCopied ? labels.copiedLink : labels.copyLink}
             </Button>
         </Cluster>
@@ -186,18 +181,9 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     <Badge tone="neutral">{card.source}</Badge>
                     <Badge tone={card.stateTone}>{card.state}</Badge>
                 </Cluster>
-                <Text size="sm" tone="muted">
-                    {card.dateText}
-                </Text>
+                <Text tone="muted">{card.dateText}</Text>
             </Cluster>
-            <Stack gap="identity">
-                <Text isStrong>{card.title}</Text>
-                {card.subtitle === undefined ? null : (
-                    <Text size="sm" tone="muted">
-                        {card.subtitle}
-                    </Text>
-                )}
-            </Stack>
+            {card.subtitle === undefined ? null : <Text tone="muted">{card.subtitle}</Text>}
             {card.returnNote === undefined ? null : (
                 <Alert tone="cautionary" title={labels.returnedNote} description={card.returnNote} />
             )}
@@ -210,15 +196,11 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     ))}
                 </Cluster>
             )}
-            {card.note === undefined ? null : (
-                <Text size="sm" tone="muted">
-                    {card.note}
-                </Text>
-            )}
+            {card.note === undefined ? null : <Text tone="muted">{card.note}</Text>}
             <CardEdit {...props} />
             {card.isReturned && !card.isEditing ? (
                 <div>
-                    <Button intent="neutral" size="sm" onPress={() => on.startEdit(card.itemId)}>
+                    <Button intent="neutral" onPress={() => on.startEdit(card.itemId)}>
                         {labels.reopen}
                     </Button>
                 </div>
@@ -231,7 +213,7 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
 
 /** One item as a thin-bordered card. */
 const ExperienceCard = (props: ExperienceCardProps) => (
-    <SurfaceCard ariaLabel={props.card.title} height="fill">
+    <SurfaceCard label={props.card.title} headingLevel={3} height="fill">
         <ExperienceCardBody {...props} />
     </SurfaceCard>
 )
@@ -291,12 +273,12 @@ const Claims = (props: ReadyProps) => (
 /** The list: the source chips, then the cards of the chosen tab and source, then the patterns ready to claim. */
 const Items = (props: ReadyProps) => (
     <Stack gap="region">
-        <ChoiceChips
+        <Tabs
+            kind="filter"
             label={props.labels.sourcesLabel}
-            options={props.view.sources.map((source) => ({ value: source.id, label: source.label }))}
-            value={props.source}
-            onValueChange={props.on.selectSource}
-            empty={null}
+            items={props.view.sources.map((source) => ({ id: source.id, label: source.label, count: source.count }))}
+            selectedKey={props.source}
+            onSelect={props.on.selectSource}
         />
         {props.view.cards.length === 0 ? (
             <EmptyTab {...props} />

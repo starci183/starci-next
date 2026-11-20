@@ -5,7 +5,12 @@ import { useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { useSession } from "@/hooks/auth"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useMutateSetCvVisibilitySwr, useQueryMyCvLinkSwr } from "@/hooks/swr"
+import {
+    useMutateChooseOutcomePathSwr,
+    useMutateSetCvVisibilitySwr,
+    useQueryMyCvLinkSwr,
+    useQueryOutcomePathsSwr,
+} from "@/hooks/swr"
 import { cvLinkOf } from "@/hooks/profileViews"
 import { labelsOf, profileIssueWordsOf } from "@/hooks/profileWords"
 import { APP_ROUTES } from "@/modules/routes"
@@ -14,6 +19,16 @@ import { PROFILE_SAVED_KEY } from "./profile.shared"
 import { useOrigin } from "./useOrigin"
 import { useProfileIdentity } from "./useProfileIdentity"
 
+/** The goal path field: its words, the paths to pick from and the one chosen now. */
+export type ProfileEditGoal = {
+    readonly label: string
+    readonly hint: string
+    readonly placeholder: string
+    readonly options: ReadonlyArray<{ readonly id: string; readonly label: string }>
+    readonly value: string | null
+    readonly isLoading: boolean
+}
+
 /** What the editor is drawn from and the commands it sends. */
 export type ProfileEditState = {
     readonly pageTitle: string
@@ -21,6 +36,7 @@ export type ProfileEditState = {
     readonly accept: string
     readonly identity: DataSlot<ProfileIdentityView>
     readonly cvLink: DataSlot<ProfileCvLinkView>
+    readonly goal: ProfileEditGoal
     readonly slotLabels: ReturnType<ReturnType<typeof useSlotLabels>>
     readonly state: {
         readonly isSaving: boolean
@@ -31,6 +47,7 @@ export type ProfileEditState = {
     }
     readonly on: {
         readonly changeName: (value: string) => void
+        readonly changeGoal: (value: string | null) => void
         readonly save: () => void
         readonly cancel: () => void
         readonly uploadAvatar: (file: File) => void
@@ -52,6 +69,11 @@ export const useProfileEdit = (): ProfileEditState => {
     const identity = useProfileIdentity(locale)
     const cvLink = useQueryMyCvLinkSwr()
     const visibility = useMutateSetCvVisibilitySwr()
+    const paths = useQueryOutcomePathsSwr(locale)
+    const chooseGoal = useMutateChooseOutcomePathSwr()
+    const [goalDraft, setGoalDraft] = useState<string | null | undefined>(undefined)
+    const activeGoal = paths.data?.activePathId ?? null
+    const goalValue = goalDraft === undefined ? activeGoal : goalDraft
     const [isRemoveOpen, setIsRemoveOpen] = useState(false)
     const limits = identity.read.data?.limits ?? {
         maxBytes: 2 * 1024 * 1024,
@@ -79,6 +101,14 @@ export const useProfileEdit = (): ProfileEditState => {
             }
         }),
         cvLink: mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
+        goal: {
+            label: t("edit.goal.label"),
+            hint: t("edit.goal.hint"),
+            placeholder: t("edit.goal.placeholder"),
+            options: (paths.data?.paths ?? []).map((path) => ({ id: path.pathId, label: path.title })),
+            value: goalValue,
+            isLoading: paths.data === undefined && paths.error === undefined,
+        },
         state: {
             isSaving: identity.isSaving,
             isUploading: identity.isUploading,
@@ -88,9 +118,18 @@ export const useProfileEdit = (): ProfileEditState => {
         },
         on: {
             changeName: identity.setDraft,
+            changeGoal: setGoalDraft,
             save: () => {
-                void identity.saveName().then((isSaved) => {
+                void identity.saveName().then(async (isSaved) => {
                     if (!isSaved) return
+                    if (goalDraft !== undefined && goalDraft !== null && goalDraft !== activeGoal) {
+                        try {
+                            await chooseGoal.trigger({ pathId: goalDraft })
+                            await paths.mutate()
+                        } catch {
+                            return
+                        }
+                    }
                     try {
                         window.sessionStorage.setItem(PROFILE_SAVED_KEY, "1")
                     } catch {

@@ -81,7 +81,7 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
                     <Stack gap="identity">
                         <Text isStrong>{identity.shownName}</Text>
                         <Cluster gap="inline" align="center" wrap>
-                            <Text size="sm" tone="muted">
+                            <Text tone="muted">
                                 {[
                                     identity.email,
                                     `${props.labels.goalTitle}: ${identity.goalTitle ?? props.labels.goalNone}`,
@@ -125,7 +125,6 @@ const CvLinkSection = (
                             isLoading={isLoading}
                         />
                         <Switch
-                            kind="compact"
                             label={props.labels.cvLinkSwitch}
                             description={props.labels.cvLinkSwitchHint}
                             isSelected={link.isPublic}
@@ -160,7 +159,6 @@ const cvRowOf = (
     },
     control: (
         <Switch
-            kind="compact"
             label={line.isPublic ? labels.verifyPublic : labels.verifyPrivate}
             isLabelHidden
             isSelected={line.isPublic}
@@ -215,33 +213,41 @@ const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "v
         labels={props.slotLabels}
         forbidden="hide"
         onRetry={props.onRetry}
-        render={(devices, isLoading) => {
-            const plan = "items" in props.views.plan ? props.views.plan.items : PLAN_PLACEHOLDER
+        render={(devices, isDevicesLoading) => {
             const first = devices[0]
             return (
-                <Section
-                    kind="list"
-                    title={props.labels.accountTitle}
-                    headingLevel={2}
-                    isLoading={isLoading}
-                    items={[
-                        {
-                            id: "devices",
-                            title: props.labels.devicesTitle,
-                            description:
-                                first === undefined
-                                    ? props.labels.devicesEmpty
-                                    : `${props.devicesCount(devices.length)} · ${first.isOnline ? props.labels.online : props.labels.offline}`,
-                            action: { label: props.labels.devicesManage, href: props.labels.devicesHref },
-                        },
-                        {
-                            id: "plan",
-                            title: props.labels.planTitle,
-                            description: `${plan.status} · ${plan.note}`,
-                            action: { label: props.labels.planManage, href: props.labels.planHref },
-                        },
-                    ]}
-                    empty={null}
+                <SlotView
+                    slot={props.views.plan}
+                    placeholder={PLAN_PLACEHOLDER}
+                    labels={props.slotLabels}
+                    forbidden="hide"
+                    onRetry={props.onRetry}
+                    render={(plan, isPlanLoading) => (
+                        <Section
+                            kind="list"
+                            title={props.labels.accountTitle}
+                            headingLevel={2}
+                            isLoading={isDevicesLoading || isPlanLoading}
+                            items={[
+                                {
+                                    id: "devices",
+                                    title: props.labels.devicesTitle,
+                                    description:
+                                        first === undefined
+                                            ? props.labels.devicesEmpty
+                                            : `${props.devicesCount(devices.length)} · ${first.isOnline ? props.labels.online : props.labels.offline}`,
+                                    action: { label: props.labels.devicesManage, href: props.labels.devicesHref },
+                                },
+                                {
+                                    id: "plan",
+                                    title: props.labels.planTitle,
+                                    description: `${plan.status} · ${plan.note}`,
+                                    action: { label: props.labels.planManage, href: props.labels.planHref },
+                                },
+                            ]}
+                            empty={null}
+                        />
+                    )}
                 />
             )
         }}
@@ -330,7 +336,7 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
                         </Stack>
                     </PaneSection>
                 </Pane>
-                <Pane area="aside" surface scroll label={labels.asideProgressTitle}>
+                <Pane area="aside" scroll label={labels.asideProgressTitle}>
                     <PaneSection>
                         <Aside {...part} views={views} />
                     </PaneSection>

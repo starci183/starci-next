@@ -60,9 +60,7 @@ const trialRowOf = (trial: HarnessTrialItemView): CellsRow => ({
         trap: (
             <Stack gap="identity">
                 <Text isStrong>{trial.title}</Text>
-                <Text size="sm" tone="muted">
-                    {trial.summary}
-                </Text>
+                <Text tone="muted">{trial.summary}</Text>
             </Stack>
         ),
         shortcuts: <Text>{trial.shortcuts}</Text>,
@@ -107,7 +105,6 @@ const DoctorRegion = (props: RegionProps<HarnessDoctorPanelView>) => {
                     isLoading={props.isLoading}
                 />
                 <Switch
-                    kind="compact"
                     label={labels.onlyFailingLabel}
                     description={labels.onlyFailingDescription}
                     isSelected={isOnlyFailing}

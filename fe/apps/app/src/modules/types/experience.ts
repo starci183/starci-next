@@ -53,7 +53,7 @@ export type ExperienceCardView = {
 export type ExperienceTabView = { readonly id: string; readonly label: string; readonly count: number }
 
 /** One chip of the source filter, with its count. */
-export type ExperienceSourceView = { readonly id: string; readonly label: string }
+export type ExperienceSourceView = { readonly id: string; readonly label: string; readonly count: number }
 
 /** One way into an experience, listed when the learner has no item yet. */
 export type ExperienceWayView = {

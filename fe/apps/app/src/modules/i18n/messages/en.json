@@ -1834,7 +1834,8 @@
         "part": "Part",
         "evidence": "Evidence",
         "code": "Verification code",
-        "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code."
+        "note": "This page lets a recruiter check one CV line. It shows no detailed score and no source code.",
+        "factsTitle": "Public details"
       },
       "loading": "Loading…",
       "crumb": {
@@ -2098,7 +2099,15 @@
         "listTitle": "Builds",
         "empty": "There are no builds yet.",
         "practising": "{n} / {total} stages run",
-        "proved": "{n} / {total} stages proved"
+        "proved": "{n} / {total} stages proved",
+        "noMatch": "No build in this state.",
+        "filterLabel": "Filter by state",
+        "filter": {
+          "all": "All",
+          "practising": "In practice",
+          "proved": "Proved",
+          "todo": "Not started"
+        }
       },
       "build": {
         "title": "Build",
@@ -2173,19 +2182,27 @@
         "doctorCommandDescription": "Run it in your repo and the result comes back here.",
         "doctorEmpty": "There are no conditions to show.",
         "onlyFailingLabel": "Failed conditions only",
-        "onlyFailingDescription": "Hide the conditions that passed"
+        "onlyFailingDescription": "Hide the conditions that passed",
+        "navTitle": "Guides",
+        "navEmpty": "No guides yet."
       },
       "docs": {
         "title": "Deep dive",
         "description": "Long explainers with diagrams and no tests. Read them to see how an agent really runs.",
         "listTitle": "Articles",
-        "empty": "There are no articles yet."
+        "empty": "There are no articles yet.",
+        "noMatch": "No article matches. Try another word.",
+        "filterLabel": "Filter by title",
+        "filterPlaceholder": "Filter by title",
+        "clearLabel": "Clear filter"
       },
       "doc": {
         "title": "Article",
         "missing": "This article was not found.",
         "outlineTitle": "In this article",
-        "outlineEmpty": "This article has no sections yet."
+        "outlineEmpty": "This article has no sections yet.",
+        "navTitle": "Docs",
+        "navEmpty": "No articles yet."
       },
       "proofs": {
         "none": "Not practised",
@@ -2283,7 +2300,12 @@
         "openNew": "Add photo and name",
         "cancel": "Cancel",
         "save": "Save changes",
-        "unsaved": "Changes not saved"
+        "unsaved": "Changes not saved",
+        "goal": {
+          "label": "Goal path",
+          "hint": "Used to suggest the next lesson. It locks nothing.",
+          "placeholder": "Choose a path"
+        }
       },
       "crumb": {
         "label": "Breadcrumb",

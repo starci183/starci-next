@@ -2,6 +2,7 @@
 
 import type { PageHeaderContent } from "@starci/grammar/common"
 import { useLocale, useTranslations } from "next-intl"
+import { useState } from "react"
 import { harnessHeaderOf, useHarnessCommonLabels } from "@/hooks/harness"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryHarnessDocsSwr } from "@/hooks/swr"
@@ -21,6 +22,9 @@ export type HarnessDocItemView = {
 export type HarnessDocsLabels = {
     readonly listTitle: string
     readonly empty: string
+    readonly filterLabel: string
+    readonly filterPlaceholder: string
+    readonly clearLabel: string
 }
 
 /** The list of articles of part 3. */
@@ -31,8 +35,9 @@ export type HarnessDocsScreen = {
         readonly placeholder: ReadonlyArray<HarnessDocItemView>
         readonly slotLabels: SlotLabels
         readonly labels: HarnessDocsLabels
+        readonly query: string
     }
-    readonly on: { readonly retry: () => void }
+    readonly on: { readonly retry: () => void; readonly search: (query: string) => void }
 }
 
 /** The same-shape list the skeleton draws while the first read runs. */
@@ -50,6 +55,8 @@ export const useHarnessDocsScreen = (): HarnessDocsScreen => {
     const common = useHarnessCommonLabels()
     const slotLabels = useSlotLabels()
     const read = useQueryHarnessDocsSwr(locale)
+    const [query, setQuery] = useState("")
+    const needle = query.trim().toLowerCase()
     useDocumentTitle(t("title"))
     return {
         props: {
@@ -60,17 +67,26 @@ export const useHarnessDocsScreen = (): HarnessDocsScreen => {
                 trail: [],
             }),
             slot: mapSlot(slotOfSwr(read), (docs) =>
-                docs.map((doc): HarnessDocItemView => ({
-                    slug: doc.slug,
-                    title: doc.title,
-                    summary: doc.summary,
-                    href: harnessDocPath(doc.slug),
-                })),
+                docs
+                    .filter((doc) => needle === "" || `${doc.title} ${doc.summary}`.toLowerCase().includes(needle))
+                    .map((doc): HarnessDocItemView => ({
+                        slug: doc.slug,
+                        title: doc.title,
+                        summary: doc.summary,
+                        href: harnessDocPath(doc.slug),
+                    })),
             ),
             placeholder: HARNESS_DOCS_PLACEHOLDER,
             slotLabels: slotLabels(t("empty")),
-            labels: { listTitle: t("listTitle"), empty: t("empty") },
+            labels: {
+                listTitle: t("listTitle"),
+                empty: needle === "" ? t("empty") : t("noMatch"),
+                filterLabel: t("filterLabel"),
+                filterPlaceholder: t("filterPlaceholder"),
+                clearLabel: t("clearLabel"),
+            },
+            query,
         },
-        on: { retry: () => void read.mutate() },
+        on: { retry: () => void read.mutate(), search: setQuery },
     }
 }

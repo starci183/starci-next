@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import {
+    Alert,
     Badge,
     Button,
     CopyField,
@@ -72,7 +73,6 @@ const CasesRegion = (props: RegionProps) => {
         >
             <Stack gap="row">
                 <Switch
-                    kind="compact"
                     label={labels.onlyOpenLabel}
                     description={labels.onlyOpenDescription}
                     isSelected={isOnlyOpen}
@@ -110,12 +110,7 @@ const GuideRegion = (props: RegionProps) => {
                 isLoading={props.isLoading}
             >
                 {selected.isLocked ? (
-                    <Stack gap="identity">
-                        <Text isStrong>{labels.lockedTitle}</Text>
-                        <Text size="sm" tone="muted">
-                            {labels.lockedText}
-                        </Text>
-                    </Stack>
+                    <Alert tone="informative" title={labels.lockedTitle} description={labels.lockedText} />
                 ) : (
                     <Stack gap="section">
                         {selected.steps.map((step, index) => (
@@ -148,7 +143,7 @@ const RepoRegion = (props: RegionProps) => {
             isLoading={props.isLoading}
         >
             <Stack gap="row">
-                <Text size="sm" tone="muted">
+                <Text tone="muted">
                     {labels.keysLabel}: {props.view.keys}
                 </Text>
                 {bound.isBound ? (
@@ -213,9 +208,7 @@ const MainRegion = (props: RegionProps) => {
                 caption={props.view.selected.summary}
                 isLoading={props.isLoading}
             >
-                <Text size="sm" tone="muted">
-                    {props.view.selected.position}
-                </Text>
+                <Text tone="muted">{props.view.selected.position}</Text>
             </Section>
             <CasesRegion {...props} />
             <GuideRegion {...props} />

@@ -43,6 +43,7 @@ export const VerifyExperience = (props: VerifyExperienceProps) => {
                 placeholder: VERIFICATION_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("notFoundTitle")),
                 note: t("note"),
+                factsTitle: t("factsTitle"),
                 notFoundTitle: t("notFoundTitle"),
                 notFoundDescription: t("notFoundDescription"),
             }}

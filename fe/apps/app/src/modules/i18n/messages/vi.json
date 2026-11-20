@@ -1834,7 +1834,8 @@
         "part": "Phần học",
         "evidence": "Bằng chứng",
         "code": "Mã xác minh",
-        "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn."
+        "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn.",
+        "factsTitle": "Thông tin công khai"
       },
       "loading": "Đang tải…",
       "crumb": {
@@ -2098,7 +2099,15 @@
         "listTitle": "Các build",
         "empty": "Chưa có build nào.",
         "practising": "{n} / {total} chặng đã chạy",
-        "proved": "{n} / {total} chặng đã chứng minh"
+        "proved": "{n} / {total} chặng đã chứng minh",
+        "noMatch": "Không có bản build nào ở trạng thái này.",
+        "filterLabel": "Lọc theo trạng thái",
+        "filter": {
+          "all": "Tất cả",
+          "practising": "Đang luyện",
+          "proved": "Đã chứng minh",
+          "todo": "Chưa bắt đầu"
+        }
       },
       "build": {
         "title": "Build",
@@ -2173,19 +2182,27 @@
         "doctorCommandDescription": "Chạy trong repo của bạn, kết quả về đây.",
         "doctorEmpty": "Không có điều kiện nào để hiển thị.",
         "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
-        "onlyFailingDescription": "Ẩn các điều kiện đã đạt"
+        "onlyFailingDescription": "Ẩn các điều kiện đã đạt",
+        "navTitle": "Hướng dẫn",
+        "navEmpty": "Chưa có hướng dẫn nào."
       },
       "docs": {
         "title": "Hiểu sâu",
         "description": "Bài giải thích dài, có sơ đồ, không có kiểm thử. Đọc để hiểu agent chạy ra sao.",
         "listTitle": "Các bài",
-        "empty": "Chưa có bài nào."
+        "empty": "Chưa có bài nào.",
+        "noMatch": "Không có bài nào khớp. Thử một từ khác.",
+        "filterLabel": "Lọc theo tên bài",
+        "filterPlaceholder": "Lọc theo tên bài",
+        "clearLabel": "Xóa bộ lọc"
       },
       "doc": {
         "title": "Bài giải thích",
         "missing": "Không tìm thấy bài này.",
         "outlineTitle": "Trong bài này",
-        "outlineEmpty": "Bài chưa có mục nào."
+        "outlineEmpty": "Bài chưa có mục nào.",
+        "navTitle": "Docs",
+        "navEmpty": "Chưa có bài nào."
       },
       "proofs": {
         "none": "Chưa luyện",
@@ -2283,7 +2300,12 @@
         "openNew": "Thêm ảnh và tên",
         "cancel": "Hủy",
         "save": "Lưu thay đổi",
-        "unsaved": "Thay đổi chưa lưu"
+        "unsaved": "Thay đổi chưa lưu",
+        "goal": {
+          "label": "Lộ trình mục tiêu",
+          "hint": "Dùng để gợi ý bài kế tiếp. Không khóa phần nào.",
+          "placeholder": "Chọn lộ trình"
+        }
       },
       "crumb": {
         "label": "Đường dẫn",

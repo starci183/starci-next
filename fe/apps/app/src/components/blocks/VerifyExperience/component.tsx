@@ -1,4 +1,4 @@
-import { Alert, DescriptionList, EmptyNotice, Page, Stack, Text } from "@starci/grammar/common"
+import { Alert, DescriptionList, EmptyNotice, Page, Section, Stack, Text } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -29,6 +29,7 @@ export type VerifyExperienceBaseProps = {
         readonly placeholder: VerificationScreenView
         readonly slotLabels: SlotLabels
         readonly note: string
+        readonly factsTitle: string
         readonly notFoundTitle: string
         readonly notFoundDescription: string
     }
@@ -49,23 +50,29 @@ export const VerifyExperienceBase = (props: VerifyExperienceBaseProps) => (
                 placeholder={props.props.placeholder}
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
-                render={(view) => (
+                render={(view, isLoading) => (
                     <Stack gap="row">
                         <Alert
                             tone={view.isRevoked ? "negative" : "affirmative"}
+                            isLoading={isLoading}
                             title={view.title}
                             description={view.sub}
                         />
-                        <Text as="p">{view.line}</Text>
-                        <DescriptionList
-                            isDivided
-                            items={view.facts.map((fact) => ({
-                                id: fact.term,
-                                term: fact.term,
-                                description: fact.value,
-                            }))}
-                        />
-                        <Text size="sm" tone="muted">
+                        <Text as="p" isLoading={isLoading}>
+                            {view.line}
+                        </Text>
+                        <Section title={props.props.factsTitle} headingLevel={2} isLoading={isLoading}>
+                            <DescriptionList
+                                isDivided
+                                isLoading={isLoading}
+                                items={view.facts.map((fact) => ({
+                                    id: fact.term,
+                                    term: fact.term,
+                                    description: fact.value,
+                                }))}
+                            />
+                        </Section>
+                        <Text tone="muted" isLoading={isLoading}>
                             {props.props.note}
                         </Text>
                     </Stack>

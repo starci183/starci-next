@@ -208,5 +208,3 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export { OutlineList } from "./composites/OutlineList"
-export type { OutlineEntry } from "./composites/OutlineList"
