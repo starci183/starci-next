@@ -406,7 +406,7 @@ if (SEEDED) {
         if (!screen || /[ (]/.test(screen)) continue
         const route = seeded.route.split(" ")[0]
         const extra = {
-            learnerState: path.join(STATES_DIR, seeded.learner + ".json"),
+            ...(seeded.guest ? { guest: true } : { learnerState: path.join(STATES_DIR, seeded.learner + ".json") }),
             ...(id === "career/review-queue-reviewers" ? { click: "Người duyệt" } : {}),
             ...(id === "review/session-conflict"
                 ? {

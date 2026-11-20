@@ -8,6 +8,7 @@ import {
     type MarkdownProps,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
+import { BODY_EMPHASIS_CLASS_NAME } from "./classNames"
 import { parseDirectives, plainWordsOf, type DirectivePiece, type RichNode } from "./directives"
 
 /** The body of a lesson, a problem, a hint or an answer: markdown that may hold `:::name` containers. */
@@ -101,17 +102,20 @@ const Piece = (props: PieceProps) => {
     )
 }
 
+/** The words a skeleton line is measured from: a line of body width. */
+const SKELETON_WORDS = "x".repeat(72)
+
 /** The body while the first read loads: three skeleton lines, never the placeholder words. */
 const MarkdownSkeleton = () => (
     <Stack gap="row">
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
     </Stack>
 )
@@ -124,8 +128,10 @@ export const RichMarkdown = (props: RichMarkdownProps) => {
     const { source, isLoading, ...context } = props
     if (isLoading === true) return <MarkdownSkeleton />
     return (
-        <Stack gap="row">
-            <Pieces nodes={parseDirectives(source)} context={context} />
-        </Stack>
+        <div className={BODY_EMPHASIS_CLASS_NAME}>
+            <Stack gap="row">
+                <Pieces nodes={parseDirectives(source)} context={context} />
+            </Stack>
+        </div>
     )
 }
