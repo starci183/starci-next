@@ -83,24 +83,24 @@ audit:
       at: 2026-11-20T16:05:46.369Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lề phải cột phải ở 1440 và mũi tên cuộn tab ở 390 thuộc Page chrome=panes / Tabs của Grammar (cần Grammar), chấp nhận như lề 268."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Đã sửa: hàng Dễ ghi "Đã xanh · 85/100" và khối điểm đặt tên "Điểm mức Vừa" (40/100).'
   escalate: null
