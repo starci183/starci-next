@@ -9,7 +9,6 @@ import type { EssenceWords } from "./essence.shared"
 /** The words of the lesson page header, tabs, notices and the locked part. */
 export type EssenceShellLabels = {
     readonly nextQuestion: string
-    readonly questionNumber: (n: number) => string
     readonly seeResult: string
     readonly readArticle: string
     readonly retake: string
@@ -68,7 +67,6 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
 /** The words of the lesson shell: the header primary, the tab marks, the facts line and the locked part. */
 const shellOf = (t: Translate): EssenceShellLabels => ({
     nextQuestion: t("shell.nextQuestion"),
-    questionNumber: (n) => t("shell.questionNumber", { n }),
     seeResult: t("shell.seeResult"),
     readArticle: t("shell.readArticle"),
     retake: t("shell.retake"),

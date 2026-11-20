@@ -64,23 +64,23 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Canvas đặt "Làm tiếp kịch bản / Việc tiếp theo" lên đầu; code không có, và ở 390 "Hôm nay" (việc cần làm) nằm cuối sau chuỗi ngày, mục tiêu tuần, kinh nghiệm, lộ trình.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 nút "Xem hướng dẫn" chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh 1440 hiện chữ "xxxxxxxxxx", "xx" thật trong khối chuỗi ngày.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh 1440 chụp lúc đang tải (chữ "xxxxxxxxxx", skeleton "Hôm nay", "Kinh nghiệm"), trong khi 390 là dữ liệu thật: hai ảnh không cùng trạng thái.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 1440 chưa có dữ liệu thật (đang tải)."
   escalate: null

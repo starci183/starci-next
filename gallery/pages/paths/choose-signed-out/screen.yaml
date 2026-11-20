@@ -40,24 +40,24 @@ audit:
       at: 2026-11-20T12:55:30.693Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh là trang Đăng nhập chung, không phải khung canvas ("Cần đăng nhập để chọn lộ trình" + "Đăng nhập để lưu lộ trình bạn chọn và theo dõi tiến độ"); người dùng không biết vì sao bị đưa tới đây và danh sách lộ trình không hiện.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Khung chưa đăng nhập của /paths/choose chưa đúng canvas."
   escalate: null

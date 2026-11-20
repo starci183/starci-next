@@ -89,24 +89,24 @@ audit:
       at: 2026-11-20T12:55:12.912Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288)."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Đáp án đúng/sai chỉ có vạch màu và chữ 12, không có icon; vạch tiến độ đỏ/tím không chú thích."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Chữ mã trong câu hỏi và đáp án hiện nguyên dấu backtick (`paid`, `SELECT`, `in_flight`) thay vì vẽ thành mã: markup thô lộ ra. Nút chính ghi "Câu 4"/"Câu 5" thay vì "Câu tiếp theo".'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh không phải màn kết quả 5 câu (canvas: "Mở bài · kết quả Đúng 3/5" + tóm tắt): hiện Câu 3/5 sau khi trả lời một câu, nút "Câu 4".'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh không có điểm tổng kết nên không kiểm được dữ liệu kết quả."
   escalate: null

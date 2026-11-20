@@ -88,24 +88,24 @@ audit:
       at: 2026-11-20T12:54:59.959Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Nút chính bị khoá nằm lẻ ở góc phải đầu trang, xa câu hỏi; ở 390 mô tả 8 dòng đẩy câu hỏi xuống."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Chữ mã trong câu hỏi và đáp án hiện nguyên dấu backtick (`paid`, `SELECT`, `in_flight`) thay vì vẽ thành mã: markup thô lộ ra."
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh không phải trạng thái "đang đọc bài viết" của canvas: hiện Câu 5/5 chưa trả lời với nút "Câu tiếp theo" bị khoá, không có "Làm lại 5 câu"/bài viết đang đọc.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh mâu thuẫn tên màn (article) nhưng là câu hỏi mở bài."
   escalate: null

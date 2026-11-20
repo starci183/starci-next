@@ -41,24 +41,24 @@ audit:
       at: 2026-11-20T12:55:17.721Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Cột phải rỗng vẫn hiện đường kẻ dọc x=1120 khi lỗi; banner lỗi ở 1440 chỉ rộng tới x=1108 và tiêu đề lề trái x=268."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Lỗi chỉ ghi "Không tải được phần này." (1440 và 390), tiêu đề trang trơ "Essentials"; canvas đã duyệt có tiêu đề nêu tên ("Không tải được chủ đề") + dòng "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ.".'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Lỗi tải thiếu tên chủ đề, dòng giải thích và breadcrumb như canvas."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

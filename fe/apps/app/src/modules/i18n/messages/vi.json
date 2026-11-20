@@ -687,9 +687,9 @@
         "prove": "Chứng minh và kết nối"
       },
       "kind": {
-        "build": "XÂY SẢN PHẨM",
-        "agent": "AGENT & LLM",
-        "job": "VIỆC LÀM"
+        "build": "Xây sản phẩm",
+        "agent": "Agent và LLM",
+        "job": "Việc làm"
       },
       "meta": "{steps} bước · khoảng {weeks} tuần",
       "card": {
@@ -722,7 +722,9 @@
         "title": "Đăng nhập để chọn mục tiêu",
         "body": "Lộ trình bạn chọn được lưu theo tài khoản của bạn.",
         "action": "Đăng nhập"
-      }
+      },
+      "errorTitle": "Không tải được danh sách lộ trình",
+      "errorText": "Kiểm tra kết nối rồi thử lại."
     },
     "incidents": {
       "pageTitle": "Sự cố",
@@ -777,7 +779,9 @@
         "planPremium": "Cần Premium",
         "noResultTitle": "Không có bài nào khớp \"{query}\"",
         "noResultText": "Thử tên bài toán như \"email gửi trùng\", hoặc bỏ bộ lọc chủ đề.",
-        "clear": "Xóa bộ lọc"
+        "clear": "Xóa bộ lọc",
+        "errorTitle": "Không tải được danh mục",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "difficulty": {
         "foundation": "Nền tảng",
@@ -946,7 +950,9 @@
         "prerequisites": "Nên biết trước",
         "related": "Chủ đề liên quan",
         "moved": "Bài này đã chuyển vào một chủ đề. Địa chỉ cũ không còn dùng.",
-        "movedOpen": "Mở bài"
+        "movedOpen": "Mở bài",
+        "errorTitle": "Không tải được chủ đề",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Tiến độ của bạn vẫn được giữ."
       },
       "attempt": {
         "saved": "Đã lưu câu trả lời của bạn.",
@@ -1247,7 +1253,6 @@
           },
           "shell": {
             "nextQuestion": "Câu tiếp theo",
-            "questionNumber": "Câu {n}",
             "seeResult": "Xem kết quả",
             "readArticle": "Đọc bài viết",
             "retake": "Làm lại 5 câu",
@@ -1282,7 +1287,9 @@
               "three": "Đã chứng minh khi CI của GitHub ký xác nhận, rồi thành dòng trên hồ sơ"
             }
           }
-        }
+        },
+        "errorTitle": "Không tải được bài",
+        "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ."
       }
     },
     "projects": {

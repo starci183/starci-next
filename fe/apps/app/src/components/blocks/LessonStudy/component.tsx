@@ -125,7 +125,9 @@ export const LessonStudyBase = (props: LessonStudyBaseProps) => {
                                 columns={{ base: ["fill"], wide: ["fill", "standard"] }}
                             >
                                 <Pane area="main" scroll label={labels.pageTitle}>
-                                    <PaneSection gap="section">{body}</PaneSection>
+                                    <PaneSection gap="section" isLoading={isLoading}>
+                                        {body}
+                                    </PaneSection>
                                 </Pane>
                                 {aside === undefined ? null : (
                                     <Pane

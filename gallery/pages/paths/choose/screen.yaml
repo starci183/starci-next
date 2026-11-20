@@ -53,24 +53,24 @@ audit:
       at: 2026-11-20T12:55:25.868Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Trái luật 8 và canvas đã duyệt (bỏ minh hoạ trong thẻ): mỗi thẻ có ảnh mascot tròn. Nhãn nhỏ viết hoa "XÂY SẢN PHẨM / AGENT & LLM / VIỆC LÀM" trái luật 4 (không ALL CAPS) và canvas. Ở 1440 lưới 4+1 để lẻ thẻ thứ năm.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Lẫn tiếng Anh/viết tắt: "milestone concept", "CI có chữ ký xanh", "e2e", "agent", "eval".'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

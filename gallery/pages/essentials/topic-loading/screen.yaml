@@ -45,24 +45,24 @@ audit:
       at: 2026-11-20T12:55:21.098Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Breadcrumb và tiêu đề hiện "..." chữ thật; skeleton hàng có ô tròn số trong khi hàng thật là "1." chữ (lệch hình); nút chính skeleton ở 1440 x1256-1428.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"..." literal ở breadcrumb và tiêu đề nhóm.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Loading hiện thật "Mỗi bài có 4 phần" trong cột phải và "..." chữ thật.'
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

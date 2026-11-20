@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { Badge, Button, Cluster, Heading, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 
 /** One outcome path as its card shows it, every word resolved. */
 export type OutcomePathView = {
@@ -71,15 +71,12 @@ export const OutcomePathCard = (props: OutcomePathCardProps) => (
         }
     >
         <Stack gap="row">
-            <Cluster gap="inline" align="start" wrap={false}>
-                <Avatar name={props.path.title} seed={props.path.id} />
-                <Stack gap="identity">
-                    <Text size="xs" tone="muted">
-                        {props.path.kind}
-                    </Text>
-                    <Heading level={2}>{props.path.title}</Heading>
-                </Stack>
-            </Cluster>
+            <Stack gap="identity">
+                <Text size="xs" tone="muted">
+                    {props.path.kind}
+                </Text>
+                <Heading level={2}>{props.path.title}</Heading>
+            </Stack>
             {props.path.isCurrent ? <Badge tone="accent">{props.labels.current}</Badge> : null}
             <Text as="p">{props.path.pitch}</Text>
             <Text as="p">

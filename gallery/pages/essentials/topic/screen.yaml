@@ -93,24 +93,24 @@ audit:
       at: 2026-11-20T12:55:16.628Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Ở 390 nút "Bắt đầu bài 1" nằm cạnh mô tả làm mô tả ngắt 5 dòng hẹp. Mỗi hàng bài có 4 thanh tiến độ xám không nhãn (không rõ là 4 phần nào, đang 0%).'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Cột phải "Nên biết trước" và "Chủ đề liên quan" (Độ tin cậy của API, Cơ sở dữ liệu) là chữ thường, không giống liên kết, không bấm được; các dòng "1 · Bản chất ..." cũng không có cách mở.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"(topic Backend framework)" còn chữ "topic" tiếng Anh thô; dấu "—" cạnh thời lượng không giải thích (điểm mở bài chưa có?).'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

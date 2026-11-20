@@ -22,6 +22,7 @@ export type EssentialsCatalogBaseProps = {
         readonly slot: DataSlot<CatalogView>
         readonly placeholder: CatalogView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly labels: CatalogLabels
         readonly filters: CatalogFilters
     }
@@ -95,7 +96,7 @@ const headerOf = (labels: CatalogLabels, view: CatalogView): PageHeaderContent =
         ? {}
         : {
               actions: (
-                  <Button intent="commit" href={view.primary.href}>
+                  <Button intent="commit" width="wrap" href={view.primary.href}>
                       {view.primary.label}
                   </Button>
               ),
@@ -114,6 +115,7 @@ export const EssentialsCatalogBase = (props: EssentialsCatalogBaseProps) => {
             slot={slot}
             placeholder={placeholder}
             labels={props.props.slotLabels}
+            errorDescription={props.props.errorText}
             onRetry={props.on.retry}
             header={(view) => headerOf(labels, view)}
             headerFallback={{ title: labels.title, breadcrumbs: "root" }}

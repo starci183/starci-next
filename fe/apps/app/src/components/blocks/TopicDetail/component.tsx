@@ -17,6 +17,7 @@ import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modul
 /** The fake topic with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
     title: "…",
+    trail: [],
     description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
     primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
@@ -46,6 +47,7 @@ export type TopicDetailBaseProps = {
         readonly slot: DataSlot<TopicScreenView>
         readonly placeholder: TopicScreenView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly labels: TopicLabels
         /** The destination of the catalog. */
         readonly catalogHref: string
@@ -68,10 +70,7 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
     titleScale: "standard",
     breadcrumbs: {
         label: props.labels.breadcrumbs,
-        items: [
-            { id: "essentials", label: props.labels.pageTitle, href: props.catalogHref },
-            { id: "topic", label: view.title },
-        ],
+        items: [{ id: "essentials", label: props.labels.pageTitle, href: props.catalogHref }, ...view.trail],
     },
     ...(view.description === "" ? {} : { description: view.description }),
     meta: view.facts,
@@ -79,7 +78,7 @@ const headerOf = (props: TopicDetailBaseProps["props"], view: TopicScreenView): 
         ? {}
         : {
               actions: (
-                  <Button intent="commit" href={view.primary.href}>
+                  <Button intent="commit" width="wrap" href={view.primary.href}>
                       {view.primary.label}
                   </Button>
               ),
@@ -145,9 +144,16 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
             slot={own.slot}
             placeholder={own.placeholder}
             labels={own.slotLabels}
+            errorDescription={own.errorText}
             onRetry={props.on.retry}
             header={(view) => headerOf(own, view)}
-            headerFallback={{ title: own.labels.pageTitle, breadcrumbs: "root" }}
+            headerFallback={{
+                title: own.labels.pageTitle,
+                breadcrumbs: {
+                    label: own.labels.breadcrumbs,
+                    items: [{ id: "essentials", label: own.labels.pageTitle }],
+                },
+            }}
             aside={(view, isLoading) => asideOf(view, own.labels, isLoading)}
             asideFallback={<PaneSection isLoading>{null}</PaneSection>}
             frame={({ header, aside, body, isLoading }) => (
@@ -159,7 +165,7 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
                         rows={{ base: ["fill"], wide: ["fill"] }}
                     >
                         <Pane area="main">
-                            <PaneSection gap="section">
+                            <PaneSection gap="section" isLoading={isLoading}>
                                 <Moved props={own} />
                                 {body}
                             </PaneSection>

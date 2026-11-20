@@ -45,24 +45,24 @@ audit:
       at: 2026-11-20T12:54:55.520Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Tiêu đề nhóm hiện "…" chữ thật thay vì skeleton; số đếm trên tab hiện "0" lúc đang tải (giả).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"..." literal làm tiêu đề nhóm.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Loading ở 1440 và 390 có skeleton hàng nhưng tab hiện số đếm 0 và tiêu đề "…" như dữ liệu thật.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Số đếm "Tất cả 0 / Đang học 0 / Chưa học 0 / Đã xong 0" hiện trong lúc tải như số thật.'
   escalate: null

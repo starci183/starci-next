@@ -106,24 +106,24 @@ audit:
       at: 2026-11-20T12:54:58.562Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Ở 390 mô tả đầu bài dài ~8 dòng bị nút "Câu 3" ép bên phải, câu hỏi bị đẩy xuống dưới màn hình đầu. Hai liên kết "Đọc kỹ mục 2.2 ..." và "Xem tận mắt ở kịch bản ..." dính liền một dòng, không phân tách.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Kết quả đúng/sai chỉ là vạch màu bên trái hàng và chữ 12 "Bạn chọn / Đáp án đúng", không có icon đúng/sai; vạch tiến độ đỏ/tím không có chú thích.'
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Chữ mã trong câu hỏi và đáp án hiện nguyên dấu backtick (`paid`, `SELECT`, `in_flight`) thay vì vẽ thành mã: markup thô lộ ra. Nút chính ghi "Câu 2" (1440)/"Câu 3" (390), khi đang ở "Câu 1/5": nhãn không rõ (canvas: "Câu tiếp theo").'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

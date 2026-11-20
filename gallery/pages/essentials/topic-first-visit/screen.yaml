@@ -54,24 +54,24 @@ audit:
       at: 2026-11-20T12:55:18.839Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ô icon hộp thư + một dòng, cột phải rỗng còn đường kẻ dọc."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Thông báo không có nút nào (Nâng cấp Premium / Về danh mục) nên người dùng bị kẹt."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh sai trạng thái: hiện "Phần này không nằm trong gói của bạn." (bị khoá) thay vì chủ đề lần đầu (canvas: 0/6 bài xong, "Bắt đầu bài 1").'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Nội dung ảnh mâu thuẫn tên màn (first-visit nhưng là bị khoá), tài khoản chưa có Premium."
   escalate: null

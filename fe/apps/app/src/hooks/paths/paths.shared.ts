@@ -28,6 +28,8 @@ export type PathsLabelSet = {
     readonly stages: ReadonlyArray<string>
     readonly note: string
     readonly empty: string
+    readonly errorTitle: string
+    readonly errorText: string
     readonly card: OutcomePathCardLabels
     readonly dialog: OutcomePathDialogLabels
     readonly switchConfirm: {

@@ -40,24 +40,24 @@ audit:
       at: 2026-11-20T12:55:29.579Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút "Xem lộ trình" và "Chọn lộ trình" vẫn bật khi thẻ đang tải.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, tiêu đề, số) lẫn với thanh skeleton, ở 1440 và 390; phải là thanh skeleton, không có chữ giữ chỗ.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Loading vẽ sai: chữ "xxxx" thật trong thẻ; nút bật.'
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

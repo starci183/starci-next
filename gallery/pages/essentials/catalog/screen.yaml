@@ -132,24 +132,24 @@ audit:
       at: 2026-11-20T12:54:50.022Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút chính "Bắt đầu: Cache phân tán: đọc nhanh mà không bán sai giá" quá dài: ở 390 chữ chạy ra ngoài mép phải màn hình (cắt), ở 1440 rộng ~390px; nên rút gọn ("Bắt đầu bài đầu") hoặc xuống dòng. Mỗi hàng bài có 4 thanh tiến độ xám không nhãn (không rõ là 4 phần nào, đang 0%). Ở 390 dải Tabs lọc cuộn ngang, "Đã xong" bị cắt (chấp nhận được nhưng chưa thấy gợi ý cuộn rõ).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

@@ -50,6 +50,8 @@ export type EssentialLessonView = {
     readonly id: string
     readonly title: string
     readonly topic: { readonly title: string; readonly href: string }
+    /** The crumbs after the catalog (the topic, then the lesson); empty until the lesson is read, so no placeholder word reaches the trail. */
+    readonly trail: ReadonlyArray<{ readonly id: string; readonly label: string; readonly href?: string }>
     readonly difficulty: string
     /** The one line under the subtitle: "Bài 3/6 trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng". */
     readonly facts: string
@@ -118,6 +120,7 @@ export type EssentialLessonScreen = {
         readonly slot: DataSlot<EssentialLessonView>
         readonly placeholder: EssentialLessonView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly page: EssentialPageLabels
         readonly labels: EssentialPartsLabels
         readonly essence: EssenceLabels
@@ -135,6 +138,7 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
     id: "placeholder",
     title: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     topic: { title: "xxxxxxxxxxxx", href: "/" },
+    trail: [],
     difficulty: "xxxxxx",
     facts: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     subtitle: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -283,6 +287,10 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     id: lesson.id,
                     title: lesson.title,
                     topic: { title: lesson.topic.title, href: topicPath(lesson.topic.id) },
+                    trail: [
+                        { id: "topic", label: lesson.topic.title, href: topicPath(lesson.topic.id) },
+                        { id: "lesson", label: lesson.title },
+                    ],
                     difficulty: difficulty[lesson.difficulty],
                     facts: [
                         place === -1 || topic === undefined
@@ -320,7 +328,8 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                 }
             }),
             placeholder: ESSENTIAL_PLACEHOLDER,
-            slotLabels: slotLabels(page.empty),
+            slotLabels: { ...slotLabels(page.empty), error: page.errorTitle },
+            errorText: page.errorText,
             page,
             labels: parts,
             essence: essenceLabels,

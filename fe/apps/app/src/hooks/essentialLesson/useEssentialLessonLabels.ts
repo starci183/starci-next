@@ -12,6 +12,8 @@ export type EssentialPageLabels = {
     readonly tabs: string
     readonly parts: Readonly<Record<EssentialPart, string>>
     readonly empty: string
+    readonly errorTitle: string
+    readonly errorText: string
     readonly soon: string
 }
 
@@ -34,6 +36,8 @@ export const useEssentialLessonLabels = (): {
                 apply: t("parts.apply"),
             },
             empty: t("empty"),
+            errorTitle: t("errorTitle"),
+            errorText: t("errorText"),
             soon: t("soon"),
         },
         parts: {

@@ -89,24 +89,24 @@ audit:
       at: 2026-11-20T12:55:02.768Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288). Hai nút giống nhau "Đọc bài viết" (header primary + pill outline).'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Cuối phần 1 của tài khoản miễn phí không có nút "Nâng cấp Premium" (canvas có): chỉ có "Đọc bài viết" ở header (nút chính) và lặp lại "Đọc bài viết" ở hàng dưới; banner "Bạn xong phần 1" không có hành động.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390 là Câu 1/5 chưa trả lời, không phải trạng thái cuối phần 1."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh 390 không khớp tên màn (không có "Đúng 4/5").'
   escalate: null

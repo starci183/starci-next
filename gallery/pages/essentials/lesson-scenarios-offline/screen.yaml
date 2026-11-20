@@ -56,24 +56,24 @@ audit:
       at: 2026-11-20T12:55:14.190Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 1440 nội dung và nút chính ở đầu trang chạm mép phải x≈1428, lệch gutter 1408 của các trang khác (lề trái x=268 thay vì 288)."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Lệnh "starci-next login" nằm trong câu chữ cảnh báo, không có nút Sao chép như ở khối lệnh; thông báo "Chưa có máy nào trực tuyến" lặp 3 lần (dưới nút, banner, khối lệnh).'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Tên kịch bản kebab thô "happy-path, crash-after-commit, ack-lost-retry, parallel-duplicates, provider-redelivery, relay-crash-lease": cần API (tên tiếng Việt), không tính lỗi build. Khối lệnh trộn "chưa chạy lần nào" tiếng Việt vào dòng lệnh.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Tên kịch bản kebab: cần API (không phải lỗi build)."
   escalate: null

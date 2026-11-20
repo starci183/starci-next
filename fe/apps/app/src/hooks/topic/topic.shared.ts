@@ -53,6 +53,7 @@ export const topicScreenOf = (input: TopicInput): TopicScreenView => {
     const done = rows.filter((each) => each.state === "done").length
     return {
         title: input.topic.title,
+        trail: [{ id: "topic", label: input.topic.title }],
         description: input.topic.description,
         facts: input.words.facts(
             rows.length,

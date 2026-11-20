@@ -57,6 +57,7 @@ export type PathsChooseBaseProps = {
         readonly slot: DataSlot<PathsScreenView>
         readonly placeholder: PathsScreenView
         readonly slotLabels: SlotLabels
+        readonly errorText: string
         readonly labels: PathsLabels
         /** The path whose dialog is open. */
         readonly openId: string | undefined
@@ -99,6 +100,7 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 slot={slot}
                 placeholder={placeholder}
                 labels={{ ...slotLabels, forbidden: labels.signedOut.title }}
+                errorDescription={props.props.errorText}
                 forbiddenDescription={labels.signedOut.body}
                 forbiddenAction={<SignInAction labels={labels} signInHref={props.props.signInHref} />}
                 onRetry={props.on.retry}
