@@ -7,10 +7,10 @@ summary: "Chưa có sự cố nào được viết: trạng thái cả trang có
 shots:
   "390":
     file: 390.png
-    sha256: 6e164364dfe0dbfd2471e0e507d69ca8569dd2dfb08243d15625ba0514f665c4
+    sha256: 4fff263c53e9cae9891a610a6d0478c098784fac670eddfec901204cccafdd00
   "1440":
     file: 1440.png
-    sha256: 59bb84eb073b0b0e9c2893f899d6ff678ad057100f1f790260ca26e9a1aed643
+    sha256: bdda9f6209d320b03905fdb238b5167d657bddeb574da4160bd97deb63675e8c
 code:
   - features/pages/IncidentsPage
   - components/blocks/IncidentsList
@@ -40,6 +40,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:56.936Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Header: dòng meta 12 và đoạn mô tả 14 dính nhau (y134/y156), đoạn mô tả dài ~850px không
+            giới hạn bề rộng; trạng thái rỗng nổi giữa trang cách header ~400px (1440) và ~420px
+            (390)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Lẫn thuật ngữ Anh/thô: "repo", "production", "flow xanh"; "Chạy sự cố cần thiết bị đã kết
+            nối — sắp có" chưa rõ.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:06:03.447Z
       lenses:
         order:
           verdict: open

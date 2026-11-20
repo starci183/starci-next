@@ -8,10 +8,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: 12c915762fe82f9ce231241e36e5bde6a5706d755b98db0e6db792678430bf47
+    sha256: 91b06e34a93b28966455d1e8686063ae0d632e95163127522fd2a23e9f916102
   "1440":
     file: 1440.png
-    sha256: 56dce9bef0cab61418b420bf293ed217b2277f5abf36e55549889be0cf77dc96
+    sha256: 53641731d0ddd14814daf98d1eface06b7ccb341b5f871c58710cb561d0dc2e9
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -53,6 +53,34 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:38.694Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dải lọc theo canvas (một dải Tabs có cả nhóm trạng thái và nhóm lộ trình) nhưng ở 390 tràn
+            thành 2 hàng và hàng hai bị cắt ("foun"), không cuộn rõ; canvas dùng nhãn lộ trình Việt
+            (Backend, Kỹ sư AI, System design). Ở 390 tên bộ thẻ ngắt 2-3 dòng vì nút "Thêm bộ thẻ"
+            chiếm cột phải, meta "Khó · backend-fullstack, a..." bị cắt.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta/tab hiện slug thô "backend-fullstack, ai-engineer, founder, system-design-senior" (id kỹ
+            thuật tiếng Anh) thay vì tên lộ trình tiếng Việt.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:30.278Z
       lenses:
         order:
           verdict: open

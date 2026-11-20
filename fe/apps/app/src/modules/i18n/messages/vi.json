@@ -255,6 +255,7 @@
         "pageTitle": "Phiên ôn tập",
         "root": "Ôn tập",
         "progress": "{position}/{total} thẻ · Còn khoảng {minutes} phút",
+        "progressDone": "{total}/{total} thẻ · Đã xong",
         "progressLabel": "Tiến độ phiên ôn",
         "sourceCard": "Bộ thẻ · {deck}",
         "sourceRetrieval": "Bài Essentials · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Dễ",
         "interval": "{days, plural, =0 {hôm nay} other {# ngày}}",
         "shortcuts": "Phím tắt: Space để hiện đáp án, 1 đến 4 để chấm",
+        "spaceHint": "Hoặc nhấn phím Space",
         "lessonLine": "Từ bài {lesson}",
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Chọn bộ thẻ",
         "emptyBack": "Về Ôn tập"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend",
+        "ai-engineer": "Kỹ sư AI",
+        "founder": "Người sáng lập",
+        "system-design-senior": "System design",
+        "fullstack mastery": "Fullstack thành thạo"
+      },
       "decks": {
         "pageTitle": "Bộ thẻ ôn tập",
         "emptyTitle": "Chưa có bộ thẻ nào.",
@@ -318,6 +327,8 @@
         "filterLabel": "Lọc theo việc đã thêm",
         "trackLabel": "Lọc theo lộ trình",
         "allTracks": "Mọi lộ trình",
+        "scrollPrevious": "Cuộn sang trái",
+        "scrollNext": "Cuộn sang phải",
         "add": "Thêm bộ thẻ",
         "added": "Đã thêm",
         "remove": "Bỏ khỏi hàng đợi",
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Bộ thẻ",
         "notFound": "Không tìm thấy bộ thẻ này.",
+        "backToDecks": "Về danh sách bộ thẻ",
         "errorText": "Bộ thẻ có thể đã đổi tên. Về danh sách để chọn lại.",
         "breadcrumbs": "Đường dẫn",
         "root": "Ôn tập",
@@ -1743,6 +1755,7 @@
         "pageTitle": "Duyệt kinh nghiệm",
         "title": "Duyệt kinh nghiệm",
         "itemTitle": "Một mục cần duyệt",
+        "backToProfile": "Về hồ sơ",
         "forbiddenTitle": "Chỉ thầy và người duyệt được mở trang này",
         "listLabel": "Hàng chờ duyệt",
         "count": "{count} mục",
@@ -2416,7 +2429,8 @@
         "doing": "Pattern đang làm",
         "done": "Pattern đã xong",
         "accepted": "{done} bài Accepted",
-        "empty": "Chưa có pattern nào."
+        "empty": "Chưa có pattern nào.",
+        "more": "Còn {count} pattern khác. Mở Luyện code để xem hết."
       },
       "firstVisit": {
         "title": "Chưa có gì để đo, và đó là bình thường",

@@ -7,10 +7,10 @@ summary: "Chưa có gì để đo: trạng thái cả trang có minh hoạ, rồ
 shots:
   "390":
     file: 390.png
-    sha256: fe1342fbb1290d61ce5fafc872f1a4270188603de63b861275400a5a654ac4be
+    sha256: 80a733a2c6ccf7f4f575e16be325fad3818db2cad374e7b661350f047a8f7d6f
   "1440":
     file: 1440.png
-    sha256: a713e51b1b6c3a63e676bd797446760b2ec2170b433900c1344d458a2dbd47b9
+    sha256: d12c72897816c9603d23a5dea6c97ce2a0e262157334ea4061caf31a5abe2223
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -40,6 +40,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:51.974Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khối trạng thái rỗng nằm lệch: tâm x~552 trong vùng nội dung tâm ~848 (1440), cách header
+            ~270px trống, trên 390 khoảng trống 300px phía trên; lề breadcrumb x=268 lệch x=288 các
+            trang khác."
+        actionable:
+          verdict: open
+          notes: Chỉ bước 1 có nút "Essentials"; bước 2 "Luyện code" và bước 3 "Ôn tập" không có nút/liên kết
+            để làm.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:56.999Z
       lenses:
         order:
           verdict: open

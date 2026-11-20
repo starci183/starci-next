@@ -6,6 +6,7 @@ import { useReviewDeckActions } from "@/hooks/review"
 import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryReviewDecksSwr, useQueryReviewTodaySwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { useTrackTitle } from "./useTrackTitle"
 import { APP_ROUTES, reviewDeckPath } from "@/modules/routes"
 import type { DataSlot, ReviewDeckView, SlotLabels } from "@/modules/types"
 
@@ -35,6 +36,8 @@ export type ReviewDecksLabels = Readonly<
         | "listTitle"
         | "filterLabel"
         | "trackLabel"
+        | "scrollPrevious"
+        | "scrollNext"
         | "add"
         | "added"
         | "remove"
@@ -96,6 +99,7 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
     const locale = useLocale()
     const t = useTranslations("app.review.decks")
     const word = useTranslations("app.review.difficulty")
+    const trackTitle = useTrackTitle()
     const slotLabels = useSlotLabels()(t("emptyTitle"))
     const read = useQueryReviewDecksSwr(locale)
     const today = useQueryReviewTodaySwr(locale)
@@ -127,7 +131,7 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
             t("cards", { count: deck.cardCount }),
             difficulties[deck.difficulty.toLowerCase()] ?? deck.difficulty,
         ].join(" · "),
-        tracks: deck.track,
+        tracks: deck.track.map(trackTitle),
         isAdded: deck.added,
         isPending: actions.pendingId === deck.deckId,
         href: reviewDeckPath(deck.deckId),
@@ -146,7 +150,10 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
         props: {
             header: {
                 title: t("pageTitle"),
-                meta: t("meta", { total: decks.length, added: added.length, goal: today.data?.goal.daily ?? 10 }),
+                meta:
+                    read.data === undefined
+                        ? ""
+                        : t("meta", { total: decks.length, added: added.length, goal: today.data?.goal.daily ?? 10 }),
                 rootHref: APP_ROUTES.review,
             },
             slot: settledListSlot(mapSlot(slotOfSwr(read), () => shown.map(rowOf))),
@@ -158,6 +165,8 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
                 listTitle: t("listTitle"),
                 filterLabel: t("filterLabel"),
                 trackLabel: t("trackLabel"),
+                scrollPrevious: t("scrollPrevious"),
+                scrollNext: t("scrollNext"),
                 add: t("add"),
                 added: t("added"),
                 remove: t("remove"),
@@ -171,7 +180,10 @@ export const useReviewDecksScreen = (): ReviewDecksScreen => {
             filter,
             filterOptions: FILTERS.map((each) => ({ id: each, label: t(`filters.${each}`), count: countOf(each) })),
             track,
-            trackOptions: [{ id: "all", label: t("allTracks") }, ...tracks.map((each) => ({ id: each, label: each }))],
+            trackOptions: [
+                { id: "all", label: t("allTracks") },
+                ...tracks.map((each) => ({ id: each, label: trackTitle(each) })),
+            ],
             note,
             decksHref: APP_ROUTES.reviewDecks,
         },

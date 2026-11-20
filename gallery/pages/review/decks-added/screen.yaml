@@ -8,10 +8,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: 282730b2439d9eee08c8c916267f9cf099b05f1248786cc57ff24396b40d2972
+    sha256: 365d4926b3fd687e1f768a4a8e1879df2d9519796d4df2524ce9d175dc65bb55
   "1440":
     file: 1440.png
-    sha256: c4f47ac6fb70952a8b2621c52d89a93f190e83afa09ed5c7d1b2193f6133ae43
+    sha256: 3b9d29fada9ca637a7e2f28cda3d5c01a045a42db851e5b2d35f6ce0e885b754
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -41,6 +41,36 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:43.865Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Dải lọc theo canvas (một dải Tabs có cả nhóm trạng thái và nhóm lộ trình) nhưng ở 390 tràn
+            thành 2 hàng và hàng hai bị cắt ("foun"), không cuộn rõ; canvas dùng nhãn lộ trình Việt
+            (Backend, Kỹ sư AI, System design). Hàng đầu nền xám đặc (trạng thái hover/chọn dính) ở
+            1440. Ở 390 mỗi hàng đã thêm có chip "Đã thêm" + nút "Bỏ khỏi hàng đợi" làm cột tên chỉ
+            còn ~110px, tên ngắt 2-3 dòng.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta/tab hiện slug thô "backend-fullstack, ai-engineer, founder, system-design-senior" (id kỹ
+            thuật tiếng Anh) thay vì tên lộ trình tiếng Việt. Cũng lẫn "bỏ khỏi hàng đợi" với "bỏ bộ
+            thẻ" ở trang chi tiết.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:46.491Z
       lenses:
         order:
           verdict: open

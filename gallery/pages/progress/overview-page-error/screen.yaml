@@ -7,10 +7,10 @@ summary: "Không đọc được tiến độ: khung báo lỗi và nút Thử l
 shots:
   "390":
     file: 390.png
-    sha256: d731a15bb5ee1a6dd0fbda172e70c471950e137528be1091d429310712a19a90
+    sha256: 1a52cab11f986554355db8b87f2bf64537c5c980c38e245c7093c865af26cf9f
   "1440":
     file: 1440.png
-    sha256: 479be4209aa11c217ff2f240eadf9912456e585acb1b240b43a575f2a6859a41
+    sha256: e69ec85a6a5833bec11cb32d5761bbcacef31a1a8143ade48f96afd16383caf2
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -40,6 +40,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:54.316Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Banner lỗi chỉ rộng ~570px (x268-836) ở 1440, không full-width như các banner lỗi trang khác
+            (hub-error, decks-error rộng 1120px); lề x=268 lệch 288.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lỗi cấp trang nhưng chữ "Không tải được phần này" là copy của một mục, không nói trang tiến
+            độ.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:59.832Z
       lenses:
         order:
           verdict: open

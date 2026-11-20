@@ -7,10 +7,10 @@ summary: "Người không có vai duyệt mở đường dẫn của một mục
 shots:
   "390":
     file: 390.png
-    sha256: f43b7255a119c3e4c7db7a40a9a8263e78d9b4c335d033f249703a45450a7fe3
+    sha256: 95f72d7a87378214f16380ef3de6dfe5850c5bc3ac5ab444ebecc41a65b2c584
   "1440":
     file: 1440.png
-    sha256: a9ac0a841c720a82dbad5783bccbf460afe7a42315b14a0294f1257069a92c00
+    sha256: b39c59df27557f0fc06bfc572ee65e7bd7f211cae274ab673b3f8db40709f287
 code:
   - features/pages/ReviewItemPage
   - components/blocks/ReviewItem
@@ -40,6 +40,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:59.108Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Thông báo chỉ một dòng tiêu đề, không có đoạn nội dung; ô icon hộp thư không hợp ngữ cảnh
+            không có quyền.
+        actionable:
+          verdict: open
+          notes: Trang cấm truy cập "Chỉ thầy và người duyệt được mở trang này" không có nút/liên kết đi tiếp
+            (vd. "Về hồ sơ").
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:06:07.141Z
       lenses:
         order:
           verdict: open

@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 6b76d7f18ae9a8e70d5c16aa18cede07e00131e4fb187d5e9a4fabba02511341
+    sha256: e8d3c085576db3b214daba5e00485abfa6f9b6661bb897090daae72c0aa28bdc
   "1440":
     file: 1440.png
-    sha256: 2850cf08c708b6963eaeb8be6085d792942ff24a5d4b9b011049d00b3e94e120
+    sha256: a2fd0947e7c515656d77aa67e85c4442c8c1d3d1562db5bde646edb470d2b383
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -41,6 +41,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:30.096Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Header "0/0 thẻ · Còn khoảng 1 phút" vô nghĩa khi không có thẻ nào.
+    - n: 2
+      at: 2026-11-20T13:05:21.121Z
       lenses:
         order:
           verdict: open

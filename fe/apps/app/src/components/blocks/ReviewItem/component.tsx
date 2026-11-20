@@ -1,4 +1,4 @@
-import { Page } from "@starci/grammar/common"
+import { Button, Page } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
 
@@ -26,6 +26,8 @@ export type ReviewItemBaseProps = {
         readonly slot: DataSlot<ReviewPreviewView>
         readonly placeholder: ReviewPreviewView
         readonly slotLabels: SlotLabels
+        readonly exitLabel: string
+        readonly exitHref: string
         readonly panelLabels: ReviewPanelLabels
         readonly title: string
         readonly backLabel: string
@@ -55,6 +57,11 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
     >
         <SlotView
             slot={props.props.slot}
+            forbiddenAction={
+                <Button intent="neutral" href={props.props.exitHref}>
+                    {props.props.exitLabel}
+                </Button>
+            }
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}

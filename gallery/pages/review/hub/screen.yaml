@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: ab2c2f685c46103a5093085a66377de1c2d06eea029cf8862bd91377ded97ecf
+    sha256: cea04254aff7dc75815eecc6b5e2ac01bcef2335d2bb792cb977dd13a9115024
   "1440":
     file: 1440.png
-    sha256: e69a59924e9439635fb6897da994c70b3a92c0c17781c14ae22bc8c6cc943d39
+    sha256: f7ea2518fb5c6f75f3df731b2160d086ae41347a2a731764354fe97b877e7cd2
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -84,6 +84,37 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:19.496Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 biểu đồ nhớ (đang rỗng) chen trước "Mục tiêu mỗi ngày" và "Bộ thẻ của bạn", hai khối
+            hành động bị đẩy xuống cuối trang; nên đưa lên trước biểu đồ.
+        layout:
+          verdict: open
+          notes: 'Header 40px OK, nút chính một dòng OK. Lỗi: Khối Mục tiêu mỗi ngày lệch canvas đã duyệt:
+            canvas đặt liên kết "Đổi" ở hàng tiêu đề mục (bên phải) kèm thanh tiến độ 3/10; code đặt
+            "Đổi" thành dòng riêng dưới thân mục, thiếu thanh tiến độ. Ở 390 dòng meta đầu trang
+            ngắt xấu ("Miễn / phí") và "Quản lý →" rơi xuống dòng riêng dưới tiêu đề thay vì cùng
+            hàng. Thẻ "Thẻ mới" ở 390 chiếm một dòng riêng làm hàng cao thêm.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'Biểu đồ "Bạn nhớ được bao nhiêu" chỉ là dòng "Chưa đủ lần ôn..." (không dữ liệu). Header nói
+            "0 thẻ đến hạn" nhưng danh sách "Sắp ôn hôm nay 10" toàn thẻ mới: nhãn "Sắp ôn" lệch với
+            số đến hạn.'
+    - n: 2
+      at: 2026-11-20T13:05:15.166Z
       lenses:
         order:
           verdict: open

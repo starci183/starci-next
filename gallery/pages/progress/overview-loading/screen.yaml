@@ -7,10 +7,10 @@ summary: Bộ xương của trang tiến độ khi đọc lần đầu.
 shots:
   "390":
     file: 390.png
-    sha256: 950a5c74508aa80a79cdf690d66d08d19756485f3a8c2f93fe6bfa2af92cc3fa
+    sha256: afe4288b1868b4385d27a81497f37724b66683bdfad4d27a7233d84e1264b19c
   "1440":
     file: 1440.png
-    sha256: f0e8924efdb76d2508dc2c247e61832439eac2e4ad81cac10f5a7c3f2788a6d3
+    sha256: 2b6768a1e088d4c6d3867d2c1c7007455d48f1a5676a2c5ab391015d8ab1eb08
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -40,6 +40,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:53.222Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton. Mục "Luyện code" giữa trang hiện lỗi "Chưa
+            tải được phần này" lẫn trong lúc các mục khác còn tải; "Đang tải..." chỉ là chữ.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+        states:
+          verdict: open
+          notes: Loading vẽ sai (chữ "xxxxxx" thật) và trộn lỗi cục bộ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:58.571Z
       lenses:
         order:
           verdict: open

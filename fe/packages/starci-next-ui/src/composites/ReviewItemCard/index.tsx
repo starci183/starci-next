@@ -5,7 +5,6 @@ import {
     ChoiceChips,
     Cluster,
     Heading,
-    Kbd,
     Stack,
     SurfaceCard,
     Text,
@@ -96,7 +95,11 @@ const Recall = (props: {
                         {isRetrieval ? props.labels.revealRetrieval : props.labels.flip}
                     </Button>
                 )}
-                {isRetrieval ? null : <Kbd keys={["space"]} />}
+                {isRetrieval ? null : (
+                    <Text size="xs" tone="muted">
+                        {props.labels.spaceHint}
+                    </Text>
+                )}
             </Cluster>
         </Stack>
     )
@@ -108,11 +111,11 @@ export const ReviewItemCard = (props: ReviewItemCardProps) => (
         <Stack gap="row">
             <Cluster gap="inline" wrap align="center">
                 <Badge tone="muted">{props.item.sourceLine}</Badge>
-                <Text size="xs" tone="muted">
+                <Text size="xs" tone="muted" isLoading={props.isLoading}>
                     {props.item.kindLine}
                 </Text>
             </Cluster>
-            <Heading level={2} scale="standard">
+            <Heading level={2} scale="standard" isLoading={props.isLoading}>
                 {props.item.question}
             </Heading>
             {props.item.isConflict ? (

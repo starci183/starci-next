@@ -8,10 +8,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: e9c5e8a4533a8db333013dd7766071922efdeb35da32a33efad59ae8c7498293
+    sha256: e0facb77f5496a5f716d1f55895ecd8519472e9b9ac8f92fdeb15444a02b06bd
   "1440":
     file: 1440.png
-    sha256: a9e5c40f2c1006a1320d33754bdd719daac36830d61a2faaf9a0e1bc7f22007c
+    sha256: 20dac42c393f725bf8f04c82b409f85765f3b61d51aba615e56e46fbfe8ea0a0
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -41,6 +41,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:40.916Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton. Dòng meta từng hàng là chuỗi
+            "xxxxxxxxxxxxxxxxxxxxxxxx" đen.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+        states:
+          verdict: open
+          notes: Loading vẽ sai (chữ "xxxx" thật) ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:40.455Z
       lenses:
         order:
           verdict: open

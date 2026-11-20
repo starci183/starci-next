@@ -9,6 +9,7 @@ import {
     Link,
     NumberField,
     Page,
+    Progress,
     Section,
     Stack,
     Text,
@@ -130,13 +131,20 @@ const Rail = (props: PieceProps) => {
     return (
         <Stack gap="region">
             {view.state === "first" ? null : (
-                <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
+                <Section
+                    title={labels.goalTitle}
+                    headingLevel={2}
+                    isLoading={props.isLoading}
+                    action={<TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>}
+                >
                     <Stack gap="row">
-                        <Text isStrong>{view.goalLine}</Text>
-                        <Text size="xs" tone="muted">
+                        <Text isStrong isLoading={props.isLoading}>
+                            {view.goalLine}
+                        </Text>
+                        <Progress label={labels.goalTitle} value={view.goalPercent} isLoading={props.isLoading} />
+                        <Text size="xs" tone="muted" isLoading={props.isLoading}>
                             {view.streakLine}
                         </Text>
-                        <TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>
                     </Stack>
                 </Section>
             )}
@@ -237,6 +245,7 @@ export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
                             <Section
                                 kind="figures"
                                 ariaLabel={props.props.labels.figuresLabel}
+                                isLoading={isLoading}
                                 items={view.figures.map((figure) => ({
                                     id: figure.id,
                                     term: figure.term,

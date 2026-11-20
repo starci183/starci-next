@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 2abe9e9424077c1aad221dc0f6780f75043126ce0072fd5fdfdfcd33ea34a760
+    sha256: 96b4aec7dedef4c6c4f3c8474e06105c96c9848f887ee27ee7937cffe0740178
   "1440":
     file: 1440.png
-    sha256: eebe7f8627304510ff4e5b0fb262181e944523f68d6b4846c40c3dd99a8b8cdf
+    sha256: 3c83d8679a4f0b48671931d6225efbe3635ba58871f99c7b58ad0e35f09677bf
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -53,6 +53,34 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:35.197Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Thông báo "Chưa đúng..." là nhãn amber
+            nhỏ (~20px) chèn giữa chip và ô ghi nhớ, đẩy bố cục.'
+        actionable:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm.'
+        live:
+          verdict: open
+          notes: Đáp án sai chỉ đổi viền chip và một nhãn amber, không có icon trạng thái (sai/đúng) và không
+            chuyển động; chip chọn chỉ đổi viền, khó thấy.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:25.087Z
       lenses:
         order:
           verdict: open

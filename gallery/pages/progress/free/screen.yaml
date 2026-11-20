@@ -8,10 +8,10 @@ summary: "Route: `/progress` (ảnh chụp: học viên chưa có Premium). Khun
 shots:
   "390":
     file: 390.png
-    sha256: 352c208034600b23cd7fa68dc575aee16c7a87eb377c33f1b5e248a44220cc3e
+    sha256: e1f2f180a57b5c1d7c535f9b80a2cf02d8523d3db88af24a2e9d6efe9735dbf5
   "1440":
     file: 1440.png
-    sha256: 515ba2600d4784e004fba5b806ba1378ff0253f12e1d163e615cd8a6d4c00939
+    sha256: b651ebaed73315a994d7438c0969f4b656a9b235781b087afc6e209f05970059
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -65,6 +65,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:55.453Z
+      lenses:
+        order:
+          verdict: open
+          notes: "Cùng vấn đề dài trang: 20 chủ đề Luyện code chen trước Ôn tập; ở 390 từng hàng Premium chiếm
+            2 dòng."
+        layout:
+          verdict: open
+          notes: 'Bốn lời mời nâng cấp lặp: 3 hàng Essentials mỗi hàng chip "Cần Premium" + nút "Xem Premium
+            →", thêm "Dự án dành cho gói Premium" + nút thứ 4 (vượt ngân sách một nút chính, nhiễu).
+            Cùng các lỗi hàng chủ đề (thanh xám full-width), lề x=268 lệch.'
+        actionable:
+          verdict: open
+          notes: Hàng "Phần 1 · Bản chất" không bấm được.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Mục Harness hiển thị "Chưa tải được phần này" như trạng thái thường.
+    - n: 2
+      at: 2026-11-20T13:06:01.676Z
       lenses:
         order:
           verdict: open

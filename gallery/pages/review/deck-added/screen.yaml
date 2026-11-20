@@ -8,10 +8,10 @@ summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ 
 shots:
   "390":
     file: 390.png
-    sha256: e7d77cd8cdb1c3ed613a71404520684acccd0e5999072f3c07584e80ce287006
+    sha256: 867f9a19fdcf46b71502586f3717e342004d4e219bbd842261bad7e6a0db8a4e
   "1440":
     file: 1440.png
-    sha256: 6413807426c06681a2bfea8f716772cdb8c0f88f2422a6fd445bb6547f570152
+    sha256: f55c89efebfc31f48579d8e1009782615d60270660a7ae2146e15d16f18ed79f
 code:
   - features/pages/ReviewDeckPage
   - components/blocks/ReviewDeck
@@ -41,6 +41,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:49.407Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Mục "Bỏ bộ thẻ" nhưng nút "Bỏ khỏi hàng đợi": hai thuật ngữ cho một việc. Meta vẫn chứa slug
+            "backend-fullstack · ai-engineer · founder · fullstack mastery".'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:54.270Z
       lenses:
         order:
           verdict: open

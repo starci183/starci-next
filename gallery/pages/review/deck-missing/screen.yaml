@@ -8,10 +8,10 @@ summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ 
 shots:
   "390":
     file: 390.png
-    sha256: 6e2909cae8b062565603c3c168162ba60f0c66cc297569646532f057ba608274
+    sha256: 213d1e7b2f70f71deff34b758adf42c99f7fc73040e82d4b7331784ea3e61ba2
   "1440":
     file: 1440.png
-    sha256: a1a6f96671d40e501d80157a5c274c8299b7473895a69a2c4e23411a346e48be
+    sha256: 00d447f097560d751593b99390c328b61ff4845bbbf7cd69a86fa1345ca62a74
 code:
   - features/pages/ReviewDeckPage
   - components/blocks/ReviewDeck
@@ -41,6 +41,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:46.435Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: Lỗi "Không tìm thấy bộ thẻ này. Về danh sách để chọn lại" nhưng nút là "Thử lại" (thử lại một
+            id không tồn tại vô nghĩa); phải là nút "Về danh sách bộ thẻ".
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:49.777Z
       lenses:
         order:
           verdict: open

@@ -7,10 +7,10 @@ summary: Người không phải người duyệt hay thầy thấy thông báo k
 shots:
   "390":
     file: 390.png
-    sha256: 78e9685d5423c1f002b496e88b77c0e15efe23c1ca5b5dd324c26b31a717e245
+    sha256: c6c99408a70520029104efb9bfb4a847f2cf5d1622a453ec3f2a3d8cbdd195ca
   "1440":
     file: 1440.png
-    sha256: 832b460fe559be4689ebe02cfd2763d2fa4b14c5ef47a3004e034b04dc3ef12f
+    sha256: a65857456ad7ac055a0f17f43bdf169350fb15967b8f9647c2716de13d5d2ef5
 code:
   - features/pages/ReviewQueuePage
   - components/blocks/ReviewQueue
@@ -40,6 +40,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:58.016Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Header không có breadcrumb trong khi trang "Một mục cần duyệt" cùng nhóm có breadcrumb (không
+            nhất quán); ô icon hộp thư không hợp ngữ cảnh không có quyền; chỉ một dòng, không giải
+            thích.
+        actionable:
+          verdict: open
+          notes: Trang cấm truy cập không có nút/liên kết đi tiếp.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:06:05.533Z
       lenses:
         order:
           verdict: open

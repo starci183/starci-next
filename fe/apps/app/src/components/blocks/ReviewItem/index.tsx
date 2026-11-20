@@ -37,6 +37,8 @@ export const ReviewItem = (props: ReviewItemProps) => {
                 slot: slotOf(),
                 placeholder: REVIEW_ITEM_PLACEHOLDER,
                 slotLabels: { ...useSlotLabels()(t("empty")), forbidden: t("forbiddenTitle") },
+                exitLabel: t("backToProfile"),
+                exitHref: APP_ROUTES.profile,
                 panelLabels: useReviewPanelLabels(),
                 title: t("itemTitle"),
                 backLabel: t("title"),

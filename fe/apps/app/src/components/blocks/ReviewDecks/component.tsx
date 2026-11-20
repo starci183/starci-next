@@ -5,6 +5,7 @@ import {
     Section,
     Stack,
     Tabs,
+    Text,
     type ListRowData,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -18,12 +19,16 @@ export type ReviewDecksBaseProps = {
 }
 
 /** One deck as a row: its name and one sentence, the cards, difficulty and tracks, the state and the one command; the row opens the deck. */
-const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps): ListRowData => ({
+const rowOf = (deck: ReviewDeckRow, props: ReviewDecksBaseProps, isLoading: boolean): ListRowData => ({
     id: deck.id,
     title: deck.title,
     description: `${deck.facts}${deck.tracks.length === 0 ? "" : ` · ${deck.tracks.join(", ")}`}`,
     href: deck.href,
-    detail: deck.description,
+    detail: (
+        <Text tone="muted" isLoading={isLoading}>
+            {deck.description}
+        </Text>
+    ),
     ...(deck.isAdded ? { badges: [{ label: props.props.labels.added, tone: "success" as const }] } : {}),
     action: {
         label: deck.isAdded ? props.props.labels.remove : props.props.labels.add,
@@ -70,6 +75,8 @@ const DeckList = (
                         items={filterOptions}
                         selectedKey={filter}
                         onSelect={props.on.setFilter}
+                        scrollPreviousLabel={labels.scrollPrevious}
+                        scrollNextLabel={labels.scrollNext}
                     />
                     <Tabs
                         kind="filter"
@@ -77,10 +84,12 @@ const DeckList = (
                         items={trackOptions}
                         selectedKey={track}
                         onSelect={props.on.setTrack}
+                        scrollPreviousLabel={labels.scrollPrevious}
+                        scrollNextLabel={labels.scrollNext}
                     />
                 </>
             }
-            items={props.rows.map((row) => rowOf(row, props))}
+            items={props.rows.map((row) => rowOf(row, props, props.isLoading))}
             empty={
                 <EmptyNotice
                     message={labels.emptyAdded}

@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 6b76d7f18ae9a8e70d5c16aa18cede07e00131e4fb187d5e9a4fabba02511341
+    sha256: e246a01d24ef47d9b778733c7b34e0adbed564b68130977f070ffcc9b1d945de
   "1440":
     file: 1440.png
-    sha256: 693ecc3e92f7dd56ce806527ca8686ff2f306a3ebf2e3b15da51f134f04a3c50
+    sha256: 386d2c372757ea7a19a8a39ac25078bcfa070602669d906926871a62ed47a075
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -42,6 +42,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:37.601Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: 'Ảnh 390 sai màn: là trạng thái "Không có thẻ nào để ôn" chứ không phải tổng kết; cần chụp
+            lại 390.'
+        truth:
+          verdict: open
+          notes: Header "10/10 thẻ · Còn khoảng 1 phút" ở trạng thái đã xong (mâu thuẫn). Ảnh 390 không phải
+            màn tổng kết nên không kiểm được.
+    - n: 2
+      at: 2026-11-20T13:05:29.104Z
       lenses:
         order:
           verdict: open

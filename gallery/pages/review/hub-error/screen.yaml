@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 690dca74e87ab141bc2aa1a9fdc20a2983c31582981f694a6c56ceacab02fd42
+    sha256: eec15474eace9a8a014950cafe3fc5e4990154835f4cc421b242f1d0688e0002
   "1440":
     file: 1440.png
-    sha256: d0020d00cedbc62b3fd7fee081f893061e42cb6883ed382425e7cf270ecc022c
+    sha256: 97076e5443281f5408e01116c09e2bbbac232511137c173d19ce87f597b7aa90
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -41,6 +41,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:26.310Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:13.736Z
       lenses:
         order:
           verdict: open

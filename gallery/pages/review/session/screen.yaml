@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: be5883b9de526bc103a32409bd5c42043fb8c5684993ab7fd863d95abcc3f899
+    sha256: a419952e2d0f54c9e7ca1c22bcef20f8aeac76563d155594515c367a7f720008
   "1440":
     file: 1440.png
-    sha256: e53145c84c8fb5424e3c46ba5d4aaa7caca9751651302baca4dccd88fdf82847
+    sha256: c4e03e4c0454ab22d4bc8174c7d755571cb0491d289f62bfb89495b31397f7f5
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -61,6 +61,34 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:32.596Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Câu hỏi chính cỡ 14, không có bậc
+            heading 16/500 so với nhãn "Chỗ trống 1" và "Điều bạn nhớ".'
+        actionable:
+          verdict: open
+          notes: 'Có nút icon nhỏ (~24px, ký tự "⌣") cạnh "Hiện đáp án" (1440 ~x715,y571; 390 ~x148,y690):
+            không nhãn, không phải 40px, dưới 44px khi chạm. Không biết nút làm gì.'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Thẻ dạng "Điền chỗ trống" nhưng câu hỏi không hiện chỗ trống nào; các chip không gắn vào vị
+            trí trong câu, nên không rõ đang điền gì.
+    - n: 2
+      at: 2026-11-20T13:05:23.716Z
       lenses:
         order:
           verdict: open

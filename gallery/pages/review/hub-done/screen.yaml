@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 4928c50562b163eead037cbe7fdfa9b405becb6814b3b712c6dc646ce9006e40
+    sha256: b1e7169a03a16db4e44be5d6bf7a10852c125f870730fa30e335d312cf351800
   "1440":
     file: 1440.png
-    sha256: 4b263598ec07ac7a614e3ea402aefbbc4164349e8be6432a9830897b0f3de9e5
+    sha256: e0a979e6936396093945251346d5c4a02367cdce6825e65fd015d08f30be1ea6
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -41,6 +41,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:28.941Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 biểu đồ lại chen trước Mục tiêu/Bộ thẻ như hub chính; chuyển khối hành động lên trước.
+        layout:
+          verdict: open
+          notes: 'Khối Mục tiêu mỗi ngày lệch canvas đã duyệt: canvas đặt liên kết "Đổi" ở hàng tiêu đề mục
+            (bên phải) kèm thanh tiến độ 3/10; code đặt "Đổi" thành dòng riêng dưới thân mục, thiếu
+            thanh tiến độ. Biểu đồ chỉ 1 cột "100% Lần 1" lệch giữa khối.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:18.907Z
       lenses:
         order:
           verdict: open

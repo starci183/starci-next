@@ -255,6 +255,7 @@
         "pageTitle": "Review session",
         "root": "Review",
         "progress": "{position}/{total} cards · About {minutes} min left",
+        "progressDone": "{total}/{total} cards · Done",
         "progressLabel": "Session progress",
         "sourceCard": "Deck · {deck}",
         "sourceRetrieval": "Essentials lesson · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Easy",
         "interval": "{days, plural, =0 {today} one {# day} other {# days}}",
         "shortcuts": "Shortcuts: Space to show the answer, 1 to 4 to grade",
+        "spaceHint": "Or press Space",
         "lessonLine": "From lesson {lesson}",
         "saveFailedTitle": "Could not save the grade",
         "saveFailedBody": "The card is still here and has not moved on. Try again.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Pick a deck",
         "emptyBack": "Back to Review"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend fullstack",
+        "ai-engineer": "AI engineer",
+        "founder": "Founder",
+        "system-design-senior": "Senior system design",
+        "fullstack mastery": "Fullstack mastery"
+      },
       "decks": {
         "pageTitle": "Review decks",
         "emptyTitle": "No deck yet.",
@@ -318,6 +327,8 @@
         "filterLabel": "Filter by added",
         "trackLabel": "Filter by path",
         "allTracks": "Every path",
+        "scrollPrevious": "Scroll left",
+        "scrollNext": "Scroll right",
         "add": "Add deck",
         "added": "Added",
         "remove": "Remove from queue",
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Deck",
         "notFound": "This deck was not found.",
+        "backToDecks": "Back to the decks",
         "errorText": "The deck may have been renamed. Go back to the list to pick again.",
         "breadcrumbs": "Breadcrumb",
         "root": "Review",
@@ -1743,6 +1755,7 @@
         "pageTitle": "Experience review",
         "title": "Experience review",
         "itemTitle": "One item to review",
+        "backToProfile": "Back to profile",
         "forbiddenTitle": "Only the teacher and reviewers can open this page",
         "listLabel": "Review queue",
         "count": "{count} items",
@@ -2416,7 +2429,8 @@
         "doing": "Patterns in progress",
         "done": "Patterns done",
         "accepted": "{done} problems Accepted",
-        "empty": "No patterns yet."
+        "empty": "No patterns yet.",
+        "more": "{count} more patterns. Open Practice to see them all."
       },
       "firstVisit": {
         "title": "Nothing to measure yet, and that is normal",

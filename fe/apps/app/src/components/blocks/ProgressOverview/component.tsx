@@ -1,13 +1,11 @@
 import type { ReactNode } from "react"
 import {
-    Button,
+    Alert,
     EmptyNotice,
+    Grid,
     Link,
     Meter,
     Page,
-    Pane,
-    PaneGrid,
-    PaneSection,
     Section,
     Stack,
     Text,
@@ -141,14 +139,7 @@ type BlockSectionProps = {
 /** A part whose source failed: its title, the words and a retry, so one failed source never hides the rest. */
 const UnavailableSection = (props: BlockSectionProps) => (
     <Section title={props.title} headingLevel={2}>
-        <Stack gap="row">
-            <Text tone="muted">{props.unavailable}</Text>
-            <div>
-                <Button intent="neutral" onPress={props.onRetry}>
-                    {props.retry}
-                </Button>
-            </div>
-        </Stack>
+        <Alert tone="negative" title={props.unavailable} action={{ label: props.retry, onAction: props.onRetry }} />
     </Section>
 )
 
@@ -233,8 +224,8 @@ const Ready = (props: ReadyProps) => {
             <BlockSection {...common} view={props.view.essentials} title={props.labels.essentialsTitle} />
             <BlockSection {...common} view={props.view.harness} title={props.labels.harnessTitle} />
             <BlockSection {...common} view={props.view.projects} title={props.labels.projectsTitle} />
-            <BlockSection {...common} view={props.view.practice} title={props.labels.practiceTitle} />
             <BlockSection {...common} view={props.view.review} title={props.labels.reviewTitle} />
+            <BlockSection {...common} view={props.view.practice} title={props.labels.practiceTitle} />
         </Stack>
     )
 }
@@ -278,16 +269,7 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
             headerFallback={headerOf(labels, undefined)}
             aside={(view, isLoading) =>
                 view.firstVisit === null ? (
-                    <Pane area="aside" scroll label={labels.activityTitle}>
-                        <PaneSection>
-                            <ActivitySection
-                                view={view}
-                                labels={labels}
-                                onRetry={props.on.retry}
-                                isLoading={isLoading}
-                            />
-                        </PaneSection>
-                    </Pane>
+                    <ActivitySection view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
                 ) : null
             }
             asideFallback={null}
@@ -295,17 +277,12 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
                 <Ready view={view} labels={labels} onRetry={props.on.retry} isLoading={isLoading} />
             )}
             frame={(parts) => (
-                <Page chrome="panes" header={parts.header}>
-                    <PaneGrid
-                        label={labels.title}
-                        areas={{ base: ["main", "aside"], wide: ["main aside"] }}
-                        columns={{ base: ["fill"], wide: parts.aside === null ? ["fill"] : ["fill", "standard"] }}
-                    >
-                        <Pane area="main" scroll label={labels.title}>
-                            <PaneSection>{parts.body}</PaneSection>
-                        </Pane>
-                        {parts.aside}
-                    </PaneGrid>
+                <Page header={parts.header}>
+                    {parts.aside === null ? (
+                        parts.body
+                    ) : (
+                        <Grid kind="main-rail" primary={parts.body} rail={parts.aside} />
+                    )}
                 </Page>
             )}
         />

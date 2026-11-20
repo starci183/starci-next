@@ -1,4 +1,4 @@
-import { Grid, Page, Section, Stack, Tabs } from "@starci/grammar/common"
+import { Button, Grid, Page, Section, Stack, Tabs } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -55,6 +55,8 @@ export type ReviewQueueBaseProps = {
         readonly slot: DataSlot<ReviewQueueScreenView>
         readonly placeholder: ReviewQueueScreenView
         readonly slotLabels: SlotLabels
+        readonly exitLabel: string
+        readonly exitHref: string
         readonly labels: ReviewQueueLabels
         readonly panelLabels: ReviewPanelLabels
         readonly tab: string
@@ -173,6 +175,11 @@ export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
     <Page header={{ title: props.props.labels.title, titleScale: "standard", breadcrumbs: "root" }}>
         <SlotView
             slot={props.props.slot}
+            forbiddenAction={
+                <Button intent="neutral" href={props.props.exitHref}>
+                    {props.props.exitLabel}
+                </Button>
+            }
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}

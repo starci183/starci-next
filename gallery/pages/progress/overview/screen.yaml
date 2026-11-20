@@ -11,10 +11,10 @@ summary: "Route: `/progress` (ảnh chụp: học viên Premium, đã làm cả 
 shots:
   "390":
     file: 390.png
-    sha256: 51164cd70eefbf528ff4ae30b7522900558ad0422ac6a31e43957cbcdb6daab3
+    sha256: 5d2a44ade75428cacd1b4559d962f3a2bbc97a39b361281501c4d442d0d1072c
   "1440":
     file: 1440.png
-    sha256: 246c3434c8d7e5f0853313e2e0c734db4007607547a9c7b88e105ac4ebd76e74
+    sha256: 79f7fdc01959ee424ea8b1254d759313bf65a9823c37c2d99625d60da475fd74
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview
@@ -94,6 +94,38 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:50.698Z
+      lenses:
+        order:
+          verdict: open
+          notes: 'Trang dài ~3260px: 20 chủ đề Luyện code (mỗi chủ đề 0 bài) chen trước mục Ôn tập; "Hoạt động
+            gần đây" rỗng xuống đáy ở 390. Nên thu gọn danh sách chủ đề và đưa việc đang làm lên
+            trước.'
+        layout:
+          verdict: open
+          notes: Mỗi hàng chủ đề có thanh tiến độ xám full-width ngay dưới hàng (20 thanh 0%), nhiễu thị giác;
+            cột phải "Hoạt động gần đây" rỗng chiếm khoảng trống ở 1440. Lề trái nội dung x=268,
+            lệch x=288 của các trang khác. Chữ phụ "/0", "/96" cạnh số lớn khác cỡ. Lỗi mục Harness
+            chỉ là dòng chữ + nút, không icon, không tông lỗi.
+        actionable:
+          verdict: open
+          notes: Hàng "Phần 1-4" của Essentials không có chevron và không bấm được trong khi Caching/Độ tin
+            cậy có chevron; chip "Đã mở" chỉ là trạng thái.
+        live:
+          verdict: open
+          notes: Mục Harness lỗi tải ("Chưa tải được phần này") không có icon lỗi, không cho biết đang thử
+            lại.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Mục Harness tải lỗi hiện như bình thường giữa trang; "Chuỗi ngày 1" trong khi Bài đã học 0
+            khó tin.
+    - n: 2
+      at: 2026-11-20T13:05:55.685Z
       lenses:
         order:
           verdict: open

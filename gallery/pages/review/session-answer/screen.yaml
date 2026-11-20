@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 4f1a249b3e0e566278941d30c9635b759c9d265fefaec96a4caef356e55417db
+    sha256: 36d2da2c52de6054d0eeafd1c5a8e88b1623ce81b570325f6ca3816939c00988
   "1440":
     file: 1440.png
-    sha256: f5aa96799562e32336afe797e4e2cde5912b509d473032c04570acf1698dfcab
+    sha256: 63cd8dabc13de461fd5d2b01c998be77f88b1b32a5e15148fb8787311c402eea
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -41,6 +41,34 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:36.479Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Phần đáp án là khối chữ liền: nhãn "Đáp án / Trả lời thẳng / Cơ chế / Bẫy thường gặp / Đào
+            sâu tiếp" cỡ 12 xám, không khoảng cách hay phân cấp giữa các đoạn (1440 y375-770). Chữ
+            đậm "container" trong thân là weight ngoài 400/500. Nút Lại/Khó/Tốt/Dễ có nhãn khoảng
+            cách cỡ 12; "Tốt" tô tím sẵn khi chưa chọn.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Đoạn "Đào sâu tiếp" bắt đầu bằng chữ thường "nếu cùng một service...". Lẫn thuật ngữ Anh
+            "unit-test, mock, loose coupling".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:27.852Z
       lenses:
         order:
           verdict: open

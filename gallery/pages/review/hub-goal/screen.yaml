@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 237d7cfea2cb6f0852bfee534385139c6bb92075ebf3422abea5207fcc8e8088
+    sha256: cea04254aff7dc75815eecc6b5e2ac01bcef2335d2bb792cb977dd13a9115024
   "1440":
     file: 1440.png
-    sha256: 090ded62e09ff51818ea7302301d678e30804b1077c77d88e9cc39e67f929708
+    sha256: 7f8f7fe1ebab4fcea5f7a961065b85c99cbf6d9bb4825f140159b9efa9280873
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -41,6 +41,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:27.662Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: Chip "Khác..." không mở ô nhập số, không thấy cách nhập số tuỳ ý dù mô tả nhắc "Đặt 0 nếu
+            muốn tạm dừng".
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:17.599Z
       lenses:
         order:
           verdict: open

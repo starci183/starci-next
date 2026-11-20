@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 50e5eb49f2491c81f9384e4d1322363693738df42cc9d7a937b6f970af5b2843
+    sha256: e642aaf31ccdd76c585cd858633e17280c72e51d1c1c6337a471008e940808d8
   "1440":
     file: 1440.png
-    sha256: 5c66dab573aab6363b70bec8d34ba5909622c70e269c7de6933695ef2ab8e03d
+    sha256: d3f119db11e0f09bb008972f70d9d1fad4f09b8ab6f8ed6716f6e6ec7e268c2a
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -41,6 +41,34 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T12:43:24.788Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton. Tiêu đề mục và "Đổi" hiện thật trong lúc
+            tải; thiếu skeleton cho nút "Bắt đầu ôn" ở header.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+        states:
+          verdict: open
+          notes: Loading có ở 1440 và 390 nhưng vẽ sai (chữ "xxxx" thật), một số tiêu đề hiện thật trong lúc
+            tải; cần skeleton đúng chuẩn.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:12.401Z
       lenses:
         order:
           verdict: open
