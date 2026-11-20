@@ -1,4 +1,5 @@
 {"data":{},"findings":[],"hash":"de36deda271272df8cacb4c33b48342e65e5ccd5f0abc3d3626c3b5fa644c60b","path":"scripts/codegen.mjs","step":"file-rules"}
+{"data":{},"findings":[],"hash":"ec61737b264b5387aca2689bab8537e7fda6254c938ffa0eb14aa0b5bcac4ef4","path":"scripts/gallery-capture.cjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d1b7177044c8a8d9480a7335c703c3f98e2dd289e47ef13e6fc2cd14fa29d9b3","path":"scripts/gallery-seed.mjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8664321023831bfe0a0d680704f61e838738a22bf514dff5e9b4a5928c2a8f0b","path":"scripts/gallery-sign-in.cjs","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4cf1b50ca486cbdd1d1681a18e19b73d7d8d30cd806a3da903a91a0a1bc75af5","path":"scripts/relay-manifest-key.mjs","step":"file-rules"}

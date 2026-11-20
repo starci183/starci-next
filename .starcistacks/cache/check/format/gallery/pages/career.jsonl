@@ -1,4 +1,12 @@
+{"findings":[],"hash":"9e327700b6ad2fb8e124f9fcc6df1d0713a57177293950123f374af2e911bd33","path":"gallery/pages/career/experience-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"4742481d17ff3d028ad1b801bfd744ca050c0f6dfa97149d6e27a0cd62b691c5","path":"gallery/pages/career/experience-first-visit/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"a474edfd11a0d41096f5d05860fc167354a4624f187bf80184e23e8f6214ec8a","path":"gallery/pages/career/experience-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"91e1bcd7e30ef3c496566860df1b94e48f3197fe34c9016ba82baf744a34365d","path":"gallery/pages/career/experience/explain.md","step":"prettier"}
 {"findings":[],"hash":"07ba9c788f3ebb1e1cf7470d18699fcbbe47d4880289fa1325644459f78860e1","path":"gallery/pages/career/review-item-forbidden/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"53c634f141032f57b5e7998648048e9f72e540e7cdf23b8091251fa0b84ce892","path":"gallery/pages/career/review-item/explain.md","step":"prettier"}
 {"findings":[],"hash":"a7df93f97ed72cd99e6091387ab52f8b25c48c75555c528eac1cde965655293e","path":"gallery/pages/career/review-queue-forbidden/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"2d48fe19dbe5bdbeb6f6c8584e36e8e61416a32338e98d89ec9e633e63d290e2","path":"gallery/pages/career/review-queue/explain.md","step":"prettier"}
+{"findings":[],"hash":"5ad6f6dccf646bb45726467f9147773ca4fbc4b9beb3d39d46f73e136dd7ac58","path":"gallery/pages/career/verify-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"2a4385524787e81f5433c2652717890b8083fe018acb2de764fcbc899a2f8b68","path":"gallery/pages/career/verify-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"70f81ecfcc2de2d8e0b9aa43c90e01d1c86e7dfd22e6357f78d774402357ef08","path":"gallery/pages/career/verify-not-found/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"64786e69dc66cf3df7e37356a6f0f051251dba8ef1982bbb49fd6a17e25636f6","path":"gallery/pages/career/verify/screen.yaml","step":"prettier"}
