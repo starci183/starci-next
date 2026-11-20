@@ -20,4 +20,6 @@ Grammar: `Avatar`, `Heading`, `Text`, `Button`.
 
 ## Cập nhật 2026-11-20 (pending-seed)
 
-Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã hiện tại đã theo luật Grammar 0.50 (nút một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ SlotView).
+Vì sao: Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã hiện tại đã theo luật Grammar 0.50 (nút một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ SlotView).
+Luật: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
+Grammar: `Section kind="list"` + `Tabs kind="filter"`, `Stepper`, `Button`, `Popover`

@@ -1,7 +1,3 @@
-{"findings":[],"hash":"b1fe74a0df14adf75c76f2212e47b978997cd43f557a9662ed9aca6523ae5b48","path":"gallery/pages/cv/public-error/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"d88e54dae4011369026d6d2a8682a1bfe77970c22d41260ada2add8a0a2929ad","path":"gallery/pages/cv/public-few-lines/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"26ac8c7f6e370a07506c039e13d70d7c4a6d8338df5ad58c3e4b64f5a11aac69","path":"gallery/pages/cv/public-loading/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"8b916fbb830bbbb060fa080e34039dfe05d29db94adb2959860ae6d72534042f","path":"gallery/pages/cv/public-many-lines/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"f0ee7c88e7a38eef45f9b0e7c16ab99db390b129e319ac777a36223fa1cbc942","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"f713cf2fe39ebebbc5eb17a93167c3a49b006ddf6c6428dbce502cab869e8e1f","path":"gallery/pages/cv/public-share/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"e69d25bf1337d0a59881501bb81ad8dc5abfe107e13e47e0d01770c28300effe","path":"gallery/pages/cv/public/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"f6a0180ca350cf98e058f94a5de8fcc096faed473612f06c36427f15eda93d90","path":"gallery/pages/cv/public-loading/explain.md","step":"prettier"}
+{"findings":[],"hash":"519a45865f8f6baa2af51b011f703c1e2e96a61bc136808fc0c7e45dbe21c56b","path":"gallery/pages/cv/public-many-lines/explain.md","step":"prettier"}
+{"findings":[],"hash":"b689b55cf7e5d619e32380a6641954d49f5fc8304ad7e1deda6bc942d2e15688","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"prettier"}
