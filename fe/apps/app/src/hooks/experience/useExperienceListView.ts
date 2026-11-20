@@ -221,7 +221,8 @@ const experienceListViewOf = (
         })),
         sources: EXPERIENCE_SOURCES.map((id) => ({
             id,
-            label: `${id === "all" ? copy.sourceAll : words.part(id)} ${sourceCountOf(id)}`,
+            label: id === "all" ? copy.sourceAll : words.part(id),
+            count: sourceCountOf(id),
         })),
         cards: read.items.filter((item) => inSource(item) && inTab(item)).map((item) => cardOf(item, context)),
         ways: read.items.length === 0 ? waysOf(copy) : undefined,

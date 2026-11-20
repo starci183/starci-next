@@ -5,7 +5,12 @@ import { useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { useSession } from "@/hooks/auth"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useMutateSetCvVisibilitySwr, useQueryMyCvLinkSwr } from "@/hooks/swr"
+import {
+    useMutateChooseOutcomePathSwr,
+    useMutateSetCvVisibilitySwr,
+    useQueryMyCvLinkSwr,
+    useQueryOutcomePathsSwr,
+} from "@/hooks/swr"
 import { cvLinkOf } from "@/hooks/profileViews"
 import { labelsOf, profileIssueWordsOf } from "@/hooks/profileWords"
 import { APP_ROUTES } from "@/modules/routes"
@@ -14,6 +19,16 @@ import { PROFILE_SAVED_KEY } from "./profile.shared"
 import { useOrigin } from "./useOrigin"
 import { useProfileIdentity } from "./useProfileIdentity"
 
+/** The goal path field: its words, the paths to pick from and the one chosen now. */
+export type ProfileEditGoal = {
+    readonly label: string
+    readonly hint: string
+    readonly placeholder: string
+    readonly options: ReadonlyArray<{ readonly id: string; readonly label: string }>
+    readonly value: string | null
+    readonly isLoading: boolean
+}
+
 /** What the editor is drawn from and the commands it sends. */
 export type ProfileEditState = {
     readonly pageTitle: string
@@ -21,6 +36,9 @@ export type ProfileEditState = {
     readonly accept: string
     readonly identity: DataSlot<ProfileIdentityView>
     readonly cvLink: DataSlot<ProfileCvLinkView>
+    /** The identity again for the name section; hidden when the identity failed, so the page draws one failure notice. */
+    readonly nameIdentity: DataSlot<ProfileIdentityView>
+    readonly goal: ProfileEditGoal
     readonly slotLabels: ReturnType<ReturnType<typeof useSlotLabels>>
     readonly state: {
         readonly isSaving: boolean
@@ -31,6 +49,7 @@ export type ProfileEditState = {
     }
     readonly on: {
         readonly changeName: (value: string) => void
+        readonly changeGoal: (value: string | null) => void
         readonly save: () => void
         readonly cancel: () => void
         readonly uploadAvatar: (file: File) => void
@@ -52,6 +71,11 @@ export const useProfileEdit = (): ProfileEditState => {
     const identity = useProfileIdentity(locale)
     const cvLink = useQueryMyCvLinkSwr()
     const visibility = useMutateSetCvVisibilitySwr()
+    const paths = useQueryOutcomePathsSwr(locale)
+    const chooseGoal = useMutateChooseOutcomePathSwr()
+    const [goalDraft, setGoalDraft] = useState<string | null | undefined>(undefined)
+    const activeGoal = paths.data?.activePathId ?? null
+    const goalValue = goalDraft === undefined ? activeGoal : goalDraft
     const [isRemoveOpen, setIsRemoveOpen] = useState(false)
     const limits = identity.read.data?.limits ?? {
         maxBytes: 2 * 1024 * 1024,
@@ -59,26 +83,41 @@ export const useProfileEdit = (): ProfileEditState => {
         nameMax: 60,
     }
     const accountName = session.session?.displayName ?? session.session?.email ?? ""
+    const identitySlot = mapSlot(slotOfSwr(identity.read), (data) => {
+        const name = identity.draft ?? data.displayName ?? ""
+        return {
+            shownName: data.displayName ?? accountName,
+            nameValue: name,
+            email: session.session?.email ?? "",
+            avatarUrl: data.avatarUrl,
+            goalTitle: data.goal?.title ?? null,
+            canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
+            isNew: false,
+            nameCount: `${name.length}/${limits.nameMax}`,
+        }
+    })
+    // One failure notice per page: when the identity failed, the name and the CV link are not drawn.
+    const isIdentityFailed = "isError" in identitySlot
     const back = (): void => router.push(APP_ROUTES.profile)
     return {
         pageTitle: t("edit.title"),
-        labels: labelsOf(t, profileIssueWordsOf(t, identity.issue, limits), limits.maxBytes),
+        labels: {
+            ...labelsOf(t, profileIssueWordsOf(t, identity.issue, limits), limits.maxBytes),
+            editMeta: identity.draft !== undefined || goalDraft !== undefined ? t("edit.unsaved") : t("edit.clean"),
+        },
         accept: limits.contentTypes.join(","),
-        slotLabels: useSlotLabels()(t("cv.empty")),
-        identity: mapSlot(slotOfSwr(identity.read), (data) => {
-            const name = identity.draft ?? data.displayName ?? ""
-            return {
-                shownName: data.displayName ?? accountName,
-                nameValue: name,
-                email: session.session?.email ?? "",
-                avatarUrl: data.avatarUrl,
-                goalTitle: data.goal?.title ?? null,
-                canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
-                isNew: false,
-                nameCount: `${name.length}/${limits.nameMax}`,
-            }
-        }),
-        cvLink: mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
+        slotLabels: useSlotLabels()(t("cv.empty"), { title: t("edit.errorTitle"), text: t("edit.errorText") }),
+        identity: identitySlot,
+        nameIdentity: isIdentityFailed ? { isForbidden: true } : identitySlot,
+        cvLink: isIdentityFailed ? { isForbidden: true } : mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
+        goal: {
+            label: t("edit.goal.label"),
+            hint: t("edit.goal.hint"),
+            placeholder: t("edit.goal.placeholder"),
+            options: (paths.data?.paths ?? []).map((path) => ({ id: path.pathId, label: path.title })),
+            value: goalValue,
+            isLoading: paths.data === undefined && paths.error === undefined,
+        },
         state: {
             isSaving: identity.isSaving,
             isUploading: identity.isUploading,
@@ -88,9 +127,18 @@ export const useProfileEdit = (): ProfileEditState => {
         },
         on: {
             changeName: identity.setDraft,
+            changeGoal: setGoalDraft,
             save: () => {
-                void identity.saveName().then((isSaved) => {
+                void identity.saveName().then(async (isSaved) => {
                     if (!isSaved) return
+                    if (goalDraft !== undefined && goalDraft !== null && goalDraft !== activeGoal) {
+                        try {
+                            await chooseGoal.trigger({ pathId: goalDraft })
+                            await paths.mutate()
+                        } catch {
+                            return
+                        }
+                    }
                     try {
                         window.sessionStorage.setItem(PROFILE_SAVED_KEY, "1")
                     } catch {

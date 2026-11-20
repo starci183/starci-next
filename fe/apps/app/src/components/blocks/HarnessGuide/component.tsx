@@ -7,13 +7,15 @@ import {
     PaneSection,
     Section,
     Stack,
+    Text,
     Switch,
     type ListRowData,
 } from "@starci/grammar/common"
-import { OutlineList, RichMarkdown, SlotView } from "@starci-next/ui"
+import { RichMarkdown, SlotView } from "@starci-next/ui"
 import type {
     HarnessDoctorPanelView,
     HarnessGuidePageView,
+    HarnessGuideNavItem,
     HarnessGuideScreen,
     HarnessProbeItemView,
 } from "@/hooks/harnessUse"
@@ -40,15 +42,29 @@ const GuideBody = (props: {
     readonly isLoading: boolean
 }) => (
     <Stack gap="region">
-        {props.view.sections.map((section) => (
+        {props.isLoading ? (
+            <Stack gap="row">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
+                    <Text key={line} as="p" isLoading>
+                        {"x".repeat(72)}
+                    </Text>
+                ))}
+            </Stack>
+        ) : null}
+        {(props.isLoading ? [] : props.view.sections).map((section) => (
             <Section
                 key={section.id}
                 id={section.id}
-                title={section.title}
-                headingLevel={2}
+                {...(props.isLoading
+                    ? { ariaLabel: props.guide.props.labels.outlineTitle }
+                    : { title: section.title, headingLevel: 2 as const })}
                 isLoading={props.isLoading}
             >
-                <RichMarkdown source={section.markdown} labels={props.guide.props.common.markdown} />
+                <RichMarkdown
+                    source={section.markdown}
+                    labels={props.guide.props.common.markdown}
+                    isLoading={props.isLoading}
+                />
             </Section>
         ))}
     </Stack>
@@ -63,11 +79,18 @@ const OutlineAside = (props: {
     const { labels, common, toolOptions } = props.guide.props
     return (
         <Stack gap="region">
-            <OutlineList
-                label={labels.outlineTitle}
-                emptyLabel={labels.outlineEmpty}
-                entries={props.view.outline}
+            <Section
+                kind="list"
+                title={labels.outlineTitle}
+                headingLevel={2}
                 isLoading={props.isLoading}
+                items={props.view.outline.map((entry, index) => ({
+                    id: entry.id,
+                    title: entry.label,
+                    leading: { position: index + 1 },
+                    href: entry.href,
+                }))}
+                empty={labels.outlineEmpty}
             />
             <Section title={common.toolLabel} headingLevel={2} caption={labels.toolDescription}>
                 <ChoiceChips
@@ -109,7 +132,6 @@ const DoctorAside = (props: {
                     isLoading={props.isLoading}
                 />
                 <Switch
-                    kind="compact"
                     label={labels.doctorOnlyFailingLabel}
                     description={labels.doctorOnlyFailingDescription}
                     isSelected={isOnlyFailing}
@@ -128,53 +150,60 @@ const DoctorAside = (props: {
     )
 }
 
+/** One guide of the list as a row; the one on screen is marked. */
+const navRowOf = (guide: HarnessGuideNavItem): ListRowData => ({
+    id: guide.id,
+    title: guide.title,
+    href: guide.href,
+    ...(guide.isCurrent ? { state: "informative" as const } : {}),
+})
+
 /**
- * Draws one guide of part 2: its markdown in anchored sections with copy buttons, and beside it the outline, the tool switch and the
- * `harness doctor` panel. Each region reads and fails on its own.
+ * Draws one guide of part 2 as three panes of one read: the guides of the tool, the markdown in anchored sections, and the outline
+ * with the tool pick and the harness doctor panel. One SlotView feeds the body and the aside, so a failure draws one notice.
  */
 export const HarnessGuideBase = (props: HarnessGuideBaseProps) => (
-    <Page chrome="panes" layout="workspace" header={props.props.header}>
-        <PaneGrid
-            label={props.props.labels.outlineTitle}
-            areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-            columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-            rows={{ base: ["auto", "fill"], wide: ["fill"] }}
-        >
-            <Pane area="main" scroll label={props.props.labels.outlineTitle}>
-                <PaneSection>
-                    <SlotView
-                        slot={props.props.guide}
-                        placeholder={props.props.guidePlaceholder}
-                        labels={props.props.slotLabels}
-                        onRetry={props.on.retryGuide}
-                        render={(view, isLoading) => <GuideBody view={view} guide={props} isLoading={isLoading} />}
-                    />
-                </PaneSection>
-            </Pane>
-            <Pane area="aside" surface scroll label={props.props.labels.doctorTitle}>
-                <PaneSection>
-                    <Stack gap="region">
-                        <SlotView
-                            slot={props.props.guide}
-                            placeholder={props.props.guidePlaceholder}
-                            labels={props.props.slotLabels}
-                            onRetry={props.on.retryGuide}
-                            render={(view, isLoading) => (
-                                <OutlineAside view={view} guide={props} isLoading={isLoading} />
-                            )}
-                        />
-                        <SlotView
-                            slot={props.props.doctor}
-                            placeholder={props.props.doctorPlaceholder}
-                            labels={props.props.slotLabels}
-                            onRetry={props.on.retryDoctor}
-                            render={(view, isLoading) => (
-                                <DoctorAside view={view} guide={props} isLoading={isLoading} />
-                            )}
-                        />
-                    </Stack>
-                </PaneSection>
-            </Pane>
-        </PaneGrid>
-    </Page>
+    <SlotView
+        slot={props.props.guide}
+        placeholder={props.props.guidePlaceholder}
+        labels={props.props.slotLabels}
+        onRetry={props.on.retryGuide}
+        render={(view, isLoading) => <GuideBody view={view} guide={props} isLoading={isLoading} />}
+        aside={(view, isLoading) => (
+            <Stack gap="region">
+                <OutlineAside view={view} guide={props} isLoading={isLoading} />
+                <DoctorAside view={view.doctor} guide={props} isLoading={isLoading} />
+            </Stack>
+        )}
+        asideFallback={null}
+        frame={({ body, aside, isLoading }) => (
+            <Page chrome="panes" layout="workspace" header={props.props.header}>
+                <PaneGrid
+                    label={props.props.labels.outlineTitle}
+                    areas={{ base: ["main", "aside", "nav"], wide: ["nav main aside"] }}
+                    columns={{ base: ["fill"], wide: ["standard", "fill", "standard"] }}
+                    rows={{ base: ["auto", "fill", "auto"], wide: ["fill"] }}
+                >
+                    <Pane area="nav" scroll label={props.props.labels.navTitle}>
+                        <PaneSection>
+                            <Section
+                                kind="list"
+                                title={props.props.labels.navTitle}
+                                headingLevel={2}
+                                isLoading={isLoading}
+                                items={props.props.guides.map(navRowOf)}
+                                empty={props.props.labels.navEmpty}
+                            />
+                        </PaneSection>
+                    </Pane>
+                    <Pane area="main" scroll label={props.props.labels.outlineTitle}>
+                        <PaneSection>{body}</PaneSection>
+                    </Pane>
+                    <Pane area="aside" scroll label={props.props.labels.doctorTitle}>
+                        <PaneSection>{aside}</PaneSection>
+                    </Pane>
+                </PaneGrid>
+            </Page>
+        )}
+    />
 )

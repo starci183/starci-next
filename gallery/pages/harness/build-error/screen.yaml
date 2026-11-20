@@ -1,0 +1,110 @@
+schema: 1
+screen: harness/build-error
+title: Chi tiết build, lỗi tải
+route: /harness/build/[build]
+area: harness
+summary: "Trạng thái của màn: Chi tiết build, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessBuildPage
+  - components/blocks/HarnessBuild
+shots:
+  "390":
+    file: 390.png
+    sha256: 1f40bcea7bf7072d6d073df52c006ef3f3fa7aacc70eefc402a942183384ce66
+  "1440":
+    file: 1440.png
+    sha256: f34f092c26726c52048e548a2207c94ea52e0d0d5643ad745cd2ecdeeb4f0035
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:10.800Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>".
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/build-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại. Canvas còn nút phụ "Về danh sách Build"; code không có.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:23.886Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Breadcrumb vẫn lặp "Harness / Build / Build".
+        actionable:
+          verdict: open
+          notes: Thiếu nút phụ "Về danh sách Build" của canvas harness/build-error.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:50.797Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

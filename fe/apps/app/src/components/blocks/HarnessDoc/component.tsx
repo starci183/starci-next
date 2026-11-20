@@ -1,6 +1,6 @@
-import { Page, Pane, PaneGrid, PaneSection, Section, Stack } from "@starci/grammar/common"
-import { OutlineList, RichMarkdown, SlotView } from "@starci-next/ui"
-import type { HarnessDocPageView, HarnessDocScreen } from "@/hooks/harnessDocs"
+import { Page, Pane, PaneGrid, PaneSection, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
+import { RichMarkdown, SlotView } from "@starci-next/ui"
+import type { HarnessDocNavItem, HarnessDocPageView, HarnessDocScreen } from "@/hooks/harnessDocs"
 
 /** Props for {@link HarnessDocBase}: the resolved screen of one article. */
 export type HarnessDocBaseProps = {
@@ -18,58 +18,97 @@ type RegionProps = {
 /** The body of the article: one anchored section per second-level heading, its markdown with tables, code and diagrams. */
 const DocBody = (props: RegionProps) => (
     <Stack gap="region">
-        {props.view.sections.map((section) => (
+        {props.isLoading ? (
+            <Stack gap="row">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
+                    <Text key={line} as="p" isLoading>
+                        {"x".repeat(72)}
+                    </Text>
+                ))}
+            </Stack>
+        ) : null}
+        {(props.isLoading ? [] : props.view.sections).map((section) => (
             <Section
                 key={section.id}
                 id={section.id}
-                title={section.title}
-                headingLevel={2}
+                {...(props.isLoading
+                    ? { ariaLabel: props.doc.props.labels.outlineTitle }
+                    : { title: section.title, headingLevel: 2 as const })}
                 isLoading={props.isLoading}
             >
-                <RichMarkdown source={section.markdown} labels={props.doc.props.common.markdown} />
+                <RichMarkdown
+                    source={section.markdown}
+                    labels={props.doc.props.common.markdown}
+                    isLoading={props.isLoading}
+                />
             </Section>
         ))}
     </Stack>
 )
 
-/** Draws one article of part 3: long markdown in anchored sections with its diagrams, and the outline beside it. */
+/** One article of the list as a row; the one on screen is marked. */
+const navRowOf = (doc: HarnessDocNavItem): ListRowData => ({
+    id: doc.id,
+    title: doc.title,
+    href: doc.href,
+    ...(doc.isCurrent ? { state: "informative" as const } : {}),
+})
+
+/**
+ * Draws one article of part 3 as three panes of one read: the list of articles, the long markdown in anchored sections with its
+ * diagrams, and the outline of this article. One SlotView feeds the body and the aside, so a failure draws one notice.
+ */
 export const HarnessDocBase = (props: HarnessDocBaseProps) => (
-    <Page chrome="panes" layout="workspace" header={props.props.header}>
-        <PaneGrid
-            label={props.props.labels.outlineTitle}
-            areas={{ base: ["aside", "main"], wide: ["main aside"] }}
-            columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-            rows={{ base: ["auto", "fill"], wide: ["fill"] }}
-        >
-            <Pane area="main" scroll label={props.props.labels.outlineTitle}>
-                <PaneSection>
-                    <SlotView
-                        slot={props.props.slot}
-                        placeholder={props.props.placeholder}
-                        labels={props.props.slotLabels}
-                        onRetry={props.on.retry}
-                        render={(view, isLoading) => <DocBody view={view} doc={props} isLoading={isLoading} />}
-                    />
-                </PaneSection>
-            </Pane>
-            <Pane area="aside" surface scroll label={props.props.labels.outlineTitle}>
-                <PaneSection>
-                    <SlotView
-                        slot={props.props.slot}
-                        placeholder={props.props.placeholder}
-                        labels={props.props.slotLabels}
-                        onRetry={props.on.retry}
-                        render={(view, isLoading) => (
-                            <OutlineList
-                                label={props.props.labels.outlineTitle}
-                                emptyLabel={props.props.labels.outlineEmpty}
-                                entries={view.outline}
+    <SlotView
+        slot={props.props.slot}
+        placeholder={props.props.placeholder}
+        labels={props.props.slotLabels}
+        onRetry={props.on.retry}
+        render={(view, isLoading) => <DocBody view={view} doc={props} isLoading={isLoading} />}
+        aside={(view, isLoading) => (
+            <Section
+                kind="list"
+                title={props.props.labels.outlineTitle}
+                headingLevel={2}
+                isLoading={isLoading}
+                items={view.outline.map((entry, index) => ({
+                    id: entry.id,
+                    title: entry.label,
+                    leading: { position: index + 1 },
+                    href: entry.href,
+                }))}
+                empty={props.props.labels.outlineEmpty}
+            />
+        )}
+        asideFallback={null}
+        frame={({ body, aside, isLoading }) => (
+            <Page chrome="panes" layout="workspace" header={props.props.header}>
+                <PaneGrid
+                    label={props.props.labels.outlineTitle}
+                    areas={{ base: ["main", "aside", "nav"], wide: ["nav main aside"] }}
+                    columns={{ base: ["fill"], wide: ["standard", "fill", "standard"] }}
+                    rows={{ base: ["auto", "fill", "auto"], wide: ["fill"] }}
+                >
+                    <Pane area="nav" scroll label={props.props.labels.navTitle}>
+                        <PaneSection>
+                            <Section
+                                kind="list"
+                                title={props.props.labels.navTitle}
+                                headingLevel={2}
                                 isLoading={isLoading}
+                                items={props.props.docs.map(navRowOf)}
+                                empty={props.props.labels.navEmpty}
                             />
-                        )}
-                    />
-                </PaneSection>
-            </Pane>
-        </PaneGrid>
-    </Page>
+                        </PaneSection>
+                    </Pane>
+                    <Pane area="main" scroll label={props.props.labels.outlineTitle}>
+                        <PaneSection>{body}</PaneSection>
+                    </Pane>
+                    <Pane area="aside" scroll label={props.props.labels.outlineTitle}>
+                        <PaneSection>{aside}</PaneSection>
+                    </Pane>
+                </PaneGrid>
+            </Page>
+        )}
+    />
 )

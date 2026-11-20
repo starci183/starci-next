@@ -1,3 +1,5 @@
-{"findings":[],"hash":"ddf15f36ffaa438d77e396baf6d90eb20f2eb715f63306f2d64579a612dced03","path":"gallery/pages/profile/edit/explain.md","step":"prettier"}
-{"findings":[],"hash":"1a3b5d3d472d655dd7c27195b8ca198b0e6e9e2b51d44fe64350613c833f9d81","path":"gallery/pages/profile/new/explain.md","step":"prettier"}
-{"findings":[],"hash":"0728b88ffc07a33725cb430abdb7aeec9e96e5027edddad64d260157c5a5cb60","path":"gallery/pages/profile/overview/explain.md","step":"prettier"}
+{"findings":[],"hash":"48796a3cc6bce5d1a7a94568d9ef27dbc51de1e15579cfbb23d57b55035679b7","path":"gallery/pages/profile/edit-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"aac630fd160accf515aaa2af36330601fb2a64cd3786ea57dda91ad2d5fa7e99","path":"gallery/pages/profile/edit-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"a411b46a4c3f3e788d2aafb0bd31d55f619e957324de6fb5d42a49cd275e67d6","path":"gallery/pages/profile/edit/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"0e207f29ac7aabceead00cd50b4105535a05382e73938c03ffc58f02da988e22","path":"gallery/pages/profile/new/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"600afe76c34a7355ff2c0e1c79e0dde44e495e546cec42498449f4baa3c113fc","path":"gallery/pages/profile/overview/screen.yaml","step":"prettier"}

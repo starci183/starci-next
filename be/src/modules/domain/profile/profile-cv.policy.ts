@@ -4,6 +4,22 @@ export const CV_SLUG_MAX = 40
 /** The slug of a learner whose name has no letter or digit that survives ASCII folding. */
 export const CV_SLUG_FALLBACK = "learner"
 
+/** What a public CV calls a learner who chose no name and whose account name is an email: a neutral label, never the email. */
+export const CV_NEUTRAL_NAME = "Học viên StarCi"
+
+/** Whether a text is an email address (it has an at sign): such a text is never shown or put in a public link. */
+export const isEmailLike = (text: string): boolean => text.includes("@")
+
+/**
+ * The name a public CV shows: the name the learner chose, else the name of the account unless it is an email, else the neutral label.
+ * A public page never carries an email.
+ */
+export const publicNameOf = (displayName: string | null, accountName: string | null): string => {
+    if (displayName !== null && displayName.trim() !== "" && !isEmailLike(displayName)) return displayName
+    if (accountName !== null && accountName.trim() !== "" && !isEmailLike(accountName)) return accountName
+    return CV_NEUTRAL_NAME
+}
+
 /** The most suffixes tried before the slug gives up on a numeric suffix. */
 export const CV_SLUG_ATTEMPTS = 50
 

@@ -557,9 +557,9 @@
 {"findings":[],"hash":"ef22ad8a12f7649aa8ab033ebda0525b3da3f339c5ec5a89e08c060023294e24","path":"be/src/modules/domain/profile/profile-avatar.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"fcb19c2406cf4f3aa08b4594f3297c71501f8f41ba9566851a6ca74c38c557eb","path":"be/src/modules/domain/profile/profile-avatar.policy.ts","step":"prettier"}
 {"findings":[],"hash":"78d4c29193706b90916b5e413a588a80884d03762007954cc24e0ff1773fb23b","path":"be/src/modules/domain/profile/profile-cv.policy.spec.ts","step":"prettier"}
-{"findings":[],"hash":"b34bd9b1daa8ecd9c859ee26ac0616df3fbd56e222b336bd62f21e510db619d9","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"prettier"}
-{"findings":[],"hash":"a1935717561d0059455ce531190b0ba22cd16be3c180286dd345dbfce8f2c74d","path":"be/src/modules/domain/profile/profile-cv.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"3e3b6e0ddbd27e1dc9f16f024543e80fcd90d7b8512dc588e9ec47c919716979","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"prettier"}
+{"findings":[],"hash":"5f98f70818c19c5d1cbe590f1d2a0a4c59987c7c34f38bbdd80c442ad5619802","path":"be/src/modules/domain/profile/profile-cv.policy.ts","step":"prettier"}
+{"findings":[],"hash":"bd421a7e759446276240aec06bd3bf4c37a71af600444c3d1e184ae88c17c0d4","path":"be/src/modules/domain/profile/profile-cv.service.spec.ts","step":"prettier"}
+{"findings":[],"hash":"199b44bd8f9056224127cf78593716670669be2b4e1d34a529a027d3724517b4","path":"be/src/modules/domain/profile/profile-cv.service.ts","step":"prettier"}
 {"findings":[],"hash":"197a26e52e2e1a437a56ec3da546893e038b4f6f8e9a6673e13c0239da0b95e0","path":"be/src/modules/domain/profile/profile-store.port.ts","step":"prettier"}
 {"findings":[],"hash":"eea5e68d0ee15a1ed304eedbd5b71fdabc6e259be5493da2a70e191f11f4ce6f","path":"be/src/modules/domain/profile/profile.config.ts","step":"prettier"}
 {"findings":[],"hash":"26c70257afc97d6cb06d2eb245ae896ee0ba280e5c60384d1e4f12918675c488","path":"be/src/modules/domain/profile/profile.contracts.ts","step":"prettier"}

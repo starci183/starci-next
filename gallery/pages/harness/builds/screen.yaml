@@ -1,0 +1,158 @@
+schema: 1
+screen: harness/builds
+title: Harness, danh sách build
+route: /harness/build
+area: harness
+summary: 'Bộ lọc trạng thái là Tabs kind="filter" có số đếm (Tất cả, Đang luyện, Đã chứng minh, Chưa
+  bắt đầu), lọc ở trình duyệt. Route: /harness/build. Mã:
+  fe/apps/app/src/components/blocks/HarnessBuilds/, dữ liệu qua
+  fe/apps/app/src/hooks/harnessBuild/useHarnessBuildsScreen.ts.'
+code:
+  - features/pages/HarnessBuildsPage
+  - components/blocks/HarnessBuilds
+shots:
+  "390":
+    file: 390.png
+    sha256: c72a0f23d8fbf184b92bfdfead86b98ae98f62f089c64a621a5815d325461052
+  "1440":
+    file: 1440.png
+    sha256: 104978958bf301d982c9dda20e5499ec241697299aa8ca822a9ac57577963cde
+sections:
+  - id: s1
+    title: Băng đầu trang (Build, đường dẫn Harness / Build, bốn tab)
+    shows: tab Build đang chọn; tab là liên kết nên đổi phần không phải dựng lại cả khu.
+    why: FE-FUNCTION-2, page-header-left-sublabel-xs.md.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Danh sách các build
+    shows: 'mỗi build là một hàng phẳng: tên, một câu nói build làm ra gì, key AI cần có trong .env làm
+      dòng meta, hai chip ("3 / 5 chặng đã chứng minh" và "4 / 5 chặng đã chạy"). Cả hàng dẫn tới
+      trang build. Không thẻ vì build chỉ là một mục của danh sách.'
+    why: FE-ERROR-1 (loading, lỗi, rỗng nằm trong chính vùng danh sách), FE-UI-1.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bộ lọc trạng thái là Tabs kind="filter" có số đếm (Tất cả, Đang luyện, Đã chứng minh, Chưa
+      bắt đầu), lọc ở trình duyệt.
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:54:50.405Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 dải Tabs kind="filter" bị cắt ở "Đã chứng minh 0 ›" (tab Chưa bắt đầu ẩn sau mũi tên),
+            hàng 2 lệch lề so với hàng 1 (x=44 so với x=36) và số liệu "0 / 5 chặng đã chứng minh ·
+            0 / 5 chặng đã chạy" căn giữa lạ. Ở 1440 mô tả bị cắt "…xác ..." giữa chữ; cột
+            "ANTHROPIC_API_KEY / OP..." bị cắt.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Cột key hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." thay vì "Anthropic hoặc
+            OpenAI" như canvas.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Thiếu "Cần key" và trạng thái (Đang luyện / Đã chứng minh) từng bản build như canvas; hàng
+            chỉ có hai số "chặng đã chứng minh / đã chạy".
+    - n: 2
+      at: 2026-11-20T14:15:32.526Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Cột key vẫn hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." (cắt giữa chữ) thay vì
+            "Anthropic hoặc OpenAI" của canvas.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:59.101Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: 'Ảnh 1440 là trạng thái rỗng "Chưa có build nào." còn ảnh 390 là danh sách 2 build: hai ảnh
+            không cùng trạng thái, 1440 không thể hiện danh sách đã sửa (cột key, tab lọc).'
+        truth:
+          verdict: open
+          notes: Ảnh 1440 rỗng mâu thuẫn dữ liệu của 390 (2 build).
+    - n: 4
+      at: 2026-11-20T15:01:54.071Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

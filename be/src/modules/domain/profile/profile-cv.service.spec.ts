@@ -231,7 +231,7 @@ describe("ProfileCvService publicCv", () => {
         expect(JSON.stringify(cv)).not.toContain(LEARNER)
     })
 
-    it("shows the account name without a display name, and the slug without either, and no avatar without one", async () => {
+    it("shows the account name without a display name, the neutral label without either (never an email or the slug), and no avatar without one", async () => {
         const named = await build({ publicRow: { ...publicRow, display_name: null, avatar_key: null } })
         const bare = await build({ publicRow: { ...publicRow, display_name: null, account_name: null } })
 
@@ -240,7 +240,7 @@ describe("ProfileCvService publicCv", () => {
             avatarUrl: null,
         })
         await expect(bare.service.publicCv({ slug: "jane-doe", locale: "vi" })).resolves.toMatchObject({
-            displayName: "jane-doe",
+            displayName: "Học viên StarCi",
         })
         expect(named.profiles.avatarUrlOf).not.toHaveBeenCalled()
     })

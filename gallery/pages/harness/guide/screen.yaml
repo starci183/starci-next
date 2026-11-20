@@ -1,0 +1,150 @@
+schema: 1
+screen: harness/guide
+title: Harness, một hướng dẫn
+route: /harness/use/[tool]/[guide]
+area: harness
+summary: "Ba ngăn đọc một lần: danh sách hướng dẫn của công cụ, thân bài, mục lục kèm kết quả doctor; lỗi chỉ hiện một thông báo. Route: /harness/use/{tool}/{guide}. Mã: fe/apps/app/src/components/blocks/HarnessGuide/, dữ liệu qua fe/apps/app/src/hooks/harnessUse/useHarnessGuideScreen.ts. Markdown được cắt thành các mục theo tiêu đề cấp hai (sectio"
+code:
+  - features/pages/HarnessGuidePage
+  - components/blocks/HarnessGuide
+shots:
+  "390":
+    file: 390.png
+    sha256: 515120d8a5fae7904516edd9f652b6a62481a6ba47044f94856ef1670982e7c8
+  "1440":
+    file: 1440.png
+    sha256: 19749545c6a6c8034ff94a4e89f88f9ca7459b47a14df609d49cf243ab6f21de
+sections:
+  - id: s1
+    title: Băng đầu trang (tên bài, dòng phụ, số phút đọc)
+    shows: đường dẫn Harness / Xài / tên bài, tab Xài đang chọn.
+    why: FE-FUNCTION-2.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thân bài (markdown có nút sao chép)
+    shows: mỗi tiêu đề cấp hai là một mục có neo; mọi khối mã và lệnh có nút Sao chép. Nội dung là markdown thật của bài, không dựng lại bằng tay.
+    why: FE-FUNCTION-4, FE-ERROR-1 (vùng thân tự chờ và tự lỗi).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Mục lục "Trong bài này"
+    shows: cột bên phải là danh sách phẳng có số thứ tự, bấm nhảy tới mục; ở màn hẹp cột này đứng trên thân bài.
+    why: FE-FOLDER-2 (composite OutlineList dùng chung với trang bài giải thích).
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: Chuyển công cụ
+    shows: nhóm chip Claude Code và Codex đổi sang bài tương ứng của công cụ kia (cùng thứ tự trong danh sách) và nhớ lựa chọn cho học viên.
+    why: FE-STORAGE.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s5
+    title: Kết quả harness doctor
+    shows: bảng điều kiện của đúng công cụ của bài, ưu tiên những điều kiện bài này sửa; có lệnh sao chép, công tắc nhỏ lọc điều kiện chưa đạt và nút "Xem cách sửa".
+    why: FE-ERROR-1.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Ba ngăn đọc một lần: danh sách hướng dẫn của công cụ, thân bài, mục lục kèm kết quả doctor; lỗi chỉ hiện một thông báo."
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:22.327Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách "Trong bài này" (8 mục) nằm ngay dưới tab, đẩy thân bài xuống dưới màn hình đầu; người đọc phải cuộn qua mục lục mới tới nội dung.
+        layout:
+          verdict: open
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`", "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:44.943Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 danh sách "Hướng dẫn" (8 mục) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu.
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:11.255Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,0 +1,139 @@
+schema: 1
+screen: profile/edit-loading
+title: Sửa hồ sơ, đang tải
+route: /profile/edit
+area: profile
+summary: "Trạng thái của màn: Sửa hồ sơ, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
+  Grammar 0.50."
+code:
+  - features/pages/ProfileEditPage
+  - components/blocks/ProfileEdit
+shots:
+  "390":
+    file: 390.png
+    sha256: 264b57068728ce7caf9f38ca5640d13b9c9b71092e40df41ff31a4fca9278533
+  "1440":
+    file: 1440.png
+    sha256: b3b9abeac4872fad960abbfd45039db61a9be624ef77d632cb2fc4427f39895d
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:49.975Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: '"Hủy" khác "Huỷ" của canvas.'
+        states:
+          verdict: open
+          notes: Ô "Lộ trình mục tiêu" đã hiện chữ thật "Chọn lộ trình" và các dòng gợi ý trong lúc khác còn
+            skeleton; "Thay đổi chưa lưu" hiện khi đang tải.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:10.024Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Ô "Lộ trình mục tiêu" hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác còn
+            skeleton; "Thay đổi chưa lưu" hiện khi đang tải.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:37.072Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Ô "Lộ trình mục tiêu" vẫn hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác là
+            skeleton (1440 và 390).
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T15:02:28.671Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,0 +1,86 @@
+schema: 1
+screen: harness/hub-error
+title: Harness, tổng quan, lỗi tải
+route: /harness
+area: harness
+summary: "Trạng thái của màn: Harness, tổng quan, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/HarnessHubPage
+  - components/blocks/HarnessHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 24b115443624a42651f246df1ce24fda474fb0f4cb2281ab19142677bb31743f
+  "1440":
+    file: 1440.png
+    sha256: 098c48e94f48a56b2b83993197468982613d1e84340e5ff41901278eed7acf02
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:26.209Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." (1440 và 390); canvas harness/hub-error có tên mục không tải được, dòng giải thích ("Máy chủ chưa trả lời... Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.") và nút Thử lại. Khối "Công cụ bạn dùng" vẫn hiện bình thường dưới lỗi.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:15:46.586Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -1,4 +1,4 @@
-import { Page, Section, type ListRowData } from "@starci/grammar/common"
+import { Page, Section, Tabs, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { HarnessBuildItemView, HarnessBuildsScreen } from "@/hooks/harnessBuild"
 
@@ -36,6 +36,15 @@ export const HarnessBuildsBase = (props: HarnessBuildsBaseProps) => (
                     headingLevel={2}
                     count={builds.length}
                     isLoading={isLoading}
+                    filter={
+                        <Tabs
+                            kind="filter"
+                            label={props.props.labels.filterLabel}
+                            items={props.props.tabs.map((tab) => ({ id: tab.id, label: tab.label, count: tab.count }))}
+                            selectedKey={props.props.filter}
+                            onSelect={props.on.filter}
+                        />
+                    }
                     items={builds.map(rowOf)}
                     empty={props.props.labels.empty}
                 />

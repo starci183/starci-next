@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import {
+    Alert,
     Badge,
     Button,
     CopyField,
@@ -72,7 +73,6 @@ const CasesRegion = (props: RegionProps) => {
         >
             <Stack gap="row">
                 <Switch
-                    kind="compact"
                     label={labels.onlyOpenLabel}
                     description={labels.onlyOpenDescription}
                     isSelected={isOnlyOpen}
@@ -110,22 +110,22 @@ const GuideRegion = (props: RegionProps) => {
                 isLoading={props.isLoading}
             >
                 {selected.isLocked ? (
-                    <Stack gap="identity">
-                        <Text isStrong>{labels.lockedTitle}</Text>
-                        <Text size="sm" tone="muted">
-                            {labels.lockedText}
-                        </Text>
-                    </Stack>
+                    <Alert tone="informative" title={labels.lockedTitle} description={labels.lockedText} />
                 ) : (
                     <Stack gap="section">
                         {selected.steps.map((step, index) => (
                             <Section
                                 key={step.id}
-                                title={`${index + 1}. ${step.title}`}
-                                headingLevel={3}
+                                {...(props.isLoading
+                                    ? { ariaLabel: labels.stepsTitle }
+                                    : { title: `${index + 1}. ${step.title}`, headingLevel: 3 as const })}
                                 isLoading={props.isLoading}
                             >
-                                <RichMarkdown source={step.markdown} labels={common.markdown} />
+                                <RichMarkdown
+                                    source={step.markdown}
+                                    labels={common.markdown}
+                                    isLoading={props.isLoading}
+                                />
                             </Section>
                         ))}
                     </Stack>
@@ -148,7 +148,7 @@ const RepoRegion = (props: RegionProps) => {
             isLoading={props.isLoading}
         >
             <Stack gap="row">
-                <Text size="sm" tone="muted">
+                <Text tone="muted" isLoading={props.isLoading}>
                     {labels.keysLabel}: {props.view.keys}
                 </Text>
                 {bound.isBound ? (
@@ -206,17 +206,19 @@ const MainRegion = (props: RegionProps) => {
                 isLoading={props.isLoading}
             />
             <RepoRegion {...props} />
-            <Section
-                title={props.view.selected.title}
-                headingLevel={2}
-                fact={props.view.selected.outcome}
-                caption={props.view.selected.summary}
-                isLoading={props.isLoading}
-            >
-                <Text size="sm" tone="muted">
-                    {props.view.selected.position}
-                </Text>
-            </Section>
+            {props.isLoading ? null : (
+                <Section
+                    title={props.view.selected.title}
+                    headingLevel={2}
+                    fact={props.view.selected.outcome}
+                    caption={props.view.selected.summary}
+                    isLoading={props.isLoading}
+                >
+                    <Text tone="muted" isLoading={props.isLoading}>
+                        {props.view.selected.position}
+                    </Text>
+                </Section>
+            )}
             <CasesRegion {...props} />
             <GuideRegion {...props} />
         </Stack>
@@ -229,7 +231,20 @@ const MainRegion = (props: RegionProps) => {
  * copyable code blocks.
  */
 export const HarnessBuildBase = (props: HarnessBuildBaseProps) => (
-    <Page header={props.props.header}>
+    <Page
+        header={{
+            ...props.props.header,
+            ...(props.props.backLabel === ""
+                ? {}
+                : {
+                      actions: (
+                          <Button intent="neutral" href={props.props.backHref}>
+                              {props.props.backLabel}
+                          </Button>
+                      ),
+                  }),
+        }}
+    >
         <SlotView
             slot={props.props.slot}
             placeholder={props.props.placeholder}

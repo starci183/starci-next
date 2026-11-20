@@ -1,4 +1,4 @@
-import { Page, Section, type ListRowData } from "@starci/grammar/common"
+import { Page, Section, SearchField, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { HarnessDocItemView, HarnessDocsScreen } from "@/hooks/harnessDocs"
 
@@ -31,6 +31,18 @@ export const HarnessDocsBase = (props: HarnessDocsBaseProps) => (
                     headingLevel={2}
                     count={docs.length}
                     isLoading={isLoading}
+                    filter={
+                        <SearchField
+                            label={props.props.labels.filterLabel}
+                            isLabelHidden
+                            placeholder={props.props.labels.filterPlaceholder}
+                            value={props.props.query}
+                            onValueChange={props.on.search}
+                            onClear={() => props.on.search("")}
+                            clearLabel={props.props.labels.clearLabel}
+                            measure="toolbar"
+                        />
+                    }
                     items={docs.map(rowOf)}
                     empty={props.props.labels.empty}
                 />

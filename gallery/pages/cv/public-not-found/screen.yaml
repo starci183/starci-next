@@ -1,0 +1,99 @@
+schema: 1
+screen: cv/public-not-found
+title: CV công khai, không có hoặc riêng tư
+route: /cv/{slug}
+area: cv
+summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã: fe/apps/app/src/components/blocks/PublicCv/, app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx. Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là ảnh chu"
+code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
+shots:
+  "390":
+    file: 390.png
+    sha256: f35225e0b7918f100cf53d6d6d25fd75eefd570bfd3dc3624e2312fb20fb8569
+  "1440":
+    file: 1440.png
+    sha256: b07d7924baa99d400ef750c2ac68590d0d16e3941d0f94b198ac88b3c9df4824
+sections:
+  - id: s1
+    title: Không có CV ở địa chỉ này
+    shows: slug sai, slug sai mẫu và CV để riêng tư cho cùng một câu, để người ngoài không đoán được ai có CV; nhắc hỏi lại người gửi liên kết; hiện lại địa chỉ đã mở để người xem thấy chỗ gõ sai. Không có nút thử lại vì đây không phải lỗi mạng.
+    why: verified-experience.md điều 4 (chỉ CV mà học viên bật Công khai mới hiện) và điều 7.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Thanh trên công khai
+    shows: như cv/public.
+    why: route nằm trong nhóm (auth), không có phiên.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:45.356Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ảnh minh hoạ có nền vuông xám nhạt lộ ra trên nền trắng (1440 ~x640-800,y283-441; 390 ~x136-254,y272-392).
+        actionable:
+          verdict: open
+          notes: Canvas có ô địa chỉ "next.starci.vn/cv/ten-khong-co" với nút Sao chép để người dùng đối chiếu; code không có.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:07.368Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

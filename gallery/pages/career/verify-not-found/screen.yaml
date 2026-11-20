@@ -1,0 +1,86 @@
+schema: 1
+screen: career/verify-not-found
+title: Xác minh dòng CV, không tìm thấy
+route: /verify/[code]
+area: career
+summary: "Trạng thái của màn: Xác minh dòng CV, không tìm thấy. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
+code:
+  - features/pages/VerifyPage
+  - components/blocks/VerifyExperience
+shots:
+  "390":
+    file: 390.png
+    sha256: 51288575949b18985c26ad0bdec2f38c58d3d96a7e09ea7c3284bb84f6874e54
+  "1440":
+    file: 1440.png
+    sha256: b872c81f48f39371ec95c076c3b33662c6a762249a668b4f544761146d6aebe2
+sections:
+  - id: s1
+    title: Nội dung chính
+    shows: Nội dung của màn như canvas đã duyệt
+    why: Theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+audit:
+  builder:
+    agent: next-ux-career
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T13:00:37.811Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội dung dính mép trên y=32.
+        actionable:
+          verdict: open
+          notes: Thiếu nút "Về trang chủ StarCi" của canvas career/verify-not-found; người xem bị kẹt trên trang chết.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Canvas viết "Mã này chưa từng được StarCi xác minh. Kiểm tra lại liên kết trên CV của người gửi."; code viết "không khớp với kinh nghiệm nào đã được StarCi xác minh" (khác nghĩa, không chỉ cách tiếp theo).
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T14:16:04.452Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null
