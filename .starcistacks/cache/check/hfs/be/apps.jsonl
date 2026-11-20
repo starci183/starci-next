@@ -11,8 +11,8 @@
 {"findings":[],"hash":"2ecdc49c9cbaca4a06d30201998d95d9e5b8abb509ac54dc2ff640b695558fc9","path":"be/apps/cli/src/compose/domain.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"62c7aab52521175d521354f58b7492e0fdd1c3a2535e6650d9e4fcfefc125644","path":"be/apps/cli/src/compose/integrations.ts","step":"file-rules"}
 {"findings":[],"hash":"1cb3180c9750d85e0b62b7cca26831b74b0ed48a6ce5965a1804517b2e63c919","path":"be/apps/cli/src/compose/integrations.ts","step":"unit:recurring-observations"}
-{"data":{},"findings":[],"hash":"161d881d3c8465366e8b933b17feb5d888ed75895a474839f17c7fed46dcd109","path":"be/apps/cli/src/compose/platform.ts","step":"file-rules"}
-{"findings":[],"hash":"901ad81f46bdf5c4c1923a100bf40de936c61e6f6b32b65f082533454ee42582","path":"be/apps/cli/src/compose/platform.ts","step":"unit:recurring-observations"}
+{"data":{},"findings":[],"hash":"fa3f524022efe4b849453ebeb52a5d2497319ada0454ff2ca5958b97d1acbb56","path":"be/apps/cli/src/compose/platform.ts","step":"file-rules"}
+{"findings":[],"hash":"0a3ff3acd1610459f537c67694dbaa29927425c1f0b9969f4f99cd3c07472461","path":"be/apps/cli/src/compose/platform.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"5caf5252dc98290ed88392795dd7983189463e54088ca9c96e8d3cacbaf89586","path":"be/apps/cli/src/main.ts","step":"file-rules"}
 {"findings":[],"hash":"e7acee8db384df3587112fcf39daa0874728a98e5f86b564aa039f5250943816","path":"be/apps/cli/src/main.ts","step":"unit:recurring-observations"}
 {"data":{},"findings":[],"hash":"44aa3a5744ec0689b95e3f2b3a83be61759e3c0fdc503134ab95bcc54525b4f5","path":"be/apps/core/Dockerfile","step":"file-rules"}
