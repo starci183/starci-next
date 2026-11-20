@@ -22,7 +22,12 @@ export const noticeOf = (state: AuthState, t: Translator): AuthNoticeView | unde
     if (state.problem?.kind === "rateLimited")
         return { tone: "cautionary", title: t("notice.rateLimited"), description: undefined }
     if (state.notice === undefined) return undefined
-    const description = state.notice === "notConfirmed" ? t("notice.notConfirmedDetail") : undefined
+    const description =
+        state.notice === "notConfirmed"
+            ? t("notice.notConfirmedDetail")
+            : state.notice === "passwordReset"
+              ? t("notice.passwordResetDetail")
+              : undefined
     return { tone: NOTICE_TONES[state.notice], title: t(`notice.${state.notice}`), description }
 }
 

@@ -225,6 +225,8 @@ const openMode = async (p, name) => {
         .first()
         .click({ timeout: 4000 })
         .catch(() => {})
+    // The pointer leaves the card, so no hover look or tooltip of the control that took its place is shot.
+    await p.mouse.move(2, 2)
     await p.waitForTimeout(800)
 }
 // Signs a learner up through the core door (the account stays unconfirmed) and answers the address.
@@ -733,6 +735,8 @@ const SCREENS = [
     S("progress", "free", "/review/decks", { free: true, act: earnProgress }),
     // Dev now holds a written incident: list is the real answer; list-none is that answer with no incident written yet.
     S("incidents", "list", "/incidents"),
+    S("incidents", "list-loading", "/incidents", { hold: true, ops: /"operationName":"Incidents"/ }),
+    S("incidents", "list-error", "/incidents", { refuse: true, ops: /"operationName":"Incidents"/ }),
     S("incidents", "list-none", "/incidents", {
         reshape: {
             ops: /"operationName":"Incidents"/,
@@ -1022,6 +1026,7 @@ const norm = (href) => {
                     .first()
                     .click()
                     .catch(() => {})
+                await p.mouse.move(2, 2)
                 await p.waitForTimeout(800)
             }
             await p.waitForTimeout(Number(process.env.CAPTURE_SETTLE) || 2500)

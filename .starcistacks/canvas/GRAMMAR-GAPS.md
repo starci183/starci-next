@@ -17,6 +17,8 @@ Checked on 2026-11-17 against `D:/.claude/packages/grammar/src` (core/leaf, bran
 | 9 | **GradeButtons** | review/session | `ButtonGroup` + `Kbd` exist, but a button cannot carry a sublabel (the next interval, for example "4 ngày") under its text. | `ButtonGroup` items take `sublabel` and `shortcut`. One item can be `intent="commit"`. |
 | 10 | **Avatar upload ring** | profile/overview | `ProgressCircle` and `Avatar` both exist, but there is no way to compose a ring around an avatar. | An `Avatar` `progress?: number` that draws a ProgressCircle ring with an accessible label. |
 | 11 | **EntryFrame split without artwork** | auth/sign-in, auth/sign-up, auth/confirm, auth/reset (1440) | `EntryFrame` split gives the context pane an artwork that takes the free height (`flex: 1`) and puts the intro under it; it hides the identity on desktop. The approved auth board has no artwork: the logo and name sit at the top leading edge and the intro is centred in the block axis beside the card. The app puts the lockup at the head of the intro, so the whole intro sits at the foot of the pane. | A split variant `context="intro"` (no artwork): identity at the context pane top edge, intro centred in the block axis. |
+| 12 | **Input height at 390** | auth/* (390) | The auditor measured inputs about 42px tall at 390 while buttons are 40px (DNA-COMMON-CONTROLS-PHONE-40); at 1440 both are 40px. | One 40px control height for Input and Button at every width. |
+| 13 | **TextAction tap target** | auth/* (390): "Quên mật khẩu?", "Đăng ký", "Dùng email khác" | `TextAction` draws about 20-40px tall with no extended hit area, below the 44px coarse-pointer target. | An extended hit area (44 by 44) on TextAction under a coarse pointer, as Button has. |
 
 ## Not a Grammar gap
 

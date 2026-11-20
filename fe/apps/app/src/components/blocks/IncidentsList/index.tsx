@@ -34,6 +34,8 @@ export const IncidentsList = () => {
                     noneTitle: t("noneTitle"),
                     noneBody: t("noneBody"),
                     noneAction: t("noneAction"),
+                    crumbLearn: t("crumbLearn"),
+                    trailLabel: t("trailLabel"),
                 },
             }}
             on={{ retry: () => void read.mutate() }}

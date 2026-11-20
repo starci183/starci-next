@@ -27,7 +27,7 @@ const rowOf = (item: PracticeProblemItem): ListRowData => ({
     title: item.title,
     leading: { position: item.position },
     href: item.href,
-    badges: [{ label: item.status, tone: item.statusTone }],
+    badges: [{ label: item.status, tone: item.statusTone, isDot: true }],
     description: (
         <Cluster gap="inline" wrap align="center">
             <Badge isDot tone={item.difficultyTone}>
@@ -80,22 +80,26 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
                     </Text>
                 </Stack>
             </Section>
-            {nextPattern === null ? null : (
+            {nextPattern === null && !props.isLoading ? null : (
                 <Section
                     kind="list"
                     title={labels.nextTitle}
                     headingLevel={2}
                     isLoading={props.isLoading}
-                    items={[
-                        {
-                            id: "next-pattern",
-                            title: nextPattern.title,
-                            description: nextPattern.description,
-                            leading: { position: nextPattern.position },
-                            href: nextPattern.href,
-                        },
-                    ]}
-                    empty={nextPattern.title}
+                    items={
+                        nextPattern === null
+                            ? []
+                            : [
+                                  {
+                                      id: "next-pattern",
+                                      title: nextPattern.title,
+                                      description: nextPattern.description,
+                                      leading: { position: nextPattern.position },
+                                      href: nextPattern.href,
+                                  },
+                              ]
+                    }
+                    empty={nextPattern?.title ?? ""}
                 />
             )}
         </Stack>

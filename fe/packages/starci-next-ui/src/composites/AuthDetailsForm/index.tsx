@@ -84,7 +84,8 @@ type PasswordFieldProps = {
 /** The label row of the sign-in password field: the label and, beside it, the way to a reset. */
 const PasswordLabelRow = (props: { readonly labels: AuthDetailsLabels; readonly onForgot: () => void }) => (
     <Cluster gap="inline" justify="between">
-        <Text>{props.labels.password}</Text>
+        {/* The field label's weight (medium), since the Input's own label is hidden for this row. */}
+        <Text isStrong>{props.labels.password}</Text>
         <TextAction appearance="inline" onPress={props.onForgot}>
             {props.labels.forgotLink}
         </TextAction>

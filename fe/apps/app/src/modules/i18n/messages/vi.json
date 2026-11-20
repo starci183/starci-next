@@ -136,13 +136,14 @@
         "rateLimited": "Bạn thao tác quá nhanh, hãy thử lại sau.",
         "credentials": "Email hoặc mật khẩu chưa đúng",
         "signedOut": "Bạn đã đăng xuất.",
-        "passwordReset": "Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới.",
+        "passwordReset": "Đã đặt lại mật khẩu",
         "socialFailed": "Chưa đăng nhập được bằng Google. Hãy thử lại.",
         "unavailable": "Chưa thể thực hiện lúc này. Hãy thử lại sau.",
         "linkResent": "Đã gửi lại email.",
         "notConfirmed": "Email này chưa được xác nhận",
         "credentialsDetail": "Kiểm tra lại, hoặc đặt lại mật khẩu.",
-        "notConfirmedDetail": "Mở liên kết chúng tôi đã gửi, hoặc gửi lại."
+        "notConfirmedDetail": "Mở liên kết chúng tôi đã gửi, hoặc gửi lại.",
+        "passwordResetDetail": "Hãy đăng nhập bằng mật khẩu mới."
       },
       "error": {
         "email": "Hãy nhập địa chỉ email hợp lệ.",
@@ -597,7 +598,7 @@
         "listLabel": "Các bài trong pattern",
         "progressTitle": "Tiến độ pattern",
         "progressLabel": "Tiến độ pattern",
-        "progressText": "{accepted} trên {total} bài đã Accepted",
+        "progressText": "{accepted}/{total} bài Accepted",
         "nextTitle": "Pattern kế tiếp",
         "nextRow": "{accepted}/{total} bài Accepted"
       },
@@ -829,13 +830,15 @@
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
-      "factAuthored": "{count} sự cố đã mở",
+      "factAuthored": "{count} sự cố sẵn sàng",
       "noneTitle": "Chưa có sự cố nào để luyện",
       "noneBody": "Sự cố gắn với bài Essentials sẽ mở dần. Học bài trước, sự cố sẽ hiện ở đây khi sẵn sàng.",
       "noneAction": "Đi tới Essentials",
-      "open": "Đã mở",
+      "open": "Sẵn sàng",
       "cta": "Mở sự cố",
-      "meta": "{difficulty} · {minutes} phút"
+      "meta": "{difficulty} · {minutes} phút",
+      "crumbLearn": "Học",
+      "trailLabel": "Vị trí trang"
     },
     "essentials": {
       "catalog": {

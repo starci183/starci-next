@@ -49,6 +49,9 @@ export type IncidentsLabels = {
     readonly noneTitle: string
     readonly noneBody: string
     readonly noneAction: string
+    /** The first crumb of the trail (the learn home) and the name of the trail landmark. */
+    readonly crumbLearn: string
+    readonly trailLabel: string
 }
 
 /** Props for {@link IncidentsListBase}. */
@@ -100,7 +103,13 @@ const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: 
 const headerOf = (labels: IncidentsLabels, meta: string | undefined): PageHeaderContent => ({
     title: labels.title,
     description: `${labels.description} ${labels.runnerNote}`,
-    breadcrumbs: "root",
+    breadcrumbs: {
+        label: labels.trailLabel,
+        items: [
+            { id: "learn", label: labels.crumbLearn, href: "/" },
+            { id: "incidents", label: labels.title },
+        ],
+    },
     ...(meta === undefined ? {} : { meta }),
 })
 
