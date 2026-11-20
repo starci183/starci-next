@@ -93,23 +93,50 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Ô bằng chứng, probe, CI, AI đọc code, thang chấm, dòng CV"
+          notes: Ô bằng chứng, probe, CI, AI đọc code, thang chấm, dòng CV
         layout:
           verdict: open
-          notes: "Hai cột lệch hàng (CI GitHub y=515 so với Thang chấm của AI y=467) và ở 390 đường dẫn bị cắt (Vòng đời request và res): cho đường dẫn xuống dòng hoặc rút gọn tên giữa, xếp hai cột cùng nhịp trong components/blocks/ProjectConcept/component.tsx"
+          notes: "Hai cột lệch hàng (CI GitHub y=515 so với Thang chấm của AI y=467) và ở 390 đường dẫn bị cắt
+            (Vòng đời request và res): cho đường dẫn xuống dòng hoặc rút gọn tên giữa, xếp hai cột
+            cùng nhịp trong components/blocks/ProjectConcept/component.tsx"
         actionable:
           verdict: pass
-          notes: "Chạy probe (vô hiệu có lý do), Hỏi Claude qua MCP"
+          notes: Chạy probe (vô hiệu có lý do), Hỏi Claude qua MCP
         live:
           verdict: pass
-          notes: "Chip Chưa bắt đầu"
+          notes: Chip Chưa bắt đầu
         words:
           verdict: open
-          notes: "Lộ Thầy đang soạn bài Bản chất này (vi.json dòng 1498); câu Chưa có run CI nào được ký lẫn Anh-Việt, đổi run thành lượt chạy"
+          notes: Lộ Thầy đang soạn bài Bản chất này (vi.json dòng 1498); câu Chưa có run CI nào được ký lẫn
+            Anh-Việt, đổi run thành lượt chạy
         states:
           verdict: pass
-          notes: "Có trạng thái trống từng phần"
+          notes: Có trạng thái trống từng phần
         truth:
           verdict: pass
-          notes: "Các ô trống đúng với concept chưa có bằng chứng"
+          notes: Các ô trống đúng với concept chưa có bằng chứng
+    - n: 3
+      at: 2026-11-20T13:25:03.635Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

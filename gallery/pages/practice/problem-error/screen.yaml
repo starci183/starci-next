@@ -91,23 +91,48 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Chỉ còn đường dẫn Luyện code, tiêu đề lỗi, rồi thông báo"
+          notes: Chỉ còn đường dẫn Luyện code, tiêu đề lỗi, rồi thông báo
         layout:
           verdict: fixed
-          notes: "Tiêu đề là Không tải được đề, đường dẫn chỉ còn Luyện code; chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)"
+          notes: Tiêu đề là Không tải được đề, đường dẫn chỉ còn Luyện code; chiều cao Thử lại và minh hoạ lỗi
+            trang gửi lane shell (chấp nhận)
         actionable:
           verdict: pass
-          notes: "Thử lại có sẵn"
+          notes: Thử lại có sẵn
         live:
           verdict: pass
-          notes: "Biểu tượng và danger-soft"
+          notes: Biểu tượng và danger-soft
         words:
           verdict: fixed
-          notes: "Hết đặt câu lỗi vào chỗ tên bài trong đường dẫn"
+          notes: Hết đặt câu lỗi vào chỗ tên bài trong đường dẫn
         states:
           verdict: pass
-          notes: "Có lỗi và Thử lại, ghi chú bản nháp còn nguyên"
+          notes: Có lỗi và Thử lại, ghi chú bản nháp còn nguyên
         truth:
           verdict: pass
-          notes: "Lỗi do API chặn thật"
+          notes: Lỗi do API chặn thật
+    - n: 3
+      at: 2026-11-20T13:24:59.684Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

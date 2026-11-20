@@ -81,23 +81,47 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tiêu đề, nút chính Làm bài đầu tiên, danh sách bài, tiến độ"
+          notes: Tiêu đề, nút chính Làm bài đầu tiên, danh sách bài, tiến độ
         layout:
           verdict: pass
-          notes: "Bố cục sạch; chữ hoa mỗi chữ trong tên bài là dữ liệu bài (chấp nhận)"
+          notes: Bố cục sạch; chữ hoa mỗi chữ trong tên bài là dữ liệu bài (chấp nhận)
         actionable:
           verdict: pass
-          notes: "Hàng là link; nút chính duy nhất"
+          notes: Hàng là link; nút chính duy nhất
         live:
           verdict: pass
-          notes: "Huy hiệu độ khó và trạng thái từng bài"
+          notes: Huy hiệu độ khó và trạng thái từng bài
         words:
           verdict: pass
-          notes: "Thẻ kỹ thuật tiếng Anh và Accepted là từ vựng sản phẩm/dữ liệu (chấp nhận)"
+          notes: Thẻ kỹ thuật tiếng Anh và Accepted là từ vựng sản phẩm/dữ liệu (chấp nhận)
         states:
           verdict: pass
-          notes: "Có shot loading và error"
+          notes: Có shot loading và error
         truth:
           verdict: pass
-          notes: "5 bài, 0/5, Chuỗi kế tiếp khớp seed"
+          notes: 5 bài, 0/5, Chuỗi kế tiếp khớp seed
+    - n: 3
+      at: 2026-11-20T13:24:43.214Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

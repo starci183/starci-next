@@ -82,23 +82,47 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Nút chính, ô tìm, tab lọc, danh sách; cột phụ xuống cuối ở 390"
+          notes: Nút chính, ô tìm, tab lọc, danh sách; cột phụ xuống cuối ở 390
         layout:
           verdict: pass
-          notes: "Cột số lệch 2px ở hàng 10+ do cột số đứng đầu của Grammar (chấp nhận, không thuộc lane này)"
+          notes: Cột số lệch 2px ở hàng 10+ do cột số đứng đầu của Grammar (chấp nhận, không thuộc lane này)
         actionable:
           verdict: pass
-          notes: "Hàng là link có chevron; một nút chính Bắt đầu với Mảng"
+          notes: Hàng là link có chevron; một nút chính Bắt đầu với Mảng
         live:
           verdict: pass
-          notes: "Thanh tiến độ từng pattern hiện rõ"
+          notes: Thanh tiến độ từng pattern hiện rõ
         words:
           verdict: pass
-          notes: "Accepted và pattern là từ vựng sản phẩm (chấp nhận)"
+          notes: Accepted và pattern là từ vựng sản phẩm (chấp nhận)
         states:
           verdict: pass
-          notes: "Có shot loading, error và no-match riêng"
+          notes: Có shot loading, error và no-match riêng
         truth:
           verdict: pass
-          notes: "20 pattern, 96 bài, 0 Accepted khớp học viên mới"
+          notes: 20 pattern, 96 bài, 0 Accepted khớp học viên mới
+    - n: 3
+      at: 2026-11-20T13:24:36.198Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

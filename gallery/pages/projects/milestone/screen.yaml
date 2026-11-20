@@ -83,23 +83,54 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tên milestone, bảng concept, lần chạy, cách chứng minh"
+          notes: Tên milestone, bảng concept, lần chạy, cách chứng minh
         layout:
           verdict: open
-          notes: "Ô Bằng chứng xếp test, e2e, probe thành cột dọc làm mỗi hàng cao khoảng 100px; ở 390 hai cột Bằng chứng và Học ở biến mất và tên concept bị cắt (Hợp đồng lỗi nhất quán, không lộ stack l). Xếp chip ngang và cho tên xuống dòng trong components/blocks/ProjectMilestone/component.tsx. Bảng tràn 12px là DataTable Grammar (chấp nhận)"
+          notes: Ô Bằng chứng xếp test, e2e, probe thành cột dọc làm mỗi hàng cao khoảng 100px; ở 390 hai cột
+            Bằng chứng và Học ở biến mất và tên concept bị cắt (Hợp đồng lỗi nhất quán, không lộ
+            stack l). Xếp chip ngang và cho tên xuống dòng trong
+            components/blocks/ProjectMilestone/component.tsx. Bảng tràn 12px là DataTable Grammar
+            (chấp nhận)
         actionable:
           verdict: open
-          notes: "Hàng concept không có chevron hay link; cột Học ở chỉ ghi Chưa có bài. Làm hàng thành link tới trang concept trong ProjectMilestone/component.tsx"
+          notes: Hàng concept không có chevron hay link; cột Học ở chỉ ghi Chưa có bài. Làm hàng thành link
+            tới trang concept trong ProjectMilestone/component.tsx
         live:
           verdict: pass
-          notes: "Chip Đang làm và Chưa bắt đầu"
+          notes: Chip Đang làm và Chưa bắt đầu
         words:
           verdict: open
-          notes: "Mỗi hàng lộ câu Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone (modules/i18n/messages/vi.json dòng 1498, chữ Bản chất là tên bài đúng ra phải là tên phần học hoặc bỏ câu giữ chỗ); relay, OIDC là từ vựng kỹ thuật (chấp nhận)"
+          notes: Mỗi hàng lộ câu Thầy đang soạn bài Bản chất này, concept này chưa tính vào milestone
+            (modules/i18n/messages/vi.json dòng 1498, chữ Bản chất là tên bài đúng ra phải là tên
+            phần học hoặc bỏ câu giữ chỗ); relay, OIDC là từ vựng kỹ thuật (chấp nhận)
         states:
           verdict: pass
-          notes: "Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn"
+          notes: Lần chạy bằng chứng có trạng thái trống kèm hướng dẫn
         truth:
           verdict: pass
-          notes: "Số 0/4 khớp seed"
+          notes: Số 0/4 khớp seed
+    - n: 3
+      at: 2026-11-20T13:25:09.732Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

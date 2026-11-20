@@ -72,23 +72,52 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Giá trị, ví dụ, Premium mở gì; một nút chính"
+          notes: Giá trị, ví dụ, Premium mở gì; một nút chính
         layout:
           verdict: open
-          notes: "Bước 1 Mang repo của bạn vào mô tả bằng câu ghi chú sai chỗ (Không có dự án mẫu: dự án nào cũng là code…); ở 390 mô tả bước và mô tả Premium bị cắt bằng dấu ba chấm; phụ đề cạnh nút làm đoạn mô tả bó 6 dòng. Sửa chuỗi trong vi.json và cho nút xuống dưới phụ đề ở 390 (components/blocks/ProjectsPitch/component.tsx)"
+          notes: "Bước 1 Mang repo của bạn vào mô tả bằng câu ghi chú sai chỗ (Không có dự án mẫu: dự án nào
+            cũng là code…); ở 390 mô tả bước và mô tả Premium bị cắt bằng dấu ba chấm; phụ đề cạnh
+            nút làm đoạn mô tả bó 6 dòng. Sửa chuỗi trong vi.json và cho nút xuống dưới phụ đề ở 390
+            (components/blocks/ProjectsPitch/component.tsx)"
         actionable:
           verdict: pass
-          notes: "Nút chính duy nhất Đăng ký Premium; khoá ở sidebar"
+          notes: Nút chính duy nhất Đăng ký Premium; khoá ở sidebar
         live:
           verdict: pass
-          notes: "Chip Đã chứng minh, Đang luyện, Chưa bắt đầu dùng màu soft"
+          notes: Chip Đã chứng minh, Đang luyện, Chưa bắt đầu dùng màu soft
         words:
           verdict: open
-          notes: "Lộ concept Bản chất trong mô tả (Mỗi concept Bản chất cần đủ ô bằng chứng) và Dự án nằm trong gói Premium lặp lại; Idempotency, Transactional outbox, CI run #41 là dữ liệu mẫu/từ vựng kỹ thuật (chấp nhận)"
+          notes: "Lộ concept Bản chất trong mô tả (Mỗi concept Bản chất cần đủ ô bằng chứng) và Dự án nằm
+            trong gói Premium lặp lại; Idempotency, Transactional outbox, CI run #41 là dữ liệu
+            mẫu/từ vựng kỹ thuật (chấp nhận)"
         states:
           verdict: pass
-          notes: "Màn cho người chưa có Premium"
+          notes: Màn cho người chưa có Premium
         truth:
           verdict: pass
-          notes: "Dữ liệu ví dụ ghi rõ là minh hoạ"
+          notes: Dữ liệu ví dụ ghi rõ là minh hoạ
+    - n: 3
+      at: 2026-11-20T13:25:13.185Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

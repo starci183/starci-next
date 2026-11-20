@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f0da72f9fd36bedeaa8922c4d226e688083b4abec764cad7d554be24d49b88cb
+    sha256: ee7305f54e496ebe48de06a0631f91d424d58c5141fa273d3fbfd1efa69ac867
   "1440":
     file: 1440.png
-    sha256: 40bead2ce277e8eaaa3dc5a9d480325bcab218da01bdf1f1dcd29e18401758fb
+    sha256: 900e63d5a6d8eacbacf2b0f2fc3ffb069cd7e7adbafa374d57838a501b702479
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -69,23 +69,50 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Đường dẫn, tên, thông báo lỗi"
+          notes: Đường dẫn, tên, thông báo lỗi
         layout:
           verdict: pass
-          notes: "Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)"
+          notes: Chiều cao Thử lại và minh hoạ lỗi trang gửi lane shell (chấp nhận)
         actionable:
           verdict: pass
-          notes: "Thử lại có sẵn"
+          notes: Thử lại có sẵn
         live:
           verdict: pass
-          notes: "Biểu tượng và danger-soft"
+          notes: Biểu tượng và danger-soft
         words:
           verdict: open
-          notes: "Tiêu đề Pattern và phụ đề Không tải được lặp lại thông báo bên dưới, trong khi problem-error đã đổi tiêu đề thành Không tải được đề. Đổi tiêu đề thành Không tải được các bài và bỏ phụ đề, đường dẫn chỉ còn Luyện code, trong components/blocks/PracticePattern/component.tsx"
+          notes: Tiêu đề Pattern và phụ đề Không tải được lặp lại thông báo bên dưới, trong khi problem-error
+            đã đổi tiêu đề thành Không tải được đề. Đổi tiêu đề thành Không tải được các bài và bỏ
+            phụ đề, đường dẫn chỉ còn Luyện code, trong
+            components/blocks/PracticePattern/component.tsx
         states:
           verdict: pass
-          notes: "Có thông báo và Thử lại"
+          notes: Có thông báo và Thử lại
         truth:
           verdict: pass
-          notes: "Lỗi từ API bị từ chối thật"
+          notes: Lỗi từ API bị từ chối thật
+    - n: 3
+      at: 2026-11-20T13:24:41.077Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

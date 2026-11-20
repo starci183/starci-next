@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c5aec611b3e76678f30ba4f21728aaacdbbe09f0aa77c78aa48cad05a871d416
+    sha256: c7c85885a79e4ac38b3be828f6d1263ba0c2c0e6e2376913462c471bc24427fb
   "1440":
     file: 1440.png
-    sha256: fd1cfd64cc05d38ae7b133d970a159b1e8100d3485ca744c7c1c4f74cc222ee1
+    sha256: ee13b002085216b19e03b72d8fa63a1726119583ec6cc0352c5b3f441a97afa3
 sections:
   - id: s1
     title: Biểu mẫu
@@ -81,23 +81,50 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải"
+          notes: Tên, loại, repo, địa chỉ deploy, nút; khối giải thích bên phải
         layout:
           verdict: fixed
-          notes: "Đo lại: khoảng từ cuối mỗi ô tới nhãn kế tiếp đều khoảng 21px, kể cả sau nhóm radio; nhận định khoảng cách không đều ở vòng 1 là sai, đã rút lại"
+          notes: "Đo lại: khoảng từ cuối mỗi ô tới nhãn kế tiếp đều khoảng 21px, kể cả sau nhóm radio; nhận
+            định khoảng cách không đều ở vòng 1 là sai, đã rút lại"
         actionable:
           verdict: open
-          notes: "Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng (ví dụ owner/repo); chỉ ô địa chỉ có chú thích. Thêm placeholder trong components/blocks/ProjectNew/component.tsx và nói lý do Tạo dự án đang vô hiệu"
+          notes: Ô Tên dự án và Repo GitHub không có chữ gợi ý định dạng (ví dụ owner/repo); chỉ ô địa chỉ có
+            chú thích. Thêm placeholder trong components/blocks/ProjectNew/component.tsx và nói lý
+            do Tạo dự án đang vô hiệu
         live:
           verdict: pass
-          notes: "Chưa có tác vụ chạy; khối lệnh mô phỏng"
+          notes: Chưa có tác vụ chạy; khối lệnh mô phỏng
         words:
           verdict: pass
-          notes: "deploy, probe, repo, test là từ vựng sản phẩm; Huỷ giữ theo bộ chữ hiện có"
+          notes: deploy, probe, repo, test là từ vựng sản phẩm; Huỷ giữ theo bộ chữ hiện có
         states:
           verdict: pass
-          notes: "Nút vô hiệu khi thiếu trường; lỗi từng trường"
+          notes: Nút vô hiệu khi thiếu trường; lỗi từng trường
         truth:
           verdict: pass
-          notes: "Lệnh mẫu ghi rõ do học viên chạy"
+          notes: Lệnh mẫu ghi rõ do học viên chạy
+    - n: 3
+      at: 2026-11-20T13:25:10.894Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

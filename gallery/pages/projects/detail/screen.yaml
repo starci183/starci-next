@@ -96,23 +96,51 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy"
+          notes: Tên, milestone, lần chạy, kinh nghiệm, địa chỉ; cột phải CI và máy
         layout:
           verdict: open
-          notes: "Xem kinh nghiệm → là chữ đen kèm mũi tên chữ, khác kiểu link/nút nơi khác trên trang (Kho mã dùng link tím có biểu tượng); dùng cùng một kiểu link trong components/blocks/ProjectDetail/component.tsx. Nút Lưu địa chỉ, Kết nối máy đo lại cao 38-40px: rút lại ý kiến nút 32px. Bảng lần chạy tràn 12px là DataTable Grammar (chấp nhận)"
+          notes: "Xem kinh nghiệm → là chữ đen kèm mũi tên chữ, khác kiểu link/nút nơi khác trên trang (Kho mã
+            dùng link tím có biểu tượng); dùng cùng một kiểu link trong
+            components/blocks/ProjectDetail/component.tsx. Nút Lưu địa chỉ, Kết nối máy đo lại cao
+            38-40px: rút lại ý kiến nút 32px. Bảng lần chạy tràn 12px là DataTable Grammar (chấp
+            nhận)"
         actionable:
           verdict: pass
-          notes: "Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI"
+          notes: Cập nhật kết quả từ máy, Lưu địa chỉ, Chạy kiểm tra, Kết nối máy, Đổi bí mật CI
         live:
           verdict: pass
-          notes: "Chip trạng thái có chấm"
+          notes: Chip trạng thái có chấm
         words:
           verdict: pass
-          notes: "Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm (chấp nhận)"
+          notes: Test unit và integration, probe, Action, OIDC là từ vựng kỹ thuật sản phẩm (chấp nhận)
         states:
           verdict: pass
-          notes: "Có trạng thái trống cho lần chạy và kinh nghiệm"
+          notes: Có trạng thái trống cho lần chạy và kinh nghiệm
         truth:
           verdict: pass
-          notes: "Số 0/4, 0/2, 0/4 khớp seed; cây starci/ đã dùng FencedCodeBlock"
+          notes: Số 0/4, 0/2, 0/4 khớp seed; cây starci/ đã dùng FencedCodeBlock
+    - n: 3
+      at: 2026-11-20T13:25:05.664Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

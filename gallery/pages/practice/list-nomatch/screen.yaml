@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b478d3c391d5b65e8b5e108d0b72ef28c4e73c309578e2dae42e08bd7eb1f2f1
+    sha256: ca2973947766d466dde4b064719bdd0a164414d7a473e098a9f6128e5fb373f7
   "1440":
     file: 1440.png
-    sha256: f7a2304e055d1a325708288079855f81abe4a782ca118e22493dcb902b252d0f
+    sha256: 1d03c8e65bd5bebdeef0f2cdcadff43c85eb81cc1ad14918efa23765df2712cb
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
@@ -81,23 +81,52 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tìm kiếm, tab, rồi thông báo không khớp; đã chụp lại thật với từ khoá cây khoảng"
+          notes: Tìm kiếm, tab, rồi thông báo không khớp; đã chụp lại thật với từ khoá cây khoảng
         layout:
           verdict: open
-          notes: "Hai nút chính cùng lúc: Bắt đầu với Mảng ở đầu trang và Xoá bộ lọc màu tím (luật 10: một nút chính mỗi view); nút Xoá bộ lọc chỉ cao khoảng 32px, không phải 40px; thông báo là hai dòng chữ thường, không dùng EmptyNotice. Đổi Xoá bộ lọc thành nút trung tính 40px trong components/blocks/PracticeCatalog/component.tsx"
+          notes: "Hai nút chính cùng lúc: Bắt đầu với Mảng ở đầu trang và Xoá bộ lọc màu tím (luật 10: một nút
+            chính mỗi view); nút Xoá bộ lọc chỉ cao khoảng 32px, không phải 40px; thông báo là hai
+            dòng chữ thường, không dùng EmptyNotice. Đổi Xoá bộ lọc thành nút trung tính 40px trong
+            components/blocks/PracticeCatalog/component.tsx"
         actionable:
           verdict: pass
-          notes: "Có Xoá bộ lọc và nút x trong ô tìm (xem layout về kiểu nút)"
+          notes: Có Xoá bộ lọc và nút x trong ô tìm (xem layout về kiểu nút)
         live:
           verdict: pass
-          notes: "Không có tác vụ chạy nền"
+          notes: Không có tác vụ chạy nền
         words:
           verdict: pass
-          notes: "Pattern, Accepted là từ vựng sản phẩm; câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng"
+          notes: Pattern, Accepted là từ vựng sản phẩm; câu Thử bỏ một bộ lọc hoặc gõ tên khác rõ ràng
         states:
           verdict: open
-          notes: "Đếm sai trong lúc lọc: nhãn Các pattern ghi 0 nhưng tab Tất cả vẫn 20, Chưa bắt đầu 20 (đếm tab không theo từ khoá, mâu thuẫn). Đếm tab theo cùng bộ lọc hoặc ẩn đếm. File hooks/practice (usePracticeCatalogScreen) và PracticeCatalog/component.tsx"
+          notes: "Đếm sai trong lúc lọc: nhãn Các pattern ghi 0 nhưng tab Tất cả vẫn 20, Chưa bắt đầu 20 (đếm
+            tab không theo từ khoá, mâu thuẫn). Đếm tab theo cùng bộ lọc hoặc ẩn đếm. File
+            hooks/practice (usePracticeCatalogScreen) và PracticeCatalog/component.tsx"
         truth:
           verdict: open
-          notes: "Số đếm tab 20/0/20/0 không khớp với danh sách rỗng ngay bên dưới"
+          notes: Số đếm tab 20/0/20/0 không khớp với danh sách rỗng ngay bên dưới
+    - n: 3
+      at: 2026-11-20T13:24:39.726Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

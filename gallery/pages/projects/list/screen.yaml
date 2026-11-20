@@ -91,23 +91,47 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Tiêu đề, một nút chính, số liệu, danh sách"
+          notes: Tiêu đề, một nút chính, số liệu, danh sách
         layout:
           verdict: pass
-          notes: "Bảng tràn 12px là hành vi DataTable của Grammar (chấp nhận); ô số liệu là Stat của Grammar"
+          notes: Bảng tràn 12px là hành vi DataTable của Grammar (chấp nhận); ô số liệu là Stat của Grammar
         actionable:
           verdict: pass
-          notes: "Hàng là link, Tạo dự án là nút chính duy nhất"
+          notes: Hàng là link, Tạo dự án là nút chính duy nhất
         live:
           verdict: pass
-          notes: "Thanh tiến độ 0/10 và Chưa nối CI"
+          notes: Thanh tiến độ 0/10 và Chưa nối CI
         words:
           verdict: pass
-          notes: "Concept, Milestone, CI là từ vựng sản phẩm (chấp nhận)"
+          notes: Concept, Milestone, CI là từ vựng sản phẩm (chấp nhận)
         states:
           verdict: pass
-          notes: "Có ghi chú trống, loading và error theo SlotView"
+          notes: Có ghi chú trống, loading và error theo SlotView
         truth:
           verdict: pass
-          notes: "my-blog-api là dự án thật"
+          notes: my-blog-api là dự án thật
+    - n: 3
+      at: 2026-11-20T13:25:08.238Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
