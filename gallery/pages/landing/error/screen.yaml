@@ -43,6 +43,30 @@ audit:
       at: 2026-11-20T19:09:25.765Z
       lenses:
         order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Hình nền vuông nhạt: cần asset (đã chấp nhận)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T19:20:03.547Z
+      lenses:
+        order:
           verdict: open
           notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:

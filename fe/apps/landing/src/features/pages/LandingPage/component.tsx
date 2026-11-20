@@ -1,7 +1,13 @@
 import { Button, Heading, Page, Section, Stack, Text } from "@starci/grammar/common"
 
 /** One of the areas of the product as the landing names it. */
-export type LandingArea = { readonly id: string; readonly title: string; readonly description: string }
+export type LandingArea = {
+    readonly id: string
+    readonly title: string
+    readonly description: string
+    /** Where the area opens in the product app. */
+    readonly href: string
+}
 
 /** Props for {@link LandingPageBase}. */
 export type LandingPageBaseProps = {
@@ -43,6 +49,7 @@ export const LandingPageBase = (props: LandingPageBaseProps) => (
                     id: area.id,
                     title: area.title,
                     description: area.description,
+                    href: area.href,
                 }))}
             />
         </Stack>

@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 3bf22290b595a37ee360c6580f3b47e52f55204905b7198b1a0a4c2ca4eff26a
+    sha256: d83205a77e821bbe3cb823289ea983ff10d27f14ad62e5710b2adc707fc0da51
   "1440":
     file: 1440.png
-    sha256: cd92bd60eadd8e418b4bf74fb22c79aa713b50675501397a39d1f27d9c22a8bb
+    sha256: f2606d3e8eccdca7c5e7dbaa68191f20a6be2ee28436d0e8e1fbd8f6a7321123
 sections:
   - id: s1
     title: Thanh trên
@@ -42,9 +42,13 @@ sections:
     needsApi: []
   - id: s3
     title: Ba khu vực
-    shows: Danh sách phẳng Essentials, Projects, Harness, mỗi hàng một dòng mô tả.
+    shows: Danh sách phẳng Essentials, Projects, Harness, mỗi hàng một dòng mô tả và một mũi tên; bấm
+      hàng mở thẳng khu vực đó trong ứng dụng.
     why: Cho thấy sản phẩm có gì mà không dựng thẻ hay hình trang trí.
-    actions: []
+    actions:
+      - Mở Essentials
+      - Mở Projects
+      - Mở Harness
     states:
       loading: null
       empty: null
@@ -55,6 +59,15 @@ considered:
     chosen: true
     why: "Mã theo canvas 07-landing đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh
       hoạ trong thẻ."
+  - option: Thêm phần mới cho nửa dưới trang ở 1440
+    chosen: false
+    why: Bản vẽ 07-landing không có thêm phần nào; nửa dưới trống ở 1440 đúng như bản vẽ đã duyệt, không
+      dựng thêm phần ngoài bản vẽ.
+  - option: Hàng khu vực là liên kết sang khu vực trong ứng dụng, tên "vibe‑code" giữ một dòng bằng dấu
+      gạch nối không ngắt
+    chosen: true
+    why: Khách đọc được nội dung miễn phí không cần tài khoản; đăng nhập tại chỗ khi họ thao tác (quyết
+      định chủ 2026-11-21).
 audit:
   builder:
     agent: next-ux-shell
@@ -63,6 +76,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T19:09:23.674Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 tiêu đề lớn ngắt giữa từ ghép "vibe-/code" (dòng 1 kết thúc ở "vibe-"), khó đọc; nên
+            giữ "vibe-code" liền một dòng. Ở 1440 nửa dưới trang trống hơn 350px sau ba khu vực.
+        actionable:
+          verdict: open
+          notes: Ba hàng khu vực (Essentials, Projects, Harness) không có chevron và không bấm được, trong khi
+            nhắc tới ba nơi người xem muốn vào; chỉ có một nút "Mở ứng dụng". Nên cho mỗi hàng dẫn
+            tới khu vực hoặc ghi rõ là mô tả.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T19:20:01.190Z
       lenses:
         order:
           verdict: open
