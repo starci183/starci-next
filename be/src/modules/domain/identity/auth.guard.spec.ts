@@ -20,7 +20,7 @@ const principal: Principal = { id: "user-1", role: "authenticated" }
 const ACCOUNT = {
     id: "user-1",
     email: "ada@example.test",
-    meta: { full_name: "Ada", roles: ["reviewer"] },
+    meta: { full_name: "Ada", roles: ["REVIEWER"] },
     disabled: false,
 }
 const API_KEY: CredentialPrincipal = { kind: "api-key", subject: "key-1", workspaceId: "ws-1" }
@@ -95,7 +95,7 @@ describe("AuthGuard", () => {
         expect(request.principal).toEqual({ id: "user-1", email: "ada@example.test", role: "authenticated" })
         expect(request.identityPrincipal).toEqual({
             subject: "user-1",
-            roles: ["reviewer"],
+            roles: ["REVIEWER"],
             displayName: "Ada",
             email: "ada@example.test",
         })

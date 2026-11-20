@@ -9,7 +9,7 @@ interface RolesBody {
 }
 
 const ROLES = { query: "{ viewerRoles }" }
-const GRANT_ROLE = `UPDATE auth.users SET raw_user_meta_data = coalesce(raw_user_meta_data, '{}'::jsonb) || '{"roles":["reviewer"]}'::jsonb WHERE id = $1`
+const GRANT_ROLE = `UPDATE auth.users SET raw_user_meta_data = coalesce(raw_user_meta_data, '{}'::jsonb) || '{"roles":["REVIEWER"]}'::jsonb WHERE id = $1`
 const DISABLE = `UPDATE auth.users SET banned_until = now() + interval '1 day' WHERE id = $1`
 
 /**
@@ -52,7 +52,7 @@ describe("identity guards (integration)", () => {
         const after = await roles(signedIn.bearer)
 
         expect(before.body.data?.viewerRoles).toEqual([])
-        expect(after.body.data?.viewerRoles).toEqual(["reviewer"])
+        expect(after.body.data?.viewerRoles).toEqual(["REVIEWER"])
     })
 
     it("refuses a disabled account even with an access token that is still valid", async () => {
