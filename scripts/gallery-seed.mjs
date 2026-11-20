@@ -944,7 +944,7 @@ if (want("orders-active")) {
         }
     }
     if (paid === undefined) fail("orders-active: the order did not settle")
-    remember(learner, { "commerce/premium-result-active": `/premium/result?order=${paid.purchase_id}` })
+    remember(learner, { "commerce/premium-result-unlocked": `/premium/result?order=${paid.purchase_id}` })
     log(`${learner.email}: active order ${paid.order_code}`)
 }
 
