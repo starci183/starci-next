@@ -77,7 +77,7 @@
 {"findings":[],"hash":"d0ce77c7965392cbeb71a0e844cc58add1a470218e85c819a2b956834d8f1db2","path":"fe/apps/app/src/components/blocks/EssentialLesson/index.tsx","step":"prettier"}
 {"findings":[],"hash":"10ec0c2da1889e68562c9dc49a53195d1e1e5bc4f4af74e96451ec6ef586003a","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx","step":"prettier"}
 {"findings":[],"hash":"c5dadf92bdfa585da4f8047a984c78cd9591c86935d5a61bb4b6036305c75495","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/index.tsx","step":"prettier"}
-{"findings":[],"hash":"c0e35cdc120283acac355aff3268cf32c568e0428314f0546b4b947dc2279483","path":"fe/apps/app/src/components/blocks/ExperienceList/component.tsx","step":"prettier"}
+{"findings":[],"hash":"95eb99da324be523a5b54a998495b2df580385e41f26eea2f5d873535461d354","path":"fe/apps/app/src/components/blocks/ExperienceList/component.tsx","step":"prettier"}
 {"findings":[],"hash":"3fa9f4df507d08faf355943b7cfba03e1cb71d7c90295470a605b60ccbccaa05","path":"fe/apps/app/src/components/blocks/ExperienceList/index.tsx","step":"prettier"}
 {"findings":[],"hash":"3fabe6dc80a85d7a1b25ccff7574915c80aea12b0a84629ec61850a4b4396653","path":"fe/apps/app/src/components/blocks/HarnessBuild/component.tsx","step":"prettier"}
 {"findings":[],"hash":"4a41896fbc1d12c91677ab993cd5aeb3e1e9183cb090764c1bbbbcc70cfdde4b","path":"fe/apps/app/src/components/blocks/HarnessBuild/index.tsx","step":"prettier"}
