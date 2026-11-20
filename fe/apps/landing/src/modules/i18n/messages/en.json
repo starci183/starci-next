@@ -4,7 +4,6 @@
     "description": "Learn how systems really work with scenarios that run on your machine.",
     "shell": {
       "brand": "StarCi Next",
-      "logoAlt": "StarCi Next",
       "languageLabel": "Language",
       "localeShortVi": "VI",
       "localeNameVi": "Tiếng Việt",
@@ -17,7 +16,6 @@
       "lede": "AI can write code. StarCi Next teaches what AI will not do for you: why systems break, and how to spot when AI code is wrong.",
       "openApp": "Open the application",
       "areasTitle": "Three areas",
-      "footer": "Learn how systems really work, checked on real code.",
       "areas": {
         "essentials": {
           "title": "Essentials",
