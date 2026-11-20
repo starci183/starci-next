@@ -307,13 +307,9 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public": {
-      "status": "built",
+      "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
-      "shots": {
-        "390": "dae1636c64be296b4f1974829c56458e6d44f16dbe57d9edc8b544ec81a79f12",
-        "1440": "63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb"
-      }
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-error": {
       "status": "approved",

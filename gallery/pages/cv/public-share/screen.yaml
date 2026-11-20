@@ -61,6 +61,9 @@ considered:
     chosen: false
     why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
       có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+  - option: "Đặt hộp chia sẻ trong lề 1408 của trang"
+    chosen: false
+    why: "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không đặt lại vị trí của lớp phủ."
 audit:
   builder:
     agent: next-ux-career-2
@@ -72,23 +75,23 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng CV phải lên trước ở cả hai độ rộng.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới x≈1428 vượt gutter 1408; liên kết chia sẻ là localhost bị cắt giữa."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như canvas ("Minh Nguyễn · 4 dòng đã ký"); link localhost không phải next.starci.vn/cv/<slug> của canvas (môi trường chụp).'
   escalate: null
