@@ -17,7 +17,8 @@
     "essentials/topic",
     "essentials/lesson",
     "essentials/lesson-source",
-    "essentials/lesson-scenarios"
+    "essentials/lesson-scenarios",
+    "essentials/lesson-ladder"
   ],
   "Harness": [
     "harness/hub",

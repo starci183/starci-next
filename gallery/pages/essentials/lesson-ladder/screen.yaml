@@ -1,0 +1,77 @@
+schema: 1
+screen: essentials/lesson-ladder
+title: Bài Essentials · Tự áp dụng, mức Vừa đang luyện
+route: /essentials/[topic]/[lesson]?part=apply
+area: essentials
+summary: Phần Tự áp dụng của bài với học viên đã xanh mức Dễ (85/100) và đang luyện mức Vừa
+  (40/100); Khó và Siêu khó chưa mở.
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: 9e3f24a0d97ad4377da62b2abc005e67883c49230d4e4ddceb3905276c7dcf00
+  "1440":
+    file: 1440.png
+    sha256: 558ae94fb1cd8a50718f5ed51c687243c49e30b0c3abc312a99b6b284950e872
+sections:
+  - id: s1
+    title: Thang bốn bậc
+    shows: "Bốn bậc Dễ, Vừa, Khó, Siêu khó là danh sách phẳng: bậc đã mở là hàng bấm được (bậc đang xem
+      được tô một lần), bậc chưa mở là hàng thường không bấm được, tông mờ, lý do khóa là chữ meta."
+    why: ui/components/list-table.md (hàng px-4 py-3), ui/components/button.md (một nút chính)
+    actions:
+      - Chạy lại mức Vừa
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Chi tiết bậc đang xem
+    shows: Đề, terminal của lần chạy ẩn, thang điểm theo từng tiêu chí và chuỗi từ luyện trên máy tới
+      chứng minh bằng CI.
+    why: ui/components/data-views.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, bậc chưa mở không bấm
+      được"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:03:20.251Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
