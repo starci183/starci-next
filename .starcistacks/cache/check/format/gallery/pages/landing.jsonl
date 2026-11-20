@@ -1,3 +1,3 @@
 {"findings":[],"hash":"3d8854b7f2f71e6ba831d0ceb33ae140d61087917a42e659614dffd3827b2687","path":"gallery/pages/landing/error/screen.yaml","step":"prettier"}
-{"findings":[{"column":0,"line":0,"message":"gallery/pages/landing/home/screen.yaml is not formatted by prettier; run `npm run format`","path":"gallery/pages/landing/home/screen.yaml","rule":"HFS_FORMAT"}],"hash":"29754d1a93a75ad086a1e3c7a55cd595c1014d1c633a74481044ffd9fd317fa2","path":"gallery/pages/landing/home/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"8364884c3b46d949cde15d6f8a634c1e1b98ff6ec2deefd9409b2cdd5b9e0abd","path":"gallery/pages/landing/home/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"1c446781597b6129c3994f5ce117919f6c0bd78584cf55e18315615acd5c7921","path":"gallery/pages/landing/not-found/screen.yaml","step":"prettier"}
