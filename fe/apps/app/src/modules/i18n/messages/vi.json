@@ -838,7 +838,9 @@
       "cta": "Mở sự cố",
       "meta": "{difficulty} · {minutes} phút",
       "crumbLearn": "Học",
-      "trailLabel": "Vị trí trang"
+      "trailLabel": "Vị trí trang",
+      "errorTitle": "Không tải được danh sách sự cố.",
+      "errorText": "Thử lại sau vài giây."
     },
     "essentials": {
       "catalog": {

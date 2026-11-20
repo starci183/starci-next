@@ -838,7 +838,9 @@
       "cta": "Open incident",
       "meta": "{difficulty} · {minutes} min",
       "crumbLearn": "Learn",
-      "trailLabel": "Page location"
+      "trailLabel": "Page location",
+      "errorTitle": "The incident list did not load.",
+      "errorText": "Try again in a few seconds."
     },
     "essentials": {
       "catalog": {

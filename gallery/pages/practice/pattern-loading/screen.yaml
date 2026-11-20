@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 692faca27393e1f1492bc2a154a924de5d6fd42100df7ebd276620c8a460238f
+    sha256: aa83126ad42b9a387e1ebe575b238a5a38aa6fc9a558fa944286544deac78476
   "1440":
     file: 1440.png
-    sha256: 92e3c98cde80b3f69ffae78fc9e90c93a9826ef3cfeb3b20a60178b4789e8e37
+    sha256: 51d0b8aaa1f13c6eff4fae03b98d48a469eb8e93cd3e8cdaa7a5360a7758b268
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -32,9 +32,15 @@ considered:
   - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
     chosen: true
     why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Chấp nhận vòng tròn làm khối giữ chỗ chung của ListRow
+    chosen: false
+    why: Phần s1 hứa "khối xám cùng hình khối"; vòng tròn làm trang nhảy bố cục khi dữ liệu về.
+  - option: Bắt khối giữ chỗ khớp từng hàng
+    chosen: false
+    why: Số hàng và hình ô leading do Grammar Section/ListRow quyết; ghi là cần Grammar.
 audit:
   builder:
-    agent: next-ux-practice
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -73,6 +79,59 @@ audit:
         layout:
           verdict: pass
           notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T21:42:33.928Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Khung đang tải không cùng hình khối với trang thật: mỗi hàng có một vòng tròn xám 40px ở chỗ
+            hàng thật chỉ có số thứ tự nhỏ "1."; cột phải chỉ có khối Tiến độ pattern, thiếu khối
+            "Pattern kế tiếp". Lỗi vòng 1 (số 0 giả khi đang tải) đã hết.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T21:58:46.186Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: fixed
+          notes: '"Pattern kế tiếp" giờ có khối giữ chỗ khi đang tải. Còn lại cần Grammar: (1) ô leading của
+            hàng giữ chỗ là vòng tròn 40px, trong khi hàng thật chỉ có số nhỏ "1."; (2) "Pattern
+            kế tiếp" vẽ ba hàng giữ chỗ còn thật chỉ có một hàng, vì Section dùng LOADING_ROWS cố
+            định khi chưa có hàng.'
         actionable:
           verdict: pass
           notes: ""

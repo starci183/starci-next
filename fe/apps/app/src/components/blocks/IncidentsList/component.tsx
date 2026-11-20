@@ -20,7 +20,8 @@ export type IncidentsScreenView = {
 
 /** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const INCIDENTS_PLACEHOLDER: IncidentsScreenView = {
-    facts: ["", ""],
+    // Stand-in words with the length of the real facts, so the meta skeleton keeps the width of a settled line.
+    facts: ["0 bài học", "0 sự cố sẵn sàng"],
     groups: [
         {
             id: "placeholder",
