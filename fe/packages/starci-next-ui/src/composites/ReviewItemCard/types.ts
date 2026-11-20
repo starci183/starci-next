@@ -88,6 +88,7 @@ export type ReviewSessionLabels = {
     readonly rateQuestion: string
     readonly rateGroup: string
     readonly shortcuts: string
+    readonly spaceHint: string
     readonly saveFailedTitle: string
     readonly saveFailedBody: string
     readonly retry: string

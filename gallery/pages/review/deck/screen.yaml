@@ -1,0 +1,155 @@
+schema: 1
+screen: review/deck
+title: Một bộ thẻ, chưa thêm
+route: /review/decks/{id}
+area: review
+summary: "Route: `/review/decks/{id}`. Một bộ thẻ (trang mới): xem bộ có gì trước khi thêm và quản
+  lý sau khi thêm. "
+shots:
+  "390":
+    file: 390.png
+    sha256: c9364ea5c36bc188cbc93aa7ba147f996648ab67dac557989286f0e263b37550
+  "1440":
+    file: 1440.png
+    sha256: edd4eb93b24c58a80e244713dac12a767781145c5de7c6a2e7c03cc0c18a63af
+code:
+  - features/pages/ReviewDeckPage
+  - components/blocks/ReviewDeck
+sections:
+  - id: s1
+    title: Dải đầu trang
+    shows: Dải đầu trang
+    why: "Đường dẫn ba mục, tên bộ, dòng sự kiện và một nút chính: Thêm bộ thẻ này, Đang thêm… hoặc Ôn
+      bộ này."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Số liệu và thẻ mẫu
+    shows: Số liệu và thẻ mẫu
+    why: Mô tả, một hàng số liệu (đã thêm thì có Đang nhớ tốt và Cần ôn lại), ba thẻ mẫu chỉ có câu hỏi;
+      thẻ mẫu là vật thật nên có thẻ viền.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:45.292Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Ở 390 tiêu đề 2 dòng bị nút "Thêm bộ thẻ này" ép bên phải, meta wrap 3 dòng. Nhãn "Điền chỗ
+            trống" lặp ở mọi hàng xem trước (nhiễu); xem trước hiện câu hỏi nguyên văn không có chỗ
+            trống.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta hiện slug thô "backend-fullstack · ai-engineer · founder · fullstack mastery" (id tiếng
+            Anh).
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Header nói "20 thẻ" nhưng thống kê "Tổng thẻ 0 · Đã học 0" (mâu thuẫn); "Thẻ mới mỗi ngày ước
+            tính 10" không giải thích.
+    - n: 2
+      at: 2026-11-20T13:05:48.134Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Meta vẫn còn nhãn tiếng Anh "fullstack mastery" trong khi các nhãn khác đã Việt hoá (Backend,
+            Kỹ sư AI, Người sáng lập).
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:03.978Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:16.142Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -2,6 +2,7 @@ import {
     Badge,
     BarChart,
     Button,
+    Cluster,
     ChoiceChips,
     Dialog,
     EmptyNotice,
@@ -9,11 +10,12 @@ import {
     Link,
     NumberField,
     Page,
+    Progress,
     Section,
     Stack,
     Text,
-    TextAction,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { ReviewHubScreen, ReviewHubView } from "@/hooks/reviewHub"
@@ -87,7 +89,7 @@ const Recall = (props: PieceProps) => {
                     empty={labels.recallEmpty}
                     isLoading={props.isLoading}
                 />
-                <Text size="sm" tone="muted">
+                <Text size="xs" tone="muted">
                     {labels.recallNote}
                 </Text>
             </Stack>
@@ -113,7 +115,7 @@ const First = (props: PieceProps) => {
                         onValueChange={props.screen.on.quickGoal}
                         empty={labels.goalFirstTitle}
                     />
-                    <Text size="sm" tone="muted">
+                    <Text size="xs" tone="muted">
                         {labels.goalFirstNote}
                     </Text>
                 </Stack>
@@ -131,11 +133,23 @@ const Rail = (props: PieceProps) => {
             {view.state === "first" ? null : (
                 <Section title={labels.goalTitle} headingLevel={2} isLoading={props.isLoading}>
                     <Stack gap="row">
-                        <Text isStrong>{view.goalLine}</Text>
-                        <Text size="sm" tone="muted">
+                        <Cluster gap="inline" justify="between" align="center" wrap>
+                            <Text isStrong isLoading={props.isLoading}>
+                                {view.goalLine}
+                            </Text>
+                            <Button
+                                intent="neutral"
+                                size="sm"
+                                onPress={props.screen.on.openGoal}
+                                isDisabled={props.isLoading}
+                            >
+                                {labels.goalChange}
+                            </Button>
+                        </Cluster>
+                        <Progress label={labels.goalTitle} value={view.goalPercent} isLoading={props.isLoading} />
+                        <Text size="xs" tone="muted" isLoading={props.isLoading}>
                             {view.streakLine}
                         </Text>
-                        <TextAction onPress={props.screen.on.openGoal}>{labels.goalChange}</TextAction>
                     </Stack>
                 </Section>
             )}
@@ -214,57 +228,59 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
  */
 export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
     const { header } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        breadcrumbs: "root",
+        meta: header.meta,
+        ...(header.primary === null ? {} : { actions: <HeaderAction primary={header.primary} /> }),
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                breadcrumbs: "root",
-                meta: header.meta,
-                ...(header.primary === null ? {} : { actions: <HeaderAction primary={header.primary} /> }),
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.labels.errorText}
-                onRetry={props.on.retry}
-                render={(view, isLoading) => {
-                    const piece: PieceProps = { screen: props, view, isLoading }
-                    return (
-                        <Stack gap="region">
-                            {view.state === "first" ? null : (
-                                <Section
-                                    kind="figures"
-                                    ariaLabel={props.props.labels.figuresLabel}
-                                    items={view.figures.map((figure) => ({
-                                        id: figure.id,
-                                        term: figure.term,
-                                        value: figure.value,
-                                    }))}
-                                />
-                            )}
-                            <Grid
-                                kind="main-rail"
-                                primary={
-                                    view.state === "first" ? (
-                                        <First {...piece} />
-                                    ) : (
-                                        <Stack gap="region">
-                                            <Queue {...piece} />
-                                            <Recall {...piece} />
-                                        </Stack>
-                                    )
-                                }
-                                rail={<Rail {...piece} />}
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={props.props.labels.errorText}
+            onRetry={props.on.retry}
+            render={(view, isLoading) => {
+                const piece: PieceProps = { screen: props, view, isLoading }
+                return (
+                    <Stack gap="region">
+                        {view.state === "first" ? null : (
+                            <Section
+                                kind="figures"
+                                ariaLabel={props.props.labels.figuresLabel}
+                                isLoading={isLoading}
+                                items={view.figures.map((figure) => ({
+                                    id: figure.id,
+                                    term: figure.term,
+                                    value: figure.value,
+                                }))}
                             />
-                            <GoalDialog {...props} />
-                        </Stack>
-                    )
-                }}
-            />
-        </Page>
+                        )}
+                        <Grid
+                            kind="main-rail"
+                            primary={
+                                view.state === "first" ? (
+                                    <First {...piece} />
+                                ) : (
+                                    <Stack gap="region">
+                                        <Queue {...piece} />
+                                        <Recall {...piece} />
+                                    </Stack>
+                                )
+                            }
+                            rail={<Rail {...piece} />}
+                        />
+                        <GoalDialog {...props} />
+                    </Stack>
+                )
+            }}
+            frame={(parts) => (
+                <Page isLoading={parts.isLoading} header={pageHeader}>
+                    {parts.body}
+                </Page>
+            )}
+        />
     )
 }

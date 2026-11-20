@@ -1,0 +1,144 @@
+schema: 1
+screen: progress/overview-first-visit
+title: Tiến độ, lần đầu
+route: /progress
+area: progress
+summary: "Chưa có gì để đo: trạng thái cả trang có minh hoạ, rồi ba cách bắt đầu."
+shots:
+  "390":
+    file: 390.png
+    sha256: 2e2695082f7d65ae147252f9251274de9cfad725677d89e39e4406c20725231b
+  "1440":
+    file: 1440.png
+    sha256: 256e231611e2bc591e7d22224cdf3de5b77e98235be1d8a218420fc67fb2063b
+code:
+  - features/pages/ProgressPage
+  - components/blocks/ProgressOverview
+sections:
+  - id: s1
+    title: Vùng chính
+    shows: Vùng chính
+    why: "Chưa có gì để đo: trạng thái cả trang có minh hoạ, rồi ba cách bắt đầu."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:51.974Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khối trạng thái rỗng nằm lệch: tâm x~552 trong vùng nội dung tâm ~848 (1440), cách header
+            ~270px trống, trên 390 khoảng trống 300px phía trên; lề breadcrumb x=268 lệch x=288 các
+            trang khác."
+        actionable:
+          verdict: open
+          notes: Chỉ bước 1 có nút "Essentials"; bước 2 "Luyện code" và bước 3 "Ôn tập" không có nút/liên kết
+            để làm.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:56.999Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Khối trạng thái rỗng cách header ~300px (1440 y210-500; 390 y270-580) và không có minh hoạ
+            first-run (Grammar empty-state first-run: scope page + illustration). Đã sửa: căn giữa
+            ngang, lề x=288."
+        actionable:
+          verdict: open
+          notes: Bước 2 "Luyện code" và bước 3 "Ôn tập" vẫn không có nút/liên kết để làm.
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:44:12.248Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: "LƯU Ý CẢ KHU VỰC: các ô minh hoạ hiển thị thành hộp xám (progress/overview-first-visit,
+            incidents/list-none và các minh hoạ khác) vì trình duyệt chụp không tới host statics;
+            builder sửa origin statics rồi chụp lại."
+    - n: 4
+      at: 2026-11-20T13:52:22.994Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

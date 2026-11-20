@@ -2,30 +2,19 @@
 title: Duyệt một mục (chỉ thầy và người duyệt)
 route: /review-queue/[itemId]
 area: career
-reviewed: 2026-11-17
+reviewed: 2026-11-20
 ---
 
-Route: `/review-queue/[itemId]` (ảnh chụp: tài khoản học viên thường với một mã mục không có thật, nên thấy trạng thái bị từ chối; thầy mở một mục thật thấy bảng duyệt). Mã: `fe/apps/app/src/components/blocks/ReviewItem/component.tsx`. Trang trắng, không thẻ. Mã nguồn màn hình nay nằm trong nhóm tuyến `(pages)`; giao diện không đổi.
+Route: `/review-queue/[itemId]`. Mã: `fe/apps/app/src/components/blocks/ReviewItem/component.tsx`. Thầy và người duyệt thấy bảng duyệt của một mục; màn này cần vai đó và một mục thật nên chưa chụp được trên dev (tài khoản thường thấy trạng thái cấm, xem `career/review-item-forbidden`).
 
-## Liên kết "Về hàng chờ"
+## Dải đầu trang
 
-Vì sao: trang con của `career/review-queue`, đầu trang là liên kết quay lại, chữ foreground. CHƯA RÕ: liên kết đứng riêng, không có mũi tên và không nằm trong đường dẫn của `Page`; nên là `Page header.breadcrumbs`.
-Luật: `page-header-left-sublabel-xs.md`, `surface-layering` (liên kết điều hướng có mũi tên).
-Grammar: `Link variant="plain"` trong `Stack`; cần `Page header.breadcrumbs`.
+Vì sao: đường dẫn Duyệt kinh nghiệm / Một mục cần duyệt nằm trong `Page header`, thay cho liên kết "quay lại" đứng riêng trước đây.
+Luật: `page-header-left-sublabel-xs.md`.
+Grammar: `Page header={{ title, breadcrumbs }}`.
 
-## Thông báo "Chỉ thầy và người duyệt được mở trang này"
+## Bảng duyệt
 
-Vì sao: cùng trạng thái cấm của hàng chờ: ô icon hộp thư xám nhạt và một câu giữa trang. Với thầy, vùng này là bảng duyệt: dòng CV AI soạn, bằng chứng, ô ghi chú và các lệnh Ký xác nhận, Trả lại (một nút chính); chưa có ảnh vì chưa có tài khoản thầy trong dữ liệu chụp.
-Luật: `grammar-slot-interface`, `verified-experience-per-part.md` (thầy ký mới là Đã xác minh).
-Grammar: `SlotView`, `EmptyNotice`; bảng duyệt là `ReviewPanel` (`fe/packages/starci-next-ui/src/composites/ReviewPanel`).
-
-## Phản biện
-
-Vì sao: tự phản biện của lần chụp này; liệt kê điều còn sai trên màn hình, không sửa trong lần chụp (chủ duyệt rồi mới sửa).
-Luật: `surface-layering`, `theme-and-type`.
-Grammar: không phải vùng của màn hình; không có thành phần.
-
-- 1440: liên kết "Về hàng chờ" đứng lẻ ở đầu trang, chữ foreground không có mũi tên và không nằm trong đường dẫn của dải tiêu đề; trang không có tiêu đề hay dải đầu trang.
-- 1440: ô icon hộp thư và câu căn giữa trong khi liên kết căn trái ở x=288; hai trục lệch nhau.
-- 1440: mục không có thật và người không có quyền cùng một thông báo, không nói vì sao bị cấm.
-- 390: liên kết "Về hàng chờ" là chữ foreground thường, không gạch chân, không mũi tên nên không có dấu hiệu là liên kết; câu gần khít hai mép khi ngắt dòng; không có đầu trang.
+Vì sao: cùng bảng duyệt như hàng chờ: thẻ mục, ba danh sách (Bằng chứng, AI chấm theo tiêu chí, Câu hỏi bảo vệ), ô ghi chú với Xác minh (nút chính) và Trả lại, Thu hồi cho thầy trên mục đã xác minh, rồi Lịch sử.
+Luật: `verified-experience-per-part.md`.
+Grammar: `SurfaceCard`, `Section kind="list"`, `Textarea`, `Button`.

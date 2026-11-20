@@ -1,0 +1,145 @@
+schema: 1
+screen: review/session-answer
+title: Phiên ôn, đáp án và chấm
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
+  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+shots:
+  "390":
+    file: 390.png
+    sha256: 38b5b8eeacbd6e8f8b58217907342399945aa94df9610635d7aed48a40237129
+  "1440":
+    file: 1440.png
+    sha256: 17ca426bda8f2ecd0e03bd41aa5796cbb59c874ad1610143609bdcf4985c26ed
+code:
+  - features/pages/ReviewSessionPage
+  - components/blocks/ReviewSession
+sections:
+  - id: s1
+    title: Đáp án và chấm
+    shows: Đáp án và chấm
+    why: "Sau khi hiện đáp án: điều bạn nhớ, đáp án, bốn mức tự chấm."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:36.479Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Phần đáp án là khối chữ liền: nhãn "Đáp án / Trả lời thẳng / Cơ chế / Bẫy thường gặp / Đào
+            sâu tiếp" cỡ 12 xám, không khoảng cách hay phân cấp giữa các đoạn (1440 y375-770). Chữ
+            đậm "container" trong thân là weight ngoài 400/500. Nút Lại/Khó/Tốt/Dễ có nhãn khoảng
+            cách cỡ 12; "Tốt" tô tím sẵn khi chưa chọn.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Đoạn "Đào sâu tiếp" bắt đầu bằng chữ thường "nếu cùng một service...". Lẫn thuật ngữ Anh
+            "unit-test, mock, loose coupling".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:27.852Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Phần đáp án vẫn là khối chữ liền: nhãn "Đáp án / Trả lời thẳng / Cơ chế / Bẫy thường gặp /
+            Đào sâu tiếp" cỡ 12 xám dính vào đoạn trên, không khoảng cách giữa các đoạn (1440
+            y375-770; 390 y480-960). Chữ đậm "container" trong thân là weight ngoài 400/500.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Đoạn "Đào sâu tiếp" vẫn bắt đầu bằng chữ thường "nếu cùng một service..."; lẫn thuật ngữ Anh
+            "unit-test, mock, loose coupling".
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:51.852Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:52:02.923Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

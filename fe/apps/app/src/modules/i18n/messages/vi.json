@@ -255,6 +255,7 @@
         "pageTitle": "Phiên ôn tập",
         "root": "Ôn tập",
         "progress": "{position}/{total} thẻ · Còn khoảng {minutes} phút",
+        "progressDone": "{total}/{total} thẻ · Đã xong",
         "progressLabel": "Tiến độ phiên ôn",
         "sourceCard": "Bộ thẻ · {deck}",
         "sourceRetrieval": "Bài Essentials · {lesson}",
@@ -286,6 +287,7 @@
         "easy": "Dễ",
         "interval": "{days, plural, =0 {hôm nay} other {# ngày}}",
         "shortcuts": "Phím tắt: Space để hiện đáp án, 1 đến 4 để chấm",
+        "spaceHint": "Hoặc nhấn phím Space",
         "lessonLine": "Từ bài {lesson}",
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
@@ -307,6 +309,13 @@
         "emptyDecks": "Chọn bộ thẻ",
         "emptyBack": "Về Ôn tập"
       },
+      "trackNames": {
+        "backend-fullstack": "Backend",
+        "ai-engineer": "Kỹ sư AI",
+        "founder": "Người sáng lập",
+        "system-design-senior": "System design",
+        "fullstack mastery": "Fullstack thành thạo"
+      },
       "decks": {
         "pageTitle": "Bộ thẻ ôn tập",
         "emptyTitle": "Chưa có bộ thẻ nào.",
@@ -318,6 +327,8 @@
         "filterLabel": "Lọc theo việc đã thêm",
         "trackLabel": "Lọc theo lộ trình",
         "allTracks": "Mọi lộ trình",
+        "scrollPrevious": "Cuộn sang trái",
+        "scrollNext": "Cuộn sang phải",
         "add": "Thêm bộ thẻ",
         "added": "Đã thêm",
         "remove": "Bỏ khỏi hàng đợi",
@@ -332,16 +343,16 @@
         "meta": "{total} bộ · {added} đã thêm · Mỗi ngày tối đa {goal} thẻ theo mục tiêu của bạn",
         "cards": "{count} thẻ",
         "filters": {
-          "all": "Tất cả {count}",
-          "added": "Đã thêm {count}",
-          "new": "Chưa thêm {count}"
+          "all": "Tất cả",
+          "added": "Đã thêm",
+          "new": "Chưa thêm"
         }
       },
       "hub": {
         "pageTitle": "Ôn tập",
         "errorTitle": "Không tải được",
         "errorText": "Không tải được hàng ôn hôm nay. Thẻ của bạn vẫn an toàn. Thử lại sau vài giây.",
-        "metaFree": "Miễn phí",
+        "metaFree": "Miễn phí",
         "metaNoDecks": "Chưa có bộ thẻ nào",
         "metaDue": "{due} thẻ đến hạn · {overdue} quá hạn",
         "metaGoal": "Mục tiêu {daily} thẻ/ngày",
@@ -400,6 +411,7 @@
       "deck": {
         "pageTitle": "Bộ thẻ",
         "notFound": "Không tìm thấy bộ thẻ này.",
+        "backToDecks": "Về danh sách bộ thẻ",
         "errorText": "Bộ thẻ có thể đã đổi tên. Về danh sách để chọn lại.",
         "breadcrumbs": "Đường dẫn",
         "root": "Ôn tập",
@@ -417,7 +429,7 @@
         "review": "Ôn bộ này",
         "previewTitle": "Xem trước vài thẻ",
         "previewNote": "Chỉ hiện câu hỏi. Đáp án có khi bạn ôn.",
-        "removeTitle": "Bỏ bộ thẻ",
+        "removeTitle": "Bỏ khỏi hàng đợi",
         "removeText": "Thẻ của bộ này sẽ ngừng đến mỗi ngày. Lịch ôn đã có của bạn được giữ, thêm lại sau vẫn nối tiếp.",
         "remove": "Bỏ khỏi hàng đợi",
         "failed": "Chưa thêm hoặc bỏ được bộ thẻ. Thử lại sau ít giây."
@@ -727,12 +739,14 @@
     "incidents": {
       "pageTitle": "Sự cố",
       "title": "Sự cố",
-      "description": "Mỗi sự cố là một lỗi thật trong repo của thầy, viết như triệu chứng ở production. Bạn tìm lỗi, sửa cho các flow xanh, rồi nộp kèm giải thích.",
+      "description": "Mỗi sự cố là một lỗi thật trong kho mã của thầy, viết như triệu chứng ở môi trường thật. Bạn tìm lỗi, sửa cho các luồng chạy qua, rồi nộp kèm giải thích.",
       "runnerNote": "Chạy sự cố cần thiết bị đã kết nối — sắp có.",
       "empty": "Chưa có bài học nào để liệt kê sự cố.",
       "factLessons": "{count} bài học",
       "factAuthored": "{count} sự cố đã mở",
-      "soon": "Sắp có",
+      "noneTitle": "Chưa có sự cố nào để luyện",
+      "noneBody": "Sự cố gắn với bài Essentials sẽ mở dần. Học bài trước, sự cố sẽ hiện ở đây khi sẵn sàng.",
+      "noneAction": "Đi tới Essentials",
       "open": "Đã mở",
       "cta": "Mở sự cố",
       "meta": "{difficulty} · {minutes} phút"
@@ -1742,6 +1756,8 @@
       "queue": {
         "pageTitle": "Duyệt kinh nghiệm",
         "title": "Duyệt kinh nghiệm",
+        "itemTitle": "Một mục cần duyệt",
+        "backToProfile": "Về hồ sơ",
         "forbiddenTitle": "Chỉ thầy và người duyệt được mở trang này",
         "listLabel": "Hàng chờ duyệt",
         "count": "{count} mục",
@@ -1803,7 +1819,6 @@
         },
         "revokeLabel": "Lý do thu hồi (bắt buộc)",
         "revoke": "Thu hồi",
-        "back": "Về hàng chờ",
         "dueAt": "Hạn duyệt {date}",
         "preview": "Xem trước",
         "gradeTitle": "AI chấm",
@@ -2328,6 +2343,8 @@
       "title": "Tiến độ của bạn",
       "description": "Đọc từ Essentials, Harness, Projects, Luyện code và Ôn tập",
       "unavailable": "Chưa tải được phần này.",
+      "pageError": "Không tải được tiến độ",
+      "pageErrorText": "Máy chủ chưa trả lời. Tiến độ của bạn vẫn còn nguyên. Thử lại sau vài giây.",
       "ribbon": {
         "label": "Tóm tắt tiến độ",
         "proved": "Khái niệm đã chứng minh",
@@ -2344,7 +2361,6 @@
         "openerNone": "Chưa trả lời câu mở bài nào.",
         "unlocked": "Đã mở",
         "locked": "Cần Premium",
-        "upgrade": "Xem Premium",
         "part": {
           "essence": "Phần 1 · Bản chất",
           "source": "Phần 2 · Source",
@@ -2415,10 +2431,12 @@
         "doing": "Pattern đang làm",
         "done": "Pattern đã xong",
         "accepted": "{done} bài Accepted",
-        "empty": "Chưa có pattern nào."
+        "empty": "Chưa có pattern nào.",
+        "more": "Còn {count} pattern khác. Mở Luyện code để xem hết."
       },
       "firstVisit": {
         "title": "Chưa có gì để đo, và đó là bình thường",
+        "start": "Bắt đầu",
         "text": "Mọi con số ở đây là việc bạn làm thật. Học một bài, luyện một bài hoặc ôn một thẻ là có số đầu tiên.",
         "essentials": {
           "title": "Essentials",

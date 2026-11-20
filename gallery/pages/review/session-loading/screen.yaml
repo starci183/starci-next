@@ -1,0 +1,142 @@
+schema: 1
+screen: review/session-loading
+title: Phiên ôn, đang tải
+route: /review/session
+area: review
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
+  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+shots:
+  "390":
+    file: 390.png
+    sha256: bc1fba1b3ac12bbe3cbc8530b275fb0d6c2699f6467fecd9de29add1ca545ac3
+  "1440":
+    file: 1440.png
+    sha256: 2d63f29fd2116e985f7f41e511099db1865bd58bcb069dfffae582c589c86754
+code:
+  - features/pages/ReviewSessionPage
+  - components/blocks/ReviewSession
+sections:
+  - id: s1
+    title: Trạng thái
+    shows: Trạng thái
+    why: Đang tải bằng khung xám cùng hình dạng.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:31.272Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton. Nút "Hiện đáp án" và "Về Ôn tập" vẫn thật;
+            icon nhỏ ~24px lạ.
+        actionable:
+          verdict: open
+          notes: '"Hiện đáp án" bấm được trong lúc đang tải (nút nên khoá).'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
+            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+        states:
+          verdict: open
+          notes: Loading vẽ sai (chữ "xxxx" thật), nhãn "Điều bạn nhớ" hiện thật.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T13:05:22.390Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: open
+          notes: 'Nút "Hiện đáp án" vẫn bật được và nhãn "Điều bạn nhớ" hiện thật trong lúc đang tải (nút nên
+            khoá). Đã sửa: hết chữ "xxxx".'
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T13:43:45.413Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 4
+      at: 2026-11-20T13:51:59.276Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

@@ -55,11 +55,17 @@ export const useReviewSessionView = (): ReviewSessionViewState => {
     useDocumentTitle(words.t("session.pageTitle"))
     const position = Math.min(session.step + 1, session.total)
     const minutes = Math.max(1, Math.ceil((session.total - session.step) / 2))
+    const progressText =
+        session.total === 0
+            ? ""
+            : session.isDone
+              ? words.t("session.progressDone", { total: session.total })
+              : words.t("session.progress", { position, total: session.total, minutes })
     const reviewCount = session.data?.items.find((each) => each.itemId === session.itemId)?.reviewCount ?? 0
     return {
         slot: slotOf(session, card, words, reviewCount),
         slotLabels,
-        labels: sessionLabelsOf(words, words.t("session.progress", { position, total: session.total, minutes })),
+        labels: sessionLabelsOf(words, progressText),
         percent: session.total === 0 ? 0 : Math.round((Math.min(session.step, session.total) / session.total) * 100),
         setNote: card.setNote,
         pick: card.pick,

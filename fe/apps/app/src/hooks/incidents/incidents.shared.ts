@@ -4,8 +4,6 @@ import { lessonPath } from "@/modules/routes"
 
 /** The words the incident list is built with, resolved by the block. */
 export type IncidentWords = {
-    /** The badge of a lesson whose incident is not written yet. */
-    readonly soon: string
     /** The badge of a lesson whose incident is written. */
     readonly open: string
     /** The words of the action that opens an authored incident. */
@@ -16,11 +14,12 @@ export type IncidentWords = {
     readonly meta: (difficulty: string, minutes: number) => string
 }
 
-/** The incident rows of one topic keep the order the back end sent (authored first, then the catalog order). */
+/** Only the written incidents are listed (the API has no readiness filter yet), grouped by topic in the order the back end sent; a topic with none written is left out. */
 export const incidentGroupsOf = (rows: IncidentRows, words: IncidentWords): ReadonlyArray<IncidentGroupView> => {
-    const topics = [...new Set(rows.map((row) => row.topicId))]
+    const written = rows.filter((row) => row.incidentAvailable)
+    const topics = [...new Set(written.map((row) => row.topicId))]
     return topics.map((topicId) => {
-        const inTopic = rows.filter((row) => row.topicId === topicId)
+        const inTopic = written.filter((row) => row.topicId === topicId)
         return {
             id: topicId,
             label: inTopic[0]?.topicTitle ?? topicId,
@@ -28,10 +27,10 @@ export const incidentGroupsOf = (rows: IncidentRows, words: IncidentWords): Read
                 id: row.lessonId,
                 title: row.title,
                 description: words.meta(words.difficulty[row.difficulty] ?? row.difficulty, row.minutes),
-                badge: row.incidentAvailable ? words.open : words.soon,
-                badgeTone: row.incidentAvailable ? ("success" as const) : ("muted" as const),
-                href: row.incidentAvailable ? lessonPath(row.topicId, row.lessonId) : "",
-                cta: row.incidentAvailable ? words.cta : "",
+                badge: words.open,
+                badgeTone: "success" as const,
+                href: lessonPath(row.topicId, row.lessonId),
+                cta: words.cta,
             })),
         }
     })

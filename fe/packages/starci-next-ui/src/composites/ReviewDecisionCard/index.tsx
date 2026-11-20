@@ -53,7 +53,7 @@ const DecideAction = (props: ReviewActionProps) => (
                 {props.labels.giveBack}
             </Button>
         </Cluster>
-        <Text size="sm" tone="muted">
+        <Text size="xs" tone="muted">
             {props.labels.rules}
         </Text>
     </Stack>
