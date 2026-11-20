@@ -7,10 +7,10 @@ summary: "Chưa có sự cố nào được viết: trạng thái cả trang có
 shots:
   "390":
     file: 390.png
-    sha256: 3742e199025cc8b4ecdffa8022627259b9c874f9e5153ac6a42d19e3dafccad4
+    sha256: 93780901539dd7f1ca2837df8d9d860c419e1407369a95d836d93cd325e472c9
   "1440":
     file: 1440.png
-    sha256: 64ed7b9a9bd019ee9f53c70df3784023d361af912f6246bc1601b46510515ee6
+    sha256: b41cd25b75603bc4aad335106e8f3d497c6ad7b2161c2eccd3846ad2ef1eab8e
 code:
   - features/pages/IncidentsPage
   - components/blocks/IncidentsList
@@ -34,7 +34,7 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
 audit:
   builder:
-    agent: next-ux-review
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:

@@ -1,0 +1,92 @@
+schema: 1
+screen: incidents/list-error
+title: Sự cố, lỗi tải
+route: /incidents
+area: incidents
+summary: "**Concept: Sự cố, lỗi tải.** Đọc danh sách thất bại: khung báo lỗi và nút Thử lại."
+code:
+  - app/[locale]/(pages)/(app)/incidents/page.tsx
+  - features/pages/IncidentsPage/
+  - components/blocks/IncidentsList/
+shots:
+  "390":
+    file: 390.png
+    sha256: 425ff4388503b6f51b6859fcbb8f42cce9db426dc7a21497cbccdd7ab6601580
+  "1440":
+    file: 1440.png
+    sha256: 196624c235e590bd4b027aafada6922f14c1bc5e15e75148bf487bf722b300db
+sections:
+  - id: danh-sach
+    title: Danh sách
+    why: nói lỗi và cho thử lại
+    law: ""
+    grammar: '`Alert tone="negative" action`'
+considered:
+  - option: Giữ lời lỗi chung của SlotView
+    chosen: false
+    why: Canvas đã duyệt nói rõ cái gì không tải được; practice/pattern-error đã truyền lời riêng nên
+      app làm được.
+  - option: Giữ layout mở vì nút 32px
+    chosen: false
+    why: Cỡ nút do SlotView của Grammar quyết; ghi cần Grammar như ở practice/pattern-error.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T21:58:43.053Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Nút "Thử lại" cao 32px (1440: y 273–304; ở 390 rộng hết khung nhưng vẫn 32px, dưới vùng chạm
+            44px). Đây là nút của khung lỗi SlotView/Alert: cần Grammar, giống
+            practice/pattern-error.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Thông báo là câu chung "Không tải được phần này." và không có dòng hướng dẫn. Canvas ghi
+            "Không tải được danh sách sự cố. Thử lại sau vài giây." Sửa trong app bằng cách truyền
+            lời riêng của trang.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T22:04:30.824Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: 'Còn một điểm, cần Grammar: nút "Thử lại" của khung lỗi SlotView cao 32px, ở 390 dưới vùng
+            chạm 44px; app không chọn được cỡ (giống practice/pattern-error).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: fixed
+          notes: 'Thông báo giờ đúng chữ của canvas: "Không tải được danh sách sự cố." và "Thử lại sau vài
+            giây." ở 1440 và 390.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null
