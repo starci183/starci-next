@@ -182,12 +182,166 @@ const revokeAllTokens = async (p) => {
     await p.reload({ waitUntil: "load" })
     await p.waitForTimeout(2500)
 }
+// The auth board states play the doors through the product's own form; the emailed-link states read the link from the loopback mail sink (CAPTURE_MAIL).
+const CORE = process.env.CAPTURE_CORE || "http://localhost:3201"
+const MAIL = process.env.CAPTURE_MAIL || "http://localhost:3292"
+// A confirmed learner for the wrong-password shot: GALLERY_STATES/cred.json ({ email }), the one gallery-sign-in made.
+const knownEmail = () => {
+    try {
+        return JSON.parse(fs.readFileSync(learnerOf("cred"), "utf8")).email
+    } catch {
+        return "gallery-fresh@example.test"
+    }
+}
+// A new disposable address per shot: a link is used once, so every width signs up its own learner.
+const freshEmail = () => `gallery-auth-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}@example.test`
+const STAND_IN_PASSWORD = "gallery-" + Math.random().toString(36).slice(2, 12)
+const fillForm = async (p, values) => {
+    for (const [name, value] of Object.entries(values))
+        await p
+            .locator(`input[name="${name}"]`)
+            .first()
+            .fill(value, { timeout: 4000 })
+            .catch(() => {})
+}
+const acceptTerms = (p) =>
+    p
+        .getByRole("checkbox")
+        .first()
+        .check({ force: true, timeout: 3000 })
+        .catch(() => {})
+const submitForm = async (p) => {
+    await p
+        .locator('form button[type="submit"]')
+        .first()
+        .click({ timeout: 4000 })
+        .catch(() => {})
+    await p.waitForTimeout(2500)
+}
+const openMode = async (p, name) => {
+    await p.waitForTimeout(1500)
+    await p
+        .getByText(name, { exact: true })
+        .first()
+        .click({ timeout: 4000 })
+        .catch(() => {})
+    await p.waitForTimeout(800)
+}
+// Signs a learner up through the core door (the account stays unconfirmed) and answers the address.
+const signUpAtCore = async (email) => {
+    await fetch(CORE + "/auth/signup", {
+        method: "POST",
+        headers: { "content-type": "application/json", origin: process.env.CAPTURE_ORIGIN_AS || ENTRY },
+        body: JSON.stringify({ email, password: STAND_IN_PASSWORD, language: "vi" }),
+    })
+    return email
+}
+// The token of the newest link of a kind (confirm or reset) the mail sink holds for an address.
+const mailedToken = async (email, kind) => {
+    for (let attempt = 0; attempt < 30; attempt++) {
+        const list = await (await fetch(`${MAIL}/api/v1/search?query=${encodeURIComponent("to:" + email)}`)).json()
+        for (const message of list.messages ?? []) {
+            const full = await (await fetch(`${MAIL}/api/v1/message/${message.ID}`)).json()
+            const token = new RegExp(`/auth/${kind}\\?token=([A-Za-z0-9_-]+)`).exec(
+                `${full.HTML ?? ""} ${full.Text ?? ""}`,
+            )?.[1]
+            if (token) return token
+        }
+        await new Promise((done) => setTimeout(done, 500))
+    }
+    return undefined
+}
+const AUTH_STATES = [
+    S("auth", "sign-in-wrong-password", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            await p.waitForTimeout(1500)
+            await fillForm(p, { email: knownEmail(), password: STAND_IN_PASSWORD + "-wrong" })
+            await submitForm(p)
+        },
+    }),
+    S("auth", "sign-up-validation-error", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            await openMode(p, "Đăng ký")
+            await fillForm(p, { email: freshEmail(), password: "short", confirm: "shorter" })
+            await acceptTerms(p)
+            await submitForm(p)
+        },
+    }),
+    S("auth", "sent", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            await openMode(p, "Đăng ký")
+            await fillForm(p, { email: freshEmail(), password: STAND_IN_PASSWORD, confirm: STAND_IN_PASSWORD })
+            await acceptTerms(p)
+            await submitForm(p)
+        },
+    }),
+    S("auth", "sent-resent", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            await openMode(p, "Đăng ký")
+            await fillForm(p, { email: freshEmail(), password: STAND_IN_PASSWORD, confirm: STAND_IN_PASSWORD })
+            await acceptTerms(p)
+            await submitForm(p)
+            await tap(p, /^Gửi lại email$/)
+            await p.waitForTimeout(2500)
+        },
+    }),
+    S("auth", "sent-not-confirmed", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            const email = await signUpAtCore(freshEmail())
+            await p.waitForTimeout(1500)
+            await fillForm(p, { email, password: STAND_IN_PASSWORD })
+            await submitForm(p)
+        },
+    }),
+    S("auth", "confirm", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            const email = await signUpAtCore(freshEmail())
+            const token = await mailedToken(email, "confirm")
+            await p.goto(ENTRY + "/sign-in/confirm?token=" + (token ?? "no-mail"), { waitUntil: "load" })
+            await p.waitForTimeout(3000)
+        },
+    }),
+    S("auth", "forgot", "/sign-in", { guest: true, act: async (p) => openMode(p, "Quên mật khẩu?") }),
+    S("auth", "forgot-sent", "/sign-in", {
+        guest: true,
+        act: async (p) => {
+            await openMode(p, "Quên mật khẩu?")
+            // A new address per shot: the forgot door limits repeats per address, and it answers "sent" for any address.
+            await fillForm(p, { email: freshEmail() })
+            await submitForm(p)
+        },
+    }),
+    S("auth", "reset-error", "/sign-in/reset?token=gallery-capture-0000", {
+        guest: true,
+        act: async (p) => {
+            await p.waitForTimeout(1500)
+            await fillForm(p, { password: STAND_IN_PASSWORD, confirm: STAND_IN_PASSWORD + "x" })
+            await submitForm(p)
+        },
+    }),
+    S("auth", "reset-expired", "/sign-in/reset?token=gallery-capture-0000", {
+        guest: true,
+        act: async (p) => {
+            await p.waitForTimeout(1500)
+            await fillForm(p, { password: STAND_IN_PASSWORD, confirm: STAND_IN_PASSWORD })
+            await submitForm(p)
+        },
+    }),
+    S("auth", "forgot-sign-in-after-reset", "/sign-in?reset=1", { guest: true }),
+]
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
     // The emailed links of the auth doors: the page opens with the token in the query (a 16+ character stand-in, so the door answers the invalid-link state).
     S("auth", "confirm-expired", "/sign-in/confirm?token=gallery-capture-0000", { guest: true }),
     S("auth", "reset", "/sign-in/reset?token=gallery-capture-0000", { guest: true }),
+    ...AUTH_STATES,
     S("landing", "home", "/", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),

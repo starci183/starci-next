@@ -10,8 +10,9 @@ import { APP_ROUTES } from "@/modules/routes"
 type EntryLayoutProps = { readonly content: ReactNode }
 
 /**
- * The entry frame of the sign-in, confirm and reset pages, resolved on the server: on a desktop the intro of the product beside the
- * card, on a phone the brand lockup above it; the language switch sits at the top trailing edge and no app header is drawn.
+ * The entry frame of the sign-in, confirm and reset pages, resolved on the server: on a desktop the intro of the product (headed by
+ * the brand lockup) beside the card, on a phone the brand lockup above it; the language switch sits at the top trailing edge and no
+ * app header is drawn. The board has no artwork: the split frame has no variant without it yet (GRAMMAR-GAPS #11).
  */
 export const EntryLayout = async (props: EntryLayoutProps): Promise<ReactElement> => {
     const t = await getTranslations("app.auth.entry")
@@ -31,9 +32,10 @@ export const EntryLayout = async (props: EntryLayoutProps): Promise<ReactElement
             identity={lockup}
             tools={<LocaleSwitch />}
             footer={null}
-            artwork={lockup}
+            artwork={null}
             intro={
                 <Stack gap="section">
+                    {lockup}
                     <Heading level={2} scale="standard">
                         {t("headline")}
                     </Heading>

@@ -12,11 +12,24 @@ export type GetAuthConfirmHook = {
     readonly loading: boolean
 }
 
+/**
+ * The spend of each token this page load already started. A remount (React's dev double mount, a loading boundary that hands over)
+ * runs the fetcher again outside SWR's dedupe; the second call would find the token spent and turn a confirmed link into "invalid".
+ */
+const spent = new Map<string, Promise<{ readonly failure: AuthFailure | undefined }>>()
+
+/** The one spend of a token: the first call sends it, every later call answers the same promise. */
+const spendOnce = (token: string): Promise<{ readonly failure: AuthFailure | undefined }> => {
+    const running = spent.get(token) ?? sendEmailDoor("confirm", { token }).then((failure) => ({ failure }))
+    spent.set(token, running)
+    return running
+}
+
 /** Spends the emailed confirmation token once through the confirm door, wrapped in SWR (no retry, no revalidation: a token works once). */
 export const useGetAuthConfirmSwr = (token: string | undefined): GetAuthConfirmHook => {
     const { data, isLoading } = useSWR<{ readonly failure: AuthFailure | undefined }>(
         token === undefined || token === "" ? null : [GET_AUTH_CONFIRM_SWR_KEY, token],
-        async () => ({ failure: await sendEmailDoor("confirm", { token }) }),
+        () => spendOnce(token ?? ""),
         { revalidateOnFocus: false, revalidateOnReconnect: false, shouldRetryOnError: false, revalidateIfStale: false },
     )
     return { failure: data?.failure, loading: isLoading }
