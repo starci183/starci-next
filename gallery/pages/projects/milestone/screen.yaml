@@ -1,0 +1,76 @@
+schema: 1
+screen: projects/milestone
+title: Milestone, đang làm
+route: /projects/[projectId]/[milestoneId]
+area: projects
+summary: "Mục tiêu: xem concept nào của milestone đã chứng minh, vào trang bằng chứng."
+code:
+  - features/pages/ProjectMilestonePage
+  - components/blocks/ProjectMilestone
+shots:
+  "390":
+    file: 390.png
+    sha256: 5bbc67af01eb9ee7315c498d86ff528eb04d8c1f8484e604ef0415717fb98230
+  "1440":
+    file: 1440.png
+    sha256: ced90d520b170395d35f585484e543909055fb2f4a91dae9f07925c552a63d14
+sections:
+  - id: s1
+    title: Concept của milestone
+    shows: "bảng concept: tên và loại, các ô bằng chứng (test, e2e, probe, AI đọc code) có trạng thái,
+      trạng thái concept, bài học dạy nó; mỗi hàng mở trang bằng chứng."
+    why: trạng thái bằng chữ trong Badge, không chỉ bằng màu.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Lần chạy bằng chứng và cách chứng minh
+    shows: bảng các lần chạy gần đây, bốn bước chứng minh và nhắc CI có chữ ký.
+    why: danh sách phẳng; chỗ trống là một dòng chữ phẳng.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:07.367Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

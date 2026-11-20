@@ -1,0 +1,88 @@
+schema: 1
+screen: projects/concept
+title: Concept, cần chứng minh thêm
+route: /projects/[projectId]/[milestoneId]/[conceptId]
+area: projects
+summary: "Mục tiêu: xem bằng chứng của một concept và bổ sung."
+code:
+  - features/pages/ProjectConceptPage
+  - components/blocks/ProjectConcept
+  - starci-next-ui composite ConceptCodeRead
+shots:
+  "390":
+    file: 390.png
+    sha256: 46e23ec7fd5838ea1afcfe7d1f0a70e2826507e860f17b413d72a15a5eb38990
+  "1440":
+    file: 1440.png
+    sha256: a4981b3ea9c67134b9e4826fc38ea86c2352001439d1e05e384cd037e8d336d9
+sections:
+  - id: s1
+    title: Ô bằng chứng
+    shows: các ô test, e2e, probe, AI đọc code với trạng thái, lý do bị từ chối lần cuối, câu thầy hỏi
+      và bài học dạy concept.
+    why: trạng thái màu dùng cặp soft và soft-foreground.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Probe, CI, AI đọc code, thang chấm
+    shows: nhật ký probe dạng terminal, bảng mô tả run CI, hai biểu mẫu (chỉ code và endpoint; gửi đoạn
+      code cho thầy), thang chấm của AI.
+    why: nhãn nhóm trong biểu mẫu là tiêu đề mục, không in đậm.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s3
+    title: Dòng CV
+    shows: bản xem trước của dòng CV concept này sẽ sinh và lối hỏi Claude qua MCP; không số tự khai.
+    why: chữ trong chip là trạng thái, không thêm màu nhấn.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:03.035Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

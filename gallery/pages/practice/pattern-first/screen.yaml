@@ -1,0 +1,76 @@
+schema: 1
+screen: practice/pattern-first
+title: Pattern, lần đầu
+route: /practice/patterns/[patternId]
+area: practice
+summary: "Trạng thái của màn này: lần đầu. Mục tiêu: chọn bài trong một pattern."
+code:
+  - features/pages/PracticePatternPage
+  - components/blocks/PracticePattern
+shots:
+  "390":
+    file: 390.png
+    sha256: f9a0f453214b892b11450d55c6e7af411a04f3c5db209f1eec2996e350a1d224
+  "1440":
+    file: 1440.png
+    sha256: 96e138547c704d713ae2c556504bf3437e20b84c901e73aebe0c3a80133640ec
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Hai con trỏ"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo"; lần đầu "Làm bài đầu tiên".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Các bài trong pattern
+    shows: "vùng này phục vụ mục tiêu của trang: chọn bài trong một pattern."
+    why: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:45:56.466Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

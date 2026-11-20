@@ -1,35 +1,66 @@
 schema: 1
 screen: projects/paywall
-title: "Dự án, chưa có Premium"
-route: "/projects (không có Premium)"
+title: Dự án, chưa có Premium
+route: /projects (không có Premium)
 area: projects
-summary: "Mục tiêu: người chưa đăng ký hiểu Dự án chứng minh gì và đăng ký. Thao tác: không (đọc gói của người dùng)."
+summary: "Mục tiêu: người chưa đăng ký hiểu Dự án chứng minh gì và đăng ký."
 code:
-  - "features/layouts/ProjectsLayout"
-  - "components/blocks/ProjectsPitch"
+  - features/layouts/ProjectsLayout
+  - components/blocks/ProjectsPitch
 shots:
-  "1440":
-    file: 1440.png
-    sha256: bbb85c646bb30bb21a1942df432939f97355f63c67d5935e988cccf50a234da8
   "390":
     file: 390.png
-    sha256: 363f424bb3cb56b8327e2ae4561d03e03dada5881a8b3c8441f90397f6d553d4
+    sha256: cc433b4af5fa55ba07e161739fc67048652e0ebca662411e96185577e87cad03
+  "1440":
+    file: 1440.png
+    sha256: e5cf744b92d358096193a43e965b1d330198cc79bd6ee454c0fce41f006aa86f
 sections:
   - id: s1
-    title: "Giới thiệu Dự án"
-    shows: 'ba bước từ repo đến dòng CV, ví dụ một milestone và dòng CV, những gì Premium mở; một nút chính "Đăng ký Premium".'
-    why: "không có công cụ rút gọn, không minh họa trong vùng làm việc."
+    title: Giới thiệu Dự án
+    shows: ba bước từ repo đến dòng CV, ví dụ một milestone và dòng CV, những gì Premium mở; một nút
+      chính "Đăng ký Premium".
+    why: không có công cụ rút gọn, không minh họa trong vùng làm việc.
     actions: []
     states:
-      loading: "Khối xám cùng hình khối, do SlotView giữ"
+      loading: Khối xám cùng hình khối, do SlotView giữ
       empty: null
-      error: "Thông báo lỗi của SlotView, có Thử lại"
+      error: Thông báo lỗi của SlotView, có Thử lại
     needsApi: []
 considered:
-  - option: "Giữ bản vẽ cũ của ngày 17/11"
+  - option: Giữ bản vẽ cũ của ngày 17/11
     chosen: false
-    why: "Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã"
-  - option: "Vẽ lại theo mã đang chạy với luật Grammar 0.50"
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
     chosen: true
-    why: 'Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11'
-audit: null
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:09.593Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

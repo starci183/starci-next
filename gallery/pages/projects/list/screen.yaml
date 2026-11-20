@@ -1,0 +1,87 @@
+schema: 1
+screen: projects/list
+title: Dự án, danh sách
+route: /projects
+area: projects
+summary: "Mục tiêu: xem các dự án của mình và vào một dự án."
+code:
+  - features/pages/ProjectsPage
+  - components/blocks/ProjectsList
+shots:
+  "390":
+    file: 390.png
+    sha256: bb77abd814511bcdbe1059b99baf587d1416608c034d07764dfde92fd854a2b4
+  "1440":
+    file: 1440.png
+    sha256: 3b804d75c8a8316897585e8224eb44646010c4c78454b8caa2544280d0472238
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Dự án của bạn"
+    shows: tên trang, mô tả và đúng một nút chính "Tạo dự án".
+    why: một nút chính mỗi view.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Dải số liệu
+    shows: "bốn số của người học giữa hai hairline: concept đã chứng minh, đang luyện, milestone xong /
+      11, dòng CV xác minh."
+    why: số liệu lớn 20/500; không khung.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s3
+    title: Bảng dự án
+    shows: "một bảng phẳng: dự án và repo, loại, milestone hiện tại, tiến độ, CI; cả hàng là liên kết. Ở
+      390 chỉ còn dự án và tiến độ."
+    why: bảng là tập hợp, không bọc thẻ; loại là chữ trung tính, không dùng màu nhấn cho danh tính.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:05.911Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

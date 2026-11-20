@@ -1,0 +1,88 @@
+schema: 1
+screen: projects/detail
+title: Dự án, chi tiết
+route: /projects/[projectId]
+area: projects
+summary: "Mục tiêu: xem tiến độ một dự án, kết quả chạy và probe, lưu địa chỉ deploy."
+code:
+  - features/pages/ProjectPage
+  - components/blocks/ProjectDetail
+  - starci-next-ui composites MilestonesCard, RunsCard, ProbesCard, DeployCard, ProjectAside
+shots:
+  "390":
+    file: 390.png
+    sha256: c41e4ccb1d24ff729dded220d15c398d03377c19874bb951477ef5a5de203bc3
+  "1440":
+    file: 1440.png
+    sha256: 70f1923f9bd7cab3ce8586c9ee9cf53f4565ea510993d8873d2db97a926d89c3
+sections:
+  - id: s1
+    title: Dải tiêu đề
+    shows: đường dẫn, tên, dòng repo · công nghệ, trạng thái và lệnh trung tính "Cập nhật kết quả từ
+      máy" (trang không có nút chính).
+    why: một nút chính mỗi view; trang này chỉ có lệnh trung tính.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Milestone, lần chạy, probe, kinh nghiệm, địa chỉ deploy
+    shows: các mục phẳng ở cột chính; mỗi milestone là một hàng liên kết có thanh tiến độ.
+    why: danh sách không viền ngoài, hàng px-4 py-3.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s3
+    title: Cột phải
+    shows: "kho mã, chứng thực CI, máy của bạn, bí mật CI, thư mục starci/: mỗi mục một Section có tiêu
+      đề 16/500, cột phải phẳng như cột chính (bỏ nền riêng)."
+    why: một kiểu bề mặt cho mọi phần tử.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:04.171Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

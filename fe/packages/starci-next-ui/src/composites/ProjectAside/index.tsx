@@ -1,4 +1,4 @@
-import { Badge, Button, Input, Link, Section, Stack, Text } from "@starci/grammar/common"
+import { Badge, Button, FencedCodeBlock, Input, Link, Section, Stack, Text } from "@starci/grammar/common"
 import type { CardProps, ProjectDetailBusy, ProjectDetailFields } from "./types"
 
 /** What the aside needs: the project, the words, the field of the new secret, the busy flags and the rotate command. */
@@ -78,13 +78,7 @@ const SecretSection = (props: ProjectAsideProps) => (
 const LayoutSection = (props: CardProps) => (
     <Section title={props.labels.layoutTitle} headingLevel={2} isLoading={props.isLoading}>
         <Stack gap="inline">
-            <Stack gap="identity">
-                {props.labels.layoutTree.split("\n").map((line) => (
-                    <Text key={line} mono>
-                        {line}
-                    </Text>
-                ))}
-            </Stack>
+            <FencedCodeBlock label={props.labels.layoutTitle} code={props.labels.layoutTree} />
             <Text>{props.labels.layoutTests}</Text>
             <Text tone="muted">{props.labels.layoutTestsText}</Text>
             <Text tone="muted">{props.labels.layoutFlow}</Text>

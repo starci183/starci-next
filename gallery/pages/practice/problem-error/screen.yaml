@@ -1,0 +1,87 @@
+schema: 1
+screen: practice/problem-error
+title: Giải bài, lỗi tải đề
+route: /practice/[slug]
+area: practice
+summary: "Trạng thái của màn này: lỗi tải đề. Mục tiêu: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý
+  khi kẹt, xem lời giải khi muốn."
+code:
+  - features/pages/PracticeSolvePage
+  - components/blocks/PracticeSolve
+  - starci-next-ui composites PracticeEditor, PracticeHints, PracticeProblemPanel, PracticeResult
+shots:
+  "390":
+    file: 390.png
+    sha256: cd1328d8e78df3caa0e1cb8fea6406063d903ad3a8d8319d1a056957197ee62f
+  "1440":
+    file: 1440.png
+    sha256: bf0f8f306f37521e35b120b43a3c9347284af6f93838e5bf6ebdbb0062fd521e
+sections:
+  - id: s1
+    title: "Dải tiêu đề: Không tải được đề"
+    shows: tên trang, dòng sự kiện và đúng một nút chính. "Nộp bài" ("Chạy thử" trung tính); đang chấm
+      thì xám kèm lý do; Accepted thì "Bài tiếp theo".
+    why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Phần tử còn thiếu
+    shows: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
+    why: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ);
+      danh sách ở GRAMMAR-GAPS.md.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+  - option: Gợi ý nằm dưới đề ở 1440 như bản vẽ
+    chosen: false
+    why: Grid kind=pair chỉ có hai ô; gợi ý đi cùng cột mã để thứ tự ở 390 vẫn là đề, mã, kết quả, gợi
+      ý. Chủ chấp nhận lệch bản vẽ 1440 (giới hạn Grammar)
+  - option: Nút Về mã khởi đầu cao 40px ở đầu mục
+    chosen: false
+    why: Nút trong đầu mục Section bắt buộc là neutral cỡ nhỏ (starci-grammar/section-head-action). Chủ
+      chấp nhận (giới hạn Grammar)
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:00.402Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

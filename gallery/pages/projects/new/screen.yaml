@@ -1,0 +1,76 @@
+schema: 1
+screen: projects/new
+title: Tạo dự án, form trống
+route: /projects/new
+area: projects
+summary: "Mục tiêu: đặt tên, chọn loại, nối repo và địa chỉ deploy rồi tạo dự án."
+code:
+  - features/pages/ProjectNewPage
+  - components/blocks/ProjectNew
+shots:
+  "390":
+    file: 390.png
+    sha256: c5aec611b3e76678f30ba4f21728aaacdbbe09f0aa77c78aa48cad05a871d416
+  "1440":
+    file: 1440.png
+    sha256: fd1cfd64cc05d38ae7b133d970a159b1e8100d3485ca744c7c1c4f74cc222ee1
+sections:
+  - id: s1
+    title: Biểu mẫu
+    shows: tên, loại (RadioGroup), repo, địa chỉ deploy; một nút chính "Tạo dự án" tắt kèm lý do cho tới
+      khi có tên.
+    why: RadioGroup cho giá trị chọn một, không dùng segmented control.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+  - id: s2
+    title: Chạy trong repo của bạn
+    shows: lệnh khởi tạo trong terminal và một dòng nói StarCi không áp kiến trúc lên repo.
+    why: terminal là mã nên dùng chữ mono.
+    actions: []
+    states:
+      loading: Khối xám cùng hình khối, do SlotView giữ
+      empty: null
+      error: Thông báo lỗi của SlotView, có Thử lại
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ của ngày 17/11
+    chosen: false
+    why: Bản vẽ cũ lệch luật mới (nút nhỏ, chữ 600, danh sách có viền) và, ở Dự án, lệch mô hình của mã
+  - option: Vẽ lại theo mã đang chạy với luật Grammar 0.50
+    chosen: true
+    why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
+audit:
+  builder:
+    agent: next-ux-practice
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:46:08.489Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
