@@ -104,12 +104,20 @@ export const ExperienceList = () => {
         confirmId,
         claimBusy,
     }
+    const settled =
+        read.data === undefined ? undefined : viewOf(read.data, { tab, source }, progress.data?.practice ?? null, state)
     return (
         <ExperienceListBase
             props={{
                 slot: mapSlot(slotOfSwr(read), (data) =>
                     viewOf(data, { tab, source }, progress.data?.practice ?? null, state),
                 ),
+                meta: settled === undefined ? (read.isLoading ? t("loading") : undefined) : settled.meta,
+                tabs:
+                    settled === undefined || settled.ways !== undefined
+                        ? undefined
+                        : settled.tabs.map((each) => ({ id: each.id, label: each.label, count: each.count })),
+                confirmLine: settled?.confirmLine,
                 placeholder: EXPERIENCE_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 labels: labelsOf(t),

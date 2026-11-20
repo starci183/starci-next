@@ -107,6 +107,13 @@ export type ExperienceListBaseProps = {
         readonly placeholder: ExperienceListView
         readonly slotLabels: SlotLabels
         readonly labels: ExperienceListLabels
+        /** The event line under the title; undefined while nothing is known. */
+        readonly meta: string | undefined
+        /** The state tabs of the header, only once the list is settled and holds an item. */
+        readonly tabs:
+            ReadonlyArray<{ readonly id: string; readonly label: string; readonly count: number }> | undefined
+        /** The CV line a send is confirmed with. */
+        readonly confirmLine: string | undefined
         readonly tab: string
         readonly source: string
         readonly isConfirmOpen: boolean
@@ -293,28 +300,13 @@ const Items = (props: ReadyProps) => (
     </Stack>
 )
 
-/** The words under the title: the event line, or that the list is loading. */
-const metaOf = (props: ExperienceListBaseProps["props"]): string | undefined => {
-    if ("items" in props.slot) return props.slot.items.meta
-    return "isLoading" in props.slot ? props.labels.loading : undefined
-}
-
-/** The state tabs of the page header, only once the list is settled and holds an item. */
-const tabsOf = (props: ExperienceListBaseProps["props"]) =>
-    "items" in props.slot && props.slot.items.ways === undefined
-        ? props.slot.items.tabs.map((tab) => ({ id: tab.id, label: tab.label, count: tab.count }))
-        : undefined
-
 /**
  * Draws Experience the way the canvas does: the trail Hồ sơ / Kinh nghiệm, the event line, the state tabs with their counts, the source
  * chips, then the item cards. A returned card shows the teacher's note first; an AI-graded card opens the line in both languages and sends
  * it for review after a confirm (a sent line is locked); a verified card carries the profile switch and the copy command.
  */
 export const ExperienceListBase = (props: ExperienceListBaseProps) => {
-    const { labels } = props.props
-    const meta = metaOf(props.props)
-    const tabs = tabsOf(props.props)
-    const confirmLine = "items" in props.props.slot ? props.props.slot.items.confirmLine : undefined
+    const { labels, meta, tabs, confirmLine } = props.props
     return (
         <Page
             header={{
