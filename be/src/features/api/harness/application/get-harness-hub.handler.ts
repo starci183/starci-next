@@ -17,7 +17,8 @@ export class GetHarnessHubHandler extends ICQRSHandler<GetHarnessHubQuery, Harne
     }
 
     protected override async process(query: GetHarnessHubQuery): Promise<HarnessHubView> {
-        const learnerId = query.params.principal.id
+        const learnerId = query.params.principal?.id
+        if (learnerId === undefined) return this.harness.hub(undefined, query.params.request.locale, [], [])
         const [builds, doctor] = await Promise.all([
             this.relay.buildResults(learnerId),
             this.relay.doctorResults(learnerId),
