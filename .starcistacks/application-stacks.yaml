@@ -243,6 +243,8 @@ environments:
             SEPAY_MERCHANT_ID: sandbox-placeholder-sepay-merchant-id
             AI_GATEWAY_MODEL: deepseek/deepseek-v4.1-flash
             ATTEMPT_COACH_DAILY_LIMIT: "100"
+            # Dev only: names the live lessons whose tier-2 incident the incident list shows as written, so the authored row of /incidents is reachable (production declares none).
+            INCIDENT_AUTHORED: "outbox-idempotency"
             # The learner relay (decision.relay.placement) is part of the core api: the push-only device socket (/socket.io) and the upload GraphQL (/graphql).
             # One core replica: the in-process hub (a shared hub is not built yet).
             REALTIME_HUB: memory

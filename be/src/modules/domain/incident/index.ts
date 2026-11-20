@@ -6,5 +6,6 @@
  * lessons through `IncidentModule.register({ authored })`. There is no incident runner here (it needs the relay and CLI).
  */
 export { IncidentModule } from "./incident.module"
+export { parseIncidentConfig } from "./incident.config"
 export { IncidentReadService } from "./incident-read.service"
 export type { IncidentListItemView } from "./incident.contracts"

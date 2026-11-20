@@ -4,6 +4,7 @@ import { parseHttpConfig } from "@modules/platform/http"
 import { parseHttpSecurityConfig } from "@modules/platform/http-security"
 import { parseRealtimeConfig } from "@modules/platform/realtime"
 import { parseAttemptConfig } from "@modules/domain/attempt"
+import { parseIncidentConfig } from "@modules/domain/incident"
 import { parseIdentityConfig } from "@modules/domain/identity"
 import { parsePracticeConfig } from "@modules/domain/practice"
 import { parseProfileConfig } from "@modules/domain/profile"
@@ -64,6 +65,8 @@ export interface CoreEnv {
     readonly realtime: ReturnType<typeof parseRealtimeConfig>
     /** The mcp capability: the token limit, the lesson checkouts, the public endpoint and the local embedder. */
     readonly mcp: ReturnType<typeof parseMcpConfig>
+    /** The incident list: the lessons whose tier-2 incident is written (undeclared outside the development stack). */
+    readonly incident: ReturnType<typeof parseIncidentConfig>
 }
 
 /** Reads the core environment; missing or invalid values fail boot, and secrets use `_FILE` first. */
@@ -92,5 +95,6 @@ export const readCoreEnv = (env: EnvSource): CoreEnv => {
         relay: parseRelayConfig(env, httpSecurity.allowedOrigins[0] ?? ""),
         realtime: parseRealtimeConfig(env),
         mcp: parseMcpConfig(env),
+        incident: parseIncidentConfig(env),
     }
 }
