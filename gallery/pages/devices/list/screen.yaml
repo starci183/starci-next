@@ -1,0 +1,97 @@
+schema: 1
+screen: devices/list
+title: Máy của bạn
+route: /devices
+area: devices
+summary: "Trang máy của học viên Premium có một máy đã nối: ba bước nối máy mới, danh sách máy và
+  việc CLI làm được."
+shots:
+  "390":
+    file: 390.png
+    sha256: 513b6a2556367829d87cf99b720bd43f8de17ac7236114a3907782120e6c5ae1
+  "1440":
+    file: 1440.png
+    sha256: cefdfdea315fff57a08fd875c46e9522208fde65ebd4c4f03b10f7136b8ad607
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: Dải đầu trang và hai phần
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối
+      máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần
+      thứ hai cùng một việc nối công cụ, không còn trang riêng.
+    actions:
+      - Kết nối máy
+    states:
+      loading: Dải đầu giữ khung, chữ là khối xám
+      empty: null
+      error: Chỉ còn tên trang
+    needsApi: []
+  - id: body
+    title: Kết nối máy mới và Máy đã nối
+    shows: "Ba bước đánh số (chạy npx @starci/next, đăng nhập trên máy, nhập mã ở đây) rồi danh sách máy
+      đã nối: tên, hệ điều hành, ngày nối, lần thấy cuối, trạng thái trực tuyến và nút Thu hồi; dưới
+      cùng là còn mấy chỗ trống."
+    why: Ba bước đứng trước danh sách vì học viên thường đến đây để nối máy; danh sách ở dưới để thu
+      hồi.
+    actions:
+      - Thu hồi
+    states:
+      loading: Hàng là khối xám giữ đúng khung
+      empty: Câu Chưa có máy nào được nối
+      error: Thông báo lỗi kèm nút Thử lại
+    needsApi: []
+  - id: aside
+    title: CLI làm được gì
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và
+      hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh
+      vì dự án giờ chứng minh bằng CI OIDC.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
+      công cụ"
+  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    chosen: true
+    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
+      cần Grammar
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:09.597Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

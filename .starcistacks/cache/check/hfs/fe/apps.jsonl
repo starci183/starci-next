@@ -67,12 +67,14 @@
 {"data":{},"findings":[],"hash":"58aa69fca5af3c671c766d30a67e25dd9da596e565e1de2bf63f2e556717b7c5","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa90ba8ad371d4793253ed7a4a18014013f59b9540fd96653ef512e02c27e614","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ba8dd3d7541e64ad1afd5d4fb753d5d2b782182ad360ce59776b070464e4e749","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"30c8785c46563d950e0938433caf7aef12c7390205e855d4c5dedb890993db66","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"3ccf6a90d26c6471174a90b6071bacaf022f6e55f1ba121ee1c3d01f7c0b0e04","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e01a5dad42e19bf37e89589d66b89fed37519543972e53b1dc829b2ead83c6b4","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a5af8af64cf6a2a4ce384ded6d62e40a46f69a953a77db8555ad9b96443d5bfb","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"65ab510b2af8c6f67e34ef779d4f69fa19d5ccc654e75508a5507da8e29aa893","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ad6b2b37f543b161cdc06878709b05f3f73b4b7a5f9165585ddf8654d31e7909","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/components/blocks/CheckoutResult/classNames.ts is neither tracked nor git-ignored, and no ignored slot owns it","path":"fe/apps/app/src/components/blocks/CheckoutResult/classNames.ts","rule":"HFS_UNTRACKED_ROOT_ENTRY"}],"hash":"absent","path":"fe/apps/app/src/components/blocks/CheckoutResult/classNames.ts","step":"hfs"}
+{"data":{},"findings":[],"hash":"fdda4fb82d504179c22424be9d098c9248b008607b0ef8faf246aeab0f2098c3","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"adcaa9f6e02e57784d76211c6d56887377e8f8f3225793407a6bfbaf5a6df615","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cfd6387550441985c4bea6cece1dcff60e72df9975c32abe7d88098586a1ae94","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4b37ad14db464ec75d35026baf9a7edd13e3fa207d4927fa7e511c98c88e2975","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
+{"data":{"size-soft":[{"code":"HFS_SIZE_SOFT_BACKLOG","level":"info","lines":509,"message":"apps/app/src/components/blocks/DevicesPair/component.tsx has 509 lines, above the soft size 500; report only","path":"apps/app/src/components/blocks/DevicesPair/component.tsx","soft":500}]},"findings":[{"column":0,"line":0,"message":"apps/app/src/components/blocks/DevicesPair/component.tsx has 509 lines, above the soft size 500; report only","path":"apps/app/src/components/blocks/DevicesPair/component.tsx","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"27b73819bd555e338f7850ca4d233d16ec50dbf21dcfc1d76eba73e6d47ee8b3","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"file-rules"}
+{"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx has 509 lines, above the soft size 500; report only","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"9ebc9ec6ce340a717293e8bdc50002883e13d87eeb3b7d197bf33d03b0a710fc","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"hfs"}
+{"data":{},"findings":[],"hash":"96ce6646076ab24ad966354de69a4b19ccc43c15ec2bea728a6765ee4ea6c3b1","path":"fe/apps/app/src/components/blocks/DevicesPair/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b54cad6b189bf6467c943e6a11578f80fdb2c5aecf96f41adf2d86877360f8e2","path":"fe/apps/app/src/components/blocks/EssentialLesson/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bf83a9e0cdcb8dc1fcd128654d2ec00c17d1a71af012bb1c096e92e4f3a40d6f","path":"fe/apps/app/src/components/blocks/EssentialLesson/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7f6c83ce423b0fad97d4f47b1c68cf41e598bb341f044932710b0d44aa257583","path":"fe/apps/app/src/components/blocks/EssentialsCatalog/component.tsx","step":"file-rules"}
@@ -109,8 +111,8 @@
 {"data":{},"findings":[],"hash":"95fd6f696b698ede0d42ae4795e36d8c42e19d417f49affdf8634be3f1b26abf","path":"fe/apps/app/src/components/blocks/PracticePattern/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4726b9e36ccc7a2b6aff7ce53421bd7b6bfd798145f7034605c8fd5f2b98fc8f","path":"fe/apps/app/src/components/blocks/PracticeSolve/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ca9a210ccf02c617b5cf7a71c00092564afd69b9c88196a5cbcd0e28bebd680f","path":"fe/apps/app/src/components/blocks/PracticeSolve/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"1bd6084afcbc62e0cc27519b5d31750042e06ee424cca8b2ab69732ce61e8824","path":"fe/apps/app/src/components/blocks/PremiumPlans/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a70a33c2f9ab0647ac3bf16e0e37d7a6e22188d4c0ae5dbe98c65ce449bdd5fc","path":"fe/apps/app/src/components/blocks/PremiumPlans/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0d4b3d9daaffb35fc8400ff44b44815f66d694e33148834b5493443100d5aa76","path":"fe/apps/app/src/components/blocks/PremiumPlans/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1cff7abcf8d88dcaca247d7ee837a6a9acea975197d82c01295daafc49b34b0c","path":"fe/apps/app/src/components/blocks/PremiumPlans/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"49b1a9a7d14df1485ac68d15f27adf63ec7dfb506cce1f07aa4c164a1be30787","path":"fe/apps/app/src/components/blocks/ProfileEdit/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a19d24205efaf52b7444ff712dfa1924d494fb32ae03d6a4d51c0d0278be96b1","path":"fe/apps/app/src/components/blocks/ProfileEdit/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2195ad52bc1d21481f1a7f7344b7a65997838ebd5b5fb451d95ab14019014dab","path":"fe/apps/app/src/components/blocks/ProfileHub/component.tsx","step":"file-rules"}
@@ -164,8 +166,7 @@
 {"data":{},"findings":[],"hash":"bcbf4c832d0a40f000fcce8395d50d49a5f0c03e7daeabcd1f5422e48cc34fb2","path":"fe/apps/app/src/features/pages/AppHomePage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"aa4e854d8cade4d9777942ea72303317af4e37b4d217b23bbb4d55000384e071","path":"fe/apps/app/src/features/pages/AppLoadingPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5f720bdc4e7254d561238cfc9fdcf817f728731ac6eac1a1da2b062033834c06","path":"fe/apps/app/src/features/pages/AppNotFoundPage/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d9cd3a85a3dd64d196ba9c826ae826e6e4be7653d36c16015bf40697dae9329b","path":"fe/apps/app/src/features/pages/CheckoutResultPage/classNames.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"4b7f32b62f4b7b09fb6b0e511a40ad33f6958b183c4b404c24e227d5a6af5711","path":"fe/apps/app/src/features/pages/CheckoutResultPage/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"521ee1971678496ee70f60d383e98c39b3265eddf001af9b82290a5c840070af","path":"fe/apps/app/src/features/pages/CheckoutResultPage/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b3ad05f23067bfa0d4f5ead38b94c617c235b0977d044265b502cc35c3ecd23d","path":"fe/apps/app/src/features/pages/CheckoutResultPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"61a7f767b0b197e9bf46bc2d6439c8e51dae7d4b84a8bb594104fd3c0225b9cc","path":"fe/apps/app/src/features/pages/ConnectPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7a492c6307ccc9110318c3978c0f1114a98ceb39d5f64e13e614bc2c739be2ab","path":"fe/apps/app/src/features/pages/DevicesPage/index.tsx","step":"file-rules"}
@@ -181,8 +182,8 @@
 {"data":{},"findings":[],"hash":"0b9b8dd3b20b0cfc97949fa71a13ae6ab089f541b76e3d7fa26b68e84d31439b","path":"fe/apps/app/src/features/pages/IncidentsPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7276b5270ef32707848f50716452ba6da1a7ce1e940e87409ae150dbecfb5c08","path":"fe/apps/app/src/features/pages/LessonPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"dc32ffb6d57cf12a2330be3e24a8ee37181e1e52c1d7d3a92b98618d5dce7467","path":"fe/apps/app/src/features/pages/PathsChoosePage/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e217b27387b2fe587c2bc8e06ac4601680a58865e1529dd135f4661429dee4ba","path":"fe/apps/app/src/features/pages/PlansPage/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f61cceb5a88ddbb4e6477189d8713280636d5a12186009d363b7f8192101f18f","path":"fe/apps/app/src/features/pages/PlansPage/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"7f9ab519e70f58cb16396c6be58569a04b0a5490485e7edd326a92491ed9412a","path":"fe/apps/app/src/features/pages/PlansPage/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e64ea1e42de1db574ee94b48d392141a65368ada2fa9582edb07bcb41592567e","path":"fe/apps/app/src/features/pages/PlansPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"035d0f21a31cd350334996d2418e00aa70450baeba6cdf40eb4bb41792aa98d1","path":"fe/apps/app/src/features/pages/PracticeCatalogPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"291446d29939497d2171652ef6d1fa21801682b98f6e10d88761f9234d5db8bd","path":"fe/apps/app/src/features/pages/PracticePatternPage/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"70195396e12440611557a4799906727227913f34b0145a542a9ba3c74dffb3fa","path":"fe/apps/app/src/features/pages/PracticeSolvePage/index.tsx","step":"file-rules"}
@@ -672,8 +673,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"569b615f978ca3f9875d870de9567ba73ca738c809df4c716c9a05b10d9573cc","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"875ed4af7f6b19e09535fbb91c88f09c6aaecaf78234c594ce09d733915da449","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"991f88242eedd8120362a7be33f9c372a763254621684320a6b2ebe2815e31dd","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"1a8c6bbc56b1e6aae42e20c250677fbea0321f7f47f5b895040fd7df1db7976e","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{"size-soft":[{"code":"HFS_SIZE_SOFT_BACKLOG","level":"info","lines":510,"message":"apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","soft":500}]},"findings":[{"column":0,"line":0,"message":"apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"55a002937a3e82135b393acca850a97b3b212fa496b5421e6260dcf2d6cd428e","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/modules/lesson-view/index.ts has 510 lines, above the soft size 500; report only","path":"fe/apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"2f2d0610e6a3d235ed2dfb32731f258e6db4f6668152866edbc11a4d61f70904","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"hfs"}
@@ -696,7 +697,7 @@
 {"data":{},"findings":[],"hash":"4379ae5dd424930b9941b4284402dbdcb172edccdf32e38f2de17c78ab297591","path":"fe/apps/app/src/modules/types/essential.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6a71ab21fc5598f84f1030ad4057e26b6957e1c2c5dca80fd491e2bd8dd7f46e","path":"fe/apps/app/src/modules/types/experience.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0af2c22aeea913938aae25d6972c68ed781d5d24faabef64cba1409811c0c580","path":"fe/apps/app/src/modules/types/harness.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"620af2a34353762b5202487a7c6cb83d54404dac4f87c47f3a48eefb1abde188","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0b7cf94afa58e4fa11402f5acd12395494be74226bde9f902d6432c285912a18","path":"fe/apps/app/src/modules/types/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"32310ed1f1b21c9ab63177f5c922c15bbcac085873f6cf5d11e0da4fa56e4d3a","path":"fe/apps/app/src/modules/types/lesson.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"77d4682bfafda16fccf5e0eb0da36efc45ae63f5f9c23a118b93a99b23f9bead","path":"fe/apps/app/src/modules/types/placeholder.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"5f8bc14c506bb86677659d722d8ab359f3d5807822d57781962fcf53ee7cc01b","path":"fe/apps/app/src/modules/types/practice.ts","step":"file-rules"}

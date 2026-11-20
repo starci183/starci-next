@@ -1,0 +1,106 @@
+schema: 1
+screen: commerce/premium-result-unlocked
+title: Kết quả thanh toán, Premium đã mở
+route: /premium/result
+area: commerce
+summary: "Kết quả khi học viên đã là Premium và địa chỉ không nêu đơn: Premium đã mở, hạn đến ngày
+  nào, nút Mở Projects."
+shots:
+  "390":
+    file: 390.png
+    sha256: bf70bbb4225398932ec5ed0decd39aa402e985a964d37f25207655d568da26b7
+  "1440":
+    file: 1440.png
+    sha256: 1dc567f3fa9bf4e5087e3cb533f9f1afbec971fe88a5b376ed2c16a74a30ea6a
+code:
+  - features/pages/CheckoutResultPage
+  - components/blocks/CheckoutResult
+sections:
+  - id: header
+    title: Dải đầu trang
+    shows: "Đường dẫn Premium, Đơn <mã>, tên trang Kết quả thanh toán và một dòng: gói, trạng thái của
+      đơn."
+    why: Nói rõ đơn nào đang ở trạng thái nào; địa chỉ quay về không bao giờ được coi là bằng chứng đã
+      trả.
+    actions: []
+    states:
+      loading: Dải đầu giữ khung, chữ là khối xám
+      empty: null
+      error: Tên trang giữ nguyên
+    needsApi: []
+  - id: notice
+    title: Thông báo trạng thái
+    shows: Dấu tích xanh, tiêu đề Premium đã mở và câu nói Projects, phần 2 đến 4 của Essentials và máy
+      thứ hai đã sẵn sàng.
+    why: Một cột giữa, một thông báo, không thẻ lồng thẻ; trạng thái do máy chủ trả lời.
+    actions: []
+    states:
+      loading: Khung thông báo là khối xám
+      empty: null
+      error: Thông báo lỗi đọc đơn kèm nút Thử lại
+    needsApi: []
+  - id: facts
+    title: Thông tin đơn
+    shows: Mã đơn, gói, số tiền, cổng và (khi đã mở) Premium đến ngày nào, dạng danh sách phẳng có kẻ.
+    why: Có mã đơn để tra khi cần hỗ trợ.
+    actions: []
+    states:
+      loading: Giá trị là khối xám
+      empty: null
+      error: null
+    needsApi: []
+  - id: action
+    title: Nút đi tiếp
+    shows: "Đúng một nút theo trạng thái: đã mở thì Mở Projects, thất bại thì Thử lại, hết hạn thì Tạo
+      đơn mới, đang chờ thì Về trang Học (trung tính)."
+    why: Một nút chính mỗi màn hình; đang chờ không có nút chính vì chưa có việc gì để làm.
+    actions:
+      - Mở Projects
+      - Thử lại
+      - Tạo đơn mới
+      - Về trang Học
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
+      công cụ"
+  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    chosen: true
+    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
+      cần Grammar
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:08.424Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

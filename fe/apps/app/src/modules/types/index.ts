@@ -104,10 +104,6 @@ export type {
     ChipView,
     ConceptCardView,
     ConceptDraftView,
-    DevicesPairDevice,
-    DevicesPairLabels,
-    DevicesPairPreview,
-    DevicesPairRule,
     DevicesPairStep,
     EvidenceChipView,
     EvidenceRunView,
@@ -218,3 +214,16 @@ export type {
     PublicCvShareLabels,
     PublicCvSourceView,
 } from "./publicCv"
+export { DEVICES_TABS } from "./devices"
+export type {
+    ConnectDialogView,
+    DevicePreview,
+    DeviceRow,
+    DevicesLabels,
+    DevicesPairBaseProps,
+    DevicesRule,
+    DevicesTab,
+    McpCommand,
+    McpView,
+    TokenRow,
+} from "./devices"

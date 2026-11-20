@@ -1,0 +1,96 @@
+schema: 1
+screen: devices/list-mcp-tokens
+title: Máy của bạn, Claude Code & MCP
+route: /devices
+area: devices
+summary: "Tab Claude Code & MCP khi đã có token: danh sách token với đuôi mã, ngày tạo và lần dùng cuối."
+shots:
+  "390":
+    file: 390.png
+    sha256: 6ab58aba3fb565c9a7d017383d828a265c737239a1734a79dea883b3edfcea70
+  "1440":
+    file: 1440.png
+    sha256: 13943faab6dad61c758d6519f16c5f6a531c776e3ecf79b5ef27510960cf874f
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: Dải đầu trang và hai phần
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối
+      máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần
+      thứ hai cùng một việc nối công cụ, không còn trang riêng.
+    actions:
+      - Kết nối máy
+    states:
+      loading: Dải đầu giữ khung, chữ là khối xám
+      empty: null
+      error: Chỉ còn tên trang
+    needsApi: []
+  - id: body
+    title: Hỏi Claude khi kẹt và Token MCP
+    shows: Lệnh cho Claude Code và Codex, danh sách token kèm nút Thu hồi, số token trên giới hạn và nút
+      Tạo token.
+    why: Thu hồi ngay trên hàng; tên token đặt theo công cụ để biết thu hồi cái nào.
+    actions:
+      - Sao chép
+      - Thu hồi
+      - Tạo token
+    states:
+      loading: Hàng là khối xám giữ đúng khung
+      empty: null
+      error: Thông báo lỗi kèm nút Thử lại
+    needsApi: []
+  - id: aside
+    title: CLI làm được gì
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và
+      hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh
+      vì dự án giờ chứng minh bằng CI OIDC.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
+      công cụ"
+  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    chosen: true
+    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
+      cần Grammar
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:30:20.311Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

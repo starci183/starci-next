@@ -137,6 +137,40 @@ const openGoalOther = async (p) => {
         .catch(() => {})
     await p.waitForTimeout(800)
 }
+// The storage state of a gallery learner the seed wrote (GALLERY_STATES, default .tmp-gallery-states).
+const learnerOf = (key) =>
+    path.join(
+        path.resolve(process.env.GALLERY_STATES || path.join(__dirname, "..", ".tmp-gallery-states")),
+        key + ".json",
+    )
+// Opens the Claude Code & MCP view of the machines page.
+const openMcpTab = async (p) => {
+    await p.waitForTimeout(2500)
+    await p
+        .getByRole("tab", { name: /Claude Code & MCP/ })
+        .first()
+        .click()
+        .catch(() => {})
+    await p.waitForTimeout(1500)
+}
+// Revokes the learner's MCP tokens through the product's own commands, so the "no token yet" screens read what a fresh learner sees.
+const revokeAllTokens = async (p) => {
+    await p.evaluate(async () => {
+        const call = (query, variables) =>
+            fetch("/graphql", {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ query, variables }),
+            }).then((r) => r.json())
+        const listed = await call("query { mcpTokens { id } }")
+        for (const token of listed.data?.mcpTokens ?? [])
+            await call("mutation R($input: RevokeMcpTokenInput!) { revokeMcpToken(input: $input) { id } }", {
+                input: { id: token.id },
+            })
+    })
+    await p.reload({ waitUntil: "load" })
+    await p.waitForTimeout(2500)
+}
 const SCREENS = [
     S("auth", "sign-in", "/sign-in", { guest: true }),
     S("auth", "sign-up", "/sign-in", { guest: true, click: "Đăng ký" }),
@@ -330,10 +364,119 @@ const SCREENS = [
     S("profile", "edit", "/profile/edit"),
     S("profile", "edit-loading", "/profile/edit", { hold: true, ops: /"operationName":"MyProfile"/ }),
     S("profile", "edit-error", "/profile/edit", { refuse: true, ops: /"operationName":"MyProfile"/ }),
-    S("commerce", "premium", "/premium"),
-    S("commerce", "premium-result", "/premium/result"),
-    S("devices", "list", "/devices"),
-    S("connect", "ai", "/connect"),
+    // --- next-ux-commerce: Premium, the checkout result, the machines and the AI connector. Each shot is a seeded gallery learner on the dev stack's real data.
+    // premium-qr-payment, premium-qr-expired, premium-result-failed, premium-result-expired and devices/list-limit-reached have no shot: the QR data, a failed or expired order and a free learner with a machine are not on the dev stack (pending-seed).
+    S("commerce", "premium", "/premium", { learnerState: learnerOf("review-nothing") }),
+    S("commerce", "premium-loading", "/premium", {
+        learnerState: learnerOf("review-nothing"),
+        holdOps: /"operationName":"PremiumPlans"/,
+    }),
+    S("commerce", "premium-has-premium", "/premium", { learnerState: learnerOf("scenarios-none") }),
+    S("commerce", "premium-checkout-error", "/premium", {
+        learnerState: learnerOf("review-nothing"),
+        refuseOps: /"operationName":"StartPremiumCheckout"/,
+        act: async (p) => {
+            await tap(p, /^Thanh toán/)
+            await p.waitForTimeout(1500)
+        },
+    }),
+    S("commerce", "premium-result", "/premium/result", {
+        learnerState: learnerOf("review-nothing"),
+        act: async (p) => {
+            // A real order: the product's own command starts one, and the result page is opened on the order it made (the gateway page it would leave for is not this screen).
+            const order = await p.evaluate(async () => {
+                const call = (query, variables) =>
+                    fetch("/graphql", {
+                        method: "POST",
+                        headers: { "content-type": "application/json" },
+                        body: JSON.stringify({ query, variables }),
+                    }).then((r) => r.json())
+                const plans = await call("query { premiumPlans { plan } }")
+                const plan = plans.data?.premiumPlans?.[0]?.plan
+                const made = await call(
+                    "mutation S($input: StartPremiumCheckoutInput!) { startPremiumCheckout(input: $input) { orderId } }",
+                    { input: { plan } },
+                )
+                return made.data?.startPremiumCheckout?.orderId
+            })
+            if (order) {
+                await p.goto(ENTRY + "/premium/result?order=" + order, { waitUntil: "load" })
+                await p.waitForTimeout(2500)
+            }
+        },
+    }),
+    S("commerce", "premium-result-unlocked", "/premium/result", { learnerState: learnerOf("scenarios-none") }),
+    S("devices", "list-empty", "/devices", { learnerState: learnerOf("review-nothing") }),
+    S("devices", "list-error", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        refuseOps: /"operationName":"RelayDevices"/,
+    }),
+    S("devices", "list-offline-device", "/devices", { learnerState: learnerOf("scenarios-red") }),
+    S("devices", "list-enter-code-dialog", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            await tap(p, /^Kết nối máy$/)
+            await p.waitForTimeout(1200)
+        },
+    }),
+    S("devices", "list-code-invalid-dialog", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            await tap(p, /^Kết nối máy$/)
+            await p.waitForTimeout(800)
+            await p.getByLabel(/Mã 8 ký tự/).fill("K7QM-4821")
+            await p.waitForTimeout(2500)
+        },
+    }),
+    S("devices", "list-preview-device-dialog", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            // A real pending pairing: a machine starts one the way the learner CLI does, and the learner types its code.
+            const started = await fetch(
+                (process.env.CAPTURE_CORE || "http://127.0.0.1:3201") + "/api/relay/devices/start",
+                {
+                    method: "POST",
+                    headers: { "content-type": "application/json", origin: process.env.CAPTURE_ORIGIN_AS || ENTRY },
+                    body: JSON.stringify({ deviceName: "MacBook Pro của Lan", platform: "macos" }),
+                },
+            ).then((r) => r.json())
+            await tap(p, /^Kết nối máy$/)
+            await p.waitForTimeout(800)
+            await p.getByLabel(/Mã 8 ký tự/).fill(started.userCode)
+            await p.waitForTimeout(2500)
+        },
+    }),
+    S("devices", "list-mcp-no-token", "/devices", { learnerState: learnerOf("scenarios-none"), act: openMcpTab }),
+    S("devices", "list-mcp-token-created", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            await openMcpTab(p)
+            await tap(p, /^Tạo token$/)
+            await p.waitForTimeout(800)
+            await p.getByLabel(/Tên token/).fill("Claude Code trên MacBook")
+            await p
+                .getByRole("dialog")
+                .getByRole("button", { name: /^Tạo token$/ })
+                .click()
+            await p.waitForTimeout(2500)
+        },
+    }),
+    S("devices", "list-mcp-tokens", "/devices", { learnerState: learnerOf("scenarios-none"), act: openMcpTab }),
+    S("devices", "list", "/devices", { learnerState: learnerOf("scenarios-none") }),
+    S("connect", "ai", "/connect", { learnerState: learnerOf("scenarios-red"), act: revokeAllTokens }),
+    S("connect", "ai-token-created", "/connect", {
+        learnerState: learnerOf("scenarios-red"),
+        act: async (p) => {
+            await revokeAllTokens(p)
+            await p.getByLabel(/Tên mã/).fill("Claude")
+            await tap(p, /^Tạo mã$/)
+            await p.waitForTimeout(2500)
+        },
+    }),
+    S("connect", "ai-tokens-error", "/connect", {
+        learnerState: learnerOf("scenarios-red"),
+        refuseOps: /"operationName":"McpTokens"/,
+    }),
     // --- next-ux-review: review, progress, incidents and the review queue. The entries run in order against ONE learner: the first states are shot before any deck is added, then a deck is added and reviewed.
     S("progress", "overview-first-visit", "/progress"),
     S("progress", "overview-loading", "/progress", { holdOps: /"operationName":"LearnerProgress"/ }),
