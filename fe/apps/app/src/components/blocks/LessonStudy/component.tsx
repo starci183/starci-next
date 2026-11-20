@@ -113,7 +113,9 @@ export const LessonStudyBase = (props: LessonStudyBaseProps) => {
             onRetry={props.on.retry}
             header={(study, isLoading) => bandOf({ study, env: envOf(isLoading), catalogHref })}
             headerFallback={{ title: labels.pageTitle, breadcrumbs: "root" }}
-            aside={(study) => <LessonAside study={study} labels={labels} plansHref={plansHref} />}
+            aside={(study, isLoading) => (
+                <LessonAside study={study} labels={labels} plansHref={plansHref} isLoading={isLoading} />
+            )}
             frame={({ header, aside, body, isLoading }) => (
                 <WalkProvider
                     onWalk={props.on.walk}

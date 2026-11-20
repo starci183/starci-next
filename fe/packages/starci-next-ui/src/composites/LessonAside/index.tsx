@@ -31,6 +31,8 @@ type LessonAsideProps = {
     readonly study: StudyView
     readonly labels: LessonStudyLabels
     readonly plansHref: string
+    /** The first read is running: every block draws as a skeleton, no placeholder word shows. */
+    readonly isLoading?: boolean
 }
 
 /** The words of a phase result's chip: the words of its status, or the score with "saved" for a graded phase. */
@@ -78,7 +80,7 @@ export const LessonAside = (props: LessonAsideProps) => {
     const { study, labels } = props
     const progress = labels.progress
     return (
-        <PaneSection gap="section">
+        <PaneSection gap="section" {...(props.isLoading === true ? { isLoading: true } : {})}>
             {study.sectionChecks.length === 0 ? null : (
                 <>
                     <Section

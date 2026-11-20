@@ -12,20 +12,27 @@ const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(","
 const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra })
 // The lesson the Essentials lesson screens open, and the learner's pick of the n-th opener answer (the wrong one or the right one, by the option's place in the stand-in sample).
 const LESSON = "/essentials/api-reliability/outbox-idempotency"
-const answerAs = async (p, n, isRight) => {
-    await p
-        .getByRole("button", { name: new RegExp("^Câu " + n + "$") })
-        .first()
-        .click()
-        .catch(() => {})
-    await p.waitForTimeout(600)
-    const options = p.getByRole("radio")
-    if ((await options.count()) === 0) return
-    await options
-        .nth(isRight ? 1 : 0)
-        .check({ force: true })
-        .catch(() => options.nth(isRight ? 1 : 0).click({ force: true }))
-    await p.waitForTimeout(1200)
+// Plays the five opener questions of a lesson through the product: picks[i] is "R" (the second option) or "W" (the first); "Câu tiếp theo" moves on and "Xem kết quả" ends the opener.
+const playOpener = async (p, picks, isFinished) => {
+    for (let i = 0; i < picks.length; i++) {
+        const options = p.getByRole("radio")
+        if ((await options.count()) > 0) {
+            const at = picks[i] === "R" ? 1 : 0
+            await options
+                .nth(at)
+                .check({ force: true })
+                .catch(() => options.nth(at).click({ force: true }))
+            await p.waitForTimeout(1800)
+        }
+        if (i < picks.length - 1 || isFinished) {
+            await p
+                .getByRole("button", { name: /^(Câu tiếp theo|Xem kết quả)$/ })
+                .first()
+                .click()
+                .catch(() => {})
+            await p.waitForTimeout(900)
+        }
+    }
 }
 // A lane server on its own port is not an origin the core api allows: CAPTURE_ORIGIN_AS (the ingress origin) is sent as the Origin of its api calls.
 const originFix = async (ctx) => {
@@ -55,7 +62,7 @@ const SCREENS = [
     S("paths", "choose-detail", "/paths/choose", { clickText: "Xem lộ trình" }),
     S("essentials", "catalog", "/essentials"),
     // States of the catalog and the topic: first visit (a learner who studied nothing, CAPTURE_FIRST_STATE), a search with no match, the first read still loading (GraphQL held), the read failing (GraphQL refused), a reader without Premium.
-    S("essentials", "catalog-first-visit", "/essentials", { first: true }),
+    S("essentials", "catalog-first-visit", "/essentials", { state: "P2" }),
     S("essentials", "catalog-no-match", "/essentials", {
         fill: { sel: 'input[type="search"], input[placeholder*="Tìm"]', text: "kafka exactly" },
     }),
@@ -63,44 +70,27 @@ const SCREENS = [
     S("essentials", "catalog-error", "/essentials", { refuse: true }),
     S("essentials", "catalog-free", "/essentials", { free: true }),
     S("essentials", "topic", { from: "/essentials", match: /^\/essentials\/[^/]+$/ }),
-    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { first: true }),
+    S("essentials", "topic-first-visit", { from: "essentials/topic", append: "?s=1" }, { state: "P2" }),
     S("essentials", "topic-free", { from: "essentials/topic", append: "?s=1" }, { free: true }),
     S("essentials", "topic-loading", { from: "essentials/topic", append: "?s=1" }, { hold: true }),
     S("essentials", "topic-error", { from: "essentials/topic", append: "?s=1" }, { refuse: true }),
     // States of the lesson page (Bản chất and the locked parts). A scenario names its stand-in answers by cookie (plan, seed: the opener answers already given as R right and W wrong, sid) and, where the learner acts, how.
-    S("essentials", "lesson", LESSON, { cookies: { seed: "R" }, act: async (p) => answerAs(p, 2, false) }),
-    S("essentials", "lesson-question-1", LESSON, { cookies: { seed: "" } }),
+    S("essentials", "lesson", LESSON, { state: "P3", act: async (p) => playOpener(p, "RW", false) }),
+    S("essentials", "lesson-question-1", LESSON, { state: "P2" }),
     S("essentials", "lesson-loading", LESSON, { hold: true }),
     S("essentials", "lesson-error", LESSON, { refuse: true }),
-    S("essentials", "lesson-result", LESSON, {
-        cookies: { seed: "RWRR" },
+    S("essentials", "lesson-result", LESSON, { state: "P3", act: async (p) => playOpener(p, "RWRRW", true) }),
+    S("essentials", "lesson-article", LESSON, {
+        state: "P3",
         act: async (p) => {
-            await answerAs(p, 5, true)
             await p
-                .getByRole("button", { name: "Xem kết quả" })
+                .getByRole("button", { name: /Đọc bài viết/ })
                 .first()
                 .click()
                 .catch(() => {})
         },
     }),
-    S("essentials", "lesson-article", LESSON, { cookies: { seed: "RWRRW" } }),
-    S("essentials", "lesson-free-end", LESSON, {
-        free: true,
-        cookies: { plan: "free", seed: "RWRRW" },
-        act: async (p) => {
-            await p
-                .getByRole("button", { name: "Làm lại 5 câu" })
-                .first()
-                .click()
-                .catch(() => {})
-            for (let n = 1; n <= 5; n++) await answerAs(p, n, true)
-            await p
-                .getByRole("button", { name: "Xem kết quả" })
-                .first()
-                .click()
-                .catch(() => {})
-        },
-    }),
+    S("essentials", "lesson-free-end", LESSON, { state: "F2", act: async (p) => playOpener(p, "RWRRW", true) }),
     S("essentials", "lesson-locked-source", LESSON + "?part=source", {
         free: true,
         cookies: { plan: "free", seed: "RWRRW" },
@@ -233,10 +223,13 @@ const norm = (href) => {
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.cookies !== undefined
+                s.hold || s.refuse || s.cookies !== undefined || s.state !== undefined
                     ? await b.newContext({
-                          storageState:
-                              s.free && process.env.CAPTURE_FREE_STATE ? process.env.CAPTURE_FREE_STATE : stateFile,
+                          storageState: s.state
+                              ? process.env["CAPTURE_STATE_" + s.state]
+                              : s.free && process.env.CAPTURE_FREE_STATE
+                                ? process.env.CAPTURE_FREE_STATE
+                                : stateFile,
                       })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
