@@ -56,24 +56,24 @@ audit:
       at: 2026-11-20T20:50:58.459Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 canvas đã duyệt (2026-11-20) là hai cột: bên trái phần giới thiệu "Học bản chất, để vibe-code..." cùng ba khu vực Essentials, Projects, Harness, bên phải thẻ biểu mẫu; code chỉ vẽ một thẻ ở giữa trên nền trắng trống (không có phần giới thiệu), 390 thì đúng (chỉ thẻ). Dòng đồng ý "Điều khoản sử dụng và Chính sách quyền riêng tư" ngắt chữ lẻ "tư" xuống dòng riêng ở 1440 và hộp chọn ~16px nhỏ hơn mức chạm 44 ở 390.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Thiếu trạng thái lỗi kiểm tra (sign-up-validation-error của canvas)."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

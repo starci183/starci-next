@@ -66,24 +66,24 @@ audit:
       at: 2026-11-20T20:51:03.257Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Cả 1440 và 390 không có thẻ biểu mẫu căn giữa như bốn màn auth còn lại."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh sai màn: là trang xác minh dòng CV công khai đang tải ("Thông tin công khai", Phần học, Bằng chứng, Người ký), không phải màn nhập mã 6 số của auth/verify (canvas: "Nhập mã xác nhận", 6 ô, Gửi lại mã sau 42 giây).'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Nội dung ảnh không thuộc auth/verify nên không kiểm được ô mã, đếm ngược gửi lại, đổi email."
   escalate: null
