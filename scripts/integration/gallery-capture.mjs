@@ -1,5 +1,5 @@
 // Captures every screen of the app at 1440 and 390 into gallery/pages/<area>/<screen>/<width>.png.
-// Dynamic routes take the first link the list screen shows. usage: node scripts/integration/gallery-capture.mjs <state.json> [area-filter]
+// Dynamic routes take the first link the list screen shows. usage: node scripts/integration/gallery-capture.mjs [state.json] [area-filter] [screen] (state.json, a .json path, may be left out for a guest-only run)
 import { spawnSync } from "node:child_process"
 import fs from "node:fs"
 import { createRequire } from "node:module"
@@ -14,7 +14,10 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 // The dev entry origin and the landing of the stack (environments.dev.local.ports: ingress 3280, landing 3202); override with CAPTURE_ENTRY / CAPTURE_LANDING.
 const ENTRY = process.env.CAPTURE_ENTRY || "http://localhost:3280"
 const LANDING = process.env.CAPTURE_LANDING || "http://localhost:3202"
-const [, , stateFile, only, onlyScreen] = process.argv
+// The state file is the first argument only when it is a .json path; a guest-only run leaves it out: gallery-capture.mjs auth [screen].
+const argv = process.argv.slice(2)
+const stateFile = argv[0]?.endsWith(".json") ? argv[0] : undefined
+const [only, onlyScreen] = stateFile === undefined ? argv : argv.slice(1)
 const PAGES = path.join(here, "..", "..", "gallery", "pages")
 const WIDTHS = process.env.CAPTURE_WIDTHS ? process.env.CAPTURE_WIDTHS.split(",").map(Number) : [1440, 390]
 const S = (area, screen, route, extra = {}) => ({ area, screen, route, ...extra })
@@ -148,7 +151,7 @@ const openGoalOther = async (p) => {
 // The storage state of a gallery learner the seed wrote (GALLERY_STATES, default .tmp-gallery-states).
 const learnerOf = (key) =>
     path.join(
-        path.resolve(process.env.GALLERY_STATES || path.join(__dirname, "..", ".tmp-gallery-states")),
+        path.resolve(process.env.GALLERY_STATES || path.join(here, "..", "..", ".tmp-gallery-states")),
         key + ".json",
     )
 // Opens the Claude Code & MCP view of the machines page.
@@ -666,7 +669,8 @@ const norm = (href) => {
 }
 ;(async () => {
     const b = await chromium.launch()
-    const user = await b.newContext({ storageState: stateFile })
+    // No state file (a guest-only run): the signed-in context is an anonymous one, and only the guest screens are meaningful.
+    const user = await b.newContext(stateFile ? { storageState: stateFile } : {})
     const guest = await b.newContext()
     const free = process.env.CAPTURE_FREE_STATE
         ? await b.newContext({ storageState: process.env.CAPTURE_FREE_STATE })
