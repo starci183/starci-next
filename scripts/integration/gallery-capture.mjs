@@ -188,7 +188,6 @@ const SCREENS = [
     // The emailed links of the auth doors: the page opens with the token in the query (a 16+ character stand-in, so the door answers the invalid-link state).
     S("auth", "confirm-expired", "/sign-in/confirm?token=gallery-capture-0000", { guest: true }),
     S("auth", "reset", "/sign-in/reset?token=gallery-capture-0000", { guest: true }),
-    S("auth", "verify", "/verify/ABCD-2345-WXYZ", { guest: true }),
     S("landing", "home", "/", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),

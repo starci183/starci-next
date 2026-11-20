@@ -95,31 +95,6 @@
       "approvedAt": "2026-11-20T21:44:10+07:00",
       "board": "https://claude.ai/artifact/SBacnRTuLYpbog6pycc62m"
     },
-    "auth/verify": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/verify-code-filled": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/verify-expired": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/verify-resent": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
-    "auth/verify-wrong-code": {
-      "status": "approved",
-      "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
-    },
     "career/experience": {
       "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
