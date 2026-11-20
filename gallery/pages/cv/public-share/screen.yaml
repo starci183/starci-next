@@ -1,0 +1,157 @@
+schema: 1
+screen: cv/public-share
+title: CV công khai, chia sẻ và ảnh xem trước
+route: /cv/{slug}
+area: cv
+summary: "Route: /cv/{slug} (ảnh chụp: bảng chia sẻ mở). Mã:
+  fe/apps/app/src/components/blocks/PublicCv/, ảnh xem trước
+  app/[locale]/(pages)/(auth)/cv/[slug]/opengraph-image.tsx."
+code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
+shots:
+  "390":
+    file: 390.png
+    sha256: fcc46895f80c0419b8188d59773fa1204463b9d91a3f0044e64201ef55d59df2
+  "1440":
+    file: 1440.png
+    sha256: 093ea36186d8058dc6cc90487c761713887d45d053115ecbc55cdb55520c164f
+sections:
+  - id: s1
+    title: Bảng chia sẻ
+    shows: 'người xem sao chép liên kết hoặc gửi tới LinkedIn, Facebook, Zalo; ở 390 có thêm "Ứng dụng
+      khác" (bảng chia sẻ của hệ điều hành) khi trình duyệt có. Rộng: cửa sổ nhỏ dưới nút; 390: ngăn
+      kéo từ dưới lên.'
+    why: "không có dữ liệu mới nào rời trang: liên kết là địa chỉ đang mở, và vẫn chỉ hiện dòng đã ký."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Ảnh xem trước khi dán liên kết
+    shows: 'tấm 1200×630 mà mạng xã hội và tin nhắn hiện khi dán liên kết: tên, số dòng đã ký, ba dòng
+      đầu, "+N dòng nữa" và vết Luyện xong, AI chấm, Thầy ký. Dựng từ publicCv bằng next/og; CV
+      không có hoặc riêng tư chỉ ra ảnh chung, không tên.'
+    why: verified-experience.md điều 7 (không điểm số, không tên người duyệt) và điều 4.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: Điểm còn mở
+    shows: địa chỉ chia sẻ Zalo (https://zalo.me/share?url=…) chưa được kiểm với Zalo; nút vẫn mở đúng
+      liên kết CV để người dùng sao chép nếu địa chỉ đó đổi.
+    why: không có dữ liệu mới nào rời trang.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bố cục đã duyệt trên canvas
+    chosen: true
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Vẽ bộ lọc thành nhóm chip như canvas
+    chosen: false
+    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
+      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+  - option: Đặt hộp chia sẻ trong lề 1408 của trang
+    chosen: false
+    why: "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không
+      đặt lại vị trí của lớp phủ."
+  - option: Ảnh xem trước có tên chủ CV và số dòng trong ảnh chụp
+    chosen: false
+    why: Route ảnh xem trước đọc CV với hạn 3 giây; trong next dev của ảnh chụp nó biên dịch lần đầu quá
+      hạn nên vẽ bản chung. Mã đã đúng (opengraph-image đọc tên và số dòng); ảnh thật sẽ có tên khi
+      chạy bản dựng.
+audit:
+  builder:
+    agent: next-ux-career-2
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T15:43:35.933Z
+      lenses:
+        order:
+          verdict: open
+          notes: Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển
+            dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng
+            CV phải lên trước ở cả hai độ rộng.
+        layout:
+          verdict: open
+          notes: Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới
+            x≈1428 vượt gutter 1408; liên kết chia sẻ là localhost bị cắt giữa.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như
+            canvas ("Minh Nguyễn · 4 dòng đã ký"); link localhost không phải
+            next.starci.vn/cv/<slug> của canvas (môi trường chụp).
+    - n: 2
+      at: 2026-11-20T15:55:18.123Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Popover vượt gutter 1408: của Grammar Popover (cần Grammar), đã chấp nhận."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: Ảnh xem trước hiện thẻ chung vì route dev quá 3 giây (đã ghi trong screen.yaml); link
+            localhost là môi trường chụp. Chấp nhận như follow-up.
+    - n: 3
+      at: 2026-11-20T16:05:58.843Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Popover vượt gutter 1408: Grammar (cần Grammar), chấp nhận."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Đã sửa: ảnh xem trước có tên, số dòng, dòng CV và hành trình; link localhost là môi trường chụp."
+  escalate: null

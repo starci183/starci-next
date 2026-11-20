@@ -131,13 +131,13 @@ const CardEdit = (props: ExperienceCardProps) => {
             <Textarea
                 label={labels.editVi}
                 value={card.edit.vi}
-                rows={2}
+                rows={4}
                 onValueChange={(text) => on.editLine(card.itemId, "vi", text)}
             />
             <Textarea
                 label={labels.editEn}
                 value={card.edit.en}
-                rows={2}
+                rows={4}
                 onValueChange={(text) => on.editLine(card.itemId, "en", text)}
             />
             <Cluster gap="inline" wrap>

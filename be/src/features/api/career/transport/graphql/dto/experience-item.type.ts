@@ -27,9 +27,13 @@ export class ExperienceItemType {
     @Field(() => String)
     output!: string
 
-    /** What it is about. */
+    /** What it is about: the internal key of the item. */
     @Field(() => String)
     subject!: string
+
+    /** What it is about in words, or null when the item has none. */
+    @Field(() => String, { nullable: true })
+    subjectLabel!: string | null
 
     /** The project of the evidence, or null. */
     @Field(() => String, { nullable: true })

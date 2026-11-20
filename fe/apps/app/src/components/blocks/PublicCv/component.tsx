@@ -339,7 +339,7 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
                                 rail={<WhySection labels={props.props.labels} isLoading={isLoading} />}
                                 railWidth="standard"
                                 align="start"
-                                collapsedOrder="rail-first"
+                                collapsedOrder="primary-first"
                                 railPosition="trailing"
                             />
                         </Stack>

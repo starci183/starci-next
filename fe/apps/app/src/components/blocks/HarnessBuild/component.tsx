@@ -5,6 +5,7 @@ import {
     Button,
     CopyField,
     DataTable,
+    DisclosureList,
     Input,
     Page,
     Section,
@@ -97,6 +98,9 @@ const CasesRegion = (props: RegionProps) => {
 }
 
 /** The newest run of the stage as the learner's terminal printed it, then the step guide that takes the stage to green. */
+/** The steps of a stage drawn in full, as the canvas draws them: the first few, then the others one row each, closed. */
+const STEPS_IN_FULL = 3
+
 const GuideRegion = (props: RegionProps) => {
     const { labels, common } = props.screen.props
     const { selected } = props.view
@@ -113,21 +117,33 @@ const GuideRegion = (props: RegionProps) => {
                     <Alert tone="informative" title={labels.lockedTitle} description={labels.lockedText} />
                 ) : (
                     <Stack gap="section">
-                        {selected.steps.map((step, index) => (
-                            <Section
-                                key={step.id}
-                                {...(props.isLoading
-                                    ? { ariaLabel: labels.stepsTitle }
-                                    : { title: `${index + 1}. ${step.title}`, headingLevel: 3 as const })}
-                                isLoading={props.isLoading}
-                            >
-                                <RichMarkdown
-                                    source={step.markdown}
-                                    labels={common.markdown}
+                        {(props.isLoading ? selected.steps : selected.steps.slice(0, STEPS_IN_FULL)).map(
+                            (step, index) => (
+                                <Section
+                                    key={step.id}
+                                    {...(props.isLoading
+                                        ? { ariaLabel: labels.stepsTitle }
+                                        : { title: `${index + 1}. ${step.title}`, headingLevel: 3 as const })}
                                     isLoading={props.isLoading}
-                                />
-                            </Section>
-                        ))}
+                                >
+                                    <RichMarkdown
+                                        source={step.markdown}
+                                        labels={common.markdown}
+                                        isLoading={props.isLoading}
+                                    />
+                                </Section>
+                            ),
+                        )}
+                        {props.isLoading || selected.steps.length <= STEPS_IN_FULL ? null : (
+                            <DisclosureList
+                                label={labels.moreStepsLabel(selected.steps.length - STEPS_IN_FULL)}
+                                items={selected.steps.slice(STEPS_IN_FULL).map((step, index) => ({
+                                    id: step.id,
+                                    title: `${index + STEPS_IN_FULL + 1}. ${step.title}`,
+                                    body: <RichMarkdown source={step.markdown} labels={common.markdown} />,
+                                }))}
+                            />
+                        )}
                     </Stack>
                 )}
             </Section>

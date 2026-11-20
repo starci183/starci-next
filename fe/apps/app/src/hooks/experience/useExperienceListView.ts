@@ -123,7 +123,8 @@ const cardOf = (item: ItemRead, context: ExperienceCardContext): ExperienceCardV
         stateTone: stateToneOf(item.state),
         dateText: dateTextOf(item, context),
         title: plain === "" ? item.subject : plain,
-        subtitle: plain === "" || plain === item.subject ? undefined : item.subject,
+        subtitle:
+            plain === "" || item.subjectLabel === null || item.subjectLabel === plain ? undefined : item.subjectLabel,
         tags: tagsOf(item, context),
         returnNote: isReturned ? (item.returnNote ?? undefined) : undefined,
         note: noteOf(item, copy),

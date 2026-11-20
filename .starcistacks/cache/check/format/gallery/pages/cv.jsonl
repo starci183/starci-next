@@ -1,6 +1,6 @@
-{"findings":[],"hash":"0f3943f4a72972b7d8e04289398a59e9f52ed5ad385fa86ebdfcdd219e6226ad","path":"gallery/pages/cv/public-few-lines/explain.md","step":"prettier"}
+{"findings":[],"hash":"b3b2138dddb42bc1dd88207d54aa4a204943ebf1ce8be86cad7197154927af0c","path":"gallery/pages/cv/public-few-lines/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"a97c865f12e495f6895d8c9e6922539b14495c5979dd8bed47b9ad79eb4832f3","path":"gallery/pages/cv/public-loading/explain.md","step":"prettier"}
 {"findings":[],"hash":"0f3291a4ca42efd6317d3af13d851ede9ff190692b6885ab1f136754b3044d43","path":"gallery/pages/cv/public-many-lines/explain.md","step":"prettier"}
 {"findings":[],"hash":"b4562247d2600efc13603862036ffeca88309b1633dc8f02bacc39e7fb627c4d","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"23abbfd65680c7565f43531f9ce89d3acafcd675b2dbacc8dde4458c8a6f2eec","path":"gallery/pages/cv/public-share/explain.md","step":"prettier"}
-{"findings":[],"hash":"b9ed85a450190eda98050d762dca3f28d13914803dbe975dad2f41e544dee263","path":"gallery/pages/cv/public/explain.md","step":"prettier"}
+{"findings":[],"hash":"4d9f0521d4ce621e69d75bfe3847075d51e1dc30d02b16dde14997739d3f0f78","path":"gallery/pages/cv/public-share/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"18b47a8f757fc88ca8954c4ab56c2b6f797e1237c37501c4a3684c2a172c836b","path":"gallery/pages/cv/public/screen.yaml","step":"prettier"}

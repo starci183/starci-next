@@ -25,6 +25,7 @@ export type HarnessBuildLabels = {
     readonly casesEmpty: string
     readonly logTitle: string
     readonly stepsTitle: string
+    readonly moreStepsLabel: (n: number) => string
     readonly lockedTitle: string
     readonly lockedText: string
     readonly keysLabel: string
@@ -124,6 +125,7 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
                 casesEmpty: t("casesEmpty"),
                 logTitle: t("logTitle"),
                 stepsTitle: t("stepsTitle"),
+                moreStepsLabel: (n) => t("moreSteps", { n }),
                 lockedTitle: t("lockedTitle"),
                 lockedText: t("lockedText"),
                 keysLabel: t("keysLabel"),

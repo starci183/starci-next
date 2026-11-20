@@ -65,10 +65,10 @@
 {"findings":[],"hash":"8de94fb1374caad5339f8ca9aa223d9f4a31e4a66e75d7600b20a0e0a9670d31","path":"be/src/modules/domain/attempt/unconfigured-coach.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"f14ade9fe78127d8955b3c93ec36e2ae779041be9110b5000ddbe99b4bfa46fe","path":"be/src/modules/domain/attempt/unconfigured-coach.client.ts","step":"prettier"}
 {"findings":[],"hash":"0be9afe5a86c0a2c739762143cb8c1ec5da1a5c64be8f4a2c1a4c4e5842bd9d7","path":"be/src/modules/domain/career/career.config.ts","step":"prettier"}
-{"findings":[],"hash":"30e9da78ded030a626af681f1b2c139412541eb9e71b94799335862ab00955c9","path":"be/src/modules/domain/career/career.contracts.ts","step":"prettier"}
+{"findings":[],"hash":"cbc44e21bb7589044f3cd5dfa3d313b49575c9a5f7d776b1c8a0703272a6731d","path":"be/src/modules/domain/career/career.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"d47df810eda93f1ab04dc53668b87b514b0f881d779c979abda31eb4618ce18b","path":"be/src/modules/domain/career/career.decorators.ts","step":"prettier"}
 {"findings":[],"hash":"751eb3c894033fdcdcefd1d8213fd787d9d64191fc46f71ad963b5236901dfb4","path":"be/src/modules/domain/career/career.mapper.spec.ts","step":"prettier"}
-{"findings":[],"hash":"c1e0c3e15b9a61a072567dcd1cabe95b7928fbe36487152b9425d2850c4deba8","path":"be/src/modules/domain/career/career.mapper.ts","step":"prettier"}
+{"findings":[],"hash":"7af1262c1923c4fd93cdd39e6d3647971cd84ddec68047295785dec62a8a3e89","path":"be/src/modules/domain/career/career.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"c463261c3909f635252bb7a1c34f1315753425f65689bdba90b5eaeed0550b13","path":"be/src/modules/domain/career/career.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"9e3eb91035ecc2e951b6b7765fb418e9052ee3a63bfbfb1bc1b81a2e59225daf","path":"be/src/modules/domain/career/career.module.ts","step":"prettier"}
 {"findings":[],"hash":"268ec3a9d641b204aeb9cd2832b2ac2316f17a485a610e472b2f26b9c0c18b9d","path":"be/src/modules/domain/career/career.options.ts","step":"prettier"}
@@ -89,7 +89,7 @@
 {"findings":[],"hash":"84d74908ea0065af49e15fffe2d94fc95120846b416bc033bbf3484941352940","path":"be/src/modules/domain/career/experience-practice.port.ts","step":"prettier"}
 {"findings":[],"hash":"92e4c2be762fa28cc5d1cc368a1d13d0e58f84215593ffa78acc14e71bfe8d5f","path":"be/src/modules/domain/career/experience-producer.port.ts","step":"prettier"}
 {"findings":[],"hash":"3162d626e1a196bebe0e491c9b4f1184dac8a862e618c960655768b6a8d5bfeb","path":"be/src/modules/domain/career/experience-read.service.spec.ts","step":"prettier"}
-{"findings":[],"hash":"53756d1855d79f284b2ae2116106df60dc08cc33f0a44148f4f15a2d64da4e78","path":"be/src/modules/domain/career/experience-read.service.ts","step":"prettier"}
+{"findings":[],"hash":"d85a30dcccb7f4e613b065b507eff4ac518249272d7d3aacefddf03b789c6ed6","path":"be/src/modules/domain/career/experience-read.service.ts","step":"prettier"}
 {"findings":[],"hash":"7ba4caa462c118c686ed1795ed6a577e256ae783a69d9bbc08d37032355600c5","path":"be/src/modules/domain/career/experience-review.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"b505034b377701f094fc53ea95e1d847124c756ecacfce5be3996f8da319d254","path":"be/src/modules/domain/career/experience-review.service.ts","step":"prettier"}
 {"findings":[],"hash":"921ac7afe9a9d4f0e8e28a9e6d6185453fbc71e7a4df9331248145f85d6e2fe3","path":"be/src/modules/domain/career/experience-seed.service.spec.ts","step":"prettier"}
@@ -587,7 +587,7 @@
 {"findings":[],"hash":"cf1f8e281f2b299f51f9b4dbf08bbb044891965cbf1e23da5ba5514967e247ea","path":"be/src/modules/domain/progress/progress.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"d2b3f4f91dc85592d5a351ad62ced494668506b01d327f62850345ef6d85d6e1","path":"be/src/modules/domain/progress/progress.module.ts","step":"prettier"}
 {"findings":[],"hash":"b5465336e489894cfd75080ec001dd6206c445ba142e483f6850856ff809a72a","path":"be/src/modules/domain/progress/progress.options.ts","step":"prettier"}
-{"findings":[],"hash":"25023d16c0f4a5a63c4afd3650b847950e2cb26e0c11b93291af7719c808d9e1","path":"be/src/modules/domain/progress/progress.service.spec.ts","step":"prettier"}
+{"findings":[],"hash":"f0df27ca40985f3d92e73cc366e3b8021efbb67e8eebd597ebe5c31960370c8a","path":"be/src/modules/domain/progress/progress.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"598e44eddc963d5b78838ba01cdb7071bfab10cde75638bbb4882389000b5f19","path":"be/src/modules/domain/progress/progress.service.ts","step":"prettier"}
 {"findings":[],"hash":"2edd27b1d2d9813cc01d8126f110aff78902d92a29c4f8879c4111f80f5a31a0","path":"be/src/modules/domain/project/ai-project-coach.client.spec.ts","step":"prettier"}
 {"findings":[],"hash":"8a0f83e81f91df6413093b5e225b84e3c5982a03de21ca1f41ad145fa24aef47","path":"be/src/modules/domain/project/ai-project-coach.client.ts","step":"prettier"}

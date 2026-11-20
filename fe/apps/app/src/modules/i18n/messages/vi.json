@@ -1778,7 +1778,7 @@
       "resend": "Sửa dòng CV và gửi lại",
       "sendHint": "Gửi xong bạn không sửa dòng CV nữa cho tới khi thầy trả lời.",
       "editVi": "Dòng CV (tiếng Việt)",
-      "editEn": "CV line (English)",
+      "editEn": "Dòng CV (tiếng Anh)",
       "failure": {
         "CAREER_PREMIUM_REQUIRED": "Gửi thầy duyệt cần gói Premium.",
         "CAREER_LINE_SLOT_CHANGED": "Bạn sửa được câu chữ nhưng không sửa được số liệu và giá trị lấy từ bằng chứng.",
@@ -2288,7 +2288,8 @@
         "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này.",
         "errorTitle": "Không tải được bản build này",
         "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
-        "backToBuilds": "Về danh sách Build"
+        "backToBuilds": "Về danh sách Build",
+        "moreSteps": "và {n} bước nữa"
       },
       "use": {
         "title": "Xài",

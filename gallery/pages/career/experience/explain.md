@@ -32,8 +32,8 @@ Grammar: `Section kind="list"` + `ListRow action`.
 Vì sao: chưa có mục nào thì nói một lần ("Mỗi phần học cho bạn một dòng kinh nghiệm") rồi bốn lối vào; tab không có mục có chỉ dẫn và nút "Xem tất cả".
 Grammar: `Alert tone="informative"`, `EmptyNotice`.
 
-## Cập nhật 2026-11-20 (pending-seed)
+## Cập nhật 2026-11-20 (chụp lại sau subjectLabel)
 
-Vì sao: Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Màn danh sách có thẻ (đã xác minh, chờ thầy, AI đã chấm, bị trả lại). Mã hiện tại: lọc theo nguồn là Tabs kind="filter" có số đếm; nút Gửi duyệt trong thẻ là nút trung tính; tiêu đề thẻ là nhãn của SurfaceCard; meta, tab trạng thái và dòng xác nhận lấy từ view đã dựng, không rẽ nhánh theo slot.
-Luật: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
-Grammar: `SurfaceCard`, `Tabs kind="filter"`, `Section kind="list"`, `Button`, `Alert`
+Vì sao: re-shoot after subjectLabel core lands. Lõi đọc kinh nghiệm của học viên nay trả subjectLabel (nhãn người đọc được, hoặc null) bên cạnh khóa nội bộ subject; danh sách chỉ hiện nhãn đó. Ảnh chụp phải theo mã mới nên chụp lại khi lõi mới chạy trên dev.
+Luật: Grammar 0.50, ảnh chụp chỉ dùng dữ liệu thật, bộ lọc nguồn là Tabs kind="filter", không hiện khóa nội bộ cho người dùng.
+Grammar: `SurfaceCard`, `Tabs kind="filter"`, `Section kind="list"`, `Textarea`, `Button`, `Alert`

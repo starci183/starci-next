@@ -73,7 +73,7 @@ export class ExperienceReadService {
             LIST_ROWS_MAX,
         ])
         return {
-            items: rows.map((row) => toExperienceItemView(row)),
+            items: rows.map((row) => toExperienceItemView(row, params.locale ?? "vi")),
             hiringMinVerified: this.settings.hiringMinVerified,
         }
     }

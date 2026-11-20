@@ -237,9 +237,13 @@
       }
     },
     "career/verify-revoked": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "f44fdcdfd8c9b2eaf755ee1476afa5fdadc3677f77d93bac9287d70a19026da2",
+        "1440": "0bb50d44054aca95b64f51aeddda851cd846e73ca495c32797c9c721642451f0"
+      }
     },
     "commerce/premium": {
       "status": "built",
@@ -347,9 +351,13 @@
       }
     },
     "cv/public": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "949460a950e34013ba617b3b6342312b587cea2b20c6385161bd4222682dea75",
+        "1440": "4ae2bbd186de2dd5afa184da9b35f70bfea8cd7200e7d52fcd16af94a180e7e3"
+      }
     },
     "cv/public-error": {
       "status": "approved",
@@ -357,9 +365,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-few-lines": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c",
+        "1440": "63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb"
+      }
     },
     "cv/public-loading": {
       "status": "approved",
@@ -381,9 +393,13 @@
       }
     },
     "cv/public-share": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "fcc46895f80c0419b8188d59773fa1204463b9d91a3f0044e64201ef55d59df2",
+        "1440": "093ea36186d8058dc6cc90487c761713887d45d053115ecbc55cdb55520c164f"
+      }
     },
     "devices/list": {
       "status": "built",
@@ -773,8 +789,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "5061f167443414d0bb4318fb3b183781c934329771310bcda8841af46c778fe7",
-        "1440": "d89bb96b3ff124daf96f08bac9e6c0adcaa442d7330dfd18df817df86b496c34"
+        "390": "4a0658d90d8acecce486befb622aa8c6e39d0e5028ae5470ab4fab165ae600dc",
+        "1440": "1608192b647c26adf08daa5ff14ccdc51dbb6bd7a24ae72104f746450bc17333"
       }
     },
     "harness/build-connect-bad-url": {

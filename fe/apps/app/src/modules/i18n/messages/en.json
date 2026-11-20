@@ -2288,7 +2288,8 @@
         "repoAudienceDescription": "The CI workflow of the repo must ask for an OIDC token with this audience.",
         "errorTitle": "Could not load this build",
         "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
-        "backToBuilds": "Back to the builds"
+        "backToBuilds": "Back to the builds",
+        "moreSteps": "and {n} more steps"
       },
       "use": {
         "title": "Use",

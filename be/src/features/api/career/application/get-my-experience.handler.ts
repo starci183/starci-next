@@ -15,6 +15,10 @@ export class GetMyExperienceHandler extends ICQRSHandler<GetMyExperienceQuery, M
     }
 
     protected override process(query: GetMyExperienceQuery): Promise<MyExperienceView> {
-        return this.reads.mine({ learnerId: query.params.principal.id, state: query.params.request.state })
+        return this.reads.mine({
+            learnerId: query.params.principal.id,
+            state: query.params.request.state,
+            locale: query.params.request.locale ?? "vi",
+        })
     }
 }
