@@ -8,6 +8,7 @@ import {
     type MarkdownProps,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
+import { BODY_EMPHASIS_CLASS_NAME } from "./classNames"
 import { parseDirectives, plainWordsOf, type DirectivePiece, type RichNode } from "./directives"
 
 /** The body of a lesson, a problem, a hint or an answer: markdown that may hold `:::name` containers. */
@@ -127,8 +128,10 @@ export const RichMarkdown = (props: RichMarkdownProps) => {
     const { source, isLoading, ...context } = props
     if (isLoading === true) return <MarkdownSkeleton />
     return (
-        <Stack gap="row">
-            <Pieces nodes={parseDirectives(source)} context={context} />
-        </Stack>
+        <div className={BODY_EMPHASIS_CLASS_NAME}>
+            <Stack gap="row">
+                <Pieces nodes={parseDirectives(source)} context={context} />
+            </Stack>
+        </div>
     )
 }
