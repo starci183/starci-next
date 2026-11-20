@@ -28,6 +28,7 @@ export const PracticeProblemPanel = (props: PracticeProblemPanelProps) => (
         <Section ariaLabel={props.labels.title} {...(props.isLoading === true ? { isLoading: true } : {})}>
             <RichMarkdown
                 source={props.markdown}
+                isLoading={props.isLoading === true}
                 labels={{ diagram: props.labels.diagram, diagramError: props.labels.diagramError }}
             />
         </Section>
