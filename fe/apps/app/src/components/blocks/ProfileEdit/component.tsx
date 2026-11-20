@@ -131,7 +131,7 @@ const NameSection = (props: ProfileEditBaseProps) => {
                             options={props.props.goal.options}
                             value={props.props.goal.value}
                             onValueChange={props.on.changeGoal}
-                            isLoading={props.props.goal.isLoading}
+                            isLoading={isLoading || props.props.goal.isLoading}
                         />
                     </Stack>
                 </Section>

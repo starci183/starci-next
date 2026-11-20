@@ -1,4 +1,4 @@
-import { Page, Pane, PaneGrid, PaneSection, Section, Stack, type ListRowData } from "@starci/grammar/common"
+import { Page, Pane, PaneGrid, PaneSection, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
 import { RichMarkdown, SlotView } from "@starci-next/ui"
 import type { HarnessDocNavItem, HarnessDocPageView, HarnessDocScreen } from "@/hooks/harnessDocs"
 
@@ -18,7 +18,16 @@ type RegionProps = {
 /** The body of the article: one anchored section per second-level heading, its markdown with tables, code and diagrams. */
 const DocBody = (props: RegionProps) => (
     <Stack gap="region">
-        {props.view.sections.map((section) => (
+        {props.isLoading ? (
+            <Stack gap="row">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
+                    <Text key={line} as="p" isLoading>
+                        {"x"}
+                    </Text>
+                ))}
+            </Stack>
+        ) : null}
+        {(props.isLoading ? [] : props.view.sections).map((section) => (
             <Section
                 key={section.id}
                 id={section.id}

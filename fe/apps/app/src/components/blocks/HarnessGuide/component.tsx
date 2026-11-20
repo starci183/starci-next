@@ -7,6 +7,7 @@ import {
     PaneSection,
     Section,
     Stack,
+    Text,
     Switch,
     type ListRowData,
 } from "@starci/grammar/common"
@@ -41,7 +42,16 @@ const GuideBody = (props: {
     readonly isLoading: boolean
 }) => (
     <Stack gap="region">
-        {props.view.sections.map((section) => (
+        {props.isLoading ? (
+            <Stack gap="row">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
+                    <Text key={line} as="p" isLoading>
+                        {"x"}
+                    </Text>
+                ))}
+            </Stack>
+        ) : null}
+        {(props.isLoading ? [] : props.view.sections).map((section) => (
             <Section
                 key={section.id}
                 id={section.id}
