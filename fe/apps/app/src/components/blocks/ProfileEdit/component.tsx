@@ -32,6 +32,7 @@ export type ProfileEditBaseProps = {
         readonly slotLabels: SlotLabels
         readonly identity: DataSlot<ProfileIdentityView>
         readonly cvLink: DataSlot<ProfileCvLinkView>
+        readonly nameIdentity: DataSlot<ProfileIdentityView>
         readonly goal: ProfileEditGoal
         /** The accepted types of the avatar picker, as a native `accept` list. */
         readonly accept: string
@@ -106,7 +107,8 @@ const NameSection = (props: ProfileEditBaseProps) => {
     const { labels, slotLabels } = props.props
     return (
         <SlotView
-            slot={props.props.identity}
+            forbidden="hide"
+            slot={props.props.nameIdentity}
             placeholder={IDENTITY_PLACEHOLDER}
             labels={slotLabels}
             onRetry={props.on.retry}

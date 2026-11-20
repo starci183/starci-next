@@ -1835,7 +1835,9 @@
         "evidence": "Bằng chứng",
         "code": "Mã xác minh",
         "note": "Trang này để nhà tuyển dụng kiểm tra một dòng CV. Không hiện điểm số chi tiết hay mã nguồn.",
-        "factsTitle": "Thông tin công khai"
+        "factsTitle": "Thông tin công khai",
+        "errorTitle": "Không tải được kết quả xác minh",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "loading": "Đang tải…",
       "crumb": {
@@ -1896,7 +1898,9 @@
       "gradePass": "Đạt",
       "gradeFail": "Chưa đạt",
       "defenseChip": "{count} câu bảo vệ",
-      "signerChip": "{role} ký"
+      "signerChip": "{role} ký",
+      "errorTitle": "Không tải được danh sách kinh nghiệm",
+      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
     },
     "devices": {
       "pageTitle": "Thiết bị",
@@ -2029,7 +2033,7 @@
         "overview": "Tổng quan",
         "build": "Build",
         "use": "Xài",
-        "docs": "Hiểu sâu"
+        "docs": "Docs"
       },
       "tools": {
         "label": "Công cụ của bạn",
@@ -2091,7 +2095,9 @@
             "topics": "Bản chất LLM · Vòng lặp agent · Context · Thiết kế harness",
             "progress": "{count} bài"
           }
-        }
+        },
+        "errorTitle": "Không tải được tiến độ",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "builds": {
         "title": "Build",
@@ -2107,7 +2113,9 @@
           "practising": "Đang luyện",
           "proved": "Đã chứng minh",
           "todo": "Chưa bắt đầu"
-        }
+        },
+        "errorTitle": "Không tải được danh sách build",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "build": {
         "title": "Build",
@@ -2139,7 +2147,9 @@
         "repoBind": "Kết nối repo",
         "repoFailed": "Không kết nối được repo này. Kiểm tra tên có dạng owner/repo.",
         "repoAudienceLabel": "Audience của workflow",
-        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này."
+        "repoAudienceDescription": "Workflow CI của repo phải xin token OIDC với audience này.",
+        "errorTitle": "Không tải được bản build này",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "use": {
         "title": "Xài",
@@ -2166,7 +2176,9 @@
         "costColumn": "Chi phí ước tính",
         "trialCommand": "Chạy bẫy: harness trial TÊN_BẪY --tool claude hoặc codex. CLI hỏi xác nhận chi phí trước khi chạy.",
         "shortcutBlocked": "{label} (bị chặn)",
-        "budget": "Tối đa {usd}"
+        "budget": "Tối đa {usd}",
+        "errorTitle": "Không tải được phần Xài",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "guide": {
         "title": "Hướng dẫn",
@@ -2184,17 +2196,21 @@
         "onlyFailingLabel": "Chỉ điều kiện chưa đạt",
         "onlyFailingDescription": "Ẩn các điều kiện đã đạt",
         "navTitle": "Hướng dẫn",
-        "navEmpty": "Chưa có hướng dẫn nào."
+        "navEmpty": "Chưa có hướng dẫn nào.",
+        "errorTitle": "Không tải được bài hướng dẫn",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "docs": {
-        "title": "Hiểu sâu",
+        "title": "Docs",
         "description": "Bài giải thích dài, có sơ đồ, không có kiểm thử. Đọc để hiểu agent chạy ra sao.",
         "listTitle": "Các bài",
         "empty": "Chưa có bài nào.",
         "noMatch": "Không có bài nào khớp. Thử một từ khác.",
         "filterLabel": "Lọc theo tên bài",
         "filterPlaceholder": "Lọc theo tên bài",
-        "clearLabel": "Xóa bộ lọc"
+        "clearLabel": "Xóa bộ lọc",
+        "errorTitle": "Không tải được mục lục Docs",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "doc": {
         "title": "Bài giải thích",
@@ -2202,7 +2218,9 @@
         "outlineTitle": "Trong bài này",
         "outlineEmpty": "Bài chưa có mục nào.",
         "navTitle": "Docs",
-        "navEmpty": "Chưa có bài nào."
+        "navEmpty": "Chưa có bài nào.",
+        "errorTitle": "Không tải được bài này",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "proofs": {
         "none": "Chưa luyện",
@@ -2298,14 +2316,16 @@
         "meta": "Thay đổi chưa lưu",
         "open": "Sửa hồ sơ",
         "openNew": "Thêm ảnh và tên",
-        "cancel": "Hủy",
+        "cancel": "Huỷ",
         "save": "Lưu thay đổi",
         "unsaved": "Thay đổi chưa lưu",
         "goal": {
           "label": "Lộ trình mục tiêu",
           "hint": "Dùng để gợi ý bài kế tiếp. Không khóa phần nào.",
           "placeholder": "Chọn lộ trình"
-        }
+        },
+        "errorTitle": "Không tải được hồ sơ",
+        "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
       },
       "crumb": {
         "label": "Đường dẫn",

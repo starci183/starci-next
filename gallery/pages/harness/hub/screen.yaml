@@ -81,24 +81,24 @@ audit:
       at: 2026-11-20T12:54:34.556Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Mô tả mỗi phần bị cắt giữa chữ ở 390 và dòng meta "AI agent · MCP server · Cha..." cắt ở cả 1440 và 390. Canvas có nút chính "Tiếp tục build dở"; code không có nút chính nào.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Không có hành động chính "Tiếp tục build dở" như canvas harness/hub; chỉ các dòng chevron.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Tab "Build / Xài / Hiểu sâu" không có số đếm như canvas (Build 5, Xài 8, Docs 12); tab "Hiểu sâu" thay "Docs" nên tên và số đếm khác canvas.'
   escalate: null

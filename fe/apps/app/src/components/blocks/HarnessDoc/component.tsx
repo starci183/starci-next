@@ -76,7 +76,7 @@ export const HarnessDocBase = (props: HarnessDocBaseProps) => (
             <Page chrome="panes" layout="workspace" header={props.props.header}>
                 <PaneGrid
                     label={props.props.labels.outlineTitle}
-                    areas={{ base: ["aside", "main", "nav"], wide: ["nav main aside"] }}
+                    areas={{ base: ["nav", "main", "aside"], wide: ["nav main aside"] }}
                     columns={{ base: ["fill"], wide: ["standard", "fill", "standard"] }}
                     rows={{ base: ["auto", "fill", "auto"], wide: ["fill"] }}
                 >

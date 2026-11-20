@@ -114,23 +114,23 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Trang dài ~17.000px ở 1440 và ~19.400px ở 390 vì hướng dẫn từng chặng chép nguyên vào trang; lệnh chạy và nối repo nằm dưới danh sách chặng, đầu trang không có nút "Tiếp tục chặng 3" như canvas.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 390 mô tả chặng bị cắt "…chờ đúng retry-after khi ..." giữa chữ.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Thiếu nút chính "Tiếp tục chặng N" ở đầu trang như canvas harness/build.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

@@ -135,8 +135,8 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
         props: {
             header: harnessHeaderOf(common, {
                 active: "use",
-                title: guide.data?.title ?? t("title"),
-                ...(guide.data === undefined ? {} : { description: guide.data.summary }),
+                title: (guide.data?.title ?? t("title")).replaceAll("`", ""),
+                ...(guide.data === undefined ? {} : { description: guide.data.summary.replaceAll("`", "") }),
                 trail: [[common.tabs.use, HARNESS_ROUTES.use]],
             }),
             guide: mapSlot(slotOfSwr(guide), (each): HarnessGuidePageView => {
@@ -144,7 +144,7 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
                 const ranAt = probes.reduce((newest, probe) => (probe.at > newest ? probe.at : newest), "")
                 return {
                     title: each?.title ?? "",
-                    summary: each?.summary ?? "",
+                    summary: (each?.summary ?? "").replaceAll("`", ""),
                     tool: each?.tool ?? tool,
                     sections: each?.sections ?? [],
                     outline: outlineOf(each?.sections ?? []),
@@ -154,11 +154,11 @@ export const useHarnessGuideScreen = (route: GuideRoute): HarnessGuideScreen => 
             guidePlaceholder: HARNESS_GUIDE_PLACEHOLDER,
             guides: (own.data ?? []).map((each) => ({
                 id: each.slug,
-                title: each.title,
+                title: each.title.replaceAll("`", ""),
                 href: harnessGuidePath(tool, each.slug),
                 isCurrent: each.slug === route.slug,
             })),
-            slotLabels: slotLabels(t("missing")),
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 navTitle: t("navTitle"),
                 navEmpty: t("navEmpty"),

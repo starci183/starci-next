@@ -105,7 +105,7 @@ export const useHarnessBuildScreen = (route: BuildRoute): HarnessBuildScreen => 
                 build === undefined ? HARNESS_BUILD_PLACEHOLDER : buildViewOf(build, route.stage, words),
             ),
             placeholder: HARNESS_BUILD_PLACEHOLDER,
-            slotLabels: slotLabels(t("missing")),
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 stagesTitle: t("stagesTitle"),
                 pullLabel: t("pullLabel"),

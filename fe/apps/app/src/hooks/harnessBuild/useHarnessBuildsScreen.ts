@@ -112,7 +112,7 @@ export const useHarnessBuildsScreen = (): HarnessBuildsScreen => {
                     .filter((item) => filter === "all" || item.status === filter),
             ),
             placeholder: HARNESS_BUILDS_PLACEHOLDER,
-            slotLabels: slotLabels(t("empty")),
+            slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 listTitle: t("listTitle"),
                 empty: filter === "all" ? t("empty") : t("noMatch"),

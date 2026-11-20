@@ -130,6 +130,9 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
         budget: (usd) => t("budget", { usd: format.number(usd, { style: "currency", currency: "USD" }) }),
         when: (iso) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" }),
     }
+    const guidesSlot = slotOfSwr(guides)
+    // One failure notice per page: when the guides failed, the other two reads are not drawn.
+    const hideRest = "isError" in guidesSlot
     return {
         props: {
             header: harnessHeaderOf(common, {
@@ -138,13 +141,15 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
                 description: t("description"),
                 trail: [],
             }),
-            guides: mapSlot(slotOfSwr(guides), (rows) => rows.map((each) => guideItemOf(each))),
+            guides: mapSlot(guidesSlot, (rows) => rows.map((each) => guideItemOf(each))),
             guidesPlaceholder: HARNESS_GUIDES_PLACEHOLDER,
-            doctor: mapSlot(slotOfSwr(doctor), (each) => doctorPanelOf(each, words)),
+            doctor: hideRest ? { isForbidden: true } : mapSlot(slotOfSwr(doctor), (each) => doctorPanelOf(each, words)),
             doctorPlaceholder: HARNESS_DOCTOR_PLACEHOLDER,
-            trials: settledListSlot(mapSlot(slotOfSwr(trials), (rows) => rows.map((each) => trialItemOf(each, words)))),
+            trials: hideRest
+                ? { isForbidden: true }
+                : settledListSlot(mapSlot(slotOfSwr(trials), (rows) => rows.map((each) => trialItemOf(each, words)))),
             trialsPlaceholder: HARNESS_TRIALS_PLACEHOLDER,
-            slotLabels: slotLabels(t("empty")),
+            slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 guidesTitle: t("guidesTitle"),
                 guidesEmpty: t("guidesEmpty"),

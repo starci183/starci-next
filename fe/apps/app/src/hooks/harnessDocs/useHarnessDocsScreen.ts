@@ -71,13 +71,13 @@ export const useHarnessDocsScreen = (): HarnessDocsScreen => {
                     .filter((doc) => needle === "" || `${doc.title} ${doc.summary}`.toLowerCase().includes(needle))
                     .map((doc): HarnessDocItemView => ({
                         slug: doc.slug,
-                        title: doc.title,
-                        summary: doc.summary,
+                        title: doc.title.replaceAll("`", ""),
+                        summary: doc.summary.replaceAll("`", ""),
                         href: harnessDocPath(doc.slug),
                     })),
             ),
             placeholder: HARNESS_DOCS_PLACEHOLDER,
-            slotLabels: slotLabels(t("empty")),
+            slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 listTitle: t("listTitle"),
                 empty: needle === "" ? t("empty") : t("noMatch"),

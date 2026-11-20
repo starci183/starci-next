@@ -36,6 +36,8 @@ export type ProfileEditState = {
     readonly accept: string
     readonly identity: DataSlot<ProfileIdentityView>
     readonly cvLink: DataSlot<ProfileCvLinkView>
+    /** The identity again for the name section; hidden when the identity failed, so the page draws one failure notice. */
+    readonly nameIdentity: DataSlot<ProfileIdentityView>
     readonly goal: ProfileEditGoal
     readonly slotLabels: ReturnType<ReturnType<typeof useSlotLabels>>
     readonly state: {
@@ -81,26 +83,30 @@ export const useProfileEdit = (): ProfileEditState => {
         nameMax: 60,
     }
     const accountName = session.session?.displayName ?? session.session?.email ?? ""
+    const identitySlot = mapSlot(slotOfSwr(identity.read), (data) => {
+        const name = identity.draft ?? data.displayName ?? ""
+        return {
+            shownName: data.displayName ?? accountName,
+            nameValue: name,
+            email: session.session?.email ?? "",
+            avatarUrl: data.avatarUrl,
+            goalTitle: data.goal?.title ?? null,
+            canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
+            isNew: false,
+            nameCount: `${name.length}/${limits.nameMax}`,
+        }
+    })
+    // One failure notice per page: when the identity failed, the name and the CV link are not drawn.
+    const isIdentityFailed = "isError" in identitySlot
     const back = (): void => router.push(APP_ROUTES.profile)
     return {
         pageTitle: t("edit.title"),
         labels: labelsOf(t, profileIssueWordsOf(t, identity.issue, limits), limits.maxBytes),
         accept: limits.contentTypes.join(","),
-        slotLabels: useSlotLabels()(t("cv.empty")),
-        identity: mapSlot(slotOfSwr(identity.read), (data) => {
-            const name = identity.draft ?? data.displayName ?? ""
-            return {
-                shownName: data.displayName ?? accountName,
-                nameValue: name,
-                email: session.session?.email ?? "",
-                avatarUrl: data.avatarUrl,
-                goalTitle: data.goal?.title ?? null,
-                canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
-                isNew: false,
-                nameCount: `${name.length}/${limits.nameMax}`,
-            }
-        }),
-        cvLink: mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
+        slotLabels: useSlotLabels()(t("cv.empty"), { title: t("edit.errorTitle"), text: t("edit.errorText") }),
+        identity: identitySlot,
+        nameIdentity: isIdentityFailed ? { isForbidden: true } : identitySlot,
+        cvLink: isIdentityFailed ? { isForbidden: true } : mapSlot(slotOfSwr(cvLink), (data) => cvLinkOf(origin, data)),
         goal: {
             label: t("edit.goal.label"),
             hint: t("edit.goal.hint"),

@@ -1,6 +1,8 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { PublicTopBar } from "@/components/blocks/PublicTopBar"
+import { usePublicCvLabels } from "@/hooks/publicCv"
 import { failureCodeOf, plainLineOf, useExperienceWords } from "@/hooks/experience"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryVerifyExperienceSwr } from "@/hooks/swr"
@@ -16,6 +18,7 @@ const NOT_FOUND_CODES: ReadonlySet<string> = new Set(["CAREER_ITEM_NOT_FOUND", "
 export const VerifyExperience = (props: VerifyExperienceProps) => {
     const t = useTranslations("app.experience.verify")
     const words = useExperienceWords()
+    const publicLabels = usePublicCvLabels()
     const code = decodeURIComponent(props.code)
     const read = useQueryVerifyExperienceSwr(code)
     const isNotFound = read.error !== undefined && NOT_FOUND_CODES.has(failureCodeOf(read.error))
@@ -40,12 +43,18 @@ export const VerifyExperience = (props: VerifyExperienceProps) => {
                         { term: t("code"), value: view.code },
                     ],
                 })),
-                placeholder: VERIFICATION_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("notFoundTitle")),
+                placeholder: {
+                    ...VERIFICATION_PLACEHOLDER,
+                    facts: [t("part"), t("evidence"), t("code")].map((term) => ({ term, value: "xxxxxxxx" })),
+                },
+                slotLabels: useSlotLabels()(t("notFoundTitle"), { title: t("errorTitle"), text: t("errorText") }),
                 note: t("note"),
                 factsTitle: t("factsTitle"),
                 notFoundTitle: t("notFoundTitle"),
                 notFoundDescription: t("notFoundDescription"),
+                top: <PublicTopBar />,
+                homeLabel: publicLabels.notFoundHome,
+                homeHref: publicLabels.homeHref,
             }}
             on={{ retry: () => void read.mutate() }}
         />

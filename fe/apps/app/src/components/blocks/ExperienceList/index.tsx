@@ -119,7 +119,7 @@ export const ExperienceList = () => {
                         : settled.tabs.map((each) => ({ id: each.id, label: each.label, count: each.count })),
                 confirmLine: settled?.confirmLine,
                 placeholder: EXPERIENCE_PLACEHOLDER,
-                slotLabels: useSlotLabels()(t("empty")),
+                slotLabels: useSlotLabels()(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
                 labels: labelsOf(t),
                 tab,
                 source,

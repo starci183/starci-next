@@ -15,6 +15,7 @@ export const ProfileEdit = () => {
                 slotLabels: edit.slotLabels,
                 identity: edit.identity,
                 cvLink: edit.cvLink,
+                nameIdentity: edit.nameIdentity,
                 goal: edit.goal,
                 accept: edit.accept,
                 ...edit.state,

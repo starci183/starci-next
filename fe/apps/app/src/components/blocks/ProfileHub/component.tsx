@@ -89,7 +89,7 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
                                     .filter((part) => part !== "")
                                     .join(" · ")}
                             </Text>
-                            <Link variant="plain" href={props.labels.goalHref}>
+                            <Link href={props.labels.goalHref}>
                                 {identity.goalTitle === null ? props.labels.goalChoose : props.labels.goalChange}
                             </Link>
                         </Cluster>

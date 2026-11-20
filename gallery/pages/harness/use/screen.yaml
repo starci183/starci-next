@@ -80,24 +80,24 @@ audit:
       at: 2026-11-20T12:59:36.062Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Công tắc "Chỉ điều kiện chưa đạt" vẫn hiện khi bảng doctor rỗng (0/0), bảng "Bẫy thử agent" rỗng chiếm khối cao; ở 390 tiêu đề "Kiểm tra máy với harness doc…" bị cắt.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Dấu backtick thô trong mô tả và tiêu đề ("`git commit --no-verify`", "`claude -p`", "`.env`", "`permissions`"): markdown lộ ra, không vẽ thành mã. Mô tả hướng dẫn kết thúc bằng "..." giữa câu.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Doctor "0/0 đạt · Chưa chạy" và bẫy thử "0" là chưa có dữ liệu máy: không đánh dấu cần API; canvas dùng dữ liệu 6/9 đạt.'
   escalate: null

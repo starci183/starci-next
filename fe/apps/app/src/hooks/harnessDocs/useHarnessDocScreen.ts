@@ -75,18 +75,18 @@ export const useHarnessDocScreen = (route: DocRoute): HarnessDocScreen => {
         props: {
             header: harnessHeaderOf(common, {
                 active: "docs",
-                title: read.data?.title ?? t("title"),
-                ...(read.data === undefined ? {} : { description: read.data.summary }),
+                title: (read.data?.title ?? t("title")).replaceAll("`", ""),
+                ...(read.data === undefined ? {} : { description: read.data.summary.replaceAll("`", "") }),
                 trail: [[common.tabs.docs, HARNESS_ROUTES.docs]],
             }),
             slot: mapSlot(slotOfSwr(read), (doc): HarnessDocPageView => ({
                 title: doc?.title ?? "",
-                summary: doc?.summary ?? "",
+                summary: (doc?.summary ?? "").replaceAll("`", ""),
                 sections: doc?.sections ?? [],
                 outline: outlineOf(doc?.sections ?? []),
             })),
             placeholder: HARNESS_DOC_PLACEHOLDER,
-            slotLabels: slotLabels(t("missing")),
+            slotLabels: slotLabels(t("missing"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 navTitle: t("navTitle"),
                 navEmpty: t("navEmpty"),
@@ -95,7 +95,7 @@ export const useHarnessDocScreen = (route: DocRoute): HarnessDocScreen => {
             },
             docs: (list.data ?? []).map((doc) => ({
                 id: doc.slug,
-                title: doc.title,
+                title: doc.title.replaceAll("`", ""),
                 href: harnessDocPath(doc.slug),
                 isCurrent: doc.slug === route.slug,
             })),

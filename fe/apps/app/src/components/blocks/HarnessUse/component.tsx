@@ -179,6 +179,7 @@ export const HarnessUseBase = (props: HarnessUseBaseProps) => (
             />
             <SlotView
                 slot={props.props.doctor}
+                forbidden="hide"
                 placeholder={props.props.doctorPlaceholder}
                 labels={props.props.slotLabels}
                 onRetry={props.on.retryDoctor}
@@ -186,6 +187,7 @@ export const HarnessUseBase = (props: HarnessUseBaseProps) => (
             />
             <SlotView
                 slot={props.props.trials}
+                forbidden="hide"
                 placeholder={props.props.trialsPlaceholder}
                 labels={props.props.slotLabels}
                 onRetry={props.on.retryTrials}

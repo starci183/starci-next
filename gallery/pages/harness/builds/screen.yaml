@@ -56,24 +56,24 @@ audit:
       at: 2026-11-20T12:54:50.405Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 390 dải Tabs kind="filter" bị cắt ở "Đã chứng minh 0 ›" (tab Chưa bắt đầu ẩn sau mũi tên), hàng 2 lệch lề so với hàng 1 (x=44 so với x=36) và số liệu "0 / 5 chặng đã chứng minh · 0 / 5 chặng đã chạy" căn giữa lạ. Ở 1440 mô tả bị cắt "…xác ..." giữa chữ; cột "ANTHROPIC_API_KEY / OP..." bị cắt.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Cột key hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." thay vì "Anthropic hoặc OpenAI" như canvas.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Thiếu "Cần key" và trạng thái (Đang luyện / Đã chứng minh) từng bản build như canvas; hàng chỉ có hai số "chặng đã chứng minh / đã chạy".'
   escalate: null

@@ -1,4 +1,5 @@
 import { Alert, DescriptionList, EmptyNotice, Page, Section, Stack, Text } from "@starci/grammar/common"
+import type { ReactNode } from "react"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -32,6 +33,10 @@ export type VerifyExperienceBaseProps = {
         readonly factsTitle: string
         readonly notFoundTitle: string
         readonly notFoundDescription: string
+        /** The public top bar: brand, language and the way in. */
+        readonly top: ReactNode
+        readonly homeLabel: string
+        readonly homeHref: string
     }
     readonly on: { readonly retry: () => void }
 }
@@ -42,42 +47,52 @@ export type VerifyExperienceBaseProps = {
  */
 export const VerifyExperienceBase = (props: VerifyExperienceBaseProps) => (
     <Page>
-        {props.shape === "notFound" ? (
-            <EmptyNotice message={props.props.notFoundTitle} description={props.props.notFoundDescription} />
-        ) : (
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(view, isLoading) => (
-                    <Stack gap="row">
-                        <Alert
-                            tone={view.isRevoked ? "negative" : "affirmative"}
-                            isLoading={isLoading}
-                            title={view.title}
-                            description={view.sub}
-                        />
-                        <Text as="p" isLoading={isLoading}>
-                            {view.line}
-                        </Text>
-                        <Section title={props.props.factsTitle} headingLevel={2} isLoading={isLoading}>
-                            <DescriptionList
-                                isDivided
+        <Stack gap="region">
+            {props.props.top}
+            {props.shape === "notFound" ? (
+                <EmptyNotice
+                    scope="page"
+                    message={props.props.notFoundTitle}
+                    description={props.props.notFoundDescription}
+                    actionIntent="neutral"
+                    actionLabel={props.props.homeLabel}
+                    actionHref={props.props.homeHref}
+                />
+            ) : (
+                <SlotView
+                    slot={props.props.slot}
+                    placeholder={props.props.placeholder}
+                    labels={props.props.slotLabels}
+                    onRetry={props.on.retry}
+                    render={(view, isLoading) => (
+                        <Stack gap="row">
+                            <Alert
+                                tone={view.isRevoked ? "negative" : "affirmative"}
                                 isLoading={isLoading}
-                                items={view.facts.map((fact) => ({
-                                    id: fact.term,
-                                    term: fact.term,
-                                    description: fact.value,
-                                }))}
+                                title={view.title}
+                                description={view.sub}
                             />
-                        </Section>
-                        <Text tone="muted" isLoading={isLoading}>
-                            {props.props.note}
-                        </Text>
-                    </Stack>
-                )}
-            />
-        )}
+                            <Text as="p" isLoading={isLoading}>
+                                {view.line}
+                            </Text>
+                            <Section title={props.props.factsTitle} headingLevel={2} isLoading={isLoading}>
+                                <DescriptionList
+                                    isDivided
+                                    isLoading={isLoading}
+                                    items={view.facts.map((fact) => ({
+                                        id: fact.term,
+                                        term: fact.term,
+                                        description: fact.value,
+                                    }))}
+                                />
+                            </Section>
+                            <Text tone="muted" isLoading={isLoading}>
+                                {props.props.note}
+                            </Text>
+                        </Stack>
+                    )}
+                />
+            )}
+        </Stack>
     </Page>
 )

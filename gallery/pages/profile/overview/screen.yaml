@@ -93,24 +93,24 @@ audit:
       at: 2026-11-20T13:00:52.378Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính "Thêm ảnh và tên" chạm mép phải x≈1428, lệch gutter 1408.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Chọn lộ trình" là chữ đậm trơn cạnh dòng meta, không dạng bấm được; canvas là liên kết "Đổi lộ trình".'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Email "gallery-ess-0006@example.test" xuất hiện hai lần liền nhau (làm tên và làm meta); ở 390 dòng meta ngắt "Lộ trình mục tiêu: Chưa / chọn lộ trình".'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ảnh chụp là tài khoản rỗng (0/3, "Chưa có dòng CV nào"), không phải trạng thái có dữ liệu (2/3 đã xác minh) của canvas profile/overview.'
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Tên hiển thị là địa chỉ email (lỗi đã biết: tên lấy từ email tài khoản), canvas là "Minh Nguyễn".'
   escalate: null

@@ -142,7 +142,7 @@ export const useHarnessHubScreen = (): HarnessHubScreen => {
                     value: "xx",
                 })),
             },
-            slotLabels: slotLabels(t("empty")),
+            slotLabels: slotLabels(t("empty"), { title: t("errorTitle"), text: t("errorText") }),
             labels: {
                 figuresLabel: t("figuresLabel"),
                 partsTitle: t("partsTitle"),
