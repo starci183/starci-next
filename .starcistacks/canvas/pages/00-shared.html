@@ -1,0 +1,44 @@
+<style>
+/* The canvas keeps its short names; each one reads a token of the brand layer (tokens.css, generated from brand.css), so no colour is written here. Pairs on a tint are the brand's x-soft + x-soft-foreground. */
+:root{--bg:var(--background);--fg:var(--foreground);--fg2:color-mix(in oklab,var(--foreground) 65%,var(--muted));--faint:var(--field-placeholder);--border-strong:color-mix(in oklab,var(--border) 75%,var(--muted));--sep:var(--separator);--hover:color-mix(in oklab,var(--surface-secondary) 50%,var(--background));--fill:var(--surface-secondary);--selected:var(--starci-core-sidebar-selected);--accent-text:var(--accent-soft-foreground);--accent-ring:var(--starci-core-field-ring);--ok-bg:var(--success-soft);--ok:var(--success-soft-foreground);--warn-bg:var(--warning-soft);--warn:var(--warning-soft-foreground);--err-bg:var(--danger-soft);--err:var(--danger-soft-foreground);--info-bg:var(--info-soft);--info:var(--info-soft-foreground);--r:var(--radius);--r-card:var(--starci-core-card-radius);--shadow-pop:var(--overlay-shadow)}
+/* canvas helper classes that lived in tokens.css before it became the generated brand layer */
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 Inter,system-ui,sans-serif}
+.input{height:36px;border:1px solid var(--border);border-radius:var(--r);padding:0 12px;display:flex;align-items:center;background:#fff;min-width:200px}
+.input.focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-ring)}.input.error{border-color:var(--accent)}
+.btn{height:36px;border-radius:var(--r);padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-weight:500;border:1px solid transparent;background:none}
+.btn.primary{background:var(--accent);color:#fff}.btn.secondary{background:#fff;border-color:var(--border)}.btn.ghost:hover,.btn.ghost.hover{background:var(--fill)}.btn.danger{color:var(--accent-text);border-color:#fecdd6;background:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r-card);padding:16px}
+.badge{display:inline-flex;align-items:center;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:500}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-warn{background:var(--warn-bg);color:var(--warn)}.b-err{background:var(--err-bg);color:var(--err)}.b-info{background:var(--info-bg);color:var(--info)}.b-neutral{background:var(--fill);color:var(--fg2)}.b-count{background:var(--accent);color:#fff;border-radius:999px;padding:0 7px}
+.nav-item{display:flex;gap:8px;align-items:center;padding:6px 10px;border-radius:6px}.nav-item.selected{background:var(--selected);font-weight:500;box-shadow:inset 2px 0 0 var(--accent);border-radius:0 6px 6px 0}
+table.t{width:100%;border-collapse:collapse}table.t th{font-size:12px;font-weight:500;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border)}table.t td{padding:10px 12px;border-bottom:1px solid var(--sep)}table.t tr:hover td{background:var(--hover)}
+.ribbon{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.ribbon>div{flex:1;padding:14px 20px}.ribbon>div+div{border-left:1px solid var(--border)}.ribbon .k{font-size:12px;color:var(--muted)}.ribbon .v{font-size:22px;font-weight:600}
+.pop{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-pop)}
+.cap{font-size:11px;color:var(--faint);margin-top:4px}
+/* StarCi Next, shared by every fragment: the ONE accent scope (brand.css, origin/dev) and the ONE app shell. Lanes keep only their content CSS. */
+.SN{font-family:"IBM Plex Sans",Inter,system-ui,sans-serif;color:var(--fg);background:#fff}
+.SN{--info-bg:var(--fill);--info:var(--fg2)}
+.SN *{box-sizing:border-box}
+.SN svg{flex:none}
+.SN .sn-sh{display:flex;flex-direction:column;background:#fff;min-width:0}
+.SN .sn-sh.sn-d{min-height:900px}
+.SN .sn-tb{height:56px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--border);background:#fff;flex:none}
+.SN .sn-sh.m>.sn-tb{height:52px;padding:0 12px;gap:10px}
+.SN .sn-sp{flex:1}
+.SN .sn-logo{width:28px;height:28px;border-radius:8px;background:var(--accent);color:var(--accent-foreground);display:grid;place-items:center;font-weight:500;font-size:14px;flex:none}
+.SN .sn-lock{display:flex;flex-direction:column;line-height:1.25}.SN .sn-lock b{font-size:14px;font-weight:500}.SN .sn-lock span{font-size:12px;color:var(--muted)}
+.SN .sn-rnd{height:40px;min-width:40px;padding:0 9px;border-radius:999px;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;gap:4px;color:var(--fg2);font-size:12px;font-weight:500;background:#fff}
+.SN .sn-rnd.sn-ib{padding:0}
+.SN .sn-av{width:40px;height:40px;border-radius:50%;background:var(--fill);border:1px solid var(--border);color:var(--fg2);display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
+.SN .sn-bd{display:flex;flex:1;min-height:0}
+.SN .sn-sd{width:248px;flex:none;border-right:1px solid var(--border);padding:12px;display:flex;flex-direction:column;gap:2px}
+.SN .sn-ni{height:36px;font-size:14px;color:var(--fg2);font-weight:400;display:flex;gap:10px;align-items:center;padding:0 10px}
+.SN .sn-ni.selected{color:var(--fg);font-weight:500}
+.SN .sn-gl{font-size:12px;color:var(--muted);padding:16px 10px 4px}
+.SN .sn-n{margin-left:auto;display:inline-flex;align-items:center;color:var(--faint)}
+.SN .sn-count{background:var(--accent);color:var(--accent-foreground);border-radius:999px;padding:0 7px;font-size:12px;font-weight:500;line-height:20px}
+.SN .sn-mn{flex:1;min-width:0;display:flex;flex-direction:column}
+/* one page-head scale for every lane */
+.SN h1{font-size:18px!important;line-height:1.25!important;font-weight:500}
+.SN.w390 h1{font-size:18px!important}
+</style>

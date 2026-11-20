@@ -1,0 +1,154 @@
+<section class="page" id="essentials-lesson-source" data-pid="essentials/lesson-source" data-route="/essentials/[topic]/[lesson]?part=source" data-title="Source, đã pull">
+  <h2>Source, đã pull</h2>
+  <div class="pid">gallery: essentials/lesson-source</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Source, đã pull · 1440</div><div class="scr w1440 zoom L2 SN"><div class="sn-sh sn-d"><header class="sn-tb"><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b><span>Học viên · Premium</span></div><div class="sn-sp"></div><span class="sn-rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span><span class="sn-rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></span><span class="sn-av">CT</span></header><div class="sn-bd"><nav class="sn-sd"><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V20h14V9.5"/></svg><span>Học</span></div><div class="sn-gl">Khu vực học</div><div class="nav-item sn-ni selected"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5V21"/></svg><span>Essentials</span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Projects</span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2-3 2"/><path d="M13 15h4"/></svg><span>Harness</span></div><div class="sn-gl">Luyện</div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M13.5 5l-3 14"/></svg><span>Luyện code</span></div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13l-3-3"/><path d="M20 15H7l3 3"/></svg><span>Ôn tập</span><span class="sn-n"><span class="sn-count">8</span></span></div><div class="sn-gl">Của bạn</div><div class="nav-item sn-ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg><span>Hồ sơ</span></div></nav><div class="sn-mn"><div class="pg"><div class="crumb">Essentials › <u>Hệ thống phân tán</u> › Outbox + Idempotency</div>
+<div class="hd"><div><h1>Outbox + Idempotency</h1><p class="sub">Đơn đã lưu nhưng email xác nhận không đi, hoặc đi hai lần. Việc gửi event nên nằm ở đâu để không mất và không trùng?</p><div class="facts"><b>Bài 3/6</b> trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng</div></div><a class="btn p"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg> Tải source (.tgz)</a></div><div class="tabs"><span class=""><span class="nb">1</span>Bản chất<em class="ok">✓</em></span><span class="on"><span class="nb">2</span>Source</span><span class=""><span class="nb">3</span>Kịch bản</span><span class=""><span class="nb">4</span>Tự áp dụng</span></div><div class="two"><div>
+<div class="sec"><h4>Lấy source về máy</h4><div class="stk"><div class="row2"><span class="bd ok">laptop-cuong · trực tuyến</span><span class="mu">đã pull a41c9e2, khớp bản bài đang dạy</span></div><div class="cap"><span>Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker</span><span class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg> Sao chép</span></div><div class="term"><span class="d">$</span> npx @starci/next pull outbox-idempotency
+<span class="g">✓</span> source a41c9e2 · TypeScript + Express · 38 file
+<span class="g">✓</span> git init xong, sẵn sàng đẩy lên GitHub của bạn
+<span class="d">$</span> starci-next up
+<span class="g">✓</span> orders-api :3031  relay-worker :3032  mail-sink :3033  postgres :5440</div></div></div>
+<div class="sec"><h4>Kiến trúc</h4><div class="arch"><svg viewBox="0 0 820 230" role="img" aria-label="Sơ đồ kiến trúc"><rect x="10" y="94" width="90" height="42" rx="8" class="o"/><text x="55" y="119" text-anchor="middle">Client</text>
+<rect x="140" y="80" width="130" height="70" rx="8"/><text x="205" y="110" text-anchor="middle">orders-api</text><text x="205" y="128" text-anchor="middle" class="s">:3031</text>
+<rect x="320" y="20" width="170" height="190" rx="10" class="o"/><text x="405" y="42" text-anchor="middle">postgres :5440</text>
+<rect x="336" y="58" width="138" height="38" rx="6"/><text x="405" y="82" text-anchor="middle" class="s">orders</text>
+<rect x="336" y="108" width="138" height="38" rx="6" class="lc"/><text x="405" y="132" text-anchor="middle">outbox</text>
+<rect x="336" y="158" width="138" height="38" rx="6"/><text x="405" y="182" text-anchor="middle" class="s">processed_events</text>
+<rect x="540" y="80" width="120" height="70" rx="8"/><text x="600" y="110" text-anchor="middle">relay-worker</text><text x="600" y="128" text-anchor="middle" class="s">:3032</text>
+<rect x="700" y="94" width="110" height="42" rx="8"/><text x="755" y="119" text-anchor="middle">mail-sink</text>
+<path d="M100 115H140"/><path d="M270 115H320"/><path d="M540 115H490"/><path d="M660 115H700"/>
+<text x="295" y="104" text-anchor="middle" class="lk">C2</text><text x="515" y="104" text-anchor="middle" class="lk">C3</text><text x="755" y="158" text-anchor="middle" class="lk">C4</text>
+<text x="205" y="176" text-anchor="middle" class="s">1 · ghi đơn + outbox</text><text x="600" y="176" text-anchor="middle" class="s">2 · đọc dòng chưa gửi</text><text x="755" y="176" text-anchor="middle" class="s">3 · gửi mail một lần</text></svg></div></div>
+<div class="sec"><h4>Mỗi thành phần giữ luật nào</h4><table class="tbl"><thead><tr><th>Thành phần</th><th>Cổng</th><th>Luật nó giữ</th></tr></thead><tbody><tr><td><b>orders-api</b></td><td class="mu">3031</td><td><span class="tag">C2</span> Ghi đơn và dòng outbox trong cùng một transaction</td></tr><tr><td><b>relay-worker</b></td><td class="mu">3032</td><td><span class="tag">C3</span> Gửi ít nhất một lần, chỉ đánh dấu đã gửi sau khi broker nhận</td></tr><tr><td><b>mail-sink</b></td><td class="mu">3033</td><td><span class="tag">C4</span> Bỏ qua event đã xử lý, dựa vào khóa idempotency</td></tr><tr><td><b>postgres</b></td><td class="mu">5440</td><td>Giữ bảng orders, outbox, processed_events</td></tr></tbody></table></div>
+<div class="sec"><h4>Đọc code · luật nằm ở đâu</h4><div class="cap"><span class="tag">orders-api/src/order.service.ts:41</span><span><span class="tag">C2</span></span></div><div class="code">await db.transaction(async (tx) => {
+  const order = await tx.save(Order, input);
+  <span class="c">// C2: việc "phải gửi" ghi cùng transaction với đơn</span>
+  await tx.save(Outbox, {
+    topic: 'order.created', key: order.id, payload: order,
+  });
+});</div><p class="t" style="margin-top:10px"><b>Vì sao:</b> nếu hai lệnh ghi tách rời và process chết giữa chừng, đơn còn đó mà không ai nhớ phải gửi email. Cùng transaction thì hoặc có cả hai, hoặc không có gì.</p></div>
+</div><div class="aside"><div class="blk"><h4>Trong source</h4><div class="stk" style="font:12.5px ui-monospace,Menlo,Consolas,monospace"><div>orders-api/</div><div style="padding-left:14px">src/order.service.ts</div><div style="padding-left:14px">src/outbox.entity.ts</div><div>relay-worker/</div><div>mail-sink/</div><div>scenarios/ <span class="mu">5 kịch bản</span></div><div>docker-compose.yml</div></div></div><div class="blk"><h4>Không có trong source</h4>Đáp án mẫu và test ẩn của mức tự áp dụng. Chúng ở lại máy chủ.</div><div class="blk"><h4>Cần có</h4>Node 22, Docker, cổng 3031 đến 3033 và 5440 còn trống.</div></div></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Source, đã pull · 390</div><div class="scr w390 L2 m SN"><div class="sn-sh m"><header class="sn-tb"><span class="sn-rnd sn-ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b></div><div class="sn-sp"></div><span class="sn-av">CT</span></header><div class="pg"><div class="crumb">Essentials › <u>Hệ thống phân tán</u> › Outbox + Idempotency</div>
+<div class="hd"><div><h1>Outbox + Idempotency</h1><p class="sub">Đơn đã lưu nhưng email xác nhận không đi, hoặc đi hai lần. Việc gửi event nên nằm ở đâu để không mất và không trùng?</p><div class="facts"><b>Bài 3/6</b> trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng</div></div><a class="btn p"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg> Tải source (.tgz)</a></div><div class="tabs"><span class="">Bản chất<em class="ok">✓</em></span><span class="on">Source</span><span class="">Kịch bản</span><span class="">Tự áp dụng</span></div><div class="two"><div>
+<div class="sec"><h4>Lấy source về máy</h4><div class="stk"><div class="row2"><span class="bd ok">laptop-cuong · trực tuyến</span><span class="mu">đã pull a41c9e2, khớp bản bài đang dạy</span></div><div class="cap"><span>Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker</span><span class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg> Sao chép</span></div><div class="term"><span class="d">$</span> npx @starci/next pull outbox-idempotency
+<span class="g">✓</span> source a41c9e2 · TypeScript + Express · 38 file
+<span class="g">✓</span> git init xong, sẵn sàng đẩy lên GitHub của bạn
+<span class="d">$</span> starci-next up
+<span class="g">✓</span> orders-api :3031  relay-worker :3032  mail-sink :3033  postgres :5440</div></div></div>
+<div class="sec"><h4>Kiến trúc</h4><div class="arch"><svg viewBox="0 0 340 430" role="img" aria-label="Sơ đồ kiến trúc"><rect x="120" y="6" width="100" height="36" rx="8" class="o"/><text x="170" y="29" text-anchor="middle">Client</text>
+<rect x="95" y="68" width="150" height="52" rx="8"/><text x="170" y="91" text-anchor="middle">orders-api</text><text x="170" y="108" text-anchor="middle" class="s">:3031</text>
+<rect x="50" y="146" width="240" height="132" rx="10" class="o"/><text x="170" y="165" text-anchor="middle">postgres :5440</text>
+<rect x="66" y="176" width="100" height="32" rx="6"/><text x="116" y="196" text-anchor="middle" class="s">orders</text>
+<rect x="174" y="176" width="100" height="32" rx="6" class="lc"/><text x="224" y="196" text-anchor="middle">outbox</text>
+<rect x="66" y="228" width="208" height="32" rx="6"/><text x="170" y="248" text-anchor="middle" class="s">processed_events</text>
+<rect x="95" y="306" width="150" height="46" rx="8"/><text x="170" y="326" text-anchor="middle">relay-worker</text><text x="170" y="342" text-anchor="middle" class="s">:3032</text>
+<rect x="110" y="382" width="120" height="38" rx="8"/><text x="170" y="406" text-anchor="middle">mail-sink</text>
+<path d="M170 42V68"/><path d="M170 120V146"/><path d="M170 306V278"/><path d="M170 352V382"/>
+<text x="182" y="136" class="lk">C2</text><text x="182" y="296" class="lk">C3</text><text x="182" y="372" class="lk">C4</text>
+<text x="260" y="98" class="s">1 · ghi đơn + outbox</text><text x="260" y="332" class="s">2 · đọc chưa gửi</text></svg></div></div>
+<div class="sec"><h4>Mỗi thành phần giữ luật nào</h4><table class="tbl"><thead><tr><th>Thành phần</th><th>Luật nó giữ</th></tr></thead><tbody><tr><td><b>orders-api</b></td><td><span class="tag">C2</span> Ghi đơn và dòng outbox trong cùng một transaction</td></tr><tr><td><b>relay-worker</b></td><td><span class="tag">C3</span> Gửi ít nhất một lần, chỉ đánh dấu đã gửi sau khi broker nhận</td></tr><tr><td><b>mail-sink</b></td><td><span class="tag">C4</span> Bỏ qua event đã xử lý, dựa vào khóa idempotency</td></tr><tr><td><b>postgres</b></td><td>Giữ bảng orders, outbox, processed_events</td></tr></tbody></table></div>
+<div class="sec"><h4>Đọc code · luật nằm ở đâu</h4><div class="cap"><span class="tag">orders-api/src/order.service.ts:41</span><span><span class="tag">C2</span></span></div><div class="code">await db.transaction(async (tx) => {
+  const order = await tx.save(Order, input);
+  <span class="c">// C2: việc "phải gửi" ghi cùng transaction với đơn</span>
+  await tx.save(Outbox, {
+    topic: 'order.created', key: order.id, payload: order,
+  });
+});</div><p class="t" style="margin-top:10px"><b>Vì sao:</b> nếu hai lệnh ghi tách rời và process chết giữa chừng, đơn còn đó mà không ai nhớ phải gửi email. Cùng transaction thì hoặc có cả hai, hoặc không có gì.</p></div>
+</div></div></div></div></div></div>
+    <div class="note"><h4>Thay đổi so với bản đã duyệt:</h4><p>- Nút cao 40px, một cỡ: bỏ cỡ nhỏ (sm) của mọi nút (luật 3).</p>
+      <div class="fm">title: Source, đã pull · route: /essentials/[topic]/[lesson]?part=source · area: essentials</div>
+      <p class="intro"><b>Concept: Source, đã pull.</b> Mục tiêu: đưa source của bài về máy, chạy lên, hiểu kiến trúc và biết từng luật nằm ở đoạn code nào. Thao tác: lesson(id).essential: source (langs, ref), architecture (diagram, components có luật nó giữ), codeWalk (file, line, snippet, invariant, why), invariants; lesson.workspace (runtime, commands windows/unix, files); REST GET /api/lessons/:id/workspace/:language/download cho tệp nén; relayDevices cho máy trực tuyến; relayManifest khi CLI kéo source. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Thanh đầu bài chung (tab Source, phần 1 có dấu xong); bốn khối phẳng: lấy source về máy (chip máy trực tuyến, terminal, nút sao chép), sơ đồ kiến trúc (ngang ở 1440, dọc ở 390, nhãn luật trên đường nối), bảng thành phần có cột "Luật nó giữ", đọc code theo luật. Cột phải 1440: cây file, những gì không có trong source (đáp án mẫu, test ẩn), yêu cầu máy. Nút chính: "Tải source" (tệp nén) là cách thay cho lệnh CLI. Lọc: không có. Khác bản hiện tại: source là một repo chạy được, không phải đoạn code dán trong bài. Lưu ý xung đột: source.langs có thể nhiều ngôn ngữ; bản vẽ hiện một (TypeScript + Express) và cần chọn ngôn ngữ khi có hơn một. Phần tử Grammar của màn: Tabs, Terminal, Code, DataTable, Badge, MermaidDiagram, CopyField, Alert.</p>
+      <h4>Khung ứng dụng</h4>
+      <p>Vì sao: khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>WorkspaceShell</code></p>
+      <h4>Dải tiêu đề: Outbox + Idempotency</h4>
+      <p>Vì sao: tên trang, dòng sự kiện và đúng một nút chính. "Tải source" (tệp nén) là cách thay cho lệnh CLI.</p>
+      <p>Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>PageHeader</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: MermaidDiagram chuyển bố cục dọc ở 390</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="essentials-lesson-source-no-device" data-pid="essentials/lesson-source-no-device" data-route="/essentials/[topic]/[lesson]?part=source" data-title="Source, chưa thấy máy nào kết nối">
+  <h2>Source, chưa thấy máy nào kết nối</h2>
+  <div class="pid">gallery: essentials/lesson-source-no-device</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Source, chưa thấy máy nào kết nối · 390</div><div class="scr w390 L2 m SN"><div class="sn-sh m"><header class="sn-tb"><span class="sn-rnd sn-ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b></div><div class="sn-sp"></div><span class="sn-av">CT</span></header><div class="pg"><div class="crumb">Essentials › <u>Hệ thống phân tán</u> › Outbox + Idempotency</div>
+<div class="hd"><div><h1>Outbox + Idempotency</h1><p class="sub">Đơn đã lưu nhưng email xác nhận không đi, hoặc đi hai lần. Việc gửi event nên nằm ở đâu để không mất và không trùng?</p><div class="facts"><b>Bài 3/6</b> trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng</div></div><a class="btn p"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg> Tải source (.tgz)</a></div><div class="tabs"><span class="">Bản chất<em class="ok">✓</em></span><span class="on">Source</span><span class="">Kịch bản</span><span class="">Tự áp dụng</span></div><div class="two"><div>
+<div class="sec"><h4>Lấy source về máy</h4><div class="stk"><div class="nt" style="background:var(--warn-bg);border-color:var(--warn-bg)"><div><b>Chưa thấy máy nào kết nối</b><span class="mu">Chạy lệnh dưới ở terminal, đăng nhập một lần, rồi quay lại trang này. Trang tự nhận khi CLI báo về.</span></div></div><div class="cap"><span>Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker</span><span class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg> Sao chép</span></div><div class="term"><span class="d">$</span> npx @starci/next pull outbox-idempotency
+<span class="d">$</span> starci-next up</div></div></div>
+<div class="sec"><h4>Kiến trúc</h4><div class="arch"><svg viewBox="0 0 340 430" role="img" aria-label="Sơ đồ kiến trúc"><rect x="120" y="6" width="100" height="36" rx="8" class="o"/><text x="170" y="29" text-anchor="middle">Client</text>
+<rect x="95" y="68" width="150" height="52" rx="8"/><text x="170" y="91" text-anchor="middle">orders-api</text><text x="170" y="108" text-anchor="middle" class="s">:3031</text>
+<rect x="50" y="146" width="240" height="132" rx="10" class="o"/><text x="170" y="165" text-anchor="middle">postgres :5440</text>
+<rect x="66" y="176" width="100" height="32" rx="6"/><text x="116" y="196" text-anchor="middle" class="s">orders</text>
+<rect x="174" y="176" width="100" height="32" rx="6" class="lc"/><text x="224" y="196" text-anchor="middle">outbox</text>
+<rect x="66" y="228" width="208" height="32" rx="6"/><text x="170" y="248" text-anchor="middle" class="s">processed_events</text>
+<rect x="95" y="306" width="150" height="46" rx="8"/><text x="170" y="326" text-anchor="middle">relay-worker</text><text x="170" y="342" text-anchor="middle" class="s">:3032</text>
+<rect x="110" y="382" width="120" height="38" rx="8"/><text x="170" y="406" text-anchor="middle">mail-sink</text>
+<path d="M170 42V68"/><path d="M170 120V146"/><path d="M170 306V278"/><path d="M170 352V382"/>
+<text x="182" y="136" class="lk">C2</text><text x="182" y="296" class="lk">C3</text><text x="182" y="372" class="lk">C4</text>
+<text x="260" y="98" class="s">1 · ghi đơn + outbox</text><text x="260" y="332" class="s">2 · đọc chưa gửi</text></svg></div></div>
+<div class="sec"><h4>Mỗi thành phần giữ luật nào</h4><table class="tbl"><thead><tr><th>Thành phần</th><th>Luật nó giữ</th></tr></thead><tbody><tr><td><b>orders-api</b></td><td><span class="tag">C2</span> Ghi đơn và dòng outbox trong cùng một transaction</td></tr><tr><td><b>relay-worker</b></td><td><span class="tag">C3</span> Gửi ít nhất một lần, chỉ đánh dấu đã gửi sau khi broker nhận</td></tr><tr><td><b>mail-sink</b></td><td><span class="tag">C4</span> Bỏ qua event đã xử lý, dựa vào khóa idempotency</td></tr><tr><td><b>postgres</b></td><td>Giữ bảng orders, outbox, processed_events</td></tr></tbody></table></div>
+<div class="sec"><h4>Đọc code · luật nằm ở đâu</h4><div class="cap"><span class="tag">orders-api/src/order.service.ts:41</span><span><span class="tag">C2</span></span></div><div class="code">await db.transaction(async (tx) => {
+  const order = await tx.save(Order, input);
+  <span class="c">// C2: việc "phải gửi" ghi cùng transaction với đơn</span>
+  await tx.save(Outbox, {
+    topic: 'order.created', key: order.id, payload: order,
+  });
+});</div><p class="t" style="margin-top:10px"><b>Vì sao:</b> nếu hai lệnh ghi tách rời và process chết giữa chừng, đơn còn đó mà không ai nhớ phải gửi email. Cùng transaction thì hoặc có cả hai, hoặc không có gì.</p></div>
+</div></div></div></div></div></div>
+    <div class="note"><h4>Thay đổi so với bản đã duyệt:</h4><p>- Nút cao 40px, một cỡ: bỏ cỡ nhỏ (sm) của mọi nút (luật 3).</p>
+      <div class="fm">title: Source, chưa thấy máy nào kết nối · route: /essentials/[topic]/[lesson]?part=source · area: essentials</div>
+      <p class="intro"><b>Concept: Source, chưa thấy máy nào kết nối.</b> Trạng thái của màn này: chưa thấy máy nào kết nối. Mục tiêu: đưa source của bài về máy, chạy lên, hiểu kiến trúc và biết từng luật nằm ở đoạn code nào. Thao tác: lesson(id).essential: source (langs, ref), architecture (diagram, components có luật nó giữ), codeWalk (file, line, snippet, invariant, why), invariants; lesson.workspace (runtime, commands windows/unix, files); REST GET /api/lessons/:id/workspace/:language/download cho tệp nén; relayDevices cho máy trực tuyến; relayManifest khi CLI kéo source. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Thanh đầu bài chung (tab Source, phần 1 có dấu xong); bốn khối phẳng: lấy source về máy (chip máy trực tuyến, terminal, nút sao chép), sơ đồ kiến trúc (ngang ở 1440, dọc ở 390, nhãn luật trên đường nối), bảng thành phần có cột "Luật nó giữ", đọc code theo luật. Cột phải 1440: cây file, những gì không có trong source (đáp án mẫu, test ẩn), yêu cầu máy. Nút chính: "Tải source" (tệp nén) là cách thay cho lệnh CLI. Lọc: không có. Khác bản hiện tại: source là một repo chạy được, không phải đoạn code dán trong bài. Lưu ý xung đột: source.langs có thể nhiều ngôn ngữ; bản vẽ hiện một (TypeScript + Express) và cần chọn ngôn ngữ khi có hơn một. Phần tử Grammar của màn: Tabs, Terminal, Code, DataTable, Badge, MermaidDiagram, CopyField, Alert.</p>
+      <h4>Khung ứng dụng</h4>
+      <p>Vì sao: khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>WorkspaceShell</code></p>
+      <h4>Dải tiêu đề: Outbox + Idempotency</h4>
+      <p>Vì sao: tên trang, dòng sự kiện và đúng một nút chính. "Tải source" (tệp nén) là cách thay cho lệnh CLI.</p>
+      <p>Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>PageHeader</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: MermaidDiagram chuyển bố cục dọc ở 390</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="essentials-lesson-source-up-failed" data-pid="essentials/lesson-source-up-failed" data-route="/essentials/[topic]/[lesson]?part=source" data-title="Source, lệnh up lỗi">
+  <h2>Source, lệnh up lỗi</h2>
+  <div class="pid">gallery: essentials/lesson-source-up-failed</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Source, lệnh up lỗi · 390</div><div class="scr w390 L2 m SN"><div class="sn-sh m"><header class="sn-tb"><span class="sn-rnd sn-ib"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></span><div class="sn-logo">S</div><div class="sn-lock"><b>StarCi Next</b></div><div class="sn-sp"></div><span class="sn-av">CT</span></header><div class="pg"><div class="crumb">Essentials › <u>Hệ thống phân tán</u> › Outbox + Idempotency</div>
+<div class="hd"><div><h1>Outbox + Idempotency</h1><p class="sub">Đơn đã lưu nhưng email xác nhận không đi, hoặc đi hai lần. Việc gửi event nên nằm ở đâu để không mất và không trùng?</p><div class="facts"><b>Bài 3/6</b> trong Hệ thống phân tán · 20 phút đọc · 5 kịch bản · 4 mức tự áp dụng</div></div><a class="btn p"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5M5 20h14"/></svg> Tải source (.tgz)</a></div><div class="tabs"><span class="">Bản chất<em class="ok">✓</em></span><span class="on">Source</span><span class="">Kịch bản</span><span class="">Tự áp dụng</span></div><div class="two"><div>
+<div class="sec"><h4>Lấy source về máy</h4><div class="stk"><div class="row2"><span class="bd ok">laptop-cuong · trực tuyến</span><span class="mu">đã pull a41c9e2, khớp bản bài đang dạy</span></div><div class="cap"><span>Terminal trên máy bạn · TypeScript + Express, chạy bằng Docker</span><span class="btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg> Sao chép</span></div><div class="term"><span class="d">$</span> starci-next up
+<span class="r">✗</span> cổng 5440 đang được dùng
+<span class="d">  ↳ postgres khác đang chạy trên máy bạn.</span>
+<span class="d">  Dừng nó, hoặc: starci-next up --port-offset 100</span></div></div></div>
+</div></div></div></div></div></div>
+    <div class="note"><h4>Thay đổi so với bản đã duyệt:</h4><p>- Nút cao 40px, một cỡ: bỏ cỡ nhỏ (sm) của mọi nút (luật 3).</p>
+      <div class="fm">title: Source, lệnh up lỗi · route: /essentials/[topic]/[lesson]?part=source · area: essentials</div>
+      <p class="intro"><b>Concept: Source, lệnh up lỗi.</b> Trạng thái của màn này: lệnh up lỗi. Mục tiêu: đưa source của bài về máy, chạy lên, hiểu kiến trúc và biết từng luật nằm ở đoạn code nào. Thao tác: lesson(id).essential: source (langs, ref), architecture (diagram, components có luật nó giữ), codeWalk (file, line, snippet, invariant, why), invariants; lesson.workspace (runtime, commands windows/unix, files); REST GET /api/lessons/:id/workspace/:language/download cho tệp nén; relayDevices cho máy trực tuyến; relayManifest khi CLI kéo source. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Thanh đầu bài chung (tab Source, phần 1 có dấu xong); bốn khối phẳng: lấy source về máy (chip máy trực tuyến, terminal, nút sao chép), sơ đồ kiến trúc (ngang ở 1440, dọc ở 390, nhãn luật trên đường nối), bảng thành phần có cột "Luật nó giữ", đọc code theo luật. Cột phải 1440: cây file, những gì không có trong source (đáp án mẫu, test ẩn), yêu cầu máy. Nút chính: "Tải source" (tệp nén) là cách thay cho lệnh CLI. Lọc: không có. Khác bản hiện tại: source là một repo chạy được, không phải đoạn code dán trong bài. Lưu ý xung đột: source.langs có thể nhiều ngôn ngữ; bản vẽ hiện một (TypeScript + Express) và cần chọn ngôn ngữ khi có hơn một. Phần tử Grammar của màn: Tabs, Terminal, Code, DataTable, Badge, MermaidDiagram, CopyField, Alert.</p>
+      <h4>Khung ứng dụng</h4>
+      <p>Vì sao: khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>WorkspaceShell</code></p>
+      <h4>Dải tiêu đề: Outbox + Idempotency</h4>
+      <p>Vì sao: tên trang, dòng sự kiện và đúng một nút chính. "Tải source" (tệp nén) là cách thay cho lệnh CLI.</p>
+      <p>Luật: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>PageHeader</code></p>
+      <h4>Phần tử còn thiếu</h4>
+      <p>Vì sao: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.</p>
+      <p>Luật: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở GRAMMAR-GAPS.md.</p>
+      <p>Grammar: cần Grammar: MermaidDiagram chuyển bố cục dọc ở 390</p>
+    </div>
+  </div>
+</section>

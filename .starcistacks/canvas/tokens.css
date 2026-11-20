@@ -1,0 +1,168 @@
+/* generated from fe/apps/app/src/modules/brand/brand.css (sha256 ff19d483de4fbb5975f9842d4f0f772b9dfcd66e9e6b0feeaebb7d14fd53b469): do not edit; after a brand change run `node node_modules/@starci/hfs/runtime/scripts/hfs/canvas-tokens.mjs` */
+/*
+ * StarCi Next brand, white theme: the one place the app writes colour. Owner 2026-11-17 (the NIVO white-theme rulings, applied to this
+ * app with its OWN accent): the page and every surface are white, neutrals carry no hue (chroma 0), and layers separate by a 1px hairline,
+ * not by tint or shadow. The violet --accent is a solid brand fill with an on-colour foreground (never a pale tint with dark text) and a signal only: the one primary button, the urgent count, the focus edge and ring, errors
+ * stay --danger, and the checked checkbox, radio and switch. Selection (a nav item, a table row, a chip) is gray, never violet. Info is a
+ * neutral gray. Only a real floating layer (popover, menu, dialog, toast) carries one soft shadow.
+ * Font: IBM Plex Sans (owner 2026-11-11, one font for the whole app) via next/font/google, subsets ["latin", "vietnamese"],
+ *   variable "--font-sans" (fe/apps/app/src/modules/brand/font.ts).
+ * The grammar renderers read these same HeroUI tokens, so a renderer and a HeroUI part paint the same colour. The `--starci-core-*`
+ * names are the Grammar theme hooks (@starci/grammar/theme-hooks.json); each is optional and read with a fallback.
+ */
+
+:root,
+.light,
+[data-theme="light"] {
+    --radius: 0.5rem;
+    --field-radius: 0.75rem;
+
+    --accent: oklch(51% 0.24 285);
+    --accent-foreground: oklch(99.1% 0 0);
+    --background: oklch(100% 0 0);
+    --border: oklch(92.2% 0 0);
+    --danger: oklch(55% 0.22 27);
+    --danger-foreground: oklch(99.11% 0 0);
+    --default: oklch(96.1% 0 0);
+    --default-foreground: oklch(20.5% 0 0);
+    --field-background: oklch(100% 0 0);
+    --field-border: var(--border);
+    --field-border-width: 1px;
+    --field-border-focus: var(--accent);
+    --field-foreground: oklch(20.5% 0 0);
+    --field-placeholder: oklch(62% 0 0);
+    --field-shadow: none;
+    --focus: var(--accent);
+    --foreground: oklch(20.5% 0 0);
+    --muted: oklch(55.6% 0 0);
+    --overlay: oklch(100% 0 0);
+    --overlay-foreground: oklch(20.5% 0 0);
+    --overlay-shadow: 0 8px 24px oklch(0% 0 0 / 8%), 0 2px 6px oklch(0% 0 0 / 5%);
+    --segment: oklch(100% 0 0);
+    --segment-foreground: oklch(20.5% 0 0);
+    --separator: oklch(95.5% 0 0);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0 0);
+    --surface: oklch(100% 0 0);
+    --surface-foreground: oklch(20.5% 0 0);
+    --surface-secondary: oklch(96.1% 0 0);
+    --surface-secondary-foreground: oklch(20.5% 0 0);
+    --surface-tertiary: oklch(94.5% 0 0);
+    --surface-tertiary-foreground: oklch(20.5% 0 0);
+    --surface-shadow: none;
+    --warning: oklch(78.19% 0.159 78.47);
+    --warning-foreground: oklch(21.03% 0 0);
+
+    --info: oklch(45% 0 0);
+    --info-foreground: oklch(99.11% 0 0);
+    --backdrop: oklch(20.5% 0 0 / 40%);
+
+    /* The text-safe accent: the violet that reads on white (inline links, a soft accent pair). */
+    --accent-soft: oklch(95.5% 0.03 287);
+    --accent-soft-foreground: #6a3cf2;
+    --link: var(--accent-soft-foreground);
+    --success-soft: color-mix(in oklab, var(--success) 14%, var(--surface));
+    --success-soft-foreground: color-mix(in oklab, var(--success) 50%, var(--foreground));
+    --warning-soft: color-mix(in oklab, var(--warning) 14%, var(--surface));
+    --warning-soft-foreground: color-mix(in oklab, var(--warning) 50%, var(--foreground));
+    --danger-soft: color-mix(in oklab, var(--danger) 7%, var(--surface));
+    --danger-soft-foreground: color-mix(in oklab, var(--danger) 70%, var(--foreground));
+    --info-soft: color-mix(in oklab, var(--info) 8%, var(--surface));
+    --info-soft-foreground: color-mix(in oklab, var(--info) 75%, var(--foreground));
+
+    --terminal-background: oklch(20% 0 0);
+    --terminal-foreground: oklch(92% 0 0);
+    --terminal-title-foreground: oklch(72% 0 0);
+
+    /* Grammar theme hooks: gray selection, hairline cards, one field ring, a navigation bar in the accent. */
+    --starci-core-card-radius: 0.75rem;
+    --starci-core-schedule-current: var(--surface-secondary);
+    --starci-core-sidebar-selected: oklch(95.1% 0 0);
+    --starci-core-sidebar-selected-foreground: var(--foreground);
+    --starci-core-sidebar-bar-width: 2px;
+    --starci-core-sidebar-bar: var(--accent);
+    --starci-core-sidebar-selected-start-radius: 0;
+    --starci-core-tabs-indicator: var(--foreground);
+    --starci-core-field-ring: color-mix(in oklab, var(--accent) 22%, transparent);
+    --starci-core-field-ring-width: 3px;
+    --starci-core-plate: var(--surface);
+    --starci-core-plate-border: 1px solid var(--border);
+    --starci-core-plate-selected: var(--surface-secondary);
+    --starci-core-plate-selected-foreground: var(--foreground);
+    --starci-core-plate-selected-border: 1px solid var(--foreground);
+    --starci-core-button-danger-soft: var(--surface);
+    --starci-core-button-danger-soft-border: 1px solid color-mix(in oklab, var(--danger) 30%, transparent);
+    --starci-core-bubble-incoming: var(--surface-secondary);
+    --starci-core-bubble-incoming-foreground: var(--foreground);
+    --starci-core-bubble-incoming-border: 0;
+    --starci-core-bubble-outgoing: var(--surface);
+    --starci-core-bubble-outgoing-foreground: var(--foreground);
+    --starci-core-bubble-outgoing-border: 1px solid var(--border);
+    --starci-core-message-card: var(--surface);
+    --starci-core-message-card-border: 1px solid var(--border);
+    --starci-core-quote: transparent;
+    --starci-core-quote-edge: 2px solid var(--border);
+    --starci-core-flow-selected: var(--surface);
+}
+
+.dark,
+[data-theme="dark"] {
+    color-scheme: dark;
+    --accent: oklch(58% 0.22 285);
+    --accent-foreground: oklch(99.1% 0 0);
+    --background: oklch(14.5% 0 0);
+    --border: oklch(28% 0 0);
+    --danger: oklch(59.4% 0.1973 30.77);
+    --danger-foreground: oklch(99.11% 0 0);
+    --default: oklch(24% 0 0);
+    --default-foreground: oklch(98.5% 0 0);
+    --field-background: oklch(14.5% 0 0);
+    --field-border: var(--border);
+    --field-border-width: 1px;
+    --field-border-focus: var(--accent);
+    --field-foreground: oklch(98.5% 0 0);
+    --field-placeholder: oklch(62% 0 0);
+    --field-shadow: none;
+    --focus: var(--accent);
+    --foreground: oklch(98.5% 0 0);
+    --muted: oklch(70.5% 0 0);
+    --overlay: oklch(18% 0 0);
+    --overlay-foreground: oklch(98.5% 0 0);
+    --overlay-shadow: 0 8px 24px oklch(0% 0 0 / 40%), 0 2px 6px oklch(0% 0 0 / 30%);
+    --segment: oklch(30% 0 0);
+    --segment-foreground: oklch(98.5% 0 0);
+    --separator: oklch(22% 0 0);
+    --success: oklch(73.29% 0.1941 156.95);
+    --success-foreground: oklch(21.03% 0 0);
+    --surface: oklch(14.5% 0 0);
+    --surface-foreground: oklch(98.5% 0 0);
+    --surface-secondary: oklch(21% 0 0);
+    --surface-secondary-foreground: oklch(98.5% 0 0);
+    --surface-tertiary: oklch(25% 0 0);
+    --surface-tertiary-foreground: oklch(98.5% 0 0);
+    --surface-shadow: none;
+    --warning: oklch(82.03% 0.1392 82.48);
+    --warning-foreground: oklch(21.03% 0 0);
+
+    --info: oklch(75% 0 0);
+    --info-foreground: oklch(20.5% 0 0);
+    --backdrop: oklch(0% 0 0 / 64%);
+
+    --accent-soft: oklch(30% 0.07 287);
+    --accent-soft-foreground: #a48bff;
+    --link: var(--accent-soft-foreground);
+    --success-soft: color-mix(in oklab, var(--success) 22%, var(--surface));
+    --success-soft-foreground: color-mix(in oklab, var(--success) 40%, var(--foreground));
+    --warning-soft: color-mix(in oklab, var(--warning) 22%, var(--surface));
+    --warning-soft-foreground: color-mix(in oklab, var(--warning) 40%, var(--foreground));
+    --danger-soft: color-mix(in oklab, var(--danger) 14%, var(--surface));
+    --danger-soft-foreground: color-mix(in oklab, var(--danger) 60%, var(--foreground));
+    --info-soft: color-mix(in oklab, var(--info) 16%, var(--surface));
+    --info-soft-foreground: color-mix(in oklab, var(--info) 60%, var(--foreground));
+
+    --terminal-background: oklch(20% 0 0);
+    --terminal-foreground: oklch(92% 0 0);
+    --terminal-title-foreground: oklch(72% 0 0);
+
+    --starci-core-sidebar-selected: oklch(24% 0 0);
+}

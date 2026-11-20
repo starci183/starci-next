@@ -1,0 +1,11 @@
+# Essentials  (gallery: essentials/catalog, route /essentials)
+Mục tiêu: thấy mình đang ở đâu trong các bài cụm và vào đúng bài đang dở, hoặc chọn bài theo bài toán nghiệp vụ.
+Thao tác: lessons(locale, group, topic, difficulty, language, q) cho danh mục và tìm kiếm; lessonTopic cho tên chủ đề; lessonProgress(lessonId) cho 4 phần (phases: done/total) và lessonOpenerScores cho điểm 5 câu mở bài; myPremium cho gói. cần API: lessons trả kèm tiến độ 4 phần và điểm mở bài của học viên (hoặc một truy vấn gộp lessonProgress cho nhiều bài) cùng số đếm theo trạng thái.
+Dữ liệu: số liệu minh họa (tên, số tiền, ngày dd/mm/yyyy) nằm trong các khung của pages/18-essentials-catalog.html; trường thật theo các thao tác ở trên.
+Trạng thái: các màn đã vẽ: essentials/catalog (Essentials, danh mục; 1440 và 390); essentials/catalog-first-visit (Essentials, lần đầu, chưa học bài nào; chỉ 390); essentials/catalog-no-match (Essentials, không khớp bộ lọc; chỉ 390); essentials/catalog-loading (Essentials, đang tải; chỉ 390); essentials/catalog-error (Essentials, lỗi tải danh mục; chỉ 390); essentials/catalog-free-account (Essentials, tài khoản miễn phí; chỉ 390). Trạng thái của bảng PROJECT-GALLERY-6 không vẽ: empty, detail, editing (trang không chạm tới, hoặc chưa được vẽ khi duyệt; thêm khi code nếu trang thật sự chạm tới).
+Quyền: lessons(locale, group, topic, difficulty, language, q) cho danh mục và tìm kiếm; lessonTopic cho tên chủ đề; lessonProgress(lessonId) cho 4 phần (phases: done/total) và lessonOpenerScores cho điểm 5 câu mở bài; myPremium cho gói. "Học tiếp" trỏ thẳng tới phần đang dở của bài gần nhất; tài khoản miễn phí đổi thành "Nâng cấp Premium".
+Grammar: PageHeader, Tabs kind="filter" có count, SearchField, Select, Section kind="list", ListRow, Badge, Meter segments={4}, Progress. cần Grammar: Meter segments chưa có nấc "đang làm" (nửa đậm) cho phần đang dở.
+Hành động chính: "Học tiếp" trỏ thẳng tới phần đang dở của bài gần nhất; tài khoản miễn phí đổi thành "Nâng cấp Premium".
+Lọc: tab trạng thái, ô tìm (q), chủ đề, gói.
+Việc đổi: bài là cụm kiến thức theo bài toán, không còn là khái niệm lẻ; tiến độ theo 4 phần thay một dấu tích.
+Xung đột: tab đếm và thanh nhóm phải cùng một nguồn để không lệch.

@@ -1,0 +1,76 @@
+<section class="page" id="auth-forgot" data-pid="auth/forgot" data-route="/sign-in/forgot" data-title="Quên mật khẩu, nhập email">
+  <h2>Quên mật khẩu, nhập email</h2>
+  <div class="pid">gallery: auth/forgot</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Quên mật khẩu, nhập email · 1440</div><div class="scr w1440 zoom L1 SN"><div class="au"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="mid"><div class="lf"><h2>Học bản chất, để vibe-code mà không mất kiểm soát.</h2><p>AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.</p>
+<div class="ar"><div><b>Essentials</b><span>Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn.</span></div><div><b>Projects</b><span>Dự án trên repo của bạn, được kiểm bằng CI và đọc mã.</span></div><div><b>Harness</b><span>Dùng Claude Code và Codex cho đúng. Miễn phí.</span></div></div></div><div class="rt"><div class="cardx"><div><h1>Quên mật khẩu</h1><div class="sb">Nhập email đăng ký. Chúng tôi gửi mã để bạn đặt mật khẩu mới.</div></div><div class="fld"><label><span>Email</span></label><div class="input focus"><span>nam@vidu.vn</span></div></div><span class="btn primary block lg">Gửi mã</span><div class="sw"><a class="u b5" style="color:var(--fg)">Quay lại đăng nhập</a></div></div></div></div></div></div></div>
+    <div class="frame"><div class="lbl">Quên mật khẩu, nhập email · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Quên mật khẩu</h1><div class="sb">Nhập email đăng ký. Chúng tôi gửi mã để bạn đặt mật khẩu mới.</div></div><div class="fld"><label><span>Email</span></label><div class="input focus"><span>nam@vidu.vn</span></div></div><span class="btn primary block lg">Gửi mã</span><div class="sw"><a class="u b5" style="color:var(--fg)">Quay lại đăng nhập</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Quên mật khẩu, nhập email · route: /sign-in/forgot · area: auth</div>
+      <p class="intro"><b>Concept: Quên mật khẩu, nhập email.</b> Mục tiêu: đặt lại mật khẩu bằng mã gửi qua email. Thao tác: REST password-reset (email) rồi password-reset/verify (mã 6 số + mật khẩu mới), challenge/resend. Bố cục: hai bước trên một thẻ: nhập email, rồi mã cùng mật khẩu mới; xong quay về Đăng nhập kèm thông báo xanh. Bước 2 luôn nói "Nếu email có tài khoản…" để không lộ email nào đã đăng ký. Nút chính: "Gửi mã", rồi "Đặt mật khẩu". Lọc: không có. Khác bản hiện tại: trang mới, chưa có trong gallery. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, Form, Field, Input, OtpInput, Button, Alert.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Học bản chất, để vibe-code mà không mất kiểm soát.</h4>
+      <p>Vì sao: vùng này phục vụ mục tiêu của trang: đặt lại mật khẩu bằng mã gửi qua email.</p>
+      <p>Luật: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục The look).</p>
+      <p>Grammar: <code>Section</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>– Chữ theo thang 5 cỡ của Grammar: tiêu đề trang 18/500, tiêu đề phần 16/500, nhãn 16/400, thân 14, meta 12; bỏ chữ đậm 600/700 và các cỡ 13/15/20/22.</p>
+      <p>– Nút, ô nhập, ô chọn cùng cao 40px (bỏ nút cỡ nhỏ 30px và cỡ lớn 44px).</p>
+      <p>– Danh sách trong phần: không viền ngoài, hàng px-16 py-12, đường kẻ ngăn kéo hết bề ngang, không phóng to khi rê chuột.</p>
+      <p>– Dòng gợi ý là meta 12.</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-forgot-new-password" data-pid="auth/forgot-new-password" data-route="/sign-in/forgot" data-title="Quên mật khẩu, nhập mã và mật khẩu mới">
+  <h2>Quên mật khẩu, nhập mã và mật khẩu mới</h2>
+  <div class="pid">gallery: auth/forgot-new-password</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Quên mật khẩu, nhập mã và mật khẩu mới · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đặt mật khẩu mới</h1><div class="sb">Nếu email có tài khoản, mã 6 số đã được gửi tới <b class="f2">n***@vidu.vn</b>.</div></div><div class="otp "><i class="">7</i><i class="">3</i><i class="">1</i><i class="">9</i><i class="">0</i><i class="">5</i></div><div class="fld"><label><span>Mật khẩu mới</span></label><div class="input focus"><span>••••••••••</span></div><div class="ft ">Ít nhất 6 ký tự</div></div><span class="btn primary block lg">Đặt mật khẩu</span><div style="display:flex;justify-content:space-between;font-size:12px"><span class="mut">Gửi lại mã sau 28 giây</span><a class="u f2">Đổi email</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Quên mật khẩu, nhập mã và mật khẩu mới · route: /sign-in/forgot · area: auth</div>
+      <p class="intro"><b>Concept: Quên mật khẩu, nhập mã và mật khẩu mới.</b> Trạng thái của màn này: nhập mã và mật khẩu mới. Mục tiêu: đặt lại mật khẩu bằng mã gửi qua email. Thao tác: REST password-reset (email) rồi password-reset/verify (mã 6 số + mật khẩu mới), challenge/resend. Bố cục: hai bước trên một thẻ: nhập email, rồi mã cùng mật khẩu mới; xong quay về Đăng nhập kèm thông báo xanh. Bước 2 luôn nói "Nếu email có tài khoản…" để không lộ email nào đã đăng ký. Nút chính: "Gửi mã", rồi "Đặt mật khẩu". Lọc: không có. Khác bản hiện tại: trang mới, chưa có trong gallery. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, Form, Field, Input, OtpInput, Button, Alert.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>– Chữ theo thang 5 cỡ của Grammar: tiêu đề trang 18/500, tiêu đề phần 16/500, nhãn 16/400, thân 14, meta 12; bỏ chữ đậm 600/700 và các cỡ 13/15/20/22.</p>
+      <p>– Nút, ô nhập, ô chọn cùng cao 40px (bỏ nút cỡ nhỏ 30px và cỡ lớn 44px).</p>
+      <p>– Danh sách trong phần: không viền ngoài, hàng px-16 py-12, đường kẻ ngăn kéo hết bề ngang, không phóng to khi rê chuột.</p>
+      <p>– Dòng gợi ý là meta 12.</p>
+    </div>
+  </div>
+</section>
+<section class="page" id="auth-forgot-sign-in-after-reset" data-pid="auth/forgot-sign-in-after-reset" data-route="/sign-in/forgot" data-title="Quên mật khẩu, đăng nhập sau khi đặt lại">
+  <h2>Quên mật khẩu, đăng nhập sau khi đặt lại</h2>
+  <div class="pid">gallery: auth/forgot-sign-in-after-reset</div>
+  <div class="status">Đã duyệt</div>
+  <div class="row">
+    <div class="frame"><div class="lbl">Quên mật khẩu, đăng nhập sau khi đặt lại · 390</div><div class="scr w390 L1 SN"><div class="au m"><div class="top"><div class="logo">S</div><b>StarCi Next</b><div class="sp"></div><span class="rnd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.5 3.5 3.5 14.5 0 18"/><path d="M12 3c-3.5 3.5-3.5 14.5 0 18"/></svg> VI</span></div><div class="rt"><div class="cardx"><div><h1>Đăng nhập</h1><div class="sb">Chào mừng quay lại. Học tiếp từ chỗ đang dở.</div></div>
+<div class="al o"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style=""><path d="M5 12.5l4.5 4.5L19 7"/></svg><div><b>Đã đặt lại mật khẩu</b>Đăng nhập bằng mật khẩu mới.</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div class="btn secondary block lg"><span class="gl2">GH</span>Tiếp tục với GitHub</div><div class="btn secondary block lg"><span class="gl2">G</span>Tiếp tục với Google</div></div><div class="or">hoặc dùng email</div>
+<div class="fld"><label><span>Email</span></label><div class="input "><span>nam@vidu.vn</span></div></div>
+<div class="fld"><label><span>Mật khẩu</span><a class="u s12 f2">Quên mật khẩu?</a></label><div class="input "><span class="ph">Nhập mật khẩu</span><span class="mut s12">Hiện</span></div></div>
+<span class="btn primary block lg">Đăng nhập</span>
+<div class="sw">Chưa có tài khoản? <a class="u b5" style="color:var(--fg)">Đăng ký</a></div></div></div></div></div></div>
+    <div class="note">
+      <div class="fm">title: Quên mật khẩu, đăng nhập sau khi đặt lại · route: /sign-in/forgot · area: auth</div>
+      <p class="intro"><b>Concept: Quên mật khẩu, đăng nhập sau khi đặt lại.</b> Trạng thái của màn này: đăng nhập sau khi đặt lại. Mục tiêu: đặt lại mật khẩu bằng mã gửi qua email. Thao tác: REST password-reset (email) rồi password-reset/verify (mã 6 số + mật khẩu mới), challenge/resend. Bố cục: hai bước trên một thẻ: nhập email, rồi mã cùng mật khẩu mới; xong quay về Đăng nhập kèm thông báo xanh. Bước 2 luôn nói "Nếu email có tài khoản…" để không lộ email nào đã đăng ký. Nút chính: "Gửi mã", rồi "Đặt mật khẩu". Lọc: không có. Khác bản hiện tại: trang mới, chưa có trong gallery. Lưu ý xung đột: không. Phần tử Grammar của màn: EntryFrame, Form, Field, Input, OtpInput, Button, Alert.</p>
+      <h4>Khung vào app</h4>
+      <p>Vì sao: trang vào app chưa có khung ứng dụng, chỉ logo, tên và đổi ngôn ngữ.</p>
+      <p>Luật: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).</p>
+      <p>Grammar: <code>EntryFrame</code>, <code>Form</code></p>
+      <h4>Thay đổi so với bản đã duyệt:</h4>
+      <p>– Chữ theo thang 5 cỡ của Grammar: tiêu đề trang 18/500, tiêu đề phần 16/500, nhãn 16/400, thân 14, meta 12; bỏ chữ đậm 600/700 và các cỡ 13/15/20/22.</p>
+      <p>– Nút, ô nhập, ô chọn cùng cao 40px (bỏ nút cỡ nhỏ 30px và cỡ lớn 44px).</p>
+      <p>– Danh sách trong phần: không viền ngoài, hàng px-16 py-12, đường kẻ ngăn kéo hết bề ngang, không phóng to khi rê chuột.</p>
+      <p>– Dòng gợi ý là meta 12.</p>
+    </div>
+  </div>
+</section>
