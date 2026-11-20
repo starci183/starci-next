@@ -1,4 +1,5 @@
 import { EmptyNotice, StaticsProvider } from "@starci/grammar/common"
+import { NOTICE_ART_CLASS_NAME } from "./classNames"
 
 /** The words of a recoverable failure, its way home and its retry. */
 type ErrorNoticeProps = {
@@ -16,14 +17,16 @@ type ErrorNoticeProps = {
 /** A server failure (500): the one page-level empty state, the way home as its primary and the retry as its secondary. */
 export const ErrorNotice = (props: ErrorNoticeProps) => (
     <StaticsProvider baseUrl={props.staticsBaseUrl}>
-        <EmptyNotice
-            scope="page"
-            message={props.title}
-            description={props.description}
-            media={{ illustration: { staticsKey: "illustrations/errors/server-error.png" } }}
-            actionLabel={props.homeLabel}
-            actionHref={props.homeHref}
-            secondary={{ label: props.retryLabel, onPress: props.onRetry }}
-        />
+        <div className={NOTICE_ART_CLASS_NAME}>
+            <EmptyNotice
+                scope="page"
+                message={props.title}
+                description={props.description}
+                media={{ illustration: { staticsKey: "illustrations/errors/server-error.png" } }}
+                actionLabel={props.homeLabel}
+                actionHref={props.homeHref}
+                secondary={{ label: props.retryLabel, onPress: props.onRetry }}
+            />
+        </div>
     </StaticsProvider>
 )

@@ -101,17 +101,20 @@ const Piece = (props: PieceProps) => {
     )
 }
 
+/** The words a skeleton line is measured from: a line of body width. */
+const SKELETON_WORDS = "x".repeat(72)
+
 /** The body while the first read loads: three skeleton lines, never the placeholder words. */
 const MarkdownSkeleton = () => (
     <Stack gap="row">
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
         <Text as="p" isLoading>
-            {" "}
+            {SKELETON_WORDS}
         </Text>
     </Stack>
 )

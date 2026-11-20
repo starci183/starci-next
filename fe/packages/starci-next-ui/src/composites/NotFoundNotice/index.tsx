@@ -1,4 +1,5 @@
 import { EmptyNotice, StaticsProvider } from "@starci/grammar/common"
+import { NOTICE_ART_CLASS_NAME } from "../ErrorNotice/classNames"
 
 /** The words of a missing page and the way home, with the statics folder its illustration is served from. */
 type NotFoundNoticeProps = {
@@ -14,13 +15,15 @@ type NotFoundNoticeProps = {
 /** A missing page (404): the one page-level empty state, an illustration, the words and one way back to the front door. */
 export const NotFoundNotice = (props: NotFoundNoticeProps) => (
     <StaticsProvider baseUrl={props.staticsBaseUrl}>
-        <EmptyNotice
-            scope="page"
-            message={props.title}
-            description={props.description}
-            media={{ illustration: { staticsKey: "illustrations/errors/not-found.png" } }}
-            actionLabel={props.homeLabel}
-            actionHref={props.homeHref}
-        />
+        <div className={NOTICE_ART_CLASS_NAME}>
+            <EmptyNotice
+                scope="page"
+                message={props.title}
+                description={props.description}
+                media={{ illustration: { staticsKey: "illustrations/errors/not-found.png" } }}
+                actionLabel={props.homeLabel}
+                actionHref={props.homeHref}
+            />
+        </div>
     </StaticsProvider>
 )
