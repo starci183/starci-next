@@ -1199,14 +1199,14 @@
             "locked": "Opens after the level before",
             "open": "Ready",
             "doing": "Practising · {score}/{max}",
-            "passed": "Green"
+            "passed": "Green · {score}/{max}"
           },
           "primary": {
             "run": "Run {level}",
             "rerun": "Run {level} again"
           },
           "aside": {
-            "score": "Your score",
+            "scoreOf": "Score for {level}",
             "scoreNote": "You pass a level when every hidden scenario is green. {max} points in total.",
             "cvTitle": "Profile line",
             "cvNote": "Shown on your public profile as a verified line.",
