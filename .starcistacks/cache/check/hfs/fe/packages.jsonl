@@ -37,9 +37,9 @@
 {"data":{},"findings":[],"hash":"4124ce560378906f311cd8e6ad7d70e44c6c0119f6ed32d55458454d490e0ffa","path":"fe/packages/starci-next-ui/src/composites/ConnectDrawer/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a974b96b07e4a8e78be4eb2b45f6a92d514911346adbaa3214197b7a860951d4","path":"fe/packages/starci-next-ui/src/composites/DeployCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0e3df438037acfc2c44634b949aab7a1435429748f8bed2ffc80073a02a0eeee","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"14867917048b90fd6a58aa1fa7f80cd72e5369e02f086758f872b9cd820f4216","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/Aside.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0b7a9b850f8e7fe7790229682f22e99836959a76dda6c6ffacf1e71653e0e466","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/Aside.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"abbb9a7e83e137a2ab36a234a2084e91c9d6c731900b3b7c13cf6c1380289ffa","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"d99d568117c0895a1101559f12e9b1247632dde8d6cb85f7d643372b6cab9707","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/types.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"43b69d1ef5df6009a255bfab7329cbb09ba268146843ce9378ee0f7737009d93","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"24be62990b8f4e9b1430172a807c95ba186bbc90cf36f2d307615c7175baac5b","path":"fe/packages/starci-next-ui/src/composites/EssentialParts/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"808b2de76775e1344715a4ad1011cad761ec074d0af361b8fc209a12bcb360df","path":"fe/packages/starci-next-ui/src/composites/EssentialParts/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c3b9615726d65f6e3834336309d1633fa6f2cbd45eccb89b13f8527e62ceb6c7","path":"fe/packages/starci-next-ui/src/composites/EssentialScenarios/Detail.tsx","step":"file-rules"}

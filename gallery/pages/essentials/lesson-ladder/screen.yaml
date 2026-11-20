@@ -1,0 +1,106 @@
+schema: 1
+screen: essentials/lesson-ladder
+title: Bài Essentials · Tự áp dụng, mức Vừa đang luyện
+route: /essentials/[topic]/[lesson]?part=apply
+area: essentials
+summary: Phần Tự áp dụng của bài với học viên đã xanh mức Dễ (85/100) và đang luyện mức Vừa
+  (40/100); Khó và Siêu khó chưa mở.
+code:
+  - features/pages/LessonPage
+  - components/blocks/EssentialLesson
+shots:
+  "390":
+    file: 390.png
+    sha256: c6eaeaaa63d18f69eee14383edb56a4080f5ab60f8a08fb800d846e3f1e18047
+  "1440":
+    file: 1440.png
+    sha256: eb6463f9fc341ec3737ae6f21dad2d6bd6b6d9879eddfe65fc1bdd22ee290aea
+sections:
+  - id: s1
+    title: Thang bốn bậc
+    shows: "Bốn bậc Dễ, Vừa, Khó, Siêu khó là danh sách phẳng: bậc đã mở là hàng bấm được (bậc đang xem
+      được tô một lần), bậc chưa mở là hàng thường không bấm được, tông mờ, lý do khóa là chữ meta."
+    why: ui/components/list-table.md (hàng px-4 py-3), ui/components/button.md (một nút chính)
+    actions:
+      - Chạy lại mức Vừa
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Chi tiết bậc đang xem
+    shows: Đề, terminal của lần chạy ẩn, thang điểm theo từng tiêu chí và chuỗi từ luyện trên máy tới
+      chứng minh bằng CI.
+    why: ui/components/data-views.md
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, bậc chưa mở không bấm
+      được"
+audit:
+  builder:
+    agent: next-ux-ess
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:03:20.251Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Cột phải "Điểm của bạn / Dòng hồ sơ" ở 1440 không có lề phải: thanh tiến độ và chữ "Tổng 100
+            điểm." chạm mép x=1440 (cột phải trang khác chừa lề). Ở 390 tab đầu "Bản chất" bị nút
+            cuộn che một phần. Còn lại: lề phải của cột phụ và mũi tên cuộn của thanh tab ở 390 do
+            Page chrome=panes và Tabs của Grammar quyết định, ứng dụng không chỉnh được (cần
+            Grammar).'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: fixed
+          notes: "Vòng 2: hàng Dễ hiện 'Đã xanh · 85/100'; khối điểm bên phải đặt tên bậc nó thuộc về ('Điểm
+            mức Vừa')."
+    - n: 2
+      at: 2026-11-20T16:05:46.369Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Lề phải cột phải ở 1440 và mũi tên cuộn tab ở 390 thuộc Page chrome=panes / Tabs của Grammar (cần Grammar), chấp nhận như lề 268."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: 'Đã sửa: hàng Dễ ghi "Đã xanh · 85/100" và khối điểm đặt tên "Điểm mức Vừa" (40/100).'
+  escalate: null

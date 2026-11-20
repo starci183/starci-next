@@ -11,13 +11,13 @@ export const EssentialApplyAside = (props: EssentialApplyAsideProps) => {
     return (
         <Stack gap="section">
             {challenge === undefined ? null : (
-                <Section title={labels.aside.score} headingLevel={2}>
+                <Section title={labels.aside.scoreOf(challenge.level)} headingLevel={2}>
                     <Stack gap="inline">
                         <Text as="p" size="figure" isStrong tabular>
                             {`${challenge.score} / ${challenge.maxScore}`}
                         </Text>
                         <Meter
-                            label={labels.aside.score}
+                            label={labels.aside.scoreOf(challenge.level)}
                             value={challenge.score}
                             maxValue={challenge.maxScore}
                             isLabelHidden

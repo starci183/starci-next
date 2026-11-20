@@ -8,7 +8,7 @@
 {"findings":[],"hash":"d00a6e215c1e4c0435be189a4d2f6c1bcd0ea5cb2e3cd732380662c799d53436","path":"gallery/pages/essentials/lesson-error/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"97d946fa4c86ec9b6d765c9c64be32317dc234d3c3f895600eaf76a1619a2f86","path":"gallery/pages/essentials/lesson-free-end/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"884d46d0e7e6e6bcaab6f0eed5362c82f77b9193002fb7d7b2950c327ef3fb6f","path":"gallery/pages/essentials/lesson-ladder-locked/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"b3d6fdfb8877987ecf95df818fe1dd0235409015cea6c9afd35a38fe074b6227","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"prettier"}
+{"findings":[],"hash":"fcbd11eff32fa2f4e8d2060b93fc5b9c0d03c47dcb7e71fb5adbb9feff3273eb","path":"gallery/pages/essentials/lesson-ladder/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"68a0a65fb5f347f07e74938bb33b7a4ba0b772c879a115bf64d13b46ccbe36ac","path":"gallery/pages/essentials/lesson-loading/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"b3dcc2ea9c957464154771348b6f5733f3f7fe493664b3c6a9a331d51c708692","path":"gallery/pages/essentials/lesson-locked-apply/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"ce95c3a7ba9f14944ba1bd6f743b1f930ce5a32ae4c0ce6dc35cdbb1a645bd0e","path":"gallery/pages/essentials/lesson-locked-scenarios/screen.yaml","step":"prettier"}
