@@ -322,6 +322,20 @@ const SCREENS = [
         refuse: true,
         ops: /"operationName":"VerifyExperience"/,
     }),
+    // The seeded learner of career-states shares one verified line (scripts/gallery-seed.mjs --only career-states,career-teacher).
+    S("cv", "public", "/cv/gallery-career-states-example-test", { guest: true }),
+    S("cv", "public-few-lines", "/cv/gallery-career-states-example-test", { guest: true }),
+    S("cv", "public-share", "/cv/gallery-career-states-example-test", {
+        guest: true,
+        act: async (p) => {
+            await p
+                .getByRole("button", { name: "Chia sẻ CV" })
+                .first()
+                .click()
+                .catch(() => {})
+            await p.waitForTimeout(800)
+        },
+    }),
     S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
     S("profile", "overview", "/profile"),
     S("profile", "new", "/profile", {

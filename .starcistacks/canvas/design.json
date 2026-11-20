@@ -307,9 +307,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "dae1636c64be296b4f1974829c56458e6d44f16dbe57d9edc8b544ec81a79f12",
+        "1440": "63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb"
+      }
     },
     "cv/public-error": {
       "status": "approved",
@@ -317,9 +321,13 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-few-lines": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "dae1636c64be296b4f1974829c56458e6d44f16dbe57d9edc8b544ec81a79f12",
+        "1440": "63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb"
+      }
     },
     "cv/public-loading": {
       "status": "approved",
@@ -341,9 +349,13 @@
       }
     },
     "cv/public-share": {
-      "status": "approved",
+      "status": "built",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
+      "shots": {
+        "390": "7f571532e7daef0e5a04cd40a501c41c08a5f49d884c4751db8cd2bdb20c4782",
+        "1440": "e0a639b552341ee066fef5fc758031964d9da9b44d90e3ae7262c197882859b6"
+      }
     },
     "devices/list": {
       "status": "approved",
@@ -685,8 +697,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "5061f167443414d0bb4318fb3b183781c934329771310bcda8841af46c778fe7",
-        "1440": "d89bb96b3ff124daf96f08bac9e6c0adcaa442d7330dfd18df817df86b496c34"
+        "390": "4a0658d90d8acecce486befb622aa8c6e39d0e5028ae5470ab4fab165ae600dc",
+        "1440": "1608192b647c26adf08daa5ff14ccdc51dbb6bd7a24ae72104f746450bc17333"
       }
     },
     "harness/build-connect-bad-url": {
