@@ -7,10 +7,10 @@ summary: "Trang máy khi máy đã nối không còn kết nối: chấm xám Ng
 shots:
   "390":
     file: 390.png
-    sha256: 2e38c719012a604070f1a737bb573add4c8c7f4430ddf7054b1a48de9f64208c
+    sha256: a1275e7e6ffbc9b0491cddd679fa3910c5c5805a10618e57b607d12be3a4e151
   "1440":
     file: 1440.png
-    sha256: eba98dcd66bd80ecc62ff90b90231d98333fafe6633bc3a104474ba0166572dc
+    sha256: ae2a483f8d85ade3ee6d132de4127ec36631a696cbdc58065b0450a2ddebfe36
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -68,6 +68,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:13.120Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:43.222Z
       lenses:
         order:
           verdict: open

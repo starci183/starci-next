@@ -3,6 +3,7 @@ import {
     DescriptionList,
     EmptyNotice,
     Page,
+    Spinner,
     Stack,
     type BreadcrumbItem,
     type PageHeaderContent,
@@ -91,6 +92,15 @@ interface ResultBodyProps {
 
 const ResultNotice = (props: ResultBodyProps) => {
     const kind = noticeKindOf(props.shape)
+    if (props.shape === "verifying")
+        return (
+            <Stack gap="row">
+                <div className={RESULT_ACTIONS_CLASS_NAME}>
+                    <Spinner label={props.view.title} size="lg" />
+                </div>
+                <EmptyNotice mark="none" message={props.view.title} description={props.view.body} />
+            </Stack>
+        )
     if (kind === "clear") return <EmptyNotice isAllClear message={props.view.title} description={props.view.body} />
     return <EmptyNotice isError={kind === "error"} message={props.view.title} description={props.view.body} />
 }

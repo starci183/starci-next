@@ -8,10 +8,10 @@ summary: "Trang Premium của học viên đang là Premium: thông báo Premium
 shots:
   "390":
     file: 390.png
-    sha256: fc4e5c1036fe75e14b93bd3ed4701c5ba296229aeb1e05b7afc4375dbe48e6f1
+    sha256: 4eb6e4d549eff5cc30df9e7b449131d7eec30e70847363987db6f2ba25702769
   "1440":
     file: 1440.png
-    sha256: ce7f0ae74975b536976d26d5dfdca3793622643e7442a65acd68ed4bc2cd4539
+    sha256: 52252a8d4eda6566199ae05cd0c3d470c1fdea9e3df30a86440d1e32ecee78be
 code:
   - features/pages/PlansPage
   - components/blocks/PremiumPlans
@@ -86,6 +86,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:04.539Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:24.353Z
       lenses:
         order:
           verdict: open

@@ -192,8 +192,8 @@
       "signInLabel": "Đăng nhập để tiếp tục",
       "failureTitle": "Chưa bắt đầu được thanh toán",
       "failureSession": "Phiên đăng nhập đã hết. Hãy đăng nhập lại.",
-      "failureRefused": "Chưa tạo được thanh toán, hãy thử lại.",
-      "failureOther": "Có lỗi xảy ra, hãy thử lại sau.",
+      "failureRefused": "Chưa tạo được thanh toán và bạn chưa bị trừ tiền. Bấm Thanh toán để thử lại.",
+      "failureOther": "Chưa tạo được thanh toán và bạn chưa bị trừ tiền. Bấm Thanh toán để thử lại.",
       "premiumTitle": "Bạn đang là Premium đến {date}",
       "premiumDescription": "Mua thêm bây giờ sẽ cộng tiếp từ ngày {date}, không mất ngày nào.",
       "payNoteExtend": "Cộng thêm từ ngày {date}. Premium được gia hạn khi cổng thanh toán xác nhận đã nhận tiền.",
@@ -2088,7 +2088,9 @@
       "tokenNeverUsed": "…{hint} · tạo {created} · chưa dùng",
       "copy": "Sao chép",
       "copied": "Đã sao chép",
-      "copyFailed": "Chưa sao chép được"
+      "copyFailed": "Chưa sao chép được",
+      "devicesError": "Chưa tải được danh sách máy",
+      "devicesErrorHint": "Kiểm tra mạng rồi thử lại."
     },
     "connectAi": {
       "pageTitle": "Kết nối Claude / ChatGPT",

@@ -7,10 +7,10 @@ summary: "Tab Claude Code & MCP ngay sau khi tạo token: token hiện một l�
 shots:
   "390":
     file: 390.png
-    sha256: eb76ec97ff11e9f67701e5199156411f17491898317bf9bb5ed6d62fcb95175e
+    sha256: 992f3a2461504212d546668b1675844368cf42883b70edce7fd425c44e8fde18
   "1440":
     file: 1440.png
-    sha256: 713eb101ca1563005ee5f331ca274afecc0482decc695ede033b48bdb7b459ab
+    sha256: f13c42e04b7987eff7febb92b7edd33c6153921ddb4c116dd8738760758f13bb
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -72,6 +72,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:19.150Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: "Hai ảnh khác dữ liệu: 1440 là 3 / 5 token (3 dòng) còn 390 là 4 / 5 token (4 dòng), nên
+            không cùng một trạng thái; cần chụp cả hai từ một học viên."
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:40.048Z
       lenses:
         order:
           verdict: open

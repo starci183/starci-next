@@ -7,10 +7,10 @@ summary: "Trang Premium khi danh sách gói chưa về: bảng so sánh có sẵ
 shots:
   "390":
     file: 390.png
-    sha256: e8d2daba1edf3346c507e4a16f6e7e9f4fbe25c3f71ced654767555cdc906087
+    sha256: b7a55614b921664a2222288abf7c6c026567858cd0f8e03f1f94908d451e32d9
   "1440":
     file: 1440.png
-    sha256: 841573b037968ff538f91689c6291cb20b980af11417da1d2144b904f3a02790
+    sha256: b8f9a4c7c4565b7113f8effb98b33cc3c0c3150d6bba0ce97823e95cc85b0085
 code:
   - features/pages/PlansPage
   - components/blocks/PremiumPlans
@@ -85,6 +85,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:03.083Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:25.662Z
       lenses:
         order:
           verdict: open

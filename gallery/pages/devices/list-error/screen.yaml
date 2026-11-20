@@ -7,10 +7,10 @@ summary: "Trang máy khi danh sách máy không đọc được: chỉ còn tên
 shots:
   "390":
     file: 390.png
-    sha256: e42efa58484df268d6e08525f3e33e716aaf6ac521a4bd643b85cf3f73764a25
+    sha256: bc236d1aa862ce2db9d7b78cb759d0457012a2b28f07ec8796db1c5739f5c305
   "1440":
     file: 1440.png
-    sha256: 4ffda35b6f5dde975fcc7de305041815ddd58ad0e840acf122b92be92bb63340
+    sha256: aab0a8c585c98dc55414b06fe635cb777ae3163dbff902eab4b104ddb31e860b
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -68,6 +68,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:11.910Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lỗi chỉ ghi "Không tải được phần này." cho cả khối máy; canvas có "Chưa tải được danh sách
+            máy / Kiểm tra mạng rồi thử lại." và vẫn giữ dải tab; tiêu đề trang mất dòng số máy.
+        states:
+          verdict: open
+          notes: Khi lỗi mất cả dải tab Máy đã nối / Claude Code & MCP và dòng meta (1 / 2 máy) mà canvas giữ.
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:36.090Z
       lenses:
         order:
           verdict: open

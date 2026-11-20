@@ -288,7 +288,7 @@ const CreateDialog = (props: DevicesPairBaseProps) => {
 
 /** The band: the title, the machines used and the two views as page tabs; the connect command stands in the band on the machines view. */
 const bandOf = (
-    devices: ReadonlyArray<DeviceRow>,
+    devices: ReadonlyArray<DeviceRow> | undefined,
     isLoading: boolean,
     props: DevicesPairBaseProps,
 ): PageHeaderContent => {
@@ -296,7 +296,7 @@ const bandOf = (
     return {
         breadcrumbs: "root",
         title: labels.pageTitle,
-        meta: props.props.meta(devices.length),
+        meta: props.props.meta(devices?.length),
         ...(tab === "devices"
             ? {
                   actions: (
@@ -313,7 +313,11 @@ const bandOf = (
             selectedKey: tab,
             onSelect: (key) => props.on.selectTab(key === "mcp" ? "mcp" : "devices"),
             items: [
-                { id: "devices", label: labels.devicesTab, ...(isLoading ? {} : { count: devices.length }) },
+                {
+                    id: "devices",
+                    label: labels.devicesTab,
+                    ...(isLoading || devices === undefined ? {} : { count: devices.length }),
+                },
                 { id: "mcp", label: labels.mcpTab, ...(mcpCount === undefined ? {} : { count: mcpCount }) },
             ],
         },
@@ -333,8 +337,9 @@ export const DevicesPairBase = (props: DevicesPairBaseProps) => {
             placeholder={view.placeholder}
             labels={view.slotLabels}
             onRetry={props.on.retry}
+            errorDescription={view.errorText}
             header={(devices, isLoading) => bandOf(devices, isLoading, props)}
-            headerFallback={{ breadcrumbs: "root", title: view.labels.pageTitle }}
+            headerFallback={bandOf(undefined, false, props)}
             render={(devices, isLoading) =>
                 view.tab === "devices" ? (
                     <DevicesBody {...props} devices={devices} isLoading={isLoading} />

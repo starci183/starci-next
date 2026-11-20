@@ -163,12 +163,15 @@ export const DevicesPair = () => {
         <DevicesPairBase
             props={{
                 labels: labelsOf(t),
-                slotLabels: useSlotLabels()(t("devicesEmpty")),
+                slotLabels: { ...useSlotLabels()(t("devicesEmpty")), error: t("devicesError") },
+                errorText: t("devicesErrorHint"),
                 tab,
                 mcpCount: tokens?.length,
                 meta: (count) =>
                     tab === "devices"
-                        ? t("metaDevices", { count, limit, plan, text: t("pageSub") })
+                        ? count === undefined
+                            ? t("pageSub")
+                            : t("metaDevices", { count, limit, plan, text: t("pageSub") })
                         : t("metaMcp", { count: tokens?.length ?? 0, limit: tokenLimit, text: t("mcpSub") }),
                 caption: (count) => {
                     if (!isPremium) return t("captionFree")

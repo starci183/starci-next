@@ -119,11 +119,13 @@ export type DevicesPairBaseProps = {
     readonly props: {
         readonly labels: DevicesLabels
         readonly slotLabels: SlotLabels
+        /** The sentence under the failure notice of the machines read. */
+        readonly errorText: string
         readonly tab: DevicesTab
         /** The tab counts: paired machines (from the read) and MCP tokens (undefined until read). */
         readonly mcpCount: number | undefined
         /** The line under the title: the machines used, the plan and what the CLI does. */
-        readonly meta: (deviceCount: number) => string
+        readonly meta: (deviceCount: number | undefined) => string
         /** The words under the machine list: how many places are left, and what Premium adds. */
         readonly caption: (deviceCount: number) => string
         readonly steps: ReadonlyArray<DevicesPairStep>

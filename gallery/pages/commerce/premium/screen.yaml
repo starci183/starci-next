@@ -87,6 +87,31 @@ audit:
       at: 2026-11-20T16:29:58.031Z
       lenses:
         order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: 'QR và quyền theo gói: cần API (đã chấp nhận). Kênh ghi "Cổng thanh toán" thay "Chuyển khoản
+            QR" của canvas do chưa có QR.'
+    - n: 2
+      at: 2026-11-20T16:54:21.504Z
+      lenses:
+        order:
           verdict: open
           notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:

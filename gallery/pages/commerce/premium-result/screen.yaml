@@ -8,10 +8,10 @@ summary: "Kết quả của một đơn vừa tạo: chưa thấy tiền về, t
 shots:
   "390":
     file: 390.png
-    sha256: 74159115c1b6ddefc263cf78b0e6ce8085a17df164a9ed990f61419542cfce4d
+    sha256: 39f54946863d2f3abe0cb48871da0ccda96305e3ffabfdb724246764250aec1d
   "1440":
     file: 1440.png
-    sha256: 5bd48c2ab9c7d4e2e67ab819b4155e1da66ad812b89aabbb56c0aee245646580
+    sha256: 9293214a7fd249af6801eae82bdbd1120022b7d1043069f69eecbb7d128ff718
 code:
   - features/pages/CheckoutResultPage
   - components/blocks/CheckoutResult
@@ -81,6 +81,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:07.207Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: open
+          notes: Trạng thái "Đang xác nhận thanh toán" dùng ô icon hộp thư tĩnh, không có spinner hay chuyển
+            động báo đang chờ tiền về dù chữ nói trang tự cập nhật.
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: Mã đơn khác nhau giữa 1440 (SE-30) và 390 (SE-31) vì tạo đơn mới mỗi lần chụp (đã nêu).
+    - n: 2
+      at: 2026-11-20T16:54:26.849Z
       lenses:
         order:
           verdict: open

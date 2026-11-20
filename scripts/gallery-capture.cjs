@@ -164,7 +164,7 @@ const revokeAllTokens = async (p) => {
             }).then((r) => r.json())
         const listed = await call("query { mcpTokens { id } }")
         for (const token of listed.data?.mcpTokens ?? [])
-            await call("mutation R($input: RevokeMcpTokenInput!) { revokeMcpToken(input: $input) { id } }", {
+            await call("mutation R($input: RevokeMcpTokenInput!) { revokeMcpToken(input: $input) }", {
                 input: { id: token.id },
             })
     })
@@ -446,10 +446,17 @@ const SCREENS = [
             await p.waitForTimeout(2500)
         },
     }),
-    S("devices", "list-mcp-no-token", "/devices", { learnerState: learnerOf("scenarios-none"), act: openMcpTab }),
+    S("devices", "list-mcp-no-token", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            await revokeAllTokens(p)
+            await openMcpTab(p)
+        },
+    }),
     S("devices", "list-mcp-token-created", "/devices", {
         learnerState: learnerOf("scenarios-none"),
         act: async (p) => {
+            await revokeAllTokens(p)
             await openMcpTab(p)
             await tap(p, /^Tạo token$/)
             await p.waitForTimeout(800)
@@ -461,7 +468,24 @@ const SCREENS = [
             await p.waitForTimeout(2500)
         },
     }),
-    S("devices", "list-mcp-tokens", "/devices", { learnerState: learnerOf("scenarios-none"), act: openMcpTab }),
+    S("devices", "list-mcp-tokens", "/devices", {
+        learnerState: learnerOf("scenarios-none"),
+        act: async (p) => {
+            // One token, secret already dismissed: the list as it reads on a later visit.
+            await revokeAllTokens(p)
+            await openMcpTab(p)
+            await tap(p, /^Tạo token$/)
+            await p.waitForTimeout(800)
+            await p.getByLabel(/Tên token/).fill("Claude Code trên MacBook")
+            await p
+                .getByRole("dialog")
+                .getByRole("button", { name: /^Tạo token$/ })
+                .click()
+            await p.waitForTimeout(2000)
+            await tap(p, /^Tôi đã lưu token$/)
+            await p.waitForTimeout(1000)
+        },
+    }),
     S("devices", "list", "/devices", { learnerState: learnerOf("scenarios-none") }),
     S("connect", "ai", "/connect", { learnerState: learnerOf("scenarios-red"), act: revokeAllTokens }),
     S("connect", "ai-token-created", "/connect", {
@@ -538,6 +562,33 @@ if (SEEDED) {
         const extra = {
             ...(seeded.guest ? { guest: true } : { learnerState: path.join(STATES_DIR, seeded.learner + ".json") }),
             ...(id === "career/review-queue-reviewers" ? { click: "Người duyệt" } : {}),
+            // A free learner with one machine pairs a second one: the dialog answers with the plan's limit (a real refusal of the core).
+            ...(id === "devices/list-limit-reached"
+                ? {
+                      act: async (p) => {
+                          const started = await fetch(
+                              (process.env.CAPTURE_CORE || "http://127.0.0.1:3201") + "/api/relay/devices/start",
+                              {
+                                  method: "POST",
+                                  headers: {
+                                      "content-type": "application/json",
+                                      origin: process.env.CAPTURE_ORIGIN_AS || ENTRY,
+                                  },
+                                  body: JSON.stringify({ deviceName: "Máy thứ hai", platform: "macos" }),
+                              },
+                          ).then((r) => r.json())
+                          await tap(p, /^Kết nối máy$/)
+                          await p.waitForTimeout(800)
+                          await p.getByLabel(/Mã 8 ký tự/).fill(started.userCode)
+                          await p.waitForTimeout(2500)
+                          await p
+                              .getByRole("dialog")
+                              .getByRole("button", { name: /^Xác nhận kết nối$/ })
+                              .click()
+                          await p.waitForTimeout(2500)
+                      },
+                  }
+                : {}),
             ...(id === "review/session-conflict"
                 ? {
                       act: async (p) => {

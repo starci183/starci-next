@@ -1,17 +1,17 @@
 schema: 1
 screen: commerce/premium-result-unlocked
 title: Kết quả thanh toán, Premium đã mở
-route: /premium/result
+route: /premium/result?order=<mã đơn>
 area: commerce
-summary: "Kết quả khi học viên đã là Premium và địa chỉ không nêu đơn: Premium đã mở, hạn đến ngày
-  nào, nút Mở Projects."
+summary: "Kết quả của một đơn đã thanh toán: Premium đã mở, thông tin đơn kèm hạn đến ngày nào, nút
+  Mở Projects."
 shots:
   "390":
     file: 390.png
-    sha256: bf70bbb4225398932ec5ed0decd39aa402e985a964d37f25207655d568da26b7
+    sha256: a6aa788e12b7ce16166b612be47b944182e1fc9c33bcede13853c3816884e5f9
   "1440":
     file: 1440.png
-    sha256: 1dc567f3fa9bf4e5087e3cb533f9f1afbec971fe88a5b376ed2c16a74a30ea6a
+    sha256: 6e1a23bb7f3752f5a51970bf67d6a3b4aae6cceb76a58d021c940777384e72a1
 code:
   - features/pages/CheckoutResultPage
   - components/blocks/CheckoutResult
@@ -81,6 +81,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:08.424Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: "Không có đơn nên không có mã đơn, gói, số tiền (canvas có); trang không bịa số, chỉ hiện
+            ngày Premium đến: chấp nhận, ghi trong screen.yaml."
+    - n: 2
+      at: 2026-11-20T16:54:29.413Z
       lenses:
         order:
           verdict: open

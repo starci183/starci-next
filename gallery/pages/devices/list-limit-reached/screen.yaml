@@ -1,0 +1,97 @@
+schema: 1
+screen: devices/list-limit-reached
+title: Máy của bạn, đã đủ giới hạn
+route: /devices
+area: devices
+summary: "Học viên miễn phí đã nối một máy nối thêm máy thứ hai: hộp thoại cho thấy máy sẽ nối rồi
+  nói gói miễn phí chỉ nối được 1 máy."
+shots:
+  "390":
+    file: 390.png
+    sha256: afab2d3b7734d114294aab4352c781e16193175d2ee53d55dd93a30e439eac1c
+  "1440":
+    file: 1440.png
+    sha256: 8148f756dc569762246814443b750f24a5be23f8f798fc922937f4810f5a26cb
+code:
+  - features/pages/DevicesPage
+  - components/blocks/DevicesPair
+sections:
+  - id: header
+    title: Dải đầu trang và hai phần
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối
+      máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần
+      thứ hai cùng một việc nối công cụ, không còn trang riêng.
+    actions:
+      - Kết nối máy
+    states:
+      loading: Dải đầu giữ khung, chữ là khối xám
+      empty: null
+      error: Chỉ còn tên trang
+    needsApi: []
+  - id: body
+    title: Hộp thoại Kết nối máy
+    shows: Tên máy, hệ điều hành, mã hết hạn, cảnh báo Gói miễn phí nối được 1 máy với cách thoát (thu
+      hồi máy cũ hoặc nâng cấp Premium), nút chính Xem Premium và nút Hủy.
+    why: Khi máy chủ từ chối vì vượt giới hạn, nút chính đổi sang đường ra duy nhất (Xem Premium) thay
+      vì cho bấm lại.
+    actions:
+      - Xem Premium
+      - Hủy
+    states:
+      loading: Hàng là khối xám giữ đúng khung
+      empty: null
+      error: Thông báo lỗi kèm nút Thử lại
+    needsApi: []
+  - id: aside
+    title: CLI làm được gì
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và
+      hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh
+      vì dự án giờ chứng minh bằng CI OIDC.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
+    chosen: false
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
+      công cụ"
+  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    chosen: true
+    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
+      cần Grammar
+audit:
+  builder:
+    agent: next-ux-commerce
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T16:54:37.235Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

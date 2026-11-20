@@ -7,10 +7,10 @@ summary: "Trang nối Claude và ChatGPT ngay sau khi tạo mã: mã hiện mộ
 shots:
   "390":
     file: 390.png
-    sha256: 35e0e20b335111bf0e7aa7abb4b923cd9fcf14b2a6fd84e177625dd135d23668
+    sha256: b4d9aa699175807901c5b8f28593a50782efcde75456293c37c42d71329cf986
   "1440":
     file: 1440.png
-    sha256: ff1e4bf7be61864fc3fd5d5a406976dddab771cf23d2fe68e37eb79f5bc8105e
+    sha256: c7e65d40e9d289c6467a177c186a9730b20a28d492414d72e5ebdceda83d95ea
 code:
   - features/pages/ConnectPage
   - components/blocks/ConnectAi
@@ -89,6 +89,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:22.860Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:46.989Z
       lenses:
         order:
           verdict: open

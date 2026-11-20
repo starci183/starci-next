@@ -7,10 +7,10 @@ summary: Hộp thoại khi mã gõ vào không khớp máy nào hoặc đã hế
 shots:
   "390":
     file: 390.png
-    sha256: 38b0a6cab2b6831875a585cc05e2afb66e0ad2b35fb6636da27cac5ed5e4651d
+    sha256: 1b3bea0adf386cb1627ba0944c40c19b747e14bc9e692108635ab8af4ec1af41
   "1440":
     file: 1440.png
-    sha256: 4bfd9809343e7f794aaabd791a504f52115894f87f99e48cf3f1d242449f956e
+    sha256: 1b2713c0c559d544b871aff67dc1f4f99a1034ab61f00c6d8215fb539ffcc5e1
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -68,6 +68,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:15.635Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:31.654Z
       lenses:
         order:
           verdict: open

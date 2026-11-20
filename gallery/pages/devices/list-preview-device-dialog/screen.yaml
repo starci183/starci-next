@@ -8,10 +8,10 @@ summary: "Hộp thoại khi mã khớp một máy đang chờ: hiện tên máy,
 shots:
   "390":
     file: 390.png
-    sha256: 601fd93fa2c5c49c9a5671d792705ae090d203e95b24ca6f90a3adbe8d0d0144
+    sha256: fcbd8e9e7a0df45973b2286b1f3e2c1f6aab8737fde7e9ec98e5fa5611cd45fc
   "1440":
     file: 1440.png
-    sha256: 4c72cd02a2c6fa47ae8fb0405d148a4b4ee750f66b855fb4c4b99f2f46b96477
+    sha256: 3ec80c00d2ff7757095504b21cc85c678e0b35debeb91b3b56f1e0f3afc48bf0
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -71,6 +71,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:16.853Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:44.600Z
       lenses:
         order:
           verdict: open

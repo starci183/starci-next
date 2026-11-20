@@ -7,10 +7,10 @@ summary: "Tab Claude Code & MCP khi đã có token: danh sách token với đuô
 shots:
   "390":
     file: 390.png
-    sha256: 6ab58aba3fb565c9a7d017383d828a265c737239a1734a79dea883b3edfcea70
+    sha256: 2c5c4cee15060aa0a76cc76e3bd259225292397601eddbd53ceb4fc8314997cf
   "1440":
     file: 1440.png
-    sha256: 13943faab6dad61c758d6519f16c5f6a531c776e3ecf79b5ef27510960cf874f
+    sha256: 064472781a3e170977df228de134029f665dd588557f4aa2d3653da7d70bf48e
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -71,6 +71,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:20.311Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:41.727Z
       lenses:
         order:
           verdict: open

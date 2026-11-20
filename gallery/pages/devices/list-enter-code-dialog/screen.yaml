@@ -7,10 +7,10 @@ summary: "Hộp thoại Kết nối máy vừa mở: một ô mã 8 ký tự."
 shots:
   "390":
     file: 390.png
-    sha256: 84da5f8634352aebcd3dd07be3ae099ab037bcb53c3df375e0fbbe7b606db977
+    sha256: 4abd4ac8ec373b06fba2c1d3b782922ac6cb06505ab6e1e70b4049d3b52acb19
   "1440":
     file: 1440.png
-    sha256: c8872847ddd881f09a44ffd5706423cd7bdb2bc447ba10e658dff95b374a427e
+    sha256: e8c643064b4cf8b29c43deaef7ac532182a9fff24944edc225f9c61190ec7691
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -69,6 +69,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:14.250Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:34.883Z
       lenses:
         order:
           verdict: open

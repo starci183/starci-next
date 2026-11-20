@@ -3,15 +3,16 @@ screen: commerce/premium-checkout-error
 title: Premium, lỗi tạo thanh toán
 route: /premium
 area: commerce
-summary: "Trang Premium khi máy chủ từ chối tạo thanh toán: khối lỗi trên thẻ gói, các lựa chọn giữ
-  nguyên để thử lại."
+summary: "Trang Premium khi máy chủ từ chối tạo thanh toán: khối lỗi nói chưa bị trừ tiền và bảo bấm
+  Thanh toán để thử lại, các lựa chọn giữ nguyên. Bản vẽ viết Thử tạo lại mã QR; mã hiện chuyển sang
+  cổng thanh toán nên chữ nói đúng việc đó, câu về mã QR sẽ có khi API trả dữ liệu QR (cần API)."
 shots:
   "390":
     file: 390.png
-    sha256: 34e7e393ef12ca65a7e84e3a38b0740eb9cdb576e3d90e1dc083d0c5aea20bab
+    sha256: 53f1f799cffc40adb76d52ca17369c46b851feb9ca0570363a2effcd9290a8cd
   "1440":
     file: 1440.png
-    sha256: bb76127f67b6101d979787bb1acc33f50e32c5b15fb5dad0a8a59580e486b962
+    sha256: 716515d3724b7a16e52403bacea7de08f4ae874db10604e6cdc4ed3717e9b39c
 code:
   - features/pages/PlansPage
   - components/blocks/PremiumPlans
@@ -86,6 +87,33 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:05.891Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: Lỗi chỉ ghi "Chưa bắt đầu được thanh toán. Có lỗi xảy ra, hãy thử lại sau."; canvas nói rõ
+            "Chưa tạo được mã thanh toán... Bạn chưa bị trừ tiền" và có nút "Thử tạo lại mã QR".
+            Thiếu câu trấn an chưa bị trừ tiền; nút Thanh toán đóng vai trò thử lại nhưng không nói
+            vậy.
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:54:22.982Z
       lenses:
         order:
           verdict: open

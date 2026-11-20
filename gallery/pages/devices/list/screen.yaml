@@ -8,10 +8,10 @@ summary: "Trang máy của học viên Premium có một máy đã nối: ba bư
 shots:
   "390":
     file: 390.png
-    sha256: 513b6a2556367829d87cf99b720bd43f8de17ac7236114a3907782120e6c5ae1
+    sha256: af5cd5acdd3b21b7907b0071ce1267eef2189e8c543544272b5c607aa0411096
   "1440":
     file: 1440.png
-    sha256: cefdfdea315fff57a08fd875c46e9522208fde65ebd4c4f03b10f7136b8ad607
+    sha256: cb584762527863da57351322b71faa25ab26bffea85387141c54c25d6a6e77fc
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -72,6 +72,30 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:09.597Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: Tên máy "May Gallery scenarios-none" là seed.
+    - n: 2
+      at: 2026-11-20T16:54:30.531Z
       lenses:
         order:
           verdict: open

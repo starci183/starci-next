@@ -7,10 +7,10 @@ summary: Tab Claude Code & MCP khi chưa có token nào.
 shots:
   "390":
     file: 390.png
-    sha256: 86f66850937d08cd7d579164895beff6b90e90108438143c23b84d5bcb6aeaec
+    sha256: f5fd3d2681af01191cb762c3e1b29c0f8855af9557d7863acc80ef14b10076f3
   "1440":
     file: 1440.png
-    sha256: 5795f157384ae199cc4692ac7cdd2ffc8d673940c89e924f63b5018a667f1fa9
+    sha256: fac5f0b9680d6556d0b7f7332a0bbebd16f8a632721070443bf9aef9fcc1a046
 code:
   - features/pages/DevicesPage
   - components/blocks/DevicesPair
@@ -70,6 +70,31 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:30:18.021Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: open
+          notes: 'Ảnh không phải trạng thái chưa có token: hiện 2 / 5 token với hai dòng "Claude Code trên
+            MacBook" (canvas: 0 / 5, hướng dẫn thêm máy chủ MCP rồi Tạo token).'
+        truth:
+          verdict: open
+          notes: Dữ liệu ảnh mâu thuẫn tên màn (no-token nhưng có 2 token), cả 1440 và 390.
+    - n: 2
+      at: 2026-11-20T16:54:38.741Z
       lenses:
         order:
           verdict: open

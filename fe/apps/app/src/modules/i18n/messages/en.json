@@ -192,8 +192,8 @@
       "signInLabel": "Sign in to continue",
       "failureTitle": "Could not start the payment",
       "failureSession": "Your session has ended. Sign in again.",
-      "failureRefused": "The payment could not be created, try again.",
-      "failureOther": "Something went wrong, try again later.",
+      "failureRefused": "The payment could not be created and you have not been charged. Press Pay to try again.",
+      "failureOther": "The payment could not be created and you have not been charged. Press Pay to try again.",
       "premiumTitle": "You are Premium until {date}",
       "premiumDescription": "Buying more now adds on from {date}, so no day is lost.",
       "payNoteExtend": "Adds time from {date}. Premium is extended when the gateway confirms it received the money.",
@@ -2088,7 +2088,9 @@
       "tokenNeverUsed": "…{hint} · created {created} · never used",
       "copy": "Copy",
       "copied": "Copied",
-      "copyFailed": "Could not copy"
+      "copyFailed": "Could not copy",
+      "devicesError": "The machine list could not be loaded",
+      "devicesErrorHint": "Check your connection and try again."
     },
     "connectAi": {
       "pageTitle": "Connect Claude / ChatGPT",
