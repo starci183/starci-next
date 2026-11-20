@@ -22,11 +22,16 @@ const DocBody = (props: RegionProps) => (
             <Section
                 key={section.id}
                 id={section.id}
-                title={section.title}
-                headingLevel={2}
+                {...(props.isLoading
+                    ? { ariaLabel: props.doc.props.labels.outlineTitle }
+                    : { title: section.title, headingLevel: 2 as const })}
                 isLoading={props.isLoading}
             >
-                <RichMarkdown source={section.markdown} labels={props.doc.props.common.markdown} />
+                <RichMarkdown
+                    source={section.markdown}
+                    labels={props.doc.props.common.markdown}
+                    isLoading={props.isLoading}
+                />
             </Section>
         ))}
     </Stack>

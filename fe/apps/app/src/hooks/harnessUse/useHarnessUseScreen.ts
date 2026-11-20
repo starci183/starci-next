@@ -4,7 +4,7 @@ import type { PageHeaderContent } from "@starci/grammar/common"
 import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { harnessHeaderOf, useHarnessCommonLabels, useHarnessTool, type HarnessCommonLabels } from "@/hooks/harness"
-import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
+import { mapSlot, settledListSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryHarnessDoctorSwr, useQueryHarnessGuidesSwr, useQueryHarnessTrialsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
 import { HARNESS_TOOLS, type DataSlot, type HarnessTool, type SlotLabels } from "@/modules/types"
@@ -142,7 +142,7 @@ export const useHarnessUseScreen = (): HarnessUseScreen => {
             guidesPlaceholder: HARNESS_GUIDES_PLACEHOLDER,
             doctor: mapSlot(slotOfSwr(doctor), (each) => doctorPanelOf(each, words)),
             doctorPlaceholder: HARNESS_DOCTOR_PLACEHOLDER,
-            trials: mapSlot(slotOfSwr(trials), (rows) => rows.map((each) => trialItemOf(each, words))),
+            trials: settledListSlot(mapSlot(slotOfSwr(trials), (rows) => rows.map((each) => trialItemOf(each, words)))),
             trialsPlaceholder: HARNESS_TRIALS_PLACEHOLDER,
             slotLabels: slotLabels(t("empty")),
             labels: {

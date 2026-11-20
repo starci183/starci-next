@@ -116,11 +116,16 @@ const GuideRegion = (props: RegionProps) => {
                         {selected.steps.map((step, index) => (
                             <Section
                                 key={step.id}
-                                title={`${index + 1}. ${step.title}`}
-                                headingLevel={3}
+                                {...(props.isLoading
+                                    ? { ariaLabel: labels.stepsTitle }
+                                    : { title: `${index + 1}. ${step.title}`, headingLevel: 3 as const })}
                                 isLoading={props.isLoading}
                             >
-                                <RichMarkdown source={step.markdown} labels={common.markdown} />
+                                <RichMarkdown
+                                    source={step.markdown}
+                                    labels={common.markdown}
+                                    isLoading={props.isLoading}
+                                />
                             </Section>
                         ))}
                     </Stack>
@@ -143,7 +148,7 @@ const RepoRegion = (props: RegionProps) => {
             isLoading={props.isLoading}
         >
             <Stack gap="row">
-                <Text tone="muted">
+                <Text tone="muted" isLoading={props.isLoading}>
                     {labels.keysLabel}: {props.view.keys}
                 </Text>
                 {bound.isBound ? (
@@ -201,15 +206,19 @@ const MainRegion = (props: RegionProps) => {
                 isLoading={props.isLoading}
             />
             <RepoRegion {...props} />
-            <Section
-                title={props.view.selected.title}
-                headingLevel={2}
-                fact={props.view.selected.outcome}
-                caption={props.view.selected.summary}
-                isLoading={props.isLoading}
-            >
-                <Text tone="muted">{props.view.selected.position}</Text>
-            </Section>
+            {props.isLoading ? null : (
+                <Section
+                    title={props.view.selected.title}
+                    headingLevel={2}
+                    fact={props.view.selected.outcome}
+                    caption={props.view.selected.summary}
+                    isLoading={props.isLoading}
+                >
+                    <Text tone="muted" isLoading={props.isLoading}>
+                        {props.view.selected.position}
+                    </Text>
+                </Section>
+            )}
             <CasesRegion {...props} />
             <GuideRegion {...props} />
         </Stack>

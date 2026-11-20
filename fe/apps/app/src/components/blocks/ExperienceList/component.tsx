@@ -191,7 +191,11 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                 </Cluster>
                 <Text tone="muted">{card.dateText}</Text>
             </Cluster>
-            {card.subtitle === undefined ? null : <Text tone="muted">{card.subtitle}</Text>}
+            {card.subtitle === undefined ? null : (
+                <Text tone="muted" isLoading={props.isLoading}>
+                    {card.subtitle}
+                </Text>
+            )}
             {card.returnNote === undefined ? null : (
                 <Alert tone="cautionary" title={labels.returnedNote} description={card.returnNote} />
             )}
@@ -221,7 +225,13 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
 
 /** One item as a thin-bordered card. */
 const ExperienceCard = (props: ExperienceCardProps) => (
-    <SurfaceCard label={props.card.title} headingLevel={3} height="fill" isLoading={props.isLoading}>
+    <SurfaceCard
+        {...(props.isLoading
+            ? { ariaLabel: props.labels.title }
+            : { label: props.card.title, headingLevel: 3 as const })}
+        height="fill"
+        isLoading={props.isLoading}
+    >
         <ExperienceCardBody {...props} />
     </SurfaceCard>
 )
@@ -281,13 +291,19 @@ const Claims = (props: ReadyProps) => (
 /** The list: the source chips, then the cards of the chosen tab and source, then the patterns ready to claim. */
 const Items = (props: ReadyProps) => (
     <Stack gap="region">
-        <Tabs
-            kind="filter"
-            label={props.labels.sourcesLabel}
-            items={props.view.sources.map((source) => ({ id: source.id, label: source.label, count: source.count }))}
-            selectedKey={props.source}
-            onSelect={props.on.selectSource}
-        />
+        {props.isLoading ? null : (
+            <Tabs
+                kind="filter"
+                label={props.labels.sourcesLabel}
+                items={props.view.sources.map((source) => ({
+                    id: source.id,
+                    label: source.label,
+                    count: source.count,
+                }))}
+                selectedKey={props.source}
+                onSelect={props.on.selectSource}
+            />
+        )}
         {props.view.cards.length === 0 ? (
             <EmptyTab {...props} />
         ) : (
