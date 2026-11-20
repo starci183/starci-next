@@ -1,5 +1,6 @@
+import { LOGGER, type Logger } from "@modules/platform/logging"
 import { Test } from "@nestjs/testing"
-import { mockEntityManager } from "@starci/jest-preset"
+import { mock, mockEntityManager } from "@starci/jest-preset"
 import { PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { HarnessErrorCode } from "./errors/harness.error"
 import type { HarnessRunRow } from "./harness.contracts"
@@ -119,6 +120,7 @@ const build = async (options: Options = {}) => {
             HarnessReadService,
             { provide: PRIMARY_ENTITY_MANAGER, useValue: em },
             { provide: HARNESS_OPTIONS, useValue: {} },
+            { provide: LOGGER, useValue: mock<Logger>() },
         ],
     }).compile()
     return moduleRef.get(HarnessReadService)

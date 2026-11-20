@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto"
 import { isRecord } from "@modules/platform/primitives"
 import type { HarnessFile } from "./harness.contracts"
-import type { HarnessStoredKind, HarnessStoreItem } from "./harness-store.policy"
+import { missingLocalizedOf, type HarnessStoredKind, type HarnessStoreItem } from "./harness-store.policy"
 
 /** The sets of a seed standard that hold harness content, and the stored kind each one becomes. */
 export const HARNESS_SEED_KINDS: Readonly<Record<string, HarnessStoredKind>> = {
@@ -36,9 +36,16 @@ const orderOf = (record: Record<string, unknown>): number => {
 /**
  * The item the database stores for one record of a harness set of the standard, or null when the record is not the shape that set
  * carries. The records are the converted shapes of `harness.contracts.ts`, so the item is built exactly as `storeItemsOf` builds it
- * for a tree read from disk: the same keys, hashes, content and tarball files, so the read side finds them unchanged.
+ * for a tree read from disk: the same keys, hashes, content and tarball files, so the read side finds them unchanged. A record that
+ * lacks a localized field the contract requires (a standard written for an older shape, such as `label` for `title`) is not
+ * that shape either, so the seed refuses it instead of storing a record the read views cannot draw.
  */
 export const harnessItemOf = (set: string, record: unknown): HarnessStoreItem | null => {
+    const item = itemOf(set, record)
+    return item !== null && missingLocalizedOf(item.kind, item.content).length === 0 ? item : null
+}
+
+const itemOf = (set: string, record: unknown): HarnessStoreItem | null => {
     const kind = HARNESS_SEED_KINDS[set]
     if (kind === undefined || !isRecord(record)) return null
     const order = orderOf(record)

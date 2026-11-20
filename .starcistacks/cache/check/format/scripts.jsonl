@@ -1,5 +1,7 @@
 {"findings":[],"hash":"4e2203a7925eb14fd3458a6d82dfd5f7b475a9c5c22a95a80262924793ad6d16","path":"scripts/codegen.mjs","step":"prettier"}
 {"findings":[],"hash":"5f4a6a18131aa8c4763fa69c753a86e374dfe7d1bba1e1da8010b5047797788a","path":"scripts/gallery-capture.cjs","step":"prettier"}
+{"findings":[],"hash":"3ffc5a948c88eaa1baba191382149eec8f848bbd37c3f6948677f5a76d5e2184","path":"scripts/gallery-capture.cjs","step":"prettier"}
+{"findings":[],"hash":"2f319129133433e7596e6670dd546b63222df1e776fc1ff98b110fc2da1ddd6d","path":"scripts/gallery-seed.mjs","step":"prettier"}
 {"findings":[],"hash":"f198ac10c14a84ab005afa020171d7106d4d8c99aaf0f948006d8fe7152580cf","path":"scripts/gallery-sign-in.cjs","step":"prettier"}
 {"findings":[],"hash":"8853de3ef887edf1a8873a9999e5aa856df10da1d92fdcba4c6dc7fefb5d4baa","path":"scripts/relay-manifest-key.mjs","step":"prettier"}
 {"findings":[],"hash":"cad5c85ee409de2a6619580740480bc76c063bb8f1b13f9154b11670f8b5f065","path":"scripts/simulate-sepay-ipn.mjs","step":"prettier"}

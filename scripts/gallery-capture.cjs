@@ -167,6 +167,49 @@ const SCREENS = [
     S("devices", "list", "/devices"),
     S("connect", "ai", "/connect"),
 ]
+// Seeded states (scripts/gallery-seed.mjs, run first; it writes manifest.json and a storage state per gallery learner into GALLERY_STATES, default .tmp-gallery-states):
+// a screen the manifest names is shot as that learner on the dev stack's real data, not through a stand-in core. Keep the seed running with --hold so its devices stay online.
+const STATES_DIR = path.resolve(process.env.GALLERY_STATES || path.join(__dirname, "..", ".tmp-gallery-states"))
+const SEEDED = (() => {
+    try {
+        return JSON.parse(fs.readFileSync(path.join(STATES_DIR, "manifest.json"), "utf8"))
+    } catch {
+        return undefined
+    }
+})()
+if (SEEDED) {
+    for (const [id, seeded] of Object.entries(SEEDED.screens)) {
+        const [area, screen] = id.split("/")
+        if (!screen || /[ (]/.test(screen)) continue
+        const route = seeded.route.split(" ")[0]
+        const extra = {
+            learnerState: path.join(STATES_DIR, seeded.learner + ".json"),
+            ...(id === "career/review-queue-reviewers" ? { click: "Người duyệt" } : {}),
+            ...(id === "review/session-conflict"
+                ? {
+                      act: async (p) => {
+                          await p
+                              .getByRole("button", { name: /Hiện đáp án/ })
+                              .first()
+                              .click()
+                          await p.waitForTimeout(1500)
+                          // The second device: another session of the same learner grades the same card "good" first.
+                          require("child_process").spawnSync(
+                              process.execPath,
+                              [path.join(__dirname, "gallery-seed.mjs"), "--grade-elsewhere", "--out", STATES_DIR],
+                              { stdio: "inherit" },
+                          )
+                          await p.getByRole("button", { name: /^Lại/ }).first().click()
+                          await p.waitForTimeout(1500)
+                      },
+                  }
+                : {}),
+        }
+        const at = SCREENS.findIndex((each) => each.area === area && each.screen === screen)
+        if (at === -1) SCREENS.push(S(area, screen, route, extra))
+        else SCREENS[at] = S(area, screen, route, extra)
+    }
+}
 // The reads of the Essentials screens (the lessons and the topic); the shell reads stay answered, so the viewer is known while these are held or refused.
 // A screen may name the operations its held or refused read stands for (ops: a regexp over the operation names); else the Essentials reads.
 // The core API accepts one browser origin (the ingress); a lane's own next dev on another port sends its reads as that origin (CAPTURE_ORIGIN_AS=http://localhost:3280).
@@ -256,8 +299,8 @@ const norm = (href) => {
         for (const w of WIDTHS) {
             // A read held or refused runs in a context of its own: the viewer cache of a shared one would answer it from an earlier screen.
             const fresh =
-                s.hold || s.refuse || s.cookies !== undefined
-                    ? await b.newContext({ storageState: stateFile })
+                s.hold || s.refuse || s.cookies !== undefined || s.learnerState !== undefined
+                    ? await b.newContext({ storageState: s.learnerState ?? stateFile })
                     : undefined
             // A stand-in core (CAPTURE_MOCK, its origin) takes the screen's state in one call: its server-side reads carry no cookie.
             if (s.cookies !== undefined && process.env.CAPTURE_MOCK)
