@@ -3,8 +3,10 @@ screen: career/verify-error
 title: "Xác minh dòng CV, lỗi tải"
 route: "/verify/[code]"
 area: career
-summary: ""
+summary: "Trạng thái của màn: Xác minh dòng CV, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/VerifyPage
+  - components/blocks/VerifyExperience
 shots:
   "1440": { file: 1440.png, sha256: 9ff385f986bae1618cc24d187e57f86becab9a4189e5db7a5d0b351f08c66f19 }
   "390": { file: 390.png, sha256: 61a5c0175d72b41c29186e0bad40ea2857c9930ed7f3bb374da7bebe116f04fb }

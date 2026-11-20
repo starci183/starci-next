@@ -3,8 +3,10 @@ screen: harness/use-error
 title: "Xài, lỗi tải"
 route: "/harness/use"
 area: harness
-summary: ""
+summary: "Trạng thái của màn: Xài, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/HarnessUsePage
+  - components/blocks/HarnessUse
 shots:
   "1440": { file: 1440.png, sha256: c6b0b4ab792052a236f09c1b3f38f3e359a36c54d75beaa176f60df9ab2ca592 }
   "390": { file: 390.png, sha256: bc5b87ff29cd17f5d70b1c5d39f39baabc64b5bbea1b41a3ff28673e04919e9e }

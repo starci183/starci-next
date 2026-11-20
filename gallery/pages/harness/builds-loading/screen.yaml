@@ -3,8 +3,10 @@ screen: harness/builds-loading
 title: "Build, danh sách, đang tải"
 route: "/harness/build"
 area: harness
-summary: ""
+summary: "Trạng thái của màn: Build, danh sách, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/HarnessBuildsPage
+  - components/blocks/HarnessBuilds
 shots:
   "1440": { file: 1440.png, sha256: f160a61d5121009528ed75f2264ae7bcfde1f250107625894f06b250f6043dc0 }
   "390": { file: 390.png, sha256: 0547ba4c92eda234f4fbb284606d6d279540265f66f194d565aedf7aa464b201 }

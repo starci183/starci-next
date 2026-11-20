@@ -3,8 +3,10 @@ screen: harness/build-error
 title: "Chi tiết build, lỗi tải"
 route: "/harness/build/[build]"
 area: harness
-summary: ""
+summary: "Trạng thái của màn: Chi tiết build, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/HarnessBuildPage
+  - components/blocks/HarnessBuild
 shots:
   "1440": { file: 1440.png, sha256: 7fcd1c0d6a55a06cb397d96ae1f5bcf95a0b6da22172e1dbb3c95f802452129d }
   "390": { file: 390.png, sha256: 04958250a101d331e0d053280682eb9d70cea90f13dfe8029789f6f15dab4892 }

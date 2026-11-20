@@ -3,8 +3,10 @@ screen: career/experience-loading
 title: "Kinh nghiệm, đang tải"
 route: "/experience"
 area: career
-summary: ""
+summary: "Trạng thái của màn: Kinh nghiệm, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/ExperiencePage
+  - components/blocks/ExperienceList
 shots:
   "1440": { file: 1440.png, sha256: b1e064d119840f5f8bcdc8cdd7da7844fe3db187f16ef760f2354d75d4bfc36c }
   "390": { file: 390.png, sha256: a30949f71de57c9ec5d736917243056a25cd58e89d5355899c14d283ead73045 }

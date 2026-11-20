@@ -3,8 +3,10 @@ screen: cv/public-error
 title: "CV công khai, lỗi tải"
 route: "/cv/[slug]"
 area: cv
-summary: ""
+summary: "Trạng thái của màn: CV công khai, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
 shots:
   "1440": { file: 1440.png, sha256: 3db4fb474f4189732aa38cf4b9e9f8281293672c648bcaeb134eabc918d8fc4d }
   "390": { file: 390.png, sha256: 0a4c7f0eec46323a564d0d69a1b27aa9de74b555374ccd1677caa6d0cda06f5d }

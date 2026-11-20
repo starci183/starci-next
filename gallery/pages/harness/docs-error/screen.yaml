@@ -3,8 +3,10 @@ screen: harness/docs-error
 title: "Docs, mục lục, lỗi tải"
 route: "/harness/docs"
 area: harness
-summary: ""
+summary: "Trạng thái của màn: Docs, mục lục, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/HarnessDocsPage
+  - components/blocks/HarnessDocs
 shots:
   "1440": { file: 1440.png, sha256: 2cd14edb8c123d0566c0284b87e86100c4a59682cd2cfcb077739e4c3ebaad2e }
   "390": { file: 390.png, sha256: a48f8c37ffea2e4c1553db1cf85943f9e5a509ca1469ad245879ffe9c749313e }

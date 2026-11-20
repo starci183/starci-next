@@ -1,6 +1,7 @@
-{"findings":[],"hash":"a29d6bb482a6a70d6a13757d993fd6e5125116174149dcd71ac67d2b7a94acf3","path":"gallery/pages/cv/public-few-lines/explain.md","step":"prettier"}
-{"findings":[],"hash":"f5e68304afd94c9de6627f5e4e7ea380f1304a587135fa41184f4e37d8aa0b1a","path":"gallery/pages/cv/public-loading/explain.md","step":"prettier"}
-{"findings":[],"hash":"7875581872993a76a79d730a80ff28a0fcfe1be5bb8fdb099f88553f452ebfdd","path":"gallery/pages/cv/public-many-lines/explain.md","step":"prettier"}
-{"findings":[],"hash":"aba1419cfac65f022e2defad8819fe972ca121a787552b63a6708cf4685f2903","path":"gallery/pages/cv/public-not-found/explain.md","step":"prettier"}
-{"findings":[],"hash":"7d3e75da6850073a4a557f4a9c93f9fdf6cc309ea1be686dfdf2aba289fa9804","path":"gallery/pages/cv/public-share/explain.md","step":"prettier"}
-{"findings":[],"hash":"2a73305481324cbc78911b46912265a7ac5cc89f210cd00d39bed0afbba50c1f","path":"gallery/pages/cv/public/explain.md","step":"prettier"}
+{"findings":[],"hash":"b1fe74a0df14adf75c76f2212e47b978997cd43f557a9662ed9aca6523ae5b48","path":"gallery/pages/cv/public-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"d88e54dae4011369026d6d2a8682a1bfe77970c22d41260ada2add8a0a2929ad","path":"gallery/pages/cv/public-few-lines/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"26ac8c7f6e370a07506c039e13d70d7c4a6d8338df5ad58c3e4b64f5a11aac69","path":"gallery/pages/cv/public-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"8b916fbb830bbbb060fa080e34039dfe05d29db94adb2959860ae6d72534042f","path":"gallery/pages/cv/public-many-lines/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"f0ee7c88e7a38eef45f9b0e7c16ab99db390b129e319ac777a36223fa1cbc942","path":"gallery/pages/cv/public-not-found/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"f713cf2fe39ebebbc5eb17a93167c3a49b006ddf6c6428dbce502cab869e8e1f","path":"gallery/pages/cv/public-share/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"e69d25bf1337d0a59881501bb81ad8dc5abfe107e13e47e0d01770c28300effe","path":"gallery/pages/cv/public/screen.yaml","step":"prettier"}

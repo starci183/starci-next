@@ -5,6 +5,8 @@ route: "/cv/{slug}"
 area: cv
 summary: "Route: /cv/{slug} (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn nguồn). Mã: fe/apps/app/src/components/blocks/PublicCv/. Trạng thái khác: cv/public-few-lines, cv/public-many-lines, cv/public-not-fou"
 code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
 shots:
   "1440": { file: 1440.png, sha256: 5a3d38a7f2430c5b0c3a4f96a12518b0d3a7ff60fd67fa51e3216f21ecca3898 }
   "390": { file: 390.png, sha256: 9c0bc2c830894853eade06e2fb528c29fb0f2f00900373071bb7482703968ab1 }

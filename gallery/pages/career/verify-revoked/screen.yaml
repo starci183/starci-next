@@ -3,8 +3,10 @@ screen: career/verify-revoked
 title: "Xác minh dòng CV, đã thu hồi"
 route: "/verify/[code]"
 area: career
-summary: ""
+summary: "Trạng thái của màn: Xác minh dòng CV, đã thu hồi. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/VerifyPage
+  - components/blocks/VerifyExperience
 shots:
   "1440": { file: 1440.png, sha256: 38f45317a796f7f98864b5be94799b3a49893d291f002c0dc2c417d77e3e8246 }
   "390": { file: 390.png, sha256: 9edc04f291e1ca4ce0bcb1d7a480db954121edd14009575d02c7fc4aa57c0bc2 }

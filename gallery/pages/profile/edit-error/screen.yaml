@@ -3,8 +3,10 @@ screen: profile/edit-error
 title: "Sửa hồ sơ, lỗi tải"
 route: "/profile/edit"
 area: profile
-summary: ""
+summary: "Trạng thái của màn: Sửa hồ sơ, lỗi tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/ProfileEditPage
+  - components/blocks/ProfileEdit
 shots:
   "1440": { file: 1440.png, sha256: 076777b13a0acbdabe620fd2873b799f3bbb6e9a0644bb1ba91603c7f7c1eed2 }
   "390": { file: 390.png, sha256: 6aaa5ed0d3f5fe430eeb871e7631168bb35fe0cefb53eb5b66495ce17bd12968 }

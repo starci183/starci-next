@@ -5,6 +5,8 @@ route: "/cv/{slug}"
 area: cv
 summary: "Route: /cv/{slug} (ảnh chụp: một dòng đã ký). Mã: fe/apps/app/src/components/blocks/PublicCv/. Màn đủ nằm ở cv/public."
 code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
 shots:
   "1440": { file: 1440.png, sha256: b6f3ceb926f6f2943d7151bba5cee1181d800cb4bc8b3993b7f9d1995b9265f8 }
   "390": { file: 390.png, sha256: e362f724c7f7eb4cd4d3f1d052f1e0081d08bd0e93e79e0fa289b7a4cd0f32e8 }

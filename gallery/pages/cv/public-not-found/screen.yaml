@@ -5,6 +5,8 @@ route: "/cv/{slug}"
 area: cv
 summary: "Route: /cv/{slug} (ảnh chụp: địa chỉ gõ sai). Mã: fe/apps/app/src/components/blocks/PublicCv/, app/[locale]/(pages)/(auth)/cv/[slug]/not-found.tsx. Trang trả HTTP 404 và noindex; ảnh xem trước của liên kết này là ảnh chu"
 code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
 shots:
   "1440": { file: 1440.png, sha256: b07d7924baa99d400ef750c2ac68590d0d16e3941d0f94b198ac88b3c9df4824 }
   "390": { file: 390.png, sha256: f35225e0b7918f100cf53d6d6d25fd75eefd570bfd3dc3624e2312fb20fb8569 }

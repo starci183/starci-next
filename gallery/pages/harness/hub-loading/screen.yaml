@@ -3,8 +3,10 @@ screen: harness/hub-loading
 title: "Harness, tổng quan, đang tải"
 route: "/harness"
 area: harness
-summary: ""
+summary: "Trạng thái của màn: Harness, tổng quan, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/HarnessHubPage
+  - components/blocks/HarnessHub
 shots:
   "1440": { file: 1440.png, sha256: b061114706944465cb318b279e815eb19b3c65e710ae67caf9fa874f402619f6 }
   "390": { file: 390.png, sha256: eaad7681a6d6b62e57831b713e73a55144f987cc8e41cbe87587c099fbbb4e54 }

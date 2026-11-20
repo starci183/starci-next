@@ -5,6 +5,8 @@ route: "/cv/{slug}"
 area: cv
 summary: "Route: /cv/{slug} (ảnh chụp: bảng chia sẻ mở). Mã: fe/apps/app/src/components/blocks/PublicCv/, ảnh xem trước app/[locale]/(pages)/(auth)/cv/[slug]/opengraph-image.tsx."
 code:
+  - features/pages/PublicCvPage
+  - components/blocks/PublicCv
 shots:
   "1440": { file: 1440.png, sha256: a97f29dd40b886048c2c686bd65ab9502bbcd5a4eb7cd35a0d61c8501fa9557d }
   "390": { file: 390.png, sha256: 2088a6ad381f17e1f76a6691bc79b6df3ac8f6bf339484f4b2dc6a9f819dd15b }

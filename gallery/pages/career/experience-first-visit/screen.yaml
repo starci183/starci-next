@@ -3,8 +3,10 @@ screen: career/experience-first-visit
 title: "Kinh nghiệm, lần đầu"
 route: "/experience"
 area: career
-summary: ""
+summary: "Trạng thái của màn: Kinh nghiệm, lần đầu. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
+  - features/pages/ExperiencePage
+  - components/blocks/ExperienceList
 shots:
   "1440": { file: 1440.png, sha256: 4d0de6c5f112800d25237cae712c42f2fce0aa268e0c7954fe87a30670f8c0d2 }
   "390": { file: 390.png, sha256: 3b045bad0f77c93cf4c1f8aca9fbe7f09c6aedbbb187bc2a41db91c06ae7117a }
