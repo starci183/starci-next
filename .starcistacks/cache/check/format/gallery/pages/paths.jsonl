@@ -1,1 +1,5 @@
-{"findings":[],"hash":"d22a2329ccef94195c529ad99aaa47c1b090291a4f4ab77f79775bab376b3b60","path":"gallery/pages/paths/choose/explain.md","step":"prettier"}
+{"findings":[],"hash":"7294c8993730495714e92d147eda66b5ec3d8a9addf6eb48686ee35cdab22dd4","path":"gallery/pages/paths/choose-detail/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"cdf0eb5df9fda21ad23d1a9e55b6c5d50d2a7357526dd1688b9cc79e86bbe9ec","path":"gallery/pages/paths/choose-error/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"6d6846711ce56041d465dee9870f28892bf698df4d7468c5ee2629600cb1af48","path":"gallery/pages/paths/choose-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"2e0196893e0ec5e3186168f5785d73cc25ad9724017039236018972368ca7975","path":"gallery/pages/paths/choose-signed-out/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"834e7b709c97678048a0eda891a1463f69e398ed580272c40e59b86c948c9124","path":"gallery/pages/paths/choose/screen.yaml","step":"prettier"}

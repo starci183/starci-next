@@ -1,6 +1,1 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"a272406d36ff57d297221cf0a8983f58abd0ac989b445c9b08d10643433e6d0e","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"5c016b420f9c71d3947a47c4ea51e2ae3b387cc697c68c28b1e1edde0c52e20f","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"a10179d6b9cdcceb6a6399d5707a008ee413c9f208a36e96b884c1d24f6edabf","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"06c0b377fdefe0d46982aadd66e5e6299c1442688fa1526a994b3736ebc7308a","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"30563774c7b29a4172897b3fd675cef3e01ed81bd9d80b3791371fd24366ff10","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"259f1a6e79d49aeba6c8a7f466c4271ecdc0b16e87db315343ed53f933aba589","path":"fast/typecheck","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"76c36297ccb5d2b4438009600848445822b3771fc13e9b4dbcc217ab7fe47b8b","path":"fast/typecheck","step":"ci-step"}

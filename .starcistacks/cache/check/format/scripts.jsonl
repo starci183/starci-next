@@ -1,6 +1,6 @@
 {"findings":[],"hash":"4e2203a7925eb14fd3458a6d82dfd5f7b475a9c5c22a95a80262924793ad6d16","path":"scripts/codegen.mjs","step":"prettier"}
-{"findings":[],"hash":"f016f7b202ed99e613e9f92c29e19c940540656a51a1f544c5e52cb5990c5be7","path":"scripts/gallery-capture.cjs","step":"prettier"}
+{"findings":[],"hash":"0581306aa83bc79b01ae5b038ddc63781bd4d34d45186191227966146c14734d","path":"scripts/gallery-capture.cjs","step":"prettier"}
 {"findings":[],"hash":"2f319129133433e7596e6670dd546b63222df1e776fc1ff98b110fc2da1ddd6d","path":"scripts/gallery-seed.mjs","step":"prettier"}
-{"findings":[],"hash":"f198ac10c14a84ab005afa020171d7106d4d8c99aaf0f948006d8fe7152580cf","path":"scripts/gallery-sign-in.cjs","step":"prettier"}
+{"findings":[],"hash":"de6eecad5d5b48a7625fdf404ce520f238066122994c1852bed83e6a4da0772e","path":"scripts/gallery-sign-in.cjs","step":"prettier"}
 {"findings":[],"hash":"8853de3ef887edf1a8873a9999e5aa856df10da1d92fdcba4c6dc7fefb5d4baa","path":"scripts/relay-manifest-key.mjs","step":"prettier"}
 {"findings":[],"hash":"cad5c85ee409de2a6619580740480bc76c063bb8f1b13f9154b11670f8b5f065","path":"scripts/simulate-sepay-ipn.mjs","step":"prettier"}
