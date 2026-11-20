@@ -4,6 +4,7 @@ import {
     Badge,
     Button,
     Cluster,
+    Heading,
     EmptyNotice,
     Page,
     Section,
@@ -193,6 +194,9 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
                     {card.dateText}
                 </Text>
             </Cluster>
+            <Heading level={3} isLoading={props.isLoading}>
+                {card.title}
+            </Heading>
             {card.subtitle === undefined ? null : (
                 <Text tone="muted" isLoading={props.isLoading}>
                     {card.subtitle}
@@ -228,9 +232,7 @@ const ExperienceCardBody = (props: ExperienceCardProps) => {
 /** One item as a thin-bordered card. */
 const ExperienceCard = (props: ExperienceCardProps) => (
     <SurfaceCard
-        {...(props.isLoading
-            ? { ariaLabel: props.labels.title }
-            : { label: props.card.title, headingLevel: 3 as const })}
+        ariaLabel={props.isLoading ? props.labels.title : props.card.title}
         height="fill"
         isLoading={props.isLoading}
     >
