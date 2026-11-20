@@ -136,11 +136,36 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: "Email lặp hai lần liền nhau ở dòng danh tính."
+          notes: Email lặp hai lần liền nhau ở dòng danh tính.
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: open
-          notes: 'Tên hiển thị vẫn là địa chỉ email "gallery-ess-0006@example.test", lặp hai lần liền nhau (lỗi đã biết, chờ sửa ở core).'
+          notes: Tên hiển thị vẫn là địa chỉ email "gallery-ess-0006@example.test", lặp hai lần liền nhau (lỗi
+            đã biết, chờ sửa ở core).
+    - n: 3
+      at: 2026-11-20T14:52:41.051Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

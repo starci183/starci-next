@@ -14,7 +14,7 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4aad1c860e76c59f3e8b93e155b9faec6f0cc8ade7cd07f8ab932c1e846907ac
+    sha256: 515120d8a5fae7904516edd9f652b6a62481a6ba47044f94856ef1670982e7c8
   "1440":
     file: 1440.png
     sha256: 19749545c6a6c8034ff94a4e89f88f9ca7459b47a14df609d49cf243ab6f21de
@@ -117,7 +117,8 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Ở 390 danh sách "Hướng dẫn" (8 mục) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu.'
+          notes: Ở 390 danh sách "Hướng dẫn" (8 mục) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình
+            đầu.
         layout:
           verdict: pass
           notes: ""
@@ -136,4 +137,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:11.255Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 00c3a17d250a74450873597b131bc49de5e04b0ef7dba5531504bcd8f9be0408
+    sha256: c72a0f23d8fbf184b92bfdfead86b98ae98f62f089c64a621a5815d325461052
   "1440":
     file: 1440.png
-    sha256: 730ef24992936fb41920721458a57db4011a2f9761d55dba4bdd8022ba817e6a
+    sha256: 7add0c6d49d826d4303eb0479cb6aa36ed41aadf8d8335c0e76423c487cc7739
 sections:
   - id: s1
     title: Băng đầu trang (Build, đường dẫn Harness / Build, bốn tab)
@@ -98,11 +98,36 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Cột key vẫn hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." (cắt giữa chữ) thay vì "Anthropic hoặc OpenAI" của canvas.'
+          notes: Cột key vẫn hiện tên biến môi trường thô "ANTHROPIC_API_KEY / OP..." (cắt giữa chữ) thay vì
+            "Anthropic hoặc OpenAI" của canvas.
         states:
           verdict: pass
           notes: ""
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:59.101Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

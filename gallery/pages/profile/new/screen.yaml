@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7cfd38de26c8558c3a9264f89b23c5f44ab1c62e802487f4f6a2067f69759b61
+    sha256: 958739ffc3b08d31f22d261130a7751d27e965730d50dea080c05a5f68bb8555
   "1440":
     file: 1440.png
-    sha256: 1dd9fdb410931c72049ed16462eda3cea416f82c0bf7c60bc255efd883d02740
+    sha256: dcde12c5c8b9a343908b74d2db51e87816c774c74acb7fc32bf6990fc642cb3d
 sections:
   - id: s1
     title: Danh tính khi chưa có ảnh
@@ -110,8 +110,33 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new.'
+          notes: Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới ·
+            Gói miễn phí · 0/3" của canvas profile/new.
         truth:
           verdict: open
-          notes: "Tên hiển thị là email (lỗi đã biết)."
+          notes: Tên hiển thị là email (lỗi đã biết).
+    - n: 3
+      at: 2026-11-20T14:52:39.664Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

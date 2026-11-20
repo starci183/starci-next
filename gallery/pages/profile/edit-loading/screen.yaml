@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 206419eb4349fc9f4b9858e0dd9eb50383053325ebf481c9dd095e47c01bc599
+    sha256: d725dbada7200e01d838d54b195749c0116d5d686cad526fc574013d087bd4ee
   "1440":
     file: 1440.png
-    sha256: 97c66ce6cec263355174bf01ede64c8e5dab7e81677c4a98790129dd462f09e9
+    sha256: c0d67d2d9e4a5bc3882843b0f7e3b18fd5d4ad7563a83419132428800f136e77
 sections:
   - id: s1
     title: Nội dung chính
@@ -82,8 +82,33 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: 'Ô "Lộ trình mục tiêu" hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác còn skeleton; "Thay đổi chưa lưu" hiện khi đang tải.'
+          notes: Ô "Lộ trình mục tiêu" hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác còn
+            skeleton; "Thay đổi chưa lưu" hiện khi đang tải.
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:37.072Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

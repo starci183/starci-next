@@ -13,7 +13,7 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 60d086e304e8b20c55f9f68eab310f7a584281f3f4b9fcc69a9e1676f4a3d56a
+    sha256: c67dec5887d544938aa2625f4e1c77270cc67814e3399c968763ab6bcc2ed2d8
   "1440":
     file: 1440.png
     sha256: 9a0f2789dea8f2cd8e408cf02893126d06aaaa1c47aaa8d8edaa6e92d11a0d18
@@ -82,7 +82,8 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Ở 390 danh sách "Docs" (11 bài) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu; breadcrumb cắt "...ra sa".'
+          notes: Ở 390 danh sách "Docs" (11 bài) đứng trước thân bài, thân bài bị đẩy xuống dưới màn hình đầu;
+            breadcrumb cắt "...ra sa".
         layout:
           verdict: pass
           notes: ""
@@ -101,4 +102,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:52:03.496Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

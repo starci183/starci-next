@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 217e7131138b177cefbd5c53c8efd59480fe09747c662c1f183ad569a75988a6
+    sha256: 75f726886e02a061862af40d4d54e14c26b6cf390291b920362c50cd3a0c5a8d
   "1440":
     file: 1440.png
-    sha256: 35647de7316d702ebb864d1438f6d835d5d9209c22a4563677211bd27815f5b6
+    sha256: 3c4b50c3099198bda1a6fc88b85b5a5c56a9cccac6e33d928150420102844d5a
 sections:
   - id: s1
     title: Nội dung chính
@@ -31,6 +31,10 @@ considered:
     chosen: true
     why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
       filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Khung xương tối của Terminal đổi sang màu nhạt
+    chosen: false
+    why: "Cần Grammar: Terminal vẽ khung xương nền tối của chính nó khi tải (ghi trong FOLLOWUPS); app
+      không tự vẽ lại."
 audit:
   builder:
     agent: next-ux-career
@@ -71,7 +75,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Breadcrumb vẫn lặp "Harness / Build / Build"; khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông.'
+          notes: Breadcrumb vẫn lặp "Harness / Build / Build"; khối "Lần chạy e2e gần nhất" nền đen với ô xám
+            sáng gradient lạc tông.
         actionable:
           verdict: pass
           notes: ""
@@ -87,4 +92,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:52.941Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

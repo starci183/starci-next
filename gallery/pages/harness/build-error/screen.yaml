@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f606cca21e20449b9b38d1d6c7eceb8db2a1a83303aca0bce8342903dd749c93
+    sha256: 1f40bcea7bf7072d6d073df52c006ef3f3fa7aacc70eefc402a942183384ce66
   "1440":
     file: 1440.png
-    sha256: d97a948fc133a897ea298d73c9f00dea999d77ef2bb4e5071a954d5ab631ad49
+    sha256: f34f092c26726c52048e548a2207c94ea52e0d0d5643ad745cd2ecdeeb4f0035
 sections:
   - id: s1
     title: Nội dung chính
@@ -73,10 +73,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Breadcrumb vẫn lặp "Harness / Build / Build".'
+          notes: Breadcrumb vẫn lặp "Harness / Build / Build".
         actionable:
           verdict: open
-          notes: 'Thiếu nút phụ "Về danh sách Build" của canvas harness/build-error.'
+          notes: Thiếu nút phụ "Về danh sách Build" của canvas harness/build-error.
         live:
           verdict: pass
           notes: ""
@@ -89,4 +89,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T14:51:50.797Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
