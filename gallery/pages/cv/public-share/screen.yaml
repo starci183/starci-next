@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7f571532e7daef0e5a04cd40a501c41c08a5f49d884c4751db8cd2bdb20c4782
+    sha256: 4bf0fb609d1077728b2f4ff27fb1b3e78a7a8155d287ecf72c8ac34f2fffde24
   "1440":
     file: 1440.png
-    sha256: e0a639b552341ee066fef5fc758031964d9da9b44d90e3ae7262c197882859b6
+    sha256: e48f33fa03e915ee1dadb294767bdec48a01253ffac0cb510a02628264fc3810
 sections:
   - id: s1
     title: Bảng chia sẻ
@@ -61,9 +61,15 @@ considered:
     chosen: false
     why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
       có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
-  - option: "Đặt hộp chia sẻ trong lề 1408 của trang"
+  - option: Đặt hộp chia sẻ trong lề 1408 của trang
     chosen: false
-    why: "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không đặt lại vị trí của lớp phủ."
+    why: "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không
+      đặt lại vị trí của lớp phủ."
+  - option: Ảnh xem trước có tên chủ CV và số dòng trong ảnh chụp
+    chosen: false
+    why: Route ảnh xem trước đọc CV với hạn 3 giây; trong next dev của ảnh chụp nó biên dịch lần đầu quá
+      hạn nên vẽ bản chung. Mã đã đúng (opengraph-image đọc tên và số dòng); ảnh thật sẽ có tên khi
+      chạy bản dựng.
 audit:
   builder:
     agent: next-ux-career-2
@@ -75,10 +81,13 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng CV phải lên trước ở cả hai độ rộng.'
+          notes: Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển
+            dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng
+            CV phải lên trước ở cả hai độ rộng.
         layout:
           verdict: open
-          notes: "Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới x≈1428 vượt gutter 1408; liên kết chia sẻ là localhost bị cắt giữa."
+          notes: Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới
+            x≈1428 vượt gutter 1408; liên kết chia sẻ là localhost bị cắt giữa.
         actionable:
           verdict: pass
           notes: ""
@@ -93,5 +102,31 @@ audit:
           notes: ""
         truth:
           verdict: open
-          notes: 'Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như canvas ("Minh Nguyễn · 4 dòng đã ký"); link localhost không phải next.starci.vn/cv/<slug> của canvas (môi trường chụp).'
+          notes: Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như
+            canvas ("Minh Nguyễn · 4 dòng đã ký"); link localhost không phải
+            next.starci.vn/cv/<slug> của canvas (môi trường chụp).
+    - n: 2
+      at: 2026-11-20T15:55:18.123Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

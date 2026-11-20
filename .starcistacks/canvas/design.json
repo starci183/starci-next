@@ -321,8 +321,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "dae1636c64be296b4f1974829c56458e6d44f16dbe57d9edc8b544ec81a79f12",
-        "1440": "63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb"
+        "390": "908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c",
+        "1440": "e0aae27bc06b1070a2c1b51b5fe567ade6e60994d9f3bfeea55ae5f76c8059e7"
       }
     },
     "cv/public-loading": {
@@ -349,8 +349,8 @@
       "approvedAt": "2026-11-20T18:18:52+07:00",
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
       "shots": {
-        "390": "7f571532e7daef0e5a04cd40a501c41c08a5f49d884c4751db8cd2bdb20c4782",
-        "1440": "e0a639b552341ee066fef5fc758031964d9da9b44d90e3ae7262c197882859b6"
+        "390": "4bf0fb609d1077728b2f4ff27fb1b3e78a7a8155d287ecf72c8ac34f2fffde24",
+        "1440": "e48f33fa03e915ee1dadb294767bdec48a01253ffac0cb510a02628264fc3810"
       }
     },
     "devices/list": {

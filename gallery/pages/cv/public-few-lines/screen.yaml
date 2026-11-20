@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: dae1636c64be296b4f1974829c56458e6d44f16dbe57d9edc8b544ec81a79f12
+    sha256: 908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c
   "1440":
     file: 1440.png
-    sha256: 63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb
+    sha256: e0aae27bc06b1070a2c1b51b5fe567ade6e60994d9f3bfeea55ae5f76c8059e7
 sections:
   - id: s1
     title: Chủ CV
@@ -69,7 +69,9 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng CV phải lên trước ở cả hai độ rộng.'
+          notes: Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển
+            dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng
+            CV phải lên trước ở cả hai độ rộng.
         layout:
           verdict: pass
           notes: ""
@@ -88,4 +90,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 2
+      at: 2026-11-20T15:55:16.223Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
