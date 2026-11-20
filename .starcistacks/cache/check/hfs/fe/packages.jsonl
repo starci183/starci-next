@@ -25,7 +25,7 @@
 {"data":{},"findings":[],"hash":"326d1269f4b1d152dc0e8a59fade847264b5aa9548e6a023fbba0afa5424655e","path":"fe/packages/starci-next-ui/src/composites/BrandLockup/classNames.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a147216ad6fde457deb165cb387e4913a4e624406a26dacd64f1f9bf030c8aa9","path":"fe/packages/starci-next-ui/src/composites/BrandLockup/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"584ab7baeb87f6a3ee4390803794b77caea7de2991d1bd4d64e637a23f6961ab","path":"fe/packages/starci-next-ui/src/composites/CatalogGroup/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"dcdc9578f9583c25822fafe230856a45dd99c3438587fd51fa415075e7fc6a23","path":"fe/packages/starci-next-ui/src/composites/CatalogToolbar/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"e871d704d3b78f898062639bb7ac2ab8917aeb6d5b6fe721f21c9429c5908a5e","path":"fe/packages/starci-next-ui/src/composites/CatalogToolbar/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"675a2dcbed690e36d242cfee0239370bdaf8d35f4be543befbe777cf4f5d5594","path":"fe/packages/starci-next-ui/src/composites/ChoiceBlock/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ac6edd7c7acf8632b8d90e81f40c25db8e4e12df8ec9657286446bab35f4e0f7","path":"fe/packages/starci-next-ui/src/composites/ChoiceCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4947e826863085c4c1433808f2774a0341f36768e4eed48ec9c980a06edd5d15","path":"fe/packages/starci-next-ui/src/composites/ChoiceWhy/index.tsx","step":"file-rules"}
@@ -38,7 +38,8 @@
 {"data":{},"findings":[],"hash":"4124ce560378906f311cd8e6ad7d70e44c6c0119f6ed32d55458454d490e0ffa","path":"fe/packages/starci-next-ui/src/composites/ConnectDrawer/types.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"917952d6e3b7b4325924f874bea0dcbbd3439e6d67206f2625084653d583acdf","path":"fe/packages/starci-next-ui/src/composites/DeployCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"545ed1526be14710bc07833ec33a3651dc8d4c127cfdb9c458d7e312f394602f","path":"fe/packages/starci-next-ui/src/composites/DraftField/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0e3df438037acfc2c44634b949aab7a1435429748f8bed2ffc80073a02a0eeee","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"c5f1b810b9f634d9528c7ea7900032cbe60cbda96704dbdb3b2b6848cdcaab5f","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/classNames.ts","step":"file-rules"}
+{"data":{},"findings":[],"hash":"58bb0bb9bb4fbaf143250994eaf2bc846340427af8a6a019a0066c69161975e5","path":"fe/packages/starci-next-ui/src/composites/ErrorNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"10a6300189851820d78e580fb9e0bacd6b9ee631e177c5a72a3148ba93eccc50","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/Aside.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0c08d329e6ef714108ca9004587216981d149d7520f0bd41bce0fa04076d1d8c","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1bcfdcbccbb4a4cfc52f372f111351eefbdb07f5a916728eb60721fb3826bc06","path":"fe/packages/starci-next-ui/src/composites/EssentialApply/types.ts","step":"file-rules"}
@@ -80,7 +81,7 @@
 {"data":{},"findings":[],"hash":"6e505962b0a20dee0de2dff469473f01f8782e5dbb78dc7e5cf24c46b5e567ca","path":"fe/packages/starci-next-ui/src/composites/LockedNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d657b005926be88edc229d2511003861a9b1a2abb9fc3c08a8b475e70e12300d","path":"fe/packages/starci-next-ui/src/composites/MilestonesCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4eb6983ab1774189162038ed00b669fbe05f2b7a7b02f946a724f024615790e5","path":"fe/packages/starci-next-ui/src/composites/MissingNotice/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ab7cdc00cd71f2c84659a380718402e03fa3e498ae5830114115816b79fb759f","path":"fe/packages/starci-next-ui/src/composites/NotFoundNotice/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"b641537e8b73f2717651dc01394fbb47cda1ca93d9d787ae295f7e048b9c6ec6","path":"fe/packages/starci-next-ui/src/composites/NotFoundNotice/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b2273b8481b43c494b7f32f865c510977f2f5ff1330a42e86254c1110fc87b18","path":"fe/packages/starci-next-ui/src/composites/NumberedListCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"68c97be59205bda827713a871079d42efb5a6492dfed352b35dbb99e6ef5e105","path":"fe/packages/starci-next-ui/src/composites/OutcomePathCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7250287ff527a4e67627babc1c4a90d63c49a2df69a0e6186e18ef7045cbdb7a","path":"fe/packages/starci-next-ui/src/composites/OutcomePathDialog/index.tsx","step":"file-rules"}
@@ -107,7 +108,7 @@
 {"data":{},"findings":[],"hash":"af409d28b55c511aec23e6cc604a6f5c4047f3a6bc65b032331812c93a1e207a","path":"fe/packages/starci-next-ui/src/composites/ReviewPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"621d807ed931f880d74de45b8a1675ee7a5f43716e1bcecfff205aa43acb887a","path":"fe/packages/starci-next-ui/src/composites/ReviewSummaryCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"bc5ad612105fabbe7f61f4bf92c47f5f165b33bdb1aa22e28c11df4f02db7df3","path":"fe/packages/starci-next-ui/src/composites/RichMarkdown/directives.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"ec3a41f49b0fa1508e6a9bfd71099581c13ee3e5c6b4dfb31c62c3e7d5c71b19","path":"fe/packages/starci-next-ui/src/composites/RichMarkdown/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4be92042350e852ab67aaf13a8913d95f9f381f1fe5ce89065505d65ee6ac356","path":"fe/packages/starci-next-ui/src/composites/RichMarkdown/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"430febae1ccc1ee39841f57ab3043c3fd4b514aa5dbebaa525d8d449c07b2beb","path":"fe/packages/starci-next-ui/src/composites/RowProgress/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"b9bbf754d33cbf8b2452d22d74874a9033b18aebc5ba9c4ecf700b7434feb071","path":"fe/packages/starci-next-ui/src/composites/RunsCard/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4332190bb81b0c5b73aa9e859c0d968cc232aad22da1387d2fab0fdba594d583","path":"fe/packages/starci-next-ui/src/composites/SimulationBlock/index.tsx","step":"file-rules"}
