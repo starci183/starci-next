@@ -22,12 +22,6 @@ const rungTone = (state: RungState) => {
     return "muted" as const
 }
 
-/** The row state of a rung: a rung that is not open is the dim unavailable row, never tinted; the open rung on screen is the one tinted row. */
-const rungRowState = (state: RungState, isSelected: boolean) => {
-    if (state === "locked") return { state: "unavailable" as const }
-    return isSelected ? { state: "informative" as const } : {}
-}
-
 /** The step state a step of the proof chain takes from the current one. */
 const stepStateOf = (index: number, current: number): StepperStepState => {
     if (index < current) return "complete"
@@ -135,14 +129,24 @@ export const EssentialApply = (props: EssentialApplyProps) => {
                 headingLevel={2}
                 empty={labels.empty}
                 isLoading={props.isLoading === true}
-                items={part.rungs.map((rung) => ({
-                    id: rung.id,
-                    title: rung.level,
-                    description: rung.title,
-                    badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
-                    onPress: () => props.onSelect(rung.id),
-                    ...rungRowState(rung.state, rung.id === part.selectedId),
-                }))}
+                items={part.rungs.map((rung) =>
+                    rung.state === "locked"
+                        ? {
+                              id: rung.id,
+                              title: rung.level,
+                              description: rung.title,
+                              state: "unavailable" as const,
+                              meta: { text: rung.stateLabel },
+                          }
+                        : {
+                              id: rung.id,
+                              title: rung.level,
+                              description: rung.title,
+                              badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
+                              onPress: () => props.onSelect(rung.id),
+                              ...(rung.id === part.selectedId ? { state: "informative" as const } : {}),
+                          },
+                )}
             />
             {challenge === undefined ? null : (
                 <RungBody challenge={challenge} labels={labels} essence={props.essence} />

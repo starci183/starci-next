@@ -142,7 +142,7 @@ const SCREENS = [
     S("essentials", "lesson-scenarios-stuck", LESSON + "?part=scenarios", { cookies: { scn: "stuck" } }),
     S("essentials", "lesson-scenarios-offline", LESSON + "?part=scenarios", { cookies: { scn: "none", dev: "off" } }),
     S("essentials", "lesson-ladder", LESSON + "?part=apply", { cookies: { rung: "mid" } }),
-    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply", { cookies: { rung: "mid" }, click: "Khó" }),
+    S("essentials", "lesson-ladder-locked", LESSON + "?part=apply"),
     S("review", "hub", "/review"),
     S("review", "decks", "/review/decks"),
     S("review", "session", "/review/session"),

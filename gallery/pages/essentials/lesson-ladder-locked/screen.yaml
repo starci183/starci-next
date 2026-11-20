@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: d6b6e39d74a30324a35f99e90ef2edc77ccc6a41282af60ed23e4d4e1f82712e
+    sha256: 6c1c3ff995cec60c53d982d9d1a5d61c975ee18f2db108d0100bc7cd920315c6
   "1440":
     file: 1440.png
-    sha256: f57e493046a766ef29dbd36b04cc7653a135940f408ec11b90706e5fcb2140cb
+    sha256: 46e1122ccedf24f103aefea533e3cf4c1930bf4e95fbf2b6f2dc102a620da45a
 sections:
   - id: s1
     title: Thông báo mức khóa
@@ -129,24 +129,26 @@ audit:
       at: 2026-11-20T14:49:06.599Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Vòng 5 (theo ruling của main): bậc chưa mở là hàng thường không bấm được (không onPress,
+            không mũi tên), tông mờ unavailable, lý do khóa là chữ meta; không còn hàng tô xám
+            dính."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-  escalate: null
+          verdict: pass
+          notes: ""
+  escalate: "ruled by main: locked rung non-pressable"
