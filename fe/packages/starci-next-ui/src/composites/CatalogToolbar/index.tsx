@@ -27,6 +27,8 @@ type CatalogToolbarProps = {
     readonly onQuery: (query: string) => void
     readonly onTopic: (id: string) => void
     readonly onPlan: (id: string) => void
+    /** The first read has no data yet: the search and the selects draw as skeleton geometry. */
+    readonly isLoading?: boolean
 }
 
 /** What one select of the toolbar needs. */
@@ -35,6 +37,7 @@ type ToolbarSelectProps = {
     readonly options: ReadonlyArray<ToolbarOption>
     readonly value: string
     readonly onChange: (id: string) => void
+    readonly isLoading: boolean
 }
 
 /** One select of the toolbar: a field named and prefixed by what it filters, its first option meaning every value. */
@@ -46,6 +49,7 @@ const ToolbarSelect = (props: ToolbarSelectProps) => (
         options={props.options}
         value={props.value}
         onValueChange={(id) => props.onChange(id ?? "")}
+        isLoading={props.isLoading}
     />
 )
 
@@ -74,18 +78,21 @@ export const CatalogToolbar = (props: CatalogToolbarProps) => (
                     value={props.query}
                     onValueChange={props.onQuery}
                     onClear={() => props.onQuery("")}
+                    isLoading={props.isLoading === true}
                 />
                 <ToolbarSelect
                     label={props.labels.topicSelect}
                     options={props.topics}
                     value={props.topic}
                     onChange={props.onTopic}
+                    isLoading={props.isLoading === true}
                 />
                 <ToolbarSelect
                     label={props.labels.planSelect}
                     options={props.plans}
                     value={props.plan}
                     onChange={props.onPlan}
+                    isLoading={props.isLoading === true}
                 />
             </>
         }
