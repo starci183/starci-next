@@ -14,7 +14,7 @@ shots:
     sha256: 908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c
   "1440":
     file: 1440.png
-    sha256: e0aae27bc06b1070a2c1b51b5fe567ade6e60994d9f3bfeea55ae5f76c8059e7
+    sha256: 63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb
 sections:
   - id: s1
     title: Chủ CV
@@ -114,4 +114,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 3
+      at: 2026-11-20T16:05:57.253Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

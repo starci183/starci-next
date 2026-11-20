@@ -1,9 +1,6 @@
 import type { PublicCv } from "@/hooks/swr"
 import type { PublicCvSourceView } from "@/modules/types"
 
-/** The source chips appear from this many lines (below it a filter only hides what a short page already shows). */
-export const PUBLIC_CV_FILTER_FROM = 3
-
 /** How many lines show before "Xem thêm": ten, six on a phone. */
 export const PUBLIC_CV_LIMIT = { wide: 10, phone: 6 } as const
 
@@ -28,17 +25,17 @@ export const PUBLIC_CV_EVIDENCE: ReadonlySet<string> = new Set([
 /** One line of the read, as the API answers it. */
 export type PublicCvLine = PublicCv["lines"][number]
 
-/** The source chips of a CV with their counts, in catalog order, or none below the filter threshold. */
+/** The source filter of a CV with its counts, in catalog order; none unless the lines come from two sources or more, since filtering one source shows the same list. */
 export const sourcesOf = (
     lines: ReadonlyArray<PublicCvLine>,
     labelOf: (source: string) => string,
 ): ReadonlyArray<PublicCvSourceView> => {
-    if (lines.length < PUBLIC_CV_FILTER_FROM) return []
-    return PUBLIC_CV_SOURCES.map((id) => ({
+    const sources = PUBLIC_CV_SOURCES.map((id) => ({
         id,
         label: labelOf(id),
         count: lines.filter((line) => line.source === id).length,
     })).filter((source) => source.count > 0)
+    return sources.length < 2 ? [] : sources
 }
 
 /** The lines of one source, or all of them. */
