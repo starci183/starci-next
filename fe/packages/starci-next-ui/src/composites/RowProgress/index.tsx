@@ -7,6 +7,8 @@ type RowProgressProps = {
     /** Completion from 0 to 100. */
     readonly value: number
     readonly tone?: ProgressTone
+    /** The first read has no data yet: the bar draws as skeleton geometry. */
+    readonly isLoading?: boolean
 }
 
 /** The width a row gives its progress control: a row control has no width of its own, and a full-width bar would collapse to nothing. */
@@ -15,6 +17,11 @@ const ROW_PROGRESS_WIDTH = "7rem"
 /** Grammar's `Progress` as the control at the end of a list row (`ListRowData.control`), at a fixed small width. */
 export const RowProgress = (props: RowProgressProps) => (
     <span style={{ display: "block", width: ROW_PROGRESS_WIDTH }}>
-        <Progress label={props.label} value={props.value} {...(props.tone === undefined ? {} : { tone: props.tone })} />
+        <Progress
+            label={props.label}
+            value={props.value}
+            isLoading={props.isLoading === true}
+            {...(props.tone === undefined ? {} : { tone: props.tone })}
+        />
     </span>
 )

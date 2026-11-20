@@ -9,14 +9,22 @@ type LockedNoticeProps = {
     readonly plansHref: string
     /** False when another command of the screen is the one primary button: the way to the plans is then a neutral button. */
     readonly isPrimary?: boolean
+    /** The first read has no data yet: the words draw as skeleton geometry. */
+    readonly isLoading?: boolean
 }
 
 /** A phase the reader's plan does not include: what Premium unlocks and the one link to the plans. */
 export const LockedNotice = (props: LockedNoticeProps) => (
-    <Section title={props.title} headingLevel={2}>
+    <Section title={props.title} headingLevel={2} isLoading={props.isLoading === true}>
         <Stack gap="row">
-            <Text as="p">{props.description}</Text>
-            <Button intent={props.isPrimary === false ? "neutral" : "commit"} href={props.plansHref}>
+            <Text as="p" isLoading={props.isLoading === true}>
+                {props.description}
+            </Text>
+            <Button
+                intent={props.isPrimary === false ? "neutral" : "commit"}
+                href={props.plansHref}
+                isLoading={props.isLoading === true}
+            >
                 {props.plansLabel}
             </Button>
         </Stack>
