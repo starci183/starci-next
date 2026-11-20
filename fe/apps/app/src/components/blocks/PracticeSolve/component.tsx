@@ -283,48 +283,49 @@ const SolutionTab = (props: PieceProps) => {
  */
 export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
     const { slot, placeholder, labels, state } = props.props
-    const view = "items" in slot ? slot.items : placeholder
-    const hasView = "items" in slot || "isLoading" in slot
-    const header: PageHeaderContent = hasView
-        ? headerOf(props, view)
-        : {
-              title: labels.catalog,
-              titleScale: "standard",
-              breadcrumbs: {
-                  label: labels.breadcrumbs,
-                  items: [
-                      { id: "practice", label: labels.catalog, href: props.props.catalogHref },
-                      { id: "problem", label: labels.loadFailedCrumb },
-                  ],
-              },
-          }
+    const fallback: PageHeaderContent = {
+        title: labels.catalog,
+        titleScale: "standard",
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "practice", label: labels.catalog, href: props.props.catalogHref },
+                { id: "problem", label: labels.loadFailedCrumb },
+            ],
+        },
+    }
     return (
-        <Page header={header} isLoading={"isLoading" in slot}>
-            <SlotView
-                slot={slot}
-                placeholder={placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={labels.loadFailedNote}
-                onRetry={props.on.retry}
-                render={(each, isLoading) => {
-                    const piece: PieceProps = { screen: props, view: each, isLoading }
-                    if (state.tab === "submissions") return <SubmissionsTab {...piece} />
-                    return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />
-                }}
-            />
-            <AlertDialog
-                title={labels.confirmTitle}
-                description={state.confirmText}
-                tone="cautionary"
-                confirmLabel={labels.confirmAction}
-                cancelLabel={labels.confirmCancel}
-                isOpen={state.isConfirmOpen}
-                onOpenChange={(isOpen) => {
-                    if (!isOpen) props.on.cancelSolution()
-                }}
-                onConfirm={props.on.confirmSolution}
-                onCancel={props.on.cancelSolution}
-            />
-        </Page>
+        <SlotView<PracticeSolveView, PageHeaderContent>
+            slot={slot}
+            placeholder={placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={labels.loadFailedNote}
+            onRetry={props.on.retry}
+            header={(view) => headerOf(props, view)}
+            headerFallback={fallback}
+            frame={({ header, isLoading, body }) => (
+                <Page header={header} isLoading={isLoading}>
+                    {body}
+                    <AlertDialog
+                        title={labels.confirmTitle}
+                        description={state.confirmText}
+                        tone="cautionary"
+                        confirmLabel={labels.confirmAction}
+                        cancelLabel={labels.confirmCancel}
+                        isOpen={state.isConfirmOpen}
+                        onOpenChange={(isOpen) => {
+                            if (!isOpen) props.on.cancelSolution()
+                        }}
+                        onConfirm={props.on.confirmSolution}
+                        onCancel={props.on.cancelSolution}
+                    />
+                </Page>
+            )}
+            render={(each, isLoading) => {
+                const piece: PieceProps = { screen: props, view: each, isLoading }
+                if (state.tab === "submissions") return <SubmissionsTab {...piece} />
+                return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />
+            }}
+        />
     )
 }

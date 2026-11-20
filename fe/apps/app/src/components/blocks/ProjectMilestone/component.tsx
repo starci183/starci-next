@@ -1,5 +1,17 @@
 import type { ReactNode } from "react"
-import { Badge, Cluster, DataTable, EmptyNotice, Grid, Link, Page, Section, Stack, Text } from "@starci/grammar/common"
+import {
+    Badge,
+    type PageHeaderContent,
+    Cluster,
+    DataTable,
+    EmptyNotice,
+    Grid,
+    Link,
+    Page,
+    Section,
+    Stack,
+    Text,
+} from "@starci/grammar/common"
 import { MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
@@ -248,39 +260,44 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
             </Page>
         )
     }
-    const isReady = "items" in slot
-    const view = isReady ? slot.items : props.props.placeholder
-    const loadingCrumb = isReady ? {} : { isLoading: true as const }
     return (
-        <Page
-            header={{
-                breadcrumbs: {
-                    label: labels.crumbTrail,
-                    items: [
-                        { id: "projects", label: labels.crumbRoot, href: labels.crumbRootHref },
-                        { id: "project", label: view.projectName, href: labels.backHref, ...loadingCrumb },
-                        { id: "milestone", label: view.title, ...loadingCrumb },
-                    ],
-                },
-                title: view.title,
-                meta: view.intro,
-                status: <Badge tone={view.stateTone}>{view.stateLabel}</Badge>,
+        <SlotView<ProjectMilestoneView, PageHeaderContent>
+            slot={slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            onRetry={props.on.retry}
+            header={(view, loading) => {
+                const loadingCrumb = loading ? { isLoading: true as const } : {}
+                return {
+                    breadcrumbs: {
+                        label: labels.crumbTrail,
+                        items: [
+                            { id: "projects", label: labels.crumbRoot, href: labels.crumbRootHref },
+                            { id: "project", label: view.projectName, href: labels.backHref, ...loadingCrumb },
+                            { id: "milestone", label: view.title, ...loadingCrumb },
+                        ],
+                    },
+                    title: view.title,
+                    meta: view.intro,
+                    status: <Badge tone={view.stateTone}>{view.stateLabel}</Badge>,
+                }
             }}
-            isLoading={!isReady}
-        >
-            <SlotView
-                slot={slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(data, loading) => (
-                    <Stack gap="region">
-                        <ConceptsTable props={props.props} view={data} isLoading={loading} />
-                        <RunsTable props={props.props} view={data} isLoading={loading} />
-                        <HowToProve labels={labels} />
-                    </Stack>
-                )}
-            />
-        </Page>
+            headerFallback={{
+                breadcrumbs: { label: labels.crumbTrail, items: [{ id: "projects", label: labels.crumbRoot }] },
+                title: labels.crumbRoot,
+            }}
+            frame={({ header, isLoading, body }) => (
+                <Page isLoading={isLoading} header={header}>
+                    {body}
+                </Page>
+            )}
+            render={(data, loading) => (
+                <Stack gap="region">
+                    <ConceptsTable props={props.props} view={data} isLoading={loading} />
+                    <RunsTable props={props.props} view={data} isLoading={loading} />
+                    <HowToProve labels={labels} />
+                </Stack>
+            )}
+        />
     )
 }

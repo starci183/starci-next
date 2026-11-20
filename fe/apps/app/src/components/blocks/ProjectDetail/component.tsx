@@ -1,4 +1,4 @@
-import { Badge, Button, Grid, Page, Stack } from "@starci/grammar/common"
+import { Badge, Button, Grid, Page, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import {
     DeployCard,
     ExperienceCard,
@@ -105,7 +105,7 @@ const WellCards = (props: WellCardsProps) => {
 }
 
 /** The band of the page: the trail, and for a settled project its state chip, repo line and the one command. */
-const headerOf = (props: ProjectDetailBaseProps, view: ProjectDetailView | undefined) => {
+const headerOf = (props: ProjectDetailBaseProps, view: ProjectDetailView | undefined): PageHeaderContent => {
     const { labels, busy } = props.props
     const trail = [{ id: "projects", label: labels.pageTitle, href: labels.pageHref }]
     if (view === undefined) {
@@ -143,35 +143,39 @@ export const ProjectDetailBase = (props: ProjectDetailBaseProps) => {
             </Page>
         )
     }
-    const view = "items" in slot ? slot.items : undefined
     return (
-        <Page isLoading={"isLoading" in slot} header={headerOf(props, view)}>
-            <SlotView
-                slot={slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                onRetry={props.on.retry}
-                render={(settled, loading) => (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
-                            </Stack>
-                        }
-                        rail={
-                            <ProjectAside
-                                view={settled}
-                                labels={labels}
-                                isLoading={loading}
-                                fields={props.props.fields}
-                                busy={props.props.busy}
-                                on={props.on}
-                            />
-                        }
-                    />
-                )}
-            />
-        </Page>
+        <SlotView<ProjectDetailView, PageHeaderContent>
+            slot={slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            onRetry={props.on.retry}
+            header={(settled) => headerOf(props, settled)}
+            headerFallback={headerOf(props, undefined)}
+            frame={({ header, isLoading, body }) => (
+                <Page isLoading={isLoading} header={header}>
+                    {body}
+                </Page>
+            )}
+            render={(settled, loading) => (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
+                        </Stack>
+                    }
+                    rail={
+                        <ProjectAside
+                            view={settled}
+                            labels={labels}
+                            isLoading={loading}
+                            fields={props.props.fields}
+                            busy={props.props.busy}
+                            on={props.on}
+                        />
+                    }
+                />
+            )}
+        />
     )
 }

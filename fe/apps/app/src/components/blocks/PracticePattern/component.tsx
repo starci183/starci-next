@@ -10,6 +10,7 @@ import {
     Stack,
     Text,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
@@ -105,54 +106,55 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
  */
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        meta: header.meta,
+        breadcrumbs: {
+            label: labels.breadcrumbs,
+            items: [
+                { id: "practice", label: header.crumb, href: labels.catalogHref },
+                { id: "pattern", label: header.title },
+            ],
+        },
+        ...(header.action === null
+            ? {}
+            : {
+                  actions: (
+                      <Button intent="commit" href={header.action.href}>
+                          {header.action.label}
+                      </Button>
+                  ),
+              }),
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                meta: header.meta,
-                breadcrumbs: {
-                    label: labels.breadcrumbs,
-                    items: [
-                        { id: "practice", label: header.crumb, href: labels.catalogHref },
-                        { id: "pattern", label: header.title },
-                    ],
-                },
-                ...(header.action === null
-                    ? {}
-                    : {
-                          actions: (
-                              <Button intent="commit" href={header.action.href}>
-                                  {header.action.label}
-                              </Button>
-                          ),
-                      }),
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.errorDescription}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                {intro === "" ? null : (
-                                    <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
-                                        <Text as="p">{intro}</Text>
-                                    </Section>
-                                )}
-                                <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
-                            </Stack>
-                        }
-                        rail={<Rail screen={props.props} isLoading={isLoading} />}
-                    />
-                )}
-            />
-        </Page>
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={props.props.errorDescription}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            {intro === "" ? null : (
+                                <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
+                                    <Text as="p">{intro}</Text>
+                                </Section>
+                            )}
+                            <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
+                        </Stack>
+                    }
+                    rail={<Rail screen={props.props} isLoading={isLoading} />}
+                />
+            )}
+            frame={({ body, isLoading }) => (
+                <Page isLoading={isLoading} header={pageHeader}>
+                    {body}
+                </Page>
+            )}
+        />
     )
 }

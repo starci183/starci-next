@@ -10,6 +10,7 @@ import {
     Tabs,
     Text,
     type ListRowData,
+    type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
 import type { PracticeCatalogScreen, PracticePatternItemView } from "@/hooks/practice"
@@ -152,36 +153,37 @@ const Rail = (props: PieceProps) => {
  */
 export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
     const { header, labels, isFirstVisit } = props.props
+    const pageHeader: PageHeaderContent = {
+        title: header.title,
+        titleScale: "standard",
+        breadcrumbs: "root",
+        meta: header.meta,
+        ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
+    }
     return (
-        <Page
-            isLoading={"isLoading" in props.props.slot}
-            header={{
-                title: header.title,
-                titleScale: "standard",
-                breadcrumbs: "root",
-                meta: header.meta,
-                ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
-            }}
-        >
-            <SlotView
-                slot={props.props.slot}
-                placeholder={props.props.placeholder}
-                labels={props.props.slotLabels}
-                errorDescription={props.props.errorDescription}
-                onRetry={props.on.retry}
-                render={(rows, isLoading) => (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
-                                <PatternList screen={props} isLoading={isLoading} rows={rows} />
-                            </Stack>
-                        }
-                        rail={<Rail screen={props} isLoading={isLoading} />}
-                    />
-                )}
-            />
-        </Page>
+        <SlotView
+            slot={props.props.slot}
+            placeholder={props.props.placeholder}
+            labels={props.props.slotLabels}
+            errorDescription={props.props.errorDescription}
+            onRetry={props.on.retry}
+            render={(rows, isLoading) => (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            {isFirstVisit ? <FirstVisit title={labels.firstTitle} text={labels.firstText} /> : null}
+                            <PatternList screen={props} isLoading={isLoading} rows={rows} />
+                        </Stack>
+                    }
+                    rail={<Rail screen={props} isLoading={isLoading} />}
+                />
+            )}
+            frame={({ body, isLoading }) => (
+                <Page isLoading={isLoading} header={pageHeader}>
+                    {body}
+                </Page>
+            )}
+        />
     )
 }
