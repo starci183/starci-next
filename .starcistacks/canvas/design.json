@@ -298,13 +298,9 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public": {
-      "status": "built",
+      "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
-      "shots": {
-        "390": "35172012adc532cc8d8f88f31db7fcc5cad0410f7aa09b82610dbd519760786a",
-        "1440": "41bd25c0d1591af59f022e91e1c005e1b117101828361883d0fc7a29962cdfc9"
-      }
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-error": {
       "status": "approved",
@@ -312,13 +308,9 @@
       "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-few-lines": {
-      "status": "built",
+      "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
-      "shots": {
-        "390": "35172012adc532cc8d8f88f31db7fcc5cad0410f7aa09b82610dbd519760786a",
-        "1440": "84e5e42e6969c24c8ef527977285c003b7acfe83071b763f0c893fd8bf261ef7"
-      }
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "cv/public-loading": {
       "status": "approved",
@@ -340,13 +332,9 @@
       }
     },
     "cv/public-share": {
-      "status": "built",
+      "status": "approved",
       "approvedAt": "2026-11-20T18:18:52+07:00",
-      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH",
-      "shots": {
-        "390": "197a5b4b3c5490c7dc69f6ab4ed506d003d3da0c652ea3049ba89e3db69620c3",
-        "1440": "4ae5d12e93ff65ae62f1910810e71b7aeed749187c1a370a04535be52b7f2da6"
-      }
+      "board": "https://claude.ai/artifact/NQpPaz7uy5mgyMAz993ZSH"
     },
     "devices/list": {
       "status": "approved",
