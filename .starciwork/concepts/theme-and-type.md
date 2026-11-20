@@ -3,7 +3,7 @@
 The look is the white theme the owner ruled on 2026-11-17 with StarCi Next's own violet accent: a white page, neutrals with no hue, one font for the whole app and a type scale of two UI sizes. Colours are a brand decision and an accessibility trade-off is his to make.
 
 ## Terms
-- **Brand file**: `fe/apps/app/src/modules/brand/brand.css` (and the landing's copy, `fe/apps/landing/src/modules/brand/brand.css`): the one place the app writes colour, loaded after `@heroui/styles` and the Grammar's common stylesheet. It also sets the Grammar theme hooks (`--starci-core-*`).
+- **Brand file**: `fe/apps/app/src/modules/brand/brand.css` (the landing imports this same file from its globals.css): the one place the app writes colour, loaded after `@heroui/styles` and the Grammar's common stylesheet. It also sets the Grammar theme hooks (`--starci-core-*`).
 - **Accent**: the violet `--accent`. A signal only: the one primary button, the urgent count, the focus edge and ring, the checked checkbox, radio and switch. Errors use `--danger`.
 - **UI text**: 14 px. **Small names** (meta, badges, counts, timestamps): 12 px. **Display**: the page title 18, big figures 20.
 - **Brand font**: IBM Plex Sans 400/500/600, subsets latin and vietnamese, through `next/font/google` as `--font-brand`.

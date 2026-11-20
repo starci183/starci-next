@@ -321,10 +321,21 @@ environments:
     runbook: README.md
     # The public hosts of staging, routers of the shared edge Traefik (`edge-traefik` on 103.130.216.201, swarm provider, network `edge`, resolver `cf`:
     # ACME DNS-01 on Cloudflare): next.staging.starci.org -> app:3000 (its /api/*, /graphql, /mcp and /socket.io/* -> core:3001), api.next.staging.starci.org -> core:3001,
-    # minio.next.staging.starci.org -> storage:9000 (PROJECT-STACKS-15: the object store's public route, the S3 port only). The stack's router labels carry these hosts.
+    # minio.next.staging.starci.org -> storage:9000 (PROJECT-STACKS-15: the object store's public route, the S3 port only). The deploy renders the router labels from these routes; no host is written in the stack file.
     ingress:
-      external: {stack: edge}
-      hosts: [next.staging.starci.org, api.next.staging.starci.org, minio.next.staging.starci.org]
+      kind: shared-edge
+      network: edge
+      certResolver: cf
+      entrypoint: websecure
+      routes:
+        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api, so the
+        # host-only session cookie reaches them; every other path is the Next app (the lower priority).
+        - {host: next.staging.starci.org, service: core, port: 3001, paths: [/graphql, /mcp], pathPrefixes: [/api/, /socket.io/], priority: 100}
+        - {host: next.staging.starci.org, service: app, port: 3000, priority: 10}
+        # The api host: the MCP endpoint, the learner CLI and the payment webhooks.
+        - {host: api.next.staging.starci.org, service: core, port: 3001}
+        # The object store's public route (PROJECT-STACKS-15): the S3 API port only, never the console (9001).
+        - {host: minio.next.staging.starci.org, service: storage, port: 9000}
     dns:
       - {host: next.staging.starci.org, owner: Staging operator, receipt: .starcistacks/staging/infra/swarm/owner-actions.md#dns}
       - {host: api.next.staging.starci.org, owner: Staging operator, receipt: .starcistacks/staging/infra/swarm/owner-actions.md#dns}
@@ -355,7 +366,7 @@ environments:
         restoreProof: .starcistacks/staging/infra/swarm/recovery/restore-proof.md
     # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
     # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER, VPS_PORT,
+    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
       - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-staging-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
@@ -364,13 +375,13 @@ environments:
       - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-staging-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-staging-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-staging-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: vps, keys: [VPS_HOST, VPS_USER, VPS_PORT, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-staging
       remote:
         host: vps
         releasesBase: /srv/next-staging
-        # VPS_HOST, VPS_USER, VPS_PORT (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
+        # VPS_HOST, VPS_USER (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
         sealed: vps
         serverRecipient: age1dypvrqkgumsr0e37d5ejenzs6gnczfqwwtegusat35t5sy7ne57sfn3kd8
       registry:
@@ -499,10 +510,21 @@ environments:
     runbook: README.md
     # The public hosts of production, routers of the shared edge Traefik (`edge-traefik` on 103.130.216.201, swarm provider, network `edge`, resolver `cf`:
     # ACME DNS-01 on Cloudflare): next.starci.org -> app:3000 (its /api/*, /graphql, /mcp and /socket.io/* -> core:3001), api.next.starci.org -> core:3001,
-    # minio.next.starci.org -> storage:9000 (PROJECT-STACKS-15: the object store's public route, the S3 port only). The stack's router labels carry these hosts.
+    # minio.next.starci.org -> storage:9000 (PROJECT-STACKS-15: the object store's public route, the S3 port only). The deploy renders the router labels from these routes; no host is written in the stack file.
     ingress:
-      external: {stack: edge}
-      hosts: [next.starci.org, api.next.starci.org, minio.next.starci.org]
+      kind: shared-edge
+      network: edge
+      certResolver: cf
+      entrypoint: websecure
+      routes:
+        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api, so the
+        # host-only session cookie reaches them; every other path is the Next app (the lower priority).
+        - {host: next.starci.org, service: core, port: 3001, paths: [/graphql, /mcp], pathPrefixes: [/api/, /socket.io/], priority: 100}
+        - {host: next.starci.org, service: app, port: 3000, priority: 10}
+        # The api host: the MCP endpoint, the learner CLI and the payment webhooks.
+        - {host: api.next.starci.org, service: core, port: 3001}
+        # The object store's public route (PROJECT-STACKS-15): the S3 API port only, never the console (9001).
+        - {host: minio.next.starci.org, service: storage, port: 9000}
     dns:
       - {host: next.starci.org, owner: Production operator, receipt: .starcistacks/production/infra/swarm/owner-actions.md#dns}
       - {host: api.next.starci.org, owner: Production operator, receipt: .starcistacks/production/infra/swarm/owner-actions.md#dns}
@@ -533,7 +555,7 @@ environments:
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
     # Fresh members of this environment (never a dev value); keys: db (POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL);
     # keycloak-client-secret (IDENTITY_KEYCLOAK_CLIENT_SECRET); identity-session-encryption-key (IDENTITY_SESSION_ENCRYPTION_KEY); keycloak (KEYCLOAK_TLS_CERT,
-    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER, VPS_PORT,
+    # KEYCLOAK_TLS_KEY); relay (RELAY_MANIFEST_SIGNING_KEY); storage (STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY); vps (VPS_HOST, VPS_USER,
     # privateKey, knownHosts: the operator transport, never granted).
     secrets:
       - {name: db, keys: [POSTGRES_PASSWORD, DB_OWNER_PASSWORD, KEYCLOAK_DB_PASSWORD, PRIMARY_DB_URL], runtimeName: next-production-custody-db-v1, version: 1, where: secrets/db, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
@@ -542,13 +564,13 @@ environments:
       - {name: keycloak, keys: [KEYCLOAK_TLS_CERT, KEYCLOAK_TLS_KEY], runtimeName: next-production-custody-keycloak-v1, version: 1, where: secrets/keycloak, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-production-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-production-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
-      - {name: vps, keys: [VPS_HOST, VPS_USER, VPS_PORT, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-production
       remote:
         host: vps
         releasesBase: /srv/next-production
-        # VPS_HOST, VPS_USER, VPS_PORT (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
+        # VPS_HOST, VPS_USER (deploy-next: docker group, key only), privateKey and the pinned knownHosts of sv-hk-1; operator only, never granted.
         sealed: vps
         serverRecipient: age1dypvrqkgumsr0e37d5ejenzs6gnczfqwwtegusat35t5sy7ne57sfn3kd8
       registry:

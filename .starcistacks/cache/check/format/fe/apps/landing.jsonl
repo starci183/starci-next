@@ -1,15 +1,16 @@
 {"findings":[],"hash":"b091ce597f02c4fbf89094cdeb446401c8775ace332b1505ec71866a4353c8a4","path":"fe/apps/landing/Dockerfile","step":"prettier"}
 {"findings":[],"hash":"332a7ded13b3f4ab5e010f61296e6134e754df6ce3b4bec1eb56ac7e026b0abe","path":"fe/apps/landing/next.config.ts","step":"prettier"}
-{"findings":[],"hash":"8071b18989d79cd556eb80971b1b1a3a943652b4eec1ab731c73c4caca3ff2f9","path":"fe/apps/landing/package.json","step":"prettier"}
+{"findings":[],"hash":"f3e77d14d2deeff28914043a406bdae574864f6bfb61eff0c8795890bd643787","path":"fe/apps/landing/package.json","step":"prettier"}
 {"findings":[],"hash":"ebd8daf9a019ed1c44a94dea9e6766759ccaf6959c7311be0d57678c90044b12","path":"fe/apps/landing/postcss.config.mjs","step":"prettier"}
 {"findings":[],"hash":"1d236fa63c21df0b5e631c724aa02926553bc3e6720b620477a0a23dea683f5b","path":"fe/apps/landing/src/app/[locale]/(pages)/error.tsx","step":"prettier"}
 {"findings":[],"hash":"3bc7a1060770200353c064020c0bb121a45bda53f884538865c86b862bf4fe74","path":"fe/apps/landing/src/app/[locale]/(pages)/loading.tsx","step":"prettier"}
+{"findings":[],"hash":"20509da6d628718721e0b3eaed0587cf3d1e2f972335722a4b42df7e98583f39","path":"fe/apps/landing/src/app/[locale]/(pages)/not-found.tsx","step":"prettier"}
 {"findings":[],"hash":"a5f5605ff6f79ab85b7f5a31033ead66378aad26e0934f28d48417924f464b2a","path":"fe/apps/landing/src/app/[locale]/(pages)/page.tsx","step":"prettier"}
 {"findings":[],"hash":"0241eca56a8437a28f9eb84995af37bb0133e9a86d126fd28b3784b20b4a000b","path":"fe/apps/landing/src/app/[locale]/[...rest]/page.tsx","step":"prettier"}
 {"findings":[],"hash":"04441aa97793b3958bdcfe935cd1e34d9de9d2bc4a067248dc865a3f24aa9f78","path":"fe/apps/landing/src/app/[locale]/layout.tsx","step":"prettier"}
 {"findings":[],"hash":"68303943a5e2ee028bdb16ac15f094c65fe9b3f834650f61127397ccb4128811","path":"fe/apps/landing/src/app/[locale]/not-found.tsx","step":"prettier"}
 {"findings":[],"hash":"a89a42489b1cdbebb0e0806ff67bb48dbbd2963149becf88924f94bf22ed3e4b","path":"fe/apps/landing/src/app/global-error.tsx","step":"prettier"}
-{"findings":[],"hash":"44bb9838fd55cce04c0a200512547650c9d82c5a852e9fd2f327e7d0be43ee5f","path":"fe/apps/landing/src/app/globals.css","step":"prettier"}
+{"findings":[],"hash":"35a88ede7ff709d2d186ddff33895ae63383df88680184871bf193b4a5608247","path":"fe/apps/landing/src/app/globals.css","step":"prettier"}
 {"findings":[],"hash":"23fe37a95647875d8c3013814c021c9a8def65aa6740d91716854167513cc5ce","path":"fe/apps/landing/src/app/health/live/route.ts","step":"prettier"}
 {"findings":[],"hash":"059f24108bdb79f9dbe81039ca94e68e8963c045910ba3e4bf4707d9bb590b20","path":"fe/apps/landing/src/app/not-found.tsx","step":"prettier"}
 {"findings":[],"hash":"6d985ea9b3e7f59eba2afaa7d583e12f4f8874648bf8b3e4e9b15ba628efd13a","path":"fe/apps/landing/src/features/layouts/LandingLayout/index.tsx","step":"prettier"}
@@ -21,7 +22,6 @@
 {"findings":[],"hash":"b9b96bc09b9e4a2897af1a383681697df0b92e7a7e67041bdad8bf4b19a6cab5","path":"fe/apps/landing/src/features/pages/LandingNotFoundPage/index.tsx","step":"prettier"}
 {"findings":[],"hash":"098bda98c9d852a08efa36fcd6f6041c856be790fca82f4145469bf9b670ebb3","path":"fe/apps/landing/src/features/pages/LandingPage/component.tsx","step":"prettier"}
 {"findings":[],"hash":"0f21dc65569f8cfe18236d73380c36024aa0ca060848456b0379b2d547cb8a9f","path":"fe/apps/landing/src/features/pages/LandingPage/index.tsx","step":"prettier"}
-{"findings":[],"hash":"b647a8c5544d59bc301583eaeb950d92779881ed67f5f4c48dfa2502e9eceb2b","path":"fe/apps/landing/src/modules/brand/brand.css","step":"prettier"}
 {"findings":[],"hash":"1ae82e52b25915d04d5bdc593afb63741a0b37df743ec0ef782f3406d2408936","path":"fe/apps/landing/src/modules/config/index.ts","step":"prettier"}
 {"findings":[],"hash":"bec4f9a9f7b384b2e4162c66c991f40c21ed173b3797083f4c6d58bfd2734513","path":"fe/apps/landing/src/modules/i18n/index.ts","step":"prettier"}
 {"findings":[],"hash":"f1c85b33d056a45558f22a598e7bd36959eb08ed74a16a4a06b5cb1761877975","path":"fe/apps/landing/src/modules/i18n/messages/en.json","step":"prettier"}

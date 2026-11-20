@@ -14,7 +14,7 @@ of sv-hk-1 (`.sops.yaml`, rule `production`), and reaches a container as a versi
 | `keycloak` | `KEYCLOAK_TLS_CERT`, `KEYCLOAK_TLS_KEY` | keycloak (its https pair); core trusts the certificate (`HTTP_TRUSTED_CA_FILE`) |
 | `relay` | `RELAY_MANIFEST_SIGNING_KEY` | core: the Ed25519 key (PKCS8 PEM) that signs learner task manifests |
 | `storage` | `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` | core (S3 client) and storage (MinIO root, `MINIO_ROOT_*_FILE`) |
-| `vps` | `VPS_HOST`, `VPS_USER`, `VPS_PORT`, `privateKey`, `knownHosts` | the operator's deploy transport (`deploy.remote.sealed`); never granted |
+| `vps` | `VPS_HOST`, `VPS_USER`, `privateKey`, `knownHosts` | the operator's deploy transport (`deploy.remote.sealed`); never granted |
 
 Not provisioned (owner-provided values; until then the feature is off or refused, typed): SMTP (`MAIL_HOST` is a placeholder: sign-up and reset
 codes cannot be mailed), payOS and SePay (no rail declared: no checkout), the AI coach (`OPENROUTER_API_KEY`: written answers are saved ungraded),

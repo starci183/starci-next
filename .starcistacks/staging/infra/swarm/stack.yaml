@@ -1,8 +1,8 @@
 # The staging stack of starci-next on the shared VPS sv-hk-1 (a one-manager swarm that also serves DirectAdmin hosting; this stack touches none of it).
 # The images, the plain environment, the <KEY>_FILE pointers and the versioned secrets come from the override `starci app stack render|deploy --env staging`
 # writes from application-stacks.yaml (environments.staging.deploy); this file holds the structure only.
-# Ingress: the shared edge Traefik outside this stack (environments.staging.ingress.external) routes the hosts of environments.staging.ingress.hosts to the
-# services joined to the external `edge` network (core, app, storage); this stack publishes no port. Every in-stack address is a unique alias on the
+# Ingress: the shared edge Traefik outside this stack (environments.staging.ingress, kind shared-edge) routes the hosts of environments.staging.ingress.routes to the
+# services joined to the external `edge` network (core, app, storage); the deploy renders the router labels from the routes, so no host is written here; this stack publishes no port. Every in-stack address is a unique alias on the
 # stack's own overlay `app` (next-staging-postgres, next-staging-keycloak, next-staging-storage), never a short service name, so nothing resolves across tenants.
 # The box serves other tenants: every service carries CPU and memory limits.
 services:
@@ -27,22 +27,6 @@ services:
       resources:
         limits: {cpus: "2", memory: 1536M}
         reservations: {memory: 256M}
-      labels:
-        traefik.enable: "true"
-        traefik.swarm.network: edge
-        # The api host: the MCP endpoint, the learner CLI and the payment webhooks.
-        traefik.http.routers.next-staging-api.rule: "Host(`api.next.staging.starci.org`)"
-        traefik.http.routers.next-staging-api.entrypoints: websecure
-        traefik.http.routers.next-staging-api.tls.certresolver: cf
-        traefik.http.routers.next-staging-api.service: next-staging-core
-        # The app host is one origin for the browser: the identity doors (/api/*), GraphQL, the MCP endpoint and the device socket reach the core api,
-        # so the host-only session cookie reaches them; every other path is the Next app (the router of the app service, lower priority).
-        traefik.http.routers.next-staging-app-core.rule: "Host(`next.staging.starci.org`) && (PathPrefix(`/api/`) || Path(`/graphql`) || Path(`/mcp`) || PathPrefix(`/socket.io/`))"
-        traefik.http.routers.next-staging-app-core.priority: "100"
-        traefik.http.routers.next-staging-app-core.entrypoints: websecure
-        traefik.http.routers.next-staging-app-core.tls.certresolver: cf
-        traefik.http.routers.next-staging-app-core.service: next-staging-core
-        traefik.http.services.next-staging-core.loadbalancer.server.port: "3001"
       update_config:
         parallelism: 1
         order: start-first
@@ -74,15 +58,6 @@ services:
       resources:
         limits: {cpus: "1", memory: 768M}
         reservations: {memory: 128M}
-      labels:
-        traefik.enable: "true"
-        traefik.swarm.network: edge
-        traefik.http.routers.next-staging-app.rule: "Host(`next.staging.starci.org`)"
-        traefik.http.routers.next-staging-app.priority: "10"
-        traefik.http.routers.next-staging-app.entrypoints: websecure
-        traefik.http.routers.next-staging-app.tls.certresolver: cf
-        traefik.http.routers.next-staging-app.service: next-staging-app
-        traefik.http.services.next-staging-app.loadbalancer.server.port: "3000"
       update_config:
         parallelism: 1
         order: start-first
@@ -250,15 +225,6 @@ services:
       resources:
         limits: {cpus: "1", memory: 1G}
         reservations: {memory: 128M}
-      labels:
-        traefik.enable: "true"
-        traefik.swarm.network: edge
-        # The object store's public route (PROJECT-STACKS-15): the S3 API port only, never the console (9001).
-        traefik.http.routers.next-staging-storage.rule: "Host(`minio.next.staging.starci.org`)"
-        traefik.http.routers.next-staging-storage.entrypoints: websecure
-        traefik.http.routers.next-staging-storage.tls.certresolver: cf
-        traefik.http.routers.next-staging-storage.service: next-staging-storage
-        traefik.http.services.next-staging-storage.loadbalancer.server.port: "9000"
       update_config:
         parallelism: 1
         order: stop-first
