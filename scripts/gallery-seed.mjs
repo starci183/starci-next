@@ -413,7 +413,7 @@ const pairDevice = async (learner, { name, platform, online }) => {
 }
 
 /** Uploads one scenario run the way `starci-next run` does: started, the output, then the result. `result` null leaves the run in flight. */
-const uploadRun = async (device, { checkId, result, output, runId = randomUUID() }) => {
+const uploadRun = async (device, { checkId, result, output, runId = randomUUID(), tier }) => {
     const base = { taskId: TASK, runId, checkId }
     const send = (mutation, type, input) =>
         gql(
@@ -443,8 +443,9 @@ const uploadRun = async (device, { checkId, result, output, runId = randomUUID()
                   concepts: [],
                   guardsOff: [],
               }),
+        ...(tier === undefined ? {} : { challengeTier: tier }),
         ...(result.why === undefined ? {} : { why: result.why }),
-        ...(result.ledger === undefined ? {} : { ledger: result.ledger }),
+        ...(result.ledger === undefined || tier !== undefined ? {} : { ledger: result.ledger }),
     })
     await sleep(120)
 }
@@ -535,6 +536,30 @@ const ESSENTIALS = [
         key: "scenarios-green",
         screens: { "essentials/lesson-scenarios-green": `${LESSON_ROUTE}?part=scenarios&scenario=crash-after-commit` },
         runs: (device, commit) => upCrash(device, commit, ["red", "green"]),
+    },
+    {
+        key: "ladder",
+        screens: { "essentials/lesson-ladder": `${LESSON_ROUTE}?part=apply` },
+        runs: async (device, commit) => {
+            // Rung scores as the CLI relays them (`starci-next run --challenge <tier>`). The hidden scenario ids are the ones of the lesson's own
+            // hidden/challenge-scenarios.yaml (a learner's reads only carry their number): both easy ones green, one of the two medium ones.
+            const easy = ["h-easy-key-reuse-409", "h-easy-replay-still-200"]
+            const medium = ["h-medium-split-payment", "h-medium-paid-twice"]
+            for (const id of easy)
+                await uploadRun(device, {
+                    checkId: id,
+                    tier: "easy",
+                    result: green(commit),
+                    output: "1 test(s), passed",
+                })
+            await uploadRun(device, {
+                checkId: medium[0],
+                tier: "medium",
+                result: green(commit),
+                output: "1 test(s), passed",
+            })
+            log(`ladder: easy ${easy.length} green, medium 1 of ${medium.length} green`)
+        },
     },
     {
         key: "source-up-failed",
@@ -669,7 +694,7 @@ const grantAndSignIn = async (key, role) => {
     // The roles of a session are the ones of the sign-in that made it: sign in again after the grant.
     return signIn(key)
 }
-const MY_EXPERIENCE = `query MyExperience($input: MyExperienceInput!) { myExperience(input: $input) { items { itemId state part itemType subject } } }`
+const MY_EXPERIENCE = `query MyExperience($input: MyExperienceInput!) { myExperience(input: $input) { items { itemId state part itemType subject verificationCode } } }`
 const myItems = async (learner) => (await gql({ jar: learner.jar }, MY_EXPERIENCE, { input: {} })).myExperience.items
 
 if (want("career-teacher") || want("career-states") || want("career-revoked") || want("career-reviewer")) {
@@ -757,6 +782,15 @@ if (want("career-teacher") || want("career-states") || want("career-revoked") ||
             cv: cv?.setCvVisibility,
         },
     )
+    // career/verify-revoked: the public verification page of the revoked item's code (a guest opens it).
+    const revokedItem = (await myItems(revoked)).find((item) => item.state === "revoked")
+    if (revokedItem !== undefined) {
+        manifest.screens["career/verify-revoked"] = {
+            learner: "career-revoked",
+            route: `/verify/${revokedItem.verificationCode}`,
+            guest: true,
+        }
+    }
     remember(
         revoked,
         { "career/experience (draft, waiting, revoked)": "/experience" },
@@ -764,6 +798,77 @@ if (want("career-teacher") || want("career-states") || want("career-revoked") ||
     )
     log(
         `career: teacher, reviewer, states (${items.length} items), revoked; cv ${cv?.setCvVisibility.path ?? "not set"}`,
+    )
+}
+
+// cv/public with several signed lines from different parts and signers: the verified deployed line (signed by the dev signer, TEACHER role), the
+// milestone line signed by the appointed REVIEWER and the essentials line the teacher signs after the learner sent it: all shown on the public CV.
+if (want("cv-multi")) {
+    const teacher = await grantAndSignIn("career-teacher", "TEACHER")
+    const reviewer = await grantAndSignIn("career-reviewer", "REVIEWER")
+    await gql(
+        { jar: teacher.jar },
+        `mutation SetExperienceReviewer($input: SetExperienceReviewerInput!) { setExperienceReviewer(input: $input) { reviewerId } }`,
+        {
+            input: {
+                reviewerId: reviewer.subject,
+                parts: ["projects", "harness"],
+                capacity: 5,
+                conflicts: [],
+                end: false,
+            },
+        },
+    )
+    const learner = await signIn("cv-multi")
+    cli(["career", "seed", "--learner", learner.subject])
+    cli(["entitlement", "dev-grant", "--learner", learner.subject])
+    const ITEMS = `query MyExperience($input: MyExperienceInput!) { myExperience(input: $input) { items { itemId state part draftLine { vi en } } } }`
+    const read = async () => (await gql({ jar: learner.jar }, ITEMS, { input: {} })).myExperience.items
+    const decide = (who, itemId) =>
+        gql(
+            { jar: who.jar },
+            `mutation DecideExperience($input: DecideExperienceInput!) { decideExperience(input: $input) { itemId state refusal } }`,
+            { input: { decisions: [{ itemId, verdict: "approve" }] } },
+        ).catch((error) => log(`cv-multi: decision refused (${error.message})`))
+    // The learner sends the graded essentials line; the teacher signs it.
+    const graded = (await read()).find((item) => item.state === "ai-graded")
+    if (graded?.draftLine)
+        await gql(
+            { jar: learner.jar },
+            `mutation SubmitExperience($input: SubmitExperienceInput!) { submitExperience(input: $input) { itemId state } }`,
+            { input: { itemId: graded.itemId, line: { vi: graded.draftLine.vi, en: graded.draftLine.en } } },
+        ).catch((error) => log(`cv-multi: submit refused (${error.message})`))
+    for (const item of (await read()).filter((each) => each.state === "pending-review")) {
+        if (item.part === "projects") {
+            // Assigned to the appointed reviewer, who signs it as REVIEWER.
+            await gql(
+                { jar: teacher.jar },
+                `mutation AssignExperience($input: AssignExperienceInput!) { assignExperience(input: $input) { itemId } }`,
+                { input: { itemId: item.itemId, reviewerId: reviewer.subject } },
+            ).catch((error) => log(`cv-multi: assign refused (${error.message})`))
+            await decide(reviewer, item.itemId)
+        } else await decide(teacher, item.itemId)
+    }
+    const signed = (await read()).filter((item) => item.state === "verified")
+    for (const item of signed)
+        await gql(
+            { jar: learner.jar },
+            `mutation ShowExperience($input: ShowExperienceInput!) { showExperience(input: $input) { itemId } }`,
+            { input: { itemId: item.itemId, shownPublicly: true } },
+        ).catch((error) => log(`cv-multi: show refused (${error.message})`))
+    const cv = await gql(
+        { jar: learner.jar },
+        `mutation SetCvVisibility($input: SetCvVisibilityInput!) { setCvVisibility(input: $input) { slug path isPublic verifiedCount } }`,
+        { input: { isPublic: true } },
+    ).catch((error) => (log(`cv-multi: CV visibility refused (${error.message})`), undefined))
+    remember(
+        learner,
+        { "cv/public": cv?.setCvVisibility.path ?? "/profile" },
+        { verified: signed.map((item) => item.part), cv: cv?.setCvVisibility },
+    )
+    manifest.screens["cv/public"] = { learner: "cv-multi", route: cv?.setCvVisibility.path ?? "/profile", guest: true }
+    log(
+        `cv-multi: ${signed.length} verified lines (${signed.map((item) => item.part).join(", ")}); cv ${cv?.setCvVisibility.path ?? "not set"}`,
     )
 }
 
