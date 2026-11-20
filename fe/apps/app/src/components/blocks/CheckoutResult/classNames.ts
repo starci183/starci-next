@@ -5,3 +5,12 @@ export const RESULT_COLUMN_CLASS_NAME: ReturnType<typeof cn> = cn("mx-auto", "w-
 
 /** The row that centres the one onward destination under the order facts. */
 export const RESULT_ACTIONS_CLASS_NAME: ReturnType<typeof cn> = cn("flex", "justify-center", "gap-3")
+
+/** The waiting notice: the spinner, the title and the sentence, all centred in one column. */
+export const RESULT_PENDING_CLASS_NAME: ReturnType<typeof cn> = cn(
+    "flex",
+    "flex-col",
+    "items-center",
+    "gap-3",
+    "text-center",
+)

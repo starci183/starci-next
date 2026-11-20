@@ -7,10 +7,10 @@ summary: "Trang nối Claude và ChatGPT ngay sau khi tạo mã: mã hiện mộ
 shots:
   "390":
     file: 390.png
-    sha256: b4d9aa699175807901c5b8f28593a50782efcde75456293c37c42d71329cf986
+    sha256: 019ef80736d0a564d2d7096a6235bc5508bba31cf1a65af86ce700b3fb0d8a6f
   "1440":
     file: 1440.png
-    sha256: c7e65d40e9d289c6467a177c186a9730b20a28d492414d72e5ebdceda83d95ea
+    sha256: ee9e04b3a74b794d1c0cb6d092ef9b8c6a5778adb3172624f2597b468e06098c
 code:
   - features/pages/ConnectPage
   - components/blocks/ConnectAi
@@ -113,6 +113,31 @@ audit:
           notes: ""
     - n: 2
       at: 2026-11-20T16:54:46.989Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Chú giải của nút khoá "Nhập tên mã trước khi bấm Tạo mã." còn nổi đè lên ô Tên mã trong ảnh ở
+            1440 và 390 (khi ô trống, nút "Tạo mã" xám); che chữ gợi ý và gây hiểu nhầm đây là lỗi.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T16:59:10.864Z
       lenses:
         order:
           verdict: open

@@ -7,10 +7,10 @@ summary: "Kết quả của một đơn thanh toán thất bại: cảnh báo, t
 shots:
   "390":
     file: 390.png
-    sha256: beb19b26d26f6dd7ebc4966b8bc9a348539dae88f041e381a7b369e3467837a1
+    sha256: 3eaf479ca810792ca368d3ad35ea1e984a0706cc06911e7e6a0389f5e401906f
   "1440":
     file: 1440.png
-    sha256: 752f4557c5d4a00016ba16cea35032ff8d2b1490db9fd8a36441205c948987f8
+    sha256: 80c00bf396e15b3f4ecf0fd2257ce0849397a4333b73a6566efa9f5f96489285
 code:
   - features/pages/CheckoutResultPage
   - components/blocks/CheckoutResult
@@ -41,13 +41,17 @@ sections:
   - id: facts
     title: Thông tin đơn
     shows: Mã đơn, gói, số tiền, cổng và (khi đã mở) Premium đến ngày nào, dạng danh sách phẳng có kẻ.
+      Tên cổng là dữ liệu máy chủ (một đơn đi qua payOS đọc payOS). Mã đơn chỉ hiện với đơn sepay
+      (SE-35); đơn payOS không hiện mã vì mã của core là số của cổng, một định dạng thứ hai.
     why: Có mã đơn để tra khi cần hỗ trợ.
     actions: []
     states:
       loading: Giá trị là khối xám
       empty: null
       error: null
-    needsApi: []
+    needsApi:
+      - "cần API: một mã đơn của ứng dụng cho mọi cổng (payOS hiện trả số trần của cổng), để đơn
+        payOS cũng hiện mã"
   - id: action
     title: Nút đi tiếp
     shows: "Đúng một nút theo trạng thái: đã mở thì Mở Projects, thất bại thì Thử lại, hết hạn thì Tạo
@@ -80,6 +84,32 @@ audit:
   rounds:
     - n: 1
       at: 2026-11-20T16:54:28.259Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Mã đơn hiện số trần "Đơn 34" / "Mã đơn 34" trong khi các đơn khác hiện mã "SE-35", "SE-38":
+            hai kiểu mã đơn, số trần là id nội bộ. Cổng ghi "payOS" khác "SePay" của các đơn khác
+            (kiểm lại nhãn cổng).'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T16:59:08.366Z
       lenses:
         order:
           verdict: open

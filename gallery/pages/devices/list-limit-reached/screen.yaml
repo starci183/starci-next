@@ -74,6 +74,31 @@ audit:
       at: 2026-11-20T16:54:37.235Z
       lenses:
         order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: ""
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: Học viên miễn phí 1/1 máy, hộp thoại nói rõ giới hạn và có Xem Premium; tên máy seed không
+            dấu.
+    - n: 2
+      at: 2026-11-20T16:59:12.241Z
+      lenses:
+        order:
           verdict: open
           notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:

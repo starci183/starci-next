@@ -1,10 +1,9 @@
 schema: 1
 screen: connect/ai-tokens-error
-title: Kết nối Claude / ChatGPT, không tải được mã
-route: /connect
+title: "Kết nối Claude / ChatGPT, không tải được mã"
+route: "/connect"
 area: connect
-summary: "Trang nối Claude và ChatGPT khi danh sách mã không đọc được: lỗi nằm trong phần Mã truy
-  cập, phần còn lại vẫn dùng được."
+summary: "Trang nối Claude và ChatGPT khi danh sách mã không đọc được: lỗi nằm trong phần Mã truy cập, phần còn lại vẫn dùng được."
 shots:
   "390":
     file: 390.png
@@ -17,45 +16,39 @@ code:
   - components/blocks/ConnectAi
 sections:
   - id: header
-    title: Dải đầu trang
-    shows: Tên trang Kết nối Claude / ChatGPT và một dòng nói AI đọc và làm được gì.
-    why: Nói ngay trang này để làm gì.
+    title: "Dải đầu trang"
+    shows: "Tên trang Kết nối Claude / ChatGPT và một dòng nói AI đọc và làm được gì."
+    why: "Nói ngay trang này để làm gì."
     actions: []
     states:
       loading: null
       empty: null
-      error: Tên trang giữ nguyên
+      error: "Tên trang giữ nguyên"
     needsApi: []
   - id: address
-    title: Địa chỉ MCP và tạo mã
-    shows: Địa chỉ MCP có nút sao chép, ô Tên mã và nút Tạo mã. Mã vừa tạo hiện một lần trong khối cảnh
-      báo kèm nút sao chép.
-    why: "Việc đầu tiên: có địa chỉ và có mã để dán. Mã chỉ hiện một lần nên cảnh báo nằm ngay chỗ vừa
-      tạo."
-    actions:
-      - Sao chép
-      - Tạo mã
-      - Tôi đã lưu mã
+    title: "Địa chỉ MCP và tạo mã"
+    shows: "Địa chỉ MCP có nút sao chép, ô Tên mã và nút Tạo mã. Mã vừa tạo hiện một lần trong khối cảnh báo kèm nút sao chép."
+    why: "Việc đầu tiên: có địa chỉ và có mã để dán. Mã chỉ hiện một lần nên cảnh báo nằm ngay chỗ vừa tạo."
+    actions: ["Sao chép", "Tạo mã", "Tôi đã lưu mã"]
     states:
       loading: null
       empty: null
-      error: Lỗi tạo mã hiện ngay dưới nút
+      error: "Lỗi tạo mã hiện ngay dưới nút"
     needsApi: []
   - id: tokens
-    title: Mã truy cập của bạn
-    shows: Các mã đã tạo (tên, đuôi mã, lần dùng cuối) kèm nút Thu hồi; tối đa 5 mã.
-    why: Thu hồi một mã là nó ngừng chạy ngay, nên nút nằm ngay hàng.
-    actions:
-      - Thu hồi
+    title: "Mã truy cập của bạn"
+    shows: "Các mã đã tạo (tên, đuôi mã, lần dùng cuối) kèm nút Thu hồi; tối đa 5 mã."
+    why: "Thu hồi một mã là nó ngừng chạy ngay, nên nút nằm ngay hàng."
+    actions: ["Thu hồi"]
     states:
-      loading: Hàng là khối xám
-      empty: Câu hướng dẫn Đặt tên cho mã rồi bấm Tạo mã
-      error: Thông báo lỗi trong phần này kèm nút Thử lại
+      loading: "Hàng là khối xám"
+      empty: "Câu hướng dẫn Đặt tên cho mã rồi bấm Tạo mã"
+      error: "Thông báo lỗi trong phần này kèm nút Thử lại"
     needsApi: []
   - id: guide
-    title: Cách thêm connector
-    shows: Hai nhóm bước đánh số cho Claude và ChatGPT, lệnh trong khối mã khi có và một dòng giải thích.
-    why: Từng bước nhỏ, mỗi bước một việc; nói thật OAuth sẽ đến sau.
+    title: "Cách thêm connector"
+    shows: "Hai nhóm bước đánh số cho Claude và ChatGPT, lệnh trong khối mã khi có và một dòng giải thích."
+    why: "Từng bước nhỏ, mỗi bước một việc; nói thật OAuth sẽ đến sau."
     actions: []
     states:
       loading: null
@@ -64,9 +57,9 @@ sections:
     needsApi:
       - "cần Grammar: khối mã tự xuống dòng (lệnh claude mcp add dài hiện phải cuộn ngang)"
   - id: aside
-    title: Cột phụ
+    title: "Cột phụ"
     shows: "Ba đoạn: AI đọc và làm được gì, AI không bao giờ thấy, về đăng nhập."
-    why: Ranh giới quyền của AI, đọc đầy đủ không bị cắt.
+    why: "Ranh giới quyền của AI, đọc đầy đủ không bị cắt."
     actions: []
     states:
       loading: null
@@ -76,12 +69,10 @@ sections:
 considered:
   - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
     chosen: false
-    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
-      công cụ"
-  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
     chosen: true
-    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
-      cần Grammar
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
 audit:
   builder:
     agent: next-ux-commerce
@@ -116,24 +107,24 @@ audit:
       at: 2026-11-20T16:54:48.190Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

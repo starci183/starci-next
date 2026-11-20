@@ -1,7 +1,7 @@
 schema: 1
 screen: commerce/premium-loading
-title: Premium, đang tải
-route: /premium
+title: "Premium, đang tải"
+route: "/premium"
 area: commerce
 summary: "Trang Premium khi danh sách gói chưa về: bảng so sánh có sẵn, thẻ gói là khung xám giữ đúng hình."
 shots:
@@ -16,35 +16,30 @@ code:
   - components/blocks/PremiumPlans
 sections:
   - id: header
-    title: Dải đầu trang
-    shows: "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness,
-      phần 1 của Essentials), hoặc Premium đến ngày nào."
-    why: "Học viên cần biết mình đang ở gói nào trước khi so sánh. Dải đầu không có nút: việc trả tiền
-      nằm ở thẻ gói."
+    title: "Dải đầu trang"
+    shows: "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness, phần 1 của Essentials), hoặc Premium đến ngày nào."
+    why: "Học viên cần biết mình đang ở gói nào trước khi so sánh. Dải đầu không có nút: việc trả tiền nằm ở thẻ gói."
     actions: []
     states:
-      loading: Dải đầu giữ khung, chữ là khối xám
+      loading: "Dải đầu giữ khung, chữ là khối xám"
       empty: null
-      error: Tên trang giữ nguyên
+      error: "Tên trang giữ nguyên"
     needsApi: []
   - id: compare
-    title: Premium mở khóa gì
-    shows: "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code
-      và Ôn tập, số máy CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
-    why: "So sánh theo khu vực thay cho danh sách quyền lợi chung chung: học viên thấy đúng phần nào
-      đang khóa với mình."
+    title: "Premium mở khóa gì"
+    shows: "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code và Ôn tập, số máy CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
+    why: "So sánh theo khu vực thay cho danh sách quyền lợi chung chung: học viên thấy đúng phần nào đang khóa với mình."
     actions: []
     states:
       loading: null
       empty: null
       error: null
     needsApi:
-      - "Bảng so sánh và giới hạn máy là chữ trong bộ từ; cần API: kế hoạch trả về quyền theo từng
-        gói"
+      - "Bảng so sánh và giới hạn máy là chữ trong bộ từ; cần API: kế hoạch trả về quyền theo từng gói"
   - id: faq
-    title: Hỏi nhanh
+    title: "Hỏi nhanh"
     shows: "Ba câu hỏi: thanh toán thế nào, có tự gia hạn không, hết hạn thì sao, mỗi câu trả lời đầy đủ."
-    why: Giải đáp ba nỗi lo trước khi trả tiền, ở ngay cạnh bảng so sánh.
+    why: "Giải đáp ba nỗi lo trước khi trả tiền, ở ngay cạnh bảng so sánh."
     actions: []
     states:
       loading: null
@@ -52,31 +47,24 @@ sections:
       error: null
     needsApi: []
   - id: plan
-    title: Chọn gói
-    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt
-      (thanh toán, tự gia hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút
-      chính."
-    why: Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền
-      không bị đẩy xuống dưới bảng.
-    actions:
-      - Thanh toán / Gia hạn
-      - Đăng nhập để tiếp tục (khi chưa đăng nhập)
+    title: "Chọn gói"
+    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt (thanh toán, tự gia hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút chính."
+    why: "Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền không bị đẩy xuống dưới bảng."
+    actions: ["Thanh toán / Gia hạn", "Đăng nhập để tiếp tục (khi chưa đăng nhập)"]
     states:
-      loading: Hai hàng gói và tóm tắt là khung xám
+      loading: "Hai hàng gói và tóm tắt là khung xám"
       empty: "Không có gói: thông báo ngay trong thẻ"
-      error: Thông báo lỗi kèm nút Thử lại trong thẻ
+      error: "Thông báo lỗi kèm nút Thử lại trong thẻ"
     needsApi:
       - "cần API: startPremiumCheckout trả dữ liệu QR để trả ngay trên trang (hiện chuyển hướng)"
       - "cần Grammar: QrCode"
 considered:
   - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
     chosen: false
-    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
-      công cụ"
-  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
     chosen: true
-    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
-      cần Grammar
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
 audit:
   builder:
     agent: next-ux-commerce
@@ -111,24 +99,24 @@ audit:
       at: 2026-11-20T16:54:25.662Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

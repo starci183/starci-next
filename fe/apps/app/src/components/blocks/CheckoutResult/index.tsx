@@ -79,12 +79,12 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
     const viewOf = (
         shape: CheckoutResultShape,
         facts: ReadonlyArray<ResultFact>,
-        order?: { readonly code: string; readonly plan: string },
+        order?: { readonly code: string | undefined; readonly plan: string },
     ): ResultView => ({
         title: copies[shape].title,
         body: copies[shape].body,
         meta: order === undefined ? copies[shape].status : `${order.plan} · ${copies[shape].status}`,
-        orderCrumb: order === undefined ? undefined : t("orderCrumb", { code: order.code }),
+        orderCrumb: order?.code === undefined ? undefined : t("orderCrumb", { code: order.code }),
         facts,
         ...actions[shape],
     })
@@ -96,8 +96,10 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
             const shape = orderShape(found.status)
             const plan = planNames.get(found.plan) ?? t("planOther")
             const until = found.premiumUntil
+            // The app's own order code is the sepay one (SE-35); a payOS order carries the gateway's bare number, a second format, so it shows no code until the core has one of its own.
+            const code = found.rail === "sepay" ? found.orderCode : undefined
             const facts: ReadonlyArray<ResultFact> = [
-                { id: "code", term: t("factCode"), description: found.orderCode },
+                ...(code === undefined ? [] : [{ id: "code", term: t("factCode"), description: code }]),
                 { id: "plan", term: t("factPlan"), description: plan },
                 {
                     id: "amount",
@@ -109,7 +111,7 @@ export const CheckoutResult = (props: CheckoutResultProps) => {
                     ? [{ id: "until", term: t("factUntil"), description: dateOf(until) }]
                     : []),
             ]
-            return { shape, view: viewOf(shape, facts, { code: found.orderCode, plan }) }
+            return { shape, view: viewOf(shape, facts, { code, plan }) }
         },
     )
     const fixed = (shape: CheckoutResultShape) => ({ items: { shape, view: viewOf(shape, []) } })

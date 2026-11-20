@@ -495,6 +495,10 @@ const SCREENS = [
             await p.getByLabel(/Tên mã/).fill("Claude")
             await tap(p, /^Tạo mã$/)
             await p.waitForTimeout(2500)
+            // The disabled Tạo mã keeps focus and its tooltip: leave it before the shot.
+            await p.evaluate(() => document.activeElement?.blur())
+            await p.mouse.move(2, 2)
+            await p.waitForTimeout(800)
         },
     }),
     S("connect", "ai-tokens-error", "/connect", {

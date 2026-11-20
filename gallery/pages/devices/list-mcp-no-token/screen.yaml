@@ -1,9 +1,9 @@
 schema: 1
 screen: devices/list-mcp-no-token
-title: Máy của bạn, Claude Code & MCP, chưa có token
-route: /devices
+title: "Máy của bạn, Claude Code & MCP, chưa có token"
+route: "/devices"
 area: devices
-summary: Tab Claude Code & MCP khi chưa có token nào.
+summary: "Tab Claude Code & MCP khi chưa có token nào."
 shots:
   "390":
     file: 390.png
@@ -16,37 +16,29 @@ code:
   - components/blocks/DevicesPair
 sections:
   - id: header
-    title: Dải đầu trang và hai phần
-    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối
-      máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
-    why: Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần
-      thứ hai cùng một việc nối công cụ, không còn trang riêng.
-    actions:
-      - Kết nối máy
+    title: "Dải đầu trang và hai phần"
+    shows: "Tên trang Máy của bạn, dòng: số máy đã dùng trên giới hạn, gói và việc CLI làm; nút Kết nối máy; hai tab Máy đã nối và Claude Code & MCP, mỗi tab có số đếm."
+    why: "Kết nối máy là việc chính của trang nên nút nằm ở dải đầu; MCP cho Claude Code và Codex là phần thứ hai cùng một việc nối công cụ, không còn trang riêng."
+    actions: ["Kết nối máy"]
     states:
-      loading: Dải đầu giữ khung, chữ là khối xám
+      loading: "Dải đầu giữ khung, chữ là khối xám"
       empty: null
-      error: Chỉ còn tên trang
+      error: "Chỉ còn tên trang"
     needsApi: []
   - id: body
-    title: Hỏi Claude khi kẹt và Token MCP
-    shows: Lời giải thích, lệnh cho Claude Code và Codex có nút sao chép, phần Token MCP trống với câu
-      hướng dẫn và nút Tạo token.
-    why: Lệnh đứng trước token vì học viên cần biết dán vào đâu.
-    actions:
-      - Sao chép
-      - Tạo token
+    title: "Hỏi Claude khi kẹt và Token MCP"
+    shows: "Lời giải thích, lệnh cho Claude Code và Codex có nút sao chép, phần Token MCP trống với câu hướng dẫn và nút Tạo token."
+    why: "Lệnh đứng trước token vì học viên cần biết dán vào đâu."
+    actions: ["Sao chép", "Tạo token"]
     states:
-      loading: Hàng là khối xám giữ đúng khung
-      empty: Chưa có token nào. Tạo một token rồi dán vào lệnh ở trên.
-      error: Thông báo lỗi kèm nút Thử lại
+      loading: "Hàng là khối xám giữ đúng khung"
+      empty: "Chưa có token nào. Tạo một token rồi dán vào lệnh ở trên."
+      error: "Thông báo lỗi kèm nút Thử lại"
     needsApi: []
   - id: aside
-    title: CLI làm được gì
-    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và
-      hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
-    why: Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh
-      vì dự án giờ chứng minh bằng CI OIDC.
+    title: "CLI làm được gì"
+    shows: "Năm dòng: ba việc được (chạy kịch bản, gửi kết quả, chuyển ngữ cảnh cho Claude qua MCP) và hai việc không (chứng minh dự án, đọc file ngoài thư mục bài)."
+    why: "Học viên cần biết CLI không làm gì trước khi cho nó chạy trên máy mình. Bỏ mục mức chứng minh vì dự án giờ chứng minh bằng CI OIDC."
     actions: []
     states:
       loading: null
@@ -56,12 +48,10 @@ sections:
 considered:
   - option: "Giữ bản cũ: thẻ có viền, ngăn kéo, trang riêng cho kết nối AI"
     chosen: false
-    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối
-      công cụ"
-  - option: Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar
+    why: "Trái luật Grammar mới: thẻ trong khung, ngăn kéo thay hộp thoại, hai nơi cho cùng việc nối công cụ"
+  - option: "Dựng đúng bản vẽ đã duyệt bằng thành phần Grammar"
     chosen: true
-    why: Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi
-      cần Grammar
+    why: "Không có thành phần riêng của ứng dụng lặp lại thứ Grammar đã có; chỗ Grammar chưa có được ghi cần Grammar"
 audit:
   builder:
     agent: next-ux-commerce
@@ -97,24 +87,24 @@ audit:
       at: 2026-11-20T16:54:38.741Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Đã sửa: 0 / 5 token, dòng "Chưa có token nào" và nút Tạo token.'
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: ""
   escalate: null

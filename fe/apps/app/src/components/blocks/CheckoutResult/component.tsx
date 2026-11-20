@@ -5,11 +5,12 @@ import {
     Page,
     Spinner,
     Stack,
+    Text,
     type BreadcrumbItem,
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
-import { RESULT_COLUMN_CLASS_NAME, RESULT_ACTIONS_CLASS_NAME } from "./classNames"
+import { RESULT_ACTIONS_CLASS_NAME, RESULT_COLUMN_CLASS_NAME, RESULT_PENDING_CLASS_NAME } from "./classNames"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The drawings of the checkout result: what the server says about the order, that it cannot be found, or that the reader must sign in to ask. */
@@ -94,12 +95,11 @@ const ResultNotice = (props: ResultBodyProps) => {
     const kind = noticeKindOf(props.shape)
     if (props.shape === "verifying")
         return (
-            <Stack gap="row">
-                <div className={RESULT_ACTIONS_CLASS_NAME}>
-                    <Spinner label={props.view.title} size="lg" />
-                </div>
-                <EmptyNotice mark="none" message={props.view.title} description={props.view.body} />
-            </Stack>
+            <div className={RESULT_PENDING_CLASS_NAME}>
+                <Spinner label={props.view.title} size="lg" />
+                <Text isStrong>{props.view.title}</Text>
+                <Text tone="muted">{props.view.body}</Text>
+            </div>
         )
     if (kind === "clear") return <EmptyNotice isAllClear message={props.view.title} description={props.view.body} />
     return <EmptyNotice isError={kind === "error"} message={props.view.title} description={props.view.body} />

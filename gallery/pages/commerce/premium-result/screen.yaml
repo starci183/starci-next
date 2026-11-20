@@ -8,10 +8,10 @@ summary: "Kết quả của một đơn vừa tạo: chưa thấy tiền về, t
 shots:
   "390":
     file: 390.png
-    sha256: 39f54946863d2f3abe0cb48871da0ccda96305e3ffabfdb724246764250aec1d
+    sha256: f38a36df8ac5e38e542f501658fd82210ab2692d659bb03efa660390ad00aaa6
   "1440":
     file: 1440.png
-    sha256: 9293214a7fd249af6801eae82bdbd1120022b7d1043069f69eecbb7d128ff718
+    sha256: 6b6b6d6fe228cc873636b5928ab49cacc5237b19e57a6d3af09e9a8d71069ca2
 code:
   - features/pages/CheckoutResultPage
   - components/blocks/CheckoutResult
@@ -42,13 +42,17 @@ sections:
   - id: facts
     title: Thông tin đơn
     shows: Mã đơn, gói, số tiền, cổng và (khi đã mở) Premium đến ngày nào, dạng danh sách phẳng có kẻ.
+      Tên cổng là dữ liệu máy chủ (một đơn đi qua payOS đọc payOS). Mã đơn chỉ hiện với đơn sepay
+      (SE-35); đơn payOS không hiện mã vì mã của core là số của cổng, một định dạng thứ hai.
     why: Có mã đơn để tra khi cần hỗ trợ.
     actions: []
     states:
       loading: Giá trị là khối xám
       empty: null
       error: null
-    needsApi: []
+    needsApi:
+      - "cần API: một mã đơn của ứng dụng cho mọi cổng (payOS hiện trả số trần của cổng), để đơn
+        payOS cũng hiện mã"
   - id: action
     title: Nút đi tiếp
     shows: "Đúng một nút theo trạng thái: đã mở thì Mở Projects, thất bại thì Thử lại, hết hạn thì Tạo
@@ -106,6 +110,32 @@ audit:
           notes: Mã đơn khác nhau giữa 1440 (SE-30) và 390 (SE-31) vì tạo đơn mới mỗi lần chụp (đã nêu).
     - n: 2
       at: 2026-11-20T16:54:26.849Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: Spinner căn giữa nhưng tiêu đề "Đang xác nhận thanh toán" và đoạn mô tả căn trái ở 1440 và
+            390 (các trạng thái khác căn giữa tiêu đề dưới biểu tượng); chữ tiêu đề cũng nhạt như
+            nội dung, không phải tiêu đề 16/500.
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 3
+      at: 2026-11-20T16:59:07.037Z
       lenses:
         order:
           verdict: open
