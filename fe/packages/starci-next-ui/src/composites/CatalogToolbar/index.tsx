@@ -66,7 +66,11 @@ export const CatalogToolbar = (props: CatalogToolbarProps) => (
                 <Tabs
                     kind="filter"
                     label={props.labels.statusLabel}
-                    items={props.statuses.map((each) => ({ id: each.id, label: each.label, count: each.count }))}
+                    items={props.statuses.map((each) => ({
+                        id: each.id,
+                        label: each.label,
+                        ...(props.isLoading === true ? {} : { count: each.count }),
+                    }))}
                     selectedKey={props.status}
                     onSelect={props.onStatus}
                 />

@@ -34,7 +34,7 @@
 {"data":{},"findings":[],"hash":"444d50f99ac9b923a0557a4dfc7aef13cf2fd717b3c20020e62c3b12851d73a8","path":"gallery/pages/essentials/lesson-error/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"19b7c693f17696360fb1e5df0d117ca0c5b01a4162154160e041ff14df9d829d","path":"gallery/pages/essentials/lesson-free-end/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"00e155fecdaeb439ec91ddcca87413184c20fcee7b4d8fbe1d8867ec87e6b209","path":"gallery/pages/essentials/lesson-ladder-locked/screen.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e65a882beb6af9dbedc14367598544abc915b648d95cffa19bf32f802a643f51","path":"gallery/pages/essentials/lesson-ladder/explain.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"0be29ea37ef7655d98394a15705577d09bcf5be5aaeb1fe42be000ba1c867569","path":"gallery/pages/essentials/lesson-ladder/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"808675478f2b2bb1923cc0da819e361af286567de698105c2454c9ad809c84ab","path":"gallery/pages/essentials/lesson-loading/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cd3cd7a1e54f68fdf056c8545b2e73e1068088d67d8f0329c17f893102c33c43","path":"gallery/pages/essentials/lesson-locked-apply/screen.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d02fdb0aeb553b49aea28735e460c9bdf5fd1762a644bab18dc2aa431f00dbae","path":"gallery/pages/essentials/lesson-locked-scenarios/screen.yaml","step":"file-rules"}

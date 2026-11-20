@@ -20,7 +20,7 @@ export type RunWords = {
         readonly locked: string
         readonly open: string
         readonly doing: (score: number, max: number) => string
-        readonly passed: string
+        readonly passed: (score: number, max: number) => string
     }
     readonly hiddenGreen: (green: number, total: number, score: number, max: number) => string
     readonly applyPrimary: {

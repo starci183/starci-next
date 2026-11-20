@@ -89,7 +89,7 @@ export type ApplyInput = {
 /** The state of a rung in words: how it opens, how far it stands or that it is green. */
 const stateLabelOf = (score: ChallengeScoreView | undefined, words: RunWords): string => {
     if (score === undefined || score.isLocked) return words.rungLabels.locked
-    if (score.state === "passed") return words.rungLabels.passed
+    if (score.state === "passed") return words.rungLabels.passed(score.score, score.maxScore)
     return score.state === "doing" ? words.rungLabels.doing(score.score, score.maxScore) : words.rungLabels.open
 }
 
@@ -100,6 +100,7 @@ const challengeDetailOf = (input: ApplyInput, rung: EssentialChallengeView): Cha
     return {
         id: rung.id,
         heading: `${words.levels[rung.level]} · ${rung.title}`,
+        level: words.levels[rung.level],
         brief: rung.brief,
         state: score?.state ?? "locked",
         stateLabel: stateLabelOf(score, words),
