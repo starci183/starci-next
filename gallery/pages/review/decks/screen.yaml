@@ -1,0 +1,78 @@
+schema: 1
+screen: review/decks
+title: Bộ thẻ, danh sách
+route: /review/decks
+area: review
+summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh
+  "Thêm bộ thẻ" ngang hàng. '
+shots:
+  "390":
+    file: 390.png
+    sha256: 12c915762fe82f9ce231241e36e5bde6a5706d755b98db0e6db792678430bf47
+  "1440":
+    file: 1440.png
+    sha256: 56dce9bef0cab61418b420bf293ed217b2277f5abf36e55549889be0cf77dc96
+code:
+  - features/pages/ReviewDecksPage
+  - components/blocks/ReviewDecks
+sections:
+  - id: s1
+    title: Dải đầu trang
+    shows: Dải đầu trang
+    why: Đường dẫn Ôn tập / Bộ thẻ, tên trang và luật mỗi ngày tối đa theo mục tiêu.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Danh sách phẳng
+    shows: Danh sách phẳng
+    why: Hai hàng chip (đã thêm hay chưa, lộ trình) đứng trên danh sách; mỗi hàng nói tên, số thẻ, độ
+      khó, nhãn; bên phải "Thêm bộ thẻ" hoặc badge Đã thêm và "Bỏ khỏi hàng đợi"; cả hàng mở trang
+      bộ thẻ.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:38.694Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

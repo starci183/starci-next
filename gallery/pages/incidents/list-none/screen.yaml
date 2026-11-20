@@ -1,0 +1,65 @@
+schema: 1
+screen: incidents/list-none
+title: Sự cố, chưa có sự cố nào
+route: /incidents
+area: incidents
+summary: "Chưa có sự cố nào được viết: trạng thái cả trang có minh hoạ, thay cho danh sách toàn Sắp có."
+shots:
+  "390":
+    file: 390.png
+    sha256: 6e164364dfe0dbfd2471e0e507d69ca8569dd2dfb08243d15625ba0514f665c4
+  "1440":
+    file: 1440.png
+    sha256: 59bb84eb073b0b0e9c2893f899d6ff678ad057100f1f790260ca26e9a1aed643
+code:
+  - features/pages/IncidentsPage
+  - components/blocks/IncidentsList
+sections:
+  - id: s1
+    title: Vùng chính
+    shows: Vùng chính
+    why: "Chưa có sự cố nào được viết: trạng thái cả trang có minh hoạ, thay cho danh sách toàn Sắp có."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:56.936Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

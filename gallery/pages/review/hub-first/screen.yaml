@@ -1,0 +1,67 @@
+schema: 1
+screen: review/hub-first
+title: Ôn tập, lần đầu
+route: /review
+area: review
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
+  không có thẻ khoá. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 33ccc3b515e608f46264499585181c1699e008ce737399631221e764d3b984a9
+  "1440":
+    file: 1440.png
+    sha256: 2bc8146ff9fad28150b5883a513de3aff3cac2b11d6e2871cb7014d5439a8fa9
+code:
+  - features/pages/ReviewTodayPage
+  - components/blocks/ReviewToday
+sections:
+  - id: s1
+    title: Trạng thái
+    shows: Trạng thái
+    why: 'Lần đầu: giải thích cách ôn và chọn mục tiêu mỗi ngày bằng chip; nút chính "Chọn bộ thẻ đầu
+      tiên".'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:23.509Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

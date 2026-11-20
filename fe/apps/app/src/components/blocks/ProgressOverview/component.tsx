@@ -193,24 +193,25 @@ const ActivitySection = (props: ReadyProps) => (
     </Section>
 )
 
-/** The first visit: nothing is measured yet, which the page says once (an illustration, the words), then the three ways in. */
-const FirstVisit = (props: ReadyProps) => (
-    <Stack gap="region">
+/** The first visit: nothing is measured yet, which the page says once (an illustration, the words) with the three ways in as its numbered steps. */
+const FirstVisit = (props: ReadyProps) => {
+    const ways = props.view.firstVisit ?? []
+    const first = ways[0]
+    return (
         <EmptyNotice
             scope="page"
             message={props.labels.firstVisitTitle}
             description={props.labels.firstVisitText}
             media={{ illustration: { staticsKey: "illustrations/empty/hoc-first-visit.png" } }}
+            steps={ways.map((way) => ({
+                id: way.id,
+                label: way.title,
+                ...(way.description === undefined ? {} : { description: String(way.description) }),
+            }))}
+            {...(first?.href === undefined ? {} : { actionLabel: first.title, actionHref: first.href })}
         />
-        <Section
-            kind="list"
-            ariaLabel={props.labels.firstVisitTitle}
-            isLoading={props.isLoading}
-            items={props.view.firstVisit ?? []}
-            empty={<Text tone="muted">{props.labels.unavailable}</Text>}
-        />
-    </Stack>
-)
+    )
+}
 
 /** The ready page: the ribbon on top, then Essentials, Harness, Projects, Luyện code and Ôn tập. */
 const Ready = (props: ReadyProps) => {

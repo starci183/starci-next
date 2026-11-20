@@ -2,10 +2,16 @@
 title: Ôn tập, không có gì đến hạn
 route: /review
 area: review
-reviewed: 2026-11-18
+reviewed: 2026-11-20
 ---
 
 Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá.
+
+## Đầu trang
+
+Vì sao: Đầu trang (tên, dòng số liệu, một nút chính) đi qua `SlotView` cùng nội dung: tiêu đề giữ nguyên khi đọc lỗi hay rỗng. Dòng số liệu và nút chính "Chọn bộ thẻ" giữ như trước.
+Luật: `grammar-slot-interface` (chỉ `SlotView` rẽ nhánh).
+Grammar: `SlotView` với `header`, `headerFallback` và `frame` đặt `Page`.
 
 ## Trạng thái
 

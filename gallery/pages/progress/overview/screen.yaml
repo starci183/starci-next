@@ -1,0 +1,119 @@
+schema: 1
+screen: progress/overview
+title: Hồ sơ · tiến độ
+route: /progress
+area: progress
+summary: "Route: `/progress` (ảnh chụp: học viên Premium, đã làm cả năm khu vực). Mã:
+  `fe/apps/app/src/components/blocks/ProgressOverview/` (`component.tsx` vẽ, `index.tsx` nối dữ
+  liệu). Mọi vùng là một `Section` phẳng, không thẻ nổi. Các trạng thái khác nằm ở `progress/free`
+  (chưa Premium), `progress/first` (lần đầu), `progress/partial` (một nguồn lỗi), `progress/error`
+  và `progress/loading`. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 51164cd70eefbf528ff4ae30b7522900558ad0422ac6a31e43957cbcdb6daab3
+  "1440":
+    file: 1440.png
+    sha256: 246c3434c8d7e5f0853313e2e0c734db4007607547a9c7b88e105ac4ebd76e74
+code:
+  - features/pages/ProgressPage
+  - components/blocks/ProgressOverview
+sections:
+  - id: s1
+    title: Mục tiêu và đường vào
+    shows: Mục tiêu và đường vào
+    why: 'một chỗ xem mình tới đâu ở mọi khu vực và nhảy vào khu vực đó. Trang không có mục riêng ở
+      thanh bên: vào từ Hồ sơ ("Xem tiến độ", đường dẫn "Hồ sơ / Tiến độ") và từ Học. Trang chỉ để
+      xem nên không có nút chính.'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s2
+    title: Hàng số liệu
+    shows: Hàng số liệu
+    why: "một hàng năm con số kẻ mảnh: khái niệm đã chứng minh, chuỗi ngày, bài đã học, bản dựng đã
+      xong, bài Accepted. Con số của một nguồn không đọc được thì bỏ khỏi hàng, không hiện 0 giả."
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s3
+    title: "Năm vùng: Essentials, Harness, Dự án, Luyện code, Ôn tập"
+    shows: "Năm vùng: Essentials, Harness, Dự án, Luyện code, Ôn tập"
+    why: mỗi vùng có liên kết "Mở …" ở cuối dòng tiêu đề và các hàng chi tiết. Essentials liệt kê bốn
+      phần (Đã mở hoặc Cần Premium kèm "Xem Premium") rồi mỗi chủ đề một hàng có thanh tiến độ đen
+      trên xám. Harness gộp bản dựng và Doctor trong một danh sách. Dự án là số liệu và hàng từng dự
+      án, hoặc một hàng lời mời khi chưa Premium. Luyện code đọc `learnerProgress.practice` (bài
+      Accepted trên tổng, pattern đang làm, pattern đã xong, tiến độ từng pattern). Ôn tập là số thẻ
+      đến hạn kèm số quá hạn, đã ôn hôm nay, chuỗi hiện tại và dài nhất. Một vùng lỗi nói "Chưa tải
+      được phần này" kèm nút Thử lại, không làm hỏng cả trang.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s4
+    title: Hoạt động gần đây
+    shows: Hoạt động gần đây
+    why: cột phải ở 1440 (cuối trang ở 390), mới nhất trước, tối đa 12 dòng.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+  - id: s5
+    title: Lần đầu
+    shows: Lần đầu
+    why: 'học viên chưa có gì để đo được nói một lần ("Chưa có gì để đo, và đó là bình thường"), rồi ba
+      lối vào: Essentials, Luyện code, Ôn tập.'
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:50.698Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

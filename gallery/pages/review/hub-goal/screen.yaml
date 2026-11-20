@@ -1,0 +1,66 @@
+schema: 1
+screen: review/hub-goal
+title: Ôn tập, đổi mục tiêu
+route: /review
+area: review
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
+  không có thẻ khoá. "
+shots:
+  "390":
+    file: 390.png
+    sha256: 237d7cfea2cb6f0852bfee534385139c6bb92075ebf3422abea5207fcc8e8088
+  "1440":
+    file: 1440.png
+    sha256: 090ded62e09ff51818ea7302301d678e30804b1077c77d88e9cc39e67f929708
+code:
+  - features/pages/ReviewTodayPage
+  - components/blocks/ReviewToday
+sections:
+  - id: s1
+    title: Hộp thoại đổi mục tiêu
+    shows: Hộp thoại đổi mục tiêu
+    why: Chip 5, 10, 20, 30 và Khác (ô số từ 0 đến 50); Lưu mục tiêu là lệnh chính.
+    actions: []
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Giữ bản vẽ cũ
+    chosen: false
+    why: Bản vẽ cũ còn nút nhỏ, chữ cỡ tay và hàng không thụt, trái luật Grammar mới
+  - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
+    chosen: true
+    why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+audit:
+  builder:
+    agent: next-ux-review
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T12:43:27.662Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null
