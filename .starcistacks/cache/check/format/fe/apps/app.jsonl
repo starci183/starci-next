@@ -57,7 +57,7 @@
 {"findings":[],"hash":"265f92553c7aea7d0fc7d7b58597e4d14f0019f5a953470d23b8aaf8ebf4f047","path":"fe/apps/app/src/app/[locale]/[...rest]/page.tsx","step":"prettier"}
 {"findings":[],"hash":"bdd451e0c804e18dae5745f520bba5bb6275861110e12e76b02ff2da466dc316","path":"fe/apps/app/src/app/[locale]/layout.tsx","step":"prettier"}
 {"findings":[],"hash":"dbf40db379e58188f9c162b92bea1119bf3c25ea7130e05898d5df718a7285bf","path":"fe/apps/app/src/app/[locale]/not-found.tsx","step":"prettier"}
-{"findings":[],"hash":"630a9fbdfe0e0817eb606b6673ee6d0339019ec17bad1dfac44c896cac60c19a","path":"fe/apps/app/src/app/global-error.tsx","step":"prettier"}
+{"findings":[],"hash":"24239bca9e21c824216da9eccf37114f796061604a0efe80ff00f1a26cb9a97c","path":"fe/apps/app/src/app/global-error.tsx","step":"prettier"}
 {"findings":[],"hash":"44bb9838fd55cce04c0a200512547650c9d82c5a852e9fd2f327e7d0be43ee5f","path":"fe/apps/app/src/app/globals.css","step":"prettier"}
 {"findings":[],"hash":"23fe37a95647875d8c3013814c021c9a8def65aa6740d91716854167513cc5ce","path":"fe/apps/app/src/app/health/live/route.ts","step":"prettier"}
 {"findings":[],"hash":"cb58c7459044d7a2921312dbdf6a332123731e3aadb709c15d744b814a639a8c","path":"fe/apps/app/src/app/not-found.tsx","step":"prettier"}
