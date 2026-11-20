@@ -1,10 +1,10 @@
 "use client"
 
-import { useLocalizedPathname } from "@/hooks/locale"
-import { useOrigin } from "@/hooks/profile"
+import { NotFoundNotice } from "@starci-next/ui"
 import { usePublicCvLabels, usePublicCvView } from "@/hooks/publicCv"
 import type { PublicCv as PublicCvRead } from "@/hooks/swr"
-import { PUBLIC_CV_PLACEHOLDER, PublicCvBase, type PublicCvBaseProps } from "./component"
+import { staticsBase } from "@/modules/config"
+import { PUBLIC_CV_PLACEHOLDER, PublicCvBase } from "./component"
 
 /** What the route hands the block: the slug of the address and what the server already read, when it could. */
 type PublicCvProps = { readonly slug: string; readonly initial?: PublicCvRead | undefined }
@@ -27,7 +27,7 @@ export const PublicCv = (props: PublicCvProps) => {
                 canShare: cv.canShare,
                 url: cv.url,
                 previewSrc: cv.previewSrc,
-                address: cv.url,
+                staticsBaseUrl: staticsBase(),
             }}
             on={{
                 retry: cv.retry,
@@ -40,46 +40,16 @@ export const PublicCv = (props: PublicCvProps) => {
     )
 }
 
-/** The inert callbacks of a page that has nothing to act on. */
-const NO_ACTIONS: PublicCvBaseProps["on"] = {
-    retry: () => undefined,
-    chooseSource: () => undefined,
-    showMore: () => undefined,
-    setShareOpen: () => undefined,
-    shareNative: () => undefined,
-}
-
-/** The not-found page of a public CV: one sentence for a wrong link and a private CV alike, with the address that was opened. */
+/** The not-found page of a public CV: one sentence for a wrong link and a private CV alike, in the shared not-found notice. */
 export const PublicCvMissing = () => {
     const labels = usePublicCvLabels()
-    const origin = useOrigin()
-    const pathname = useLocalizedPathname()
     return (
-        <PublicCvBase
-            shape="notFound"
-            props={{
-                slot: { isLoading: true },
-                placeholder: PUBLIC_CV_PLACEHOLDER,
-                slotLabels: { empty: labels.notFoundTitle, forbidden: "", error: "", retry: "" },
-                labels,
-                share: {
-                    title: "",
-                    closeLabel: "",
-                    linkLabel: "",
-                    previewTitle: "",
-                    previewAlt: "",
-                    other: "",
-                    targets: [],
-                },
-                source: "all",
-                isShareOpen: false,
-                isPhone: false,
-                canShare: false,
-                url: "",
-                previewSrc: "",
-                address: `${origin}${pathname}`,
-            }}
-            on={NO_ACTIONS}
+        <NotFoundNotice
+            title={labels.notFoundTitle}
+            description={labels.notFoundDescription}
+            homeLabel={labels.notFoundHome}
+            homeHref={labels.homeHref}
+            staticsBaseUrl={staticsBase()}
         />
     )
 }

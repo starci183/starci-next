@@ -72,7 +72,6 @@ export type PublicCvLabels = {
     readonly notFoundTitle: string
     readonly notFoundDescription: string
     readonly notFoundHome: string
-    readonly notFoundAddressLabel: string
     readonly copy: string
     readonly copied: string
     readonly copyError: string
