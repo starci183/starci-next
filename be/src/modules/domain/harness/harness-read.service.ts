@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
+import { InjectLogger, type Logger } from "@modules/platform/logging"
+import { HarnessLogEvent } from "./harness.log-events"
+import { missingLocalizedOf } from "./harness-store.policy"
 import { InjectHarnessOptions } from "./harness.decorators"
 import type { HarnessOptions } from "./harness.options"
 import { DEFAULT_CI_OIDC_AUDIENCE } from "@modules/domain/project"
@@ -82,6 +85,7 @@ export class HarnessReadService {
 
     constructor(
         @InjectPrimaryEntityManager() private readonly entityManager: EntityManager,
+        @InjectLogger() private readonly logger: Logger,
         @InjectHarnessOptions() options: HarnessOptions,
     ) {
         this.audience = options.ciOidcAudience ?? DEFAULT_CI_OIDC_AUDIENCE
@@ -302,13 +306,26 @@ export class HarnessReadService {
 
     private async records<T>(kind: string): Promise<ReadonlyArray<T>> {
         const rows: Array<ContentRow> = await this.entityManager.query(SELECT_PUBLISHED_KIND, [kind, LIST_ROWS_MAX])
-        return rows.map((row) => recordOf<T>(row))
+        return rows.filter((row) => this.isDrawable(row)).map((row) => recordOf<T>(row))
+    }
+
+    /** Whether a stored row is the contract's shape; a row that is not is logged with its key and left out, so one bad record never empties a section. */
+    private isDrawable(row: ContentRow): boolean {
+        const missing = missingLocalizedOf(row.kind, row.content)
+        if (missing.length === 0) return true
+        this.logger.warn(HarnessLogEvent.StoredInvalid, {
+            kind: row.kind,
+            key: row.content_key,
+            version: row.version,
+            missing: missing.join(","),
+        })
+        return false
     }
 
     private async one(kind: string, key: string): Promise<ContentRow> {
         const rows: Array<ContentRow> = await this.entityManager.query(SELECT_PUBLISHED_ONE, [kind, key])
         const row = rows[0]
-        if (row === undefined) throw new HarnessError({ code: HarnessErrorCode.NotFound })
+        if (row === undefined || !this.isDrawable(row)) throw new HarnessError({ code: HarnessErrorCode.NotFound })
         return row
     }
 }
