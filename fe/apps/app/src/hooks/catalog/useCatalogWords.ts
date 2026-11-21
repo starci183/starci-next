@@ -2,8 +2,14 @@
 
 import { useTranslations } from "next-intl"
 import type { CatalogWords } from "@/modules/types"
-import { hoursText } from "./hours.shared"
 import { useViewerPremium } from "./useViewerPremium"
+
+/** The words of a length of time: minutes under an hour, whole hours, or hours and minutes. */
+export const hoursText = (t: ReturnType<typeof useTranslations>, hours: number, minutes: number): string => {
+    if (hours === 0) return t("minutesOnly", { minutes })
+    if (minutes === 0) return t("hoursOnly", { hours })
+    return t("hours", { hours, minutes })
+}
 
 /** Resolves the words the catalog and topic views are built with: the state of a lesson, the counts and the primary. */
 export const useCatalogWords = (): CatalogWords => {
