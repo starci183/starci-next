@@ -1,5 +1,18 @@
-import { Button, Cluster, EmptyNotice, Page, Section, Stack, Text, type ListRowData } from "@starci/grammar/common"
-import { RowProgress, SlotView } from "@starci-next/ui"
+import {
+    Badge,
+    Button,
+    Cluster,
+    EmptyNotice,
+    Grid,
+    Meter,
+    Page,
+    ProgressCircle,
+    Section,
+    Stack,
+    SurfaceCard,
+    Text,
+} from "@starci/grammar/common"
+import { ArtImage, SlotView, areaArt } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
 
@@ -15,6 +28,8 @@ export type ProjectRowView = {
     readonly isAgent: boolean
     readonly milestone: string
     readonly percent: number
+    readonly proved: number
+    readonly count: number
     readonly progress: string
     readonly ci: string
     readonly ciTone: "success" | "warning" | "muted"
@@ -48,6 +63,8 @@ export const PROJECTS_LIST_PLACEHOLDER: ProjectsListView = {
         isAgent: false,
         milestone: blank(10),
         percent: 0,
+        proved: 0,
+        count: 0,
         progress: "x/x",
         ci: blank(6),
         ciTone: "muted",
@@ -81,6 +98,8 @@ export type ProjectsListLabels = {
     readonly emptyTitle: string
     readonly emptyText: string
     readonly note: string
+    readonly addTitle: string
+    readonly addText: string
 }
 
 /** Props for {@link ProjectsListBase}. */
@@ -90,6 +109,8 @@ export type ProjectsListBaseProps = {
         readonly placeholder: ProjectsListView
         readonly slotLabels: SlotLabels
         readonly labels: ProjectsListLabels
+        /** The public base of the statics, for the hero picture. */
+        readonly staticsBaseUrl: string
     }
     readonly on: { readonly retry: () => void }
 }
@@ -101,63 +122,78 @@ type BodyProps = {
     readonly isLoading: boolean
 }
 
-/** The ribbon over the list: the four figures of the learner, in one band between two hairlines. */
-const Ribbon = (props: BodyProps) => {
+/** The hero: the three figures of the learner beside the 3D picture of the area. */
+const Hero = (props: BodyProps) => {
     const { figures } = props.view
     const { labels } = props.props
     return (
-        <Section
-            kind="figures"
-            ariaLabel={labels.ribbonLabel}
-            isLoading={props.isLoading}
-            items={[
-                { id: "proved", term: labels.figures.proved, value: figures.proved },
-                { id: "practising", term: labels.figures.practising, value: figures.practising },
-                {
-                    id: "milestones",
-                    term: labels.figures.milestones,
-                    value: figures.milestonesDone,
-                    unit: `/ ${figures.milestonesTotal}`,
-                },
-                { id: "cv", term: labels.figures.cv, value: figures.cvLines },
-            ]}
+        <Grid
+            kind="pair"
+            leading={
+                <Section
+                    kind="figures"
+                    ariaLabel={labels.ribbonLabel}
+                    isLoading={props.isLoading}
+                    items={[
+                        { id: "proved", term: labels.figures.proved, value: figures.proved },
+                        {
+                            id: "milestones",
+                            term: labels.figures.milestones,
+                            value: figures.milestonesDone,
+                            unit: `/ ${figures.milestonesTotal}`,
+                        },
+                        { id: "cv", term: labels.figures.cv, value: figures.cvLines },
+                    ]}
+                />
+            }
+            trailing={<ArtImage asset={areaArt("projects")} base={props.props.staticsBaseUrl} />}
         />
     )
 }
 
-/** One project as a list row: name, repo and current milestone, the kind and the deployment as chips, the progress as the row's control; the whole row is the link. */
-const rowOf = (row: ProjectRowView, progressLabel: string): ListRowData => ({
-    id: row.id,
-    title: row.name,
-    description: [row.repo, row.milestone].filter((part) => part !== "").join(" · "),
-    href: row.href,
-    badges: [
-        { label: row.kindLabel, tone: "neutral" },
-        { label: row.ci, tone: row.ciTone },
-    ],
-    control: (
-        <Cluster gap="inline" align="center">
-            <RowProgress label={progressLabel} value={row.percent} tone={row.isProved ? "success" : "accent"} />
-            <Text tone="muted" tabular>
-                {row.progress}
-            </Text>
-        </Cluster>
-    ),
-})
-
-/** The learner's projects as one flat list under its head; the empty list is drawn in its place. */
-const ListTable = (props: BodyProps) => {
-    const { labels } = props.props
+/** One project as a card: the name, the proved ring, the kind and CI chips, and one segment per concept. */
+const ProjectCard = (props: { readonly row: ProjectRowView; readonly progressLabel: string }) => {
+    const { row } = props
     return (
-        <Section
-            kind="list"
-            title={labels.listLabel}
-            headingLevel={2}
-            count={props.view.rows.length}
-            caption={labels.note}
-            isLoading={props.isLoading}
-            items={props.view.rows.map((row) => rowOf(row, labels.progressLabel))}
-            empty={
+        <SurfaceCard
+            label={row.name}
+            headingLevel={3}
+            labelEnd={<ProgressCircle label={props.progressLabel} value={row.percent} size="sm" />}
+            wholeAction={{ kind: "link", href: row.href, label: row.name }}
+            {...(row.isProved ? { emphasis: "accent" as const } : {})}
+        >
+            <Stack gap="inline">
+                <Text tone="muted">{[row.repo, row.milestone].filter((part) => part !== "").join(" · ")}</Text>
+                <Cluster gap="inline" align="center" wrap>
+                    <Badge tone="neutral">{row.kindLabel}</Badge>
+                    <Badge isDot tone={row.ciTone}>
+                        {row.ci}
+                    </Badge>
+                    <Text tone="muted" tabular>
+                        {row.progress}
+                    </Text>
+                </Cluster>
+                <Meter
+                    label={props.progressLabel}
+                    isLabelHidden
+                    value={row.proved}
+                    maxValue={Math.max(1, row.count)}
+                    segments={Math.min(12, Math.max(2, row.count)) as 2}
+                    tone={row.isProved ? "affirmative" : "informative"}
+                    isLoading={row.href === ""}
+                />
+            </Stack>
+        </SurfaceCard>
+    )
+}
+
+/** The learner's projects as cards, with the dashed card that adds the next repo; the empty list is drawn in its place. */
+const Cards = (props: BodyProps) => {
+    const { labels, staticsBaseUrl } = props.props
+    if (props.view.rows.length === 0) {
+        return (
+            <Stack gap="region">
+                <ArtImage asset={areaArt("empty-projects")} base={staticsBaseUrl} />
                 <EmptyNotice
                     message={labels.emptyTitle}
                     description={labels.emptyText}
@@ -165,14 +201,30 @@ const ListTable = (props: BodyProps) => {
                     actionHref={labels.createHref}
                     frame="frameless"
                 />
-            }
-        />
+            </Stack>
+        )
+    }
+    return (
+        <Section title={labels.listLabel} headingLevel={2} count={props.view.rows.length}>
+            <Grid kind="cards" columns={3}>
+                {props.view.rows.map((row) => (
+                    <ProjectCard key={row.id} row={row} progressLabel={labels.progressLabel} />
+                ))}
+                <SurfaceCard
+                    label={labels.addTitle}
+                    headingLevel={3}
+                    wholeAction={{ kind: "link", href: labels.createHref, label: labels.addTitle }}
+                >
+                    <Text tone="muted">{labels.addText}</Text>
+                </SurfaceCard>
+            </Grid>
+        </Section>
     )
 }
 
 /**
- * Draws the projects page of a subscriber: the one primary (create a project), the ribbon of figures between two hairlines, and the
- * flat table of projects. Nothing sits in a card; the read's state is drawn inside the table's section.
+ * Draws the projects page of a subscriber: the one primary (create a project), the hero with three figures and the 3D picture, and
+ * one card per project. The read's state is drawn in place: a skeleton while it runs, the empty notice for none.
  */
 export const ProjectsListBase = (props: ProjectsListBaseProps) => (
     <Page
@@ -200,8 +252,8 @@ export const ProjectsListBase = (props: ProjectsListBaseProps) => (
                     </Stack>
                 ) : (
                     <Stack gap="region">
-                        <Ribbon props={props.props} view={view} isLoading={isLoading} />
-                        <ListTable props={props.props} view={view} isLoading={isLoading} />
+                        <Hero props={props.props} view={view} isLoading={isLoading} />
+                        <Cards props={props.props} view={view} isLoading={isLoading} />
                     </Stack>
                 )
             }

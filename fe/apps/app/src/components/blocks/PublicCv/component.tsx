@@ -16,12 +16,12 @@ import {
     Popover,
     Section,
     Stack,
-    Stepper,
+    SurfaceCard,
     Tabs,
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
-import { ExperienceGlyph, NotFoundNotice, SlotView } from "@starci-next/ui"
+import { areaArt, ArtImage, ExperienceGlyph, NotFoundNotice, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
     PublicCvLabels,
@@ -40,6 +40,7 @@ export const PUBLIC_CV_PLACEHOLDER: PublicCvScreenView = {
     avatarUrl: null,
     facts: "",
     total: 0,
+    figures: [],
     sources: [],
     lines: [],
     hidden: 0,
@@ -144,41 +145,62 @@ const ShareAction = (
         </Popover>
     )
 
-/** Who the CV belongs to: the avatar, the name, the shield line and the event line, then the one action. */
+/** Who the CV belongs to: the avatar, the name, the shield line and the event line, the one action, and the picture of the CV. */
 const Hero = (
     props: PublicCvBaseProps["props"] &
         Pick<PublicCvBaseProps, "on"> & { readonly view: PublicCvScreenView; readonly isLoading: boolean },
 ) => {
     const { isLoading } = props
     return (
-        <Stack gap="row">
-            <Cluster gap="row" align="center" justify="between" wrap>
-                <Cluster gap="row" align="center" wrap={false}>
-                    <Avatar
-                        name={props.view.name}
-                        size="lg"
-                        fallbackMark="initials"
-                        isLoading={isLoading}
-                        {...(props.view.avatarUrl === null ? {} : { src: props.view.avatarUrl })}
-                    />
-                    <Stack gap="identity">
-                        <Heading level={1} isLoading={isLoading}>
-                            {props.view.name}
-                        </Heading>
-                        <Text tone="muted" isLoading={isLoading}>
-                            {props.labels.verifiedBy}
-                        </Text>
-                        <Text tone="muted" isLoading={isLoading}>
-                            {props.view.facts}
-                        </Text>
-                    </Stack>
-                </Cluster>
-                <ShareAction {...props} isLoading={isLoading} />
-            </Cluster>
-            <Divider />
-        </Stack>
+        <Grid
+            kind="main-rail"
+            primary={
+                <Stack gap="row">
+                    <Cluster gap="row" align="center" wrap={false}>
+                        <Avatar
+                            name={props.view.name}
+                            size="lg"
+                            fallbackMark="initials"
+                            isLoading={isLoading}
+                            {...(props.view.avatarUrl === null ? {} : { src: props.view.avatarUrl })}
+                        />
+                        <Stack gap="identity">
+                            <Heading level={1} isLoading={isLoading}>
+                                {props.view.name}
+                            </Heading>
+                            <Text tone="muted" isLoading={isLoading}>
+                                {props.labels.verifiedBy}
+                            </Text>
+                            <Text tone="muted" isLoading={isLoading}>
+                                {props.view.facts}
+                            </Text>
+                        </Stack>
+                    </Cluster>
+                    <Cluster gap="inline">
+                        <ShareAction {...props} isLoading={isLoading} />
+                    </Cluster>
+                </Stack>
+            }
+            rail={<ArtImage asset={areaArt("cv")} base={props.staticsBaseUrl} />}
+            railWidth="standard"
+            align="start"
+            collapsedOrder="primary-first"
+            railPosition="trailing"
+        />
     )
 }
+
+/** The key figures of the CV as one ribbon: the signed lines, then the lines of each source group. */
+const Figures = (
+    props: PublicCvBaseProps["props"] & { readonly view: PublicCvScreenView; readonly isLoading: boolean },
+) => (
+    <Section
+        kind="figures"
+        ariaLabel={props.labels.figuresLabel}
+        isLoading={props.isLoading}
+        items={props.view.figures.map((figure) => ({ id: figure.id, term: figure.term, value: figure.value }))}
+    />
+)
 
 /**
  * One signed line: the shield, the sentence, the source and the subject, the trust trail and the verification link. The link is a
@@ -258,24 +280,21 @@ const LinesSection = (
     )
 }
 
-/** Why the CV can be trusted: the three signals every line carries, once, and how a code is checked. */
+/** Why the CV can be trusted: the three signals every line carries, as three cards, and how a code is checked. */
 const WhySection = (props: { readonly labels: PublicCvLabels; readonly isLoading: boolean }) => (
-    <Section title={props.labels.whyTitle} headingLevel={2} isLoading={props.isLoading}>
-        <Stack gap="row">
-            <Stepper
-                label={props.labels.stepsLabel}
-                orientation="vertical"
-                steps={props.labels.steps.map((step) => ({
-                    id: step.id,
-                    label: step.label,
-                    description: step.description,
-                    state: "complete" as const,
-                }))}
-                currentStepId="signed"
-                isLoading={props.isLoading}
-            />
-            <Text tone="muted">{props.labels.whyNote}</Text>
-        </Stack>
+    <Section title={props.labels.whyTitle} headingLevel={2} caption={props.labels.whyNote} isLoading={props.isLoading}>
+        <Grid kind="cards" columns={3}>
+            {props.labels.steps.map((step) => (
+                <SurfaceCard
+                    key={step.id}
+                    kind="tile"
+                    name={step.label}
+                    description={step.description}
+                    mark={{ icon: ExperienceGlyph }}
+                    isLoading={props.isLoading}
+                />
+            ))}
+        </Grid>
     </Section>
 )
 
@@ -321,45 +340,35 @@ const LineSkeleton = () => (
  */
 const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
     <Stack gap="region">
-        <Stack gap="row">
-            <Cluster gap="row" align="center" wrap={false}>
-                <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
-                <Stack gap="row">
-                    <Skeleton className="h-5 w-40 rounded-md" />
-                    <Skeleton className="h-4 w-56 rounded-md" />
-                    <Skeleton className="h-3 w-32 rounded-md" />
-                </Stack>
-            </Cluster>
-            <Divider />
+        <Cluster gap="row" align="center" wrap={false}>
+            <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
+            <Stack gap="row">
+                <Skeleton className="h-5 w-40 rounded-md" />
+                <Skeleton className="h-4 w-56 rounded-md" />
+                <Skeleton className="h-3 w-32 rounded-md" />
+            </Stack>
+        </Cluster>
+        <Cluster gap="row" wrap={false}>
+            <Skeleton className="h-12 w-full rounded-md" />
+            <Skeleton className="h-12 w-full rounded-md" />
+            <Skeleton className="h-12 w-full rounded-md" />
+            <Skeleton className="h-12 w-full rounded-md" />
+        </Cluster>
+        <Stack gap="section">
+            <Skeleton className="h-5 w-40 rounded-md" />
+            <LineSkeleton />
+            <LineSkeleton />
+            <LineSkeleton />
+            <Skeleton className="h-4 w-32 rounded-md" />
         </Stack>
-        <Grid
-            kind="main-rail"
-            primary={
-                <Stack gap="section">
-                    <Skeleton className="h-5 w-40 rounded-md" />
-                    <LineSkeleton />
-                    <LineSkeleton />
-                    <LineSkeleton />
-                    <Skeleton className="h-4 w-32 rounded-md" />
-                </Stack>
-            }
-            rail={
-                <Stack gap="section">
-                    <Skeleton className="h-5 w-40 rounded-md" />
-                    {props.labels.steps.map((step) => (
-                        <Cluster key={step.id} gap="row" align="center" wrap={false}>
-                            <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
-                            <Skeleton className="h-4 w-40 rounded-md" />
-                        </Cluster>
-                    ))}
-                    <Skeleton className="h-4 w-32 rounded-md" />
-                </Stack>
-            }
-            railWidth="standard"
-            align="start"
-            collapsedOrder="primary-first"
-            railPosition="trailing"
-        />
+        <Stack gap="section">
+            <Skeleton className="h-5 w-40 rounded-md" />
+            <Cluster gap="row" wrap={false}>
+                {props.labels.steps.map((step) => (
+                    <Skeleton key={step.id} className="h-24 w-full rounded-md" />
+                ))}
+            </Cluster>
+        </Stack>
     </Stack>
 )
 
@@ -409,17 +418,9 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
                     render={(view, isLoading) => (
                         <Stack gap="region">
                             <Hero {...props.props} on={props.on} view={view} isLoading={isLoading} />
-                            <Grid
-                                kind="main-rail"
-                                primary={
-                                    <LinesSection {...props.props} on={props.on} view={view} isLoading={isLoading} />
-                                }
-                                rail={<WhySection labels={props.props.labels} isLoading={isLoading} />}
-                                railWidth="standard"
-                                align="start"
-                                collapsedOrder="primary-first"
-                                railPosition="trailing"
-                            />
+                            <Figures {...props.props} view={view} isLoading={isLoading} />
+                            <LinesSection {...props.props} on={props.on} view={view} isLoading={isLoading} />
+                            <WhySection labels={props.props.labels} isLoading={isLoading} />
                         </Stack>
                     )}
                 />

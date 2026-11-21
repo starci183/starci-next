@@ -10,7 +10,13 @@ import { useQueryPublicCvSwr } from "@/hooks/swr"
 import { navigation } from "@starci-next/i18n/navigation"
 import { PUBLIC_CV_NOT_FOUND_CODES } from "@/modules/api"
 import { APP_ROUTES, verifyPath } from "@/modules/routes"
-import type { PublicCvLabels, PublicCvLineView, PublicCvScreenView, PublicCvShareLabels } from "@/modules/types"
+import type {
+    PublicCvFigureView,
+    PublicCvLabels,
+    PublicCvLineView,
+    PublicCvScreenView,
+    PublicCvShareLabels,
+} from "@/modules/types"
 import {
     ALL_SOURCES,
     PUBLIC_CV_EVIDENCE,
@@ -28,6 +34,20 @@ const PUBLIC_CV_CHIPS_FROM = 8
 
 /** The steps of the trust trail, in the order every line carries them. */
 const STEP_IDS = ["proved", "graded", "signed"] as const
+
+/** The key figures of a CV: the signed lines, then the lines of Essentials, of Projects and of Harness with practice. */
+const figuresOf = (
+    lines: ReadonlyArray<PublicCvLine>,
+    t: (key: "figSigned" | "figEssentials" | "figProjects" | "figPractice") => string,
+): ReadonlyArray<PublicCvFigureView> => {
+    const count = (...sources: ReadonlyArray<string>) => lines.filter((line) => sources.includes(line.source)).length
+    return [
+        { id: "signed", term: t("figSigned"), value: lines.length },
+        { id: "essentials", term: t("figEssentials"), value: count("essentials") },
+        { id: "projects", term: t("figProjects"), value: count("projects") },
+        { id: "practice", term: t("figPractice"), value: count("harness", "practice", "incidents") },
+    ]
+}
 
 /** What the page is built from: the slug of the address. */
 type PublicCvViewInput = { readonly slug: string }
@@ -75,11 +95,11 @@ export const usePublicCvLabels = (): PublicCvLabels => {
         empty: t("empty"),
         allSources: t("allSources"),
         sourcesLabel: t("sourcesLabel"),
+        figuresLabel: t("figuresLabel"),
         verify: t("verify"),
         aiText: t("aiGraded"),
         whyTitle: t("whyTitle"),
         steps: STEP_IDS.map((id) => ({ id, label: t(`steps.${id}.label`), description: t(`steps.${id}.description`) })),
-        stepsLabel: t("stepsLabel"),
         whyNote: t("whyNote"),
         footNote: t("footNote"),
         footCta: t("footCta"),
@@ -91,6 +111,12 @@ export const usePublicCvLabels = (): PublicCvLabels => {
         copyError: t("copyError"),
     }
 }
+
+/**
+ * The name a public CV shows: never an email, whatever the read carries (the API already words a neutral name; this keeps the page
+ * safe if a name with an at sign ever reaches it).
+ */
+const publicName = (name: string, neutral: string): string => (name.includes("@") ? neutral : name)
 
 /** The words of one line's trust trail: the proof, and who signed when. */
 const useLineWords = () => {
@@ -143,7 +169,7 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
     const limit = (isPhone ? PUBLIC_CV_LIMIT.phone : PUBLIC_CV_LIMIT.wide) + shown
     const isNotFound = read.error !== undefined && PUBLIC_CV_NOT_FOUND_CODES.has(failureCodeOf(read.error))
     const url = `${origin}${pathname}`
-    const name = read.data?.displayName ?? ""
+    const name = publicName(read.data?.displayName ?? "", t("neutralName"))
     const shareLabels: PublicCvShareLabels = {
         title: t("shareTitle", { name }),
         closeLabel: t("shareClose"),
@@ -169,21 +195,19 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
         const matching = linesOfSource(cv.lines, source)
         const newest = newestSignedAt(cv.lines)
         return {
-            name: cv.displayName,
+            name,
             avatarUrl: cv.avatarUrl ?? null,
             facts: [
                 t("factsCount", { count: cv.lines.length }),
                 ...(newest === undefined ? [] : [t("factsUpdated", { date: signDate(newest) })]),
             ].join(" · "),
             total: cv.lines.length,
+            figures: figuresOf(cv.lines, t),
             sources: cv.lines.length < PUBLIC_CV_CHIPS_FROM ? [] : sourcesOf(cv.lines, words.part),
             lines: matching.slice(0, limit).map(lineView),
             hidden: Math.max(0, matching.length - limit),
             moreLabel: t("more", { count: Math.max(0, matching.length - limit) }),
-            growNote:
-                cv.lines.length > 0 && cv.lines.length <= PUBLIC_CV_SHORT_LIST
-                    ? t("fewNote", { name: cv.displayName })
-                    : "",
+            growNote: cv.lines.length > 0 && cv.lines.length <= PUBLIC_CV_SHORT_LIST ? t("fewNote", { name }) : "",
         }
     })
     return {

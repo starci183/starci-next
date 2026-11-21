@@ -1,11 +1,13 @@
 import { Badge, Button, Grid, Page, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import {
+    ConnectPanel,
     DeployCard,
     ExperienceCard,
     MilestonesCard,
     MissingNotice,
     ProbesCard,
     ProjectAside,
+    ProjectStatus,
     RunsCard,
     SlotView,
 } from "@starci-next/ui"
@@ -72,6 +74,8 @@ export type ProjectDetailBaseProps = {
         readonly busy: ProjectDetailBusy
         /** True when the back end said the learner has no such project. */
         readonly isNotFound: boolean
+        /** The public base of the statics, for the milestone picture. */
+        readonly staticsBaseUrl: string
     }
     readonly on: ProjectDetailCommands
 }
@@ -89,22 +93,34 @@ const WellCards = (props: WellCardsProps) => {
     const card = { view: props.view, labels: props.props.labels, isLoading: props.isLoading }
     return (
         <>
-            <MilestonesCard
-                rows={props.view.milestones}
-                label={card.labels.milestones}
-                emptyLabel={card.labels.emptyMilestones}
-                isLoading={props.isLoading}
-            />
-            <RunsCard {...card} locale={props.props.fields.locale} />
             <ProbesCard
                 rows={props.view.probes}
                 label={card.labels.probesTitle}
                 emptyLabel={card.labels.runsEmpty}
                 isLoading={props.isLoading}
             />
+            <RunsCard {...card} locale={props.props.fields.locale} />
             <ExperienceCard rows={props.view.experience} labels={card.labels} isLoading={props.isLoading} />
             <DeployCard {...card} fields={props.props.fields} busy={props.props.busy} on={props.on} />
         </>
+    )
+}
+
+/** The top of the page: the milestone track, the four status tiles and, until a signed run exists, the connect flow. */
+const Top = (props: WellCardsProps) => {
+    const card = { view: props.view, labels: props.props.labels, isLoading: props.isLoading }
+    return (
+        <Stack gap="region">
+            <MilestonesCard
+                rows={props.view.milestones}
+                label={card.labels.milestones}
+                emptyLabel={card.labels.emptyMilestones}
+                isLoading={props.isLoading}
+                staticsBaseUrl={props.props.staticsBaseUrl}
+            />
+            <ProjectStatus {...card} fields={props.props.fields} busy={props.props.busy} on={props.on} />
+            {props.view.ci.tone === "muted" ? <ConnectPanel {...card} /> : null}
+        </Stack>
     )
 }
 
@@ -179,24 +195,18 @@ export const ProjectDetailBase = (props: ProjectDetailBaseProps) => {
                         }
                     />
                 ) : (
-                    <Grid
-                        kind="main-rail"
-                        primary={
-                            <Stack gap="region">
-                                <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
-                            </Stack>
-                        }
-                        rail={
-                            <ProjectAside
-                                view={settled}
-                                labels={labels}
-                                isLoading={loading}
-                                fields={props.props.fields}
-                                busy={props.props.busy}
-                                on={props.on}
-                            />
-                        }
-                    />
+                    <Stack gap="region">
+                        <Top view={settled} isLoading={loading} props={props.props} on={props.on} />
+                        <Grid
+                            kind="main-rail"
+                            primary={
+                                <Stack gap="region">
+                                    <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
+                                </Stack>
+                            }
+                            rail={<ProjectAside view={settled} labels={labels} isLoading={loading} />}
+                        />
+                    </Stack>
                 )
             }
         />

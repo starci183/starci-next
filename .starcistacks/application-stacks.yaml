@@ -734,8 +734,8 @@ data:
       stores: [database]
       environments: [dev]
       to: [{driver: git, repository: "https://github.com/starci183/starci-next-seed-standard"}]
-      commit: c52e404091c57cb43163bfcde9bb742327db8c20
-      # Applies once at this commit (content/opener-story: both lessons' quiz.yaml with story, event and insight), although the pin moved from db45224 (DATA_STANDARD_CHANGED); remove it after the bring-up.
+      commit: 1d92d1f9e949518ef00f214ed28d45807e4eaef3
+      # Applies once at this commit (content/5part: the five-part lessons, openers with readSection on the 2-essence headings); remove it after the bring-up.
       force: true
 gates:
   lint: {run: off, reason: "owner 2026-11-17: product model not settled; code first, quality gates later"}
