@@ -51,7 +51,7 @@
     "@nestjs/testing": "11.2.5",
     "@starci/eslint-canon-be": "3.28.3",
     "@starci/eslint-canon-fe": "9.21.4",
-    "@starci/eslint-grammar-core": "0.52.1",
+    "@starci/eslint-grammar-core": "0.52.2",
     "@starci/jest-preset": "2.11.1",
     "@starci/prettier-config": "1.1.0",
     "@starci/stylelint-canon": "2.9.7",
