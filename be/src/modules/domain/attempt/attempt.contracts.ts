@@ -1,4 +1,4 @@
-import type { LessonContentService, LessonLocale, LessonPhase } from "@modules/domain/lesson"
+import type { LessonContentService, LessonLocale, LessonOptionInsight, LessonPhase } from "@modules/domain/lesson"
 import type { LessonReviewSlotView } from "@modules/domain/review"
 
 /** Where an attempt stands: stored, being graded by the coach, graded, or failed with a code and open to a retry. */
@@ -80,8 +80,16 @@ export interface AttemptResult {
     readonly isDiagnostic: boolean
     /** For a choice, whether the pick was right; otherwise null. */
     readonly correct: boolean | null
-    /** For a choice, every option with its explanation; otherwise empty. */
+    /**
+     * For a choice, every option with its explanation; otherwise empty. A choice graded one pick at a time (the opener) answers the
+     * picked option only, so a wrong pick never names the right one.
+     */
     readonly options: ReadonlyArray<OptionResult>
+    /**
+     * For a choice graded one pick at a time, the three-part explanation of the right option once the pick is right; null for a
+     * wrong pick or a right option without one. Absent for every other activity and in results stored before it existed.
+     */
+    readonly insight?: LessonOptionInsight | null
     /** For a simulation, whether the path reached a goal state; otherwise null. */
     readonly success: boolean | null
     /** For a simulation, the state the path reached; otherwise null. */

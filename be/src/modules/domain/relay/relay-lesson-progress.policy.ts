@@ -32,7 +32,7 @@ export interface LessonPartProgress {
 export interface LessonProgressFacts {
     /** The stored four-part fields of the live version, or null for a lesson that ships none. */
     readonly essential: LessonEssential | null
-    /** The opener questions the learner answered. */
+    /** The opener questions the learner answered right (solved); the opener is done once every one is. */
     readonly openerAnswered: number
     /** Which parts the learner may read (the entitlement setting). */
     readonly readable: Readonly<Record<LessonPartId, boolean>>

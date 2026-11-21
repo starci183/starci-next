@@ -1,4 +1,11 @@
-import { CHALLENGES, SCENARIOS, field, lessonFiles } from "@tests/fixtures/builders/raw-lesson.builder"
+import {
+    CHALLENGES,
+    SCENARIOS,
+    STORY_QUIZ,
+    field,
+    lessonFiles,
+    quizOf,
+} from "@tests/fixtures/builders/raw-lesson.builder"
 import type { LessonSourceFile } from "./lesson-import.contracts"
 import { convertRawLesson } from "./lesson-raw.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
@@ -117,5 +124,69 @@ describe("convertRawLesson keeps the invariants of the hidden challenge scenario
         const essential = convert(withPlanInvariants()).draft?.content.locales.vi.essential
         expect(essential?.invariants).toEqual([{ id: "effect-once", text: "One effect" }])
         expect(essential?.hiddenInvariants).toEqual([{ id: "refund-once", text: "One refund per order" }])
+    })
+})
+
+describe("convertRawLesson reads the story of the opener when quiz.yaml has one", () => {
+    const withQuiz = (quiz: string) => convert(lessonFiles("", SCENARIOS, CHALLENGES, quiz))
+
+    it("takes the story, the event of each question and its insight in each locale", () => {
+        const { draft, issues } = withQuiz(quizOf(STORY_QUIZ))
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        const en = draft?.content.locales.en.essential
+        expect(vi?.story).toEqual({ title: "Đêm Black Friday", body: "Cổng thanh toán chậm dần." })
+        expect(en?.story).toEqual({ title: "Black Friday night", body: "The payment gateway slows down." })
+        expect(vi?.opener.map((question) => question.event)).toEqual(
+            [1, 2, 3, 4, 5].map((n) => ({ at: `21:0${n}`, text: `Diễn biến ${n}` })),
+        )
+        expect(en?.opener[2]?.insight).toEqual({ essence: "Essence 3", why: "Why 3", interview: "Interview 3" })
+        expect(vi?.opener[0]?.explanation).toBe("E")
+    })
+
+    it("still imports a lesson written before the story: no story, no event, no insight", () => {
+        const { draft, issues } = convert(lessonFiles(""))
+
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi.essential
+        expect(vi?.story).toBeNull()
+        expect(vi?.opener[0]).not.toHaveProperty("event")
+        expect(vi?.opener[0]).not.toHaveProperty("insight")
+    })
+
+    it("keeps the fields optional per question", () => {
+        const { draft, issues } = withQuiz(quizOf({ event: (n) => (n === 1 ? STORY_QUIZ.event(n) : "") }))
+
+        expect(issues).toEqual([])
+        const opener = draft?.content.locales.vi.essential?.opener ?? []
+        expect(opener[0]?.event?.at).toBe("21:01")
+        expect(opener[1]).not.toHaveProperty("event")
+        expect(draft?.content.locales.vi.essential?.story).toBeNull()
+    })
+
+    it("reports a story, an event or an insight it cannot use", () => {
+        const eventOf = (n: number): string => {
+            if (n === 1) return '\n    event: { at: "late", text: { vi: "x" } }'
+            return n === 2 ? "\n    event: soon" : ""
+        }
+        const broken = quizOf({
+            story: "story: just a line\n",
+            event: eventOf,
+            insight: (n) =>
+                n === 3 ? '\n    insight: { essence: { vi: "B" }, why: { vi: "" }, interview: { vi: "P" } }' : "",
+        })
+
+        const { draft, issues } = withQuiz(broken)
+
+        expect(draft).toBeNull()
+        expect(issues).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ path: "sections/1-essential/quiz.yaml", field: "story" }),
+                expect.objectContaining({ field: "questions[0].event.at", message: "late is not a time like 21:03" }),
+                expect.objectContaining({ field: "questions[1].event" }),
+                expect.objectContaining({ field: "questions[2].insight.why", message: "is empty" }),
+            ]),
+        )
     })
 })

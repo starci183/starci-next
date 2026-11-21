@@ -20,14 +20,37 @@ const root = (extra: string): string =>
 const section = (title: string): string =>
     field("title", title) + field("status", "draft") + field("author", "x") + field("body", `## 1. ${title}`)
 
-const quizOf = (): string => `
+/** The story the opener tells (essentials-quiz@1): `story` on top, an `event` and an `insight` on each question. */
+export const STORY_QUIZ = {
+    story: `story:
+  title: { vi: "Đêm Black Friday", en: "Black Friday night" }
+  body: { vi: "Cổng thanh toán chậm dần.", en: "The payment gateway slows down." }
+`,
+    event: (n: number): string => `
+    event: { at: "21:0${n}", text: { vi: "Diễn biến ${n}", en: "Development ${n}" } }`,
+    insight: (n: number): string => `
+    insight:
+      essence: { vi: "Bản chất ${n}", en: "Essence ${n}" }
+      why: { vi: "Vì sao ${n}", en: "Why ${n}" }
+      interview: { vi: "Phỏng vấn ${n}", en: "Interview ${n}" }`,
+}
+
+/** What the opener of the builder carries beyond its questions: the story and, per question, its event and insight. */
+export type QuizStory = {
+    readonly story?: string
+    readonly event?: (n: number) => string
+    readonly insight?: (n: number) => string
+}
+
+/** The opener file: five questions, the first option right; with `extra`, the story fields of essentials-quiz@1. */
+export const quizOf = (extra: QuizStory = {}): string => `${extra.story ?? ""}
 questions:
 ${[1, 2, 3, 4, 5]
     .map(
         (n) => `  - id: q${n}
     readSection: "1"
     scenario: happy-path
-    prompt: { vi: "Q${n}", en: "Q${n}" }
+    prompt: { vi: "Q${n}", en: "Q${n}" }${extra.event?.(n) ?? ""}${extra.insight?.(n) ?? ""}
     options:
       - { id: a, correct: true, text: { vi: "A", en: "A" }, explanation: { vi: "E", en: "E" } }
       - { id: b, correct: false, text: { vi: "B", en: "B" }, explanation: { vi: "E", en: "E" } }`,
@@ -76,6 +99,7 @@ export const lessonFiles = (
     rootExtra: string,
     scenarios = SCENARIOS,
     challenges = CHALLENGES,
+    quiz = quizOf(),
 ): ReadonlyArray<LessonSourceFile> => [
     fileOf("vi.md", root(rootExtra)),
     fileOf("en.md", root(rootExtra)),
@@ -83,7 +107,7 @@ export const lessonFiles = (
         fileOf(`sections/${part}/vi.md`, section(part)),
         fileOf(`sections/${part}/en.md`, section(part)),
     ]),
-    fileOf("sections/1-essential/quiz.yaml", quizOf()),
+    fileOf("sections/1-essential/quiz.yaml", quiz),
     fileOf("scenarios.yaml", scenarios),
     fileOf("sections/4-apply/challenges.yaml", challenges),
     fileOf("hidden/challenge-scenarios.yaml", PLAN),

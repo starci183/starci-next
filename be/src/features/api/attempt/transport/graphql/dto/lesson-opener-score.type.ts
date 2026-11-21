@@ -15,6 +15,10 @@ export class LessonOpenerQuestionScoreType {
     @Field(() => Boolean)
     latestCorrect!: boolean
 
+    /** Whether any graded answer is right: the question is solved. */
+    @Field(() => Boolean)
+    isSolved!: boolean
+
     /** The graded answers given. */
     @Field(() => Int)
     attempts!: number
@@ -38,6 +42,14 @@ export class LessonOpenerScoreType {
     /** The questions right now. */
     @Field(() => Int)
     latestCorrect!: number
+
+    /** The questions picked right at least once. */
+    @Field(() => Int)
+    solved!: number
+
+    /** True once every question of the opener is solved: the opener is passed. */
+    @Field(() => Boolean)
+    isPassed!: boolean
 
     /** Each answered question. */
     @Field(() => [LessonOpenerQuestionScoreType])

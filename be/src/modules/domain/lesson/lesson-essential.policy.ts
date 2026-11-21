@@ -1,6 +1,12 @@
 import type { EssentialPart } from "@modules/domain/entitlement"
 import type { LessonIssue, LessonParsedLocale } from "./lesson-import.contracts"
-import type { LessonActivity, LessonLocale, LessonPhase, LessonRootFile } from "./lesson.contracts"
+import {
+    PICKED_FEEDBACK_RELEASE,
+    type LessonActivity,
+    type LessonLocale,
+    type LessonPhase,
+    type LessonRootFile,
+} from "./lesson.contracts"
 import {
     choiceOptionId,
     type LessonScenarioGuard,
@@ -283,21 +289,27 @@ export const essentialStructureOf = (root: LessonRootFile): Array<string> => [
     ]),
 ]
 
-/** A question as a stored choice activity: one option per choice, the explanation released with each after the submit. */
-const choiceActivityOf = (id: string, question: LessonOpenerQuestion, isDiagnostic: boolean): LessonActivity => ({
+/**
+ * A question as a stored choice activity: one option per choice, the explanation released with each after the submit. An opener
+ * question (`isOpener`) is graded one pick at a time: only the picked option is released, and the right one carries its insight.
+ */
+const choiceActivityOf = (id: string, question: LessonOpenerQuestion, isOpener: boolean): LessonActivity => ({
     id,
     kind: "choice",
     prompt: question.prompt,
     responseKind: "single-choice",
     evaluationMethod: "deterministic",
-    isDiagnostic,
-    feedbackRelease: "after-submit",
+    isDiagnostic: isOpener,
+    feedbackRelease: isOpener ? PICKED_FEEDBACK_RELEASE : "after-submit",
     outcomeIds: [],
     options: question.choices.map((label, index) => ({
         id: choiceOptionId(index),
         label,
         explanation: question.choiceExplanations?.[index] ?? question.explanation,
         isCorrect: index === question.correctIndex,
+        ...(isOpener && index === question.correctIndex && question.insight !== undefined
+            ? { insight: { ...question.insight } }
+            : {}),
     })),
 })
 

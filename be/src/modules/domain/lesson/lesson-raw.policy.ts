@@ -22,7 +22,10 @@ import {
     type LessonChallengeLevel,
     type LessonEssential,
     type LessonHiddenScenario,
+    type LessonOpenerEvent,
+    type LessonOpenerInsight,
     type LessonOpenerQuestion,
+    type LessonOpenerStory,
     type LessonScenario,
 } from "./lesson-essential.contracts"
 import { LESSON_CHALLENGE_POINTS, LESSON_OPENER_SIZE } from "./lesson-essential.policy"
@@ -131,18 +134,89 @@ const stringOf = (value: unknown): string => (typeof value === "string" ? value 
 const stringsOf = (value: unknown): Array<string> =>
     Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : []
 
-/** The opener of `quiz.yaml`: five questions, one right option each, an explanation per option, a section and a scenario. */
+/** The path of the opener file. */
+const QUIZ_PATH = "sections/1-essential/quiz.yaml"
+
+/** The time an event of the story happens at, as the timeline labels it: `21:03`, `09:15`. */
+const EVENT_AT = /^([01]?\d|2[0-3]):[0-5]\d$/u
+
+/** The text of a localized field, with an issue (Vietnamese only, like the other opener checks) when it is empty. */
+const requiredTextOf = (value: unknown, locale: LessonLocale, field: string, issues: Issues): string => {
+    const text = textOf(value as Localized, locale)
+    if (locale === "vi" && text.trim() === "") issues.add(QUIZ_PATH, field, "is empty")
+    return text
+}
+
+/**
+ * The situation the opener tells (`story: { title, body }` at the top of `quiz.yaml`), or null when the file has none: a lesson
+ * written before the story still imports. When present, both texts are needed.
+ */
+const storyOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Issues): LessonOpenerStory | null => {
+    if (quiz.story === undefined) return null
+    if (!isRecord(quiz.story)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, "story", "is not a mapping of title and body")
+        return null
+    }
+    return {
+        title: requiredTextOf(quiz.story.title, locale, "story.title", issues),
+        body: requiredTextOf(quiz.story.body, locale, "story.body", issues),
+    }
+}
+
+/** The development a question adds to the story (`event: { at, text }`), or undefined when the question has none. */
+const eventOf = (
+    question: Record<string, unknown>,
+    at: string,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonOpenerEvent | undefined => {
+    if (question.event === undefined) return undefined
+    if (!isRecord(question.event)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, `${at}.event`, "is not a mapping of at and text")
+        return undefined
+    }
+    const time = stringOf(question.event.at)
+    if (locale === "vi" && !EVENT_AT.test(time))
+        issues.add(QUIZ_PATH, `${at}.event.at`, `${time} is not a time like 21:03`)
+    return { at: time, text: requiredTextOf(question.event.text, locale, `${at}.event.text`, issues) }
+}
+
+/** The three-part explanation of the right option (`insight: { essence, why, interview }`), or undefined when the question has none. */
+const insightOf = (
+    question: Record<string, unknown>,
+    at: string,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonOpenerInsight | undefined => {
+    if (question.insight === undefined) return undefined
+    if (!isRecord(question.insight)) {
+        if (locale === "vi") issues.add(QUIZ_PATH, `${at}.insight`, "is not a mapping of essence, why and interview")
+        return undefined
+    }
+    return {
+        essence: requiredTextOf(question.insight.essence, locale, `${at}.insight.essence`, issues),
+        why: requiredTextOf(question.insight.why, locale, `${at}.insight.why`, issues),
+        interview: requiredTextOf(question.insight.interview, locale, `${at}.insight.interview`, issues),
+    }
+}
+
+/**
+ * The opener of `quiz.yaml`: five questions, one right option each, an explanation per option, a section and a scenario; with the
+ * story, each question may carry the event it adds to the story and the insight its right option releases.
+ */
 const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: Issues): Array<LessonOpenerQuestion> => {
-    const path = "sections/1-essential/quiz.yaml"
     const questions = recordsOf(quiz.questions)
     if (locale === "vi" && questions.length !== LESSON_OPENER_SIZE)
-        issues.add(path, "questions", `holds ${questions.length} questions, not ${LESSON_OPENER_SIZE}`)
+        issues.add(QUIZ_PATH, "questions", `holds ${questions.length} questions, not ${LESSON_OPENER_SIZE}`)
     return questions.map((question, index) => {
+        const at = `questions[${index}]`
         const options = recordsOf(question.options)
         const correct = options.findIndex((option) => option.correct === true)
         if (locale === "vi" && (options.length < 2 || options.filter((option) => option.correct === true).length !== 1))
-            issues.add(path, `questions[${index}].options`, "needs two options at least and exactly one correct")
+            issues.add(QUIZ_PATH, `${at}.options`, "needs two options at least and exactly one correct")
         const explanations = options.map((option) => textOf(option.explanation as Localized, locale))
+        const event = eventOf(question, at, locale, issues)
+        const insight = insightOf(question, at, locale, issues)
         return {
             id: stringOf(question.id),
             prompt: textOf(question.prompt as Localized, locale),
@@ -153,6 +227,8 @@ const openerOf = (quiz: Record<string, unknown>, locale: LessonLocale, issues: I
             sectionId: "1-essential",
             ...(typeof question.readSection === "string" ? { sectionRef: question.readSection } : {}),
             ...(typeof question.scenario === "string" ? { scenarioId: question.scenario } : {}),
+            ...(event === undefined ? {} : { event }),
+            ...(insight === undefined ? {} : { insight }),
         }
     })
 }
@@ -269,7 +345,7 @@ const essentialOf = (
     locale: LessonLocale,
     issues: Issues,
 ): LessonEssential => {
-    const quiz = yamlOf(byPath, "sections/1-essential/quiz.yaml", issues) ?? {}
+    const quiz = yamlOf(byPath, QUIZ_PATH, issues) ?? {}
     const scenarios = yamlOf(byPath, "scenarios.yaml", issues) ?? {}
     const ladder = byPath.has("sections/4-apply/challenges.yaml")
         ? yamlOf(byPath, "sections/4-apply/challenges.yaml", issues)
@@ -287,6 +363,7 @@ const essentialOf = (
         ([id]) => !Object.hasOwn(publicInvariants, id),
     )
     return {
+        story: storyOf(quiz, locale, issues),
         opener: openerOf(quiz, locale, issues),
         source: {
             langs: ["typescript"],
@@ -377,7 +454,11 @@ const documentOf = (
 /** The structural lines two locales must share: question shapes, scenario ids and commands, rubric points. */
 const structureOf = (essential: LessonEssential, sections: ReadonlyArray<LessonSection>): Array<string> => [
     ...sections.map((section) => `section ${section.id}`),
-    ...essential.opener.map((question) => `q ${question.id} ${question.choices.length} ${question.correctIndex}`),
+    ...essential.opener.map(
+        (question) =>
+            `q ${question.id} ${question.choices.length} ${question.correctIndex} ${question.event?.at ?? ""} ${String(question.insight !== undefined)}`,
+    ),
+    `story ${String(essential.story !== null && essential.story !== undefined)}`,
     ...essential.challenges.flatMap((challenge) => [
         `c ${challenge.id} ${challenge.rubric.map((criterion) => criterion.points).join(",")}`,
         ...(challenge.questions ?? []).map((question) => `e ${question.id} ${question.choices.length}`),

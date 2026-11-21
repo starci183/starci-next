@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
+import { LESSON_OPENER_SIZE } from "@modules/domain/lesson"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import type { OpenerScoreRow } from "./persistence/attempt.rows"
 import { SELECT_OPENER_SCORES } from "./persistence/attempt.sql"
@@ -15,6 +16,8 @@ export interface OpenerQuestionScoreView {
     readonly firstCorrect: boolean
     /** Whether the newest graded answer is right (the "after"). */
     readonly latestCorrect: boolean
+    /** Whether any graded answer is right: a wrong pick may be picked again until the right one, which solves the question. */
+    readonly isSolved: boolean
     /** The graded answers given. */
     readonly attempts: number
 }
@@ -29,6 +32,10 @@ export interface OpenerScoreView {
     readonly firstCorrect: number
     /** The questions right now. */
     readonly latestCorrect: number
+    /** The questions picked right at least once. */
+    readonly solved: number
+    /** True once every question of the opener is solved: the opener is passed. */
+    readonly isPassed: boolean
     /** Each answered question. */
     readonly questions: ReadonlyArray<OpenerQuestionScoreView>
 }
@@ -44,7 +51,8 @@ export interface OpenerScoresParams {
 @Injectable()
 /**
  * Scores the five-question opener of lessons from the graded choice attempts stored under `opener.<question id>`: the first
- * answer of each question is the "before", the newest the "after". A lesson the learner never opened is answered with zeros.
+ * answer of each question is the "before", the newest the "after", and a question picked right once is solved; the opener is passed
+ * once its five questions are solved. A lesson the learner never opened is answered with zeros.
  */
 export class AttemptOpenerService {
     constructor(@InjectPrimaryEntityManager() private readonly entityManager: EntityManager) {}
@@ -63,13 +71,17 @@ export class AttemptOpenerService {
                     activityId: row.activity_id,
                     firstCorrect: row.first_correct === true,
                     latestCorrect: row.latest_correct === true,
+                    isSolved: row.ever_correct === true,
                     attempts: row.attempts,
                 }))
+            const solved = questions.filter((question) => question.isSolved).length
             return {
                 lessonId,
                 answered: questions.length,
                 firstCorrect: questions.filter((question) => question.firstCorrect).length,
                 latestCorrect: questions.filter((question) => question.latestCorrect).length,
+                solved,
+                isPassed: solved >= LESSON_OPENER_SIZE,
                 questions,
             }
         })

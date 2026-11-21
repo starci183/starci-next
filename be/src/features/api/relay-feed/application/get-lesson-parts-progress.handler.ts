@@ -65,7 +65,8 @@ export class GetLessonPartsProgressHandler extends ICQRSHandler<
                 const opener = scores.find((score) => score.lessonId === lessonId)
                 const { parts, inProgressPart } = lessonPartsOf({
                     essential: stored?.essential ?? null,
-                    openerAnswered: opener?.answered ?? 0,
+                    // The opener part is done once passed: every question picked right (a wrong pick may be picked again).
+                    openerAnswered: opener?.solved ?? 0,
                     readable,
                     runs: runs.filter((run) => (run.slot === "challenge" ? readable.apply : readable.scenarios)),
                     hasEvents,

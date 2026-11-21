@@ -63,7 +63,25 @@ export interface LessonOption {
     readonly explanation: string
     /** Whether the option is the right one; never leaves the server before a submit. */
     readonly isCorrect: boolean
+    /** For the right option of an opener question, the three-part explanation its pick releases. */
+    readonly insight?: LessonOptionInsight
 }
+
+/** The three-part explanation of a right option: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
+export interface LessonOptionInsight {
+    /** The essence the question tests. */
+    readonly essence: string
+    /** Why the system needs it. */
+    readonly why: string
+    /** A model interview answer. */
+    readonly interview: string
+}
+
+/**
+ * The feedback release of a choice graded one pick at a time (the opener): the grade answers the picked option only, so a wrong
+ * pick never names the right one and the learner may pick again.
+ */
+export const PICKED_FEEDBACK_RELEASE = "picked"
 
 /** The teacher's answer to an activity; never leaves the server before a submit. */
 export interface LessonAnswer {
