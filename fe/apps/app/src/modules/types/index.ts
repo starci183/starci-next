@@ -216,6 +216,7 @@ export {
 } from "./profile"
 export type {
     PublicCvLabels,
+    PublicCvFigureView,
     PublicCvLineView,
     PublicCvScreenView,
     PublicCvShareLabels,

@@ -1785,73 +1785,42 @@
       },
       "pitch": {
         "title": "Projects",
-        "description": "Bring your own repo, prove each Essentials concept with evidence a machine can check, and get a verified CV line. Projects come with Premium.",
+        "description": "Bring your own repo, prove each concept with evidence a machine can check, and get a verified CV line.",
         "subscribe": "Subscribe to Premium",
+        "premiumNote": "Projects come with Premium",
         "stepsTitle": "From your repo to a CV line",
         "steps": {
           "repo": {
-            "title": "Bring your own repo",
-            "text": "There is no sample project: every project is your own code, on any topic, in any language. One command adds a starci/ folder and a CI template to the repo."
+            "title": "Bring your repo",
+            "text": "Any topic, any language. One command adds starci/."
           },
           "prove": {
             "title": "Prove each concept",
-            "text": "Every Essentials concept needs its evidence slots: a test, an e2e flow, a probe of your deployed address, or an AI read of the code you paste. Running on your machine is Practising; a CI run GitHub signs with OIDC, or a server re-run, is Proved."
+            "text": "A test, e2e, a probe or an AI read of the code. Only a CI run signed with OIDC counts."
           },
           "cv": {
-            "title": "Get a verified CV line",
-            "text": "Each finished milestone writes a CV line from evidence StarCi has checked. There are no self-reported numbers."
+            "title": "Get a CV line",
+            "text": "Each finished milestone makes one line. No self-reported numbers."
           }
         },
-        "sampleNote": "Illustrative data, not anyone's project. Your own project shows in exactly this frame.",
-        "conceptsTitle": "Example: the concepts of a milestone",
-        "columns": {
-          "concept": "Concept",
-          "evidence": "Evidence needed",
-          "state": "Status"
-        },
-        "cvTitle": "Example: the CV line once the evidence is complete",
-        "includedTitle": "What Premium opens in Projects",
+        "includedTitle": "Premium opens",
         "included": {
           "many": {
-            "title": "Many projects, every milestone",
-            "text": "Each project is its own repo, with no limit on how many."
+            "title": "Many projects",
+            "text": "No limit on repos"
           },
           "probes": {
-            "title": "Probes on your deployed address",
-            "text": "The StarCi server calls your public http or https address and records each result."
+            "title": "Probes on deploy",
+            "text": "Calls your public address"
           },
           "aiRead": {
-            "title": "AI code read",
-            "text": "Paste the handler, the AI scores it against a rubric and points at what is missing."
+            "title": "AI reads code",
+            "text": "Graded on a rubric"
           },
           "ci": {
             "title": "Signed CI",
-            "text": "GitHub OIDC confirms the run before it counts as Proved."
+            "text": "GitHub OIDC confirms"
           }
-        },
-        "noTable": "No concepts yet.",
-        "sample": {
-          "lifecycle": {
-            "concept": "Request/response lifecycle",
-            "slots": "test ✓ · probe ✓",
-            "state": "Proved"
-          },
-          "idempotency": {
-            "concept": "Idempotency on retry",
-            "slots": "test ✓ · probe pending",
-            "state": "Practising"
-          },
-          "outbox": {
-            "concept": "Transactional outbox",
-            "slots": "e2e (relay) · CI signed by OIDC",
-            "state": "Not started"
-          }
-        },
-        "cv": {
-          "role": "Backend developer",
-          "badge": "Verified",
-          "text": "Designed idempotent writes and a transactional outbox for my-blog-api; survives 5 parallel duplicate requests without a stray record.",
-          "evidence": "Evidence: CI run #41 (signed by GitHub) · probe 17 Nov · 3 concepts"
         }
       },
       "concept": {
@@ -2780,6 +2749,12 @@
       "fewNote": "{name} is still learning. The CV updates when the teacher signs more lines, and the link stays the same.",
       "allSources": "All sources",
       "sourcesLabel": "Filter by source",
+      "figuresLabel": "CV figures",
+      "figSigned": "Signed lines",
+      "figEssentials": "Essentials",
+      "figProjects": "Projects",
+      "figPractice": "Harness · Practice",
+      "neutralName": "StarCi learner",
       "more": "Show {count, plural, one {# more line} other {# more lines}}",
       "verify": "Verify",
       "aiGraded": "AI graded: passed",
@@ -2801,7 +2776,6 @@
       "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",
       "factsUpdated": "Updated {date}",
       "whyTitle": "Why this CV can be trusted",
-      "stepsLabel": "The three steps every CV line went through",
       "steps": {
         "proved": {
           "label": "Practised",

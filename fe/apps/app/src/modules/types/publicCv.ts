@@ -27,6 +27,13 @@ export type PublicCvSourceView = {
     readonly count: number
 }
 
+/** One key figure of the CV: its words and its count. */
+export type PublicCvFigureView = {
+    readonly id: string
+    readonly term: string
+    readonly value: number
+}
+
 /** The public CV as it is drawn: whose it is, the event line and the lines that show now. */
 export type PublicCvScreenView = {
     readonly name: string
@@ -35,6 +42,8 @@ export type PublicCvScreenView = {
     readonly facts: string
     /** How many lines the CV holds in all. */
     readonly total: number
+    /** The key figures: the signed lines, then the lines of each source group; never a score. */
+    readonly figures: ReadonlyArray<PublicCvFigureView>
     /** The source chips, only from the count the screen filters at; empty below it. */
     readonly sources: ReadonlyArray<PublicCvSourceView>
     /** The lines that show now: the chosen source, up to the limit. */
@@ -61,11 +70,11 @@ export type PublicCvLabels = {
     readonly empty: string
     readonly allSources: string
     readonly sourcesLabel: string
+    readonly figuresLabel: string
     readonly verify: string
     readonly aiText: string
     readonly whyTitle: string
     readonly steps: ReadonlyArray<{ readonly id: string; readonly label: string; readonly description: string }>
-    readonly stepsLabel: string
     readonly whyNote: string
     readonly footNote: string
     readonly footCta: string
