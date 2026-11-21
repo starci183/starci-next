@@ -242,6 +242,7 @@ secrets:
   relay: { external: true, name: next-production-custody-relay-v1 }
   storage: { external: true, name: next-production-custody-storage-v1 }
   mail: { external: true, name: next-production-custody-mail-v1 }
+  alerts: { external: true, name: next-production-custody-alerts-v1 }
   vps: { external: true, name: next-production-custody-vps-v1 }
 # The non-secret files (deploy.configs), each a config object named by the digest of its content.
 configs:
