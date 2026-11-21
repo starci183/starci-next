@@ -398,6 +398,7 @@ environments:
       - {name: auth, keys: [AUTH_JWT_PRIVATE_KEY], runtimeName: next-staging-custody-auth-v1, version: 1, where: secrets/auth, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-staging-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-staging-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-staging-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-staging-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the staging rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-staging
@@ -437,6 +438,7 @@ environments:
               - {member: auth, keys: [AUTH_JWT_PRIVATE_KEY], required: true}
               - {member: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], required: true}
               - {member: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], required: true}
+              - {member: mail, keys: [MAIL_PASSWORD], required: true}
           - service: cli
             filePointers: true
             from:
@@ -465,11 +467,12 @@ environments:
             AUTH_COOKIE_NAME: starci_next_refresh
             AUTH_JWT_AUDIENCE: starci-next
             AUTH_JWT_KEY_ID: staging-1
-            # No SMTP is provisioned yet: mail sends (sign-up and reset codes) fail until the owner seals a mail member and points these at it.
-            MAIL_HOST: smtp.starci-next.example.invalid
+            # SMTP: the owner's Gmail account with an app password (member mail, MAIL_PASSWORD); Gmail sends only as the account itself.
+            MAIL_HOST: smtp.gmail.com
             MAIL_PORT: "587"
             MAIL_SECURITY: starttls
-            MAIL_FROM: no-reply@starci.org
+            MAIL_USER: cto.nivo@gmail.com
+            MAIL_FROM: cto.nivo@gmail.com
             MAIL_FROM_NAME: StarCi Next
             MAIL_DEFAULT_LANGUAGE: vi
             STORAGE_ENDPOINT: "http://next-staging-storage:9000"
@@ -577,6 +580,7 @@ environments:
       - {name: auth, keys: [AUTH_JWT_PRIVATE_KEY], runtimeName: next-production-custody-auth-v1, version: 1, where: secrets/auth, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], runtimeName: next-production-custody-relay-v1, version: 1, where: secrets/relay, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], runtimeName: next-production-custody-storage-v1, version: 1, where: secrets/storage, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
+      - {name: mail, keys: [MAIL_PASSWORD], runtimeName: next-production-custody-mail-v1, version: 1, where: secrets/mail, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
       - {name: vps, keys: [VPS_HOST, VPS_USER, privateKey, knownHosts], runtimeName: next-production-custody-vps-v1, version: 1, where: secrets/vps, recipientPolicy: "the production rule of .sops.yaml: the owner key and the sv-hk-1 server key", keyCustody: "owner: SOPS_AGE_KEY in the harness secret.env; server: /root/.config/sops/age/keys.txt on sv-hk-1; never printed"}
     deploy:
       stack: next-production
@@ -616,6 +620,7 @@ environments:
               - {member: auth, keys: [AUTH_JWT_PRIVATE_KEY], required: true}
               - {member: relay, keys: [RELAY_MANIFEST_SIGNING_KEY], required: true}
               - {member: storage, keys: [STORAGE_ACCESS_KEY_ID, STORAGE_SECRET_ACCESS_KEY], required: true}
+              - {member: mail, keys: [MAIL_PASSWORD], required: true}
           - service: cli
             filePointers: true
             from:
@@ -644,11 +649,12 @@ environments:
             AUTH_COOKIE_NAME: starci_next_refresh
             AUTH_JWT_AUDIENCE: starci-next
             AUTH_JWT_KEY_ID: production-1
-            # No SMTP is provisioned yet: mail sends (sign-up and reset codes) fail until the owner seals a mail member and points these at it.
-            MAIL_HOST: smtp.starci-next.example.invalid
+            # SMTP: the owner's Gmail account with an app password (member mail, MAIL_PASSWORD); Gmail sends only as the account itself.
+            MAIL_HOST: smtp.gmail.com
             MAIL_PORT: "587"
             MAIL_SECURITY: starttls
-            MAIL_FROM: no-reply@starci.org
+            MAIL_USER: cto.nivo@gmail.com
+            MAIL_FROM: cto.nivo@gmail.com
             MAIL_FROM_NAME: StarCi Next
             MAIL_DEFAULT_LANGUAGE: vi
             STORAGE_ENDPOINT: "http://next-production-storage:9000"

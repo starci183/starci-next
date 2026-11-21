@@ -241,6 +241,7 @@ secrets:
   auth: { external: true, name: next-staging-custody-auth-v1 }
   relay: { external: true, name: next-staging-custody-relay-v1 }
   storage: { external: true, name: next-staging-custody-storage-v1 }
+  mail: { external: true, name: next-staging-custody-mail-v1 }
   vps: { external: true, name: next-staging-custody-vps-v1 }
 # The non-secret files (deploy.configs), each a config object named by the digest of its content.
 configs:
