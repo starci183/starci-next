@@ -126,12 +126,12 @@
 {"findings":[],"hash":"1381017ef45783937df1e5627afea123db8fd9f5427154a26614389132f5daa2","path":"fe/apps/app/src/components/blocks/ProfileHub/index.tsx","step":"prettier"}
 {"findings":[],"hash":"2a461379b21aba1af7362c657e0562a05f6ee51759b66f059e36075be88608e1","path":"fe/apps/app/src/components/blocks/ProgressOverview/component.tsx","step":"prettier"}
 {"findings":[],"hash":"cedfea96f5fd78357de4c82b1030758b1a90cc0df3fb5b86d72b7ff669267fdc","path":"fe/apps/app/src/components/blocks/ProgressOverview/index.tsx","step":"prettier"}
-{"findings":[],"hash":"760314769588b6f0221a534db25bcb171fde94cc023dd6b0cbc00d271dadb73e","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
-{"findings":[],"hash":"2cbe05140446df880e4ef99d05f8aa6b0618682f45640a924312a4cf2351d439","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"prettier"}
+{"findings":[],"hash":"ec619349bf84e250a6887f55996e2731d7852bd34fcebcffe053dfbdccd8739b","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
+{"findings":[],"hash":"6f708cca7a1d4c2118a86ddf2de5eb371895a3225d258cdcada0d096389d0dcd","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"prettier"}
 {"findings":[],"hash":"df50dace4fccf7903453b8304c48897af4359b7a313210367e2a2602611341be","path":"fe/apps/app/src/components/blocks/ProjectDetail/component.tsx","step":"prettier"}
 {"findings":[],"hash":"b1584ceca21815c5fd4d2fbdb04dcc7851211f05b6c276bf0aa820fb804dce9e","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"prettier"}
-{"findings":[],"hash":"38231abd01bc8228e1c4320bdb65f65c38745322ab76e031d2e8186f4f773c28","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"prettier"}
-{"findings":[],"hash":"30972f5ef275f00e9a80feae575b1827aa8762ad6f718118c2b352f0e40e38bb","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"prettier"}
+{"findings":[],"hash":"e753c54ccaaae5ce5e53f39229fdc49bb9ab87ba1a48ffe4b621c5346a271506","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"prettier"}
+{"findings":[],"hash":"3c38c932848ecbbc3236196f6fbd0d9b009c583e52221bb87a188ac9afb4381b","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"prettier"}
 {"findings":[],"hash":"a19c59e98a783cfc1acd087de7d6cac9f0662ba388b847bb0b5d82c40df84fb1","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"prettier"}
 {"findings":[],"hash":"d3b76e1e55d1c8ca98ef58c2d0c1b5f283e5031285e281cbf55860cef1576794","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"prettier"}
 {"findings":[],"hash":"217b970d3c4803d1d3182b66e02b462f3326b30b89d530f2b036fcd70fcd09d3","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"prettier"}

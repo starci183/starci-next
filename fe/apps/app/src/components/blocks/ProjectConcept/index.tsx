@@ -7,6 +7,7 @@ import { isProjectMissing, useConceptForms, useProjectActions, type ProjectIssue
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectMilestoneSwr, useQueryProjectSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { PROJECT_CONCEPT_PLACEHOLDER, ProjectConceptBase } from "./component"
 
 type Translate = ReturnType<typeof useTranslations>
@@ -67,6 +68,7 @@ export const ProjectConcept = (props: ProjectConceptProps) => {
                 isBusy: forms.pendingId === props.conceptId,
                 isProbing: actions.isProbing,
                 issueWords,
+                staticsBaseUrl: staticsBase(),
             }}
             on={{
                 retry: refresh,

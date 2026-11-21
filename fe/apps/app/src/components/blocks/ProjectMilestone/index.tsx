@@ -6,6 +6,7 @@ import { isProjectMissing, isProjectPremiumRequired } from "@/hooks/projects"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectMilestoneSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { projectConceptPath } from "@/modules/routes"
 import { PROJECT_MILESTONE_PLACEHOLDER, ProjectMilestoneBase } from "./component"
 
@@ -36,6 +37,13 @@ export const ProjectMilestone = (props: ProjectMilestoneProps) => {
                     legend: t("milestone.legend"),
                     noLesson: t("milestone.noLesson"),
                     columns: { state: t("milestone.col.state"), lesson: t("milestone.col.lesson") },
+                },
+                staticsBaseUrl: staticsBase(),
+                tally: {
+                    proved: t("milestone.conceptState.proved"),
+                    practising: t("milestone.conceptState.practising"),
+                    todo: t("milestone.conceptState.todo"),
+                    ring: t("milestone.conceptsLabel"),
                 },
                 conceptHrefs: Object.fromEntries(
                     (read.data?.concepts ?? []).map((concept) => [
