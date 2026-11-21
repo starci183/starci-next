@@ -1,4 +1,5 @@
-export { ART, ArtImage } from "./leaves/Art"
+export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
+export type { AreaArtName } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export { CatalogGroup } from "./composites/CatalogGroup"
@@ -204,16 +205,9 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export {
-    EssentialBugHunt,
-    EssentialBugHuntAside,
-    EssentialPattern,
-    EssentialPatternAside,
-    EssentialPatternLink,
-    EssentialReading,
-    EssentialReadingAside,
-    LessonJourneyBlock,
-} from "./composites/LessonFiveParts"
+export { EssentialBugHunt, EssentialBugHuntAside } from "./composites/EssentialBugHunt"
+export { EssentialPattern, EssentialPatternAside, EssentialPatternLink } from "./composites/EssentialPattern"
+export { EssentialReading, EssentialReadingAside, LessonJourneyBlock } from "./composites/LessonFiveParts"
 export type {
     BugHuntLabels,
     BugHuntView,
@@ -226,4 +220,4 @@ export type {
     ReadingLabels,
     ReadingTocRow,
     ReadingView,
-} from "./composites/LessonFiveParts"
+} from "./composites/LessonFiveParts/types"

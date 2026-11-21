@@ -3,7 +3,6 @@
 import { useFormatter, useTranslations } from "next-intl"
 import type { EssenceLabels } from "@starci-next/ui"
 import { useLessonJourneyLabels } from "@/hooks/lessonStudy"
-import type { EssentialPart } from "@/modules/types"
 import type { EssenceWords } from "./essence.shared"
 
 /** The words of the lesson page header, tabs, notices and the locked part. */
@@ -18,12 +17,7 @@ export type EssenceShellLabels = {
     readonly position: (n: number, total: number, topic: string) => string
     readonly facts: (minutes: number, scenarios: number, levels: number) => string
     readonly factsPlain: (minutes: number) => string
-    readonly locked: Readonly<
-        Record<Exclude<EssentialPart, "essence">, { readonly title: string; readonly contents: ReadonlyArray<string> }>
-    >
     readonly lockedDescription: string
-    readonly lockedList: string
-    readonly lockedBack: string
     readonly lockedCompare: string
 }
 
@@ -89,27 +83,7 @@ const shellOf = (t: Translate): EssenceShellLabels => ({
     position: (n, total, topic) => t("shell.position", { n, total, topic }),
     facts: (minutes, scenarios, levels) => t("shell.facts", { minutes, scenarios, levels }),
     factsPlain: (minutes) => t("shell.factsPlain", { minutes }),
-    locked: {
-        source: {
-            title: t("locked.source.title"),
-            contents: [t("locked.source.one"), t("locked.source.two"), t("locked.source.three")],
-        },
-        scenarios: {
-            title: t("locked.scenarios.title"),
-            contents: [t("locked.scenarios.one"), t("locked.scenarios.two"), t("locked.scenarios.three")],
-        },
-        apply: {
-            title: t("locked.apply.title"),
-            contents: [t("locked.apply.one"), t("locked.apply.two"), t("locked.apply.three")],
-        },
-        pattern: {
-            title: t("locked.pattern.title"),
-            contents: [t("locked.pattern.one"), t("locked.pattern.two"), t("locked.pattern.three")],
-        },
-    },
     lockedDescription: t("locked.description"),
-    lockedList: t("locked.list"),
-    lockedBack: t("locked.back"),
     lockedCompare: t("locked.compare"),
 })
 

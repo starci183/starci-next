@@ -90,3 +90,36 @@ export const ArtImage = (props: ArtImageProps): ReactElement => (
         loading="lazy"
     />
 )
+
+/** The v2 clay-3D pictures, 960 by 640, under `art/v2/`; the same sets of ids as the files in `statics/art/v2`. */
+const v2 = (name: string): ArtAsset => ({ key: `art/v2/${name}.webp`, width: 960, height: 640 })
+
+/** The lessons that have their own picture (Essentials, one per lesson). */
+const LESSON_ART_IDS = ["outbox-idempotency", "distributed-cache"] as const
+/** The topics that have their own picture. */
+const TOPIC_ART_IDS = ["api-reliability", "caching", "databases", "messaging", "observability"] as const
+/** The area heroes and the empty, locked and milestone pictures. */
+const AREA_ART_NAMES = [
+    "essentials",
+    "projects",
+    "auth",
+    "cv",
+    "empty-essentials",
+    "empty-projects",
+    "locked",
+    "milestone",
+] as const
+
+/** The name of an area picture. */
+export type AreaArtName = (typeof AREA_ART_NAMES)[number]
+
+/** The picture of an Essentials lesson by its id; a lesson without one gets the essentials hero, so a page never branches on it. */
+export const lessonArt = (id: string): ArtAsset =>
+    (LESSON_ART_IDS as readonly string[]).includes(id) ? v2(`lesson-${id}`) : v2("area-essentials")
+
+/** The picture of an Essentials topic by its id; a topic without one gets the essentials hero. */
+export const topicArt = (id: string): ArtAsset =>
+    (TOPIC_ART_IDS as readonly string[]).includes(id) ? v2(`topic-${id}`) : v2("area-essentials")
+
+/** The hero or state picture of an area. */
+export const areaArt = (name: AreaArtName): ArtAsset => v2(`area-${name}`)

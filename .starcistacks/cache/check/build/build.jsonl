@@ -1,2 +1,2 @@
 {"data":{"verdict":"green"},"findings":[],"hash":"37c92cada6a241762dcff14b12eab0fd1c858d402e2ccad59f5db51ef480c2fa","path":"build/build be","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"3636a5ac9543df58b671f7e7a8fc2e8773f000ce30f3ea5a71ec97b24979e2b8","path":"build/build fe","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"15349f7bc6ba05ba7fc46ebecd19e03dffa26bb6e21ec6c5f90ef7af59d7bf01","path":"build/build fe","step":"ci-step"}
