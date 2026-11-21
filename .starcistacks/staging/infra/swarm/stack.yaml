@@ -105,7 +105,7 @@ services:
         condition: on-failure
         delay: 5s
   # The app's own PostgreSQL, the db component: the image .starcistacks/images/db/Dockerfile builds (official postgres plus pgvector and pgmq), set by deploy.images.db.
-  # PostgreSQL 17 runs on its own NEW volume next-staging-db-data, filled by `starci app stack db-upgrade` from the PostgreSQL 16 volume next-staging-postgres-data, which is never mounted here and stays untouched (rollback = that volume + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
+  # PostgreSQL 17 runs on its own NEW, empty volume next-staging-db-data-v2 (staging was reset to a first start, owner 2026-11-22); the PostgreSQL 16 volume next-staging-postgres-data and its PostgreSQL 17 copy next-staging-db-data are never mounted here and stay untouched (rollback = next-staging-postgres-data + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
   db:
     image: "starci-next/db:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
     environment:
@@ -228,7 +228,7 @@ networks:
 volumes:
   db-data:
     external: true
-    name: "next-staging-db-data"
+    name: "next-staging-db-data-v2"
   storage-data:
     external: true
     name: "next-staging-storage-data"
