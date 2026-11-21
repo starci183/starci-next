@@ -58,8 +58,12 @@ export type BugRowView = {
     readonly caption: string
     readonly state: BugRowState
     readonly stateLabel: string
-    /** The expected line and, for a red run, the received line, as terminal lines; empty when there is nothing to compare. */
-    readonly compare: ReadonlyArray<string>
+    /** What a red run should have measured; empty when the test has no number to compare. */
+    readonly expected: string
+    /** What the newest red run measured; empty unless red. */
+    readonly received: string
+    /** The unit of both numbers ("điểm"); empty when none. */
+    readonly measure: string
     /** "Vì sao giờ đúng"; empty unless green. */
     readonly pass: string
     /** "Vì sao chưa pass"; empty unless red. */
@@ -95,15 +99,14 @@ export type BugHuntLabels = {
     readonly copy: string
     readonly runsEmpty: string
     readonly passTitle: string
-    readonly failTitle: string
-    readonly hintsTitle: string
-    readonly lockedFinal: string
+    readonly tilesTitle: string
+    readonly compareTitle: string
+    readonly expected: string
+    readonly received: string
+    readonly ring: (passed: number, total: number) => string
     readonly machineNone: string
     readonly machineNoneNote: string
     readonly machineOnline: (name: string) => string
-    readonly asideBugs: string
-    readonly asideHintsTitle: string
-    readonly asideHints: string
     readonly asideUnlockTitle: string
     readonly asideUnlock: string
     readonly asideUnlocked: string
@@ -142,6 +145,4 @@ export type PatternLabels = {
     readonly github: string
     readonly sourceTitle: string
     readonly sourceNote: (repo: string) => string
-    readonly addTitle: string
-    readonly addNote: string
 }

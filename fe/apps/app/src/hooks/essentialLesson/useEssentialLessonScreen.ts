@@ -18,6 +18,7 @@ import type {
     SourcePartView,
 } from "@starci-next/ui"
 import { navigation } from "@starci-next/i18n/navigation"
+import { useSession } from "@/hooks/auth"
 import { useLessonAttempts } from "@/hooks/lesson"
 import { useLessonProgress } from "@/hooks/lessonProgress"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
@@ -28,7 +29,7 @@ import {
     useQueryLessonPartsProgressSwr,
 } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
-import { APP_ROUTES, topicPath } from "@/modules/routes"
+import { APP_ROUTES, signInRedirectHref, topicPath } from "@/modules/routes"
 import {
     ESSENTIAL_PARTS,
     type DataSlot,
@@ -38,6 +39,7 @@ import {
     type SlotLabels,
 } from "@/modules/types"
 import { useTranslations } from "next-intl"
+import { useLockLabels, type LockLabels } from "./useLockLabels"
 import { partOf, partPath, partSectionOf, type EssentialDesk } from "./essentialLesson.shared"
 import { essenceOf, useEssenceLabels, type EssenceShellLabels } from "@/hooks/essence"
 import { EMPTY_RUN_PARTS } from "@/modules/essential-runs"
@@ -175,6 +177,12 @@ export type EssentialLessonScreen = {
         readonly five: FivePartsLabels
         /** The words of the written explanation card. */
         readonly written: WrittenCardLabels
+        /** The words of the part the plan lacks. */
+        readonly lock: LockLabels
+        /** True for a reader who is not signed in: the locked part then asks to sign in before it asks to upgrade. */
+        readonly isGuest: boolean
+        /** The sign-in address that brings the reader back to this lesson part. */
+        readonly signInHref: string
         readonly plansHref: string
         readonly catalogHref: string
     }
@@ -290,6 +298,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
     const topicId = read.data?.topic.id
     const topic = useGetLessonTopicsSwr(topicId === undefined ? [] : [topicId], locale).data?.[topicId ?? ""]
     const slotLabels = useSlotLabels()
+    const lock = useLockLabels()
+    const session = useSession()
+    const here = read.data === undefined ? APP_ROUTES.essentials : partPath(read.data, part)
     const [desk, setDesk] = useState<EssentialDesk>({
         picks: {},
         retakeFrom: {},
@@ -455,6 +466,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
             runs: runsPart,
             five: five.labels,
             written: cards.written,
+            lock,
+            isGuest: session.status === "signed-out",
+            signInHref: signInRedirectHref(APP_ROUTES.signIn, here),
             plansHref: APP_ROUTES.premium,
             catalogHref: APP_ROUTES.essentials,
         },

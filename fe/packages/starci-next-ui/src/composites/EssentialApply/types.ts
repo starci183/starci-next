@@ -12,6 +12,9 @@ export type LadderRungView = {
     readonly state: RungState
     /** The state in words, for example "Practising 70/100" or "Opens after the level before". */
     readonly stateLabel: string
+    /** The points the newest run scored on the rung, and the most it can score: the ring of the rung. */
+    readonly score: number
+    readonly maxScore: number
 }
 
 /** One criterion of the rubric with its points and whether the newest run earned them. */
@@ -20,6 +23,8 @@ export type RubricRowView = {
     readonly criterion: string
     /** The score once a run scored it ("20/20"), the points before ("20 pts"). */
     readonly value: string
+    /** The points the criterion is worth: its share of the bar. */
+    readonly points: number
     readonly isCritical: boolean
     /** True when earned, false when missed, undefined before any run. */
     readonly isEarned: boolean | undefined

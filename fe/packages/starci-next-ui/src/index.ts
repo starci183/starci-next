@@ -205,16 +205,9 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export {
-    EssentialBugHunt,
-    EssentialBugHuntAside,
-    EssentialPattern,
-    EssentialPatternAside,
-    EssentialPatternLink,
-    EssentialReading,
-    EssentialReadingAside,
-    LessonJourneyBlock,
-} from "./composites/LessonFiveParts"
+export { EssentialBugHunt, EssentialBugHuntAside } from "./composites/EssentialBugHunt"
+export { EssentialPattern, EssentialPatternAside, EssentialPatternLink } from "./composites/EssentialPattern"
+export { EssentialReading, EssentialReadingAside, LessonJourneyBlock } from "./composites/LessonFiveParts"
 export type {
     BugHuntLabels,
     BugHuntView,
@@ -227,4 +220,4 @@ export type {
     ReadingLabels,
     ReadingTocRow,
     ReadingView,
-} from "./composites/LessonFiveParts"
+} from "./composites/LessonFiveParts/types"

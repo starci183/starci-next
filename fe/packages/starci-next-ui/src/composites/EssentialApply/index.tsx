@@ -1,8 +1,19 @@
-import { Section, Stack, Stepper, Terminal, type StepperStepState } from "@starci/grammar/common"
+import {
+    Grid,
+    ProportionBar,
+    Section,
+    Stack,
+    Stepper,
+    SurfaceCard,
+    Terminal,
+    Text,
+    type ProportionBarPart,
+    type StepperStepState,
+} from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { RichMarkdown } from "../RichMarkdown"
 import { LessonCode } from "../LessonCode"
-import type { ApplyLabels, ApplyPartView, ChallengeDetailView, RungState } from "./types"
+import type { ApplyLabels, ApplyPartView, ChallengeDetailView } from "./types"
 
 export { EssentialApplyAside } from "./Aside"
 export type {
@@ -15,13 +26,6 @@ export type {
     RungState,
 } from "./types"
 
-/** The badge tone of a rung state. */
-const rungTone = (state: RungState) => {
-    if (state === "passed") return "success" as const
-    if (state === "doing") return "warning" as const
-    return "muted" as const
-}
-
 /** The step state a step of the proof chain takes from the current one. */
 const stepStateOf = (index: number, current: number): StepperStepState => {
     if (index < current) return "complete"
@@ -31,26 +35,36 @@ const stepStateOf = (index: number, current: number): StepperStepState => {
 /** What the rubric needs. */
 type RubricProps = { readonly challenge: ChallengeDetailView; readonly labels: ApplyLabels }
 
-/** The rubric of a rung: a row per criterion with its points, the critical badge and a verdict once a run scored it. */
-const Rubric = (props: RubricProps) => (
-    <Section
-        kind="list"
-        title={props.labels.rubric}
-        headingLevel={2}
-        empty={props.labels.empty}
-        items={props.challenge.rubric.map((row) => ({
-            id: row.id,
-            title: row.criterion,
-            value: row.value,
-            ...(row.isCritical
-                ? { badges: [{ label: props.labels.critical, tone: "warning" as const }] as const }
-                : {}),
-            ...(row.isEarned === undefined
-                ? {}
-                : { verdict: row.isEarned ? ("success" as const) : ("danger" as const) }),
-        }))}
-    />
-)
+/** The tone of one part of the rubric bar: earned is green, missed is red, a critical one not yet scored is amber, the rest are plain. */
+const partToneOf = (row: ChallengeDetailView["rubric"][number]) => {
+    if (row.isEarned === true) return "success" as const
+    if (row.isEarned === false) return "danger" as const
+    return row.isCritical ? ("warning" as const) : ("neutral" as const)
+}
+
+/** The rubric of a rung as one bar split by points, the critical criteria first in the legend, each with its score once a run scored it. */
+const Rubric = (props: RubricProps) => {
+    const parts: ReadonlyArray<ProportionBarPart> = props.challenge.rubric.map((row) => ({
+        id: row.id,
+        label: row.isCritical ? `${row.criterion} · ${props.labels.critical}` : row.criterion,
+        value: row.points,
+        valueLabel: row.value,
+        tone: partToneOf(row),
+    }))
+    return (
+        <Section
+            title={props.labels.rubric}
+            headingLevel={2}
+            fact={`${props.challenge.score}/${props.challenge.maxScore}`}
+        >
+            <ProportionBar
+                label={props.labels.rubric}
+                parts={parts}
+                empty={<Text tone="muted">{props.labels.empty}</Text>}
+            />
+        </Section>
+    )
+}
 
 /** What the detail of an open rung needs. */
 type DetailProps = {
@@ -115,31 +129,30 @@ export const EssentialApply = (props: EssentialApplyProps) => {
     const challenge = part.challenge
     return (
         <Stack gap="region">
-            <Section
-                kind="list"
-                title={labels.ladder}
-                headingLevel={2}
-                empty={labels.empty}
-                isLoading={props.isLoading === true}
-                items={part.rungs.map((rung) =>
-                    rung.state === "locked"
-                        ? {
-                              id: rung.id,
-                              title: rung.level,
-                              description: rung.title,
-                              state: "unavailable" as const,
-                              meta: { text: rung.stateLabel },
-                          }
-                        : {
-                              id: rung.id,
-                              title: rung.level,
-                              description: rung.title,
-                              badges: [{ label: rung.stateLabel, tone: rungTone(rung.state) }] as const,
-                              onPress: () => props.onSelect(rung.id),
-                              ...(rung.id === part.selectedId ? { state: "informative" as const } : {}),
-                          },
-                )}
-            />
+            <Section title={labels.ladder} headingLevel={2} isLoading={props.isLoading === true}>
+                <Grid kind="cards" columns={4}>
+                    {part.rungs.map((rung) => (
+                        <SurfaceCard
+                            key={rung.id}
+                            kind="tile"
+                            name={rung.level}
+                            description={rung.title}
+                            figure={`${rung.score}/${rung.maxScore}`}
+                            {...(rung.state === "locked"
+                                ? { state: "unavailable" as const, facts: rung.stateLabel }
+                                : {
+                                      facts: rung.stateLabel,
+                                      wholeAction: {
+                                          kind: "button" as const,
+                                          label: rung.level,
+                                          press: () => props.onSelect(rung.id),
+                                      },
+                                  })}
+                            {...(rung.id === part.selectedId ? { groundTone: "accent" as const } : {})}
+                        />
+                    ))}
+                </Grid>
+            </Section>
             {challenge === undefined ? null : <Detail challenge={challenge} labels={labels} essence={props.essence} />}
         </Stack>
     )
