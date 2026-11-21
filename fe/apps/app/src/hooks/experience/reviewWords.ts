@@ -23,8 +23,8 @@ export const itemNameOf = (item: NamedItem): string => {
     return plain === "" ? item.subject : plain
 }
 
-/** The marks that end the first clause of a CV line, where its short name stops. */
-const CLAUSE_END = /[:;,.(]/
+/** The marks that end the first clause of a CV line, where its short name stops: a ":" of a URL and a "." inside a word (Node.js) do not. */
+const CLAUSE_END = /[;,(]|:(?!\/\/)|\.(?=\s|$)/
 
 /** The most characters a breadcrumb of an item keeps before it is cut on a word with an ellipsis. */
 const CRUMB_MAX = 28

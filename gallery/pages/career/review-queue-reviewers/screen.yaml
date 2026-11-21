@@ -3,8 +3,8 @@ screen: career/review-queue-reviewers
 title: Duyệt trải nghiệm, người duyệt
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, người duyệt.** Mục tiêu: giáo viên bổ nhiệm và kết thúc
-  người duyệt. Chỉ giáo viên thấy tab này."
+summary: "**Concept: Duyệt trải nghiệm, người duyệt.** Mục tiêu: giáo viên bổ nhiệm và kết thúc người duyệt. Chỉ giáo
+  viên thấy tab này."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
@@ -47,16 +47,24 @@ audit:
           notes: "Chỉ định người duyệt trước, rồi danh sách người duyệt hiện tại, đúng hai phần của screen.yaml ở cả 1440 và 390."
         layout:
           verdict: open
-          notes: "Checklist: ô mã, ô số mục, Chỉ định, tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn. Còn mở: nút Kết thúc chỉ cao khoảng 31px (sm trong hàng danh sách thì được, nhưng screen.yaml của career/review-queue ghi 40px) và ở 390 vùng bấm của nó cùng các ô chọn phần (khoảng 24px) dưới 44px."
+          notes:
+            "Checklist: ô mã, ô số mục, Chỉ định, tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn.
+            Còn mở: nút Kết thúc chỉ cao khoảng 31px (sm trong hàng danh sách thì được, nhưng screen.yaml của
+            career/review-queue ghi 40px) và ở 390 vùng bấm của nó cùng các ô chọn phần (khoảng 24px) dưới 44px."
         actionable:
           verdict: open
-          notes: "Ô Phần được duyệt có Essentials, Dự án, Sự cố, Luyện code (PARTS trong useReviewerAdmin.ts): thiếu Harness dù hai người duyệt hiện tại duyệt Harness, và có Sự cố là phần đã bỏ (experience.shared.ts). Hàng người duyệt chỉ có Kết thúc, không đổi được phần hay số mục tối đa."
+          notes:
+            "Ô Phần được duyệt có Essentials, Dự án, Sự cố, Luyện code (PARTS trong useReviewerAdmin.ts): thiếu Harness dù
+            hai người duyệt hiện tại duyệt Harness, và có Sự cố là phần đã bỏ (experience.shared.ts). Hàng người duyệt
+            chỉ có Kết thúc, không đổi được phần hay số mục tối đa."
         live:
           verdict: pass
           notes: "Mỗi hàng có số mục đang mở (0/5); không có việc đang chạy."
         words:
           verdict: open
-          notes: '"Sự cố" là phần đã bỏ; "Dự án" trong khi thanh bên ghi "Projects". Cần API, không giữ lens: "Người duyệt 2591F3" thay tên, ô "Mã tài khoản người duyệt" gõ mã tay (cần API danh sách thành viên).'
+          notes:
+            '"Sự cố" là phần đã bỏ; "Dự án" trong khi thanh bên ghi "Projects". Cần API, không giữ lens: "Người duyệt 2591F3"
+            thay tên, ô "Mã tài khoản người duyệt" gõ mã tay (cần API danh sách thành viên).'
         states:
           verdict: pass
           notes: "Đây là màn tab Người duyệt, có ở 1440 và 390."

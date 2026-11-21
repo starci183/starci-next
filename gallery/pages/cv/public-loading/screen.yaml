@@ -3,23 +3,24 @@ screen: cv/public-loading
 title: CV công khai, đang tải
 route: /cv/{slug}
 area: cv
-summary: "Route: `/cv/{slug}` (ảnh chụp: đang đọc; truy vấn PublicCv được giữ lại để thấy khung
-  chờ). Mã: `fe/apps/app/src/components/blocks/PublicCv/`."
+summary: "Route: `/cv/{slug}` (ảnh chụp: đang đọc; truy vấn PublicCv được giữ lại để thấy khung chờ). Mã:
+  `fe/apps/app/src/components/blocks/PublicCv/`."
 code:
   - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
   - features/pages/PublicCvPage/
 shots:
   "390":
     file: 390.png
-    sha256: 467eb969110f4149ef26b9224b1b187f02b02290d0afba3d3df741d96dddedb7
+    sha256: f793214dc68096f93f550681a50b0c45698870ba937b8cb4d1e0849eded2bc9e
   "1440":
     file: 1440.png
-    sha256: 84cba9b428b078974924a91348bcff1bb736e708b5e0637b3afb1483f1cf6209
+    sha256: 2175dce2034211acf5b10527b2f8b3a0cbac32cf2b2d3d8676b03b968822247a
 sections:
   - id: chu-cv
     title: Chủ CV
-    why: khung xương đúng chỗ avatar, tên, dòng sự kiện và nút, để trang không nhảy khi dữ liệu tới. Nút
-      Chia sẻ chưa bấm được cho tới khi biết CV có thật, để không chia sẻ một liên kết không có CV.
+    why:
+      khung xương đúng chỗ avatar, tên, dòng sự kiện và nút, để trang không nhảy khi dữ liệu tới. Nút Chia sẻ chưa bấm
+      được cho tới khi biết CV có thật, để không chia sẻ một liên kết không có CV.
     law: một vùng đang tải đi qua `SlotView`, chỉ nó rẽ nhánh; lá và vùng ghép chỉ nhận `isLoading`.
     grammar: "`Avatar`, `Heading`, `Text`, `Button` với `isLoading`."
   - id: dong-cv-da-ky
@@ -34,12 +35,13 @@ sections:
     grammar: "`Section isLoading`, `Stepper isLoading`."
   - id: cap-nhat-2026-11-20-pending-seed
     title: Cập nhật 2026-11-20 (pending-seed)
-    why: "Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác
-      minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã
-      hiện tại đã theo luật Grammar 0.50 (nút một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ
-      SlotView)."
-    law: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs
-      kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
+    why:
+      "Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác minh, CV công khai).
+      Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã hiện tại đã theo luật Grammar 0.50 (nút
+      một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ SlotView)."
+    law:
+      Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs kind="filter" (quyết định điều
+      phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
     grammar: '`Section kind="list"` + `Tabs kind="filter"`, `Stepper`, `Button`, `Popover`'
 considered:
   - option: Chấm các lăng kính trên ảnh hiện có
@@ -71,13 +73,12 @@ audit:
           notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
         states:
           verdict: open
-          notes: Ảnh không phải trạng thái đang tải. 390.png, 390-first.png và 390-header.png trùng từng byte
-            với cv/public-many-lines; 1440 chỉ khác vài điểm ảnh. Việc giữ truy vấn PublicCv không
-            có tác dụng (có thể trang đã có dữ liệu từ máy chủ). Cần chụp lại với khung xương thật.
+          notes: Ảnh không phải trạng thái đang tải. 390.png, 390-first.png và 390-header.png trùng từng byte với
+            cv/public-many-lines; 1440 chỉ khác vài điểm ảnh. Việc giữ truy vấn PublicCv không có tác dụng (có thể trang
+            đã có dữ liệu từ máy chủ). Cần chụp lại với khung xương thật.
         truth:
           verdict: open
-          notes: 'summary nói "đang đọc; truy vấn PublicCv được giữ lại" nhưng ảnh là dữ liệu đã tải: mô tả
-            không khớp ảnh.'
+          notes: 'summary nói "đang đọc; truy vấn PublicCv được giữ lại" nhưng ảnh là dữ liệu đã tải: mô tả không khớp ảnh.'
     - n: 2
       at: 2026-11-21T04:22:59.116Z
       lenses:
@@ -86,27 +87,26 @@ audit:
           notes: "Khung xương giữ đúng chỗ: chủ CV và nút, ba hàng dòng CV, cột Vì sao tin được, chân trang."
         layout:
           verdict: open
-          notes: "Khung xương đúng hình avatar, tên, dòng sự kiện, nút 40px và ba hàng (câu, nguồn, vết, nút
-            Xác minh); 390 không tràn. Còn mở: thanh trên tự dựng bằng Cluster như cv/public. Phụ
-            (cần Grammar): ở 390 khung của chú thích danh sách là một khối xám cao 32px rộng hết
-            hàng (y 901-932), trông như một nút, trong khi ở 1440 là một vạch mảnh."
+          notes:
+            "Khung xương đúng hình avatar, tên, dòng sự kiện, nút 40px và ba hàng (câu, nguồn, vết, nút Xác minh); 390 không
+            tràn. Còn mở: thanh trên tự dựng bằng Cluster như cv/public. Phụ (cần Grammar): ở 390 khung của chú thích
+            danh sách là một khối xám cao 32px rộng hết hàng (y 901-932), trông như một nút, trong khi ở 1440 là một
+            vạch mảnh."
         actionable:
           verdict: pass
-          notes: "Chia sẻ CV chỉ là khung xương cho tới khi biết CV có thật; đổi ngôn ngữ và Đăng nhập vẫn bấm
-            được."
+          notes: "Chia sẻ CV chỉ là khung xương cho tới khi biết CV có thật; đổi ngôn ngữ và Đăng nhập vẫn bấm được."
         live:
           verdict: pass
           notes: "Đang tải hiện bằng khung xương của SlotView ở cả hai cỡ."
         words:
           verdict: pass
-          notes: "Chỉ tiêu đề thật (Dòng CV đã ký, Vì sao tin được CV này, ba bước) và chân trang, đúng một
-            thuật ngữ."
+          notes: "Chỉ tiêu đề thật (Dòng CV đã ký, Vì sao tin được CV này, ba bước) và chân trang, đúng một thuật ngữ."
         states:
           verdict: pass
           notes: "Đã là ảnh đang tải thật ở 1440 và 390 (khác vòng 1)."
         truth:
           verdict: open
-          notes: 'Summary khớp ảnh, nhưng phần "Cập nhật 2026-11-20 (pending-seed)" còn nói ảnh sẽ được chụp
-            lại và considered "Ảnh là màn khác (CV đã tải)" đã cũ; xoá hoặc sửa theo ảnh hiện
-            tại.'
+          notes:
+            'Summary khớp ảnh, nhưng phần "Cập nhật 2026-11-20 (pending-seed)" còn nói ảnh sẽ được chụp lại và considered
+            "Ảnh là màn khác (CV đã tải)" đã cũ; xoá hoặc sửa theo ảnh hiện tại.'
   escalate: null

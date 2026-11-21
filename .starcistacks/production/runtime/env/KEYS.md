@@ -16,8 +16,10 @@ of sv-hk-1 (`.sops.yaml`, rule `production`), and reaches a container as a versi
 
 Plain (unsealed) core env that sits beside these members: `AUTH_COOKIE_NAME` (the refresh cookie name, `starci_next_refresh`, so the other app on the shared starci.org hosts cannot overwrite it) and `AUTH_COOKIE_DOMAIN`, declared in application-stacks.yaml.
 
-Not provisioned (owner-provided values; until then the feature is off or refused, typed): SMTP (`MAIL_HOST` is a placeholder: sign-up and reset
-codes cannot be mailed), payOS and SePay (no rail declared: no checkout), the AI coach (`OPENROUTER_API_KEY`: written answers are saved ungraded),
+SMTP: the member `mail` (`MAIL_PASSWORD`, the owner's Gmail app password, granted to core as `MAIL_PASSWORD_FILE`) with the plain `MAIL_HOST`
+smtp.gmail.com, `MAIL_PORT` 587, `MAIL_SECURITY` starttls, `MAIL_USER` and `MAIL_FROM` cto.nivo@gmail.com.
+
+Not provisioned (owner-provided values; until then the feature is off or refused, typed): payOS and SePay (no rail declared: no checkout), the AI coach (`OPENROUTER_API_KEY`: written answers are saved ungraded),
 Judge0 (code runs end as `PRACTICE_JUDGE_UNAVAILABLE`), Qdrant and the embeddings service (MCP search answers by keywords).
 
 Plain configuration (hosts, ports, bucket) is `environments.production.deploy.environment` of `application-stacks.yaml`; the app's public values are its

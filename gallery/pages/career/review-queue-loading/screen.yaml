@@ -3,18 +3,18 @@ screen: career/review-queue-loading
 title: Duyệt trải nghiệm, đang tải
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel,
-  không nhảy bố cục khi dữ liệu về."
+summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel, không nhảy bố cục khi dữ
+  liệu về."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
 shots:
   "390":
     file: 390.png
-    sha256: ec762e12487d45c3c956fe90ffb931a26c23adc7b635160ebdb973eda491927e
+    sha256: 9fed61dc954f33a35c0196690a582370cdc00b8fca50b7e03fab2cb1545192b1
   "1440":
     file: 1440.png
-    sha256: 84f39e0b06c94e608ffb7d6fcde96b272231b22dc7bb0573301a394aa15af0da
+    sha256: b92587cf57c67482f1d1202cf22aa16aadb5957d0ca64e0310a67afe8bc66a1e
 sections:
   - id: vung-chinh
     title: Vùng chính
@@ -42,20 +42,31 @@ audit:
           notes: "Đầu trang, hàng chờ bên trái và bảng bên phải ở 1440, hàng chờ trước ở 390, giống bản đã tải."
         layout:
           verdict: open
-          notes: 'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ filter) và dòng meta dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh sách xuống khoảng 60px: trái với "không nhảy bố cục". Bảng bên phải không có khung xương thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
+          notes:
+            'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ filter) và dòng meta
+            dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh sách xuống khoảng 60px: trái với "không
+            nhảy bố cục". Bảng bên phải không có khung xương thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu
+            40px; nhãn không gãy ở 390; dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
         actionable:
           verdict: pass
           notes: "Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được."
         live:
           verdict: open
-          notes: 'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản thật, không có khối xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame / Page isLoading nên lớp skeleton không bật).'
+          notes:
+            'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản thật, không có khối
+            xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame / Page isLoading nên lớp skeleton không
+            bật).'
         words:
           verdict: open
-          notes: 'Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong khi hàng chờ còn chưa về.'
+          notes:
+            'Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong khi hàng chờ còn
+            chưa về.'
         states:
           verdict: pass
           notes: "Đây là trạng thái đang tải, có ở 1440 và 390."
         truth:
           verdict: open
-          notes: "Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời chọn mục và thiếu thanh lọc."
+          notes:
+            "Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời chọn mục và thiếu
+            thanh lọc."
   escalate: null

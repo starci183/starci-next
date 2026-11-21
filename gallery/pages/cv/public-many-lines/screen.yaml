@@ -3,9 +3,9 @@ screen: cv/public-many-lines
 title: CV công khai, nhiều dòng
 route: /cv/{slug}
 area: cv
-summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `gallery-cv-multi`, ba dòng
-  đã ký thuộc hai nguồn Dự án và Essentials, có tab theo nguồn; seed của dev chỉ sinh được ba dòng
-  đã xác minh cho một học viên). Mã: `fe/apps/app/src/components/blocks/PublicCv/`."
+summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `gallery-cv-multi`, ba dòng đã ký thuộc hai
+  nguồn Dự án và Essentials, có tab theo nguồn; seed của dev chỉ sinh được ba dòng đã xác minh cho một học viên). Mã:
+  `fe/apps/app/src/components/blocks/PublicCv/`."
 code:
   - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
   - features/pages/PublicCvPage/
@@ -19,12 +19,11 @@ shots:
 sections:
   - id: dong-cv-da-ky
     title: Dòng CV đã ký
-    why: 'nhà tuyển dụng thường tìm một mảng (dự án, sự cố): từ 8 dòng hiện chip nguồn có đếm, một chạm
-      là lọc. Danh sách hiện 10 dòng (390: 6) rồi "Xem thêm" mở tiếp tại chỗ, không đổi trang. Nguồn
-      Luyện code là một nguồn như các nguồn khác: cả nhóm bài Accepted thành một dòng, bài đã xem
-      lời giải trước khi Accepted không tính.'
-    law: "`verified-experience.md` điều 10 (số bài là bằng chứng của dòng, không tự thành dòng CV) và
-      điều 4."
+    why:
+      'nhà tuyển dụng thường tìm một mảng (dự án, sự cố): từ 8 dòng hiện chip nguồn có đếm, một chạm là lọc. Danh sách
+      hiện 10 dòng (390: 6) rồi "Xem thêm" mở tiếp tại chỗ, không đổi trang. Nguồn Luyện code là một nguồn như các nguồn
+      khác: cả nhóm bài Accepted thành một dòng, bài đã xem lời giải trước khi Accepted không tính.'
+    law: "`verified-experience.md` điều 10 (số bài là bằng chứng của dòng, không tự thành dòng CV) và điều 4."
     grammar: '`ChoiceChips`, `Section kind="list"` + `ListRow`, `Button`.'
   - id: chu-cv
     title: Chủ CV
@@ -33,18 +32,20 @@ sections:
     grammar: "`Avatar`, `Heading`, `Text`, `Button`."
   - id: cap-nhat-2026-11-20-pending-seed
     title: Cập nhật 2026-11-20 (pending-seed)
-    why: "Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác
-      minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã
-      hiện tại đã theo luật Grammar 0.50 (nút một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ
-      SlotView)."
-    law: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs
-      kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
+    why:
+      "Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác minh, CV công khai).
+      Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã hiện tại đã theo luật Grammar 0.50 (nút
+      một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ SlotView)."
+    law:
+      Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs kind="filter" (quyết định điều
+      phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
     grammar: '`Section kind="list"` + `Tabs kind="filter"`, `Stepper`, `Button`, `Popover`'
 considered:
   - option: Ẩn tab nguồn dưới 8 dòng như phần màn ghi
     chosen: false
-    why: "Cần chọn một: sửa lời trong screen.yaml theo quyết định Tabs filter ngày 20/11, hoặc ẩn tab
-      dưới 8 dòng; hiện tại lời và ảnh lệch nhau."
+    why:
+      "Cần chọn một: sửa lời trong screen.yaml theo quyết định Tabs filter ngày 20/11, hoặc ẩn tab dưới 8 dòng; hiện tại
+      lời và ảnh lệch nhau."
   - option: Chấp nhận tên trung tính "Học viên StarCi" trên CV công khai
     chosen: true
     why: Học viên seed chưa đặt tên hiển thị; đó là nhãn trung tính đã định, không phải lỗi app.
@@ -62,11 +63,11 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Phần dong-cv-da-ky nói chip nguồn chỉ hiện từ 8 dòng, nhưng ảnh 3 dòng đã có thanh tab Mọi
-            nguồn / Essentials / Dự án. Ở 390, dòng ký "Người duyệt do thầy chỉ định ký 21 thg 11,"
-            gãy để "2026" đứng riêng. Nút "Xác minh …" cao 32px (1440: y 368–399; 390: y 568–599);
-            cỡ sm trong hàng được phép, nhưng ở 390 nó dưới vùng chạm 44px và hàng không phải liên
-            kết (ListRow action, cần Grammar). "Chia sẻ CV" và "Đăng nhập" 40px.'
+          notes:
+            'Phần dong-cv-da-ky nói chip nguồn chỉ hiện từ 8 dòng, nhưng ảnh 3 dòng đã có thanh tab Mọi nguồn / Essentials /
+            Dự án. Ở 390, dòng ký "Người duyệt do thầy chỉ định ký 21 thg 11," gãy để "2026" đứng riêng. Nút "Xác minh
+            …" cao 32px (1440: y 368–399; 390: y 568–599); cỡ sm trong hàng được phép, nhưng ở 390 nó dưới vùng chạm
+            44px và hàng không phải liên kết (ListRow action, cần Grammar). "Chia sẻ CV" và "Đăng nhập" 40px.'
         actionable:
           verdict: pass
           notes: ""
@@ -75,17 +76,20 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Người ký có ba cách gọi trên một trang: "Thầy ký", "Người duyệt do thầy chỉ định ký" (dòng
-            1) và "Giảng viên StarCi đọc bằng chứng và ký" (khối Vì sao tin được). Dòng 2 ghi
-            "(StarCi Bản chất)" trong khi huy hiệu ghi "Essentials" (chữ do AI soạn, cần API).'
+          notes:
+            'Người ký có ba cách gọi trên một trang: "Thầy ký", "Người duyệt do thầy chỉ định ký" (dòng 1) và "Giảng viên
+            StarCi đọc bằng chứng và ký" (khối Vì sao tin được). Dòng 2 ghi "(StarCi Bản chất)" trong khi huy hiệu ghi
+            "Essentials" (chữ do AI soạn, cần API).'
         states:
           verdict: open
-          notes: cv/public-loading chụp ra CV đã tải (ảnh 390 trùng từng byte với màn này), và cv/public-error
-            có trong canvas nhưng chưa có trong gallery.
+          notes:
+            cv/public-loading chụp ra CV đã tải (ảnh 390 trùng từng byte với màn này), và cv/public-error có trong canvas
+            nhưng chưa có trong gallery.
         truth:
           verdict: open
-          notes: 'Khối "Vì sao tin được CV này" bước 3 nói "Giảng viên StarCi … ký từng dòng", nhưng dòng 1 do
-            người duyệt được thầy chỉ định ký: lời giải thích không còn đúng với dữ liệu.'
+          notes:
+            'Khối "Vì sao tin được CV này" bước 3 nói "Giảng viên StarCi … ký từng dòng", nhưng dòng 1 do người duyệt được
+            thầy chỉ định ký: lời giải thích không còn đúng với dữ liệu.'
     - n: 2
       at: 2026-11-21T04:23:00.192Z
       lenses:
@@ -94,26 +98,28 @@ audit:
           notes: "Thứ tự như cv/public."
         layout:
           verdict: open
-          notes: "Ảnh trùng từng byte với cv/public (3 dòng), nên dải Tabs lọc nguồn và nút Xem thêm của màn
-            này chưa chấm được ở 1440 và 390. Thanh trên tự dựng bằng Cluster như cv/public."
+          notes:
+            "Ảnh trùng từng byte với cv/public (3 dòng), nên dải Tabs lọc nguồn và nút Xem thêm của màn này chưa chấm được ở
+            1440 và 390. Thanh trên tự dựng bằng Cluster như cv/public."
         actionable:
           verdict: open
-          notes: "Không thấy được lối lọc theo nguồn và Xem thêm, hai hành động riêng của trạng thái nhiều
-            dòng."
+          notes: "Không thấy được lối lọc theo nguồn và Xem thêm, hai hành động riêng của trạng thái nhiều dòng."
         live:
           verdict: pass
           notes: "Như cv/public: dòng đã ký có biểu tượng đã xác minh."
         words:
           verdict: open
-          notes: 'Như cv/public: câu "không hiện điểm số…" lặp hai lần, "bài Accepted", và "(StarCi Bản
-            chất)" trong câu cạnh huy hiệu "Essentials".'
+          notes:
+            'Như cv/public: câu "không hiện điểm số…" lặp hai lần, "bài Accepted", và "(StarCi Bản chất)" trong câu cạnh huy
+            hiệu "Essentials".'
         states:
           verdict: open
-          notes: "Không phải trạng thái nhiều dòng: 3 dòng, không có dải lọc (mã chỉ hiện từ 8 dòng) và không
-            có Xem thêm (giới hạn 10 / 390: 6). Cần seed từ 8 dòng trở lên rồi chụp lại."
+          notes:
+            "Không phải trạng thái nhiều dòng: 3 dòng, không có dải lọc (mã chỉ hiện từ 8 dòng) và không có Xem thêm (giới
+            hạn 10 / 390: 6). Cần seed từ 8 dòng trở lên rồi chụp lại."
         truth:
           verdict: open
-          notes: 'Summary ghi "có tab theo nguồn", phần chu-cv ghi "14 dòng đã ký", phần pending-seed còn
-            hứa chụp lại; considered "Ẩn tab nguồn dưới 8 dòng" ghi chosen false trong khi mã đã
-            ẩn dưới 8 dòng. Lời và ảnh lệch nhau.'
+          notes:
+            'Summary ghi "có tab theo nguồn", phần chu-cv ghi "14 dòng đã ký", phần pending-seed còn hứa chụp lại; considered
+            "Ẩn tab nguồn dưới 8 dòng" ghi chosen false trong khi mã đã ẩn dưới 8 dòng. Lời và ảnh lệch nhau.'
   escalate: null

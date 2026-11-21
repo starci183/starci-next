@@ -1,4 +1,4 @@
-import { Button, Page, Stack } from "@starci/grammar/common"
+import { Button, Page, Skeleton, Stack } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
 
@@ -52,41 +52,50 @@ export type ReviewItemBaseProps = {
  * and Revoke for the teacher on a verified item. A reader with no signer role gets the forbidden slot.
  */
 export const ReviewItemBase = (props: ReviewItemBaseProps) => (
-    <Page
-        header={{
-            title: props.props.title,
-            titleScale: "standard",
-            breadcrumbs: {
-                label: props.props.crumbLabel,
-                items: [
-                    { id: "profile", label: props.props.profileLabel, href: props.props.profileHref },
-                    { id: "queue", label: props.props.backLabel, href: props.props.backHref },
-                    { id: "item", label: props.props.crumb },
-                ],
-            },
-            ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
-        }}
-    >
-        <SlotView
-            slot={props.props.slot}
-            forbiddenAction={
-                <Stack gap="row" align="center">
-                    <Button intent="neutral" href={props.props.exitHref}>
-                        {props.props.exitLabel}
-                    </Button>
-                </Stack>
-            }
-            placeholder={props.props.placeholder}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(item) => (
+    <SlotView
+        slot={props.props.slot}
+        forbiddenAction={
+            <Stack gap="row" align="center">
+                <Button intent="neutral" href={props.props.exitHref}>
+                    {props.props.exitLabel}
+                </Button>
+            </Stack>
+        }
+        placeholder={props.props.placeholder}
+        labels={props.props.slotLabels}
+        onRetry={props.on.retry}
+        render={(item, isLoading) =>
+            // While the first read loads the item is bars, not the placeholder words.
+            isLoading ? (
+                <Skeleton shape="text" lines={10} />
+            ) : (
                 <ReviewPanel
                     item={item}
                     labels={props.props.panelLabels}
                     decision={props.props.decision}
                     on={props.on}
                 />
-            )}
-        />
-    </Page>
+            )
+        }
+        frame={({ body, isLoading }) => (
+            <Page
+                isLoading={isLoading}
+                header={{
+                    title: props.props.title,
+                    titleScale: "standard",
+                    breadcrumbs: {
+                        label: props.props.crumbLabel,
+                        items: [
+                            { id: "profile", label: props.props.profileLabel, href: props.props.profileHref },
+                            { id: "queue", label: props.props.backLabel, href: props.props.backHref },
+                            { id: "item", label: props.props.crumb },
+                        ],
+                    },
+                    ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
+                }}
+            >
+                {body}
+            </Page>
+        )}
+    />
 )

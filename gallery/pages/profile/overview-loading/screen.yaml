@@ -3,53 +3,47 @@ screen: profile/overview-loading
 title: Hồ sơ, đang tải
 route: /profile
 area: profile
-summary: '**Concept: Hồ sơ, đang tải.** Trạng thái của màn này: đang tải. Mục tiêu: thấy mình hiện
-  ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ.
-  Thao tác: myProfile (displayName, avatarUrl, goal, limits: contentTypes, maxBytes, nameMax),
-  setProfileName, requestAvatarUpload rồi trình duyệt gửi thẳng tới kho đối tượng và
-  confirmAvatarUpload, removeAvatar; myExperience (dòng đã xác minh), showExperience,
-  verifyExperience (trang /verify/{mã}). cần API: liên kết CV tổng hợp next.starci.vn/cv/{slug}
-  (cvLink, setCvVisibility); hiện chỉ có liên kết theo từng dòng. Bố cục: Khung chung: thanh trên
-  (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects ·
-  Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Dải đầu;
-  thân: Danh tính (ảnh, tên, email, lộ trình), Liên kết CV (hộp liên kết có Sao chép, công tắc công
-  khai), CV đã xác minh (dòng CV, ai ký ngày nào bằng chứng gì, mã verify, công tắc công khai từng
-  dòng), Tài khoản (máy, gói). Cột phải: tiến độ nhanh với liên kết "Xem tiến độ" và tóm tắt Kinh
-  nghiệm với "Xem kinh nghiệm". Sửa là trang con "Hồ sơ / Sửa". Ảnh: kiểm loại và dung lượng ở trình
-  duyệt, đang tải có vòng phần trăm, lỗi quá nặng nói giới hạn lấy từ server, xóa ảnh có xác nhận.
-  Nút chính: "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính). Lọc: không có. Khác bản
-  hiện tại: Hồ sơ là cửa vào Kinh nghiệm và Tiến độ (thanh bên chỉ còn một mục Hồ sơ). Lưu ý xung
-  đột: một vùng lỗi không làm hỏng cả trang. Phần tử Grammar của màn: PageHeader, Section, Avatar,
-  ProgressCircle, FileButton, Input, Switch, CopyField, Section kind="list", ListRow, AlertDialog.'
+summary: '**Concept: Hồ sơ, đang tải.** Trạng thái của màn này: đang tải. Mục tiêu: thấy mình hiện ra thế nào với người
+  khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ. Thao tác: myProfile (displayName, avatarUrl,
+  goal, limits: contentTypes, maxBytes, nameMax), setProfileName, requestAvatarUpload rồi trình duyệt gửi thẳng tới kho
+  đối tượng và confirmAvatarUpload, removeAvatar; myExperience (dòng đã xác minh), showExperience, verifyExperience
+  (trang /verify/{mã}). cần API: liên kết CV tổng hợp next.starci.vn/cv/{slug} (cvLink, setCvVisibility); hiện chỉ có
+  liên kết theo từng dòng. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và
+  thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng
+  nút menu. Dải đầu; thân: Danh tính (ảnh, tên, email, lộ trình), Liên kết CV (hộp liên kết có Sao chép, công tắc công
+  khai), CV đã xác minh (dòng CV, ai ký ngày nào bằng chứng gì, mã verify, công tắc công khai từng dòng), Tài khoản
+  (máy, gói). Cột phải: tiến độ nhanh với liên kết "Xem tiến độ" và tóm tắt Kinh nghiệm với "Xem kinh nghiệm". Sửa là
+  trang con "Hồ sơ / Sửa". Ảnh: kiểm loại và dung lượng ở trình duyệt, đang tải có vòng phần trăm, lỗi quá nặng nói giới
+  hạn lấy từ server, xóa ảnh có xác nhận. Nút chính: "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính). Lọc:
+  không có. Khác bản hiện tại: Hồ sơ là cửa vào Kinh nghiệm và Tiến độ (thanh bên chỉ còn một mục Hồ sơ). Lưu ý xung
+  đột: một vùng lỗi không làm hỏng cả trang. Phần tử Grammar của màn: PageHeader, Section, Avatar, ProgressCircle,
+  FileButton, Input, Switch, CopyField, Section kind="list", ListRow, AlertDialog.'
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
   "390":
     file: 390.png
-    sha256: 4fb01e267419839ba35971ce61cce3b8fd4a3d4e55facf99add32fb25e9bbdbe
+    sha256: 7eb0df4b9f19f9226f3bcefd150459850bde56b455f4142a1f35775687955878
   "1440":
     file: 1440.png
-    sha256: 3d67a10ffda2425c0a7f8c3df2b471fe1b9a7312f599652e4659cd9725aa60d3
+    sha256: 8b9c6b4307cf5b78b5ae0c130e8ceecd0b221eea00f3ccdcdc92871ff81a1749
 sections:
   - id: khung-ung-dung
     title: Khung ứng dụng
-    why: "khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở
-      390."
-    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
-      app).
+    why: "khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390."
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).
     grammar: "`WorkspaceShell`"
   - id: dai-tieu-de-ho-so-cua-ban
     title: "Dải tiêu đề: Hồ sơ của bạn"
-    why: tên trang, dòng sự kiện và đúng một nút chính. "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy
-      trung tính).
+    why: tên trang, dòng sự kiện và đúng một nút chính. "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính).
     law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
     grammar: "`PageHeader`"
   - id: phan-tu-con-thieu
     title: Phần tử còn thiếu
     why: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
-    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ);
-      danh sách ở GRAMMAR-GAPS.md.
+    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở
+      GRAMMAR-GAPS.md.
     grammar: "cần Grammar: vòng tiến độ quanh Avatar khi đang tải ảnh (ghép ProgressCircle với Avatar)"
 considered: []
 audit:
@@ -63,10 +57,14 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Cùng thứ tự với profile/overview: đầu trang, Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột phải xuống cuối ở 390."
+          notes:
+            "Cùng thứ tự với profile/overview: đầu trang, Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột phải xuống
+            cuối ở 390."
         layout:
           verdict: open
-          notes: 'Chữ giữ chỗ hiện thô thay vì khung xám: "xxxxxx" ở tên và email, "xxxxxx · xxxxxx" ở dòng người ký, "xxxxxxxxxxxxxxxx" ở Kinh nghiệm: các Text này chưa nhận isLoading (Text của Grammar có isLoading). Tiến độ nhanh mất nhãn, chỉ còn vạch. Checklist: "Sửa hồ sơ" 40px, một dòng ở 390, không tràn.'
+          notes: 'Chữ giữ chỗ hiện thô thay vì khung xám: "xxxxxx" ở tên và email, "xxxxxx · xxxxxx" ở dòng người ký,
+            "xxxxxxxxxxxxxxxx" ở Kinh nghiệm: các Text này chưa nhận isLoading (Text của Grammar có isLoading). Tiến độ
+            nhanh mất nhãn, chỉ còn vạch. Checklist: "Sửa hồ sơ" 40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: pass
           notes: "Không có giá trị nào cần đổi khi đang tải; các nút giữ chỗ đúng vị trí."
@@ -81,5 +79,8 @@ audit:
           notes: "Đây là trạng thái đang tải ở 1440 và 390."
         truth:
           verdict: open
-          notes: 'Nút chính "Sửa hồ sơ" và liên kết "Đổi lộ trình" đoán trước dữ liệu; với học viên chưa có tên và lộ trình, tải xong chúng đổi thành "Thêm ảnh và tên" và "Chọn lộ trình" (nhãn nhảy). Summary vẫn ghi "cần API: liên kết CV tổng hợp" trong khi liên kết CV đã chạy ở profile/overview.'
+          notes:
+            'Nút chính "Sửa hồ sơ" và liên kết "Đổi lộ trình" đoán trước dữ liệu; với học viên chưa có tên và lộ trình, tải
+            xong chúng đổi thành "Thêm ảnh và tên" và "Chọn lộ trình" (nhãn nhảy). Summary vẫn ghi "cần API: liên kết CV
+            tổng hợp" trong khi liên kết CV đã chạy ở profile/overview.'
   escalate: null

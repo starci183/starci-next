@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 3f2599ae6fc87228e44d6b101d56fad2f95dd254e35667b84331ed0ffe5b8a98
+    sha256: 540da0d099792bfe0f74c8b8c400d1a55ff2a02ca53a10ad9360ff300122aec6
   "1440":
     file: 1440.png
-    sha256: f5eee6b86f692ee206815ad122015d9e4139f7aa80944b90b0643762f8f786d8
+    sha256: 26431f92ca948d9858caf7f03b48e3ebe8328b3190790492938692653105fcb2
 sections:
   - id: dai-dau-trang
     title: Dải đầu trang
@@ -46,13 +46,19 @@ audit:
           notes: "Đầu trang rồi thẻ mục, đúng chỗ của bản đã tải."
         layout:
           verdict: open
-          notes: "Bộ xương chỉ có thẻ mục: REVIEW_ITEM_PLACEHOLDER để evidence, criteria, defense, history rỗng nên không có khung Bằng chứng, AI chấm, Câu hỏi bảo vệ, ô ghi chú với nút và Lịch sử; không có meta dưới tiêu đề. Khi dữ liệu về trang dài thêm gần 900px, trái với summary. Checklist: Mở menu 40px; đường dẫn và tiêu đề một dòng ở 390; dải đầu không tràn; không có nút khác."
+          notes:
+            "Bộ xương chỉ có thẻ mục: REVIEW_ITEM_PLACEHOLDER để evidence, criteria, defense, history rỗng nên không có khung
+            Bằng chứng, AI chấm, Câu hỏi bảo vệ, ô ghi chú với nút và Lịch sử; không có meta dưới tiêu đề. Khi dữ liệu
+            về trang dài thêm gần 900px, trái với summary. Checklist: Mở menu 40px; đường dẫn và tiêu đề một dòng ở 390;
+            dải đầu không tràn; không có nút khác."
         actionable:
           verdict: pass
           notes: "Màn tải không có giá trị để đổi; đường dẫn về hàng chờ dùng được."
         live:
           verdict: open
-          notes: 'Không thấy trạng thái đang tải: chữ "xxxxxx", "Xxxxxx" và hai dòng x in như văn bản thật, không khối xương hay chuyển động (ReviewItemBase gọi SlotView không có frame / Page isLoading).'
+          notes:
+            'Không thấy trạng thái đang tải: chữ "xxxxxx", "Xxxxxx" và hai dòng x in như văn bản thật, không khối xương hay
+            chuyển động (ReviewItemBase gọi SlotView không có frame / Page isLoading).'
         words:
           verdict: open
           notes: "Chữ x thô đọc được trong huy hiệu phần, mã người học, trạng thái và dòng CV ở cả hai cỡ."

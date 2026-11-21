@@ -3,6 +3,7 @@
 import { NotFoundNotice } from "@starci-next/ui"
 import { usePublicCvLabels, usePublicCvView } from "@/hooks/publicCv"
 import { staticsBase } from "@/modules/config"
+import { PublicTopBar } from "@/components/blocks/PublicTopBar"
 import { PUBLIC_CV_PLACEHOLDER, PublicCvBase } from "./component"
 import type { PublicCv as PublicCvRead } from "@/hooks/swr"
 
@@ -31,6 +32,7 @@ export const PublicCv = (props: PublicCvProps) => {
                 url: cv.url,
                 previewSrc: cv.previewSrc,
                 staticsBaseUrl: staticsBase(),
+                top: <PublicTopBar />,
             }}
             on={{
                 retry: cv.retry,

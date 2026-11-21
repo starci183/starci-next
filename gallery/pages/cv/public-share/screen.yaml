@@ -3,8 +3,7 @@ screen: cv/public-share
 title: CV công khai, chia sẻ và ảnh xem trước
 route: /cv/{slug}
 area: cv
-summary: "Route: /cv/{slug} (ảnh chụp: bảng chia sẻ mở). Mã:
-  fe/apps/app/src/components/blocks/PublicCv/, ảnh xem trước
+summary: "Route: /cv/{slug} (ảnh chụp: bảng chia sẻ mở). Mã: fe/apps/app/src/components/blocks/PublicCv/, ảnh xem trước
   app/[locale]/(pages)/(auth)/cv/[slug]/opengraph-image.tsx."
 code:
   - features/pages/PublicCvPage
@@ -15,13 +14,13 @@ shots:
     sha256: e50947532b8306307840ef01e10a7f6784f87b055a36d1b356cdf928b13368ae
   "1440":
     file: 1440.png
-    sha256: c46fd4f93b60ad8698cf2ea6928bc328e6389286f150a9bcf7d758c6de658e74
+    sha256: d712ba9a2b4deb731c473999668b73d6dc80bf172e728bc585afb57978bd19c2
 sections:
   - id: s1
     title: Bảng chia sẻ
-    shows: 'người xem sao chép liên kết hoặc gửi tới LinkedIn, Facebook, Zalo; ở 390 có thêm "Ứng dụng
-      khác" (bảng chia sẻ của hệ điều hành) khi trình duyệt có. Rộng: cửa sổ nhỏ dưới nút; 390: ngăn
-      kéo từ dưới lên.'
+    shows:
+      'người xem sao chép liên kết hoặc gửi tới LinkedIn, Facebook, Zalo; ở 390 có thêm "Ứng dụng khác" (bảng chia sẻ
+      của hệ điều hành) khi trình duyệt có. Rộng: cửa sổ nhỏ dưới nút; 390: ngăn kéo từ dưới lên.'
     why: "không có dữ liệu mới nào rời trang: liên kết là địa chỉ đang mở, và vẫn chỉ hiện dòng đã ký."
     actions: []
     states:
@@ -31,9 +30,10 @@ sections:
     needsApi: []
   - id: s2
     title: Ảnh xem trước khi dán liên kết
-    shows: 'tấm 1200×630 mà mạng xã hội và tin nhắn hiện khi dán liên kết: tên, số dòng đã ký, ba dòng
-      đầu, "+N dòng nữa" và vết Luyện xong, AI chấm, Thầy ký. Dựng từ publicCv bằng next/og; CV
-      không có hoặc riêng tư chỉ ra ảnh chung, không tên.'
+    shows:
+      'tấm 1200×630 mà mạng xã hội và tin nhắn hiện khi dán liên kết: tên, số dòng đã ký, ba dòng đầu, "+N dòng nữa" và
+      vết Luyện xong, AI chấm, Thầy ký. Dựng từ publicCv bằng next/og; CV không có hoặc riêng tư chỉ ra ảnh chung, không
+      tên.'
     why: verified-experience.md điều 7 (không điểm số, không tên người duyệt) và điều 4.
     actions: []
     states:
@@ -43,8 +43,9 @@ sections:
     needsApi: []
   - id: s3
     title: Điểm còn mở
-    shows: địa chỉ chia sẻ Zalo (https://zalo.me/share?url=…) chưa được kiểm với Zalo; nút vẫn mở đúng
-      liên kết CV để người dùng sao chép nếu địa chỉ đó đổi.
+    shows:
+      địa chỉ chia sẻ Zalo (https://zalo.me/share?url=…) chưa được kiểm với Zalo; nút vẫn mở đúng liên kết CV để người
+      dùng sao chép nếu địa chỉ đó đổi.
     why: không có dữ liệu mới nào rời trang.
     actions: []
     states:
@@ -55,21 +56,23 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
-      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why:
+      'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ
+      dành cho giá trị của biểu mẫu'
   - option: Đặt hộp chia sẻ trong lề 1408 của trang
     chosen: false
-    why: "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không
-      đặt lại vị trí của lớp phủ."
+    why:
+      "Cần Grammar: Popover tự canh vào mép phải của nút kích hoạt và có thể vượt lề trang; app không đặt lại vị trí của
+      lớp phủ."
   - option: Ảnh xem trước có tên chủ CV và số dòng trong ảnh chụp
     chosen: false
-    why: Route ảnh xem trước đọc CV với hạn 3 giây; trong next dev của ảnh chụp nó biên dịch lần đầu quá
-      hạn nên vẽ bản chung. Mã đã đúng (opengraph-image đọc tên và số dòng); ảnh thật sẽ có tên khi
-      chạy bản dựng.
+    why: Route ảnh xem trước đọc CV với hạn 3 giây; trong next dev của ảnh chụp nó biên dịch lần đầu quá hạn nên vẽ bản
+      chung. Mã đã đúng (opengraph-image đọc tên và số dòng); ảnh thật sẽ có tên khi chạy bản dựng.
 audit:
   builder:
     agent: next-ux-career-2
@@ -81,13 +84,14 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển
-            dụng phải cuộn qua phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng
-            CV phải lên trước ở cả hai độ rộng.
+          notes:
+            Ở 390 khối "Vì sao tin được CV này" (3 bước) đứng trước danh sách dòng CV, nên người tuyển dụng phải cuộn qua
+            phần giải thích mới thấy dòng đã ký; ở 1440 dòng CV lên trước. Dòng CV phải lên trước ở cả hai độ rộng.
         layout:
           verdict: open
-          notes: Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới
-            x≈1428 vượt gutter 1408; liên kết chia sẻ là localhost bị cắt giữa.
+          notes:
+            Ở 1440 ô xem trước 16:9 trong popover là hộp xám trống (ảnh chưa nạp); popover tràn tới x≈1428 vượt gutter 1408;
+            liên kết chia sẻ là localhost bị cắt giữa.
         actionable:
           verdict: pass
           notes: ""
@@ -102,9 +106,9 @@ audit:
           notes: ""
         truth:
           verdict: open
-          notes: Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như
-            canvas ("Minh Nguyễn · 4 dòng đã ký"); link localhost không phải
-            next.starci.vn/cv/<slug> của canvas (môi trường chụp).
+          notes:
+            Ảnh xem trước 390 chỉ ghi "CV đã xác minh bởi StarCi", không có tên chủ CV hay số dòng như canvas ("Minh Nguyễn ·
+            4 dòng đã ký"); link localhost không phải next.starci.vn/cv/<slug> của canvas (môi trường chụp).
     - n: 2
       at: 2026-11-20T15:55:18.123Z
       lenses:
@@ -128,8 +132,9 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: Ảnh xem trước hiện thẻ chung vì route dev quá 3 giây (đã ghi trong screen.yaml); link
-            localhost là môi trường chụp. Chấp nhận như follow-up.
+          notes:
+            Ảnh xem trước hiện thẻ chung vì route dev quá 3 giây (đã ghi trong screen.yaml); link localhost là môi trường
+            chụp. Chấp nhận như follow-up.
     - n: 3
       at: 2026-11-20T16:05:58.843Z
       lenses:
@@ -153,21 +158,19 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: "Đã sửa: ảnh xem trước có tên, số dòng, dòng CV và hành trình; link localhost là môi trường
-            chụp."
+          notes: "Đã sửa: ảnh xem trước có tên, số dòng, dòng CV và hành trình; link localhost là môi trường chụp."
     - n: 4
       at: 2026-11-21T04:23:02.332Z
       lenses:
         order:
           verdict: pass
-          notes: "Bảng chia sẻ mở ngay dưới nút: liên kết với Sao chép, LinkedIn, Facebook, Zalo, rồi ảnh xem
-            trước."
+          notes: "Bảng chia sẻ mở ngay dưới nút: liên kết với Sao chép, LinkedIn, Facebook, Zalo, rồi ảnh xem trước."
         layout:
           verdict: open
-          notes: "Nút trong bảng 40px (1440: y 267-306; 390: y 542-581), nhãn một dòng, ngăn kéo ở 390 có tay
-            nắm và nút Đóng. Còn mở: ở 1440 Popover chạy qua lề phải của trang tới x≈1427 (lề 1328)
-            và che tiêu đề Vì sao tin được (cần Grammar, đã ghi ở considered); thanh trên tự dựng
-            bằng Cluster như cv/public."
+          notes:
+            "Nút trong bảng 40px (1440: y 267-306; 390: y 542-581), nhãn một dòng, ngăn kéo ở 390 có tay nắm và nút Đóng. Còn
+            mở: ở 1440 Popover chạy qua lề phải của trang tới x≈1427 (lề 1328) và che tiêu đề Vì sao tin được (cần
+            Grammar, đã ghi ở considered); thanh trên tự dựng bằng Cluster như cv/public."
         actionable:
           verdict: pass
           notes: "Sao chép, ba mạng, ngăn kéo có Đóng; Ứng dụng khác chỉ khi trình duyệt có."
@@ -179,12 +182,13 @@ audit:
           notes: '"Chia sẻ CV của …", "Ảnh xem trước khi dán liên kết"; tên mạng xã hội giữ nguyên.'
         states:
           verdict: open
-          notes: "Ở 1440 ảnh xem trước là một ô xám trống, không có khung chờ hay ảnh chung; ở 390 ảnh có. Ảnh
-            trống phải có trạng thái đang tải hoặc ảnh chung."
+          notes:
+            "Ở 1440 ảnh xem trước là một ô xám trống, không có khung chờ hay ảnh chung; ở 390 ảnh có. Ảnh trống phải có trạng
+            thái đang tải hoặc ảnh chung."
         truth:
           verdict: open
           notes: "Ô liên kết ghi http://localhost:3280/cv/gallery-career-… còn ảnh xem trước ghi
-            starci-next-app-dev.starci.org/cv/gallery-career-states-example-test: hai địa chỉ cho
-            một liên kết. 1440 không có ảnh thật."
-  escalate: "needs owner: sau vòng 4 còn mở Popover tràn lề trang (cần Grammar), ảnh xem trước trống ở
-    1440 và địa chỉ trong ảnh xem trước khác liên kết sao chép, thanh trên tự dựng bằng Cluster"
+            starci-next-app-dev.starci.org/cv/gallery-career-states-example-test: hai địa chỉ cho một liên kết. 1440
+            không có ảnh thật."
+  escalate: "needs owner: sau vòng 4 còn mở Popover tràn lề trang (cần Grammar), ảnh xem trước trống ở 1440 và địa chỉ
+    trong ảnh xem trước khác liên kết sao chép, thanh trên tự dựng bằng Cluster"

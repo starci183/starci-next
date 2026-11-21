@@ -3,9 +3,9 @@ screen: cv/public
 title: CV công khai, đã tải
 route: /cv/{slug}
 area: cv
-summary: "Route: /cv/{slug} (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn
-  nguồn). Mã: fe/apps/app/src/components/blocks/PublicCv/. Trạng thái khác: cv/public-few-lines,
-  cv/public-many-lines, cv/public-not-fou"
+summary: "Route: /cv/{slug} (không cần đăng nhập; ảnh chụp: CV của Minh Nguyễn, bốn dòng từ bốn nguồn). Mã:
+  fe/apps/app/src/components/blocks/PublicCv/. Trạng thái khác: cv/public-few-lines, cv/public-many-lines,
+  cv/public-not-fou"
 code:
   - features/pages/PublicCvPage
   - components/blocks/PublicCv
@@ -19,8 +19,7 @@ shots:
 sections:
   - id: s1
     title: Thanh trên công khai
-    shows: người xem chưa đăng nhập; chỉ cần biết đây là StarCi và đổi ngôn ngữ (dòng CV đọc theo ngôn
-      ngữ đang chọn).
+    shows: người xem chưa đăng nhập; chỉ cần biết đây là StarCi và đổi ngôn ngữ (dòng CV đọc theo ngôn ngữ đang chọn).
     why: route nằm trong nhóm (auth), không có phiên và không có thanh bên của app.
     actions: []
     states:
@@ -30,9 +29,9 @@ sections:
     needsApi: []
   - id: s2
     title: Chủ CV
-    shows: 'nhà tuyển dụng thấy ngay CV của ai và ai bảo đảm: ảnh hoặc chữ đầu, tên, dấu "CV đã xác minh
-      bởi StarCi", dòng sự kiện (số dòng đã ký, ngày ký mới nhất); không email, không gói, không lộ
-      trình. Nút chính "Chia sẻ CV".'
+    shows:
+      'nhà tuyển dụng thấy ngay CV của ai và ai bảo đảm: ảnh hoặc chữ đầu, tên, dấu "CV đã xác minh bởi StarCi", dòng
+      sự kiện (số dòng đã ký, ngày ký mới nhất); không email, không gói, không lộ trình. Nút chính "Chia sẻ CV".'
     why: verified-experience.md điều 7 (chỉ hiện vai trò người ký và ngày, không hiện tên người duyệt).
     actions: []
     states:
@@ -42,11 +41,12 @@ sections:
     needsApi: []
   - id: s3
     title: Dòng CV đã ký
-    shows: mỗi dòng là câu CV, nguồn, chủ đề và vết tin cậy Luyện xong, AI chấm, Thầy ký, kèm liên kết
-      "Xác minh" và mã tới /verify/{mã}. Chỉ dòng Đã xác minh mà học viên bật Công khai, mới ký
-      trước; dòng bị thu hồi biến mất.
-    why: verified-experience.md điều 4 và 10 (chỉ mục Đã xác minh lên CV; số bài luyện là bằng chứng,
-      không tự thành dòng CV).
+    shows:
+      mỗi dòng là câu CV, nguồn, chủ đề và vết tin cậy Luyện xong, AI chấm, Thầy ký, kèm liên kết "Xác minh" và mã tới
+      /verify/{mã}. Chỉ dòng Đã xác minh mà học viên bật Công khai, mới ký trước; dòng bị thu hồi biến mất.
+    why:
+      verified-experience.md điều 4 và 10 (chỉ mục Đã xác minh lên CV; số bài luyện là bằng chứng, không tự thành dòng
+      CV).
     actions: []
     states:
       loading: null
@@ -55,10 +55,10 @@ sections:
     needsApi: []
   - id: s4
     title: Vì sao tin được CV này
-    shows: giải thích một lần ba tín hiệu mà mỗi dòng mang (Luyện xong, AI chấm, Thầy ký), và nói trang
-      không hiện điểm số hay tên người duyệt.
-    why: verified-experience.md điều 3 (AI không tự xác minh, nên "AI chấm" là một bước của vết, không
-      có điểm) và điều 7.
+    shows:
+      giải thích một lần ba tín hiệu mà mỗi dòng mang (Luyện xong, AI chấm, Thầy ký), và nói trang không hiện điểm số
+      hay tên người duyệt.
+    why: verified-experience.md điều 3 (AI không tự xác minh, nên "AI chấm" là một bước của vết, không có điểm) và điều 7.
     actions: []
     states:
       loading: null
@@ -88,17 +88,18 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Vẽ bộ lọc thành nhóm chip như canvas
     chosen: false
-    why: 'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter"
-      có số đếm; chip chỉ dành cho giá trị của biểu mẫu'
+    why:
+      'Theo quyết định của điều phối ngày 20/11: bộ lọc một danh sách là Grammar Tabs kind="filter" có số đếm; chip chỉ
+      dành cho giá trị của biểu mẫu'
   - option: Hiện bộ lọc Mọi nguồn theo số dòng
     chosen: false
-    why: "Quy tắc đã chọn: hiện Mọi nguồn khi các dòng của CV đến từ hai nguồn trở lên, vì lọc một nguồn
-      chỉ cho ra đúng danh sách cũ. Khung 4 dòng của canvas và CV 3 dòng của seed (Dự án và
-      Essentials) đều có bộ lọc vì lý do đó."
+    why: "Quy tắc đã chọn: hiện Mọi nguồn khi các dòng của CV đến từ hai nguồn trở lên, vì lọc một nguồn chỉ cho ra đúng
+      danh sách cũ. Khung 4 dòng của canvas và CV 3 dòng của seed (Dự án và Essentials) đều có bộ lọc vì lý do đó."
 audit:
   builder:
     agent: next-ux-career-2
@@ -137,8 +138,9 @@ audit:
           notes: ""
         layout:
           verdict: pass
-          notes: "Kiểm lại 1440 và 390: dải lọc là Tabs kind=filter đúng Grammar (gạch chân, chip đếm xám, vừa
-            hàng ở 390), dòng CV lên trước ở 390, mã xác minh theo SC/XXXX đã chấp nhận."
+          notes:
+            "Kiểm lại 1440 và 390: dải lọc là Tabs kind=filter đúng Grammar (gạch chân, chip đếm xám, vừa hàng ở 390), dòng
+            CV lên trước ở 390, mã xác minh theo SC/XXXX đã chấp nhận."
         actionable:
           verdict: pass
           notes: ""
@@ -159,43 +161,44 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Chủ CV và Chia sẻ CV trước, rồi dòng đã ký, cột Vì sao tin được bên phải (390: sau danh
-            sách), chân trang cuối; đúng thứ nhà tuyển dụng cần."
+          notes:
+            "Chủ CV và Chia sẻ CV trước, rồi dòng đã ký, cột Vì sao tin được bên phải (390: sau danh sách), chân trang cuối;
+            đúng thứ nhà tuyển dụng cần."
         layout:
           verdict: open
-          notes: 'Chiều cao: Đăng nhập, đổi ngôn ngữ, Chia sẻ CV và Xác minh đều 40px (đo 1440 và 390). Nhãn
-            một dòng ở 390, thanh trên vừa hàng, không tràn. Vùng chạm: nút 40px vẫn dưới 44 ở 390,
-            Grammar không nới vùng chạm cho Button (cần Grammar, ghi, không giữ mở). Còn mở: thanh
-            trên tự dựng bằng Cluster trong PublicCv/component.tsx (TopBar riêng, Đăng nhập là liên
-            kết tới trang đăng nhập), trong khi /verify dùng PublicTopBar (Đăng nhập mở hộp đăng
-            nhập); canvas ghi luật "app không dựng thanh trên bằng Cluster" và một kiểu cho mỗi
-            phần tử. Phụ: ở 390 biểu tượng đầu hàng canh giữa một hàng cao 5-6 dòng nên lơ lửng giữa
-            câu và nút Xác minh.'
+          notes:
+            'Chiều cao: Đăng nhập, đổi ngôn ngữ, Chia sẻ CV và Xác minh đều 40px (đo 1440 và 390). Nhãn một dòng ở 390, thanh
+            trên vừa hàng, không tràn. Vùng chạm: nút 40px vẫn dưới 44 ở 390, Grammar không nới vùng chạm cho Button
+            (cần Grammar, ghi, không giữ mở). Còn mở: thanh trên tự dựng bằng Cluster trong PublicCv/component.tsx
+            (TopBar riêng, Đăng nhập là liên kết tới trang đăng nhập), trong khi /verify dùng PublicTopBar (Đăng nhập mở
+            hộp đăng nhập); canvas ghi luật "app không dựng thanh trên bằng Cluster" và một kiểu cho mỗi phần tử. Phụ: ở
+            390 biểu tượng đầu hàng canh giữa một hàng cao 5-6 dòng nên lơ lửng giữa câu và nút Xác minh.'
         actionable:
           verdict: pass
-          notes: "Trang công khai, người xem không sửa giá trị nào; mỗi dòng có nút Xác minh tới /verify/{mã},
-            một nút chính Chia sẻ CV, chân trang có lối tạo CV."
+          notes:
+            "Trang công khai, người xem không sửa giá trị nào; mỗi dòng có nút Xác minh tới /verify/{mã}, một nút chính Chia
+            sẻ CV, chân trang có lối tạo CV."
         live:
           verdict: pass
-          notes: "CV công khai chỉ có dòng đã ký; mỗi dòng có biểu tượng đã xác minh, không có trạng thái chạy
-            hay chờ để hiện."
+          notes: "CV công khai chỉ có dòng đã ký; mỗi dòng có biểu tượng đã xác minh, không có trạng thái chạy hay chờ để hiện."
         words:
           verdict: open
-          notes: 'Câu "Không hiện điểm số hay tên người duyệt" lặp hai lần trên một trang (chú thích dưới
-            danh sách và dòng cuối cột Vì sao tin được). Bước Luyện xong viết "bài Accepted" (chữ
-            Anh, chọn một: "bài đạt"). Dòng 2 ghi "(StarCi Bản chất)" trong câu còn huy hiệu
-            nguồn ghi "Essentials": một khoá hai tên. Lời người ký đã thống nhất (Thầy ký / Người
-            duyệt thầy chỉ định ký, bước 3 giải thích cả hai).'
+          notes:
+            'Câu "Không hiện điểm số hay tên người duyệt" lặp hai lần trên một trang (chú thích dưới danh sách và dòng cuối
+            cột Vì sao tin được). Bước Luyện xong viết "bài Accepted" (chữ Anh, chọn một: "bài đạt"). Dòng 2 ghi
+            "(StarCi Bản chất)" trong câu còn huy hiệu nguồn ghi "Essentials": một khoá hai tên. Lời người ký đã thống
+            nhất (Thầy ký / Người duyệt thầy chỉ định ký, bước 3 giải thích cả hai).'
         states:
           verdict: open
-          notes: "Đang tải, lỗi tải, không tìm thấy và ít dòng đã có ở gallery. Nhưng cv/public-many-lines
-            trùng từng byte với màn này (cùng sha 1d98…/701c…, 3 dòng), nên trạng thái từ 8 dòng
-            (Tabs lọc nguồn, Xem thêm) chưa được thấy ở đâu; cv/public-not-found mất thanh trên (xem
-            màn đó)."
+          notes:
+            "Đang tải, lỗi tải, không tìm thấy và ít dòng đã có ở gallery. Nhưng cv/public-many-lines trùng từng byte với màn
+            này (cùng sha 1d98…/701c…, 3 dòng), nên trạng thái từ 8 dòng (Tabs lọc nguồn, Xem thêm) chưa được thấy ở
+            đâu; cv/public-not-found mất thanh trên (xem màn đó)."
         truth:
           verdict: open
-          notes: 'Dữ liệu ảnh là thật (seed, mã xác minh thật). Nhưng summary nói "CV của Minh Nguyễn, bốn
-            dòng từ bốn nguồn" trong khi ảnh là Học viên StarCi, 3 dòng, 2 nguồn; considered "Hiện
-            bộ lọc Mọi nguồn theo số dòng" còn ghi quy tắc từ hai nguồn, ngược với mã
-            (PUBLIC_CV_CHIPS_FROM = 8); phần s6 "hai điều chưa chắc" không nêu điều nào.'
+          notes:
+            'Dữ liệu ảnh là thật (seed, mã xác minh thật). Nhưng summary nói "CV của Minh Nguyễn, bốn dòng từ bốn nguồn"
+            trong khi ảnh là Học viên StarCi, 3 dòng, 2 nguồn; considered "Hiện bộ lọc Mọi nguồn theo số dòng" còn ghi
+            quy tắc từ hai nguồn, ngược với mã (PUBLIC_CV_CHIPS_FROM = 8); phần s6 "hai điều chưa chắc" không nêu điều
+            nào.'
   escalate: null

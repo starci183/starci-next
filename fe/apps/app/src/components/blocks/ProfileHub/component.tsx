@@ -9,6 +9,7 @@ import {
     Link,
     Page,
     Section,
+    Skeleton,
     Stack,
     Switch,
     Text,
@@ -69,9 +70,11 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
                         {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                     />
                     <Stack gap="identity">
-                        <Text isStrong>{identity.shownName}</Text>
+                        <Text isStrong isLoading={isLoading}>
+                            {identity.shownName}
+                        </Text>
                         <Cluster gap="inline" align="center" wrap>
-                            <Text tone="muted">
+                            <Text tone="muted" isLoading={isLoading}>
                                 {[
                                     identity.email,
                                     `${props.labels.goalTitle}: ${identity.goalTitle ?? props.labels.goalNone}`,
@@ -79,9 +82,11 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
                                     .filter((part) => part !== "")
                                     .join(" · ")}
                             </Text>
-                            <Link href={props.labels.goalHref}>
-                                {identity.goalTitle === null ? props.labels.goalChoose : props.labels.goalChange}
-                            </Link>
+                            {isLoading ? null : (
+                                <Link href={props.labels.goalHref}>
+                                    {identity.goalTitle === null ? props.labels.goalChoose : props.labels.goalChange}
+                                </Link>
+                            )}
                         </Cluster>
                     </Stack>
                 </Cluster>
@@ -115,6 +120,7 @@ const CvLinkSection = (
                             isLoading={isLoading}
                         />
                         <Switch
+                            kind="compact"
                             label={props.labels.cvLinkSwitch}
                             description={props.labels.cvLinkSwitchHint}
                             isSelected={link.isPublic}
@@ -148,7 +154,9 @@ const cvRowOf = (
     ],
     detail: (
         <Stack gap="row">
-            <Text tone="muted">{[line.signed, line.evidence].filter((part) => part !== "").join(" · ")}</Text>
+            <Text tone="muted" isLoading={isLoading}>
+                {[line.signed, line.evidence].filter((part) => part !== "").join(" · ")}
+            </Text>
             <CopyField
                 label={labels.verifyLinkLabel}
                 value={line.url}
@@ -295,7 +303,9 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
                 </Stack>
                 <Section title={props.labels.asideExperienceTitle} headingLevel={2} isLoading={isLoading}>
                     <Stack gap="inline" align="start">
-                        <Text tone="muted">{aside.experience}</Text>
+                        <Text tone="muted" isLoading={isLoading}>
+                            {aside.experience}
+                        </Text>
                         <Button intent="neutral" endArrow href={props.labels.experienceHref} isLoading={isLoading}>
                             {props.labels.asideExperienceLink}
                         </Button>
@@ -313,6 +323,44 @@ const EditAction = (props: { readonly labels: ProfileHubLabels; readonly isNew: 
     </Button>
 )
 
+/** One block of the loading page: a bar for its title, then the lines its body will take. */
+const SkeletonBlock = (props: { readonly lines: number }) => (
+    <Stack gap="row">
+        <Skeleton shape="text" lines={1} />
+        <Skeleton shape="text" lines={props.lines} />
+    </Stack>
+)
+
+/**
+ * The profile while its first reads load: no section title, label or placeholder word, only the geometry of the page (identity with
+ * its avatar, the CV link, the verified lines, the account rows; the rail's figures) as Skeleton bars.
+ */
+const ProfileSkeleton = () => (
+    <Grid
+        kind="main-rail"
+        primary={
+            <Stack gap="region">
+                <Stack gap="row">
+                    <Skeleton shape="text" lines={1} />
+                    <Cluster gap="inline" align="center">
+                        <Skeleton shape="circle" size="lg" />
+                        <Skeleton shape="text" lines={2} />
+                    </Cluster>
+                </Stack>
+                <SkeletonBlock lines={3} />
+                <SkeletonBlock lines={6} />
+                <SkeletonBlock lines={4} />
+            </Stack>
+        }
+        rail={
+            <Stack gap="region">
+                <SkeletonBlock lines={4} />
+                <SkeletonBlock lines={2} />
+            </Stack>
+        }
+    />
+)
+
 /**
  * Draws the profile: who the learner is, the combined CV link with its public switch, the verified CV lines each with its own link and
  * switch, and the account rows. The rail holds the quick progress and the experience summary (below the page at 390). Every part
@@ -321,8 +369,11 @@ const EditAction = (props: { readonly labels: ProfileHubLabels; readonly isNew: 
 export const ProfileHubBase = (props: ProfileHubBaseProps) => {
     const { labels, slotLabels, views } = props.props
     const part = { labels, slotLabels, onRetry: props.on.retry }
+    // While the first reads load the page is one skeleton (Grammar draws its text as bars), never the placeholder words.
+    const isFirstLoad = "isLoading" in views.identity
     return (
         <Page
+            isLoading={isFirstLoad}
             header={{
                 title: labels.title,
                 titleScale: "standard",
@@ -331,21 +382,30 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
                 actions: <EditAction labels={labels} isNew={props.props.isNew} />,
             }}
         >
-            <Grid
-                kind="main-rail"
-                primary={
-                    <Stack gap="region">
-                        {props.props.isSaved ? (
-                            <Alert tone="affirmative" title={labels.savedTitle} description={labels.savedText} />
-                        ) : null}
-                        <IdentitySection {...part} slot={views.identity} />
-                        <CvLinkSection {...part} views={views} isCvLinkBusy={props.props.isCvLinkBusy} on={props.on} />
-                        <CvSection {...part} views={views} on={props.on} />
-                        <AccountSection {...part} views={views} devicesCount={props.props.devicesCount} />
-                    </Stack>
-                }
-                rail={<Aside {...part} views={views} />}
-            />
+            {isFirstLoad ? (
+                <ProfileSkeleton />
+            ) : (
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="region">
+                            {props.props.isSaved ? (
+                                <Alert tone="affirmative" title={labels.savedTitle} description={labels.savedText} />
+                            ) : null}
+                            <IdentitySection {...part} slot={views.identity} />
+                            <CvLinkSection
+                                {...part}
+                                views={views}
+                                isCvLinkBusy={props.props.isCvLinkBusy}
+                                on={props.on}
+                            />
+                            <CvSection {...part} views={views} on={props.on} />
+                            <AccountSection {...part} views={views} devicesCount={props.props.devicesCount} />
+                        </Stack>
+                    }
+                    rail={<Aside {...part} views={views} />}
+                />
+            )}
         </Page>
     )
 }

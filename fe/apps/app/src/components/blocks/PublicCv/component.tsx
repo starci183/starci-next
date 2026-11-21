@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import {
     Avatar,
     Button,
@@ -18,8 +19,7 @@ import {
     Text,
     type ListRowData,
 } from "@starci/grammar/common"
-import { BrandLockup, ExperienceGlyph, NotFoundNotice, SlotView } from "@starci-next/ui"
-import { LocaleSwitch } from "@/components/blocks/LocaleSwitch"
+import { ExperienceGlyph, NotFoundNotice, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
     PublicCvLabels,
@@ -70,6 +70,8 @@ export type PublicCvBaseProps = {
         readonly previewSrc: string
         /** Where the statics are served from: the not-found notice's illustration. */
         readonly staticsBaseUrl: string
+        /** The public top bar (PublicTopBar): the same brand, language and sign-in as the verification page. */
+        readonly top: ReactNode
     }
     readonly on: {
         readonly retry: () => void
@@ -79,24 +81,6 @@ export type PublicCvBaseProps = {
         readonly shareNative: () => void
     }
 }
-
-/** The top of the page: the brand, the language and the way in. It is the only chrome of a public page. */
-const TopBar = (props: { readonly labels: PublicCvLabels }) => (
-    <Cluster gap="row" align="center" justify="between">
-        <BrandLockup
-            brand={props.labels.brand}
-            logoSrc={props.labels.logoSrc}
-            homeHref={props.labels.homeHref}
-            size="header"
-        />
-        <Cluster gap="inline" align="center">
-            <LocaleSwitch />
-            <Button intent="neutral" href={props.labels.signInHref}>
-                {props.labels.signIn}
-            </Button>
-        </Cluster>
-    </Cluster>
-)
 
 /** The share sheet body: the link with its copy field, the places to send it, and the picture a pasted link shows. */
 const ShareBody = (props: PublicCvBaseProps["props"] & Pick<PublicCvBaseProps, "on">) => (
@@ -329,7 +313,7 @@ const NotFound = (props: { readonly labels: PublicCvLabels; readonly staticsBase
 export const PublicCvBase = (props: PublicCvBaseProps) => (
     <Page>
         <Stack gap="region">
-            <TopBar labels={props.props.labels} />
+            {props.props.top}
             {props.shape === "notFound" ? (
                 <NotFound labels={props.props.labels} staticsBaseUrl={props.props.staticsBaseUrl} />
             ) : (

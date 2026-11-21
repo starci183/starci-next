@@ -3,8 +3,8 @@ screen: career/review-queue-error
 title: Duyệt trải nghiệm, lỗi tải
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, lỗi tải.** Đọc hàng đợi thất bại: khung báo lỗi có nút Thử
-  lại, các mục chưa duyệt vẫn nguyên."
+summary: "**Concept: Duyệt trải nghiệm, lỗi tải.** Đọc hàng đợi thất bại: khung báo lỗi có nút Thử lại, các mục chưa
+  duyệt vẫn nguyên."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
@@ -42,7 +42,10 @@ audit:
           notes: "Đầu trang rồi khung báo lỗi ngay chỗ hàng chờ, ở cả 1440 và 390."
         layout:
           verdict: pass
-          notes: "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn. Nút Thử lại trong Alert chỉ cao khoảng 31px ở 1440 và 32px ở 390 (vùng bấm dưới 44px): đó là cỡ action của Alert, cần Grammar, không giữ lens."
+          notes:
+            "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn. Nút Thử lại trong Alert chỉ
+            cao khoảng 31px ở 1440 và 32px ở 390 (vùng bấm dưới 44px): đó là cỡ action của Alert, cần Grammar, không giữ
+            lens."
         actionable:
           verdict: pass
           notes: "Thử lại đọc lại hàng chờ."
@@ -51,7 +54,10 @@ audit:
           notes: "Biểu tượng cảnh báo và tông đỏ của Alert; lỗi không cần chuyển động."
         words:
           verdict: open
-          notes: 'Chỉ có câu chung "Không tải được phần này."; summary hứa câu nói các mục chưa duyệt vẫn nguyên nhưng không có errorDescription (ReviewQueue/index.tsx chỉ truyền useSlotLabels()(t("empty"))). Frontend thêm được câu này.'
+          notes:
+            'Chỉ có câu chung "Không tải được phần này."; summary hứa câu nói các mục chưa duyệt vẫn nguyên nhưng không có
+            errorDescription (ReviewQueue/index.tsx chỉ truyền useSlotLabels()(t("empty"))). Frontend thêm được câu
+            này.'
         states:
           verdict: pass
           notes: "Đây là trạng thái lỗi, có ở 1440 và 390."

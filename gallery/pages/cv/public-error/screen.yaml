@@ -3,9 +3,8 @@ screen: cv/public-error
 title: CV công khai, lỗi tải
 route: /cv/[slug]
 area: cv
-summary: "**Concept: CV công khai, lỗi tải.** Lõi không trả lời và trình duyệt cũng không đọc được.
-  Mục tiêu: thông báo lỗi với nút Thử lại. Bố cục: một thông báo lỗi trang giữa trang, thanh trên
-  giữ nguyên."
+summary: "**Concept: CV công khai, lỗi tải.** Lõi không trả lời và trình duyệt cũng không đọc được. Mục tiêu: thông báo
+  lỗi với nút Thử lại. Bố cục: một thông báo lỗi trang giữa trang, thanh trên giữ nguyên."
 code:
   - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
   - features/pages/PublicCvPage/
@@ -47,10 +46,10 @@ audit:
           notes: "Thanh trên, thông báo lỗi với Thử lại, chân trang."
         layout:
           verdict: open
-          notes: 'Nút "Thử lại" cao 32px (1440: y 116-147; 390: y 168-199), là cỡ sm trong một thông báo cả
-            trang, không phải hàng danh sách hay thanh công cụ dày; cần 40px. Canvas vẽ thông báo
-            lỗi trang giữa trang, ảnh là dải hồng ở đầu trang rồi trống. Thanh trên tự dựng bằng
-            Cluster như cv/public.'
+          notes:
+            'Nút "Thử lại" cao 32px (1440: y 116-147; 390: y 168-199), là cỡ sm trong một thông báo cả trang, không phải hàng
+            danh sách hay thanh công cụ dày; cần 40px. Canvas vẽ thông báo lỗi trang giữa trang, ảnh là dải hồng ở đầu
+            trang rồi trống. Thanh trên tự dựng bằng Cluster như cv/public.'
         actionable:
           verdict: pass
           notes: "Có Thử lại; đổi ngôn ngữ, Đăng nhập và lối tạo CV vẫn còn."
@@ -59,14 +58,13 @@ audit:
           notes: "Lỗi hiện bằng biểu tượng và tông đỏ, có lời và hành động."
         words:
           verdict: pass
-          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không
-            mã thô.'
+          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không mã thô.'
         states:
           verdict: pass
           notes: "Trạng thái lỗi tải có ở 1440 và 390."
         truth:
           verdict: open
-          notes: "screen.yaml chép phần của canvas cho màn đã tải (Chủ CV và Chia sẻ CV, Dòng CV với
-            ChoiceChips) trong khi ảnh lỗi không có các phần đó, và ghi ChoiceChips ngược quyết định
-            Tabs filter; considered rỗng."
+          notes:
+            "screen.yaml chép phần của canvas cho màn đã tải (Chủ CV và Chia sẻ CV, Dòng CV với ChoiceChips) trong khi ảnh
+            lỗi không có các phần đó, và ghi ChoiceChips ngược quyết định Tabs filter; considered rỗng."
   escalate: null

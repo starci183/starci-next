@@ -3,27 +3,25 @@ screen: profile/overview
 title: Hồ sơ của bạn
 route: /profile
 area: profile
-summary: "Không còn ngăn nền riêng ở cột bên; công tắc một kiểu. Route: /profile (ảnh chụp: học viên
-  đã có hai dòng CV Đã xác minh, một máy nối, gói miễn phí). Mã:
-  fe/apps/app/src/components/blocks/ProfileHub/. Trang sửa: profile/edit. Trạng thái khác:
-  profile/new (học viên mới), prof"
+summary: "Không còn ngăn nền riêng ở cột bên; công tắc một kiểu. Route: /profile (ảnh chụp: học viên đã có hai dòng CV
+  Đã xác minh, một máy nối, gói miễn phí). Mã: fe/apps/app/src/components/blocks/ProfileHub/. Trang sửa: profile/edit.
+  Trạng thái khác: profile/new (học viên mới), prof"
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
   "390":
     file: 390.png
-    sha256: dee7ecd92206092a19113995ede41aa7c231f8795db8af3a1e2e0178c3ead3aa
+    sha256: c7b311c3122e83bf1209dd76351f661c7b0fd41707789b9d58b8fb143145533c
   "1440":
     file: 1440.png
-    sha256: d2c0a65bde80c4ea36cf3c7b71ff1fdb7124dc139c6e635d1948c5bab0dfba52
+    sha256: dd4bda8cf2008c6eba28515b35789358cd5f42171a92459bc817b7d920aff019
 sections:
   - id: s1
     title: Mục tiêu
-    shows: 'thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh
-      nghiệm và Tiến độ (không có mục riêng ở thanh bên). Nút chính "Sửa hồ sơ" (với học viên mới là
-      "Thêm ảnh và tên"). Dòng dưới tiêu đề: Học viên · gói · số mục đã xác minh trên ngưỡng giới
-      thiệu việc làm.'
+    shows: 'thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ
+      (không có mục riêng ở thanh bên). Nút chính "Sửa hồ sơ" (với học viên mới là "Thêm ảnh và tên"). Dòng dưới tiêu
+      đề: Học viên · gói · số mục đã xác minh trên ngưỡng giới thiệu việc làm.'
     why: Theo khung Grammar 0.50 của màn này.
     actions: []
     states:
@@ -33,9 +31,9 @@ sections:
     needsApi: []
   - id: s2
     title: Danh tính và liên kết CV
-    shows: ảnh, tên, email và lộ trình mục tiêu. Liên kết CV tổng hợp (myCvLink) là hộp có Sao chép và
-      công tắc "Cho người khác xem CV bằng liên kết này" (setCvVisibility); chưa có dòng đã xác minh
-      thì chỉ nói khi nào liên kết xuất hiện.
+    shows:
+      ảnh, tên, email và lộ trình mục tiêu. Liên kết CV tổng hợp (myCvLink) là hộp có Sao chép và công tắc "Cho người
+      khác xem CV bằng liên kết này" (setCvVisibility); chưa có dòng đã xác minh thì chỉ nói khi nào liên kết xuất hiện.
     why: Theo khung Grammar 0.50 của màn này.
     actions: []
     states:
@@ -45,9 +43,9 @@ sections:
     needsApi: []
   - id: s3
     title: CV đã xác minh và tài khoản
-    shows: mỗi dòng là một mục Đã xác minh với người ký, ngày, bằng chứng, mã /verify/…, nút Sao chép và
-      công tắc công khai riêng. Rỗng thì có chỉ dẫn và nút. Tài khoản gồm máy đã nối và gói, mỗi
-      hàng một liên kết.
+    shows:
+      mỗi dòng là một mục Đã xác minh với người ký, ngày, bằng chứng, mã /verify/…, nút Sao chép và công tắc công khai
+      riêng. Rỗng thì có chỉ dẫn và nút. Tài khoản gồm máy đã nối và gói, mỗi hàng một liên kết.
     why: Theo khung Grammar 0.50 của màn này.
     actions: []
     states:
@@ -57,8 +55,7 @@ sections:
     needsApi: []
   - id: s4
     title: Cột phải
-    shows: tiến độ nhanh với "Xem tiến độ" và tóm tắt Kinh nghiệm với "Mở Kinh nghiệm"; ở 390 nằm cuối
-      trang.
+    shows: tiến độ nhanh với "Xem tiến độ" và tóm tắt Kinh nghiệm với "Mở Kinh nghiệm"; ở 390 nằm cuối trang.
     why: Theo khung Grammar 0.50 của màn này.
     actions: []
     states:
@@ -68,9 +65,9 @@ sections:
     needsApi: []
   - id: s5
     title: Sửa hồ sơ
-    shows: trang con "Hồ sơ / Sửa". Ảnh gửi thẳng tới kho đối tượng và tự lưu; tên chờ "Lưu thay đổi"
-      (Hủy trung tính); đang tải ảnh thì nút Lưu tắt; xóa ảnh hỏi xác nhận. Lưu xong quay về Hồ sơ
-      với dòng "Đã cập nhật hồ sơ".
+    shows:
+      trang con "Hồ sơ / Sửa". Ảnh gửi thẳng tới kho đối tượng và tự lưu; tên chờ "Lưu thay đổi" (Hủy trung tính); đang
+      tải ảnh thì nút Lưu tắt; xóa ảnh hỏi xác nhận. Lưu xong quay về Hồ sơ với dòng "Đã cập nhật hồ sơ".
     why: Theo khung Grammar 0.50 của màn này.
     actions: []
     states:
@@ -81,25 +78,25 @@ sections:
 considered:
   - option: Không còn ngăn nền riêng ở cột bên; công tắc một kiểu.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Cho pass vì tên không còn là email
     chosen: false
-    why: Lỗi email đã hết, nhưng ảnh vẫn không phải trạng thái có dữ liệu, và nhãn trung tính trùng nhãn
-      ô nhập.
+    why: Lỗi email đã hết, nhưng ảnh vẫn không phải trạng thái có dữ liệu, và nhãn trung tính trùng nhãn ô nhập.
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: 'Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối
-      2026-11-20T22:24:04.211Z); lens cuối: order pass, layout open, actionable pass, live pass,
-      words open, states pass, truth open. Sau vòng 4 đã sửa: lề nội dung 288/1408 (Page thường +
-      Grid main-rail thay chrome panes), tên trống hiện "Chưa đặt tên" (khoá
-      app.profile.identity.unnamed), avatar vẽ từ email tài khoản như thanh trên, dòng gói rút gọn
-      không bị cắt ở 390; ảnh chụp bằng học viên cv-multi có ba dòng đã xác minh. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
-      run).'
+    why:
+      'Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối 2026-11-20T22:24:04.211Z); lens
+      cuối: order pass, layout open, actionable pass, live pass, words open, states pass, truth open. Sau vòng 4 đã sửa:
+      lề nội dung 288/1408 (Page thường + Grid main-rail thay chrome panes), tên trống hiện "Chưa đặt tên" (khoá
+      app.profile.identity.unnamed), avatar vẽ từ email tài khoản như thanh trên, dòng gói rút gọn không bị cắt ở 390;
+      ảnh chụp bằng học viên cv-multi có ba dòng đã xác minh. Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ
+      mới theo đường harness đã duyệt (audit: null, audit run).'
   - option: "Auditor vòng 2: cho layout pass vì Grammar cho phép Switch compact trong hàng danh sách"
     chosen: false
-    why: "Grammar cho phép compact, nhưng công tắc liên kết CV cũng là hàng cài đặt có nhãn và mô tả; hai kiểu trên một trang trái luật một kiểu cho mỗi phần tử và trái chính summary."
+    why: "Grammar cho phép compact, nhưng công tắc liên kết CV cũng là hàng cài đặt có nhãn và mô tả; hai kiểu trên một
+      trang trái luật một kiểu cho mỗi phần tử và trái chính summary."
 audit:
   builder:
     agent: next-one-edition
@@ -111,68 +108,90 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: Đầu trang có tiêu đề, dòng meta và nút chính "Thêm ảnh và tên"; rồi Danh tính, Liên kết CV,
-            các dòng CV đã xác minh, Tài khoản; cột phải (Tiến độ nhanh, Kinh nghiệm) xuống cuối
-            trang ở 390 đúng như mục s4.
+          notes:
+            Đầu trang có tiêu đề, dòng meta và nút chính "Thêm ảnh và tên"; rồi Danh tính, Liên kết CV, các dòng CV đã xác
+            minh, Tài khoản; cột phải (Tiến độ nhanh, Kinh nghiệm) xuống cuối trang ở 390 đúng như mục s4.
         layout:
           verdict: open
-          notes: 'Ở 390 liên kết đầu mục "Mở Kinh nghiệm" đè lên dòng "3 mục đã xác minh, đủ để được giới
-            thiệu việc làm"; "Xem tiến độ" cũng rơi xuống dòng riêng sát ngay hàng đầu tiên. Chiều
-            cao: các nút "Sao chép", "Quản lý", "Xem Premium" chỉ khoảng 32px, dưới 40 và dưới vùng
-            chạm 44 ở 390 (chúng không nằm trong đầu trang nên cỡ sm trong ListRow được phép, nhưng
-            vùng chạm vẫn phải đủ 44). Không có nhãn xuống dòng: nút đầu trang và "Mở menu" nằm một
-            dòng ở 390, đầu trang không tràn. Ở 1440 mô tả dòng CV bị cắt "…" làm mất mã /verify và
-            phần bằng chứng.'
+          notes:
+            'Ở 390 liên kết đầu mục "Mở Kinh nghiệm" đè lên dòng "3 mục đã xác minh, đủ để được giới thiệu việc làm"; "Xem
+            tiến độ" cũng rơi xuống dòng riêng sát ngay hàng đầu tiên. Chiều cao: các nút "Sao chép", "Quản lý", "Xem
+            Premium" chỉ khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390 (chúng không nằm trong đầu trang nên cỡ sm
+            trong ListRow được phép, nhưng vùng chạm vẫn phải đủ 44). Không có nhãn xuống dòng: nút đầu trang và "Mở
+            menu" nằm một dòng ở 390, đầu trang không tràn. Ở 1440 mô tả dòng CV bị cắt "…" làm mất mã /verify và phần
+            bằng chứng.'
         actionable:
           verdict: open
-          notes: Công tắc ở mỗi dòng CV không có nhãn nhìn thấy (chỉ nhãn ẩn), người học không biết bật là
-            công khai dòng đó; mã /verify/… bị cắt "1CE…" nên không đọc được dù là giá trị để chia
-            sẻ. Các giá trị khác đều có đường đổi (Chọn lộ trình, Thêm ảnh và tên, Quản lý, Xem
-            Premium, công tắc liên kết CV).
+          notes:
+            Công tắc ở mỗi dòng CV không có nhãn nhìn thấy (chỉ nhãn ẩn), người học không biết bật là công khai dòng đó; mã
+            /verify/… bị cắt "1CE…" nên không đọc được dù là giá trị để chia sẻ. Các giá trị khác đều có đường đổi (Chọn
+            lộ trình, Thêm ảnh và tên, Quản lý, Xem Premium, công tắc liên kết CV).
         live:
           verdict: open
-          notes: "Công tắc liên kết CV tắt khi đang lưu, nhưng công tắc từng dòng CV (toggleLine) không có
-            trạng thái đang lưu hay lỗi: bấm xong không thấy chờ, hỏng không thấy báo. Trang không
-            có việc chạy dài nào khác."
+          notes:
+            "Công tắc liên kết CV tắt khi đang lưu, nhưng công tắc từng dòng CV (toggleLine) không có trạng thái đang lưu hay
+            lỗi: bấm xong không thấy chờ, hỏng không thấy báo. Trang không có việc chạy dài nào khác."
         words:
           verdict: open
-          notes: '"Bài Accepted" lẫn tiếng Anh; thanh bên ghi "Projects" còn huy hiệu dòng CV ghi "Dự án" (hai
-            từ cho một khái niệm), "Essentials" cạnh "StarCi Bản chất" trong cùng một dòng; người ký
-            lúc là "Thầy", lúc là "Người duyệt do thầy chỉ định"; mã /verify hiện thô và bị cắt.'
+          notes:
+            '"Bài Accepted" lẫn tiếng Anh; thanh bên ghi "Projects" còn huy hiệu dòng CV ghi "Dự án" (hai từ cho một khái
+            niệm), "Essentials" cạnh "StarCi Bản chất" trong cùng một dòng; người ký lúc là "Thầy", lúc là "Người duyệt
+            do thầy chỉ định"; mã /verify hiện thô và bị cắt.'
         states:
           verdict: open
-          notes: Code có SlotView cho đang tải, lỗi từng vùng và forbidden=hide, nhưng gallery không có ảnh
-            profile/overview đang tải, lỗi một vùng hay không có quyền ở 1440 và 390, dù canvas đã
-            vẽ overview-loading và overview-partial-error. Chỉ có trạng thái có dữ liệu (và
-            profile/new cho rỗng).
+          notes:
+            Code có SlotView cho đang tải, lỗi từng vùng và forbidden=hide, nhưng gallery không có ảnh profile/overview đang
+            tải, lỗi một vùng hay không có quyền ở 1440 và 390, dù canvas đã vẽ overview-loading và
+            overview-partial-error. Chỉ có trạng thái có dữ liệu (và profile/new cho rỗng).
         truth:
           verdict: open
-          notes: 'Summary ghi ảnh chụp "hai dòng CV, một máy nối, gói miễn phí" nhưng ảnh có ba dòng, "Chưa
-            nối máy nào" và gói Premium. Cột phải ghi 0 khái niệm đã chứng minh, 0 bài, chuỗi 0 ngày
-            trong khi có ba mục đã xác minh từ dự án và Essentials: dữ liệu mẫu không khớp nhau.
-            Liên kết CV dùng slug "learner-4" giống mã nội bộ, không phải slug người đọc được.'
+          notes:
+            'Summary ghi ảnh chụp "hai dòng CV, một máy nối, gói miễn phí" nhưng ảnh có ba dòng, "Chưa nối máy nào" và gói
+            Premium. Cột phải ghi 0 khái niệm đã chứng minh, 0 bài, chuỗi 0 ngày trong khi có ba mục đã xác minh từ dự
+            án và Essentials: dữ liệu mẫu không khớp nhau. Liên kết CV dùng slug "learner-4" giống mã nội bộ, không phải
+            slug người đọc được.'
     - n: 2
       at: 2026-11-21T04:23:06.592Z
       lenses:
         order:
           verdict: pass
-          notes: "Giữ thứ tự vòng 1: đầu trang (tiêu đề, meta, nút chính), Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột phải xuống cuối ở 390."
+          notes:
+            "Giữ thứ tự vòng 1: đầu trang (tiêu đề, meta, nút chính), Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột
+            phải xuống cuối ở 390."
         layout:
           verdict: open
-          notes: 'Đã sửa: "Mở Kinh nghiệm" không còn đè chữ; Quản lý, Xem Premium, Xem tiến độ, Mở Kinh nghiệm cao 40px; mã /verify hiện đủ ở 1440. Còn: (1) hai kiểu công tắc trên cùng trang: công tắc liên kết CV là toggle 72x40, công tắc mỗi dòng là compact 32x18, dù cả hai là hàng cài đặt có nhãn và mô tả (Grammar dành compact cho hàng cài đặt); summary ghi "công tắc một kiểu" nhưng ảnh không đúng. (2) Tiến độ nhanh: danh sách số chỉ rộng khoảng 100px trong cột phải 320px, nhãn "Khái niệm đã chứng minh" xuống hai dòng ở 1440 và 390. Checklist: nút đầu trang 40px, một dòng, không tràn ở 390; công tắc compact lấy cả nhãn làm vùng chạm nên đủ 44.'
+          notes:
+            'Đã sửa: "Mở Kinh nghiệm" không còn đè chữ; Quản lý, Xem Premium, Xem tiến độ, Mở Kinh nghiệm cao 40px; mã
+            /verify hiện đủ ở 1440. Còn: (1) hai kiểu công tắc trên cùng trang: công tắc liên kết CV là toggle 72x40,
+            công tắc mỗi dòng là compact 32x18, dù cả hai là hàng cài đặt có nhãn và mô tả (Grammar dành compact cho
+            hàng cài đặt); summary ghi "công tắc một kiểu" nhưng ảnh không đúng. (2) Tiến độ nhanh: danh sách số chỉ
+            rộng khoảng 100px trong cột phải 320px, nhãn "Khái niệm đã chứng minh" xuống hai dòng ở 1440 và 390.
+            Checklist: nút đầu trang 40px, một dòng, không tràn ở 390; công tắc compact lấy cả nhãn làm vùng chạm nên đủ
+            44.'
         actionable:
           verdict: fixed
-          notes: 'Công tắc mỗi dòng CV nay có nhãn "Hiện trên CV công khai" và mô tả; mã /verify đọc đủ ở 1440, ở 390 rút giữa nhưng có nút Sao chép.'
+          notes:
+            'Công tắc mỗi dòng CV nay có nhãn "Hiện trên CV công khai" và mô tả; mã /verify đọc đủ ở 1440, ở 390 rút giữa
+            nhưng có nút Sao chép.'
         live:
           verdict: fixed
-          notes: "Công tắc mỗi dòng có lineState: đang lưu thì tắt và mô tả đổi sang câu đang lưu, hỏng thì errorMessage (ProfileHub cvRowOf). Không có ảnh của hai trạng thái này, kiểm trên code."
+          notes: "Công tắc mỗi dòng có lineState: đang lưu thì tắt và mô tả đổi sang câu đang lưu, hỏng thì errorMessage
+            (ProfileHub cvRowOf). Không có ảnh của hai trạng thái này, kiểm trên code."
         words:
           verdict: open
-          notes: '"Bài Accepted" ở Tiến độ nhanh vẫn lẫn tiếng Anh (khoá dùng chung với Luyện code, cần một từ tiếng Việt cho cả app); dòng CV thứ hai gắn huy hiệu "Essentials" nhưng câu mô tả viết "(StarCi Bản chất)", hai tên cho một phần. Huy hiệu "Projects" nay khớp thanh bên.'
+          notes:
+            '"Bài Accepted" ở Tiến độ nhanh vẫn lẫn tiếng Anh (khoá dùng chung với Luyện code, cần một từ tiếng Việt cho cả
+            app); dòng CV thứ hai gắn huy hiệu "Essentials" nhưng câu mô tả viết "(StarCi Bản chất)", hai tên cho một
+            phần. Huy hiệu "Projects" nay khớp thanh bên.'
         states:
           verdict: pass
-          notes: "Đang tải (profile/overview-loading) và lỗi một vùng (profile/overview-partial-error) đã có ảnh 1440 và 390; rỗng ở profile/new; không có quyền: Tài khoản dùng forbidden=hide. Trạng thái tải ảnh thuộc profile/edit."
+          notes:
+            "Đang tải (profile/overview-loading) và lỗi một vùng (profile/overview-partial-error) đã có ảnh 1440 và 390; rỗng
+            ở profile/new; không có quyền: Tài khoản dùng forbidden=hide. Trạng thái tải ảnh thuộc profile/edit."
         truth:
           verdict: open
-          notes: 'Summary vẫn ghi ảnh chụp "hai dòng CV Đã xác minh, một máy nối, gói miễn phí" trong khi ảnh có ba dòng, "Chưa nối máy nào" và Premium. Slug liên kết CV vẫn "learner-4" như mã nội bộ (nếu slug đọc được do API sinh thì ghi "cần API"). Số 0 ở Tiến độ nhanh là lỗ seed đã biết của học viên cv-multi, không tính.'
+          notes:
+            'Summary vẫn ghi ảnh chụp "hai dòng CV Đã xác minh, một máy nối, gói miễn phí" trong khi ảnh có ba dòng, "Chưa
+            nối máy nào" và Premium. Slug liên kết CV vẫn "learner-4" như mã nội bộ (nếu slug đọc được do API sinh thì
+            ghi "cần API"). Số 0 ở Tiến độ nhanh là lỗ seed đã biết của học viên cv-multi, không tính.'
   escalate: null

@@ -1,4 +1,4 @@
-import { Button, Grid, Page, Section, Stack, Tabs, type PageHeaderContent } from "@starci/grammar/common"
+import { Button, Grid, Page, Section, Skeleton, Stack, Tabs, type PageHeaderContent } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -90,6 +90,7 @@ type QueueListProps = {
     readonly labels: ReviewQueueLabels
     readonly tab: string
     readonly on: ReviewQueueActions
+    readonly isLoading: boolean
 }
 
 /** What the reviewer list draws. */
@@ -100,7 +101,11 @@ type ReviewerListProps = {
 }
 
 /** What the queue body draws once read. */
-type QueueBodyProps = { readonly view: ReviewQueueScreenView; readonly base: ReviewQueueBaseProps }
+type QueueBodyProps = {
+    readonly view: ReviewQueueScreenView
+    readonly base: ReviewQueueBaseProps
+    readonly isLoading: boolean
+}
 
 /** The rail: the rows of the chosen filter, under the filter pills when there is more than one filter. */
 const QueueList = (props: QueueListProps) => (
@@ -108,6 +113,7 @@ const QueueList = (props: QueueListProps) => (
         kind="list"
         title={props.labels.listLabel}
         headingLevel={2}
+        isLoading={props.isLoading}
         fact={props.view.count}
         {...(props.view.tabs.length < 2
             ? {}
@@ -165,6 +171,7 @@ const QueueGrid = (props: QueueBodyProps) => (
         collapsedOrder="rail-first"
         rail={
             <QueueList
+                isLoading={props.isLoading}
                 view={props.view}
                 labels={props.base.props.labels}
                 tab={props.base.props.tab}
@@ -172,15 +179,20 @@ const QueueGrid = (props: QueueBodyProps) => (
             />
         }
         primary={
-            <Stack gap="section">
-                <ReviewPanel
-                    item={props.view.preview}
-                    labels={props.base.props.panelLabels}
-                    decision={props.base.props.decision}
-                    on={props.base.on}
-                />
-                {props.base.props.assign === undefined ? null : <AssignItemCard {...props.base.props.assign} />}
-            </Stack>
+            // While the first read loads the panel is bars, not the placeholder item or the "pick an item" notice.
+            props.isLoading ? (
+                <Skeleton shape="text" lines={8} />
+            ) : (
+                <Stack gap="section">
+                    <ReviewPanel
+                        item={props.view.preview}
+                        labels={props.base.props.panelLabels}
+                        decision={props.base.props.decision}
+                        on={props.base.on}
+                    />
+                    {props.base.props.assign === undefined ? null : <AssignItemCard {...props.base.props.assign} />}
+                </Stack>
+            )
         }
     />
 )
@@ -238,20 +250,23 @@ const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
  * role gets the forbidden slot.
  */
 export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
-    <Page header={headerOf(props)}>
-        <SlotView
-            slot={props.props.slot}
-            forbiddenAction={
-                <Stack gap="row" align="center">
-                    <Button intent="neutral" href={props.props.exitHref}>
-                        {props.props.exitLabel}
-                    </Button>
-                </Stack>
-            }
-            placeholder={props.props.placeholder}
-            labels={props.props.slotLabels}
-            onRetry={props.on.retry}
-            render={(view) => <QueueBody view={view} base={props} />}
-        />
-    </Page>
+    <SlotView
+        slot={props.props.slot}
+        forbiddenAction={
+            <Stack gap="row" align="center">
+                <Button intent="neutral" href={props.props.exitHref}>
+                    {props.props.exitLabel}
+                </Button>
+            </Stack>
+        }
+        placeholder={props.props.placeholder}
+        labels={props.props.slotLabels}
+        onRetry={props.on.retry}
+        render={(view, isLoading) => <QueueBody view={view} base={props} isLoading={isLoading} />}
+        frame={({ body, isLoading }) => (
+            <Page isLoading={isLoading} header={headerOf(props)}>
+                {body}
+            </Page>
+        )}
+    />
 )
