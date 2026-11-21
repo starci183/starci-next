@@ -2,5 +2,5 @@
 {"data":{},"findings":[],"hash":"f4be2ace35a0c7e119ec2c30f386d6eeba1eb06e8d8a45dc818a27d97eea2b13","path":"be/i18n-dynamic-keys.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"fd7c82a9497cf9062f8a2afbd1ad1149bf3d0609ae1092993bf6fc85df92e655","path":"be/jest.config.js","step":"file-rules"}
 {"data":{},"findings":[],"hash":"51148c6a311d78165e154d7aad2b4632139a0ae312495d2887ee63d50e5cc7c0","path":"be/nest-cli.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"c3d0f80cbeebb7575264b99b524e6a7385f81373bb063c8dc4aebdd88469817c","path":"be/tsconfig.build.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"40374e450e338acfd912ef0690a7004df412fb4e1baee2700b1ef41e86e6f28f","path":"be/tsconfig.build.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"2634d1f7d7b7ea1494025c2016170dc60d6e0b4c75113637e58249fff79edf91","path":"be/tsconfig.json","step":"file-rules"}

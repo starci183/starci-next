@@ -1,5 +1,5 @@
 {"findings":[],"hash":"ebaee65587ce29257d590012ac5fce8c53fb4fe87d098a93721a5b84ced6862e","path":"gallery/pages/progress/free/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"369d44a11ef8dc19b1167e05ba0db637d296ad16e4d10cab58f653e4ad6fc3be","path":"gallery/pages/progress/overview-first-visit/screen.yaml","step":"prettier"}
-{"findings":[],"hash":"33266c6067a5822dc094966262a5b3b80661fe75a9cdfa4b1b20d0fbd815de45","path":"gallery/pages/progress/overview-loading/screen.yaml","step":"prettier"}
+{"findings":[],"hash":"e65832b68ac138f4d96c4c9a83addbf3fc1688ed9dfb1e2f11273967da49f9fc","path":"gallery/pages/progress/overview-loading/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"82941d772b76d7fde3137d60edd666b589ee22283efef9ffa1ba24250170586d","path":"gallery/pages/progress/overview-page-error/screen.yaml","step":"prettier"}
 {"findings":[],"hash":"699c83dba4b131dc2738f964c8748ba347193b38402147e7402b6c240957db88","path":"gallery/pages/progress/overview/screen.yaml","step":"prettier"}

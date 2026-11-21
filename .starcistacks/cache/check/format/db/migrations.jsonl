@@ -1,4 +1,4 @@
-{"findings":[],"hash":"801d26c9925ab5489e839a29610c445cbc528b4c59300a8d4cbabec50292e04f","path":"db/migrations/20261120150000_baseline.sql","step":"prettier"}
+{"findings":[],"hash":"668b6761f82afa5fbb716164421742a48f2c262c1e0c59191a43da6b565ccd1e","path":"db/migrations/20261120150000_baseline.sql","step":"prettier"}
 {"findings":[],"hash":"3aefafdb060851d9139d5427d099101153adb491d37216e262b255072f97698e","path":"db/migrations/20261120150100_app-role-row-security.sql","step":"prettier"}
-{"findings":[],"hash":"651ee31c1f4a28b509d3d24dc4d480a7425ccea9d4cbd6627b93277baa5554e3","path":"db/migrations/20261120150200_contract_converge-key-shape.sql","step":"prettier"}
-{"findings":[],"hash":"afc49767f82d1d2f382045131e49f47b16c64ea22786701dfd250788a26fb513","path":"db/migrations/20261120150300_identity-passport.sql","step":"prettier"}
+{"findings":[],"hash":"e390774bc0f87ef2ab2cf09ec79168d432abdf63512f726fd6c33947598f8e1f","path":"db/migrations/20261120150200_contract_converge-key-shape.sql","step":"prettier"}
+{"findings":[],"hash":"9247eff42046f000cf81565b7fc5414306e170a77476d804c09d7ebc7a48634e","path":"db/migrations/20261120150300_identity-passport.sql","step":"prettier"}

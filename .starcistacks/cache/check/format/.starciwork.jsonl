@@ -1,3 +1,2 @@
-{"findings":[],"hash":"6659d77f31027369172e2db2efee40b9d8143d161e3e5c24031cd8a057dc2728","path":".starciwork/.gitignore","step":"prettier"}
-{"findings":[],"hash":"d8dcdfdff4f9ab2fa7363e56f2fadb32ca4cc25f681a1802043f4445afa08ec9","path":".starciwork/index.yaml","step":"prettier"}
+{"findings":[],"hash":"4453dc3e7efa7871676eaba4f7892c54c967f58a96f9e8edf0de7dd2e1d66458","path":".starciwork/.gitignore","step":"prettier"}
 {"findings":[],"hash":"9cf583bd17ad198aa5c68fcb8d13f94d08cbae94f30b41144d1eccd2dccac9bd","path":".starciwork/workspace.yaml","step":"prettier"}
