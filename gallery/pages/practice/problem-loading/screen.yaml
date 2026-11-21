@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 98a4e8eea103874eeecbc58b60497de8af9fb1808d2172bb9c1c301673909222
+    sha256: 9ecf0c28baa5f61cc0df06559f6fe640c1fc584d38653c27244701af3201d805
   "1440":
     file: 1440.png
-    sha256: 65566e202a7c5d291b13459684b189fd926ff3ddfcb3d0257a235f81e7b91376
+    sha256: dec5890390439e054728d18220f125218fb0fdb3d536bd515dbbd857d9e8d2f4
 sections:
   - id: s1
     title: "Dải tiêu đề: đang tải"

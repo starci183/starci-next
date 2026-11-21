@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import { Button, Page, Stack } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
@@ -80,24 +81,27 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
         }
         frame={({ body, isLoading }) => (
             <Page
-                isLoading={isLoading}
                 header={{
-                    title: props.props.title,
+                    title: isLoading ? <Skeleton className="h-6 w-64 rounded-md" /> : props.props.title,
                     titleScale: "standard",
                     breadcrumbs: {
                         label: props.props.crumbLabel,
                         items: [
                             { id: "profile", label: props.props.profileLabel, href: props.props.profileHref },
                             { id: "queue", label: props.props.backLabel, href: props.props.backHref },
-                            { id: "item", label: props.props.crumb },
+                            {
+                                id: "item",
+                                label: props.props.crumb,
+                                ...(isLoading ? { isLoading: true as const } : {}),
+                            },
                         ],
                     },
-                    // While loading the meta line keeps its box under the header's shimmer, so the band does not grow when the item arrives.
-                    ...(props.props.meta === undefined
-                        ? isLoading
-                            ? { meta: props.props.title }
-                            : {}
-                        : { meta: props.props.meta }),
+                    // While loading the meta line is a bone, so the band does not grow when the item arrives.
+                    ...(isLoading
+                        ? { meta: <Skeleton className="h-3 w-56 rounded-md" /> }
+                        : props.props.meta === undefined
+                          ? {}
+                          : { meta: props.props.meta }),
                 }}
             >
                 {body}

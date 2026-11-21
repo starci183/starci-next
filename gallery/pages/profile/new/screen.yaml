@@ -164,3 +164,6 @@ audit:
             "Tải ảnh lên" và avatar vẽ từ tên, ảnh có "Thêm ảnh và tên" và avatar vẽ từ email; s2 trích câu chỉ dẫn cũ
             (ảnh ghi Essentials, Projects, Luyện code).'
   escalate: null
+  baseline:
+    at: 2026-11-20T14:52:39.664Z
+    rounds: 3

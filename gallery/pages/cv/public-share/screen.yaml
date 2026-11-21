@@ -192,3 +192,6 @@ audit:
             không có ảnh thật."
   escalate: "needs owner: sau vòng 4 còn mở Popover tràn lề trang (cần Grammar), ảnh xem trước trống ở 1440 và địa chỉ
     trong ảnh xem trước khác liên kết sao chép, thanh trên tự dựng bằng Cluster"
+  baseline:
+    at: 2026-11-20T16:05:58.843Z
+    rounds: 3

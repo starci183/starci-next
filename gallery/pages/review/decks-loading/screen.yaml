@@ -7,10 +7,10 @@ summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có
 shots:
   "390":
     file: 390.png
-    sha256: fa544c0649e53227028768a11deeb45d2327e78c9eb17c03c7dde45eb86e2486
+    sha256: da31e368c1006faaa6e4945fad979c69a6cb036c94b92c271369dbf619f65b83
   "1440":
     file: 1440.png
-    sha256: 224fc12f03cf33893d72a32b09fee38e7b9ddaff9bce089c51c7f9d0674c2e73
+    sha256: 1babdbecc642bfe3ba2170e4ab76d40e481637cc5fb174e841300239e85038e0
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks

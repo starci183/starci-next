@@ -202,3 +202,6 @@ audit:
             quy tắc từ hai nguồn, ngược với mã (PUBLIC_CV_CHIPS_FROM = 8); phần s6 "hai điều chưa chắc" không nêu điều
             nào.'
   escalate: null
+  baseline:
+    at: 2026-11-20T16:29:43.577Z
+    rounds: 2

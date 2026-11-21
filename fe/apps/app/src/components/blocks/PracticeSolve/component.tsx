@@ -69,9 +69,9 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoad
     const { labels, state, catalogHref } = props.props
     const loadingCrumb = isLoading ? { isLoading: true as const } : {}
     return {
-        title: view.title,
+        title: isLoading ? <Skeleton className="h-6 w-64 rounded-md" /> : view.title,
         titleScale: "standard",
-        meta: view.meta,
+        meta: isLoading ? <Skeleton className="h-3 w-56 rounded-md" /> : view.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -80,7 +80,7 @@ const headerOf = (props: PracticeSolveBaseProps, view: PracticeSolveView, isLoad
                 { id: "problem", label: view.title, ...loadingCrumb },
             ],
         },
-        actions: <HeaderActions screen={props} view={view} />,
+        ...(isLoading ? {} : { actions: <HeaderActions screen={props} view={view} /> }),
         tabs: {
             label: labels.tabsLabel,
             selectedKey: state.tab,
@@ -323,8 +323,8 @@ export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
             onRetry={props.on.retry}
             header={(view, loading) => headerOf(props, view, loading)}
             headerFallback={fallback}
-            frame={({ header, isLoading, body }) => (
-                <Page header={header} isLoading={isLoading}>
+            frame={({ header, body }) => (
+                <Page header={header}>
                     {body}
                     <AlertDialog
                         title={labels.confirmTitle}

@@ -3,32 +3,51 @@ screen: career/review-queue-loading
 title: Duyệt trải nghiệm, đang tải
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel,
-  không nhảy bố cục khi dữ liệu về."
+summary: "Route: `/review-queue` (ảnh chụp: thầy seed `gallery-career-teacher` khi truy vấn
+  ReviewQueue bị giữ). Dải đầu trang giữ đường dẫn Hồ sơ / Duyệt kinh nghiệm, tiêu đề Duyệt kinh
+  nghiệm và hai tab Hàng đợi / Người duyệt thật; dòng đếm dưới tiêu đề là một thanh. Dưới đường kẻ
+  là khung xương của lưới hàng đợi: cột danh sách (tiêu đề, hàng nút lọc, các hàng) bên trái và
+  panel xem trước bên phải. Mã: `fe/apps/app/src/components/blocks/ReviewQueue/` (QueueSkeleton,
+  ReviewItem/skeleton.tsx)."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
 shots:
   "390":
     file: 390.png
-    sha256: f7e091a3fe1b7e732e801c0301d2af4d73161319406ad58066c252d21c7bbd05
+    sha256: 488954c8723802ecfc85be5c8115458c2640fcdcfe9a15217abe3a8c2ce0745a
   "1440":
     file: 1440.png
-    sha256: a47ab6f81e44375b60c03589eb73c18299351362b3b550496ebaf8f3288a0267
+    sha256: 01b6b7311db1d039bd20b1d726eda1bcfbe18e06ab57010980afd41350ab4be7
 sections:
-  - id: vung-chinh
-    title: Vùng chính
-    why: Bộ xương đúng hình dạng danh sách và panel, không nhảy bố cục khi dữ liệu về.
-    law: ""
-    grammar: "`SlotView, EmptyNotice, Alert`"
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: Tiêu đề và tab là nhãn cố định nên giữ thật trong lúc tải; dòng đếm (số mục chờ, quá hạn) phụ
+      thuộc dữ liệu nên là một thanh cùng cỡ dòng meta, để dải không cao lên khi dữ liệu về.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
+    grammar: Page header, Skeleton (HeroUI)
+  - id: luoi-hang-doi
+    title: Lưới hàng đợi
+    why: Cột danh sách (thanh tiêu đề, thanh hàng nút lọc, ba hàng) và panel xem trước đều là thanh ở
+      đúng chỗ của lưới khi đã tải; không có chữ, nút hay câu chọn một mục trong lúc chờ.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
+    grammar: Grid main-rail, Skeleton (HeroUI)
 considered:
-  - option: Bật skeleton bằng frame của SlotView (Page isLoading) thay vì vẽ placeholder như dữ liệu
+  - option: Page isLoading của Grammar cho cả dải đầu trang
+    chosen: false
+    why: Biến cả tiêu đề cố định thành khung xương; luật giữ dải đầu trang thật.
+  - option: Placeholder có ba tab lọc và một preview giả
+    chosen: false
+    why: Hiện chữ giả và câu chọn một mục trong lúc tải; luật cấm chữ trong vùng nội dung.
+  - option: Trang khung xương vẽ tay theo lưới đã tải, tiêu đề và tab giữ thật
     chosen: true
-    why: Các block khác (ExperienceList, EssentialsCatalog) đã làm vậy; chữ x thô là lỗi, không phải
-      cách vẽ.
-  - option: Cho placeholder đủ ba tab lọc và một preview giả
-    chosen: true
-    why: Giữ chỗ thanh lọc và thẻ mục để bố cục không nhảy khi dữ liệu về.
+    why: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là Skeleton của HeroUI (if-else, chỉ đặt cỡ và bo góc), một kiểu, không viền, không màu;
+      dải đầu trang, thanh trên và thanh bên giữ nguyên."
 audit:
   builder:
     agent: next-one-edition
@@ -104,23 +123,59 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Đầu trang (đường dẫn, tiêu đề, tab Hàng đợi / Người duyệt), rồi xương hàng đợi bên trái và bảng duyệt bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải."
+          notes: Đầu trang (đường dẫn, tiêu đề, tab Hàng đợi / Người duyệt), rồi xương hàng đợi bên trái và
+            bảng duyệt bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải.
         layout:
           verdict: fixed
-          notes: "Tiêu đề Duyệt kinh nghiệm giờ là chữ thật (headerOf chỉ đổi dòng meta thành Skeleton), đường dẫn và tab đầu trang thật; dưới đường kẻ là thanh Skeleton phẳng từ mép tới mép, một kiểu, không viền, không tông. Dòng meta là một thanh hết bề rộng: tạm chấp nhận (GRAMMAR-GAPS #16, Grammar chưa định được bề rộng thanh). Checklist: tab đầu trang và Mở menu 40px; nhãn một dòng ở 390; dải đầu không tràn; không có nút bấm được trong vùng tải."
+          notes: "Tiêu đề Duyệt kinh nghiệm giờ là chữ thật (headerOf chỉ đổi dòng meta thành Skeleton), đường
+            dẫn và tab đầu trang thật; dưới đường kẻ là thanh Skeleton phẳng từ mép tới mép, một
+            kiểu, không viền, không tông. Dòng meta là một thanh hết bề rộng: tạm chấp nhận
+            (GRAMMAR-GAPS #16, Grammar chưa định được bề rộng thanh). Checklist: tab đầu trang và Mở
+            menu 40px; nhãn một dòng ở 390; dải đầu không tràn; không có nút bấm được trong vùng
+            tải."
         actionable:
           verdict: pass
-          notes: "Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được."
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được.
         live:
           verdict: pass
-          notes: "Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390."
+          notes: Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390.
         words:
           verdict: pass
-          notes: "Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người duyệt."
+          notes: Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người
+            duyệt.
         states:
           verdict: pass
-          notes: "Đây là trạng thái đang tải, có ở 1440 và 390."
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
         truth:
           verdict: open
-          notes: 'Summary khớp ảnh, nhưng screen.yaml chưa được viết lại như các màn CV và hồ sơ: considered "Bật skeleton bằng frame của SlotView (Page isLoading)" đã cũ (mã nay vẽ QueueSkeleton trong render, frame chỉ đổi meta thành Skeleton, tiêu đề giữ thật); "Cho placeholder đủ ba tab lọc và một preview giả" không còn đúng (vùng nội dung chỉ là thanh, không tab lọc hay preview); phần vung-chinh ghi grammar EmptyNotice, Alert không có trên màn này, và law rỗng (nên dẫn luật tải 2026-11-21).'
+          notes: 'Summary khớp ảnh, nhưng screen.yaml chưa được viết lại như các màn CV và hồ sơ: considered
+            "Bật skeleton bằng frame của SlotView (Page isLoading)" đã cũ (mã nay vẽ QueueSkeleton
+            trong render, frame chỉ đổi meta thành Skeleton, tiêu đề giữ thật); "Cho placeholder đủ
+            ba tab lọc và một preview giả" không còn đúng (vùng nội dung chỉ là thanh, không tab lọc
+            hay preview); phần vung-chinh ghi grammar EmptyNotice, Alert không có trên màn này, và
+            law rỗng (nên dẫn luật tải 2026-11-21).'
+    - n: 4
+      at: 2026-11-21T07:01:04.103Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

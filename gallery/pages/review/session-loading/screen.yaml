@@ -8,10 +8,10 @@ summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp 
 shots:
   "390":
     file: 390.png
-    sha256: 80e6f9d1b65fc44649012be2cb629f1d25417cff11129a13b937681c44b6afd6
+    sha256: 8d881ffc01770ca71084f4dfba777c08a0d1b55363e140c943082c58957a8281
   "1440":
     file: 1440.png
-    sha256: c7f97626763c9c35ee3b80a56d29bced7cd20216acd45f072c2b7f902f11b41a
+    sha256: 8c57e8018afa9b230fc7a7a15836c759b3b6a4e08a95a6593ad96bfba0b67bca
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession

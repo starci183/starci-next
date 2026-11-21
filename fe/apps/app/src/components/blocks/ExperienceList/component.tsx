@@ -347,7 +347,11 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => {
                 },
                 title: labels.title,
                 titleScale: "standard",
-                ...(meta === undefined ? {} : { meta }),
+                ...("isLoading" in props.props.slot
+                    ? { meta: <Skeleton className="h-3 w-56 rounded-md" /> }
+                    : meta === undefined
+                      ? {}
+                      : { meta }),
                 ...(tabs === undefined
                     ? {}
                     : {

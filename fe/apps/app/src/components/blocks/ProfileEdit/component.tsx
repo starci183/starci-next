@@ -245,18 +245,26 @@ export const ProfileEditBase = (props: ProfileEditBaseProps) => {
                 },
                 actions: (
                     <Cluster gap="inline" align="center">
-                        <Button intent="neutral" isLoading={isFirstLoad} onPress={props.on.cancel}>
-                            {labels.cancel}
-                        </Button>
-                        <Button
-                            intent="commit"
-                            isLoading={isFirstLoad}
-                            isDisabled={isFirstLoad || !canSave}
-                            isPending={isSaving}
-                            onPress={props.on.save}
-                        >
-                            {labels.saveChanges}
-                        </Button>
+                        {isFirstLoad ? (
+                            <>
+                                <HeroSkeleton className="h-10 w-28 rounded-full" />
+                                <HeroSkeleton className="h-10 w-28 rounded-full" />
+                            </>
+                        ) : (
+                            <>
+                                <Button intent="neutral" onPress={props.on.cancel}>
+                                    {labels.cancel}
+                                </Button>
+                                <Button
+                                    intent="commit"
+                                    isDisabled={!canSave}
+                                    isPending={isSaving}
+                                    onPress={props.on.save}
+                                >
+                                    {labels.saveChanges}
+                                </Button>
+                            </>
+                        )}
                     </Cluster>
                 ),
             }}

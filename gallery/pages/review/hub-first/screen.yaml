@@ -3,8 +3,7 @@ screen: review/hub-first
 title: Ôn tập, lần đầu
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
@@ -19,8 +18,7 @@ sections:
   - id: s1
     title: Trạng thái
     shows: Trạng thái
-    why: 'Lần đầu: giải thích cách ôn và chọn mục tiêu mỗi ngày bằng chip; nút chính "Chọn bộ thẻ đầu
-      tiên".'
+    why: 'Lần đầu: giải thích cách ôn và chọn mục tiêu mỗi ngày bằng chip; nút chính "Chọn bộ thẻ đầu tiên".'
     actions: []
     states:
       loading: null
@@ -36,11 +34,10 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
-      2026-11-20T13:51:50.760Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:50.760Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run)."
 audit:
   builder:
@@ -56,7 +53,12 @@ audit:
           notes: 'Cách ôn tập trước, rồi chọn mục tiêu, bộ thẻ (rỗng) sau; nút chính "Chọn bộ thẻ đầu tiên" ở đầu trang.'
         layout:
           verdict: open
-          notes: 'Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dưới tiêu đề và chạm/đè lên dòng "Bạn chưa thêm bộ thẻ nào." (y ~620–640), không có khoảng cách. Sửa trong app: đưa lối Quản lý vào thân mục như ProfileHub đã làm, hoặc bỏ khi chưa có bộ thẻ nào (nút chính đã dẫn tới bộ thẻ). Còn ghi: chip mục tiêu 5/10/20/30 thẻ cao ~20px, dưới vùng chạm 44px ở 390; bản vẽ đã duyệt chọn ChoiceChips nên vùng chạm mở rộng là việc của Grammar (cần Grammar). Nút chính 40px, một dòng.'
+          notes:
+            'Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dưới tiêu đề và chạm/đè lên dòng "Bạn chưa thêm bộ thẻ nào." (y
+            ~620–640), không có khoảng cách. Sửa trong app: đưa lối Quản lý vào thân mục như ProfileHub đã làm, hoặc bỏ
+            khi chưa có bộ thẻ nào (nút chính đã dẫn tới bộ thẻ). Còn ghi: chip mục tiêu 5/10/20/30 thẻ cao ~20px, dưới
+            vùng chạm 44px ở 390; bản vẽ đã duyệt chọn ChoiceChips nên vùng chạm mở rộng là việc của Grammar (cần
+            Grammar). Nút chính 40px, một dòng.'
         actionable:
           verdict: pass
           notes: 'Mục tiêu đổi ngay bằng chip, có câu "Bạn đổi lại được bất cứ lúc nào"; bộ thẻ có nút chính.'
@@ -73,3 +75,6 @@ audit:
           verdict: pass
           notes: "Học viên seed chưa có bộ thẻ, mục tiêu mặc định 10 thẻ/ngày khớp chip đang chọn."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:50.760Z
+    rounds: 4

@@ -135,3 +135,6 @@ audit:
           verdict: open
           notes: 's1 nói "hiện lại địa chỉ đã mở" và s2 nói thanh trên "như cv/public"; ảnh không có cả hai.'
   escalate: null
+  baseline:
+    at: 2026-11-20T14:16:07.368Z
+    rounds: 2

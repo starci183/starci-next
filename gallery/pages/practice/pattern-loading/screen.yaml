@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: d5ba58ea15736a889cc3b07a3fc4dc26c86032d01a9a38aa27fb6433c2a1d5c0
+    sha256: dddb74a8488c8c552c6cbc73ca33369d82de92804ee04d8f77d26665f401c1c6
   "1440":
     file: 1440.png
-    sha256: 9c5114c75b7ea909fc5abb43cef677d87356dcda21342a22024980abc51d3425
+    sha256: f1c6354f5a879a60cdd3fd51e45233ee0e9707b0e58d7dca5683665a869d8eaa
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"

@@ -126,10 +126,10 @@ const DecksSkeleton = () => (
  */
 export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
     const { header, labels } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
-        meta: header.meta,
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -137,7 +137,7 @@ export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
                 { id: "decks", label: header.title },
             ],
         },
-    }
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -155,11 +155,7 @@ export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
                     </Stack>
                 )
             }
-            frame={(parts) => (
-                <Page isLoading={parts.isLoading} header={pageHeader}>
-                    {parts.body}
-                </Page>
-            )}
+            frame={(parts) => <Page header={pageHeaderOf(parts.isLoading)}>{parts.body}</Page>}
         />
     )
 }

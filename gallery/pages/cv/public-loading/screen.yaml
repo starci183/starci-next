@@ -3,61 +3,58 @@ screen: cv/public-loading
 title: CV công khai, đang tải
 route: /cv/{slug}
 area: cv
-summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `gallery-cv-multi` khi truy
-  vấn PublicCv bị giữ lại). Thanh trên công khai (PublicTopBar, chung với trang xác minh) giữ thật;
-  cả phần dưới là khung xương phẳng theo bố cục của trang đã tải. Mã:
-  `fe/apps/app/src/components/blocks/PublicCv/` (PublicCvSkeleton)."
+summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `gallery-cv-multi` khi truy vấn PublicCv bị giữ
+  lại). Thanh trên công khai (PublicTopBar, chung với trang xác minh) giữ thật; cả phần dưới là khung xương phẳng theo
+  bố cục của trang đã tải. Mã: `fe/apps/app/src/components/blocks/PublicCv/` (PublicCvSkeleton)."
 code:
   - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
   - features/pages/PublicCvPage/
 shots:
   "390":
     file: 390.png
-    sha256: f855bd3cff661e5045d1e18e4419f8a1aa0b2cd1ba2e5a27b320124123bc03dc
+    sha256: 19ab9726c8930f95efc17369772804f24703c5bcfa2fc2c2cf049f718b427ed1
   "1440":
     file: 1440.png
-    sha256: 2f0ad413272bf043ee12ec60d845416667e6c9c719a85d31e4d740a1fe3a60a3
+    sha256: 2c323aaa4b23d82a3d5af8ed5a1a277ae14d0cc41e35e1a62842086072fea4f0
 sections:
   - id: thanh-tren
     title: Thanh trên công khai
-    why: Người xem chưa đăng nhập vẫn biết đây là StarCi, đổi được ngôn ngữ và đăng nhập trong lúc chờ;
-      đây là khung của trang nên không thành khung xương.
+    why: Người xem chưa đăng nhập vẫn biết đây là StarCi, đổi được ngôn ngữ và đăng nhập trong lúc chờ; đây là khung của
+      trang nên không thành khung xương.
     law: page-header-left-sublabel-xs.md
     grammar: PublicTopBar
   - id: chu-cv
     title: Chủ CV
-    why: "Ảnh, tên, dòng sự kiện và nút Chia sẻ CV đều là thanh: không đoán tên hay số dòng trước khi
-      đọc xong, và không có nút bấm được khi chưa biết CV có thật."
-    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
-      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
-      thanh bên giữ nguyên."
+    why:
+      "Ảnh, tên, dòng sự kiện và nút Chia sẻ CV đều là thanh: không đoán tên hay số dòng trước khi đọc xong, và không có
+      nút bấm được khi chưa biết CV có thật."
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi thứ là thanh
+      Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và thanh bên giữ nguyên."
     grammar: Skeleton circle, Skeleton text
   - id: dong-cv-da-ky
     title: Dòng CV đã ký
-    why: Tiêu đề phần, ba dòng (dấu, câu, vết tin cậy) và dòng chú thích đều là thanh, cùng bố cục hai
-      cột với cột phải, để trang không nhảy khi dữ liệu tới.
-    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
-      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
-      thanh bên giữ nguyên."
+    why:
+      Tiêu đề phần, ba dòng (dấu, câu, vết tin cậy) và dòng chú thích đều là thanh, cùng bố cục hai cột với cột phải, để
+      trang không nhảy khi dữ liệu tới.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi thứ là thanh
+      Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và thanh bên giữ nguyên."
     grammar: Grid, Skeleton text
   - id: vi-sao-tin-duoc
     title: Vì sao tin được CV này
-    why: "Ba bước Luyện xong, AI chấm, Thầy ký và câu cuối cũng là thanh: chữ thật chỉ hiện khi CV đã
-      đọc xong."
-    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
-      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
-      thanh bên giữ nguyên."
+    why: "Ba bước Luyện xong, AI chấm, Thầy ký và câu cuối cũng là thanh: chữ thật chỉ hiện khi CV đã đọc xong."
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi thứ là thanh
+      Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và thanh bên giữ nguyên."
     grammar: Skeleton circle, Skeleton text
 considered:
   - option: Giữ tiêu đề phần thật (Section isLoading của Grammar)
     chosen: false
-    why: "Chủ sản phẩm yêu cầu vùng nội dung là khung xương từ mép tới mép; Grammar chưa có chế độ đó
-      (GRAMMAR-GAPS #14), nên app vẽ trang khung xương riêng."
+    why:
+      "Chủ sản phẩm yêu cầu vùng nội dung là khung xương từ mép tới mép; Grammar chưa có chế độ đó (GRAMMAR-GAPS #14),
+      nên app vẽ trang khung xương riêng."
   - option: Trang khung xương vẽ tay theo bố cục trang đã tải
     chosen: true
-    why: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
-      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
-      thanh bên giữ nguyên."
+    why: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi thứ là thanh
+      Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và thanh bên giữ nguyên."
 audit:
   builder:
     agent: mig-auth-fe
@@ -84,13 +81,12 @@ audit:
           notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
         states:
           verdict: open
-          notes: Ảnh không phải trạng thái đang tải. 390.png, 390-first.png và 390-header.png trùng từng byte
-            với cv/public-many-lines; 1440 chỉ khác vài điểm ảnh. Việc giữ truy vấn PublicCv không
-            có tác dụng (có thể trang đã có dữ liệu từ máy chủ). Cần chụp lại với khung xương thật.
+          notes: Ảnh không phải trạng thái đang tải. 390.png, 390-first.png và 390-header.png trùng từng byte với
+            cv/public-many-lines; 1440 chỉ khác vài điểm ảnh. Việc giữ truy vấn PublicCv không có tác dụng (có thể trang
+            đã có dữ liệu từ máy chủ). Cần chụp lại với khung xương thật.
         truth:
           verdict: open
-          notes: 'summary nói "đang đọc; truy vấn PublicCv được giữ lại" nhưng ảnh là dữ liệu đã tải: mô tả
-            không khớp ảnh.'
+          notes: 'summary nói "đang đọc; truy vấn PublicCv được giữ lại" nhưng ảnh là dữ liệu đã tải: mô tả không khớp ảnh.'
     - n: 2
       at: 2026-11-21T04:22:59.116Z
       lenses:
@@ -99,45 +95,48 @@ audit:
           notes: "Khung xương giữ đúng chỗ: chủ CV và nút, ba hàng dòng CV, cột Vì sao tin được, chân trang."
         layout:
           verdict: open
-          notes: "Khung xương đúng hình avatar, tên, dòng sự kiện, nút 40px và ba hàng (câu, nguồn, vết, nút
-            Xác minh); 390 không tràn. Còn mở: thanh trên tự dựng bằng Cluster như cv/public. Phụ
-            (cần Grammar): ở 390 khung của chú thích danh sách là một khối xám cao 32px rộng hết
-            hàng (y 901-932), trông như một nút, trong khi ở 1440 là một vạch mảnh."
+          notes:
+            "Khung xương đúng hình avatar, tên, dòng sự kiện, nút 40px và ba hàng (câu, nguồn, vết, nút Xác minh); 390 không
+            tràn. Còn mở: thanh trên tự dựng bằng Cluster như cv/public. Phụ (cần Grammar): ở 390 khung của chú thích
+            danh sách là một khối xám cao 32px rộng hết hàng (y 901-932), trông như một nút, trong khi ở 1440 là một
+            vạch mảnh."
         actionable:
           verdict: pass
-          notes: Chia sẻ CV chỉ là khung xương cho tới khi biết CV có thật; đổi ngôn ngữ và Đăng nhập vẫn bấm
-            được.
+          notes: Chia sẻ CV chỉ là khung xương cho tới khi biết CV có thật; đổi ngôn ngữ và Đăng nhập vẫn bấm được.
         live:
           verdict: pass
           notes: Đang tải hiện bằng khung xương của SlotView ở cả hai cỡ.
         words:
           verdict: pass
-          notes: Chỉ tiêu đề thật (Dòng CV đã ký, Vì sao tin được CV này, ba bước) và chân trang, đúng một
-            thuật ngữ.
+          notes: Chỉ tiêu đề thật (Dòng CV đã ký, Vì sao tin được CV này, ba bước) và chân trang, đúng một thuật ngữ.
         states:
           verdict: pass
           notes: Đã là ảnh đang tải thật ở 1440 và 390 (khác vòng 1).
         truth:
           verdict: open
-          notes: Summary khớp ảnh, nhưng phần "Cập nhật 2026-11-20 (pending-seed)" còn nói ảnh sẽ được chụp
-            lại và considered "Ảnh là màn khác (CV đã tải)" đã cũ; xoá hoặc sửa theo ảnh hiện tại.
+          notes:
+            Summary khớp ảnh, nhưng phần "Cập nhật 2026-11-20 (pending-seed)" còn nói ảnh sẽ được chụp lại và considered "Ảnh
+            là màn khác (CV đã tải)" đã cũ; xoá hoặc sửa theo ảnh hiện tại.
     - n: 3
       at: 2026-11-21T04:58:20.779Z
       lenses:
         order:
           verdict: pass
-          notes: "Khung xương giữ thứ tự của CV đã tải: chủ CV và nút, dòng CV, cột Vì sao tin được, chân
-            trang; ở 390 cột phải xuống dưới danh sách."
+          notes:
+            "Khung xương giữ thứ tự của CV đã tải: chủ CV và nút, dòng CV, cột Vì sao tin được, chân trang; ở 390 cột phải
+            xuống dưới danh sách."
         layout:
           verdict: fixed
-          notes: "Thanh trên giờ là PublicTopBar dùng chung (hết Cluster tự dựng), giữ thật: logo, đổi ngôn
-            ngữ, Đăng nhập 40px. Vùng nội dung là xương từ mép tới mép theo loading-rules: không
-            chữ, không tiêu đề, không tông; Chia sẻ CV là xương 40px. Khối xám 32px giống nút ở 390
-            (vòng 2) đã mất. Checklist: điều khiển 40px, một dòng, không tràn ở 390."
+          notes:
+            "Thanh trên giờ là PublicTopBar dùng chung (hết Cluster tự dựng), giữ thật: logo, đổi ngôn ngữ, Đăng nhập 40px.
+            Vùng nội dung là xương từ mép tới mép theo loading-rules: không chữ, không tiêu đề, không tông; Chia sẻ CV
+            là xương 40px. Khối xám 32px giống nút ở 390 (vòng 2) đã mất. Checklist: điều khiển 40px, một dòng, không
+            tràn ở 390."
         actionable:
           verdict: pass
-          notes: Không giá trị nào để đổi khi đang tải; Chia sẻ CV không bấm được tới khi biết CV có thật; đổi
-            ngôn ngữ và Đăng nhập vẫn dùng được.
+          notes:
+            Không giá trị nào để đổi khi đang tải; Chia sẻ CV không bấm được tới khi biết CV có thật; đổi ngôn ngữ và Đăng
+            nhập vẫn dùng được.
         live:
           verdict: pass
           notes: Đang tải hiện bằng khung xương có chuyển động ở 1440 và 390.
@@ -146,24 +145,30 @@ audit:
           notes: Vùng nội dung không có chữ (đúng luật); thanh trên chỉ có StarCi Next và Đăng nhập.
         states:
           verdict: pass
-          notes: Ảnh đang tải thật ở 1440 và 390; các màn chị em cv/public, cv/public-many-lines,
-            cv/public-error có trong gallery.
+          notes:
+            Ảnh đang tải thật ở 1440 và 390; các màn chị em cv/public, cv/public-many-lines, cv/public-error có trong
+            gallery.
         truth:
           verdict: open
-          notes: 'Lời trong screen.yaml lệch ảnh: phần dong-cv-da-ky nói giữ tiêu đề "Dòng CV đã ký" thật,
-            nhưng ảnh (đúng luật mới) là vạch xương; ba phần ghi Button/Section/Stepper isLoading
-            qua SlotView trong khi mã vẽ PublicCvSkeleton bằng Skeleton của Grammar; phần "Cập nhật
-            2026-11-20 (pending-seed)" còn hứa chụp lại và considered "Ảnh là màn khác (CV đã tải)"
-            đã cũ.'
+          notes:
+            'Lời trong screen.yaml lệch ảnh: phần dong-cv-da-ky nói giữ tiêu đề "Dòng CV đã ký" thật, nhưng ảnh (đúng luật
+            mới) là vạch xương; ba phần ghi Button/Section/Stepper isLoading qua SlotView trong khi mã vẽ
+            PublicCvSkeleton bằng Skeleton của Grammar; phần "Cập nhật 2026-11-20 (pending-seed)" còn hứa chụp lại và
+            considered "Ảnh là màn khác (CV đã tải)" đã cũ.'
     - n: 4
       at: 2026-11-21T05:07:19.781Z
       lenses:
         order:
           verdict: pass
-          notes: "Thanh trên công khai thật, rồi xương chủ CV, xương dòng CV bên trái và cột Vì sao tin được bên phải ở 1440, chân trang; ở 390 cột phải xuống dưới danh sách."
+          notes:
+            "Thanh trên công khai thật, rồi xương chủ CV, xương dòng CV bên trái và cột Vì sao tin được bên phải ở 1440, chân
+            trang; ở 390 cột phải xuống dưới danh sách."
         layout:
           verdict: pass
-          notes: "PublicTopBar thật (logo, đổi ngôn ngữ, Đăng nhập 40px); dưới đó là thanh Skeleton phẳng một kiểu, không viền, không tông, theo bố cục hai cột của trang đã tải. Nút Chia sẻ CV là thanh phẳng: tạm chấp nhận (GRAMMAR-GAPS #16). Checklist: điều khiển 40px, một dòng ở 390, không tràn, không nút bấm được trong vùng tải."
+          notes:
+            "PublicTopBar thật (logo, đổi ngôn ngữ, Đăng nhập 40px); dưới đó là thanh Skeleton phẳng một kiểu, không viền,
+            không tông, theo bố cục hai cột của trang đã tải. Nút Chia sẻ CV là thanh phẳng: tạm chấp nhận (GRAMMAR-GAPS
+            #16). Checklist: điều khiển 40px, một dòng ở 390, không tràn, không nút bấm được trong vùng tải."
         actionable:
           verdict: pass
           notes: "Không giá trị nào để đổi khi đang tải; đổi ngôn ngữ và Đăng nhập vẫn dùng được."
@@ -175,8 +180,13 @@ audit:
           notes: "Vùng nội dung không có chữ; thanh trên chỉ có StarCi Next và Đăng nhập."
         states:
           verdict: pass
-          notes: "Ảnh đang tải thật ở 1440 và 390; các màn chị em cv/public, cv/public-many-lines, cv/public-error có trong gallery."
+          notes:
+            "Ảnh đang tải thật ở 1440 và 390; các màn chị em cv/public, cv/public-many-lines, cv/public-error có trong
+            gallery."
         truth:
           verdict: fixed
-          notes: 'screen.yaml đã viết lại theo ảnh: summary tả PublicTopBar thật và PublicCvSkeleton; bốn phần (thanh-tren, chu-cv, dong-cv-da-ky, vi-sao-tin-duoc) nói đúng thanh Skeleton circle/text; considered không còn phần pending-seed hay "Ảnh là màn khác".'
+          notes:
+            'screen.yaml đã viết lại theo ảnh: summary tả PublicTopBar thật và PublicCvSkeleton; bốn phần (thanh-tren,
+            chu-cv, dong-cv-da-ky, vi-sao-tin-duoc) nói đúng thanh Skeleton circle/text; considered không còn phần
+            pending-seed hay "Ảnh là màn khác".'
   escalate: null

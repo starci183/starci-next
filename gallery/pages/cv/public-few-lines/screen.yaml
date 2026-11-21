@@ -172,3 +172,6 @@ audit:
           notes: "Summary khớp ảnh (một dòng đã ký, dữ liệu seed thật, mã 9C2E-F88F-B6BA)."
   escalate: 'needs owner: sau vòng 4 còn mở thanh trên tự dựng bằng Cluster, khác PublicTopBar của /verify (cần chọn một
     thanh trên công khai, có thể cần Grammar TopBar không avatar), và câu "không hiện điểm số…" lặp hai lần'
+  baseline:
+    at: 2026-11-20T16:05:57.253Z
+    rounds: 3

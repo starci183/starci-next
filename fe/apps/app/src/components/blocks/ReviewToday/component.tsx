@@ -262,13 +262,13 @@ const TodaySkeleton = () => (
  */
 export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
     const { header } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         breadcrumbs: "root",
-        meta: header.meta,
-        ...(header.primary === null ? {} : { actions: <HeaderAction primary={header.primary} /> }),
-    }
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
+        ...(header.primary === null || loading ? {} : { actions: <HeaderAction primary={header.primary} /> }),
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -311,11 +311,7 @@ export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
                     </Stack>
                 )
             }}
-            frame={(parts) => (
-                <Page isLoading={parts.isLoading} header={pageHeader}>
-                    {parts.body}
-                </Page>
-            )}
+            frame={(parts) => <Page header={pageHeaderOf(parts.isLoading)}>{parts.body}</Page>}
         />
     )
 }

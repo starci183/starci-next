@@ -7,10 +7,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 1d05da2d57cda000237a16d2196d36fd6aa54192614314d72ad4dd2c3d404833
+    sha256: 3171f33d360be41131ee374c973be89caae3a785d427e868d7b1b09ae85e3e92
   "1440":
     file: 1440.png
-    sha256: 70e9a2d505494a5051b16b101cf1c9108af2780efe1c61b7eb7003da2a96aea7
+    sha256: c6611c6e19c1beac2c75531f444503a123687ab769863f284503328f8e12e2cf
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -72,3 +72,6 @@ audit:
           verdict: pass
           notes: "Không có số giả trong khung tải."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:52.101Z
+    rounds: 4

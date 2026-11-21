@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 0830d2280212c38d3203db270546d09985f266e6bd8bc4e3906add6d30267559
+    sha256: 2645be1dd325a3a4929e8fce3081299c6e9b4b126fddc25b087ee4e59f4eb82e
   "1440":
     file: 1440.png
-    sha256: a74b8410c0231ed48b5e4f31a65b75879f1e9ef45314da9021a1cf5ba7b8a040
+    sha256: 9d5321d5680d702d6d3689374438d2fe76135b930addb1f1783ab7d18843ed6b
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"

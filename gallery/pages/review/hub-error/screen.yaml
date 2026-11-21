@@ -3,8 +3,7 @@ screen: review/hub-error
 title: Ôn tập, lỗi tải
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
@@ -35,11 +34,10 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
-      2026-11-20T13:51:53.182Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:53.182Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run)."
 audit:
   builder:
@@ -55,7 +53,9 @@ audit:
           notes: "Tên trang rồi cảnh báo lỗi với Thử lại ngay dưới."
         layout:
           verdict: pass
-          notes: 'Đầu trang giữ tên khi lỗi. Còn ghi: "Thử lại" là action của Alert, cao ~32px (1440: y 219–250; 390: y 355–387), dưới 40px và vùng chạm 44px ở 390 (cần Grammar).'
+          notes:
+            'Đầu trang giữ tên khi lỗi. Còn ghi: "Thử lại" là action của Alert, cao ~32px (1440: y 219–250; 390: y 355–387),
+            dưới 40px và vùng chạm 44px ở 390 (cần Grammar).'
         actionable:
           verdict: pass
           notes: "Lỗi có nút Thử lại."
@@ -72,3 +72,6 @@ audit:
           verdict: pass
           notes: "Lỗi thật từ ảnh chụp ép lỗi đọc; không có số giả."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:53.182Z
+    rounds: 4

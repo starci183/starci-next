@@ -10,6 +10,8 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
+import type { ReactNode } from "react"
+import { Skeleton } from "@heroui/react"
 import { SkeletonRows } from "../LoadingShapes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -102,7 +104,7 @@ const NoneYet = (props: { readonly labels: IncidentsLabels; readonly isLoading: 
 )
 
 /** The header of the page: the title, what it is and the facts of the read as its meta. */
-const headerOf = (labels: IncidentsLabels, meta: string | undefined): PageHeaderContent => ({
+const headerOf = (labels: IncidentsLabels, meta: ReactNode | undefined): PageHeaderContent => ({
     title: labels.title,
     description: `${labels.description} ${labels.runnerNote}`,
     breadcrumbs: {
@@ -127,7 +129,9 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
             placeholder={placeholder}
             labels={slotLabels}
             onRetry={props.on.retry}
-            header={(view) => headerOf(labels, view.facts.join(" · "))}
+            header={(view, loading) =>
+                headerOf(labels, loading ? <Skeleton className="h-3 w-56 rounded-md" /> : view.facts.join(" · "))
+            }
             headerFallback={headerOf(labels, undefined)}
             render={(view, isLoading) =>
                 isLoading ? (
@@ -140,11 +144,7 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
                     <IncidentGroups groups={view.groups} emptyLabel={labels.empty} isLoading={isLoading} />
                 )
             }
-            frame={(parts) => (
-                <Page header={parts.header} isLoading={parts.isLoading}>
-                    {parts.body}
-                </Page>
-            )}
+            frame={(parts) => <Page header={parts.header}>{parts.body}</Page>}
         />
     )
 }

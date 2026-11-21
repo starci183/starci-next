@@ -7,10 +7,10 @@ summary: "Trang Premium khi danh sách gói chưa về: bảng so sánh có sẵ
 shots:
   "390":
     file: 390.png
-    sha256: e8c96c2fd9f458a0202896e9e6a2b8ea55151032e59d868732557182a28d87a6
+    sha256: fbf01b8b0991edb54c2faeb9d3e7a028a0e274da9359493a5c41ac7c161384bf
   "1440":
     file: 1440.png
-    sha256: f3e4642aa444c377d278083215003c9d698252a419f38f437683056a2fc71c55
+    sha256: 6b886eb70bf544043a0a522f9be86f630ec341b996b8aad5612041f690bf57f9
 code:
   - features/pages/PlansPage
   - components/blocks/PremiumPlans

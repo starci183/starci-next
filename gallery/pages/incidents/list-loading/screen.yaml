@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 9de746bfb439ab30e76196834d8cc46e09eee25c39066d20073f74b97451affc
+    sha256: 1e09abd905528fd0d042fca4c6021bc32adbe8e607c1a6a758a3d93f8f5b9034
   "1440":
     file: 1440.png
-    sha256: 6d2cf963fe729222e6cd5d9664f55681cb9ab7837467778bff424f6015a232f2
+    sha256: 5a7736255c7f2c90fc842059a044c872bac017269ec58dffbaa0b0f9a99ed234
 sections:
   - id: danh-sach
     title: Danh sách

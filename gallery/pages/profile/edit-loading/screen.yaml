@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 18351698ed93673ea6ce6b9708825dd3f17d37444dba32b92f3a269f7ee4e589
+    sha256: 4c1280159cccf099aa64d1036ae53c3d65d05d9bdaf17b346f7ceed2a11a7a89
   "1440":
     file: 1440.png
-    sha256: ea7b8a8c10c15967731905d0d03ebd5b61b468e895410d3d94c291f931f1c9b0
+    sha256: 7e5033d328601783407197702912d0b538c48aefe40fc11b89bbac69b7c767b2
 sections:
   - id: s1
     title: Nội dung chính
@@ -77,3 +77,6 @@ audit:
             (placeholder verifiedCount 0) và bộ đếm "0/60" hiện trước khi biết tên: trạng thái tải nói điều chưa biết,
             nên là khung xám.'
   escalate: null
+  baseline:
+    at: 2026-11-20T15:02:28.671Z
+    rounds: 4

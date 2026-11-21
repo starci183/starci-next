@@ -178,13 +178,13 @@ const CatalogSkeleton = () => (
  */
 export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
     const { header, labels, isFirstVisit } = props.props
-    const pageHeader: PageHeaderContent = {
+    const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
         title: header.title,
         titleScale: "standard",
         breadcrumbs: "root",
-        meta: header.meta,
-        ...(header.action === null ? {} : { actions: <HeaderAction action={header.action} /> }),
-    }
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
+        ...(header.action === null || loading ? {} : { actions: <HeaderAction action={header.action} /> }),
+    })
     return (
         <SlotView
             slot={props.props.slot}
@@ -208,11 +208,7 @@ export const PracticeCatalogBase = (props: PracticeCatalogBaseProps) => {
                     />
                 )
             }
-            frame={({ body, isLoading }) => (
-                <Page isLoading={isLoading} header={pageHeader}>
-                    {body}
-                </Page>
-            )}
+            frame={({ body, isLoading }) => <Page header={pageHeaderOf(isLoading)}>{body}</Page>}
         />
     )
 }

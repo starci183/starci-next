@@ -13,6 +13,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { Skeleton } from "@heroui/react"
 import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
 
@@ -133,9 +134,9 @@ const PatternSkeleton = () => (
 export const PracticePatternBase = (props: PracticePatternBaseProps) => {
     const { header, labels, intro } = props.props
     const pageHeaderOf = (loading: boolean): PageHeaderContent => ({
-        title: header.title,
+        title: loading ? <Skeleton className="h-6 w-64 rounded-md" /> : header.title,
         titleScale: "standard",
-        meta: header.meta,
+        meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : header.meta,
         breadcrumbs: {
             label: labels.breadcrumbs,
             items: [
@@ -143,7 +144,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
                 { id: "pattern", label: header.title, ...(loading ? { isLoading: true as const } : {}) },
             ],
         },
-        ...(header.action === null
+        ...(header.action === null || loading
             ? {}
             : {
                   actions: (
@@ -190,11 +191,7 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
                     />
                 )
             }
-            frame={({ header, body, isLoading }) => (
-                <Page isLoading={isLoading} header={header}>
-                    {body}
-                </Page>
-            )}
+            frame={({ header, body }) => <Page header={header}>{body}</Page>}
         />
     )
 }

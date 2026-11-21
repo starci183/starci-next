@@ -3,8 +3,7 @@ screen: review/hub-done
 title: Ôn tập, hôm nay xong
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
@@ -35,11 +34,10 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
-      2026-11-20T13:51:56.701Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:56.701Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run)."
 audit:
   builder:
@@ -55,7 +53,9 @@ audit:
           notes: 'Dải đầu báo đã đạt 10/10, ba con số, ô "Hôm nay xong rồi", biểu đồ; mục tiêu đầy.'
         layout:
           verdict: pass
-          notes: '"Đổi" 40px, không nút chính khi không còn thẻ mới. Còn ghi: Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dòng riêng dưới tiêu đề (Section đẩy action xuống khi hẹp); ở màn này không đè lên hàng nên không giữ mở.'
+          notes:
+            '"Đổi" 40px, không nút chính khi không còn thẻ mới. Còn ghi: Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dòng
+            riêng dưới tiêu đề (Section đẩy action xuống khi hẹp); ở màn này không đè lên hàng nên không giữ mở.'
         actionable:
           verdict: pass
           notes: 'Mục tiêu có "Đổi", bộ thẻ có "Quản lý".'
@@ -67,8 +67,14 @@ audit:
           notes: "Tiếng Việt, một thuật ngữ."
         states:
           verdict: open
-          notes: 'Mục s1 nói trạng thái này chỉ còn lệnh trung tính "Ôn thêm thẻ mới", nhưng ảnh không có nút đó: seed có "Thẻ mới có thể thêm 0" nên code (useReviewHubScreen, newAvailable > 0) ẩn nút. Ảnh không chứng minh được lệnh trung tính của bản vẽ: seed thêm thẻ mới cho học viên này, hoặc sửa mô tả s1 cho đúng ảnh.'
+          notes:
+            'Mục s1 nói trạng thái này chỉ còn lệnh trung tính "Ôn thêm thẻ mới", nhưng ảnh không có nút đó: seed có "Thẻ mới
+            có thể thêm 0" nên code (useReviewHubScreen, newAvailable > 0) ẩn nút. Ảnh không chứng minh được lệnh trung
+            tính của bản vẽ: seed thêm thẻ mới cho học viên này, hoặc sửa mô tả s1 cho đúng ảnh.'
         truth:
           verdict: pass
           notes: "10/10, chuỗi 1 ngày, 100% lần 1 khớp nhau và từ seed."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:56.701Z
+    rounds: 4

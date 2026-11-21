@@ -57,10 +57,10 @@ const Body = (props: BodyProps) => {
 }
 
 /** The header of the session: the title, the progress words and the way back to Ôn tập. */
-const headerOf = (props: ReviewSessionBaseProps): PageHeaderContent => ({
+const headerOf = (props: ReviewSessionBaseProps, loading = false): PageHeaderContent => ({
     title: props.props.labels.pageTitle,
     titleScale: "standard",
-    meta: props.props.labels.progressText,
+    meta: loading ? <Skeleton className="h-3 w-56 rounded-md" /> : props.props.labels.progressText,
     breadcrumbs: {
         label: props.props.labels.root,
         items: [
@@ -87,7 +87,7 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
         errorDescription={props.props.labels.saveFailedBody}
         emptyDescription={props.props.labels.emptyText}
         onRetry={props.on.retry}
-        header={() => headerOf(props)}
+        header={(_screen, loading) => headerOf(props, loading)}
         headerFallback={{
             ...headerOf(props),
             actions: (
@@ -112,7 +112,7 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
             )
         }
         frame={(parts) => (
-            <Page header={parts.header} isLoading={parts.isLoading} measure="reading">
+            <Page header={parts.header} measure="reading">
                 {parts.body}
             </Page>
         )}

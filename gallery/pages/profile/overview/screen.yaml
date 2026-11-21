@@ -195,3 +195,6 @@ audit:
             nối máy nào" và Premium. Slug liên kết CV vẫn "learner-4" như mã nội bộ (nếu slug đọc được do API sinh thì
             ghi "cần API"). Số 0 ở Tiến độ nhanh là lỗ seed đã biết của học viên cv-multi, không tính.'
   escalate: null
+  baseline:
+    at: 2026-11-20T14:52:41.051Z
+    rounds: 3

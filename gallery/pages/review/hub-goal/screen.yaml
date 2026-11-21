@@ -3,8 +3,7 @@ screen: review/hub-goal
 title: Ôn tập, đổi mục tiêu
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
@@ -35,11 +34,10 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
-      2026-11-20T13:51:55.596Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:55.596Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run)."
 audit:
   builder:
@@ -55,7 +53,11 @@ audit:
           notes: "Hộp thoại: tiêu đề, giải thích, chip, ô số, rồi Huỷ / Lưu mục tiêu."
         layout:
           verdict: open
-          notes: "Ảnh 390-first.png không có hộp thoại: trong ảnh dài 390 hộp thoại nằm giữa trang 2103px (y ~900–1140), nên màn đầu 390x844 chỉ thấy nền tối, không chấm được màn đầu. Sửa ở cách chụp: chụp hộp thoại ở khung 390x844. Phần thấy được: ô số và hai nút 40px, ở 390 hai nút xếp dọc đủ rộng. Còn ghi: chip 5/10/20/30/Khác cao ~20px, dưới vùng chạm 44px ở 390; bản vẽ chọn ChoiceChips (cần Grammar)."
+          notes:
+            "Ảnh 390-first.png không có hộp thoại: trong ảnh dài 390 hộp thoại nằm giữa trang 2103px (y ~900–1140), nên màn
+            đầu 390x844 chỉ thấy nền tối, không chấm được màn đầu. Sửa ở cách chụp: chụp hộp thoại ở khung 390x844. Phần
+            thấy được: ô số và hai nút 40px, ở 390 hai nút xếp dọc đủ rộng. Còn ghi: chip 5/10/20/30/Khác cao ~20px,
+            dưới vùng chạm 44px ở 390; bản vẽ chọn ChoiceChips (cần Grammar)."
         actionable:
           verdict: pass
           notes: "Chip đổi nhanh, Khác mở ô số có −/+ từ 0 đến 50, Lưu mục tiêu là lệnh chính."
@@ -72,3 +74,6 @@ audit:
           verdict: pass
           notes: "Giá trị 10 khớp mục tiêu 10 thẻ/ngày trên trang."
   escalate: null
+  baseline:
+    at: 2026-11-20T13:51:55.596Z
+    rounds: 4
