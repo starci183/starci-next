@@ -146,6 +146,8 @@ export type EssenceLabels = {
         readonly review: string
         readonly freeTitle: string
         readonly freeText: string
+        /** The command of the end-of-part notice: to the plans. */
+        readonly upgrade: string
     }
     readonly toc: { readonly title: string; readonly flagged: string }
     readonly article: { readonly locked: string; readonly empty: string }

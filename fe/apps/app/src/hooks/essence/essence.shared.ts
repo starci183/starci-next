@@ -108,7 +108,8 @@ const barPartOf = (
     const isCurrent = index === current
     const label = isCurrent ? position : words.questionName(index + 1)
     if (question.isSolved) return { id: question.id, label, isCurrent, state: "complete" }
-    if (isCurrent) return { id: question.id, label, isCurrent, state: "current" }
+    // The question on screen turns red after a wrong pick until it is solved.
+    if (isCurrent) return { id: question.id, label, isCurrent, state: question.misses.length > 0 ? "error" : "current" }
     return { id: question.id, label, isCurrent, state: question.misses.length > 0 ? "error" : "upcoming" }
 }
 

@@ -119,6 +119,9 @@ const mainOf = (context: PartContext) => {
                 labels={labels}
                 onRead={() => screen.on.showStage("article")}
                 onReview={() => screen.on.moveOpener(0)}
+                // The header carries "Đọc bài viết" unless it asks a free reader who retook the five to upgrade.
+                showRead={lesson.isFree && essence.retakeLine !== ""}
+                onUpgrade={screen.on.openPlans}
             />
         )
     }

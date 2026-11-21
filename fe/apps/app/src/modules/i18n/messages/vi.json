@@ -1305,7 +1305,7 @@
         },
         "essence": {
           "opener": {
-            "eyebrow": "Mở bài · 5 câu hỏi mở bài, chấm ngay",
+            "eyebrow": "Mở bài · một tình huống, năm diễn biến",
             "barLabel": "Kết quả 5 câu mở bài",
             "hint": "Chọn một phương án. Sai thì xem vì sao rồi chọn lại; đúng thì câu chuyện đi tiếp.",
             "empty": "Bài này chưa có câu hỏi mở bài.",

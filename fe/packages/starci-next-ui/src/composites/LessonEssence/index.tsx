@@ -50,6 +50,10 @@ type LessonResultProps = {
     readonly labels: EssenceLabels
     readonly onRead: () => void
     readonly onReview: () => void
+    /** False when the page header already carries "Đọc bài viết" as its primary: the block then does not repeat it. */
+    readonly showRead: boolean
+    /** Opens the plans, from the end-of-part notice of a reader without Premium. */
+    readonly onUpgrade: () => void
 }
 
 /** The result of the five answers: the bar and score, which sections to read closely, the contents and the two ways on. */
@@ -66,9 +70,11 @@ export const LessonResult = (props: LessonResultProps) => (
         </Stack>
         <LessonToc view={props.view} labels={props.labels} />
         <Cluster gap="inline">
-            <Button intent="neutral" onPress={props.onRead}>
-                {props.labels.result.readArticle}
-            </Button>
+            {props.showRead ? (
+                <Button intent="neutral" onPress={props.onRead}>
+                    {props.labels.result.readArticle}
+                </Button>
+            ) : null}
             <Button intent="neutral" onPress={props.onReview}>
                 {props.labels.result.review}
             </Button>
@@ -79,6 +85,7 @@ export const LessonResult = (props: LessonResultProps) => (
                 leading={<IconTile source={LockGlyph} />}
                 title={props.labels.result.freeTitle}
                 description={props.labels.result.freeText}
+                action={{ label: props.labels.result.upgrade, onAction: props.onUpgrade }}
             />
         ) : null}
     </Stack>

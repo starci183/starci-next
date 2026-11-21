@@ -61,7 +61,7 @@ const rowOf = (
         return {
             ...base,
             verdict: "danger" as const,
-            meta: { text: labels.opener.wrongMark, tone: "danger" as const },
+            badges: [{ label: labels.opener.wrongMark, tone: "danger" as const }] as const,
             detail: (
                 <Alert
                     tone="negative"
@@ -71,7 +71,11 @@ const rowOf = (
             ),
         }
     if (question.isSolved && choice.id === question.pickedId)
-        return { ...base, verdict: "success" as const, meta: { text: labels.opener.rightMark } }
+        return {
+            ...base,
+            verdict: "success" as const,
+            badges: [{ label: labels.opener.rightMark, tone: "success" as const }] as const,
+        }
     if (question.isSolved || isBusy) return base
     return { ...base, onPress: () => props.onAnswer(question.id, choice.id) }
 }

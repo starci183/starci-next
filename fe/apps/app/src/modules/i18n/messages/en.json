@@ -1305,7 +1305,7 @@
         },
         "essence": {
           "opener": {
-            "eyebrow": "Opener · 5 interview questions, graded at once",
+            "eyebrow": "Opener · one situation, five developments",
             "barLabel": "Result of the 5 opener questions",
             "hint": "Pick one option. If it is wrong, read why and pick again; if it is right, the story moves on.",
             "empty": "This lesson has no opener questions.",

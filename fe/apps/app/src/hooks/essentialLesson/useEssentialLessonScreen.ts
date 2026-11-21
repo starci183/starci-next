@@ -113,6 +113,8 @@ export type EssentialLessonActions = {
     readonly toggleGuard: (flag: string, isOff: boolean) => void
     readonly revealHint: (scenarioId: string) => void
     readonly openPart: (part: EssentialPart) => void
+    /** Opens the plans page. */
+    readonly openPlans: () => void
 }
 
 /** The connected lesson page. */
@@ -394,6 +396,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                 if (typeof window !== "undefined") window.location.hash = "opener"
             },
             ...runsPart.on,
+            openPlans: () => router.push(APP_ROUTES.premium),
             openPart: (target) => {
                 if (read.data !== undefined) router.push(partPath(read.data, target))
             },

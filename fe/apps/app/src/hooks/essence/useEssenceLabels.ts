@@ -64,6 +64,7 @@ const labelsOf = (t: Translate, markdown: EssenceLabels["markdown"]): EssenceLab
         review: t("result.review"),
         freeTitle: t("result.freeTitle"),
         freeText: t("result.freeText"),
+        upgrade: t("shell.upgrade"),
     },
     toc: { title: t("toc.title"), flagged: t("toc.flagged") },
     article: { locked: t("article.locked"), empty: t("article.empty") },
