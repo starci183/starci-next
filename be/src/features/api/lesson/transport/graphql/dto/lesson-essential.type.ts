@@ -3,6 +3,7 @@ import { LessonOpenerStoryType, LessonQuestionType } from "./lesson-question.typ
 import { LessonArchitectureType, LessonCodeWalkType, LessonSourceType } from "./lesson-source.type"
 import { LessonChallengeType, LessonScenarioType } from "./lesson-scenario.type"
 import { LessonStatementType } from "./lesson-statement.type"
+import { LessonBugPackType, LessonPatternType } from "./lesson-bugs.type"
 
 @ObjectType()
 /**
@@ -14,7 +15,7 @@ export class LessonEssentialType {
     @Field(() => Boolean)
     isLocked!: boolean
 
-    /** The ids of the parts the learner may not read: `1-essential`, `2-source`, `3-scenarios`, `4-apply`. */
+    /** The ids of the parts the learner may not read: `1-essential`, `2-source`, `3-scenarios`, `4-apply`, `5-patterns`. */
     @Field(() => [String])
     lockedParts!: ReadonlyArray<string>
 
@@ -49,4 +50,12 @@ export class LessonEssentialType {
     /** The challenge ladder. */
     @Field(() => [LessonChallengeType])
     challenges!: ReadonlyArray<LessonChallengeType>
+
+    /** The Tìm sạn bug pack, or null (a lesson without one, or Tìm sạn is locked). */
+    @Field(() => LessonBugPackType, { nullable: true })
+    bugs!: LessonBugPackType | null
+
+    /** The Pattern stacks; empty for a lesson without them or when Pattern is locked. */
+    @Field(() => [LessonPatternType])
+    patterns!: ReadonlyArray<LessonPatternType>
 }

@@ -1,5 +1,5 @@
 import { ESSENTIAL_PARTS, type EssentialPart } from "@modules/domain/entitlement"
-import type { LessonOpenerAnswerView, LessonView } from "@modules/domain/lesson"
+import { LESSON_ESSENCE_SECTION, type LessonOpenerAnswerView, type LessonView } from "@modules/domain/lesson"
 import { headingsOf, markdownChunksOf } from "./mcp-chunk.policy"
 import type { Chunk } from "./mcp-embedding.policy"
 import type { McpLesson, McpLessonSection, McpOpenerQuestion } from "./mcp.contracts"
@@ -91,7 +91,9 @@ const LABELS: Record<Locale, Labels> = {
 
 const labelsOf = (locale: string): Labels => LABELS[locale === "en" ? "en" : "vi"]
 
-const partOf = (id: string): EssentialPart | null => ESSENTIAL_PARTS.find((part) => part === id) ?? null
+/** The part a section is read under: the Bản chất reading (`2-essence`) is the `2-source` part, the others are named after theirs. */
+const partOf = (id: string): EssentialPart | null =>
+    id === LESSON_ESSENCE_SECTION ? "2-source" : (ESSENTIAL_PARTS.find((part) => part === id) ?? null)
 
 const letter = (index: number): string => String.fromCharCode(65 + index)
 

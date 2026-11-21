@@ -1,5 +1,6 @@
 import {
     challengeActivityId,
+    lessonBugCheckId,
     LESSON_CHALLENGE_LEVELS,
     type LessonChallenge,
     type LessonEssential,
@@ -129,7 +130,11 @@ export const challengeScoresOf = (
             const green = hidden.filter((id) => isGreen(byId.get(id)))
             const isPassed = hidden.length > 0 && green.length === hidden.length
             const below = tierBelow(challenge.level)
-            const belowIds = below === null ? [] : hiddenIdsOf(challenges.find((each) => each.level === below))
+            // The first rung opens once the whole Tìm sạn bug pack is green (a lesson without one opens it at once).
+            const belowIds =
+                below === null
+                    ? (essential?.bugs?.tests ?? []).map((test) => lessonBugCheckId(test.id))
+                    : hiddenIdsOf(challenges.find((each) => each.level === below))
             const isLocked = !belowIds.every((id) => isGreen(byId.get(id)))
             const hasEssence = (challenge.questions ?? []).length > 0
             const essenceIndex = hasEssence ? challenge.rubric.length - 1 : -1
@@ -187,7 +192,12 @@ export const lessonPartsOf = (
     const essential = facts.essential
     const hasSource = (essential?.source ?? null) !== null
     const scenarioRuns = facts.runs.filter((run) => run.slot !== "challenge")
-    const scenarioIds = (essential?.scenarios ?? []).map((scenario) => scenario.id)
+    // Tìm sạn counts the bug-pack tests when the lesson has them, its scenarios otherwise.
+    const bugTests = essential?.bugs?.tests ?? []
+    const scenarioIds =
+        bugTests.length > 0
+            ? bugTests.map((test) => lessonBugCheckId(test.id))
+            : (essential?.scenarios ?? []).map((scenario) => scenario.id)
     const scenarioGreen = scenarioIds.filter((id) => isGreen(scenarioRuns.find((run) => run.scenarioId === id))).length
     const rungs = challengeScoresOf(essential, facts.runs, facts.choices)
     const raw: Record<LessonPartId, Omit<LessonPartProgress, "part">> = {

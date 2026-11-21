@@ -19,6 +19,7 @@ export type { SimulationCardLabels, SimulationStep } from "./branches/Simulation
 export { WalkProvider } from "./branches/WalkProvider"
 export { SlotView } from "./composites/SlotView"
 export type { DataSlot, SlotLabels, SlotParts, SlotRead } from "./composites/SlotView"
+export { WrittenCard } from "./composites/WrittenCard"
 export type { WrittenCardLabels } from "./composites/WrittenCard"
 export { BarWide } from "./frames/BarWide"
 export { SiteShell } from "./frames/SiteShell"
@@ -203,3 +204,26 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
+export {
+    EssentialBugHunt,
+    EssentialBugHuntAside,
+    EssentialPattern,
+    EssentialPatternAside,
+    EssentialPatternLink,
+    EssentialReading,
+    EssentialReadingAside,
+    LessonJourneyBlock,
+} from "./composites/LessonFiveParts"
+export type {
+    BugHuntLabels,
+    BugHuntView,
+    BugRowState,
+    BugRowView,
+    PatternLabels,
+    PatternPartView,
+    PatternStackView,
+    ReadingChunkView,
+    ReadingLabels,
+    ReadingTocRow,
+    ReadingView,
+} from "./composites/LessonFiveParts"

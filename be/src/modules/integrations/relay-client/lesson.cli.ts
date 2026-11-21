@@ -3,6 +3,8 @@ import type { CliIo, PendingUpload } from "./relay-client.contracts"
 import type { LastRun, LessonRunOptions, LessonScenario, LessonSection } from "./lesson.contracts"
 import { fixPromptOf } from "./lesson-prompt.policy"
 import {
+    bugsFolderOf,
+    bugsRootOf,
     collides,
     excludeFromGit,
     hasFolder,
@@ -48,7 +50,7 @@ type LessonFetch =
 const fetchLesson = async (
     io: CliIo,
     lessonId: string,
-    ask: { readonly scenario?: string; readonly challenge?: string },
+    ask: { readonly scenario?: string; readonly challenge?: string; readonly bugs?: boolean },
 ): Promise<LessonFetch> => {
     const read = sessionOf(io)
     if (read.kind === "unpaired") {
@@ -89,6 +91,7 @@ export const pullLesson = async (
     lessonId: string,
     lang: string | undefined,
     cwd: string,
+    bugs = false,
 ): Promise<number> => {
     if (!isLessonId(lessonId)) {
         io.err("A lesson id is lowercase letters, digits and dashes.")
@@ -98,6 +101,7 @@ export const pullLesson = async (
         io.err(`Lesson sources are ${LANGUAGE} only; --lang ${lang} is not available.`)
         return 1
     }
+    if (bugs) return pullBugs(io, lessonId, cwd)
     const got = await fetchLesson(io, lessonId, {})
     if (got.kind === "failed") return 1
     const { source, dir, compose, project } = got.lesson
@@ -127,6 +131,56 @@ export const pullLesson = async (
         `Lesson ${lessonId} is in ./${lessonId} (source at ${source.commit.slice(0, 10)}, sha256 verified), one initial commit.`,
     )
     io.out(`Next: cd ${lessonId} && starci-next up`)
+    return 0
+}
+
+/**
+ * `starci-next pull <lesson> --bugs`: downloads the Tìm sạn bug pack StarCi signed (the buggy copy of the source, `bugs/source/`),
+ * checks its sha256 and listing like the source, unpacks it into `./<lesson>-bugs` and makes it a git repository with one commit.
+ */
+const pullBugs = async (io: CliIo, lessonId: string, cwd: string): Promise<number> => {
+    const got = await fetchLesson(io, lessonId, { bugs: true })
+    if (got.kind === "failed") return 1
+    const pack = got.lesson.bugs
+    if (pack === undefined) {
+        io.err(`Lesson ${lessonId} has no bug pack; nothing was pulled.`)
+        return 1
+    }
+    const { dir, compose, project } = got.lesson
+    const folder = bugsFolderOf(lessonId)
+    const target = join(cwd, folder)
+    if (hasFolder(target)) {
+        const had = readState(target)
+        const same = had?.pack === "bugs" && had.sha256 === pack.source.sha256
+        io.out(
+            same
+                ? `The bug pack of ${lessonId} is already in ./${folder} at ${pack.source.commit.slice(0, 10)}.`
+                : `./${folder} already exists and is not this bug pack; move it away and pull again.`,
+        )
+        return same ? 0 : 1
+    }
+    const unpacked = await unpackSource(io, got.session, {
+        noun: "bug pack",
+        source: pack.source,
+        target,
+        dir,
+        message: `"Lesson ${lessonId} bug pack at ${pack.source.commit.slice(0, 10)}"`,
+        finish: (made) => {
+            excludeFromGit(made)
+            writeState(made, {
+                lessonId,
+                commit: pack.source.commit,
+                sha256: pack.source.sha256,
+                dir,
+                compose,
+                project,
+                pack: "bugs",
+            })
+        },
+    })
+    if (!unpacked) return 1
+    io.out(`The bug pack of ${lessonId} is in ./${folder} (sha256 verified), one initial commit.`)
+    io.out(`Next: cd ${folder} && starci-next up && starci-next run ${lessonId} --bugs`)
     return 0
 }
 
@@ -238,6 +292,116 @@ const runScenario = async (
     return { result, exitCode: run.exitCode, uploads }
 }
 
+/** The longest received line a bug-pack result carries. */
+const RECEIVED_MAX = 1000
+
+/** The check id a bug-pack test is relayed under. */
+const bugCheckIdOf = (testId: string): string => `bug:${testId}`
+
+/**
+ * Runs one bug-pack test's command and reads its report, like a scenario; its result is relayed under `bug:<test id>` with slot
+ * `bugs` and the message of its first failing case as the received line.
+ */
+const runBugTest = async (
+    io: CliIo,
+    root: string,
+    lesson: LessonSection,
+    test: LessonScenario,
+    base: Readonly<Record<string, string>>,
+): Promise<ScenarioRun> => {
+    removeFile(join(root, test.report))
+    io.out(`Running ${test.id}: ${test.title}...`)
+    const run = await io.runCommand(test.command, join(root, test.cwd), test.timeoutMs)
+    const report = readText(join(root, test.report))
+    if (report === null) io.err(`No JUnit report at ${test.report}: the command must write it.`)
+    const result = scenarioResultOf(report === null ? [] : scenarioCasesOf(report), test)
+    const passed = result.passed && run.exitCode === 0
+    io.out(`  ${passed ? "passed" : "FAILED"} (exit ${run.exitCode}, ${run.durationMs} ms)`)
+    ledgerLinesOf(result, lesson.invariants).forEach((line) => io.out(line))
+    const received = (result.why ?? result.failing[0]?.message ?? "").slice(0, RECEIVED_MAX)
+    const ofCheck = { ...base, checkId: bugCheckIdOf(test.id) }
+    const uploads: ReadonlyArray<PendingUpload> = [
+        { mutation: "relayCheckStarted", input: { eventId: io.ids(), ...ofCheck } },
+        { mutation: "relayLog", input: { eventId: io.ids(), ...ofCheck, text: run.output.slice(-LOG_TAIL_MAX) } },
+        {
+            mutation: "relayCheckResult" as const,
+            input: {
+                eventId: io.ids(),
+                ...ofCheck,
+                slot: "bugs",
+                ref: `bugs:${test.id}`,
+                passed,
+                exitCode: run.exitCode,
+                durationMs: run.durationMs,
+                commit: lesson.bugs?.source.commit ?? lesson.source.commit,
+                lessonId: lesson.lessonId,
+                scenarioId: test.id,
+                concepts: result.concepts,
+                guardsOff: [],
+                ...(result.why === null ? {} : { why: result.why }),
+                ...(ledgerTextOf(result) === "" ? {} : { ledger: ledgerTextOf(result) }),
+                ...(passed || received === "" ? {} : { received }),
+            },
+        },
+    ]
+    return { result, exitCode: run.exitCode, uploads }
+}
+
+/** Runs the bug-pack tests one after the other, in the order StarCi signed them. */
+const runTests = async (
+    io: CliIo,
+    root: string,
+    lesson: LessonSection,
+    tests: ReadonlyArray<LessonScenario>,
+    base: Readonly<Record<string, string>>,
+): Promise<ReadonlyArray<ScenarioRun>> => {
+    const [test, ...rest] = tests
+    if (test === undefined) return []
+    const run = await runBugTest(io, root, lesson, test, base)
+    return [run, ...(await runTests(io, root, lesson, rest, base))]
+}
+
+/**
+ * `starci-next run <lesson> --bugs`, from the bug-pack folder (or its parent): verifies the signed manifest, runs every test of the
+ * pack it lists (the final one only once StarCi opened it) and uploads one practice result per test id.
+ */
+const runBugs = async (io: CliIo, lessonId: string, options: LessonRunOptions, cwd: string): Promise<number> => {
+    const root = bugsRootOf(cwd, lessonId)
+    if (!isLessonId(lessonId) || root === null) {
+        io.err(`The bug pack of ${lessonId} is not here. Run starci-next pull ${lessonId} --bugs first.`)
+        return 1
+    }
+    if (options.guards.length > 0) {
+        io.err("The bug pack runs with no guard switched off.")
+        return 1
+    }
+    const got = await fetchLesson(io, lessonId, { bugs: true })
+    if (got.kind === "failed") return 1
+    const pack = got.lesson.bugs
+    if (pack === undefined || pack.tests.length === 0) {
+        io.err(`StarCi sent no bug pack for ${lessonId}; nothing was run.`)
+        return 1
+    }
+    io.out(`Lesson ${lessonId} bug pack: ${pack.tests.length} test(s), signed by StarCi.`)
+    pack.tests.forEach((test) => io.out(`  ${test.id}: ${test.command}   (at most ${test.timeoutMs / 1000}s)`))
+    if (!options.yes && !(await io.confirm("Run these commands on this machine?"))) {
+        io.out("Nothing was run.")
+        return 0
+    }
+    const base = { taskId: `lesson:${lessonId}`, runId: io.ids() }
+    const ack: PendingUpload = {
+        mutation: "relayManifestAck",
+        input: { eventId: io.ids(), ...base, manifestId: got.manifestId },
+    }
+    const acked = await flush(io, got.session, [...readQueue(io.env), ack])
+    writeQueue(io.env, acked)
+    const runs = await runTests(io, root, got.lesson, pack.tests, base)
+    const left = await flush(io, got.session, [...acked, ...runs.flatMap((run) => run.uploads)])
+    writeQueue(io.env, left)
+    io.out(left.length === 0 ? "Results sent to StarCi (practice)." : `${left.length} upload(s) wait for the next run.`)
+    return runs.every((run) => run.result.passed && run.exitCode === 0) ? 0 : 1
+}
+
 /** What the learner remembers of a run for `prompt`; a challenge keeps nothing. */
 const lastOf = (result: ScenarioResult, names: ReadonlyArray<string>): LastRun => ({
     scenarioId: result.scenarioId,
@@ -309,6 +473,13 @@ export const runLesson = async (
     isCheck: boolean,
     cwd: string,
 ): Promise<number> => {
+    if (options.bugs === true) {
+        if (options.challenge !== undefined || options.scenario !== undefined) {
+            io.err("Use --bugs alone, not with --scenario or --challenge.")
+            return 1
+        }
+        return runBugs(io, lessonId, options, cwd)
+    }
     const root = lessonRootOf(cwd, lessonId)
     if (!isLessonId(lessonId) || root === null) {
         io.err(`Lesson ${lessonId} is not here. Run starci-next pull ${lessonId} first.`)

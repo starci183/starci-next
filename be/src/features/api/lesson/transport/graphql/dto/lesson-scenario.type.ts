@@ -91,4 +91,8 @@ export class LessonChallengeType {
     /** The essence check. */
     @Field(() => [LessonQuestionType])
     questions!: ReadonlyArray<LessonQuestionType>
+
+    /** True when some essence question of the tier asks a written explanation (AI graded). */
+    @Field(() => Boolean)
+    writtenRequired!: boolean
 }

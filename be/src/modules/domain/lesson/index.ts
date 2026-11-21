@@ -52,17 +52,22 @@ export type { LessonSourceFile } from "./lesson-import.contracts"
 export type {
     LessonArchitectureComponentView,
     LessonArchitectureView,
+    LessonBugPackView,
+    LessonBugTestView,
     LessonChallengeCriterionView,
     LessonChallengeView,
     LessonChoiceView,
     LessonCodeWalkView,
     LessonEssentialView,
     LessonOpenerStoryView,
+    LessonPatternView,
     LessonQuestionView,
     LessonScenarioView,
     LessonSourceView,
 } from "./lesson-essential-view.contracts"
 export type {
+    LessonBugPack,
+    LessonBugTest,
     LessonChallenge,
     LessonChallengeLevel,
     LessonEssential,
@@ -75,7 +80,13 @@ export type {
     LessonScenarioRun,
     LessonSourceRepo,
 } from "./lesson-essential.contracts"
-export { LESSON_CHALLENGE_LEVELS } from "./lesson-essential.contracts"
+export {
+    LESSON_BUG_CHECK_PREFIX,
+    LESSON_CHALLENGE_LEVELS,
+    LESSON_ESSENCE_SECTION,
+    challengeWrittenActivityId,
+    lessonBugCheckId,
+} from "./lesson-essential.contracts"
 export type { LessonRunnable } from "./lesson-content.service"
 export type { LessonSourceArchive } from "./lesson-source-archive.policy"
 export { sourceArchiveOf } from "./lesson-source-archive.policy"

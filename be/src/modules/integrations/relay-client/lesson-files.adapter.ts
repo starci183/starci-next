@@ -52,7 +52,12 @@ const LAST_DIR = ".starci-last"
 /** The repo folder of a lesson: the current folder when it holds the marker of that lesson, else `./<lesson>`; null when neither does. */
 export const lessonRootOf = (cwd: string, lessonId: string): string | null => {
     const candidates = [cwd, join(cwd, lessonId)]
-    return candidates.find((folder) => readState(folder)?.lessonId === lessonId) ?? null
+    return (
+        candidates.find((folder) => {
+            const state = readState(folder)
+            return state?.lessonId === lessonId && state.pack === undefined
+        }) ?? null
+    )
 }
 
 /** The state `pull` wrote in a folder, or null. */
@@ -61,10 +66,24 @@ export const readState = (folder: string): LessonState | null => {
     if (!existsSync(path)) return null
     const read = jsonOf(readFileSync(path, "utf8"))
     if (read.kind !== "read" || !isRecord(read.value)) return null
-    const { lessonId, commit, sha256, dir, compose, project } = read.value
+    const { lessonId, commit, sha256, dir, compose, project, pack } = read.value
     return [lessonId, commit, sha256, dir, compose, project].every((item) => typeof item === "string")
-        ? ({ lessonId, commit, sha256, dir, compose, project } as LessonState)
+        ? ({ lessonId, commit, sha256, dir, compose, project, ...(pack === "bugs" ? { pack } : {}) } as LessonState)
         : null
+}
+
+/** The folder of a lesson's Tìm sạn bug pack: `./<lesson>-bugs` by default. */
+export const bugsFolderOf = (lessonId: string): string => `${lessonId}-bugs`
+
+/** The bug-pack folder of a lesson: the current folder when it holds that pack's marker, else `./<lesson>-bugs`; null when neither does. */
+export const bugsRootOf = (cwd: string, lessonId: string): string | null => {
+    const candidates = [cwd, join(cwd, bugsFolderOf(lessonId))]
+    return (
+        candidates.find((folder) => {
+            const state = readState(folder)
+            return state?.lessonId === lessonId && state.pack === "bugs"
+        }) ?? null
+    )
 }
 
 /** Writes the state in the repo folder. */

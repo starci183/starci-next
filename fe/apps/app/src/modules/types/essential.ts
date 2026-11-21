@@ -4,8 +4,12 @@ export const CHALLENGE_LEVELS = ["easy", "medium", "hard", "insane"] as const
 /** One rung of the challenge ladder. */
 export type ChallengeLevel = (typeof CHALLENGE_LEVELS)[number]
 
-/** The four parts of a lesson page, in the order a learner meets them. */
-export const ESSENTIAL_PARTS = ["essence", "source", "scenarios", "apply"] as const
+/**
+ * The five parts of a lesson page, in the order a learner meets them (`?part=`): Mở đầu (`essence`, the opener), Bản chất
+ * (`source`, the practice-led reading), Tìm sạn (`scenarios`, the bug pack), Challenges (`apply`) and Pattern (`pattern`). The ids
+ * stay the earlier ones so links into a part keep working.
+ */
+export const ESSENTIAL_PARTS = ["essence", "source", "scenarios", "apply", "pattern"] as const
 
 /** One part of a lesson page (`?part=`). */
 export type EssentialPart = (typeof ESSENTIAL_PARTS)[number]
@@ -25,6 +29,8 @@ export type EssentialQuestionView = {
     readonly scenarioId: string
     /** The development of the opener story this question adds; undefined for a lesson without a story and a challenge question. */
     readonly event: OpenerEventView | undefined
+    /** The activity id of the written explanation the question asks; empty when it asks none. */
+    readonly writtenActivityId: string
 }
 
 /** One development of the opener story: when it happens (`21:03`) and what happens. */
@@ -63,6 +69,59 @@ export type EssentialChallengeView = {
     }>
     readonly hiddenScenarios: number
     readonly questions: ReadonlyArray<EssentialQuestionView>
+    /** True when some essence question of the rung asks a written explanation (AI graded). */
+    readonly writtenRequired: boolean
+}
+
+/** One test of the Tìm sạn bug pack as the lesson names it: what it checks and how to run it. */
+export type BugTestView = {
+    readonly id: string
+    readonly title: string
+    /** The opener question id it belongs to; empty for the happy path and the final test. */
+    readonly essence: string
+    readonly command: string
+    readonly expected: string
+    /** The label of what the run measures. */
+    readonly received: string
+    readonly hintCount: number
+    readonly isFinal: boolean
+}
+
+/** Where a Tìm sạn test stands for the learner. */
+export type BugRunStatus = "none" | "running" | "passed" | "failed"
+
+/** One Tìm sạn test with the learner's newest run and what it earned (the back end releases each text only once earned). */
+export type BugResultView = {
+    readonly testId: string
+    readonly status: BugRunStatus
+    readonly isLocked: boolean
+    readonly at: string
+    /** What the newest red run measured; empty otherwise. */
+    readonly received: string
+    readonly output: string
+    /** "Vì sao giờ đúng", after a green run; empty otherwise. */
+    readonly pass: string
+    /** "Vì sao chưa pass", after a red run; empty otherwise. */
+    readonly fail: string
+    /** The hints opened so far, while the test is red. */
+    readonly hints: ReadonlyArray<string>
+    readonly hintsOpened: number
+    readonly hintCount: number
+}
+
+/** One Pattern stack: where a real project keeps the pattern. */
+export type PatternView = {
+    readonly stack: string
+    readonly status: "ready" | "soon"
+    readonly repo: string
+    readonly path: string
+    /** The folder on GitHub; empty for a stack without a repository. */
+    readonly url: string
+    readonly where: string
+    readonly howFar: string
+    readonly whenDown: string
+    readonly files: ReadonlyArray<{ readonly path: string; readonly note: string }>
+    readonly snippet: { readonly lang: string; readonly file: string; readonly code: string } | undefined
 }
 
 /** The four parts of a lesson as the page reads them; a part the learner may not read is empty and named in `lockedParts`. */
@@ -103,6 +162,10 @@ export type EssentialView = {
     }>
     readonly scenarios: ReadonlyArray<EssentialScenarioView>
     readonly challenges: ReadonlyArray<EssentialChallengeView>
+    /** The Tìm sạn bug pack's tests; empty for a lesson without one (Tìm sạn then shows the scenarios) or when it is locked. */
+    readonly bugs: ReadonlyArray<BugTestView>
+    /** The Pattern stacks; empty for a lesson without them or when Pattern is locked. */
+    readonly patterns: ReadonlyArray<PatternView>
 }
 
 /** Where the newest relayed run of a scenario stands. */

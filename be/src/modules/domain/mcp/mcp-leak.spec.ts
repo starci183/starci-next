@@ -639,7 +639,12 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         const full = await premium.tutor.lesson(LEARNER, LESSON, "vi", null)
         assertClean(full)
         expect(full.lockedParts).toEqual([])
-        expect(full.sections.map((section) => section.part)).toEqual(ESSENTIAL_PARTS)
+        expect(full.sections.map((section) => section.part)).toEqual([
+            "1-essential",
+            "2-source",
+            "3-scenarios",
+            "4-apply",
+        ])
         expect(full.sections[0]?.body).toContain("UNLOCKEDTEXT")
         expect(full.sections[0]?.headings.map((heading) => heading.title)).toEqual(["Ban chat", "Ly do"])
         expect(full.sections[1]?.body).toContain("PREMIUMSOURCETEXT")
@@ -663,7 +668,7 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         const free = await make(false, offline)
         const open = await free.tutor.lesson(LEARNER, LESSON, "vi", null)
         assertFree(open)
-        expect(open.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply"])
+        expect(open.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply", "5-patterns"])
         expect(open.sections.map((section) => section.body === null)).toEqual([false, true, true, true])
         expect(open.scenarios).toEqual([])
         expect(open.challenges).toEqual([])

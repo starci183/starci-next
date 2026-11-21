@@ -4,6 +4,7 @@ import {
     LESSON_PART_COUNT,
     LESSON_PHASES,
     type ChallengeLevel,
+    type BugResultView,
     type ChallengeScoreView,
     type EssentialPart,
     type EssentialView,
@@ -27,6 +28,7 @@ import type {
     LessonProgressQuery,
     LessonQuery,
     LessonChallengeScoresQuery,
+    LessonBugResultsQuery,
     LessonScenarioRunsQuery,
     LessonsQuery,
     LessonTopicQuery,
@@ -42,6 +44,7 @@ const PART_OF_WIRE: Readonly<Record<string, EssentialPart | undefined>> = {
     "2-source": "source",
     "3-scenarios": "scenarios",
     "4-apply": "apply",
+    "5-patterns": "pattern",
 }
 
 /** The difficulty the back end names; anything else is a contract break and stops here. */
@@ -222,9 +225,32 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
                       rubric: challenge.rubric,
                       hiddenScenarios: challenge.hiddenScenarios,
                       questions: challenge.questions.map((question) => questionOf(question)),
+                      writtenRequired: challenge.writtenRequired,
                   },
               ]
     }),
+    bugs: (wire.bugs?.tests ?? []).map((test) => ({
+        id: test.id,
+        title: test.title,
+        essence: test.essence ?? "",
+        command: test.command,
+        expected: test.expected,
+        received: test.received,
+        hintCount: test.hintCount,
+        isFinal: test.isFinal,
+    })),
+    patterns: wire.patterns.map((pattern) => ({
+        stack: pattern.stack,
+        status: pattern.status === "ready" ? ("ready" as const) : ("soon" as const),
+        repo: pattern.repo,
+        path: pattern.path,
+        url: pattern.url ?? "",
+        where: pattern.where,
+        howFar: pattern.howFar,
+        whenDown: pattern.whenDown,
+        files: pattern.files,
+        snippet: pattern.snippet ?? undefined,
+    })),
 })
 
 /** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
@@ -242,6 +268,7 @@ const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     sectionRef: wire.sectionRef ?? "",
     scenarioId: wire.scenarioId ?? "",
     event: wire.event === null || wire.event === undefined ? undefined : { at: wire.event.at, text: wire.event.text },
+    writtenActivityId: wire.writtenActivityId ?? "",
 })
 
 /** The opener scores of the answer, by lesson id. */
@@ -266,6 +293,27 @@ export const scenarioRunsOf = (wire: LessonScenarioRunsQuery): ReadonlyArray<Sce
         challengeTier: run.challengeTier ?? "",
         at: run.at,
     }))
+
+/** The status of a Tìm sạn test the back end names; anything else is a contract break and stops here. */
+const bugStatusOf = (raw: string): BugResultView["status"] => {
+    if (raw === "none" || raw === "running" || raw === "passed" || raw === "failed") return raw
+    throw new Error(`unknown bug-pack status ${raw}`)
+}
+
+/** One Tìm sạn result of the answer (the query and the hint mutation share the shape). */
+export const bugResultOf = (wire: LessonBugResultsQuery["lessonBugResults"][number]): BugResultView => ({
+    testId: wire.testId,
+    status: bugStatusOf(wire.status),
+    isLocked: wire.isLocked,
+    at: wire.at ?? "",
+    received: wire.received ?? "",
+    output: wire.output ?? "",
+    pass: wire.pass ?? "",
+    fail: wire.fail ?? "",
+    hints: wire.hints,
+    hintsOpened: wire.hintsOpened,
+    hintCount: wire.hintCount,
+})
 
 /** The lessons of the catalog answer, in the shape the catalog filters. */
 export const catalogLessonsOf = (wire: LessonsQuery): ReadonlyArray<CatalogLessonView> =>

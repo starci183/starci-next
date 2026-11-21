@@ -47,14 +47,15 @@ const ESSENTIAL: LessonEssential = {
 }
 
 /** A four-part lesson row: the article and the three other parts are sections named by their part id. */
-const fourPartRow = (): VersionRow => {
+const FOUR_PARTS: ReadonlyArray<[string, LessonPhase]> = [
+    ["1-essential", "explain"],
+    ["2-source", "explore"],
+    ["3-scenarios", "apply"],
+    ["4-apply", "reflect"],
+]
+
+const fourPartRow = (phases: ReadonlyArray<[string, LessonPhase]> = FOUR_PARTS): VersionRow => {
     const content = demoContentOf()
-    const phases: ReadonlyArray<[string, LessonPhase]> = [
-        ["1-essential", "explain"],
-        ["2-source", "explore"],
-        ["3-scenarios", "apply"],
-        ["4-apply", "reflect"],
-    ]
     const document = (locale: "vi" | "en"): LessonLocaleDocument => ({
         ...content.locales[locale],
         isPremium: true, // the lesson root says Premium: the parts, not this mark, decide
@@ -82,12 +83,15 @@ const fourPartRow = (): VersionRow => {
 }
 
 const FREE = ["1-essential"] as const
-const ALL = ["1-essential", "2-source", "3-scenarios", "4-apply"] as const
+const ALL = ["1-essential", "2-source", "3-scenarios", "4-apply", "5-patterns"] as const
 
 describe("toEssentialView by part", () => {
     it("gives a free learner the opener and names the other three parts locked, with none of their payload", () => {
         const view = toEssentialView(ESSENTIAL, FREE)
-        expect(view).toMatchObject({ isLocked: true, lockedParts: ["2-source", "3-scenarios", "4-apply"] })
+        expect(view).toMatchObject({
+            isLocked: true,
+            lockedParts: ["2-source", "3-scenarios", "4-apply", "5-patterns"],
+        })
         expect(view?.opener).toHaveLength(1)
         expect(view).toMatchObject({
             source: null,
@@ -117,7 +121,7 @@ describe("toEssentialView by part", () => {
 
     it("follows the setting: a part the app leaves free opens for everyone, the rest stays locked", () => {
         const view = toEssentialView(ESSENTIAL, ["1-essential", "3-scenarios"])
-        expect(view?.lockedParts).toEqual(["2-source", "4-apply"])
+        expect(view?.lockedParts).toEqual(["2-source", "4-apply", "5-patterns"])
         expect(view?.scenarios).toHaveLength(1)
         expect(view?.invariants).toHaveLength(1) // the rules ride with Kịch bản too
         expect(view?.codeWalk).toEqual([])
@@ -144,7 +148,7 @@ describe("toLessonView of a four-part lesson", () => {
             ["3-scenarios", true, null],
             ["4-apply", true, null],
         ])
-        expect(view.essential?.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply"])
+        expect(view.essential?.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply", "5-patterns"])
         expect(view.essential?.opener).toHaveLength(1)
         expect(JSON.stringify(view)).not.toContain("2-source BODY")
     })
@@ -200,5 +204,114 @@ describe("toEssentialView of a story-driven opener", () => {
     it("answers no story and no event for a lesson written before them, and no story while the opener is locked", () => {
         expect(toEssentialView(ESSENTIAL, FREE)).toMatchObject({ story: null, opener: [{ event: null }] })
         expect(toEssentialView(STORY, [])?.story).toBeNull()
+    })
+})
+
+describe("toEssentialView of the five parts", () => {
+    const test = (id: string, isFinal = false) => ({
+        id,
+        command: `npm test -- --scenario ${id}`,
+        essence: isFinal ? null : "q1",
+        title: `T ${id}`,
+        pass: `PASS-SECRET-${id}`,
+        fail: `FAIL-SECRET-${id}`,
+        expected: "points 499",
+        received: "points",
+        hints: [`HINT-1-${id}`, `HINT-2-${id}`, `HINT-3-${id}`],
+        isFinal,
+    })
+    const FIVE: LessonEssential = {
+        ...ESSENTIAL,
+        challenges: [
+            {
+                id: "hard",
+                level: "hard",
+                title: "H",
+                brief: "B",
+                rubric: [],
+                questions: [
+                    {
+                        id: "e1",
+                        prompt: "Why?",
+                        choices: ["right", "wrong"],
+                        correctIndex: 0,
+                        explanation: "",
+                        writtenRequired: true,
+                    },
+                    { id: "e2", prompt: "How?", choices: ["right", "wrong"], correctIndex: 0, explanation: "" },
+                ],
+                writtenRequired: true,
+            },
+        ],
+        bugs: { tests: [test("bug-1"), test("ledger-under-chaos", true)] },
+        patterns: [
+            {
+                stack: "nestjs",
+                status: "ready",
+                repo: "starci183/patterns-demo",
+                path: "saga/src/modules/platform/event-bus",
+                where: "W",
+                howFar: "H",
+                whenDown: "D",
+                files: [{ path: "event-bus.service.ts", note: "publish()" }],
+                snippet: { lang: "ts", file: "x.ts", code: "publish()" },
+            },
+        ],
+    }
+
+    it("lists the bug-pack tests by name and command, never their pass and fail texts or hints", () => {
+        const view = toEssentialView(FIVE, ALL)
+        expect(view?.bugs?.tests).toEqual([
+            {
+                id: "bug-1",
+                title: "T bug-1",
+                essence: "q1",
+                command: "npm test -- --scenario bug-1",
+                expected: "points 499",
+                received: "points",
+                hintCount: 3,
+                isFinal: false,
+            },
+            expect.objectContaining({ id: "ledger-under-chaos", isFinal: true }),
+        ])
+        const text = JSON.stringify(view)
+        expect(text).not.toContain("PASS-SECRET")
+        expect(text).not.toContain("FAIL-SECRET")
+        expect(text).not.toContain("HINT-")
+    })
+
+    it("sends no bug pack and no pattern to a reader who may not read those parts", () => {
+        const view = toEssentialView(FIVE, FREE)
+        expect(view).toMatchObject({ bugs: null, patterns: [], challenges: [] })
+        expect(view?.lockedParts).toEqual(["2-source", "3-scenarios", "4-apply", "5-patterns"])
+    })
+
+    it("links a Pattern stack to its folder on GitHub", () => {
+        expect(toEssentialView(FIVE, ALL)?.patterns[0]).toMatchObject({
+            stack: "nestjs",
+            url: "https://github.com/starci183/patterns-demo/tree/HEAD/saga/src/modules/platform/event-bus",
+            files: [{ path: "event-bus.service.ts", note: "publish()" }],
+        })
+    })
+
+    it("marks a tier that asks a written explanation, and never sends the right choice", () => {
+        const [hard] = toEssentialView(FIVE, ALL)?.challenges ?? []
+        expect(hard?.writtenRequired).toBe(true)
+        expect(hard?.questions.map((question) => question.writtenActivityId)).toEqual([
+            "challenge.hard.e1.written",
+            null,
+        ])
+        expect(JSON.stringify(hard)).not.toContain("correctIndex")
+    })
+
+    it("reads the Bản chất section under the Bản chất part: locked to its title without Premium", () => {
+        const row = fourPartRow([
+            ["1-essential", "explain"],
+            ["2-essence", "explore"],
+        ])
+        const free = toLessonView(row, "vi", false, FREE)
+        expect(free.sections.find((section) => section.id === "2-essence")).toMatchObject({ locked: true, body: null })
+        const premium = toLessonView(row, "vi", true, ALL)
+        expect(premium.sections.find((section) => section.id === "2-essence")?.body).toBe("2-essence BODY")
     })
 })

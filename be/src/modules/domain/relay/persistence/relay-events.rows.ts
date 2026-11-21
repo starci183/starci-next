@@ -62,6 +62,8 @@ export interface RelayResultDetail {
     why?: string
     /** The ledger lines. */
     ledger?: string
+    /** What a bug-pack test measured. */
+    received?: string
 }
 
 /** One newest harness result row. */

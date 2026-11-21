@@ -1,8 +1,11 @@
 import {
+    BUG_TESTS,
     CHALLENGES,
+    PATTERNS,
     SCENARIOS,
     STORY_QUIZ,
     field,
+    fivePartFiles,
     lessonFiles,
     quizOf,
 } from "@tests/fixtures/builders/raw-lesson.builder"
@@ -188,5 +191,164 @@ describe("convertRawLesson reads the story of the opener when quiz.yaml has one"
                 expect.objectContaining({ field: "questions[2].insight.why", message: "is empty" }),
             ]),
         )
+    })
+})
+
+describe("convertRawLesson reads the five-part files when the lesson has them", () => {
+    const five = (bugs?: string, patterns?: string): ReadonlyArray<LessonSourceFile> => [
+        ...lessonFiles(""),
+        ...fivePartFiles(bugs, patterns),
+    ]
+    const issuesOf = (files: ReadonlyArray<LessonSourceFile>) => convert(files).issues
+    const BUGS_PATH = "bugs/tests.yaml"
+
+    it("still imports a lesson without any of them, with no bug pack, no pattern and no Bản chất section", () => {
+        const { draft, issues } = convert(lessonFiles(""))
+        expect(issues).toEqual([])
+        const vi = draft?.content.locales.vi
+        expect(vi?.essential?.bugs).toBeUndefined()
+        expect(vi?.essential?.patterns).toBeUndefined()
+        expect(vi?.sections.map((section) => section.id)).not.toContain("2-essence")
+        expect(draft?.content.bugsCode).toBeUndefined()
+    })
+
+    it("reads the Bản chất reading as the 2-essence section, after the four part sections", () => {
+        const { draft, issues } = convert(five())
+        expect(issues).toEqual([])
+        const essence = draft?.content.locales.vi.sections.find((section) => section.id === "2-essence")
+        expect(essence).toMatchObject({ title: "Bản chất", phase: "explore", sortIndex: 5 })
+        expect(essence?.body).toContain("2.1.3")
+        expect(draft?.content.locales.en.sections.find((section) => section.id === "2-essence")?.title).toBe("Essence")
+    })
+
+    it("reads the bug pack per locale, the final test last, and keeps bugs/source apart from source", () => {
+        const { draft } = convert(five())
+        const tests = draft?.content.locales.vi.essential?.bugs?.tests ?? []
+        expect(tests.map((test) => test.id)).toEqual([
+            "happy-path",
+            "bug-1",
+            "bug-2",
+            "bug-3",
+            "bug-4",
+            "bug-5",
+            "ledger-under-chaos",
+        ])
+        expect(tests.map((test) => test.isFinal)).toEqual([false, false, false, false, false, false, true])
+        expect(tests[1]).toMatchObject({
+            essence: "q1",
+            command: "npm test -- --scenario bug-1",
+            pass: "Đúng vì bug-1",
+            fail: "Chưa pass vì bug-1",
+            hints: ["Gợi ý 1 bug-1", "Gợi ý 2 bug-1", "Gợi ý 3 bug-1"],
+        })
+        expect(draft?.content.locales.en.essential?.bugs?.tests[1]?.pass).toBe("Right because bug-1")
+        expect(draft?.content.bugsCode?.map((file) => file.path)).toEqual(["package.json", "src/partner/order-paid.ts"])
+        expect(draft?.content.sourceCode ?? []).toEqual([])
+    })
+
+    it("takes the test marked final over the last one", () => {
+        const marked = BUG_TESTS.replace("  - id: bug-5\n", "  - id: bug-5\n    final: true\n")
+        const tests = convert(five(marked)).draft?.content.locales.vi.essential?.bugs?.tests ?? []
+        expect(tests.filter((test) => test.isFinal).map((test) => test.id)).toEqual(["bug-5"])
+    })
+
+    it("refuses a bug pack whose tests are wrong, once per problem", () => {
+        const twice = BUG_TESTS.replace("  - id: bug-2\n", "  - id: bug-1\n")
+        expect(issuesOf(five(twice))).toContainEqual({
+            path: BUGS_PATH,
+            field: "tests[2].id",
+            message: "bug-1 is listed twice",
+        })
+        const stray = BUG_TESTS.replace("essence: q3", "essence: q9")
+        expect(issuesOf(five(stray))).toEqual([
+            {
+                path: BUGS_PATH,
+                field: "tests[3].essence",
+                message: "q9 is not a question of sections/1-essential/quiz.yaml",
+            },
+        ])
+        const noPass = BUG_TESTS.replace('pass: { vi: "Đúng vì bug-4", en: "Right because bug-4" }', "")
+        expect(issuesOf(five(noPass))).toEqual([{ path: BUGS_PATH, field: "tests[4].pass", message: "is empty" }])
+        const noCommand = BUG_TESTS.replace('command: "npm test -- --scenario bug-5"', "")
+        expect(issuesOf(five(noCommand))).toEqual([{ path: BUGS_PATH, field: "tests[5].command", message: "is empty" }])
+        const schema = BUG_TESTS.replace("essentials-bugs@1", "essentials-bugs@2")
+        expect(issuesOf(five(schema))[0]).toMatchObject({ path: BUGS_PATH, field: "schema" })
+        const upward = BUG_TESTS.replace("  - id: bug-1\n", "  - id: bug-1\n    cwd: ../x\n")
+        expect(issuesOf(five(upward))).toEqual([
+            { path: BUGS_PATH, field: "tests[1].cwd", message: "../x is not a relative path" },
+        ])
+    })
+
+    it("refuses tests without their buggy source, and a buggy source without tests", () => {
+        const noSource = five().filter((file) => !file.path.startsWith("bugs/source/"))
+        expect(issuesOf(noSource)).toEqual([{ path: BUGS_PATH, field: "", message: "comes without bugs/source/" }])
+        const noTests = five().filter((file) => file.path !== BUGS_PATH)
+        expect(issuesOf(noTests)).toEqual([{ path: "bugs/source/", field: "", message: "has no bugs/tests.yaml" }])
+    })
+
+    it("reads the Pattern stacks, the repository as owner/name, and checks a ready stack", () => {
+        const patterns = convert(five()).draft?.content.locales.vi.essential?.patterns ?? []
+        expect(patterns[0]).toMatchObject({
+            stack: "nestjs",
+            status: "ready",
+            repo: "starci183/patterns-demo",
+            path: "saga/src/modules/platform/event-bus",
+            where: "Ở platform",
+            snippet: { lang: "ts", file: "complete.handler.ts", code: "await bus.publish(manager, event)" },
+        })
+        expect(patterns[1]).toMatchObject({ stack: "go", status: "soon", repo: "", files: [], snippet: null })
+        const bare = PATTERNS.replace('    where: { vi: "Ở platform", en: "In platform" }\n', "")
+        expect(issuesOf(five(BUG_TESTS, bare))).toEqual([
+            { path: "sections/5-patterns/patterns.yaml", field: "patterns[0].where", message: "is empty" },
+        ])
+        const stack = PATTERNS.replace("stack: go", "stack: rust")
+        expect(issuesOf(five(BUG_TESTS, stack))[0]).toMatchObject({ field: "patterns[1].stack" })
+    })
+
+    it("reads writtenRequired on a tier with essence questions, and refuses it on one without", () => {
+        const written = CHALLENGES.replace(
+            "    essence: []",
+            [
+                "    writtenRequired: true",
+                "    essence:",
+                "      - id: e1",
+                '        prompt: { vi: "Vì sao?", en: "Why?" }',
+                "        options:",
+                '          - { id: a, text: { vi: "Đúng", en: "Right" } }',
+                '          - { id: b, text: { vi: "Sai", en: "Wrong" } }',
+            ].join("\n"),
+        )
+        const files = lessonFiles("", SCENARIOS, written).map((file) =>
+            file.path === "hidden/essence-answers.yaml" ? { ...file, text: "answers: { e1: a }" } : file,
+        )
+        const { draft, issues } = convert(files)
+        expect(issues).toEqual([])
+        expect(draft?.content.locales.vi.essential?.challenges[0]?.writtenRequired).toBe(true)
+        expect(draft?.content.locales.vi.essential?.challenges[0]?.questions?.[0]?.writtenRequired).toBe(true)
+        const perQuestion = convert(
+            files.map((file) =>
+                file.path === "sections/4-apply/challenges.yaml"
+                    ? {
+                          ...file,
+                          text: file.text
+                              .replace("    writtenRequired: true\n", "")
+                              .replace("      - id: e1\n", "      - id: e1\n        writtenRequired: true\n"),
+                      }
+                    : file,
+            ),
+        )
+        expect(perQuestion.issues).toEqual([])
+        expect(perQuestion.draft?.content.locales.vi.essential?.challenges[0]).toMatchObject({
+            writtenRequired: true,
+            questions: [{ id: "e1", writtenRequired: true }],
+        })
+        const empty = CHALLENGES.replace("    essence: []", "    writtenRequired: true\n    essence: []")
+        expect(issuesOf(lessonFiles("", SCENARIOS, empty))).toEqual([
+            {
+                path: "sections/4-apply/challenges.yaml",
+                field: "tiers[0].writtenRequired",
+                message: "asks a written explanation of the essence questions, but the tier has none",
+            },
+        ])
     })
 })

@@ -49,7 +49,7 @@ export const flush = async (
 export const fetchManifest = async (
     io: CliIo,
     session: RelaySession,
-    input: Readonly<Record<string, string>> & { readonly taskId: string },
+    input: Readonly<Record<string, string | boolean>> & { readonly taskId: string },
     publicKey: string,
 ): Promise<ManifestFetch> => {
     const { taskId } = input

@@ -155,6 +155,13 @@ export class RelayCheckResultInput extends RelayCheckStartedInput {
     @MaxLength(4000)
     ledger?: string
 
+    /** A Tìm sạn bug-pack test result (check id bug:<test id>): what the run measured, the received line of a red test. */
+    @Field(() => String, { nullable: true })
+    @IsOptional()
+    @IsString()
+    @MaxLength(1000)
+    received?: string
+
     /** A harness-stage result: the build id (the task is harness:build:<id>). */
     @Field(() => String, { nullable: true })
     @IsOptional()

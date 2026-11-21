@@ -97,10 +97,34 @@ export const lessonOf = (value: unknown): LessonSection | null | undefined => {
     const scenarios = scenariosOf(value.scenarios)
     const invariants = invariantsOf(value.invariants)
     if (scenarios === null || invariants === null) return null
-    const base = { lessonId, source: { url, sha256, commit }, dir, compose, project, invariants, scenarios }
+    const bugs = bugsOf(value.bugs)
+    if (bugs === null) return null
+    const base = {
+        lessonId,
+        source: { url, sha256, commit },
+        dir,
+        compose,
+        project,
+        invariants,
+        scenarios,
+        ...(bugs === undefined ? {} : { bugs }),
+    }
     if (value.challenge === undefined) return base
     if (!isRecord(value.challenge) || typeof value.challenge.tier !== "string" || !ID.test(value.challenge.tier))
         return null
     const hidden = scenariosOf(value.challenge.scenarios)
     return hidden === null ? null : { ...base, challenge: { tier: value.challenge.tier, scenarios: hidden } }
+}
+
+/** The bug pack of a payload: undefined when absent, null when present but malformed. */
+const bugsOf = (value: unknown): NonNullable<LessonSection["bugs"]> | null | undefined => {
+    if (value === undefined) return undefined
+    if (!isRecord(value) || !isRecord(value.source)) return null
+    const { url, commit, sha256 } = value.source
+    if (typeof url !== "string" || !SOURCE_URL.test(url) || url.includes("@")) return null
+    if (typeof sha256 !== "string" || !SHA256.test(sha256)) return null
+    if (typeof commit !== "string" || !COMMIT.test(commit)) return null
+    const tests = scenariosOf(value.tests)
+    if (tests === null || tests.some((test) => test.files.length > 0)) return null
+    return { source: { url, sha256, commit }, tests }
 }

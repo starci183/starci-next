@@ -5,6 +5,7 @@ import { LessonChallengeScoresResolver } from "./lesson-challenge-scores.resolve
 import { LessonPartsProgressResolver } from "./lesson-parts-progress.resolver"
 import { RequestLessonRunResolver } from "./request-lesson-run.resolver"
 import { LessonScenarioRunsResolver } from "./lesson-scenario-runs.resolver"
+import { LessonBugResultsResolver } from "./lesson-bug-results.resolver"
 import { RelayCheckStartedResolver } from "./relay-check-started.resolver"
 import { RelayCheckResultResolver } from "./relay-check-result.resolver"
 import { RelayHarnessResultResolver } from "./relay-harness-result.resolver"
@@ -22,6 +23,7 @@ import { ConfigurableModuleClass } from "./relay-feed-graphql.module-definition"
         RelayLogResolver,
         RelayManifestAckResolver,
         LessonScenarioRunsResolver,
+        LessonBugResultsResolver,
         LessonPartsProgressResolver,
         LessonChallengeScoresResolver,
         RequestLessonRunResolver,

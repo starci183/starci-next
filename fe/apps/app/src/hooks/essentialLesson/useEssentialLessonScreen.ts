@@ -6,6 +6,10 @@ import { useLocale } from "next-intl"
 import type {
     ApplyPartView,
     ArticleSectionView,
+    BugHuntView,
+    PatternPartView,
+    ReadingView,
+    WrittenCardLabels,
     EssenceLabels,
     EssenceStage,
     EssenceView,
@@ -29,6 +33,7 @@ import {
     ESSENTIAL_PARTS,
     type DataSlot,
     type EssentialPart,
+    type EssentialView,
     type LessonDifficulty,
     type SlotLabels,
 } from "@/modules/types"
@@ -38,6 +43,10 @@ import { essenceOf, useEssenceLabels, type EssenceShellLabels } from "@/hooks/es
 import { EMPTY_RUN_PARTS } from "@/modules/essential-runs"
 import { useEssentialRuns, type EssentialRuns } from "./useEssentialRuns"
 import { useEssentialLessonLabels, type EssentialPageLabels } from "./useEssentialLessonLabels"
+import { useFiveParts, type FivePartsLabels } from "./useFiveParts"
+import { useLessonCardLabels } from "@/hooks/lessonStudy"
+import type { AttemptState } from "@/hooks/lesson"
+import type { WrittenDraftView } from "@/modules/types"
 
 /** What the route hands the lesson page: the lesson and the `part` and `scenario` queries. */
 type EssentialRoute = {
@@ -77,6 +86,30 @@ export type EssentialLessonView = {
     readonly source: SourcePartView
     readonly scenarios: ScenariosPartView
     readonly apply: ApplyPartView
+    /** Bản chất: the practice-led reading; undefined for a lesson without one (the part then shows the source). */
+    readonly reading: ReadingView | undefined
+    /** Tìm sạn: the bug pack; undefined for a lesson without one (the part then shows the scenarios). */
+    readonly bugHunt: BugHuntView | undefined
+    /** Pattern: the stacks; undefined for a lesson without them. */
+    readonly pattern: PatternPartView | undefined
+    /** The written explanations the rung on screen asks, by the activity id of the essence question each explains. */
+    readonly written: Readonly<Record<string, EssentialWrittenView>>
+    /** The five parts with where the learner stands in each, the block every right column ends with. */
+    readonly journey: ReadonlyArray<{
+        readonly id: string
+        readonly title: string
+        readonly isDone: boolean
+        readonly isLocked: boolean
+    }>
+}
+
+/** The written explanation an essence question asks (from the Khó rung up), graded by the AI coach. */
+export type EssentialWrittenView = {
+    readonly activityId: string
+    readonly prompt: string
+    readonly draft: WrittenDraftView
+    /** False until the learner answered the question: the box then waits. */
+    readonly isOpen: boolean
 }
 
 /** One tab of the lesson band: the part, its address and the standing the tab marks. */
@@ -112,6 +145,14 @@ export type EssentialLessonActions = {
     readonly selectChallenge: (challengeId: string) => void
     readonly toggleGuard: (flag: string, isOff: boolean) => void
     readonly revealHint: (scenarioId: string) => void
+    /** Opens the next hint of a red Tìm sạn test. */
+    readonly openBugHint: (testId: string) => void
+    /** Shows one stack of Pattern. */
+    readonly selectStack: (stack: string) => void
+    /** Holds the text of a written explanation. */
+    readonly write: (activityId: string, text: string) => void
+    /** Sends a written explanation to be graded. */
+    readonly submitWritten: (activityId: string) => void
     readonly openPart: (part: EssentialPart) => void
     /** Opens the plans page. */
     readonly openPlans: () => void
@@ -130,6 +171,10 @@ export type EssentialLessonScreen = {
         readonly shell: EssenceShellLabels
         /** The three parts that run on the learner machine: their words, the primary command of the part on screen. */
         readonly runs: EssentialRuns
+        /** The words of Bản chất, Tìm sạn and Pattern. */
+        readonly five: FivePartsLabels
+        /** The words of the written explanation card. */
+        readonly written: WrittenCardLabels
         readonly plansHref: string
         readonly catalogHref: string
     }
@@ -194,6 +239,34 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
         isFree: false,
     },
     ...EMPTY_RUN_PARTS,
+    reading: undefined,
+    bugHunt: undefined,
+    pattern: undefined,
+    written: {},
+    journey: [],
+}
+
+/** The status a written explanation shows: its attempt's, or idle before the first submit. */
+const writtenDraftOf = (attempt: AttemptState | undefined, held: string | undefined): WrittenDraftView => {
+    const result = attempt?.view?.result
+    const isGraded = result !== undefined && result.criteria.length > 0
+    const code = attempt?.view?.failureCode ?? ""
+    const issueOf = (): WrittenDraftView["issue"] => {
+        if (code === "") return "none"
+        if (code === "ATTEMPT_COACH_UNCONFIGURED") return "unconfigured"
+        return code === "ATTEMPT_COACH_LIMIT_REACHED" ? "limit" : "other"
+    }
+    return {
+        value: held ?? attempt?.view?.answer.text ?? "",
+        status: attempt?.status ?? "idle",
+        isSendFailed: attempt?.isSendFailed ?? false,
+        issue: issueOf(),
+        criteria: result?.criteria ?? [],
+        scoreLine: isGraded ? `${result.score}/${result.maxScore}` : "",
+        scoreShort: isGraded ? `${result.score}/${result.maxScore}` : "",
+        isDiagnostic: false,
+        savedAt: "",
+    }
 }
 
 /**
@@ -223,6 +296,9 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
         openerIndex: undefined,
         stage: undefined,
     })
+    const [writing, setWriting] = useState<Readonly<Record<string, string>>>({})
+    const cards = useLessonCardLabels()
+    const tFive = useTranslations("app.essentials.essential.five")
     const runsPart = useEssentialRuns({
         lesson: read.data,
         part,
@@ -230,6 +306,13 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
         refreshLesson: () => void read.mutate(),
         attempts: attempts.attempts,
         picks: desk.picks,
+    })
+    const five = useFiveParts({
+        lesson: read.data,
+        part,
+        locale,
+        score: scores.data?.[route.lessonId],
+        machine: runsPart.source.machine.isOnline ? runsPart.source.machine.name : "",
     })
     const settled = Object.values(attempts.attempts)
         .map((attempt) => `${attempt.view?.attemptId ?? ""}:${attempt.status}`)
@@ -252,7 +335,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
     return {
         props: {
             slot: mapSlot(slotOfSwr(read), (lesson): EssentialLessonView => {
-                const view = lesson.essential ?? {
+                const view: EssentialView = lesson.essential ?? {
                     isLocked: !lesson.isPremium,
                     lockedParts: [],
                     story: undefined,
@@ -263,6 +346,8 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     codeWalk: [],
                     scenarios: [],
                     challenges: [],
+                    bugs: [],
+                    patterns: [],
                 }
                 const essence = essenceOf({
                     lesson,
@@ -286,7 +371,26 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                         ? "locked"
                         : (partStandings.find((each) => each.part === id)?.state ?? "none")
                 const nextPart =
-                    ESSENTIAL_PARTS.find((id) => stateOf(id) !== "done" && stateOf(id) !== "locked") ?? "essence"
+                    ESSENTIAL_PARTS.find(
+                        (id) => id !== "pattern" && stateOf(id) !== "done" && stateOf(id) !== "locked",
+                    ) ?? "essence"
+                const rung = view.challenges.find((each) => each.id === runsPart.apply.challenge?.id)
+                const written = Object.fromEntries(
+                    (rung?.questions ?? [])
+                        .filter((question) => question.writtenActivityId !== "")
+                        .map((question): [string, EssentialWrittenView] => [
+                            question.activityId,
+                            {
+                                activityId: question.writtenActivityId,
+                                prompt: tFive("written.prompt"),
+                                draft: writtenDraftOf(
+                                    attempts.attempts[question.writtenActivityId],
+                                    writing[question.writtenActivityId],
+                                ),
+                                isOpen: attempts.attempts[question.activityId]?.status === "graded",
+                            },
+                        ]),
+                )
                 return {
                     id: lesson.id,
                     title: lesson.title,
@@ -329,6 +433,16 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     source: runsPart.source,
                     scenarios: runsPart.scenarios,
                     apply: runsPart.apply,
+                    reading: five.reading,
+                    bugHunt: five.bugHunt,
+                    pattern: five.pattern,
+                    written,
+                    journey: ESSENTIAL_PARTS.map((id) => ({
+                        id,
+                        title: page.parts[id],
+                        isDone: stateOf(id) === "done",
+                        isLocked: stateOf(id) === "locked",
+                    })),
                 }
             }),
             placeholder: ESSENTIAL_PLACEHOLDER,
@@ -339,6 +453,8 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
             essence: essenceLabels,
             shell,
             runs: runsPart,
+            five: five.labels,
+            written: cards.written,
             plansHref: APP_ROUTES.premium,
             catalogHref: APP_ROUTES.essentials,
         },
@@ -396,6 +512,20 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                 if (typeof window !== "undefined") window.location.hash = "opener"
             },
             ...runsPart.on,
+            openBugHint: five.on.openBugHint,
+            selectStack: five.on.selectStack,
+            write: (activityId, text) => setWriting((all) => ({ ...all, [activityId]: text })),
+            submitWritten: (activityId) => {
+                const text = writing[activityId] ?? ""
+                if (text.trim() === "" || read.data === undefined) return
+                attempts.submit({
+                    lessonId: route.lessonId,
+                    version: read.data.version,
+                    locale,
+                    activityId,
+                    answer: { text },
+                })
+            },
             openPlans: () => router.push(APP_ROUTES.premium),
             openPart: (target) => {
                 if (read.data !== undefined) router.push(partPath(read.data, target))

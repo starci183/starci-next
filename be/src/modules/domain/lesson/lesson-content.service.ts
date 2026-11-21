@@ -5,7 +5,7 @@ import { InjectPrimaryEntityManager } from "@modules/platform/database"
 import { LessonError, LessonErrorCode } from "./errors/lesson.error"
 import type { VersionRow } from "./persistence/lesson.rows"
 import { SELECT_PUBLISHED, SELECT_VERSION, SELECT_VERSIONS_CONTENT } from "./persistence/lesson.sql"
-import type { LessonEssential } from "./lesson-essential.contracts"
+import type { LessonBugPack, LessonEssential } from "./lesson-essential.contracts"
 import type { LessonSourceArchive } from "./lesson-source-archive.policy"
 import { LessonSourceService } from "./lesson-source.service"
 
@@ -17,6 +17,8 @@ export interface LessonRunnable {
     readonly essential: LessonEssential
     /** The tarball of its `source/` folder, or null. */
     readonly source: LessonSourceArchive | null
+    /** The tarball of its Tìm sạn bug pack (`bugs/source/`), or null. */
+    readonly bugs: LessonSourceArchive | null
 }
 import { needsPremium } from "./lesson-access.policy"
 import type {
@@ -53,7 +55,10 @@ export class LessonContentService {
             params.version,
         ])
         const row = rows[0]
-        const found = row === undefined ? null : findActivity(row.content.locales[params.locale], params.activityId)
+        const found =
+            row === undefined
+                ? null
+                : findActivity(row.content.locales[params.locale], params.activityId, params.locale)
         if (found === null) throw new LessonError({ code: LessonErrorCode.NotFound })
         return found
     }
@@ -76,7 +81,7 @@ export class LessonContentService {
         const byVersion = new Map(rows.map((row) => [`${row.lesson_id}:${row.version}`, row]))
         for (const ref of refs) {
             const row = byVersion.get(`${ref.lessonId}:${ref.version}`)
-            const found = row === undefined ? null : findActivity(row.content.locales[locale], ref.activityId)
+            const found = row === undefined ? null : findActivity(row.content.locales[locale], ref.activityId, locale)
             if (found !== null) prompts.set(`${ref.lessonId}:${ref.version}:${ref.activityId}`, found.activity.prompt)
         }
         return prompts
@@ -124,7 +129,21 @@ export class LessonContentService {
         const row = rows[0]
         const essential = row?.content.locales.vi.essential
         if (row === undefined || essential === undefined) return null
-        return { version: row.version, essential, source: this.sources?.archiveOf(row) ?? null }
+        return {
+            version: row.version,
+            essential,
+            source: this.sources?.archiveOf(row) ?? null,
+            bugs: this.sources?.bugsArchiveOf(row) ?? null,
+        }
+    }
+
+    /**
+     * The Tìm sạn bug pack of the live version in one locale, whole: every test with its `pass` and `fail` texts and its hints.
+     * Null when the lesson is not live or ships none. Nothing it returns may reach a browser before the learner earned it.
+     */
+    async bugPack(lessonId: string, locale: LessonLocale): Promise<LessonBugPack | null> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [lessonId])
+        return rows[0]?.content.locales[locale].essential?.bugs ?? null
     }
 
     /**

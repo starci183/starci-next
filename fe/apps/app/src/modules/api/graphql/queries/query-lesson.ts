@@ -130,6 +130,7 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                         at
                         text
                     }
+                    writtenActivityId
                 }
                 source {
                     langs
@@ -192,6 +193,39 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                         sectionRef
                         sectionRef
                         scenarioId
+                        writtenActivityId
+                    }
+                    writtenRequired
+                }
+                bugs {
+                    tests {
+                        id
+                        title
+                        essence
+                        command
+                        expected
+                        received
+                        hintCount
+                        isFinal
+                    }
+                }
+                patterns {
+                    stack
+                    status
+                    repo
+                    path
+                    url
+                    where
+                    howFar
+                    whenDown
+                    files {
+                        path
+                        note
+                    }
+                    snippet {
+                        lang
+                        file
+                        code
                     }
                 }
             }

@@ -1,7 +1,13 @@
 import { QueryHandler } from "@nestjs/cqrs"
 import { AttemptMarkService, AttemptOpenerService } from "@modules/domain/attempt"
 import { LessonContentService } from "@modules/domain/lesson"
-import { lessonPartsOf, LESSON_PART_IDS, RelayLessonService, type LessonPartId } from "@modules/domain/relay"
+import {
+    isBugHintKey,
+    lessonPartsOf,
+    LESSON_PART_IDS,
+    RelayLessonService,
+    type LessonPartId,
+} from "@modules/domain/relay"
 import { ICQRSHandler } from "@modules/platform/cqrs"
 import { InjectLogger, type Logger } from "@modules/platform/logging"
 import { GetLessonPartsProgressQuery } from "./get-lesson-parts-progress.query"
@@ -82,7 +88,8 @@ export class GetLessonPartsProgressHandler extends ICQRSHandler<
                         latestCorrect: opener?.latestCorrect ?? 0,
                     },
                     proved: false,
-                    usedHint: (hints.get(lessonId)?.size ?? 0) > 0,
+                    // A Tìm sạn hint costs nothing: only a scenario hint marks the lesson as helped.
+                    usedHint: [...(hints.get(lessonId) ?? [])].some((key) => !isBugHintKey(key)),
                 }
             }),
         )

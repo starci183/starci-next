@@ -12,6 +12,9 @@ export type LessonSourceLink = ManifestLesson["source"]
 /** The path of a lesson's source tarball on the StarCi origin; the CLI sends its device token to it (SCENARIO-CONTRACT v3 §4). */
 export const lessonSourcePathOf = (lessonId: string): string => `/api/relay/lessons/${lessonId}/source.tgz`
 
+/** The path of a lesson's Tìm sạn bug pack tarball (`bugs/source/`) on the StarCi origin; the CLI sends its device token to it. */
+export const lessonBugsPathOf = (lessonId: string): string => `/api/relay/lessons/${lessonId}/bugs.tgz`
+
 /** The largest source tarball the CLI takes. */
 export const LESSON_SOURCE_MAX_BYTES = 50 * 1024 * 1024
 
@@ -79,6 +82,16 @@ export interface LessonManifestAsk {
     readonly scenario?: string | undefined
     /** The challenge tier, when one is asked. */
     readonly challenge?: string | undefined
+    /** True when the bug pack is asked. */
+    readonly bugs?: boolean | undefined
+}
+
+/** What signing the bug pack needs: its tarball link, and whether the final test is open (every other test green). */
+export interface LessonBugsSigning {
+    /** The tarball of `bugs/source/`, or null when the lesson ships none (or it is too large). */
+    readonly link: LessonSourceLink | null
+    /** True once every test but the final one passed. */
+    readonly isFinalOpen: boolean
 }
 
 /** Why a lesson cannot be signed for the ask, or the section to sign. */
@@ -105,6 +118,7 @@ export const lessonManifestOf = (
     ask: LessonManifestAsk,
     isUnlocked: (tier: string) => boolean,
     link: LessonSourceLink | null,
+    bugs: LessonBugsSigning = { link: null, isFinalOpen: false },
 ): LessonManifestResult => {
     const source = essential.source
     if (link === null || !/^[0-9a-f]{40}$/u.test(link.commit) || essential.scenarios.length === 0)
@@ -135,6 +149,15 @@ export const lessonManifestOf = (
                 })),
             }),
         ),
+    }
+    if (ask.bugs === true) {
+        const pack = essential.bugs
+        if (pack === undefined || pack === null || pack.tests.length === 0 || bugs.link === null)
+            return { kind: "not-runnable" }
+        const tests = pack.tests
+            .filter((test) => !test.isFinal || bugs.isFinalOpen)
+            .map((test) => scenarioOf(test, defaults, { fallbackBrief: test.title, guards: [] }))
+        return { kind: "section", lesson: { ...base, bugs: { source: bugs.link, tests } } }
     }
     if (ask.challenge === undefined) return { kind: "section", lesson: base }
     const challenge = essential.challenges.find((each) => each.level === ask.challenge)

@@ -20,9 +20,12 @@ export interface LessonSourceCode {
 /** Folders never part of a lesson's source, whatever its `.gitignore` says. */
 const ALWAYS_SKIPPED: ReadonlyArray<string> = [".git", "node_modules"]
 
+/** The folder of the Tìm sạn bug pack: the buggy copy of `source/`, its own tarball. */
+export const LESSON_BUGS_SOURCE_FOLDER = "bugs/source/"
+
 /** The plain folder names the source's own `.gitignore` ignores (`dist/`, `reports/`); patterns with wildcards are not read. */
-const ignoredFoldersOf = (files: ReadonlyArray<LessonSourceFile>): ReadonlyArray<string> => {
-    const ignore = files.find((file) => file.path === `${LESSON_SOURCE_FOLDER}.gitignore`)?.text ?? ""
+const ignoredFoldersOf = (files: ReadonlyArray<LessonSourceFile>, folder: string): ReadonlyArray<string> => {
+    const ignore = files.find((file) => file.path === `${folder}.gitignore`)?.text ?? ""
     return ignore
         .split(/\r?\n/u)
         .map((line) => line.trim().replace(/^\//u, "").replace(/\/$/u, ""))
@@ -30,14 +33,17 @@ const ignoredFoldersOf = (files: ReadonlyArray<LessonSourceFile>): ReadonlyArray
 }
 
 /**
- * The files of the lesson folder under `source/`, sorted, their paths relative to it: nothing outside it (no `hidden/`), no
+ * The files of the lesson folder under `source/` (or another folder, `bugs/source/` for the bug pack), sorted, their paths relative to it: nothing outside it (no `hidden/`), no
  * `.git` or `node_modules`, and none of the folders the source's own `.gitignore` names (the build and report output).
  */
-export const sourceCodeOf = (files: ReadonlyArray<LessonSourceFile>): Array<LessonSourceCode> => {
-    const skipped = new Set([...ALWAYS_SKIPPED, ...ignoredFoldersOf(files)])
+export const sourceCodeOf = (
+    files: ReadonlyArray<LessonSourceFile>,
+    folder: string = LESSON_SOURCE_FOLDER,
+): Array<LessonSourceCode> => {
+    const skipped = new Set([...ALWAYS_SKIPPED, ...ignoredFoldersOf(files, folder)])
     return files
-        .filter((file) => file.path.startsWith(LESSON_SOURCE_FOLDER) && file.path.length > LESSON_SOURCE_FOLDER.length)
-        .map((file) => ({ path: file.path.slice(LESSON_SOURCE_FOLDER.length), content: file.text }))
+        .filter((file) => file.path.startsWith(folder) && file.path.length > folder.length)
+        .map((file) => ({ path: file.path.slice(folder.length), content: file.text }))
         .filter(
             (file) =>
                 !file.path.split("/").some((segment, index, all) => index < all.length - 1 && skipped.has(segment)),

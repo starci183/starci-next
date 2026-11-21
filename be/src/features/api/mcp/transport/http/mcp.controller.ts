@@ -1,8 +1,8 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Post, Req, Res } from "@nestjs/common"
+import { Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Req, Res } from "@nestjs/common"
 import type { Request, Response } from "express"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { Public, PublicReason } from "@modules/domain/identity"
-import { McpServerFactory, McpTokenService } from "@modules/domain/mcp"
+import { isMcpLessonId, McpServerFactory, McpTokenService } from "@modules/domain/mcp"
 import { RateLimit, RateTier } from "@modules/platform/http-security"
 
 /** The JSON-RPC answer of a method the stateless endpoint does not offer (no server stream, no session to end). */
@@ -31,8 +31,30 @@ export class McpController {
     @Public({ reason: PublicReason.ProtocolBearer })
     @RateLimit(RateTier.Default)
     async handle(@Req() request: Request, @Res() response: Response): Promise<void> {
+        await this.serve(request, response, null)
+    }
+
+    /**
+     * POST /mcp/l/<lesson id>, the MCP of one lesson (`starci-<lesson id>` in the client config): the same tools, each reading that
+     * lesson when it names none and refusing any other. Access per part stays the learner's own.
+     */
+    @Post("l/:lessonId")
+    @HttpCode(HttpStatus.OK)
+    @Public({ reason: PublicReason.ProtocolBearer })
+    @RateLimit(RateTier.Default)
+    async handleLesson(
+        @Param("lessonId") lessonId: string,
+        @Req() request: Request,
+        @Res() response: Response,
+    ): Promise<void> {
+        if (!isMcpLessonId(lessonId)) throw new NotFoundException()
+        await this.serve(request, response, lessonId)
+    }
+
+    /** Proves the learner by the token, then answers one JSON-RPC message with a server for that learner (and lesson). */
+    private async serve(request: Request, response: Response, lessonId: string | null): Promise<void> {
         const learnerId = await this.tokens.authenticate(request.headers.authorization)
-        const server = this.servers.create(learnerId)
+        const server = this.servers.create(learnerId, lessonId)
         const transport = new StreamableHTTPServerTransport({ enableJsonResponse: true })
         response.on("close", () => {
             void transport.close()

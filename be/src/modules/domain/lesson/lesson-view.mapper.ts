@@ -8,6 +8,7 @@ import type { CatalogRow, VersionRow } from "./persistence/lesson.rows"
 import type { LessonActivity, LessonLocale, LessonLocaleDocument, LessonSection } from "./lesson.contracts"
 import { needsPremium, premiumMarkOf } from "./lesson-access.policy"
 import { toEssentialView } from "./lesson-essential-view.mapper"
+import { LESSON_ESSENCE_SECTION } from "./lesson-essential.contracts"
 import type {
     LessonActivityView,
     LessonCatalogItemView,
@@ -91,9 +92,16 @@ const toActivityView = (activity: LessonActivity): LessonActivityView => ({
         : null,
 })
 
+/** The part a section that is not named after its part is read under: the Bản chất reading (`2-essence`) is the `2-source` part. */
+const SECTION_PARTS: Readonly<Record<string, EssentialPart>> = { [LESSON_ESSENCE_SECTION]: "2-source" }
+
+/** The Essentials part a section id is read under, or undefined for a section of no part. */
+export const essentialPartOfSection = (id: string): EssentialPart | undefined =>
+    SECTION_PARTS[id] ?? ESSENTIAL_PARTS.find((part) => part === id)
+
 /** The Essentials part a section of a four-part lesson is, or undefined for any other section. */
 const essentialPartOf = (section: LessonSection, document: LessonLocaleDocument): EssentialPart | undefined =>
-    document.essential === undefined ? undefined : ESSENTIAL_PARTS.find((part) => part === section.id)
+    document.essential === undefined ? undefined : essentialPartOfSection(section.id)
 
 const toSectionView = (
     section: LessonSection,

@@ -58,6 +58,11 @@ export interface LessonSection {
     readonly scenarios: ReadonlyArray<LessonScenario>
     /** The hidden scenarios of the asked challenge tier, when one was asked. */
     readonly challenge?: { readonly tier: string; readonly scenarios: ReadonlyArray<LessonScenario> }
+    /** The Tìm sạn bug pack, when it was asked: the tarball of `bugs/source/` and its tests (the final one only once it is open). */
+    readonly bugs?: {
+        readonly source: { readonly url: string; readonly sha256: string; readonly commit: string }
+        readonly tests: ReadonlyArray<LessonScenario>
+    }
 }
 
 /** What `pull` leaves in the repo folder so `up`, `down` and `run` need no network to find it. */
@@ -74,6 +79,8 @@ export interface LessonState {
     readonly compose: string
     /** The compose project name. */
     readonly project: string
+    /** `bugs` for the folder of the Tìm sạn bug pack (`pull --bugs`); absent for the lesson source. */
+    readonly pack?: "bugs"
 }
 
 /** What `run` and `check` remember locally about the last run of a scenario; never written for a challenge. */
@@ -100,4 +107,6 @@ export interface LessonRunOptions {
     readonly challenge?: string | undefined
     /** Whether to skip the question. */
     readonly yes: boolean
+    /** True to run the Tìm sạn bug pack (every test, results per test id). */
+    readonly bugs?: boolean | undefined
 }

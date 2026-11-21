@@ -1178,10 +1178,11 @@
         "breadcrumbs": "Đường dẫn",
         "tabs": "Bốn phần của bài",
         "parts": {
-          "essence": "Bản chất",
-          "source": "Source",
-          "scenarios": "Kịch bản",
-          "apply": "Tự áp dụng"
+          "essence": "Mở đầu",
+          "source": "Bản chất",
+          "scenarios": "Tìm sạn",
+          "apply": "Challenges",
+          "pattern": "Pattern"
         },
         "empty": "Bài này chưa có nội dung.",
         "soon": "Phần này đang soạn.",
@@ -1359,8 +1360,8 @@
             "empty": "Bài này chưa có bài viết."
           },
           "aside": {
-            "journeyTitle": "Bài này gồm 4 phần",
-            "journeyNote": "Phần 2 đến 4 cần Premium.",
+            "journeyTitle": "Bài này gồm 5 phần",
+            "journeyNote": "Phần 2 đến 5 cần Premium.",
             "retakeTitle": "Cuối bài",
             "retakeText": "Làm lại 5 câu để thấy điểm trước và sau khi đọc.",
             "lockedPart": "Premium"
@@ -1383,29 +1384,105 @@
             "back": "Quay lại phần 1",
             "compare": "So sánh hai gói",
             "source": {
-              "title": "Phần 2 · Source thuộc gói Premium",
-              "one": "Tải source TypeScript + Express về máy, chạy bằng Docker",
-              "two": "Sơ đồ kiến trúc và bảng thành phần, mỗi thành phần giữ một luật",
-              "three": "Đọc code: mỗi đoạn gắn với luật và số dòng thật"
+              "title": "Phần 2 · Bản chất thuộc gói Premium",
+              "one": "Đọc bài theo kiểu thực hành dẫn dắt lý thuyết: chạy source rồi mới hệ thống hóa",
+              "two": "Kiến trúc, giải thích code có WHY và bản chất của từng đoạn",
+              "three": "Bốn luồng kiểm thử, các trường hợp biên và câu hỏi phỏng vấn"
             },
             "scenarios": {
-              "title": "Phần 3 · Kịch bản thuộc gói Premium",
-              "one": "Chạy từng kịch bản lỗi trên máy bạn qua CLI",
-              "two": "Xem vì sao sai: luật nào bị phá, kèm gợi ý sau mỗi lần chạy đỏ",
-              "three": "Nhờ AI của bạn sửa rồi check lại tới khi xanh"
+              "title": "Phần 3 · Tìm sạn thuộc gói Premium",
+              "one": "Tải bản source có 5 lỗi cài sẵn về máy và chạy bằng Docker",
+              "two": "Sửa code tới khi pass từng test; test đỏ có mong đợi, thực tế và gợi ý mở dần",
+              "three": "Pass hết test thì mở Challenges"
             },
             "apply": {
-              "title": "Phần 4 · Tự áp dụng thuộc gói Premium",
-              "one": "Bốn mức Dễ, Vừa, Khó, Siêu khó, mỗi mức mở khi xong mức trước",
-              "two": "Test ẩn chạy trên máy bạn, thang điểm 100 chia theo từng mục",
-              "three": "Đã chứng minh khi CI của GitHub ký xác nhận, rồi thành dòng trên hồ sơ"
+              "title": "Phần 4 · Challenges thuộc gói Premium",
+              "one": "Bốn bậc Dễ, Vừa, Khó, Siêu khó, mỗi bậc mở khi xong bậc trước",
+              "two": "Kịch bản ẩn chạy trên máy bạn, thang điểm 100 chia theo từng mục",
+              "three": "Câu hỏi bản chất kiểu hỏi vặn, từ bậc Khó kèm giải thích ngắn để AI chấm"
+            },
+            "pattern": {
+              "title": "Phần 5 · Pattern thuộc gói Premium",
+              "one": "Pattern này nằm ở đâu trong một dự án thật",
+              "two": "Áp tới mức nào, server sập thì sao",
+              "three": "Các file chính và đoạn code mẫu, kèm đường tới repo"
             }
           }
         },
         "errorTitle": "Không tải được bài",
         "errorText": "Kiểm tra kết nối rồi thử lại. Điểm và tiến độ của bạn vẫn được giữ.",
         "more": "Xem thêm",
-        "less": "Thu gọn"
+        "less": "Thu gọn",
+        "five": {
+          "copy": "Sao chép",
+          "journeyTitle": "Bài này gồm 5 phần",
+          "reading": {
+            "tocTitle": "Mục lục",
+            "tocEmpty": "Bài chưa có mục nào.",
+            "flagged": "Nên đọc kỹ",
+            "locked": "Phần này thuộc gói Premium.",
+            "mcpTitle": "Hỏi AI qua MCP của bài",
+            "mcpNote": "AI đọc được bài, source và các lần chạy của bạn, không đọc được lời giải ẩn.",
+            "mcpConfig": "Cấu hình MCP",
+            "mcpCommand": "Lệnh cho Claude Code",
+            "mcpToken": "Thay YOUR_TOKEN bằng mã tạo ở trang Kết nối AI."
+          },
+          "bugs": {
+            "pullTitle": "Lấy source và chạy trên máy bạn",
+            "pullNote": "Bản source này có 5 lỗi cài sẵn, mỗi lỗi ứng với một bản chất ở phần mở đầu. Sửa code tới khi pass hết test.",
+            "runsEmpty": "Bài chưa có test nào.",
+            "passTitle": "Vì sao giờ đúng",
+            "failTitle": "Vì sao chưa pass",
+            "hintsTitle": "Gợi ý đã mở",
+            "lockedFinal": "Test tổng mở khi các test khác đã pass.",
+            "machineNone": "Chưa có máy nào kết nối",
+            "machineNoneNote": "Ghép máy của bạn ở trang Kết nối để kết quả từng test về đây.",
+            "machineOnline": "Máy {name} đang kết nối",
+            "asideBugs": "5 hạt sạn",
+            "asideHintsTitle": "Gợi ý mở dần",
+            "asideHints": "Hướng (mục cần đọc lại), rồi file, rồi dòng. Mở gợi ý không trừ điểm; trang ghi lại bạn đã dùng mấy nấc.",
+            "asideUnlockTitle": "Mở khóa",
+            "asideUnlock": "Pass hết test, kể cả test tổng, để mở Challenges.",
+            "asideUnlocked": "Bạn đã pass hết test. Challenges đã mở.",
+            "state": {
+              "none": "Chưa chạy",
+              "running": "Đang chạy",
+              "passed": "Pass",
+              "failed": "Chưa pass",
+              "locked": "Đang khóa"
+            },
+            "bug": "Sạn {n}",
+            "happy": "Đường đi bình thường",
+            "final": "Test tổng",
+            "hint": "Gợi ý {n}",
+            "openHint": "Mở gợi ý {n}",
+            "expected": "mong đợi",
+            "received": "thực tế",
+            "runTitle": "Lần chạy {time} · {passed}/{total} pass",
+            "noRun": "Chưa có lần chạy nào · {total} test"
+          },
+          "pattern": {
+            "stacks": "Stack",
+            "questions": "Ba câu AI không tự trả lời",
+            "snippet": "Nghiệp vụ chỉ khai báo, platform lo phần còn lại",
+            "files": "Các file chính · {folder}",
+            "filesEmpty": "Stack này chưa có file.",
+            "soonText": "Stack này sắp có.",
+            "soon": "{stack} · sắp có",
+            "github": "Mở trên GitHub",
+            "sourceTitle": "Nguồn",
+            "sourceNote": "Code trích từ {repo}, chỉ giữ phần liên quan, không chạy độc lập.",
+            "addTitle": "Thêm stack",
+            "addNote": "Mỗi stack là một mục trong patterns.yaml của bài: repo, thư mục, file chính kèm chú thích, trạng thái.",
+            "where": "Đặt code ở đâu",
+            "howFar": "Áp tới mức nào",
+            "whenDown": "Server sập thì sao"
+          },
+          "written": {
+            "prompt": "Giải thích ngắn (3 đến 5 câu) như đang trả lời phỏng vấn: vì sao lựa chọn của bạn giữ được lời hứa của hệ thống?",
+            "wait": "Chọn đáp án câu này trước, rồi viết phần giải thích để AI chấm."
+          }
+        }
       }
     },
     "projects": {

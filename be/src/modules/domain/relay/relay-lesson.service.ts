@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import type { EntityManager } from "typeorm"
-import { lessonRelayTaskId } from "@modules/domain/lesson"
+import { LESSON_BUG_CHECK_PREFIX, lessonRelayTaskId } from "@modules/domain/lesson"
 import { InjectPrimaryEntityManager, LIST_ROWS_MAX } from "@modules/platform/database"
 import type { RelayCheckStateRow } from "./persistence/relay-events.rows"
 import { SELECT_TASK_CHECKS, SELECT_TASK_SEEN } from "./persistence/relay-events.sql"
@@ -38,9 +38,15 @@ export interface LessonScenarioRunView {
     readonly why: string | null
     /** The ledger lines of the run, or null. */
     readonly ledger: string | null
+    /** What a bug-pack test measured (its received line), or null. */
+    readonly received: string | null
     /** When the newest event was stored, ISO 8601. */
     readonly at: string
 }
+
+/** True for the run of a Tìm sạn bug-pack test (check id `bug:<test id>`). */
+export const isBugRun = (run: Pick<LessonScenarioRunView, "scenarioId">): boolean =>
+    run.scenarioId.startsWith(LESSON_BUG_CHECK_PREFIX)
 
 /** The status a check's newest event gives. */
 const statusOf = (row: RelayCheckStateRow): LessonRunStatus => {
@@ -64,7 +70,10 @@ export class RelayLessonService {
         )
     }
 
-    /** The newest run of each scenario of the lesson the learner ran, by scenario id. */
+    /**
+     * The newest run of each check of the lesson the learner ran, by check id: the scenarios, the hidden challenge scenarios and
+     * the bug-pack tests (`bug:<test id>`, see `isBugRun`).
+     */
     async runs(learnerId: string, lessonId: string): Promise<ReadonlyArray<LessonScenarioRunView>> {
         const rows: Array<RelayCheckStateRow> = await this.entityManager.query(SELECT_TASK_CHECKS, [
             learnerId,
@@ -86,6 +95,7 @@ export class RelayLessonService {
             concepts: row.detail?.concepts ?? [],
             why: row.detail?.why ?? null,
             ledger: row.detail?.ledger ?? null,
+            received: row.detail?.received ?? null,
             at: row.created_at.toISOString(),
         }))
     }

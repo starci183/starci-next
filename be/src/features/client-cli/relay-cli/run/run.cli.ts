@@ -11,6 +11,8 @@ export interface RunTaskOptions {
     readonly guard?: ReadonlyArray<string> | undefined
     /** The challenge tier whose hidden scenarios to run. */
     readonly challenge?: string | undefined
+    /** True to run the Tìm sạn bug pack. */
+    readonly bugs?: boolean | undefined
 }
 
 @Command({
@@ -52,8 +54,22 @@ export class RunTaskCli extends CommandRunner {
         return value
     }
 
-    /** Runs the task, or the scenario or challenge of the lesson, named by the first argument. */
+    /** `--bugs`: run every test of the Tìm sạn bug pack and send one result per test. */
+    @Option({ flags: "--bugs", description: "Run the Tìm sạn bug pack, one result per test", defaultValue: false })
+    parseBugs(): boolean {
+        return true
+    }
+
+    /** Runs the task, or the scenario, challenge or bug pack of the lesson, named by the first argument. */
     async run(passed: Array<string>, options: RunTaskOptions): Promise<void> {
+        if (options.bugs === true) {
+            await this.relay.lessonRun(
+                passed[0] ?? "",
+                { guards: options.guard ?? [], yes: options.yes, bugs: true },
+                false,
+            )
+            return
+        }
         if (options.scenario !== undefined || options.challenge !== undefined) {
             await this.relay.lessonRun(
                 passed[0] ?? "",

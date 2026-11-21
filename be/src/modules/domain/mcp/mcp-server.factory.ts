@@ -12,17 +12,46 @@ const LESSON_ID = z
     .describe("The lesson id, a slug such as request-response-lifecycle")
 const LOCALE = z.enum(["vi", "en"]).default("vi").describe("The language of the lesson text")
 const PART = z
-    .enum(["1-essential", "2-source", "3-scenarios", "4-apply"])
-    .describe("One part of an Essentials lesson: 1-essential, 2-source, 3-scenarios or 4-apply")
+    .enum(["1-essential", "2-source", "3-scenarios", "4-apply", "5-patterns"])
+    .describe(
+        "One part of an Essentials lesson: 1-essential (Mở đầu), 2-source (Bản chất), 3-scenarios (Tìm sạn), 4-apply (Challenges) or 5-patterns (Pattern)",
+    )
 const SLUG = z.string().regex(/^[a-z0-9][a-z0-9-]{0,63}$/u)
 
 const one = (value: string | ReadonlyArray<string> | undefined): string =>
     Array.isArray(value) ? (value[0] ?? "") : String(value ?? "")
 
+/** The MCP server name of a session scoped to one lesson: `starci-<lesson id>`, the key a learner pastes into the client config. */
+export const lessonMcpNameOf = (lessonId: string): string => `starci-${lessonId}`
+
+/** True when a lesson id could be one (the slug the tools take). */
+export const isMcpLessonId = (value: string): boolean => /^[a-z0-9][a-z0-9-]{0,99}$/u.test(value)
+
+/**
+ * The lesson a tool acts on. A session scoped to one lesson (`/mcp/l/<lesson id>`) answers that lesson when the tool names none and
+ * refuses any other; an unscoped session needs the id.
+ */
+const lessonIn = (scope: string | null, id: string | undefined): string => {
+    if (scope === null) {
+        if (id === undefined) throw new McpScopeError("MCP_LESSON_REQUIRED")
+        return id
+    }
+    if (id !== undefined && id !== scope) throw new McpScopeError("MCP_LESSON_OUT_OF_SCOPE")
+    return scope
+}
+
+/** A tool asked for a lesson outside the session's scope, or named none in an unscoped session. */
+class McpScopeError extends Error {
+    constructor(readonly code: "MCP_LESSON_REQUIRED" | "MCP_LESSON_OUT_OF_SCOPE") {
+        super(code)
+    }
+}
+
 const json = (value: unknown): CallToolResult => ({ content: [{ type: "text", text: JSON.stringify(value, null, 2) }] })
 
 /** A refusal the learner's AI can read: the domain code, never a stack. Anything else is rethrown as an internal error. */
 const refusal = (error: unknown): CallToolResult => {
+    if (error instanceof McpScopeError) return { isError: true, content: [{ type: "text", text: error.code }] }
     if (error instanceof DomainError)
         return { isError: true, content: [{ type: "text", text: `${String((error as { code?: unknown }).code)}` }] }
     throw error
@@ -45,16 +74,22 @@ const act = async (run: () => Promise<unknown>): Promise<CallToolResult> => {
 export class McpServerFactory {
     constructor(private readonly tutor: McpTutorService) {}
 
-    /** The server for a learner. */
-    create(learnerId: string): McpServer {
-        const server = new McpServer({ name: "starci-next", version: "1.0.0" })
-        this.resources(server, learnerId)
-        this.tools(server, learnerId)
+    /**
+     * The server for a learner. With a lesson (`/mcp/l/<lesson id>`, the MCP of one lesson) the server is named `starci-<lesson id>`,
+     * every lesson tool reads that lesson when it names none and refuses any other.
+     */
+    create(learnerId: string, lessonId: string | null = null): McpServer {
+        const server = new McpServer({
+            name: lessonId === null ? "starci-next" : lessonMcpNameOf(lessonId),
+            version: "1.0.0",
+        })
+        this.resources(server, learnerId, lessonId)
+        this.tools(server, learnerId, lessonId)
         this.prompts(server)
         return server
     }
 
-    private resources(server: McpServer, learnerId: string): void {
+    private resources(server: McpServer, learnerId: string, scope: string | null): void {
         server.registerResource(
             "lesson-outline",
             new ResourceTemplate("lesson://{id}/outline", { list: undefined }),
@@ -68,7 +103,11 @@ export class McpServerFactory {
                     {
                         uri: uri.href,
                         mimeType: "application/json",
-                        text: JSON.stringify(await this.tutor.outline(learnerId, one(variables.id), "vi"), null, 2),
+                        text: JSON.stringify(
+                            await this.tutor.outline(learnerId, lessonIn(scope, one(variables.id)), "vi"),
+                            null,
+                            2,
+                        ),
                     },
                 ],
             }),
@@ -86,8 +125,14 @@ export class McpServerFactory {
                     {
                         uri: uri.href,
                         mimeType: "text/markdown",
-                        text: (await this.tutor.section(learnerId, one(variables.id), Number(one(variables.n)), "vi"))
-                            .body,
+                        text: (
+                            await this.tutor.section(
+                                learnerId,
+                                lessonIn(scope, one(variables.id)),
+                                Number(one(variables.n)),
+                                "vi",
+                            )
+                        ).body,
                     },
                 ],
             }),
@@ -106,25 +151,34 @@ export class McpServerFactory {
                     {
                         uri: uri.href,
                         mimeType: "text/plain",
-                        text: (await this.tutor.readFile(learnerId, one(variables.id), one(variables.path))).text,
+                        text: (
+                            await this.tutor.readFile(
+                                learnerId,
+                                lessonIn(scope, one(variables.id)),
+                                one(variables.path),
+                            )
+                        ).text,
                     },
                 ],
             }),
         )
     }
 
-    private tools(server: McpServer, learnerId: string): void {
+    private tools(server: McpServer, learnerId: string, scope: string | null): void {
         const readOnly = { readOnlyHint: true, openWorldHint: false }
+        // A session scoped to one lesson may leave the id out; the handlers then read that lesson.
+        const LESSON_ID_IN = scope === null ? LESSON_ID : LESSON_ID.optional()
+        const pin = (id: string | undefined): string => lessonIn(scope, id)
         server.registerTool(
             "lesson",
             {
                 title: "The lesson, in full",
                 description:
                     "The whole lesson the learner may read, in full: every readable section with its headings (the article of part 1, the source explanation and architecture of part 2, the scenarios of part 3, the apply brief of part 4), the 5-question opener (the key and the explanations appear once the learner answered a question in the app), the invariants, the code walk, the scenarios with guards, commands and expected results (a hint only after the learner's own red run), and the challenge briefs and rubrics. A locked part has no text. Pass part to read one part only (all parts together are long).",
-                inputSchema: { id: LESSON_ID, locale: LOCALE, part: PART.optional() },
+                inputSchema: { id: LESSON_ID_IN, locale: LOCALE, part: PART.optional() },
                 annotations: readOnly,
             },
-            ({ id, locale, part }) => act(() => this.tutor.lesson(learnerId, id, locale, part ?? null)),
+            ({ id, locale, part }) => act(() => this.tutor.lesson(learnerId, pin(id), locale, part ?? null)),
         )
         server.registerTool(
             "lesson_outline",
@@ -132,20 +186,20 @@ export class McpServerFactory {
                 title: "Lesson outline",
                 description:
                     "The outline of a lesson: sections (locked ones listed without text), their numbers and the learning outcomes.",
-                inputSchema: { id: LESSON_ID, locale: LOCALE },
+                inputSchema: { id: LESSON_ID_IN, locale: LOCALE },
                 annotations: readOnly,
             },
-            ({ id, locale }) => act(() => this.tutor.outline(learnerId, id, locale)),
+            ({ id, locale }) => act(() => this.tutor.outline(learnerId, pin(id), locale)),
         )
         server.registerTool(
             "lesson_section",
             {
                 title: "Lesson section",
                 description: "The text of one unlocked section by its 1-based number from the outline.",
-                inputSchema: { id: LESSON_ID, n: z.number().int().min(1).max(200), locale: LOCALE },
+                inputSchema: { id: LESSON_ID_IN, n: z.number().int().min(1).max(200), locale: LOCALE },
                 annotations: readOnly,
             },
-            ({ id, n, locale }) => act(() => this.tutor.section(learnerId, id, n, locale)),
+            ({ id, n, locale }) => act(() => this.tutor.section(learnerId, pin(id), n, locale)),
         )
         server.registerTool(
             "search_lesson",
@@ -154,7 +208,7 @@ export class McpServerFactory {
                 description:
                     "Search everything of the lesson the learner may read: article headings, opener questions, invariants, scenarios, code walk and challenges, in Vietnamese or English. Each hit has a path (section/<n>, scenario/<id>, opener/<id>...), a line range and its heading trail. Semantic by default when available, keywords otherwise.",
                 inputSchema: {
-                    id: LESSON_ID,
+                    id: LESSON_ID_IN,
                     query: z.string().min(1).max(300),
                     mode: z.enum(["semantic", "keyword"]).default("semantic"),
                     locale: LOCALE,
@@ -162,7 +216,7 @@ export class McpServerFactory {
                 annotations: readOnly,
             },
             ({ id, query, mode, locale }) =>
-                act(() => this.tutor.searchLesson(learnerId, id, locale, query, mode === "semantic")),
+                act(() => this.tutor.searchLesson(learnerId, pin(id), locale, query, mode === "semantic")),
         )
         server.registerTool(
             "search_harness",
@@ -186,14 +240,14 @@ export class McpServerFactory {
                 description:
                     "Lines of any file of the lesson repository at its pinned commit (up to 1000 lines per call; when truncated is true, ask again from nextFrom). Use list_files to see the paths.",
                 inputSchema: {
-                    id: LESSON_ID,
+                    id: LESSON_ID_IN,
                     path: z.string().min(1).max(300),
                     from: z.number().int().min(1).optional(),
                     to: z.number().int().min(1).optional(),
                 },
                 annotations: readOnly,
             },
-            ({ id, path, from, to }) => act(() => this.tutor.readFile(learnerId, id, path, from, to)),
+            ({ id, path, from, to }) => act(() => this.tutor.readFile(learnerId, pin(id), path, from, to)),
         )
         server.registerTool(
             "list_files",
@@ -201,10 +255,10 @@ export class McpServerFactory {
                 title: "List the source files",
                 description:
                     "Every readable file of the lesson repository at its pinned commit with its size and line count; read any of them with read_file.",
-                inputSchema: { id: LESSON_ID },
+                inputSchema: { id: LESSON_ID_IN },
                 annotations: readOnly,
             },
-            ({ id }) => act(() => this.tutor.listFiles(learnerId, id)),
+            ({ id }) => act(() => this.tutor.listFiles(learnerId, pin(id))),
         )
         server.registerTool(
             "search_code",
@@ -213,13 +267,13 @@ export class McpServerFactory {
                 description:
                     "Search the lesson repository at its pinned commit: every file is indexed by file and symbol, and a hit gives the path, the symbol and the line range to read. Semantic by default when available, keywords otherwise.",
                 inputSchema: {
-                    id: LESSON_ID,
+                    id: LESSON_ID_IN,
                     query: z.string().min(1).max(300),
                     mode: z.enum(["semantic", "keyword"]).default("semantic"),
                 },
                 annotations: readOnly,
             },
-            ({ id, query, mode }) => act(() => this.tutor.searchCode(learnerId, id, query, mode === "semantic")),
+            ({ id, query, mode }) => act(() => this.tutor.searchCode(learnerId, pin(id), query, mode === "semantic")),
         )
         server.registerTool(
             "list_scenarios",
@@ -227,10 +281,10 @@ export class McpServerFactory {
                 title: "List scenarios",
                 description:
                     "The scenarios of the lesson: the injected fault, the guards that can be switched off and the command to run.",
-                inputSchema: { id: LESSON_ID },
+                inputSchema: { id: LESSON_ID_IN },
                 annotations: readOnly,
             },
-            ({ id }) => act(() => this.tutor.scenarios(learnerId, id)),
+            ({ id }) => act(() => this.tutor.scenarios(learnerId, pin(id))),
         )
         server.registerTool(
             "my_runs",
@@ -238,20 +292,20 @@ export class McpServerFactory {
                 title: "My runs",
                 description:
                     "The learner's own recent scenario runs of the lesson with the result and the log tail, to explain why one is red.",
-                inputSchema: { id: LESSON_ID },
+                inputSchema: { id: LESSON_ID_IN },
                 annotations: readOnly,
             },
-            ({ id }) => act(() => this.tutor.myRuns(learnerId, id)),
+            ({ id }) => act(() => this.tutor.myRuns(learnerId, pin(id))),
         )
         server.registerTool(
             "invariants",
             {
                 title: "Invariants",
                 description: "The invariants the learner has revealed so far, with where the code keeps each.",
-                inputSchema: { id: LESSON_ID },
+                inputSchema: { id: LESSON_ID_IN },
                 annotations: readOnly,
             },
-            ({ id }) => act(() => this.tutor.invariants(learnerId, id)),
+            ({ id }) => act(() => this.tutor.invariants(learnerId, pin(id))),
         )
         server.registerTool(
             "request_run",
@@ -260,7 +314,7 @@ export class McpServerFactory {
                 description:
                     "Ask the learner's own machine to run one scenario. The StarCi CLI shows the exact command and asks the learner to confirm; read the result with my_runs. If delivered is false, no device is listening: tell the learner to run the returned command in their terminal.",
                 inputSchema: {
-                    id: LESSON_ID,
+                    id: LESSON_ID_IN,
                     scenario: SLUG,
                     guards_off: z.array(SLUG).max(8).default([]).describe("Guard ids to switch off for this run"),
                 },
@@ -271,7 +325,8 @@ export class McpServerFactory {
                     openWorldHint: false,
                 },
             },
-            ({ id, scenario, guards_off }) => act(() => this.tutor.requestRun(learnerId, id, scenario, guards_off)),
+            ({ id, scenario, guards_off }) =>
+                act(() => this.tutor.requestRun(learnerId, pin(id), scenario, guards_off)),
         )
     }
 

@@ -1,15 +1,45 @@
 import { lockedEssentialPartsOf, type EssentialPart } from "@modules/domain/entitlement"
 import {
     challengeActivityId,
+    challengeWrittenActivityId,
     choiceOptionId,
     openerActivityId,
     type LessonEssential,
     type LessonOpenerQuestion,
+    type LessonPattern,
 } from "./lesson-essential.contracts"
-import type { LessonEssentialView, LessonQuestionView } from "./lesson-essential-view.contracts"
+import type { LessonEssentialView, LessonPatternView, LessonQuestionView } from "./lesson-essential-view.contracts"
+
+/** The GitHub address of a Pattern folder (the default branch), or null without a repository. */
+const patternUrlOf = (pattern: LessonPattern): string | null => {
+    if (pattern.repo === "") return null
+    const base = `https://github.com/${pattern.repo}`
+    return pattern.path === "" ? base : `${base}/tree/HEAD/${pattern.path}`
+}
+
+/** A Pattern stack for the page, field by field. */
+const toPatternView = (pattern: LessonPattern): LessonPatternView => ({
+    stack: pattern.stack,
+    status: pattern.status,
+    repo: pattern.repo,
+    path: pattern.path,
+    url: patternUrlOf(pattern),
+    where: pattern.where,
+    howFar: pattern.howFar,
+    whenDown: pattern.whenDown,
+    files: pattern.files.map((file) => ({ path: file.path, note: file.note })),
+    snippet:
+        pattern.snippet === null
+            ? null
+            : { lang: pattern.snippet.lang, file: pattern.snippet.file, code: pattern.snippet.code },
+})
 
 /** A question for the learner, field by field: the right index, the explanations and the insight are never copied. */
-const toQuestionView = (question: LessonOpenerQuestion, activityId: string): LessonQuestionView => ({
+const toQuestionView = (
+    question: LessonOpenerQuestion,
+    activityId: string,
+    writtenActivityId: string | null = null,
+): LessonQuestionView => ({
     id: question.id,
     activityId,
     prompt: question.prompt,
@@ -18,6 +48,7 @@ const toQuestionView = (question: LessonOpenerQuestion, activityId: string): Les
     sectionRef: question.sectionRef ?? null,
     scenarioId: question.scenarioId ?? null,
     event: question.event === undefined ? null : { at: question.event.at, text: question.event.text },
+    writtenActivityId,
 })
 
 /**
@@ -104,9 +135,33 @@ export const toEssentialView = (
                   })),
                   hiddenScenarios: challenge.hidden?.length ?? challenge.hiddenScenarios ?? 0,
                   questions: (challenge.questions ?? []).map((question) =>
-                      toQuestionView(question, challengeActivityId(challenge.id, question.id)),
+                      toQuestionView(
+                          question,
+                          challengeActivityId(challenge.id, question.id),
+                          question.writtenRequired === true
+                              ? challengeWrittenActivityId(challenge.id, question.id)
+                              : null,
+                      ),
                   ),
+                  writtenRequired: challenge.writtenRequired === true,
               }))
             : [],
+        // Tìm sạn reads the bug pack: the tests by name and command, never their pass and fail texts or hints.
+        bugs:
+            has("3-scenarios") && essential.bugs !== undefined && essential.bugs !== null
+                ? {
+                      tests: essential.bugs.tests.map((test) => ({
+                          id: test.id,
+                          title: test.title,
+                          essence: test.essence,
+                          command: test.command,
+                          expected: test.expected,
+                          received: test.received,
+                          hintCount: test.hints.length,
+                          isFinal: test.isFinal,
+                      })),
+                  }
+                : null,
+        patterns: has("5-patterns") ? (essential.patterns ?? []).map((pattern) => toPatternView(pattern)) : [],
     }
 }
