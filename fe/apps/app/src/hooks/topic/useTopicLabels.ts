@@ -17,5 +17,9 @@ export const useTopicLabels = (): TopicLabels => {
         related: t("related"),
         moved: t("moved"),
         movedOpen: t("movedOpen"),
+        trackTitle: t("trackTitle"),
+        trackLabel: t("trackLabel"),
+        trackState: { done: t("trackDone"), doing: t("trackDoing"), todo: t("trackTodo") },
+        lessonsTitle: t("lessonsTitle"),
     }
 }
