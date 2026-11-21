@@ -1,1 +1,2 @@
 {"data":{"verdict":"green"},"findings":[],"hash":"257b9331506fb5d08222a75a37c4ab35a7c4bdaf6eb05a1338bec1563a3d86b3","path":"fast/typecheck","step":"ci-step"}
+{"data":{"verdict":"red"},"findings":[{"column":0,"line":0,"message":".github/workflows/ci.yml fast / typecheck (npm run typecheck) failed locally as it would in CI (exit 2)","path":".github/workflows/ci.yml","rule":"CI_PARITY_STEP_FAILED"}],"hash":"b84b9a64a932c1c1c989b3d3655deb15099b6323caec49efed9f3acc4182cb76","path":"fast/typecheck","step":"ci-step"}

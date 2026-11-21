@@ -4,4 +4,6 @@
 {"findings":[],"hash":"fbfd404d77d72dbe61fd8af91d07bb16dad9b6192448a41430e819e30222fa97","path":".starcistacks/canvas/canvas.css","step":"prettier"}
 {"findings":[],"hash":"3728740447f20eee683fd0dfb9d7552daf58465c19b84e9d84edea5414d3dd05","path":".starcistacks/canvas/design.json","step":"prettier"}
 {"findings":[],"hash":"1e9fa88aebb6809f63f73d42c2018930179b8fda43d9a00ad0b97866afaa177f","path":".starcistacks/canvas/starci-next-design.html","step":"prettier"}
+{"findings":[],"hash":"557ac10e76b7656ff77c0a4cee4ac9fdd35e72cacc0c0db4ea1480fc4e6992f7","path":".starcistacks/canvas/design.json","step":"prettier"}
+{"findings":[],"hash":"46f4b3610fdc941f68e72b9540a0c3e7f1e559ba92213f2967482c0ec73f6162","path":".starcistacks/canvas/starci-next-design.html","step":"prettier"}
 {"findings":[],"hash":"8ae3e76017bb24d1e975511fd36047ff559544b8065c1c5a0f49c61e7b207262","path":".starcistacks/canvas/tokens.css","step":"prettier"}

@@ -1,31 +1,91 @@
 schema: 1
 screen: landing/error
-title: Landing, đã xảy ra lỗi
+title: Trang giới thiệu, đã xảy ra lỗi
 route: /{locale}/{trang lỗi}
 area: landing
-summary: "Route: bất kỳ trang nào dưới một ngôn ngữ mà việc vẽ trang ném lỗi (ảnh chụp dùng một
-  trang thử ném lỗi tạm, không nằm trong mã). Mã: `fe/apps/landing/src/app/[locale]/error.tsx`,
-  `features/pages/LandingErrorPage`. Bản cuối cùng khi chính khung lỗi: `app/global-error.tsx`,
-  `LandingGlobalErrorPage`."
-code: []
+app: landing
+summary: 'Một trang của trang giới thiệu bị lỗi khi vẽ: thanh thương hiệu còn nguyên, phần thân là
+  trạng thái lỗi dùng chung với "Về trang chủ" và "Thử lại".'
+code:
+  - app/[locale]/(pages)/error.tsx
+  - features/pages/LandingErrorPage
 shots:
   "390":
     file: 390.png
-    sha256: null
+    sha256: a93a844ff522e203b8333ee9618dd69254e21f972683e812909148514cd4442d
   "1440":
     file: 1440.png
-    sha256: null
+    sha256: c3da2751a59ef47d422eccaee0608be598ff2691a709232b1c6a4d56441f924c
 sections:
-  - id: thanh-thuong-hieu
-    title: Thanh thương hiệu
-    why: dải trên vẫn hiện vì lỗi chỉ thay phần thân của trang.
-    law: "`surface-layering`."
-    grammar: "`LocaleShell` của `@starci-next/ui`."
-  - id: trang-thai-loi
+  - id: s1
     title: Trạng thái lỗi
-    why: một trạng thái cấp trang có hình, câu nói có sự cố khi tải trang này, nút chính "Về trang chủ"
-      và một nút phụ "Thử lại" để vẽ lại ngay; lỗi này có thể qua đi nên cần thử lại.
-    law: "`surface-layering` (một nút chính, một nút phụ)."
-    grammar: '`EmptyNotice scope="page"` với `secondary` qua `ErrorNotice` của `@starci-next/ui`.'
-considered: []
-audit: null
+    shows: Hình, tiêu đề, câu nói có sự cố, nút chính "Về trang chủ" và nút phụ "Thử lại" để vẽ lại ngay.
+    why: Lỗi có thể qua đi nên cần thử lại; đường về trang chủ luôn có.
+    actions:
+      - Về trang chủ
+      - Thử lại
+    states:
+      loading: null
+      empty: null
+      error: null
+    needsApi: []
+considered:
+  - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
+    chosen: true
+    why: "Mã theo canvas 07-landing đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh
+      hoạ trong thẻ."
+audit:
+  builder:
+    agent: next-ux-shell
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T19:09:25.765Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Hình nền vuông nhạt: cần asset (đã chấp nhận)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-20T19:20:03.547Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: pass
+          notes: "Nền vuông nhạt: cần asset (đã chấp nhận)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null
