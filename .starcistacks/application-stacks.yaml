@@ -331,11 +331,6 @@ environments:
   staging:
     status: supported
     runtime: docker-swarm
-    cutover:
-      state: pending
-      reason: "one-edition migration; owner provisions PRIMARY_DB_URL→app_be, re-seals db and moves custody to the VPS key + GitHub backup"
-      until: 2026-12-05
-      keep: [db/KEYCLOAK_DB_PASSWORD]
     composeFiles: [infra/swarm/stack.yaml]
     components:
       core: {replicas: 1, port: 3001}
@@ -513,11 +508,6 @@ environments:
   production:
     status: supported
     runtime: docker-swarm
-    cutover:
-      state: pending
-      reason: "one-edition migration; owner provisions PRIMARY_DB_URL→app_be, re-seals db and moves custody to the VPS key + GitHub backup"
-      until: 2026-12-05
-      keep: [db/KEYCLOAK_DB_PASSWORD]
     composeFiles: [infra/swarm/stack.yaml]
     components:
       core: {replicas: 1, port: 3001}
