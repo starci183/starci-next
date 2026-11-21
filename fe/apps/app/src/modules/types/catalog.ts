@@ -81,6 +81,12 @@ export type CatalogGroupView = {
     readonly done: number
     readonly total: number
     readonly href: string
+    /** What the topic is about, one line. */
+    readonly description: string
+    /** Lessons and time, for example "6 lessons · 2 h 15 min". */
+    readonly metaLabel: string
+    /** Where the learner stands on the topic: not started, under way or done. */
+    readonly badge: { readonly label: string; readonly tone: LessonBadgeTone }
     /** The lessons shown (the first three), in the topic's order. */
     readonly lessons: ReadonlyArray<LessonRowView>
     /** The link under the list when more lessons stand in the topic (for example "See all 6 lessons"); empty when none. */
@@ -90,8 +96,31 @@ export type CatalogGroupView = {
 /** One option of a select. */
 export type CatalogOption = { readonly id: string; readonly label: string }
 
+/** The lesson under way as the cover card draws it. */
+export type CatalogResumeView = {
+    readonly lessonId: string
+    /** For example "API reliability · lesson 3/6". */
+    readonly kicker: string
+    readonly title: string
+    /** How many of the lesson parts are finished. */
+    readonly doneParts: number
+    /** For example "Part 3 · 2 of 4 done". */
+    readonly progressLabel: string
+    readonly cta: string
+    readonly href: string
+}
+
 /** The catalog as the screen draws it. */
 export type CatalogView = {
+    /** The four key figures of the band: lessons done, under way, not started and the time of the rest. */
+    readonly figures: ReadonlyArray<{
+        readonly id: string
+        readonly term: string
+        readonly value: string
+        readonly unit?: string
+    }>
+    /** The lesson to go on with, drawn as the cover card; undefined when none is under way. */
+    readonly resume: CatalogResumeView | undefined
     /** The fact line under the title (topics, lessons, lessons done). */
     readonly facts: string
     /** The one primary: continue, start or upgrade; undefined when the catalog holds no lesson. */
@@ -104,6 +133,13 @@ export type CatalogView = {
 
 /** The words of the catalog screen that do not depend on its data. */
 export type CatalogLabels = {
+    readonly figuresLabel: string
+    readonly resumeTitle: string
+    readonly topicsTitle: string
+    /** The accessible name of the ring of a topic (for example "2 of 6 lessons done"). */
+    readonly topicRing: (done: number, total: number) => string
+    readonly fivePartsTitle: string
+    readonly fiveParts: ReadonlyArray<{ readonly id: string; readonly title: string }>
     readonly title: string
     readonly breadcrumbs: string
     readonly statusLabel: string
@@ -122,6 +158,12 @@ export type CatalogLabels = {
 
 /** The words the catalog view is built with, resolved by the block. */
 export type CatalogWords = {
+    readonly figure: { readonly done: string; readonly doing: string; readonly todo: string; readonly time: string }
+    readonly hours: (hours: number, minutes: number) => string
+    readonly groupMeta: (lessons: number, minutes: number) => string
+    readonly groupState: { readonly todo: string; readonly doing: string; readonly done: string }
+    readonly resumeKicker: (topic: string, position: number, total: number) => string
+    readonly resumeProgress: (part: number, done: number) => string
     readonly isPremium: boolean
     readonly minutes: (minutes: number) => string
     readonly partsLabel: (done: number) => string

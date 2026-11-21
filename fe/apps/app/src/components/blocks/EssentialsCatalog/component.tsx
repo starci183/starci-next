@@ -1,6 +1,17 @@
 import { Skeleton as HeroSkeleton } from "@heroui/react"
-import { Button, Cluster, EmptyNotice, Page, type PageHeaderContent, Stack } from "@starci/grammar/common"
-import { CatalogGroup, CatalogToolbar, SlotView } from "@starci-next/ui"
+import {
+    Button,
+    Cluster,
+    EmptyNotice,
+    Grid,
+    Page,
+    type PageHeaderContent,
+    Section,
+    Stack,
+    SurfaceCard,
+    Text,
+} from "@starci/grammar/common"
+import { CatalogToolbar, ResumeCard, SlotView, TopicCard, lessonArt, topicArt } from "@starci-next/ui"
 import type {
     CatalogFilters,
     CatalogLabels,
@@ -26,6 +37,8 @@ export type EssentialsCatalogBaseProps = {
         readonly errorText: string
         readonly labels: CatalogLabels
         readonly filters: CatalogFilters
+        /** The public base of the statics, where the 3D pictures are served. */
+        readonly artBase: string
     }
     readonly on: EssentialsCatalogActions
 }
@@ -36,6 +49,7 @@ type WellProps = {
     readonly isLoading: boolean
     readonly labels: CatalogLabels
     readonly filters: CatalogFilters
+    readonly artBase: string
     readonly on: EssentialsCatalogActions
 }
 
@@ -74,56 +88,94 @@ const Toolbar = (props: WellProps) => (
     />
 )
 
-/** The well: the toolbar, then one group per topic with a lesson that passes it, or the notice when none does. */
-const CatalogWell = (props: WellProps) => (
-    <Stack gap="region">
-        <Toolbar {...props} />
-        {props.view.groups.length === 0 ? <NoResult {...props} /> : null}
-        {props.view.groups.map((group) => (
-            <CatalogGroup
-                key={group.id}
-                group={{ ...group, percent: group.total === 0 ? 0 : Math.round((group.done / group.total) * 100) }}
-                viewTopic={props.labels.viewTopic}
+/** How many parts a lesson has, the segments of the cover card. */
+const PART_COUNT = 4
+
+/** The strip of key figures: lessons done, under way, not started and the time left. */
+const Figures = (props: WellProps) => (
+    <Section
+        kind="figures"
+        ariaLabel={props.labels.figuresLabel}
+        items={props.view.figures}
+        isLoading={props.isLoading}
+    />
+)
+
+/** The cover card of the lesson under way beside the card that says what the five parts of a lesson are. */
+const Cover = (props: WellProps) => (
+    <Grid kind="cards" columns={2}>
+        {props.view.resume === undefined ? null : (
+            <ResumeCard
+                resume={props.view.resume}
+                art={lessonArt(props.view.resume.lessonId)}
+                artBase={props.artBase}
+                partCount={PART_COUNT}
                 isLoading={props.isLoading}
             />
-        ))}
+        )}
+        <SurfaceCard label={props.labels.fivePartsTitle} isLoading={props.isLoading}>
+            <Stack gap="row">
+                {props.labels.fiveParts.map((part, index) => (
+                    <Text key={part.id} as="p">
+                        {`${index + 1} · ${part.title}`}
+                    </Text>
+                ))}
+            </Stack>
+        </SurfaceCard>
+    </Grid>
+)
+
+/** The well: the figures, the cover, the toolbar, then one card per topic with a lesson that passes it, or the notice when none does. */
+const CatalogWell = (props: WellProps) => (
+    <Stack gap="region">
+        <Figures {...props} />
+        <Cover {...props} />
+        <Toolbar {...props} />
+        {props.view.groups.length === 0 ? <NoResult {...props} /> : null}
+        <Grid kind="cards" columns="balanced">
+            {props.view.groups.map((group) => (
+                <TopicCard
+                    key={group.id}
+                    topic={group}
+                    art={topicArt(group.id)}
+                    artBase={props.artBase}
+                    openLabel={props.labels.viewTopic}
+                    ringLabel={props.labels.topicRing(group.done, group.total)}
+                    isLoading={props.isLoading}
+                />
+            ))}
+        </Grid>
     </Stack>
 )
 
-/** n text bars, the last one shorter, like a paragraph. */
-const Lines = (props: { readonly count: number }) => (
+/** One topic card of the loading page: the picture, the name and two lines. */
+const SkeletonCard = () => (
     <Stack gap="row">
-        {Array.from({ length: props.count }, (_, index) => (
-            <HeroSkeleton
-                key={index}
-                className={
-                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
-                }
-            />
-        ))}
-    </Stack>
-)
-
-/** One group of the loading page: a bar for its title, then the rows it will hold. */
-const SkeletonGroup = () => (
-    <Stack gap="row">
+        <HeroSkeleton className="h-36 w-full rounded-xl" />
         <HeroSkeleton className="h-5 w-40 rounded-lg" />
-        {[1, 2, 3].map((row) => (
-            <Lines key={row} count={2} />
-        ))}
+        <HeroSkeleton className="h-4 w-full rounded-lg" />
+        <HeroSkeleton className="h-4 w-2/3 rounded-lg" />
     </Stack>
 )
 
-/** The catalog while its first read loads: the toolbar (tabs, search, selects) and two groups, all bars, no word. */
+/** The catalog while its first read loads: the figures, the toolbar (tabs, search, selects) and the topic cards, all bars, no word. */
 const CatalogSkeleton = () => (
     <Stack gap="region">
+        <Grid kind="cards" columns={4} gap="inline">
+            {[1, 2, 3, 4].map((figure) => (
+                <HeroSkeleton key={figure} className="h-16 w-full rounded-xl" />
+            ))}
+        </Grid>
         <Cluster gap="inline" align="center">
             <HeroSkeleton className="h-10 w-28 rounded-full" />
             <HeroSkeleton className="h-10 w-64 rounded-xl" />
             <HeroSkeleton className="h-10 w-40 rounded-xl" />
         </Cluster>
-        <SkeletonGroup />
-        <SkeletonGroup />
+        <Grid kind="cards" columns={3}>
+            {[1, 2, 3].map((card) => (
+                <SkeletonCard key={card} />
+            ))}
+        </Grid>
     </Stack>
 )
 
@@ -168,7 +220,14 @@ export const EssentialsCatalogBase = (props: EssentialsCatalogBaseProps) => {
                 isLoading ? (
                     <CatalogSkeleton />
                 ) : (
-                    <CatalogWell view={view} isLoading={isLoading} labels={labels} filters={filters} on={props.on} />
+                    <CatalogWell
+                        view={view}
+                        isLoading={isLoading}
+                        labels={labels}
+                        filters={filters}
+                        artBase={props.props.artBase}
+                        on={props.on}
+                    />
                 )
             }
         />

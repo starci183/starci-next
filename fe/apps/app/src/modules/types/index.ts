@@ -14,6 +14,7 @@ export { LESSON_PART_COUNT } from "./catalog"
 export type {
     CatalogFilters,
     CatalogGroupView,
+    CatalogResumeView,
     CatalogLabels,
     CatalogOption,
     CatalogTopics,

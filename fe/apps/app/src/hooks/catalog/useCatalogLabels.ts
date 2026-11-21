@@ -8,6 +8,12 @@ export const useCatalogLabels = (): CatalogLabels => {
     const t = useTranslations("app.essentials.catalog")
     return {
         title: t("title"),
+        figuresLabel: t("figuresLabel"),
+        resumeTitle: t("resumeTitle"),
+        topicsTitle: t("topicsTitle"),
+        topicRing: (done, total) => t("topicRing", { done, total }),
+        fivePartsTitle: t("fivePartsTitle"),
+        fiveParts: [1, 2, 3, 4, 5].map((n) => ({ id: String(n), title: t(`fivePart${n}`) })),
         breadcrumbs: t("breadcrumbs"),
         statusLabel: t("statusLabel"),
         statuses: [

@@ -1,14 +1,14 @@
-import { currentOf, currentPathOf, lessonRowOf, orderedOf, standingsOf } from "@/hooks/catalog"
+import { currentOf, currentPathOf, hoursOf, lessonRowOf, minutesOf, orderedOf, standingsOf } from "@/hooks/catalog"
 import { lessonPartPath, topicPath } from "@/modules/routes"
-import type {
-    CatalogLessonView,
-    CatalogWords,
-    LessonPartsView,
-    TopicScreenView,
-    TopicView,
-    TopicWords,
+import {
+    ESSENTIAL_PARTS,
+    type CatalogLessonView,
+    type CatalogWords,
+    type LessonPartsView,
+    type TopicScreenView,
+    type TopicView,
+    type TopicWords,
 } from "@/modules/types"
-import { ESSENTIAL_PARTS } from "@/modules/types"
 
 /** What the topic screen needs besides the topic: the catalog (which names the lessons), where the learner stands and the words. */
 type TopicInput = {
@@ -63,6 +63,19 @@ export const topicScreenOf = (input: TopicInput): TopicScreenView => {
             percent: rows.length === 0 ? 0 : Math.round((done / rows.length) * 100),
         },
         notice: input.catalogWords.isPremium ? undefined : input.words.notice,
+        id: input.topic.id,
+        ring: { done, total: rows.length, label: `${done}/${rows.length}` },
+        figures: [
+            { id: "lessons", term: input.words.figure.lessons, value: String(rows.length) },
+            { id: "time", term: input.words.figure.time, value: input.words.hours(...hoursOf(minutesOf(rows))) },
+        ],
+        track: rows.map((each) => ({
+            id: each.lesson.id,
+            title: each.lesson.title,
+            problem: each.lesson.description,
+            href: lessonPartPath(each.lesson.topic.id, each.lesson.id, ESSENTIAL_PARTS[0]),
+            state: each.state,
+        })),
         rows: rows.map((each) => lessonRowOf(each, input.catalogWords, each.lesson.id === current?.lesson.id, true)),
         parts: input.words.parts.map((part) => ({
             id: part.id,

@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslations } from "next-intl"
+import { hoursText } from "@/hooks/catalog"
 import type { TopicWords } from "@/modules/types"
 
 /** The words the topic view is built with. */
@@ -8,6 +9,8 @@ export const useTopicWords = (): TopicWords => {
     const t = useTranslations("app.essentials.topic")
     return {
         facts: (lessons, minutes) => t("facts", { lessons, minutes }),
+        figure: { lessons: t("figureLessons"), time: t("figureTime") },
+        hours: (hours, minutes) => hoursText(t, hours, minutes),
         progress: (done, total) => t("progress", { done, total }),
         startFirst: t("startFirst"),
         resumePart: (part) => t("resumePart", { part }),
@@ -18,6 +21,7 @@ export const useTopicWords = (): TopicWords => {
             { id: "source", title: t("parts.source"), isFree: false },
             { id: "scenarios", title: t("parts.scenarios"), isFree: false },
             { id: "apply", title: t("parts.apply"), isFree: false },
+            { id: "pattern", title: t("parts.pattern"), isFree: false },
         ],
     }
 }

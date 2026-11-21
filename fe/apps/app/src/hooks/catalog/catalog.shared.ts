@@ -1,3 +1,4 @@
+import { figuresOf, groupBadgeOf, minutesOf } from "./catalog.figures"
 import { lessonStateOf, UNTOUCHED_PARTS } from "@/hooks/lessonParts"
 import { lessonPartPath, topicPath } from "@/modules/routes"
 import {
@@ -134,6 +135,33 @@ const primaryOf = (
           }
 }
 
+/** The cover card of the lesson under way, with the place of the lesson in its topic. */
+const resumeOf = (
+    standings: ReadonlyArray<Standing>,
+    current: Standing | undefined,
+    input: CatalogInput,
+): CatalogView["resume"] => {
+    if (current === undefined || !input.words.isPremium) return undefined
+    const topic = input.topics[current.lesson.topic.id]
+    const inTopic = orderedOf(
+        standings.filter((each) => each.lesson.topic.id === current.lesson.topic.id),
+        topic,
+    )
+    return {
+        lessonId: current.lesson.id,
+        kicker: input.words.resumeKicker(
+            current.lesson.topic.title,
+            inTopic.findIndex((each) => each.lesson.id === current.lesson.id) + 1,
+            inTopic.length,
+        ),
+        title: current.lesson.title,
+        doneParts: current.parts.doneParts,
+        progressLabel: input.words.resumeProgress(current.parts.currentPart, current.parts.doneParts),
+        cta: input.words.resume(),
+        href: currentPathOf(current),
+    }
+}
+
 /** The groups the catalog lists: one per topic with a lesson that passes the toolbar, each with its bar over all its lessons. */
 const groupsOf = (
     standings: ReadonlyArray<Standing>,
@@ -157,6 +185,9 @@ const groupsOf = (
                 done,
                 total: all.length,
                 href: topicPath(id),
+                description: input.topics[id]?.description ?? "",
+                metaLabel: input.words.groupMeta(all.length, minutesOf(all)),
+                badge: groupBadgeOf(done, all, input.words),
                 lessons: shown
                     .slice(0, LESSONS_SHOWN)
                     .map((each) => lessonRowOf(each, input.words, each.lesson.id === current?.lesson.id, false)),
@@ -180,6 +211,8 @@ export const catalogViewOf = (input: CatalogInput): CatalogView => {
             count("done") + count("doing") === 0
                 ? input.words.factsFirst(topicIds.length, standings.length)
                 : input.words.facts(topicIds.length, standings.length, count("done")),
+        figures: figuresOf(standings, input.words),
+        resume: resumeOf(standings, current, input),
         primary: primaryOf(standings, current, input),
         counts: { all: standings.length, todo: count("todo"), doing: count("doing"), done: count("done") },
         topics: topicIds.map((id) => ({

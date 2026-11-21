@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { catalogViewOf, useCatalogFilters, useCatalogLabels, useCatalogWords } from "@/hooks/catalog"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useGetEssentialsSwr, useGetLessonTopicsSwr, useQueryLessonPartsProgressSwr } from "@/hooks/swr"
+import { staticsBase } from "@/modules/config"
 import { APP_ROUTES } from "@/modules/routes"
 import { CATALOG_PLACEHOLDER } from "@/modules/types"
 import { EssentialsCatalogBase } from "./component"
@@ -30,6 +31,7 @@ export const EssentialsCatalog = () => {
                 errorText: t("errorText"),
                 labels: useCatalogLabels(),
                 filters,
+                artBase: staticsBase(),
             }}
             on={{ retry: () => void read.mutate(), choose, clear }}
         />

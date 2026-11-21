@@ -1,6 +1,8 @@
+export { hoursOf, minutesOf } from "./catalog.figures"
 export { catalogViewOf, currentOf, currentPathOf, lessonRowOf, orderedOf, standingsOf } from "./catalog.shared"
 export { useCatalogFilters } from "./useCatalogFilters"
 export { useCatalogLabels } from "./useCatalogLabels"
 export { useCatalogNames } from "./useCatalogNames"
 export { useCatalogWords } from "./useCatalogWords"
 export { useViewerPremium } from "./useViewerPremium"
+export { hoursText } from "./hoursText"
