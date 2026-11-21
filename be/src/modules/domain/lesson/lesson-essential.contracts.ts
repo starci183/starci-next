@@ -15,6 +15,32 @@ export const LESSON_CHALLENGE_LEVELS = ["easy", "medium", "hard", "insane"] as c
 /** One rung of the challenge ladder. */
 export type LessonChallengeLevel = (typeof LESSON_CHALLENGE_LEVELS)[number]
 
+/** The one real-world situation a lesson opens with (`story` of `quiz.yaml`): the five opener questions are five developments of it. */
+export interface LessonOpenerStory {
+    /** The situation in a few words. */
+    readonly title: string
+    /** The situation as the learner reads it before the first question. */
+    readonly body: string
+}
+
+/** The development one opener question adds to the story's timeline (`event` of a question); shown with the question. */
+export interface LessonOpenerEvent {
+    /** When it happens, as the timeline labels it (`21:03`). */
+    readonly at: string
+    /** What happens. */
+    readonly text: string
+}
+
+/** The three-part explanation released when the learner picks the right option (`insight` of a question). */
+export interface LessonOpenerInsight {
+    /** Bản chất: the essence the question tests. */
+    readonly essence: string
+    /** Vì sao cần: why the system needs it. */
+    readonly why: string
+    /** Trả lời phỏng vấn: a model interview answer. */
+    readonly interview: string
+}
+
 /** One multiple-choice interview question: the opener asks five, a challenge's essence check asks its own. */
 export interface LessonOpenerQuestion {
     /** The stable id, unique inside the lesson. */
@@ -35,6 +61,10 @@ export interface LessonOpenerQuestion {
     readonly sectionRef?: string
     /** The scenario that shows the answer when it is run. */
     readonly scenarioId?: string
+    /** The development of the story this question adds; public, shown with the question. */
+    readonly event?: LessonOpenerEvent
+    /** The three-part explanation of the right option; never leaves the server but in the grade of a right pick. */
+    readonly insight?: LessonOpenerInsight
 }
 
 /**
@@ -200,6 +230,8 @@ export interface LessonChallenge {
 
 /** The four-part fields of one locale; a lesson written before them has none. */
 export interface LessonEssential {
+    /** The situation the opener tells, or absent for a lesson written before the story. */
+    readonly story?: LessonOpenerStory | null
     /** The five-question opener. */
     readonly opener: ReadonlyArray<LessonOpenerQuestion>
     /** The source repository, or null. */

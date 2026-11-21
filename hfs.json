@@ -78,6 +78,12 @@
         }
       ],
       "grammar": "core",
+      "extraPackages": [
+        {
+          "name": "@starci/visual-effects",
+          "reason": "The StarCi harness package of front-end visual effects (confetti); the owner asked for its confetti on a right opener pick (2026-11-21). knowledge/hfs/fe-stack.yaml does not list it yet."
+        }
+      ],
       "reads": ["be/contracts/"],
       "optionalSlots": ["fe.package.ui", "fe.package.i18n", "repo.i18n-dynamic-keys"]
     }

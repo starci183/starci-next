@@ -12,15 +12,18 @@ import type { QueryStub } from "@tests/fixtures/builders/attempt-stub.builder"
 import { LIST_ROWS_MAX, PRIMARY_ENTITY_MANAGER } from "@modules/platform/database"
 import { LessonContentService, LessonReadService, type LessonOutline, type LessonView } from "@modules/domain/lesson"
 import { ReviewScheduleService } from "@modules/domain/review"
+import { AttemptOpenerService } from "./attempt-opener.service"
 import { AttemptReadService } from "./attempt-read.service"
 import { AttemptError, AttemptErrorCode } from "./errors/attempt.error"
 import {
     SELECT_ACTIVITY_PROGRESS,
     SELECT_ATTEMPT,
     SELECT_COMPLETION,
+    SELECT_OPENER_SCORES,
     SELECT_OUTCOMES,
     SELECT_SIMULATION_PROGRESS,
 } from "./persistence/attempt.sql"
+import type { OpenerScoreRow } from "./persistence/attempt.rows"
 
 /** A lesson with one outcome, a predict choice, an apply exercise and a reflect explain, all training that outcome. */
 const OUTLINE: LessonOutline = {
@@ -275,6 +278,67 @@ describe("AttemptReadService progress of a lesson", () => {
             phase: "challenge",
             outcomes: [{ id: "demo--o1", understood: 0, proved: 0, state: "not-started" }],
             activities: [],
+        })
+    })
+})
+
+describe("AttemptOpenerService scores a story-driven opener", () => {
+    const buildOpener = async (rows: ReadonlyArray<OpenerScoreRow>) => {
+        const em = mockEntityManager({ query: [SELECT_OPENER_SCORES, [...rows]] })
+        const moduleRef = await Test.createTestingModule({
+            providers: [AttemptOpenerService, { provide: PRIMARY_ENTITY_MANAGER, useValue: em }],
+        }).compile()
+        return moduleRef.get(AttemptOpenerService)
+    }
+    const rowOf = (question: number, overrides: Partial<OpenerScoreRow> = {}): OpenerScoreRow => ({
+        lesson_id: "outbox",
+        activity_id: `opener.q${question}`,
+        first_correct: true,
+        latest_correct: true,
+        ever_correct: true,
+        attempts: 1,
+        ...overrides,
+    })
+
+    it("keeps the first answer as the before and solves a question picked wrong then right", async () => {
+        const service = await buildOpener([
+            rowOf(1, { first_correct: false, latest_correct: true, ever_correct: true, attempts: 3 }),
+            rowOf(2, { first_correct: false, latest_correct: false, ever_correct: false, attempts: 1 }),
+        ])
+
+        const [score] = await service.scores({ learnerId: LEARNER, lessonIds: ["outbox"] })
+
+        expect(score).toMatchObject({ answered: 2, firstCorrect: 0, latestCorrect: 1, solved: 1, isPassed: false })
+        expect(score?.questions[0]).toMatchObject({ firstCorrect: false, isSolved: true, attempts: 3 })
+    })
+
+    it("passes the opener once each of the five questions is solved", async () => {
+        const service = await buildOpener([
+            rowOf(1, { first_correct: false, attempts: 2 }),
+            rowOf(2),
+            rowOf(3, { first_correct: false, attempts: 4 }),
+            rowOf(4),
+            rowOf(5),
+        ])
+
+        const [score] = await service.scores({ learnerId: LEARNER, lessonIds: ["outbox"] })
+
+        expect(score).toMatchObject({ answered: 5, firstCorrect: 3, solved: 5, isPassed: true })
+    })
+
+    it("answers zeros and not passed for a lesson the learner never opened", async () => {
+        const service = await buildOpener([])
+
+        const [score] = await service.scores({ learnerId: LEARNER, lessonIds: ["outbox"] })
+
+        expect(score).toEqual({
+            lessonId: "outbox",
+            answered: 0,
+            firstCorrect: 0,
+            latestCorrect: 0,
+            solved: 0,
+            isPassed: false,
+            questions: [],
         })
     })
 })

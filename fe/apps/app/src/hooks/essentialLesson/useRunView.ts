@@ -42,6 +42,9 @@ const questionsOf = (
             isCorrect: result?.correct === true,
             explanation: result?.options.find((option) => option.selected)?.explanation ?? "",
             links: [],
+            misses: [],
+            isSolved: result?.correct === true,
+            insight: undefined,
         }
     })
 

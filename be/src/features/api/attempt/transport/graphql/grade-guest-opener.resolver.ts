@@ -13,7 +13,7 @@ import { toGradeGuestOpenerParams, toGuestGradeType } from "./guest-progress.map
 export class GradeGuestOpenerResolver {
     constructor(@InjectQueryBus() private readonly queryBus: QueryBus) {}
 
-    /** Grades the pick and answers the right option with every explanation; content that is not free needs Premium. */
+    /** Grades the pick on its own (an opener pick answers the picked option, and the insight when right); content that is not free needs Premium. */
     @Query(() => LessonAttemptResultType, { name: "gradeGuestOpener" })
     @Public({ reason: PublicReason.GuestRead })
     @RateLimit(RateTier.Strict, RateBucket.GuestGrade)

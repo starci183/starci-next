@@ -68,8 +68,8 @@ const answer = (d: Doubles): void => {
     ])
     d.lessons.catalog.mockResolvedValue([catalogItemOf("l1", "One"), catalogItemOf("l2", "Two")])
     d.openers.scores.mockResolvedValue([
-        { lessonId: "l1", answered: 5, firstCorrect: 2, latestCorrect: 4, questions: [] },
-        { lessonId: "l2", answered: 0, firstCorrect: 0, latestCorrect: 0, questions: [] },
+        { lessonId: "l1", answered: 5, firstCorrect: 2, latestCorrect: 4, solved: 4, isPassed: false, questions: [] },
+        { lessonId: "l2", answered: 0, firstCorrect: 0, latestCorrect: 0, solved: 0, isPassed: false, questions: [] },
     ])
     d.attempts.progress.mockImplementation(({ lessonId }) =>
         Promise.resolve({

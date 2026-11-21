@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql"
-import { LessonQuestionType } from "./lesson-question.type"
+import { LessonOpenerStoryType, LessonQuestionType } from "./lesson-question.type"
 import { LessonArchitectureType, LessonCodeWalkType, LessonSourceType } from "./lesson-source.type"
 import { LessonChallengeType, LessonScenarioType } from "./lesson-scenario.type"
 import { LessonStatementType } from "./lesson-statement.type"
@@ -17,6 +17,10 @@ export class LessonEssentialType {
     /** The ids of the parts the learner may not read: `1-essential`, `2-source`, `3-scenarios`, `4-apply`. */
     @Field(() => [String])
     lockedParts!: ReadonlyArray<string>
+
+    /** The situation the opener tells, or null for a lesson without one. */
+    @Field(() => LessonOpenerStoryType, { nullable: true })
+    story!: LessonOpenerStoryType | null
 
     /** The five-question opener. */
     @Field(() => [LessonQuestionType])

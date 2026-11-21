@@ -160,3 +160,45 @@ describe("toLessonView of a four-part lesson", () => {
         expect(view.essential?.codeWalk).toHaveLength(1)
     })
 })
+
+describe("toEssentialView of a story-driven opener", () => {
+    const STORY: LessonEssential = {
+        ...ESSENTIAL,
+        story: { title: "Black Friday", body: "The gateway slows down." },
+        opener: [
+            {
+                id: "q1",
+                prompt: "Q1?",
+                choices: ["a", "b"],
+                correctIndex: 1,
+                explanation: "RIGHT-ANSWER-WHY",
+                choiceExplanations: ["WRONG-OPTION-WHY", "RIGHT-ANSWER-WHY"],
+                sectionId: "1-essential",
+                event: { at: "21:03", text: "Retries double the load" },
+                insight: { essence: "INSIGHT-ESSENCE", why: "INSIGHT-WHY", interview: "INSIGHT-INTERVIEW" },
+            },
+        ],
+    }
+
+    it("shows the story and the event of each question, and none of the answer key or the insight", () => {
+        const view = toEssentialView(STORY, FREE)
+
+        expect(view?.story).toEqual({ title: "Black Friday", body: "The gateway slows down." })
+        expect(view?.opener[0]?.event).toEqual({ at: "21:03", text: "Retries double the load" })
+        const text = JSON.stringify(view)
+        for (const secret of [
+            "RIGHT-ANSWER-WHY",
+            "WRONG-OPTION-WHY",
+            "INSIGHT-ESSENCE",
+            "INSIGHT-WHY",
+            "INSIGHT-INTERVIEW",
+            "correctIndex",
+        ])
+            expect(text).not.toContain(secret)
+    })
+
+    it("answers no story and no event for a lesson written before them, and no story while the opener is locked", () => {
+        expect(toEssentialView(ESSENTIAL, FREE)).toMatchObject({ story: null, opener: [{ event: null }] })
+        expect(toEssentialView(STORY, [])?.story).toBeNull()
+    })
+})

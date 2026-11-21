@@ -40,12 +40,14 @@ export type {
     LessonDifficulty,
     LessonLocale,
     LessonLocaleDocument,
+    LessonOptionInsight,
     LessonPhase,
     LessonRootFile,
     LessonSection,
     LessonSimulation,
     LessonWorkspaceFile,
 } from "./lesson.contracts"
+export { PICKED_FEEDBACK_RELEASE } from "./lesson.contracts"
 export type { LessonSourceFile } from "./lesson-import.contracts"
 export type {
     LessonArchitectureComponentView,
@@ -55,6 +57,7 @@ export type {
     LessonChoiceView,
     LessonCodeWalkView,
     LessonEssentialView,
+    LessonOpenerStoryView,
     LessonQuestionView,
     LessonScenarioView,
     LessonSourceView,
@@ -65,6 +68,9 @@ export type {
     LessonEssential,
     LessonHiddenScenario,
     LessonInvariant,
+    LessonOpenerEvent,
+    LessonOpenerInsight,
+    LessonOpenerStory,
     LessonScenario,
     LessonScenarioRun,
     LessonSourceRepo,
@@ -91,3 +97,4 @@ export type {
     LessonReadParams,
     LessonView,
 } from "./lesson-read.contracts"
+export { LESSON_OPENER_SIZE } from "./lesson-essential.policy"

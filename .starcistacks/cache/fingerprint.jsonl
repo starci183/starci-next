@@ -19,7 +19,7 @@
 {"name":"file:fe/packages/starci-next-ui/tsconfig.json","sha256":"73109e2a7ccde906d948dca16e015cf3bd6f6c99b3aff7fcd5ab2fd12fde5069"}
 {"name":"file:fe/stylelint.config.mjs","sha256":"492a27a38a841d1c7b556ba9599bcdb24a395ae86e2472028977173f8f63fcd7"}
 {"name":"file:fe/tsconfig.json","sha256":"b8e1cb6f05a72d5e193b5a55718f11a148e7e39eb0015a759aa9d525492579d3"}
-{"name":"file:hfs.json","sha256":"b3caa005107fdfd5ce0ee90a28b786dc0c1cc83ac3d01c155ab7c247879d4a0b"}
+{"name":"file:hfs.json","sha256":"3e463f016ed9c4c5d34f55cdd8a4122a75b56496b9aa78dc3aa4b76b28d10225"}
 {"name":"file:sonar-project.properties","sha256":"a517c60ad0729c8b55a9e5cf116df72247716e971bdc5a5fd4bc4041c43d222e"}
 {"name":"hfs","sha256":"87c09516cb44c9a084e8c3aba64798a75524430af9b0b173714f690130d7feab"}
 {"name":"lock:format","sha256":"275d51588fe77bd48bc71d50a0fee3ba59de74b5b462fb49d464a1569040b0ba"}
@@ -46,8 +46,9 @@
 {"name":"pkg:@starci/stylelint-canon","sha256":"d58668d4eedfa82a016f2865e080f2ecc6202c7d06c7e7406915bfd50065be7a"}
 {"name":"pkg:@starci/test-world","sha256":"21a090d1981f4fc159cb827d4c7b7944632056b862a1a4d813118bc3512fe5ff"}
 {"name":"pkg:@starci/tsconfig","sha256":"1b90ae7e9de8f30d099a9aec149038ac08455e5c11114db795412e1175955f0d"}
+{"name":"pkg:@starci/visual-effects","sha256":"955bd7fd2c7eaf79ed5f3325cfb6a1e966d1cb4cb64199394515985b2cb2b76f"}
 {"name":"shape:be/apps/relay-cli/package.json","sha256":"af827a97e53574d3bb7b993729f63810116308aee2f27a0f0d938be9cd7f397a"}
-{"name":"shape:fe/apps/app/package.json","sha256":"cd007b0adf3e55735737abea259853031066531201677c857bd1c256ed47c502"}
+{"name":"shape:fe/apps/app/package.json","sha256":"6d83f2b89907acb375f243b5c2c9ab8c4ec786bf9c2ad43318a4afceaf9fc33c"}
 {"name":"shape:fe/apps/landing/package.json","sha256":"522d555a84edec20673d520c0d76102deab7cd98b75c05aec3ce7ce9e1f16605"}
 {"name":"shape:fe/packages/starci-next-i18n/package.json","sha256":"b5a5a9e207a19ff0b8d331c867127e0ace99d7d5e275dfaa963f1d0b6dd5e98d"}
 {"name":"shape:fe/packages/starci-next-ui/package.json","sha256":"4159ce5bb5eb43ac94370a9ed4414017e9895decc12bb2d40f7bb80dd8724ea5"}

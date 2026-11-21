@@ -114,7 +114,7 @@ export class McpTutorService {
 
     /**
      * The whole lesson as the learner may read it, or one part of it: every readable section in full with its headings, the opener
-     * (with the key and the explanations of the questions the learner already answered in the app), the invariants, the code walk,
+     * (with the key and the explanations of the questions the learner already solved in the app; a question only picked wrong keeps them), the invariants, the code walk,
      * the scenarios (a hint only after the learner's own red run of that scenario) and the challenge briefs and rubrics. A locked
      * part has no text; asking for it is MCP_PREMIUM_REQUIRED.
      */
@@ -126,9 +126,10 @@ export class McpTutorService {
         const showsScenarios = part === null || part === "3-scenarios"
         const answered =
             showsOpener && (view.essential?.opener.length ?? 0) > 0
-                ? ((await this.openers.scores({ learnerId, lessonIds: [id] }))[0]?.questions ?? []).map(
-                      (question) => question.activityId,
-                  )
+                ? ((await this.openers.scores({ learnerId, lessonIds: [id] }))[0]?.questions ?? [])
+                      // Only a question the learner picked right releases its key: a wrong pick may be picked again in the app.
+                      .filter((question) => question.isSolved)
+                      .map((question) => question.activityId)
                 : []
         const answers =
             answered.length === 0 ? [] : await this.lessons.openerAnswers({ id, locale, activityIds: answered })

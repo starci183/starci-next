@@ -97,6 +97,8 @@ export interface OpenerScoreRow {
     first_correct: boolean | null
     /** Whether the newest graded answer is right. */
     latest_correct: boolean | null
+    /** Whether any graded answer is right: the question is solved. */
+    ever_correct: boolean | null
     /** The graded answers given. */
     attempts: number
 }

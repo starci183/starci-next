@@ -8,7 +8,7 @@ import {
 } from "./lesson-essential.contracts"
 import type { LessonEssentialView, LessonQuestionView } from "./lesson-essential-view.contracts"
 
-/** A question for the learner, field by field: the right index and the explanation are never copied. */
+/** A question for the learner, field by field: the right index, the explanations and the insight are never copied. */
 const toQuestionView = (question: LessonOpenerQuestion, activityId: string): LessonQuestionView => ({
     id: question.id,
     activityId,
@@ -17,6 +17,7 @@ const toQuestionView = (question: LessonOpenerQuestion, activityId: string): Les
     sectionId: question.sectionId ?? null,
     sectionRef: question.sectionRef ?? null,
     scenarioId: question.scenarioId ?? null,
+    event: question.event === undefined ? null : { at: question.event.at, text: question.event.text },
 })
 
 /**
@@ -40,6 +41,10 @@ export const toEssentialView = (
     return {
         isLocked: lockedParts.length > 0,
         lockedParts,
+        story:
+            has("1-essential") && essential.story !== undefined && essential.story !== null
+                ? { title: essential.story.title, body: essential.story.body }
+                : null,
         opener,
         source:
             !has("2-source") || essential.source === null

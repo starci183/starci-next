@@ -179,6 +179,7 @@ WHERE learner_id = $1::uuid AND lesson_id = $2::text AND understood = 2 AND prov
 export const SELECT_OPENER_SCORES: ReturnType<typeof sql> = sql`SELECT lesson_id, activity_id,
     (array_agg((result ->> 'correct')::boolean ORDER BY submitted_at, revision))[1] AS first_correct,
     (array_agg((result ->> 'correct')::boolean ORDER BY submitted_at DESC, revision DESC))[1] AS latest_correct,
+    coalesce(bool_or((result ->> 'correct')::boolean), false) AS ever_correct,
     count(*)::int AS attempts
 FROM lesson_attempts
 WHERE learner_id = $1::uuid AND lesson_id = ANY($2::text[]) AND activity_id LIKE 'opener.%' AND status = 'graded'

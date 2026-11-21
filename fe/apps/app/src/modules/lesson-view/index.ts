@@ -182,6 +182,7 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
         const part = PART_OF_WIRE[id]
         return part === undefined ? [] : [part]
     }),
+    story: wire.story === null ? undefined : { title: wire.story.title, body: wire.story.body },
     opener: wire.opener.map((question) => questionOf(question)),
     source: wire.source === null ? undefined : { langs: wire.source.langs },
     invariants: wire.invariants,
@@ -226,8 +227,13 @@ const essentialOf = (wire: NonNullable<LessonWire["essential"]>): EssentialView 
     }),
 })
 
-/** A question of the answer: its choices, and its links as empty texts when it has none. */
-const questionOf = (wire: NonNullable<LessonWire["essential"]>["opener"][number]): EssentialView["opener"][number] => ({
+/** A question as the answer carries it: an opener question also has its story event, a challenge question none. */
+type QuestionWire = Omit<NonNullable<LessonWire["essential"]>["opener"][number], "event"> & {
+    readonly event?: NonNullable<LessonWire["essential"]>["opener"][number]["event"]
+}
+
+/** A question of the answer: its choices, its links as empty texts when it has none, and its story event. */
+const questionOf = (wire: QuestionWire): EssentialView["opener"][number] => ({
     id: wire.id,
     activityId: wire.activityId,
     prompt: wire.prompt,
@@ -235,6 +241,7 @@ const questionOf = (wire: NonNullable<LessonWire["essential"]>["opener"][number]
     sectionId: wire.sectionId ?? "",
     sectionRef: wire.sectionRef ?? "",
     scenarioId: wire.scenarioId ?? "",
+    event: wire.event === null || wire.event === undefined ? undefined : { at: wire.event.at, text: wire.event.text },
 })
 
 /** The opener scores of the answer, by lesson id. */
@@ -317,6 +324,14 @@ export const attemptOf = (wire: AttemptWire): AttemptView => ({
                   maxScore: wire.result.maxScore,
                   isDiagnostic: wire.result.isDiagnostic,
                   options: wire.result.options,
+                  insight:
+                      wire.result.insight === null || wire.result.insight === undefined
+                          ? undefined
+                          : {
+                                essence: wire.result.insight.essence,
+                                why: wire.result.insight.why,
+                                interview: wire.result.insight.interview,
+                            },
                   criteria: wire.result.criteria.map((criterion) => ({
                       id: criterion.criterionId,
                       criterion: criterion.criterion,

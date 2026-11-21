@@ -31,6 +31,24 @@ export interface LessonQuestionView {
     readonly sectionRef: string | null
     /** The scenario that shows the answer, or null. */
     readonly scenarioId: string | null
+    /** The development of the opener story this question adds, or null (a lesson without a story, a challenge question). */
+    readonly event: LessonOpenerEventView | null
+}
+
+/** One development of the opener story as the timeline shows it. */
+export interface LessonOpenerEventView {
+    /** When it happens (`21:03`). */
+    readonly at: string
+    /** What happens. */
+    readonly text: string
+}
+
+/** The situation the opener tells, shown above the questions. */
+export interface LessonOpenerStoryView {
+    /** The situation in a few words. */
+    readonly title: string
+    /** The situation. */
+    readonly body: string
 }
 
 /** The source repository as the learner sees it. */
@@ -80,6 +98,8 @@ export interface LessonEssentialView {
     readonly isLocked: boolean
     /** The ids of the parts the learner may not read (`1-essential`, `2-source`, `3-scenarios`, `4-apply`), in order. */
     readonly lockedParts: ReadonlyArray<string>
+    /** The situation the opener tells, or null for a lesson without one (or when the opener part is locked). */
+    readonly story: LessonOpenerStoryView | null
     /** The five-question opener. */
     readonly opener: ReadonlyArray<LessonQuestionView>
     /** The source repository, or null. */

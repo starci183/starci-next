@@ -37,6 +37,11 @@ const query1: TypedDocumentNode<LessonAttemptQuery, LessonAttemptQueryVariables>
                     selected
                     explanation
                 }
+                insight {
+                    essence
+                    why
+                    interview
+                }
                 criteria {
                     criterionId
                     criterion

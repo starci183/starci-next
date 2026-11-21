@@ -13,7 +13,31 @@ export class LessonChoiceType {
 }
 
 @ObjectType()
-/** A multiple-choice question before a submit: no right index and no explanation. */
+/** One development of the opener story: when it happens and what happens. */
+export class LessonOpenerEventType {
+    /** When it happens, as the timeline labels it (`21:03`). */
+    @Field(() => String)
+    at!: string
+
+    /** What happens. */
+    @Field(() => String)
+    text!: string
+}
+
+@ObjectType()
+/** The situation the opener tells, shown above the questions. */
+export class LessonOpenerStoryType {
+    /** The situation in a few words. */
+    @Field(() => String)
+    title!: string
+
+    /** The situation. */
+    @Field(() => String)
+    body!: string
+}
+
+@ObjectType()
+/** A multiple-choice question before a submit: no right index, no explanation and no insight. */
 export class LessonQuestionType {
     /** The question id. */
     @Field(() => String)
@@ -42,4 +66,8 @@ export class LessonQuestionType {
     /** The scenario that shows the answer, or null. */
     @Field(() => String, { nullable: true })
     scenarioId!: string | null
+
+    /** The development of the opener story this question adds, or null. */
+    @Field(() => LessonOpenerEventType, { nullable: true })
+    event!: LessonOpenerEventType | null
 }

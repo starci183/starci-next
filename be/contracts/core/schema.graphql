@@ -598,6 +598,12 @@ input LessonAttemptInput {
   attemptId: String! @inputBounds(maxLength: 36)
 }
 
+type LessonAttemptInsightType {
+  essence: String!
+  interview: String!
+  why: String!
+}
+
 type LessonAttemptOptionResultType {
   explanation: String!
   isCorrect: Boolean!
@@ -608,6 +614,7 @@ type LessonAttemptOptionResultType {
 type LessonAttemptResultType {
   correct: Boolean
   criteria: [LessonAttemptCriterionResultType!]!
+  insight: LessonAttemptInsightType
   isDiagnostic: Boolean!
   maxScore: Float!
   options: [LessonAttemptOptionResultType!]!
@@ -726,6 +733,7 @@ type LessonEssentialType {
   opener: [LessonQuestionType!]!
   scenarios: [LessonScenarioType!]!
   source: LessonSourceType
+  story: LessonOpenerStoryType
 }
 
 type LessonExerciseFileType {
@@ -750,23 +758,36 @@ input LessonInput {
   locale: String!
 }
 
+type LessonOpenerEventType {
+  at: String!
+  text: String!
+}
+
 type LessonOpenerQuestionScoreType {
   activityId: String!
   attempts: Int!
   firstCorrect: Boolean!
+  isSolved: Boolean!
   latestCorrect: Boolean!
 }
 
 type LessonOpenerScoreType {
   answered: Int!
   firstCorrect: Int!
+  isPassed: Boolean!
   latestCorrect: Int!
   lessonId: String!
   questions: [LessonOpenerQuestionScoreType!]!
+  solved: Int!
 }
 
 input LessonOpenerScoresInput {
   lessonIds: [String!]! @inputBounds(maxItems: 50, itemMaxLength: 100)
+}
+
+type LessonOpenerStoryType {
+  body: String!
+  title: String!
 }
 
 type LessonOptionType {
@@ -870,6 +891,7 @@ type LessonProgressType {
 type LessonQuestionType {
   activityId: String!
   choices: [LessonChoiceType!]!
+  event: LessonOpenerEventType
   id: String!
   prompt: String!
   scenarioId: String

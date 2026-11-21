@@ -41,6 +41,11 @@ const mutation1: TypedDocumentNode<SubmitLessonAttemptMutation, SubmitLessonAtte
                     selected
                     explanation
                 }
+                insight {
+                    essence
+                    why
+                    interview
+                }
                 criteria {
                     criterionId
                     criterion

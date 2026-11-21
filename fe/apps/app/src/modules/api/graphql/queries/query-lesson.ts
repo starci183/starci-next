@@ -111,6 +111,10 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
             essential {
                 isLocked
                 lockedParts
+                story {
+                    title
+                    body
+                }
                 opener {
                     id
                     activityId
@@ -121,8 +125,11 @@ const query1: TypedDocumentNode<LessonQuery, LessonQueryVariables> = gql`
                     }
                     sectionId
                     sectionRef
-                    sectionRef
                     scenarioId
+                    event {
+                        at
+                        text
+                    }
                 }
                 source {
                     langs

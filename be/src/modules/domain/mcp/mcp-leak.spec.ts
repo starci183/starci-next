@@ -672,12 +672,21 @@ describe("the MCP never leaks what a learner AI may not read", () => {
         })
     })
 
-    it("releases the key and the explanations of an opener question only after the learner answered it", async () => {
+    it("releases the key and the explanations of an opener question only once the learner solved it, never after a wrong pick alone", async () => {
         const free = await make(false, offline)
         free.openers.scores.mockResolvedValue([
             {
                 lessonId: LESSON,
-                questions: [{ activityId: "opener.q1", firstCorrect: true, latestCorrect: true, attempts: 1 }],
+                questions: [
+                    { activityId: "opener.q1", firstCorrect: false, latestCorrect: true, isSolved: true, attempts: 2 },
+                    {
+                        activityId: "opener.q2",
+                        firstCorrect: false,
+                        latestCorrect: false,
+                        isSolved: false,
+                        attempts: 1,
+                    },
+                ],
             },
         ])
         const lesson = await free.tutor.lesson(LEARNER, LESSON, "vi", null)

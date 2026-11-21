@@ -70,6 +70,11 @@ const query1: TypedDocumentNode<LessonProgressQuery, LessonProgressQueryVariable
                             selected
                             explanation
                         }
+                        insight {
+                            essence
+                            why
+                            interview
+                        }
                         criteria {
                             criterionId
                             criterion
