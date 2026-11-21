@@ -1,4 +1,1 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"e2f590951fd22462cc64f102a9d68d140195a9b6dcc1c7907b6192f9fefa731f","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"3bf9147fccfe717e3af1c1daa9214f76d0310379b62329beac8802c8bc0de988","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"579a0631d49be102a38601af63e762ac8933596b2307a80b8fb49362af4c8707","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"f87791cc31164f1a22093583ff948bd39aa9f852fa5c4b0d121e6cc9c6c6fa5f","path":"fast/typecheck","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"bc36218da6c01e0463683e389e6a8e8eda7b254b1bffa2b3cfb003b5e616cef5","path":"fast/typecheck","step":"ci-step"}
