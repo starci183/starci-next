@@ -9,12 +9,14 @@ import {
     Link,
     Page,
     Section,
+    StaticsProvider,
     Stack,
+    SurfaceCard,
     Terminal,
     Text,
     type PageHeaderContent,
 } from "@starci/grammar/common"
-import { ConceptCodeRead, MissingNotice, SlotView } from "@starci-next/ui"
+import { ArtImage, areaArt, ConceptCodeRead, MissingNotice, SlotView } from "@starci-next/ui"
 import type { ConceptDraftView, DataSlot, ProjectConceptLabels, ProjectConceptView, SlotLabels } from "@/modules/types"
 import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
 
@@ -36,6 +38,8 @@ export type ProjectConceptBaseProps = {
         readonly isProbing: boolean
         /** The words of the last refusal of a command; empty for none. */
         readonly issueWords: string
+        /** The public base of the statics, for the CV picture. */
+        readonly staticsBaseUrl: string
     }
     readonly on: {
         readonly retry: () => void
@@ -78,20 +82,47 @@ export const PROJECT_CONCEPT_PLACEHOLDER: ProjectConceptView = {
     cv: undefined,
 }
 
-/** The evidence slots of the concept with their state, what was rejected last and the lesson that teaches it. */
+/** The ground of an evidence tile by the tone of its chip; a slot not run yet has none. */
+const groundOf = (tone: "success" | "warning" | "muted"): { readonly groundTone?: "success" | "danger" } => {
+    if (tone === "success") return { groundTone: "success" }
+    return tone === "warning" ? { groundTone: "danger" } : {}
+}
+
+/** The line under the number of an evidence tile: what the slot saw, from the probe log or the rubric. */
+const noteOf = (props: BodyProps, chipId: string, mark: string): string => {
+    if (chipId === "probe") return props.view.probeLines.find((line) => !line.passed)?.text ?? mark
+    return mark
+}
+
+/** The three evidence tiles at the head: each slot with its result as one big word, and the rubric as a bar on the code-read tile. */
+const EvidenceTiles = (props: BodyProps) => {
+    const { concept, rubric } = props.view
+    const met = rubric.filter((row) => row.verdict === "met").length
+    return (
+        <Grid kind="cards" columns={3}>
+            {concept.chips.map((chip) => (
+                <SurfaceCard
+                    key={chip.id}
+                    kind="tile"
+                    name={chip.label}
+                    figure={chip.id === "code-read" && rubric.length > 0 ? `${met}/${rubric.length}` : chip.state}
+                    description={noteOf(props, chip.id, chip.mark)}
+                    {...groundOf(chip.tone)}
+                    isLoading={props.isLoading}
+                />
+            ))}
+        </Grid>
+    )
+}
+
+/** What was rejected last, the question of the AI teacher and the lesson that teaches the concept. */
 const Slots = (props: BodyProps) => {
     const { concept } = props.view
     const { labels } = props.props
+    if (concept.rejection === undefined && concept.aiQuestion === "" && concept.lessonHref === "") return null
     return (
         <Section title={labels.slotsTitle} headingLevel={2} isLoading={props.isLoading}>
             <Stack gap="inline">
-                <Cluster gap="identity" wrap>
-                    {concept.chips.map((chip) => (
-                        <Badge key={chip.id} tone={chip.tone}>
-                            {chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`}
-                        </Badge>
-                    ))}
-                </Cluster>
                 {concept.rejection === undefined ? null : <Alert tone="negative" title={concept.rejection.text} />}
                 {concept.aiQuestion === "" ? null : <Text>{`${labels.questionLabel}: ${concept.aiQuestion}`}</Text>}
                 {concept.lessonHref === "" ? null : (
@@ -185,6 +216,9 @@ const CvPreview = (props: BodyProps) => {
                     <EmptyNotice message={labels.cvEmpty} mark="none" frame="frameless" />
                 ) : (
                     <Stack gap="identity">
+                        <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
+                            <ArtImage asset={areaArt("cv")} base={props.props.staticsBaseUrl} />
+                        </StaticsProvider>
                         <Badge tone={cv.isProved ? "success" : "muted"}>
                             {cv.isProved ? labels.cvVerified : labels.cvPreview}
                         </Badge>
@@ -266,7 +300,11 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
                 if (loading)
                     return (
                         <Stack gap="section">
-                            <SkeletonBlock lines={4} />
+                            <Grid kind="cards" columns={3}>
+                                <SkeletonBlock lines={3} />
+                                <SkeletonBlock lines={3} />
+                                <SkeletonBlock lines={3} />
+                            </Grid>
                             <Grid
                                 kind="pair"
                                 leading={
@@ -282,6 +320,7 @@ export const ProjectConceptBase = (props: ProjectConceptBaseProps) => {
                     )
                 return (
                     <Stack gap="section">
+                        <EvidenceTiles {...body} />
                         <Slots {...body} />
                         <Grid
                             kind="pair"

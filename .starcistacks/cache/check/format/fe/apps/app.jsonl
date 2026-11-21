@@ -136,6 +136,16 @@
 {"findings":[],"hash":"2b38a657c1c453755743c4702c582452cd19380c2dec2b5e6a4417ff61c2db5f","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"prettier"}
 {"findings":[],"hash":"32c7f491a01eae9ded60729fa6204fcfdc4e35cc41996f5917f906caf355d8ab","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"prettier"}
 {"findings":[],"hash":"8b5847efcca9ff37e182cfd5039a458ad35eb8d2e079decee3fb298da37db209","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"prettier"}
+{"findings":[],"hash":"ec619349bf84e250a6887f55996e2731d7852bd34fcebcffe053dfbdccd8739b","path":"fe/apps/app/src/components/blocks/ProjectConcept/component.tsx","step":"prettier"}
+{"findings":[],"hash":"6f708cca7a1d4c2118a86ddf2de5eb371895a3225d258cdcada0d096389d0dcd","path":"fe/apps/app/src/components/blocks/ProjectConcept/index.tsx","step":"prettier"}
+{"findings":[],"hash":"df50dace4fccf7903453b8304c48897af4359b7a313210367e2a2602611341be","path":"fe/apps/app/src/components/blocks/ProjectDetail/component.tsx","step":"prettier"}
+{"findings":[],"hash":"b1584ceca21815c5fd4d2fbdb04dcc7851211f05b6c276bf0aa820fb804dce9e","path":"fe/apps/app/src/components/blocks/ProjectDetail/index.tsx","step":"prettier"}
+{"findings":[],"hash":"e753c54ccaaae5ce5e53f39229fdc49bb9ab87ba1a48ffe4b621c5346a271506","path":"fe/apps/app/src/components/blocks/ProjectMilestone/component.tsx","step":"prettier"}
+{"findings":[],"hash":"3c38c932848ecbbc3236196f6fbd0d9b009c583e52221bb87a188ac9afb4381b","path":"fe/apps/app/src/components/blocks/ProjectMilestone/index.tsx","step":"prettier"}
+{"findings":[],"hash":"a19c59e98a783cfc1acd087de7d6cac9f0662ba388b847bb0b5d82c40df84fb1","path":"fe/apps/app/src/components/blocks/ProjectNew/component.tsx","step":"prettier"}
+{"findings":[],"hash":"d3b76e1e55d1c8ca98ef58c2d0c1b5f283e5031285e281cbf55860cef1576794","path":"fe/apps/app/src/components/blocks/ProjectNew/index.tsx","step":"prettier"}
+{"findings":[],"hash":"217b970d3c4803d1d3182b66e02b462f3326b30b89d530f2b036fcd70fcd09d3","path":"fe/apps/app/src/components/blocks/ProjectsList/component.tsx","step":"prettier"}
+{"findings":[],"hash":"e88b66764ff6d25325b944efccc2e873c6f5d277b1dd5723e8bfc361c4f4936c","path":"fe/apps/app/src/components/blocks/ProjectsList/index.tsx","step":"prettier"}
 {"findings":[],"hash":"a3ec0349537376f18e397e65e49f01b76b5bc17e39200c78dee0cb812fcca6b5","path":"fe/apps/app/src/components/blocks/ProjectsPitch/component.tsx","step":"prettier"}
 {"findings":[],"hash":"b2b6b695bfd05800572910d13f6a0f8e792f6eea54e74869db6b7dfd7ace58f1","path":"fe/apps/app/src/components/blocks/ProjectsPitch/index.tsx","step":"prettier"}
 {"findings":[],"hash":"580ed848e2bc116a5396b2a29c6ba9a5d4c72d63c97b248f4c726cf95e2a0d47","path":"fe/apps/app/src/components/blocks/PublicCv/component.tsx","step":"prettier"}
