@@ -1,12 +1,12 @@
-{"data":{},"findings":[],"hash":"7f26b15ed7b7941e90602a7d19027c05c421793be1996cef6ff37230d5f4bad9","path":".starcistacks/staging/README.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"3b77753b57d703115d14447db9689d9ff7f889c5374f0accdf909d5c9f668fe0","path":".starcistacks/staging/README.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"516267647e546f5ed836833d35f031ec2ace7735248c5ce5ca73e36f2b4cda9e","path":".starcistacks/staging/environment.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4edcd0f0f3f2757d108d7c38dab0aaed1e07dcec59415f5c12c4be11c89906f5","path":".starcistacks/staging/infra/swarm/owner-actions.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"42a444ac5be5013d628ce4726faff56f2f9a61df6784059f268858dec38798d2","path":".starcistacks/staging/infra/swarm/postgres-roles.sh","step":"file-rules"}
-{"data":{},"findings":[],"hash":"905970aab6519d646325ec85ec6f3435da33b86590b034379201b15ee654fd4c","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"file-rules"}
+{"data":{},"findings":[],"hash":"405d8effe1a673f7edad9f57f56be5c516fa585ab55658ac9be189a21418fd79","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"cdb0e3e8fb539b0234c6d4204dcb41dbed0ff511e4055c22069183ca51e19dbf","path":".starcistacks/staging/infra/swarm/releases/current.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"1811be38fbbeac55b6623fa70734fba3d6aa2ceae203c8e7c0e118a04c085dab","path":".starcistacks/staging/infra/swarm/releases/images.lock.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4a61c4c8a3caa1037bbcf3b3101aa2ba1d697904a32a19800c9b745fd8718801","path":".starcistacks/staging/infra/swarm/releases/previous.yaml","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e522e0f532274e8dda340acec462fefe0105b56207faa514ad6856fc366dd9ff","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"file-rules"}
+{"data":{},"findings":[],"hash":"522361dbbcf8579acb3ebceea3466457f458a98f182cdaa66751d84cf5b9958d","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"6fdf6b2aac0358da5d60f61ef037c6d29ee6bc066404d535ac319afce8db9113","path":".starcistacks/staging/runtime/env/KEYS.md","step":"file-rules"}
 {"data":{},"findings":[],"hash":"876c1ac7d5aeab38a8c06c1727ac218b92181baa40836fd14ce726f0c96fb623","path":".starcistacks/staging/secrets/alerts.enc.yaml","step":"file-rules"}
 {"data":{},"findings":[],"hash":"d1528570f2e381f6c558fce151cdb708482a5ebe6bf58451391e39f4866891b8","path":".starcistacks/staging/secrets/auth.enc.yaml","step":"file-rules"}
