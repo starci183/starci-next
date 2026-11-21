@@ -1417,6 +1417,8 @@
           "copy": "Sao chép",
           "journeyTitle": "Bài này gồm 5 phần",
           "reading": {
+            "deepTitle": "Đọc sâu khi cần",
+            "overviewTitle": "Các mục của bài",
             "tocTitle": "Mục lục",
             "tocEmpty": "Bài chưa có mục nào.",
             "flagged": "Nên đọc kỹ",

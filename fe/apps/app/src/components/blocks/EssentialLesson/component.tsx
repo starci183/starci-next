@@ -38,6 +38,8 @@ import {
     LessonResult,
     LessonStoryCard,
     LessonStoryQuestion,
+    ArtImage,
+    lessonArt,
     LockIcon,
     SlotView,
 } from "@starci-next/ui"
@@ -368,6 +370,8 @@ export const lockedLayout: PartLayoutOf = ({ lesson, screen }) => {
 
 /** Props for {@link EssentialLessonBase}: the resolved props and the actions of the screen. */
 export type EssentialLessonBaseProps = {
+    /** The public base of the statics, for the picture of the lesson. */
+    readonly staticsBaseUrl: string
     readonly props: EssentialLessonScreen["props"]
     readonly on: EssentialLessonScreen["on"]
 }
@@ -412,6 +416,7 @@ const bandOf = (
     },
     title: lesson.title,
     titleScale: "standard",
+    mark: <ArtImage asset={lessonArt(lesson.id)} base={props.staticsBaseUrl} />,
     ...(lesson.subtitle === ""
         ? {}
         : {

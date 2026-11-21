@@ -1,6 +1,7 @@
 "use client"
 
 import { useEssentialLessonScreen } from "@/hooks/essentialLesson"
+import { staticsBase } from "@/modules/config"
 import { EssentialLessonBase } from "./component"
 
 /** What the route hands the lesson block: the lesson and the `part` and `scenario` queries, all atoms. */
@@ -15,5 +16,5 @@ type EssentialLessonProps = {
 /** The connected four-part lesson page: resolves the world in its hook and hands it to the presentational block. */
 export const EssentialLesson = (props: EssentialLessonProps) => {
     const screen = useEssentialLessonScreen(props)
-    return <EssentialLessonBase props={screen.props} on={screen.on} />
+    return <EssentialLessonBase staticsBaseUrl={staticsBase()} props={screen.props} on={screen.on} />
 }

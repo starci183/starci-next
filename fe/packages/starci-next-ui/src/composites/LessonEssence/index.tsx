@@ -1,4 +1,14 @@
-import { Alert, Button, Cluster, IconTile, PaneSection, Section, Stack, Text } from "@starci/grammar/common"
+import {
+    Alert,
+    Button,
+    Cluster,
+    IconTile,
+    PaneSection,
+    ProgressCircle,
+    Section,
+    Stack,
+    Text,
+} from "@starci/grammar/common"
 import { LockGlyph } from "../../leaves/Icon"
 import type { ReactNode } from "react"
 import { LessonCode } from "../LessonCode"
@@ -145,12 +155,35 @@ const journeyItems = (rows: ReadonlyArray<EssenceJourneyRow>) =>
         state: stateOf(row),
     }))
 
+/** The ring of the five answers: how many are picked right, as a number beside it. */
+const SolvedRing = (props: { readonly questions: EssenceView["questions"]; readonly label: string }) => {
+    const total = props.questions.length
+    const solved = props.questions.filter((question) => question.isSolved).length
+    return (
+        <Cluster gap="inline">
+            <ProgressCircle
+                label={props.label}
+                value={total === 0 ? 0 : Math.round((solved / total) * 100)}
+                size="lg"
+            />
+            <Text as="p" isStrong>
+                {solved}/{total}
+            </Text>
+        </Cluster>
+    )
+}
+
 /** The right column of essence on wide screens: the four parts of the lesson and the reminder to answer the five again. */
 export const LessonEssenceAside = (props: LessonEssenceAsideProps) => (
     <>
         <AsideBlock
-            title={props.labels.aside.journeyTitle}
+            title={props.labels.opener.barLabel}
             isFirst
+            content={<SolvedRing questions={props.view.questions} label={props.labels.opener.barLabel} />}
+        />
+        <AsideBlock
+            title={props.labels.aside.journeyTitle}
+            isFirst={false}
             content={
                 <Section
                     kind="list"

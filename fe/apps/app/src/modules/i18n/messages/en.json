@@ -1417,6 +1417,8 @@
           "copy": "Copy",
           "journeyTitle": "This lesson has 5 parts",
           "reading": {
+            "deepTitle": "Read deeper when needed",
+            "overviewTitle": "The parts of the lesson",
             "tocTitle": "Contents",
             "tocEmpty": "The reading has no section yet.",
             "flagged": "Read closely",

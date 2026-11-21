@@ -31,6 +31,9 @@ export type ReadingView = {
 
 /** Every word of the Bản chất part. */
 export type ReadingLabels = {
+    /** The head of the folded long read, and of the numbered overview above it. */
+    readonly deepTitle: string
+    readonly overviewTitle: string
     readonly tocTitle: string
     readonly tocEmpty: string
     readonly flagged: string

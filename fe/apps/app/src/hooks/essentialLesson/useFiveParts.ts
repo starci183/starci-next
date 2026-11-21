@@ -60,6 +60,8 @@ const useFivePartsWords = (): {
     return {
         labels: {
             reading: {
+                deepTitle: t("reading.deepTitle"),
+                overviewTitle: t("reading.overviewTitle"),
                 tocTitle: t("reading.tocTitle"),
                 tocEmpty: t("reading.tocEmpty"),
                 flagged: t("reading.flagged"),

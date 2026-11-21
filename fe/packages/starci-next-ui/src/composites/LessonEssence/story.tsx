@@ -1,4 +1,4 @@
-import { Alert, Section, Stack, SurfaceCard, Text, Timeline } from "@starci/grammar/common"
+import { Alert, Badge, Grid, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
 import { withInlineCode } from "./inline"
 import type { EssenceInsight, EssenceLabels, EssenceQuestionView, EssenceView } from "./types"
 
@@ -9,29 +9,32 @@ export type LessonStoryCardProps = {
 }
 
 /**
- * The situation the opener tells, above the questions: its title and body, then the timeline of the developments so far, one per
- * question up to the one on screen, which is the current entry. Nothing for a lesson written before the story.
+ * The situation the opener tells, above the questions: its title as the section head, then one tile per development so far (its time as
+ * a badge, its words), the one of the question on screen ringed in accent. The body is the one muted line under them. Nothing for a lesson
+ * written before the story.
  */
 export const LessonStoryCard = (props: LessonStoryCardProps) => {
     const { story, timeline } = props.view
     if (story === undefined) return null
     return (
-        <SurfaceCard label={story.title}>
-            <Stack gap="section">
-                <Text as="p">{withInlineCode(story.body)}</Text>
-                {timeline.length === 0 ? null : (
-                    <Timeline
-                        label={props.labels.opener.timeline}
-                        items={timeline.map((event) => ({
-                            id: event.id,
-                            title: withInlineCode(event.text),
-                            timeLabel: event.at,
-                            isCurrent: event.isCurrent,
-                        }))}
-                    />
-                )}
-            </Stack>
-        </SurfaceCard>
+        <Section title={story.title} headingLevel={2} {...(story.body === "" ? {} : { caption: story.body })}>
+            {timeline.length === 0 ? null : (
+                <Grid kind="cards" columns={3} gap="inline" size="tile">
+                    {timeline.map((event) => (
+                        <SurfaceCard
+                            key={event.id}
+                            ariaLabel={`${event.at} ${event.text}`}
+                            {...(event.isCurrent ? { emphasis: "accent" as const } : {})}
+                        >
+                            <Stack gap="inline">
+                                <Badge tone={event.isCurrent ? "accent" : "success"}>{event.at}</Badge>
+                                <Text as="p">{withInlineCode(event.text)}</Text>
+                            </Stack>
+                        </SurfaceCard>
+                    ))}
+                </Grid>
+            )}
+        </Section>
     )
 }
 

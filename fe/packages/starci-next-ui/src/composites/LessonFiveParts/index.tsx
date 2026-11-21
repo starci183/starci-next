@@ -3,6 +3,9 @@ import {
     Badge,
     Button,
     Cluster,
+    Disclosure,
+    Grid,
+    SurfaceCard,
     FencedCodeBlock,
     PaneSection,
     Section,
@@ -90,19 +93,61 @@ type EssentialReadingProps = {
  */
 export const EssentialReading = (props: EssentialReadingProps) => {
     const { view, labels } = props
+    const flaggedIds = new Set(view.toc.filter((row) => row.isFlagged).map((row) => row.id))
     return (
         <Stack gap="region">
             {view.isLocked ? <Text tone="muted">{labels.locked}</Text> : null}
-            {view.chunks.map((chunk) => (
-                <Section key={chunk.id} id={chunk.id} ariaLabel={chunk.title}>
-                    <RichMarkdown
-                        source={chunk.markdown}
-                        labels={labels.markdown}
-                        isLoading={props.isLoading === true}
-                        renderCode={(code) => <LessonCode code={code} />}
-                    />
+            {view.chunks.length === 0 ? null : (
+                <Section title={labels.overviewTitle} headingLevel={2}>
+                    <Grid kind="cards" columns="balanced" gap="inline" size="tile">
+                        {view.chunks.map((chunk, index) => (
+                            <SurfaceCard
+                                key={chunk.id}
+                                ariaLabel={chunk.title}
+                                wholeAction={{ kind: "link", href: `#${chunk.id}`, label: chunk.title }}
+                            >
+                                <Stack gap="inline">
+                                    <Badge tone={flaggedIds.has(chunk.id) ? "warning" : "accent"}>
+                                        {String(index + 1)}
+                                    </Badge>
+                                    <Text as="p" isStrong>
+                                        {chunk.title}
+                                    </Text>
+                                    {flaggedIds.has(chunk.id) ? <Text tone="muted">{labels.flagged}</Text> : null}
+                                </Stack>
+                            </SurfaceCard>
+                        ))}
+                    </Grid>
                 </Section>
-            ))}
+            )}
+            {view.chunks.length === 0 ? null : (
+                <Section title={labels.deepTitle} headingLevel={2}>
+                    <Stack gap="inline">
+                        {view.chunks.map((chunk, index) => (
+                            <Section key={chunk.id} id={chunk.id} ariaLabel={chunk.title}>
+                                <Disclosure
+                                    title={chunk.title}
+                                    headingLevel={3}
+                                    leading={{
+                                        state: flaggedIds.has(chunk.id) ? "problem" : "todo",
+                                        position: index + 1,
+                                    }}
+                                    defaultExpanded={flaggedIds.has(chunk.id)}
+                                    {...(flaggedIds.has(chunk.id) ? { summary: labels.flagged } : {})}
+                                    body={
+                                        <RichMarkdown
+                                            source={chunk.markdown}
+                                            labels={labels.markdown}
+                                            isLoading={props.isLoading === true}
+                                            renderCode={(code) => <LessonCode code={code} />}
+                                        />
+                                    }
+                                />
+                            </Section>
+                        ))}
+                    </Stack>
+                </Section>
+            )}
             {view.mcpConfig === "" ? null : (
                 <Section title={labels.mcpTitle} headingLevel={2} id="lesson-mcp">
                     <Stack gap="inline">
