@@ -42,11 +42,11 @@
 {"findings":[],"hash":"cc4a9666500c9eff8c05928c2b34ea00770ebcb094aef79a26809a2d750219a2","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt-file.input.ts","step":"prettier"}
 {"findings":[],"hash":"4b31496de35139bcf926672ddea3a819da1aba3ff1d47ddcb83741d5f2b6d58a","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt-file.type.ts","step":"prettier"}
 {"findings":[],"hash":"43c46b65b281efb68bddc76a4eb316d4315b668d9bc940107ed7c99e80b721cd","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt-option-result.type.ts","step":"prettier"}
-{"findings":[],"hash":"ad2a89f5360851447515ccf1263b7b7ef84399e0e056593c90c2500538133771","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt-result.type.ts","step":"prettier"}
+{"findings":[],"hash":"18a775f7f842dc997da101e22b48732d469701beb82c8c182df55628e346951a","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt-result.type.ts","step":"prettier"}
 {"findings":[],"hash":"e097527b08ee0e02e9aff468f5038c6de8a251f41b8a9c87f5df96a09ded6ef9","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt.input.ts","step":"prettier"}
 {"findings":[],"hash":"31dc07845d771139fc8c94d077c9b7c0d875609457dd2efeca86c0bb0f666b5e","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-attempt.type.ts","step":"prettier"}
 {"findings":[],"hash":"e05dac7ab3ba36392869c422ecac38238ab3f5a78916bd597ad698fda9ac00a1","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-hint-revealed.type.ts","step":"prettier"}
-{"findings":[],"hash":"76652619fcdac1f7df44298db31718fec6517fa256191ad75e4e61992c294089","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-opener-score.type.ts","step":"prettier"}
+{"findings":[],"hash":"0aa8b4f1383fb85e0ffec3f8b3c78503d83e94bb533924d09bb74ecf4f97d2d9","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-opener-score.type.ts","step":"prettier"}
 {"findings":[],"hash":"8642b0d16f02f02ae0ae92622e15d9f21e980015f9050e4f2a484d2af012c8dc","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-opener-scores.input.ts","step":"prettier"}
 {"findings":[],"hash":"a1f46046b7fcc98eb3052f67f50d022620880bd7927082342ff923277e5e3579","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-progress-activity.type.ts","step":"prettier"}
 {"findings":[],"hash":"ea1a1f60f67ffbae522f2980ef3652c18873f9014ddd329e3df61797b1de27d0","path":"be/src/features/api/attempt/transport/graphql/dto/lesson-progress-attempts.type.ts","step":"prettier"}
@@ -63,7 +63,7 @@
 {"findings":[],"hash":"2eaf2b5e5ce050ce55e40ff00c0eaca8483968d26eedb70186ccf62ec6082e07","path":"be/src/features/api/attempt/transport/graphql/get-lesson-attempt.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"cc6b2f5e2d914a2a3b7e8bfe98e560a3d349c1996077972719df5e236d3b53d7","path":"be/src/features/api/attempt/transport/graphql/get-lesson-opener-scores.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"5e9486a2f6f83a29cff65433961a2d32d75ebfa98c66942f6dd5a21b2f9f4f81","path":"be/src/features/api/attempt/transport/graphql/get-lesson-progress.mapper.ts","step":"prettier"}
-{"findings":[],"hash":"29d03ea9a1cf86f2bd7d073ec005e16d9bd49cc3e52cc0cdfb9172fbd1da5cda","path":"be/src/features/api/attempt/transport/graphql/grade-guest-opener.resolver.ts","step":"prettier"}
+{"findings":[],"hash":"5ab130780bfb164381ac828990b65a0604c0ee78014e01f8720b338894772baa","path":"be/src/features/api/attempt/transport/graphql/grade-guest-opener.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"d710e1434e38e3478402c0395f60c92db0479260da6f127826b5348abfbad607","path":"be/src/features/api/attempt/transport/graphql/guest-progress.mapper.ts","step":"prettier"}
 {"findings":[],"hash":"ef4ada38ce0e4dd0167bb82abe35787cabecff3385fdf164ebd2d9be5074d980","path":"be/src/features/api/attempt/transport/graphql/lesson-attempt.resolver.ts","step":"prettier"}
 {"findings":[],"hash":"1b8a409376a5c1dcd448516418aad9145c79ba0732c0d2a6d2c53286a6faaf10","path":"be/src/features/api/attempt/transport/graphql/lesson-opener-scores.resolver.ts","step":"prettier"}
@@ -396,11 +396,11 @@
 {"findings":[],"hash":"3e0b10107b19cc958594de96c3172fc01044c664d50ae337ea9772af85661229","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-catalog-item.type.ts","step":"prettier"}
 {"findings":[],"hash":"d55f374b1f6cd5b35e2b5e93b4df683f3a7c5b82fdb326795ebbf40496309fbe","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-commands.type.ts","step":"prettier"}
 {"findings":[],"hash":"b72e1d44c39feae332b1a6158660d9604ea59454a7e5beb67605d4a82329ec80","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-criterion.type.ts","step":"prettier"}
-{"findings":[],"hash":"5f1d6f3ee36b5d547fcac8d2b7ffe9775637174ae50067a36fc42e07a454d904","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-essential.type.ts","step":"prettier"}
+{"findings":[],"hash":"d036af0c1bf292404fdca1bc05b9101420f925e8950c60cd7cb92bad99850244","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-essential.type.ts","step":"prettier"}
 {"findings":[],"hash":"b1e041b019baa23b56ff6869bbfda9700ec943f0e25d0fbb249b16a7e25a8471","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-exercise-file.type.ts","step":"prettier"}
 {"findings":[],"hash":"994865c47e1fb245347cdd49d0dc79f6908290cb1bd52a4fc4a2649fa35decf4","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-exercise.type.ts","step":"prettier"}
 {"findings":[],"hash":"8cacb16be27dd4da489c8ac50576f9d56a5b3daf07566a2c6d2c8be12ca9e7a9","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-option.type.ts","step":"prettier"}
-{"findings":[],"hash":"4bd13531b28c86a86789d8f0621bbd8cdcc99b97a534630a3ee3cc8ef3e6dd77","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-question.type.ts","step":"prettier"}
+{"findings":[],"hash":"8b650390c3174030f004f1e957229951a2d6dcebab0f44d01e0ae10f53e8b581","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-question.type.ts","step":"prettier"}
 {"findings":[],"hash":"17d251ba0f8148a778f08c28648def9cddccd298c03be12de2ce3281d333f132","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-reference.type.ts","step":"prettier"}
 {"findings":[],"hash":"6b27447674ca859517464f2bf6509aef0bc77fedd2efeaa0a7ddf30cedb8fc42","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-related-topic.type.ts","step":"prettier"}
 {"findings":[],"hash":"df8f3129b895cae5dae0055c1e127282a4e967b0dca269291c932d083b14a31f","path":"be/src/features/api/lesson/transport/graphql/dto/lesson-scenario.type.ts","step":"prettier"}
@@ -821,7 +821,7 @@
 {"findings":[],"hash":"73580292714a78b435ccb47b3087aad2a638b8ac38568d271e390cd7682e9a82","path":"be/src/features/api/relay-feed/application/get-lesson-challenge-scores.handler.ts","step":"prettier"}
 {"findings":[],"hash":"72801121ac0f084ecf0ca60662789e01b8a68ed1b7b97783d3d4fda2acb093e3","path":"be/src/features/api/relay-feed/application/get-lesson-challenge-scores.query.ts","step":"prettier"}
 {"findings":[],"hash":"832662a10b66e305f8984e716cb0487d8e7d3dbc89a3d80493f11d076c84b49a","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.contracts.ts","step":"prettier"}
-{"findings":[],"hash":"62c3bd10ec1a743e8755ee6d4dc3eb3b5dc6f04bc2c97b2f2a385c578b6149a7","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.handler.ts","step":"prettier"}
+{"findings":[],"hash":"5be90947c35367e2cce88168bd7ac04fd7838388ca6b2e3c99c9cdc9338eda8d","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.handler.ts","step":"prettier"}
 {"findings":[],"hash":"c87c6a2496ca0fc63a03ff68fe3d2a3c18d1fa39ba246c86ba443ac3b567de26","path":"be/src/features/api/relay-feed/application/get-lesson-parts-progress.query.ts","step":"prettier"}
 {"findings":[],"hash":"25cfd91c4be57003311d72632b93c2f4e68e8de2a06628448212c7f90f6a7618","path":"be/src/features/api/relay-feed/application/get-lesson-scenario-runs.contracts.ts","step":"prettier"}
 {"findings":[],"hash":"587ccebb79fa880082af373987b5e38f8b7af6d04b6c7aecab4608e780d66c84","path":"be/src/features/api/relay-feed/application/get-lesson-scenario-runs.handler.ts","step":"prettier"}
