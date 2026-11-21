@@ -1,6 +1,5 @@
-import { Section, type ListRowData } from "@starci/grammar/common"
-import { PracticeGlyph } from "../../leaves/Icon"
-import type { ProbeLineView } from "../ProjectAside/types"
+import { Grid, Section, SurfaceCard } from "@starci/grammar/common"
+import type { ChipView, ProbeLineView } from "../ProjectAside/types"
 
 /** What the probes card needs: the probe rows, its label and the line of its empty state. */
 type ProbesCardProps = {
@@ -10,20 +9,24 @@ type ProbesCardProps = {
     readonly isLoading: boolean
 }
 
-/** The probes of the last server run: a list card shown only when there are results. */
+/** The ground a probe tile takes: green for a pass, red for a fail, none otherwise. */
+const groundOf = (chip: ChipView): { readonly groundTone?: "success" | "danger" } =>
+    chip.tone === "success" ? { groundTone: "success" } : chip.tone === "warning" ? { groundTone: "danger" } : {}
+
+/** The probes of the last server run as one tile each, green or red; shown only when there are results. */
 export const ProbesCard = (props: ProbesCardProps) =>
     props.rows.length === 0 ? null : (
-        <Section
-            kind="list"
-            title={props.label}
-            count={props.rows.length}
-            isLoading={props.isLoading}
-            items={props.rows.map((probe): ListRowData => ({
-                id: probe.id,
-                title: probe.text,
-                leading: { icon: PracticeGlyph },
-                badges: [probe.chip],
-            }))}
-            empty={props.emptyLabel}
-        />
+        <Section title={props.label} headingLevel={2} count={props.rows.length} isLoading={props.isLoading}>
+            <Grid kind="cards" columns={3}>
+                {props.rows.map((probe) => (
+                    <SurfaceCard
+                        key={probe.id}
+                        kind="tile"
+                        name={probe.text}
+                        badge={{ label: probe.chip.label, tone: probe.chip.tone, isDot: true }}
+                        {...groundOf(probe.chip)}
+                    />
+                ))}
+            </Grid>
+        </Section>
     )

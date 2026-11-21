@@ -1521,7 +1521,9 @@
           "none": "Chưa nối CI",
           "passed": "Xanh",
           "failed": "Đỏ"
-        }
+        },
+        "addTitle": "Mang repo tiếp theo",
+        "addText": "Một lệnh thêm thư mục starci/"
       },
       "new": {
         "title": "Tạo dự án",
@@ -1566,7 +1568,15 @@
           "$ starci-next run",
           "  request-response-lifecycle  2 test  đang luyện",
           "  health-probe-semantics      0 test  chưa có bằng chứng"
-        ]
+        ],
+        "stepsLabel": "Ba bước tạo dự án",
+        "steps": [
+          "Đặt tên, chọn loại",
+          "Nối repo",
+          "Chạy một lệnh"
+        ],
+        "kindAppText": "HTTP, chạy bằng Docker, có probe",
+        "kindAgentText": "Gọi công cụ, đánh giá bằng e2e"
       },
       "detail": {
         "back": "Tất cả dự án",
@@ -1635,7 +1645,34 @@
         "secretAside": "Bí mật CI",
         "layoutAside": "Thư mục starci/",
         "milestonesEmpty": "Dự án chưa có milestone.",
-        "expEmpty": "Chưa có kinh nghiệm."
+        "expEmpty": "Chưa có kinh nghiệm.",
+        "repoLinked": "Đã nối",
+        "connectTitle": "Kết nối repo",
+        "connectNote": "CI của bạn gửi bằng chứng bằng token OIDC của GitHub Actions.",
+        "connectFlow": {
+          "push": {
+            "title": "git push",
+            "note": "Code của bạn"
+          },
+          "actions": {
+            "title": "GitHub Actions",
+            "note": "starci.yml chạy test"
+          },
+          "starci": {
+            "title": "StarCi",
+            "note": "Kiểm repo, commit, run id qua OIDC và HMAC"
+          },
+          "proved": {
+            "title": "Đã chứng minh",
+            "note": "Dòng CV"
+          }
+        },
+        "connectSteps": {
+          "repo": "Repo",
+          "audience": "Audience OIDC",
+          "secret": "Secret ký kết quả",
+          "run": "Run đầu tiên"
+        }
       },
       "milestone": {
         "back": "Về dự án",

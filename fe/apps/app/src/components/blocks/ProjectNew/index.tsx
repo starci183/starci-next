@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { NO_TRACK, useProjectNewForm, type ProjectIssue } from "@/hooks/projects"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { APP_ROUTES, projectPath } from "@/modules/routes"
 import { ProjectNewBase } from "./component"
 
@@ -52,6 +53,8 @@ export const ProjectNew = () => {
                     description: t("new.description"),
                     infoLabel: t("new.infoLabel"),
                     kindLabel: t("new.kindLabel"),
+                    stepsLabel: t("new.stepsLabel"),
+                    steps: linesOf(t.raw("new.steps")),
                     trackLabel: t("new.trackLabel"),
                     name: t("new.name"),
                     repo: t("new.repo"),
@@ -75,8 +78,8 @@ export const ProjectNew = () => {
                 },
                 projectsHref: APP_ROUTES.projects,
                 kinds: [
-                    { id: "app", label: t("kind.app") },
-                    { id: "agent", label: t("kind.agent") },
+                    { id: "app", label: t("kind.app"), description: t("new.kindAppText") },
+                    { id: "agent", label: t("kind.agent"), description: t("new.kindAgentText") },
                 ],
                 tracks: [
                     { id: NO_TRACK, label: t("new.trackNone") },
@@ -84,6 +87,7 @@ export const ProjectNew = () => {
                     { id: "openclaw", label: t("new.trackOpenclaw") },
                     { id: "hermes", label: t("new.trackHermes") },
                 ],
+                staticsBaseUrl: staticsBase(),
                 state: form.values,
                 isCreating: form.isPending,
                 issueWords: issueWordsOf(t, form.issue),

@@ -99,6 +99,11 @@ export type ProjectDetailLabels = {
     readonly layoutTestsText: string
     readonly layoutFlow: string
     readonly emptyMilestones: string
+    readonly repoLinked: string
+    readonly connectTitle: string
+    readonly connectNote: string
+    readonly connectFlow: ReadonlyArray<{ readonly title: string; readonly note: string }>
+    readonly connectSteps: ReadonlyArray<string>
 }
 
 /** What the learner typed or was handed on the page, apart from the read. */

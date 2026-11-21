@@ -6,6 +6,7 @@ import { isProjectMissing, useProjectActions, type ProjectIssue } from "@/hooks/
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryProjectSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { PROJECT_DETAIL_PLACEHOLDER, ProjectDetailBase } from "./component"
 
 type Translate = ReturnType<typeof useTranslations>
@@ -53,6 +54,7 @@ export const ProjectDetail = (props: ProjectDetailProps) => {
                 placeholder: PROJECT_DETAIL_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("empty")),
                 isNotFound: isProjectMissing(read.error),
+                staticsBaseUrl: staticsBase(),
                 fields: {
                     deployed: actions.deployedDraft ?? read.data?.deployedUrl ?? "",
                     secret: actions.secret,
