@@ -13,6 +13,7 @@ import {
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import {
+    ArtImage,
     DoneIcon,
     EssentialApply,
     EssentialApplyAside,
@@ -38,10 +39,14 @@ import {
     LessonResult,
     LessonStoryCard,
     LessonStoryQuestion,
+    lessonArt,
     LockIcon,
     SlotView,
+    areaArt,
 } from "@starci-next/ui"
+import { LOCKABLE_PARTS } from "@/hooks/essentialLesson"
 import type { EssentialLessonScreen, EssentialLessonView, EssentialPrimary } from "@/hooks/essentialLesson"
+import { staticsBase } from "@/modules/config"
 import { APP_ROUTES } from "@/modules/routes"
 
 /** What a part is drawn from: the lesson as the screen resolved it, the screen's props and actions, and whether the first read still runs. */
@@ -338,29 +343,36 @@ export const applyLayout: PartLayoutOf = (context) => {
     }
 }
 
-/** A part Premium unlocks, shown to a reader without it: what it holds and the way to Premium; the primary is the upgrade. */
-export const lockedLayout: PartLayoutOf = ({ lesson, screen }) => {
-    const { shell } = screen.props
-    const words = lesson.part === "essence" ? undefined : shell.locked[lesson.part]
-    const back = lesson.tabs.find((tab) => tab.id === "essence")
+/** The parts the reader lacks, one card each; the part on screen is marked. */
+const tilesOf = ({ lesson, screen }: PartContext) =>
+    LOCKABLE_PARTS.map((id) => ({
+        id,
+        title: screen.props.page.parts[id],
+        note: screen.props.lock.notes[id],
+        isCurrent: id === lesson.part,
+    }))
+
+/**
+ * A part the plan lacks, shown to a reader without it: the 3D lock, what stays, the way to compare plans and a card per locked part.
+ * A guest is asked to sign in first (the score and progress are then saved); a signed-in reader is asked to upgrade.
+ */
+export const lockedLayout: PartLayoutOf = (context) => {
+    const { screen } = context
+    const { shell, lock, isGuest } = screen.props
     return {
-        main:
-            words === undefined ? null : (
-                <LessonLockedPart
-                    title={words.title}
-                    description={shell.lockedDescription}
-                    listTitle={shell.lockedList}
-                    contents={words.contents}
-                    backLabel={shell.lockedBack}
-                    backHref={back?.href ?? screen.props.catalogHref}
-                    compareLabel={shell.lockedCompare}
-                    compareHref={screen.props.plansHref}
-                />
-            ),
+        main: (
+            <LessonLockedPart
+                art={<ArtImage asset={areaArt("locked")} base={staticsBase()} />}
+                title={isGuest ? lock.guestTitle : lock.premiumTitle}
+                description={isGuest ? lock.guestNote : shell.lockedDescription}
+                tiles={tilesOf(context)}
+                compare={isGuest ? undefined : { label: shell.lockedCompare, href: screen.props.plansHref }}
+            />
+        ),
         aside: undefined,
         action: (
-            <Button intent="commit" width="wrap" href={screen.props.plansHref}>
-                {shell.upgrade}
+            <Button intent="commit" width="wrap" href={isGuest ? screen.props.signInHref : screen.props.plansHref}>
+                {isGuest ? lock.signIn : shell.upgrade}
             </Button>
         ),
     }
@@ -368,6 +380,8 @@ export const lockedLayout: PartLayoutOf = ({ lesson, screen }) => {
 
 /** Props for {@link EssentialLessonBase}: the resolved props and the actions of the screen. */
 export type EssentialLessonBaseProps = {
+    /** The public base of the statics, for the picture of the lesson. */
+    readonly staticsBaseUrl: string
     readonly props: EssentialLessonScreen["props"]
     readonly on: EssentialLessonScreen["on"]
 }
@@ -412,6 +426,7 @@ const bandOf = (
     },
     title: lesson.title,
     titleScale: "standard",
+    mark: <ArtImage asset={lessonArt(lesson.id)} base={props.staticsBaseUrl} />,
     ...(lesson.subtitle === ""
         ? {}
         : {

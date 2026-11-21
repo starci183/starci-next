@@ -2,3 +2,4 @@ export { useEssentialLessonScreen, ESSENTIAL_PLACEHOLDER } from "./useEssentialL
 export type { EssentialPrimary } from "@/modules/essential-runs"
 export type { EssentialLessonActions, EssentialLessonScreen, EssentialLessonView } from "./useEssentialLessonScreen"
 export { partOf } from "./essentialLesson.shared"
+export { LOCKABLE_PARTS } from "./useLockLabels"

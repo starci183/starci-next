@@ -45,6 +45,7 @@ const rubricOf = (
             id: criterion.id,
             criterion: criterion.criterion,
             value: isScored ? words.pointsOf(scored.earned, criterion.points) : words.points(criterion.points),
+            points: criterion.points,
             isCritical: criterion.isCritical,
             isEarned: isScored ? scored.passed : undefined,
         }
@@ -127,6 +128,8 @@ export const applyOf = (input: ApplyInput): ApplyPartView => {
                 title: rung.title,
                 state: score?.state ?? "locked",
                 stateLabel: stateLabelOf(score, words),
+                score: score?.score ?? 0,
+                maxScore: score?.maxScore ?? 100,
             }
         }),
         selectedId: selected?.id ?? "",

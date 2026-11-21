@@ -99,7 +99,9 @@ export { LessonAside } from "./composites/LessonAside"
 export { LessonStepper } from "./composites/LessonStepper"
 export { MilestonesCard } from "./composites/MilestonesCard"
 export { ProbesCard } from "./composites/ProbesCard"
+export { ConnectPanel } from "./composites/ConnectPanel"
 export { ProjectAside } from "./composites/ProjectAside"
+export { ProjectStatus } from "./composites/ProjectStatus"
 export { ReviewItemCard } from "./composites/ReviewItemCard"
 export { ReviewSummaryCard } from "./composites/ReviewSummaryCard"
 export { RunsCard } from "./composites/RunsCard"
@@ -205,16 +207,9 @@ export type {
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"
 export { LessonLockedPart } from "./composites/LessonLockedPart"
-export {
-    EssentialBugHunt,
-    EssentialBugHuntAside,
-    EssentialPattern,
-    EssentialPatternAside,
-    EssentialPatternLink,
-    EssentialReading,
-    EssentialReadingAside,
-    LessonJourneyBlock,
-} from "./composites/LessonFiveParts"
+export { EssentialBugHunt, EssentialBugHuntAside } from "./composites/EssentialBugHunt"
+export { EssentialPattern, EssentialPatternAside, EssentialPatternLink } from "./composites/EssentialPattern"
+export { EssentialReading, EssentialReadingAside, LessonJourneyBlock } from "./composites/LessonFiveParts"
 export type {
     BugHuntLabels,
     BugHuntView,
@@ -227,7 +222,7 @@ export type {
     ReadingLabels,
     ReadingTocRow,
     ReadingView,
-} from "./composites/LessonFiveParts"
+} from "./composites/LessonFiveParts/types"
 export { AuthHero } from "./composites/AuthHero"
 export { AuthSentSteps } from "./composites/AuthSentSteps"
 export { AuthLinkNotice } from "./composites/AuthLinkNotice"

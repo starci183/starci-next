@@ -1395,33 +1395,7 @@
           },
           "locked": {
             "description": "The free plan covers all of part 1 of every lesson. Your opener score and progress stay when you upgrade.",
-            "list": "What this part has",
-            "back": "Back to part 1",
-            "compare": "Compare the two plans",
-            "source": {
-              "title": "Part 2 · Essence is part of Premium",
-              "one": "Read practice first: run the source, then the theory",
-              "two": "The architecture, the code explained with its WHY and the essence of each piece",
-              "three": "Four test flows, the edge cases and the interview questions"
-            },
-            "scenarios": {
-              "title": "Part 3 · Bug hunt is part of Premium",
-              "one": "Pull a copy of the source with 5 planted bugs and run it with Docker",
-              "two": "Fix the code until every test passes; a red test shows expected, received and hints one at a time",
-              "three": "Pass every test to open Challenges"
-            },
-            "apply": {
-              "title": "Part 4 · Challenges is part of Premium",
-              "one": "Four rungs, Easy to Insane, each opens once the one before is done",
-              "two": "Hidden scenarios run on your machine, a 100-point rubric per rung",
-              "three": "Push-back essence questions, with a short written answer graded by AI from Hard up"
-            },
-            "pattern": {
-              "title": "Part 5 · Pattern is part of Premium",
-              "one": "Where this pattern lives in a real project",
-              "two": "How far to apply it, and what happens when the server goes down",
-              "three": "The main files and a code sample, with the way to the repository"
-            }
+            "compare": "Compare the two plans"
           }
         },
         "errorTitle": "Could not load the lesson",
@@ -1432,6 +1406,8 @@
           "copy": "Copy",
           "journeyTitle": "This lesson has 5 parts",
           "reading": {
+            "deepTitle": "Read deeper when needed",
+            "overviewTitle": "The parts of the lesson",
             "tocTitle": "Contents",
             "tocEmpty": "The reading has no section yet.",
             "flagged": "Read closely",
@@ -1444,18 +1420,11 @@
           },
           "bugs": {
             "pullTitle": "Get the source and run it on your machine",
-            "pullNote": "This copy of the source has 5 planted bugs, one per essence of the opener. Fix the code until every test passes.",
             "runsEmpty": "The lesson has no test yet.",
             "passTitle": "Why it is right now",
-            "failTitle": "Why it does not pass yet",
-            "hintsTitle": "Hints opened",
-            "lockedFinal": "The final test opens once every other test passes.",
             "machineNone": "No machine is connected",
             "machineNoneNote": "Pair your machine on the Connect page so each test's result comes back here.",
             "machineOnline": "Machine {name} is connected",
-            "asideBugs": "5 bugs",
-            "asideHintsTitle": "Hints, one at a time",
-            "asideHints": "Direction (the section to read again), then the file, then the line. Hints cost no points; the page records how many you used.",
             "asideUnlockTitle": "Unlock",
             "asideUnlock": "Pass every test, the final one too, to open Challenges.",
             "asideUnlocked": "Every test passes. Challenges is open.",
@@ -1474,7 +1443,10 @@
             "expected": "expected",
             "received": "received",
             "runTitle": "Run {time} · {passed}/{total} pass",
-            "noRun": "No run yet · {total} tests"
+            "noRun": "No run yet · {total} tests",
+            "tilesTitle": "5 bugs",
+            "compareTitle": "Expected and received",
+            "ring": "{passed} of {total} tests pass"
           },
           "pattern": {
             "stacks": "Stack",
@@ -1487,8 +1459,6 @@
             "github": "Open on GitHub",
             "sourceTitle": "Source",
             "sourceNote": "Code taken from {repo}, only the relevant part, not runnable on its own.",
-            "addTitle": "Add a stack",
-            "addNote": "Each stack is one entry of the lesson's patterns.yaml: repository, folder, main files with notes, status.",
             "where": "Where the code goes",
             "howFar": "How far to apply it",
             "whenDown": "When the server goes down"
@@ -1496,6 +1466,18 @@
           "written": {
             "prompt": "Explain briefly (3 to 5 sentences), as in an interview: why does your choice keep the system's promise?",
             "wait": "Pick an answer to this question first, then write the explanation for the AI to grade."
+          }
+        },
+        "lock": {
+          "premiumTitle": "Parts 2 to 5 are Premium",
+          "guestTitle": "Sign in to keep learning",
+          "guestNote": "The opener of every lesson is free. Sign in to save your score and progress.",
+          "signIn": "Sign in",
+          "notes": {
+            "source": "Source that runs on your machine, the test flows",
+            "scenarios": "Planted bugs, red tests with hints",
+            "apply": "4 rungs, hidden scenarios, a verified CV line",
+            "pattern": "The pattern in a real project"
           }
         }
       }
@@ -1536,7 +1518,9 @@
           "none": "CI not linked",
           "passed": "Green",
           "failed": "Red"
-        }
+        },
+        "addTitle": "Bring the next repo",
+        "addText": "One command adds the starci/ folder"
       },
       "new": {
         "title": "Create a project",
@@ -1581,7 +1565,15 @@
           "$ starci-next run",
           "  request-response-lifecycle  2 tests  practising",
           "  health-probe-semantics      0 tests  no evidence yet"
-        ]
+        ],
+        "stepsLabel": "Three steps to create a project",
+        "steps": [
+          "Name it, pick a kind",
+          "Link the repo",
+          "Run one command"
+        ],
+        "kindAppText": "HTTP, runs in Docker, has probes",
+        "kindAgentText": "Calls tools, judged by e2e"
       },
       "detail": {
         "back": "All projects",
@@ -1650,7 +1642,34 @@
         "secretAside": "CI secret",
         "layoutAside": "The starci/ folder",
         "milestonesEmpty": "This project has no milestones.",
-        "expEmpty": "No experience yet."
+        "expEmpty": "No experience yet.",
+        "repoLinked": "Linked",
+        "connectTitle": "Connect the repo",
+        "connectNote": "Your CI sends proof with the GitHub Actions OIDC token.",
+        "connectFlow": {
+          "push": {
+            "title": "git push",
+            "note": "Your code"
+          },
+          "actions": {
+            "title": "GitHub Actions",
+            "note": "starci.yml runs the tests"
+          },
+          "starci": {
+            "title": "StarCi",
+            "note": "Checks repo, commit and run id by OIDC and HMAC"
+          },
+          "proved": {
+            "title": "Proved",
+            "note": "A CV line"
+          }
+        },
+        "connectSteps": {
+          "repo": "Repo",
+          "audience": "OIDC audience",
+          "secret": "Signing secret",
+          "run": "First run"
+        }
       },
       "milestone": {
         "back": "Back to the project",
@@ -1800,73 +1819,42 @@
       },
       "pitch": {
         "title": "Projects",
-        "description": "Bring your own repo, prove each Essentials concept with evidence a machine can check, and get a verified CV line. Projects come with Premium.",
+        "description": "Bring your own repo, prove each concept with evidence a machine can check, and get a verified CV line.",
         "subscribe": "Subscribe to Premium",
+        "premiumNote": "Projects come with Premium",
         "stepsTitle": "From your repo to a CV line",
         "steps": {
           "repo": {
-            "title": "Bring your own repo",
-            "text": "There is no sample project: every project is your own code, on any topic, in any language. One command adds a starci/ folder and a CI template to the repo."
+            "title": "Bring your repo",
+            "text": "Any topic, any language. One command adds starci/."
           },
           "prove": {
             "title": "Prove each concept",
-            "text": "Every Essentials concept needs its evidence slots: a test, an e2e flow, a probe of your deployed address, or an AI read of the code you paste. Running on your machine is Practising; a CI run GitHub signs with OIDC, or a server re-run, is Proved."
+            "text": "A test, e2e, a probe or an AI read of the code. Only a CI run signed with OIDC counts."
           },
           "cv": {
-            "title": "Get a verified CV line",
-            "text": "Each finished milestone writes a CV line from evidence StarCi has checked. There are no self-reported numbers."
+            "title": "Get a CV line",
+            "text": "Each finished milestone makes one line. No self-reported numbers."
           }
         },
-        "sampleNote": "Illustrative data, not anyone's project. Your own project shows in exactly this frame.",
-        "conceptsTitle": "Example: the concepts of a milestone",
-        "columns": {
-          "concept": "Concept",
-          "evidence": "Evidence needed",
-          "state": "Status"
-        },
-        "cvTitle": "Example: the CV line once the evidence is complete",
-        "includedTitle": "What Premium opens in Projects",
+        "includedTitle": "Premium opens",
         "included": {
           "many": {
-            "title": "Many projects, every milestone",
-            "text": "Each project is its own repo, with no limit on how many."
+            "title": "Many projects",
+            "text": "No limit on repos"
           },
           "probes": {
-            "title": "Probes on your deployed address",
-            "text": "The StarCi server calls your public http or https address and records each result."
+            "title": "Probes on deploy",
+            "text": "Calls your public address"
           },
           "aiRead": {
-            "title": "AI code read",
-            "text": "Paste the handler, the AI scores it against a rubric and points at what is missing."
+            "title": "AI reads code",
+            "text": "Graded on a rubric"
           },
           "ci": {
             "title": "Signed CI",
-            "text": "GitHub OIDC confirms the run before it counts as Proved."
+            "text": "GitHub OIDC confirms"
           }
-        },
-        "noTable": "No concepts yet.",
-        "sample": {
-          "lifecycle": {
-            "concept": "Request/response lifecycle",
-            "slots": "test ✓ · probe ✓",
-            "state": "Proved"
-          },
-          "idempotency": {
-            "concept": "Idempotency on retry",
-            "slots": "test ✓ · probe pending",
-            "state": "Practising"
-          },
-          "outbox": {
-            "concept": "Transactional outbox",
-            "slots": "e2e (relay) · CI signed by OIDC",
-            "state": "Not started"
-          }
-        },
-        "cv": {
-          "role": "Backend developer",
-          "badge": "Verified",
-          "text": "Designed idempotent writes and a transactional outbox for my-blog-api; survives 5 parallel duplicate requests without a stray record.",
-          "evidence": "Evidence: CI run #41 (signed by GitHub) · probe 17 Nov · 3 concepts"
         }
       },
       "concept": {
@@ -2795,6 +2783,12 @@
       "fewNote": "{name} is still learning. The CV updates when the teacher signs more lines, and the link stays the same.",
       "allSources": "All sources",
       "sourcesLabel": "Filter by source",
+      "figuresLabel": "CV figures",
+      "figSigned": "Signed lines",
+      "figEssentials": "Essentials",
+      "figProjects": "Projects",
+      "figPractice": "Harness · Practice",
+      "neutralName": "StarCi learner",
       "more": "Show {count, plural, one {# more line} other {# more lines}}",
       "verify": "Verify",
       "aiGraded": "AI graded: passed",
@@ -2816,7 +2810,6 @@
       "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",
       "factsUpdated": "Updated {date}",
       "whyTitle": "Why this CV can be trusted",
-      "stepsLabel": "The three steps every CV line went through",
       "steps": {
         "proved": {
           "label": "Practised",

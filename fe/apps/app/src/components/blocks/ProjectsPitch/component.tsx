@@ -1,33 +1,7 @@
-import {
-    Badge,
-    Button,
-    EmptyNotice,
-    Page,
-    Section,
-    Stack,
-    Text,
-    type BadgeTone,
-    type ListRowData,
-} from "@starci/grammar/common"
+import { Button, Cluster, Grid, Heading, Page, Section, Stack, SurfaceCard, Text } from "@starci/grammar/common"
+import { areaArt, ArtImage, type AreaArtName } from "@starci-next/ui"
 
-/** One row of the sample concept table the pitch shows. */
-export type PitchSampleRow = {
-    readonly id: string
-    readonly concept: string
-    readonly slots: string
-    readonly state: string
-    readonly stateTone: BadgeTone
-}
-
-/** The sample CV line the pitch shows: the role, the sentence and the evidence it stands on. */
-export type PitchCvView = {
-    readonly role: string
-    readonly badge: string
-    readonly text: string
-    readonly evidence: string
-}
-
-/** One titled line of a list of the pitch. */
+/** One titled line of a list of the pitch: the step or the thing Premium opens. */
 export type PitchLine = { readonly id: string; readonly title: string; readonly text: string }
 
 /** The fixed words of the pitch. */
@@ -36,98 +10,82 @@ export type ProjectsPitchLabels = {
     readonly description: string
     readonly subscribe: string
     readonly subscribeHref: string
+    readonly premiumNote: string
     readonly stepsTitle: string
     readonly steps: ReadonlyArray<PitchLine>
-    readonly sampleNote: string
-    readonly conceptsTitle: string
-    readonly columns: { readonly concept: string; readonly evidence: string; readonly state: string }
-    readonly cvTitle: string
     readonly includedTitle: string
     readonly included: ReadonlyArray<PitchLine>
-    readonly noTable: string
 }
 
 /** Props for {@link ProjectsPitchBase}. */
 export type ProjectsPitchBaseProps = {
     readonly props: {
         readonly labels: ProjectsPitchLabels
-        readonly sample: ReadonlyArray<PitchSampleRow>
-        readonly cv: PitchCvView
+        /** Where the statics are served from: the pictures of the hero and of the three steps. */
+        readonly staticsBaseUrl: string
     }
 }
 
-/** The sample concepts as rows: the concept, the evidence it needs and where each stands as a chip, flat on the page. */
-const SampleTable = (props: ProjectsPitchBaseProps["props"]) => (
-    <Section
-        kind="list"
-        title={props.labels.conceptsTitle}
-        headingLevel={2}
-        caption={props.labels.sampleNote}
-        items={props.sample.map((row): ListRowData => ({
-            id: row.id,
-            title: row.concept,
-            description: row.slots,
-            badges: [{ label: row.state, tone: row.stateTone }],
-        }))}
-        empty={<EmptyNotice message={props.labels.noTable} mark="none" frame="frameless" />}
-    />
-)
-
-/** The sample CV line: the role with its verified badge, the sentence, and the evidence line. */
-const SampleCv = (props: ProjectsPitchBaseProps["props"]) => (
-    <Stack gap="identity">
-        <Text isStrong>{props.cv.role}</Text>
-        <Badge tone="success">{props.cv.badge}</Badge>
-        <Text>{props.cv.text}</Text>
-        <Text tone="muted">{props.cv.evidence}</Text>
-    </Stack>
-)
+/** The picture of each of the three steps, in order: the repo, the proof, the CV line. */
+const STEP_ART: ReadonlyArray<AreaArtName> = ["projects", "milestone", "cv"]
 
 /**
- * Draws the Projects pitch a reader without Premium sees: what Projects proves (your own repo, proved concepts, a verified CV line),
- * a sample of the concept table and the CV line, and the one Subscribe action. No tool is shown in a reduced form.
+ * Draws the Projects pitch a reader without Premium sees: the hero with its one Subscribe action, the three steps from the repo to the
+ * CV line as three picture cards, and the four things Premium opens. No tool is shown in a reduced form.
  */
 export const ProjectsPitchBase = (props: ProjectsPitchBaseProps) => {
-    const { labels } = props.props
+    const { labels, staticsBaseUrl } = props.props
     return (
-        <Page
-            header={{
-                title: labels.title,
-                breadcrumbs: "root",
-                description: labels.description,
-            }}
-        >
+        <Page>
             <Stack gap="region">
-                <Section
-                    title={labels.stepsTitle}
-                    headingLevel={2}
-                    kind="list"
-                    items={labels.steps.map((step, index) => ({
-                        id: step.id,
-                        title: step.title,
-                        detail: <Text tone="muted">{step.text}</Text>,
-                        leading: { position: index + 1 },
-                    }))}
-                    empty={null}
+                <Grid
+                    kind="main-rail"
+                    primary={
+                        <Stack gap="row">
+                            <Heading level={1}>{labels.title}</Heading>
+                            <Text tone="muted">{labels.description}</Text>
+                            <Cluster gap="row" align="center" wrap>
+                                <Button intent="commit" href={labels.subscribeHref}>
+                                    {labels.subscribe}
+                                </Button>
+                                <Text tone="muted">{labels.premiumNote}</Text>
+                            </Cluster>
+                        </Stack>
+                    }
+                    rail={<ArtImage asset={areaArt("projects")} base={staticsBaseUrl} />}
+                    railWidth="standard"
+                    align="start"
+                    collapsedOrder="primary-first"
+                    railPosition="trailing"
                 />
-                <SampleTable {...props.props} />
-                <Section title={labels.cvTitle} headingLevel={2}>
-                    <SampleCv {...props.props} />
+                <Section title={labels.stepsTitle} headingLevel={2}>
+                    <Grid kind="cards" columns={3}>
+                        {labels.steps.map((step, index) => (
+                            <SurfaceCard
+                                key={step.id}
+                                kind="tile"
+                                name={step.title}
+                                description={step.text}
+                                badge={{ label: String(index + 1), tone: "accent" }}
+                                poster={{
+                                    aspect: "landscape",
+                                    fit: "contain",
+                                    image: {
+                                        src: `${staticsBaseUrl}/${areaArt(STEP_ART[index] ?? "projects").key}`,
+                                        alt: "",
+                                    },
+                                }}
+                            />
+                        ))}
+                    </Grid>
                 </Section>
-                <Section
-                    title={labels.includedTitle}
-                    headingLevel={2}
-                    kind="list"
-                    items={labels.included.map((each) => ({
-                        id: each.id,
-                        title: each.title,
-                        detail: <Text tone="muted">{each.text}</Text>,
-                    }))}
-                    empty={null}
-                />
-                <Button intent="commit" href={labels.subscribeHref}>
-                    {labels.subscribe}
-                </Button>
+                <Section title={labels.includedTitle} headingLevel={2}>
+                    <Grid kind="cards" columns={4}>
+                        {labels.included.map((each) => (
+                            <SurfaceCard key={each.id} kind="tile" name={each.title} description={each.text} />
+                        ))}
+                    </Grid>
+                </Section>
             </Stack>
         </Page>
     )

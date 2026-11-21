@@ -2,15 +2,21 @@ import {
     Badge,
     type PageHeaderContent,
     type ListRowData,
+    Cluster,
     EmptyNotice,
     Grid,
     Link,
     Page,
+    ProgressCircle,
     Section,
+    StaticsProvider,
     Stack,
+    StatusDot,
+    Stepper,
+    SurfaceCard,
     Text,
 } from "@starci/grammar/common"
-import { MissingNotice, SlotView } from "@starci-next/ui"
+import { ArtImage, areaArt, MissingNotice, SlotView } from "@starci-next/ui"
 import type {
     ConceptCardView,
     DataSlot,
@@ -73,6 +79,15 @@ export type ProjectMilestoneBaseProps = {
         readonly isLocked: boolean
         /** Where each concept of this milestone opens (its evidence page), by concept id. */
         readonly conceptHrefs: Readonly<Record<string, string>>
+        /** The public base of the statics, for the milestone picture. */
+        readonly staticsBaseUrl: string
+        /** The words of the three levels of a concept and of the ring. */
+        readonly tally: {
+            readonly proved: string
+            readonly practising: string
+            readonly todo: string
+            readonly ring: string
+        }
     }
     readonly on: { readonly retry: () => void }
 }
@@ -84,40 +99,115 @@ type BodyProps = {
     readonly isLoading: boolean
 }
 
-/** The evidence slots of a concept in words: each slot with its state ("test · đạt"). */
-const slotsOf = (concept: ConceptCardView): string =>
-    concept.chips.map((chip) => (chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`)).join(", ")
-
-/** One concept as a row that opens its evidence page: its name, its kind, its evidence slots and the lesson that teaches it; its state is the chip. */
-const conceptRowOf = (concept: ConceptCardView, props: BodyProps, isAllSoon: boolean): ListRowData => ({
-    id: concept.id,
-    title: concept.label,
-    description: [
-        isAllSoon || !concept.comingSoon ? concept.kindLabel : props.props.labels.comingSoon,
-        slotsOf(concept),
-        concept.lessonHref === "" ? "" : `${props.props.table.columns.lesson}: ${concept.lessonTitle}`,
-    ]
-        .filter((part) => part !== "")
-        .join(" · "),
-    href: props.props.conceptHrefs[concept.id] ?? "",
-    badges: [{ label: concept.stateLabel, tone: concept.stateTone }],
+/** How many concepts stand at each level. */
+const tallyOf = (concepts: ReadonlyArray<ConceptCardView>) => ({
+    proved: concepts.filter((concept) => concept.stateTone === "success").length,
+    practising: concepts.filter((concept) => concept.stateTone === "warning").length,
+    total: concepts.length,
 })
 
-/** The concepts of the milestone as one list: a row per concept, each opening its evidence page; the legend of the two levels under the head. */
+/** The head of the page: the ring of proved concepts, the three-level tally and the milestone picture. */
+const Hero = (props: BodyProps) => {
+    const { tally } = props.props
+    const count = tallyOf(props.view.concepts)
+    const todo = count.total - count.proved - count.practising
+    const value = count.total === 0 ? 0 : Math.round((count.proved / count.total) * 100)
+    const rows = [
+        { id: "proved", tone: "success" as const, n: count.proved, label: tally.proved },
+        { id: "practising", tone: "warning" as const, n: count.practising, label: tally.practising },
+        { id: "todo", tone: "neutral" as const, n: todo, label: tally.todo },
+    ]
+    return (
+        <Grid
+            kind="pair"
+            leading={
+                <Cluster gap="inline" wrap>
+                    <Stack gap="identity">
+                        <ProgressCircle label={tally.ring} value={value} size="lg" />
+                        <Text size="figure" tabular>
+                            {`${count.proved}/${count.total}`}
+                        </Text>
+                    </Stack>
+                    <Stack gap="identity">
+                        {rows.map((row) => (
+                            <Cluster key={row.id} gap="identity">
+                                <StatusDot tone={row.tone} aria-label={row.label} />
+                                <Text>{`${row.n} ${row.label}`}</Text>
+                            </Cluster>
+                        ))}
+                    </Stack>
+                </Cluster>
+            }
+            trailing={
+                <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
+                    <ArtImage asset={areaArt("milestone")} base={props.props.staticsBaseUrl} />
+                </StaticsProvider>
+            }
+        />
+    )
+}
+
+/** The way from practising to proved as one flow: the lines of the catalogue as steps, the current one by how far the concepts got. */
+const ProofFlow = (props: BodyProps) => {
+    const { labels } = props.props
+    const count = tallyOf(props.view.concepts)
+    const steps = labels.how.map((line, index) => ({ id: `step-${index}`, label: line }))
+    const current = count.proved > 0 ? steps.length - 1 : count.practising > 0 ? Math.min(1, steps.length - 1) : 0
+    return (
+        <Section title={labels.howTitle} headingLevel={2} isLoading={props.isLoading}>
+            <Stepper label={labels.howTitle} steps={steps} currentStepId={steps[current]?.id ?? ""} />
+        </Section>
+    )
+}
+
+/** One concept as a card that opens its evidence page: its level, its kind, and one badge per evidence slot. */
+const ConceptCard = (props: {
+    readonly concept: ConceptCardView
+    readonly body: BodyProps
+    readonly isAllSoon: boolean
+}) => {
+    const { concept } = props
+    const { labels, table } = props.body.props
+    const subtitle = [
+        props.isAllSoon || !concept.comingSoon ? concept.kindLabel : labels.comingSoon,
+        concept.lessonHref === "" ? "" : `${table.columns.lesson}: ${concept.lessonTitle}`,
+    ]
+        .filter((part) => part !== "")
+        .join(" · ")
+    return (
+        <SurfaceCard
+            kind="tile"
+            name={concept.label}
+            byline={subtitle}
+            badge={{ label: concept.stateLabel, tone: concept.stateTone }}
+            facts={concept.chips.map((chip) => (chip.mark === "" ? chip.label : `${chip.label} · ${chip.mark}`))}
+            wholeAction={{ kind: "link", href: props.body.props.conceptHrefs[concept.id] ?? "", label: concept.label }}
+        />
+    )
+}
+
+/** The concepts of the milestone as a grid of cards, each opening its evidence page. */
 const ConceptsTable = (props: BodyProps) => {
     const { labels, table } = props.props
     const isAllSoon = props.view.concepts.length > 0 && props.view.concepts.every((concept) => concept.comingSoon)
     return (
         <Section
-            kind="list"
             title={labels.conceptsLabel}
             headingLevel={2}
             count={props.view.concepts.length}
             isLoading={props.isLoading}
             caption={isAllSoon ? `${table.legend} ${labels.comingSoon}` : table.legend}
-            items={props.view.concepts.map((concept) => conceptRowOf(concept, props, isAllSoon))}
-            empty={<EmptyNotice message={labels.runsEmpty} mark="none" frame="frameless" />}
-        />
+        >
+            {props.view.concepts.length === 0 ? (
+                <EmptyNotice message={labels.runsEmpty} mark="none" frame="frameless" />
+            ) : (
+                <Grid kind="cards" columns={3}>
+                    {props.view.concepts.map((concept) => (
+                        <ConceptCard key={concept.id} concept={concept} body={props} isAllSoon={isAllSoon} />
+                    ))}
+                </Grid>
+            )}
+        </Section>
     )
 }
 
@@ -153,37 +243,16 @@ const RunsTable = (props: BodyProps) => {
     )
 }
 
-/** How to prove (numbered rows) and the signed CI attestation, side by side under the table. */
-type HowToProveProps = { readonly labels: ProjectMilestoneLabels }
-
-/** How to prove, as {@link HowToProveProps} says. */
-const HowToProve = (props: HowToProveProps) => (
-    <Grid
-        kind="pair"
-        leading={
-            <Section
-                title={props.labels.howTitle}
-                headingLevel={2}
-                kind="list"
-                items={props.labels.how.map((line, index) => ({
-                    id: `how-${index}`,
-                    title: line,
-                    leading: { position: index + 1 },
-                }))}
-                empty={null}
-            />
-        }
-        trailing={
-            <Section title={props.labels.ciTitle} headingLevel={2}>
-                <Stack gap="inline">
-                    <Text tone="muted">{props.labels.ciText}</Text>
-                    <Link href={props.labels.ciHref} variant="head">
-                        {props.labels.ciLink}
-                    </Link>
-                </Stack>
-            </Section>
-        }
-    />
+/** The signed CI attestation: what it is, and where to read how to set it up. */
+const CiNote = (props: { readonly labels: ProjectMilestoneLabels }) => (
+    <Section title={props.labels.ciTitle} headingLevel={2}>
+        <Stack gap="inline">
+            <Text tone="muted">{props.labels.ciText}</Text>
+            <Link href={props.labels.ciHref} variant="head">
+                {props.labels.ciLink}
+            </Link>
+        </Stack>
+    </Section>
 )
 
 /**
@@ -255,9 +324,11 @@ export const ProjectMilestoneBase = (props: ProjectMilestoneBaseProps) => {
                     </Stack>
                 ) : (
                     <Stack gap="region">
+                        <Hero props={props.props} view={data} isLoading={loading} />
+                        <ProofFlow props={props.props} view={data} isLoading={loading} />
                         <ConceptsTable props={props.props} view={data} isLoading={loading} />
                         <RunsTable props={props.props} view={data} isLoading={loading} />
-                        <HowToProve labels={labels} />
+                        <CiNote labels={labels} />
                     </Stack>
                 )
             }

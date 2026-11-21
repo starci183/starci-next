@@ -1395,33 +1395,7 @@
           },
           "locked": {
             "description": "Gói miễn phí học trọn phần 1 của mọi bài. Điểm 5 câu mở bài và tiến độ của bạn được giữ nguyên khi nâng cấp.",
-            "list": "Trong phần này bạn có",
-            "back": "Quay lại phần 1",
-            "compare": "So sánh hai gói",
-            "source": {
-              "title": "Phần 2 · Bản chất thuộc gói Premium",
-              "one": "Đọc bài theo kiểu thực hành dẫn dắt lý thuyết: chạy source rồi mới hệ thống hóa",
-              "two": "Kiến trúc, giải thích code có WHY và bản chất của từng đoạn",
-              "three": "Bốn luồng kiểm thử, các trường hợp biên và câu hỏi phỏng vấn"
-            },
-            "scenarios": {
-              "title": "Phần 3 · Tìm sạn thuộc gói Premium",
-              "one": "Tải bản source có 5 lỗi cài sẵn về máy và chạy bằng Docker",
-              "two": "Sửa code tới khi pass từng test; test đỏ có mong đợi, thực tế và gợi ý mở dần",
-              "three": "Pass hết test thì mở Challenges"
-            },
-            "apply": {
-              "title": "Phần 4 · Challenges thuộc gói Premium",
-              "one": "Bốn bậc Dễ, Vừa, Khó, Siêu khó, mỗi bậc mở khi xong bậc trước",
-              "two": "Kịch bản ẩn chạy trên máy bạn, thang điểm 100 chia theo từng mục",
-              "three": "Câu hỏi bản chất kiểu hỏi vặn, từ bậc Khó kèm giải thích ngắn để AI chấm"
-            },
-            "pattern": {
-              "title": "Phần 5 · Pattern thuộc gói Premium",
-              "one": "Pattern này nằm ở đâu trong một dự án thật",
-              "two": "Áp tới mức nào, server sập thì sao",
-              "three": "Các file chính và đoạn code mẫu, kèm đường tới repo"
-            }
+            "compare": "So sánh hai gói"
           }
         },
         "errorTitle": "Không tải được bài",
@@ -1432,6 +1406,8 @@
           "copy": "Sao chép",
           "journeyTitle": "Bài này gồm 5 phần",
           "reading": {
+            "deepTitle": "Đọc sâu khi cần",
+            "overviewTitle": "Các mục của bài",
             "tocTitle": "Mục lục",
             "tocEmpty": "Bài chưa có mục nào.",
             "flagged": "Nên đọc kỹ",
@@ -1444,18 +1420,11 @@
           },
           "bugs": {
             "pullTitle": "Lấy source và chạy trên máy bạn",
-            "pullNote": "Bản source này có 5 lỗi cài sẵn, mỗi lỗi ứng với một bản chất ở phần mở đầu. Sửa code tới khi pass hết test.",
             "runsEmpty": "Bài chưa có test nào.",
             "passTitle": "Vì sao giờ đúng",
-            "failTitle": "Vì sao chưa pass",
-            "hintsTitle": "Gợi ý đã mở",
-            "lockedFinal": "Test tổng mở khi các test khác đã pass.",
             "machineNone": "Chưa có máy nào kết nối",
             "machineNoneNote": "Ghép máy của bạn ở trang Kết nối để kết quả từng test về đây.",
             "machineOnline": "Máy {name} đang kết nối",
-            "asideBugs": "5 hạt sạn",
-            "asideHintsTitle": "Gợi ý mở dần",
-            "asideHints": "Hướng (mục cần đọc lại), rồi file, rồi dòng. Mở gợi ý không trừ điểm; trang ghi lại bạn đã dùng mấy nấc.",
             "asideUnlockTitle": "Mở khóa",
             "asideUnlock": "Pass hết test, kể cả test tổng, để mở Challenges.",
             "asideUnlocked": "Bạn đã pass hết test. Challenges đã mở.",
@@ -1474,7 +1443,10 @@
             "expected": "mong đợi",
             "received": "thực tế",
             "runTitle": "Lần chạy {time} · {passed}/{total} pass",
-            "noRun": "Chưa có lần chạy nào · {total} test"
+            "noRun": "Chưa có lần chạy nào · {total} test",
+            "tilesTitle": "5 hạt sạn",
+            "compareTitle": "Mong đợi và thực tế",
+            "ring": "{passed}/{total} test đã pass"
           },
           "pattern": {
             "stacks": "Stack",
@@ -1487,8 +1459,6 @@
             "github": "Mở trên GitHub",
             "sourceTitle": "Nguồn",
             "sourceNote": "Code trích từ {repo}, chỉ giữ phần liên quan, không chạy độc lập.",
-            "addTitle": "Thêm stack",
-            "addNote": "Mỗi stack là một mục trong patterns.yaml của bài: repo, thư mục, file chính kèm chú thích, trạng thái.",
             "where": "Đặt code ở đâu",
             "howFar": "Áp tới mức nào",
             "whenDown": "Server sập thì sao"
@@ -1496,6 +1466,18 @@
           "written": {
             "prompt": "Giải thích ngắn (3 đến 5 câu) như đang trả lời phỏng vấn: vì sao lựa chọn của bạn giữ được lời hứa của hệ thống?",
             "wait": "Chọn đáp án câu này trước, rồi viết phần giải thích để AI chấm."
+          }
+        },
+        "lock": {
+          "premiumTitle": "Phần 2 đến 5 thuộc Premium",
+          "guestTitle": "Đăng nhập để học tiếp",
+          "guestNote": "Mở đầu của mọi bài là miễn phí. Đăng nhập để lưu điểm và tiến độ.",
+          "signIn": "Đăng nhập",
+          "notes": {
+            "source": "Source chạy trên máy bạn, các luồng kiểm thử",
+            "scenarios": "Lỗi cài sẵn, test đỏ có gợi ý",
+            "apply": "4 bậc, kịch bản ẩn, dòng CV đã xác minh",
+            "pattern": "Pattern trong dự án thật"
           }
         }
       }
@@ -1536,7 +1518,9 @@
           "none": "Chưa nối CI",
           "passed": "Xanh",
           "failed": "Đỏ"
-        }
+        },
+        "addTitle": "Mang repo tiếp theo",
+        "addText": "Một lệnh thêm thư mục starci/"
       },
       "new": {
         "title": "Tạo dự án",
@@ -1581,7 +1565,15 @@
           "$ starci-next run",
           "  request-response-lifecycle  2 test  đang luyện",
           "  health-probe-semantics      0 test  chưa có bằng chứng"
-        ]
+        ],
+        "stepsLabel": "Ba bước tạo dự án",
+        "steps": [
+          "Đặt tên, chọn loại",
+          "Nối repo",
+          "Chạy một lệnh"
+        ],
+        "kindAppText": "HTTP, chạy bằng Docker, có probe",
+        "kindAgentText": "Gọi công cụ, đánh giá bằng e2e"
       },
       "detail": {
         "back": "Tất cả dự án",
@@ -1650,7 +1642,34 @@
         "secretAside": "Bí mật CI",
         "layoutAside": "Thư mục starci/",
         "milestonesEmpty": "Dự án chưa có milestone.",
-        "expEmpty": "Chưa có kinh nghiệm."
+        "expEmpty": "Chưa có kinh nghiệm.",
+        "repoLinked": "Đã nối",
+        "connectTitle": "Kết nối repo",
+        "connectNote": "CI của bạn gửi bằng chứng bằng token OIDC của GitHub Actions.",
+        "connectFlow": {
+          "push": {
+            "title": "git push",
+            "note": "Code của bạn"
+          },
+          "actions": {
+            "title": "GitHub Actions",
+            "note": "starci.yml chạy test"
+          },
+          "starci": {
+            "title": "StarCi",
+            "note": "Kiểm repo, commit, run id qua OIDC và HMAC"
+          },
+          "proved": {
+            "title": "Đã chứng minh",
+            "note": "Dòng CV"
+          }
+        },
+        "connectSteps": {
+          "repo": "Repo",
+          "audience": "Audience OIDC",
+          "secret": "Secret ký kết quả",
+          "run": "Run đầu tiên"
+        }
       },
       "milestone": {
         "back": "Về dự án",
@@ -1800,73 +1819,42 @@
       },
       "pitch": {
         "title": "Dự án",
-        "description": "Mang repo thật của bạn vào, chứng minh từng concept Bản chất bằng bằng chứng máy kiểm được, rồi nhận một dòng CV đã xác minh. Dự án nằm trong gói Premium.",
+        "description": "Mang repo thật vào, chứng minh từng concept bằng bằng chứng máy kiểm được, nhận dòng CV đã xác minh.",
         "subscribe": "Đăng ký Premium",
+        "premiumNote": "Dự án nằm trong gói Premium",
         "stepsTitle": "Từ repo của bạn đến dòng CV",
         "steps": {
           "repo": {
-            "title": "Mang repo của bạn vào",
-            "text": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ. Một lệnh thêm thư mục starci/ và mẫu CI vào repo."
+            "title": "Mang repo vào",
+            "text": "Mọi đề tài, mọi ngôn ngữ. Một lệnh thêm starci/."
           },
           "prove": {
             "title": "Chứng minh từng concept",
-            "text": "Mỗi concept Bản chất cần đủ ô bằng chứng: test, e2e, probe trên địa chỉ deploy, hoặc AI đọc đoạn code bạn dán. Chạy trên máy là Đang luyện; CI GitHub ký OIDC hoặc server chạy lại mới là Đã chứng minh."
+            "text": "Test, e2e, probe hoặc AI đọc code. CI ký OIDC mới tính."
           },
           "cv": {
-            "title": "Nhận dòng CV đã xác minh",
-            "text": "Mỗi milestone xong sinh một dòng CV từ bằng chứng StarCi đã kiểm. Không có số tự khai."
+            "title": "Nhận dòng CV",
+            "text": "Mỗi milestone xong sinh một dòng. Không có số tự khai."
           }
         },
-        "sampleNote": "Dữ liệu minh hoạ, không phải dự án của ai. Dự án thật của bạn hiện ở đúng khung này.",
-        "conceptsTitle": "Ví dụ: concept của một milestone",
-        "columns": {
-          "concept": "Concept",
-          "evidence": "Bằng chứng cần",
-          "state": "Trạng thái"
-        },
-        "cvTitle": "Ví dụ: dòng CV khi đủ bằng chứng",
-        "includedTitle": "Premium mở những gì ở Dự án",
+        "includedTitle": "Premium mở",
         "included": {
           "many": {
-            "title": "Nhiều dự án, mọi milestone",
-            "text": "Mỗi dự án là một repo riêng, không giới hạn số lượng."
+            "title": "Nhiều dự án",
+            "text": "Không giới hạn repo"
           },
           "probes": {
-            "title": "Probe trên địa chỉ deploy",
-            "text": "Server StarCi gọi địa chỉ http hoặc https công khai của bạn và ghi lại từng kết quả."
+            "title": "Probe trên deploy",
+            "text": "Gọi địa chỉ công khai của bạn"
           },
           "aiRead": {
             "title": "AI đọc code",
-            "text": "Dán đoạn xử lý, AI chấm theo thang tiêu chí và chỉ ra chỗ còn thiếu."
+            "text": "Chấm theo thang tiêu chí"
           },
           "ci": {
             "title": "CI có chữ ký",
-            "text": "GitHub OIDC xác nhận lần chạy trước khi tính là Đã chứng minh."
+            "text": "GitHub OIDC xác nhận"
           }
-        },
-        "noTable": "Chưa có concept.",
-        "sample": {
-          "lifecycle": {
-            "concept": "Vòng đời request/response",
-            "slots": "test ✓ · probe ✓",
-            "state": "Đã chứng minh"
-          },
-          "idempotency": {
-            "concept": "Idempotency khi retry",
-            "slots": "test ✓ · probe đang chờ",
-            "state": "Đang luyện"
-          },
-          "outbox": {
-            "concept": "Transactional outbox",
-            "slots": "e2e (relay) · CI ký OIDC",
-            "state": "Chưa bắt đầu"
-          }
-        },
-        "cv": {
-          "role": "Backend developer",
-          "badge": "Đã xác minh",
-          "text": "Thiết kế API ghi idempotent và transactional outbox cho my-blog-api; chịu 5 request trùng song song không tạo bản ghi thừa.",
-          "evidence": "Bằng chứng: CI run #41 (GitHub ký) · probe 17/11 · 3 concept"
         }
       },
       "concept": {
@@ -2795,6 +2783,12 @@
       "fewNote": "{name} đang học tiếp. CV tự cập nhật khi thầy ký thêm dòng mới, liên kết vẫn giữ nguyên.",
       "allSources": "Mọi nguồn",
       "sourcesLabel": "Lọc theo nguồn",
+      "figuresLabel": "Số liệu của CV",
+      "figSigned": "Dòng đã ký",
+      "figEssentials": "Essentials",
+      "figProjects": "Dự án",
+      "figPractice": "Harness · Luyện code",
+      "neutralName": "Học viên StarCi",
       "more": "Xem thêm {count, plural, other {# dòng}}",
       "verify": "Xác minh",
       "aiGraded": "AI chấm đạt",
@@ -2816,7 +2810,6 @@
       "factsCount": "{count, plural, other {# dòng đã ký}}",
       "factsUpdated": "Cập nhật {date}",
       "whyTitle": "Vì sao tin được CV này",
-      "stepsLabel": "Ba bước mỗi dòng CV đã qua",
       "steps": {
         "proved": {
           "label": "Luyện xong",
