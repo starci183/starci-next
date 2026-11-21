@@ -1,8 +1,9 @@
-import { EntryFrame, Heading, Section, Stack, Text } from "@starci/grammar/common"
-import { BrandLockup } from "@starci-next/ui"
+import { EntryFrame } from "@starci/grammar/common"
+import { ArtImage, AuthHero, BrandLockup, areaArt } from "@starci-next/ui"
 import { getLocale, getTranslations } from "next-intl/server"
 import type { ReactNode, ReactElement } from "react"
 import { LocaleSwitch } from "@/components/blocks/LocaleSwitch"
+import { staticsBase } from "@/modules/config"
 import { appI18n } from "@/modules/i18n"
 import { APP_ROUTES } from "@/modules/routes"
 
@@ -12,7 +13,7 @@ type EntryLayoutProps = { readonly content: ReactNode }
 /**
  * The entry frame of the sign-in, confirm and reset pages, resolved on the server: on a desktop the intro of the product (headed by
  * the brand lockup) beside the card, on a phone the brand lockup above it; the language switch sits at the top trailing edge and no
- * app header is drawn. The board has no artwork: the split frame has no variant without it yet (GRAMMAR-GAPS #11).
+ * app header is drawn. The intro is the welcome picture, one headline and the three areas as chips (the v2 board); the split frame's own artwork pane stays empty.
  */
 export const EntryLayout = async (props: EntryLayoutProps): Promise<ReactElement> => {
     const t = await getTranslations("app.auth.entry")
@@ -34,24 +35,15 @@ export const EntryLayout = async (props: EntryLayoutProps): Promise<ReactElement
             footer={null}
             artwork={null}
             intro={
-                <Stack gap="section">
-                    {lockup}
-                    <Heading level={2} scale="title">
-                        {t("headline")}
-                    </Heading>
-                    <Text tone="muted">{t("lead")}</Text>
-                    <Section
-                        kind="list"
-                        layout="settings"
-                        ariaLabel={t("areas")}
-                        items={(["essentials", "projects", "harness"] as const).map((area) => ({
-                            id: area,
-                            title: t(`${area}.name`),
-                            description: t(`${area}.text`),
-                        }))}
-                        empty={null}
-                    />
-                </Stack>
+                <AuthHero
+                    art={<ArtImage asset={areaArt("auth")} base={staticsBase()} />}
+                    headline={t("headline")}
+                    chipsLabel={t("areas")}
+                    chips={(["essentials", "projects", "harness"] as const).map((area) => ({
+                        id: area,
+                        label: t(`${area}.name`),
+                    }))}
+                />
             }
         >
             {props.content}

@@ -1,3 +1,7 @@
+"use client"
+
+import { useState } from "react"
+import { AuthPasswordLength } from "../AuthPasswordLength"
 import { Button, Checkbox, Cluster, Form, Input, Stack, Text, TextAction } from "@starci/grammar/common"
 
 /** The three detail forms: sign in, create an account, ask for a reset link. */
@@ -10,7 +14,13 @@ export interface AuthDetailsLabels {
     readonly password: string
     readonly newPassword: string
     readonly confirm: string
-    readonly passwordHint: string
+    /** The length rule of a new password: its words, bounds and the reading beside the gauge. */
+    readonly passwordLength: {
+        readonly label: string
+        readonly min: number
+        readonly max: number
+        readonly reading: (count: number) => string
+    }
     readonly emailPlaceholder: string
     readonly passwordPlaceholder: string
     readonly confirmPlaceholder: string
@@ -93,25 +103,38 @@ const PasswordLabelRow = (props: { readonly labels: AuthDetailsLabels; readonly 
 )
 
 /** The password field: a new password with its rule hint on sign-up, the current one otherwise. */
-const PasswordField = (props: PasswordFieldProps) => (
-    <Stack gap="identity">
-        {props.onForgot === undefined ? null : <PasswordLabelRow labels={props.labels} onForgot={props.onForgot} />}
-        <Input
-            id="auth-password"
-            name="password"
-            label={props.labels.password}
-            isLabelHidden={props.onForgot !== undefined}
-            placeholder={props.labels.passwordPlaceholder}
-            kind={props.isSignUp ? "newPassword" : "password"}
-            description={props.isSignUp ? props.labels.passwordHint : undefined}
-            revealLabel={props.labels.reveal}
-            hideLabel={props.labels.hide}
-            isRequired
-            isInvalid={props.isInvalid}
-            errorMessage={props.error}
-        />
-    </Stack>
-)
+const PasswordField = (props: PasswordFieldProps) => {
+    const [count, setCount] = useState(0)
+    const length = props.labels.passwordLength
+    return (
+        <Stack gap="identity">
+            {props.onForgot === undefined ? null : <PasswordLabelRow labels={props.labels} onForgot={props.onForgot} />}
+            <Input
+                id="auth-password"
+                name="password"
+                label={props.labels.password}
+                isLabelHidden={props.onForgot !== undefined}
+                placeholder={props.labels.passwordPlaceholder}
+                kind={props.isSignUp ? "newPassword" : "password"}
+                onValueChange={(value) => setCount(value.length)}
+                revealLabel={props.labels.reveal}
+                hideLabel={props.labels.hide}
+                isRequired
+                isInvalid={props.isInvalid}
+                errorMessage={props.error}
+            />
+            {props.isSignUp ? (
+                <AuthPasswordLength
+                    label={length.label}
+                    count={count}
+                    min={length.min}
+                    max={length.max}
+                    reading={length.reading(count)}
+                />
+            ) : null}
+        </Stack>
+    )
+}
 
 /** What the credential fields need: the whole form but its submit and pending flag. */
 type FieldsProps = Omit<AuthDetailsFormProps, "onSubmit" | "isPending">

@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl"
 import { useConfirmEmail } from "@/hooks/auth"
+import { staticsBase } from "@/modules/config"
+import { ArtImage, areaArt } from "@starci-next/ui"
 import { ConfirmEmailBase } from "./component"
 
 /** What the confirm page tells the card: the token the emailed link carried (when it did) and where the sign-in screen is. */
@@ -19,6 +21,11 @@ export const ConfirmEmail = (props: ConfirmEmailProps) => {
             props={{
                 title: t(`${verdict}.title`),
                 text: t(`${verdict}.text`),
+                art: <ArtImage asset={areaArt(verdict === "done" ? "milestone" : "auth")} base={staticsBase()} />,
+                expiredFacts:
+                    verdict === "invalid"
+                        ? { once: t("facts.once"), expires: t("facts.expires"), again: t("facts.again") }
+                        : undefined,
                 isWorking: verdict === "working",
                 failureTitle: verdict === "unavailable" ? t("unavailable.title") : undefined,
                 signInLabel: t("signIn"),

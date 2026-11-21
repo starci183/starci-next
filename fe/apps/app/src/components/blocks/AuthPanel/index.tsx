@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import { Text } from "@starci/grammar/common"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
@@ -70,7 +70,12 @@ const detailsLabelsOf = (state: AuthState, t: Translator): AuthPanelBaseProps["p
         password: t("field.password"),
         newPassword: t("field.newPassword"),
         confirm: t("field.confirm"),
-        passwordHint: t("field.passwordHint", { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH }),
+        passwordLength: {
+            label: t("field.passwordLength", { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH }),
+            min: PASSWORD_MIN_LENGTH,
+            max: PASSWORD_MAX_LENGTH,
+            reading: (count) => t("field.passwordReading", { count, max: PASSWORD_MAX_LENGTH }),
+        },
         emailPlaceholder: t("field.emailPlaceholder"),
         passwordPlaceholder: t("field.passwordPlaceholder"),
         confirmPlaceholder: t("field.confirmPlaceholder"),
@@ -82,6 +87,24 @@ const detailsLabelsOf = (state: AuthState, t: Translator): AuthPanelBaseProps["p
         submit: copy.submit,
     }
 }
+
+/** Seconds before the emailed link can be sent again; the screen shows the wait, the back end keeps its own limit. */
+const RESEND_WAIT_SECONDS = 60
+
+/** The seconds left of the resend wait since `startedAt` (a counter that restarts when the key changes); 0 when it is over. */
+const useResendWait = (key: string | undefined): number => {
+    const [left, setLeft] = useState(RESEND_WAIT_SECONDS)
+    useEffect(() => {
+        if (key === undefined) return
+        setLeft(RESEND_WAIT_SECONDS)
+        const timer = window.setInterval(() => setLeft((current) => Math.max(0, current - 1)), 1000)
+        return () => window.clearInterval(timer)
+    }, [key])
+    return left
+}
+
+/** The time left as m:ss. */
+const clockOf = (seconds: number): string => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`
 
 /** The card of the sign-in screen: its state machine over the auth doors, drawn by its pure twin. */
 export const AuthPanel = (props: AuthPanelProps) => {
@@ -99,6 +122,8 @@ export const AuthPanel = (props: AuthPanelProps) => {
         },
     })
     const [isTermsAccepted, setIsTermsAccepted] = useState(false)
+    const [resends, setResends] = useState(0)
+    const waitLeft = useResendWait(panel.state.step === "sent" ? `${panel.state.sentTo ?? ""}#${resends}` : undefined)
     const isSignedOut = useSignedInGuard(props.destination, props.presentation === "page")
     const { state } = panel
     if (!isSignedOut) return null
@@ -118,14 +143,23 @@ export const AuthPanel = (props: AuthPanelProps) => {
                     pendingLabel: t("social.redirecting", { provider: t("social.googleName") }),
                 },
                 details: detailsLabelsOf(state, t),
-                sent: { resend: t("sent.resend"), anotherEmail: t("sent.anotherEmail") },
+                sent: {
+                    resend: t("sent.resend"),
+                    resendWait: waitLeft > 0 ? t("sent.resendIn", { time: clockOf(waitLeft) }) : undefined,
+                    stepsLabel: t("sent.steps.label"),
+                    steps: { sent: t("sent.steps.sent"), open: t("sent.steps.open"), confirm: t("sent.steps.confirm") },
+                    anotherEmail: t("sent.anotherEmail"),
+                },
                 isPending: panel.pending,
                 isTermsAccepted,
                 isRefused: state.problem?.kind === "credentials",
             }}
             on={{
                 submitDetails: panel.submitDetails,
-                resend: panel.resend,
+                resend: () => {
+                    setResends((count) => count + 1)
+                    panel.resend()
+                },
                 anotherEmail: panel.chooseAnotherEmail,
                 forgot: () => panel.switchMode("forgot"),
                 terms: setIsTermsAccepted,

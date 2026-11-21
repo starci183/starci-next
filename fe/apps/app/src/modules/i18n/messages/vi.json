@@ -117,14 +117,15 @@
         "password": "Mật khẩu",
         "newPassword": "Mật khẩu mới",
         "confirm": "Nhập lại mật khẩu",
-        "passwordHint": "Từ {min} đến {max} ký tự.",
         "emailPlaceholder": "ban@email.com",
         "passwordPlaceholder": "Nhập mật khẩu",
         "confirmPlaceholder": "Nhập lại mật khẩu",
         "reveal": "Hiện mật khẩu",
         "hide": "Ẩn mật khẩu",
         "terms": "Tôi đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư",
-        "termsRequired": "Đồng ý điều khoản để đăng ký"
+        "termsRequired": "Đồng ý điều khoản để đăng ký",
+        "passwordLength": "{min}–{max} ký tự",
+        "passwordReading": "{count}/{max}"
       },
       "social": {
         "google": "Tiếp tục với Google",
@@ -155,14 +156,27 @@
         "subtitleConfirm": "Chúng tôi đã gửi một liên kết tới <b>{email}</b>. Hãy mở liên kết để xác nhận email.",
         "subtitleReset": "Nếu <b>{email}</b> có tài khoản, chúng tôi đã gửi liên kết để đặt mật khẩu mới.",
         "resend": "Gửi lại email",
-        "anotherEmail": "Dùng email khác"
+        "anotherEmail": "Dùng email khác",
+        "resendIn": "Gửi lại email · {time}",
+        "steps": {
+          "label": "Các bước xác nhận",
+          "sent": "Đã gửi",
+          "open": "Mở thư",
+          "confirm": "Xác nhận"
+        }
       },
       "reset": {
         "title": "Đặt mật khẩu mới",
         "subtitle": "Chọn mật khẩu mới cho tài khoản của bạn.",
         "submit": "Đặt mật khẩu",
-        "invalid": "Liên kết này không còn hiệu lực. Hãy xin liên kết mới.",
-        "again": "Về trang đăng nhập"
+        "again": "Đăng nhập để nhận liên kết mới",
+        "expired": {
+          "title": "Liên kết không còn hiệu lực",
+          "text": "Liên kết đã dùng, hết hạn hoặc chưa đầy đủ.",
+          "once": "chỉ dùng một lần",
+          "expires": "có hạn",
+          "again": "xin lại bất kỳ lúc nào"
+        }
       },
       "confirm": {
         "signIn": "Đăng nhập",
@@ -176,27 +190,28 @@
         },
         "invalid": {
           "title": "Liên kết không còn hiệu lực",
-          "text": "Liên kết đã dùng, hết hạn hoặc chưa đầy đủ. Hãy đăng nhập để nhận liên kết mới."
+          "text": "Liên kết đã dùng, hết hạn hoặc chưa đầy đủ."
         },
         "unavailable": {
           "title": "Chưa thể thực hiện",
           "text": "Chưa xác nhận được email lúc này."
+        },
+        "facts": {
+          "once": "chỉ dùng một lần",
+          "expires": "có hạn",
+          "again": "xin lại bất kỳ lúc nào"
         }
       },
       "entry": {
         "headline": "Học bản chất, để vibe-code mà không mất kiểm soát.",
-        "lead": "AI viết được mã. StarCi Next dạy phần AI không làm hộ bạn: vì sao hệ thống hỏng, và cách nhận ra khi mã AI viết sai.",
         "essentials": {
-          "name": "Essentials",
-          "text": "Kiến thức xoay quanh bài toán thật, có kịch bản chạy ngay trên máy bạn."
+          "name": "Essentials"
         },
         "projects": {
-          "name": "Projects",
-          "text": "Dự án trên repo của bạn, được kiểm bằng CI và đọc mã."
+          "name": "Projects"
         },
         "harness": {
-          "name": "Harness",
-          "text": "Dùng Claude Code và Codex cho đúng. Miễn phí."
+          "name": "Harness"
         },
         "areas": "Ba khu vực học"
       }

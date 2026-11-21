@@ -1,7 +1,13 @@
 import { Alert, Button, Cluster, Stack, SurfaceCard, Text, TextAction } from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import type { AuthNoticeView } from "@/modules/types"
-import { AuthCardHeading, AuthDetailsForm, AuthSocialButtons, type AuthDetailsLabels } from "@starci-next/ui"
+import {
+    AuthCardHeading,
+    AuthDetailsForm,
+    AuthSentSteps,
+    AuthSocialButtons,
+    type AuthDetailsLabels,
+} from "@starci-next/ui"
 
 /** The drawings of the card: the three detail forms and the note that the emailed link was sent. */
 export const AUTH_PANEL_SHAPES = ["signIn", "signUp", "forgot", "sent"] as const
@@ -28,6 +34,10 @@ export interface AuthPanelBaseProps {
         readonly details: AuthDetailsLabels
         readonly sent: {
             readonly resend: string
+            /** The resend label while the cool-down runs (it carries the time left), or undefined once the resend is open. */
+            readonly resendWait: string | undefined
+            readonly stepsLabel: string
+            readonly steps: { readonly sent: string; readonly open: string; readonly confirm: string }
             readonly anotherEmail: string
         }
         /** True inside the sign-in modal: the dialog is the surface, so the card and its page-level heading are not drawn. */
@@ -58,13 +68,15 @@ const Body = (props: AuthPanelBaseProps) => {
         case "sent":
             return (
                 <Stack gap="row">
+                    <AuthSentSteps label={props.props.sent.stepsLabel} steps={props.props.sent.steps} />
                     <Button
                         intent="alternative"
                         width="fill"
                         isPending={props.props.isPending}
+                        isDisabled={props.props.sent.resendWait !== undefined}
                         onPress={props.on.resend}
                     >
-                        {props.props.sent.resend}
+                        {props.props.sent.resendWait ?? props.props.sent.resend}
                     </Button>
                     <Cluster gap="inline" justify="center">
                         <TextAction appearance="inline" onPress={props.on.anotherEmail}>
