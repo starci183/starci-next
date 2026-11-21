@@ -159,24 +159,32 @@ audit:
       at: 2026-11-21T04:23:02.332Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Bảng chia sẻ mở ngay dưới nút: liên kết với Sao chép, LinkedIn, Facebook, Zalo, rồi ảnh xem
+            trước."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Nút trong bảng 40px (1440: y 267-306; 390: y 542-581), nhãn một dòng, ngăn kéo ở 390 có tay
+            nắm và nút Đóng. Còn mở: ở 1440 Popover chạy qua lề phải của trang tới x≈1427 (lề 1328)
+            và che tiêu đề Vì sao tin được (cần Grammar, đã ghi ở considered); thanh trên tự dựng
+            bằng Cluster như cv/public."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Sao chép, ba mạng, ngăn kéo có Đóng; Ứng dụng khác chỉ khi trình duyệt có."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không có trạng thái chạy; ô sao chép có lời Đã sao chép / Không sao chép được trong mã."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: '"Chia sẻ CV của …", "Ảnh xem trước khi dán liên kết"; tên mạng xã hội giữ nguyên.'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ở 1440 ảnh xem trước là một ô xám trống, không có khung chờ hay ảnh chung; ở 390 ảnh có. Ảnh
+            trống phải có trạng thái đang tải hoặc ảnh chung."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-  escalate: null
+          notes: "Ô liên kết ghi http://localhost:3280/cv/gallery-career-… còn ảnh xem trước ghi
+            starci-next-app-dev.starci.org/cv/gallery-career-states-example-test: hai địa chỉ cho
+            một liên kết. 1440 không có ảnh thật."
+  escalate: "needs owner: sau vòng 4 còn mở Popover tràn lề trang (cần Grammar), ảnh xem trước trống ở
+    1440 và địa chỉ trong ảnh xem trước khác liên kết sao chép, thanh trên tự dựng bằng Cluster"

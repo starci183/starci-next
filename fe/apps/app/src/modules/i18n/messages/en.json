@@ -477,6 +477,7 @@
         "streakLine": "{days}-day streak. Reviewing one card counts today.",
         "decksTitle": "Your decks",
         "decksManage": "Manage",
+        "decksAddFirst": "Pick a deck",
         "decksEmpty": "You have not added a deck.",
         "deckCards": "{count} cards",
         "howTitle": "How review works",

@@ -52,24 +52,24 @@ audit:
       at: 2026-11-21T04:23:13.362Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Cách ôn tập trước, rồi chọn mục tiêu, bộ thẻ (rỗng) sau; nút chính "Chọn bộ thẻ đầu tiên" ở đầu trang.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dưới tiêu đề và chạm/đè lên dòng "Bạn chưa thêm bộ thẻ nào." (y ~620–640), không có khoảng cách. Sửa trong app: đưa lối Quản lý vào thân mục như ProfileHub đã làm, hoặc bỏ khi chưa có bộ thẻ nào (nút chính đã dẫn tới bộ thẻ). Còn ghi: chip mục tiêu 5/10/20/30 thẻ cao ~20px, dưới vùng chạm 44px ở 390; bản vẽ đã duyệt chọn ChoiceChips nên vùng chạm mở rộng là việc của Grammar (cần Grammar). Nút chính 40px, một dòng.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Mục tiêu đổi ngay bằng chip, có câu "Bạn đổi lại được bất cứ lúc nào"; bộ thẻ có nút chính.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lần đầu không có gì đang chạy; chip đang chọn có viền rõ."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiếng Việt, Lại/Khó/Tốt/Dễ khớp tên nút ở phiên ôn."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Màn này là trạng thái lần đầu; rỗng của bộ thẻ có câu "Bạn chưa thêm bộ thẻ nào."'
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Học viên seed chưa có bộ thẻ, mục tiêu mặc định 10 thẻ/ngày khớp chip đang chọn."
   escalate: null

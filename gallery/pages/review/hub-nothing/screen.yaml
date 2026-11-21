@@ -76,24 +76,24 @@ audit:
       at: 2026-11-21T04:23:27.016Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Dải đầu với "Chọn bộ thẻ", ba con số, ô rỗng có đường tới Essentials, biểu đồ, rồi mục tiêu và bộ thẻ.'
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'Nút "Đổi" nay 40px (1440: y 361–400; 390: y ~1073–1113), bỏ size="sm" trong ReviewToday. Còn ghi: Đầu trang ở 390 gãy dòng sự kiện giữa cụm ("Mục tiêu / 10 thẻ/ngày", "Chuỗi 1 / ngày") vì PageHeader meta xuống dòng tự do (cần Grammar). Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dòng riêng dưới tiêu đề (Section đẩy action xuống khi hẹp); ở màn này không đè lên hàng nên không giữ mở. "Đến Essentials →" là action của EmptyNotice, cao ~20px ở 390 (cần Grammar).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Mục tiêu có "Đổi", ô rỗng có "Đến Essentials", đầu trang có "Chọn bộ thẻ".'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thanh mục tiêu 10/20, ô rỗng có biểu tượng."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiếng Việt; Essentials là tên khu vực."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái không có gì đến hạn, có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Seed gallery-review-nothing: 0 đến hạn, 0 thẻ mới, 10/20, một bộ thẻ 10 thẻ, khớp nhau."
   escalate: null

@@ -80,7 +80,7 @@ audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T03:56:48.575Z
@@ -124,24 +124,24 @@ audit:
       at: 2026-11-21T04:23:05.541Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Như vòng 1: nút chính "Thêm ảnh và tên", Danh tính nói chưa đặt tên và chưa chọn lộ trình, Liên kết CV và CV đã xác minh nói điều cần làm, rồi Tài khoản; cột phải xuống cuối ở 390.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Đã sửa: "Mở Kinh nghiệm" không còn đè chữ; khối rỗng CV căn giữa cả nút "Xem việc có thể làm"; Quản lý và Xem Premium cao 40px. Còn: ở 390 mô tả gói bị cắt "Gói miễn phí · Phần 1 của mỗi bài Essentials và toà…" (mất nội dung, nên xuống dòng); Tiến độ nhanh hẹp khoảng 100px, nhãn "Khái niệm đã chứng minh" xuống hai dòng. Checklist: nút đầu trang 40px, một dòng, không tràn ở 390; vùng chạm đủ 44.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Mỗi giá trị có đường đổi: Thêm ảnh và tên, Chọn lộ trình, Xem việc có thể làm, Quản lý, Xem Premium."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Học viên mới không có việc đang chạy hay chờ; "0 đang chờ duyệt" đúng với dữ liệu.'
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Bài Accepted" vẫn lẫn tiếng Anh; cùng một gói mà thanh trên ghi "Chưa có Premium" (khoá planFree), meta và hàng gói ghi "Gói miễn phí": vẫn hai cách gọi.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái rỗng; /profile nay có ảnh đang tải và lỗi một vùng ở 1440 và 390 (profile/overview-loading, profile/overview-partial-error); không có quyền ẩn vùng Tài khoản."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'screen.yaml không đổi so với vòng 1: summary và s3 vẫn hứa bảng token "Chưa có token nào.", liên kết "Quản lý gói" và câu "Phần 1 của mỗi bài Bản chất...", ảnh không có token, nút là "Xem Premium", câu khác; s1 hứa nút "Tải ảnh lên" và avatar vẽ từ tên, ảnh có "Thêm ảnh và tên" và avatar vẽ từ email; s2 trích câu chỉ dẫn cũ (ảnh ghi Essentials, Projects, Luyện code).'
   escalate: null

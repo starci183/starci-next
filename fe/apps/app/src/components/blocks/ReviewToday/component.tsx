@@ -154,18 +154,30 @@ const Rail = (props: PieceProps) => {
                 headingLevel={2}
                 count={view.decks.length}
                 isLoading={props.isLoading}
-                action={
-                    <Link variant="head" href={props.screen.props.decksHref}>
-                        {labels.decksManage}
-                    </Link>
-                }
+                // With no deck yet the way to add one is the empty notice's own command, so the head carries no second link.
+                {...(view.decks.length === 0 && !props.isLoading
+                    ? {}
+                    : {
+                          action: (
+                              <Link variant="head" href={props.screen.props.decksHref}>
+                                  {labels.decksManage}
+                              </Link>
+                          ),
+                      })}
                 items={view.decks.map((deck) => ({
                     id: deck.id,
                     title: deck.title,
                     description: deck.description,
                     href: deck.href,
                 }))}
-                empty={labels.decksEmpty}
+                empty={
+                    <EmptyNotice
+                        message={labels.decksEmpty}
+                        actionLabel={labels.decksAddFirst}
+                        actionHref={props.screen.props.decksHref}
+                        frame="frameless"
+                    />
+                }
             />
         </Stack>
     )

@@ -51,24 +51,24 @@ audit:
       at: 2026-11-21T04:23:15.598Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khung xám theo đúng thứ tự màn đầy đủ."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Khung xám cùng hình dạng (ba con số, ba hàng, biểu đồ, mục tiêu, bộ thẻ); "Đổi" 40px bị tắt khi đang tải; 390 không tràn.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Khi đang tải không có giá trị để đổi; "Đổi" tắt đúng.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đang tải thấy bằng khung xám ở mọi mục."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chỉ còn tiêu đề mục tiếng Việt."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái đang tải có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không có số giả trong khung tải."
   escalate: null

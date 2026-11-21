@@ -21,7 +21,13 @@ sections:
     why: Bộ xương đúng hình dạng danh sách và panel, không nhảy bố cục khi dữ liệu về.
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
-considered: []
+considered:
+  - option: "Bật skeleton bằng frame của SlotView (Page isLoading) thay vì vẽ placeholder như dữ liệu"
+    chosen: true
+    why: "Các block khác (ExperienceList, EssentialsCatalog) đã làm vậy; chữ x thô là lỗi, không phải cách vẽ."
+  - option: "Cho placeholder đủ ba tab lọc và một preview giả"
+    chosen: true
+    why: "Giữ chỗ thanh lọc và thẻ mục để bố cục không nhảy khi dữ liệu về."
 audit:
   builder:
     agent: next-one-edition
@@ -32,24 +38,24 @@ audit:
       at: 2026-11-21T04:22:52.288Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đầu trang, hàng chờ bên trái và bảng bên phải ở 1440, hàng chờ trước ở 390, giống bản đã tải."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ filter) và dòng meta dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh sách xuống khoảng 60px: trái với "không nhảy bố cục". Bảng bên phải không có khung xương thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được."
         live:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản thật, không có khối xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame / Page isLoading nên lớp skeleton không bật).'
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong khi hàng chờ còn chưa về.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái đang tải, có ở 1440 và 390."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời chọn mục và thiếu thanh lọc."
   escalate: null

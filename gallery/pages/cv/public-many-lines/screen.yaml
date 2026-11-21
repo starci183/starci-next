@@ -90,24 +90,30 @@ audit:
       at: 2026-11-21T04:23:00.192Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thứ tự như cv/public."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh trùng từng byte với cv/public (3 dòng), nên dải Tabs lọc nguồn và nút Xem thêm của màn
+            này chưa chấm được ở 1440 và 390. Thanh trên tự dựng bằng Cluster như cv/public."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Không thấy được lối lọc theo nguồn và Xem thêm, hai hành động riêng của trạng thái nhiều
+            dòng."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Như cv/public: dòng đã ký có biểu tượng đã xác minh."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Như cv/public: câu "không hiện điểm số…" lặp hai lần, "bài Accepted", và "(StarCi Bản
+            chất)" trong câu cạnh huy hiệu "Essentials".'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Không phải trạng thái nhiều dòng: 3 dòng, không có dải lọc (mã chỉ hiện từ 8 dòng) và không
+            có Xem thêm (giới hạn 10 / 390: 6). Cần seed từ 8 dòng trở lên rồi chụp lại."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Summary ghi "có tab theo nguồn", phần chu-cv ghi "14 dòng đã ký", phần pending-seed còn
+            hứa chụp lại; considered "Ẩn tab nguồn dưới 8 dòng" ghi chosen false trong khi mã đã
+            ẩn dưới 8 dòng. Lời và ảnh lệch nhau.'
   escalate: null

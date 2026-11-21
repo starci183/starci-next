@@ -158,24 +158,44 @@ audit:
       at: 2026-11-21T04:22:55.867Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chủ CV và Chia sẻ CV trước, rồi dòng đã ký, cột Vì sao tin được bên phải (390: sau danh
+            sách), chân trang cuối; đúng thứ nhà tuyển dụng cần."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Chiều cao: Đăng nhập, đổi ngôn ngữ, Chia sẻ CV và Xác minh đều 40px (đo 1440 và 390). Nhãn
+            một dòng ở 390, thanh trên vừa hàng, không tràn. Vùng chạm: nút 40px vẫn dưới 44 ở 390,
+            Grammar không nới vùng chạm cho Button (cần Grammar, ghi, không giữ mở). Còn mở: thanh
+            trên tự dựng bằng Cluster trong PublicCv/component.tsx (TopBar riêng, Đăng nhập là liên
+            kết tới trang đăng nhập), trong khi /verify dùng PublicTopBar (Đăng nhập mở hộp đăng
+            nhập); canvas ghi luật "app không dựng thanh trên bằng Cluster" và một kiểu cho mỗi
+            phần tử. Phụ: ở 390 biểu tượng đầu hàng canh giữa một hàng cao 5-6 dòng nên lơ lửng giữa
+            câu và nút Xác minh.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trang công khai, người xem không sửa giá trị nào; mỗi dòng có nút Xác minh tới /verify/{mã},
+            một nút chính Chia sẻ CV, chân trang có lối tạo CV."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "CV công khai chỉ có dòng đã ký; mỗi dòng có biểu tượng đã xác minh, không có trạng thái chạy
+            hay chờ để hiện."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Câu "Không hiện điểm số hay tên người duyệt" lặp hai lần trên một trang (chú thích dưới
+            danh sách và dòng cuối cột Vì sao tin được). Bước Luyện xong viết "bài Accepted" (chữ
+            Anh, chọn một: "bài đạt"). Dòng 2 ghi "(StarCi Bản chất)" trong câu còn huy hiệu
+            nguồn ghi "Essentials": một khoá hai tên. Lời người ký đã thống nhất (Thầy ký / Người
+            duyệt thầy chỉ định ký, bước 3 giải thích cả hai).'
         states:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Đang tải, lỗi tải, không tìm thấy và ít dòng đã có ở gallery. Nhưng cv/public-many-lines
+            trùng từng byte với màn này (cùng sha 1d98…/701c…, 3 dòng), nên trạng thái từ 8 dòng
+            (Tabs lọc nguồn, Xem thêm) chưa được thấy ở đâu; cv/public-not-found mất thanh trên (xem
+            màn đó)."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Dữ liệu ảnh là thật (seed, mã xác minh thật). Nhưng summary nói "CV của Minh Nguyễn, bốn
+            dòng từ bốn nguồn" trong khi ảnh là Học viên StarCi, 3 dòng, 2 nguồn; considered "Hiện
+            bộ lọc Mọi nguồn theo số dòng" còn ghi quy tắc từ hai nguồn, ngược với mã
+            (PUBLIC_CV_CHIPS_FROM = 8); phần s6 "hai điều chưa chắc" không nêu điều nào.'
   escalate: null

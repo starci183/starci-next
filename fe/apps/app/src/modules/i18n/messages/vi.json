@@ -477,6 +477,7 @@
         "streakLine": "Chuỗi {days} ngày. Ôn xong một thẻ là hôm nay đã được tính.",
         "decksTitle": "Bộ thẻ của bạn",
         "decksManage": "Quản lý",
+        "decksAddFirst": "Chọn bộ thẻ",
         "decksEmpty": "Bạn chưa thêm bộ thẻ nào.",
         "deckCards": "{count} thẻ",
         "howTitle": "Ôn tập hoạt động thế nào",

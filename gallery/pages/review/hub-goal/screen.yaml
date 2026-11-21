@@ -51,24 +51,24 @@ audit:
       at: 2026-11-21T04:23:14.466Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hộp thoại: tiêu đề, giải thích, chip, ô số, rồi Huỷ / Lưu mục tiêu."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ảnh 390-first.png không có hộp thoại: trong ảnh dài 390 hộp thoại nằm giữa trang 2103px (y ~900–1140), nên màn đầu 390x844 chỉ thấy nền tối, không chấm được màn đầu. Sửa ở cách chụp: chụp hộp thoại ở khung 390x844. Phần thấy được: ô số và hai nút 40px, ở 390 hai nút xếp dọc đủ rộng. Còn ghi: chip 5/10/20/30/Khác cao ~20px, dưới vùng chạm 44px ở 390; bản vẽ chọn ChoiceChips (cần Grammar)."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chip đổi nhanh, Khác mở ô số có −/+ từ 0 đến 50, Lưu mục tiêu là lệnh chính."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lưu có trạng thái đang lưu và badge lỗi khi lưu hỏng (code ReviewToday GoalDialog)."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Tiếng Việt; "Đặt 0 nếu muốn tạm dừng thẻ mới" rõ.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Hộp thoại có đang lưu và lỗi lưu trong code; màn trạng thái của trang có ở các màn hub-*."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Giá trị 10 khớp mục tiêu 10 thẻ/ngày trên trang."
   escalate: null

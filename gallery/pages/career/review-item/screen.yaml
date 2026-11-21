@@ -117,24 +117,24 @@ audit:
       at: 2026-11-21T04:22:46.973Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đầu trang, thẻ mục, Bằng chứng, AI chấm, Câu hỏi bảo vệ, ghi chú với Xác minh và Trả lại, rồi Lịch sử ở 1440 và 390."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'Tiêu đề là tên ngắn "Xây StarCi Shop bằng NestJS", mảnh cuối đường dẫn vừa một dòng ở 390, thẻ mục có "Còn 3 ngày". Checklist: Xác minh, Trả lại kèm ghi chú và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn; vùng bấm đủ 44px. Còn nhỏ, không giữ lens: meta dưới tiêu đề lặp đúng hàng đầu thẻ mục (Dự án · HV-… · Chờ thầy duyệt).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Ghi chú có Xác minh (nút chính) và Trả lại kèm ghi chú; đường dẫn đưa về hàng chờ."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chờ thầy duyệt có chấm màu ở thẻ và meta; màn không có việc đang chạy."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Mã thô evidence.ref đã bỏ. Còn mở vì frontend sửa được: phần Projects ghi "Dự án" ở huy hiệu và meta trong khi thanh bên ghi "Projects". Cần API, không giữ lens: HV-A3746A và "Học viên" trong Lịch sử, "Sample criterion" và hai câu hỏi bảo vệ tiếng Anh (seed).'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Gallery đã có -loading, -verified và -forbidden ở 1440 và 390 (lỗi riêng của -loading ghi ở màn đó)."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Dữ liệu thật của dev. Cần API: tên thật người học, tên ngắn của mục, tiêu chí và câu hỏi bảo vệ tiếng Việt."
   escalate: null

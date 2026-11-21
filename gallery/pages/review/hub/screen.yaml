@@ -94,24 +94,24 @@ audit:
       at: 2026-11-21T04:23:09.848Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Dải đầu với nút "Bắt đầu ôn 10 thẻ" đứng trước, rồi ba con số, danh sách sắp ôn, biểu đồ; cột phải (mục tiêu, bộ thẻ) xuống cuối ở 390.'
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Nút "Đổi" nay cao 40px (1440: y 361–400; 390: y ~1750–1790), nút chính 40px, không nhãn nào gãy ở 390, thanh trên dồn vào "Mở menu". Còn ghi: Đầu trang ở 390 gãy dòng sự kiện giữa cụm ("Mục tiêu / 10 thẻ/ngày", "Chuỗi 1 / ngày") vì PageHeader meta xuống dòng tự do (cần Grammar). Ở 390 "Quản lý →" của Bộ thẻ của bạn rơi xuống dòng riêng dưới tiêu đề (Section đẩy action xuống khi hẹp); ở màn này không đè lên hàng nên không giữ mở.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Mục tiêu có "Đổi", bộ thẻ có "Quản lý" và hàng có mũi tên, danh sách ôn mở bằng nút chính.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Thanh mục tiêu 0/10, badge "Thẻ mới" trên từng hàng; màn không có tác vụ chạy nền.'
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiếng Việt một thuật ngữ cho mỗi khái niệm (thẻ, bộ thẻ, mục tiêu, chuỗi); Essentials, Projects, Harness là tên khu vực; thuật ngữ Anh trong câu hỏi là nội dung thẻ."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Các màn trạng thái hub-first, hub-loading, hub-error, hub-goal, hub-done, hub-nothing có đủ ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Số liệu khớp nhau: 0 đến hạn, 10 thẻ mới, 10 hàng trong danh sách, nút "Bắt đầu ôn 10 thẻ", 0/10 hôm nay; bộ thẻ 20 và 10 thẻ từ seed.'
   escalate: null

@@ -78,24 +78,24 @@ audit:
       at: 2026-11-21T04:23:28.042Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Đường dẫn, tên, thanh tiến độ, câu hỏi, cảnh báo xung đột với "Tải lại thẻ", rồi "Về Ôn tập".'
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: '"Về Ôn tập" 40px, đường dẫn và đầu trang đúng bản vẽ. Còn ghi: "Tải lại thẻ" là action của Alert, cao ~32px (1440: y 405–436; 390: y 605–637), dưới vùng chạm 44px ở 390 (cần Grammar).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Xung đột có "Tải lại thẻ", lối về có "Về Ôn tập".'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Cảnh báo có biểu tượng tam giác và màu vàng."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'Mã nội dòng nay vẽ thành chữ mã (`DEBUG`, `onModuleInit`), không còn backtick thô; cảnh báo nói "thiết bị khác" ở cả tiêu đề và câu dưới. Còn ghi ngoài app: tiêu đề cảnh báo trong canvas 46-review-session.html và summary của screen.yaml vẫn nói "máy khác".'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái xung đột chấm, có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Xung đột thật từ seed gallery-review-conflict. Ghi: hai khổ là hai lần chạy seed (1440: 1/28 thẻ, câu Pino; 390: 1/27 thẻ, câu onModuleInit), mỗi ảnh tự khớp."
   escalate: null

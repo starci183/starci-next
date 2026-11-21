@@ -142,24 +142,32 @@ audit:
       at: 2026-11-21T04:22:58.058Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Chủ CV, một dòng đã ký, chú thích và lời "đang học tiếp", cột Vì sao tin được, chân trang;
+            390 giữ đúng thứ đó.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Nút 40px, nhãn một dòng ở 390, thanh trên vừa hàng, không có dải lọc dưới 8 dòng (đúng mã).
+            Vùng chạm 40 < 44 ở 390 là của Grammar (cần Grammar). Còn mở: thanh trên tự dựng bằng
+            Cluster, khác PublicTopBar của /verify (như cv/public). Phụ: hai lời xám chồng nhau dưới
+            danh sách với hai cỡ chữ khác nhau (chú thích nhỏ, lời "đang học tiếp" thường).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Nút Xác minh của dòng, Chia sẻ CV và lối tạo CV đều có."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Một dòng đã ký có biểu tượng đã xác minh; không có trạng thái chạy."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Không hiện điểm số hay tên người duyệt" lặp hai lần (chú thích danh sách và cột Vì sao);
+            "bài Accepted" ở bước Luyện xong còn chữ Anh.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái ít dòng hiện đủ ở 1440 và 390: một dòng vẫn đủ vết tin cậy, lời CV tự cập nhật,
+            không có dải lọc."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-  escalate: null
+          verdict: pass
+          notes: "Summary khớp ảnh (một dòng đã ký, dữ liệu seed thật, mã 9C2E-F88F-B6BA)."
+  escalate: 'needs owner: sau vòng 4 còn mở thanh trên tự dựng bằng Cluster, khác PublicTopBar của
+    /verify (cần chọn một thanh trên công khai, có thể cần Grammar TopBar không avatar), và câu
+    "không hiện điểm số…" lặp hai lần'

@@ -26,7 +26,13 @@ sections:
     why: xem ai đang duyệt phần nào và kết thúc khi cần
     law: ""
     grammar: '`Section kind="list"`'
-considered: []
+considered:
+  - option: "Lấy danh sách phần từ cùng tập phần của hàng chờ (essentials, projects, harness, practice)"
+    chosen: true
+    why: "Bỏ Sự cố đã bỏ và thêm Harness để chỉ định được đúng phần đang có mục."
+  - option: "Giữ ô gõ mã tài khoản đến khi có API thành viên"
+    chosen: true
+    why: "Không có nguồn tên; đã ghi cần API."
 audit:
   builder:
     agent: next-one-edition
@@ -37,24 +43,24 @@ audit:
       at: 2026-11-21T04:23:24.993Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chỉ định người duyệt trước, rồi danh sách người duyệt hiện tại, đúng hai phần của screen.yaml ở cả 1440 và 390."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Checklist: ô mã, ô số mục, Chỉ định, tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn. Còn mở: nút Kết thúc chỉ cao khoảng 31px (sm trong hàng danh sách thì được, nhưng screen.yaml của career/review-queue ghi 40px) và ở 390 vùng bấm của nó cùng các ô chọn phần (khoảng 24px) dưới 44px."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Ô Phần được duyệt có Essentials, Dự án, Sự cố, Luyện code (PARTS trong useReviewerAdmin.ts): thiếu Harness dù hai người duyệt hiện tại duyệt Harness, và có Sự cố là phần đã bỏ (experience.shared.ts). Hàng người duyệt chỉ có Kết thúc, không đổi được phần hay số mục tối đa."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Mỗi hàng có số mục đang mở (0/5); không có việc đang chạy."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Sự cố" là phần đã bỏ; "Dự án" trong khi thanh bên ghi "Projects". Cần API, không giữ lens: "Người duyệt 2591F3" thay tên, ô "Mã tài khoản người duyệt" gõ mã tay (cần API danh sách thành viên).'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là màn tab Người duyệt, có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Danh sách người duyệt là dữ liệu thật của dev. Cần API: tên người duyệt, danh sách thành viên để chọn."
   escalate: null

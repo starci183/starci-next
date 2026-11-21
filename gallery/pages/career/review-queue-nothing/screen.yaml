@@ -22,7 +22,13 @@ sections:
       trong trang."
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
-considered: []
+considered:
+  - option: "Ẩn bảng xem trước khi hàng chờ trống, dùng một EmptyNotice kèm đường đi tiếp"
+    chosen: true
+    why: "Một thông báo, không có câu mời chọn mục không tồn tại."
+  - option: "Giữ bố cục hai cột như bản có dữ liệu"
+    chosen: false
+    why: "Cột phải trống chiếm chỗ và nói sai."
 audit:
   builder:
     agent: next-one-edition
@@ -34,23 +40,23 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Ở 1440 ô "Chọn một mục để xem trước." có biểu tượng giữa cột phải nổi hơn câu trống thật "Không có mục nào chờ duyệt." (chữ thường nhỏ dưới thanh lọc); ở 390 ô đó là khối thứ hai dưới câu trống.'
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Khi hàng chờ trống, bảng xem trước rỗng vẫn chiếm nửa phải ở 1440; câu trống là dòng chữ trơn thay vì EmptyNotice như các vùng trống khác; ba viên lọc đều 0 vẫn hiện. Checklist: viên lọc và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn; vùng bấm viên lọc 40px cao."
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Summary hứa "đường đi tiếp" nhưng màn không có nút hay liên kết nào (về Hồ sơ, hoặc sang Người duyệt cho thầy).'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không có việc đang chạy; số đếm 0 trên các viên lọc."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Chọn một mục để xem trước." sai khi không có mục nào; meta "0 mục đang chờ · 0 quá hạn" lặp lại nhãn "0 mục" cạnh tiêu đề.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái trống, có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Số đếm 0 khớp danh sách trống."
   escalate: null

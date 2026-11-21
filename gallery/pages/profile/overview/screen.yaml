@@ -97,11 +97,14 @@ considered:
       không bị cắt ở 390; ảnh chụp bằng học viên cv-multi có ba dòng đã xác minh. Các vòng cũ nằm
       trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run).'
+  - option: "Auditor vòng 2: cho layout pass vì Grammar cho phép Switch compact trong hàng danh sách"
+    chosen: false
+    why: "Grammar cho phép compact, nhưng công tắc liên kết CV cũng là hàng cài đặt có nhãn và mô tả; hai kiểu trên một trang trái luật một kiểu cho mỗi phần tử và trái chính summary."
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T03:56:47.485Z
@@ -152,24 +155,24 @@ audit:
       at: 2026-11-21T04:23:06.592Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Giữ thứ tự vòng 1: đầu trang (tiêu đề, meta, nút chính), Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột phải xuống cuối ở 390."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Đã sửa: "Mở Kinh nghiệm" không còn đè chữ; Quản lý, Xem Premium, Xem tiến độ, Mở Kinh nghiệm cao 40px; mã /verify hiện đủ ở 1440. Còn: (1) hai kiểu công tắc trên cùng trang: công tắc liên kết CV là toggle 72x40, công tắc mỗi dòng là compact 32x18, dù cả hai là hàng cài đặt có nhãn và mô tả (Grammar dành compact cho hàng cài đặt); summary ghi "công tắc một kiểu" nhưng ảnh không đúng. (2) Tiến độ nhanh: danh sách số chỉ rộng khoảng 100px trong cột phải 320px, nhãn "Khái niệm đã chứng minh" xuống hai dòng ở 1440 và 390. Checklist: nút đầu trang 40px, một dòng, không tràn ở 390; công tắc compact lấy cả nhãn làm vùng chạm nên đủ 44.'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'Công tắc mỗi dòng CV nay có nhãn "Hiện trên CV công khai" và mô tả; mã /verify đọc đủ ở 1440, ở 390 rút giữa nhưng có nút Sao chép.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Công tắc mỗi dòng có lineState: đang lưu thì tắt và mô tả đổi sang câu đang lưu, hỏng thì errorMessage (ProfileHub cvRowOf). Không có ảnh của hai trạng thái này, kiểm trên code."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Bài Accepted" ở Tiến độ nhanh vẫn lẫn tiếng Anh (khoá dùng chung với Luyện code, cần một từ tiếng Việt cho cả app); dòng CV thứ hai gắn huy hiệu "Essentials" nhưng câu mô tả viết "(StarCi Bản chất)", hai tên cho một phần. Huy hiệu "Projects" nay khớp thanh bên.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đang tải (profile/overview-loading) và lỗi một vùng (profile/overview-partial-error) đã có ảnh 1440 và 390; rỗng ở profile/new; không có quyền: Tài khoản dùng forbidden=hide. Trạng thái tải ảnh thuộc profile/edit."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Summary vẫn ghi ảnh chụp "hai dòng CV Đã xác minh, một máy nối, gói miễn phí" trong khi ảnh có ba dòng, "Chưa nối máy nào" và Premium. Slug liên kết CV vẫn "learner-4" như mã nội bộ (nếu slug đọc được do API sinh thì ghi "cần API"). Số 0 ở Tiến độ nhanh là lỗ seed đã biết của học viên cv-multi, không tính.'
   escalate: null

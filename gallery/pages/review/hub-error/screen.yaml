@@ -51,24 +51,24 @@ audit:
       at: 2026-11-21T04:23:12.228Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tên trang rồi cảnh báo lỗi với Thử lại ngay dưới."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Đầu trang giữ tên khi lỗi. Còn ghi: "Thử lại" là action của Alert, cao ~32px (1440: y 219–250; 390: y 355–387), dưới 40px và vùng chạm 44px ở 390 (cần Grammar).'
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lỗi có nút Thử lại."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lỗi có biểu tượng và màu đỏ, câu nói rõ thẻ vẫn an toàn."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: '"Không tải được hàng ôn hôm nay. Thẻ của bạn vẫn an toàn." tiếng Việt rõ.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái lỗi có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lỗi thật từ ảnh chụp ép lỗi đọc; không có số giả."
   escalate: null

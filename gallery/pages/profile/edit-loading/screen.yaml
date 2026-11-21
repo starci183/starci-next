@@ -43,30 +43,30 @@ audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T04:23:04.501Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Giữ thứ tự của trang sửa: breadcrumb, tiêu đề, Huỷ và Lưu; khung xám cho Ảnh đại diện, Danh tính; rồi Liên kết CV."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Khung xám của ô tên và Select trải khoảng 1120px ở 1440 như profile/edit; khung "Chọn ảnh" cỡ sm (cần Grammar, như profile/edit). Checklist: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Lưu thay đổi" và "Huỷ" vẫn bấm được khi dữ liệu chưa về: canSave chỉ xét !isUploading; Lưu nên tắt khi đang tải.'
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Ảnh, nút Chọn ảnh, ô tên và Select đều là khung xám có chuyển động; đầu trang giữ nguyên."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: '"Huỷ" và "Hủy" cùng tồn tại trong vi.json, như profile/edit.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái đang tải ở 1440 và 390; lỗi có ở profile/edit-error."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Khi đang tải, Liên kết CV đã khẳng định "Liên kết CV xuất hiện khi bạn có ít nhất một mục đã xác minh" (placeholder verifiedCount 0) và bộ đếm "0/60" hiện trước khi biết tên: trạng thái tải nói điều chưa biết, nên là khung xám.'
   escalate: null

@@ -21,7 +21,13 @@ sections:
     why: "Đọc hàng đợi thất bại: khung báo lỗi có nút Thử lại, các mục chưa duyệt vẫn nguyên."
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
-considered: []
+considered:
+  - option: "Giữ Alert của SlotView, thêm errorDescription riêng cho hàng chờ"
+    chosen: true
+    why: "Một công thức trạng thái cho mọi vùng; chỉ thiếu câu giải thích."
+  - option: "Tự làm nút Thử lại 40px ngoài Alert"
+    chosen: false
+    why: "Sẽ có hai kiểu báo lỗi; cỡ nút thuộc Grammar (cần Grammar)."
 audit:
   builder:
     agent: next-one-edition
@@ -32,24 +38,24 @@ audit:
       at: 2026-11-21T04:22:51.189Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đầu trang rồi khung báo lỗi ngay chỗ hàng chờ, ở cả 1440 và 390."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn. Nút Thử lại trong Alert chỉ cao khoảng 31px ở 1440 và 32px ở 390 (vùng bấm dưới 44px): đó là cỡ action của Alert, cần Grammar, không giữ lens."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thử lại đọc lại hàng chờ."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Biểu tượng cảnh báo và tông đỏ của Alert; lỗi không cần chuyển động."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Chỉ có câu chung "Không tải được phần này."; summary hứa câu nói các mục chưa duyệt vẫn nguyên nhưng không có errorDescription (ReviewQueue/index.tsx chỉ truyền useSlotLabels()(t("empty"))). Frontend thêm được câu này.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái lỗi, có ở 1440 và 390."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không có dữ liệu giả trên màn."
   escalate: null

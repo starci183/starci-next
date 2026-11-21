@@ -82,24 +82,31 @@ audit:
       at: 2026-11-21T04:22:59.116Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khung xương giữ đúng chỗ: chủ CV và nút, ba hàng dòng CV, cột Vì sao tin được, chân trang."
         layout:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: "Khung xương đúng hình avatar, tên, dòng sự kiện, nút 40px và ba hàng (câu, nguồn, vết, nút
+            Xác minh); 390 không tràn. Còn mở: thanh trên tự dựng bằng Cluster như cv/public. Phụ
+            (cần Grammar): ở 390 khung của chú thích danh sách là một khối xám cao 32px rộng hết
+            hàng (y 901-932), trông như một nút, trong khi ở 1440 là một vạch mảnh."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chia sẻ CV chỉ là khung xương cho tới khi biết CV có thật; đổi ngôn ngữ và Đăng nhập vẫn bấm
+            được."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đang tải hiện bằng khung xương của SlotView ở cả hai cỡ."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Chỉ tiêu đề thật (Dòng CV đã ký, Vì sao tin được CV này, ba bước) và chân trang, đúng một
+            thuật ngữ."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đã là ảnh đang tải thật ở 1440 và 390 (khác vòng 1)."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Summary khớp ảnh, nhưng phần "Cập nhật 2026-11-20 (pending-seed)" còn nói ảnh sẽ được chụp
+            lại và considered "Ảnh là màn khác (CV đã tải)" đã cũ; xoá hoặc sửa theo ảnh hiện
+            tại.'
   escalate: null
