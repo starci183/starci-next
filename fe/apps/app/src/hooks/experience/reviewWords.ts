@@ -23,6 +23,27 @@ export const itemNameOf = (item: NamedItem): string => {
     return plain === "" ? item.subject : plain
 }
 
+/** The marks that end the first clause of a CV line, where its short name stops. */
+const CLAUSE_END = /[:;,.(]/
+
+/** The most characters a breadcrumb of an item keeps before it is cut on a word with an ellipsis. */
+const CRUMB_MAX = 28
+
+/** The short name of an item for its page heading: the first clause of its line, e.g. "Xây StarCi Shop bằng NestJS". */
+export const itemShortNameOf = (item: NamedItem): string => {
+    const name = itemNameOf(item)
+    const clause = name.split(CLAUSE_END)[0]?.trim() ?? ""
+    return clause === "" ? name : clause
+}
+
+/** Cuts a name to at most {@link CRUMB_MAX} characters on a word boundary, ending with an ellipsis when it was cut. */
+export const crumbOf = (name: string): string => {
+    if (name.length <= CRUMB_MAX) return name
+    const cut = name.slice(0, CRUMB_MAX)
+    const space = cut.lastIndexOf(" ")
+    return `${(space > 0 ? cut.slice(0, space) : cut).trimEnd()}…`
+}
+
 /** One day in milliseconds. */
 const DAY_MS = 24 * 60 * 60 * 1000
 

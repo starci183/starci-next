@@ -43,6 +43,7 @@ export const ReviewItem = (props: ReviewItemProps) => {
                 exitHref: APP_ROUTES.profile,
                 panelLabels: useReviewPanelLabels(),
                 title: header?.title ?? t("itemTitle"),
+                crumb: header?.crumb ?? t("itemTitle"),
                 meta: header?.meta,
                 crumbLabel: crumb("label"),
                 profileLabel: crumb("profile"),

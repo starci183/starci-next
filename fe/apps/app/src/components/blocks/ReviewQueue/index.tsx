@@ -15,10 +15,13 @@ import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useQueryReviewQueueSwr } from "@/hooks/swr"
 import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot, ReviewQueueScreenView } from "@/modules/types"
-import { REVIEW_QUEUE_PLACEHOLDER, ReviewQueueBase } from "./component"
+import { QUEUE_VIEW, REVIEW_QUEUE_PLACEHOLDER, REVIEWERS_VIEW, ReviewQueueBase } from "./component"
 
 /** The tab of the reviewer appointments, which reads them instead of the queue. */
-const REVIEWERS_TAB = "reviewers"
+const REVIEWERS_TAB = REVIEWERS_VIEW
+
+/** The filter the queue opens at. */
+const FIRST_FILTER = "pending"
 
 /**
  * Experience review for the teacher and appointed reviewers. The role comes from the verified session and only chooses what to
@@ -30,9 +33,9 @@ export const ReviewQueue = () => {
     const session = useSession()
     const role = signerRoleOf(useViewerRoles())
     const isTeacher = role === SIGNER_ROLES.teacher
-    const [tab, setTab] = useState("pending")
+    const [tab, setTab] = useState(FIRST_FILTER)
     const [selected, setSelected] = useState<string>()
-    const queue = useQueryReviewQueueSwr(tab === REVIEWERS_TAB ? "pending" : tab, role !== undefined)
+    const queue = useQueryReviewQueueSwr(tab === REVIEWERS_TAB ? FIRST_FILTER : tab, role !== undefined)
     const views = useReviewQueueViews(isTeacher)
     const currentId = selected ?? queue.data?.items[0]?.itemId
     const decision = useReviewDecision(currentId, () => queue.mutate())
@@ -59,6 +62,8 @@ export const ReviewQueue = () => {
                     crumbProfile: crumb("profile"),
                     listLabel: t("listLabel"),
                     tabsLabel: t("tabsLabel"),
+                    viewsLabel: t("reviewViewsLabel"),
+                    queueView: t("queueViewTab"),
                     reviewersLabel: t("tabReviewers"),
                     empty: t("empty"),
                     reviewersEmpty: t("reviewersEmpty"),
@@ -68,6 +73,7 @@ export const ReviewQueue = () => {
                 },
                 panelLabels: useReviewPanelLabels(),
                 tab,
+                isTeacher,
                 decision,
                 appoint: isTeacher ? admin.appointCard : undefined,
                 assign:
@@ -78,7 +84,7 @@ export const ReviewQueue = () => {
             on={{
                 retry: () => void queue.mutate(),
                 selectTab: (next) => {
-                    setTab(next)
+                    setTab(next === QUEUE_VIEW ? FIRST_FILTER : next)
                     setSelected(undefined)
                     decision.clear()
                 },

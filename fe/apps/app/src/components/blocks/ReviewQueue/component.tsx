@@ -36,7 +36,12 @@ export type ReviewQueueLabels = {
     /** The first crumb, back to the profile. */
     readonly crumbProfile: string
     readonly listLabel: string
+    /** Names the filter row of the queue list. */
     readonly tabsLabel: string
+    /** Names the teacher's view tabs, Queue and Reviewers. */
+    readonly viewsLabel: string
+    /** The Queue view tab. */
+    readonly queueView: string
     readonly reviewersLabel: string
     readonly empty: string
     readonly reviewersEmpty: string
@@ -48,6 +53,7 @@ export type ReviewQueueLabels = {
 /** What the signer does on the queue. */
 export type ReviewQueueActions = ReviewPanelActions & {
     readonly retry: () => void
+    /** Chooses a filter of the queue, or the Reviewers view. */
     readonly selectTab: (tab: string) => void
     readonly preview: (itemId: string) => void
     readonly endReviewer: (reviewerId: string) => void
@@ -65,7 +71,10 @@ export type ReviewQueueBaseProps = {
         readonly meta: string | undefined
         readonly labels: ReviewQueueLabels
         readonly panelLabels: ReviewPanelLabels
+        /** The chosen filter of the queue, or the Reviewers view. */
         readonly tab: string
+        /** The teacher sees the view tabs Queue and Reviewers and the filters Overdue and Unassigned. */
+        readonly isTeacher: boolean
         readonly decision: ReviewPanelDecision
         /** The teacher's appointment form on the Reviewers tab, or undefined for a reviewer. */
         readonly appoint: AppointReviewerCardProps | undefined
@@ -79,6 +88,7 @@ export type ReviewQueueBaseProps = {
 type QueueListProps = {
     readonly view: ReviewQueueScreenView
     readonly labels: ReviewQueueLabels
+    readonly tab: string
     readonly on: ReviewQueueActions
 }
 
@@ -92,13 +102,27 @@ type ReviewerListProps = {
 /** What the queue body draws once read. */
 type QueueBodyProps = { readonly view: ReviewQueueScreenView; readonly base: ReviewQueueBaseProps }
 
-/** The rail: the rows of the tab. */
+/** The rail: the rows of the chosen filter, under the filter pills when there is more than one filter. */
 const QueueList = (props: QueueListProps) => (
     <Section
         kind="list"
         title={props.labels.listLabel}
         headingLevel={2}
         fact={props.view.count}
+        {...(props.view.tabs.length < 2
+            ? {}
+            : {
+                  filter: (
+                      <Tabs
+                          label={props.labels.tabsLabel}
+                          kind="filter"
+                          shape="pill"
+                          items={props.view.tabs}
+                          selectedKey={props.tab}
+                          onSelect={props.on.selectTab}
+                      />
+                  ),
+              })}
         items={props.view.rows.map((row) => ({
             id: row.itemId,
             title: row.title,
@@ -139,7 +163,14 @@ const QueueGrid = (props: QueueBodyProps) => (
         railPosition="leading"
         railWidth="wide"
         collapsedOrder="rail-first"
-        rail={<QueueList view={props.view} labels={props.base.props.labels} on={props.base.on} />}
+        rail={
+            <QueueList
+                view={props.view}
+                labels={props.base.props.labels}
+                tab={props.base.props.tab}
+                on={props.base.on}
+            />
+        }
         primary={
             <Stack gap="section">
                 <ReviewPanel
@@ -154,16 +185,9 @@ const QueueGrid = (props: QueueBodyProps) => (
     />
 )
 
-/** The queue once read: the filter tabs, then the queue grid or the reviewer list. */
+/** The queue once read: the queue grid, or the teacher's appointment form and reviewer list on the Reviewers view. */
 const QueueBody = (props: QueueBodyProps) => (
     <Stack gap="region">
-        <Tabs
-            label={props.base.props.labels.tabsLabel}
-            kind="filter"
-            items={props.view.tabs}
-            selectedKey={props.base.props.tab}
-            onSelect={props.base.on.selectTab}
-        />
         {props.view.reviewers === undefined ? <QueueGrid {...props} /> : null}
         {props.view.reviewers === undefined || props.base.props.appoint === undefined ? null : (
             <AppointReviewerCard {...props.base.props.appoint} />
@@ -174,7 +198,13 @@ const QueueBody = (props: QueueBodyProps) => (
     </Stack>
 )
 
-/** The band: the trail from the profile, the page title and the summary of the queue once read. */
+/** The view the teacher's Reviewers tab opens; every other tab key is a filter of the Queue view. */
+export const REVIEWERS_VIEW = "reviewers"
+
+/** The Queue view tab key, which opens the queue at its first filter. */
+export const QUEUE_VIEW = "queue"
+
+/** The band: the trail from the profile, the page title, the summary of the queue once read, and the teacher's view tabs. */
 const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
     title: props.props.labels.title,
     titleScale: "standard",
@@ -186,11 +216,25 @@ const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
         ],
     },
     ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
+    ...(props.props.isTeacher
+        ? {
+              tabs: {
+                  label: props.props.labels.viewsLabel,
+                  kind: "views" as const,
+                  items: [
+                      { id: QUEUE_VIEW, label: props.props.labels.queueView },
+                      { id: REVIEWERS_VIEW, label: props.props.labels.reviewersLabel },
+                  ],
+                  selectedKey: props.props.tab === REVIEWERS_VIEW ? REVIEWERS_VIEW : QUEUE_VIEW,
+                  onSelect: props.on.selectTab,
+              },
+          }
+        : {}),
 })
 
 /**
- * Draws Experience review the way the canvas does (Program screen queue): the tabs Waiting, Overdue, Unassigned and Reviewers
- * (the last three for the teacher), the rows with their SLA badges, and the review panel of the chosen row. A reader with no signer
+ * Draws Experience review the way the canvas does (Program screen queue): for the teacher the view tabs Queue and Reviewers in the
+ * band and the filter pills Waiting, Overdue and Unassigned over the list; the rows with their SLA badges, and the review panel of the chosen row. A reader with no signer
  * role gets the forbidden slot.
  */
 export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (

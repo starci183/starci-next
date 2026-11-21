@@ -1,0 +1,60 @@
+schema: 1
+screen: career/review-item-verified
+title: Một mục cần duyệt, đã xác minh
+route: /review-queue/[itemId]
+area: career
+summary: "**Concept: Một mục cần duyệt, đã xác minh.** Mục đã xác minh: không còn Xác minh / Trả
+  lại; giáo viên có Thu hồi kèm lý do."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/[itemId]/page.tsx
+  - features/pages/ReviewItemPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 8fdbe26f89041e25f0b37b4207fc1b835b11022c723f1bc6e1ee874e0a17b4a7
+  "1440":
+    file: 1440.png
+    sha256: 04241d023e300a6a7b4c12bccb8429c4f38c122fd5fd3cdb7648c6114d1a0e14
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: đường về hàng đợi nằm trong đường dẫn, không còn liên kết rời
+    law: ""
+    grammar: "`Page header={{ title, meta, breadcrumbs }}`"
+  - id: panel-duyet
+    title: Panel duyệt
+    why: đọc bằng chứng và quyết định ngay trên trang riêng
+    law: ""
+    grammar: '`SurfaceCard, Section kind="list", Textarea, Button`'
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:49.058Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

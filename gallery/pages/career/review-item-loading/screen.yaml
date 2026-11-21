@@ -1,0 +1,59 @@
+schema: 1
+screen: career/review-item-loading
+title: Một mục cần duyệt, đang tải
+route: /review-queue/[itemId]
+area: career
+summary: "**Concept: Một mục cần duyệt, đang tải.** Bộ xương đúng hình dạng thẻ mục và các danh sách."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/[itemId]/page.tsx
+  - features/pages/ReviewItemPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 3f2599ae6fc87228e44d6b101d56fad2f95dd254e35667b84331ed0ffe5b8a98
+  "1440":
+    file: 1440.png
+    sha256: f5eee6b86f692ee206815ad122015d9e4139f7aa80944b90b0643762f8f786d8
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: đường về hàng đợi nằm trong đường dẫn, không còn liên kết rời
+    law: ""
+    grammar: "`Page header={{ title, meta, breadcrumbs }}`"
+  - id: panel-duyet
+    title: Panel duyệt
+    why: đọc bằng chứng và quyết định ngay trên trang riêng
+    law: ""
+    grammar: '`SurfaceCard, Section kind="list", Textarea, Button`'
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:48.001Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

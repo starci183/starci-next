@@ -46,20 +46,12 @@ export type ProfileHubBaseProps = {
     readonly on: {
         readonly setPublic: (isPublic: boolean) => void
         readonly toggleLine: (itemId: string) => void
-        readonly copyLine: (itemId: string, url: string) => void
         readonly retry: () => void
     }
 }
 
 /** What one part is drawn from: the words, the slot labels and how to read again. */
 type PartProps = Pick<ProfileHubBaseProps["props"], "labels" | "slotLabels"> & { readonly onRetry: () => void }
-
-/** The head link of a section. */
-const headLinkOf = (label: string, href: string) => (
-    <Link variant="head" href={href}>
-        {label}
-    </Link>
-)
 
 /** The identity: the avatar, the name, then the email and the goal path with the link that changes it. */
 const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIdentityView> }) => (
@@ -137,7 +129,11 @@ const CvLinkSection = (
     />
 )
 
-/** The row of one verified CV line: the line, who signed it, the badges, the copy command and the public switch. */
+/**
+ * The row of one verified CV line: the line and its badges, then under it who signed it and on what proof (wrapping, never cut), the
+ * verification link in full with its copy command, and the switch that puts the line on the public CV, which says while it saves and
+ * when it failed.
+ */
 const cvRowOf = (
     line: ProfileCvLine,
     labels: ProfileHubLabels,
@@ -146,23 +142,32 @@ const cvRowOf = (
 ): ListRowData => ({
     id: line.itemId,
     title: line.line,
-    description: `${line.signed}, ${line.evidence} · ${line.code}`,
     badges: [
         { label: labels.verified, tone: "success" },
         { label: line.part, tone: "neutral" },
     ],
-    action: {
-        label: line.isCopied ? labels.verifyCopied : labels.verifyCopy,
-        press: () => on.copyLine(line.itemId, line.url),
-    },
-    control: (
-        <Switch
-            label={line.isPublic ? labels.verifyPublic : labels.verifyPrivate}
-            isLabelHidden
-            isSelected={line.isPublic}
-            onSelectedChange={() => on.toggleLine(line.itemId)}
-            isLoading={isLoading}
-        />
+    detail: (
+        <Stack gap="row">
+            <Text tone="muted">{[line.signed, line.evidence].filter((part) => part !== "").join(" · ")}</Text>
+            <CopyField
+                label={labels.verifyLinkLabel}
+                value={line.url}
+                copyLabel={labels.cvLinkCopy}
+                copiedLabel={labels.cvLinkCopied}
+                copyErrorLabel={labels.cvLinkCopyError}
+                isLoading={isLoading}
+            />
+            <Switch
+                kind="compact"
+                label={labels.lineShown}
+                description={line.lineState === "saving" ? labels.lineSaving : labels.lineShownHint}
+                {...(line.lineState === "failed" ? { errorMessage: labels.lineFailed } : {})}
+                isSelected={line.isPublic}
+                isDisabled={line.lineState === "saving"}
+                onSelectedChange={() => on.toggleLine(line.itemId)}
+                isLoading={isLoading}
+            />
+        </Stack>
     ),
 })
 
@@ -185,18 +190,15 @@ const CvSection = (
                 isLoading={isLoading}
                 items={cv.lines.map((line) => cvRowOf(line, props.labels, props.on, isLoading))}
                 empty={
-                    <Stack gap="row">
-                        <EmptyNotice
-                            message={props.labels.cvEmptyTitle}
-                            description={props.labels.cvEmpty}
-                            frame="frameless"
-                        />
-                        <div>
-                            <Button intent="neutral" href={props.labels.cvEmptyHref}>
-                                {props.labels.cvEmptyAction}
-                            </Button>
-                        </div>
-                    </Stack>
+                    <EmptyNotice
+                        message={props.labels.cvEmptyTitle}
+                        description={props.labels.cvEmpty}
+                        frame="frameless"
+                        actionIntent="neutral"
+                        actionLabel={props.labels.cvEmptyAction}
+                        actionHref={props.labels.cvEmptyHref}
+                        actionEndArrow
+                    />
                 }
             />
         )}
@@ -234,13 +236,21 @@ const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "v
                                         first === undefined
                                             ? props.labels.devicesEmpty
                                             : `${props.devicesCount(devices.length)} · ${first.isOnline ? props.labels.online : props.labels.offline}`,
-                                    action: { label: props.labels.devicesManage, href: props.labels.devicesHref },
+                                    control: (
+                                        <Button intent="neutral" href={props.labels.devicesHref}>
+                                            {props.labels.devicesManage}
+                                        </Button>
+                                    ),
                                 },
                                 {
                                     id: "plan",
                                     title: props.labels.planTitle,
                                     description: `${plan.status} · ${plan.note}`,
-                                    action: { label: props.labels.planManage, href: props.labels.planHref },
+                                    control: (
+                                        <Button intent="neutral" href={props.labels.planHref}>
+                                            {props.labels.planManage}
+                                        </Button>
+                                    ),
                                 },
                             ]}
                             empty={null}
@@ -252,7 +262,10 @@ const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "v
     />
 )
 
-/** The side: a few figures of progress with the way to Progress, then the words about experience with the way to Experience. */
+/**
+ * The side: a few figures of progress with the way to Progress under them, then the words about experience with the way to Experience
+ * under them. The ways stand in the body, not the section head: a head link drops under the title in a narrow rail and overlaps the body.
+ */
 const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) => (
     <SlotView
         slot={props.views.aside}
@@ -262,23 +275,31 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
         onRetry={props.onRetry}
         render={(aside, isLoading) => (
             <Stack gap="region">
-                <Section
-                    kind="list"
-                    layout="keyValue"
-                    title={props.labels.asideProgressTitle}
-                    headingLevel={2}
-                    isLoading={isLoading}
-                    action={headLinkOf(props.labels.asideProgressLink, props.labels.progressHref)}
-                    items={aside.figures.map((figure) => ({ id: figure.id, title: figure.term, value: figure.value }))}
-                    empty={null}
-                />
-                <Section
-                    title={props.labels.asideExperienceTitle}
-                    headingLevel={2}
-                    isLoading={isLoading}
-                    action={headLinkOf(props.labels.asideExperienceLink, props.labels.experienceHref)}
-                >
-                    <Text tone="muted">{aside.experience}</Text>
+                <Stack gap="section" align="start">
+                    <Section
+                        kind="list"
+                        layout="keyValue"
+                        title={props.labels.asideProgressTitle}
+                        headingLevel={2}
+                        isLoading={isLoading}
+                        items={aside.figures.map((figure) => ({
+                            id: figure.id,
+                            title: figure.term,
+                            value: figure.value,
+                        }))}
+                        empty={null}
+                    />
+                    <Button intent="neutral" endArrow href={props.labels.progressHref} isLoading={isLoading}>
+                        {props.labels.asideProgressLink}
+                    </Button>
+                </Stack>
+                <Section title={props.labels.asideExperienceTitle} headingLevel={2} isLoading={isLoading}>
+                    <Stack gap="inline" align="start">
+                        <Text tone="muted">{aside.experience}</Text>
+                        <Button intent="neutral" endArrow href={props.labels.experienceHref} isLoading={isLoading}>
+                            {props.labels.asideExperienceLink}
+                        </Button>
+                    </Stack>
                 </Section>
             </Stack>
         )}

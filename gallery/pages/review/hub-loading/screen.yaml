@@ -8,10 +8,10 @@ summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì v
 shots:
   "390":
     file: 390.png
-    sha256: 80e92400f02f2f454ef0a4f7c9e20bff3a24d893308805619e75615ca1a97f8e
+    sha256: e0ee1d9a07aee2248b963e5b5ed19075dfbb939774044d14ac6f2c0b297236ae
   "1440":
     file: 1440.png
-    sha256: acd14f1c1d9aa9a3001e73a1b2398714f1d9ae940ba1b5c79ebdca38e51c8cae
+    sha256: 813c0acd6ea7521298beab6cfa6d8649cd4dd7230077ea343e131e73fb3f08f0
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -33,110 +33,42 @@ considered:
   - option: Theo bản vẽ đã duyệt ngày 2026-11-20 với Grammar 0.50
     chosen: true
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
+  - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
+    chosen: true
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
+      2026-11-20T13:51:52.101Z); lens cuối: order pass, layout pass, actionable pass, live pass,
+      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
+      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
+      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+      run)."
 audit:
   builder:
-    agent: next-ux-review
+    agent: next-one-edition
   auditor:
-    agent: next-ux-auditor
+    agent: next-ux-auditor-2
   rounds:
     - n: 1
-      at: 2026-11-20T12:43:24.788Z
+      at: 2026-11-21T04:23:15.598Z
       lenses:
         order:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton. Tiêu đề mục và "Đổi" hiện thật trong lúc
-            tải; thiếu skeleton cho nút "Bắt đầu ôn" ở header.
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
           verdict: open
-          notes: Loading có ở 1440 và 390 nhưng vẽ sai (chữ "xxxx" thật), một số tiêu đề hiện thật trong lúc
-            tải; cần skeleton đúng chuẩn.
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: ""
-    - n: 2
-      at: 2026-11-20T13:05:12.401Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 3
-      at: 2026-11-20T13:43:30.608Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 4
-      at: 2026-11-20T13:51:52.101Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

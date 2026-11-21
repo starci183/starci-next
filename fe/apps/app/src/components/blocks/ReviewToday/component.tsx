@@ -137,12 +137,7 @@ const Rail = (props: PieceProps) => {
                             <Text isStrong isLoading={props.isLoading}>
                                 {view.goalLine}
                             </Text>
-                            <Button
-                                intent="neutral"
-                                size="sm"
-                                onPress={props.screen.on.openGoal}
-                                isDisabled={props.isLoading}
-                            >
+                            <Button intent="neutral" onPress={props.screen.on.openGoal} isDisabled={props.isLoading}>
                                 {labels.goalChange}
                             </Button>
                         </Cluster>

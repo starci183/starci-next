@@ -568,6 +568,17 @@ const SCREENS = [
     S("profile", "new", "/profile", {
         learnerState: learnerOf("review-nothing"),
     }),
+    // The filled profile while its reads are held, and with the experience read refused (the other regions still draw).
+    S("profile", "overview-loading", "/profile", {
+        learnerState: learnerOf("cv-multi"),
+        hold: true,
+        ops: /"operationName":"(MyProfile|MyCvLink|MyExperience|LearnerProgress|RelayDevices|MyPremium)"/,
+    }),
+    S("profile", "overview-partial-error", "/profile", {
+        learnerState: learnerOf("cv-multi"),
+        refuse: true,
+        ops: /"operationName":"MyExperience"/,
+    }),
     S("profile", "edit", "/profile/edit"),
     S("profile", "edit-loading", "/profile/edit", { hold: true, ops: /"operationName":"MyProfile"/ }),
     S("profile", "edit-error", "/profile/edit", { refuse: true, ops: /"operationName":"MyProfile"/ }),
@@ -766,6 +777,41 @@ const SCREENS = [
     }),
     S("career", "review-queue-forbidden", "/review-queue"),
     S("career", "review-item-forbidden", "/review-queue/00000000-0000-4000-8000-000000000001"),
+    // The teacher queue in its other states: the real ReviewQueue answer held (loading), refused (error) or emptied (nothing yet to review).
+    S("career", "review-queue-loading", "/review-queue", {
+        learnerState: learnerOf("career-teacher"),
+        hold: true,
+        ops: /"operationName":"ReviewQueue"/,
+    }),
+    S("career", "review-queue-error", "/review-queue", {
+        learnerState: learnerOf("career-teacher"),
+        refuse: true,
+        ops: /"operationName":"ReviewQueue"/,
+    }),
+    S("career", "review-queue-nothing", "/review-queue", {
+        learnerState: learnerOf("career-teacher"),
+        reshape: {
+            ops: /"operationName":"ReviewQueue"/,
+            map: (body) => ({
+                ...body,
+                data: {
+                    reviewQueue: {
+                        ...body.data?.reviewQueue,
+                        counts: { pending: 0, overdue: 0, unassigned: 0 },
+                        items: [],
+                    },
+                },
+            }),
+        },
+    }),
+    // One item of the seeded teacher queue while its read is held.
+    S("career", "review-item-loading", "/review-queue/ae894d4c-4182-4ec3-9851-dedf2a1a2410", {
+        learnerState: learnerOf("career-teacher"),
+        hold: true,
+        ops: /"operationName":"ReviewItem"/,
+    }),
+    // The public CV of the seeded cv-multi learner when its read is refused.
+    S("cv", "public-error", "/cv/learner-4", { guest: true, refuse: true, ops: /"operationName":"PublicCv"/ }),
 ]
 // Seeded states (scripts/integration/gallery-seed.mjs, run first; it writes manifest.json and a storage state per gallery learner into GALLERY_STATES, default .tmp-gallery-states):
 // a screen the manifest names is shot as that learner on the dev stack's real data, not through a stand-in core. Keep the seed running with --hold so its devices stay online.

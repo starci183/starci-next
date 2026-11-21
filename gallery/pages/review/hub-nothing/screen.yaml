@@ -1,0 +1,99 @@
+schema: 1
+screen: review/hub-nothing
+title: Ôn tập, không có gì đến hạn
+route: /review
+area: review
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay (ảnh chụp: học
+  viên seed `gallery-review-nothing` đã ôn xong, hôm nay không còn thẻ đến hạn). Miễn phí nên không
+  có thẻ khoá."
+code:
+  - app/[locale]/(pages)/(app)/review/page.tsx
+  - features/pages/ReviewTodayPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: b98359edd69321adb81c8db74373d532ea79a72cd06675895fb48ab08712ae51
+  "1440":
+    file: 1440.png
+    sha256: 7934bb41043ca6ebdd3410b726eecd8779345dc5df92d7de240b49c9cff23da8
+sections:
+  - id: dau-trang
+    title: Đầu trang
+    why: 'Đầu trang (tên, dòng số liệu, một nút chính) đi qua `SlotView` cùng nội dung: tiêu đề giữ
+      nguyên khi đọc lỗi hay rỗng. Dòng số liệu và nút chính "Chọn bộ thẻ" giữ như trước.'
+    law: "`grammar-slot-interface` (chỉ `SlotView` rẽ nhánh)."
+    grammar: "`SlotView` với `header`, `headerFallback` và `frame` đặt `Page`."
+  - id: trang-thai
+    title: Trạng thái
+    why: 'Không có gì đến hạn: nút chính "Chọn bộ thẻ" và đường tới Essentials.'
+    law: "`FE-ERROR-1` (chỉ `SlotView` rẽ nhánh), `grammar-slot-interface`"
+    grammar: "`SlotView` với `Alert`, `EmptyNotice` và `isLoading` của Section, ListRow."
+  - id: phan-bien
+    title: Phản biện
+    why: Chưa thấy chỗ lệch so với bản vẽ ở lần chụp này; chủ dự án duyệt rồi mới sửa tiếp.
+    law: "`PROJECT-GALLERY-6`"
+    grammar: không đổi Grammar; chỗ lệch được ghi lại để chủ dự án quyết.
+considered:
+  - option: Giữ "Đổi" cỡ sm vì nằm cạnh chữ
+    chosen: false
+    why: Checklist chỉ cho sm trong hàng danh sách hay thanh công cụ dày; đây là một dòng nội dung bình
+      thường.
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-20T22:24:02.321Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Nút "Đổi" của Mục tiêu mỗi ngày cao 32px (1440: y 361–392; 390: y 1073–1104) vì
+            ReviewToday/component.tsx đặt size="sm" trong một Cluster, không phải hàng danh sách hay
+            thanh công cụ dày (sửa trong app). Ở 390 "Quản lý →" rơi xuống dòng riêng dưới "Bộ thẻ
+            của bạn". Meta ở 390 gãy giữa "Chuỗi 1 / ngày" (PageHeader, cần Grammar). Nút chính
+            "Chọn bộ thẻ" 40px.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: pass
+          notes: ""
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: pass
+          notes: ""
+    - n: 2
+      at: 2026-11-21T04:23:27.016Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

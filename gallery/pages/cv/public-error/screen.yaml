@@ -1,0 +1,66 @@
+schema: 1
+screen: cv/public-error
+title: CV công khai, lỗi tải
+route: /cv/[slug]
+area: cv
+summary: "**Concept: CV công khai, lỗi tải.** Lõi không trả lời và trình duyệt cũng không đọc được.
+  Mục tiêu: thông báo lỗi với nút Thử lại. Bố cục: một thông báo lỗi trang giữa trang, thanh trên
+  giữ nguyên."
+code:
+  - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
+  - features/pages/PublicCvPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 97a43e6bdf43f9da3f19dfe6dd9e5ae76f454ce731a7af357b5e507241b0ea0c
+  "1440":
+    file: 1440.png
+    sha256: f5bb907f9d939f0a45d491f199f612b5bbb1ca6f1408b7aa9c4c94b0b4373175
+sections:
+  - id: thanh-tren-cong-khai
+    title: Thanh trên công khai
+    why: người xem chưa đăng nhập chỉ cần biết đây là StarCi, đổi ngôn ngữ và đăng nhập.
+    law: Một cỡ nút cao 40px; app không dựng thanh trên bằng Cluster.
+    grammar: "`TopBar (cần Grammar nếu bản hiện tại buộc có avatar), Button`"
+  - id: chu-cv-va-chia-se-cv
+    title: Chủ CV và Chia sẻ CV
+    why: nhà tuyển dụng thấy ngay CV của ai và ai bảo đảm; nút chính duy nhất là Chia sẻ CV.
+    law: "Ngân sách đỏ: một nút chính; tên người xuất hiện trong chữ 500."
+    grammar: "`Avatar, Heading, Button, Popover, Drawer`"
+  - id: dong-cv-da-ky
+    title: Dòng CV đã ký
+    why: mỗi dòng là câu CV, nguồn và vết tin cậy; lọc theo nguồn là nhóm chip chọn một có số đếm.
+    law: Lọc theo giá trị là ChoiceChips (Tabs chỉ chuyển ngăn); danh sách phẳng, hàng px-4 py-3.
+    grammar: '`Section kind="list" filter, ChoiceChips, ListRow`'
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:23:23.014Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

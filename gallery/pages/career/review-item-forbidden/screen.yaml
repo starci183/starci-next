@@ -7,10 +7,10 @@ summary: "Người không có vai duyệt mở đường dẫn của một mục
 shots:
   "390":
     file: 390.png
-    sha256: e33eb44af4963a6e62735fdf08606632399f1a4b51ae40d64ab2c01e8403c1e1
+    sha256: 59762851b91bb5315bd5533deff50bed64c0f575f1b17621785f33cf7ae9cd35
   "1440":
     file: 1440.png
-    sha256: 2c8a9793201bec5aac67db0071b29b343913a68c3aed3ba8ae53c7a74b8a5843
+    sha256: 893f6e14f45ddfdf61a3b488b9642901934498c6c1f9123991882b421b492c71
 code:
   - features/pages/ReviewItemPage
   - components/blocks/ReviewItem
@@ -34,7 +34,7 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
 audit:
   builder:
-    agent: next-ux-review
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:

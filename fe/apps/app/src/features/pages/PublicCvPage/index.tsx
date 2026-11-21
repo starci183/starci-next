@@ -34,12 +34,13 @@ export const publicCvMetadata = async (props: PublicCvPageProps): Promise<Metada
 
 /**
  * The public CV page of one learner: a server owner that asks the core whether the link has a CV. A link with none answers HTTP 404 (the
- * not-found slot of the route draws it); a core that does not answer in time leaves the page to read in the browser.
+ * not-found slot of the route draws it). The CV itself is read in the browser, so the page draws its skeleton while that read is in
+ * flight and its failure notice with a retry when the read fails, the same as a core that did not answer the server in time.
  */
 export const PublicCvPage = async (props: PublicCvPageProps): Promise<ReactElement> => {
     const read = await readPublicCv(slugOf(props.slug), await getLocale())
     if (read.status === "notFound") notFound()
-    return <PublicCv slug={props.slug} initial={read.status === "found" ? read.cv : undefined} />
+    return <PublicCv slug={props.slug} />
 }
 
 /** The not-found page of a public CV: the same notice for a wrong link and a private CV. */

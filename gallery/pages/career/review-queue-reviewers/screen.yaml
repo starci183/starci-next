@@ -1,0 +1,60 @@
+schema: 1
+screen: career/review-queue-reviewers
+title: Duyệt trải nghiệm, người duyệt
+route: /review-queue
+area: career
+summary: "**Concept: Duyệt trải nghiệm, người duyệt.** Mục tiêu: giáo viên bổ nhiệm và kết thúc
+  người duyệt. Chỉ giáo viên thấy tab này."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: dfcf5de2d2163c50e8c723b6979521492f7cfd7d1615461fee64f1a1c5a49715
+  "1440":
+    file: 1440.png
+    sha256: 4235f42c83d73cc947f054a761485b546ff23687c456fd97565c6cfcfda6813d
+sections:
+  - id: bo-nhiem-nguoi-duyet
+    title: Bổ nhiệm người duyệt
+    why: chọn người, phần và số mục tối đa rồi bổ nhiệm
+    law: ""
+    grammar: "`Select, CheckboxGroup, NumberField, Button`"
+  - id: nguoi-duyet-hien-tai
+    title: Người duyệt hiện tại
+    why: xem ai đang duyệt phần nào và kết thúc khi cần
+    law: ""
+    grammar: '`Section kind="list"`'
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:23:24.993Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

@@ -1,12 +1,12 @@
 "use client"
 
-import { useLocale, useTranslations } from "next-intl"
+import { useFormatter, useLocale, useTranslations } from "next-intl"
 import { useState } from "react"
 import { failureCodeOf, plainLineOf, useExperienceWords } from "@/hooks/experience"
 import { useLocalizedPathname } from "@/hooks/locale"
 import { useOrigin } from "@/hooks/profile"
 import { mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
-import { useQueryPublicCvSwr, type PublicCv } from "@/hooks/swr"
+import { useQueryPublicCvSwr } from "@/hooks/swr"
 import { navigation } from "@starci-next/i18n/navigation"
 import { PUBLIC_CV_NOT_FOUND_CODES } from "@/modules/api"
 import { APP_ROUTES, verifyPath } from "@/modules/routes"
@@ -23,11 +23,39 @@ import {
 } from "./publicCv.shared"
 import { useCanShare, useIsPhone, usePreviewSrc } from "./useViewport"
 
+/** The public CV shows its source chips from this many signed lines: a shorter list is read whole at a glance. */
+const PUBLIC_CV_CHIPS_FROM = 8
+
 /** The steps of the trust trail, in the order every line carries them. */
 const STEP_IDS = ["proved", "graded", "signed"] as const
 
-/** What the page is built from: the slug of the address and what the server already read. */
-type PublicCvViewInput = { readonly slug: string; readonly initial?: PublicCv | undefined }
+/** What the page is built from: the slug of the address. */
+type PublicCvViewInput = { readonly slug: string }
+
+/**
+ * The signing date of a line, in digits (21/11/2026): one word that never breaks, so a wrapped trust line never leaves the year alone.
+ */
+const useSignDate = () => {
+    const format = useFormatter()
+    return (iso: string): string =>
+        format.dateTime(new Date(iso), { day: "2-digit", month: "2-digit", year: "numeric" })
+}
+
+/**
+ * The fixed words of this page: the shared labels, with the list caption and the signing step worded for both signers (the teacher,
+ * or a reviewer the teacher appointed), since a line may carry either.
+ */
+const usePageLabels = (): PublicCvLabels => {
+    const t = useTranslations("app.publicCv")
+    const labels = usePublicCvLabels()
+    return {
+        ...labels,
+        note: t("linesNote"),
+        steps: labels.steps.map((step) =>
+            step.id === "signed" ? { ...step, description: t("signedStepText") } : step,
+        ),
+    }
+}
 
 /** Resolves the fixed words of the page. */
 export const usePublicCvLabels = (): PublicCvLabels => {
@@ -68,6 +96,7 @@ export const usePublicCvLabels = (): PublicCvLabels => {
 const useLineWords = () => {
     const t = useTranslations("app.publicCv")
     const words = useExperienceWords()
+    const signDate = useSignDate()
     return (line: PublicCvLine): PublicCvLineView => {
         const kinds = line.evidence.map((entry) =>
             t(`evidence.${PUBLIC_CV_EVIDENCE.has(entry.kind) ? entry.kind : "other"}`, { count: entry.count ?? 0 }),
@@ -80,7 +109,7 @@ const useLineWords = () => {
             subject: line.subject,
             proofText: t("proof", { kinds: kinds.join(", ") }),
             signText: t(line.signerRole === "REVIEWER" ? "signedReviewer" : "signedTeacher", {
-                date: words.date(line.signedAt),
+                date: signDate(line.signedAt),
             }),
             code: line.verificationCode,
             verifyHref: verifyPath(line.verificationCode),
@@ -88,13 +117,16 @@ const useLineWords = () => {
     }
 }
 
-/** The public CV: reads one slug without a session, filters its lines by source, folds them under "Xem thêm", and holds the share sheet. */
+/**
+ * The public CV: reads one slug in the browser without a session (the skeleton shows while the read is in flight, the failure notice
+ * with its retry when it fails), filters its lines by source, folds them under "Xem thêm", and holds the share sheet. */
 export const usePublicCvView = (input: PublicCvViewInput) => {
     const t = useTranslations("app.publicCv")
     const locale = useLocale()
     const words = useExperienceWords()
+    const signDate = useSignDate()
     const lineView = useLineWords()
-    const read = useQueryPublicCvSwr(decodeURIComponent(input.slug), locale, input.initial)
+    const read = useQueryPublicCvSwr(decodeURIComponent(input.slug), locale)
     const isPhone = useIsPhone()
     const canShare = useCanShare()
     const previewSrc = usePreviewSrc()
@@ -103,8 +135,11 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
     const [isShareOpen, setIsShareOpen] = useState(false)
     const origin = useOrigin()
     const pathname = useLocalizedPathname()
-    const labels = usePublicCvLabels()
-    const slotLabels = useSlotLabels()(labels.notFoundTitle)
+    const labels = usePageLabels()
+    const slotLabels = useSlotLabels()(labels.notFoundTitle, {
+        title: t("cvLoadFailedTitle"),
+        text: t("cvLoadFailedText"),
+    })
     const limit = (isPhone ? PUBLIC_CV_LIMIT.phone : PUBLIC_CV_LIMIT.wide) + shown
     const isNotFound = read.error !== undefined && PUBLIC_CV_NOT_FOUND_CODES.has(failureCodeOf(read.error))
     const url = `${origin}${pathname}`
@@ -138,10 +173,10 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
             avatarUrl: cv.avatarUrl ?? null,
             facts: [
                 t("factsCount", { count: cv.lines.length }),
-                ...(newest === undefined ? [] : [t("factsUpdated", { date: words.date(newest) })]),
+                ...(newest === undefined ? [] : [t("factsUpdated", { date: signDate(newest) })]),
             ].join(" · "),
             total: cv.lines.length,
-            sources: sourcesOf(cv.lines, words.part),
+            sources: cv.lines.length < PUBLIC_CV_CHIPS_FROM ? [] : sourcesOf(cv.lines, words.part),
             lines: matching.slice(0, limit).map(lineView),
             hidden: Math.max(0, matching.length - limit),
             moreLabel: t("more", { count: Math.max(0, matching.length - limit) }),

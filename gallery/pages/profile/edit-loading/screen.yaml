@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 224033aec7f63b099cafae1c68d556d76ce269008744675b6f592da80e6d01fa
+    sha256: ea470dadbc7956121e6daf5ad916e1511d09518fa5a28d2e595c9cab224dde18
   "1440":
     file: 1440.png
-    sha256: 47b29647b0eaac392c21ec9a47aa4bce09057e4a29b0c0d0cf0195ca3ca051ec
+    sha256: 0804d7bde0e424641916ca814f06ca5d78d31de4c19547c3c5c80497f5917bd4
 sections:
   - id: s1
     title: Nội dung chính
@@ -31,109 +31,42 @@ considered:
     chosen: true
     why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
       filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
+    chosen: true
+    why: "Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối
+      2026-11-20T15:02:28.671Z); lens cuối: order pass, layout pass, actionable pass, live pass,
+      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
+      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
+      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+      run)."
 audit:
   builder:
-    agent: mig-auth-fe
+    agent: next-one-edition
   auditor:
-    agent: next-ux-auditor
+    agent: next-ux-auditor-2
   rounds:
     - n: 1
-      at: 2026-11-20T13:00:49.975Z
+      at: 2026-11-21T04:23:04.501Z
       lenses:
         order:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         layout:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         actionable:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         live:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         words:
           verdict: open
-          notes: '"Hủy" khác "Huỷ" của canvas.'
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         states:
           verdict: open
-          notes: Ô "Lộ trình mục tiêu" đã hiện chữ thật "Chọn lộ trình" và các dòng gợi ý trong lúc khác còn
-            skeleton; "Thay đổi chưa lưu" hiện khi đang tải.
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
         truth:
-          verdict: pass
-          notes: ""
-    - n: 2
-      at: 2026-11-20T14:16:10.024Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
           verdict: open
-          notes: Ô "Lộ trình mục tiêu" hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác còn
-            skeleton; "Thay đổi chưa lưu" hiện khi đang tải.
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 3
-      at: 2026-11-20T14:52:37.072Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: open
-          notes: Ô "Lộ trình mục tiêu" vẫn hiện chữ thật "Chọn lộ trình" và dòng gợi ý trong lúc các ô khác là
-            skeleton (1440 và 390).
-        truth:
-          verdict: pass
-          notes: ""
-    - n: 4
-      at: 2026-11-20T15:02:28.671Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: ""
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

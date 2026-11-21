@@ -1,0 +1,55 @@
+schema: 1
+screen: career/review-queue-error
+title: Duyệt trải nghiệm, lỗi tải
+route: /review-queue
+area: career
+summary: "**Concept: Duyệt trải nghiệm, lỗi tải.** Đọc hàng đợi thất bại: khung báo lỗi có nút Thử
+  lại, các mục chưa duyệt vẫn nguyên."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 7ee8f0b322325958184c2571d23daf5057a47e15edfe747ab1cdb92c3dd5accc
+  "1440":
+    file: 1440.png
+    sha256: f7c26f029ce356cab3e5e47be50e978f643aeed4131745876fac139720454c89
+sections:
+  - id: vung-chinh
+    title: Vùng chính
+    why: "Đọc hàng đợi thất bại: khung báo lỗi có nút Thử lại, các mục chưa duyệt vẫn nguyên."
+    law: ""
+    grammar: "`SlotView, EmptyNotice, Alert`"
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:51.189Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

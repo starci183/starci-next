@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 56d610b48f85ab2670390694239f4c19d016917bd85844f3d768b95898a2994c
+    sha256: 84cea5c3d28f907da781dc6e117a7b0a9a4626c7037952a33e995dca3121b523
   "1440":
     file: 1440.png
-    sha256: 85f85f9bff8752a90904fd57de2524b29ef60d8e66d7e9574d37ada806c61904
+    sha256: b267bd8f74839f5e9e2f7e7aec6eb10604e6e6b3e32b6292fdcae3cb6896b4e1
 sections:
   - id: s1
     title: Danh tính khi chưa có ảnh
@@ -87,23 +87,61 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: 'Với học viên mới: nút chính "Thêm ảnh và tên" ở đầu, Danh tính nói rõ chưa đặt tên và chưa chọn lộ trình, Liên kết CV và CV đã xác minh nói điều cần làm ngay sau đó, rồi Tài khoản; cột phải xuống cuối ở 390.'
+          notes: 'Với học viên mới: nút chính "Thêm ảnh và tên" ở đầu, Danh tính nói rõ chưa đặt tên và chưa
+            chọn lộ trình, Liên kết CV và CV đã xác minh nói điều cần làm ngay sau đó, rồi Tài
+            khoản; cột phải xuống cuối ở 390.'
         layout:
           verdict: open
-          notes: 'Ở 390 "Mở Kinh nghiệm" đè lên dòng "0 đã xác minh, 0 đang chờ duyệt…"; "Xem tiến độ" dính sát hàng số liệu đầu. Khối rỗng CV căn giữa nhưng nút "Xem việc có thể làm" căn trái, tách khỏi nhóm của nó. "Quản lý" và "Xem Premium" khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390. Đầu trang: nút 40px, một dòng, không tràn ở 390.'
+          notes: 'Ở 390 "Mở Kinh nghiệm" đè lên dòng "0 đã xác minh, 0 đang chờ duyệt…"; "Xem tiến độ" dính
+            sát hàng số liệu đầu. Khối rỗng CV căn giữa nhưng nút "Xem việc có thể làm" căn trái,
+            tách khỏi nhóm của nó. "Quản lý" và "Xem Premium" khoảng 32px, dưới 40 và dưới vùng chạm
+            44 ở 390. Đầu trang: nút 40px, một dòng, không tràn ở 390.'
         actionable:
           verdict: pass
-          notes: "Mỗi giá trị có đường đổi: Thêm ảnh và tên, Chọn lộ trình, Xem việc có thể làm, Quản lý (máy), Xem Premium (gói)."
+          notes: "Mỗi giá trị có đường đổi: Thêm ảnh và tên, Chọn lộ trình, Xem việc có thể làm, Quản lý
+            (máy), Xem Premium (gói)."
         live:
           verdict: pass
-          notes: 'Học viên mới không có việc đang chạy hay chờ; số "0 đang chờ duyệt" là văn bản đúng với dữ liệu, không có trạng thái nào bị giấu.'
+          notes: Học viên mới không có việc đang chạy hay chờ; số "0 đang chờ duyệt" là văn bản đúng với dữ
+            liệu, không có trạng thái nào bị giấu.
         words:
           verdict: open
-          notes: '"Bài Accepted" lẫn tiếng Anh; cùng một gói mà thanh trên ghi "Chưa có Premium", meta ghi "Gói miễn phí", hàng gói ghi "Miễn phí"; thanh bên "Projects" trong khi chỉ dẫn rỗng ghi "dự án"; "Phần 1 Essentials, cả Harness" cụt, không thành câu.'
+          notes: '"Bài Accepted" lẫn tiếng Anh; cùng một gói mà thanh trên ghi "Chưa có Premium", meta ghi
+            "Gói miễn phí", hàng gói ghi "Miễn phí"; thanh bên "Projects" trong khi chỉ dẫn rỗng ghi
+            "dự án"; "Phần 1 Essentials, cả Harness" cụt, không thành câu.'
         states:
           verdict: open
-          notes: "Đây là trạng thái rỗng và đúng ý; nhưng /profile vẫn thiếu ảnh đang tải, lỗi một vùng và không có quyền ở 1440 và 390 (canvas có overview-loading, overview-partial-error)."
+          notes: Đây là trạng thái rỗng và đúng ý; nhưng /profile vẫn thiếu ảnh đang tải, lỗi một vùng và
+            không có quyền ở 1440 và 390 (canvas có overview-loading, overview-partial-error).
         truth:
           verdict: open
-          notes: 'screen.yaml không khớp ảnh: s3 hứa bảng token "Chưa có token nào." và liên kết "Quản lý gói" cùng câu "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", ảnh không có hàng token, nút là "Xem Premium", câu khác; s2 trích chỉ dẫn "bản dựng Harness, một dự án hoặc một bài Bản chất" còn ảnh ghi Essentials và Luyện code; s1 nói avatar vẽ từ tên nhưng consider nói vẽ từ email.'
+          notes: 'screen.yaml không khớp ảnh: s3 hứa bảng token "Chưa có token nào." và liên kết "Quản lý gói"
+            cùng câu "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", ảnh không có hàng
+            token, nút là "Xem Premium", câu khác; s2 trích chỉ dẫn "bản dựng Harness, một dự án
+            hoặc một bài Bản chất" còn ảnh ghi Essentials và Luyện code; s1 nói avatar vẽ từ tên
+            nhưng consider nói vẽ từ email.'
+    - n: 2
+      at: 2026-11-21T04:23:05.541Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

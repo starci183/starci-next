@@ -17,7 +17,7 @@ export const CV_PARTS: ReadonlySet<string> = new Set(["essentials", "projects", 
 
 /** The words of the part of a CV line. */
 export const partWordsOf = (t: ProfileTranslate, part: string): string => {
-    if (part === "projects") return t("cv.part.projects")
+    if (part === "projects") return t("cv.partProjects")
     if (part === "harness") return t("cv.part.harness")
     return part === "practice" ? t("cv.part.practice") : t("cv.part.essentials")
 }
@@ -70,7 +70,7 @@ export const labelsOf = (t: ProfileTranslate, issue: string, maxBytes: number): 
     avatarHint: t("identity.avatarHint", { size: sizeWordsOf(maxBytes) }),
     nameLabel: t("identity.nameLabel"),
     namePlaceholder: t("identity.namePlaceholder"),
-    nameHint: t("identity.nameHint"),
+    nameHint: t("identity.nameOnCvHint"),
     issue,
     goalTitle: t("goal.title"),
     goalNone: t("goal.none"),
@@ -87,14 +87,15 @@ export const labelsOf = (t: ProfileTranslate, issue: string, maxBytes: number): 
     cvLinkEmpty: t("cvLink.empty"),
     cvTitle: t("cv.title"),
     cvEmptyTitle: t("cv.emptyTitle"),
-    cvEmpty: t("cv.empty"),
+    cvEmpty: t("cv.emptyWays"),
     cvEmptyAction: t("cv.emptyAction"),
     cvEmptyHref: APP_ROUTES.experience,
     verified: t("cv.verified"),
-    verifyCopy: t("verify.copy"),
-    verifyCopied: t("verify.copied"),
-    verifyPublic: t("verify.public"),
-    verifyPrivate: t("verify.private"),
+    verifyLinkLabel: t("cv.verifyLinkLabel"),
+    lineShown: t("cv.lineShown"),
+    lineShownHint: t("cv.lineShownHint"),
+    lineSaving: t("cv.lineSaving"),
+    lineFailed: t("cv.lineFailed"),
     accountTitle: t("account.title"),
     devicesTitle: t("account.devices.title"),
     devicesManage: t("account.devices.manage"),

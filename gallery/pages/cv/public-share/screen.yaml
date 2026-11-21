@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: fcc46895f80c0419b8188d59773fa1204463b9d91a3f0044e64201ef55d59df2
+    sha256: e50947532b8306307840ef01e10a7f6784f87b055a36d1b356cdf928b13368ae
   "1440":
     file: 1440.png
-    sha256: 093ea36186d8058dc6cc90487c761713887d45d053115ecbc55cdb55520c164f
+    sha256: c46fd4f93b60ad8698cf2ea6928bc328e6389286f150a9bcf7d758c6de658e74
 sections:
   - id: s1
     title: Bảng chia sẻ
@@ -153,5 +153,30 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: "Đã sửa: ảnh xem trước có tên, số dòng, dòng CV và hành trình; link localhost là môi trường chụp."
+          notes: "Đã sửa: ảnh xem trước có tên, số dòng, dòng CV và hành trình; link localhost là môi trường
+            chụp."
+    - n: 4
+      at: 2026-11-21T04:23:02.332Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 908545acf94e6af7433c31a69e5460cb95e485a19ba8b5b42fdb4b739f36f22c
+    sha256: c8aa2f2bccea5b3bb59660f52ef012423f6599a3b0416476f01a4d98cbbed479
   "1440":
     file: 1440.png
-    sha256: 63e6e29f8b8bb12df7aa322926af6ff8d7c957353305b671017c70735a984feb
+    sha256: 3dc86edfc28d75c8d2fed6fd4bc2f546401576c10cbc2ae9e490c8180b85d140
 sections:
   - id: s1
     title: Chủ CV
@@ -138,4 +138,28 @@ audit:
         truth:
           verdict: pass
           notes: ""
+    - n: 4
+      at: 2026-11-21T04:22:58.058Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

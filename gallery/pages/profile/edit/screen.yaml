@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 838c053917878c043e90317eb2535b0ee455e437adb2a668705f3f276bd1cf02
+    sha256: 125ffeec0c2c394fe8eeb59b6dc53863105990d7cf9c6d0bd88f53a042d15a14
   "1440":
     file: 1440.png
-    sha256: bc71b832bd3791a91f89e3ed48a6e47829d866d7642dc08bae017c56ee2bd0fa
+    sha256: 67ef5d8feaa10bc3406c8be15337ac797b5d3aa324c147aa35b607d17b4dd00a
 sections:
   - id: s1
     title: "Đầu trang: Hủy và Lưu thay đổi"
@@ -76,23 +76,59 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Breadcrumb Hồ sơ / Sửa, tiêu đề, Huỷ và Lưu thay đổi ở đầu; rồi Ảnh đại diện, Danh tính (tên, lộ trình), Liên kết CV, đúng thứ tự người sửa cần."
+          notes: Breadcrumb Hồ sơ / Sửa, tiêu đề, Huỷ và Lưu thay đổi ở đầu; rồi Ảnh đại diện, Danh tính (tên,
+            lộ trình), Liên kết CV, đúng thứ tự người sửa cần.
         layout:
           verdict: open
-          notes: 'Nút "Chọn ảnh" chỉ khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390 (không nằm trong ListRow hay thanh công cụ dày). Đầu trang: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn. Ở 1440 ô tên (60 ký tự) và Select trải hết bề ngang khoảng 1120px, quá rộng so với nội dung.'
+          notes: 'Nút "Chọn ảnh" chỉ khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390 (không nằm trong ListRow
+            hay thanh công cụ dày). Đầu trang: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn.
+            Ở 1440 ô tên (60 ký tự) và Select trải hết bề ngang khoảng 1120px, quá rộng so với nội
+            dung.'
         actionable:
           verdict: pass
-          notes: "Ảnh có Chọn ảnh (Xoá ảnh khi đã có ảnh, có xác nhận), tên có ô nhập và bộ đếm, lộ trình có Select, Lưu và Huỷ ở đầu."
+          notes: Ảnh có Chọn ảnh (Xoá ảnh khi đã có ảnh, có xác nhận), tên có ô nhập và bộ đếm, lộ trình có
+            Select, Lưu và Huỷ ở đầu.
         live:
           verdict: open
-          notes: "Khi ảnh đang tải lên chỉ đổi dòng gợi ý và tắt nút, không có vòng tiến độ quanh avatar như canvas vẽ (cần Grammar: Avatar progress, GRAMMAR-GAPS #10); không có ảnh chụp trạng thái đang tải ảnh để kiểm."
+          notes: "Khi ảnh đang tải lên chỉ đổi dòng gợi ý và tắt nút, không có vòng tiến độ quanh avatar như
+            canvas vẽ (cần Grammar: Avatar progress, GRAMMAR-GAPS #10); không có ảnh chụp trạng thái
+            đang tải ảnh để kiểm."
         words:
           verdict: open
-          notes: 'Nút ghi "Huỷ" còn screen.yaml và một khoá khác trong vi.json ghi "Hủy"; gợi ý ghi "khoá" trong khi chỗ khác viết "khóa": một khái niệm hai cách viết. Gợi ý tên "Tên này không xuất hiện trên CV nếu bạn tắt công khai" khó hiểu và nhắc công tắc không có trên trang.'
+          notes: 'Nút ghi "Huỷ" còn screen.yaml và một khoá khác trong vi.json ghi "Hủy"; gợi ý ghi "khoá"
+            trong khi chỗ khác viết "khóa": một khái niệm hai cách viết. Gợi ý tên "Tên này không
+            xuất hiện trên CV nếu bạn tắt công khai" khó hiểu và nhắc công tắc không có trên trang.'
         states:
           verdict: open
-          notes: "Đang tải và lỗi có ảnh riêng (profile/edit-loading, profile/edit-error), nhưng thiếu ảnh tải ảnh lên, ảnh quá nặng, xác nhận xoá ảnh (canvas đã vẽ) và không có quyền ở 1440 và 390."
+          notes: Đang tải và lỗi có ảnh riêng (profile/edit-loading, profile/edit-error), nhưng thiếu ảnh tải
+            ảnh lên, ảnh quá nặng, xác nhận xoá ảnh (canvas đã vẽ) và không có quyền ở 1440 và 390.
         truth:
           verdict: open
-          notes: "s3 nói có công tắc công khai liên kết CV để đặt ngay lúc sửa, ảnh chụp bằng học viên chưa có mục xác minh nên không thấy công tắc: ảnh không chứng minh được mục s3. Lời gợi ý tên (không xuất hiện trên CV khi tắt công khai) cần đối chiếu verified-experience.md."
+          notes: "s3 nói có công tắc công khai liên kết CV để đặt ngay lúc sửa, ảnh chụp bằng học viên chưa có
+            mục xác minh nên không thấy công tắc: ảnh không chứng minh được mục s3. Lời gợi ý tên
+            (không xuất hiện trên CV khi tắt công khai) cần đối chiếu verified-experience.md."
+    - n: 2
+      at: 2026-11-21T04:23:03.371Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

@@ -1,0 +1,55 @@
+schema: 1
+screen: career/review-queue-loading
+title: Duyệt trải nghiệm, đang tải
+route: /review-queue
+area: career
+summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel,
+  không nhảy bố cục khi dữ liệu về."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/page.tsx
+  - features/pages/ReviewQueuePage/
+shots:
+  "390":
+    file: 390.png
+    sha256: ec762e12487d45c3c956fe90ffb931a26c23adc7b635160ebdb973eda491927e
+  "1440":
+    file: 1440.png
+    sha256: 84f39e0b06c94e608ffb7d6fcde96b272231b22dc7bb0573301a394aa15af0da
+sections:
+  - id: vung-chinh
+    title: Vùng chính
+    why: Bộ xương đúng hình dạng danh sách và panel, không nhảy bố cục khi dữ liệu về.
+    law: ""
+    grammar: "`SlotView, EmptyNotice, Alert`"
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:22:52.288Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

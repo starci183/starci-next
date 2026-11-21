@@ -5,7 +5,7 @@ import type { ExperienceReviewersView, ReviewItemView, ReviewQueueView } from "@
 import { reviewItemPath } from "@/modules/routes"
 import type { ReviewPreviewView, ReviewQueueScreenView } from "@/modules/types"
 import { plainLineOf, slaToneOf, stateToneOf } from "./experience.shared"
-import { daysUntil, itemNameOf, useReviewWords, type ReviewWords } from "./reviewWords"
+import { crumbOf, daysUntil, itemNameOf, itemShortNameOf, useReviewWords, type ReviewWords } from "./reviewWords"
 
 /** The translator of the queue's namespace. */
 type QueueTranslator = ReturnType<typeof useTranslations<"app.experience.queue">>
@@ -14,7 +14,12 @@ type QueueTranslator = ReturnType<typeof useTranslations<"app.experience.queue">
 type QueueItem = ReviewQueueView["items"][number]
 
 /** The heading of one item's page. */
-export type ReviewItemHeaderView = { readonly title: string; readonly meta: string }
+export type ReviewItemHeaderView = {
+    readonly title: string
+    /** The last crumb of the trail: the short name, cut with an ellipsis so it fits a phone. */
+    readonly crumb: string
+    readonly meta: string
+}
 
 /** What the mapping of the read needs. */
 type ReviewQueueContext = {
@@ -39,11 +44,10 @@ const previewOf = (
         stateTone: stateToneOf(item.state),
         line: line ? plainLineOf(line.vi) : "",
         lineEn: line ? plainLineOf(line.en) : "",
-        due: item.dueAt ? t("dueAt", { date: words.date(item.dueAt) }) : undefined,
+        due: dueOf(item, context),
         evidence: item.evidence.map((evidence, index) => ({
             id: `${evidence.ref}-${index}`,
             label: words.evidence(evidence.kind),
-            ref: evidence.ref,
         })),
         criteria: (item.grade?.criteria ?? []).map((criterion, index) => ({
             id: `${index}`,
@@ -66,16 +70,29 @@ const previewOf = (
     }
 }
 
-/** The words of the SLA badge: the days left or overdue when the item has a deadline, else the SLA bucket. */
-const slaLabelOf = (item: QueueItem, context: ReviewQueueContext): string => {
-    if (!item.dueAt || item.state !== "pending-review") return context.t(`sla.${item.sla}`)
+/** The days left or overdue of an item waiting for a decision with a deadline, else undefined. */
+const daysLeftOf = (item: QueueItem, context: ReviewQueueContext): string | undefined => {
+    if (!item.dueAt || item.state !== "pending-review") return undefined
     const days = daysUntil(item.dueAt, Date.now())
     return days < 0 ? context.t("overdueBy", { days: -days }) : context.t("dueIn", { days })
 }
 
-/** The heading of one item's page: its name, and the part, learner and state under it. */
+/** The words of the SLA badge: the days left or overdue when the item has a deadline, else the SLA bucket. */
+const slaLabelOf = (item: QueueItem, context: ReviewQueueContext): string =>
+    daysLeftOf(item, context) ?? context.t(`sla.${item.sla}`)
+
+/** The deadline line of the item card: the date, with the days left or overdue while the item waits, as the queue's badge says. */
+const dueOf = (item: QueueItem, context: ReviewQueueContext): string | undefined => {
+    if (!item.dueAt) return undefined
+    const date = context.words.date(item.dueAt)
+    const left = daysLeftOf(item, context)
+    return left === undefined ? context.t("dueAt", { date }) : context.t("dueAtWithDaysLeft", { date, left })
+}
+
+/** The heading of one item's page: its short name, the crumb cut from it, and the part, learner and state under it. */
 const itemHeaderOf = (item: QueueItem, context: ReviewQueueContext): ReviewItemHeaderView => ({
-    title: itemNameOf(item),
+    title: itemShortNameOf(item),
+    crumb: crumbOf(itemShortNameOf(item)),
     meta: context.t("itemMeta", {
         part: context.words.part(item.part),
         who: item.learnerHandle,
@@ -83,7 +100,7 @@ const itemHeaderOf = (item: QueueItem, context: ReviewQueueContext): ReviewItemH
     }),
 })
 
-/** The queue as it is drawn: the tabs with their counts, the rows and the preview of the chosen row. */
+/** The queue as it is drawn: the filters (pending, and overdue and unassigned for the teacher) with their counts, the rows and the preview of the chosen row. */
 const queueViewOf = (
     read: ReviewQueueView,
     selected: string | undefined,
@@ -101,7 +118,6 @@ const queueViewOf = (
                       isAttention: read.counts.overdue > 0,
                   },
                   { id: "unassigned", label: t("tabUnassigned"), count: read.counts.unassigned },
-                  { id: "reviewers", label: t("tabReviewers") },
               ]
             : []),
     ]
@@ -159,7 +175,7 @@ export interface ReviewQueueViews {
     readonly itemHeader: (item: QueueItem) => ReviewItemHeaderView
     /** The summary line under the queue heading: how many wait and how many are overdue. */
     readonly pageMeta: (read: ReviewQueueView) => string
-    /** The reviewer appointments under the queue tabs. */
+    /** The reviewer appointments of the Reviewers view. */
     readonly reviewers: (rows: ExperienceReviewersView, tabs: ReviewQueueScreenView["tabs"]) => ReviewQueueScreenView
 }
 

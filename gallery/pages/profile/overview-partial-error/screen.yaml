@@ -1,0 +1,106 @@
+schema: 1
+screen: profile/overview-partial-error
+title: Hồ sơ, một vùng lỗi
+route: /profile
+area: profile
+summary: '**Concept: Hồ sơ, một vùng lỗi.** Trạng thái của màn này: một vùng lỗi. Mục tiêu: thấy
+  mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và
+  Tiến độ. Thao tác: myProfile (displayName, avatarUrl, goal, limits: contentTypes, maxBytes,
+  nameMax), setProfileName, requestAvatarUpload rồi trình duyệt gửi thẳng tới kho đối tượng và
+  confirmAvatarUpload, removeAvatar; myExperience (dòng đã xác minh), showExperience,
+  verifyExperience (trang /verify/{mã}). cần API: liên kết CV tổng hợp next.starci.vn/cv/{slug}
+  (cvLink, setCvVisibility); hiện chỉ có liên kết theo từng dòng. Bố cục: Khung chung: thanh trên
+  (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects ·
+  Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng nút menu. Dải đầu;
+  thân: Danh tính (ảnh, tên, email, lộ trình), Liên kết CV (hộp liên kết có Sao chép, công tắc công
+  khai), CV đã xác minh (dòng CV, ai ký ngày nào bằng chứng gì, mã verify, công tắc công khai từng
+  dòng), Tài khoản (máy, gói). Cột phải: tiến độ nhanh với liên kết "Xem tiến độ" và tóm tắt Kinh
+  nghiệm với "Xem kinh nghiệm". Sửa là trang con "Hồ sơ / Sửa". Ảnh: kiểm loại và dung lượng ở trình
+  duyệt, đang tải có vòng phần trăm, lỗi quá nặng nói giới hạn lấy từ server, xóa ảnh có xác nhận.
+  Nút chính: "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính). Lọc: không có. Khác bản
+  hiện tại: Hồ sơ là cửa vào Kinh nghiệm và Tiến độ (thanh bên chỉ còn một mục Hồ sơ). Lưu ý xung
+  đột: một vùng lỗi không làm hỏng cả trang. Phần tử Grammar của màn: PageHeader, Section, Avatar,
+  ProgressCircle, FileButton, Input, Switch, CopyField, Section kind="list", ListRow, AlertDialog.'
+code:
+  - features/pages/ProfilePage
+  - components/blocks/ProfileHub
+shots:
+  "390":
+    file: 390.png
+    sha256: 175fceff06ed9520ed809c601ed8ca90991563b1bcffac5a0ffba6de33ca7910
+  "1440":
+    file: 1440.png
+    sha256: 6aa900dcb63b596b63a5aff1be87e04214a99d9915f849a22146a3bef7b94232
+sections:
+  - id: khung-ung-dung
+    title: Khung ứng dụng
+    why: "khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở
+      390."
+    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của
+      app).
+    grammar: "`WorkspaceShell`"
+  - id: dai-tieu-de-ho-so-cua-ban
+    title: "Dải tiêu đề: Hồ sơ của bạn"
+    why: tên trang, dòng sự kiện và đúng một nút chính. "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy
+      trung tính).
+    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
+    grammar: "`PageHeader`"
+  - id: danh-tinh
+    title: Danh tính
+    why: "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên,
+      lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: '`Section`, `Section kind="list"`'
+  - id: cv-da-xac-minh
+    title: CV đã xác minh
+    why: "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên,
+      lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: '`Section`, `Section kind="list"`'
+  - id: tai-khoan
+    title: Tài khoản
+    why: "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên,
+      lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ."
+    law: danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật
+      (skills/claude-design/SKILL.md, mục The look).
+    grammar: '`Section`, `Section kind="list"`'
+  - id: phan-tu-con-thieu
+    title: Phần tử còn thiếu
+    why: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
+    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ);
+      danh sách ở GRAMMAR-GAPS.md.
+    grammar: "cần Grammar: vòng tiến độ quanh Avatar khi đang tải ảnh (ghép ProgressCircle với Avatar)"
+considered: []
+audit:
+  builder:
+    agent: next-one-edition
+  auditor:
+    agent: next-ux-auditor-2
+  rounds:
+    - n: 1
+      at: 2026-11-21T04:23:24.005Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

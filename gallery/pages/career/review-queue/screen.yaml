@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b387267ab67e096f939f6f66eb2af01b964c6c1fe06a34c59c2017e77b6b08d2
+    sha256: add62b6d0fa3f81c0eb82a340c13b28e88df33293c5ea92e7a2f174046c28ee2
   "1440":
     file: 1440.png
-    sha256: 5ed48c7ab2e356f40e081e83966065d74edaadfd1da5248aea236ed14ec82c1c
+    sha256: 12364d26eb43a7efa25b5f9bae36e6215c5bdaa14552e1c012a5fbac494bafb4
 sections:
   - id: dai-dau-trang
     title: Dải đầu trang
@@ -105,27 +105,27 @@ audit:
       lenses:
         order:
           verdict: fixed
-          notes: 'Ở 390 "Hàng chờ duyệt" giờ đứng ngay sau thanh lọc, bảng duyệt xuống dưới năm hàng; ở 1440
-            hàng chờ bên trái, bảng duyệt bên phải.'
+          notes: Ở 390 "Hàng chờ duyệt" giờ đứng ngay sau thanh lọc, bảng duyệt xuống dưới năm hàng; ở 1440
+            hàng chờ bên trái, bảng duyệt bên phải.
         layout:
           verdict: open
           notes: 'Đã có đường dẫn "Hồ sơ / Duyệt kinh nghiệm" và dòng meta "5 mục đang chờ · 1 quá hạn"; cột
             hàng chờ ở 1440 rộng hơn (tên mục còn bốn dòng vì tên mục là cả dòng CV, tên ngắn cần
-            API). Còn mở: ở 390 thanh tab vẫn cuộn ngang, tab "Người duyệt" bị cắt thành "N…" với mũi
-            tên. Canvas tách hai việc: Tabs chỉ đổi Hàng đợi / Người duyệt, ba lọc Đang chờ, Quá hạn,
-            Chưa phân công là ChoiceChips; bản dựng gộp bốn mục vào một thanh Tabs nên tràn. Checklist:
-            Xác minh, Trả lại kèm ghi chú, Giao, ô Giao cho và nút Mở menu đều 40px; nhãn nút không
-            gãy ở 390; hàng danh sách bấm cả hàng nên vùng bấm trên 44px; tràn ở thanh tab như trên.
-            Phần "Bạn duyệt phần Backend" của meta cần API (reviewQueue không trả các phần người
-            duyệt phụ trách, đã kiểm query-review-queue.ts).'
+            API). Còn mở: ở 390 thanh tab vẫn cuộn ngang, tab "Người duyệt" bị cắt thành "N…" với
+            mũi tên. Canvas tách hai việc: Tabs chỉ đổi Hàng đợi / Người duyệt, ba lọc Đang chờ, Quá
+            hạn, Chưa phân công là ChoiceChips; bản dựng gộp bốn mục vào một thanh Tabs nên tràn.
+            Checklist: Xác minh, Trả lại kèm ghi chú, Giao, ô Giao cho và nút Mở menu đều 40px; nhãn
+            nút không gãy ở 390; hàng danh sách bấm cả hàng nên vùng bấm trên 44px; tràn ở thanh tab
+            như trên. Phần "Bạn duyệt phần Backend" của meta cần API (reviewQueue không trả các phần
+            người duyệt phụ trách, đã kiểm query-review-queue.ts).'
         actionable:
           verdict: pass
           notes: Mỗi hàng bấm được để xem và có mũi tên mở trang riêng; Giao cho có ô chọn và nút Giao; ghi
             chú có Xác minh và Trả lại.
         live:
           verdict: pass
-          notes: 'Huy hiệu hạn có tông riêng ("Quá hạn 10 ngày" đỏ, "Còn 3 ngày" trung tính), trạng thái "Chờ
-            thầy duyệt" có chấm màu; màn không có việc đang chạy.'
+          notes: Huy hiệu hạn có tông riêng ("Quá hạn 10 ngày" đỏ, "Còn 3 ngày" trung tính), trạng thái "Chờ
+            thầy duyệt" có chấm màu; màn không có việc đang chạy.
         words:
           verdict: open
           notes: 'Còn mở vì phần frontend tự làm: danh sách Bằng chứng in nguyên mã evidence.ref
@@ -143,4 +143,28 @@ audit:
           notes: 'Dữ liệu thật của dev; huy hiệu hạn đã đếm ngày ("Quá hạn 10 ngày", "Còn 3 ngày", khớp Hạn
             duyệt 12 thg 11). Cần API: tên thật người học (chỉ có learnerHandle), nhãn bằng chứng,
             tên ngắn của mục, các phần người duyệt phụ trách.'
+    - n: 3
+      at: 2026-11-21T04:22:50.129Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

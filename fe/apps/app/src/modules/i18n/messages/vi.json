@@ -377,7 +377,7 @@
         "saveFailedTitle": "Chưa lưu được lần chấm",
         "saveFailedBody": "Thẻ vẫn ở đây, chưa chuyển sang thẻ kế. Thử lại nhé.",
         "retry": "Thử lại",
-        "conflictTitle": "Thẻ này vừa được cập nhật ở máy khác",
+        "conflictTitle": "Thẻ này vừa được cập nhật trên thiết bị khác",
         "conflictBody": "Bạn đã chấm thẻ này trên thiết bị khác. Tải lại thẻ để chấm theo lịch mới nhất.",
         "reload": "Tải lại thẻ",
         "answerError": "Câu trả lời trống hoặc quá dài.",
@@ -1861,6 +1861,9 @@
         "tabOverdue": "Quá hạn",
         "tabUnassigned": "Chưa giao",
         "tabReviewers": "Người duyệt",
+        "reviewViewsLabel": "Việc duyệt",
+        "queueViewTab": "Hàng đợi",
+        "dueAtWithDaysLeft": "Hạn duyệt {date} · {left}",
         "empty": "Không có mục nào chờ duyệt.",
         "reviewersEmpty": "Chưa có người duyệt nào được chỉ định.",
         "reviewerLine": "{parts} · {open}/{capacity} mục đang mở",
@@ -2419,6 +2422,7 @@
         "nameLabel": "Tên hiển thị",
         "unnamed": "Chưa đặt tên",
         "namePlaceholder": "Tên bạn muốn hiện",
+        "nameOnCvHint": "Người mở CV công khai của bạn thấy tên này. Để trống thì CV dùng tên tài khoản, không bao giờ dùng email.",
         "nameHint": "Để trống thì hồ sơ ghi “Chưa đặt tên”. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
         "error": {
           "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
@@ -2449,6 +2453,15 @@
           "harness": "Harness",
           "practice": "Luyện code"
         },
+        "partProjects": "Projects",
+        "emptyWays": "Hoàn thành một bài Essentials, một bản dựng Harness, một dự án trong Projects hoặc một nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi đã được ký.",
+        "signerTeacher": "Thầy",
+        "signerReviewer": "Người duyệt",
+        "lineShown": "Hiện trên CV công khai",
+        "lineShownHint": "Tắt thì CV công khai không có dòng này.",
+        "lineSaving": "Đang lưu…",
+        "lineFailed": "Chưa lưu được, bạn bấm lại nhé.",
+        "verifyLinkLabel": "Liên kết xác minh dòng này",
         "verified": "Đã xác minh",
         "emptyTitle": "Chưa có dòng CV nào",
         "emptyAction": "Xem việc có thể làm"
@@ -2473,6 +2486,7 @@
           "free": "Miễn phí",
           "until": "Premium đến {date}",
           "freeNote": "Phần 1 Essentials, cả Harness",
+          "freeScope": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
           "manage": "Xem Premium",
           "premiumNote": "Mở hết mọi phần"
         },
@@ -2502,6 +2516,7 @@
         "unsaved": "Thay đổi chưa lưu",
         "goal": {
           "label": "Lộ trình mục tiêu",
+          "goalHint": "Dùng để gợi ý bài kế tiếp. Các phần khác vẫn mở như cũ.",
           "hint": "Dùng để gợi ý bài kế tiếp. Không khoá phần nào.",
           "placeholder": "Chọn lộ trình"
         },
@@ -2689,8 +2704,12 @@
         "practice-accepted": "{count, plural, other {# bài}} Accepted",
         "other": "Bằng chứng StarCi"
       },
-      "signedTeacher": "Thầy ký {date}",
-      "signedReviewer": "Người duyệt do thầy chỉ định ký {date}",
+      "signedTeacher": "Thầy ký {date}",
+      "signedReviewer": "Người duyệt thầy chỉ định ký {date}",
+      "signedStepText": "Thầy, hoặc người duyệt thầy chỉ định, đọc bằng chứng và ký từng dòng. Chỉ dòng đã ký mới hiện trên CV.",
+      "linesNote": "Chỉ hiện các dòng đã ký, mới ký trước. Không hiện điểm số hay tên người duyệt.",
+      "cvLoadFailedTitle": "Không tải được CV này",
+      "cvLoadFailedText": "Máy chủ chưa trả lời. Thử lại sau vài giây.",
       "factsCount": "{count, plural, other {# dòng đã ký}}",
       "factsUpdated": "Cập nhật {date}",
       "whyTitle": "Vì sao tin được CV này",

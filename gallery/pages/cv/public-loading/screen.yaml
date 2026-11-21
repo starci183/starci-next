@@ -1,0 +1,105 @@
+schema: 1
+screen: cv/public-loading
+title: CV công khai, đang tải
+route: /cv/{slug}
+area: cv
+summary: "Route: `/cv/{slug}` (ảnh chụp: đang đọc; truy vấn PublicCv được giữ lại để thấy khung
+  chờ). Mã: `fe/apps/app/src/components/blocks/PublicCv/`."
+code:
+  - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
+  - features/pages/PublicCvPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: 467eb969110f4149ef26b9224b1b187f02b02290d0afba3d3df741d96dddedb7
+  "1440":
+    file: 1440.png
+    sha256: 84cba9b428b078974924a91348bcff1bb736e708b5e0637b3afb1483f1cf6209
+sections:
+  - id: chu-cv
+    title: Chủ CV
+    why: khung xương đúng chỗ avatar, tên, dòng sự kiện và nút, để trang không nhảy khi dữ liệu tới. Nút
+      Chia sẻ chưa bấm được cho tới khi biết CV có thật, để không chia sẻ một liên kết không có CV.
+    law: một vùng đang tải đi qua `SlotView`, chỉ nó rẽ nhánh; lá và vùng ghép chỉ nhận `isLoading`.
+    grammar: "`Avatar`, `Heading`, `Text`, `Button` với `isLoading`."
+  - id: dong-cv-da-ky
+    title: Dòng CV đã ký
+    why: ba dòng xương với ba vạch (câu, nguồn, vết tin cậy), giữ tiêu đề "Dòng CV đã ký" thật.
+    law: như trên.
+    grammar: '`Section kind="list" isLoading` + `ListRow`.'
+  - id: vi-sao-tin-duoc-cv-nay
+    title: Vì sao tin được CV này
+    why: khối giải thích cũng là khung xương vì nó đi cùng CV; không vẽ khi kết quả là không có CV.
+    law: như trên.
+    grammar: "`Section isLoading`, `Stepper isLoading`."
+  - id: cap-nhat-2026-11-20-pending-seed
+    title: Cập nhật 2026-11-20 (pending-seed)
+    why: "Trạng thái: pending-seed. Màn này cần dữ liệu thật mà dev DB chưa có (mục kinh nghiệm đã xác
+      minh, CV công khai). Lane next-gallery-seed gieo dữ liệu; ảnh chụp sẽ được chụp lại khi đó. Mã
+      hiện tại đã theo luật Grammar 0.50 (nút một cỡ 40px, Tabs filter cho bộ lọc, isLoading từ
+      SlotView)."
+    law: Grammar 0.50, một nút chính mỗi màn, nút một cỡ 40px, bộ lọc một danh sách là Tabs
+      kind="filter" (quyết định điều phối 20/11), ảnh chụp chỉ dùng dữ liệu thật.
+    grammar: '`Section kind="list"` + `Tabs kind="filter"`, `Stepper`, `Button`, `Popover`'
+considered:
+  - option: Chấm các lăng kính trên ảnh hiện có
+    chosen: false
+    why: Ảnh là màn khác (CV đã tải); chấm pass sẽ là pass cho thứ chưa được nhìn thấy.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T22:24:01.292Z
+      lenses:
+        order:
+          verdict: open
+          notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
+        layout:
+          verdict: open
+          notes: "Không có khung xương để chấm: ảnh hiện đủ tên, ba dòng CV và khối Vì sao tin được."
+        actionable:
+          verdict: open
+          notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
+        live:
+          verdict: open
+          notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
+        words:
+          verdict: open
+          notes: "Không chấm được: ảnh không phải trạng thái đang tải (xem states)."
+        states:
+          verdict: open
+          notes: Ảnh không phải trạng thái đang tải. 390.png, 390-first.png và 390-header.png trùng từng byte
+            với cv/public-many-lines; 1440 chỉ khác vài điểm ảnh. Việc giữ truy vấn PublicCv không
+            có tác dụng (có thể trang đã có dữ liệu từ máy chủ). Cần chụp lại với khung xương thật.
+        truth:
+          verdict: open
+          notes: 'summary nói "đang đọc; truy vấn PublicCv được giữ lại" nhưng ảnh là dữ liệu đã tải: mô tả
+            không khớp ảnh.'
+    - n: 2
+      at: 2026-11-21T04:22:59.116Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+  escalate: null

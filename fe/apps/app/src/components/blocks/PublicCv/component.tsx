@@ -198,7 +198,11 @@ const Hero = (
     )
 }
 
-/** One signed line: the shield, the sentence, the source and the subject, the trust trail and the verification link. */
+/**
+ * One signed line: the shield, the sentence, the source and the subject, the trust trail and the verification link. The link is a
+ * standalone Button at the one control height (40px), not the row's small action: it is the row's only target, and on a phone a
+ * recruiter taps it with a thumb.
+ */
 const rowOf = (line: PublicCvLineView, labels: PublicCvLabels, isLoading: boolean): ListRowData => ({
     id: line.id,
     title: line.title,
@@ -206,19 +210,25 @@ const rowOf = (line: PublicCvLineView, labels: PublicCvLabels, isLoading: boolea
     leading: { icon: ExperienceGlyph },
     badges: [{ label: line.sourceLabel, tone: "neutral" }],
     detail: (
-        <Cluster gap="inline" wrap align="center">
-            <Text tone="muted" isLoading={isLoading}>
-                {line.proofText}
-            </Text>
-            <Text tone="muted" isLoading={isLoading}>
-                {labels.aiText}
-            </Text>
-            <Text isStrong isLoading={isLoading}>
-                {line.signText}
-            </Text>
-        </Cluster>
+        <Stack gap="inline">
+            <Cluster gap="inline" wrap align="center">
+                <Text tone="muted" isLoading={isLoading}>
+                    {line.proofText}
+                </Text>
+                <Text tone="muted" isLoading={isLoading}>
+                    {labels.aiText}
+                </Text>
+                <Text isStrong isLoading={isLoading}>
+                    {line.signText}
+                </Text>
+            </Cluster>
+            <Cluster gap="inline">
+                <Button intent="neutral" href={line.verifyHref} endArrow isLoading={isLoading}>
+                    {`${labels.verify} ${line.code}`}
+                </Button>
+            </Cluster>
+        </Stack>
     ),
-    action: { label: `${labels.verify} ${line.code}`, href: line.verifyHref, endArrow: true },
 })
 
 /** The source chips, from eight lines, each with its count; one choice, "all sources" first. */

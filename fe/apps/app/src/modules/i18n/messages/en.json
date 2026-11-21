@@ -1861,6 +1861,9 @@
         "tabOverdue": "Overdue",
         "tabUnassigned": "Unassigned",
         "tabReviewers": "Reviewers",
+        "reviewViewsLabel": "Review work",
+        "queueViewTab": "Queue",
+        "dueAtWithDaysLeft": "Due {date} · {left}",
         "empty": "No item is waiting for review.",
         "reviewersEmpty": "No reviewer is appointed yet.",
         "reviewerLine": "{parts} · {open}/{capacity} open items",
@@ -2419,6 +2422,7 @@
         "nameLabel": "Display name",
         "unnamed": "No name yet",
         "namePlaceholder": "The name to show",
+        "nameOnCvHint": "People who open your public CV see this name. Left empty, the CV uses your account name, never your email.",
         "nameHint": "Leave it empty and the profile says “No name yet”. This name does not appear on the CV if you turn public off.",
         "error": {
           "type": "Only PNG, JPEG or WebP images.",
@@ -2449,6 +2453,15 @@
           "harness": "Harness",
           "practice": "Practice"
         },
+        "partProjects": "Projects",
+        "emptyWays": "Finish an Essentials lesson, a Harness build, a project in Projects or a Practice pattern to get the first line. A CV line exists only once it is signed.",
+        "signerTeacher": "the teacher",
+        "signerReviewer": "a reviewer",
+        "lineShown": "Shown on the public CV",
+        "lineShownHint": "Off, the public CV leaves this line out.",
+        "lineSaving": "Saving…",
+        "lineFailed": "Not saved, press it again.",
+        "verifyLinkLabel": "Verification link of this line",
         "verified": "Verified",
         "emptyTitle": "No CV line yet",
         "emptyAction": "See what you can do"
@@ -2473,6 +2486,7 @@
           "free": "Free",
           "until": "Premium until {date}",
           "freeNote": "Essentials part 1, all of Harness",
+          "freeScope": "Part 1 of every Essentials lesson and all of Harness",
           "manage": "See Premium",
           "premiumNote": "Every part open"
         },
@@ -2502,6 +2516,7 @@
         "unsaved": "Changes not saved",
         "goal": {
           "label": "Goal path",
+          "goalHint": "Used to suggest the next lesson. Every other part stays open.",
           "hint": "Used to suggest the next lesson. It locks nothing.",
           "placeholder": "Choose a path"
         },
@@ -2689,8 +2704,12 @@
         "practice-accepted": "{count, plural, one {# problem} other {# problems}} Accepted",
         "other": "StarCi evidence"
       },
-      "signedTeacher": "Signed by the teacher {date}",
-      "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
+      "signedTeacher": "Signed by the teacher {date}",
+      "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
+      "signedStepText": "The teacher, or a reviewer the teacher appointed, reads the evidence and signs each line. Only a signed line shows on the CV.",
+      "linesNote": "Only signed lines show, newest first. No scores and no reviewer names.",
+      "cvLoadFailedTitle": "Could not load this CV",
+      "cvLoadFailedText": "The server has not answered. Try again in a few seconds.",
       "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",
       "factsUpdated": "Updated {date}",
       "whyTitle": "Why this CV can be trusted",

@@ -29,8 +29,10 @@ export type ReviewItemBaseProps = {
         readonly exitLabel: string
         readonly exitHref: string
         readonly panelLabels: ReviewPanelLabels
-        /** The item's name once read, else the generic heading. */
+        /** The item's short name once read, else the generic heading. */
         readonly title: string
+        /** The last crumb: the short name cut to fit a phone, else the generic heading. */
+        readonly crumb: string
         /** The part, learner and state under the heading once read. */
         readonly meta: string | undefined
         /** Names the breadcrumb landmark. */
@@ -59,7 +61,7 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
                 items: [
                     { id: "profile", label: props.props.profileLabel, href: props.props.profileHref },
                     { id: "queue", label: props.props.backLabel, href: props.props.backHref },
-                    { id: "item", label: props.props.title },
+                    { id: "item", label: props.props.crumb },
                 ],
             },
             ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),

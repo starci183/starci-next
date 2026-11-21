@@ -28,7 +28,8 @@ export type ProfileCvLine = {
     readonly code: string
     readonly url: string
     readonly isPublic: boolean
-    readonly isCopied: boolean
+    /** Whether the last change of the public switch is still saving or failed. */
+    readonly lineState: "idle" | "saving" | "failed"
 }
 
 /** The verified CV lines and what still waits. */
@@ -108,10 +109,11 @@ export type ProfileHubLabels = {
     readonly cvEmptyAction: string
     readonly cvEmptyHref: string
     readonly verified: string
-    readonly verifyCopy: string
-    readonly verifyCopied: string
-    readonly verifyPublic: string
-    readonly verifyPrivate: string
+    readonly verifyLinkLabel: string
+    readonly lineShown: string
+    readonly lineShownHint: string
+    readonly lineSaving: string
+    readonly lineFailed: string
     readonly accountTitle: string
     readonly devicesTitle: string
     readonly devicesManage: string
@@ -175,7 +177,7 @@ export const CV_PLACEHOLDER: ProfileCvView = {
         code: "xxxxxx",
         url: "xxxxxx",
         isPublic: false,
-        isCopied: false,
+        lineState: "idle",
     })),
 }
 
