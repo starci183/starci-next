@@ -2430,7 +2430,6 @@
         "unnamed": "Chưa đặt tên",
         "namePlaceholder": "Tên bạn muốn hiện",
         "nameOnCvHint": "Người mở CV công khai của bạn thấy tên này. Để trống thì CV dùng tên tài khoản, không bao giờ dùng email.",
-        "nameHint": "Để trống thì hồ sơ ghi “Chưa đặt tên”. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
         "error": {
           "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
           "size": "Ảnh quá lớn, tối đa {size}.",
@@ -2456,7 +2455,6 @@
         "empty": "Hoàn thành một bài Essentials, bản dựng Harness, dự án hoặc nhóm bài Luyện code để có dòng đầu tiên. Dòng CV chỉ có khi thầy ký.",
         "part": {
           "essentials": "Essentials",
-          "projects": "Dự án",
           "harness": "Harness",
           "practice": "Luyện code"
         },
@@ -2490,21 +2488,14 @@
         },
         "plan": {
           "title": "Gói của bạn",
-          "free": "Miễn phí",
           "until": "Premium đến {date}",
-          "freeNote": "Phần 1 Essentials, cả Harness",
           "freeScope": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
           "manage": "Xem Premium",
           "premiumNote": "Mở hết mọi phần"
         },
         "title": "Tài khoản"
       },
-      "verify": {
-        "copy": "Sao chép",
-        "copied": "Đã sao chép",
-        "public": "Công khai",
-        "private": "Riêng tư"
-      },
+      "verify": {},
       "loading": "Đang tải…",
       "meta": {
         "learner": "Học viên",
@@ -2524,7 +2515,6 @@
         "goal": {
           "label": "Lộ trình mục tiêu",
           "goalHint": "Dùng để gợi ý bài kế tiếp. Các phần khác vẫn mở như cũ.",
-          "hint": "Dùng để gợi ý bài kế tiếp. Không khoá phần nào.",
           "placeholder": "Chọn lộ trình"
         },
         "errorTitle": "Không tải được hồ sơ",

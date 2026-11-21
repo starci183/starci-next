@@ -11,7 +11,7 @@ import {
 } from "@/hooks/swr"
 import { useReviewerAdminLabels } from "./useReviewerAdminLabels"
 import { useReviewerWrite } from "./useReviewerWrite"
-import { REVIEW_PARTS, useReviewWords } from "./reviewWords"
+import { REVIEW_PARTS, useReviewWords } from "./useReviewWords"
 
 /** The choice of the reassign form that sends the item back to the teacher's queue. */
 const TEACHER_QUEUE = "teacher"

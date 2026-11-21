@@ -11,7 +11,7 @@ import {
     type ReviewPanelDecision,
 } from "@starci-next/ui"
 import type { DataSlot, ReviewerRowView, ReviewPanelLabels, ReviewQueueScreenView, SlotLabels } from "@/modules/types"
-import { ReviewPanelSkeleton } from "../ReviewItem/skeleton"
+import { ReviewPanelSkeleton } from "../ReviewItem/component"
 
 /** The queue SlotView hands the render while the first read loads; the render draws {@link QueueSkeleton} instead, so it holds no words. */
 export const REVIEW_QUEUE_PLACEHOLDER: ReviewQueueScreenView = {

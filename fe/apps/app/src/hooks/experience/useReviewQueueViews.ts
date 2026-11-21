@@ -5,7 +5,7 @@ import type { ExperienceReviewersView, ReviewItemView, ReviewQueueView } from "@
 import { reviewItemPath } from "@/modules/routes"
 import type { ReviewPreviewView, ReviewQueueScreenView } from "@/modules/types"
 import { plainLineOf, slaToneOf, stateToneOf } from "./experience.shared"
-import { crumbOf, daysUntil, itemNameOf, itemShortNameOf, useReviewWords, type ReviewWords } from "./reviewWords"
+import { crumbOf, daysUntil, itemNameOf, itemShortNameOf, useReviewWords, type ReviewWords } from "./useReviewWords"
 
 /** The translator of the queue's namespace. */
 type QueueTranslator = ReturnType<typeof useTranslations<"app.experience.queue">>

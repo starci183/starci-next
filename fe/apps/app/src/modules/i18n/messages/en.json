@@ -2430,7 +2430,6 @@
         "unnamed": "No name yet",
         "namePlaceholder": "The name to show",
         "nameOnCvHint": "People who open your public CV see this name. Left empty, the CV uses your account name, never your email.",
-        "nameHint": "Leave it empty and the profile says “No name yet”. This name does not appear on the CV if you turn public off.",
         "error": {
           "type": "Only PNG, JPEG or WebP images.",
           "size": "The image is too large, up to {size}.",
@@ -2456,7 +2455,6 @@
         "empty": "Finish an Essentials lesson, a Harness build, a project or a Practice pattern to get the first one. A CV line only exists once the teacher signs it.",
         "part": {
           "essentials": "Essentials",
-          "projects": "Projects",
           "harness": "Harness",
           "practice": "Practice"
         },
@@ -2490,21 +2488,14 @@
         },
         "plan": {
           "title": "Your plan",
-          "free": "Free",
           "until": "Premium until {date}",
-          "freeNote": "Essentials part 1, all of Harness",
           "freeScope": "Part 1 of every Essentials lesson and all of Harness",
           "manage": "See Premium",
           "premiumNote": "Every part open"
         },
         "title": "Account"
       },
-      "verify": {
-        "copy": "Copy",
-        "copied": "Copied",
-        "public": "Public",
-        "private": "Private"
-      },
+      "verify": {},
       "loading": "Loading…",
       "meta": {
         "learner": "Learner",
@@ -2524,7 +2515,6 @@
         "goal": {
           "label": "Goal path",
           "goalHint": "Used to suggest the next lesson. Every other part stays open.",
-          "hint": "Used to suggest the next lesson. It locks nothing.",
           "placeholder": "Choose a path"
         },
         "errorTitle": "Could not load your profile",

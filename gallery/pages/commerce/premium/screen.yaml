@@ -17,7 +17,9 @@ code:
 sections:
   - id: header
     title: "Dải đầu trang"
-    shows: "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness, phần 1 của Essentials), hoặc Premium đến ngày nào."
+    shows:
+      "Tên trang Premium và một dòng: gói hiện tại của học viên và điều luôn miễn phí (Harness, phần 1 của Essentials),
+      hoặc Premium đến ngày nào."
     why: "Học viên cần biết mình đang ở gói nào trước khi so sánh. Dải đầu không có nút: việc trả tiền nằm ở thẻ gói."
     actions: []
     states:
@@ -27,7 +29,9 @@ sections:
     needsApi: []
   - id: compare
     title: "Premium mở khóa gì"
-    shows: "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code và Ôn tập, số máy CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
+    shows:
+      "Bảng phẳng theo khu vực học: Harness, Essentials phần 1, phần 2 đến 4, Projects, Luyện code và Ôn tập, số máy
+      CLI. Mỗi dòng có hai cột Miễn phí và Premium với dấu Có hoặc Khóa."
     why: "So sánh theo khu vực thay cho danh sách quyền lợi chung chung: học viên thấy đúng phần nào đang khóa với mình."
     actions: []
     states:
@@ -48,8 +52,11 @@ sections:
     needsApi: []
   - id: plan
     title: "Chọn gói"
-    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt (thanh toán, tự gia hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút chính."
-    why: "Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền không bị đẩy xuống dưới bảng."
+    shows: "Cột phải: hai gói (tháng, năm có nhãn Tiết kiệm 2 tháng) với giá do máy chủ giữ, tóm tắt (thanh toán, tự gia
+      hạn, tổng), một dòng nói trang sẽ chuyển sang cổng thanh toán và một nút chính."
+    why:
+      "Một nút chính duy nhất của màn hình, kèm đúng số tiền. Ở 390 thẻ gói lên đầu để việc trả tiền không bị đẩy xuống
+      dưới bảng."
     actions: ["Thanh toán / Gia hạn", "Đăng nhập để tiếp tục (khi chưa đăng nhập)"]
     states:
       loading: "Hai hàng gói và tóm tắt là khung xám"
@@ -94,8 +101,9 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: 'QR và quyền theo gói: cần API (đã chấp nhận). Kênh ghi "Cổng thanh toán" thay "Chuyển khoản
-            QR" của canvas do chưa có QR.'
+          notes:
+            'QR và quyền theo gói: cần API (đã chấp nhận). Kênh ghi "Cổng thanh toán" thay "Chuyển khoản QR" của canvas do
+            chưa có QR.'
     - n: 2
       at: 2026-11-20T16:54:21.504Z
       lenses:
