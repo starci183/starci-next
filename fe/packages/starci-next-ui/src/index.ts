@@ -1,4 +1,5 @@
-export { ART, ArtImage } from "./leaves/Art"
+export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
+export type { AreaArtName } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
 export { CatalogGroup } from "./composites/CatalogGroup"
