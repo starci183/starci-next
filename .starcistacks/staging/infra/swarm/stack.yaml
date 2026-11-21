@@ -76,10 +76,11 @@ services:
   # the same database grant. It serves no traffic and joins only the stack's own overlay.
   cli:
     image: "starci-next/cli:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
-    entrypoint: ["/bin/sh", "-c", "node be/dist/apps/cli/src/main.js migrate run && touch /tmp/migrated && exec sleep infinity"]
+    # The deploy migrates inside the database container (starci app db migrate); the cli only idles for stack task (it has no migrate command).
+    entrypoint: ["/bin/sh", "-c", "touch /tmp/ready && exec sleep infinity"]
     networks: [app]
     healthcheck:
-      test: ["CMD", "test", "-f", "/tmp/migrated"]
+      test: ["CMD", "test", "-f", "/tmp/ready"]
       interval: 15s
       timeout: 5s
       start_period: 120s
@@ -105,12 +106,13 @@ services:
         condition: on-failure
         delay: 5s
   # The app's own PostgreSQL, the db component: the image .starcistacks/images/db/Dockerfile builds (official postgres plus pgvector and pgmq), set by deploy.images.db.
-  # PostgreSQL 17 runs on its own NEW, empty volume next-staging-db-data-v3 (staging was reset to a first start, owner 2026-11-22); the PostgreSQL 16 volume next-staging-postgres-data and its PostgreSQL 17 copy next-staging-db-data are never mounted here and stay untouched (rollback = next-staging-postgres-data + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
+  # PostgreSQL 17 runs on its own NEW, empty volume next-staging-db-data-v4 (staging was reset to a first start, owner 2026-11-22); the PostgreSQL 16 volume next-staging-postgres-data and its PostgreSQL 17 copy next-staging-db-data are never mounted here and stay untouched (rollback = next-staging-postgres-data + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
   postgres:
     image: "starci-next/db:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      # The app database (PRIMARY_DB_URL names /starci_next): the deploy migrates the container's POSTGRES_DB, so it is starci_next, created by the entrypoint.
+      POSTGRES_DB: starci_next
     configs:
       - source: postgres-roles
         target: /docker-entrypoint-initdb.d/10-roles.sh
@@ -228,7 +230,7 @@ networks:
 volumes:
   db-data:
     external: true
-    name: "next-staging-db-data-v3"
+    name: "next-staging-db-data-v4"
   storage-data:
     external: true
     name: "next-staging-storage-data"
