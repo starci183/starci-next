@@ -2,7 +2,6 @@ export { ART, ArtImage, areaArt, lessonArt, topicArt } from "./leaves/Art"
 export type { AreaArtName } from "./leaves/Art"
 export type { ApplyEvidenceLabels } from "./composites/ApplyEvidence"
 export { BrandLockup } from "./composites/BrandLockup"
-export { CatalogGroup } from "./composites/CatalogGroup"
 export { LessonList } from "./composites/LessonList"
 export { TopicAside } from "./composites/TopicAside"
 export { CatalogToolbar } from "./composites/CatalogToolbar"
@@ -223,3 +222,7 @@ export type {
     ReadingTocRow,
     ReadingView,
 } from "./composites/LessonFiveParts/types"
+export { LessonTrack } from "./composites/LessonTrack"
+export { ResumeCard } from "./composites/ResumeCard"
+export { TopicCard } from "./composites/TopicCard"
+export { TopicHero } from "./composites/TopicHero"

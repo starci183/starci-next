@@ -31,6 +31,25 @@ export type TopicScreenView = {
     /** The notice a reader without Premium gets over the list; undefined with Premium. */
     readonly notice: { readonly title: string; readonly text: string } | undefined
     readonly rows: ReadonlyArray<LessonRowView>
+    /** The topic id: the key of its picture. */
+    readonly id: string
+    /** The ring of lessons done: done over total, and the words inside (for example "2/6"). */
+    readonly ring: { readonly done: number; readonly total: number; readonly label: string }
+    /** The key figures of the hero: lessons and time. */
+    readonly figures: ReadonlyArray<{
+        readonly id: string
+        readonly term: string
+        readonly value: string
+        readonly unit?: string
+    }>
+    /** The track of lessons: one node per lesson in the topic order. */
+    readonly track: ReadonlyArray<{
+        readonly id: string
+        readonly title: string
+        readonly problem: string
+        readonly href: string
+        readonly state: "todo" | "doing" | "done"
+    }>
     readonly parts: ReadonlyArray<TopicPartView>
     readonly prerequisites: ReadonlyArray<TopicAsideEntry>
     readonly related: ReadonlyArray<TopicAsideEntry>
@@ -48,12 +67,18 @@ export type TopicLabels = {
     readonly prerequisites: string
     readonly related: string
     readonly moved: string
+    readonly trackTitle: string
+    readonly trackLabel: string
+    readonly trackState: { readonly done: string; readonly doing: string; readonly todo: string }
+    readonly lessonsTitle: string
     readonly movedOpen: string
 }
 
 /** The words the topic view is built with, resolved by the block. */
 export type TopicWords = {
     readonly facts: (lessons: number, minutes: number) => string
+    readonly figure: { readonly lessons: string; readonly time: string }
+    readonly hours: (hours: number, minutes: number) => string
     readonly progress: (done: number, total: number) => string
     readonly startFirst: string
     readonly resumePart: (part: number) => string

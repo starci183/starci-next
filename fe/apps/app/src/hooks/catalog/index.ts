@@ -1,6 +1,15 @@
-export { catalogViewOf, currentOf, currentPathOf, lessonRowOf, orderedOf, standingsOf } from "./catalog.shared"
+export {
+    catalogViewOf,
+    currentOf,
+    currentPathOf,
+    hoursOf,
+    lessonRowOf,
+    minutesOf,
+    orderedOf,
+    standingsOf,
+} from "./catalog.shared"
 export { useCatalogFilters } from "./useCatalogFilters"
 export { useCatalogLabels } from "./useCatalogLabels"
 export { useCatalogNames } from "./useCatalogNames"
-export { useCatalogWords } from "./useCatalogWords"
+export { hoursText, useCatalogWords } from "./useCatalogWords"
 export { useViewerPremium } from "./useViewerPremium"

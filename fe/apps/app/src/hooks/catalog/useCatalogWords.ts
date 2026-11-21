@@ -4,12 +4,29 @@ import { useTranslations } from "next-intl"
 import type { CatalogWords } from "@/modules/types"
 import { useViewerPremium } from "./useViewerPremium"
 
+/** The words of a length of time: minutes under an hour, whole hours, or hours and minutes. */
+export const hoursText = (t: ReturnType<typeof useTranslations>, hours: number, minutes: number): string => {
+    if (hours === 0) return t("minutesOnly", { minutes })
+    if (minutes === 0) return t("hoursOnly", { hours })
+    return t("hours", { hours, minutes })
+}
+
 /** Resolves the words the catalog and topic views are built with: the state of a lesson, the counts and the primary. */
 export const useCatalogWords = (): CatalogWords => {
     const t = useTranslations("app.essentials.catalog")
     const isPremium = useViewerPremium()
     return {
         isPremium,
+        figure: { done: t("figureDone"), doing: t("figureDoing"), todo: t("figureTodo"), time: t("figureTime") },
+        hours: (hours, minutes) => hoursText(t, hours, minutes),
+        groupMeta: (lessons, minutes) =>
+            t("groupMeta", {
+                lessons,
+                time: hoursText(t, Math.floor(minutes / 60), minutes % 60),
+            }),
+        groupState: { todo: t("groupTodo"), doing: t("groupDoing"), done: t("groupDone") },
+        resumeKicker: (topic, position, total) => t("resumeKicker", { topic, position, total }),
+        resumeProgress: (part, done) => t("resumeProgress", { part, done }),
         minutes: (minutes) => t("minutes", { minutes }),
         partsLabel: (done) => t("partsLabel", { done }),
         facts: (topics, lessons, done) => t("facts", { topics, lessons, done }),

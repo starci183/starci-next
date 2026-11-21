@@ -1,11 +1,13 @@
 "use client"
 
+import { navigation } from "@starci-next/i18n/navigation"
 import { useLocale, useTranslations } from "next-intl"
 import { useCatalogWords } from "@/hooks/catalog"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { useGetEssentialsSwr, useGetLessonTopicSwr, useQueryLessonPartsProgressSwr } from "@/hooks/swr"
 import { topicScreenOf, useLegacyLessonDestination, useTopicLabels, useTopicWords } from "@/hooks/topic"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { APP_ROUTES } from "@/modules/routes"
 import { TOPIC_PLACEHOLDER, TopicDetailBase } from "./component"
 
@@ -21,6 +23,7 @@ export const TopicDetail = (props: TopicDetailProps) => {
     const locale = useLocale()
     const read = useGetLessonTopicSwr(props.topicId, locale)
     const catalog = useGetEssentialsSwr(locale)
+    const router = navigation.useRouter()
     const words = useTopicWords()
     const catalogWords = useCatalogWords()
     const lessonIds = (read.data?.path ?? []).flatMap((row) => (row.lessonId === "" ? [] : [row.lessonId]))
@@ -42,8 +45,9 @@ export const TopicDetail = (props: TopicDetailProps) => {
                 labels: useTopicLabels(),
                 catalogHref: APP_ROUTES.essentials,
                 movedTo,
+                artBase: staticsBase(),
             }}
-            on={{ retry: () => void read.mutate() }}
+            on={{ retry: () => void read.mutate(), open: (href) => router.push(href) }}
         />
     )
 }
