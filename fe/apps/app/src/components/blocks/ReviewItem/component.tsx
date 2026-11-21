@@ -29,7 +29,15 @@ export type ReviewItemBaseProps = {
         readonly exitLabel: string
         readonly exitHref: string
         readonly panelLabels: ReviewPanelLabels
+        /** The item's name once read, else the generic heading. */
         readonly title: string
+        /** The part, learner and state under the heading once read. */
+        readonly meta: string | undefined
+        /** Names the breadcrumb landmark. */
+        readonly crumbLabel: string
+        /** The first crumb, back to the profile. */
+        readonly profileLabel: string
+        readonly profileHref: string
         readonly backLabel: string
         readonly backHref: string
         readonly decision: ReviewPanelDecision
@@ -38,7 +46,7 @@ export type ReviewItemBaseProps = {
 }
 
 /**
- * Draws one item under review on /review-queue/{itemId}: the way back to the queue, then the review panel with the item's history,
+ * Draws one item under review on /review-queue/{itemId}: the trail through the profile and the queue, the item's name and facts, then the review panel with the item's history,
  * and Revoke for the teacher on a verified item. A reader with no signer role gets the forbidden slot.
  */
 export const ReviewItemBase = (props: ReviewItemBaseProps) => (
@@ -47,12 +55,14 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
             title: props.props.title,
             titleScale: "standard",
             breadcrumbs: {
-                label: props.props.backLabel,
+                label: props.props.crumbLabel,
                 items: [
+                    { id: "profile", label: props.props.profileLabel, href: props.props.profileHref },
                     { id: "queue", label: props.props.backLabel, href: props.props.backHref },
                     { id: "item", label: props.props.title },
                 ],
             },
+            ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
         }}
     >
         <SlotView

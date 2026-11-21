@@ -69,7 +69,7 @@ const AvatarSection = (props: ProfileEditBaseProps) => {
                 <Section title={labels.avatarTitle} headingLevel={2} isLoading={isLoading}>
                     <Cluster gap="inline" align="center" wrap>
                         <Avatar
-                            name={identity.shownName}
+                            name={identity.avatarName}
                             size="lg"
                             {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                         />

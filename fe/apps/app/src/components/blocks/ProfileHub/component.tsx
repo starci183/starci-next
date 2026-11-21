@@ -3,13 +3,11 @@ import {
     Avatar,
     Button,
     Cluster,
+    Grid,
     CopyField,
     EmptyNotice,
     Link,
     Page,
-    Pane,
-    PaneGrid,
-    PaneSection,
     Section,
     Stack,
     Switch,
@@ -74,7 +72,7 @@ const IdentitySection = (props: PartProps & { readonly slot: DataSlot<ProfileIde
             <Section title={props.labels.identityTitle} headingLevel={2} isLoading={isLoading}>
                 <Cluster gap="inline" align="center" wrap>
                     <Avatar
-                        name={identity.shownName}
+                        name={identity.avatarName}
                         size="lg"
                         {...(identity.avatarUrl === null ? {} : { src: identity.avatarUrl })}
                     />
@@ -296,7 +294,7 @@ const EditAction = (props: { readonly labels: ProfileHubLabels; readonly isNew: 
 
 /**
  * Draws the profile: who the learner is, the combined CV link with its public switch, the verified CV lines each with its own link and
- * switch, and the account rows. A side pane holds the quick progress and the experience summary (below the page at 390). Every part
+ * switch, and the account rows. The rail holds the quick progress and the experience summary (below the page at 390). Every part
  * reads on its own, so one that fails says so without hiding the others.
  */
 export const ProfileHubBase = (props: ProfileHubBaseProps) => {
@@ -304,7 +302,6 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
     const part = { labels, slotLabels, onRetry: props.on.retry }
     return (
         <Page
-            chrome="panes"
             header={{
                 title: labels.title,
                 titleScale: "standard",
@@ -313,35 +310,21 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
                 actions: <EditAction labels={labels} isNew={props.props.isNew} />,
             }}
         >
-            <PaneGrid
-                label={labels.title}
-                areas={{ base: ["main", "aside"], wide: ["main aside"] }}
-                columns={{ base: ["fill"], wide: ["fill", "standard"] }}
-            >
-                <Pane area="main" scroll label={labels.title}>
-                    <PaneSection>
-                        <Stack gap="region">
-                            {props.props.isSaved ? (
-                                <Alert tone="affirmative" title={labels.savedTitle} description={labels.savedText} />
-                            ) : null}
-                            <IdentitySection {...part} slot={views.identity} />
-                            <CvLinkSection
-                                {...part}
-                                views={views}
-                                isCvLinkBusy={props.props.isCvLinkBusy}
-                                on={props.on}
-                            />
-                            <CvSection {...part} views={views} on={props.on} />
-                            <AccountSection {...part} views={views} devicesCount={props.props.devicesCount} />
-                        </Stack>
-                    </PaneSection>
-                </Pane>
-                <Pane area="aside" scroll label={labels.asideProgressTitle}>
-                    <PaneSection>
-                        <Aside {...part} views={views} />
-                    </PaneSection>
-                </Pane>
-            </PaneGrid>
+            <Grid
+                kind="main-rail"
+                primary={
+                    <Stack gap="region">
+                        {props.props.isSaved ? (
+                            <Alert tone="affirmative" title={labels.savedTitle} description={labels.savedText} />
+                        ) : null}
+                        <IdentitySection {...part} slot={views.identity} />
+                        <CvLinkSection {...part} views={views} isCvLinkBusy={props.props.isCvLinkBusy} on={props.on} />
+                        <CvSection {...part} views={views} on={props.on} />
+                        <AccountSection {...part} views={views} devicesCount={props.props.devicesCount} />
+                    </Stack>
+                }
+                rail={<Aside {...part} views={views} />}
+            />
         </Page>
     )
 }

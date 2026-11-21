@@ -1933,7 +1933,11 @@
         "teacherQueue": "Hàng chờ của thầy",
         "appointed": "Đã lưu chỉ định người duyệt.",
         "ended": "Đã kết thúc chỉ định.",
-        "assigned": "Đã giao lại mục."
+        "assigned": "Đã giao lại mục.",
+        "pageMeta": "{pending} mục đang chờ · {overdue} quá hạn",
+        "itemMeta": "{part} · {who} · {state}",
+        "dueIn": "{days, plural, =0 {Đến hạn hôm nay} other {Còn # ngày}}",
+        "overdueBy": "{days, plural, other {Quá hạn # ngày}}"
       },
       "verify": {
         "pageTitle": "Xác minh kinh nghiệm",
@@ -2014,7 +2018,8 @@
       "defenseChip": "{count} câu bảo vệ",
       "signerChip": "{role} ký",
       "errorTitle": "Không tải được danh sách kinh nghiệm",
-      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây."
+      "errorText": "Máy chủ chưa trả lời. Dữ liệu của bạn vẫn còn nguyên. Thử lại sau vài giây.",
+      "moment": "{date}, {time}"
     },
     "devices": {
       "pageTitle": "Thiết bị",
@@ -2412,8 +2417,9 @@
         "remove": "Xoá ảnh",
         "avatarHint": "PNG, JPEG hoặc WebP, tối đa {size}.",
         "nameLabel": "Tên hiển thị",
+        "unnamed": "Chưa đặt tên",
         "namePlaceholder": "Tên bạn muốn hiện",
-        "nameHint": "Để trống thì hiện tên tài khoản. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
+        "nameHint": "Để trống thì hồ sơ ghi “Chưa đặt tên”. Tên này không xuất hiện trên CV nếu bạn tắt công khai.",
         "error": {
           "type": "Chỉ nhận ảnh PNG, JPEG hoặc WebP.",
           "size": "Ảnh quá lớn, tối đa {size}.",
@@ -2466,9 +2472,9 @@
           "title": "Gói của bạn",
           "free": "Miễn phí",
           "until": "Premium đến {date}",
-          "freeNote": "Phần 1 của mỗi bài Essentials và toàn bộ Harness",
+          "freeNote": "Phần 1 Essentials, cả Harness",
           "manage": "Xem Premium",
-          "premiumNote": "Mọi phần của Bản chất, Dự án và Harness đều đã mở."
+          "premiumNote": "Mở hết mọi phần"
         },
         "title": "Tài khoản"
       },
@@ -2481,6 +2487,7 @@
       "loading": "Đang tải…",
       "meta": {
         "learner": "Học viên",
+        "learnerNew": "Học viên mới",
         "premium": "Premium",
         "free": "Gói miễn phí",
         "verified": "{verified}/{min} mục đã xác minh"
@@ -2495,7 +2502,7 @@
         "unsaved": "Thay đổi chưa lưu",
         "goal": {
           "label": "Lộ trình mục tiêu",
-          "hint": "Dùng để gợi ý bài kế tiếp. Không khóa phần nào.",
+          "hint": "Dùng để gợi ý bài kế tiếp. Không khoá phần nào.",
           "placeholder": "Chọn lộ trình"
         },
         "errorTitle": "Không tải được hồ sơ",

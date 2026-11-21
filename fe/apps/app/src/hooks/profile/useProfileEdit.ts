@@ -89,6 +89,7 @@ export const useProfileEdit = (): ProfileEditState => {
             nameValue: name,
             email: session.session?.email ?? "",
             avatarUrl: data.avatarUrl,
+            avatarName: session.session?.email ?? "",
             goalTitle: data.goal?.title ?? null,
             canSaveName: identity.draft !== undefined && identity.draft !== (data.displayName ?? ""),
             isNew: false,

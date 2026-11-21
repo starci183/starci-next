@@ -88,7 +88,7 @@ export const useProfileHub = (): ProfileHubState => {
         profile.data === undefined || experience.data === undefined
             ? undefined
             : [
-                  t("meta.learner"),
+                  isNew && verified === 0 ? t("meta.learnerNew") : t("meta.learner"),
                   premium.data?.isPremium === true ? t("meta.premium") : t("meta.free"),
                   t("meta.verified", { verified, min: experience.data.hiringMinVerified }),
               ].join(" · ")
@@ -102,10 +102,11 @@ export const useProfileHub = (): ProfileHubState => {
         isCvLinkBusy: visibility.isMutating,
         views: {
             identity: slotOf(profile, (data) => ({
-                shownName: data.displayName ?? t("identity.nameLabel"),
+                shownName: data.displayName ?? t("identity.unnamed"),
                 nameValue: data.displayName ?? "",
                 email: session.session?.email ?? "",
                 avatarUrl: data.avatarUrl,
+                avatarName: session.session?.email ?? "",
                 goalTitle: data.goal?.title ?? null,
                 canSaveName: false,
                 isNew: data.displayName === null && data.avatarUrl === null,

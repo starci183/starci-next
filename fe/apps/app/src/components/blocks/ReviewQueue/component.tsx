@@ -1,4 +1,4 @@
-import { Button, Grid, Page, Section, Stack, Tabs } from "@starci/grammar/common"
+import { Button, Grid, Page, Section, Stack, Tabs, type PageHeaderContent } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -31,6 +31,10 @@ export const REVIEW_QUEUE_PLACEHOLDER: ReviewQueueScreenView = {
 /** The fixed words of the queue. */
 export type ReviewQueueLabels = {
     readonly title: string
+    /** Names the breadcrumb landmark. */
+    readonly crumbLabel: string
+    /** The first crumb, back to the profile. */
+    readonly crumbProfile: string
     readonly listLabel: string
     readonly tabsLabel: string
     readonly reviewersLabel: string
@@ -57,6 +61,8 @@ export type ReviewQueueBaseProps = {
         readonly slotLabels: SlotLabels
         readonly exitLabel: string
         readonly exitHref: string
+        /** The summary line under the heading once the queue is read: how many wait and how many are overdue. */
+        readonly meta: string | undefined
         readonly labels: ReviewQueueLabels
         readonly panelLabels: ReviewPanelLabels
         readonly tab: string
@@ -126,11 +132,13 @@ const ReviewerList = (props: ReviewerListProps) => (
     />
 )
 
-/** The rail of rows beside the review panel of the chosen row. */
+/** The rail of rows beside the review panel of the chosen row; on a narrow screen the rows come first. */
 const QueueGrid = (props: QueueBodyProps) => (
     <Grid
         kind="main-rail"
         railPosition="leading"
+        railWidth="wide"
+        collapsedOrder="rail-first"
         rail={<QueueList view={props.view} labels={props.base.props.labels} on={props.base.on} />}
         primary={
             <Stack gap="section">
@@ -166,13 +174,27 @@ const QueueBody = (props: QueueBodyProps) => (
     </Stack>
 )
 
+/** The band: the trail from the profile, the page title and the summary of the queue once read. */
+const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
+    title: props.props.labels.title,
+    titleScale: "standard",
+    breadcrumbs: {
+        label: props.props.labels.crumbLabel,
+        items: [
+            { id: "profile", label: props.props.labels.crumbProfile, href: props.props.exitHref },
+            { id: "queue", label: props.props.labels.title },
+        ],
+    },
+    ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
+})
+
 /**
  * Draws Experience review the way the canvas does (Program screen queue): the tabs Waiting, Overdue, Unassigned and Reviewers
  * (the last three for the teacher), the rows with their SLA badges, and the review panel of the chosen row. A reader with no signer
  * role gets the forbidden slot.
  */
 export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
-    <Page header={{ title: props.props.labels.title, titleScale: "standard", breadcrumbs: "root" }}>
+    <Page header={headerOf(props)}>
         <SlotView
             slot={props.props.slot}
             forbiddenAction={

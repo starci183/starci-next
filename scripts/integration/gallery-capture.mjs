@@ -563,7 +563,8 @@ const SCREENS = [
     // The seeded learner with three verified lines (gallery-seed cv-multi); its slug is in the seed manifest (learners.cv-multi.cv.slug).
     S("cv", "public-many-lines", "/cv/learner-4", { guest: true }),
     S("cv", "public-loading", "/cv/learner-4", { guest: true, hold: true, ops: /"operationName":"PublicCv"/ }),
-    S("profile", "overview", "/profile"),
+    // The learner with three verified lines and a CV (gallery-seed cv-multi): the overview is the settled, filled profile.
+    S("profile", "overview", "/profile", { learnerState: learnerOf("cv-multi") }),
     S("profile", "new", "/profile", {
         learnerState: learnerOf("review-nothing"),
     }),

@@ -5,7 +5,7 @@ import type { ExperienceReviewersView, ReviewItemView, ReviewQueueView } from "@
 import { reviewItemPath } from "@/modules/routes"
 import type { ReviewPreviewView, ReviewQueueScreenView } from "@/modules/types"
 import { plainLineOf, slaToneOf, stateToneOf } from "./experience.shared"
-import { useExperienceWords, type ExperienceWords } from "./useExperienceWords"
+import { daysUntil, itemNameOf, useReviewWords, type ReviewWords } from "./reviewWords"
 
 /** The translator of the queue's namespace. */
 type QueueTranslator = ReturnType<typeof useTranslations<"app.experience.queue">>
@@ -13,10 +13,13 @@ type QueueTranslator = ReturnType<typeof useTranslations<"app.experience.queue">
 /** One queue row of the read. */
 type QueueItem = ReviewQueueView["items"][number]
 
+/** The heading of one item's page. */
+export type ReviewItemHeaderView = { readonly title: string; readonly meta: string }
+
 /** What the mapping of the read needs. */
 type ReviewQueueContext = {
     readonly t: QueueTranslator
-    readonly words: ExperienceWords
+    readonly words: ReviewWords
     readonly isTeacher: boolean
 }
 
@@ -56,12 +59,29 @@ const previewOf = (
             text: t("historyRow", {
                 action: t(`action.${row.action}`),
                 role: t(`actor.${row.actorRole}`),
-                date: words.date(row.at),
+                date: words.moment(row.at),
             }),
             note: row.note ?? undefined,
         })),
     }
 }
+
+/** The words of the SLA badge: the days left or overdue when the item has a deadline, else the SLA bucket. */
+const slaLabelOf = (item: QueueItem, context: ReviewQueueContext): string => {
+    if (!item.dueAt || item.state !== "pending-review") return context.t(`sla.${item.sla}`)
+    const days = daysUntil(item.dueAt, Date.now())
+    return days < 0 ? context.t("overdueBy", { days: -days }) : context.t("dueIn", { days })
+}
+
+/** The heading of one item's page: its name, and the part, learner and state under it. */
+const itemHeaderOf = (item: QueueItem, context: ReviewQueueContext): ReviewItemHeaderView => ({
+    title: itemNameOf(item),
+    meta: context.t("itemMeta", {
+        part: context.words.part(item.part),
+        who: item.learnerHandle,
+        state: context.words.state(item.state),
+    }),
+})
 
 /** The queue as it is drawn: the tabs with their counts, the rows and the preview of the chosen row. */
 const queueViewOf = (
@@ -91,14 +111,14 @@ const queueViewOf = (
         tabs,
         rows: read.items.map((item) => ({
             itemId: item.itemId,
-            title: plainLineOf((item.line ?? item.draftLine)?.vi ?? item.subject),
+            title: itemNameOf(item),
             meta: [
                 item.learnerHandle,
                 words.part(item.part),
                 item.grade?.result === "pass" ? t("aiPass") : t("aiFail"),
                 ...(item.teacherOnly ? [t("teacherOnly")] : []),
             ].join(", "),
-            sla: t(`sla.${item.sla}`),
+            sla: slaLabelOf(item, context),
             slaTone: slaToneOf(item.sla),
             href: reviewItemPath(item.itemId),
             isSelected: item.itemId === current?.itemId,
@@ -135,6 +155,10 @@ export interface ReviewQueueViews {
     readonly preview: (item: QueueItem, history: ReviewItemView["history"]) => ReviewPreviewView
     /** The queue with the preview of the chosen row. */
     readonly queue: (read: ReviewQueueView, selected: string | undefined) => ReviewQueueScreenView
+    /** The heading of one item's page. */
+    readonly itemHeader: (item: QueueItem) => ReviewItemHeaderView
+    /** The summary line under the queue heading: how many wait and how many are overdue. */
+    readonly pageMeta: (read: ReviewQueueView) => string
     /** The reviewer appointments under the queue tabs. */
     readonly reviewers: (rows: ExperienceReviewersView, tabs: ReviewQueueScreenView["tabs"]) => ReviewQueueScreenView
 }
@@ -142,11 +166,13 @@ export interface ReviewQueueViews {
 /** Binds the review mappings to the queue words and to whether the reader is the teacher. */
 export const useReviewQueueViews = (isTeacher: boolean): ReviewQueueViews => {
     const t = useTranslations("app.experience.queue")
-    const words = useExperienceWords()
+    const words = useReviewWords()
     const context: ReviewQueueContext = { t, words, isTeacher }
     return {
         preview: (item, history) => previewOf(item, history, context),
         queue: (read, selected) => queueViewOf(read, selected, context),
+        itemHeader: (item) => itemHeaderOf(item, context),
+        pageMeta: (read) => t("pageMeta", { pending: read.counts.pending, overdue: read.counts.overdue }),
         reviewers: (rows, tabs) => reviewersViewOf(rows, context, tabs),
     }
 }

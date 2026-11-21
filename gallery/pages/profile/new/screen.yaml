@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ae2ed45dd1d69151c5d7d646a5c0ce66466c51b6a9df18136a576ddc41719273
+    sha256: 56d610b48f85ab2670390694239f4c19d016917bd85844f3d768b95898a2994c
   "1440":
     file: 1440.png
-    sha256: 4882fb4584c149cec820b238da041a3b83c2d5e4640f17204b8466cda558b020
+    sha256: 85f85f9bff8752a90904fd57de2524b29ef60d8e66d7e9574d37ada806c61904
 sections:
   - id: s1
     title: Danh tính khi chưa có ảnh
@@ -66,114 +66,44 @@ considered:
     chosen: false
     why: Thanh trên đã có avatar riêng của tài khoản; hai chỗ khác nhau làm người học không biết người
       khác thấy ảnh nào.
+  - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
+    chosen: true
+    why: 'Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối
+      2026-11-20T22:24:05.141Z); lens cuối: order pass, layout open, actionable pass, live pass,
+      words open, states pass, truth open. Sau vòng 4 đã sửa: lề nội dung 288/1408 (Page thường +
+      Grid main-rail thay chrome panes), tên trống hiện "Chưa đặt tên" (khoá
+      app.profile.identity.unnamed), avatar vẽ từ email tài khoản như thanh trên, dòng gói rút gọn
+      không bị cắt ở 390; meta ghi "Học viên mới" khi chưa có tên, ảnh và dòng xác minh. Các vòng cũ
+      nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null,
+      audit run).'
 audit:
   builder:
-    agent: mig-auth-fe
+    agent: next-one-edition
   auditor:
-    agent: next-ux-auditor
+    agent: next-ux-auditor-2
   rounds:
     - n: 1
-      at: 2026-11-20T13:00:51.082Z
+      at: 2026-11-21T03:56:48.575Z
       lenses:
         order:
           verdict: pass
-          notes: ""
+          notes: 'Với học viên mới: nút chính "Thêm ảnh và tên" ở đầu, Danh tính nói rõ chưa đặt tên và chưa chọn lộ trình, Liên kết CV và CV đã xác minh nói điều cần làm ngay sau đó, rồi Tài khoản; cột phải xuống cuối ở 390.'
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
-            dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
-        actionable:
-          verdict: open
-          notes: '"Chọn lộ trình" là chữ đậm trơn không giống liên kết.'
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: open
-          notes: Email lặp hai lần liền nhau.
-        states:
-          verdict: open
-          notes: Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên
-            mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.
-        truth:
-          verdict: open
-          notes: Tên hiển thị là email "gallery-ess-0006@example.test" (lỗi đã biết), canvas là "minh".
-    - n: 2
-      at: 2026-11-20T14:16:12.512Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
-        actionable:
-          verdict: open
-          notes: '"Chọn lộ trình" vẫn là chữ đậm trơn, không giống liên kết (ở overview đã là liên kết tím).'
-        live:
-          verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: open
-          notes: Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới ·
-            Gói miễn phí · 0/3" của canvas profile/new.
-        truth:
-          verdict: open
-          notes: Tên hiển thị là email (lỗi đã biết).
-    - n: 3
-      at: 2026-11-20T14:52:39.664Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: pass
-          notes: ""
+          notes: 'Ở 390 "Mở Kinh nghiệm" đè lên dòng "0 đã xác minh, 0 đang chờ duyệt…"; "Xem tiến độ" dính sát hàng số liệu đầu. Khối rỗng CV căn giữa nhưng nút "Xem việc có thể làm" căn trái, tách khỏi nhóm của nó. "Quản lý" và "Xem Premium" khoảng 32px, dưới 40 và dưới vùng chạm 44 ở 390. Đầu trang: nút 40px, một dòng, không tràn ở 390.'
         actionable:
           verdict: pass
-          notes: ""
+          notes: "Mỗi giá trị có đường đổi: Thêm ảnh và tên, Chọn lộ trình, Xem việc có thể làm, Quản lý (máy), Xem Premium (gói)."
         live:
           verdict: pass
-          notes: ""
-        words:
-          verdict: pass
-          notes: ""
-        states:
-          verdict: pass
-          notes: ""
-        truth:
-          verdict: pass
-          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo
-            sau)."
-    - n: 4
-      at: 2026-11-20T22:24:05.141Z
-      lenses:
-        order:
-          verdict: pass
-          notes: ""
-        layout:
-          verdict: open
-          notes: "Cùng khung với profile/overview: lề nội dung x=268 và nút chính tới x=1428, lệch 288/1408
-            của các trang khác (sửa trong app)."
-        actionable:
-          verdict: pass
-          notes: ""
-        live:
-          verdict: pass
-          notes: ""
+          notes: 'Học viên mới không có việc đang chạy hay chờ; số "0 đang chờ duyệt" là văn bản đúng với dữ liệu, không có trạng thái nào bị giấu.'
         words:
           verdict: open
-          notes: 'Tên hiện "Tên hiển thị" (nhãn ô nhập). Dòng meta ghi "Học viên" thay vì "Học viên mới"
-            như canvas. Cả hai sửa trong app.'
+          notes: '"Bài Accepted" lẫn tiếng Anh; cùng một gói mà thanh trên ghi "Chưa có Premium", meta ghi "Gói miễn phí", hàng gói ghi "Miễn phí"; thanh bên "Projects" trong khi chỉ dẫn rỗng ghi "dự án"; "Phần 1 Essentials, cả Harness" cụt, không thành câu.'
         states:
-          verdict: pass
-          notes: ""
+          verdict: open
+          notes: "Đây là trạng thái rỗng và đúng ý; nhưng /profile vẫn thiếu ảnh đang tải, lỗi một vùng và không có quyền ở 1440 và 390 (canvas có overview-loading, overview-partial-error)."
         truth:
           verdict: open
-          notes: "Ảnh đại diện ở Danh tính (chậu cây xanh) khác avatar trên thanh trên (hoa hồng nền cam) của
-            cùng tài khoản: trang hồ sơ không dùng avatar của tài khoản."
-  escalate: 'needs owner: vòng 4 còn mở layout (lề 268/1428), words ("Tên hiển thị", meta thiếu "mới")
-    và truth (avatar ở Danh tính khác avatar tài khoản); đều là việc của app.'
+          notes: 'screen.yaml không khớp ảnh: s3 hứa bảng token "Chưa có token nào." và liên kết "Quản lý gói" cùng câu "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", ảnh không có hàng token, nút là "Xem Premium", câu khác; s2 trích chỉ dẫn "bản dựng Harness, một dự án hoặc một bài Bản chất" còn ảnh ghi Essentials và Luyện code; s1 nói avatar vẽ từ tên nhưng consider nói vẽ từ email.'
+  escalate: null

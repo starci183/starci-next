@@ -2,12 +2,14 @@ import type { DataSlot } from "@starci-next/ui"
 
 /** The identity of the learner as it is drawn: the name, the email, the avatar and the goal path, in words. */
 export type ProfileIdentityView = {
-    /** The name that shows: the one the learner chose, else the name of their account. */
+    /** The name that shows: the one the learner chose, else a neutral "no name yet". */
     readonly shownName: string
     /** What the name field holds now. */
     readonly nameValue: string
     readonly email: string
     readonly avatarUrl: string | null
+    /** The name the generated avatar is drawn from: the account email, as in the app header, so both show one image. */
+    readonly avatarName: string
     readonly goalTitle: string | null
     readonly canSaveName: boolean
     /** Whether the learner has set neither a name nor an avatar yet (the first-visit head says "Thêm ảnh và tên"). */
@@ -151,6 +153,7 @@ export const IDENTITY_PLACEHOLDER: ProfileIdentityView = {
     nameValue: "xxxxxx",
     email: "xxxxxx",
     avatarUrl: null,
+    avatarName: "xxxxxx",
     goalTitle: "xxxxxx",
     canSaveName: false,
     isNew: false,

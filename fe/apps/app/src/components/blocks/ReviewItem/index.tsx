@@ -21,10 +21,12 @@ type ReviewItemProps = { readonly itemId: string }
 /** One item under review with its history; the teacher can also revoke a verified item here. */
 export const ReviewItem = (props: ReviewItemProps) => {
     const t = useTranslations("app.experience.queue")
+    const crumb = useTranslations("app.experience.crumb")
     const session = useSession()
     const role = signerRoleOf(useViewerRoles())
     const views = useReviewQueueViews(role === SIGNER_ROLES.teacher)
     const read = useQueryReviewItemSwr(props.itemId, role !== undefined)
+    const header = role === undefined || read.data === undefined ? undefined : views.itemHeader(read.data.item)
     const decision = useReviewDecision(props.itemId, () => read.mutate())
     const slotOf = (): DataSlot<ReviewPreviewView> => {
         if (session.status !== "signed-in") return loadingSlot<ReviewPreviewView>()
@@ -40,7 +42,11 @@ export const ReviewItem = (props: ReviewItemProps) => {
                 exitLabel: t("backToProfile"),
                 exitHref: APP_ROUTES.profile,
                 panelLabels: useReviewPanelLabels(),
-                title: t("itemTitle"),
+                title: header?.title ?? t("itemTitle"),
+                meta: header?.meta,
+                crumbLabel: crumb("label"),
+                profileLabel: crumb("profile"),
+                profileHref: APP_ROUTES.profile,
                 backLabel: t("title"),
                 backHref: APP_ROUTES.reviewQueue,
                 decision,

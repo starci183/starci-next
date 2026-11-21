@@ -26,6 +26,7 @@ const REVIEWERS_TAB = "reviewers"
  */
 export const ReviewQueue = () => {
     const t = useTranslations("app.experience.queue")
+    const crumb = useTranslations("app.experience.crumb")
     const session = useSession()
     const role = signerRoleOf(useViewerRoles())
     const isTeacher = role === SIGNER_ROLES.teacher
@@ -51,8 +52,11 @@ export const ReviewQueue = () => {
                 slotLabels: { ...useSlotLabels()(t("empty")), forbidden: t("forbiddenTitle") },
                 exitLabel: t("backToProfile"),
                 exitHref: APP_ROUTES.profile,
+                meta: role === undefined || queue.data === undefined ? undefined : views.pageMeta(queue.data),
                 labels: {
                     title: t("title"),
+                    crumbLabel: crumb("label"),
+                    crumbProfile: crumb("profile"),
                     listLabel: t("listLabel"),
                     tabsLabel: t("tabsLabel"),
                     reviewersLabel: t("tabReviewers"),

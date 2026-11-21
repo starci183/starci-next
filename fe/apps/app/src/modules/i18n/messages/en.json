@@ -1933,7 +1933,11 @@
         "teacherQueue": "Teacher's queue",
         "appointed": "The appointment is saved.",
         "ended": "The appointment is ended.",
-        "assigned": "The item is reassigned."
+        "assigned": "The item is reassigned.",
+        "pageMeta": "{pending} waiting · {overdue} overdue",
+        "itemMeta": "{part} · {who} · {state}",
+        "dueIn": "{days, plural, =0 {Due today} one {# day left} other {# days left}}",
+        "overdueBy": "{days, plural, one {# day overdue} other {# days overdue}}"
       },
       "verify": {
         "pageTitle": "Experience verification",
@@ -2014,7 +2018,8 @@
       "defenseChip": "{count} defense questions",
       "signerChip": "Signed by {role}",
       "errorTitle": "Could not load your experience",
-      "errorText": "The server did not answer. Your data is safe. Try again in a few seconds."
+      "errorText": "The server did not answer. Your data is safe. Try again in a few seconds.",
+      "moment": "{date}, {time}"
     },
     "devices": {
       "pageTitle": "Devices",
@@ -2412,8 +2417,9 @@
         "remove": "Remove photo",
         "avatarHint": "PNG, JPEG or WebP, up to {size}.",
         "nameLabel": "Display name",
+        "unnamed": "No name yet",
         "namePlaceholder": "The name to show",
-        "nameHint": "Leave empty to show your account name. This name does not appear on the CV if you turn public off.",
+        "nameHint": "Leave it empty and the profile says “No name yet”. This name does not appear on the CV if you turn public off.",
         "error": {
           "type": "Only PNG, JPEG or WebP images.",
           "size": "The image is too large, up to {size}.",
@@ -2466,9 +2472,9 @@
           "title": "Your plan",
           "free": "Free",
           "until": "Premium until {date}",
-          "freeNote": "Part 1 of every Essentials lesson and all of Harness",
+          "freeNote": "Essentials part 1, all of Harness",
           "manage": "See Premium",
-          "premiumNote": "Every part of Essentials, Projects and Harness is open."
+          "premiumNote": "Every part open"
         },
         "title": "Account"
       },
@@ -2481,6 +2487,7 @@
       "loading": "Loading…",
       "meta": {
         "learner": "Learner",
+        "learnerNew": "New learner",
         "premium": "Premium",
         "free": "Free plan",
         "verified": "{verified}/{min} items verified"
