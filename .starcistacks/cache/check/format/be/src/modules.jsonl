@@ -340,7 +340,7 @@
 {"findings":[],"hash":"088e81b61c3f7d7d785b47a61fc7b658ba428bc9d3163bb2bcc6f0c9cd4437bb","path":"be/src/modules/domain/mcp/mcp-index.module-definition.ts","step":"prettier"}
 {"findings":[],"hash":"78bd47ead6989f940960563eb26e7f0b1092d2bd89f19e07cada1cf8eaaa8f16","path":"be/src/modules/domain/mcp/mcp-index.module.ts","step":"prettier"}
 {"findings":[],"hash":"33dfb71ab30ced0dea3c926fdeea8a29b0711fb92c696e18e80834d941c6c72a","path":"be/src/modules/domain/mcp/mcp-index.options.ts","step":"prettier"}
-{"findings":[],"hash":"dccbb119dd28a82096d4d0465ab3c55a67f06bf4adb2801588e738b15943200b","path":"be/src/modules/domain/mcp/mcp-leak.spec.ts","step":"prettier"}
+{"findings":[],"hash":"dd3d1a39fe6b68916e4c6f59981584b1b97421b5493fca97ebe6c768958e2329","path":"be/src/modules/domain/mcp/mcp-leak.spec.ts","step":"prettier"}
 {"findings":[],"hash":"93a5a18b6a5868c5aed6b6a2105304fc102d5781d23e2f4d47703aa79286ebc7","path":"be/src/modules/domain/mcp/mcp-lesson-index.service.ts","step":"prettier"}
 {"findings":[],"hash":"a9d15143d080c8b4a9bbf9e3bfe1d166ae7c2db22871aa2f0934bf9a3b32eb6f","path":"be/src/modules/domain/mcp/mcp-lesson.policy.spec.ts","step":"prettier"}
 {"findings":[],"hash":"3191a8e1faa0e802b4047e8479f0d78198a1c4e2723b147ddd41dbc656f5924c","path":"be/src/modules/domain/mcp/mcp-lesson.policy.ts","step":"prettier"}
@@ -361,7 +361,7 @@
 {"findings":[],"hash":"3fba242552835e705216738a6172738677a751626a977f4aef5daae31b342dbf","path":"be/src/modules/domain/mcp/mcp-token.service.spec.ts","step":"prettier"}
 {"findings":[],"hash":"72f597d54d3e76d055cf827c5702cc671fbf16c18b8ff2cdf49138554225ace3","path":"be/src/modules/domain/mcp/mcp-token.service.ts","step":"prettier"}
 {"findings":[],"hash":"50ee9fbd0748ad5a0ed5759813f5622814e761d7805120d428165751295722fe","path":"be/src/modules/domain/mcp/mcp-tools-snapshot.spec.ts","step":"prettier"}
-{"findings":[],"hash":"1c52c7204edd981331bd0d138b33f28c82e8c169b6181e267e9a11b5c1ded20e","path":"be/src/modules/domain/mcp/mcp-tutor.service.ts","step":"prettier"}
+{"findings":[],"hash":"3257c07cc49046abcb39e71cda762ab8ed4a27c0742dab70fe191fe9b472deed","path":"be/src/modules/domain/mcp/mcp-tutor.service.ts","step":"prettier"}
 {"findings":[],"hash":"3ac8031b31f42f8a9b2ead12b0f63060a3486e5444d7889aeedf439a1be958fd","path":"be/src/modules/domain/mcp/mcp-unconfigured.vector-store.ts","step":"prettier"}
 {"findings":[],"hash":"c5857772b16fb6e1f58fa1e75fbcaff128b4825c42537f29044cfd8522e14b28","path":"be/src/modules/domain/mcp/mcp-vector-store.port.ts","step":"prettier"}
 {"findings":[],"hash":"570695dc1adb7fbcf72c3c3b622afb0426fceab4fbf65bd9ef066a9f6d4e4bea","path":"be/src/modules/domain/mcp/mcp-vector.index.spec.ts","step":"prettier"}
