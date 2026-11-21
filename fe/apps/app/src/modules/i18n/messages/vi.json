@@ -1804,73 +1804,42 @@
       },
       "pitch": {
         "title": "Dự án",
-        "description": "Mang repo thật của bạn vào, chứng minh từng concept Bản chất bằng bằng chứng máy kiểm được, rồi nhận một dòng CV đã xác minh. Dự án nằm trong gói Premium.",
+        "description": "Mang repo thật vào, chứng minh từng concept bằng bằng chứng máy kiểm được, nhận dòng CV đã xác minh.",
         "subscribe": "Đăng ký Premium",
+        "premiumNote": "Dự án nằm trong gói Premium",
         "stepsTitle": "Từ repo của bạn đến dòng CV",
         "steps": {
           "repo": {
-            "title": "Mang repo của bạn vào",
-            "text": "Không có dự án mẫu: dự án nào cũng là code của chính bạn, mọi chủ đề, mọi ngôn ngữ. Một lệnh thêm thư mục starci/ và mẫu CI vào repo."
+            "title": "Mang repo vào",
+            "text": "Mọi đề tài, mọi ngôn ngữ. Một lệnh thêm starci/."
           },
           "prove": {
             "title": "Chứng minh từng concept",
-            "text": "Mỗi concept Bản chất cần đủ ô bằng chứng: test, e2e, probe trên địa chỉ deploy, hoặc AI đọc đoạn code bạn dán. Chạy trên máy là Đang luyện; CI GitHub ký OIDC hoặc server chạy lại mới là Đã chứng minh."
+            "text": "Test, e2e, probe hoặc AI đọc code. CI ký OIDC mới tính."
           },
           "cv": {
-            "title": "Nhận dòng CV đã xác minh",
-            "text": "Mỗi milestone xong sinh một dòng CV từ bằng chứng StarCi đã kiểm. Không có số tự khai."
+            "title": "Nhận dòng CV",
+            "text": "Mỗi milestone xong sinh một dòng. Không có số tự khai."
           }
         },
-        "sampleNote": "Dữ liệu minh hoạ, không phải dự án của ai. Dự án thật của bạn hiện ở đúng khung này.",
-        "conceptsTitle": "Ví dụ: concept của một milestone",
-        "columns": {
-          "concept": "Concept",
-          "evidence": "Bằng chứng cần",
-          "state": "Trạng thái"
-        },
-        "cvTitle": "Ví dụ: dòng CV khi đủ bằng chứng",
-        "includedTitle": "Premium mở những gì ở Dự án",
+        "includedTitle": "Premium mở",
         "included": {
           "many": {
-            "title": "Nhiều dự án, mọi milestone",
-            "text": "Mỗi dự án là một repo riêng, không giới hạn số lượng."
+            "title": "Nhiều dự án",
+            "text": "Không giới hạn repo"
           },
           "probes": {
-            "title": "Probe trên địa chỉ deploy",
-            "text": "Server StarCi gọi địa chỉ http hoặc https công khai của bạn và ghi lại từng kết quả."
+            "title": "Probe trên deploy",
+            "text": "Gọi địa chỉ công khai của bạn"
           },
           "aiRead": {
             "title": "AI đọc code",
-            "text": "Dán đoạn xử lý, AI chấm theo thang tiêu chí và chỉ ra chỗ còn thiếu."
+            "text": "Chấm theo thang tiêu chí"
           },
           "ci": {
             "title": "CI có chữ ký",
-            "text": "GitHub OIDC xác nhận lần chạy trước khi tính là Đã chứng minh."
+            "text": "GitHub OIDC xác nhận"
           }
-        },
-        "noTable": "Chưa có concept.",
-        "sample": {
-          "lifecycle": {
-            "concept": "Vòng đời request/response",
-            "slots": "test ✓ · probe ✓",
-            "state": "Đã chứng minh"
-          },
-          "idempotency": {
-            "concept": "Idempotency khi retry",
-            "slots": "test ✓ · probe đang chờ",
-            "state": "Đang luyện"
-          },
-          "outbox": {
-            "concept": "Transactional outbox",
-            "slots": "e2e (relay) · CI ký OIDC",
-            "state": "Chưa bắt đầu"
-          }
-        },
-        "cv": {
-          "role": "Backend developer",
-          "badge": "Đã xác minh",
-          "text": "Thiết kế API ghi idempotent và transactional outbox cho my-blog-api; chịu 5 request trùng song song không tạo bản ghi thừa.",
-          "evidence": "Bằng chứng: CI run #41 (GitHub ký) · probe 17/11 · 3 concept"
         }
       },
       "concept": {
@@ -2799,6 +2768,12 @@
       "fewNote": "{name} đang học tiếp. CV tự cập nhật khi thầy ký thêm dòng mới, liên kết vẫn giữ nguyên.",
       "allSources": "Mọi nguồn",
       "sourcesLabel": "Lọc theo nguồn",
+      "figuresLabel": "Số liệu của CV",
+      "figSigned": "Dòng đã ký",
+      "figEssentials": "Essentials",
+      "figProjects": "Dự án",
+      "figPractice": "Harness · Luyện code",
+      "neutralName": "Học viên StarCi",
       "more": "Xem thêm {count, plural, other {# dòng}}",
       "verify": "Xác minh",
       "aiGraded": "AI chấm đạt",
@@ -2820,7 +2795,6 @@
       "factsCount": "{count, plural, other {# dòng đã ký}}",
       "factsUpdated": "Cập nhật {date}",
       "whyTitle": "Vì sao tin được CV này",
-      "stepsLabel": "Ba bước mỗi dòng CV đã qua",
       "steps": {
         "proved": {
           "label": "Luyện xong",
