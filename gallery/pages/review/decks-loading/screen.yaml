@@ -3,15 +3,14 @@ screen: review/decks-loading
 title: Bộ thẻ, đang tải
 route: /review/decks
 area: review
-summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh
-  "Thêm bộ thẻ" ngang hàng. '
+summary: 'Route: `/review/decks`. Bộ thẻ: chọn bộ muốn ôn. Không có nút chính vì mỗi hàng có lệnh "Thêm bộ thẻ" ngang hàng. '
 shots:
   "390":
     file: 390.png
-    sha256: 87055bc12e1b9ae493d51b990672f664faa402ebfcb1c8dcb528589151ec9935
+    sha256: fa544c0649e53227028768a11deeb45d2327e78c9eb17c03c7dde45eb86e2486
   "1440":
     file: 1440.png
-    sha256: dcdf6290ddceb25ea6fab0b4b3421a4bf81ecf68516df3ed47dfbc8053c3cc87
+    sha256: 224fc12f03cf33893d72a32b09fee38e7b9ddaff9bce089c51c7f9d0674c2e73
 code:
   - features/pages/ReviewDecksPage
   - components/blocks/ReviewDecks
@@ -47,9 +46,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton. Dòng meta từng hàng là chuỗi
-            "xxxxxxxxxxxxxxxxxxxxxxxx" đen.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton. Dòng meta từng hàng là chuỗi "xxxxxxxxxxxxxxxxxxxxxxxx" đen.
         actionable:
           verdict: pass
           notes: ""
@@ -58,8 +57,9 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton.
         states:
           verdict: open
           notes: Loading vẽ sai (chữ "xxxx" thật) ở 1440 và 390.

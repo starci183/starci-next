@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: dfcf5de2d2163c50e8c723b6979521492f7cfd7d1615461fee64f1a1c5a49715
+    sha256: ca678260982b378641c65e088fb1a5221b7db635cf088102db6ace2efd2b4bc2
   "1440":
     file: 1440.png
-    sha256: 4235f42c83d73cc947f054a761485b546ff23687c456fd97565c6cfcfda6813d
+    sha256: 47848f1cc1956f1169d7de69c2856cce42f4a403b5bf33d5e292c711d5219277
 sections:
   - id: bo-nhiem-nguoi-duyet
     title: Bổ nhiệm người duyệt

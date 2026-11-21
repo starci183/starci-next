@@ -9,6 +9,7 @@ import {
     Input,
     Page,
     Section,
+    Skeleton,
     Stack,
     Switch,
     Terminal,
@@ -16,6 +17,7 @@ import {
     type ListRowData,
 } from "@starci/grammar/common"
 import { RichMarkdown, SlotView } from "@starci-next/ui"
+import { HarnessSkeletonBlock, HarnessSkeletonList } from "../HarnessSkeleton"
 import type {
     HarnessBuildScreen,
     HarnessBuildScreenView,
@@ -241,6 +243,19 @@ const MainRegion = (props: RegionProps) => {
     )
 }
 
+/** The build while its first read loads: bars only, in the geometry of the stages, the pull command, the repository, the cases and the guide. */
+const BuildSkeleton = () => (
+    <Stack gap="region">
+        <HarnessSkeletonList rows={3} />
+        <HarnessSkeletonBlock lines={1} />
+        <HarnessSkeletonBlock lines={3} />
+        <HarnessSkeletonBlock lines={2} />
+        <HarnessSkeletonList rows={3} />
+        <Skeleton shape="rect" ratio="wide" />
+        <HarnessSkeletonBlock lines={6} />
+    </Stack>
+)
+
 /**
  * Draws one build of part 1: the stages with their e2e status (the newest result of each, live over the relay) as one flat list, then
  * the stage on screen with the command that pulls the starter source, its cases, the log of its newest run and the step guide with
@@ -266,21 +281,25 @@ export const HarnessBuildBase = (props: HarnessBuildBaseProps) => (
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
-            render={(view, isLoading) => (
-                <Stack gap="region">
-                    <Section
-                        kind="list"
-                        title={props.props.labels.stagesTitle}
-                        headingLevel={2}
-                        count={view.stages.length}
-                        meta={view.ranAt}
-                        isLoading={isLoading}
-                        items={view.stages.map(stageRowOf)}
-                        empty={props.props.labels.casesEmpty}
-                    />
-                    <MainRegion view={view} isLoading={isLoading} screen={props} />
-                </Stack>
-            )}
+            render={(view, isLoading) =>
+                isLoading ? (
+                    <BuildSkeleton />
+                ) : (
+                    <Stack gap="region">
+                        <Section
+                            kind="list"
+                            title={props.props.labels.stagesTitle}
+                            headingLevel={2}
+                            count={view.stages.length}
+                            meta={view.ranAt}
+                            isLoading={isLoading}
+                            items={view.stages.map(stageRowOf)}
+                            empty={props.props.labels.casesEmpty}
+                        />
+                        <MainRegion view={view} isLoading={isLoading} screen={props} />
+                    </Stack>
+                )
+            }
         />
     </Page>
 )

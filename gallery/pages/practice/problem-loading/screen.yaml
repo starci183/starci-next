@@ -3,8 +3,8 @@ screen: practice/problem-loading
 title: Giải bài, đang tải
 route: /practice/[slug]
 area: practice
-summary: "Trạng thái của màn này: đang tải. Mục tiêu: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý
-  khi kẹt, xem lời giải khi muốn."
+summary: "Trạng thái của màn này: đang tải. Mục tiêu: đọc đề, viết mã, chạy thử rồi nộp, mở gợi ý khi kẹt, xem lời giải
+  khi muốn."
 code:
   - features/pages/PracticeSolvePage
   - components/blocks/PracticeSolve
@@ -12,16 +12,15 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: eb8e942bb7948e4d650d2115135f1fba9ae3acc73716a848598848e160146b40
+    sha256: 98a4e8eea103874eeecbc58b60497de8af9fb1808d2172bb9c1c301673909222
   "1440":
     file: 1440.png
-    sha256: 59019a79e95fae35b903dc442546bc17d3c8a4151f942e4ef416b6f473681290
+    sha256: 65566e202a7c5d291b13459684b189fd926ff3ddfcb3d0257a235f81e7b91376
 sections:
   - id: s1
     title: "Dải tiêu đề: đang tải"
     shows: đường dẫn và tên giữ chỗ, dòng sự kiện là khối xám; hai nút giữ chỗ nhưng tắt vì chưa có đề.
-    why: "DataSlot: chỉ SlotView rẽ nhánh đang tải; các khối nhận isLoading và vẽ khối xám cùng hình
-      khối với bản thật."
+    why: "DataSlot: chỉ SlotView rẽ nhánh đang tải; các khối nhận isLoading và vẽ khối xám cùng hình khối với bản thật."
     actions: []
     states:
       loading: Khối xám cùng hình khối, do SlotView giữ
@@ -47,12 +46,14 @@ considered:
     why: Chủ duyệt "Duyệt hết" và "projects theo code" ngày 20/11
   - option: Gợi ý nằm dưới đề ở 1440 như bản vẽ
     chosen: false
-    why: Grid kind=pair chỉ có hai ô; gợi ý đi cùng cột mã để thứ tự ở 390 vẫn là đề, mã, kết quả, gợi
-      ý. Chủ chấp nhận lệch bản vẽ 1440 (giới hạn Grammar)
+    why:
+      Grid kind=pair chỉ có hai ô; gợi ý đi cùng cột mã để thứ tự ở 390 vẫn là đề, mã, kết quả, gợi ý. Chủ chấp nhận lệch
+      bản vẽ 1440 (giới hạn Grammar)
   - option: Nút Về mã khởi đầu cao 40px ở đầu mục
     chosen: false
-    why: Nút trong đầu mục Section bắt buộc là neutral cỡ nhỏ (starci-grammar/section-head-action). Chủ
-      chấp nhận (giới hạn Grammar)
+    why:
+      Nút trong đầu mục Section bắt buộc là neutral cỡ nhỏ (starci-grammar/section-head-action). Chủ chấp nhận (giới hạn
+      Grammar)
 audit:
   builder:
     agent: next-ux-practice

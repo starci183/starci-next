@@ -7,6 +7,7 @@ import {
     Grid,
     Page,
     Section,
+    Skeleton,
     Stack,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -18,6 +19,7 @@ import {
     RichMarkdown,
     SlotView,
 } from "@starci-next/ui"
+import { SkeletonBlock } from "../LoadingShapes"
 import type { PracticeSolveScreen, PracticeSolveView } from "@/hooks/practice"
 
 /** Props for {@link PracticeSolveBase}: the resolved screen of one problem. */
@@ -278,6 +280,26 @@ const SolutionTab = (props: PieceProps) => {
     )
 }
 
+/** The solve page while its first read loads: statement on one side, editor, result and hints on the other, all bars. */
+const SolveSkeleton = () => (
+    <Grid
+        kind="pair"
+        leading={
+            <Stack gap="region">
+                <SkeletonBlock lines={8} />
+                <SkeletonBlock lines={4} />
+            </Stack>
+        }
+        trailing={
+            <Stack gap="region">
+                <Skeleton shape="rect" ratio="landscape" />
+                <SkeletonBlock lines={3} />
+                <SkeletonBlock lines={2} />
+            </Stack>
+        }
+    />
+)
+
 /**
  * Draws the solve page: the header with the trail, the facts, the run and submit commands and the three tabs; the problem tab holds the
  * statement beside the editor, the result and the hint ladder. Viewing the solution before an accepted answer asks first.
@@ -320,6 +342,7 @@ export const PracticeSolveBase = (props: PracticeSolveBaseProps) => {
                 </Page>
             )}
             render={(each, isLoading) => {
+                if (isLoading) return <SolveSkeleton />
                 const piece: PieceProps = { screen: props, view: each, isLoading }
                 if (state.tab === "submissions") return <SubmissionsTab {...piece} />
                 return state.tab === "solution" ? <SolutionTab {...piece} /> : <ProblemTab {...piece} />

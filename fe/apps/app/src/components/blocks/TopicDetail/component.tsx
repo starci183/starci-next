@@ -7,6 +7,7 @@ import {
     Pane,
     PaneGrid,
     PaneSection,
+    Skeleton,
     Stack,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -18,23 +19,23 @@ import type { DataSlot, SlotLabels, TopicLabels, TopicScreenView } from "@/modul
 export const TOPIC_PLACEHOLDER: TopicScreenView = {
     title: "",
     trail: [],
-    description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    facts: "xxxxxxxxxxxxxxxxxxxxxxxx",
-    primary: { label: "xxxxxxxxxxxxxxxxxxxx", href: "/" },
+    description: "",
+    facts: "",
+    primary: { label: "", href: "/" },
     progress: { label: "", percent: 0 },
     notice: undefined,
     rows: [1, 2, 3, 4].map((index) => ({
         id: `placeholder-${index}`,
-        title: "xxxxxxxxxxxxxxxx",
-        problem: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        title: "",
+        problem: "",
         href: "/",
-        minutes: "xxxxxxx",
+        minutes: "",
         doneParts: 0,
-        partsLabel: "xxxxxx",
+        partsLabel: "",
         state: "todo",
-        badge: { label: "xxxxxxxx", tone: "neutral" },
+        badge: { label: "", tone: "neutral" },
         isCurrent: false,
-        opener: "xxxxxxxx",
+        opener: "",
     })),
     parts: [],
     prerequisites: [],
@@ -122,6 +123,28 @@ const Moved = (props: MovedProps) =>
         </Stack>
     )
 
+/** The well while the first read runs: the bar of lessons, then the lesson rows, all Skeleton bars. */
+const TopicSkeleton = () => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={1} />
+        {[1, 2, 3, 4].map((row) => (
+            <Skeleton key={row} shape="text" lines={3} />
+        ))}
+    </Stack>
+)
+
+/** The aside while the first read runs: the blocks of the topic as bars. */
+const TopicAsideSkeleton = () => (
+    <Stack gap="region">
+        {[3, 2, 2].map((lines, index) => (
+            <Stack key={index} gap="row">
+                <Skeleton shape="text" lines={1} />
+                <Skeleton shape="text" lines={lines} />
+            </Stack>
+        ))}
+    </Stack>
+)
+
 /** The aside pane's content: the topic's blocks; they draw as skeletons while the first read runs. */
 const asideOf = (view: TopicScreenView, labels: TopicLabels, isLoading: boolean): ReactNode => (
     <TopicAside
@@ -165,13 +188,13 @@ export const TopicDetailBase = (props: TopicDetailBaseProps) => {
                         rows={{ base: ["fill"], wide: ["fill"] }}
                     >
                         <Pane area="main">
-                            <PaneSection gap="section" isLoading={isLoading}>
+                            <PaneSection gap="section">
                                 <Moved props={own} />
-                                {body}
+                                {isLoading ? <TopicSkeleton /> : body}
                             </PaneSection>
                         </Pane>
                         <Pane area="aside" surface>
-                            {aside}
+                            {isLoading ? <TopicAsideSkeleton /> : aside}
                         </Pane>
                     </PaneGrid>
                 </Page>

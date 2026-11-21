@@ -1,5 +1,6 @@
 import { Page, Section, Tabs, type ListRowData } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { HarnessSkeletonList } from "../HarnessSkeleton"
 import type { HarnessBuildItemView, HarnessBuildsScreen } from "@/hooks/harnessBuild"
 
 /** Props for {@link HarnessBuildsBase}: the resolved screen of the list of builds. */
@@ -29,26 +30,34 @@ export const HarnessBuildsBase = (props: HarnessBuildsBaseProps) => (
             placeholder={props.props.placeholder}
             labels={props.props.slotLabels}
             onRetry={props.on.retry}
-            render={(builds, isLoading) => (
-                <Section
-                    kind="list"
-                    title={props.props.labels.listTitle}
-                    headingLevel={2}
-                    count={builds.length}
-                    isLoading={isLoading}
-                    filter={
-                        <Tabs
-                            kind="filter"
-                            label={props.props.labels.filterLabel}
-                            items={props.props.tabs.map((tab) => ({ id: tab.id, label: tab.label, count: tab.count }))}
-                            selectedKey={props.props.filter}
-                            onSelect={props.on.filter}
-                        />
-                    }
-                    items={builds.map(rowOf)}
-                    empty={props.props.labels.empty}
-                />
-            )}
+            render={(builds, isLoading) =>
+                isLoading ? (
+                    <HarnessSkeletonList rows={3} />
+                ) : (
+                    <Section
+                        kind="list"
+                        title={props.props.labels.listTitle}
+                        headingLevel={2}
+                        count={builds.length}
+                        isLoading={isLoading}
+                        filter={
+                            <Tabs
+                                kind="filter"
+                                label={props.props.labels.filterLabel}
+                                items={props.props.tabs.map((tab) => ({
+                                    id: tab.id,
+                                    label: tab.label,
+                                    count: tab.count,
+                                }))}
+                                selectedKey={props.props.filter}
+                                onSelect={props.on.filter}
+                            />
+                        }
+                        items={builds.map(rowOf)}
+                        empty={props.props.labels.empty}
+                    />
+                )
+            }
         />
     </Page>
 )

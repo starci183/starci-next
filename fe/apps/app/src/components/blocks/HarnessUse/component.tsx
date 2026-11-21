@@ -12,6 +12,7 @@ import {
     type ListRowData,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { HarnessSkeletonBlock, HarnessSkeletonList } from "../HarnessSkeleton"
 import type {
     HarnessDoctorPanelView,
     HarnessGuideItemView,
@@ -70,30 +71,34 @@ const trialRowOf = (trial: HarnessTrialItemView): CellsRow => ({
 })
 
 /** The guides of the tool the learner picked, as one flat list. */
-const GuidesRegion = (props: RegionProps<ReadonlyArray<HarnessGuideItemView>>) => (
-    <Section
-        kind="list"
-        title={props.screen.props.labels.guidesTitle}
-        headingLevel={2}
-        count={props.view.length}
-        isLoading={props.isLoading}
-        items={props.view.map((guide) => guideRowOf(guide))}
-        empty={props.screen.props.labels.guidesEmpty}
-    />
-)
+const GuidesRegion = (props: RegionProps<ReadonlyArray<HarnessGuideItemView>>) =>
+    props.isLoading ? (
+        <HarnessSkeletonList rows={3} />
+    ) : (
+        <Section
+            kind="list"
+            title={props.screen.props.labels.guidesTitle}
+            headingLevel={2}
+            count={props.view.length}
+            items={props.view.map((guide) => guideRowOf(guide))}
+            empty={props.screen.props.labels.guidesEmpty}
+        />
+    )
 
 /** The `harness doctor` panel: the command that produces the result, when it last arrived and one row per probe. */
 const DoctorRegion = (props: RegionProps<HarnessDoctorPanelView>) => {
     const { labels, common, isOnlyFailing } = props.screen.props
     const { view } = props
+    if (props.isLoading) {
+        return (
+            <Stack gap="row">
+                <HarnessSkeletonBlock lines={2} />
+                <HarnessSkeletonList rows={4} />
+            </Stack>
+        )
+    }
     return (
-        <Section
-            title={labels.doctorTitle}
-            headingLevel={2}
-            fact={view.summary}
-            meta={view.ranAt}
-            isLoading={props.isLoading}
-        >
+        <Section title={labels.doctorTitle} headingLevel={2} fact={view.summary} meta={view.ranAt}>
             <Stack gap="row">
                 <CopyField
                     label={labels.doctorCommandLabel}
@@ -102,19 +107,16 @@ const DoctorRegion = (props: RegionProps<HarnessDoctorPanelView>) => {
                     copyLabel={common.copy.copy}
                     copiedLabel={common.copy.copied}
                     copyErrorLabel={common.copy.copyError}
-                    isLoading={props.isLoading}
                 />
                 <Switch
                     label={labels.onlyFailingLabel}
                     description={labels.onlyFailingDescription}
                     isSelected={isOnlyFailing}
                     onSelectedChange={props.screen.on.setOnlyFailing}
-                    isLoading={props.isLoading}
                 />
                 <Section
                     kind="list"
                     ariaLabel={labels.doctorTitle}
-                    isLoading={props.isLoading}
                     items={view.probes
                         .filter((probe) => !isOnlyFailing || probe.isFailing)
                         .map((probe) => probeRowOf(probe))}
@@ -128,17 +130,13 @@ const DoctorRegion = (props: RegionProps<HarnessDoctorPanelView>) => {
 /** The trial panel: per trap, the shortcuts the headless run observed and the verdict. */
 const TrialsRegion = (props: RegionProps<ReadonlyArray<HarnessTrialItemView>>) => {
     const { labels } = props.screen.props
+    if (props.isLoading) {
+        return <HarnessSkeletonBlock lines={5} />
+    }
     return (
-        <Section
-            title={labels.trialsTitle}
-            headingLevel={2}
-            count={props.view.length}
-            isLoading={props.isLoading}
-            caption={labels.trialCommand}
-        >
+        <Section title={labels.trialsTitle} headingLevel={2} count={props.view.length} caption={labels.trialCommand}>
             <DataTable
                 label={labels.trialsTitle}
-                isLoading={props.isLoading}
                 columns={[
                     { id: "trap", label: labels.trapColumn },
                     { id: "shortcuts", label: labels.shortcutsColumn, hideBelow: "tablet" },
@@ -160,16 +158,24 @@ const TrialsRegion = (props: RegionProps<ReadonlyArray<HarnessTrialItemView>>) =
 export const HarnessUseBase = (props: HarnessUseBaseProps) => (
     <Page header={props.props.header}>
         <Stack gap="region">
-            <Section title={props.props.common.toolLabel} headingLevel={2} caption={props.props.labels.toolDescription}>
-                <ChoiceChips
-                    label={props.props.common.toolLabel}
-                    isLabelHidden
-                    options={props.props.toolOptions}
-                    value={props.props.tool}
-                    onValueChange={props.on.chooseTool}
-                    empty={props.props.labels.guidesEmpty}
-                />
-            </Section>
+            {"isLoading" in props.props.guides ? (
+                <HarnessSkeletonBlock lines={1} />
+            ) : (
+                <Section
+                    title={props.props.common.toolLabel}
+                    headingLevel={2}
+                    caption={props.props.labels.toolDescription}
+                >
+                    <ChoiceChips
+                        label={props.props.common.toolLabel}
+                        isLabelHidden
+                        options={props.props.toolOptions}
+                        value={props.props.tool}
+                        onValueChange={props.on.chooseTool}
+                        empty={props.props.labels.guidesEmpty}
+                    />
+                </Section>
+            )}
             <SlotView
                 slot={props.props.guides}
                 placeholder={props.props.guidesPlaceholder}

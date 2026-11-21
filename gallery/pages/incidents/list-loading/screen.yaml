@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f758231eac481bcf96dde35392594e17eef856449b2fa2ab16c80daae18755d5
+    sha256: 9de746bfb439ab30e76196834d8cc46e09eee25c39066d20073f74b97451affc
   "1440":
     file: 1440.png
-    sha256: 46a704fc145039159806c0808db92806b28797f447d3c81792764a3252d0a871
+    sha256: 6d2cf963fe729222e6cd5d9664f55681cb9ab7837467778bff424f6015a232f2
 sections:
   - id: danh-sach
     title: Danh sách
@@ -30,8 +30,8 @@ considered:
     why: Dòng meta thật dài khoảng 130px; vạch mảnh trông như lỗi vẽ chứ không phải đang tải.
   - option: Đặt một tiêu đề nhóm mẫu khi đang tải
     chosen: false
-    why: Section in tiêu đề như chữ thật nên người dùng sẽ đọc thấy một chủ đề không có; để trống trung
-      thực hơn, chờ Grammar.
+    why: Section in tiêu đề như chữ thật nên người dùng sẽ đọc thấy một chủ đề không có; để trống trung thực hơn, chờ
+      Grammar.
 audit:
   builder:
     agent: mig-auth-fe
@@ -46,11 +46,11 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Khối giữ chỗ của meta chỉ là một vạch rộng 4px (1440: x 288–291, y khoảng 155–168), không
-            giống dòng meta thật; nên cho nó một chữ mẫu có độ dài thật (sửa trong app). Tiêu đề
-            nhóm không có khối giữ chỗ nên để một khoảng trống cao khoảng 60px trên các hàng. Danh
-            sách vẽ ba hàng giữ chỗ trong khi dữ liệu thật có một hàng: Section dùng LOADING_ROWS cố
-            định khi chưa có hàng nào, cần Grammar."
+          notes:
+            "Khối giữ chỗ của meta chỉ là một vạch rộng 4px (1440: x 288–291, y khoảng 155–168), không giống dòng meta thật;
+            nên cho nó một chữ mẫu có độ dài thật (sửa trong app). Tiêu đề nhóm không có khối giữ chỗ nên để một khoảng
+            trống cao khoảng 60px trên các hàng. Danh sách vẽ ba hàng giữ chỗ trong khi dữ liệu thật có một hàng:
+            Section dùng LOADING_ROWS cố định khi chưa có hàng nào, cần Grammar."
         actionable:
           verdict: pass
           notes: ""
@@ -74,10 +74,10 @@ audit:
           notes: ""
         layout:
           verdict: fixed
-          notes: "Khối giữ chỗ của meta giờ dài bằng dòng meta thật (1440: x 288–434). Còn lại cần Grammar:
-            (1) Section vẽ tiêu đề bằng chữ thường khi isLoading (head.js không có khối giữ chỗ cho
-            tiêu đề), nên app để trống chứ không bịa chữ, và có một khoảng trống cao khoảng 60px
-            trên các hàng; (2) LOADING_ROWS luôn vẽ ba hàng giữ chỗ."
+          notes:
+            "Khối giữ chỗ của meta giờ dài bằng dòng meta thật (1440: x 288–434). Còn lại cần Grammar: (1) Section vẽ tiêu đề
+            bằng chữ thường khi isLoading (head.js không có khối giữ chỗ cho tiêu đề), nên app để trống chứ không bịa
+            chữ, và có một khoảng trống cao khoảng 60px trên các hàng; (2) LOADING_ROWS luôn vẽ ba hàng giữ chỗ."
         actionable:
           verdict: pass
           notes: ""

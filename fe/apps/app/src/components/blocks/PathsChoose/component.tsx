@@ -1,4 +1,4 @@
-import { AlertDialog, Button, Cluster, Grid, Page, Stack, Text } from "@starci/grammar/common"
+import { AlertDialog, Button, Cluster, Grid, Page, Skeleton, Stack, Text } from "@starci/grammar/common"
 import {
     OutcomePathCard,
     OutcomePathDialog,
@@ -20,12 +20,12 @@ export type PathsScreenView = {
 export const PATHS_PLACEHOLDER: PathsScreenView = {
     cards: [1, 2, 3, 4, 5].map((index) => ({
         id: `placeholder-${index}`,
-        kind: "xxxxxxxx",
-        title: "xxxxxxxxxx",
-        pitch: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        done: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        parts: ["xxxxxx", "xxxxxxx", "xxxxxxxx"],
-        meta: "xxxxxxxxxxxx",
+        kind: "",
+        title: "",
+        pitch: "",
+        done: "",
+        parts: ["", "", ""],
+        meta: "",
         isCurrent: false,
     })),
     details: [],
@@ -92,6 +92,22 @@ const SignInAction = (
     </Cluster>
 )
 
+/** The goal screen while the first read runs: the note line, then five cards of bars in the cards grid. */
+const PathsSkeleton = () => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={1} />
+        <Grid kind="cards">
+            {[1, 2, 3, 4, 5].map((card) => (
+                <Stack key={card} gap="row">
+                    <Skeleton shape="text" lines={1} />
+                    <Skeleton shape="text" lines={3} />
+                    <Skeleton shape="text" lines={2} />
+                </Stack>
+            ))}
+        </Grid>
+    </Stack>
+)
+
 /**
  * Draws the goal screen the way the canvas does: the intro with the stages every path strings together and the teacher beside it, the five
  * outcome paths as peer cards, each with the dialog that opens its done outcome, checks and stages, and the confirmation before a
@@ -109,53 +125,57 @@ export const PathsChooseBase = (props: PathsChooseBaseProps) => {
                 forbiddenDescription={labels.signedOut.body}
                 forbiddenAction={<SignInAction labels={labels} signIn={props.on.signIn} />}
                 onRetry={props.on.retry}
-                render={(view, isLoading) => (
-                    <Stack gap="region">
-                        <Text tone="muted">{[labels.stages.join(" · "), labels.note].join(" — ")}</Text>
-                        {status === "" ? null : (
-                            <Text as="p" live="polite">
-                                {status}
-                            </Text>
-                        )}
-                        <Grid kind="cards">
-                            {view.cards.map((path) => (
-                                <OutcomePathCard
-                                    key={path.id}
-                                    path={path}
-                                    hasActive={hasActive}
-                                    labels={labels.card}
-                                    isPending={isPending}
-                                    isLoading={isLoading}
-                                    onView={props.on.view}
-                                    onChoose={props.on.choose}
-                                />
-                            ))}
-                        </Grid>
-                        <OutcomePathDialog
-                            path={view.details.find((detail) => detail.id === openId)}
-                            hasActive={hasActive}
-                            labels={labels.dialog}
-                            isPending={isPending}
-                            onOpenChange={(isOpen) => {
-                                if (!isOpen) props.on.viewClose()
-                            }}
-                            onChoose={props.on.choose}
-                        />
-                        <AlertDialog
-                            isOpen={confirmId !== undefined}
-                            onOpenChange={(isOpen) => {
-                                if (!isOpen) props.on.cancel()
-                            }}
-                            title={labels.switchConfirm.title}
-                            description={labels.switchConfirm.body}
-                            tone="informative"
-                            confirmLabel={labels.switchConfirm.confirm}
-                            cancelLabel={labels.switchConfirm.cancel}
-                            isConfirmPending={isPending}
-                            onConfirm={props.on.confirm}
-                        />
-                    </Stack>
-                )}
+                render={(view, isLoading) =>
+                    isLoading ? (
+                        <PathsSkeleton />
+                    ) : (
+                        <Stack gap="region">
+                            <Text tone="muted">{[labels.stages.join(" · "), labels.note].join(" — ")}</Text>
+                            {status === "" ? null : (
+                                <Text as="p" live="polite">
+                                    {status}
+                                </Text>
+                            )}
+                            <Grid kind="cards">
+                                {view.cards.map((path) => (
+                                    <OutcomePathCard
+                                        key={path.id}
+                                        path={path}
+                                        hasActive={hasActive}
+                                        labels={labels.card}
+                                        isPending={isPending}
+                                        isLoading={isLoading}
+                                        onView={props.on.view}
+                                        onChoose={props.on.choose}
+                                    />
+                                ))}
+                            </Grid>
+                            <OutcomePathDialog
+                                path={view.details.find((detail) => detail.id === openId)}
+                                hasActive={hasActive}
+                                labels={labels.dialog}
+                                isPending={isPending}
+                                onOpenChange={(isOpen) => {
+                                    if (!isOpen) props.on.viewClose()
+                                }}
+                                onChoose={props.on.choose}
+                            />
+                            <AlertDialog
+                                isOpen={confirmId !== undefined}
+                                onOpenChange={(isOpen) => {
+                                    if (!isOpen) props.on.cancel()
+                                }}
+                                title={labels.switchConfirm.title}
+                                description={labels.switchConfirm.body}
+                                tone="informative"
+                                confirmLabel={labels.switchConfirm.confirm}
+                                cancelLabel={labels.switchConfirm.cancel}
+                                isConfirmPending={isPending}
+                                onConfirm={props.on.confirm}
+                            />
+                        </Stack>
+                    )
+                }
             />
         </Page>
     )

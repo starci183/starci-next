@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: d049d188ca04bd16a1a0e1dc26cb9cb3948bc8b1ad5a66fb41a46c4efd7d874e
+    sha256: 1b1c666a82d1e9cd291ab4ba56e499f288eb9f2726a6631a461c596a1e5836a4
   "1440":
     file: 1440.png
-    sha256: adbbe3d04d12e743c590912122f8b7c5e4fe1217fe195c53b59e9dbbe81a779e
+    sha256: 4de18239c0cb61e3f873b94a94de96f92aeeac4b6aadec17a4149b87887fc385
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,7 +28,9 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -43,7 +45,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội dung dính mép trên y=32.
+          notes:
+            Trang công khai thiếu thanh đầu trang (logo StarCi Next, ngôn ngữ, nút Đăng nhập) mà canvas career/verify có; nội
+            dung dính mép trên y=32.
         actionable:
           verdict: pass
           notes: ""

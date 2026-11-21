@@ -3,6 +3,7 @@ import {
     EmptyNotice,
     Page,
     Section,
+    Skeleton,
     Stack,
     Tabs,
     Text,
@@ -10,6 +11,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonRows } from "../LoadingShapes"
 import type { ReviewDeckRow, ReviewDecksScreen } from "@/hooks/reviewHub"
 
 /** Props for {@link ReviewDecksBase}: the resolved screen of the decks. */
@@ -110,6 +112,14 @@ const DeckList = (
     )
 }
 
+/** The decks while their first read loads: the filter rows and the deck rows as bars, with no title or chip word. */
+const DecksSkeleton = () => (
+    <Stack gap="section">
+        <Skeleton shape="text" lines={2} />
+        <SkeletonRows rows={6} />
+    </Stack>
+)
+
 /**
  * Draws the decks: the header with the trail and the one rule (a daily cap from the goal), the added and not-added chips with the track
  * chips, and the decks as a flat list. There is no primary command: each row carries its own "Add deck", so nothing pretends to be one.
@@ -135,12 +145,16 @@ export const ReviewDecksBase = (props: ReviewDecksBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={labels.errorText}
             onRetry={props.on.retry}
-            render={(rows, isLoading) => (
-                <Stack gap="section">
-                    <Note {...props} />
-                    <DeckList {...props} rows={rows} isLoading={isLoading} />
-                </Stack>
-            )}
+            render={(rows, isLoading) =>
+                isLoading ? (
+                    <DecksSkeleton />
+                ) : (
+                    <Stack gap="section">
+                        <Note {...props} />
+                        <DeckList {...props} rows={rows} isLoading={isLoading} />
+                    </Stack>
+                )
+            }
             frame={(parts) => (
                 <Page isLoading={parts.isLoading} header={pageHeader}>
                     {parts.body}

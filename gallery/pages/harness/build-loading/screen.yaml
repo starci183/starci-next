@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 75f726886e02a061862af40d4d54e14c26b6cf390291b920362c50cd3a0c5a8d
+    sha256: 0e688e079796e118ff8dd24064ec47e37ba3c589b7d4b1dbee0e67e0897f2493
   "1440":
     file: 1440.png
-    sha256: 3c4b50c3099198bda1a6fc88b85b5a5c56a9cccac6e33d928150420102844d5a
+    sha256: f7e7d16c5f7be55d6761a40759b454ef7c5c1a3188f7fbeecc30ce26a99a4fdb
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,7 +28,9 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Khung xương tối của Terminal đổi sang màu nhạt
     chosen: false
     why: "Cần Grammar: Terminal vẽ khung xương nền tối của chính nó khi tải (ghi trong FOLLOWUPS); app không tự vẽ lại."
@@ -46,7 +48,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>". Khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông khi tải.
+          notes:
+            Breadcrumb lặp "Harness / Build / Build" (hai mục cùng tên), canvas là "Harness / Build / <tên build>". Khối "Lần
+            chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông khi tải.
         actionable:
           verdict: pass
           notes: ""
@@ -70,7 +74,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Breadcrumb vẫn lặp "Harness / Build / Build"; khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc tông.
+          notes:
+            Breadcrumb vẫn lặp "Harness / Build / Build"; khối "Lần chạy e2e gần nhất" nền đen với ô xám sáng gradient lạc
+            tông.
         actionable:
           verdict: pass
           notes: ""

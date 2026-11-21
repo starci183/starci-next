@@ -1940,6 +1940,12 @@
         "assigned": "The item is reassigned.",
         "pageMeta": "{pending} waiting · {overdue} overdue",
         "itemMeta": "{part} · {who} · {state}",
+        "queueEmptyMeta": "No items yet",
+        "queueEmptyTitle": "Nothing is waiting for review",
+        "queueEmptyText": "New items show up here when a learner submits one.",
+        "queueEmptyToReviewers": "See reviewers",
+        "queueErrorTitle": "The queue did not load.",
+        "queueErrorText": "Items waiting for review are safe. Try again in a few seconds.",
         "dueIn": "{days, plural, =0 {Due today} one {# day left} other {# days left}}",
         "overdueBy": "{days, plural, one {# day overdue} other {# days overdue}}"
       },
@@ -2558,7 +2564,8 @@
         "experienceTitle": "Experience",
         "experienceLink": "Open Experience",
         "experience": "{verified} verified, {pending} waiting for review. {min} verified items are needed to be referred for jobs.",
-        "experienceEnough": "{verified} verified items, enough to be referred for jobs."
+        "experienceEnough": "{verified} verified items, enough to be referred for jobs.",
+        "experienceUnavailable": "The verified count did not load. Open Experience to see it."
       }
     },
     "progress": {
@@ -2708,7 +2715,7 @@
       "signedTeacher": "Signed by the teacher {date}",
       "signedReviewer": "Signed by a reviewer the teacher appointed {date}",
       "signedStepText": "The teacher, or a reviewer the teacher appointed, reads the evidence and signs each line. Only a signed line shows on the CV.",
-      "linesNote": "Only signed lines show, newest first. No scores and no reviewer names.",
+      "linesNote": "Only signed lines show, newest first.",
       "cvLoadFailedTitle": "Could not load this CV",
       "cvLoadFailedText": "The server has not answered. Try again in a few seconds.",
       "factsCount": "{count, plural, one {# line signed} other {# lines signed}}",

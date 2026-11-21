@@ -560,8 +560,8 @@ const SCREENS = [
         },
     }),
     S("cv", "public-not-found", "/cv/khong-co-cv-nay", { guest: true }),
-    // The seeded learner with three verified lines (gallery-seed cv-multi); its slug is in the seed manifest (learners.cv-multi.cv.slug).
-    S("cv", "public-many-lines", "/cv/learner-4", { guest: true }),
+    // The seeded learner with eleven verified lines from three sources (gallery-seed cv-eight): the source chips and "Xem thêm" show; its slug is learners.cv-eight.cv.slug.
+    S("cv", "public-many-lines", "/cv/minh-nguyen", { guest: true }),
     S("cv", "public-loading", "/cv/learner-4", { guest: true, hold: true, ops: /"operationName":"PublicCv"/ }),
     // The learner with three verified lines and a CV (gallery-seed cv-multi): the overview is the settled, filled profile.
     S("profile", "overview", "/profile", { learnerState: learnerOf("cv-multi") }),

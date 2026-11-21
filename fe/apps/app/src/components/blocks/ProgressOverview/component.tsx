@@ -9,6 +9,7 @@ import {
     Meter,
     Page,
     Section,
+    Skeleton,
     Stack,
     Text,
     Timeline,
@@ -272,6 +273,32 @@ const headerOf = (labels: ProgressLabels, description: string | undefined): Page
     ...(description === undefined ? {} : { description }),
 })
 
+/** One part of the loading page: a bar for its title, then the lines of its figures and rows. */
+const SkeletonPart = (props: { readonly lines: number }) => (
+    <Stack gap="row">
+        <Skeleton shape="text" lines={1} />
+        <Skeleton shape="text" lines={props.lines} />
+    </Stack>
+)
+
+/** The page while its first read loads: the ribbon, the five parts and the activity rail, all bars, no word. */
+const ProgressSkeleton = () => (
+    <Grid
+        kind="main-rail"
+        primary={
+            <Stack gap="region">
+                <Skeleton shape="text" lines={2} />
+                <SkeletonPart lines={4} />
+                <SkeletonPart lines={4} />
+                <SkeletonPart lines={4} />
+                <SkeletonPart lines={3} />
+                <SkeletonPart lines={4} />
+            </Stack>
+        }
+        rail={<SkeletonPart lines={5} />}
+    />
+)
+
 /**
  * Draws Progress (the page across the whole app): a ribbon of figures, then Essentials (the parts the plan opens and a meter row per
  * topic), Harness (builds and the doctor), Projects (figures and projects for a subscriber, the pitch for anyone else), Luyện code
@@ -302,7 +329,9 @@ export const ProgressOverviewBase = (props: ProgressOverviewBaseProps) => {
             )}
             frame={(parts) => (
                 <Page header={parts.header}>
-                    {parts.aside === null ? (
+                    {parts.isLoading ? (
+                        <ProgressSkeleton />
+                    ) : parts.aside === null ? (
                         parts.body
                     ) : (
                         <Grid kind="main-rail" primary={parts.body} rail={parts.aside} />

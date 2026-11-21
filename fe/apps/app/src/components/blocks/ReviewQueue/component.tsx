@@ -1,4 +1,14 @@
-import { Button, Grid, Page, Section, Skeleton, Stack, Tabs, type PageHeaderContent } from "@starci/grammar/common"
+import {
+    Button,
+    EmptyNotice,
+    Grid,
+    Page,
+    Section,
+    Skeleton,
+    Stack,
+    Tabs,
+    type PageHeaderContent,
+} from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -10,20 +20,13 @@ import {
     type ReviewPanelDecision,
 } from "@starci-next/ui"
 import type { DataSlot, ReviewerRowView, ReviewPanelLabels, ReviewQueueScreenView, SlotLabels } from "@/modules/types"
+import { ReviewPanelSkeleton } from "../ReviewItem/skeleton"
 
-/** The fake queue with the geometry of a settled one. */
+/** The queue SlotView hands the render while the first read loads; the render draws {@link QueueSkeleton} instead, so it holds no words. */
 export const REVIEW_QUEUE_PLACEHOLDER: ReviewQueueScreenView = {
-    count: "xxxxxx",
-    tabs: [{ id: "pending", label: "xxxxxx" }],
-    rows: [1, 2, 3].map((index) => ({
-        itemId: `placeholder-${index}`,
-        title: "xxxxxxxxxx",
-        meta: "xxxxxx",
-        sla: "xxxxxx",
-        slaTone: "neutral" as const,
-        href: "",
-        isSelected: false,
-    })),
+    count: "",
+    tabs: [],
+    rows: [],
     preview: undefined,
     reviewers: undefined,
 }
@@ -44,6 +47,11 @@ export type ReviewQueueLabels = {
     readonly queueView: string
     readonly reviewersLabel: string
     readonly empty: string
+    /** The empty queue's notice: nothing waits, and where new items come from. */
+    readonly emptyTitle: string
+    readonly emptyText: string
+    /** The teacher's way on from an empty queue: the Reviewers view. */
+    readonly toReviewers: string
     readonly reviewersEmpty: string
     readonly preview: string
     readonly open: string
@@ -90,7 +98,10 @@ type QueueListProps = {
     readonly labels: ReviewQueueLabels
     readonly tab: string
     readonly on: ReviewQueueActions
-    readonly isLoading: boolean
+    /** The teacher's empty queue leads to the Reviewers view, a reviewer's back to the profile. */
+    readonly isTeacher: boolean
+    readonly exitLabel: string
+    readonly exitHref: string
 }
 
 /** What the reviewer list draws. */
@@ -104,7 +115,6 @@ type ReviewerListProps = {
 type QueueBodyProps = {
     readonly view: ReviewQueueScreenView
     readonly base: ReviewQueueBaseProps
-    readonly isLoading: boolean
 }
 
 /** The rail: the rows of the chosen filter, under the filter pills when there is more than one filter. */
@@ -113,8 +123,7 @@ const QueueList = (props: QueueListProps) => (
         kind="list"
         title={props.labels.listLabel}
         headingLevel={2}
-        isLoading={props.isLoading}
-        fact={props.view.count}
+        {...(props.view.rows.length === 0 ? {} : { fact: props.view.count })}
         {...(props.view.tabs.length < 2
             ? {}
             : {
@@ -137,7 +146,19 @@ const QueueList = (props: QueueListProps) => (
             onPress: () => props.on.preview(row.itemId),
             ...(row.isSelected ? { edgeTone: "accent" as const } : {}),
         }))}
-        empty={props.labels.empty}
+        empty={
+            <EmptyNotice
+                message={props.labels.emptyTitle}
+                description={props.labels.emptyText}
+                actionIntent="neutral"
+                {...(props.isTeacher
+                    ? {
+                          actionLabel: props.labels.toReviewers,
+                          onAction: () => props.on.selectTab(REVIEWERS_VIEW),
+                      }
+                    : { actionLabel: props.exitLabel, actionHref: props.exitHref })}
+            />
+        }
     />
 )
 
@@ -151,38 +172,78 @@ const ReviewerList = (props: ReviewerListProps) => (
             id: row.id,
             title: row.title,
             description: row.meta,
-            action: {
-                label: props.labels.endReviewer,
-                intent: "neutral" as const,
-                press: () => props.on.endReviewer(row.id),
-            },
-            actionPlacement: "end" as const,
+            // A list row's action is a small button; the end of an appointment is the standard 40px button, so it is the row's control.
+            control: (
+                <Button intent="neutral" onPress={() => props.on.endReviewer(row.id)}>
+                    {props.labels.endReviewer}
+                </Button>
+            ),
         }))}
         empty={props.labels.reviewersEmpty}
     />
 )
 
-/** The rail of rows beside the review panel of the chosen row; on a narrow screen the rows come first. */
-const QueueGrid = (props: QueueBodyProps) => (
+/** One queue row while it loads: the item's line, then its learner and part, then its deadline badge. */
+const RowSkeleton = () => (
+    <Stack gap="row">
+        <Skeleton shape="text" lines={3} />
+        <Skeleton shape="text" lines={1} />
+    </Stack>
+)
+
+/**
+ * The queue while its first read loads, in the ready grid so nothing jumps: the list heading, the teacher's filter row and three
+ * rows in the rail, the review panel beside them. No heading, filter word, badge or tone, only Skeleton bars.
+ */
+const QueueSkeleton = (props: { readonly isTeacher: boolean }) => (
     <Grid
         kind="main-rail"
         railPosition="leading"
         railWidth="wide"
         collapsedOrder="rail-first"
         rail={
-            <QueueList
-                isLoading={props.isLoading}
-                view={props.view}
-                labels={props.base.props.labels}
-                tab={props.base.props.tab}
-                on={props.base.on}
-            />
+            <Stack gap="row">
+                <Skeleton shape="text" lines={1} />
+                {props.isTeacher ? <Skeleton shape="text" lines={1} /> : null}
+                <Stack gap="region">
+                    <RowSkeleton />
+                    <RowSkeleton />
+                    <RowSkeleton />
+                </Stack>
+            </Stack>
         }
-        primary={
-            // While the first read loads the panel is bars, not the placeholder item or the "pick an item" notice.
-            props.isLoading ? (
-                <Skeleton shape="text" lines={8} />
-            ) : (
+        primary={<ReviewPanelSkeleton />}
+    />
+)
+
+/** What the list draws from the queue's props. */
+const queueListOf = (props: QueueBodyProps) => (
+    <QueueList
+        view={props.view}
+        labels={props.base.props.labels}
+        tab={props.base.props.tab}
+        on={props.base.on}
+        isTeacher={props.base.props.isTeacher}
+        exitLabel={props.base.props.exitLabel}
+        exitHref={props.base.props.exitHref}
+    />
+)
+
+/**
+ * The rail of rows beside the review panel of the chosen row; on a narrow screen the rows come first. An empty queue is the list
+ * alone with its notice: there is no item to preview, so no panel.
+ */
+const QueueGrid = (props: QueueBodyProps) =>
+    props.view.rows.length === 0 ? (
+        queueListOf(props)
+    ) : (
+        <Grid
+            kind="main-rail"
+            railPosition="leading"
+            railWidth="wide"
+            collapsedOrder="rail-first"
+            rail={queueListOf(props)}
+            primary={
                 <Stack gap="section">
                     <ReviewPanel
                         item={props.view.preview}
@@ -192,10 +253,9 @@ const QueueGrid = (props: QueueBodyProps) => (
                     />
                     {props.base.props.assign === undefined ? null : <AssignItemCard {...props.base.props.assign} />}
                 </Stack>
-            )
-        }
-    />
-)
+            }
+        />
+    )
 
 /** The queue once read: the queue grid, or the teacher's appointment form and reviewer list on the Reviewers view. */
 const QueueBody = (props: QueueBodyProps) => (
@@ -217,7 +277,7 @@ export const REVIEWERS_VIEW = "reviewers"
 export const QUEUE_VIEW = "queue"
 
 /** The band: the trail from the profile, the page title, the summary of the queue once read, and the teacher's view tabs. */
-const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
+const headerOf = (props: ReviewQueueBaseProps, isLoading: boolean): PageHeaderContent => ({
     title: props.props.labels.title,
     titleScale: "standard",
     breadcrumbs: {
@@ -227,7 +287,12 @@ const headerOf = (props: ReviewQueueBaseProps): PageHeaderContent => ({
             { id: "queue", label: props.props.labels.title },
         ],
     },
-    ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
+    // While loading the meta line keeps its box under the header's shimmer, so the band does not grow when the queue arrives.
+    ...(props.props.meta === undefined
+        ? isLoading
+            ? { meta: props.props.labels.title }
+            : {}
+        : { meta: props.props.meta }),
     ...(props.props.isTeacher
         ? {
               tabs: {
@@ -262,9 +327,12 @@ export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
         placeholder={props.props.placeholder}
         labels={props.props.slotLabels}
         onRetry={props.on.retry}
-        render={(view, isLoading) => <QueueBody view={view} base={props} isLoading={isLoading} />}
+        render={(view, isLoading) =>
+            // While the first read loads the content is a skeleton of the ready grid: no heading, filter, row word or panel.
+            isLoading ? <QueueSkeleton isTeacher={props.props.isTeacher} /> : <QueueBody view={view} base={props} />
+        }
         frame={({ body, isLoading }) => (
-            <Page isLoading={isLoading} header={headerOf(props)}>
+            <Page isLoading={isLoading} header={headerOf(props, isLoading)}>
                 {body}
             </Page>
         )}

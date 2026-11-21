@@ -6,6 +6,7 @@ import {
     CopyField,
     Divider,
     Drawer,
+    EmptyNotice,
     Grid,
     Heading,
     Image,
@@ -13,6 +14,7 @@ import {
     Page,
     Popover,
     Section,
+    Skeleton,
     Stack,
     Stepper,
     Tabs,
@@ -29,24 +31,17 @@ import type {
     SlotLabels,
 } from "@/modules/types"
 
-/** The fake public CV with the geometry of a settled one: the avatar, the name, the event line and three lines. */
+/**
+ * The view SlotView is handed for its loading branch. The block never draws it: the first read draws {@link PublicCvSkeleton}, so it
+ * carries no placeholder words.
+ */
 export const PUBLIC_CV_PLACEHOLDER: PublicCvScreenView = {
-    name: "xxxxxxxx xxxxxx",
+    name: "",
     avatarUrl: null,
-    facts: "xxxxxxxxxx · xxxxxxxxxxxxxx",
-    total: 3,
+    facts: "",
+    total: 0,
     sources: [],
-    lines: [1, 2, 3].map((index) => ({
-        id: `placeholder-${index}`,
-        title: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-        sourceId: "essentials",
-        sourceLabel: "xxxxxxxx",
-        subject: "xxxxxxxxxxxxxx",
-        proofText: "xxxxxxxxxxxxxxxxxxxx",
-        signText: "xxxxxxxxxxxx",
-        code: "xxxxxxx",
-        verifyHref: "/",
-    })),
+    lines: [],
     hidden: 0,
     moreLabel: "",
     growNote: "",
@@ -54,8 +49,11 @@ export const PUBLIC_CV_PLACEHOLDER: PublicCvScreenView = {
 
 /** Props for {@link PublicCvBase}. */
 export type PublicCvBaseProps = {
-    /** A link StarCi never issued, or one its owner turned private, draws the not-found notice instead of the slot. */
-    readonly shape: "read" | "notFound"
+    /**
+     * `loading` (the first read) draws the skeleton page, `failed` the page notice with its retry, `notFound` (a link StarCi never issued,
+     * or one its owner turned private) the not-found notice; `read` draws the settled CV.
+     */
+    readonly shape: "loading" | "failed" | "read" | "notFound"
     readonly props: {
         readonly slot: DataSlot<PublicCvScreenView>
         readonly placeholder: PublicCvScreenView
@@ -305,6 +303,82 @@ const NotFound = (props: { readonly labels: PublicCvLabels; readonly staticsBase
     />
 )
 
+/** One signed line while the CV loads: the line's mark, then bars for its sentence, its source and its trust trail. */
+const LineSkeleton = () => (
+    <Cluster gap="row" align="start" wrap={false}>
+        <Skeleton shape="circle" size="sm" />
+        <Skeleton shape="text" lines={3} />
+    </Cluster>
+)
+
+/**
+ * The public CV while its first read is in flight: no title, label, step or button word, only the geometry of the settled page as bars
+ * (the owner with the avatar and the share button, three signed lines and the caption line, the trust steps of the rail).
+ */
+const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
+    <Stack gap="region">
+        <Stack gap="row">
+            <Cluster gap="row" align="center" wrap={false}>
+                <Skeleton shape="circle" size="lg" />
+                <Skeleton shape="text" lines={3} />
+                <Button intent="neutral" isLoading isDisabled>
+                    {props.labels.share}
+                </Button>
+            </Cluster>
+            <Divider />
+        </Stack>
+        <Grid
+            kind="main-rail"
+            primary={
+                <Stack gap="section">
+                    <Skeleton shape="text" lines={1} />
+                    <LineSkeleton />
+                    <LineSkeleton />
+                    <LineSkeleton />
+                    <Skeleton shape="text" lines={1} />
+                </Stack>
+            }
+            rail={
+                <Stack gap="section">
+                    <Skeleton shape="text" lines={1} />
+                    {props.labels.steps.map((step) => (
+                        <Cluster key={step.id} gap="row" align="center" wrap={false}>
+                            <Skeleton shape="circle" size="sm" />
+                            <Skeleton shape="text" lines={1} />
+                        </Cluster>
+                    ))}
+                    <Skeleton shape="text" lines={1} />
+                </Stack>
+            }
+            railWidth="standard"
+            align="start"
+            collapsedOrder="primary-first"
+            railPosition="trailing"
+        />
+    </Stack>
+)
+
+/** The words under the page while it loads: the same divider, the note and the link as bars. */
+const FootSkeleton = () => (
+    <Stack gap="row">
+        <Divider />
+        <Skeleton shape="text" lines={2} />
+    </Stack>
+)
+
+/** The read failed: the page notice in the middle of the page, what happened and the retry (neutral, at the one control height). */
+const Failed = (props: { readonly slotLabels: SlotLabels; readonly onRetry: () => void }) => (
+    <EmptyNotice
+        scope="page"
+        isError
+        message={props.slotLabels.error}
+        {...(props.slotLabels.errorDescription === undefined ? {} : { description: props.slotLabels.errorDescription })}
+        actionIntent="neutral"
+        actionLabel={props.slotLabels.retry}
+        onAction={props.onRetry}
+    />
+)
+
 /**
  * Draws the public CV a learner chose to share, for a recruiter with no account: the owner and the one action to share it, the signed
  * lines (each with its source, subject, trust trail Luyện xong, AI chấm, Thầy ký and a link to its verification), the source filter from
@@ -316,6 +390,10 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
             {props.props.top}
             {props.shape === "notFound" ? (
                 <NotFound labels={props.props.labels} staticsBaseUrl={props.props.staticsBaseUrl} />
+            ) : props.shape === "loading" ? (
+                <PublicCvSkeleton labels={props.props.labels} />
+            ) : props.shape === "failed" ? (
+                <Failed slotLabels={props.props.slotLabels} onRetry={props.on.retry} />
             ) : (
                 <SlotView
                     slot={props.props.slot}
@@ -340,7 +418,7 @@ export const PublicCvBase = (props: PublicCvBaseProps) => (
                     )}
                 />
             )}
-            <Foot labels={props.props.labels} />
+            {props.shape === "loading" ? <FootSkeleton /> : <Foot labels={props.props.labels} />}
         </Stack>
     </Page>
 )

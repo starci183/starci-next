@@ -145,7 +145,9 @@ export const useProfileHub = (): ProfileHubState => {
             cv: slotOf(experience, (data) => cvOf({ t, words, locale, origin, lineStates: lines.states, data })),
             devices: settledListSlot(slotOf(devices, (list) => devicesOf(t, format, list))),
             plan: slotOf(premium, (data) => planOf(t, words, data)),
-            aside: slotOf(progress, (data) => asideOf(t, data, experience.data)),
+            aside: slotOf(progress, (data) =>
+                asideOf(t, data, experience.data, experience.data === undefined && experience.error !== undefined),
+            ),
         },
         on: {
             setPublic: (isPublic) => {

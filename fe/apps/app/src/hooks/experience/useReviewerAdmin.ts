@@ -11,13 +11,10 @@ import {
 } from "@/hooks/swr"
 import { useReviewerAdminLabels } from "./useReviewerAdminLabels"
 import { useReviewerWrite } from "./useReviewerWrite"
-import { useExperienceWords } from "./useExperienceWords"
+import { REVIEW_PARTS, useReviewWords } from "./reviewWords"
 
 /** The choice of the reassign form that sends the item back to the teacher's queue. */
 const TEACHER_QUEUE = "teacher"
-
-/** The parts a reviewer may be appointed to. */
-const PARTS: ReadonlyArray<string> = ["essentials", "projects", "incidents", "practice"]
 
 /** The capacity the form proposes, the proposed default of Q-CA-3. */
 const DEFAULT_CAPACITY = 30
@@ -40,7 +37,7 @@ export const useReviewerAdmin = (
     reload: () => Promise<unknown>,
 ): ReviewerAdmin => {
     const t = useTranslations("app.experience.queue")
-    const words = useExperienceWords()
+    const words = useReviewWords()
     const reviewers = useQueryExperienceReviewersSwr(isTeacher)
     const setReviewer = useMutateSetExperienceReviewerSwr()
     const assignWrite = useMutateAssignExperienceSwr()
@@ -50,7 +47,7 @@ export const useReviewerAdmin = (
     const labels = useReviewerAdminLabels()
     const appointCard: AppointReviewerCardProps = {
         labels: labels.appoint,
-        parts: PARTS.map((part) => ({ id: part, label: words.part(part) })),
+        parts: REVIEW_PARTS.map((part) => ({ id: part, label: words.part(part) })),
         value: form,
         isWorking: write.isWorking,
         outcome: write.outcome,

@@ -12,10 +12,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 1d98a3595b6cf2bbfd7eff13a7feeaf4ed3de402fd6764936267ac6195c2bfcb
+    sha256: 4a0abe383d2f82ae917ab27aa5f2b98f5ff1dbebedb5ff0dd381830404d84b5a
   "1440":
     file: 1440.png
-    sha256: 701cd60d597f3b0d50a8791a72111ff7667c45d6fa0dbbf1d60bcae8fedb2bb2
+    sha256: 782243573d725b7a02abeb05cb08d96eb97de04d1bb47375d44ffcfb50d1a29d
 sections:
   - id: dong-cv-da-ky
     title: Dòng CV đã ký

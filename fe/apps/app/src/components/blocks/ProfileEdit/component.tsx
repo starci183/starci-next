@@ -9,6 +9,7 @@ import {
     Page,
     Section,
     Select,
+    Skeleton,
     Stack,
     Switch,
     Text,
@@ -180,12 +181,60 @@ const CvLinkSection = (props: ProfileEditBaseProps) => {
     )
 }
 
+/** One field while the editor loads: a bar for its label, the field's box (its own skeleton, label hidden) and a bar for its helper. */
+const FieldSkeleton = (props: { readonly id: string; readonly label: string }) => (
+    <Stack gap="inline">
+        <Skeleton shape="text" lines={1} />
+        <Input id={props.id} name={props.id} label={props.label} isLabelHidden value="" isLoading isDisabled />
+        <Skeleton shape="text" lines={1} />
+    </Stack>
+)
+
+/**
+ * The editor while its first reads load: no title, label, helper, counter or button word, only the geometry of the three sections as
+ * bars (the avatar with its picker, the name and goal fields, the CV link with its copy box and switch row).
+ */
+const ProfileEditSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
+    <Stack gap="region">
+        <Stack gap="row">
+            <Skeleton shape="text" lines={1} />
+            <Cluster gap="inline" align="center" wrap={false}>
+                <Skeleton shape="circle" size="lg" />
+                <Skeleton shape="text" lines={2} />
+            </Cluster>
+        </Stack>
+        <Stack gap="row">
+            <Skeleton shape="text" lines={1} />
+            <FieldSkeleton id="profile-display-name-loading" label={props.labels.nameLabel} />
+            <FieldSkeleton id="profile-goal-loading" label={props.labels.nameLabel} />
+        </Stack>
+        <Stack gap="row">
+            <Skeleton shape="text" lines={1} />
+            <CopyField
+                label={props.labels.cvLinkLabel}
+                isLabelHidden
+                value=""
+                copyLabel={props.labels.cvLinkCopy}
+                copiedLabel={props.labels.cvLinkCopied}
+                copyErrorLabel={props.labels.cvLinkCopyError}
+                isLoading
+            />
+            <Cluster gap="row" align="center" justify="between" wrap={false}>
+                <Skeleton shape="text" lines={2} />
+                <Switch label={props.labels.cvLinkSwitch} isLabelHidden isLoading isDisabled />
+            </Cluster>
+        </Stack>
+    </Stack>
+)
+
 /**
  * Draws the profile editor, the child page "Hồ sơ / Sửa": the avatar (sent to the store on its own, with a confirm before it is
  * removed), the display name and the CV link. Cancel is neutral, Save is the one commit and waits while an image uploads.
  */
 export const ProfileEditBase = (props: ProfileEditBaseProps) => {
     const { labels, canSave, isSaving, isRemoveOpen } = props.props
+    // While the first read loads the body is one skeleton and the two commands are inert bars: nothing to cancel or save yet.
+    const isFirstLoad = "isLoading" in props.props.identity
     return (
         <Page
             header={{
@@ -201,21 +250,31 @@ export const ProfileEditBase = (props: ProfileEditBaseProps) => {
                 },
                 actions: (
                     <Cluster gap="inline" align="center">
-                        <Button intent="neutral" onPress={props.on.cancel}>
+                        <Button intent="neutral" isLoading={isFirstLoad} onPress={props.on.cancel}>
                             {labels.cancel}
                         </Button>
-                        <Button intent="commit" isDisabled={!canSave} isPending={isSaving} onPress={props.on.save}>
+                        <Button
+                            intent="commit"
+                            isLoading={isFirstLoad}
+                            isDisabled={isFirstLoad || !canSave}
+                            isPending={isSaving}
+                            onPress={props.on.save}
+                        >
                             {labels.saveChanges}
                         </Button>
                     </Cluster>
                 ),
             }}
         >
-            <Stack gap="region">
-                <AvatarSection {...props} />
-                <NameSection {...props} />
-                <CvLinkSection {...props} />
-            </Stack>
+            {isFirstLoad ? (
+                <ProfileEditSkeleton labels={labels} />
+            ) : (
+                <Stack gap="region">
+                    <AvatarSection {...props} />
+                    <NameSection {...props} />
+                    <CvLinkSection {...props} />
+                </Stack>
+            )}
             <AlertDialog
                 title={labels.removeTitle}
                 description={labels.removeText}

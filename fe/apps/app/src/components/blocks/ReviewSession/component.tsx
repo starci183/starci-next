@@ -1,4 +1,4 @@
-import { Button, Page, Progress, Stack, type PageHeaderContent } from "@starci/grammar/common"
+import { Button, Page, Progress, Skeleton, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import { ReviewItemCard, ReviewSummaryCard, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
@@ -12,12 +12,12 @@ import type {
 export const REVIEW_SESSION_PLACEHOLDER: ReviewSessionScreen = {
     kind: "item",
     isRetrieval: false,
-    sourceLine: "xxxxxxxx",
-    kindLine: "xxxxxxxx · xxxxxxxx",
+    sourceLine: "",
+    kindLine: "",
     lessonLine: undefined,
-    question: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    level: "xxxxxx",
-    tags: ["xxxxxx", "xxxxxxx"],
+    question: "",
+    level: "",
+    tags: [],
     cloze: [],
     note: "",
     isFlipping: false,
@@ -95,13 +95,21 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
                 </Button>
             ),
         }}
-        render={(screen, isLoading) => (
-            <Stack gap="region">
-                <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
-                <Body {...props} screen={screen} isLoading={isLoading} />
-                <Exit {...props} screen={screen} isLoading={isLoading} />
-            </Stack>
-        )}
+        render={(screen, isLoading) =>
+            isLoading ? (
+                <Stack gap="region">
+                    <Skeleton shape="text" lines={1} />
+                    <Skeleton shape="rect" ratio="landscape" />
+                    <Skeleton shape="text" lines={1} />
+                </Stack>
+            ) : (
+                <Stack gap="region">
+                    <Progress label={props.props.labels.progressLabel} value={props.props.percent} />
+                    <Body {...props} screen={screen} isLoading={isLoading} />
+                    <Exit {...props} screen={screen} isLoading={isLoading} />
+                </Stack>
+            )
+        }
         frame={(parts) => (
             <Page header={parts.header} isLoading={parts.isLoading} measure="reading">
                 {parts.body}

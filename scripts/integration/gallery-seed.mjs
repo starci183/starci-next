@@ -15,6 +15,7 @@
 import { spawnSync } from "node:child_process"
 import { randomBytes, randomUUID } from "node:crypto"
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { createRequire } from "node:module"
 import { dirname, join, resolve } from "node:path"
 import pg from "pg"
 
@@ -828,6 +829,169 @@ if (want("cv-multi")) {
     manifest.screens["cv/public"] = { learner: "cv-multi", route: cv?.setCvVisibility.path ?? "/profile", guest: true }
     log(
         `cv-multi: ${signed.length} verified lines (${signed.map((item) => item.part).join(", ")}); cv ${cv?.setCvVisibility.path ?? "not set"}`,
+    )
+}
+
+/**
+ * cv/public-many-lines: a named learner with eleven signed lines from three sources (essentials, projects, practice), so the public CV
+ * shows its source chips (from eight lines) and "Xem thêm" (more than ten lines, six on a phone). The cli seed gives the three samples;
+ * the other eight are the ai-graded items the essentials and practice producers would write (the same row and its "grade" audit row as
+ * ExperienceService.produce, the line drafted from the catalog template in the compiled career messages), written in the loopback dev
+ * database because no dev door produces them; submitting, assigning and signing then go through the real doors as in cv-multi.
+ * The slug comes from the display name (`minh-nguyen`, or `minh-nguyen-<n>` when another learner holds it): see manifest learners.cv-eight.cv.
+ */
+const CV_EIGHT_NAME = "Minh Nguyễn"
+const CV_EIGHT_PROJECT = { id: "dev-shop", title: "StarCi Shop", language: "typescript" }
+const CV_EIGHT_ITEMS = [
+    ...[
+        ["outbox-idempotency", "Transactional outbox"],
+        ["idempotency-keys", "Idempotency key"],
+        ["optimistic-locking", "Optimistic locking"],
+        ["retry-backoff", "Retry với backoff"],
+    ].map(([lesson, concept]) => ({
+        itemType: "essentials.concept-proved",
+        part: "essentials",
+        subject: `${lesson}@${CV_EIGHT_PROJECT.id}`,
+        projectId: CV_EIGHT_PROJECT.id,
+        evidence: { kind: "lesson-proved", ref: lesson, proofForm: "proved-lesson" },
+        slots: { concept, project: CV_EIGHT_PROJECT.title, language: CV_EIGHT_PROJECT.language, lesson },
+    })),
+    ...[
+        ["two-pointers", "Two pointers", "6"],
+        ["sliding-window", "Sliding window", "5"],
+        ["binary-search", "Binary search", "7"],
+        ["graph-bfs", "BFS trên đồ thị", "4"],
+    ].map(([pattern, title, count]) => ({
+        itemType: "practice.pattern-solved",
+        part: "practice",
+        subject: pattern,
+        projectId: null,
+        evidence: { kind: "practice-pattern", ref: pattern, proofForm: "judge" },
+        slots: { count, pattern: title, language: "typescript" },
+    })),
+]
+/** Fills a catalog template the way the engine drafts a line: every `<slot>` replaced by its value. */
+const draftOf = (template, slots) =>
+    Object.entries(slots).reduce((line, [slot, value]) => line.split(`<${slot}>`).join(value), template)
+
+if (want("cv-eight")) {
+    const teacher = await grantAndSignIn("career-teacher", "TEACHER")
+    const reviewer = await grantAndSignIn("career-reviewer", "REVIEWER")
+    const learner = await signIn("cv-eight")
+    cli(["entitlement", "dev-grant", "--learner", learner.subject])
+    cli(["career", "seed", "--learner", learner.subject])
+    await gql(
+        { token: learner.token },
+        `mutation SetProfileName($input: SetProfileNameInput!) { setProfileName(input: $input) { displayName } }`,
+        { input: { displayName: CV_EIGHT_NAME, locale: "vi" } },
+    )
+    const { CAREER_MESSAGES } = createRequire(import.meta.url)(
+        resolve("be", "dist", "src", "modules", "domain", "career", "messages", "career.messages.js"),
+    )
+    requireLoopbackDatabase()
+    const db = new pg.Client({ connectionString: readFileSync(dbUrlFile(), "utf8").trim() })
+    await db.connect()
+    try {
+        for (const item of CV_EIGHT_ITEMS) {
+            const at = new Date()
+            const slotValues = { vi: item.slots, en: item.slots }
+            const draft = {
+                vi: draftOf(CAREER_MESSAGES.vi[`lines.${item.itemType}`], item.slots),
+                en: draftOf(CAREER_MESSAGES.en[`lines.${item.itemType}`], item.slots),
+            }
+            const grade = {
+                result: "pass",
+                criteria: [{ criterion: "gallery seed", level: 2, evidenceQuote: "proved level 2/2" }],
+            }
+            const { rows } = await db.query(
+                `INSERT INTO career_experience_items (
+                    verification_code, learner_id, item_type, part, subject, project_id, evidence, slot_values, grade, draft_line, state,
+                    created_at, updated_at
+                )
+                SELECT upper(substr(h, 1, 4) || '-' || substr(h, 5, 4) || '-' || substr(h, 9, 4)), $1::uuid, $2::text, $3::text, $4::text,
+                    $5::text, $6::jsonb, $7::jsonb, $8::jsonb, $9::jsonb, 'ai-graded', $10::timestamptz, $10::timestamptz
+                FROM (SELECT md5(gen_random_uuid()::text) AS h) AS code
+                ON CONFLICT (learner_id, item_type, subject) WHERE state <> 'revoked' DO NOTHING
+                RETURNING *`,
+                [
+                    learner.subject,
+                    item.itemType,
+                    item.part,
+                    item.subject,
+                    item.projectId,
+                    JSON.stringify([{ ...item.evidence, at: at.toISOString() }]),
+                    JSON.stringify(slotValues),
+                    JSON.stringify(grade),
+                    JSON.stringify(draft),
+                    at,
+                ],
+            )
+            const created = rows[0]
+            if (created !== undefined)
+                await db.query(
+                    `INSERT INTO career_review_decisions (
+                        career_experience_item_id, action, actor_id, actor_role, from_state, to_state, note, snapshot, at
+                    ) VALUES ($1::uuid, 'grade', NULL, 'system', NULL, 'ai-graded', NULL, $2::jsonb, $3::timestamptz)`,
+                    [
+                        created.item_id,
+                        JSON.stringify({
+                            line: created.line ?? null,
+                            evidence: [{ kind: item.evidence.kind, ref: item.evidence.ref }],
+                            assigneeId: created.assignee_id ?? null,
+                        }),
+                        at,
+                    ],
+                )
+        }
+    } finally {
+        await db.end()
+    }
+    const ITEMS = `query MyExperience($input: MyExperienceInput!) { myExperience(input: $input) { items { itemId state part draftLine { vi en } } } }`
+    const read = async () => (await gql({ token: learner.token }, ITEMS, { input: {} })).myExperience.items
+    for (const item of (await read()).filter((each) => each.state === "ai-graded" && each.draftLine))
+        await gql(
+            { token: learner.token },
+            `mutation SubmitExperience($input: SubmitExperienceInput!) { submitExperience(input: $input) { itemId state } }`,
+            { input: { itemId: item.itemId, line: { vi: item.draftLine.vi, en: item.draftLine.en } } },
+        ).catch((error) => log(`cv-eight: submit refused (${error.message})`))
+    for (const item of (await read()).filter((each) => each.state === "pending-review")) {
+        const signer = item.part === "projects" ? reviewer : teacher
+        if (item.part === "projects")
+            await gql(
+                { token: teacher.token },
+                `mutation AssignExperience($input: AssignExperienceInput!) { assignExperience(input: $input) { itemId } }`,
+                { input: { itemId: item.itemId, reviewerId: reviewer.subject } },
+            ).catch((error) => log(`cv-eight: assign refused (${error.message})`))
+        await gql(
+            { token: signer.token },
+            `mutation DecideExperience($input: DecideExperienceInput!) { decideExperience(input: $input) { itemId state refusal } }`,
+            { input: { decisions: [{ itemId: item.itemId, verdict: "approve" }] } },
+        ).catch((error) => log(`cv-eight: decision refused (${error.message})`))
+    }
+    const signed = (await read()).filter((item) => item.state === "verified")
+    for (const item of signed)
+        await gql(
+            { token: learner.token },
+            `mutation ShowExperience($input: ShowExperienceInput!) { showExperience(input: $input) { itemId } }`,
+            { input: { itemId: item.itemId, shownPublicly: true } },
+        ).catch((error) => log(`cv-eight: show refused (${error.message})`))
+    const cv = await gql(
+        { token: learner.token },
+        `mutation SetCvVisibility($input: SetCvVisibilityInput!) { setCvVisibility(input: $input) { slug path isPublic verifiedCount } }`,
+        { input: { isPublic: true } },
+    ).catch((error) => (log(`cv-eight: CV visibility refused (${error.message})`), undefined))
+    remember(
+        learner,
+        { "cv/public-many-lines": cv?.setCvVisibility.path ?? "/profile" },
+        { verified: signed.map((item) => item.part), cv: cv?.setCvVisibility },
+    )
+    manifest.screens["cv/public-many-lines"] = {
+        learner: "cv-eight",
+        route: cv?.setCvVisibility.path ?? "/profile",
+        guest: true,
+    }
+    log(
+        `cv-eight: ${signed.length} verified lines (${[...new Set(signed.map((item) => item.part))].join(", ")}); cv ${cv?.setCvVisibility.path ?? "not set"}`,
     )
 }
 

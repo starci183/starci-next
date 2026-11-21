@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 4d1f94e3155ee88dab6bf0944fb0fd2b4e040c3a1d9b1093e10c10a5c97fbf8d
+    sha256: ef10d10272f79f5c632a67cd016ed2dfdad500e4c9892af2ce13ff552ee15c69
   "1440":
     file: 1440.png
-    sha256: 2cf7b4ad41a697f9d6d9aed8db2cccb13dc0dfbae8e2085cae1def5d22486a50
+    sha256: 7f0e58ccc24abe6ab967c86c6b3c71e73d3c3f5ade38d0d372456e1d144081ac
 sections:
   - id: vung-chinh
     title: Vùng chính

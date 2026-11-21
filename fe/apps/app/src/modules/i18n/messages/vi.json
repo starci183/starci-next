@@ -1940,6 +1940,12 @@
         "assigned": "Đã giao lại mục.",
         "pageMeta": "{pending} mục đang chờ · {overdue} quá hạn",
         "itemMeta": "{part} · {who} · {state}",
+        "queueEmptyMeta": "Chưa có mục nào",
+        "queueEmptyTitle": "Không còn mục nào chờ duyệt",
+        "queueEmptyText": "Mục mới sẽ hiện ở đây khi người học gửi duyệt.",
+        "queueEmptyToReviewers": "Xem người duyệt",
+        "queueErrorTitle": "Không tải được hàng đợi.",
+        "queueErrorText": "Các mục chưa duyệt vẫn an toàn. Thử lại sau vài giây.",
         "dueIn": "{days, plural, =0 {Đến hạn hôm nay} other {Còn # ngày}}",
         "overdueBy": "{days, plural, other {Quá hạn # ngày}}"
       },
@@ -2558,7 +2564,8 @@
         "experienceTitle": "Kinh nghiệm",
         "experienceLink": "Mở Kinh nghiệm",
         "experience": "{verified} đã xác minh, {pending} đang chờ duyệt. Cần {min} mục đã xác minh để được giới thiệu việc làm.",
-        "experienceEnough": "{verified} mục đã xác minh, đủ để được giới thiệu việc làm."
+        "experienceEnough": "{verified} mục đã xác minh, đủ để được giới thiệu việc làm.",
+        "experienceUnavailable": "Chưa tải được số mục đã xác minh. Mở Kinh nghiệm để xem."
       }
     },
     "progress": {
@@ -2708,7 +2715,7 @@
       "signedTeacher": "Thầy ký {date}",
       "signedReviewer": "Người duyệt thầy chỉ định ký {date}",
       "signedStepText": "Thầy, hoặc người duyệt thầy chỉ định, đọc bằng chứng và ký từng dòng. Chỉ dòng đã ký mới hiện trên CV.",
-      "linesNote": "Chỉ hiện các dòng đã ký, mới ký trước. Không hiện điểm số hay tên người duyệt.",
+      "linesNote": "Chỉ hiện các dòng đã ký, mới ký trước.",
       "cvLoadFailedTitle": "Không tải được CV này",
       "cvLoadFailedText": "Máy chủ chưa trả lời. Thử lại sau vài giây.",
       "factsCount": "{count, plural, other {# dòng đã ký}}",

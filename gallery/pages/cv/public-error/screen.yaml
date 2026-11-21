@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 97a43e6bdf43f9da3f19dfe6dd9e5ae76f454ce731a7af357b5e507241b0ea0c
+    sha256: 5547709b29c9c7c78d6aa597b2e510103caac5585db414aadeafdc28ff978601
   "1440":
     file: 1440.png
-    sha256: f5bb907f9d939f0a45d491f199f612b5bbb1ca6f1408b7aa9c4c94b0b4373175
+    sha256: 74a6a15840d88d809ad8e159b4539bd87ad24bf5923ef65bbd4efa48b4dfe7a4
 sections:
   - id: thanh-tren-cong-khai
     title: Thanh trên công khai

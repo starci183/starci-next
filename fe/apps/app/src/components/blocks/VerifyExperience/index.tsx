@@ -45,13 +45,7 @@ export const VerifyExperience = (props: VerifyExperienceProps) => {
                         { term: t("code"), value: view.code },
                     ],
                 })),
-                placeholder: {
-                    ...VERIFICATION_PLACEHOLDER,
-                    facts: [t("part"), t("evidence"), t("signer"), t("signedOn"), t("code")].map((term) => ({
-                        term,
-                        value: "xxxxxxxx",
-                    })),
-                },
+                placeholder: VERIFICATION_PLACEHOLDER,
                 slotLabels: useSlotLabels()(t("notFoundTitle"), { title: t("errorTitle"), text: t("errorText") }),
                 note: t("note"),
                 factsTitle: t("factsTitle"),

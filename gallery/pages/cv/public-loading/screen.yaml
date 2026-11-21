@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: f793214dc68096f93f550681a50b0c45698870ba937b8cb4d1e0849eded2bc9e
+    sha256: 0b052bb584eadced662392fbf06ee787271460a3054297d3939bef9f2768e4bb
   "1440":
     file: 1440.png
-    sha256: 2175dce2034211acf5b10527b2f8b3a0cbac32cf2b2d3d8676b03b968822247a
+    sha256: e3c3e258ae2d6c28d74c16e69272d3b9e9c276bbd0db09305b8698ce743c149a
 sections:
   - id: chu-cv
     title: Chủ CV

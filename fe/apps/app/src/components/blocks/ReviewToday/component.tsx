@@ -12,12 +12,14 @@ import {
     Page,
     Progress,
     Section,
+    Skeleton,
     Stack,
     Text,
     type ListRowData,
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { ReviewHubScreen, ReviewHubView } from "@/hooks/reviewHub"
 
 /** Props for {@link ReviewTodayBase}: the resolved screen of the day. */
@@ -229,6 +231,31 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
     )
 }
 
+/** The day while its first read loads: the figures strip, the card rows and the chart, the goal and the decks as bars. */
+const TodaySkeleton = () => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={2} />
+        <Grid
+            kind="main-rail"
+            primary={
+                <Stack gap="region">
+                    <SkeletonRows rows={5} />
+                    <Stack gap="row">
+                        <Skeleton shape="text" lines={1} />
+                        <Skeleton shape="rect" ratio="wide" />
+                    </Stack>
+                </Stack>
+            }
+            rail={
+                <Stack gap="region">
+                    <SkeletonBlock lines={3} />
+                    <SkeletonRows rows={3} />
+                </Stack>
+            }
+        />
+    </Stack>
+)
+
 /**
  * Draws Ôn tập today: the header with the one command (start the due cards), the strip of three numbers, the next cards as a flat list
  * and the recall chart; beside them the daily goal and the decks of the learner. A day with nothing due or already done says so.
@@ -250,6 +277,7 @@ export const ReviewTodayBase = (props: ReviewTodayBaseProps) => {
             errorDescription={props.props.labels.errorText}
             onRetry={props.on.retry}
             render={(view, isLoading) => {
+                if (isLoading) return <TodaySkeleton />
                 const piece: PieceProps = { screen: props, view, isLoading }
                 return (
                     <Stack gap="region">

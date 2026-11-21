@@ -179,39 +179,50 @@ const cvRowOf = (
     ),
 })
 
-/** The verified CV lines; with none, the way to the first one. */
-const CvSection = (
-    props: PartProps & Pick<ProfileHubBaseProps, "on"> & Pick<ProfileHubBaseProps["props"], "views">,
-) => (
-    <SlotView
-        slot={props.views.cv}
-        placeholder={CV_PLACEHOLDER}
-        labels={props.slotLabels}
-        onRetry={props.onRetry}
-        render={(cv, isLoading) => (
-            <Section
-                kind="list"
-                title={props.labels.cvTitle}
-                headingLevel={2}
-                count={cv.lines.length}
-                meta={cv.gate}
-                isLoading={isLoading}
-                items={cv.lines.map((line) => cvRowOf(line, props.labels, props.on, isLoading))}
-                empty={
-                    <EmptyNotice
-                        message={props.labels.cvEmptyTitle}
-                        description={props.labels.cvEmpty}
-                        frame="frameless"
-                        actionIntent="neutral"
-                        actionLabel={props.labels.cvEmptyAction}
-                        actionHref={props.labels.cvEmptyHref}
-                        actionEndArrow
-                    />
-                }
-            />
-        )}
-    />
-)
+/**
+ * The verified CV lines; with none, the way to the first one. A failed read keeps the section's heading with the failure and its retry
+ * under it, so the learner sees which part did not load.
+ */
+const CvSection = (props: PartProps & Pick<ProfileHubBaseProps, "on"> & Pick<ProfileHubBaseProps["props"], "views">) =>
+    "isError" in props.views.cv ? (
+        <Section title={props.labels.cvTitle} headingLevel={2}>
+            <Stack gap="inline" align="start">
+                <Text tone="muted">{props.slotLabels.error}</Text>
+                <Button intent="neutral" onPress={props.onRetry}>
+                    {props.slotLabels.retry}
+                </Button>
+            </Stack>
+        </Section>
+    ) : (
+        <SlotView
+            slot={props.views.cv}
+            placeholder={CV_PLACEHOLDER}
+            labels={props.slotLabels}
+            onRetry={props.onRetry}
+            render={(cv, isLoading) => (
+                <Section
+                    kind="list"
+                    title={props.labels.cvTitle}
+                    headingLevel={2}
+                    count={cv.lines.length}
+                    meta={cv.gate}
+                    isLoading={isLoading}
+                    items={cv.lines.map((line) => cvRowOf(line, props.labels, props.on, isLoading))}
+                    empty={
+                        <EmptyNotice
+                            message={props.labels.cvEmptyTitle}
+                            description={props.labels.cvEmpty}
+                            frame="frameless"
+                            actionIntent="neutral"
+                            actionLabel={props.labels.cvEmptyAction}
+                            actionHref={props.labels.cvEmptyHref}
+                            actionEndArrow
+                        />
+                    }
+                />
+            )}
+        />
+    )
 
 /** The account: the machines paired and the plan, as two rows each with its link. */
 const AccountSection = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views" | "devicesCount">) => (
@@ -332,22 +343,45 @@ const SkeletonBlock = (props: { readonly lines: number }) => (
 )
 
 /**
+ * The CV link while it loads: a bar for its title, the copy field's box and the row of the public switch, whose words are bars and whose
+ * control is the same compact Switch as the settled one (its own skeleton, label hidden).
+ */
+const CvLinkSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
+    <Stack gap="row">
+        <Skeleton shape="text" lines={1} />
+        <CopyField
+            label={props.labels.cvLinkLabel}
+            isLabelHidden
+            value=""
+            copyLabel={props.labels.cvLinkCopy}
+            copiedLabel={props.labels.cvLinkCopied}
+            copyErrorLabel={props.labels.cvLinkCopyError}
+            isLoading
+        />
+        <Cluster gap="row" align="center" justify="between" wrap={false}>
+            <Skeleton shape="text" lines={2} />
+            <Switch kind="compact" label={props.labels.cvLinkSwitch} isLabelHidden isLoading isDisabled />
+        </Cluster>
+    </Stack>
+)
+
+/**
  * The profile while its first reads load: no section title, label or placeholder word, only the geometry of the page (identity with
  * its avatar, the CV link, the verified lines, the account rows; the rail's figures) as Skeleton bars.
  */
-const ProfileSkeleton = () => (
+const ProfileSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
     <Grid
         kind="main-rail"
         primary={
             <Stack gap="region">
                 <Stack gap="row">
                     <Skeleton shape="text" lines={1} />
-                    <Cluster gap="inline" align="center">
+                    <Cluster gap="inline" align="center" wrap={false}>
                         <Skeleton shape="circle" size="lg" />
                         <Skeleton shape="text" lines={2} />
                     </Cluster>
                 </Stack>
-                <SkeletonBlock lines={3} />
+                <CvLinkSkeleton labels={props.labels} />
                 <SkeletonBlock lines={6} />
                 <SkeletonBlock lines={4} />
             </Stack>
@@ -383,7 +417,7 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
             }}
         >
             {isFirstLoad ? (
-                <ProfileSkeleton />
+                <ProfileSkeleton labels={labels} />
             ) : (
                 <Grid
                     kind="main-rail"

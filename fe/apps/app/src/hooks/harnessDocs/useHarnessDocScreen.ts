@@ -49,14 +49,14 @@ export type HarnessDocScreen = {
 
 /** The same-shape article the skeleton draws while the first read runs. */
 export const HARNESS_DOC_PLACEHOLDER: HarnessDocPageView = {
-    title: "xxxxxxxxxxxxxxxx",
-    summary: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    title: "",
+    summary: "",
     sections: [1, 2].map((n) => ({
         id: `s${n}`,
-        title: "xxxxxxxxxxxxxxxx",
-        markdown: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        title: "",
+        markdown: "",
     })),
-    outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "xxxxxxxxxxxxxxxx", href: `#o${n}` })),
+    outline: [1, 2, 3].map((n) => ({ id: `o${n}`, label: "", href: `#o${n}` })),
 }
 
 /** What the route hands the article page: the article in the address. */

@@ -10,15 +10,16 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 2e1b65038b55dd3b4b4dc1582fe332299e54ba35d4c7af316bbe3fb5cb3e5044
+    sha256: 0830d2280212c38d3203db270546d09985f266e6bd8bc4e3906add6d30267559
   "1440":
     file: 1440.png
-    sha256: 16c56b8a89161e613270226b689ffaec3712982d078613ddfeaf9f268de23556
+    sha256: a74b8410c0231ed48b5e4f31a65b75879f1e9ef45314da9021a1cf5ba7b8a040
 sections:
   - id: s1
     title: "Dải tiêu đề: Luyện code"
-    shows: tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu
-      tiên); lần đầu "Bắt đầu với Mảng".
+    shows:
+      tên trang, dòng sự kiện và đúng một nút chính. "Làm bài tiếp theo" (bài chưa Accepted đầu tiên); lần đầu "Bắt đầu
+      với Mảng".
     why: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
     actions: []
     states:
@@ -59,12 +60,12 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
-            như số thật.
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted") như số thật.
         truth:
           verdict: open
-          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
-            như số thật. Phải là skeleton.
+          notes:
+            Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted") như số thật. Phải là
+            skeleton.
     - n: 2
       at: 2026-11-20T14:02:38.571Z
       lenses:

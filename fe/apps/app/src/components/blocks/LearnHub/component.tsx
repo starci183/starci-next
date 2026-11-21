@@ -15,6 +15,10 @@ import {
     type HubTodayRow,
 } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
+import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
+
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
 
 /** The hub as it is drawn, every word resolved. */
 export type HubScreenView = {
@@ -29,20 +33,20 @@ export type HubScreenView = {
 /** The fake hub with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const HUB_PLACEHOLDER: HubScreenView = {
     path: undefined,
-    todayTitle: "xxxxxxxxxxxxxxxx",
+    todayTitle: blank(16),
     today: [1, 2, 3].map((index) => ({
         id: `p-${index}`,
-        title: "xxxxxxxxxxxx",
+        title: blank(12),
         shard: "essentials",
-        part: "xxxxxx",
+        part: blank(6),
         href: "/",
     })),
     streak: {
         currentFigure: "0",
-        currentUnit: "xxxxxxxxxx",
-        line: "xxxxxxxxxxxxxxxxxxxx",
-        weekTitle: "xxxxxxxxxx",
-        weekLabel: "xxxxxx",
+        currentUnit: blank(10),
+        line: blank(20),
+        weekTitle: blank(10),
+        weekLabel: blank(6),
         weekPercent: 0,
         days: [1, 2, 3, 4, 5, 6, 7].map((index) => ({
             id: `d-${index}`,
@@ -207,7 +211,15 @@ export const LearnHubBase = (props: LearnHubBaseProps) => {
             onRetry={props.on.retry}
             aside={(view, isLoading) => (
                 <PaneSection>
-                    <HubRail view={view} isLoading={isLoading} props={own} on={props.on} />
+                    {isLoading ? (
+                        <Stack gap="section">
+                            <SkeletonBlock lines={4} />
+                            <SkeletonBlock lines={2} />
+                            <SkeletonBlock lines={3} />
+                        </Stack>
+                    ) : (
+                        <HubRail view={view} isLoading={isLoading} props={own} on={props.on} />
+                    )}
                 </PaneSection>
             )}
             frame={({ aside, body }) => (
@@ -242,7 +254,16 @@ export const LearnHubBase = (props: LearnHubBaseProps) => {
                     </PaneGrid>
                 </Page>
             )}
-            render={(view, isLoading) => <HubWell view={view} isLoading={isLoading} props={own} />}
+            render={(view, isLoading) =>
+                isLoading ? (
+                    <Stack gap="region">
+                        <SkeletonBlock lines={5} />
+                        <SkeletonBlock lines={6} />
+                    </Stack>
+                ) : (
+                    <HubWell view={view} isLoading={isLoading} props={own} />
+                )
+            }
         />
     )
 }

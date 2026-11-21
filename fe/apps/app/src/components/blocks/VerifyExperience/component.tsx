@@ -1,4 +1,15 @@
-import { Alert, DescriptionList, EmptyNotice, Page, Section, Stack, Text } from "@starci/grammar/common"
+import {
+    Alert,
+    Cluster,
+    DescriptionList,
+    Divider,
+    EmptyNotice,
+    Page,
+    Section,
+    Skeleton,
+    Stack,
+    Text,
+} from "@starci/grammar/common"
 import type { ReactNode } from "react"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
@@ -12,14 +23,43 @@ export type VerificationScreenView = {
     readonly facts: ReadonlyArray<{ readonly term: string; readonly value: string }>
 }
 
-/** The fake verification with the geometry of a settled one. */
+/** The view SlotView is handed for its loading branch; the block draws {@link VerificationSkeleton} instead, so it carries no words. */
 export const VERIFICATION_PLACEHOLDER: VerificationScreenView = {
     isRevoked: false,
-    title: "xxxxxxxxxx",
-    sub: "xxxxxxxxxxxxxx",
-    line: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    facts: [{ term: "xxxxxx", value: "xxxxxxxx" }],
+    title: "",
+    sub: "",
+    line: "",
+    facts: [],
 }
+
+/** The public facts the settled page lists (part, evidence, signer, date, code): one bar pair each while loading. */
+const FACT_ROWS = ["part", "evidence", "signer", "signedOn", "code"] as const
+
+/**
+ * The verification while its read is in flight: no status, line, title, term or note word and no tone, only the geometry of the settled
+ * page as bars (the status with its mark, the signed line, the facts with their dividers, the note).
+ */
+const VerificationSkeleton = () => (
+    <Stack gap="row">
+        <Cluster gap="row" align="start" wrap={false}>
+            <Skeleton shape="circle" size="sm" />
+            <Skeleton shape="text" lines={2} />
+        </Cluster>
+        <Skeleton shape="text" lines={2} />
+        <Stack gap="section">
+            <Skeleton shape="text" lines={1} />
+            <Stack gap="row">
+                {FACT_ROWS.map((id) => (
+                    <Stack key={id} gap="row">
+                        <Skeleton shape="text" lines={2} />
+                        <Divider />
+                    </Stack>
+                ))}
+            </Stack>
+        </Stack>
+        <Skeleton shape="text" lines={1} />
+    </Stack>
+)
 
 /** Props for {@link VerifyExperienceBase}. */
 export type VerifyExperienceBaseProps = {
@@ -64,33 +104,37 @@ export const VerifyExperienceBase = (props: VerifyExperienceBaseProps) => (
                     placeholder={props.props.placeholder}
                     labels={props.props.slotLabels}
                     onRetry={props.on.retry}
-                    render={(view, isLoading) => (
-                        <Stack gap="row">
-                            <Alert
-                                tone={view.isRevoked ? "negative" : "affirmative"}
-                                isLoading={isLoading}
-                                title={view.title}
-                                description={view.sub}
-                            />
-                            <Text as="p" isLoading={isLoading}>
-                                {view.line}
-                            </Text>
-                            <Section title={props.props.factsTitle} headingLevel={2} isLoading={isLoading}>
-                                <DescriptionList
-                                    isDivided
+                    render={(view, isLoading) =>
+                        isLoading ? (
+                            <VerificationSkeleton />
+                        ) : (
+                            <Stack gap="row">
+                                <Alert
+                                    tone={view.isRevoked ? "negative" : "affirmative"}
                                     isLoading={isLoading}
-                                    items={view.facts.map((fact) => ({
-                                        id: fact.term,
-                                        term: fact.term,
-                                        description: fact.value,
-                                    }))}
+                                    title={view.title}
+                                    description={view.sub}
                                 />
-                            </Section>
-                            <Text tone="muted" isLoading={isLoading}>
-                                {props.props.note}
-                            </Text>
-                        </Stack>
-                    )}
+                                <Text as="p" isLoading={isLoading}>
+                                    {view.line}
+                                </Text>
+                                <Section title={props.props.factsTitle} headingLevel={2} isLoading={isLoading}>
+                                    <DescriptionList
+                                        isDivided
+                                        isLoading={isLoading}
+                                        items={view.facts.map((fact) => ({
+                                            id: fact.term,
+                                            term: fact.term,
+                                            description: fact.value,
+                                        }))}
+                                    />
+                                </Section>
+                                <Text tone="muted" isLoading={isLoading}>
+                                    {props.props.note}
+                                </Text>
+                            </Stack>
+                        )
+                    }
                 />
             )}
         </Stack>

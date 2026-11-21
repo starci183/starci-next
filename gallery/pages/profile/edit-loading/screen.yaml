@@ -3,18 +3,17 @@ screen: profile/edit-loading
 title: Sửa hồ sơ, đang tải
 route: /profile/edit
 area: profile
-summary: "Trạng thái của màn: Sửa hồ sơ, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật
-  Grammar 0.50."
+summary: "Trạng thái của màn: Sửa hồ sơ, đang tải. Vẽ theo bảng vẽ đã duyệt ngày 20/11 và luật Grammar 0.50."
 code:
   - features/pages/ProfileEditPage
   - components/blocks/ProfileEdit
 shots:
   "390":
     file: 390.png
-    sha256: ea470dadbc7956121e6daf5ad916e1511d09518fa5a28d2e595c9cab224dde18
+    sha256: 49af90aef1ebf57081bf1dc64f7a74595ee51c7ef186d26bad0ac5d40d8733d8
   "1440":
     file: 1440.png
-    sha256: 0804d7bde0e424641916ca814f06ca5d78d31de4c19547c3c5c80497f5917bd4
+    sha256: f9fcdad302dcd353102d7f84c753994d6cea756249a254605c25660535534f83
 sections:
   - id: s1
     title: Nội dung chính
@@ -29,16 +28,16 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
-      filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối
-      2026-11-20T15:02:28.671Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
-      run)."
+    why:
+      "Chu kỳ audit cũ: 4 vòng (builder mig-auth-fe, auditor next-ux-auditor, vòng cuối 2026-11-20T15:02:28.671Z); lens
+      cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã sửa:
+      chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các
+      vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit run)."
 audit:
   builder:
     agent: next-one-edition
@@ -50,13 +49,19 @@ audit:
       lenses:
         order:
           verdict: pass
-          notes: "Giữ thứ tự của trang sửa: breadcrumb, tiêu đề, Huỷ và Lưu; khung xám cho Ảnh đại diện, Danh tính; rồi Liên kết CV."
+          notes:
+            "Giữ thứ tự của trang sửa: breadcrumb, tiêu đề, Huỷ và Lưu; khung xám cho Ảnh đại diện, Danh tính; rồi Liên kết
+            CV."
         layout:
           verdict: open
-          notes: 'Khung xám của ô tên và Select trải khoảng 1120px ở 1440 như profile/edit; khung "Chọn ảnh" cỡ sm (cần Grammar, như profile/edit). Checklist: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn.'
+          notes:
+            'Khung xám của ô tên và Select trải khoảng 1120px ở 1440 như profile/edit; khung "Chọn ảnh" cỡ sm (cần Grammar,
+            như profile/edit). Checklist: Huỷ và Lưu thay đổi 40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: open
-          notes: '"Lưu thay đổi" và "Huỷ" vẫn bấm được khi dữ liệu chưa về: canSave chỉ xét !isUploading; Lưu nên tắt khi đang tải.'
+          notes:
+            '"Lưu thay đổi" và "Huỷ" vẫn bấm được khi dữ liệu chưa về: canSave chỉ xét !isUploading; Lưu nên tắt khi đang
+            tải.'
         live:
           verdict: pass
           notes: "Ảnh, nút Chọn ảnh, ô tên và Select đều là khung xám có chuyển động; đầu trang giữ nguyên."
@@ -68,5 +73,7 @@ audit:
           notes: "Đây là trạng thái đang tải ở 1440 và 390; lỗi có ở profile/edit-error."
         truth:
           verdict: open
-          notes: 'Khi đang tải, Liên kết CV đã khẳng định "Liên kết CV xuất hiện khi bạn có ít nhất một mục đã xác minh" (placeholder verifiedCount 0) và bộ đếm "0/60" hiện trước khi biết tên: trạng thái tải nói điều chưa biết, nên là khung xám.'
+          notes: 'Khi đang tải, Liên kết CV đã khẳng định "Liên kết CV xuất hiện khi bạn có ít nhất một mục đã xác minh"
+            (placeholder verifiedCount 0) và bộ đếm "0/60" hiện trước khi biết tên: trạng thái tải nói điều chưa biết,
+            nên là khung xám.'
   escalate: null

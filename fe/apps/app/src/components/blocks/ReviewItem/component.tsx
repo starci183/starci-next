@@ -1,16 +1,17 @@
-import { Button, Page, Skeleton, Stack } from "@starci/grammar/common"
+import { Button, Page, Stack } from "@starci/grammar/common"
 import { ReviewPanel, SlotView, type ReviewPanelActions, type ReviewPanelDecision } from "@starci-next/ui"
 import type { DataSlot, ReviewPanelLabels, ReviewPreviewView, SlotLabels } from "@/modules/types"
+import { ReviewPanelSkeleton } from "./skeleton"
 
-/** The fake item with the geometry of a settled one. */
+/** The item SlotView hands the render while the first read loads; the render draws {@link ReviewPanelSkeleton} instead, so it holds no words. */
 export const REVIEW_ITEM_PLACEHOLDER: ReviewPreviewView = {
     itemId: "placeholder",
-    part: "xxxxxx",
-    who: "xxxxxx",
-    state: "xxxxxx",
+    part: "",
+    who: "",
+    state: "",
     stateTone: "neutral",
-    line: "xxxxxxxxxxxxxxxxxxxxxxxx",
-    lineEn: "xxxxxxxxxxxxxxxxxxxxxxxx",
+    line: "",
+    lineEn: "",
     due: undefined,
     evidence: [],
     criteria: [],
@@ -65,9 +66,9 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
         labels={props.props.slotLabels}
         onRetry={props.on.retry}
         render={(item, isLoading) =>
-            // While the first read loads the item is bars, not the placeholder words.
+            // While the first read loads the panel is a skeleton of its geometry: no heading, label, button word or tone.
             isLoading ? (
-                <Skeleton shape="text" lines={10} />
+                <ReviewPanelSkeleton />
             ) : (
                 <ReviewPanel
                     item={item}
@@ -91,7 +92,12 @@ export const ReviewItemBase = (props: ReviewItemBaseProps) => (
                             { id: "item", label: props.props.crumb },
                         ],
                     },
-                    ...(props.props.meta === undefined ? {} : { meta: props.props.meta }),
+                    // While loading the meta line keeps its box under the header's shimmer, so the band does not grow when the item arrives.
+                    ...(props.props.meta === undefined
+                        ? isLoading
+                            ? { meta: props.props.title }
+                            : {}
+                        : { meta: props.props.meta }),
                 }}
             >
                 {body}

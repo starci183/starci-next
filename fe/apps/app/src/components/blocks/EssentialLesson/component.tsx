@@ -6,6 +6,7 @@ import {
     Pane,
     PaneGrid,
     PaneSection,
+    Skeleton,
     Stack,
     Text,
     type PageHeaderContent,
@@ -353,6 +354,26 @@ const bandOf = (
     },
 })
 
+/** The body while the first read runs: the opener line, the question and its choices, then the article, all bars. */
+const LessonSkeleton = () => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={1} />
+        <Skeleton shape="text" lines={2} />
+        {[1, 2, 3, 4].map((choice) => (
+            <Skeleton key={choice} shape="text" lines={1} />
+        ))}
+        <Skeleton shape="text" lines={6} />
+    </Stack>
+)
+
+/** The right column while the first read runs: its blocks as bars. */
+const LessonAsideSkeleton = () => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={3} />
+        <Skeleton shape="text" lines={3} />
+    </Stack>
+)
+
 /**
  * One lesson in four parts, the page tabs of its band (`?part=`): essence (the five-question opener, the article), Source,
  * Kịch bản and Tự áp dụng. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
@@ -394,13 +415,11 @@ export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {
                         rows={{ base: ["fill"] }}
                     >
                         <Pane area="main">
-                            <PaneSection gap="section" isLoading={isLoading}>
-                                {body}
-                            </PaneSection>
+                            <PaneSection gap="section">{isLoading ? <LessonSkeleton /> : body}</PaneSection>
                         </Pane>
                         {aside === undefined ? null : (
                             <Pane area="aside" surface>
-                                {aside}
+                                {isLoading ? <LessonAsideSkeleton /> : aside}
                             </Pane>
                         )}
                     </PaneGrid>

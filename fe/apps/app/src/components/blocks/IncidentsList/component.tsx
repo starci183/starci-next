@@ -10,6 +10,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { IncidentGroups, SlotView, type IncidentGroupView } from "@starci-next/ui"
+import { SkeletonRows } from "../LoadingShapes"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
 /** The incident list as it is drawn: the facts under the title and the topics with their lessons, every word resolved. */
@@ -129,7 +130,9 @@ export const IncidentsListBase = (props: IncidentsListBaseProps) => {
             header={(view) => headerOf(labels, view.facts.join(" · "))}
             headerFallback={headerOf(labels, undefined)}
             render={(view, isLoading) =>
-                view.groups.length === 0 ? (
+                isLoading ? (
+                    <SkeletonRows rows={5} />
+                ) : view.groups.length === 0 ? (
                     <StaticsProvider baseUrl={props.props.staticsBaseUrl}>
                         <NoneYet labels={labels} isLoading={isLoading} />
                     </StaticsProvider>

@@ -52,7 +52,10 @@ export const ReviewQueue = () => {
             props={{
                 slot: slotOf(),
                 placeholder: REVIEW_QUEUE_PLACEHOLDER,
-                slotLabels: { ...useSlotLabels()(t("empty")), forbidden: t("forbiddenTitle") },
+                slotLabels: {
+                    ...useSlotLabels()(t("empty"), { title: t("queueErrorTitle"), text: t("queueErrorText") }),
+                    forbidden: t("forbiddenTitle"),
+                },
                 exitLabel: t("backToProfile"),
                 exitHref: APP_ROUTES.profile,
                 meta: role === undefined || queue.data === undefined ? undefined : views.pageMeta(queue.data),
@@ -66,6 +69,9 @@ export const ReviewQueue = () => {
                     queueView: t("queueViewTab"),
                     reviewersLabel: t("tabReviewers"),
                     empty: t("empty"),
+                    emptyTitle: t("queueEmptyTitle"),
+                    emptyText: t("queueEmptyText"),
+                    toReviewers: t("queueEmptyToReviewers"),
                     reviewersEmpty: t("reviewersEmpty"),
                     preview: t("preview"),
                     open: t("open"),

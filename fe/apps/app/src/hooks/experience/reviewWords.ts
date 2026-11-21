@@ -26,13 +26,16 @@ export const itemNameOf = (item: NamedItem): string => {
 /** The marks that end the first clause of a CV line, where its short name stops: a ":" of a URL and a "." inside a word (Node.js) do not. */
 const CLAUSE_END = /[;,(]|:(?!\/\/)|\.(?=\s|$)/
 
+/** A web address and the short preposition before it (one to three letters, e.g. "at"): a heading stops before it, the address stays in the CV line. */
+const URL_TAIL = /\s+(?:\S{1,3}\s+)?https?:\/\//i
+
 /** The most characters a breadcrumb of an item keeps before it is cut on a word with an ellipsis. */
 const CRUMB_MAX = 28
 
-/** The short name of an item for its page heading: the first clause of its line, e.g. "Xây StarCi Shop bằng NestJS". */
+/** The short name of an item for its page heading: the first clause of its line before any web address, e.g. "Xây StarCi Shop bằng NestJS". */
 export const itemShortNameOf = (item: NamedItem): string => {
     const name = itemNameOf(item)
-    const clause = name.split(CLAUSE_END)[0]?.trim() ?? ""
+    const clause = (name.split(CLAUSE_END)[0] ?? "").split(URL_TAIL)[0]?.trim() ?? ""
     return clause === "" ? name : clause
 }
 
@@ -53,13 +56,27 @@ export const daysUntil = (iso: string, now: number): number => {
     return left >= 0 ? Math.floor(left / DAY_MS) : -Math.ceil(-left / DAY_MS)
 }
 
-/** The review screens' words, built on the shared experience words. */
+/** The parts the sidebar names: the review screens call them by the sidebar's words (Projects, not a translation). */
+const SIDEBAR_PARTS = ["essentials", "projects", "harness", "practice"] as const
+
+/** The parts a reviewer may be appointed to: the parts the sidebar names (the retired incidents is not one). */
+export const REVIEW_PARTS: ReadonlyArray<string> = SIDEBAR_PARTS
+
+/** A part the sidebar names. */
+type SidebarPart = (typeof SIDEBAR_PARTS)[number]
+
+/** Whether the sidebar names this part. */
+const isSidebarPart = (part: string): part is SidebarPart => (SIDEBAR_PARTS as ReadonlyArray<string>).includes(part)
+
+/** The review screens' words, built on the shared experience words, with the parts named as the sidebar names them. */
 export const useReviewWords = (): ReviewWords => {
     const words = useExperienceWords()
     const t = useTranslations("app.experience")
+    const nav = useTranslations("app.shell.nav")
     const format = useFormatter()
     return {
         ...words,
+        part: (part) => (isSidebarPart(part) ? nav(part) : words.part(part)),
         moment: (iso) =>
             t("moment", {
                 date: format.dateTime(new Date(iso), { day: "numeric", month: "numeric" }),

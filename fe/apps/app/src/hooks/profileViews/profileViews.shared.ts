@@ -101,11 +101,15 @@ export const planOf = (t: ProfileTranslate, words: ExperienceWords, data: MyPrem
     note: data.isPremium ? t("account.plan.premiumNote") : t("account.plan.freeScope"),
 })
 
-/** The side of the page: three figures from progress and the words about how many items are verified or waiting. */
+/**
+ * The side of the page: three figures from progress and the words about how many items are verified or waiting; when the experience read
+ * failed it says the count did not load instead of claiming zero.
+ */
 export const asideOf = (
     t: ProfileTranslate,
     progress: LearnerProgress,
     experience: MyExperienceView | undefined,
+    isExperienceFailed = false,
 ): ProfileAsideView => {
     const items = experience?.items ?? []
     const verified = items.filter((item) => item.state === "verified").length
@@ -119,9 +123,10 @@ export const asideOf = (
                 : [{ id: "accepted", term: t("aside.accepted"), value: progress.practice.acceptedCount }]),
             { id: "streak", term: t("aside.streak"), value: progress.ribbon.streak },
         ],
-        experience:
-            verified >= min
-                ? t("aside.experienceEnough", { verified })
-                : t("aside.experience", { verified, pending, min }),
+        experience: isExperienceFailed
+            ? t("aside.experienceUnavailable")
+            : verified >= min
+              ? t("aside.experienceEnough", { verified })
+              : t("aside.experience", { verified, pending, min }),
     }
 }

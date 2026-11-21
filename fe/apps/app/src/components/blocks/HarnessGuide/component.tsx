@@ -7,11 +7,11 @@ import {
     PaneSection,
     Section,
     Stack,
-    Text,
     Switch,
     type ListRowData,
 } from "@starci/grammar/common"
 import { RichMarkdown, SlotView } from "@starci-next/ui"
+import { HarnessSkeletonBlock, HarnessSkeletonList } from "../HarnessSkeleton"
 import type {
     HarnessDoctorPanelView,
     HarnessGuidePageView,
@@ -40,42 +40,25 @@ const GuideBody = (props: {
     readonly view: HarnessGuidePageView
     readonly guide: HarnessGuideBaseProps
     readonly isLoading: boolean
-}) => (
-    <Stack gap="region">
-        {props.isLoading ? (
-            <Stack gap="row">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((line) => (
-                    <Text key={line} as="p" isLoading>
-                        {"x".repeat(72)}
-                    </Text>
-                ))}
-            </Stack>
-        ) : null}
-        {(props.isLoading ? [] : props.view.sections).map((section) => (
-            <Section
-                key={section.id}
-                id={section.id}
-                {...(props.isLoading
-                    ? { ariaLabel: props.guide.props.labels.outlineTitle }
-                    : { title: section.title, headingLevel: 2 as const })}
-                isLoading={props.isLoading}
-            >
-                <RichMarkdown
-                    source={section.markdown}
-                    labels={props.guide.props.common.markdown}
-                    isLoading={props.isLoading}
-                />
-            </Section>
-        ))}
-    </Stack>
-)
+}) =>
+    props.isLoading ? (
+        <Stack gap="region">
+            <HarnessSkeletonBlock lines={6} />
+            <HarnessSkeletonBlock lines={8} />
+            <HarnessSkeletonBlock lines={5} />
+        </Stack>
+    ) : (
+        <Stack gap="region">
+            {props.view.sections.map((section) => (
+                <Section key={section.id} id={section.id} title={section.title} headingLevel={2}>
+                    <RichMarkdown source={section.markdown} labels={props.guide.props.common.markdown} />
+                </Section>
+            ))}
+        </Stack>
+    )
 
 /** The outline of the guide and the tool switch that moves to the same guide of the other tool. */
-const OutlineAside = (props: {
-    readonly view: HarnessGuidePageView
-    readonly guide: HarnessGuideBaseProps
-    readonly isLoading: boolean
-}) => {
+const OutlineAside = (props: { readonly view: HarnessGuidePageView; readonly guide: HarnessGuideBaseProps }) => {
     const { labels, common, toolOptions } = props.guide.props
     return (
         <Stack gap="region">
@@ -83,7 +66,6 @@ const OutlineAside = (props: {
                 kind="list"
                 title={labels.outlineTitle}
                 headingLevel={2}
-                isLoading={props.isLoading}
                 items={props.view.outline.map((entry, index) => ({
                     id: entry.id,
                     title: entry.label,
@@ -107,20 +89,10 @@ const OutlineAside = (props: {
 }
 
 /** The `harness doctor` result of the guide's tool: the command, when the result arrived and the probes this guide fixes. */
-const DoctorAside = (props: {
-    readonly view: HarnessDoctorPanelView
-    readonly guide: HarnessGuideBaseProps
-    readonly isLoading: boolean
-}) => {
+const DoctorAside = (props: { readonly view: HarnessDoctorPanelView; readonly guide: HarnessGuideBaseProps }) => {
     const { labels, common, isOnlyFailing } = props.guide.props
     return (
-        <Section
-            title={labels.doctorTitle}
-            headingLevel={2}
-            fact={props.view.summary}
-            meta={props.view.ranAt}
-            isLoading={props.isLoading}
-        >
+        <Section title={labels.doctorTitle} headingLevel={2} fact={props.view.summary} meta={props.view.ranAt}>
             <Stack gap="row">
                 <CopyField
                     label={labels.doctorCommandLabel}
@@ -129,19 +101,16 @@ const DoctorAside = (props: {
                     copyLabel={common.copy.copy}
                     copiedLabel={common.copy.copied}
                     copyErrorLabel={common.copy.copyError}
-                    isLoading={props.isLoading}
                 />
                 <Switch
                     label={labels.doctorOnlyFailingLabel}
                     description={labels.doctorOnlyFailingDescription}
                     isSelected={isOnlyFailing}
                     onSelectedChange={props.guide.on.setOnlyFailing}
-                    isLoading={props.isLoading}
                 />
                 <Section
                     kind="list"
                     ariaLabel={labels.doctorTitle}
-                    isLoading={props.isLoading}
                     items={props.view.probes.filter((probe) => !isOnlyFailing || probe.isFailing).map(probeRowOf)}
                     empty={labels.doctorEmpty}
                 />
@@ -169,12 +138,19 @@ export const HarnessGuideBase = (props: HarnessGuideBaseProps) => (
         labels={props.props.slotLabels}
         onRetry={props.on.retryGuide}
         render={(view, isLoading) => <GuideBody view={view} guide={props} isLoading={isLoading} />}
-        aside={(view, isLoading) => (
-            <Stack gap="region">
-                <OutlineAside view={view} guide={props} isLoading={isLoading} />
-                <DoctorAside view={view.doctor} guide={props} isLoading={isLoading} />
-            </Stack>
-        )}
+        aside={(view, isLoading) =>
+            isLoading ? (
+                <Stack gap="region">
+                    <HarnessSkeletonList rows={4} />
+                    <HarnessSkeletonBlock lines={5} />
+                </Stack>
+            ) : (
+                <Stack gap="region">
+                    <OutlineAside view={view} guide={props} />
+                    <DoctorAside view={view.doctor} guide={props} />
+                </Stack>
+            )
+        }
         asideFallback={null}
         frame={({ body, aside, isLoading }) => (
             <Page chrome="panes" layout="workspace" header={props.props.header}>
@@ -186,14 +162,17 @@ export const HarnessGuideBase = (props: HarnessGuideBaseProps) => (
                 >
                     <Pane area="nav" scroll label={props.props.labels.navTitle}>
                         <PaneSection>
-                            <Section
-                                kind="list"
-                                title={props.props.labels.navTitle}
-                                headingLevel={2}
-                                isLoading={isLoading}
-                                items={props.props.guides.map(navRowOf)}
-                                empty={props.props.labels.navEmpty}
-                            />
+                            {isLoading ? (
+                                <HarnessSkeletonList rows={4} />
+                            ) : (
+                                <Section
+                                    kind="list"
+                                    title={props.props.labels.navTitle}
+                                    headingLevel={2}
+                                    items={props.props.guides.map(navRowOf)}
+                                    empty={props.props.labels.navEmpty}
+                                />
+                            )}
                         </PaneSection>
                     </Pane>
                     <Pane area="main" scroll label={props.props.labels.outlineTitle}>

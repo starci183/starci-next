@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: ce6a2bb86f72efc3654e71564955b480674d671f80b5dfe6c14bf2354d905ba7
+    sha256: 1cdf9ccaa7504ca8a22197db0315e3e5fab9803c3bdbc929794801c5551b3d6e
   "1440":
     file: 1440.png
-    sha256: cbf4b14d8a7d1ee3189cc3726efd8dcd60738225008a83c32c7881ba0da90fce
+    sha256: f64f204499d65aa1dee7f1940eb762352d520b5a0c8cf684133c4694692da6d4
 sections:
   - id: s1
     title: Nội dung chính
@@ -28,7 +28,9 @@ sections:
 considered:
   - option: Giữ bố cục đã duyệt trên canvas
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why:
+      "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá
+      trị là ChoiceChips hoặc Select."
 audit:
   builder:
     agent: next-ux-career
@@ -43,7 +45,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực."
+          notes:
+            "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch
+            gutter giữa các trang cùng khu vực."
         actionable:
           verdict: pass
           notes: ""

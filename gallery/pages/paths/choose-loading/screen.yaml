@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: c491270aefffa2cc54bc06721b4e9ae28b516356e425a1fa46ab36a3dae54475
+    sha256: aee30a52aed06868d6f70126d4bcb59f3afd07752d09dd1df2d081d9fe2e0e06
   "1440":
     file: 1440.png
-    sha256: 521681e3a36065c5533d452a6b74fe1102e427fd0b4442e92b3b4dcffa6049f8
+    sha256: f892435628dede7517ca52a68cad70c8249a97df8fa3d53da4de8ffc8f17af1e
 sections:
   - id: s1
     title: Khung xương
@@ -28,8 +28,9 @@ sections:
 considered:
   - option: Bản vẽ đã duyệt 2026-11-20 (Duyệt hết)
     chosen: true
-    why: "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong
-      thẻ, chỉ SlotView rẽ nhánh tải"
+    why:
+      "Mã theo canvas đã duyệt; luật Grammar 0.50: một nút chính, nút cao 40, không minh họa trong thẻ, chỉ SlotView rẽ
+      nhánh tải"
 audit:
   builder:
     agent: next-ux-ess
@@ -44,8 +45,7 @@ audit:
           notes: ""
         layout:
           verdict: fixed
-          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương
-            thay chữ giữ chỗ."
+          notes: "Vòng 2: nút chính bọc dòng ở 390, nhãn viết thường, bỏ hình trong thẻ, nút 40px, khung xương thay chữ giữ chỗ."
         actionable:
           verdict: fixed
           notes: "Vòng 2: nút chính một chỗ, bọc dòng thay vì tràn mép."
@@ -54,12 +54,14 @@ audit:
           notes: ""
         words:
           verdict: fixed
-          notes: "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã
-            trong câu hỏi hiện đúng dạng."
+          notes:
+            "Vòng 2: bỏ chữ giữ chỗ và nhãn viết hoa, mã luật thô thay bằng chữ, nút Câu tiếp theo, mã trong câu hỏi hiện
+            đúng dạng."
         states:
           verdict: fixed
-          notes: "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề,
-            dòng giải thích và Thử lại)."
+          notes:
+            "Vòng 2: chụp lại đúng trạng thái thật (học viên mới hoặc luồng trả lời thật; lỗi có tiêu đề, dòng giải thích và
+            Thử lại)."
         truth:
           verdict: pass
           notes: ""
@@ -71,12 +73,12 @@ audit:
           notes: ""
         layout:
           verdict: fixed
-          notes: "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm
-            Xem thêm, một kiểu khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
+          notes:
+            "Vòng 3: nút chính một dòng ở 390 (Học tiếp / Bắt đầu học), mô tả bài rút gọn hai dòng kèm Xem thêm, một kiểu
+            khối mã và một kiểu nút Sao chép, bỏ ô biểu tượng ở màn không khớp."
         actionable:
           verdict: fixed
-          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp
-            Premium."
+          notes: "Vòng 3: nút chính một dòng; lỗi lệnh up có dòng hướng xử lý; màn khóa có nút Nâng cấp Premium."
         live:
           verdict: pass
           notes: ""

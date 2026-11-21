@@ -8,6 +8,7 @@ import {
     EmptyNotice,
     Page,
     Section,
+    Skeleton,
     Stack,
     Switch,
     SurfaceCard,
@@ -19,29 +20,12 @@ import {
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, ExperienceCardView, ExperienceListView, SlotLabels } from "@/modules/types"
 
-/** The fake list with the geometry of a settled one, drawn as a skeleton while the first read runs. */
+/** The list SlotView hands the render while the first read loads; the render draws {@link ExperienceSkeleton} instead, so it holds no words. */
 export const EXPERIENCE_PLACEHOLDER: ExperienceListView = {
-    meta: "xxxxxx",
-    tabs: [{ id: "all", label: "xxxxxx", count: 0 }],
-    sources: [{ id: "all", label: "xxxxxx", count: 0 }],
-    cards: [1, 2].map((index) => ({
-        itemId: `placeholder-${index}`,
-        source: "xxxxxx",
-        state: "xxxxxx",
-        stateTone: "neutral" as const,
-        dateText: "xxxxxx",
-        title: "xxxxxxxxxxxxxxxxxxxxxxxx",
-        subtitle: "xxxxxxxxxxxx",
-        tags: [{ id: "e", label: "xxxxxx" }],
-        returnNote: undefined,
-        note: undefined,
-        edit: undefined,
-        verified: undefined,
-        notice: undefined,
-        isBusy: false,
-        isEditing: false,
-        isReturned: false,
-    })),
+    meta: "",
+    tabs: [],
+    sources: [],
+    cards: [],
     ways: undefined,
     claims: [],
     confirmLine: undefined,
@@ -327,6 +311,31 @@ const Items = (props: ReadyProps) => (
     </Stack>
 )
 
+/** One item card while it loads: the source and state row, the title, the subtitle and the chips, as bars in the card's frame. */
+const CardSkeleton = (props: { readonly label: string }) => (
+    <SurfaceCard ariaLabel={props.label} height="fill">
+        <Stack gap="row">
+            <Skeleton shape="text" lines={1} />
+            <Skeleton shape="text" lines={2} />
+            <Skeleton shape="text" lines={1} />
+        </Stack>
+    </SurfaceCard>
+)
+
+/**
+ * The list while its first read loads: the source filter row and two item cards, only Skeleton bars, so no word, badge, tone or
+ * placeholder text shows and nothing jumps when the list arrives.
+ */
+const ExperienceSkeleton = (props: { readonly label: string }) => (
+    <Stack gap="region">
+        <Skeleton shape="text" lines={1} />
+        <Stack gap="row">
+            <CardSkeleton label={props.label} />
+            <CardSkeleton label={props.label} />
+        </Stack>
+    </Stack>
+)
+
 /**
  * Draws Experience the way the canvas does: the trail Hồ sơ / Kinh nghiệm, the event line, the state tabs with their counts, the source
  * chips, then the item cards. A returned card shows the teacher's note first; an AI-graded card opens the line in both languages and sends
@@ -366,6 +375,7 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => {
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
                 render={(view, isLoading) => {
+                    if (isLoading) return <ExperienceSkeleton label={labels.loading} />
                     const ready = { view, labels, on: props.on, source: props.props.source, isLoading }
                     return view.ways === undefined ? <Items {...ready} /> : <FirstVisit {...ready} />
                 }}

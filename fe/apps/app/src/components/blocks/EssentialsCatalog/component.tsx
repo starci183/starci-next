@@ -1,4 +1,4 @@
-import { Button, EmptyNotice, Page, type PageHeaderContent, Stack } from "@starci/grammar/common"
+import { Button, Cluster, EmptyNotice, Page, type PageHeaderContent, Skeleton, Stack } from "@starci/grammar/common"
 import { CatalogGroup, CatalogToolbar, SlotView } from "@starci-next/ui"
 import type {
     CatalogFilters,
@@ -89,6 +89,31 @@ const CatalogWell = (props: WellProps) => (
     </Stack>
 )
 
+/** One group of the loading page: a bar for its title, then the rows it will hold, each a title bar and a line. */
+const SkeletonGroup = () => (
+    <Stack gap="row">
+        <Skeleton shape="text" lines={1} />
+        {[1, 2, 3].map((row) => (
+            <Stack key={row} gap="row">
+                <Skeleton shape="text" lines={2} />
+            </Stack>
+        ))}
+    </Stack>
+)
+
+/** The catalog while its first read loads: the toolbar (tabs, search, selects) and two groups, all bars, no word. */
+const CatalogSkeleton = () => (
+    <Stack gap="region">
+        <Cluster gap="inline" align="center">
+            <Skeleton shape="text" lines={1} />
+            <Skeleton shape="text" lines={1} />
+            <Skeleton shape="text" lines={1} />
+        </Cluster>
+        <SkeletonGroup />
+        <SkeletonGroup />
+    </Stack>
+)
+
 /** The page band of the catalog: the title, the fact line and the one primary. */
 const headerOf = (labels: CatalogLabels, view: CatalogView): PageHeaderContent => ({
     title: labels.title,
@@ -126,9 +151,13 @@ export const EssentialsCatalogBase = (props: EssentialsCatalogBaseProps) => {
                     {body}
                 </Page>
             )}
-            render={(view, isLoading) => (
-                <CatalogWell view={view} isLoading={isLoading} labels={labels} filters={filters} on={props.on} />
-            )}
+            render={(view, isLoading) =>
+                isLoading ? (
+                    <CatalogSkeleton />
+                ) : (
+                    <CatalogWell view={view} isLoading={isLoading} labels={labels} filters={filters} on={props.on} />
+                )
+            }
         />
     )
 }

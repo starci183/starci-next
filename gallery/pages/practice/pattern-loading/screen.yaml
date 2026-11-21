@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: aa83126ad42b9a387e1ebe575b238a5a38aa6fc9a558fa944286544deac78476
+    sha256: d5ba58ea15736a889cc3b07a3fc4dc26c86032d01a9a38aa27fb6433c2a1d5c0
   "1440":
     file: 1440.png
-    sha256: 51d0b8aaa1f13c6eff4fae03b98d48a469eb8e93cd3e8cdaa7a5360a7758b268
+    sha256: 9c5114c75b7ea909fc5abb43cef677d87356dcda21342a22024980abc51d3425
 sections:
   - id: s1
     title: "Dải tiêu đề: Hai con trỏ"
@@ -64,12 +64,12 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
-            như số thật.
+          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted") như số thật.
         truth:
           verdict: open
-          notes: Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted")
-            như số thật. Phải là skeleton.
+          notes:
+            Khi đang tải, khối bên phải đã hiện "0 bài Accepted / 0" (hoặc "0 trên 0 bài đã Accepted") như số thật. Phải là
+            skeleton.
     - n: 2
       at: 2026-11-20T14:02:44.352Z
       lenses:
@@ -102,9 +102,10 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Khung đang tải không cùng hình khối với trang thật: mỗi hàng có một vòng tròn xám 40px ở chỗ
-            hàng thật chỉ có số thứ tự nhỏ "1."; cột phải chỉ có khối Tiến độ pattern, thiếu khối
-            "Pattern kế tiếp". Lỗi vòng 1 (số 0 giả khi đang tải) đã hết.'
+          notes:
+            'Khung đang tải không cùng hình khối với trang thật: mỗi hàng có một vòng tròn xám 40px ở chỗ hàng thật chỉ có số
+            thứ tự nhỏ "1."; cột phải chỉ có khối Tiến độ pattern, thiếu khối "Pattern kế tiếp". Lỗi vòng 1 (số 0 giả
+            khi đang tải) đã hết.'
         actionable:
           verdict: pass
           notes: ""
@@ -128,10 +129,10 @@ audit:
           notes: ""
         layout:
           verdict: fixed
-          notes: '"Pattern kế tiếp" giờ có khối giữ chỗ khi đang tải. Còn lại cần Grammar: (1) ô leading của
-            hàng giữ chỗ là vòng tròn 40px, trong khi hàng thật chỉ có số nhỏ "1."; (2) "Pattern
-            kế tiếp" vẽ ba hàng giữ chỗ còn thật chỉ có một hàng, vì Section dùng LOADING_ROWS cố
-            định khi chưa có hàng.'
+          notes:
+            '"Pattern kế tiếp" giờ có khối giữ chỗ khi đang tải. Còn lại cần Grammar: (1) ô leading của hàng giữ chỗ là vòng
+            tròn 40px, trong khi hàng thật chỉ có số nhỏ "1."; (2) "Pattern kế tiếp" vẽ ba hàng giữ chỗ còn thật chỉ có
+            một hàng, vì Section dùng LOADING_ROWS cố định khi chưa có hàng.'
         actionable:
           verdict: pass
           notes: ""

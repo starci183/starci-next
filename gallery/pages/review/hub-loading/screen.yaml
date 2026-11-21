@@ -3,15 +3,14 @@ screen: review/hub-loading
 title: Ôn tập, đang tải
 route: /review
 area: review
-summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên
-  không có thẻ khoá. "
+summary: "Route: `/review`. Ôn tập hôm nay: biết hôm nay phải ôn gì và bắt đầu ngay. Miễn phí nên không có thẻ khoá. "
 shots:
   "390":
     file: 390.png
-    sha256: e0ee1d9a07aee2248b963e5b5ed19075dfbb939774044d14ac6f2c0b297236ae
+    sha256: 1d05da2d57cda000237a16d2196d36fd6aa54192614314d72ad4dd2c3d404833
   "1440":
     file: 1440.png
-    sha256: 813c0acd6ea7521298beab6cfa6d8649cd4dd7230077ea343e131e73fb3f08f0
+    sha256: 70e9a2d505494a5051b16b101cf1c9108af2780efe1c61b7eb7003da2a96aea7
 code:
   - features/pages/ReviewTodayPage
   - components/blocks/ReviewToday
@@ -35,11 +34,10 @@ considered:
     why: Chủ dự án đã duyệt cả bảng; mã đi đúng bản vẽ
   - option: Mở chu kỳ audit mới sau khi sửa các lens còn mở ở vòng 4
     chosen: true
-    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối
-      2026-11-20T13:51:52.101Z); lens cuối: order pass, layout pass, actionable pass, live pass,
-      words pass, states pass, truth pass. Sau vòng 4 đã sửa: chụp lại sau khi sửa code của lane
-      migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4. Các vòng cũ nằm
-      trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
+    why: "Chu kỳ audit cũ: 4 vòng (builder next-ux-review, auditor next-ux-auditor, vòng cuối 2026-11-20T13:51:52.101Z);
+      lens cuối: order pass, layout pass, actionable pass, live pass, words pass, states pass, truth pass. Sau vòng 4 đã
+      sửa: chụp lại sau khi sửa code của lane migration (xem commit của lane next-one-edition); ảnh mới khác ảnh vòng 4.
+      Các vòng cũ nằm trong lịch sử git của file này. Mở chu kỳ mới theo đường harness đã duyệt (audit: null, audit
       run)."
 audit:
   builder:
@@ -55,7 +53,9 @@ audit:
           notes: "Khung xám theo đúng thứ tự màn đầy đủ."
         layout:
           verdict: pass
-          notes: 'Khung xám cùng hình dạng (ba con số, ba hàng, biểu đồ, mục tiêu, bộ thẻ); "Đổi" 40px bị tắt khi đang tải; 390 không tràn.'
+          notes:
+            'Khung xám cùng hình dạng (ba con số, ba hàng, biểu đồ, mục tiêu, bộ thẻ); "Đổi" 40px bị tắt khi đang tải; 390
+            không tràn.'
         actionable:
           verdict: pass
           notes: 'Khi đang tải không có giá trị để đổi; "Đổi" tắt đúng.'

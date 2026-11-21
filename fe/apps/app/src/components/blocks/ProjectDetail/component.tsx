@@ -17,33 +17,37 @@ import type {
     ProjectDetailView,
     SlotLabels,
 } from "@/modules/types"
+import { SkeletonBlock } from "@/components/loading/SkeletonBlock"
+
+/** Blank text of the width the skeleton needs: non-breaking spaces carry no readable word into the page or the accessibility tree. */
+const blank = (width: number): string => " ".repeat(width)
 
 /** The fake project with the geometry of a settled one, drawn as a skeleton while the first read runs. */
 export const PROJECT_DETAIL_PLACEHOLDER: ProjectDetailView = {
-    title: "xxxxxxxxxx",
-    meta: "xxxxxxxx · xxxxxxxx",
-    state: { label: "xxxxxx", tone: "muted" },
+    title: blank(10),
+    meta: `${blank(8)} · ${blank(8)}`,
+    state: { label: blank(6), tone: "muted" },
     repo: "",
     repoLabel: "",
     milestones: [1, 2, 3].map((index) => ({
         id: `placeholder-${index}`,
-        title: "xxxxxxxxxx",
-        meta: "xxxxxxxx",
+        title: blank(10),
+        meta: blank(8),
         percent: 0,
-        chip: { label: "xxxxxx", tone: "muted" as const },
+        chip: { label: blank(6), tone: "muted" as const },
         href: "",
     })),
     runs: [1, 2].map((index) => ({
         id: `placeholder-${index}`,
-        kind: "xxxxxxxx",
-        detail: "xxxxxxxxxxxx",
-        verdict: { label: "xxxxxx", tone: "muted" as const },
+        kind: blank(8),
+        detail: blank(12),
+        verdict: { label: blank(6), tone: "muted" as const },
         at: "",
     })),
-    experience: [1, 2, 3].map((index) => ({ id: `placeholder-${index}`, title: "xxxxxxxxxx", count: 0 })),
+    experience: [1, 2, 3].map((index) => ({ id: `placeholder-${index}`, title: blank(10), count: 0 })),
     probes: [],
-    ci: { label: "xxxxxx", tone: "muted" },
-    ciLine: "xxxxxxxxxxxx",
+    ci: { label: blank(6), tone: "muted" },
+    ciLine: blank(12),
     deployedUrl: "",
 }
 
@@ -156,26 +160,45 @@ export const ProjectDetailBase = (props: ProjectDetailBaseProps) => {
                     {body}
                 </Page>
             )}
-            render={(settled, loading) => (
-                <Grid
-                    kind="main-rail"
-                    primary={
-                        <Stack gap="region">
-                            <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
-                        </Stack>
-                    }
-                    rail={
-                        <ProjectAside
-                            view={settled}
-                            labels={labels}
-                            isLoading={loading}
-                            fields={props.props.fields}
-                            busy={props.props.busy}
-                            on={props.on}
-                        />
-                    }
-                />
-            )}
+            render={(settled, loading) =>
+                loading ? (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                <SkeletonBlock lines={4} />
+                                <SkeletonBlock lines={6} />
+                                <SkeletonBlock lines={4} />
+                            </Stack>
+                        }
+                        rail={
+                            <Stack gap="region">
+                                <SkeletonBlock lines={4} />
+                                <SkeletonBlock lines={3} />
+                            </Stack>
+                        }
+                    />
+                ) : (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                <WellCards view={settled} isLoading={loading} props={props.props} on={props.on} />
+                            </Stack>
+                        }
+                        rail={
+                            <ProjectAside
+                                view={settled}
+                                labels={labels}
+                                isLoading={loading}
+                                fields={props.props.fields}
+                                busy={props.props.busy}
+                                on={props.on}
+                            />
+                        }
+                    />
+                )
+            }
         />
     )
 }

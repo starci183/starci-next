@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 8fdbe26f89041e25f0b37b4207fc1b835b11022c723f1bc6e1ee874e0a17b4a7
+    sha256: 895aa89b031dd9bec23f8528f37a5b159af61c1c9721c78433ee8c8ee71c58f7
   "1440":
     file: 1440.png
-    sha256: 04241d023e300a6a7b4c12bccb8429c4f38c122fd5fd3cdb7648c6114d1a0e14
+    sha256: 32da9b44d2b65c325bcb2f79705aac8df8d1f927baf15f0fa423434d01414c57
 sections:
   - id: dai-dau-trang
     title: Dải đầu trang

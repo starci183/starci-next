@@ -173,7 +173,7 @@ export interface ReviewQueueViews {
     readonly queue: (read: ReviewQueueView, selected: string | undefined) => ReviewQueueScreenView
     /** The heading of one item's page. */
     readonly itemHeader: (item: QueueItem) => ReviewItemHeaderView
-    /** The summary line under the queue heading: how many wait and how many are overdue. */
+    /** The summary line under the queue heading: how many wait and how many are overdue, or that none waits. */
     readonly pageMeta: (read: ReviewQueueView) => string
     /** The reviewer appointments of the Reviewers view. */
     readonly reviewers: (rows: ExperienceReviewersView, tabs: ReviewQueueScreenView["tabs"]) => ReviewQueueScreenView
@@ -188,7 +188,10 @@ export const useReviewQueueViews = (isTeacher: boolean): ReviewQueueViews => {
         preview: (item, history) => previewOf(item, history, context),
         queue: (read, selected) => queueViewOf(read, selected, context),
         itemHeader: (item) => itemHeaderOf(item, context),
-        pageMeta: (read) => t("pageMeta", { pending: read.counts.pending, overdue: read.counts.overdue }),
+        pageMeta: (read) =>
+            read.counts.pending === 0 && read.counts.overdue === 0
+                ? t("queueEmptyMeta")
+                : t("pageMeta", { pending: read.counts.pending, overdue: read.counts.overdue }),
         reviewers: (rows, tabs) => reviewersViewOf(rows, context, tabs),
     }
 }

@@ -13,6 +13,7 @@ import {
     type PageHeaderContent,
 } from "@starci/grammar/common"
 import { SlotView } from "@starci-next/ui"
+import { SkeletonBlock, SkeletonRows } from "../LoadingShapes"
 import type { PracticePatternScreen, PracticeProblemItem } from "@/hooks/practice"
 
 /** Props for {@link PracticePatternBase}: the resolved screen of one pattern. */
@@ -106,6 +107,25 @@ const Rail = (props: { readonly screen: PracticePatternBaseProps["props"]; reado
     )
 }
 
+/** The pattern while its first read loads: the intro block, the problem rows and the rail as bars, no word and no tone. */
+const PatternSkeleton = () => (
+    <Grid
+        kind="main-rail"
+        primary={
+            <Stack gap="region">
+                <SkeletonBlock lines={3} />
+                <SkeletonRows rows={6} isMarked />
+            </Stack>
+        }
+        rail={
+            <Stack gap="region">
+                <SkeletonBlock lines={2} />
+                <SkeletonBlock lines={2} />
+            </Stack>
+        }
+    />
+)
+
 /**
  * Draws one pattern: the header with the number of problems accepted and the one primary command, the short "when to use it"
  * paragraph, the problems as a flat list with where the learner stands in each, and the pattern progress beside them.
@@ -150,22 +170,26 @@ export const PracticePatternBase = (props: PracticePatternBaseProps) => {
             labels={props.props.slotLabels}
             errorDescription={props.props.errorDescription}
             onRetry={props.on.retry}
-            render={(rows, isLoading) => (
-                <Grid
-                    kind="main-rail"
-                    primary={
-                        <Stack gap="region">
-                            {intro === "" ? null : (
-                                <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
-                                    <Text as="p">{intro}</Text>
-                                </Section>
-                            )}
-                            <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
-                        </Stack>
-                    }
-                    rail={<Rail screen={props.props} isLoading={isLoading} />}
-                />
-            )}
+            render={(rows, isLoading) =>
+                isLoading ? (
+                    <PatternSkeleton />
+                ) : (
+                    <Grid
+                        kind="main-rail"
+                        primary={
+                            <Stack gap="region">
+                                {intro === "" ? null : (
+                                    <Section title={labels.introTitle} headingLevel={2} isLoading={isLoading}>
+                                        <Text as="p">{intro}</Text>
+                                    </Section>
+                                )}
+                                <ProblemList rows={rows} labels={labels} isLoading={isLoading} />
+                            </Stack>
+                        }
+                        rail={<Rail screen={props.props} isLoading={isLoading} />}
+                    />
+                )
+            }
             frame={({ header, body, isLoading }) => (
                 <Page isLoading={isLoading} header={header}>
                     {body}

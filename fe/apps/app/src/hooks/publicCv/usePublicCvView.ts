@@ -187,7 +187,13 @@ export const usePublicCvView = (input: PublicCvViewInput) => {
         }
     })
     return {
-        shape: isNotFound ? ("notFound" as const) : ("read" as const),
+        shape: isNotFound
+            ? ("notFound" as const)
+            : "isLoading" in slot
+              ? ("loading" as const)
+              : "isError" in slot
+                ? ("failed" as const)
+                : ("read" as const),
         slot,
         slotLabels,
         labels,

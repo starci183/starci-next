@@ -3,15 +3,15 @@ screen: review/session-loading
 title: Phiên ôn, đang tải
 route: /review/session
 area: review
-summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có
-  "Hiện đáp án" (phím Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
+summary: 'Route: `/review/session`. Phiên ôn: nhớ lại trước, xem đáp án sau, tự chấm. Bước 1 chỉ có "Hiện đáp án" (phím
+  Space); bước 2 có bốn nút Lại, Khó, Tốt, Dễ với khoảng hẹn ngay dưới. '
 shots:
   "390":
     file: 390.png
-    sha256: bc1fba1b3ac12bbe3cbc8530b275fb0d6c2699f6467fecd9de29add1ca545ac3
+    sha256: 80e6f9d1b65fc44649012be2cb629f1d25417cff11129a13b937681c44b6afd6
   "1440":
     file: 1440.png
-    sha256: 2d63f29fd2116e985f7f41e511099db1865bd58bcb069dfffae582c589c86754
+    sha256: c7f97626763c9c35ee3b80a56d29bced7cd20216acd45f072c2b7f902f11b41a
 code:
   - features/pages/ReviewSessionPage
   - components/blocks/ReviewSession
@@ -47,9 +47,9 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton. Nút "Hiện đáp án" và "Về Ôn tập" vẫn thật;
-            icon nhỏ ~24px lạ.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton. Nút "Hiện đáp án" và "Về Ôn tập" vẫn thật; icon nhỏ ~24px lạ.
         actionable:
           verdict: open
           notes: '"Hiện đáp án" bấm được trong lúc đang tải (nút nên khoá).'
@@ -58,8 +58,9 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả
-            1440 và 390; chữ tiêu đề thật lẫn skeleton.
+          notes:
+            Skeleton vẽ chữ thật "xxxx" màu đen (nhãn, số, tiêu đề hàng) thay vì thanh skeleton, ở cả 1440 và 390; chữ tiêu
+            đề thật lẫn skeleton.
         states:
           verdict: open
           notes: Loading vẽ sai (chữ "xxxx" thật), nhãn "Điều bạn nhớ" hiện thật.
@@ -77,8 +78,9 @@ audit:
           notes: ""
         actionable:
           verdict: open
-          notes: 'Nút "Hiện đáp án" vẫn bật được và nhãn "Điều bạn nhớ" hiện thật trong lúc đang tải (nút nên
-            khoá). Đã sửa: hết chữ "xxxx".'
+          notes:
+            'Nút "Hiện đáp án" vẫn bật được và nhãn "Điều bạn nhớ" hiện thật trong lúc đang tải (nút nên khoá). Đã sửa: hết
+            chữ "xxxx".'
         live:
           verdict: pass
           notes: ""

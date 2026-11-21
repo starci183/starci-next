@@ -24,10 +24,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 7eb0df4b9f19f9226f3bcefd150459850bde56b455f4142a1f35775687955878
+    sha256: 2d198d1a03ce369bae36765215e08c0e3502663d373f064e9a14d61a66534d61
   "1440":
     file: 1440.png
-    sha256: 8b9c6b4307cf5b78b5ae0c130e8ceecd0b221eea00f3ccdcdc92871ff81a1749
+    sha256: 408d123d7d85a6e2e402cf018f99eb97f899435f896c9d867112d55079adf1ef
 sections:
   - id: khung-ung-dung
     title: Khung ứng dụng
