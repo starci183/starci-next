@@ -367,11 +367,19 @@ const SCREENS = [
     S("auth", "reset", "/sign-in/reset?token=gallery-capture-0000", { guest: true }),
     ...AUTH_STATES,
     S("landing", "home", "/", { guest: true, origin: LANDING }),
+    S("landing", "not-found", "/zz-no-such-page", { guest: true, origin: LANDING }),
+    // The error page needs a route that throws: a temporary page /zz-throw of the landing (not in the code) while shooting.
+    S("landing", "error", "/zz-throw", { guest: true, origin: LANDING }),
     S("learn", "home", "/"),
     S("learn", "home-account-menu", "/", { clickSel: 'button[aria-label*="@"]' }),
     S("learn", "not-found", "/zz-no-such-page"),
     // The error page needs a route that throws: a temporary page /zz-throw (not in the code) while shooting.
     S("learn", "error", "/zz-throw"),
+    // Inside the app chrome (the (app) group). No product route calls notFound() or throws, so each shot needs a TEMPORARY page of the (app) group while shooting, never committed:
+    // /zz-missing (calls notFound()), /zz-boom (throws), /zz-slow (awaits 60 s so loading.tsx stays on screen).
+    S("learn", "not-found-in-app", "/zz-missing"),
+    S("learn", "error-in-app", "/zz-boom"),
+    S("learn", "loading", "/zz-slow", { hold: true }),
     S("paths", "choose", "/paths/choose"),
     S("paths", "choose-loading", "/paths/choose", { hold: true, hit: "paths" }),
     S("paths", "choose-error", "/paths/choose", { refuse: true, hit: "paths" }),

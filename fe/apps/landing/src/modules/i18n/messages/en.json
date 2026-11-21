@@ -1,14 +1,35 @@
 {
   "landing": {
-    "title": "starci-next",
-    "description": "The introduction to starci-next.",
+    "title": "StarCi Next",
+    "description": "Learn how systems really work with scenarios that run on your machine.",
     "shell": {
-      "brand": "starci-next"
+      "brand": "StarCi Next",
+      "languageLabel": "Language",
+      "localeShortVi": "VI",
+      "localeNameVi": "Tiếng Việt",
+      "localeShortEn": "EN",
+      "localeNameEn": "English",
+      "signIn": "Sign in"
     },
     "home": {
-      "title": "Welcome to starci-next",
-      "lede": "Everything you need is in the application.",
-      "openApp": "Open the application"
+      "title": "Learn the fundamentals, vibe‑code without losing control.",
+      "lede": "AI can write code. StarCi Next teaches what AI will not do for you: why systems break, and how to spot when AI code is wrong.",
+      "openApp": "Open the application",
+      "areasTitle": "Three areas",
+      "areas": {
+        "essentials": {
+          "title": "Essentials",
+          "description": "Knowledge built around real problems, with scenarios that run on your own machine."
+        },
+        "projects": {
+          "title": "Projects",
+          "description": "Projects on your own repo, checked by CI and by reading the code."
+        },
+        "harness": {
+          "title": "Harness",
+          "description": "Use Claude Code and Codex properly. Free."
+        }
+      }
     },
     "loading": {
       "message": "Loading"

@@ -1,6 +1,6 @@
 # Staging environment key roster
 
-Names and consumers only; every value is fresh for this environment, sealed under `.starcistacks/staging/secrets/` to the owner key and the server key
+Names and consumers only; every value is fresh for this environment, sealed under `.starcistacks/staging/secrets/` to the server key of sv-hk-1 and the break-glass backup key
 of sv-hk-1 (`.sops.yaml`, rule `staging`), and reaches a container as a versioned Swarm secret mounted at `/run/secrets/<KEY>` (the core and the cli read `<KEY>_FILE`).
 
 | Member | Key | Consumer |
@@ -9,9 +9,11 @@ of sv-hk-1 (`.sops.yaml`, rule `staging`), and reaches a container as a versione
 | `db` | `DB_APP_PASSWORD` | db: the password of the role `app_be` the migrations create; core and cli connect as it |
 | `db` | `DB_OWNER_PASSWORD` | postgres: the first start gives the role `starci_next` (owner of the database `starci_next`) this password |
 | `db` | `PRIMARY_DB_URL` | core and cli: the role `app_be` on `next-staging-postgres:5432/starci_next` |
+| `db` | `KEYCLOAK_DB_PASSWORD` | the previous release (Keycloak edition): kept only so a rollback can start it, until 2026-12-05; then `starci app secret unset` (FOLLOWUPS) |
 | `auth` | `AUTH_JWT_PRIVATE_KEY` | core: the Ed25519 PEM (passport kit) the access tokens are signed with; the JWKS publishes its public half |
 | `relay` | `RELAY_MANIFEST_SIGNING_KEY` | core: the Ed25519 key (PKCS8 PEM) that signs learner task manifests |
 | `storage` | `STORAGE_ACCESS_KEY_ID`, `STORAGE_SECRET_ACCESS_KEY` | core (S3 client) and storage (MinIO root, `MINIO_ROOT_*_FILE`) |
+| `mail` | `MAIL_PASSWORD` | core: the Gmail app password of cto.nivo@gmail.com for smtp.gmail.com (`MAIL_PASSWORD_FILE`) |
 | `vps` | `VPS_HOST`, `VPS_USER`, `privateKey`, `knownHosts` | the operator's deploy transport (`deploy.remote.sealed`); never granted |
 
 Plain (unsealed) core env that sits beside these members: `AUTH_COOKIE_NAME` (the refresh cookie name, `starci_next_refresh`, so the other app on the shared starci.org hosts cannot overwrite it) and `AUTH_COOKIE_DOMAIN`, declared in application-stacks.yaml.
