@@ -117,14 +117,15 @@
         "password": "Password",
         "newPassword": "New password",
         "confirm": "Confirm password",
-        "passwordHint": "{min} to {max} characters.",
         "emailPlaceholder": "you@email.com",
         "passwordPlaceholder": "Enter your password",
         "confirmPlaceholder": "Confirm your password",
         "reveal": "Show password",
         "hide": "Hide password",
         "terms": "I agree to the Terms of Use and the Privacy Policy",
-        "termsRequired": "Accept the terms to sign up"
+        "termsRequired": "Accept the terms to sign up",
+        "passwordLength": "{min}–{max} characters",
+        "passwordReading": "{count}/{max}"
       },
       "social": {
         "google": "Continue with Google",
@@ -155,14 +156,27 @@
         "subtitleConfirm": "We sent a link to <b>{email}</b>. Open it to confirm your email and finish.",
         "subtitleReset": "If <b>{email}</b> has an account, we sent a link to set a new password.",
         "resend": "Send the email again",
-        "anotherEmail": "Use another email"
+        "anotherEmail": "Use another email",
+        "resendIn": "Resend email · {time}",
+        "steps": {
+          "label": "Confirmation steps",
+          "sent": "Sent",
+          "open": "Open mail",
+          "confirm": "Confirm"
+        }
       },
       "reset": {
         "title": "Set a new password",
         "subtitle": "Choose a new password for your account.",
         "submit": "Set password",
-        "invalid": "This link is no longer valid. Ask for a new one.",
-        "again": "Back to sign in"
+        "again": "Sign in to get a new link",
+        "expired": {
+          "title": "This link no longer works",
+          "text": "The link was used, has expired or is incomplete.",
+          "once": "works once",
+          "expires": "expires",
+          "again": "ask again any time"
+        }
       },
       "confirm": {
         "signIn": "Sign in",
@@ -176,27 +190,28 @@
         },
         "invalid": {
           "title": "This link is no longer valid",
-          "text": "The link was used, expired or incomplete. Sign in to get a new one."
+          "text": "The link was used, has expired or is incomplete."
         },
         "unavailable": {
           "title": "Not available",
           "text": "We could not confirm your email right now."
+        },
+        "facts": {
+          "once": "works once",
+          "expires": "expires",
+          "again": "ask again any time"
         }
       },
       "entry": {
         "headline": "Learn the essentials, so you can vibe-code without losing control.",
-        "lead": "AI can write the code. StarCi Next teaches what AI does not do for you: why systems break, and how to spot when AI-written code is wrong.",
         "essentials": {
-          "name": "Essentials",
-          "text": "Knowledge built around real problems, with scenarios you run on your own machine."
+          "name": "Essentials"
         },
         "projects": {
-          "name": "Projects",
-          "text": "Projects on your own repo, checked by CI and a code read."
+          "name": "Projects"
         },
         "harness": {
-          "name": "Harness",
-          "text": "Use Claude Code and Codex properly. Free."
+          "name": "Harness"
         },
         "areas": "Three areas to learn"
       }

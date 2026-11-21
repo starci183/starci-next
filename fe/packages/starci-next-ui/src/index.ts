@@ -228,3 +228,7 @@ export type {
     ReadingTocRow,
     ReadingView,
 } from "./composites/LessonFiveParts"
+export { AuthHero } from "./composites/AuthHero"
+export { AuthSentSteps } from "./composites/AuthSentSteps"
+export { AuthLinkNotice } from "./composites/AuthLinkNotice"
+export { AuthPasswordLength } from "./composites/AuthPasswordLength"
