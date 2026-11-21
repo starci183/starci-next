@@ -5,6 +5,7 @@ import { projectRowsOf, projectsFiguresOf } from "@/hooks/projects"
 import { loadingSlot, mapSlot, slotOfSwr, useSlotLabels } from "@/hooks/slot"
 import { type ProjectsRead, useQueryProjectCatalogSwr, useQueryProjectsSwr } from "@/hooks/swr"
 import { useDocumentTitle } from "@/hooks/title"
+import { staticsBase } from "@/modules/config"
 import { APP_ROUTES } from "@/modules/routes"
 import type { DataSlot } from "@/modules/types"
 import { PROJECTS_LIST_PLACEHOLDER, ProjectsListBase, type ProjectsListView } from "./component"
@@ -66,7 +67,10 @@ export const ProjectsList = () => {
                     emptyTitle: t("list.emptyTitle"),
                     emptyText: t("list.emptyText"),
                     note: t("list.note"),
+                    addTitle: t("list.addTitle"),
+                    addText: t("list.addText"),
                 },
+                staticsBaseUrl: staticsBase(),
             }}
             on={{ retry: () => void read.mutate() }}
         />

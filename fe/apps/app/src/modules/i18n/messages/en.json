@@ -1503,7 +1503,9 @@
           "none": "CI not linked",
           "passed": "Green",
           "failed": "Red"
-        }
+        },
+        "addTitle": "Bring the next repo",
+        "addText": "One command adds the starci/ folder"
       },
       "new": {
         "title": "Create a project",
@@ -1548,7 +1550,15 @@
           "$ starci-next run",
           "  request-response-lifecycle  2 tests  practising",
           "  health-probe-semantics      0 tests  no evidence yet"
-        ]
+        ],
+        "stepsLabel": "Three steps to create a project",
+        "steps": [
+          "Name it, pick a kind",
+          "Link the repo",
+          "Run one command"
+        ],
+        "kindAppText": "HTTP, runs in Docker, has probes",
+        "kindAgentText": "Calls tools, judged by e2e"
       },
       "detail": {
         "back": "All projects",
@@ -1617,7 +1627,34 @@
         "secretAside": "CI secret",
         "layoutAside": "The starci/ folder",
         "milestonesEmpty": "This project has no milestones.",
-        "expEmpty": "No experience yet."
+        "expEmpty": "No experience yet.",
+        "repoLinked": "Linked",
+        "connectTitle": "Connect the repo",
+        "connectNote": "Your CI sends proof with the GitHub Actions OIDC token.",
+        "connectFlow": {
+          "push": {
+            "title": "git push",
+            "note": "Your code"
+          },
+          "actions": {
+            "title": "GitHub Actions",
+            "note": "starci.yml runs the tests"
+          },
+          "starci": {
+            "title": "StarCi",
+            "note": "Checks repo, commit and run id by OIDC and HMAC"
+          },
+          "proved": {
+            "title": "Proved",
+            "note": "A CV line"
+          }
+        },
+        "connectSteps": {
+          "repo": "Repo",
+          "audience": "OIDC audience",
+          "secret": "Signing secret",
+          "run": "First run"
+        }
       },
       "milestone": {
         "back": "Back to the project",

@@ -83,6 +83,8 @@ export type ProjectListRow = {
     readonly isAgent: boolean
     readonly milestone: string
     readonly percent: number
+    readonly proved: number
+    readonly count: number
     readonly progress: string
     readonly ci: string
     readonly ciTone: "success" | "warning" | "muted"
@@ -127,6 +129,8 @@ export const projectRowsOf = (
             milestone: milestoneId === null ? words.noMilestone : (titles[milestoneId] ?? words.noMilestone),
             percent:
                 project.conceptCount === 0 ? 0 : Math.round((project.provedConceptCount / project.conceptCount) * 100),
+            proved: project.provedConceptCount,
+            count: project.conceptCount,
             progress: words.progress(project.provedConceptCount, project.conceptCount),
             ci: words.ci[project.latestCiStatus] ?? words.ci.none ?? "",
             ciTone:

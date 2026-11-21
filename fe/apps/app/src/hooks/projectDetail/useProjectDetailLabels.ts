@@ -57,5 +57,13 @@ export const useProjectDetailLabels = (): ProjectDetailLabels => {
         layoutTests: t("detail.layoutTests"),
         layoutTestsText: t("detail.layoutTestsText"),
         layoutFlow: t("detail.layoutFlow"),
+        repoLinked: t("detail.repoLinked"),
+        connectTitle: t("detail.connectTitle"),
+        connectNote: t("detail.connectNote"),
+        connectFlow: ["push", "actions", "starci", "proved"].map((key) => ({
+            title: t(`detail.connectFlow.${key}.title`),
+            note: t(`detail.connectFlow.${key}.note`),
+        })),
+        connectSteps: ["repo", "audience", "secret", "run"].map((key) => t(`detail.connectSteps.${key}`)),
     }
 }
