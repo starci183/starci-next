@@ -1429,18 +1429,11 @@
           },
           "bugs": {
             "pullTitle": "Lấy source và chạy trên máy bạn",
-            "pullNote": "Bản source này có 5 lỗi cài sẵn, mỗi lỗi ứng với một bản chất ở phần mở đầu. Sửa code tới khi pass hết test.",
             "runsEmpty": "Bài chưa có test nào.",
             "passTitle": "Vì sao giờ đúng",
-            "failTitle": "Vì sao chưa pass",
-            "hintsTitle": "Gợi ý đã mở",
-            "lockedFinal": "Test tổng mở khi các test khác đã pass.",
             "machineNone": "Chưa có máy nào kết nối",
             "machineNoneNote": "Ghép máy của bạn ở trang Kết nối để kết quả từng test về đây.",
             "machineOnline": "Máy {name} đang kết nối",
-            "asideBugs": "5 hạt sạn",
-            "asideHintsTitle": "Gợi ý mở dần",
-            "asideHints": "Hướng (mục cần đọc lại), rồi file, rồi dòng. Mở gợi ý không trừ điểm; trang ghi lại bạn đã dùng mấy nấc.",
             "asideUnlockTitle": "Mở khóa",
             "asideUnlock": "Pass hết test, kể cả test tổng, để mở Challenges.",
             "asideUnlocked": "Bạn đã pass hết test. Challenges đã mở.",
@@ -1459,7 +1452,10 @@
             "expected": "mong đợi",
             "received": "thực tế",
             "runTitle": "Lần chạy {time} · {passed}/{total} pass",
-            "noRun": "Chưa có lần chạy nào · {total} test"
+            "noRun": "Chưa có lần chạy nào · {total} test",
+            "tilesTitle": "5 hạt sạn",
+            "compareTitle": "Mong đợi và thực tế",
+            "ring": "{passed}/{total} test đã pass"
           },
           "pattern": {
             "stacks": "Stack",
@@ -1472,8 +1468,6 @@
             "github": "Mở trên GitHub",
             "sourceTitle": "Nguồn",
             "sourceNote": "Code trích từ {repo}, chỉ giữ phần liên quan, không chạy độc lập.",
-            "addTitle": "Thêm stack",
-            "addNote": "Mỗi stack là một mục trong patterns.yaml của bài: repo, thư mục, file chính kèm chú thích, trạng thái.",
             "where": "Đặt code ở đâu",
             "howFar": "Áp tới mức nào",
             "whenDown": "Server sập thì sao"
@@ -1481,6 +1475,18 @@
           "written": {
             "prompt": "Giải thích ngắn (3 đến 5 câu) như đang trả lời phỏng vấn: vì sao lựa chọn của bạn giữ được lời hứa của hệ thống?",
             "wait": "Chọn đáp án câu này trước, rồi viết phần giải thích để AI chấm."
+          }
+        },
+        "lock": {
+          "premiumTitle": "Phần 2 đến 5 thuộc Premium",
+          "guestTitle": "Đăng nhập để học tiếp",
+          "guestNote": "Mở đầu của mọi bài là miễn phí. Đăng nhập để lưu điểm và tiến độ.",
+          "signIn": "Đăng nhập",
+          "notes": {
+            "source": "Source chạy trên máy bạn, các luồng kiểm thử",
+            "scenarios": "Lỗi cài sẵn, test đỏ có gợi ý",
+            "apply": "4 bậc, kịch bản ẩn, dòng CV đã xác minh",
+            "pattern": "Pattern trong dự án thật"
           }
         }
       }

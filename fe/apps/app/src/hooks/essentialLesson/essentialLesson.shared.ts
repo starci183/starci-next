@@ -153,8 +153,6 @@ export type BugWords = {
     readonly final: string
     readonly hint: (n: number) => string
     readonly openHint: (n: number) => string
-    readonly expected: string
-    readonly received: string
     readonly runTitle: (time: string, passed: number, total: number) => string
     readonly noRun: (total: number) => string
 }
@@ -198,13 +196,9 @@ export const bugHuntOf = (
             caption,
             state,
             stateLabel: words.state[state],
-            compare:
-                state === "failed" && test.expected !== ""
-                    ? [
-                          `${words.expected}  ${test.expected}`,
-                          ...(received === "" ? [] : [`${words.received}  ${test.received} ${received}`.trim()]),
-                      ]
-                    : [],
+            expected: state === "failed" ? test.expected : "",
+            received: state === "failed" ? received : "",
+            measure: test.received,
             pass: result?.pass ?? "",
             fail: result?.fail ?? "",
             hints: (result?.hints ?? []).map((text, index) => ({
