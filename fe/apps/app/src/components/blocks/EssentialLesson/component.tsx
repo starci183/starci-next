@@ -27,6 +27,8 @@ import {
     LessonOpenerHead,
     LessonQuestion,
     LessonResult,
+    LessonStoryCard,
+    LessonStoryQuestion,
     LockIcon,
     SlotView,
 } from "@starci-next/ui"
@@ -77,29 +79,8 @@ const actionOf = ({ lesson, screen }: PartContext) => {
     const { essence } = lesson
     const { shell } = screen.props
     const on = screen.on
-    const last = essence.questions.length - 1
-    if (essence.stage === "questions") {
-        const current = essence.questions[essence.index]
-        const isGraded = current?.status === "graded"
-        if (!isGraded)
-            return (
-                <Button intent="commit" width="wrap" isDisabled>
-                    {shell.nextQuestion}
-                </Button>
-            )
-        if (essence.index < last) {
-            return (
-                <Button intent="commit" width="wrap" onPress={() => on.moveOpener(essence.index + 1)}>
-                    {shell.nextQuestion}
-                </Button>
-            )
-        }
-        return (
-            <Button intent="commit" width="wrap" onPress={() => on.showStage("result")}>
-                {shell.seeResult}
-            </Button>
-        )
-    }
+    // While the questions are on screen the panel of a right pick carries the one command on (the next development of the story).
+    if (essence.stage === "questions") return undefined
     if (essence.stage === "result") {
         if (lesson.isFree && essence.retakeLine !== "") {
             return (
@@ -143,11 +124,19 @@ const mainOf = (context: PartContext) => {
     }
     const question = essence.questions[essence.index]
     if (essence.stage === "article" || question === undefined) return <ArticleBlock {...context} />
+    const isLast = essence.index >= essence.questions.length - 1
     return (
         <Stack gap="region">
             <Stack gap="section">
+                <LessonStoryCard view={essence} labels={labels} />
                 <LessonOpenerHead view={essence} labels={labels} isLoading={isLoading} />
-                <LessonQuestion question={question} labels={labels} isLoading={isLoading} onAnswer={screen.on.answer} />
+                <LessonStoryQuestion
+                    question={question}
+                    labels={labels}
+                    isLast={isLast}
+                    onAnswer={screen.on.answer}
+                    onNext={() => (isLast ? screen.on.showStage("result") : screen.on.moveOpener(essence.index + 1))}
+                />
             </Stack>
             <ArticleBlock {...context} />
         </Stack>

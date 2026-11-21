@@ -17,7 +17,32 @@ export type EssenceQuestionView = {
     readonly explanation: string
     /** Where to read or see more after a wrong answer. */
     readonly links: ReadonlyArray<QuestionLink>
+    /** The wrong picks of the question, locked, each with why it is wrong (the story opener lets the learner pick again). */
+    readonly misses: ReadonlyArray<EssenceMiss>
+    /** True once the learner picked the right option. */
+    readonly isSolved: boolean
+    /** The three-part explanation the right pick released; undefined before, or for a question without one (`explanation` stands in). */
+    readonly insight: EssenceInsight | undefined
 }
+
+/** One wrong pick of a question: the option, locked, and why it is wrong. */
+export type EssenceMiss = { readonly optionId: string; readonly explanation: string }
+
+/** The three-part explanation of a right pick. */
+export type EssenceInsight = { readonly essence: string; readonly why: string; readonly interview: string }
+
+/** One development of the opener story on its timeline. */
+export type EssenceStoryEvent = {
+    readonly id: string
+    /** When it happens (`21:03`). */
+    readonly at: string
+    readonly text: string
+    /** True for the development of the question on screen. */
+    readonly isCurrent: boolean
+}
+
+/** The situation the opener tells. */
+export type EssenceStory = { readonly title: string; readonly body: string }
 
 /** One segment of the five-answer bar: how that question stands (right is complete, wrong is error). */
 export type EssenceBarPart = {
@@ -55,6 +80,12 @@ export type EssenceStage = "questions" | "result" | "article"
 /** The essence part as drawn, every word resolved. */
 export type EssenceView = {
     readonly stage: EssenceStage
+    /** The situation the opener tells; undefined for a lesson written before the story. */
+    readonly story: EssenceStory | undefined
+    /** The developments so far: one per question up to the one on screen, which is current. */
+    readonly timeline: ReadonlyArray<EssenceStoryEvent>
+    /** True once every question is picked right: the opener is passed. */
+    readonly isPassed: boolean
     readonly questions: ReadonlyArray<EssenceQuestionView>
     /** The question on screen. */
     readonly index: number
@@ -89,9 +120,28 @@ export type EssenceLabels = {
         readonly retry: string
         readonly grading: string
         readonly readMore: string
+        /** The name of the story timeline. */
+        readonly timeline: string
+        /** The mark of a wrong pick ("Sai") and the title of why ("Vì sao sai"). */
+        readonly wrongMark: string
+        readonly wrongTitle: string
+        /** The line under the options after a wrong pick: pick again. */
+        readonly again: string
+        /** The mark of the right pick ("Đúng") and the title of its panel. */
+        readonly rightMark: string
+        readonly rightTitle: string
+        /** The three parts of the insight. */
+        readonly essence: string
+        readonly need: string
+        readonly interview: string
+        /** The command to the next development of the story, and after the last question to the result. */
+        readonly next: string
+        readonly finish: string
     }
     readonly result: {
         readonly eyebrow: string
+        /** The title of the result once every question is picked right ("Pass phần mở đầu"). */
+        readonly passed: string
         readonly readArticle: string
         readonly review: string
         readonly freeTitle: string

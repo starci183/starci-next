@@ -14,10 +14,13 @@ const query1: TypedDocumentNode<LessonOpenerScoresQuery, LessonOpenerScoresQuery
             answered
             firstCorrect
             latestCorrect
+            solved
+            isPassed
             questions {
                 activityId
                 firstCorrect
                 latestCorrect
+                isSolved
                 attempts
             }
         }

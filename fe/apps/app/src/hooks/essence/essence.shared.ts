@@ -3,6 +3,7 @@ import type {
     EssenceBarPart,
     EssenceJourneyRow,
     EssenceQuestionView,
+    EssenceStoryEvent,
     EssenceStage,
     EssenceView,
     QuestionLink,
@@ -34,9 +35,14 @@ export type EssenceWords = {
     readonly seeScenario: (title: string) => string
     readonly articleEyebrow: (minutes: number) => string
     readonly sectionsList: (numbers: ReadonlyArray<number>) => string
+    /** The sentence of the result once the opener is passed: how many were right at the first pick. */
+    readonly passedText: (first: number, total: number) => string
 }
 
-/** One question as the card draws it, from its attempt; a retake hides the attempts made before it. */
+/**
+ * One question as the card draws it, from its attempt and the picks graded wrong before it; a retake hides the attempts made before
+ * it. A wrong pick stays locked with why it is wrong and the learner picks again; the right pick solves the question.
+ */
 const questionOf = (
     question: EssentialQuestionView,
     attempt: AttemptState | undefined,
@@ -47,19 +53,42 @@ const questionOf = (
     const isHidden = attempt === undefined || (base !== undefined && attempt.revision <= base)
     const view = isHidden ? undefined : attempt.view
     const result = view?.result
+    const isSolved = result?.correct === true
     return {
         id: question.activityId,
         prompt: question.prompt,
         choices: question.choices,
         pickedId: desk.picks[question.activityId] ?? view?.answer.optionId ?? "",
-        correctId: result?.options.find((option) => option.isCorrect)?.optionId ?? "",
+        correctId: isSolved ? (result.options.find((option) => option.isCorrect)?.optionId ?? "") : "",
         status: isHidden ? "idle" : attempt.status,
         isSendFailed: !isHidden && attempt.isSendFailed,
-        isCorrect: result?.correct === true,
+        isCorrect: isSolved,
         explanation: result?.options.find((option) => option.selected)?.explanation ?? "",
         links,
+        misses: isHidden
+            ? []
+            : attempt.misses
+                  .filter((miss) => base === undefined || miss.revision > base)
+                  .map((miss) => ({ optionId: miss.optionId, explanation: miss.explanation })),
+        isSolved,
+        insight: isSolved ? result.insight : undefined,
     }
 }
+
+/** The developments of the story so far: one per question up to the one on screen, which is current. */
+const timelineOf = (opener: ReadonlyArray<EssentialQuestionView>, index: number): ReadonlyArray<EssenceStoryEvent> =>
+    opener.slice(0, index + 1).flatMap((question, position) =>
+        question.event === undefined
+            ? []
+            : [
+                  {
+                      id: question.activityId,
+                      at: question.event.at,
+                      text: question.event.text,
+                      isCurrent: position === index,
+                  },
+              ],
+    )
 
 /**
  * The stage on screen: the learner's own move; else the article for a learner who opens the lesson with every question already
@@ -78,10 +107,9 @@ const barPartOf = (
 ): EssenceBarPart => {
     const isCurrent = index === current
     const label = isCurrent ? position : words.questionName(index + 1)
-    if (question.status === "graded") {
-        return { id: question.id, label, isCurrent, state: question.isCorrect ? "complete" : "error" }
-    }
-    return { id: question.id, label, isCurrent, state: isCurrent ? "current" : "upcoming" }
+    if (question.isSolved) return { id: question.id, label, isCurrent, state: "complete" }
+    if (isCurrent) return { id: question.id, label, isCurrent, state: "current" }
+    return { id: question.id, label, isCurrent, state: question.misses.length > 0 ? "error" : "upcoming" }
 }
 
 /** The four parts as the journey lists them. */
@@ -122,11 +150,23 @@ const flaggedIdsOf = (input: EssenceInput, questions: ReadonlyArray<EssenceQuest
                 const card = questions.find((each) => each.id === question.activityId)
                 return (
                     (first !== undefined && first.attempts > 0 && !first.firstCorrect) ||
-                    (card?.status === "graded" && !card.isCorrect)
+                    (card !== undefined && card.misses.length > 0)
                 )
             })
             .map((question) => question.sectionId),
     )
+
+/** The sentence under the result: the first-pick score once passed, then which sections a wrong pick pointed at. */
+const resultTextOf = (
+    isPassed: boolean,
+    flagged: ReadonlyArray<number>,
+    firstRight: number,
+    total: number,
+    words: EssenceWords,
+): string => {
+    const sections = flagged.length === 0 ? words.resultClean : words.resultFlagged(words.sectionsList(flagged))
+    return isPassed ? `${words.passedText(firstRight, total)} ${flagged.length === 0 ? "" : sections}`.trim() : sections
+}
 
 /**
  * The essence part: the five opener questions one at a time, the result, the article with its contents and the journey. The article
@@ -137,10 +177,12 @@ export const essenceOf = (input: EssenceInput): EssenceView => {
     const questions = essential.opener.map((question) =>
         questionOf(question, input.attempts[question.activityId], desk, linksOf(lesson, question, words)),
     )
-    const firstOpen = questions.findIndex((question) => question.status !== "graded")
+    const firstOpen = questions.findIndex((question) => !question.isSolved)
     const index = Math.min(desk.openerIndex ?? (firstOpen === -1 ? 0 : firstOpen), Math.max(questions.length - 1, 0))
-    const isDone = questions.length > 0 && questions.every((question) => question.status === "graded")
-    const right = questions.filter((question) => question.isCorrect).length
+    const isDone =
+        questions.length > 0 && (questions.every((question) => question.isSolved) || input.score?.isPassed === true)
+    const right = questions.filter((question) => question.isSolved).length
+    const firstRight = input.score?.firstCorrect ?? right
     const flagged = flaggedIdsOf(input, questions)
     const sections: ReadonlyArray<ArticleSectionView> = articleSectionsOf(lesson).map((section) => ({
         id: section.id,
@@ -157,14 +199,16 @@ export const essenceOf = (input: EssenceInput): EssenceView => {
         : words.position(index + 1, questions.length, right)
     return {
         stage,
+        story: essential.story,
+        timeline: timelineOf(essential.opener, index),
+        isPassed: isDone,
         questions,
         index,
         bar: questions.map((question, position) =>
             barPartOf(question, position, stage === "questions" ? index : -1, positionLine, words),
         ),
         resultTitle: words.score(right, questions.length),
-        resultText:
-            flaggedNumbers.length === 0 ? words.resultClean : words.resultFlagged(words.sectionsList(flaggedNumbers)),
+        resultText: resultTextOf(isDone, flaggedNumbers, firstRight, questions.length, words),
         retakeLine:
             isRetake && isDone && input.score !== undefined
                 ? words.retakeLine(right, questions.length, input.score.firstCorrect)

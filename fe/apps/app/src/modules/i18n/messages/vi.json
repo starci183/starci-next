@@ -1307,7 +1307,7 @@
           "opener": {
             "eyebrow": "Mở bài · 5 câu hỏi mở bài, chấm ngay",
             "barLabel": "Kết quả 5 câu mở bài",
-            "hint": "Chọn một đáp án, kết quả và lời giải hiện ngay. Không có ô viết tự do.",
+            "hint": "Chọn một phương án. Sai thì xem vì sao rồi chọn lại; đúng thì câu chuyện đi tiếp.",
             "empty": "Bài này chưa có câu hỏi mở bài.",
             "correct": "Đáp án đúng",
             "picked": "Bạn chọn",
@@ -1317,7 +1317,18 @@
             "grading": "Đang chấm câu trả lời…",
             "readMore": "Đọc tiếp",
             "readSection": "Đọc kỹ mục {n} · {title}",
-            "seeScenario": "Xem tận mắt ở kịch bản {title}"
+            "seeScenario": "Xem tận mắt ở kịch bản {title}",
+            "timeline": "Diễn biến của tình huống",
+            "wrongMark": "Sai",
+            "wrongTitle": "Vì sao sai",
+            "again": "Phương án này đã khóa. Chọn lại một phương án khác.",
+            "rightMark": "Đúng",
+            "rightTitle": "Chính xác",
+            "essence": "Bản chất",
+            "need": "Vì sao cần",
+            "interview": "Trả lời phỏng vấn",
+            "next": "Diễn biến tiếp theo",
+            "finish": "Xem kết quả"
           },
           "bar": {
             "question": "Câu {n}"
@@ -1334,7 +1345,9 @@
             "readArticle": "Đọc bài viết",
             "review": "Xem lại 5 câu",
             "freeTitle": "Bạn xong phần 1",
-            "freeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium."
+            "freeText": "Source, kịch bản chạy trên máy và mức tự áp dụng thuộc Premium.",
+            "passed": "Pass phần mở đầu",
+            "passedText": "Bạn đã xử lý đúng cả {total} diễn biến, {first}/{total} câu đúng ngay lần chọn đầu. Bài viết ở dưới đi sâu vào từng điểm."
           },
           "toc": {
             "title": "Mục lục",

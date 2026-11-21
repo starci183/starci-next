@@ -23,7 +23,18 @@ export type EssentialQuestionView = {
     readonly sectionRef: string
     /** The scenario that shows the answer; empty when none. */
     readonly scenarioId: string
+    /** The development of the opener story this question adds; undefined for a lesson without a story and a challenge question. */
+    readonly event: OpenerEventView | undefined
 }
+
+/** One development of the opener story: when it happens (`21:03`) and what happens. */
+export type OpenerEventView = { readonly at: string; readonly text: string }
+
+/** The one real-world situation the opener tells; the five questions are five developments of it. */
+export type OpenerStoryView = { readonly title: string; readonly body: string }
+
+/** The three-part explanation a right opener pick releases: Bản chất, Vì sao cần, Trả lời phỏng vấn. */
+export type OpenerInsightView = { readonly essence: string; readonly why: string; readonly interview: string }
 
 /** One scenario of Kịch bản. */
 export type EssentialScenarioView = {
@@ -60,6 +71,8 @@ export type EssentialView = {
     readonly isLocked: boolean
     /** The parts the learner may not read (by default Source, Kịch bản and Tự áp dụng without Premium); never their payload. */
     readonly lockedParts: ReadonlyArray<EssentialPart>
+    /** The situation the opener tells; undefined for a lesson written before the story. */
+    readonly story: OpenerStoryView | undefined
     readonly opener: ReadonlyArray<EssentialQuestionView>
     /** The source as the CLI pulls it; undefined when the lesson ships none yet. */
     readonly source:
@@ -114,10 +127,15 @@ export type OpenerScoreView = {
     readonly answered: number
     readonly firstCorrect: number
     readonly latestCorrect: number
+    /** The questions picked right at least once. */
+    readonly solved: number
+    /** True once the five questions are solved: the opener is passed. */
+    readonly isPassed: boolean
     readonly questions: ReadonlyArray<{
         readonly activityId: string
         readonly firstCorrect: boolean
         readonly latestCorrect: boolean
+        readonly isSolved: boolean
         readonly attempts: number
     }>
 }

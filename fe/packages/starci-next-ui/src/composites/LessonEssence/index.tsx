@@ -7,13 +7,18 @@ import { AnswerBar } from "./question"
 import type { EssenceJourneyRow, EssenceLabels, EssenceView } from "./types"
 
 export { LessonOpenerHead, LessonQuestion } from "./question"
+export { LessonStoryCard, LessonStoryQuestion } from "./story"
 
 export type {
     EssenceBarPart,
+    EssenceInsight,
     EssenceJourneyRow,
     EssenceLabels,
+    EssenceMiss,
     EssenceQuestionView,
     EssenceStage,
+    EssenceStory,
+    EssenceStoryEvent,
     EssenceTocRow,
     EssenceView,
 } from "./types"
@@ -54,7 +59,7 @@ export const LessonResult = (props: LessonResultProps) => (
             <Text tone="muted">{props.labels.result.eyebrow}</Text>
             <AnswerBar label={props.labels.opener.barLabel} bar={props.view.bar} isLoading={false} />
             <Text as="p" isStrong>
-                {props.view.resultTitle}
+                {props.view.isPassed ? props.labels.result.passed : props.view.resultTitle}
             </Text>
             {props.view.retakeLine === "" ? null : <Text tone="muted">{props.view.retakeLine}</Text>}
             <Text>{props.view.resultText}</Text>

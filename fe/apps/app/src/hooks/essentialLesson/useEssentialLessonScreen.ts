@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { fireConfetti } from "@starci/visual-effects"
 import { useLocale } from "next-intl"
 import type {
     ApplyPartView,
@@ -165,8 +166,14 @@ export const ESSENTIAL_PLACEHOLDER: EssentialLessonView = {
                 isCorrect: false,
                 explanation: "",
                 links: [],
+                misses: [],
+                isSolved: false,
+                insight: undefined,
             },
         ],
+        story: undefined,
+        timeline: [],
+        isPassed: false,
         index: 0,
         bar: [1, 2, 3, 4, 5].map((n) => ({ id: `q${n}`, label: "", state: "upcoming" as const, isCurrent: false })),
         resultTitle: "",
@@ -246,6 +253,7 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                 const view = lesson.essential ?? {
                     isLocked: !lesson.isPremium,
                     lockedParts: [],
+                    story: undefined,
                     opener: [],
                     source: undefined,
                     invariants: [],
@@ -354,13 +362,19 @@ export const useEssentialLessonScreen = (route: EssentialRoute): EssentialLesson
                     openerIndex: place === -1 ? all.openerIndex : place,
                 }))
                 if (optionId === "" || read.data === undefined) return
-                attempts.submit({
-                    lessonId: route.lessonId,
-                    version: read.data.version,
-                    locale,
-                    activityId,
-                    answer: { optionId },
-                })
+                attempts.submit(
+                    {
+                        lessonId: route.lessonId,
+                        version: read.data.version,
+                        locale,
+                        activityId,
+                        answer: { optionId },
+                    },
+                    (view) => {
+                        // The right pick of an opener question is celebrated the moment its grade lands.
+                        if (place !== -1 && view.result?.correct === true) fireConfetti()
+                    },
+                )
             },
             moveOpener: (index) => setDesk((all) => ({ ...all, openerIndex: index, stage: "questions" })),
             showStage: (stage) => setDesk((all) => ({ ...all, stage })),

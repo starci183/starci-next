@@ -186,13 +186,19 @@ export {
     LessonOpenerHead,
     LessonQuestion,
     LessonResult,
+    LessonStoryCard,
+    LessonStoryQuestion,
 } from "./composites/LessonEssence"
 export type {
     EssenceBarPart,
+    EssenceInsight,
     EssenceJourneyRow,
     EssenceLabels,
+    EssenceMiss,
     EssenceQuestionView,
     EssenceStage,
+    EssenceStory,
+    EssenceStoryEvent,
     EssenceView,
 } from "./composites/LessonEssence"
 export { DoneIcon } from "./leaves/Icon"

@@ -1,4 +1,4 @@
-import type { EssentialView } from "./essential"
+import type { EssentialView, OpenerInsightView } from "./essential"
 import type { ExerciseFileView, LessonDifficulty, LessonPhase, WorkspaceVariantView } from "@starci-next/ui"
 
 /** One lesson of the catalog. */
@@ -115,6 +115,8 @@ export type AttemptResultView = {
         readonly selected: boolean
         readonly explanation: string
     }>
+    /** For an opener question picked right, the three-part explanation of the right option; undefined otherwise. */
+    readonly insight: OpenerInsightView | undefined
     readonly criteria: ReadonlyArray<{
         readonly id: string
         readonly criterion: string

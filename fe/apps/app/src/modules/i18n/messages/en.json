@@ -1307,7 +1307,7 @@
           "opener": {
             "eyebrow": "Opener · 5 interview questions, graded at once",
             "barLabel": "Result of the 5 opener questions",
-            "hint": "Pick an answer: the verdict and the explanation show at once. No free-text box.",
+            "hint": "Pick one option. If it is wrong, read why and pick again; if it is right, the story moves on.",
             "empty": "This lesson has no opener questions.",
             "correct": "Right answer",
             "picked": "Your pick",
@@ -1317,7 +1317,18 @@
             "grading": "Grading your answer…",
             "readMore": "Read on",
             "readSection": "Read section {n} closely · {title}",
-            "seeScenario": "See it in the {title} scenario"
+            "seeScenario": "See it in the {title} scenario",
+            "timeline": "How the situation unfolds",
+            "wrongMark": "Wrong",
+            "wrongTitle": "Why it is wrong",
+            "again": "That option is locked. Pick another one.",
+            "rightMark": "Right",
+            "rightTitle": "Correct",
+            "essence": "The essence",
+            "need": "Why it is needed",
+            "interview": "Interview answer",
+            "next": "Next development",
+            "finish": "See the result"
           },
           "bar": {
             "question": "Question {n}"
@@ -1334,7 +1345,9 @@
             "readArticle": "Read the article",
             "review": "Review the 5 answers",
             "freeTitle": "You finished part 1",
-            "freeText": "Source, scenarios that run on your machine and the apply ladder are Premium."
+            "freeText": "Source, scenarios that run on your machine and the apply ladder are Premium.",
+            "passed": "Opener passed",
+            "passedText": "You handled all {total} developments, {first}/{total} right at the first pick. The article below goes deeper into each point."
           },
           "toc": {
             "title": "Contents",
