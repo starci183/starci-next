@@ -71,24 +71,61 @@ audit:
       at: 2026-11-21T07:01:02.995Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Chủ CV (ảnh, tên, CV đã xác minh bởi StarCi, 11 dòng đã ký, Chia sẻ CV) đứng đầu; rồi Dòng CV
+            đã ký với tab lọc theo nguồn; Vì sao tin được CV này ở cột phải (1440) và sau danh sách
+            (390).
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tab lọc Mọi nguồn / Essentials / Dự án / Luyện code có số đếm (Tabs filter); ở 390 hàng tab
+            cuộn ngang có mũi tên, không gãy. Danh sách 10 dòng (390: 6) rồi Xem thêm N dòng.
+            Checklist: Đăng nhập, Chia sẻ CV, Xác minh …, Xem thêm cao 40px; nhãn một dòng ở 390;
+            thanh trên không tràn; vùng chạm đủ 44."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Trang công khai chỉ đọc; mỗi dòng có Xác minh tới trang xác minh, Xem thêm mở tiếp tại chỗ,
+            tab lọc một chạm.
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: CV công khai chỉ có dòng đã ký; mỗi dòng có biểu tượng đã xác minh và dòng Thầy ký / Người
+            duyệt thầy chỉ định ký kèm ngày; không có trạng thái chạy hay chờ để hiện.
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: 'Accepted giữ theo quyết định của chủ 2026-11-21 (thuật ngữ chấm bài chung). Chữ dòng CV do
+            AI soạn ("(StarCi Bản chất)" cạnh nhãn Essentials, "typescript" viết thường) đến từ mẫu
+            backend, chủ cho sửa sau (FOLLOWUPS): ghi nhận, không giữ mở. Mã xác minh là mã công
+            khai có chủ đích, không phải id thô.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Màn nhiều dòng ở 1440 và 390; đang tải, lỗi, không tìm thấy, ít dòng và chia sẻ là các màn
+            chị em cv/public-*.
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khớp summary: học viên seed cv-eight Minh Nguyễn, 11 dòng (Essentials 5, Dự án 2, Luyện code
+            4), 1440 hiện 10 dòng + Xem thêm 1 dòng, 390 hiện 6 + Xem thêm 5 dòng; dữ liệu thật từ
+            seed."
+    - n: 2
+      at: 2026-11-21T07:02:39.160Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Độc lập: chủ CV (ảnh, tên, CV đã xác minh bởi StarCi, 11 dòng đã ký, Chia sẻ CV) trên cùng; rồi tab lọc và danh sách; Vì sao tin được CV này ở cột phải (1440), sau danh sách (390). Khớp khung canvas."
+        layout:
+          verdict: pass
+          notes: "Trên ảnh: tab lọc có số đếm, hàng tab cuộn ngang có mũi tên ở 390; mỗi dòng nhóm rõ (chữ chính, nguồn, nhãn, dòng ký, nút Xác minh). Chiều cao 40 cho Đăng nhập, Chia sẻ CV, Xác minh, Xem thêm; nhãn một dòng ở 390; thanh trên gọn, không tràn; vùng chạm đủ 44."
+        actionable:
+          verdict: pass
+          notes: "Trang công khai chỉ đọc: tab lọc một chạm, Xác minh tới trang xác minh từng dòng, Xem thêm mở tiếp tại chỗ, Chia sẻ CV."
+        live:
+          verdict: pass
+          notes: "Chỉ có dòng đã ký, mỗi dòng có biểu tượng đã xác minh và ngày ký; không có trạng thái chạy, chờ hay lỗi để hiện."
+        words:
+          verdict: pass
+          notes: 'Accepted giữ theo quyết định của chủ (thuật ngữ chấm bài chung). Chữ do AI soạn ("(StarCi Bản chất)", "typescript" viết thường) là mẫu backend, sửa sau (FOLLOWUPS): ghi nhận, không giữ mở. Mã xác minh là mã công khai có chủ đích.'
+        states:
+          verdict: pass
+          notes: "Màn nhiều dòng ở 1440 và 390; đang tải, lỗi, không tìm thấy, ít dòng, chia sẻ là các màn chị em cv/public-* trong gallery."
+        truth:
+          verdict: pass
+          notes: "Khớp summary và yaml: Minh Nguyễn, 11 dòng (Essentials 5, Dự án 2, Luyện code 4); 1440 hiện 10 dòng + Xem thêm 1 dòng, 390 hiện 6 + Xem thêm 5 dòng; dữ liệu seed thật."
   escalate: null

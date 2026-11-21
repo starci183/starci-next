@@ -158,24 +158,24 @@ audit:
       at: 2026-11-21T07:01:04.103Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Dải đầu trang (đường dẫn, tiêu đề, dòng meta là thanh, tab Hàng đợi / Người duyệt), rồi xương cột hàng đợi bên trái và panel xem trước bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải.
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Tiêu đề Duyệt kinh nghiệm, đường dẫn và tab đầu trang giữ thật; dòng meta nay là một thanh ngắn cỡ dòng meta (không còn hết bề rộng). Dưới đường kẻ mọi thứ là Skeleton HeroUI phẳng, không viền, không màu: thanh tiêu đề, thanh hàng nút lọc, các hàng và panel xem trước đúng chỗ của lưới main-rail. Checklist: tab đầu trang và Mở menu 40px; nhãn một dòng ở 390; dải đầu không tràn; vùng tải không có gì bấm được."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được.
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390.
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người duyệt.
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "screen.yaml đã viết lại theo ảnh: summary, hai phần dai-dau-trang và luoi-hang-doi dẫn luật tải 2026-11-21 (HeroUI Skeleton), considered bỏ hai lựa chọn cũ (Page isLoading, placeholder ba tab và preview giả) với lý do đúng; không còn EmptyNotice, Alert."
   escalate: null
