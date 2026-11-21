@@ -1,7 +1,7 @@
 {"findings":[],"hash":"71a35c4287fbd319ab2b93a55316a1034e53d2895721d1d0cf80310de34b8658","path":".starcistacks/staging/infra/swarm/owner-actions.md","step":"prettier"}
 {"findings":[],"hash":"da143341bbd4cb8ac55d9d72dbf57d5753a3f44b27efd16e2eba2ef20990ebf0","path":".starcistacks/staging/infra/swarm/postgres-roles.sh","step":"prettier"}
-{"findings":[],"hash":"24d063c860fc495307369be88ec032cb9ab1d54ea1f3bdd916700299ee5b83ec","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"prettier"}
+{"findings":[],"hash":"991f8b1e390bbf0a4f0207780908a7be7e6d4d7dddc650f7c5793abc26d2d4a7","path":".starcistacks/staging/infra/swarm/recovery/restore-proof.md","step":"prettier"}
 {"findings":[],"hash":"b8f8850e94c4d4f4b24bfeb3a459e0db30be083e716cfbd616a3b3743ae24bab","path":".starcistacks/staging/infra/swarm/releases/current.yaml","step":"prettier"}
 {"findings":[],"hash":"d81e6f657ccdaeec6d0b9fd3d7fb30296d70ce4ec2235db92870769e6e39584f","path":".starcistacks/staging/infra/swarm/releases/images.lock.yaml","step":"prettier"}
 {"findings":[],"hash":"17b7f2ba014ba13ef9944dae9891bdf4f970bef7387cd05cd5a81c74776db248","path":".starcistacks/staging/infra/swarm/releases/previous.yaml","step":"prettier"}
-{"findings":[],"hash":"5f22ea7f42ae357993c42db16447c769ea22ba975c21e70696bf1dc39c032b19","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"prettier"}
+{"findings":[],"hash":"4810b41e1f04c8a9a6a420ee7f674597962e36e25bc6d9fbbd51442f37626ba9","path":".starcistacks/staging/infra/swarm/stack.yaml","step":"prettier"}
