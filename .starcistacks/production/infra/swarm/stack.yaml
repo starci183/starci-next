@@ -106,7 +106,7 @@ services:
         delay: 5s
   # The app's own PostgreSQL, the db component: the image .starcistacks/images/db/Dockerfile builds (official postgres plus pgvector and pgmq), set by deploy.images.db.
   # PostgreSQL 17 runs on its own NEW volume next-production-db-data, filled by `starci app stack db-upgrade` from the PostgreSQL 16 volume next-production-postgres-data, which is never mounted here and stays untouched (rollback = that volume + the previous release). The network alias is the earlier one, so PRIMARY_DB_URL keeps its host.
-  db:
+  postgres:
     image: "starci-next/db:v0.0.0@sha256:0000000000000000000000000000000000000000000000000000000000000000"
     environment:
       POSTGRES_USER: postgres

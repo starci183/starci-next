@@ -163,7 +163,7 @@ jobs:
           app app
           cli cli
           core core
-          db db
+          postgres db
           storage storage
           LIST
       - name: CI run of the commit
@@ -198,7 +198,7 @@ jobs:
           IMAGE_APP: ${{ steps.images.outputs.app }}
           IMAGE_CLI: ${{ steps.images.outputs.cli }}
           IMAGE_CORE: ${{ steps.images.outputs.core }}
-          IMAGE_DB: ${{ steps.images.outputs.db }}
+          IMAGE_POSTGRES: ${{ steps.images.outputs.postgres }}
           IMAGE_STORAGE: ${{ steps.images.outputs.storage }}
         run: |
           again=()
@@ -207,7 +207,7 @@ jobs:
             --image "app=$IMAGE_APP" \
             --image "cli=$IMAGE_CLI" \
             --image "core=$IMAGE_CORE" \
-            --image "db=$IMAGE_DB" \
+            --image "postgres=$IMAGE_POSTGRES" \
             --image "storage=$IMAGE_STORAGE" \
             --sha "$GITHUB_SHA" --ci-run "$CI_RUN" "${again[@]}" --execute
       - name: disconnect from the swarm manager
