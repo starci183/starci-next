@@ -4,9 +4,13 @@ import { NotFoundNotice } from "@starci-next/ui"
 import { usePublicCvLabels, usePublicCvView } from "@/hooks/publicCv"
 import { staticsBase } from "@/modules/config"
 import { PUBLIC_CV_PLACEHOLDER, PublicCvBase } from "./component"
+import type { PublicCv as PublicCvRead } from "@/hooks/swr"
 
-/** What the route hands the block: the slug of the address; the CV itself is read in the browser. */
-type PublicCvProps = { readonly slug: string }
+/**
+ * What the route hands the block: the slug of the address, and what the server already read when it could. The block reads the CV in
+ * the browser either way (its skeleton, then the lines or the failure notice), so `initial` only tells the route the slug exists.
+ */
+type PublicCvProps = { readonly slug: string; readonly initial?: PublicCvRead | undefined }
 
 /** The public CV: reads one slug without a session, filters and folds its signed lines, and holds the share sheet. */
 export const PublicCv = (props: PublicCvProps) => {
