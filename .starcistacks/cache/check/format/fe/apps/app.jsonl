@@ -685,10 +685,8 @@
 {"findings":[],"hash":"2b70c69cba7ac72c98f3c7e53372f8ac3dfb3ebfc7cef908df27a3f6a863c299","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"prettier"}
 {"findings":[],"hash":"de04710d324f81730509852c12ee39068fc33a1d370cfb7fb574d8b4999ba25a","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3250a1a387c6be27f6f47ba8c0ca508e554d69ffab7519be25e5722149176c71","path":"fe/apps/app/src/modules/i18n/index.ts","step":"prettier"}
-{"findings":[],"hash":"a90bf9a9cbb885e84af884485c76f7f502b973172611c84b9b7510360c62106e","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"dead2964b461d6986977351ca243ad8c5a8f657fa754d5d63b311efb4308e4bb","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
-{"findings":[],"hash":"38312fc829839e45559d75d11c68c50e370baa75008aa9f67eb344ee8361be24","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
-{"findings":[],"hash":"86bbad7fca3f0c2a2ece1668fc3d59568c7bffe82fbfad24b12b2f934f967252","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
+{"findings":[],"hash":"1ab838cb61c346339cbae9d65b27520e1d0f0bea5ea339fe634b5673e09da7dd","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"prettier"}
+{"findings":[],"hash":"42bf2eef8f88a1409b4ae7284f4f346bf40b223e011c0c9b84927d05cd2a1468","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"prettier"}
 {"findings":[],"hash":"5c34d838583710ef39f49ec100882024b7483146a6fe445df0a7bcde24779f95","path":"fe/apps/app/src/modules/i18n/request.ts","step":"prettier"}
 {"findings":[],"hash":"fbc7b5301bbece6b196d341bd6b08a4b49a6baef6384cd03dff9896ddd2dc113","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"prettier"}
 {"findings":[],"hash":"3f9d6781eedea34915464508155c9135728867d5fd1f1081c7506b5dd8fd85e7","path":"fe/apps/app/src/modules/practice-draft/index.ts","step":"prettier"}

@@ -1,2 +1,1 @@
-{"data":{"verdict":"green"},"findings":[],"hash":"0f6ebff2aeab1b97d4f480e65ef17d4b634191e5c4d1077d1e4c49e8adcc015b","path":"fast/typecheck","step":"ci-step"}
-{"data":{"verdict":"green"},"findings":[],"hash":"bc36218da6c01e0463683e389e6a8e8eda7b254b1bffa2b3cfb003b5e616cef5","path":"fast/typecheck","step":"ci-step"}
+{"data":{"verdict":"green"},"findings":[],"hash":"7bbcec4aa5181a6f930d693ef4ef5da21df114f9d91d09c8e5ce1a2119af6d42","path":"fast/typecheck","step":"ci-step"}
