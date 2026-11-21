@@ -1,0 +1,76 @@
+schema: 1
+screen: career/review-item
+title: Duyệt một mục (chỉ thầy và người duyệt)
+route: /review-queue/[itemId]
+area: career
+summary: "Route: `/review-queue/[itemId]`. Mã:
+  `fe/apps/app/src/components/blocks/ReviewItem/component.tsx`. Thầy và người duyệt thấy bảng duyệt
+  của một mục (ảnh chụp: học viên seed `gallery-career-teacher`, vai TEACHER, mở một mục Dự án đang
+  chờ thầy duyệt trên dữ liệu thật của dev). Tài khoản thường thấy trạng thái cấm, xem
+  `career/review-item-forbidden`."
+code:
+  - app/[locale]/(pages)/(app)/review-queue/[itemId]/page.tsx
+  - features/pages/ReviewItemPage/
+shots:
+  "390":
+    file: 390.png
+    sha256: e79429ac8406dbd0af39f97cab18a725d235c033a7664086dcdd623e94301105
+  "1440":
+    file: 1440.png
+    sha256: d7e5aab7ca809b6d984b8187d613490097c68262c2dc8eb9f7f37eb3be15c755
+sections:
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: đường dẫn Duyệt kinh nghiệm / Một mục cần duyệt nằm trong `Page header`, thay cho liên kết
+      "quay lại" đứng riêng trước đây.
+    law: "`page-header-left-sublabel-xs.md`."
+    grammar: "`Page header={{ title, breadcrumbs }}`."
+  - id: bang-duyet
+    title: Bảng duyệt
+    why: "cùng bảng duyệt như hàng chờ: thẻ mục, ba danh sách (Bằng chứng, AI chấm theo tiêu chí, Câu
+      hỏi bảo vệ), ô ghi chú với Xác minh (nút chính) và Trả lại, Thu hồi cho thầy trên mục đã xác
+      minh, rồi Lịch sử."
+    law: "`verified-experience-per-part.md`."
+    grammar: '`SurfaceCard`, `Section kind="list"`, `Textarea`, `Button`.'
+considered:
+  - option: Dùng tên mục làm tiêu đề trang
+    chosen: true
+    why: Canvas đã duyệt làm vậy; tiêu đề chung không nói đang duyệt mục nào.
+audit:
+  builder:
+    agent: mig-auth-fe
+  auditor:
+    agent: next-ux-auditor
+  rounds:
+    - n: 1
+      at: 2026-11-20T22:23:58.849Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Tiêu đề là chữ chung "Một mục cần duyệt", đường dẫn "Duyệt kinh nghiệm / Một mục cần
+            duyệt" thiếu "Hồ sơ" và tên mục, và không có dòng meta. Canvas: "Hồ sơ / Duyệt trải
+            nghiệm / Luồng thanh toán", tiêu đề là tên mục, meta "Phần 2 · Linh Nguyễn · Chờ
+            duyệt". Checklist: Xác minh và Trả lại 40px, nhãn không gãy ở 390, không tràn.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Câu hỏi bảo vệ là tiếng Anh ("Why this design for each concept?", "What breaks without
+            it…"), tiêu chí "Sample criterion", và bằng chứng là mã thô
+            "dev-seed:milestone@dev-s…". Đây là dữ liệu seed: cần API cho nhãn bằng chứng, và seed
+            cần câu tiếng Việt. Lịch sử chỉ có ngày, không có giờ như canvas ("12/11, 09:20").'
+        states:
+          verdict: open
+          notes: "Canvas có career/review-item-loading và -verified (mục đã xác minh, có Thu hồi) nhưng
+            gallery chưa chụp."
+        truth:
+          verdict: pass
+          notes: ""
+  escalate: null

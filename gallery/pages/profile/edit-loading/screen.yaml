@@ -11,10 +11,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: 264b57068728ce7caf9f38ca5640d13b9c9b71092e40df41ff31a4fca9278533
+    sha256: 224033aec7f63b099cafae1c68d556d76ce269008744675b6f592da80e6d01fa
   "1440":
     file: 1440.png
-    sha256: b3b9abeac4872fad960abbfd45039db61a9be624ef77d632cb2fc4427f39895d
+    sha256: 47b29647b0eaac392c21ec9a47aa4bce09057e4a29b0c0d0cf0195ca3ca051ec
 sections:
   - id: s1
     title: Nội dung chính
@@ -33,7 +33,7 @@ considered:
       filter, chọn giá trị là ChoiceChips hoặc Select."
 audit:
   builder:
-    agent: next-ux-career
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:

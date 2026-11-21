@@ -3,21 +3,25 @@ screen: profile/new
 title: Hồ sơ của học viên mới
 route: /profile
 area: profile
-summary: "Như profile/overview, học viên mới. Route: /profile (ảnh chụp: học viên mới, chưa có ảnh, chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích ở profile/overview. Mã nguồn màn hình nay nằm trong nhóm tuyến (page"
+summary: "Như profile/overview, học viên mới. Route: /profile (ảnh chụp: học viên mới, chưa có ảnh,
+  chưa có mục Đã xác minh, chưa nối máy, chưa có token, gói Miễn phí). Mã và khung chung giải thích
+  ở profile/overview. Mã nguồn màn hình nay nằm trong nhóm tuyến (page"
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
   "390":
     file: 390.png
-    sha256: 958739ffc3b08d31f22d261130a7751d27e965730d50dea080c05a5f68bb8555
+    sha256: ae2ed45dd1d69151c5d7d646a5c0ce66466c51b6a9df18136a576ddc41719273
   "1440":
     file: 1440.png
-    sha256: dcde12c5c8b9a343908b74d2db51e87816c774c74acb7fc32bf6990fc642cb3d
+    sha256: 4882fb4584c149cec820b238da041a3b83c2d5e4640f17204b8466cda558b020
 sections:
   - id: s1
     title: Danh tính khi chưa có ảnh
-    shows: Avatar vẽ hình mầm sinh từ tên (chưa có ảnh nên không có nút "Xoá ảnh"); nút duy nhất là "Tải ảnh lên". Chưa chọn lộ trình thì dòng mục tiêu ghi "Chưa chọn lộ trình" và liên kết đổi thành "Chọn lộ trình".
+    shows: Avatar vẽ hình mầm sinh từ tên (chưa có ảnh nên không có nút "Xoá ảnh"); nút duy nhất là "Tải
+      ảnh lên". Chưa chọn lộ trình thì dòng mục tiêu ghi "Chưa chọn lộ trình" và liên kết đổi thành
+      "Chọn lộ trình".
     why: learning-program.md (lộ trình là tùy chọn, không phần nào bị chặn vì chưa chọn).
     actions: []
     states:
@@ -27,7 +31,9 @@ sections:
     needsApi: []
   - id: s2
     title: Dòng CV và liên kết xác minh khi rỗng
-    shows: vùng CV nói thẳng điều cần làm ("Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản chất để có dòng đầu tiên") thay vì một danh sách trống; vùng liên kết nói liên kết xuất hiện khi một mục được xác minh. Đếm "0/3 mục Đã xác minh" vẫn hiện để học viên biết ngưỡng.
+    shows: vùng CV nói thẳng điều cần làm ("Hoàn thành một bản dựng Harness, một dự án hoặc một bài Bản
+      chất để có dòng đầu tiên") thay vì một danh sách trống; vùng liên kết nói liên kết xuất hiện
+      khi một mục được xác minh. Đếm "0/3 mục Đã xác minh" vẫn hiện để học viên biết ngưỡng.
     why: verified-experience.md điều 4, unhandled-case-tells-customer.md (không để trống im lặng).
     actions: []
     states:
@@ -37,7 +43,9 @@ sections:
     needsApi: []
   - id: s3
     title: Tài khoản khi chưa có gì
-    shows: máy và token rỗng mỗi bảng một câu ngắn ("Chưa nối máy nào.", "Chưa có token nào.") và vẫn giữ liên kết quản lý để học viên đi nối; gói ghi "Miễn phí" và "Phần 1 của mỗi bài Bản chất và toàn bộ Harness là miễn phí", liên kết "Quản lý gói" dẫn tới trang Premium.
+    shows: máy và token rỗng mỗi bảng một câu ngắn ("Chưa nối máy nào.", "Chưa có token nào.") và vẫn
+      giữ liên kết quản lý để học viên đi nối; gói ghi "Miễn phí" và "Phần 1 của mỗi bài Bản chất và
+      toàn bộ Harness là miễn phí", liên kết "Quản lý gói" dẫn tới trang Premium.
     why: premium.md (bậc miễn phí), COOK 2026-11-17 mục access (Harness miễn phí cho mọi người).
     actions: []
     states:
@@ -48,13 +56,19 @@ sections:
 considered:
   - option: Như profile/overview, học viên mới.
     chosen: true
-    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs filter, chọn giá trị là ChoiceChips hoặc Select."
+    why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
+      filter, chọn giá trị là ChoiceChips hoặc Select."
   - option: Hiện tên học viên mới bằng tên nhập sẵn
     chosen: false
-    why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên; sửa ở lõi, không phải ở app."
+    why: "Lỗi lõi đã biết (FOLLOWUPS): tên hiển thị lấy email của tài khoản khi học viên chưa chọn tên;
+      sửa ở lõi, không phải ở app."
+  - option: Coi ảnh trong Danh tính là ảnh mặc định
+    chosen: false
+    why: Thanh trên đã có avatar riêng của tài khoản; hai chỗ khác nhau làm người học không biết người
+      khác thấy ảnh nào.
 audit:
   builder:
-    agent: next-ux-career
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -66,7 +80,8 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
+          notes: "Lề trái nội dung x=268 ở trang ba cột (guide, doc) và profile, trong khi hub, builds, use
+            dùng x=288: lệch gutter giữa các trang cùng khu vực. Nút chính chạm mép phải x≈1428."
         actionable:
           verdict: open
           notes: '"Chọn lộ trình" là chữ đậm trơn không giống liên kết.'
@@ -78,7 +93,8 @@ audit:
           notes: Email lặp hai lần liền nhau.
         states:
           verdict: open
-          notes: Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.
+          notes: Ảnh y hệt profile/overview (tài khoản Premium, "Học viên · Premium"), không phải "Học viên
+            mới · Gói miễn phí · 0/3" của canvas profile/new; không phân biệt được hai màn.
         truth:
           verdict: open
           notes: Tên hiển thị là email "gallery-ess-0006@example.test" (lỗi đã biết), canvas là "minh".
@@ -102,7 +118,8 @@ audit:
           notes: ""
         states:
           verdict: open
-          notes: Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới · Gói miễn phí · 0/3" của canvas profile/new.
+          notes: Ảnh vẫn y hệt profile/overview (Premium, "Học viên · Premium"), không phải "Học viên mới ·
+            Gói miễn phí · 0/3" của canvas profile/new.
         truth:
           verdict: open
           notes: Tên hiển thị là email (lỗi đã biết).
@@ -129,5 +146,34 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo sau)."
-  escalate: null
+          notes: "Tên hiển thị là email: lỗi core đã biết, ghi trong FOLLOWUPS (main chấp nhận làm việc theo
+            sau)."
+    - n: 4
+      at: 2026-11-20T22:24:05.141Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: "Cùng khung với profile/overview: lề nội dung x=268 và nút chính tới x=1428, lệch 288/1408
+            của các trang khác (sửa trong app)."
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Tên hiện "Tên hiển thị" (nhãn ô nhập). Dòng meta ghi "Học viên" thay vì "Học viên mới"
+            như canvas. Cả hai sửa trong app.'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: "Ảnh đại diện ở Danh tính (chậu cây xanh) khác avatar trên thanh trên (hoa hồng nền cam) của
+            cùng tài khoản: trang hồ sơ không dùng avatar của tài khoản."
+  escalate: 'needs owner: vòng 4 còn mở layout (lề 268/1428), words ("Tên hiển thị", meta thiếu "mới")
+    và truth (avatar ở Danh tính khác avatar tài khoản); đều là việc của app.'

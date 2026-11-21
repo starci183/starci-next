@@ -13,10 +13,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: b76eec18d3d3ee3d1a649b74e8dc1f9d31f7e490464b8bdc964128a97605ab6a
+    sha256: 1ffce0c72420ad44cc864314f8e335c54d9c7bb05ce00293d9d1d8a9174c4866
   "1440":
     file: 1440.png
-    sha256: 23e4b39f2e1ac41435a937742750786bc190374684bbb594efbc47349bcce8d9
+    sha256: 71908fde39da4ab09c74199060fc830dd60d813b027b3ae1c3d7e824be869ab0
 sections:
   - id: s1
     title: Mục tiêu
@@ -83,9 +83,13 @@ considered:
     chosen: true
     why: "Chủ sản phẩm duyệt cả bảng vẽ ngày 20/11 và luật mới: một kiểu cho mỗi phần tử, bộ lọc là Tabs
       filter, chọn giá trị là ChoiceChips hoặc Select."
+  - option: Cho pass vì tên không còn là email
+    chosen: false
+    why: Lỗi email đã hết, nhưng ảnh vẫn không phải trạng thái có dữ liệu, và nhãn trung tính trùng nhãn
+      ô nhập.
 audit:
   builder:
-    agent: next-ux-career
+    agent: mig-auth-fe
   auditor:
     agent: next-ux-auditor
   rounds:
@@ -167,5 +171,40 @@ audit:
           notes: ""
         truth:
           verdict: pass
-          notes: "Tên hiển thị là email (lặp hai lần): lỗi core đã biết, FOLLOWUPS, chấp nhận như profile/new."
-  escalate: null
+          notes: "Tên hiển thị là email (lặp hai lần): lỗi core đã biết, FOLLOWUPS, chấp nhận như
+            profile/new."
+    - n: 4
+      at: 2026-11-20T22:24:04.211Z
+      lenses:
+        order:
+          verdict: pass
+          notes: ""
+        layout:
+          verdict: open
+          notes: 'Lề nội dung ở x=268 và nút chính sát mép phải tới x=1428, trong khi /profile/edit và các
+            trang khác dùng 288 và 1408 (sửa trong app). Ở 390 dòng "Gói của bạn" bị cắt "…toàn
+            bộ Harn…". Nút "Quản lý" và "Xem Premium" 32px là action trong hàng, được phép;
+            vùng chạm 44px ở 390 là cần Grammar.'
+        actionable:
+          verdict: pass
+          notes: ""
+        live:
+          verdict: pass
+          notes: ""
+        words:
+          verdict: open
+          notes: 'Khi chưa đặt tên, dòng tên hiện "Tên hiển thị", tức nhãn của ô nhập ở trang sửa, nên trông
+            như một nhãn trống chứ không phải một cái tên (sửa trong app: một nhãn trung tính khác,
+            ví dụ "Chưa đặt tên").'
+        states:
+          verdict: pass
+          notes: ""
+        truth:
+          verdict: open
+          notes: 'summary và canvas tả học viên có hai dòng CV đã xác minh và một máy đã nối, nhưng ảnh là tài
+            khoản rỗng gallery-fresh (0/3, "Chưa có dòng CV nào", "Chưa nối máy nào"), gần như
+            trùng profile/new. Seed gallery-cv-multi đã có ba dòng đã ký nên chụp lại được (sửa
+            trong app hoặc chỗ chụp).'
+  escalate: 'needs owner: vòng 4 còn mở layout (lề 268/1428, chữ gói bị cắt ở 390), words (tên trung
+    tính "Tên hiển thị") và truth (ảnh là tài khoản rỗng, không phải học viên có dòng đã xác minh);
+    cả ba đều sửa được trong app hoặc chỗ chụp.'
