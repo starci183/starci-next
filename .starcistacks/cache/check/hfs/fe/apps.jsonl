@@ -69,13 +69,13 @@
 {"data":{},"findings":[],"hash":"9adbdc3f23ca3d5f520bbd3f1022a9b38dfc6f1143afa8a9dcb82235fa7f26b5","path":"fe/apps/app/src/components/blocks/AppHeader/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"17b197a3cf962ccc946cb96b6f64440887e57fc43f626191bfb0371b5e3ae9a7","path":"fe/apps/app/src/components/blocks/AppSidebar/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"58aa69fca5af3c671c766d30a67e25dd9da596e565e1de2bf63f2e556717b7c5","path":"fe/apps/app/src/components/blocks/AppSidebar/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"b66b58397d898c19559f1c55ed211d804dd5dc8942513714de899545ffef7ad1","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"a48becfdf2d3b9e5193bf7bd58914d27910a06f56650b2e5edd9c4e2a211c0d6","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"4a4a522205da205b396744d71db2b3428dfb8402c1ac3d616e8b4e39ec7c29d7","path":"fe/apps/app/src/components/blocks/AuthPanel/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9b08bf4d7b807268d237325d05d9daf05f77ed0d685e5ff69a842ba20c073b62","path":"fe/apps/app/src/components/blocks/AuthPanel/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"e95a4593b4145547bbe66751e46464be1fea414e9064fc9768a9b37d9b740020","path":"fe/apps/app/src/components/blocks/CheckoutResult/classNames.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"65f97da71772604149d256c35871ccdddabbdcdd7d1934edaebdc5650ee62a4e","path":"fe/apps/app/src/components/blocks/CheckoutResult/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"85821b553edf7d64a6a36ac597b204d5b647c89026b5e9d434beb6d5bd17a9ea","path":"fe/apps/app/src/components/blocks/CheckoutResult/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e0eb9372d91402226d904b462d20fbf7fd878060288a39f9d25ee5518e52d584","path":"fe/apps/app/src/components/blocks/ConfirmEmail/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"e4fc918bbf6ff07d5f796d38e548797ac4538f58e6cbd178178b0eb3794eed92","path":"fe/apps/app/src/components/blocks/ConfirmEmail/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"909984563181302f9249cf4ef0eaae140769d2fa170b691128e1e16fc5380c2a","path":"fe/apps/app/src/components/blocks/ConfirmEmail/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"69f72ce0040edf86c608a31e883dfab3b3b8d5b420e6b835b9a645c49f8f9a30","path":"fe/apps/app/src/components/blocks/ConfirmEmail/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"ef793b18bd9469f00449e9cfacdfcb20ce04efc5f7698958b5def642774434cc","path":"fe/apps/app/src/components/blocks/ConnectAi/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"a223a21af9c4674e7e461c9f1b587858a3b141c1f14a7c55c950a7a6a2b1d6ba","path":"fe/apps/app/src/components/blocks/ConnectAi/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"9569a070b36c0b18d02c51619c6449ae33297e49eadb68a7858e5f7a8458ce94","path":"fe/apps/app/src/components/blocks/DevicesPair/component.tsx","step":"file-rules"}
@@ -142,8 +142,8 @@
 {"data":{},"findings":[],"hash":"3e7d42f9f14ad6c1d85c1a7ac9500f4a0a2e7be0bc4042d05e3cb91437dd0115","path":"fe/apps/app/src/components/blocks/PublicCv/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"0bfc7324359a1046cd1a915e3a7f04bef6bbb073b59bde1be0f213cafc6cf68a","path":"fe/apps/app/src/components/blocks/PublicCv/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"467477ae544325a784ca7d04130b380cbe2c5e4d9fd1d47ac563be6117e92fd7","path":"fe/apps/app/src/components/blocks/PublicTopBar/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"0df816b946a2b04f0deb5703644010118fac2928f9f29b17486ce6a51fb505df","path":"fe/apps/app/src/components/blocks/ResetPassword/component.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"5668f6642105b2f516454b20d22c2c82f787d9ce95652113ed487e8bc0f4b966","path":"fe/apps/app/src/components/blocks/ResetPassword/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"9a33fa68628621798d22a524ac368cab82323c94587964c2a10930106b7112c5","path":"fe/apps/app/src/components/blocks/ResetPassword/component.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"cf7383dbd95b33f03a2549dcf0f83c2661cc44026601da8c6a402ee4a3b873b1","path":"fe/apps/app/src/components/blocks/ResetPassword/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"872628b71d715c85f3516b569a61d376f020ef38d622ceabf29dcc2a0734849e","path":"fe/apps/app/src/components/blocks/ReviewDeck/component.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"52113d73ff1ef369f9c963ca90a02be500b39e0fc34a30eae5b61052b87da83c","path":"fe/apps/app/src/components/blocks/ReviewDeck/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"4c515e261f66756b544895641b20387e63172e85c98942bce930a924e35f6611","path":"fe/apps/app/src/components/blocks/ReviewDecks/component.tsx","step":"file-rules"}
@@ -164,7 +164,7 @@
 {"data":{},"findings":[],"hash":"e5675599a227ba99879c3cd04cde678592ffcc0248bcb68c1b5b48af15cbb736","path":"fe/apps/app/src/components/providers/AppProviders/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"76f61894465e29769257c3ef04461c6c50190a84922600d389f464586d6ff874","path":"fe/apps/app/src/features/layouts/AppLayout/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"104b2346904679cbd05adb7f58b378a20f2115bfe6b82c645340c33e8a12dd93","path":"fe/apps/app/src/features/layouts/AuthLayout/index.tsx","step":"file-rules"}
-{"data":{},"findings":[],"hash":"31af6eb2857b4810dece564179caebc08f49913d133c145f829b186f3c0f6924","path":"fe/apps/app/src/features/layouts/EntryLayout/index.tsx","step":"file-rules"}
+{"data":{},"findings":[],"hash":"74f4751f2787ddc9a20a732175c0da2f51360d5e174d8e01defcd93e78e4cd85","path":"fe/apps/app/src/features/layouts/EntryLayout/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"8b1f8b95e04f78aac8d819a0f7fbaeb02dee96e945206439955f6530a159e848","path":"fe/apps/app/src/features/layouts/LocaleLayout/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"df43cf529f271b22225249835ccf9db9cbdf5666eb6b77ba11e66dea7a758fb4","path":"fe/apps/app/src/features/layouts/ProjectsLayout/index.tsx","step":"file-rules"}
 {"data":{},"findings":[],"hash":"7ba5c20590d5937131d48b573e47fd736252aa8e201255500b210e49186b8f62","path":"fe/apps/app/src/features/overlays/SignInModal/component.tsx","step":"file-rules"}
@@ -686,8 +686,8 @@
 {"data":{},"findings":[],"hash":"34e69eca73d3b3b7d97055ed694b8550496ce44a99df22dea5e80cc2b8ebde1c","path":"fe/apps/app/src/modules/harness-tool/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"236c98e7438235315222120cee1dd449d9ad01cff9f3f5532ffb9dfccb8d51c9","path":"fe/apps/app/src/modules/harness-view/index.ts","step":"file-rules"}
 {"data":{},"findings":[],"hash":"c9acce5af361fe2a73e296c75b9a5258fc687ccc098caaac6e0c2f39b0ca16b8","path":"fe/apps/app/src/modules/i18n/index.ts","step":"file-rules"}
-{"data":{},"findings":[],"hash":"f42b6787d7fe56a9109c820558f495c439f173d7cacbb7046491e0595179e083","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
-{"data":{},"findings":[],"hash":"51c73a4f385021becda9a0aefda6deaa0d12aaf106f3e49c7dd0a82e1fa15026","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"8cfad6a0698512fd7bcb39d49816f6979306eb1f1228765702e866d122ec7623","path":"fe/apps/app/src/modules/i18n/messages/en.json","step":"file-rules"}
+{"data":{},"findings":[],"hash":"54bf91ef4251953591116fa76a5f66fc8ba931ee48f70fb98441d3f0dd631c10","path":"fe/apps/app/src/modules/i18n/messages/vi.json","step":"file-rules"}
 {"data":{},"findings":[],"hash":"f6a78fccad240a5266d76c348e827e06729110e64068bf9693c46c59dcdecfe2","path":"fe/apps/app/src/modules/i18n/request.ts","step":"file-rules"}
 {"data":{"size-soft":[{"code":"HFS_SIZE_SOFT_BACKLOG","level":"info","lines":573,"message":"apps/app/src/modules/lesson-view/index.ts has 573 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","soft":500}]},"findings":[{"column":0,"line":0,"message":"apps/app/src/modules/lesson-view/index.ts has 573 lines, above the soft size 500; report only","path":"apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"5c36bd39c02b39be4d940d9d8339496a0b5b11c4230c3ff6f506e31e811c0223","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"file-rules"}
 {"findings":[{"column":0,"line":0,"message":"fe/apps/app/src/modules/lesson-view/index.ts has 573 lines, above the soft size 500; report only","path":"fe/apps/app/src/modules/lesson-view/index.ts","rule":"HFS_SIZE_SOFT_BACKLOG"}],"hash":"fbc7b5301bbece6b196d341bd6b08a4b49a6baef6384cd03dff9896ddd2dc113","path":"fe/apps/app/src/modules/lesson-view/index.ts","step":"hfs"}

@@ -45,8 +45,6 @@ namespaces:
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: confirm
       reason: read through the translator that the AuthPanel block hands to its copy helpers
-    - key: passwordHint
-      reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: reveal
       reason: read through the translator that the AuthPanel block hands to its copy helpers
     - key: hide
