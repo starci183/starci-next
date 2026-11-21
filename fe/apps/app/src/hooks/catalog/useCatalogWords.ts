@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl"
 import type { CatalogWords } from "@/modules/types"
-import { hoursText } from "./hoursText"
+import { hoursText } from "./hours.shared"
 import { useViewerPremium } from "./useViewerPremium"
 
 /** Resolves the words the catalog and topic views are built with: the state of a lesson, the counts and the primary. */

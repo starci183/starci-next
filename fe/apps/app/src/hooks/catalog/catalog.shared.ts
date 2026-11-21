@@ -1,4 +1,4 @@
-import { figuresOf, groupBadgeOf, minutesOf } from "./catalog.figures"
+import { figuresOf, groupBadgeOf, minutesOf } from "./figures.shared"
 import { lessonStateOf, UNTOUCHED_PARTS } from "@/hooks/lessonParts"
 import { lessonPartPath, topicPath } from "@/modules/routes"
 import {
