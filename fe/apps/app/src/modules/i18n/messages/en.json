@@ -1178,10 +1178,11 @@
         "breadcrumbs": "Breadcrumbs",
         "tabs": "The four parts of the lesson",
         "parts": {
-          "essence": "Essence",
-          "source": "Source",
-          "scenarios": "Scenarios",
-          "apply": "Apply it"
+          "essence": "Opener",
+          "source": "Essence",
+          "scenarios": "Bug hunt",
+          "apply": "Challenges",
+          "pattern": "Pattern"
         },
         "empty": "This lesson has no content yet.",
         "soon": "This part is being written.",
@@ -1359,8 +1360,8 @@
             "empty": "This lesson has no article."
           },
           "aside": {
-            "journeyTitle": "This lesson has 4 parts",
-            "journeyNote": "Parts 2 to 4 need Premium.",
+            "journeyTitle": "This lesson has 5 parts",
+            "journeyNote": "Parts 2 to 5 need Premium.",
             "retakeTitle": "At the end",
             "retakeText": "Answer the 5 again to see your score before and after reading.",
             "lockedPart": "Premium"
@@ -1383,29 +1384,105 @@
             "back": "Back to part 1",
             "compare": "Compare the two plans",
             "source": {
-              "title": "Part 2 · Source is a Premium part",
-              "one": "Download the TypeScript + Express source and run it with Docker",
-              "two": "Architecture diagram and a table where each component keeps one rule",
-              "three": "Read the code: each snippet tied to a rule and its real line number"
+              "title": "Part 2 · Essence is part of Premium",
+              "one": "Read practice first: run the source, then the theory",
+              "two": "The architecture, the code explained with its WHY and the essence of each piece",
+              "three": "Four test flows, the edge cases and the interview questions"
             },
             "scenarios": {
-              "title": "Part 3 · Scenarios are a Premium part",
-              "one": "Run each failure scenario on your own machine through the CLI",
-              "two": "See why it failed: the broken rule, plus a hint after each red run",
-              "three": "Ask your own AI to fix it, then check again until it is green"
+              "title": "Part 3 · Bug hunt is part of Premium",
+              "one": "Pull a copy of the source with 5 planted bugs and run it with Docker",
+              "two": "Fix the code until every test passes; a red test shows expected, received and hints one at a time",
+              "three": "Pass every test to open Challenges"
             },
             "apply": {
-              "title": "Part 4 · Apply is a Premium part",
-              "one": "Four levels, Easy, Medium, Hard, Insane, each opens when the one before is done",
-              "two": "Hidden tests run on your machine, a 100-point scale split per item",
-              "three": "Proved when GitHub CI signs it, then it becomes a line on your profile"
+              "title": "Part 4 · Challenges is part of Premium",
+              "one": "Four rungs, Easy to Insane, each opens once the one before is done",
+              "two": "Hidden scenarios run on your machine, a 100-point rubric per rung",
+              "three": "Push-back essence questions, with a short written answer graded by AI from Hard up"
+            },
+            "pattern": {
+              "title": "Part 5 · Pattern is part of Premium",
+              "one": "Where this pattern lives in a real project",
+              "two": "How far to apply it, and what happens when the server goes down",
+              "three": "The main files and a code sample, with the way to the repository"
             }
           }
         },
         "errorTitle": "Could not load the lesson",
         "errorText": "Check your connection and try again. Your scores and progress are kept.",
         "more": "Show more",
-        "less": "Show less"
+        "less": "Show less",
+        "five": {
+          "copy": "Copy",
+          "journeyTitle": "This lesson has 5 parts",
+          "reading": {
+            "tocTitle": "Contents",
+            "tocEmpty": "The reading has no section yet.",
+            "flagged": "Read closely",
+            "locked": "This part is part of Premium.",
+            "mcpTitle": "Ask AI through the lesson's MCP",
+            "mcpNote": "The AI reads the lesson, the source and your runs, never the hidden answers.",
+            "mcpConfig": "MCP config",
+            "mcpCommand": "Claude Code command",
+            "mcpToken": "Replace YOUR_TOKEN with a token from the Connect AI page."
+          },
+          "bugs": {
+            "pullTitle": "Get the source and run it on your machine",
+            "pullNote": "This copy of the source has 5 planted bugs, one per essence of the opener. Fix the code until every test passes.",
+            "runsEmpty": "The lesson has no test yet.",
+            "passTitle": "Why it is right now",
+            "failTitle": "Why it does not pass yet",
+            "hintsTitle": "Hints opened",
+            "lockedFinal": "The final test opens once every other test passes.",
+            "machineNone": "No machine is connected",
+            "machineNoneNote": "Pair your machine on the Connect page so each test's result comes back here.",
+            "machineOnline": "Machine {name} is connected",
+            "asideBugs": "5 bugs",
+            "asideHintsTitle": "Hints, one at a time",
+            "asideHints": "Direction (the section to read again), then the file, then the line. Hints cost no points; the page records how many you used.",
+            "asideUnlockTitle": "Unlock",
+            "asideUnlock": "Pass every test, the final one too, to open Challenges.",
+            "asideUnlocked": "Every test passes. Challenges is open.",
+            "state": {
+              "none": "Not run",
+              "running": "Running",
+              "passed": "Pass",
+              "failed": "Not yet",
+              "locked": "Locked"
+            },
+            "bug": "Bug {n}",
+            "happy": "The happy path",
+            "final": "Final test",
+            "hint": "Hint {n}",
+            "openHint": "Open hint {n}",
+            "expected": "expected",
+            "received": "received",
+            "runTitle": "Run {time} · {passed}/{total} pass",
+            "noRun": "No run yet · {total} tests"
+          },
+          "pattern": {
+            "stacks": "Stack",
+            "questions": "Three questions an AI does not answer by itself",
+            "snippet": "The business code only declares, the platform does the rest",
+            "files": "The main files · {folder}",
+            "filesEmpty": "This stack has no file yet.",
+            "soonText": "This stack is coming.",
+            "soon": "{stack} · coming",
+            "github": "Open on GitHub",
+            "sourceTitle": "Source",
+            "sourceNote": "Code taken from {repo}, only the relevant part, not runnable on its own.",
+            "addTitle": "Add a stack",
+            "addNote": "Each stack is one entry of the lesson's patterns.yaml: repository, folder, main files with notes, status.",
+            "where": "Where the code goes",
+            "howFar": "How far to apply it",
+            "whenDown": "When the server goes down"
+          },
+          "written": {
+            "prompt": "Explain briefly (3 to 5 sentences), as in an interview: why does your choice keep the system's promise?",
+            "wait": "Pick an answer to this question first, then write the explanation for the AI to grade."
+          }
+        }
       }
     },
     "projects": {

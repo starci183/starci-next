@@ -11,8 +11,13 @@ import type { RelayOptions } from "./relay.options"
 import type { DevicePrincipal } from "./relay.contracts"
 import { HarnessError, HarnessErrorCode, HarnessReadService } from "@modules/domain/harness"
 import { milestoneIn, ProjectCheckSetService } from "@modules/domain/project"
-import { LessonContentService, LessonSourceService, type LessonSourcePack } from "@modules/domain/lesson"
-import { RelayLessonService, type LessonScenarioRunView } from "./relay-lesson.service"
+import {
+    LessonContentService,
+    LessonSourceService,
+    lessonBugCheckId,
+    type LessonSourcePack,
+} from "@modules/domain/lesson"
+import { RelayLessonService, isBugRun, type LessonScenarioRunView } from "./relay-lesson.service"
 import { isHarnessTask } from "./relay-harness.policy"
 import {
     harnessBuildManifestOf,
@@ -22,6 +27,7 @@ import {
 } from "./relay-harness-manifest.policy"
 import {
     LESSON_SOURCE_MAX_BYTES,
+    lessonBugsPathOf,
     lessonIdOfTask,
     lessonManifestOf,
     lessonSourcePathOf,
@@ -166,13 +172,13 @@ export class RelayFeedService {
     ): Promise<ManifestLesson | null> {
         const lessonId = lessonIdOfTask(taskId)
         if (lessonId === null) {
-            if (request?.scenario !== undefined || request?.challenge !== undefined)
+            if (request?.scenario !== undefined || request?.challenge !== undefined || request?.bugs === true)
                 throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
             return null
         }
         if (this.content === undefined || this.lessons === undefined)
             throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
-        // A challenge run is Tự áp dụng; any other lesson run (the scenarios and the lesson section) is Kịch bản.
+        // A challenge run is Challenges; any other lesson run (the scenarios, the bug pack and the lesson section) is Tìm sạn.
         await this.content.requireAccess({
             learnerId: device.learnerId,
             phase: "apply",
@@ -182,13 +188,30 @@ export class RelayFeedService {
         const stored = await this.content.runnable(lessonId)
         if (stored === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
         const below = request?.challenge === undefined ? null : tierBelow(request.challenge)
+        const bugTests = stored.essential.bugs?.tests ?? []
+        // The first rung opens once the whole bug pack is green; a later one once the hidden scenarios of the tier below are.
         const belowIds =
             below === null
-                ? []
+                ? request?.challenge === undefined
+                    ? []
+                    : bugTests.map((test) => lessonBugCheckId(test.id))
                 : (stored.essential.challenges.find((each) => each.level === below)?.hidden ?? []).map(
                       (each) => each.id,
                   )
-        const isBelowGreen = await this.lessons.allGreen(device.learnerId, lessonId, belowIds)
+        const [isBelowGreen, isFinalOpen] = await Promise.all([
+            this.lessons.allGreen(device.learnerId, lessonId, belowIds),
+            request?.bugs === true
+                ? this.lessons.allGreen(
+                      device.learnerId,
+                      lessonId,
+                      bugTests.filter((test) => !test.isFinal).map((test) => lessonBugCheckId(test.id)),
+                  )
+                : Promise.resolve(false),
+        ])
+        const bugsLink =
+            stored.bugs === null || stored.bugs.content.length > LESSON_SOURCE_MAX_BYTES
+                ? null
+                : { url: lessonBugsPathOf(lessonId), sha256: stored.bugs.sha256, commit: stored.version }
         const link =
             stored.source === null || stored.source.content.length > LESSON_SOURCE_MAX_BYTES
                 ? null
@@ -196,9 +219,10 @@ export class RelayFeedService {
         const result = lessonManifestOf(
             lessonId,
             stored.essential,
-            { scenario: request?.scenario, challenge: request?.challenge },
+            { scenario: request?.scenario, challenge: request?.challenge, bugs: request?.bugs },
             () => isBelowGreen,
             link,
+            { link: bugsLink, isFinalOpen },
         )
         if (result.kind === "locked") throw new RelayError({ code: RelayErrorCode.ChallengeLocked })
         if (result.kind === "not-runnable") throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
@@ -226,6 +250,25 @@ export class RelayFeedService {
     }
 
     /**
+     * The tarball of the Tìm sạn bug pack (`bugs/source/`) of the live version of a lesson, for a paired device whose learner may
+     * read Tìm sạn (Premium): the bytes the manifest signed the sha256 of. Never `source/` or `hidden/`.
+     */
+    async bugsDownload(device: DevicePrincipal, lessonId: string): Promise<LessonSourcePack> {
+        if (!/^[a-z0-9-]{1,100}$/u.test(lessonId)) throw new RelayError({ code: RelayErrorCode.PayloadInvalid })
+        if (this.content === undefined || this.sources === undefined)
+            throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
+        await this.content.requireAccess({
+            learnerId: device.learnerId,
+            phase: "apply",
+            isPremium: undefined,
+            part: "3-scenarios",
+        })
+        const pack = await this.sources.bugsArchive(lessonId)
+        if (pack === null) throw new RelayError({ code: RelayErrorCode.LessonNotRunnable })
+        return pack
+    }
+
+    /**
      * The newest relayed run of each scenario and challenge tier of a lesson, for the learner who asks. Scenario runs are Kịch bản
      * and challenge runs Tự áp dụng: a learner who may read neither part is refused (never an empty answer that hides the lock),
      * and one who may read only one part gets only that part's runs.
@@ -240,7 +283,8 @@ export class RelayFeedService {
         if (!scenarios && !challenges)
             await this.content.requireAccess({ learnerId, phase: "apply", isPremium: undefined, part: "3-scenarios" })
         const runs = await this.lessons.runs(learnerId, lessonId)
-        return runs.filter((run) => (run.challengeTier === null ? scenarios : challenges))
+        // The bug-pack tests have their own read (lessonBugResults), which releases their texts as they are earned.
+        return runs.filter((run) => !isBugRun(run) && (run.challengeTier === null ? scenarios : challenges))
     }
 
     /**

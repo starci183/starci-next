@@ -110,8 +110,8 @@ export class RelayClientService implements RelayClientPort {
     }
 
     /** Gets a lesson repo at the signed commit. */
-    async pull(lesson: string, lang: string | undefined): Promise<void> {
-        this.io.exit(await pullLesson(this.io, lesson, lang, this.cwd))
+    async pull(lesson: string, lang: string | undefined, bugs = false): Promise<void> {
+        this.io.exit(await pullLesson(this.io, lesson, lang, this.cwd, bugs))
     }
 
     /** Starts or stops the lesson containers. */

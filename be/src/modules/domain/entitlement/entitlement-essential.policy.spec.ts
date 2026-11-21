@@ -24,12 +24,19 @@ describe("essential free parts", () => {
 
     it("opens every part with Premium and the free parts without", () => {
         const free = essentialFreePartsOf({})
-        expect(openEssentialPartsOf(free, true)).toEqual(["1-essential", "2-source", "3-scenarios", "4-apply"])
+        expect(openEssentialPartsOf(free, true)).toEqual([
+            "1-essential",
+            "2-source",
+            "3-scenarios",
+            "4-apply",
+            "5-patterns",
+        ])
         expect(openEssentialPartsOf(free, false)).toEqual(["1-essential"])
         expect(lockedEssentialPartsOf(openEssentialPartsOf(free, false))).toEqual([
             "2-source",
             "3-scenarios",
             "4-apply",
+            "5-patterns",
         ])
         expect(lockedEssentialPartsOf(openEssentialPartsOf(free, true))).toEqual([])
     })

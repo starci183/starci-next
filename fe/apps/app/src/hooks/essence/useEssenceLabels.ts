@@ -102,6 +102,10 @@ const shellOf = (t: Translate): EssenceShellLabels => ({
             title: t("locked.apply.title"),
             contents: [t("locked.apply.one"), t("locked.apply.two"), t("locked.apply.three")],
         },
+        pattern: {
+            title: t("locked.pattern.title"),
+            contents: [t("locked.pattern.one"), t("locked.pattern.two"), t("locked.pattern.three")],
+        },
     },
     lockedDescription: t("locked.description"),
     lockedList: t("locked.list"),

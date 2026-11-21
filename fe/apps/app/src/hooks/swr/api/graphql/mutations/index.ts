@@ -7,6 +7,8 @@ export { MUTATE_CONFIRM_RELAY_DEVICE_SWR_KEY, useMutateConfirmRelayDeviceSwr } f
 export { MUTATE_REVOKE_RELAY_DEVICE_SWR_KEY, useMutateRevokeRelayDeviceSwr } from "./useMutateRevokeRelayDeviceSwr"
 export { MUTATE_PRACTICE_HINT_SWR_KEY, useMutatePracticeHintSwr } from "./useMutatePracticeHintSwr"
 export { MUTATE_REVEAL_LESSON_HINT_SWR_KEY, useMutateRevealLessonHintSwr } from "./useMutateRevealLessonHintSwr"
+export { MUTATE_OPEN_LESSON_BUG_HINT_SWR_KEY, useMutateOpenLessonBugHintSwr } from "./useMutateOpenLessonBugHintSwr"
+export type { OpenLessonBugHintArgument } from "./useMutateOpenLessonBugHintSwr"
 export type { LessonHintRevealed, RevealLessonHintArgument } from "./useMutateRevealLessonHintSwr"
 export { MUTATE_REQUEST_LESSON_RUN_SWR_KEY, useMutateRequestLessonRunSwr } from "./useMutateRequestLessonRunSwr"
 export type { LessonRunRequested, RequestLessonRunArgument } from "./useMutateRequestLessonRunSwr"

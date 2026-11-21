@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql"
-import { IsIn, IsOptional, IsString, Matches, MaxLength } from "class-validator"
+import { IsBoolean, IsIn, IsOptional, IsString, Matches, MaxLength } from "class-validator"
 
 @InputType()
 /** The relayManifest arguments: the task the device asks the checks of. */
@@ -46,6 +46,12 @@ export class RelayManifestInput {
     @IsOptional()
     @IsIn(["easy", "medium", "hard", "insane"])
     challenge?: string
+
+    /** For a lesson task: true to sign the Tìm sạn bug pack (its tarball and its tests). */
+    @Field(() => Boolean, { nullable: true })
+    @IsOptional()
+    @IsBoolean()
+    bugs?: boolean
 
     /** For a harness trial task: the tool whose headless run the manifest is for. */
     @Field(() => String, { nullable: true })

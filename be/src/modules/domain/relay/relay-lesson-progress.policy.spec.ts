@@ -1,6 +1,8 @@
 import { Test } from "@nestjs/testing"
 import type { LessonEssential } from "@modules/domain/lesson"
 import { challengeScoresOf, lessonPartsOf, type LessonProgressFacts } from "./relay-lesson-progress.policy"
+import { bugHintKeyOf, bugResultsOf, isBugHintKey, isFinalOpenOf, nextBugHintOf } from "./relay-lesson-bugs.policy"
+import { lessonManifestOf } from "./relay-lesson-manifest.policy"
 import type { LessonScenarioRunView } from "./relay-lesson.service"
 
 const POLICY: unique symbol = Symbol("spec.relay-lesson-progress-policy")
@@ -69,6 +71,7 @@ const run = (
     concepts: [],
     why: null,
     ledger: null,
+    received: null,
     at: "2026-11-17T00:00:00.000Z",
     ...extra,
 })
@@ -166,5 +169,121 @@ describe("challenge scores", () => {
             score: 80,
         })
         expect(medium).toMatchObject({ state: "open", isLocked: false, score: 0 })
+    })
+})
+
+describe("the Tìm sạn bug pack, per test id", () => {
+    const bugTest = (id: string, isFinal = false) => ({
+        id,
+        command: `npm test -- --scenario ${id}`,
+        essence: null,
+        title: id,
+        pass: `PASS ${id}`,
+        fail: `FAIL ${id}`,
+        expected: "1",
+        received: "n",
+        hints: [`H1 ${id}`, `H2 ${id}`, `H3 ${id}`],
+        isFinal,
+        concepts: [],
+    })
+    const pack = { tests: [bugTest("happy-path"), bugTest("ack-lost-retry"), bugTest("ledger-under-chaos", true)] }
+    const withBugs: LessonEssential = { ...essential, bugs: pack }
+    const bugRun = (id: string, status: LessonScenarioRunView["status"], received: string | null = null) =>
+        run(`bug:${id}`, status, { slot: "bugs", received })
+
+    it("releases pass after a green run, fail and the received line after a red one, nothing before a run", () => {
+        const results = bugResultsOf(
+            pack,
+            [bugRun("happy-path", "passed"), bugRun("ack-lost-retry", "failed", "points 998")],
+            new Set(),
+        )
+        expect(results[0]).toMatchObject({
+            testId: "happy-path",
+            status: "passed",
+            pass: "PASS happy-path",
+            fail: null,
+        })
+        expect(results[1]).toMatchObject({
+            status: "failed",
+            pass: null,
+            fail: "FAIL ack-lost-retry",
+            received: "points 998",
+            hints: [],
+            hintsOpened: 0,
+            hintCount: 3,
+        })
+        expect(results[2]).toMatchObject({ status: "none", isLocked: true, pass: null, fail: null, hints: [] })
+    })
+
+    it("opens the hints one at a time while the test is red, and never past the last", () => {
+        const runs = [bugRun("ack-lost-retry", "failed")]
+        expect(nextBugHintOf(pack, "ack-lost-retry", runs, new Set())).toEqual({ kind: "open", level: 1 })
+        const two = new Set([bugHintKeyOf("ack-lost-retry", 1), bugHintKeyOf("ack-lost-retry", 2)])
+        expect(nextBugHintOf(pack, "ack-lost-retry", runs, two)).toEqual({ kind: "open", level: 3 })
+        expect(bugResultsOf(pack, runs, two)[1]?.hints).toEqual(["H1 ack-lost-retry", "H2 ack-lost-retry"])
+        const all = new Set([...two, bugHintKeyOf("ack-lost-retry", 3)])
+        expect(nextBugHintOf(pack, "ack-lost-retry", runs, all)).toEqual({ kind: "none-left" })
+        expect(nextBugHintOf(pack, "happy-path", [bugRun("happy-path", "passed")], new Set())).toEqual({
+            kind: "not-red",
+        })
+        expect(nextBugHintOf(pack, "nope", runs, new Set())).toEqual({ kind: "unknown" })
+        expect(isBugHintKey(bugHintKeyOf("ack-lost-retry", 2))).toBe(true)
+        expect(isBugHintKey("happy-path")).toBe(false)
+    })
+
+    it("opens the final test once every other test is green, and shows its run only then", () => {
+        const green = [bugRun("happy-path", "passed"), bugRun("ack-lost-retry", "passed")]
+        expect(isFinalOpenOf(pack, green)).toBe(true)
+        const results = bugResultsOf(pack, [...green, bugRun("ledger-under-chaos", "failed")], new Set())
+        expect(results[2]).toMatchObject({ isLocked: false, status: "failed", fail: "FAIL ledger-under-chaos" })
+        const early = bugResultsOf(pack, [bugRun("ledger-under-chaos", "passed")], new Set())
+        expect(early[2]).toMatchObject({ isLocked: true, status: "none", pass: null })
+    })
+
+    it("keeps the first rung of Challenges locked until the whole bug pack is green, and counts Tìm sạn by test", () => {
+        const half = [bugRun("happy-path", "passed"), bugRun("ack-lost-retry", "passed")]
+        expect(challengeScoresOf(withBugs, half, new Map())[0]).toMatchObject({ level: "easy", isLocked: true })
+        const all = [...half, bugRun("ledger-under-chaos", "passed")]
+        expect(challengeScoresOf(withBugs, all, new Map())[0]).toMatchObject({ level: "easy", isLocked: false })
+        const { parts } = lessonPartsOf({
+            essential: withBugs,
+            openerAnswered: 0,
+            readable: { essence: true, source: true, scenarios: true, apply: true },
+            runs: half,
+            hasEvents: true,
+            choices: new Map(),
+        })
+        expect(parts.find((part) => part.part === "scenarios")).toMatchObject({ done: 2, total: 3, state: "doing" })
+    })
+
+    it("signs the bug pack only when asked, the final test only once it is open", () => {
+        const link = { url: "/api/relay/lessons/outbox/source.tgz", sha256: "a".repeat(64), commit: "b".repeat(40) }
+        const bugsLink = { ...link, url: "/api/relay/lessons/outbox/bugs.tgz" }
+        const closed = lessonManifestOf("outbox", withBugs, { bugs: true }, () => true, link, {
+            link: bugsLink,
+            isFinalOpen: false,
+        })
+        expect(closed.kind === "section" ? closed.lesson.bugs?.tests.map((test) => test.id) : null).toEqual([
+            "happy-path",
+            "ack-lost-retry",
+        ])
+        const open = lessonManifestOf("outbox", withBugs, { bugs: true }, () => true, link, {
+            link: bugsLink,
+            isFinalOpen: true,
+        })
+        expect(open.kind === "section" ? open.lesson.bugs : null).toMatchObject({
+            source: bugsLink,
+            tests: [{ id: "happy-path" }, { id: "ack-lost-retry" }, { id: "ledger-under-chaos" }],
+        })
+        const plain = lessonManifestOf("outbox", withBugs, {}, () => true, link)
+        expect(plain.kind === "section" ? plain.lesson.bugs : "x").toBeUndefined()
+        expect(
+            lessonManifestOf("outbox", essential, { bugs: true }, () => true, link, {
+                link: bugsLink,
+                isFinalOpen: true,
+            }),
+        ).toEqual({ kind: "not-runnable" })
+        expect(JSON.stringify(open)).not.toContain("PASS ")
+        expect(JSON.stringify(open)).not.toContain("H1 ")
     })
 })

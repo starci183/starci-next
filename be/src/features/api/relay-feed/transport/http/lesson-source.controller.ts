@@ -3,6 +3,7 @@ import type { QueryBus } from "@nestjs/cqrs"
 import { Credential, CurrentCredential, type CredentialPrincipal } from "@modules/domain/identity"
 import { InjectQueryBus } from "@modules/platform/cqrs"
 import { GetLessonSourceArchiveQuery } from "../../application/get-lesson-source-archive.query"
+import { GetLessonBugsArchiveQuery } from "../../application/get-lesson-bugs-archive.query"
 
 @Controller("api/relay/lessons")
 /**
@@ -30,6 +31,28 @@ export class LessonSourceController {
         return new StreamableFile(found.content, {
             type: "application/gzip",
             disposition: `attachment; filename="${lessonId}-source.tgz"`,
+            length: found.content.length,
+        })
+    }
+
+    /** Streams the contents of `bugs/source/` (the Tìm sạn bug pack) of the live lesson version as `application/gzip`. */
+    @Get(":lessonId/bugs.tgz")
+    @Credential({ kind: "tool-token" })
+    async downloadBugs(
+        @CurrentCredential() credential: CredentialPrincipal,
+        @Param("lessonId") lessonId: string,
+    ): Promise<StreamableFile> {
+        const found = await this.queryBus.execute(
+            new GetLessonBugsArchiveQuery({
+                request: {
+                    device: { learnerId: credential.workspaceId, deviceId: credential.subject },
+                    lessonId,
+                },
+            }),
+        )
+        return new StreamableFile(found.content, {
+            type: "application/gzip",
+            disposition: `attachment; filename="${lessonId}-bugs.tgz"`,
             length: found.content.length,
         })
     }

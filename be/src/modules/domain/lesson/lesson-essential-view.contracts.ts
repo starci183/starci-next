@@ -3,6 +3,7 @@ import type {
     LessonChallengeLevel,
     LessonCodeWalkEntry,
     LessonInvariant,
+    LessonPatternStatus,
     LessonScenario,
     LessonSourceLanguage,
 } from "./lesson-essential.contracts"
@@ -33,6 +34,8 @@ export interface LessonQuestionView {
     readonly scenarioId: string | null
     /** The development of the opener story this question adds, or null (a lesson without a story, a challenge question). */
     readonly event: LessonOpenerEventView | null
+    /** The activity id of the written explanation the question asks (`challenge.<id>.<question>.written`), or null. */
+    readonly writtenActivityId: string | null
 }
 
 /** One development of the opener story as the timeline shows it. */
@@ -87,6 +90,61 @@ export interface LessonChallengeView {
     readonly hiddenScenarios: number
     /** The essence check. */
     readonly questions: ReadonlyArray<LessonQuestionView>
+    /** True when some essence question of the tier asks a written explanation (AI graded), from the Khó tier up. */
+    readonly writtenRequired: boolean
+}
+
+/**
+ * One test of the Tìm sạn bug pack as every reader of the part sees it: what it checks and how to run it. "Vì sao giờ đúng", "Vì sao
+ * chưa pass" and the hints are not here: the learner's own runs release them (`lessonBugRuns`).
+ */
+export interface LessonBugTestView {
+    /** The test id. */
+    readonly id: string
+    /** The title. */
+    readonly title: string
+    /** The opener question id it belongs to, or null. */
+    readonly essence: string | null
+    /** The command the CLI runs for it. */
+    readonly command: string
+    /** What a correct system shows. */
+    readonly expected: string
+    /** The label of what the run measures. */
+    readonly received: string
+    /** How many hints it has. */
+    readonly hintCount: number
+    /** True for the final test, which opens once every other test passed. */
+    readonly isFinal: boolean
+}
+
+/** The bug pack of Tìm sạn as the page reads it. */
+export interface LessonBugPackView {
+    /** The tests, in order. */
+    readonly tests: ReadonlyArray<LessonBugTestView>
+}
+
+/** One Pattern stack as the page reads it. */
+export interface LessonPatternView {
+    /** The stack id. */
+    readonly stack: string
+    /** Ready or soon. */
+    readonly status: LessonPatternStatus
+    /** The GitHub repository, `owner/name`, or empty. */
+    readonly repo: string
+    /** The folder inside it, or empty. */
+    readonly path: string
+    /** The link to the folder on GitHub, or null for a stack without a repository. */
+    readonly url: string | null
+    /** Đặt code ở đâu. */
+    readonly where: string
+    /** Áp tới mức nào. */
+    readonly howFar: string
+    /** Server sập thì sao. */
+    readonly whenDown: string
+    /** The main files with what each holds. */
+    readonly files: ReadonlyArray<{ readonly path: string; readonly note: string }>
+    /** The snippet, or null. */
+    readonly snippet: { readonly lang: string; readonly file: string; readonly code: string } | null
 }
 
 /**
@@ -116,6 +174,10 @@ export interface LessonEssentialView {
     readonly scenarios: ReadonlyArray<LessonScenarioView>
     /** The challenge ladder. */
     readonly challenges: ReadonlyArray<LessonChallengeView>
+    /** The bug pack of Tìm sạn, or null (a lesson without one, or the part is locked). */
+    readonly bugs: LessonBugPackView | null
+    /** The Pattern stacks; empty for a lesson without them or when the part is locked. */
+    readonly patterns: ReadonlyArray<LessonPatternView>
 }
 
 /** A component as the learner sees it. */

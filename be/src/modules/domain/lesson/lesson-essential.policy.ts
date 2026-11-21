@@ -8,6 +8,7 @@ import {
     type LessonRootFile,
 } from "./lesson.contracts"
 import {
+    challengeWrittenActivityId,
     choiceOptionId,
     type LessonScenarioGuard,
     type LessonScenarioRun,
@@ -313,6 +314,47 @@ const choiceActivityOf = (id: string, question: LessonOpenerQuestion, isOpener: 
     })),
 })
 
+/** The most points one essence question gives the written explanation of a tier. */
+const WRITTEN_CRITERION_POINTS = 2
+
+/** The break between two paragraphs of a prompt. */
+const PARAGRAPH = `${String.fromCharCode(10)}${String.fromCharCode(10)}`
+
+/**
+ * The written explanation of an essence question that asks one (`writtenRequired`) as an explain activity the AI coach grades: one
+ * criterion, the right choice as the evidence a good answer shows and the wrong ones as the misconceptions it catches. The rubric
+ * never leaves the server; the page sends the learner's text only.
+ */
+const writtenActivityOf = (
+    challenge: LessonChallenge,
+    question: LessonOpenerQuestion,
+    locale: LessonLocale,
+): LessonActivity => {
+    const ask =
+        locale === "vi"
+            ? "Giải thích ngắn (3 đến 5 câu) như đang trả lời phỏng vấn: vì sao lựa chọn của bạn giữ được lời hứa của hệ thống?"
+            : "Explain briefly (3 to 5 sentences), as in an interview: why does your choice keep the system's promise?"
+    return {
+        id: challengeWrittenActivityId(challenge.id, question.id),
+        kind: "explain",
+        prompt: [question.prompt, ask].join(PARAGRAPH),
+        responseKind: "written-explanation",
+        evaluationMethod: "ai-rubric",
+        isDiagnostic: false,
+        feedbackRelease: "after-submit",
+        outcomeIds: [],
+        rubric: [
+            {
+                id: question.id,
+                criterion: question.prompt,
+                expectedEvidence: question.choices[question.correctIndex] ?? "",
+                misconception: question.choices.filter((_, index) => index !== question.correctIndex).join(" / "),
+                maxScore: WRITTEN_CRITERION_POINTS,
+            },
+        ],
+    }
+}
+
 /** An activity found among the four-part fields: the choice, the phase it is graded in and the teacher's mark. */
 export interface EssentialActivity {
     /** The question as a choice activity. */
@@ -332,6 +374,7 @@ export interface EssentialActivity {
 export const findEssentialActivity = (
     essential: LessonEssential | undefined,
     activityId: string,
+    locale: LessonLocale = "vi",
 ): EssentialActivity | null => {
     if (essential === undefined) return null
     if (activityId.startsWith(OPENER_PREFIX)) {
@@ -346,6 +389,18 @@ export const findEssentialActivity = (
               }
     }
     if (!activityId.startsWith(CHALLENGE_PREFIX)) return null
+    for (const challenge of essential.challenges) {
+        const written = (challenge.questions ?? []).find(
+            (each) => each.writtenRequired === true && challengeWrittenActivityId(challenge.id, each.id) === activityId,
+        )
+        if (written !== undefined)
+            return {
+                activity: writtenActivityOf(challenge, written, locale),
+                phase: "apply",
+                isPremium: true,
+                part: "4-apply",
+            }
+    }
     for (const challenge of essential.challenges) {
         const question = (challenge.questions ?? []).find(
             (each) => `${CHALLENGE_PREFIX}${challenge.id}.${each.id}` === activityId,

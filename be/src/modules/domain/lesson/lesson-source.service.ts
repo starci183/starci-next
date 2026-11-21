@@ -93,11 +93,28 @@ export class LessonSourceService {
         return archive === null ? null : { ...archive, lessonId, commit: row.version }
     }
 
+    /** The tarball of the lesson's Tìm sạn bug pack (`bugs/source/`), cut once per lesson and commit; null when it ships none. */
+    async bugsArchive(lessonId: string): Promise<LessonSourcePack | null> {
+        const rows: Array<VersionRow> = await this.entityManager.query(SELECT_PUBLISHED, [lessonId])
+        const row = rows[0]
+        if (row === undefined) return null
+        const archive = this.bugsArchiveOf(row)
+        return archive === null ? null : { ...archive, lessonId, commit: row.version }
+    }
+
+    /** The tarball of a stored version's bug pack, cut once per lesson and version; null when it ships no `bugs/source/`. */
+    bugsArchiveOf(row: VersionRow): LessonSourceArchive | null {
+        return this.cut(`${row.lesson_id}@${row.version}#bugs`, row.content.bugsCode ?? [])
+    }
+
     /** The tarball of a stored version, cut once per lesson and version; null when it ships no `source/`. */
     archiveOf(row: VersionRow): LessonSourceArchive | null {
-        const code = row.content.sourceCode ?? []
+        return this.cut(`${row.lesson_id}@${row.version}`, row.content.sourceCode ?? [])
+    }
+
+    /** The tarball of some files under a cache key, cut once; null for no file. */
+    private cut(key: string, code: ReadonlyArray<LessonSourceCode>): LessonSourceArchive | null {
         if (code.length === 0) return null
-        const key = `${row.lesson_id}@${row.version}`
         const cached = this.archives.get(key)
         if (cached !== undefined) return cached
         const archive = sourceArchiveOf(code)

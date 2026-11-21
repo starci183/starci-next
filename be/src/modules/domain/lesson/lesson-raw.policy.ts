@@ -3,7 +3,7 @@ import { isRecord } from "@modules/platform/primitives"
 import { contentHashOf } from "./lesson-draft.policy"
 import { groupOf } from "./lesson-group.policy"
 import { parseSeparatorFields } from "./separator.policy"
-import { sourceCodeOf } from "./lesson-source-archive.policy"
+import { LESSON_BUGS_SOURCE_FOLDER as BUGS_FOLDER, sourceCodeOf } from "./lesson-source-archive.policy"
 import { topicSourceOf } from "./lesson-topic-file.policy"
 import type { LessonTopicCatalog } from "./lesson-topic.contracts"
 import type { LessonDraftResult, LessonIssue, LessonSourceFile } from "./lesson-import.contracts"
@@ -18,6 +18,10 @@ import {
 } from "./lesson.contracts"
 import {
     LESSON_CHALLENGE_LEVELS,
+    LESSON_ESSENCE_SECTION,
+    LESSON_PATTERN_STATUSES,
+    type LessonBugPack,
+    type LessonBugTest,
     type LessonChallenge,
     type LessonChallengeLevel,
     type LessonEssential,
@@ -26,6 +30,8 @@ import {
     type LessonOpenerInsight,
     type LessonOpenerQuestion,
     type LessonOpenerStory,
+    type LessonPattern,
+    type LessonPatternFile,
     type LessonScenario,
 } from "./lesson-essential.contracts"
 import { LESSON_CHALLENGE_POINTS, LESSON_OPENER_SIZE } from "./lesson-essential.policy"
@@ -319,14 +325,35 @@ const challengesOf = (
             const correct = options.findIndex((option) => option.id === answer)
             if (locale === "vi" && correct < 0)
                 issues.add("hidden/essence-answers.yaml", stringOf(question.id), "names no option of the question")
+            if (
+                question.writtenRequired !== undefined &&
+                typeof question.writtenRequired !== "boolean" &&
+                locale === "vi"
+            )
+                issues.add(
+                    "sections/4-apply/challenges.yaml",
+                    `tiers[${index}].essence.${stringOf(question.id)}.writtenRequired`,
+                    "is not true or false",
+                )
             return {
                 id: stringOf(question.id),
                 prompt: textOf(question.prompt as Localized, locale),
                 choices: options.map((option) => textOf(option.text as Localized, locale)),
                 correctIndex: Math.max(correct, 0),
                 explanation: "",
+                ...(tier.writtenRequired === true || question.writtenRequired === true
+                    ? { writtenRequired: true }
+                    : {}),
             }
         })
+        if (tier.writtenRequired !== undefined && typeof tier.writtenRequired !== "boolean" && locale === "vi")
+            issues.add("sections/4-apply/challenges.yaml", `tiers[${index}].writtenRequired`, "is not true or false")
+        if (tier.writtenRequired === true && questions.length === 0 && locale === "vi")
+            issues.add(
+                "sections/4-apply/challenges.yaml",
+                `tiers[${index}].writtenRequired`,
+                "asks a written explanation of the essence questions, but the tier has none",
+            )
         const challenge: LessonChallenge = {
             id: level,
             level: level as LessonChallengeLevel,
@@ -335,9 +362,238 @@ const challengesOf = (
             rubric,
             hidden: hiddenOf(tier, plan, locale, byPath, issues),
             questions,
+            ...(questions.some((question) => question.writtenRequired === true) ? { writtenRequired: true } : {}),
         }
         return [challenge]
     })
+
+/** The path of the bug pack's tests. */
+const BUGS_PATH = "bugs/tests.yaml"
+
+/** The schema the bug pack's tests file names. */
+const BUGS_SCHEMA = "starci-next-seed-standard/essentials-bugs@1"
+
+/** The path of the Pattern stacks. */
+const PATTERNS_PATH = "sections/5-patterns/patterns.yaml"
+
+/** The schema the Pattern file names. */
+const PATTERNS_SCHEMA = "starci-next-seed-standard/essentials-patterns@1"
+
+/** The stacks Pattern knows. */
+const PATTERN_STACKS: ReadonlyArray<string> = ["nestjs", "go", "spring", "dotnet"]
+
+/** The most hints a bug-pack test gives: direction, file, line. */
+const BUG_HINTS_MAX = 3
+
+/** An id of a test: lowercase letters, digits and dashes. */
+const SLUG_ID = /^[a-z0-9][a-z0-9-]{0,63}$/u
+
+/** A path the learner CLI takes: relative, posix, no drive. */
+const RUN_PATH = /^[A-Za-z0-9._@-][A-Za-z0-9._@/-]*$/u
+
+/** A GitHub repository as `owner/name`. */
+const GITHUB_REPO = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u
+
+/** The text of a localized field, with an issue on the vi pass when it is empty. */
+const neededTextOf = (value: unknown, locale: LessonLocale, path: string, field: string, issues: Issues): string => {
+    const text = textOf(value as Localized, locale)
+    if (locale === "vi" && text.trim() === "") issues.add(path, field, "is empty")
+    return text
+}
+
+/** The schema line of a file, with an issue when it names another schema (a file without one is read as this schema). */
+const checkSchema = (doc: Record<string, unknown>, path: string, schema: string, issues: Issues): void => {
+    if (doc.schema !== undefined && doc.schema !== schema)
+        issues.add(path, "schema", `is ${String(doc.schema)}, not ${schema}`)
+}
+
+/** The issues of the vi pass only: a structural check is reported once, not once per locale. */
+const viIssues = (locale: LessonLocale, issues: Issues): Issues => (locale === "vi" ? issues : new Issues())
+
+/** The final test of a pack: the one marked `final: true`, else the last of several; -1 when none. */
+const finalIndexOf = (entries: ReadonlyArray<Record<string, unknown>>): number => {
+    const marked = entries.findIndex((entry) => entry.final === true)
+    if (marked >= 0) return marked
+    return entries.length > 1 ? entries.length - 1 : -1
+}
+
+/** One test of the bug pack, field by field, with the issues of its own fields. */
+const bugTestOf = (
+    entry: Record<string, unknown>,
+    index: number,
+    isFinal: boolean,
+    opener: ReadonlyArray<LessonOpenerQuestion>,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonBugTest => {
+    const vi = viIssues(locale, issues)
+    const at = `tests[${index}]`
+    const id = stringOf(entry.id)
+    if (!SLUG_ID.test(id)) vi.add(BUGS_PATH, `${at}.id`, `${id} is not an id like ack-lost-retry`)
+    const command = stringOf(entry.command)
+    if (command.trim() === "") vi.add(BUGS_PATH, `${at}.command`, "is empty")
+    const essence = typeof entry.essence === "string" ? entry.essence : null
+    if (entry.essence !== undefined && entry.essence !== null && typeof entry.essence !== "string")
+        vi.add(BUGS_PATH, `${at}.essence`, "is not an opener question id or null")
+    if (essence !== null && !opener.some((question) => question.id === essence))
+        vi.add(BUGS_PATH, `${at}.essence`, `${essence} is not a question of ${QUIZ_PATH}`)
+    if (entry.hints !== undefined && !Array.isArray(entry.hints)) vi.add(BUGS_PATH, `${at}.hints`, "is not a list")
+    const hints: ReadonlyArray<unknown> = Array.isArray(entry.hints) ? entry.hints : []
+    if (hints.length > BUG_HINTS_MAX)
+        vi.add(BUGS_PATH, `${at}.hints`, `holds ${hints.length} hints, not ${BUG_HINTS_MAX} at most`)
+    if (hints.length === 0 && !isFinal) vi.add(BUGS_PATH, `${at}.hints`, "holds no hint")
+    // The learner CLI refuses a path above the folder and an id it cannot name, so the importer refuses them first.
+    for (const field of ["cwd", "report"] as const) {
+        const value = entry[field]
+        if (
+            value !== undefined &&
+            (typeof value !== "string" || !RUN_PATH.test(value) || value.split("/").includes(".."))
+        )
+            vi.add(BUGS_PATH, `${at}.${field}`, `${String(value)} is not a relative path`)
+    }
+    stringsOf(entry.concepts)
+        .filter((concept) => !SLUG_ID.test(concept))
+        .forEach((concept) => vi.add(BUGS_PATH, `${at}.concepts`, `${concept} is not [a-z0-9-]+`))
+    return {
+        id,
+        command,
+        essence,
+        title: neededTextOf(entry.title, locale, BUGS_PATH, `${at}.title`, issues),
+        pass: neededTextOf(entry.pass, locale, BUGS_PATH, `${at}.pass`, issues),
+        fail: neededTextOf(entry.fail, locale, BUGS_PATH, `${at}.fail`, issues),
+        expected: textOf(entry.expected as Localized, locale),
+        received: textOf(entry.received as Localized, locale),
+        hints: hints.map((hint, place) => neededTextOf(hint, locale, BUGS_PATH, `${at}.hints[${place}]`, issues)),
+        isFinal,
+        concepts: stringsOf(entry.concepts),
+        ...(typeof entry.cwd === "string" ? { cwd: entry.cwd } : {}),
+        ...(typeof entry.report === "string" ? { report: entry.report } : {}),
+        ...(typeof entry.timeoutMs === "number" ? { timeoutMs: entry.timeoutMs } : {}),
+    }
+}
+
+/**
+ * The bug pack of Tìm sạn (`bugs/tests.yaml`, essentials-bugs@1), or null when the lesson has none: a lesson written before it
+ * still imports. Every test needs an id (once), a command, a title, `pass` and `fail` texts and up to three hints (at least one,
+ * but for the final test); `essence` names an opener question or is null. The final test is the one marked `final: true`, else
+ * the last of several. The buggy source (`bugs/source/`) must come with the tests, and the tests with it.
+ */
+const bugsOf = (
+    byPath: ReadonlyMap<string, LessonSourceFile>,
+    opener: ReadonlyArray<LessonOpenerQuestion>,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonBugPack | null => {
+    const vi = viIssues(locale, issues)
+    const hasSource = [...byPath.keys()].some((path) => path.startsWith(BUGS_FOLDER))
+    if (!byPath.has(BUGS_PATH)) {
+        if (hasSource) vi.add(BUGS_FOLDER, "", `has no ${BUGS_PATH}`)
+        return null
+    }
+    const doc = yamlOf(byPath, BUGS_PATH, vi)
+    if (doc === null) return null
+    checkSchema(doc, BUGS_PATH, BUGS_SCHEMA, vi)
+    if (!hasSource) vi.add(BUGS_PATH, "", `comes without ${BUGS_FOLDER}`)
+    const entries = recordsOf(doc.tests)
+    if (entries.length === 0) vi.add(BUGS_PATH, "tests", "holds no test")
+    const marked = entries.filter((entry) => entry.final === true).length
+    if (marked > 1) vi.add(BUGS_PATH, "tests", `marks ${marked} tests final, not one`)
+    const finalIndex = finalIndexOf(entries)
+    const tests = entries.map((entry, index) => bugTestOf(entry, index, index === finalIndex, opener, locale, issues))
+    tests.forEach((test, index) => {
+        if (tests.findIndex((each) => each.id === test.id) !== index)
+            vi.add(BUGS_PATH, `tests[${index}].id`, `${test.id} is listed twice`)
+    })
+    return { tests }
+}
+
+/** The `owner/name` of a GitHub repository named as `owner/name`, `github.com/owner/name` or its https address. */
+const repoOf = (raw: string): string =>
+    raw
+        .trim()
+        .replace(/^https?:\/\//u, "")
+        .replace(/^github\.com\//u, "")
+        .replace(/\.git$/u, "")
+        .replace(/\/$/u, "")
+
+/** One Pattern stack, field by field, with the issues of its own fields. */
+const patternOf = (
+    entry: Record<string, unknown>,
+    index: number,
+    locale: LessonLocale,
+    issues: Issues,
+): LessonPattern => {
+    const vi = viIssues(locale, issues)
+    const at = `patterns[${index}]`
+    const stack = stringOf(entry.stack)
+    if (!PATTERN_STACKS.includes(stack))
+        vi.add(PATTERNS_PATH, `${at}.stack`, `${stack} is not one of ${PATTERN_STACKS.join(", ")}`)
+    const status = LESSON_PATTERN_STATUSES.find((each) => each === entry.status) ?? "soon"
+    if (entry.status !== status) vi.add(PATTERNS_PATH, `${at}.status`, "is not ready or soon")
+    const isReady = status === "ready"
+    const repo = repoOf(stringOf(entry.repo))
+    if (repo !== "" && !GITHUB_REPO.test(repo))
+        vi.add(PATTERNS_PATH, `${at}.repo`, `${repo} is not a GitHub owner/name`)
+    if (isReady && repo === "") vi.add(PATTERNS_PATH, `${at}.repo`, "is empty for a ready stack")
+    const folder = stringOf(entry.path).replace(/^\/+|\/+$/gu, "")
+    if (folder.split("/").includes("..")) vi.add(PATTERNS_PATH, `${at}.path`, "leaves the repository")
+    const answer = (field: "where" | "howFar" | "whenDown"): string =>
+        isReady
+            ? neededTextOf(entry[field], locale, PATTERNS_PATH, `${at}.${field}`, issues)
+            : textOf(entry[field] as Localized, locale)
+    const files = recordsOf(entry.files).map((file): LessonPatternFile => ({
+        path: stringOf(file.path),
+        note: textOf(file.note as Localized, locale),
+    }))
+    if (isReady && files.length === 0) vi.add(PATTERNS_PATH, `${at}.files`, "is empty for a ready stack")
+    files.forEach((file, place) => {
+        if (file.path.trim() === "") vi.add(PATTERNS_PATH, `${at}.files[${place}].path`, "is empty")
+    })
+    const snippet = isRecord(entry.snippet)
+        ? {
+              lang: stringOf(entry.snippet.lang),
+              file: stringOf(entry.snippet.file),
+              code: stringOf(entry.snippet.code),
+          }
+        : null
+    if (snippet !== null && snippet.code.trim() === "") vi.add(PATTERNS_PATH, `${at}.snippet.code`, "is empty")
+    return {
+        stack,
+        status,
+        repo,
+        path: folder,
+        where: answer("where"),
+        howFar: answer("howFar"),
+        whenDown: answer("whenDown"),
+        files,
+        snippet,
+    }
+}
+
+/**
+ * The Pattern stacks (`sections/5-patterns/patterns.yaml`, essentials-patterns@1, the list under `patterns`), or undefined when the
+ * lesson has no file. A stack is one of nestjs, go, spring and dotnet, listed once; a ready one needs its repository, the three
+ * answers and its files.
+ */
+const patternsOf = (
+    byPath: ReadonlyMap<string, LessonSourceFile>,
+    locale: LessonLocale,
+    issues: Issues,
+): ReadonlyArray<LessonPattern> | undefined => {
+    if (!byPath.has(PATTERNS_PATH)) return undefined
+    const vi = viIssues(locale, issues)
+    const doc = yamlOf(byPath, PATTERNS_PATH, vi)
+    if (doc === null) return []
+    checkSchema(doc, PATTERNS_PATH, PATTERNS_SCHEMA, vi)
+    const entries = recordsOf(doc.patterns)
+    if (entries.length === 0) vi.add(PATTERNS_PATH, "patterns", "holds no stack")
+    const patterns = entries.map((entry, index) => patternOf(entry, index, locale, issues))
+    patterns.forEach((pattern, index) => {
+        if (patterns.findIndex((each) => each.stack === pattern.stack) !== index)
+            vi.add(PATTERNS_PATH, `patterns[${index}].stack`, `${pattern.stack} is listed twice`)
+    })
+    return patterns
+}
 
 /** The four-part fields of one locale. */
 const essentialOf = (
@@ -362,9 +618,12 @@ const essentialOf = (
     const hiddenInvariants = Object.entries(isRecord(plans?.invariants) ? plans.invariants : {}).filter(
         ([id]) => !Object.hasOwn(publicInvariants, id),
     )
+    const opener = openerOf(quiz, locale, issues)
+    const bugs = bugsOf(byPath, opener, locale, issues)
+    const patterns = patternsOf(byPath, locale, issues)
     return {
         story: storyOf(quiz, locale, issues),
-        opener: openerOf(quiz, locale, issues),
+        opener,
         source: {
             langs: ["typescript"],
             ...(typeof source.dir === "string" ? { dir: source.dir } : {}),
@@ -387,6 +646,8 @@ const essentialOf = (
                       byPath,
                       issues,
                   ),
+        ...(bugs === null ? {} : { bugs }),
+        ...(patterns === undefined ? {} : { patterns }),
     }
 }
 
@@ -410,8 +671,8 @@ const sectionsOf = (
     byPath: ReadonlyMap<string, LessonSourceFile>,
     locale: LessonLocale,
     issues: Issues,
-): Array<LessonSection> =>
-    PART_SECTIONS.flatMap((part, index) => {
+): Array<LessonSection> => [
+    ...PART_SECTIONS.flatMap((part, index) => {
         const fields = fieldsOf(byPath, `sections/${part.id}/${locale}.md`, issues)
         if (fields === null) return []
         return [
@@ -423,7 +684,34 @@ const sectionsOf = (
                 body: fields.body ?? "",
             },
         ]
-    })
+    }),
+    ...essenceSectionOf(byPath, locale, issues),
+]
+
+/**
+ * The practice-led Bản chất reading (`sections/2-essence/<locale>.md`, separator fields), or none for a lesson written before it.
+ * When one locale has it, both need it. It sorts after the four part sections and is read under the `2-source` part.
+ */
+const essenceSectionOf = (
+    byPath: ReadonlyMap<string, LessonSourceFile>,
+    locale: LessonLocale,
+    issues: Issues,
+): Array<LessonSection> => {
+    const path = `sections/${LESSON_ESSENCE_SECTION}/${locale}.md`
+    if (!LESSON_LOCALES.some((each) => byPath.has(`sections/${LESSON_ESSENCE_SECTION}/${each}.md`))) return []
+    const fields = fieldsOf(byPath, path, issues)
+    if (fields === null) return []
+    if ((fields.body ?? "").trim() === "") issues.add(path, "body", "is empty")
+    return [
+        {
+            id: LESSON_ESSENCE_SECTION,
+            title: fields.title ?? LESSON_ESSENCE_SECTION,
+            phase: "explore",
+            sortIndex: PART_SECTIONS.length + 1,
+            body: fields.body ?? "",
+        },
+    ]
+}
 
 /** A whole number field, or the fallback. */
 const numberOf = (raw: string | undefined, fallback: number): number =>
@@ -461,8 +749,18 @@ const structureOf = (essential: LessonEssential, sections: ReadonlyArray<LessonS
     `story ${String(essential.story !== null && essential.story !== undefined)}`,
     ...essential.challenges.flatMap((challenge) => [
         `c ${challenge.id} ${challenge.rubric.map((criterion) => criterion.points).join(",")}`,
-        ...(challenge.questions ?? []).map((question) => `e ${question.id} ${question.choices.length}`),
+        ...(challenge.questions ?? []).map(
+            (question) => `e ${question.id} ${question.choices.length} ${String(question.writtenRequired === true)}`,
+        ),
+        `w ${challenge.id} ${String(challenge.writtenRequired === true)}`,
     ]),
+    ...(essential.bugs?.tests ?? []).map(
+        (test) => `bug ${test.id} ${test.command} ${test.essence ?? ""} ${test.hints.length} ${String(test.isFinal)}`,
+    ),
+    ...(essential.patterns ?? []).map(
+        (pattern) =>
+            `pattern ${pattern.stack} ${pattern.status} ${pattern.repo} ${pattern.path} ${pattern.files.map((file) => file.path).join(",")}`,
+    ),
 ]
 
 /**
@@ -503,6 +801,7 @@ export const convertRawLesson = (input: RawLessonInput, catalog: LessonTopicCata
     }
     if (topicSource === undefined || group === null) return { draft: null, issues: issues.list }
     const sourceCode = sourceCodeOf(input.files)
+    const bugsCode = sourceCodeOf(input.files, BUGS_FOLDER)
     const content: LessonContent = {
         locales: {
             vi: documentOf(vi, docs.vi.sections, docs.vi.essential),
@@ -511,6 +810,7 @@ export const convertRawLesson = (input: RawLessonInput, catalog: LessonTopicCata
         workspace: null,
         files: [],
         ...(sourceCode.length === 0 ? {} : { sourceCode }),
+        ...(bugsCode.length === 0 ? {} : { bugsCode }),
     }
     return {
         draft: {

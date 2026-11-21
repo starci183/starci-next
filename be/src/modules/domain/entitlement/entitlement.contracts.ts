@@ -54,10 +54,15 @@ export interface DevGrantParams {
     readonly term: PremiumTerm
 }
 
-/** The four parts of an Essentials lesson in learning order; the ids of its content folders and of its lesson sections. */
-export const ESSENTIAL_PARTS = ["1-essential", "2-source", "3-scenarios", "4-apply"] as const
+/**
+ * The parts of an Essentials lesson in learning order, as the entitlement setting names them. The five tabs (owner 2026-11-21) keep
+ * the four earlier ids so the setting and the stored progress read the same: `1-essential` is Mở đầu, `2-source` Bản chất (the
+ * practice-led reading, `sections/2-essence`), `3-scenarios` Tìm sạn (the bug pack and the scenarios), `4-apply` Challenges and
+ * `5-patterns` Pattern.
+ */
+export const ESSENTIAL_PARTS = ["1-essential", "2-source", "3-scenarios", "4-apply", "5-patterns"] as const
 
-/** One part of an Essentials lesson: Bản chất, Source, Kịch bản or Tự áp dụng. */
+/** One part of an Essentials lesson: Mở đầu, Bản chất, Tìm sạn, Challenges or Pattern. */
 export type EssentialPart = (typeof ESSENTIAL_PARTS)[number]
 
 /** The parts of an Essentials lesson everyone may read unless the environment names others: Bản chất, its opener and its article. */

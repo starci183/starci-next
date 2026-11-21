@@ -32,9 +32,10 @@
               "1-essential",
               "2-source",
               "3-scenarios",
-              "4-apply"
+              "4-apply",
+              "5-patterns"
             ],
-            "description": "One part of an Essentials lesson: 1-essential, 2-source, 3-scenarios or 4-apply"
+            "description": "One part of an Essentials lesson: 1-essential (Mở đầu), 2-source (Bản chất), 3-scenarios (Tìm sạn), 4-apply (Challenges) or 5-patterns (Pattern)"
           }
         },
         "required": [

@@ -16,6 +16,15 @@ import {
     DoneIcon,
     EssentialApply,
     EssentialApplyAside,
+    EssentialBugHunt,
+    EssentialBugHuntAside,
+    EssentialPattern,
+    EssentialPatternAside,
+    EssentialPatternLink,
+    EssentialReading,
+    EssentialReadingAside,
+    LessonJourneyBlock,
+    WrittenCard,
     EssentialPartIntro,
     EssentialScenarios,
     EssentialSource,
@@ -153,6 +162,93 @@ export const essenceLayout: PartLayoutOf = (context): PartLayout => ({
     action: actionOf(context),
 })
 
+/** The five parts with where the learner stands in each: the block every right column of the new parts ends with. */
+const JourneyOf = ({ lesson, screen }: PartContext) => (
+    <LessonJourneyBlock title={screen.props.five.journeyTitle} rows={lesson.journey} />
+)
+
+/** Copies a text to the clipboard of the learner. */
+const copy = (text: string): void => void navigator.clipboard.writeText(text)
+
+/**
+ * Bản chất: the practice-led reading (sections/2-essence), its contents with "Nên đọc kỹ" where the opener was missed, and the MCP of
+ * the lesson; the primary goes on to Tìm sạn. A lesson written before the reading keeps the source part.
+ */
+export const readingLayout: PartLayoutOf = (context) => {
+    const { lesson, screen, isLoading } = context
+    const reading = lesson.reading
+    if (reading === undefined) return sourceLayout(context)
+    const labels = screen.props.five.reading
+    return {
+        main: <EssentialReading view={reading} labels={labels} isLoading={isLoading} onCopy={copy} />,
+        aside: <EssentialReadingAside view={reading} labels={labels} journey={<JourneyOf {...context} />} />,
+        action: (
+            <Button intent="commit" width="wrap" onPress={() => screen.on.openPart("scenarios")}>
+                {screen.props.page.parts.scenarios}
+            </Button>
+        ),
+    }
+}
+
+/**
+ * Tìm sạn: the bug pack pulled and run on the learner's machine, every test with its newest result, why it passes or not yet, and its
+ * hints one at a time. A lesson without a bug pack keeps its scenarios.
+ */
+export const bugsLayout: PartLayoutOf = (context) => {
+    const { lesson, screen, isLoading } = context
+    const hunt = lesson.bugHunt
+    if (hunt === undefined) return scenariosLayout(context)
+    const labels = screen.props.five.bugs
+    return {
+        main: (
+            <EssentialBugHunt
+                view={hunt}
+                labels={labels}
+                isLoading={isLoading}
+                onCopy={copy}
+                onHint={screen.on.openBugHint}
+            />
+        ),
+        aside: <EssentialBugHuntAside view={hunt} labels={labels} journey={<JourneyOf {...context} />} />,
+        action: undefined,
+    }
+}
+
+/** Pattern: the stack tabs, the three questions, the snippet and the main files; the primary opens the folder on GitHub. Not graded. */
+export const patternLayout: PartLayoutOf = (context) => {
+    const { lesson, screen, isLoading } = context
+    const pattern = lesson.pattern
+    if (pattern === undefined)
+        return { main: <EmptyNotice message={screen.props.page.soon} />, aside: undefined, action: undefined }
+    const labels = screen.props.five.pattern
+    return {
+        main: (
+            <EssentialPattern part={pattern} labels={labels} isLoading={isLoading} onSelect={screen.on.selectStack} />
+        ),
+        aside: <EssentialPatternAside part={pattern} labels={labels} journey={<JourneyOf {...context} />} />,
+        action: <EssentialPatternLink href={pattern.url} label={labels.github} />,
+    }
+}
+
+/** The written explanation an essence question asks: the box once the question was answered, a line before. */
+const WrittenOf = ({ lesson, screen, questionId }: PartContext & { readonly questionId: string }) => {
+    const written = lesson.written[questionId]
+    if (written === undefined) return null
+    if (!written.isOpen) return <Text tone="muted">{screen.props.five.writtenWait}</Text>
+    return (
+        <WrittenCard
+            prompt={written.prompt}
+            criteria={[]}
+            instructions=""
+            draft={written.draft}
+            labels={screen.props.written}
+            plansHref={screen.props.plansHref}
+            onChange={(text) => screen.on.write(written.activityId, text)}
+            onSubmit={() => screen.on.submitWritten(written.activityId)}
+        />
+    )
+}
+
 /** Source: the machine and the pull commands, the architecture, the rule each component keeps and the code walk; the archive is the primary. */
 export const sourceLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
     const { labels } = screen.props.runs
@@ -201,8 +297,9 @@ export const scenariosLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => 
     }
 }
 
-/** Tự áp dụng: the ladder of four rungs, the rung on screen with its rubric, and the score beside it; the primary runs the rung again. */
-export const applyLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
+/** Challenges: the ladder of four rungs, the rung on screen with its rubric and its written explanation, and the score beside it; the primary runs the rung again. */
+export const applyLayout: PartLayoutOf = (context) => {
+    const { lesson, screen, isLoading } = context
     const { labels, primary } = screen.props.runs
     const questions = lesson.apply.challenge?.questions ?? []
     return {
@@ -215,13 +312,15 @@ export const applyLayout: PartLayoutOf = ({ lesson, screen, isLoading }) => {
                         questions.length === 0 ? null : (
                             <Stack gap="section">
                                 {questions.map((question) => (
-                                    <LessonQuestion
-                                        key={question.id}
-                                        question={question}
-                                        labels={screen.props.essence}
-                                        isLoading={isLoading}
-                                        onAnswer={screen.on.answer}
-                                    />
+                                    <Stack key={question.id} gap="row">
+                                        <LessonQuestion
+                                            question={question}
+                                            labels={screen.props.essence}
+                                            isLoading={isLoading}
+                                            onAnswer={screen.on.answer}
+                                        />
+                                        <WrittenOf {...context} questionId={question.id} />
+                                    </Stack>
                                 ))}
                             </Stack>
                         )
@@ -276,9 +375,10 @@ export type EssentialLessonBaseProps = {
 /** The layout of each part; a part the reader's plan lacks is drawn by the locked layout instead. */
 const LAYOUTS: Readonly<Record<EssentialLessonView["part"], PartLayoutOf>> = {
     essence: essenceLayout,
-    source: sourceLayout,
-    scenarios: scenariosLayout,
+    source: readingLayout,
+    scenarios: bugsLayout,
     apply: applyLayout,
+    pattern: patternLayout,
 }
 
 /** What a tab wears at its start: the lock of a part Premium unlocks, the check of a finished one. */
@@ -381,8 +481,8 @@ const LessonAsideSkeleton = () => (
 )
 
 /**
- * One lesson in four parts, the page tabs of its band (`?part=`): essence (the five-question opener, the article), Source,
- * Kịch bản and Tự áp dụng. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
+ * One lesson in five parts, the page tabs of its band (`?part=`): Mở đầu (the five-question opener, the article), Bản chất (the
+ * practice-led reading), Tìm sạn (the bug pack), Challenges and Pattern. Each part hands the shell a body, an optional right column and the one primary the band carries; a part
  * the reader's plan lacks is the locked notice (the back end names the locked parts and never sends their payload).
  */
 export const EssentialLessonBase = (props: EssentialLessonBaseProps) => {

@@ -5,6 +5,8 @@ import { InjectRelayClient, type RelayClientPort } from "@modules/integrations/r
 export interface PullLessonOptions {
     /** The language asked, or undefined. */
     readonly lang?: string | undefined
+    /** True to pull the Tìm sạn bug pack instead of the source. */
+    readonly bugs?: boolean | undefined
 }
 
 @Command({
@@ -24,8 +26,14 @@ export class PullCli extends CommandRunner {
         return value
     }
 
+    /** `--bugs`: the Tìm sạn bug pack (the buggy copy of the source) into `./<lesson>-bugs`. */
+    @Option({ flags: "--bugs", description: "Pull the Tìm sạn bug pack into ./<lesson>-bugs", defaultValue: false })
+    parseBugs(): boolean {
+        return true
+    }
+
     /** Pulls the lesson named by the first argument. */
     async run(passed: Array<string>, options: PullLessonOptions): Promise<void> {
-        await this.relay.pull(passed[0] ?? "", options.lang)
+        await this.relay.pull(passed[0] ?? "", options.lang, options.bugs === true)
     }
 }

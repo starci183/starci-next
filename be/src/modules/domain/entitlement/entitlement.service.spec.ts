@@ -247,6 +247,12 @@ describe("EntitlementService essential parts", () => {
     it("lists the open parts by whether the learner holds Premium", async () => {
         const service = await build(mockEntityManager({ query: [SELECT_ENTITLEMENT, []] }))
         expect(service.openEssentialParts(false)).toEqual(["1-essential"])
-        expect(service.openEssentialParts(true)).toEqual(["1-essential", "2-source", "3-scenarios", "4-apply"])
+        expect(service.openEssentialParts(true)).toEqual([
+            "1-essential",
+            "2-source",
+            "3-scenarios",
+            "4-apply",
+            "5-patterns",
+        ])
     })
 })

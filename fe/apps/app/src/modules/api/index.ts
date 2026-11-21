@@ -21,6 +21,7 @@ export type {
     LessonProgressQuery,
     LessonQuery,
     LessonScenarioRunsQuery,
+    LessonBugResultsQuery,
     LessonChallengeScoresQuery,
     LessonsQuery,
     LessonTopicQuery,

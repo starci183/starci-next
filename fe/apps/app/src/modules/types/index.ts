@@ -42,6 +42,10 @@ export type {
 export type { TopicAsideEntry, TopicLabels, TopicPartView, TopicScreenView, TopicWords } from "./topic"
 export { CHALLENGE_LEVELS, ESSENTIAL_PARTS } from "./essential"
 export type {
+    BugResultView,
+    BugRunStatus,
+    BugTestView,
+    PatternView,
     ChallengeLevel,
     EssentialChallengeView,
     EssentialPart,

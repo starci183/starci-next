@@ -114,3 +114,53 @@ export const lessonFiles = (
     fileOf("hidden/essence-answers.yaml", "answers: {}"),
     fileOf("hidden/tests/easy.test.ts", "// hidden test"),
 ]
+
+/** One test of the Tìm sạn bug pack (essentials-bugs@1); `extra` adds lines to the entry. */
+export const bugTestOf = (id: string, essence: string | null, extra = ""): string => `  - id: ${id}
+    command: "npm test -- --scenario ${id}"
+    essence: ${essence ?? "null"}
+    title: { vi: "Test ${id}", en: "Test ${id}" }
+    pass: { vi: "Đúng vì ${id}", en: "Right because ${id}" }
+    fail: { vi: "Chưa pass vì ${id}", en: "Not yet because ${id}" }
+    expected: { vi: "mong đợi ${id}", en: "expected ${id}" }
+    received: { vi: "thực tế", en: "received" }
+    hints:
+      - { vi: "Gợi ý 1 ${id}", en: "Hint 1 ${id}" }
+      - { vi: "Gợi ý 2 ${id}", en: "Hint 2 ${id}" }
+      - { vi: "Gợi ý 3 ${id}", en: "Hint 3 ${id}" }${extra}`
+
+/** The bug pack: the happy path, one test per opener question and the final test, last. */
+export const BUG_TESTS = `schema: starci-next-seed-standard/essentials-bugs@1
+tests:
+${[bugTestOf("happy-path", null), ...[1, 2, 3, 4, 5].map((n) => bugTestOf(`bug-${n}`, `q${n}`)), bugTestOf("ledger-under-chaos", null)].join("\n")}
+`
+
+/** The Pattern stacks (essentials-patterns@1): NestJS ready, Go announced. */
+export const PATTERNS = `schema: starci-next-seed-standard/essentials-patterns@1
+patterns:
+  - stack: nestjs
+    status: ready
+    repo: github.com/starci183/patterns-demo
+    path: saga/src/modules/platform/event-bus
+    where: { vi: "Ở platform", en: "In platform" }
+    howFar: { vi: "Mọi sự kiện rời service", en: "Every event that leaves" }
+    whenDown: { vi: "Relay chạy lại", en: "The relay resumes" }
+    files:
+      - { path: event-bus.service.ts, note: { vi: "publish()", en: "publish()" } }
+    snippet: { lang: ts, file: complete.handler.ts, code: "await bus.publish(manager, event)" }
+  - stack: go
+    status: soon
+`
+
+/** The files a five-part lesson adds: the Bản chất reading, the bug pack with its buggy source, and the Pattern stacks. */
+export const fivePartFiles = (bugs = BUG_TESTS, patterns = PATTERNS): ReadonlyArray<LessonSourceFile> => [
+    fileOf(
+        "sections/2-essence/vi.md",
+        field("title", "Bản chất") + field("body", "## 2.1.3. Giải thích code\nBản chất: x"),
+    ),
+    fileOf("sections/2-essence/en.md", field("title", "Essence") + field("body", "## 2.1.3. Code\nEssence: x")),
+    fileOf("bugs/tests.yaml", bugs),
+    fileOf("bugs/source/package.json", "{}"),
+    fileOf("bugs/source/src/partner/order-paid.ts", "// the buggy copy"),
+    fileOf("sections/5-patterns/patterns.yaml", patterns),
+]

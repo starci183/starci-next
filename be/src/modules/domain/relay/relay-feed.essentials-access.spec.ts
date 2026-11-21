@@ -36,6 +36,7 @@ const runOf = (scenarioId: string, challengeTier: string | null): LessonScenario
     concepts: [],
     why: null,
     ledger: null,
+    received: null,
     at: NOW,
 })
 

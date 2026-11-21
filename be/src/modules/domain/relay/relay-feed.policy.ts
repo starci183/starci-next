@@ -24,6 +24,7 @@ const SLOTS: ReadonlySet<string> = new Set([
     "probe",
     "scenario",
     "challenge",
+    "bugs",
     "harness-stage",
     "harness-doctor",
     "harness-trial",
@@ -33,6 +34,8 @@ const TIERS: ReadonlySet<string> = new Set(["easy", "medium", "hard", "insane"])
 const LIST_MAX = 50
 const WHY_MAX = 300
 const LEDGER_MAX = 4000
+/** The longest measured value a bug-pack result carries (the received line). */
+const RECEIVED_MAX = 1000
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu
 const SAFE_ID = /^[A-Za-z0-9._:/-]{1,100}$/u
 
@@ -189,7 +192,8 @@ const lessonFacts = (upload: RelayUpload): boolean =>
     idListOptional(upload.guardsOff) &&
     (upload.challengeTier === undefined || TIERS.has(upload.challengeTier)) &&
     (upload.why === undefined || upload.why.length <= WHY_MAX) &&
-    (upload.ledger === undefined || upload.ledger.length <= LEDGER_MAX)
+    (upload.ledger === undefined || upload.ledger.length <= LEDGER_MAX) &&
+    (upload.received === undefined || upload.received.length <= RECEIVED_MAX)
 
 /** The lesson facts of a scenario result as stored in `detail`, or null for any other result. */
 export const resultDetailOf = (upload: RelayUpload): Record<string, unknown> | null => {
@@ -201,6 +205,7 @@ export const resultDetailOf = (upload: RelayUpload): Record<string, unknown> | n
         ...(upload.challengeTier === undefined ? {} : { challengeTier: upload.challengeTier }),
         ...(upload.why === undefined ? {} : { why: upload.why }),
         ...(upload.ledger === undefined ? {} : { ledger: upload.ledger }),
+        ...(upload.received === undefined ? {} : { received: upload.received }),
         ...harnessDetailOf(upload),
     }
     return upload.kind === "check.result" && Object.keys(detail).length > 0 ? detail : null

@@ -40,6 +40,8 @@ export interface ManifestRequest {
     readonly scenario?: string | undefined
     /** For a lesson task: the challenge tier whose hidden scenarios are asked, or undefined. */
     readonly challenge?: string | undefined
+    /** For a lesson task: true to sign the Tìm sạn bug pack (its tarball and its tests), or undefined. */
+    readonly bugs?: boolean | undefined
     /** For a harness trial task: the tool of the run, or undefined. */
     readonly tool?: string | undefined
 }
@@ -118,6 +120,14 @@ export interface ManifestLesson {
     readonly scenarios: ReadonlyArray<ManifestLessonScenario>
     /** The hidden scenarios of the asked tier, only when it is unlocked. */
     readonly challenge?: { readonly tier: string; readonly scenarios: ReadonlyArray<ManifestLessonScenario> }
+    /**
+     * The Tìm sạn bug pack, only when it is asked: the tarball of `bugs/source/` (path, sha256, commit) and its tests. The final
+     * test is listed only once every other test of the pack is green; each result is relayed under check id `bug:<test id>`.
+     */
+    readonly bugs?: {
+        readonly source: { readonly url: string; readonly sha256: string; readonly commit: string }
+        readonly tests: ReadonlyArray<ManifestLessonScenario>
+    }
 }
 
 /** The harness section of a build manifest (CONTRACT.md, build manifest): the pinned tarball and what the CLI may run. */
@@ -260,6 +270,8 @@ export interface RelayUpload {
     readonly why?: string | undefined
     /** The ledger lines of the run, 4000 characters at most. */
     readonly ledger?: string | undefined
+    /** For a bug-pack test result: what the run measured (the received line of a red test), 1000 characters at most. */
+    readonly received?: string | undefined
     /** For a harness-stage result: the build id (the task is `harness:build:<id>`). */
     readonly buildId?: string | undefined
     /** For a harness-stage result: the stage id (the check id). */

@@ -65,6 +65,8 @@ export interface LessonOpenerQuestion {
     readonly event?: LessonOpenerEvent
     /** The three-part explanation of the right option; never leaves the server but in the grade of a right pick. */
     readonly insight?: LessonOpenerInsight
+    /** For a challenge question: true when the learner also writes a short explanation of it (`writtenRequired`), graded by AI. */
+    readonly writtenRequired?: boolean
 }
 
 /**
@@ -226,6 +228,91 @@ export interface LessonChallenge {
     readonly hidden?: ReadonlyArray<LessonHiddenScenario>
     /** The essence check: multiple-choice and design-decision questions graded on the spot. */
     readonly questions?: ReadonlyArray<LessonOpenerQuestion>
+    /**
+     * True when the tier asks a short written explanation of its essence questions (`writtenRequired` on the tier: every question;
+     * on a question: that one), from the Khó tier up.
+     */
+    readonly writtenRequired?: boolean
+}
+
+/**
+ * One test of the Tìm sạn bug pack (`bugs/tests.yaml`, schema `essentials-bugs@1`): the command the learner CLI runs on the buggy
+ * copy, the opener question it belongs to, and what the page says about it. `pass`, `fail` and the hints are earned: `pass` only
+ * after the learner's own green run, `fail` after a red one, each hint after the learner opened the ones before it.
+ */
+export interface LessonBugTest extends LessonScenarioRun {
+    /** The stable id, `[a-z0-9-]+`; the relay names its runs `bug:<id>`. */
+    readonly id: string
+    /** The only command the CLI may run for it. */
+    readonly command: string
+    /** The opener question id it belongs to, or null (the happy path, the final test). */
+    readonly essence: string | null
+    /** The title. */
+    readonly title: string
+    /** "Vì sao giờ đúng": released only after a green run. */
+    readonly pass: string
+    /** "Vì sao chưa pass": a symptom and a guiding question, released only after a red run. */
+    readonly fail: string
+    /** What a correct system shows (public, the expected line). */
+    readonly expected: string
+    /** The label of what the run measured (public, the received line; the value comes from the run). */
+    readonly received: string
+    /** The hints, direction then file then line; each released only after the ones before it were opened. */
+    readonly hints: ReadonlyArray<string>
+    /** True for the final test, which opens only once every other test of the pack passed. */
+    readonly isFinal: boolean
+}
+
+/** The bug pack of Tìm sạn: `bugs/source/` (the buggy copy of `source/`, its own tarball) and its tests. */
+export interface LessonBugPack {
+    /** The tests, in the order the file lists them (the final one last). */
+    readonly tests: ReadonlyArray<LessonBugTest>
+}
+
+/** The two states of a Pattern stack: ready to read, or announced. */
+export const LESSON_PATTERN_STATUSES = ["ready", "soon"] as const
+
+/** One state of a Pattern stack. */
+export type LessonPatternStatus = (typeof LESSON_PATTERN_STATUSES)[number]
+
+/** One file of a Pattern reference with what it holds. */
+export interface LessonPatternFile {
+    /** The path inside the reference folder. */
+    readonly path: string
+    /** What it holds. */
+    readonly note: string
+}
+
+/** The snippet a Pattern stack shows: the business code that only declares the event. */
+export interface LessonPatternSnippet {
+    /** The language of the code (`ts`). */
+    readonly lang: string
+    /** The file it comes from. */
+    readonly file: string
+    /** The code. */
+    readonly code: string
+}
+
+/** One stack of Pattern (`sections/5-patterns/patterns.yaml`, schema `essentials-patterns@1`): where a real project keeps the pattern. Not graded. */
+export interface LessonPattern {
+    /** The stack id (`nestjs`, `go`, `spring`, `dotnet`). */
+    readonly stack: string
+    /** Ready to read, or announced. */
+    readonly status: LessonPatternStatus
+    /** The GitHub repository (`starci183/patterns-demo`), or empty. */
+    readonly repo: string
+    /** The folder inside it, or empty. */
+    readonly path: string
+    /** Đặt code ở đâu. */
+    readonly where: string
+    /** Áp tới mức nào. */
+    readonly howFar: string
+    /** Server sập thì sao. */
+    readonly whenDown: string
+    /** The main files. */
+    readonly files: ReadonlyArray<LessonPatternFile>
+    /** The snippet, or null. */
+    readonly snippet: LessonPatternSnippet | null
 }
 
 /** The four-part fields of one locale; a lesson written before them has none. */
@@ -251,6 +338,10 @@ export interface LessonEssential {
     readonly scenarios: ReadonlyArray<LessonScenario>
     /** The challenge ladder. */
     readonly challenges: ReadonlyArray<LessonChallenge>
+    /** The bug pack of Tìm sạn, or absent for a lesson written before it. */
+    readonly bugs?: LessonBugPack | null
+    /** The Pattern stacks, or absent for a lesson written before them. */
+    readonly patterns?: ReadonlyArray<LessonPattern>
 }
 
 /** The four-part fields as the root file may carry them, each optional. */
@@ -280,6 +371,19 @@ export const challengeActivityId = (challengeId: string, questionId: string): st
 
 /** The option id of a choice: `c<index>`. */
 export const choiceOptionId = (index: number): string => `c${index}`
+
+/** The activity id of the written explanation of a challenge question: `challenge.<challenge id>.<question id>.written`. */
+export const challengeWrittenActivityId = (challengeId: string, questionId: string): string =>
+    `challenge.${challengeId}.${questionId}.written`
+
+/** The check id a bug-pack test is relayed under, inside the lesson task: `bug:<test id>`. */
+export const lessonBugCheckId = (testId: string): string => `bug:${testId}`
+
+/** The prefix of the check ids of the bug pack. */
+export const LESSON_BUG_CHECK_PREFIX = "bug:"
+
+/** The section of the practice-led Bản chất reading (`sections/2-essence/<locale>.md`); it is read under the `2-source` part. */
+export const LESSON_ESSENCE_SECTION = "2-essence"
 
 /** The relay task a lesson's scenarios run under: `lesson:<lesson id>`; the check id is the scenario id. */
 export const lessonRelayTaskId = (lessonId: string): string => `lesson:${lessonId}`

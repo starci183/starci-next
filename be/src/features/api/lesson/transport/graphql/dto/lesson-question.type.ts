@@ -70,4 +70,8 @@ export class LessonQuestionType {
     /** The development of the opener story this question adds, or null. */
     @Field(() => LessonOpenerEventType, { nullable: true })
     event!: LessonOpenerEventType | null
+
+    /** The activity id of the written explanation the question asks (challenge.<id>.<question>.written), or null. */
+    @Field(() => String, { nullable: true })
+    writtenActivityId!: string | null
 }

@@ -36,6 +36,7 @@ export const useEssentialLessonLabels = (): {
                 source: t("parts.source"),
                 scenarios: t("parts.scenarios"),
                 apply: t("parts.apply"),
+                pattern: t("parts.pattern"),
             },
             empty: t("empty"),
             errorTitle: t("errorTitle"),

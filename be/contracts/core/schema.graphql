@@ -639,6 +639,40 @@ type LessonAttemptType {
   version: String!
 }
 
+type LessonBugPackType {
+  tests: [LessonBugTestType!]!
+}
+
+type LessonBugResultType {
+  at: String
+  fail: String
+  hintCount: Int!
+  hints: [String!]!
+  hintsOpened: Int!
+  isLocked: Boolean!
+  output: String
+  pass: String
+  received: String
+  status: String!
+  testId: String!
+}
+
+input LessonBugResultsInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+}
+
+type LessonBugTestType {
+  command: String!
+  essence: String
+  expected: String!
+  hintCount: Int!
+  id: String!
+  isFinal: Boolean!
+  received: String!
+  title: String!
+}
+
 type LessonCatalogItemType {
   category: String!
   description: String!
@@ -695,6 +729,7 @@ type LessonChallengeType {
   questions: [LessonQuestionType!]!
   rubric: [LessonChallengeCriterionType!]!
   title: String!
+  writtenRequired: Boolean!
 }
 
 type LessonChoiceType {
@@ -725,12 +760,14 @@ type LessonCriterionType {
 
 type LessonEssentialType {
   architecture: LessonArchitectureType
+  bugs: LessonBugPackType
   challenges: [LessonChallengeType!]!
   codeWalk: [LessonCodeWalkType!]!
   invariants: [LessonStatementType!]!
   isLocked: Boolean!
   lockedParts: [String!]!
   opener: [LessonQuestionType!]!
+  patterns: [LessonPatternType!]!
   scenarios: [LessonScenarioType!]!
   source: LessonSourceType
   story: LessonOpenerStoryType
@@ -821,6 +858,30 @@ type LessonPartsProgressType {
   usedHint: Boolean!
 }
 
+type LessonPatternFileType {
+  note: String!
+  path: String!
+}
+
+type LessonPatternSnippetType {
+  code: String!
+  file: String!
+  lang: String!
+}
+
+type LessonPatternType {
+  files: [LessonPatternFileType!]!
+  howFar: String!
+  path: String!
+  repo: String!
+  snippet: LessonPatternSnippetType
+  stack: String!
+  status: String!
+  url: String
+  whenDown: String!
+  where: String!
+}
+
 type LessonProgressActivityType {
   activityId: String!
   attempts: Int!
@@ -897,6 +958,7 @@ type LessonQuestionType {
   scenarioId: String
   sectionId: String
   sectionRef: String
+  writtenActivityId: String
 }
 
 type LessonReferenceType {
@@ -1147,6 +1209,7 @@ type Mutation {
   gradeReviewCard(input: GradeRecallCardInput!): RecallGradeType!
   markLessonSectionRead(input: MarkLessonSectionReadInput!): [String!]!
   markNotificationsRead(input: MarkNotificationsReadInput!): Int!
+  openLessonBugHint(input: OpenLessonBugHintInput!): LessonBugResultType!
   relayCheckResult(input: RelayCheckResultInput!): RelayUploadType!
   relayCheckStarted(input: RelayCheckStartedInput!): RelayUploadType!
   relayHarnessResult(input: RelayHarnessResultInput!): RelayUploadType!
@@ -1222,6 +1285,12 @@ type NotificationPage {
 type NotificationParam {
   key: String!
   value: String!
+}
+
+input OpenLessonBugHintInput {
+  lessonId: String! @inputBounds(maxLength: 100)
+  locale: String! = "vi"
+  testId: String! @inputBounds(maxLength: 64)
 }
 
 type OutcomeCheckType {
@@ -1908,6 +1977,10 @@ type Query {
   learnerProgress(input: LearnerProgressInput!): LearnerProgressType!
   lesson(input: LessonInput!): LessonType!
   lessonAttempt(input: LessonAttemptInput!): LessonAttemptType!
+  """
+  Every Tìm sạn test of a lesson with the learner's newest relayed run (check id bug:<test id>). pass is released after a green run, fail and the opened hints after a red one; the final test stays locked until every other test is green. Poll while any status is running.
+  """
+  lessonBugResults(input: LessonBugResultsInput!): [LessonBugResultType!]!
   lessonChallengeScores(input: LessonChallengeScoresInput!): [LessonChallengeScoreType!]!
   lessonOpenerScores(input: LessonOpenerScoresInput!): [LessonOpenerScoreType!]!
   lessonPartsProgress(input: LessonPartsProgressInput!): [LessonPartsProgressType!]!
@@ -2133,6 +2206,7 @@ input RelayCheckResultInput {
   ledger: String @inputBounds(maxLength: 4000)
   lessonId: String @inputBounds(maxLength: 100)
   passed: Boolean!
+  received: String @inputBounds(maxLength: 1000)
   ref: String @inputBounds(maxLength: 300)
   runId: String! @inputBounds(maxLength: 100)
   scenarioId: String @inputBounds(maxLength: 100)
@@ -2199,6 +2273,7 @@ type RelayManifestCheckType {
 }
 
 input RelayManifestInput {
+  bugs: Boolean
   challenge: String
   milestone: String @inputBounds(maxLength: 100)
   scenario: String @inputBounds(maxLength: 100)

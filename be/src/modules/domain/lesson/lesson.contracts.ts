@@ -353,4 +353,6 @@ export interface LessonContent {
     readonly workspaces?: ReadonlyArray<LessonWorkspaceVariant>
     /** The files of the lesson folder under `source/` (the code the learner pulls); absent when the folder has none. */
     readonly sourceCode?: ReadonlyArray<LessonSourceCode>
+    /** The files of `bugs/source/` (the Tìm sạn bug pack, the buggy copy of `source/`); a tarball of its own, never shown on a page. */
+    readonly bugsCode?: ReadonlyArray<LessonSourceCode>
 }
