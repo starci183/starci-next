@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     Alert,
     Button,
@@ -7,7 +8,6 @@ import {
     Pane,
     PaneGrid,
     PaneSection,
-    Skeleton,
     Stack,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -123,12 +123,26 @@ const Moved = (props: MovedProps) =>
         </Stack>
     )
 
-/** The well while the first read runs: the bar of lessons, then the lesson rows, all Skeleton bars. */
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
+/** The well while the first read runs: the bar of lessons, then the lesson rows, all bars. */
 const TopicSkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={1} />
+        <HeroSkeleton className="h-4 w-full rounded-full" />
         {[1, 2, 3, 4].map((row) => (
-            <Skeleton key={row} shape="text" lines={3} />
+            <Lines key={row} count={3} />
         ))}
     </Stack>
 )
@@ -136,10 +150,10 @@ const TopicSkeleton = () => (
 /** The aside while the first read runs: the blocks of the topic as bars. */
 const TopicAsideSkeleton = () => (
     <Stack gap="region">
-        {[3, 2, 2].map((lines, index) => (
+        {[3, 2, 2].map((count, index) => (
             <Stack key={index} gap="row">
-                <Skeleton shape="text" lines={1} />
-                <Skeleton shape="text" lines={lines} />
+                <HeroSkeleton className="h-5 w-40 rounded-lg" />
+                <Lines count={count} />
             </Stack>
         ))}
     </Stack>

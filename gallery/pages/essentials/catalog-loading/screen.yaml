@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: a1b5744e4bdef670a5fbce4e461323861608c2f655bb390612a5b2a265089b6e
+    sha256: 400fade57978d73f46b8acb84285a90414d732dacc95a8c5d1afe9e488bef409
   "1440":
     file: 1440.png
-    sha256: 381153a6dae4c9512f3021ff65ede0351fa6d59c57c53cb4b2770d3e4b890ebc
+    sha256: 66680a832865985756e97239e0455e531b131b8d1262339ba2b9ca0ff9c5fee9
 sections:
   - id: s1
     title: Khung xám cùng hình dữ liệu

@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     Button,
     EmptyNotice,
@@ -6,7 +7,6 @@ import {
     Pane,
     PaneGrid,
     PaneSection,
-    Skeleton,
     Stack,
     Text,
     type PageHeaderContent,
@@ -354,23 +354,37 @@ const bandOf = (
     },
 })
 
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
 /** The body while the first read runs: the opener line, the question and its choices, then the article, all bars. */
 const LessonSkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={2} />
+        <HeroSkeleton className="h-4 w-1/2 rounded-lg" />
+        <Lines count={2} />
         {[1, 2, 3, 4].map((choice) => (
-            <Skeleton key={choice} shape="text" lines={1} />
+            <HeroSkeleton key={choice} className="h-10 w-full rounded-xl" />
         ))}
-        <Skeleton shape="text" lines={6} />
+        <Lines count={6} />
     </Stack>
 )
 
 /** The right column while the first read runs: its blocks as bars. */
 const LessonAsideSkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={3} />
-        <Skeleton shape="text" lines={3} />
+        <Lines count={3} />
+        <Lines count={3} />
     </Stack>
 )
 

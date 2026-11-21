@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     AlertDialog,
@@ -8,7 +9,6 @@ import {
     EmptyNotice,
     Page,
     Section,
-    Skeleton,
     Stack,
     Switch,
     SurfaceCard,
@@ -311,27 +311,19 @@ const Items = (props: ReadyProps) => (
     </Stack>
 )
 
-/** One item card while it loads: the source and state row, the title, the subtitle and the chips, as bars in the card's frame. */
-const CardSkeleton = (props: { readonly label: string }) => (
-    <SurfaceCard ariaLabel={props.label} height="fill">
-        <Stack gap="row">
-            <Skeleton shape="text" lines={1} />
-            <Skeleton shape="text" lines={2} />
-            <Skeleton shape="text" lines={1} />
-        </Stack>
-    </SurfaceCard>
-)
+/** One item card while it loads: a card-sized bone. */
+const CardSkeleton = () => <Skeleton className="h-28 w-full rounded-2xl" />
 
 /**
- * The list while its first read loads: the source filter row and two item cards, only Skeleton bars, so no word, badge, tone or
+ * The list while its first read loads: the source filter row and two item cards, only Skeleton bones, so no word, badge, tone or
  * placeholder text shows and nothing jumps when the list arrives.
  */
-const ExperienceSkeleton = (props: { readonly label: string }) => (
+const ExperienceSkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={1} />
+        <Skeleton className="h-10 w-full rounded-xl" />
         <Stack gap="row">
-            <CardSkeleton label={props.label} />
-            <CardSkeleton label={props.label} />
+            <CardSkeleton />
+            <CardSkeleton />
         </Stack>
     </Stack>
 )
@@ -375,7 +367,7 @@ export const ExperienceListBase = (props: ExperienceListBaseProps) => {
                 labels={props.props.slotLabels}
                 onRetry={props.on.retry}
                 render={(view, isLoading) => {
-                    if (isLoading) return <ExperienceSkeleton label={labels.loading} />
+                    if (isLoading) return <ExperienceSkeleton />
                     const ready = { view, labels, on: props.on, source: props.props.source, isLoading }
                     return view.ways === undefined ? <Items {...ready} /> : <FirstVisit {...ready} />
                 }}

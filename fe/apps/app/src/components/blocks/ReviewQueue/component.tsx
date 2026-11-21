@@ -1,14 +1,5 @@
-import {
-    Button,
-    EmptyNotice,
-    Grid,
-    Page,
-    Section,
-    Skeleton,
-    Stack,
-    Tabs,
-    type PageHeaderContent,
-} from "@starci/grammar/common"
+import { Skeleton } from "@heroui/react"
+import { Button, EmptyNotice, Grid, Page, Section, Stack, Tabs, type PageHeaderContent } from "@starci/grammar/common"
 import {
     AppointReviewerCard,
     AssignItemCard,
@@ -186,8 +177,10 @@ const ReviewerList = (props: ReviewerListProps) => (
 /** One queue row while it loads: the item's line, then its learner and part, then its deadline badge. */
 const RowSkeleton = () => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={3} />
-        <Skeleton shape="text" lines={1} />
+        <Skeleton className="h-4 w-full rounded-md" />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
+        <Skeleton className="h-3 w-40 rounded-md" />
+        <Skeleton className="h-3 w-24 rounded-md" />
     </Stack>
 )
 
@@ -203,8 +196,8 @@ const QueueSkeleton = (props: { readonly isTeacher: boolean }) => (
         collapsedOrder="rail-first"
         rail={
             <Stack gap="row">
-                <Skeleton shape="text" lines={1} />
-                {props.isTeacher ? <Skeleton shape="text" lines={1} /> : null}
+                <Skeleton className="h-5 w-40 rounded-md" />
+                {props.isTeacher ? <Skeleton className="h-10 w-full rounded-xl" /> : null}
                 <Stack gap="region">
                     <RowSkeleton />
                     <RowSkeleton />
@@ -289,7 +282,7 @@ const headerOf = (props: ReviewQueueBaseProps, isLoading: boolean): PageHeaderCo
     },
     // While loading only the count line is a bar (the title is a fixed label and stays real), so the band does not grow when the queue arrives.
     ...(isLoading
-        ? { meta: <Skeleton shape="text" lines={1} /> }
+        ? { meta: <Skeleton className="h-3 w-56 rounded-md" /> }
         : props.props.meta === undefined
           ? {}
           : { meta: props.props.meta }),

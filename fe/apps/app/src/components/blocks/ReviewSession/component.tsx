@@ -1,4 +1,5 @@
-import { Button, Page, Progress, Skeleton, Stack, type PageHeaderContent } from "@starci/grammar/common"
+import { Skeleton } from "@heroui/react"
+import { Button, Page, Progress, Stack, type PageHeaderContent } from "@starci/grammar/common"
 import { ReviewItemCard, ReviewSummaryCard, SlotView } from "@starci-next/ui"
 import type {
     DataSlot,
@@ -98,9 +99,9 @@ export const ReviewSessionBase = (props: ReviewSessionBaseProps) => (
         render={(screen, isLoading) =>
             isLoading ? (
                 <Stack gap="region">
-                    <Skeleton shape="text" lines={1} />
-                    <Skeleton shape="rect" ratio="landscape" />
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-5 w-40 rounded-md" />
+                    <Skeleton className="h-40 w-full rounded-2xl" />
+                    <Skeleton className="h-5 w-40 rounded-md" />
                 </Stack>
             ) : (
                 <Stack gap="region">

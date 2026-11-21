@@ -159,24 +159,24 @@ audit:
       at: 2026-11-21T05:07:19.781Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thanh trên công khai thật, rồi xương chủ CV, xương dòng CV bên trái và cột Vì sao tin được bên phải ở 1440, chân trang; ở 390 cột phải xuống dưới danh sách."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "PublicTopBar thật (logo, đổi ngôn ngữ, Đăng nhập 40px); dưới đó là thanh Skeleton phẳng một kiểu, không viền, không tông, theo bố cục hai cột của trang đã tải. Nút Chia sẻ CV là thanh phẳng: tạm chấp nhận (GRAMMAR-GAPS #16). Checklist: điều khiển 40px, một dòng ở 390, không tràn, không nút bấm được trong vùng tải."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Không giá trị nào để đổi khi đang tải; đổi ngôn ngữ và Đăng nhập vẫn dùng được."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Khung xương có chuyển động ở 1440 và 390."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Vùng nội dung không có chữ; thanh trên chỉ có StarCi Next và Đăng nhập."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Ảnh đang tải thật ở 1440 và 390; các màn chị em cv/public, cv/public-many-lines, cv/public-error có trong gallery."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'screen.yaml đã viết lại theo ảnh: summary tả PublicTopBar thật và PublicCvSkeleton; bốn phần (thanh-tren, chu-cv, dong-cv-da-ky, vi-sao-tin-duoc) nói đúng thanh Skeleton circle/text; considered không còn phần pending-seed hay "Ảnh là màn khác".'
   escalate: null

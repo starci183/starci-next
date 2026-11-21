@@ -7,10 +7,10 @@ summary: Bộ xương của trang tiến độ khi đọc lần đầu.
 shots:
   "390":
     file: 390.png
-    sha256: d794256e71610fed2005a9deec04c2de9ab5df039cc8a94862c5050033e1ffcc
+    sha256: 530c2cc92d72b7f855e3ebd585159d4b344da7286369dcea637070ca3f959713
   "1440":
     file: 1440.png
-    sha256: 86e6e1adfbe80f29a49480487fb18c3d9e86b87a480602a99dcb217883cd15c6
+    sha256: 7947196551b516f013b9224f969017041f1b81fa9803e2487c58668f97af40e5
 code:
   - features/pages/ProgressPage
   - components/blocks/ProgressOverview

@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     AlertDialog,
@@ -7,7 +8,6 @@ import {
     Grid,
     Page,
     Section,
-    Skeleton,
     Stack,
     type PageHeaderContent,
 } from "@starci/grammar/common"
@@ -292,7 +292,7 @@ const SolveSkeleton = () => (
         }
         trailing={
             <Stack gap="region">
-                <Skeleton shape="rect" ratio="landscape" />
+                <Skeleton className="h-40 w-full rounded-2xl" />
                 <SkeletonBlock lines={3} />
                 <SkeletonBlock lines={2} />
             </Stack>

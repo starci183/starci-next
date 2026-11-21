@@ -1,4 +1,5 @@
-import { Button, Cluster, EmptyNotice, Page, type PageHeaderContent, Skeleton, Stack } from "@starci/grammar/common"
+import { Skeleton as HeroSkeleton } from "@heroui/react"
+import { Button, Cluster, EmptyNotice, Page, type PageHeaderContent, Stack } from "@starci/grammar/common"
 import { CatalogGroup, CatalogToolbar, SlotView } from "@starci-next/ui"
 import type {
     CatalogFilters,
@@ -89,14 +90,26 @@ const CatalogWell = (props: WellProps) => (
     </Stack>
 )
 
-/** One group of the loading page: a bar for its title, then the rows it will hold, each a title bar and a line. */
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
+/** One group of the loading page: a bar for its title, then the rows it will hold. */
 const SkeletonGroup = () => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={1} />
+        <HeroSkeleton className="h-5 w-40 rounded-lg" />
         {[1, 2, 3].map((row) => (
-            <Stack key={row} gap="row">
-                <Skeleton shape="text" lines={2} />
-            </Stack>
+            <Lines key={row} count={2} />
         ))}
     </Stack>
 )
@@ -105,9 +118,9 @@ const SkeletonGroup = () => (
 const CatalogSkeleton = () => (
     <Stack gap="region">
         <Cluster gap="inline" align="center">
-            <Skeleton shape="text" lines={1} />
-            <Skeleton shape="text" lines={1} />
-            <Skeleton shape="text" lines={1} />
+            <HeroSkeleton className="h-10 w-28 rounded-full" />
+            <HeroSkeleton className="h-10 w-64 rounded-xl" />
+            <HeroSkeleton className="h-10 w-40 rounded-xl" />
         </Cluster>
         <SkeletonGroup />
         <SkeletonGroup />

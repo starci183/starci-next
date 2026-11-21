@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import type { ReactNode } from "react"
 import {
     Alert,
@@ -9,7 +10,6 @@ import {
     Meter,
     Page,
     Section,
-    Skeleton,
     Stack,
     Text,
     Timeline,
@@ -273,11 +273,25 @@ const headerOf = (labels: ProgressLabels, description: string | undefined): Page
     ...(description === undefined ? {} : { description }),
 })
 
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
 /** One part of the loading page: a bar for its title, then the lines of its figures and rows. */
 const SkeletonPart = (props: { readonly lines: number }) => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={props.lines} />
+        <HeroSkeleton className="h-5 w-40 rounded-lg" />
+        <Lines count={props.lines} />
     </Stack>
 )
 
@@ -287,7 +301,7 @@ const ProgressSkeleton = () => (
         kind="main-rail"
         primary={
             <Stack gap="region">
-                <Skeleton shape="text" lines={2} />
+                <Lines count={2} />
                 <SkeletonPart lines={4} />
                 <SkeletonPart lines={4} />
                 <SkeletonPart lines={4} />

@@ -1,4 +1,5 @@
-import { AlertDialog, Button, Cluster, Grid, Page, Skeleton, Stack, Text } from "@starci/grammar/common"
+import { Skeleton as HeroSkeleton } from "@heroui/react"
+import { AlertDialog, Button, Cluster, Grid, Page, Stack, Text } from "@starci/grammar/common"
 import {
     OutcomePathCard,
     OutcomePathDialog,
@@ -92,16 +93,30 @@ const SignInAction = (
     </Cluster>
 )
 
+/** n text bars, the last one shorter, like a paragraph. */
+const Lines = (props: { readonly count: number }) => (
+    <Stack gap="row">
+        {Array.from({ length: props.count }, (_, index) => (
+            <HeroSkeleton
+                key={index}
+                className={
+                    index === props.count - 1 && props.count > 1 ? "h-4 w-2/3 rounded-lg" : "h-4 w-full rounded-lg"
+                }
+            />
+        ))}
+    </Stack>
+)
+
 /** The goal screen while the first read runs: the note line, then five cards of bars in the cards grid. */
 const PathsSkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={1} />
+        <HeroSkeleton className="h-4 w-2/3 rounded-lg" />
         <Grid kind="cards">
             {[1, 2, 3, 4, 5].map((card) => (
                 <Stack key={card} gap="row">
-                    <Skeleton shape="text" lines={1} />
-                    <Skeleton shape="text" lines={3} />
-                    <Skeleton shape="text" lines={2} />
+                    <HeroSkeleton className="h-5 w-40 rounded-lg" />
+                    <Lines count={3} />
+                    <Lines count={2} />
                 </Stack>
             ))}
         </Grid>

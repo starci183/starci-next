@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Button,
     EmptyNotice,
@@ -6,7 +7,6 @@ import {
     Page,
     SearchField,
     Section,
-    Skeleton,
     Stack,
     Tabs,
     Text,
@@ -158,7 +158,7 @@ const CatalogSkeleton = () => (
         kind="main-rail"
         primary={
             <Stack gap="region">
-                <Skeleton shape="text" lines={1} />
+                <Skeleton className="h-5 w-40 rounded-md" />
                 <SkeletonRows rows={6} isMarked />
             </Stack>
         }

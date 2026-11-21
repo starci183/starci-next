@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: e01e47ceaccd408ce7d00f478f5b6002e43da80831417a648fa214a77f3e528d
+    sha256: 7a28c67b7800007e121476485362e819f712a1e110c51abef8bc697556e428a3
   "1440":
     file: 1440.png
-    sha256: 93bb110feb7972e1a92cb8bad6e165b29d05c825863fd5d110aee546bc6f348d
+    sha256: 6c131a4156e1501aeae916fa5b893548f2ff50a78d780428e55a1c5cb04d7557
 sections:
   - id: s1
     title: Khung xương của bài

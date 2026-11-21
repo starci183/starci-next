@@ -1,3 +1,4 @@
+import { Skeleton as HeroSkeleton } from "@heroui/react"
 import {
     AlertDialog,
     Avatar,
@@ -9,7 +10,6 @@ import {
     Page,
     Section,
     Select,
-    Skeleton,
     Stack,
     Switch,
     Text,
@@ -184,9 +184,9 @@ const CvLinkSection = (props: ProfileEditBaseProps) => {
 /** One field while the editor loads: a bar for its label, the field's box (its own skeleton, label hidden) and a bar for its helper. */
 const FieldSkeleton = () => (
     <Stack gap="inline">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={1} />
+        <HeroSkeleton className="h-4 w-28 rounded-md" />
+        <HeroSkeleton className="h-10 w-full rounded-xl" />
+        <HeroSkeleton className="h-3 w-64 rounded-md" />
     </Stack>
 )
 
@@ -197,22 +197,26 @@ const FieldSkeleton = () => (
 const ProfileEditSkeleton = () => (
     <Stack gap="region">
         <Stack gap="row">
-            <Skeleton shape="text" lines={1} />
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
             <Cluster gap="inline" align="center" wrap={false}>
-                <Skeleton shape="circle" size="lg" />
-                <Skeleton shape="text" lines={2} />
+                <HeroSkeleton className="h-12 w-12 shrink-0 rounded-full" />
+                <Stack gap="row">
+                    <HeroSkeleton className="h-4 w-40 rounded-md" />
+                    <HeroSkeleton className="h-3 w-56 rounded-md" />
+                </Stack>
             </Cluster>
         </Stack>
         <Stack gap="row">
-            <Skeleton shape="text" lines={1} />
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
             <FieldSkeleton />
             <FieldSkeleton />
         </Stack>
         <Stack gap="row">
-            <Skeleton shape="text" lines={1} />
-            <Skeleton shape="text" lines={1} />
+            <HeroSkeleton className="h-5 w-40 rounded-md" />
+            <HeroSkeleton className="h-10 w-full rounded-xl" />
             <Cluster gap="row" align="center" justify="between" wrap={false}>
-                <Skeleton shape="text" lines={2} />
+                <HeroSkeleton className="h-4 w-48 rounded-md" />
+                <HeroSkeleton className="h-[18px] w-8 shrink-0 rounded-full" />
             </Cluster>
         </Stack>
     </Stack>

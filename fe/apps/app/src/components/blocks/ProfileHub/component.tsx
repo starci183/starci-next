@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     Avatar,
@@ -9,7 +10,6 @@ import {
     Link,
     Page,
     Section,
-    Skeleton,
     Stack,
     Switch,
     Text,
@@ -340,8 +340,10 @@ const EditAction = (props: { readonly labels: ProfileHubLabels; readonly isNew: 
 /** One block of the loading page: a bar for its title, then the lines its body will take. */
 const SkeletonBlock = (props: { readonly lines: number }) => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={props.lines} />
+        <Skeleton className="h-5 w-40 rounded-md" />
+        {Array.from({ length: props.lines }, (_, index) => (
+            <Skeleton key={index} className="h-4 w-2/3 rounded-md" />
+        ))}
     </Stack>
 )
 
@@ -351,10 +353,11 @@ const SkeletonBlock = (props: { readonly lines: number }) => (
  */
 const CvLinkSkeleton = () => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={1} />
+        <Skeleton className="h-5 w-40 rounded-md" />
+        <Skeleton className="h-10 w-full rounded-xl" />
         <Cluster gap="row" align="center" justify="between" wrap={false}>
-            <Skeleton shape="text" lines={2} />
+            <Skeleton className="h-4 w-48 rounded-md" />
+            <Skeleton className="h-[18px] w-8 shrink-0 rounded-full" />
         </Cluster>
     </Stack>
 )
@@ -369,10 +372,13 @@ const ProfileSkeleton = () => (
         primary={
             <Stack gap="region">
                 <Stack gap="row">
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-5 w-40 rounded-md" />
                     <Cluster gap="inline" align="center" wrap={false}>
-                        <Skeleton shape="circle" size="lg" />
-                        <Skeleton shape="text" lines={2} />
+                        <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
+                        <Stack gap="row">
+                            <Skeleton className="h-4 w-40 rounded-md" />
+                            <Skeleton className="h-3 w-56 rounded-md" />
+                        </Stack>
                     </Cluster>
                 </Stack>
                 <CvLinkSkeleton />
@@ -406,7 +412,11 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
                 title: labels.title,
                 titleScale: "standard",
                 breadcrumbs: "root",
-                meta: isFirstLoad ? <Skeleton shape="text" lines={1} /> : (props.props.metaLine ?? labels.loading),
+                meta: isFirstLoad ? (
+                    <Skeleton className="h-3 w-56 rounded-md" />
+                ) : (
+                    (props.props.metaLine ?? labels.loading)
+                ),
                 ...(isFirstLoad ? {} : { actions: <EditAction labels={labels} isNew={props.props.isNew} /> }),
             }}
         >

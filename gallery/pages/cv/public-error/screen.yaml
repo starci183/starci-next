@@ -110,24 +110,24 @@ audit:
       at: 2026-11-21T05:07:22.525Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thanh trên công khai, thông báo lỗi giữa vùng nội dung, chân trang."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Thông báo lỗi giữa trang (biểu tượng, tiêu đề, câu giải thích, Thử lại 40px); PublicTopBar dùng chung. Checklist: Thử lại và Đăng nhập 40px, nhãn một dòng ở 390, không tràn."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Có Thử lại; đổi ngôn ngữ, Đăng nhập và lối tạo CV vẫn còn."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lỗi có biểu tượng cảnh báo, tiêu đề, lời và hành động."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: '"Không tải được CV này", "Máy chủ chưa trả lời. Thử lại sau vài giây." Tiếng Việt, không mã thô.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái lỗi tải có ở 1440 và 390; đang tải, đã tải và nhiều dòng là các màn chị em."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: 'screen.yaml đã viết lại theo ảnh: ba phần thanh-tren, thong-bao-loi, chan-trang; không còn phần chủ CV hay ChoiceChips, không còn "cần Grammar nếu TopBar buộc có avatar"; considered có hai lựa chọn (Alert đầu trang bị bỏ, thông báo giữa trang được chọn). Chân trang giữ câu về mã xác minh, phần chan-trang nói rõ lý do.'
   escalate: null

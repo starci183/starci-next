@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     Badge,
@@ -10,7 +11,6 @@ import {
     PaneSection,
     RadioGroup,
     Section,
-    Skeleton,
     Stack,
     Text,
     type DataTableRow,
@@ -266,8 +266,10 @@ const Faq = (props: PremiumPlansBaseProps) => (
 /** One block of the loading page: a bar for its title, then the lines its body will take. */
 const SkeletonBlock = (props: { readonly lines: number }) => (
     <Stack gap="row">
-        <Skeleton shape="text" lines={1} />
-        <Skeleton shape="text" lines={props.lines} />
+        <Skeleton className="h-5 w-40 rounded-md" />
+        {Array.from({ length: props.lines }, (_, index) => (
+            <Skeleton key={index} className="h-4 w-2/3 rounded-md" />
+        ))}
     </Stack>
 )
 
@@ -291,7 +293,7 @@ const plansSkeleton = (title: string) => (
                 <Stack gap="section">
                     <SkeletonBlock lines={4} />
                     <SkeletonBlock lines={3} />
-                    <Skeleton shape="rect" ratio="wide" />
+                    <Skeleton className="h-24 w-full rounded-2xl" />
                 </Stack>
             </PaneSection>
         </Pane>

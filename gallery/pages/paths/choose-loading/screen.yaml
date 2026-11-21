@@ -10,10 +10,10 @@ code:
 shots:
   "390":
     file: 390.png
-    sha256: aee30a52aed06868d6f70126d4bcb59f3afd07752d09dd1df2d081d9fe2e0e06
+    sha256: fcbce03296314ce93342b60e0fde0efb930c4fd06e8461fe302acaa760dfd247
   "1440":
     file: 1440.png
-    sha256: f892435628dede7517ca52a68cad70c8249a97df8fa3d53da4de8ffc8f17af1e
+    sha256: defc80cfc0e64578e6e4e4989ff65f9a50d97c62e0eb69065087dd3d1a7853d3
 sections:
   - id: s1
     title: Khung xương

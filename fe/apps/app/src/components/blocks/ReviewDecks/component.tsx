@@ -1,9 +1,9 @@
+import { Skeleton } from "@heroui/react"
 import {
     Alert,
     EmptyNotice,
     Page,
     Section,
-    Skeleton,
     Stack,
     Tabs,
     Text,
@@ -115,7 +115,7 @@ const DeckList = (
 /** The decks while their first read loads: the filter rows and the deck rows as bars, with no title or chip word. */
 const DecksSkeleton = () => (
     <Stack gap="section">
-        <Skeleton shape="text" lines={2} />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
         <SkeletonRows rows={6} />
     </Stack>
 )

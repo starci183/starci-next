@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { Skeleton } from "@heroui/react"
 import {
     Avatar,
     Button,
@@ -14,7 +15,6 @@ import {
     Page,
     Popover,
     Section,
-    Skeleton,
     Stack,
     Stepper,
     Tabs,
@@ -306,8 +306,12 @@ const NotFound = (props: { readonly labels: PublicCvLabels; readonly staticsBase
 /** One signed line while the CV loads: the line's mark, then bars for its sentence, its source and its trust trail. */
 const LineSkeleton = () => (
     <Cluster gap="row" align="start" wrap={false}>
-        <Skeleton shape="circle" size="sm" />
-        <Skeleton shape="text" lines={3} />
+        <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
+        <Stack gap="row">
+            <Skeleton className="h-4 w-full rounded-md" />
+            <Skeleton className="h-4 w-2/3 rounded-md" />
+            <Skeleton className="h-3 w-40 rounded-md" />
+        </Stack>
     </Cluster>
 )
 
@@ -319,8 +323,12 @@ const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
     <Stack gap="region">
         <Stack gap="row">
             <Cluster gap="row" align="center" wrap={false}>
-                <Skeleton shape="circle" size="lg" />
-                <Skeleton shape="text" lines={3} />
+                <Skeleton className="h-12 w-12 shrink-0 rounded-full" />
+                <Stack gap="row">
+                    <Skeleton className="h-5 w-40 rounded-md" />
+                    <Skeleton className="h-4 w-56 rounded-md" />
+                    <Skeleton className="h-3 w-32 rounded-md" />
+                </Stack>
             </Cluster>
             <Divider />
         </Stack>
@@ -328,23 +336,23 @@ const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
             kind="main-rail"
             primary={
                 <Stack gap="section">
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-5 w-40 rounded-md" />
                     <LineSkeleton />
                     <LineSkeleton />
                     <LineSkeleton />
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-4 w-32 rounded-md" />
                 </Stack>
             }
             rail={
                 <Stack gap="section">
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-5 w-40 rounded-md" />
                     {props.labels.steps.map((step) => (
                         <Cluster key={step.id} gap="row" align="center" wrap={false}>
-                            <Skeleton shape="circle" size="sm" />
-                            <Skeleton shape="text" lines={1} />
+                            <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
+                            <Skeleton className="h-4 w-40 rounded-md" />
                         </Cluster>
                     ))}
-                    <Skeleton shape="text" lines={1} />
+                    <Skeleton className="h-4 w-32 rounded-md" />
                 </Stack>
             }
             railWidth="standard"
@@ -359,7 +367,8 @@ const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
 const FootSkeleton = () => (
     <Stack gap="row">
         <Divider />
-        <Skeleton shape="text" lines={2} />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
+        <Skeleton className="h-4 w-32 rounded-md" />
     </Stack>
 )
 

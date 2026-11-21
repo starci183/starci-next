@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import {
     Badge,
     BarChart,
@@ -12,7 +13,6 @@ import {
     Page,
     Progress,
     Section,
-    Skeleton,
     Stack,
     Text,
     type ListRowData,
@@ -234,15 +234,15 @@ const GoalDialog = (props: ReviewTodayBaseProps) => {
 /** The day while its first read loads: the figures strip, the card rows and the chart, the goal and the decks as bars. */
 const TodaySkeleton = () => (
     <Stack gap="region">
-        <Skeleton shape="text" lines={2} />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
         <Grid
             kind="main-rail"
             primary={
                 <Stack gap="region">
                     <SkeletonRows rows={5} />
                     <Stack gap="row">
-                        <Skeleton shape="text" lines={1} />
-                        <Skeleton shape="rect" ratio="wide" />
+                        <Skeleton className="h-5 w-40 rounded-md" />
+                        <Skeleton className="h-24 w-full rounded-2xl" />
                     </Stack>
                 </Stack>
             }

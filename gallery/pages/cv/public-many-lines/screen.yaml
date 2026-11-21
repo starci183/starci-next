@@ -3,10 +3,9 @@ screen: cv/public-many-lines
 title: CV công khai, nhiều dòng
 route: /cv/{slug}
 area: cv
-summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `cv-eight`, Minh Nguyễn,
-  `/cv/minh-nguyen`: 11 dòng đã ký từ ba nguồn, Essentials 5, Dự án 2, Luyện code 4). Từ 8 dòng hiện
-  tab lọc theo nguồn có số đếm; danh sách hiện 10 dòng (390: 6) rồi nút Xem thêm. Mã:
-  `fe/apps/app/src/components/blocks/PublicCv/`."
+summary: "Route: `/cv/{slug}` (ảnh chụp: CV công khai của học viên seed `cv-eight`, Minh Nguyễn, `/cv/minh-nguyen`: 11
+  dòng đã ký từ ba nguồn, Essentials 5, Dự án 2, Luyện code 4). Từ 8 dòng hiện tab lọc theo nguồn có số đếm; danh sách
+  hiện 10 dòng (390: 6) rồi nút Xem thêm. Mã: `fe/apps/app/src/components/blocks/PublicCv/`."
 code:
   - app/[locale]/(pages)/(auth)/cv/[slug]/page.tsx
   - features/pages/PublicCvPage/
@@ -20,21 +19,23 @@ shots:
 sections:
   - id: chu-cv
     title: Chủ CV
-    why: "Như `cv/public`: ảnh, tên, dòng CV đã xác minh bởi StarCi, dòng sự kiện 11 dòng đã ký và ngày
-      cập nhật, nút chính Chia sẻ CV."
+    why:
+      "Như `cv/public`: ảnh, tên, dòng CV đã xác minh bởi StarCi, dòng sự kiện 11 dòng đã ký và ngày cập nhật, nút chính
+      Chia sẻ CV."
     law: verified-experience.md điều 7
     grammar: Avatar, Button
   - id: dong-cv-da-ky
     title: Dòng CV đã ký
-    why: "Nhà tuyển dụng thường tìm một mảng: từ 8 dòng hiện tab lọc Mọi nguồn, Essentials, Dự án, Luyện
-      code có đếm, một chạm là lọc. Danh sách hiện 10 dòng (390: 6) rồi Xem thêm N dòng mở tiếp tại
-      chỗ; mỗi dòng có nút Xác minh 40px tới trang xác minh."
+    why:
+      "Nhà tuyển dụng thường tìm một mảng: từ 8 dòng hiện tab lọc Mọi nguồn, Essentials, Dự án, Luyện code có đếm, một
+      chạm là lọc. Danh sách hiện 10 dòng (390: 6) rồi Xem thêm N dòng mở tiếp tại chỗ; mỗi dòng có nút Xác minh 40px
+      tới trang xác minh."
     law: verified-experience.md điều 4 và 10
     grammar: Tabs kind=filter, Section kind=list, Button
   - id: vi-sao-tin-duoc
     title: Vì sao tin được CV này
-    why: Ba bước Luyện xong, AI chấm, Thầy ký (hoặc người duyệt thầy chỉ định); câu nói trang không hiện
-      điểm số hay tên người duyệt chỉ đứng một lần ở đây.
+    why: Ba bước Luyện xong, AI chấm, Thầy ký (hoặc người duyệt thầy chỉ định); câu nói trang không hiện điểm số hay tên
+      người duyệt chỉ đứng một lần ở đây.
     law: verified-experience.md điều 3 và 7
     grammar: Stack, Text
 considered:
@@ -43,12 +44,14 @@ considered:
     why: "Luật Grammar: lọc một danh sách là Tabs filter có số đếm; ChoiceChips là giá trị của form."
   - option: Sửa chữ trong câu CV (StarCi Bản chất, typescript viết thường)
     chosen: false
-    why: "Câu dòng CV do AI soạn theo mẫu của backend
-      (be/src/modules/domain/career/messages/career.messages.ts): cần API, ghi FOLLOWUPS."
+    why:
+      "Câu dòng CV do AI soạn theo mẫu của backend (be/src/modules/domain/career/messages/career.messages.ts): cần API,
+      ghi FOLLOWUPS."
   - option: Đổi chữ Accepted sang tiếng Việt
     chosen: false
-    why: Accepted là thuật ngữ chung của khu Luyện code trên toàn app (kết quả của máy chấm); đổi ở một
-      nơi sẽ lệch các nơi khác.
+    why:
+      Accepted là thuật ngữ chung của khu Luyện code trên toàn app (kết quả của máy chấm); đổi ở một nơi sẽ lệch các nơi
+      khác.
 audit:
   builder:
     agent: mig-auth-fe
@@ -63,11 +66,11 @@ audit:
           notes: ""
         layout:
           verdict: open
-          notes: 'Phần dong-cv-da-ky nói chip nguồn chỉ hiện từ 8 dòng, nhưng ảnh 3 dòng đã có thanh tab Mọi
-            nguồn / Essentials / Dự án. Ở 390, dòng ký "Người duyệt do thầy chỉ định ký 21 thg 11,"
-            gãy để "2026" đứng riêng. Nút "Xác minh …" cao 32px (1440: y 368–399; 390: y 568–599);
-            cỡ sm trong hàng được phép, nhưng ở 390 nó dưới vùng chạm 44px và hàng không phải liên
-            kết (ListRow action, cần Grammar). "Chia sẻ CV" và "Đăng nhập" 40px.'
+          notes:
+            'Phần dong-cv-da-ky nói chip nguồn chỉ hiện từ 8 dòng, nhưng ảnh 3 dòng đã có thanh tab Mọi nguồn / Essentials /
+            Dự án. Ở 390, dòng ký "Người duyệt do thầy chỉ định ký 21 thg 11," gãy để "2026" đứng riêng. Nút "Xác minh
+            …" cao 32px (1440: y 368–399; 390: y 568–599); cỡ sm trong hàng được phép, nhưng ở 390 nó dưới vùng chạm
+            44px và hàng không phải liên kết (ListRow action, cần Grammar). "Chia sẻ CV" và "Đăng nhập" 40px.'
         actionable:
           verdict: pass
           notes: ""
@@ -76,17 +79,20 @@ audit:
           notes: ""
         words:
           verdict: open
-          notes: 'Người ký có ba cách gọi trên một trang: "Thầy ký", "Người duyệt do thầy chỉ định ký" (dòng
-            1) và "Giảng viên StarCi đọc bằng chứng và ký" (khối Vì sao tin được). Dòng 2 ghi
-            "(StarCi Bản chất)" trong khi huy hiệu ghi "Essentials" (chữ do AI soạn, cần API).'
+          notes:
+            'Người ký có ba cách gọi trên một trang: "Thầy ký", "Người duyệt do thầy chỉ định ký" (dòng 1) và "Giảng viên
+            StarCi đọc bằng chứng và ký" (khối Vì sao tin được). Dòng 2 ghi "(StarCi Bản chất)" trong khi huy hiệu ghi
+            "Essentials" (chữ do AI soạn, cần API).'
         states:
           verdict: open
-          notes: cv/public-loading chụp ra CV đã tải (ảnh 390 trùng từng byte với màn này), và cv/public-error
-            có trong canvas nhưng chưa có trong gallery.
+          notes:
+            cv/public-loading chụp ra CV đã tải (ảnh 390 trùng từng byte với màn này), và cv/public-error có trong canvas
+            nhưng chưa có trong gallery.
         truth:
           verdict: open
-          notes: 'Khối "Vì sao tin được CV này" bước 3 nói "Giảng viên StarCi … ký từng dòng", nhưng dòng 1 do
-            người duyệt được thầy chỉ định ký: lời giải thích không còn đúng với dữ liệu.'
+          notes:
+            'Khối "Vì sao tin được CV này" bước 3 nói "Giảng viên StarCi … ký từng dòng", nhưng dòng 1 do người duyệt được
+            thầy chỉ định ký: lời giải thích không còn đúng với dữ liệu.'
     - n: 2
       at: 2026-11-21T04:23:00.192Z
       lenses:
@@ -95,88 +101,108 @@ audit:
           notes: Thứ tự như cv/public.
         layout:
           verdict: open
-          notes: Ảnh trùng từng byte với cv/public (3 dòng), nên dải Tabs lọc nguồn và nút Xem thêm của màn
-            này chưa chấm được ở 1440 và 390. Thanh trên tự dựng bằng Cluster như cv/public.
+          notes:
+            Ảnh trùng từng byte với cv/public (3 dòng), nên dải Tabs lọc nguồn và nút Xem thêm của màn này chưa chấm được ở
+            1440 và 390. Thanh trên tự dựng bằng Cluster như cv/public.
         actionable:
           verdict: open
-          notes: Không thấy được lối lọc theo nguồn và Xem thêm, hai hành động riêng của trạng thái nhiều
-            dòng.
+          notes: Không thấy được lối lọc theo nguồn và Xem thêm, hai hành động riêng của trạng thái nhiều dòng.
         live:
           verdict: pass
           notes: "Như cv/public: dòng đã ký có biểu tượng đã xác minh."
         words:
           verdict: open
-          notes: 'Như cv/public: câu "không hiện điểm số…" lặp hai lần, "bài Accepted", và "(StarCi Bản chất)"
-            trong câu cạnh huy hiệu "Essentials".'
+          notes:
+            'Như cv/public: câu "không hiện điểm số…" lặp hai lần, "bài Accepted", và "(StarCi Bản chất)" trong câu cạnh huy
+            hiệu "Essentials".'
         states:
           verdict: open
-          notes: "Không phải trạng thái nhiều dòng: 3 dòng, không có dải lọc (mã chỉ hiện từ 8 dòng) và không
-            có Xem thêm (giới hạn 10 / 390: 6). Cần seed từ 8 dòng trở lên rồi chụp lại."
+          notes:
+            "Không phải trạng thái nhiều dòng: 3 dòng, không có dải lọc (mã chỉ hiện từ 8 dòng) và không có Xem thêm (giới
+            hạn 10 / 390: 6). Cần seed từ 8 dòng trở lên rồi chụp lại."
         truth:
           verdict: open
-          notes: Summary ghi "có tab theo nguồn", phần chu-cv ghi "14 dòng đã ký", phần pending-seed còn hứa
-            chụp lại; considered "Ẩn tab nguồn dưới 8 dòng" ghi chosen false trong khi mã đã ẩn dưới
-            8 dòng. Lời và ảnh lệch nhau.
+          notes:
+            Summary ghi "có tab theo nguồn", phần chu-cv ghi "14 dòng đã ký", phần pending-seed còn hứa chụp lại; considered
+            "Ẩn tab nguồn dưới 8 dòng" ghi chosen false trong khi mã đã ẩn dưới 8 dòng. Lời và ảnh lệch nhau.
     - n: 3
       at: 2026-11-21T04:58:22.720Z
       lenses:
         order:
           verdict: pass
-          notes: "Chủ CV và Chia sẻ CV, rồi Dòng CV đã ký với dải lọc nguồn, danh sách, Xem thêm; Vì sao tin
-            được ở cột phải (390: sau danh sách), chân trang."
+          notes:
+            "Chủ CV và Chia sẻ CV, rồi Dòng CV đã ký với dải lọc nguồn, danh sách, Xem thêm; Vì sao tin được ở cột phải (390:
+            sau danh sách), chân trang."
         layout:
           verdict: fixed
-          notes: 'Đã chụp đúng trạng thái nhiều dòng: 11 dòng, Tabs filter Mọi nguồn 11 / Essentials 5 / Dự án
-            2 / Luyện code 4; 1440 hiện 10 dòng rồi "Xem thêm 1 dòng", 390 hiện 6 rồi "Xem thêm 5
-            dòng". Thanh trên là PublicTopBar dùng chung. Checklist: Chia sẻ CV, Xác minh …, Xem
-            thêm, Đăng nhập cao 40px; nhãn một dòng ở 390; dải Tabs ở 390 cuộn ngang có mũi tên
-            (Luyện code bị cắt), là cách tràn của Tabs, trang không vỡ.'
+          notes:
+            'Đã chụp đúng trạng thái nhiều dòng: 11 dòng, Tabs filter Mọi nguồn 11 / Essentials 5 / Dự án 2 / Luyện code 4;
+            1440 hiện 10 dòng rồi "Xem thêm 1 dòng", 390 hiện 6 rồi "Xem thêm 5 dòng". Thanh trên là PublicTopBar dùng
+            chung. Checklist: Chia sẻ CV, Xác minh …, Xem thêm, Đăng nhập cao 40px; nhãn một dòng ở 390; dải Tabs ở 390
+            cuộn ngang có mũi tên (Luyện code bị cắt), là cách tràn của Tabs, trang không vỡ.'
         actionable:
           verdict: pass
-          notes: Lọc theo nguồn một chạm, Xem thêm mở tại chỗ, mỗi dòng có Xác minh tới mã riêng, Chia sẻ CV
-            là nút chính duy nhất.
+          notes:
+            Lọc theo nguồn một chạm, Xem thêm mở tại chỗ, mỗi dòng có Xác minh tới mã riêng, Chia sẻ CV là nút chính duy
+            nhất.
         live:
           verdict: pass
           notes: Mỗi dòng có biểu tượng đã xác minh và vết Luyện xong, AI chấm đạt, Thầy ký ngày.
         words:
           verdict: open
-          notes: 'Đã khớp: bước 3 nay nói "Thầy, hoặc người duyệt thầy chỉ định", khớp dòng 1. Còn: câu dòng
-            Essentials ghi "(StarCi Bản chất)" cạnh huy hiệu "Essentials" (một khái niệm hai tên);
-            "typescript" viết thường như mã thô; "Accepted" ở câu và vết (thuật ngữ chấm bài của cả
-            app, cần chủ quyết giữ hay Việt hoá). Câu dòng do máy chủ soạn: cần API cho hai điểm
-            đầu.'
+          notes:
+            'Đã khớp: bước 3 nay nói "Thầy, hoặc người duyệt thầy chỉ định", khớp dòng 1. Còn: câu dòng Essentials ghi
+            "(StarCi Bản chất)" cạnh huy hiệu "Essentials" (một khái niệm hai tên); "typescript" viết thường như mã thô;
+            "Accepted" ở câu và vết (thuật ngữ chấm bài của cả app, cần chủ quyết giữ hay Việt hoá). Câu dòng do máy chủ
+            soạn: cần API cho hai điểm đầu.'
         states:
           verdict: pass
           notes: Trạng thái nhiều dòng thật ở 1440 và 390; đang tải và lỗi là các màn chị em trong gallery.
         truth:
           verdict: open
-          notes: 'Summary còn ghi học viên `gallery-cv-multi`, "ba dòng đã ký thuộc hai nguồn" và "seed chỉ
-            sinh được ba dòng"; ảnh là 11 dòng, ba nguồn của Minh Nguyễn (/cv/minh-nguyen). Phần
-            chu-cv ghi "14 dòng đã ký" (ảnh: 11); phần dong-cv-da-ky ghi chip nguồn và ChoiceChips,
-            ảnh là Tabs filter; phần pending-seed và considered ("Ẩn tab nguồn…", tên "Học viên
-            StarCi") đã cũ.'
+          notes:
+            'Summary còn ghi học viên `gallery-cv-multi`, "ba dòng đã ký thuộc hai nguồn" và "seed chỉ sinh được ba dòng";
+            ảnh là 11 dòng, ba nguồn của Minh Nguyễn (/cv/minh-nguyen). Phần chu-cv ghi "14 dòng đã ký" (ảnh: 11); phần
+            dong-cv-da-ky ghi chip nguồn và ChoiceChips, ảnh là Tabs filter; phần pending-seed và considered ("Ẩn tab
+            nguồn…", tên "Học viên StarCi") đã cũ.'
     - n: 4
       at: 2026-11-21T05:07:21.126Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes:
+            "Chủ CV và Chia sẻ CV, rồi Dòng CV đã ký với tab lọc nguồn, danh sách, Xem thêm; Vì sao tin được ở cột phải (390:
+            sau danh sách), chân trang."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes:
+            "Tabs filter Mọi nguồn 11 / Essentials 5 / Dự án 2 / Luyện code 4; 1440 hiện 10 dòng rồi Xem thêm 1 dòng, 390
+            hiện 6 rồi Xem thêm 5 dòng. Checklist: Chia sẻ CV, Xác minh, Xem thêm, Đăng nhập cao 40px; nhãn nút một dòng
+            ở 390; dải Tabs ở 390 cuộn ngang có mũi tên, trang không vỡ."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Lọc nguồn một chạm, Xem thêm mở tại chỗ, mỗi dòng có Xác minh tới mã riêng, Chia sẻ CV là nút chính duy nhất."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes:
+            "Mỗi dòng có biểu tượng đã xác minh và vết Luyện xong, AI chấm đạt, Thầy ký (hoặc Người duyệt thầy chỉ định ký)
+            kèm ngày."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes:
+            'Vẫn như vòng 3 (vòng cuối): câu dòng Essentials ghi "(StarCi Bản chất)" cạnh huy hiệu "Essentials" (một khái
+            niệm hai tên); "typescript" viết thường như mã thô; "Accepted" ở câu, vết và bước Luyện xong. Hai điểm đầu
+            do máy chủ soạn câu (cần API); điểm ba cần chủ quyết. Chuyển escalate.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái nhiều dòng thật ở 1440 và 390; đang tải và lỗi là các màn chị em trong gallery."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
-  escalate: null
+          verdict: fixed
+          notes:
+            "screen.yaml đã khớp ảnh: summary ghi học viên seed cv-eight, Minh Nguyễn, /cv/minh-nguyen, 11 dòng ba nguồn
+            (5/2/4), 10 dòng (390: 6) rồi Xem thêm; phần dong-cv-da-ky ghi Tabs filter; phần pending-seed và considered
+            cũ đã bỏ. Dữ liệu là seed thật."
+  escalate: 'owner decided 2026-11-21 ("ok" to the coordinator proposal): keep "Accepted" as the app-wide grading term;
+    the AI-drafted CV line wording ("(StarCi Bản chất)" beside the Essentials badge, lowercase "typescript") is fixed
+    later in the backend template be/src/modules/domain/career/messages/career.messages.ts with a seed refresh
+    (FOLLOWUPS).'

@@ -1,3 +1,4 @@
+import { Skeleton } from "@heroui/react"
 import type { ReactNode } from "react"
 import {
     Alert,
@@ -9,7 +10,6 @@ import {
     Input,
     Page,
     Section,
-    Skeleton,
     Stack,
     Switch,
     Terminal,
@@ -251,7 +251,7 @@ const BuildSkeleton = () => (
         <HarnessSkeletonBlock lines={3} />
         <HarnessSkeletonBlock lines={2} />
         <HarnessSkeletonList rows={3} />
-        <Skeleton shape="rect" ratio="wide" />
+        <Skeleton className="h-24 w-full rounded-2xl" />
         <HarnessSkeletonBlock lines={6} />
     </Stack>
 )

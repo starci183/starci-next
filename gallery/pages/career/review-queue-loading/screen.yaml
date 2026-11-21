@@ -103,24 +103,24 @@ audit:
       at: 2026-11-21T05:07:18.559Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đầu trang (đường dẫn, tiêu đề, tab Hàng đợi / Người duyệt), rồi xương hàng đợi bên trái và bảng duyệt bên phải ở 1440; ở 390 hàng đợi trước, như bản đã tải."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes: "Tiêu đề Duyệt kinh nghiệm giờ là chữ thật (headerOf chỉ đổi dòng meta thành Skeleton), đường dẫn và tab đầu trang thật; dưới đường kẻ là thanh Skeleton phẳng từ mép tới mép, một kiểu, không viền, không tông. Dòng meta là một thanh hết bề rộng: tạm chấp nhận (GRAMMAR-GAPS #16, Grammar chưa định được bề rộng thanh). Checklist: tab đầu trang và Mở menu 40px; nhãn một dòng ở 390; dải đầu không tràn; không có nút bấm được trong vùng tải."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt và thanh bên vẫn dùng được."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đang tải hiện bằng thanh Skeleton có chuyển động ở 1440 và 390."
         words:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Vùng nội dung không có chữ; đầu trang chỉ có Hồ sơ / Duyệt kinh nghiệm, Hàng đợi, Người duyệt."
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Đây là trạng thái đang tải, có ở 1440 và 390."
         truth:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes: 'Summary khớp ảnh, nhưng screen.yaml chưa được viết lại như các màn CV và hồ sơ: considered "Bật skeleton bằng frame của SlotView (Page isLoading)" đã cũ (mã nay vẽ QueueSkeleton trong render, frame chỉ đổi meta thành Skeleton, tiêu đề giữ thật); "Cho placeholder đủ ba tab lọc và một preview giả" không còn đúng (vùng nội dung chỉ là thanh, không tab lọc hay preview); phần vung-chinh ghi grammar EmptyNotice, Alert không có trên màn này, và law rỗng (nên dẫn luật tải 2026-11-21).'
   escalate: null

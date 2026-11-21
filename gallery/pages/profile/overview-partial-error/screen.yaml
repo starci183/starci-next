@@ -3,10 +3,9 @@ screen: profile/overview-partial-error
 title: Hồ sơ, một vùng lỗi
 route: /profile
 area: profile
-summary: "Route: `/profile` (ảnh chụp: học viên seed `gallery-cv-multi` khi truy vấn MyExperience bị
-  từ chối). Các vùng khác vẫn hiện đủ; phần CV đã xác minh giữ tiêu đề với câu Không tải được phần
-  này và nút Thử lại 40px; cột Kinh nghiệm nói chưa tải được số mục thay vì 0. Mã:
-  `fe/apps/app/src/components/blocks/ProfileHub/`."
+summary: "Route: `/profile` (ảnh chụp: học viên seed `gallery-cv-multi` khi truy vấn MyExperience bị từ chối). Các vùng
+  khác vẫn hiện đủ; phần CV đã xác minh giữ tiêu đề với câu Không tải được phần này và nút Thử lại 40px; cột Kinh nghiệm
+  nói chưa tải được số mục thay vì 0. Mã: `fe/apps/app/src/components/blocks/ProfileHub/`."
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
@@ -20,14 +19,16 @@ shots:
 sections:
   - id: cv-da-xac-minh
     title: CV đã xác minh (lỗi)
-    why: "Mỗi vùng đọc riêng: vùng hỏng giữ tiêu đề để người học biết phần nào lỗi, kèm một việc làm
-      tiếp (Thử lại), không che các vùng khác."
+    why:
+      "Mỗi vùng đọc riêng: vùng hỏng giữ tiêu đề để người học biết phần nào lỗi, kèm một việc làm tiếp (Thử lại), không
+      che các vùng khác."
     law: unhandled-case-tells-customer.md
     grammar: Section, Text, Button
   - id: cot-phai
     title: Cột phải
-    why: Kinh nghiệm không khẳng định 0 đã xác minh khi không đọc được; Tiến độ nhanh chiếm hết bề rộng
-      cột nên nhãn không gãy.
+    why:
+      Kinh nghiệm không khẳng định 0 đã xác minh khi không đọc được; Tiến độ nhanh chiếm hết bề rộng cột nên nhãn không
+      gãy.
     law: unhandled-case-tells-customer.md
     grammar: Section layout=keyValue
   - id: cac-vung-con-lai
@@ -41,12 +42,15 @@ considered:
     why: "Vòng audit trước: không nói được phần nào hỏng."
   - option: Đổi chữ Accepted sang tiếng Việt
     chosen: false
-    why: Accepted là thuật ngữ chung của khu Luyện code trên toàn app (kết quả của máy chấm); đổi ở một
-      nơi sẽ lệch các nơi khác.
+    why:
+      Accepted là thuật ngữ chung của khu Luyện code trên toàn app (kết quả của máy chấm); đổi ở một nơi sẽ lệch các nơi
+      khác.
   - option: Bỏ dòng Học viên · Premium dưới tiêu đề
     chosen: false
-    why: "Dòng meta của trang hồ sơ theo canvas: loại tài khoản, gói và số mục đã xác minh của chính
-      trang này."
+    why: "Dòng meta của trang hồ sơ theo canvas: loại tài khoản, gói và số mục đã xác minh của chính trang này."
+  - option: Owner decision on "Bài Accepted" (2026-11-21)
+    chosen: true
+    why: The owner kept "Accepted" as the app-wide grading term of Luyện code ("ok" to the coordinator proposal).
 audit:
   builder:
     agent: next-one-edition
@@ -58,13 +62,14 @@ audit:
       lenses:
         order:
           verdict: open
-          notes: 'Khối lỗi thay cả vùng và mất tiêu đề "CV đã xác minh": người học không biết phần nào hỏng;
-            canvas giữ tiêu đề vùng trên khối lỗi.'
+          notes:
+            'Khối lỗi thay cả vùng và mất tiêu đề "CV đã xác minh": người học không biết phần nào hỏng; canvas giữ tiêu đề
+            vùng trên khối lỗi.'
         layout:
           verdict: open
-          notes: '"Thử lại" cao khoảng 28px ở 1440 và 32px ở 390, dưới 40 và dưới vùng chạm 44; Tiến độ nhanh
-            hẹp, nhãn xuống dòng như profile/overview. Checklist: nút đầu trang 40px, một dòng ở
-            390, không tràn.'
+          notes:
+            '"Thử lại" cao khoảng 28px ở 1440 và 32px ở 390, dưới 40 và dưới vùng chạm 44; Tiến độ nhanh hẹp, nhãn xuống dòng
+            như profile/overview. Checklist: nút đầu trang 40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: pass
           notes: Vùng lỗi có Thử lại; các vùng khác giữ đường đổi của chúng.
@@ -73,16 +78,18 @@ audit:
           notes: Lỗi có biểu tượng, nền lỗi và Thử lại; các vùng còn lại không bị ảnh hưởng.
         words:
           verdict: open
-          notes: '"Không tải được phần này." không nói phần nào (canvas: "Chưa tải được phần này." dưới tiêu
-            đề vùng); "Bài Accepted" lẫn tiếng Anh.'
+          notes:
+            '"Không tải được phần này." không nói phần nào (canvas: "Chưa tải được phần này." dưới tiêu đề vùng); "Bài
+            Accepted" lẫn tiếng Anh.'
         states:
           verdict: pass
           notes: Đây là trạng thái lỗi một vùng ở 1440 và 390; các vùng khác vẫn đúng.
         truth:
           verdict: open
-          notes: 'Kinh nghiệm ghi "0 đã xác minh, 0 đang chờ duyệt. Cần 3 mục..." trong khi Liên kết CV đang
-            hiện (chỉ hiện khi có mục đã xác minh) và cùng học viên ở profile/overview có 3 mục: khi
-            vùng CV lỗi, tóm tắt nói 0 thay vì nói chưa tải được.'
+          notes:
+            'Kinh nghiệm ghi "0 đã xác minh, 0 đang chờ duyệt. Cần 3 mục..." trong khi Liên kết CV đang hiện (chỉ hiện khi có
+            mục đã xác minh) và cùng học viên ở profile/overview có 3 mục: khi vùng CV lỗi, tóm tắt nói 0 thay vì nói
+            chưa tải được.'
     - n: 2
       at: 2026-11-21T04:58:26.832Z
       lenses:
@@ -91,11 +98,11 @@ audit:
           notes: Vùng lỗi giữ tiêu đề "CV đã xác minh", lời và Thử lại ở dưới; các vùng khác giữ chỗ.
         layout:
           verdict: open
-          notes: 'Thử lại đã cao 40px (1440 y 579-619; 390 y 816-856). Còn: Tiến độ nhanh dồn ba số vào cột
-            hẹp khoảng 100px trong rail 320px ở 1440, nên "Khái niệm đã chứng minh" xuống hai dòng
-            và số 0 nằm dòng riêng (như vòng 1). Dòng sự kiện "Học viên · Premium" dưới tiêu đề lặp
-            nguyên văn dòng dưới logo ở thanh trên. Checklist: nút đầu trang 40px, một dòng ở 390,
-            không tràn.'
+          notes:
+            'Thử lại đã cao 40px (1440 y 579-619; 390 y 816-856). Còn: Tiến độ nhanh dồn ba số vào cột hẹp khoảng 100px trong
+            rail 320px ở 1440, nên "Khái niệm đã chứng minh" xuống hai dòng và số 0 nằm dòng riêng (như vòng 1). Dòng sự
+            kiện "Học viên · Premium" dưới tiêu đề lặp nguyên văn dòng dưới logo ở thanh trên. Checklist: nút đầu trang
+            40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: pass
           notes: Vùng lỗi có Thử lại; các vùng khác giữ đường đổi của chúng.
@@ -104,39 +111,49 @@ audit:
           notes: Vùng lỗi có lời và Thử lại; các vùng còn lại không bị ảnh hưởng.
         words:
           verdict: open
-          notes: '"Không tải được phần này." nay đứng dưới tiêu đề vùng nên rõ phần nào (đạt). Còn "Bài
-            Accepted" ở Tiến độ nhanh lẫn tiếng Anh (thuật ngữ chấm bài của cả app, cần chủ quyết).'
+          notes:
+            '"Không tải được phần này." nay đứng dưới tiêu đề vùng nên rõ phần nào (đạt). Còn "Bài Accepted" ở Tiến độ nhanh
+            lẫn tiếng Anh (thuật ngữ chấm bài của cả app, cần chủ quyết).'
         states:
           verdict: pass
           notes: Trạng thái lỗi một vùng ở 1440 và 390; các vùng khác vẫn đúng.
         truth:
           verdict: open
-          notes: 'Kinh nghiệm nay nói "Chưa tải được số mục đã xác minh" thay vì 0 (đạt). Còn: summary ghi
-            "cần API: liên kết CV tổng hợp" trong khi Liên kết CV đang chạy trên ảnh; "Nút chính:
-            Sửa hồ sơ" nhưng ảnh là "Thêm ảnh và tên"; "Xem kinh nghiệm" nhưng ảnh "Mở Kinh nghiệm";
-            considered rỗng.'
+          notes:
+            'Kinh nghiệm nay nói "Chưa tải được số mục đã xác minh" thay vì 0 (đạt). Còn: summary ghi "cần API: liên kết CV
+            tổng hợp" trong khi Liên kết CV đang chạy trên ảnh; "Nút chính: Sửa hồ sơ" nhưng ảnh là "Thêm ảnh và tên";
+            "Xem kinh nghiệm" nhưng ảnh "Mở Kinh nghiệm"; considered rỗng.'
     - n: 3
       at: 2026-11-21T05:07:25.085Z
       lenses:
         order:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes:
+            "Vùng lỗi giữ tiêu đề CV đã xác minh, lời và Thử lại ở dưới; Danh tính, Liên kết CV, Tài khoản và cột phải giữ
+            chỗ."
         layout:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes:
+            "Tiến độ nhanh nay chiếm hết bề rộng cột phải: nhãn Khái niệm đã chứng minh một dòng, số đứng dưới nhãn ở 1440 và
+            cùng hàng ở 390. Dòng meta Học viên · Premium giữ theo canvas (considered nêu lý do). Checklist: Thêm ảnh và
+            tên, Thử lại, Xem tiến độ, Mở Kinh nghiệm, Quản lý, Xem Premium 40px; nhãn một dòng ở 390; không tràn."
         actionable:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Vùng lỗi có Thử lại; liên kết CV có nút chép và công tắc, các vùng khác giữ đường đổi của chúng."
         live:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Vùng lỗi có lời và Thử lại; Kinh nghiệm nói chưa tải được thay vì 0; các vùng còn lại không bị ảnh hưởng."
         words:
           verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          notes:
+            '"Bài Accepted" ở Tiến độ nhanh vẫn lẫn tiếng Anh. Considered giữ vì là thuật ngữ chấm bài của cả app; đây là
+            quyết định của chủ (giữ hay Việt hoá toàn app), builder không tự sửa được ở màn này.'
         states:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: pass
+          notes: "Trạng thái lỗi một vùng ở 1440 và 390; đang tải và đã tải là các màn chị em."
         truth:
-          verdict: open
-          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+          verdict: fixed
+          notes:
+            'screen.yaml đã viết lại theo ảnh: không còn "cần API: liên kết CV tổng hợp", nhãn Sửa hồ sơ / Xem kinh nghiệm;
+            summary nói Kinh nghiệm chưa tải được số mục; considered có ba lựa chọn. Dữ liệu là học viên seed thật.'
   escalate: null

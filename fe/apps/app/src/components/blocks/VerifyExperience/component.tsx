@@ -6,11 +6,11 @@ import {
     EmptyNotice,
     Page,
     Section,
-    Skeleton,
     Stack,
     Text,
 } from "@starci/grammar/common"
 import type { ReactNode } from "react"
+import { Skeleton } from "@heroui/react"
 import { SlotView } from "@starci-next/ui"
 import type { DataSlot, SlotLabels } from "@/modules/types"
 
@@ -42,22 +42,26 @@ const FACT_ROWS = ["part", "evidence", "signer", "signedOn", "code"] as const
 const VerificationSkeleton = () => (
     <Stack gap="row">
         <Cluster gap="row" align="start" wrap={false}>
-            <Skeleton shape="circle" size="sm" />
-            <Skeleton shape="text" lines={2} />
+            <Skeleton className="h-6 w-6 shrink-0 rounded-full" />
+            <Stack gap="row">
+                <Skeleton className="h-5 w-48 rounded-md" />
+                <Skeleton className="h-4 w-64 rounded-md" />
+            </Stack>
         </Cluster>
-        <Skeleton shape="text" lines={2} />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
         <Stack gap="section">
-            <Skeleton shape="text" lines={1} />
+            <Skeleton className="h-5 w-40 rounded-md" />
             <Stack gap="row">
                 {FACT_ROWS.map((id) => (
                     <Stack key={id} gap="row">
-                        <Skeleton shape="text" lines={2} />
+                        <Skeleton className="h-3 w-24 rounded-md" />
+                        <Skeleton className="h-4 w-48 rounded-md" />
                         <Divider />
                     </Stack>
                 ))}
             </Stack>
         </Stack>
-        <Skeleton shape="text" lines={1} />
+        <Skeleton className="h-4 w-2/3 rounded-md" />
     </Stack>
 )
 
