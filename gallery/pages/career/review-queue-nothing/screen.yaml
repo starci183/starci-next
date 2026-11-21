@@ -3,8 +3,8 @@ screen: career/review-queue-nothing
 title: Duyệt trải nghiệm, hết mục chờ
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, hết mục chờ.** Không còn mục nào chờ duyệt: câu thông báo và đường đi tiếp,
-  không minh hoạ vì đây là vùng trong trang."
+summary: "**Concept: Duyệt trải nghiệm, hết mục chờ.** Không còn mục nào chờ duyệt: câu thông báo và
+  đường đi tiếp, không minh hoạ vì đây là vùng trong trang."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
@@ -18,46 +18,72 @@ shots:
 sections:
   - id: vung-chinh
     title: Vùng chính
-    why: "Không còn mục nào chờ duyệt: câu thông báo và đường đi tiếp, không minh hoạ vì đây là vùng trong trang."
+    why: "Không còn mục nào chờ duyệt: câu thông báo và đường đi tiếp, không minh hoạ vì đây là vùng
+      trong trang."
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
 considered:
-  - option: "Ẩn bảng xem trước khi hàng chờ trống, dùng một EmptyNotice kèm đường đi tiếp"
+  - option: Ẩn bảng xem trước khi hàng chờ trống, dùng một EmptyNotice kèm đường đi tiếp
     chosen: true
-    why: "Một thông báo, không có câu mời chọn mục không tồn tại."
-  - option: "Giữ bố cục hai cột như bản có dữ liệu"
+    why: Một thông báo, không có câu mời chọn mục không tồn tại.
+  - option: Giữ bố cục hai cột như bản có dữ liệu
     chosen: false
-    why: "Cột phải trống chiếm chỗ và nói sai."
+    why: Cột phải trống chiếm chỗ và nói sai.
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T04:22:53.523Z
       lenses:
         order:
           verdict: open
-          notes:
-            'Ở 1440 ô "Chọn một mục để xem trước." có biểu tượng giữa cột phải nổi hơn câu trống thật "Không có mục nào chờ
-            duyệt." (chữ thường nhỏ dưới thanh lọc); ở 390 ô đó là khối thứ hai dưới câu trống.'
+          notes: Ở 1440 ô "Chọn một mục để xem trước." có biểu tượng giữa cột phải nổi hơn câu trống thật
+            "Không có mục nào chờ duyệt." (chữ thường nhỏ dưới thanh lọc); ở 390 ô đó là khối thứ
+            hai dưới câu trống.
         layout:
           verdict: open
-          notes: "Khi hàng chờ trống, bảng xem trước rỗng vẫn chiếm nửa phải ở 1440; câu trống là dòng chữ trơn thay vì
-            EmptyNotice như các vùng trống khác; ba viên lọc đều 0 vẫn hiện. Checklist: viên lọc và Mở menu 40px; nhãn
-            không gãy ở 390; dải đầu không tràn; vùng bấm viên lọc 40px cao."
+          notes: "Khi hàng chờ trống, bảng xem trước rỗng vẫn chiếm nửa phải ở 1440; câu trống là dòng chữ
+            trơn thay vì EmptyNotice như các vùng trống khác; ba viên lọc đều 0 vẫn hiện. Checklist:
+            viên lọc và Mở menu 40px; nhãn không gãy ở 390; dải đầu không tràn; vùng bấm viên lọc
+            40px cao."
         actionable:
           verdict: open
-          notes: 'Summary hứa "đường đi tiếp" nhưng màn không có nút hay liên kết nào (về Hồ sơ, hoặc sang Người duyệt cho thầy).'
+          notes: Summary hứa "đường đi tiếp" nhưng màn không có nút hay liên kết nào (về Hồ sơ, hoặc sang
+            Người duyệt cho thầy).
+        live:
+          verdict: pass
+          notes: Không có việc đang chạy; số đếm 0 trên các viên lọc.
+        words:
+          verdict: open
+          notes: '"Chọn một mục để xem trước." sai khi không có mục nào; meta "0 mục đang chờ · 0 quá hạn" lặp
+            lại nhãn "0 mục" cạnh tiêu đề.'
+        states:
+          verdict: pass
+          notes: Đây là trạng thái trống, có ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: Số đếm 0 khớp danh sách trống.
+    - n: 2
+      at: 2026-11-21T04:58:14.438Z
+      lenses:
+        order:
+          verdict: fixed
+          notes: "Bảng xem trước rỗng đã bỏ; câu trống là khối chính ngay dưới viên lọc ở 1440 và 390."
+        layout:
+          verdict: fixed
+          notes: "Câu trống là EmptyNotice (Không còn mục nào chờ duyệt) ở giữa vùng, không còn cột phải trống. Checklist: viên lọc và Mở menu 40px; nhãn một dòng ở 390; dải đầu không tràn. Nút Xem người duyệt của EmptyNotice thấp hơn 40px: cần Grammar, không giữ lens. Ba viên lọc 0 vẫn hiện, giữ chỗ cho bộ lọc như bản có dữ liệu, chấp nhận."
+        actionable:
+          verdict: fixed
+          notes: "Có đường đi tiếp Xem người duyệt (tab của thầy)."
         live:
           verdict: pass
           notes: "Không có việc đang chạy; số đếm 0 trên các viên lọc."
         words:
-          verdict: open
-          notes:
-            '"Chọn một mục để xem trước." sai khi không có mục nào; meta "0 mục đang chờ · 0 quá hạn" lặp lại nhãn "0 mục"
-            cạnh tiêu đề.'
+          verdict: fixed
+          notes: "Câu Chọn một mục để xem trước đã bỏ; meta đổi thành Chưa có mục nào, không lặp nhãn 0 mục cạnh tiêu đề."
         states:
           verdict: pass
           notes: "Đây là trạng thái trống, có ở 1440 và 390."

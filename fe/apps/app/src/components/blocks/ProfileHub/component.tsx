@@ -294,7 +294,8 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
         onRetry={props.onRetry}
         render={(aside, isLoading) => (
             <Stack gap="region">
-                <Stack gap="section" align="start">
+                {/* The figures take the rail width (a start-aligned stack shrank them to ~100px and wrapped their labels). */}
+                <Stack gap="section">
                     <Section
                         kind="list"
                         layout="keyValue"
@@ -308,9 +309,11 @@ const Aside = (props: PartProps & Pick<ProfileHubBaseProps["props"], "views">) =
                         }))}
                         empty={null}
                     />
-                    <Button intent="neutral" endArrow href={props.labels.progressHref} isLoading={isLoading}>
-                        {props.labels.asideProgressLink}
-                    </Button>
+                    <Cluster gap="inline">
+                        <Button intent="neutral" endArrow href={props.labels.progressHref} isLoading={isLoading}>
+                            {props.labels.asideProgressLink}
+                        </Button>
+                    </Cluster>
                 </Stack>
                 <Section title={props.labels.asideExperienceTitle} headingLevel={2} isLoading={isLoading}>
                     <Stack gap="inline" align="start">
@@ -343,24 +346,15 @@ const SkeletonBlock = (props: { readonly lines: number }) => (
 )
 
 /**
- * The CV link while it loads: a bar for its title, the copy field's box and the row of the public switch, whose words are bars and whose
- * control is the same compact Switch as the settled one (its own skeleton, label hidden).
+ * The CV link while it loads: flat bars for its title, the copy field and the public switch's words (one look for every skeleton: no
+ * field ring and no control skeleton of its own; a control-sized shape waits for Grammar, GRAMMAR-GAPS #16).
  */
-const CvLinkSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
+const CvLinkSkeleton = () => (
     <Stack gap="row">
         <Skeleton shape="text" lines={1} />
-        <CopyField
-            label={props.labels.cvLinkLabel}
-            isLabelHidden
-            value=""
-            copyLabel={props.labels.cvLinkCopy}
-            copiedLabel={props.labels.cvLinkCopied}
-            copyErrorLabel={props.labels.cvLinkCopyError}
-            isLoading
-        />
+        <Skeleton shape="text" lines={1} />
         <Cluster gap="row" align="center" justify="between" wrap={false}>
             <Skeleton shape="text" lines={2} />
-            <Switch kind="compact" label={props.labels.cvLinkSwitch} isLabelHidden isLoading isDisabled />
         </Cluster>
     </Stack>
 )
@@ -369,7 +363,7 @@ const CvLinkSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
  * The profile while its first reads load: no section title, label or placeholder word, only the geometry of the page (identity with
  * its avatar, the CV link, the verified lines, the account rows; the rail's figures) as Skeleton bars.
  */
-const ProfileSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
+const ProfileSkeleton = () => (
     <Grid
         kind="main-rail"
         primary={
@@ -381,7 +375,7 @@ const ProfileSkeleton = (props: { readonly labels: ProfileHubLabels }) => (
                         <Skeleton shape="text" lines={2} />
                     </Cluster>
                 </Stack>
-                <CvLinkSkeleton labels={props.labels} />
+                <CvLinkSkeleton />
                 <SkeletonBlock lines={6} />
                 <SkeletonBlock lines={4} />
             </Stack>
@@ -407,17 +401,17 @@ export const ProfileHubBase = (props: ProfileHubBaseProps) => {
     const isFirstLoad = "isLoading" in views.identity
     return (
         <Page
-            isLoading={isFirstLoad}
             header={{
+                // The title is a fixed label and stays real while loading; the meta line is a bar and the action waits for the read.
                 title: labels.title,
                 titleScale: "standard",
                 breadcrumbs: "root",
-                meta: props.props.metaLine ?? labels.loading,
-                actions: <EditAction labels={labels} isNew={props.props.isNew} />,
+                meta: isFirstLoad ? <Skeleton shape="text" lines={1} /> : (props.props.metaLine ?? labels.loading),
+                ...(isFirstLoad ? {} : { actions: <EditAction labels={labels} isNew={props.props.isNew} /> }),
             }}
         >
             {isFirstLoad ? (
-                <ProfileSkeleton labels={labels} />
+                <ProfileSkeleton />
             ) : (
                 <Grid
                     kind="main-rail"

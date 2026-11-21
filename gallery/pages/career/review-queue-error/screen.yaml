@@ -3,8 +3,8 @@ screen: career/review-queue-error
 title: Duyệt trải nghiệm, lỗi tải
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, lỗi tải.** Đọc hàng đợi thất bại: khung báo lỗi có nút Thử lại, các mục chưa
-  duyệt vẫn nguyên."
+summary: "**Concept: Duyệt trải nghiệm, lỗi tải.** Đọc hàng đợi thất bại: khung báo lỗi có nút Thử
+  lại, các mục chưa duyệt vẫn nguyên."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
@@ -22,42 +22,64 @@ sections:
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
 considered:
-  - option: "Giữ Alert của SlotView, thêm errorDescription riêng cho hàng chờ"
+  - option: Giữ Alert của SlotView, thêm errorDescription riêng cho hàng chờ
     chosen: true
-    why: "Một công thức trạng thái cho mọi vùng; chỉ thiếu câu giải thích."
-  - option: "Tự làm nút Thử lại 40px ngoài Alert"
+    why: Một công thức trạng thái cho mọi vùng; chỉ thiếu câu giải thích.
+  - option: Tự làm nút Thử lại 40px ngoài Alert
     chosen: false
-    why: "Sẽ có hai kiểu báo lỗi; cỡ nút thuộc Grammar (cần Grammar)."
+    why: Sẽ có hai kiểu báo lỗi; cỡ nút thuộc Grammar (cần Grammar).
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T04:22:51.189Z
       lenses:
         order:
           verdict: pass
-          notes: "Đầu trang rồi khung báo lỗi ngay chỗ hàng chờ, ở cả 1440 và 390."
+          notes: Đầu trang rồi khung báo lỗi ngay chỗ hàng chờ, ở cả 1440 và 390.
         layout:
           verdict: pass
-          notes:
-            "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn. Nút Thử lại trong Alert chỉ
-            cao khoảng 31px ở 1440 và 32px ở 390 (vùng bấm dưới 44px): đó là cỡ action của Alert, cần Grammar, không giữ
-            lens."
+          notes: "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn. Nút Thử
+            lại trong Alert chỉ cao khoảng 31px ở 1440 và 32px ở 390 (vùng bấm dưới 44px): đó là cỡ
+            action của Alert, cần Grammar, không giữ lens."
         actionable:
           verdict: pass
-          notes: "Thử lại đọc lại hàng chờ."
+          notes: Thử lại đọc lại hàng chờ.
+        live:
+          verdict: pass
+          notes: Biểu tượng cảnh báo và tông đỏ của Alert; lỗi không cần chuyển động.
+        words:
+          verdict: open
+          notes: Chỉ có câu chung "Không tải được phần này."; summary hứa câu nói các mục chưa duyệt vẫn
+            nguyên nhưng không có errorDescription (ReviewQueue/index.tsx chỉ truyền
+            useSlotLabels()(t("empty"))). Frontend thêm được câu này.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái lỗi, có ở 1440 và 390.
+        truth:
+          verdict: pass
+          notes: Không có dữ liệu giả trên màn.
+    - n: 2
+      at: 2026-11-21T04:58:13.270Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Đầu trang rồi khung báo lỗi ngay chỗ hàng đợi, ở 1440 và 390."
+        layout:
+          verdict: pass
+          notes: "Checklist: tab đầu trang và Mở menu 40px; nhãn Thử lại một dòng; dải đầu không tràn; ở 390 Thử lại kéo hết bề ngang. Nút Thử lại trong Alert thấp hơn 40px: cỡ action của Alert, cần Grammar, không giữ lens."
+        actionable:
+          verdict: pass
+          notes: "Thử lại đọc lại hàng đợi."
         live:
           verdict: pass
           notes: "Biểu tượng cảnh báo và tông đỏ của Alert; lỗi không cần chuyển động."
         words:
-          verdict: open
-          notes:
-            'Chỉ có câu chung "Không tải được phần này."; summary hứa câu nói các mục chưa duyệt vẫn nguyên nhưng không có
-            errorDescription (ReviewQueue/index.tsx chỉ truyền useSlotLabels()(t("empty"))). Frontend thêm được câu
-            này.'
+          verdict: fixed
+          notes: "Đã có câu riêng: Không tải được hàng đợi. Các mục chưa duyệt vẫn an toàn. Thử lại sau vài giây."
         states:
           verdict: pass
           notes: "Đây là trạng thái lỗi, có ở 1440 và 390."

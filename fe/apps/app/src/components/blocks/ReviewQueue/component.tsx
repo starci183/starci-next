@@ -287,12 +287,12 @@ const headerOf = (props: ReviewQueueBaseProps, isLoading: boolean): PageHeaderCo
             { id: "queue", label: props.props.labels.title },
         ],
     },
-    // While loading the meta line keeps its box under the header's shimmer, so the band does not grow when the queue arrives.
-    ...(props.props.meta === undefined
-        ? isLoading
-            ? { meta: props.props.labels.title }
-            : {}
-        : { meta: props.props.meta }),
+    // While loading only the count line is a bar (the title is a fixed label and stays real), so the band does not grow when the queue arrives.
+    ...(isLoading
+        ? { meta: <Skeleton shape="text" lines={1} /> }
+        : props.props.meta === undefined
+          ? {}
+          : { meta: props.props.meta }),
     ...(props.props.isTeacher
         ? {
               tabs: {
@@ -331,10 +331,6 @@ export const ReviewQueueBase = (props: ReviewQueueBaseProps) => (
             // While the first read loads the content is a skeleton of the ready grid: no heading, filter, row word or panel.
             isLoading ? <QueueSkeleton isTeacher={props.props.isTeacher} /> : <QueueBody view={view} base={props} />
         }
-        frame={({ body, isLoading }) => (
-            <Page isLoading={isLoading} header={headerOf(props, isLoading)}>
-                {body}
-            </Page>
-        )}
+        frame={({ body, isLoading }) => <Page header={headerOf(props, isLoading)}>{body}</Page>}
     />
 )

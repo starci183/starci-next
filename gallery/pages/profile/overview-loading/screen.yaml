@@ -3,84 +3,147 @@ screen: profile/overview-loading
 title: Hồ sơ, đang tải
 route: /profile
 area: profile
-summary: '**Concept: Hồ sơ, đang tải.** Trạng thái của màn này: đang tải. Mục tiêu: thấy mình hiện ra thế nào với người
-  khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ. Thao tác: myProfile (displayName, avatarUrl,
-  goal, limits: contentTypes, maxBytes, nameMax), setProfileName, requestAvatarUpload rồi trình duyệt gửi thẳng tới kho
-  đối tượng và confirmAvatarUpload, removeAvatar; myExperience (dòng đã xác minh), showExperience, verifyExperience
-  (trang /verify/{mã}). cần API: liên kết CV tổng hợp next.starci.vn/cv/{slug} (cvLink, setCvVisibility); hiện chỉ có
-  liên kết theo từng dòng. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn ngữ, giao diện, avatar) và
-  thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh bên vào ngăn kéo mở bằng
-  nút menu. Dải đầu; thân: Danh tính (ảnh, tên, email, lộ trình), Liên kết CV (hộp liên kết có Sao chép, công tắc công
-  khai), CV đã xác minh (dòng CV, ai ký ngày nào bằng chứng gì, mã verify, công tắc công khai từng dòng), Tài khoản
-  (máy, gói). Cột phải: tiến độ nhanh với liên kết "Xem tiến độ" và tóm tắt Kinh nghiệm với "Xem kinh nghiệm". Sửa là
-  trang con "Hồ sơ / Sửa". Ảnh: kiểm loại và dung lượng ở trình duyệt, đang tải có vòng phần trăm, lỗi quá nặng nói giới
-  hạn lấy từ server, xóa ảnh có xác nhận. Nút chính: "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính). Lọc:
-  không có. Khác bản hiện tại: Hồ sơ là cửa vào Kinh nghiệm và Tiến độ (thanh bên chỉ còn một mục Hồ sơ). Lưu ý xung
-  đột: một vùng lỗi không làm hỏng cả trang. Phần tử Grammar của màn: PageHeader, Section, Avatar, ProgressCircle,
-  FileButton, Input, Switch, CopyField, Section kind="list", ListRow, AlertDialog.'
+summary: "Route: `/profile` (ảnh chụp: học viên seed `gallery-cv-multi` khi các truy vấn hồ sơ bị
+  giữ). Dải đầu trang giữ tiêu đề Hồ sơ của bạn thật, dòng meta là thanh, nút đầu trang chờ dữ liệu;
+  dưới đường kẻ là trang khung xương phẳng theo bố cục hai cột của trang đã tải. Mã:
+  `fe/apps/app/src/components/blocks/ProfileHub/` (ProfileSkeleton)."
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
   "390":
     file: 390.png
-    sha256: 2d198d1a03ce369bae36765215e08c0e3502663d373f064e9a14d61a66534d61
+    sha256: 6eb0afc6f4bbdde65f00a605f58c7065b500f28a656ece2061359cbe39e738a0
   "1440":
     file: 1440.png
-    sha256: 408d123d7d85a6e2e402cf018f99eb97f899435f896c9d867112d55079adf1ef
+    sha256: 33e823926205e4fd8d5dce607f4ab20cd0deb3dab9e2cd43be02d4ba1f18ecc1
 sections:
-  - id: khung-ung-dung
-    title: Khung ứng dụng
-    why: "khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390."
-    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).
-    grammar: "`WorkspaceShell`"
-  - id: dai-tieu-de-ho-so-cua-ban
-    title: "Dải tiêu đề: Hồ sơ của bạn"
-    why: tên trang, dòng sự kiện và đúng một nút chính. "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính).
-    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
-    grammar: "`PageHeader`"
-  - id: phan-tu-con-thieu
-    title: Phần tử còn thiếu
-    why: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
-    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở
-      GRAMMAR-GAPS.md.
-    grammar: "cần Grammar: vòng tiến độ quanh Avatar khi đang tải ảnh (ghép ProgressCircle với Avatar)"
-considered: []
+  - id: dai-dau-trang
+    title: Dải đầu trang
+    why: Tiêu đề là nhãn cố định nên giữ thật; dòng meta (loại tài khoản, gói, số mục) là thanh; nút
+      Thêm ảnh và tên hay Sửa hồ sơ chỉ hiện khi biết học viên đã có ảnh và tên.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
+      thanh bên giữ nguyên."
+    grammar: Page header, Skeleton text
+  - id: cot-chinh
+    title: Cột chính
+    why: Danh tính (vòng ảnh và hai thanh), liên kết CV, các dòng CV đã xác minh và tài khoản đều là
+      thanh phẳng, cùng một kiểu, không viền; ô liên kết và công tắc không vẽ khung xương riêng.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
+      thanh bên giữ nguyên."
+    grammar: Grid main-rail, Skeleton circle, Skeleton text
+  - id: cot-phai
+    title: Cột phải
+    why: Tiến độ nhanh và Kinh nghiệm là các thanh ở đúng chỗ của chúng.
+    law: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
+      thanh bên giữ nguyên."
+    grammar: Skeleton text
+considered:
+  - option: Dùng Switch isLoading và CopyField isLoading của Grammar
+    chosen: false
+    why: "Chủ sản phẩm từ chối: công tắc có khung xương khác màu và ô nhập còn viền (GRAMMAR-GAPS #16).
+      Dùng thanh phẳng cho tới khi Grammar có hình cỡ control."
+  - option: Trang khung xương vẽ tay, tiêu đề trang giữ thật
+    chosen: true
+    why: "Luật của chủ sản phẩm 2026-11-21 cho trạng thái đang tải: dưới đường kẻ của dải đầu trang, mọi
+      thứ là thanh Skeleton phẳng, một kiểu, không viền, không màu; dải đầu trang, thanh trên và
+      thanh bên giữ nguyên."
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-3
+    agent: next-ux-auditor-r
   rounds:
     - n: 1
       at: 2026-11-21T04:23:25.992Z
       lenses:
         order:
           verdict: pass
-          notes:
-            "Cùng thứ tự với profile/overview: đầu trang, Danh tính, Liên kết CV, CV đã xác minh, Tài khoản; cột phải xuống
-            cuối ở 390."
+          notes: "Cùng thứ tự với profile/overview: đầu trang, Danh tính, Liên kết CV, CV đã xác minh, Tài
+            khoản; cột phải xuống cuối ở 390."
         layout:
           verdict: open
-          notes: 'Chữ giữ chỗ hiện thô thay vì khung xám: "xxxxxx" ở tên và email, "xxxxxx · xxxxxx" ở dòng người ký,
-            "xxxxxxxxxxxxxxxx" ở Kinh nghiệm: các Text này chưa nhận isLoading (Text của Grammar có isLoading). Tiến độ
-            nhanh mất nhãn, chỉ còn vạch. Checklist: "Sửa hồ sơ" 40px, một dòng ở 390, không tràn.'
+          notes: 'Chữ giữ chỗ hiện thô thay vì khung xám: "xxxxxx" ở tên và email, "xxxxxx · xxxxxx" ở dòng
+            người ký, "xxxxxxxxxxxxxxxx" ở Kinh nghiệm: các Text này chưa nhận isLoading (Text của
+            Grammar có isLoading). Tiến độ nhanh mất nhãn, chỉ còn vạch. Checklist: "Sửa hồ sơ"
+            40px, một dòng ở 390, không tràn.'
         actionable:
           verdict: pass
-          notes: "Không có giá trị nào cần đổi khi đang tải; các nút giữ chỗ đúng vị trí."
+          notes: Không có giá trị nào cần đổi khi đang tải; các nút giữ chỗ đúng vị trí.
         live:
           verdict: pass
-          notes: 'Meta "Đang tải...", avatar, hộp liên kết, công tắc, dòng CV và Tài khoản là khung xám có chuyển động.'
+          notes: Meta "Đang tải...", avatar, hộp liên kết, công tắc, dòng CV và Tài khoản là khung xám có
+            chuyển động.
         words:
           verdict: open
-          notes: 'Chuỗi "xxxxxx" lộ ra cho người học, không phải chữ tiếng Việt; cùng gốc với layout.'
+          notes: Chuỗi "xxxxxx" lộ ra cho người học, không phải chữ tiếng Việt; cùng gốc với layout.
         states:
           verdict: pass
-          notes: "Đây là trạng thái đang tải ở 1440 và 390."
+          notes: Đây là trạng thái đang tải ở 1440 và 390.
         truth:
           verdict: open
-          notes:
-            'Nút chính "Sửa hồ sơ" và liên kết "Đổi lộ trình" đoán trước dữ liệu; với học viên chưa có tên và lộ trình, tải
-            xong chúng đổi thành "Thêm ảnh và tên" và "Chọn lộ trình" (nhãn nhảy). Summary vẫn ghi "cần API: liên kết CV
-            tổng hợp" trong khi liên kết CV đã chạy ở profile/overview.'
+          notes: 'Nút chính "Sửa hồ sơ" và liên kết "Đổi lộ trình" đoán trước dữ liệu; với học viên chưa có
+            tên và lộ trình, tải xong chúng đổi thành "Thêm ảnh và tên" và "Chọn lộ trình" (nhãn
+            nhảy). Summary vẫn ghi "cần API: liên kết CV tổng hợp" trong khi liên kết CV đã chạy ở
+            profile/overview.'
+    - n: 2
+      at: 2026-11-21T04:58:25.289Z
+      lenses:
+        order:
+          verdict: pass
+          notes: "Cùng thứ tự với profile/overview: dải đầu, Danh tính, Liên kết CV, CV đã xác minh, Tài
+            khoản; cột phải xuống cuối ở 390."
+        layout:
+          verdict: open
+          notes: 'Vùng nội dung đã là xương sạch (hết "xxxx", không chữ, không tông; công tắc là viên xương),
+            giữ main-rail và một cột ở 390. Còn mở theo loading-rules: tiêu đề trang "Hồ sơ của bạn"
+            trong dải đầu cũng thành vạch xám (ProfileHubBase truyền isLoading cho Page), trong khi
+            luật giữ dải đầu và tiêu đề thật; chỉ dòng sự kiện và nút chính (nhãn tuỳ dữ liệu) được
+            là xương. Checklist: xương nút đầu trang 40px, không tràn ở 390.'
+        actionable:
+          verdict: pass
+          notes: Nút chính là xương, không bấm được; không giá trị nào đổi khi đang tải.
+        live:
+          verdict: pass
+          notes: Khung xương có chuyển động khắp vùng nội dung ở cả hai cỡ.
+        words:
+          verdict: fixed
+          notes: Hết "xxxxxx"; vùng nội dung không còn chữ.
+        states:
+          verdict: pass
+          notes: Trạng thái đang tải ở 1440 và 390.
+        truth:
+          verdict: open
+          notes: 'Đã hết nhãn đoán trước (Sửa hồ sơ, Đổi lộ trình). Còn: summary ghi "cần API: liên kết CV
+            tổng hợp… hiện chỉ có liên kết theo từng dòng" trong khi Liên kết CV đã chạy
+            (profile/overview-partial-error); "Nút chính: Sửa hồ sơ" và "Xem kinh nghiệm" khác nhãn
+            thật ("Thêm ảnh và tên" khi chưa có tên, "Mở Kinh nghiệm"); phần phan-tu-con-thieu (vòng
+            tiến độ quanh ảnh) không có ở màn này; summary không tả khung xương.'
+    - n: 3
+      at: 2026-11-21T05:07:23.873Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

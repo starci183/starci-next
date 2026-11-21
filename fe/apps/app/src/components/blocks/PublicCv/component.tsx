@@ -321,9 +321,6 @@ const PublicCvSkeleton = (props: { readonly labels: PublicCvLabels }) => (
             <Cluster gap="row" align="center" wrap={false}>
                 <Skeleton shape="circle" size="lg" />
                 <Skeleton shape="text" lines={3} />
-                <Button intent="neutral" isLoading isDisabled>
-                    {props.labels.share}
-                </Button>
             </Cluster>
             <Divider />
         </Stack>

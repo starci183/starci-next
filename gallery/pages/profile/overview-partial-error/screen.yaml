@@ -3,113 +3,140 @@ screen: profile/overview-partial-error
 title: Hồ sơ, một vùng lỗi
 route: /profile
 area: profile
-summary: '**Concept: Hồ sơ, một vùng lỗi.** Trạng thái của màn này: một vùng lỗi. Mục tiêu: thấy mình hiện ra thế nào
-  với người khác, đổi ảnh và tên, lấy liên kết CV; từ đây vào Kinh nghiệm và Tiến độ. Thao tác: myProfile (displayName,
-  avatarUrl, goal, limits: contentTypes, maxBytes, nameMax), setProfileName, requestAvatarUpload rồi trình duyệt gửi
-  thẳng tới kho đối tượng và confirmAvatarUpload, removeAvatar; myExperience (dòng đã xác minh), showExperience,
-  verifyExperience (trang /verify/{mã}). cần API: liên kết CV tổng hợp next.starci.vn/cv/{slug} (cvLink,
-  setCvVisibility); hiện chỉ có liên kết theo từng dòng. Bố cục: Khung chung: thanh trên (logo, StarCi Next, gói, ngôn
-  ngữ, giao diện, avatar) và thanh bên Học · Essentials · Projects · Harness · Luyện code · Ôn tập · Hồ sơ; ở 390 thanh
-  bên vào ngăn kéo mở bằng nút menu. Dải đầu; thân: Danh tính (ảnh, tên, email, lộ trình), Liên kết CV (hộp liên kết có
-  Sao chép, công tắc công khai), CV đã xác minh (dòng CV, ai ký ngày nào bằng chứng gì, mã verify, công tắc công khai
-  từng dòng), Tài khoản (máy, gói). Cột phải: tiến độ nhanh với liên kết "Xem tiến độ" và tóm tắt Kinh nghiệm với "Xem
-  kinh nghiệm". Sửa là trang con "Hồ sơ / Sửa". Ảnh: kiểm loại và dung lượng ở trình duyệt, đang tải có vòng phần trăm,
-  lỗi quá nặng nói giới hạn lấy từ server, xóa ảnh có xác nhận. Nút chính: "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi"
-  (Hủy trung tính). Lọc: không có. Khác bản hiện tại: Hồ sơ là cửa vào Kinh nghiệm và Tiến độ (thanh bên chỉ còn một mục
-  Hồ sơ). Lưu ý xung đột: một vùng lỗi không làm hỏng cả trang. Phần tử Grammar của màn: PageHeader, Section, Avatar,
-  ProgressCircle, FileButton, Input, Switch, CopyField, Section kind="list", ListRow, AlertDialog.'
+summary: "Route: `/profile` (ảnh chụp: học viên seed `gallery-cv-multi` khi truy vấn MyExperience bị
+  từ chối). Các vùng khác vẫn hiện đủ; phần CV đã xác minh giữ tiêu đề với câu Không tải được phần
+  này và nút Thử lại 40px; cột Kinh nghiệm nói chưa tải được số mục thay vì 0. Mã:
+  `fe/apps/app/src/components/blocks/ProfileHub/`."
 code:
   - features/pages/ProfilePage
   - components/blocks/ProfileHub
 shots:
   "390":
     file: 390.png
-    sha256: e39b9bc27b69d52ba3b25e6fb89894747f5a911843d56b98b5b901e8ffb38e3b
+    sha256: a6f11073e7f74cb9d65ed49050aa7980ba71ada7cf812f17812af37be7253322
   "1440":
     file: 1440.png
-    sha256: a4117b2d1b131e8be96a02af531c5f97df9e9675a288ab4ab717ba2dcd2b835d
+    sha256: 68027faec6cedf56d7ba5b4f83f9cca9a20507988fb0a2af5b5f04faa149a3a1
 sections:
-  - id: khung-ung-dung
-    title: Khung ứng dụng
-    why: "khung chung của app, cùng một chỗ ở mọi trang đã đăng nhập: thanh trên, thanh bên, ngăn kéo ở 390."
-    law: nền trắng, hairline 1px, không bóng (skills/claude-design/SKILL.md, mục The look; brand.css của app).
-    grammar: "`WorkspaceShell`"
-  - id: dai-tieu-de-ho-so-cua-ban
-    title: "Dải tiêu đề: Hồ sơ của bạn"
-    why: tên trang, dòng sự kiện và đúng một nút chính. "Sửa hồ sơ"; ở trang sửa là "Lưu thay đổi" (Hủy trung tính).
-    law: một nút chính mỗi view, các nút khác trung tính (skills/claude-design/SKILL.md, mục The look).
-    grammar: "`PageHeader`"
-  - id: danh-tinh
-    title: Danh tính
-    why:
-      "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ
-      đây vào Kinh nghiệm và Tiến độ."
-    law:
-      danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục
-      The look).
-    grammar: '`Section`, `Section kind="list"`'
   - id: cv-da-xac-minh
-    title: CV đã xác minh
-    why:
-      "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ
-      đây vào Kinh nghiệm và Tiến độ."
-    law:
-      danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục
-      The look).
-    grammar: '`Section`, `Section kind="list"`'
-  - id: tai-khoan
-    title: Tài khoản
-    why:
-      "vùng này phục vụ mục tiêu của trang: thấy mình hiện ra thế nào với người khác, đổi ảnh và tên, lấy liên kết CV; từ
-      đây vào Kinh nghiệm và Tiến độ."
-    law:
-      danh sách và bảng nằm phẳng trên nền với hàng hairline, thẻ chỉ cho vật thật (skills/claude-design/SKILL.md, mục
-      The look).
-    grammar: '`Section`, `Section kind="list"`'
-  - id: phan-tu-con-thieu
-    title: Phần tử còn thiếu
-    why: bản vẽ cần một phần tử mà Grammar chưa có và vẫn vẽ nó, đánh dấu trong khung.
-    law: skills/claude-design/SKILL.md, mục Method (một phần tử Grammar còn thiếu không chặn bản vẽ); danh sách ở
-      GRAMMAR-GAPS.md.
-    grammar: "cần Grammar: vòng tiến độ quanh Avatar khi đang tải ảnh (ghép ProgressCircle với Avatar)"
-considered: []
+    title: CV đã xác minh (lỗi)
+    why: "Mỗi vùng đọc riêng: vùng hỏng giữ tiêu đề để người học biết phần nào lỗi, kèm một việc làm
+      tiếp (Thử lại), không che các vùng khác."
+    law: unhandled-case-tells-customer.md
+    grammar: Section, Text, Button
+  - id: cot-phai
+    title: Cột phải
+    why: Kinh nghiệm không khẳng định 0 đã xác minh khi không đọc được; Tiến độ nhanh chiếm hết bề rộng
+      cột nên nhãn không gãy.
+    law: unhandled-case-tells-customer.md
+    grammar: Section layout=keyValue
+  - id: cac-vung-con-lai
+    title: Các vùng còn lại
+    why: Danh tính, liên kết CV và tài khoản hiện bình thường.
+    law: verified-experience.md
+    grammar: Section
+considered:
+  - option: Một Alert thay cả vùng, không có tiêu đề
+    chosen: false
+    why: "Vòng audit trước: không nói được phần nào hỏng."
+  - option: Đổi chữ Accepted sang tiếng Việt
+    chosen: false
+    why: Accepted là thuật ngữ chung của khu Luyện code trên toàn app (kết quả của máy chấm); đổi ở một
+      nơi sẽ lệch các nơi khác.
+  - option: Bỏ dòng Học viên · Premium dưới tiêu đề
+    chosen: false
+    why: "Dòng meta của trang hồ sơ theo canvas: loại tài khoản, gói và số mục đã xác minh của chính
+      trang này."
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-3
+    agent: next-ux-auditor-r
   rounds:
     - n: 1
       at: 2026-11-21T04:23:24.005Z
       lenses:
         order:
           verdict: open
-          notes:
-            'Khối lỗi thay cả vùng và mất tiêu đề "CV đã xác minh": người học không biết phần nào hỏng; canvas giữ tiêu đề
-            vùng trên khối lỗi.'
+          notes: 'Khối lỗi thay cả vùng và mất tiêu đề "CV đã xác minh": người học không biết phần nào hỏng;
+            canvas giữ tiêu đề vùng trên khối lỗi.'
         layout:
           verdict: open
-          notes:
-            '"Thử lại" cao khoảng 28px ở 1440 và 32px ở 390, dưới 40 và dưới vùng chạm 44; Tiến độ nhanh hẹp, nhãn xuống dòng
-            như profile/overview. Checklist: nút đầu trang 40px, một dòng ở 390, không tràn.'
+          notes: '"Thử lại" cao khoảng 28px ở 1440 và 32px ở 390, dưới 40 và dưới vùng chạm 44; Tiến độ nhanh
+            hẹp, nhãn xuống dòng như profile/overview. Checklist: nút đầu trang 40px, một dòng ở
+            390, không tràn.'
         actionable:
           verdict: pass
-          notes: "Vùng lỗi có Thử lại; các vùng khác giữ đường đổi của chúng."
+          notes: Vùng lỗi có Thử lại; các vùng khác giữ đường đổi của chúng.
         live:
           verdict: pass
-          notes: "Lỗi có biểu tượng, nền lỗi và Thử lại; các vùng còn lại không bị ảnh hưởng."
+          notes: Lỗi có biểu tượng, nền lỗi và Thử lại; các vùng còn lại không bị ảnh hưởng.
         words:
           verdict: open
-          notes:
-            '"Không tải được phần này." không nói phần nào (canvas: "Chưa tải được phần này." dưới tiêu đề vùng); "Bài
-            Accepted" lẫn tiếng Anh.'
+          notes: '"Không tải được phần này." không nói phần nào (canvas: "Chưa tải được phần này." dưới tiêu
+            đề vùng); "Bài Accepted" lẫn tiếng Anh.'
         states:
           verdict: pass
-          notes: "Đây là trạng thái lỗi một vùng ở 1440 và 390; các vùng khác vẫn đúng."
+          notes: Đây là trạng thái lỗi một vùng ở 1440 và 390; các vùng khác vẫn đúng.
         truth:
           verdict: open
-          notes:
-            'Kinh nghiệm ghi "0 đã xác minh, 0 đang chờ duyệt. Cần 3 mục..." trong khi Liên kết CV đang hiện (chỉ hiện khi có
-            mục đã xác minh) và cùng học viên ở profile/overview có 3 mục: khi vùng CV lỗi, tóm tắt nói 0 thay vì nói
-            chưa tải được.'
+          notes: 'Kinh nghiệm ghi "0 đã xác minh, 0 đang chờ duyệt. Cần 3 mục..." trong khi Liên kết CV đang
+            hiện (chỉ hiện khi có mục đã xác minh) và cùng học viên ở profile/overview có 3 mục: khi
+            vùng CV lỗi, tóm tắt nói 0 thay vì nói chưa tải được.'
+    - n: 2
+      at: 2026-11-21T04:58:26.832Z
+      lenses:
+        order:
+          verdict: fixed
+          notes: Vùng lỗi giữ tiêu đề "CV đã xác minh", lời và Thử lại ở dưới; các vùng khác giữ chỗ.
+        layout:
+          verdict: open
+          notes: 'Thử lại đã cao 40px (1440 y 579-619; 390 y 816-856). Còn: Tiến độ nhanh dồn ba số vào cột
+            hẹp khoảng 100px trong rail 320px ở 1440, nên "Khái niệm đã chứng minh" xuống hai dòng
+            và số 0 nằm dòng riêng (như vòng 1). Dòng sự kiện "Học viên · Premium" dưới tiêu đề lặp
+            nguyên văn dòng dưới logo ở thanh trên. Checklist: nút đầu trang 40px, một dòng ở 390,
+            không tràn.'
+        actionable:
+          verdict: pass
+          notes: Vùng lỗi có Thử lại; các vùng khác giữ đường đổi của chúng.
+        live:
+          verdict: pass
+          notes: Vùng lỗi có lời và Thử lại; các vùng còn lại không bị ảnh hưởng.
+        words:
+          verdict: open
+          notes: '"Không tải được phần này." nay đứng dưới tiêu đề vùng nên rõ phần nào (đạt). Còn "Bài
+            Accepted" ở Tiến độ nhanh lẫn tiếng Anh (thuật ngữ chấm bài của cả app, cần chủ quyết).'
+        states:
+          verdict: pass
+          notes: Trạng thái lỗi một vùng ở 1440 và 390; các vùng khác vẫn đúng.
+        truth:
+          verdict: open
+          notes: 'Kinh nghiệm nay nói "Chưa tải được số mục đã xác minh" thay vì 0 (đạt). Còn: summary ghi
+            "cần API: liên kết CV tổng hợp" trong khi Liên kết CV đang chạy trên ảnh; "Nút chính:
+            Sửa hồ sơ" nhưng ảnh là "Thêm ảnh và tên"; "Xem kinh nghiệm" nhưng ảnh "Mở Kinh nghiệm";
+            considered rỗng.'
+    - n: 3
+      at: 2026-11-21T05:07:25.085Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null

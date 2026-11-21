@@ -3,18 +3,18 @@ screen: career/review-queue-loading
 title: Duyệt trải nghiệm, đang tải
 route: /review-queue
 area: career
-summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel, không nhảy bố cục khi dữ
-  liệu về."
+summary: "**Concept: Duyệt trải nghiệm, đang tải.** Bộ xương đúng hình dạng danh sách và panel,
+  không nhảy bố cục khi dữ liệu về."
 code:
   - app/[locale]/(pages)/(app)/review-queue/page.tsx
   - features/pages/ReviewQueuePage/
 shots:
   "390":
     file: 390.png
-    sha256: ec74dab5dfb4c1e21a6dfcb4f048da58717948aca22fef012bf406a70a22e6e4
+    sha256: f7e091a3fe1b7e732e801c0301d2af4d73161319406ad58066c252d21c7bbd05
   "1440":
     file: 1440.png
-    sha256: 2e6d37e1112458d27911a84eaecd402c91b272ba29a99d58ed0f4f03f99b84fe
+    sha256: a47ab6f81e44375b60c03589eb73c18299351362b3b550496ebaf8f3288a0267
 sections:
   - id: vung-chinh
     title: Vùng chính
@@ -22,51 +22,105 @@ sections:
     law: ""
     grammar: "`SlotView, EmptyNotice, Alert`"
 considered:
-  - option: "Bật skeleton bằng frame của SlotView (Page isLoading) thay vì vẽ placeholder như dữ liệu"
+  - option: Bật skeleton bằng frame của SlotView (Page isLoading) thay vì vẽ placeholder như dữ liệu
     chosen: true
-    why: "Các block khác (ExperienceList, EssentialsCatalog) đã làm vậy; chữ x thô là lỗi, không phải cách vẽ."
-  - option: "Cho placeholder đủ ba tab lọc và một preview giả"
+    why: Các block khác (ExperienceList, EssentialsCatalog) đã làm vậy; chữ x thô là lỗi, không phải
+      cách vẽ.
+  - option: Cho placeholder đủ ba tab lọc và một preview giả
     chosen: true
-    why: "Giữ chỗ thanh lọc và thẻ mục để bố cục không nhảy khi dữ liệu về."
+    why: Giữ chỗ thanh lọc và thẻ mục để bố cục không nhảy khi dữ liệu về.
 audit:
   builder:
     agent: next-one-edition
   auditor:
-    agent: next-ux-auditor-2
+    agent: next-ux-auditor-3
   rounds:
     - n: 1
       at: 2026-11-21T04:22:52.288Z
       lenses:
         order:
           verdict: pass
-          notes: "Đầu trang, hàng chờ bên trái và bảng bên phải ở 1440, hàng chờ trước ở 390, giống bản đã tải."
+          notes: Đầu trang, hàng chờ bên trái và bảng bên phải ở 1440, hàng chờ trước ở 390, giống bản đã tải.
         layout:
           verdict: open
-          notes:
-            'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ filter) và dòng meta
-            dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh sách xuống khoảng 60px: trái với "không
-            nhảy bố cục". Bảng bên phải không có khung xương thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu
-            40px; nhãn không gãy ở 390; dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
+          notes: 'Bộ xương thiếu hàng viên lọc (REVIEW_QUEUE_PLACEHOLDER chỉ có một tab nên Section không vẽ
+            filter) và dòng meta dưới tiêu đề, nên khi dữ liệu về hai dải này chèn vào và đẩy danh
+            sách xuống khoảng 60px: trái với "không nhảy bố cục". Bảng bên phải không có khung xương
+            thẻ mục mà là ô trống. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390;
+            dải đầu không tràn; hàng giả bấm cả hàng (trên 44px).'
         actionable:
           verdict: pass
-          notes: "Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được."
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được.
         live:
           verdict: open
-          notes:
-            'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản thật, không có khối
-            xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame / Page isLoading nên lớp skeleton không
-            bật).'
+          notes: 'Không thấy trạng thái đang tải: placeholder in nguyên chữ "xxxxxxxxxx", "xxxxxx" như văn bản
+            thật, không có khối xương hay chuyển động (ReviewQueueBase gọi SlotView không có frame /
+            Page isLoading nên lớp skeleton không bật).'
         words:
           verdict: open
-          notes:
-            'Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong khi hàng chờ còn
-            chưa về.'
+          notes: Chữ "xxxxxx" đọc được trên màn ở cả hai cỡ; bảng phải ghi "Chọn một mục để xem trước." trong
+            khi hàng chờ còn chưa về.
         states:
           verdict: pass
-          notes: "Đây là trạng thái đang tải, có ở 1440 và 390."
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
         truth:
           verdict: open
-          notes:
-            "Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời chọn mục và thiếu
-            thanh lọc."
+          notes: Summary nói bộ xương đúng hình danh sách và panel, ảnh cho thấy chữ x thô, panel là câu mời
+            chọn mục và thiếu thanh lọc.
+    - n: 2
+      at: 2026-11-21T04:58:12.038Z
+      lenses:
+        order:
+          verdict: pass
+          notes: Đầu trang, rồi hàng đợi bên trái và bảng bên phải ở 1440, hàng đợi trước ở 390, như bản đã
+            tải.
+        layout:
+          verdict: open
+          notes: "Vùng dưới đường kẻ đầu trang đã là khối xương trơn từ mép tới mép, tab Hàng đợi / Người
+            duyệt và đường dẫn còn thật, đúng luật tải. Còn mở: tiêu đề trang Duyệt kinh nghiệm là
+            chữ cố định nhưng bị vẽ thành khối xương (Page isLoading trong ReviewQueue/component.tsx
+            làm xương cả tiêu đề); luật tải giữ thật dải đầu trang gồm tiêu đề, chỉ dòng meta số đếm
+            được làm xương. Checklist: tab đầu trang và Mở menu 40px; nhãn không gãy ở 390; dải đầu
+            không tràn; không có nút bấm được trong vùng tải."
+        actionable:
+          verdict: pass
+          notes: Màn tải không có giá trị để đổi; tab Hàng đợi / Người duyệt vẫn dùng được.
+        live:
+          verdict: fixed
+          notes: Chữ x thô đã bỏ; vùng nội dung là thanh Skeleton của Grammar, có hiệu ứng tải ở cả 1440 và
+            390.
+        words:
+          verdict: fixed
+          notes: Không còn chữ x hay câu Chọn một mục để xem trước trong lúc tải; không có chữ nào trong vùng
+            nội dung.
+        states:
+          verdict: pass
+          notes: Đây là trạng thái đang tải, có ở 1440 và 390.
+        truth:
+          verdict: fixed
+          notes: "Ảnh khớp summary: bộ xương hàng đợi bên trái, bảng duyệt bên phải, không chữ giả."
+    - n: 3
+      at: 2026-11-21T05:07:18.559Z
+      lenses:
+        order:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        layout:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        actionable:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        live:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        words:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        states:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
+        truth:
+          verdict: open
+          notes: "auditor: fill this lens (pass, fixed or open) with what you found"
   escalate: null
