@@ -11,7 +11,7 @@ hosting: its services sit on its own overlay `app`, and the three public ones al
 | https://minio.next.starci.org | storage, the S3 port only (9000); statics are public-read under `starci-next-production/statics` |
 
 `db` (the app's own PostgreSQL 17 with pgvector and pgmq, the database `starci_next`), `redis` (the BullMQ queue, AOF) and `storage`
-(MinIO) keep their data on `next-production-db-data` (filled from the PostgreSQL 16 volume `next-production-postgres-data`, left untouched for rollback), `next-production-redis-data` and `next-production-storage-data`; no port is published. `starci app db migrate` applies db/migrations/*.sql at deploy; `cli` idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
+(MinIO) keep their data on `next-production-db-data-v2` (a fresh first start; the PostgreSQL 16 volume `next-production-postgres-data` is left untouched for rollback), `next-production-redis-data` and `next-production-storage-data`; no port is published. `starci app db migrate` applies db/migrations/*.sql at deploy; `cli` idles for `stack task`. The landing site is not deployed (no host is declared for it). Every service has CPU and memory limits.
 
 The operator reaches the manager as `deploy-next` through the sealed member `vps`: the host listens on SSH port 9999, the member carries the port, and the harness's sealed transport passes the port, the key and the pinned host keys to ssh explicitly, so no `--ssh-cmd`, docker host override or `~/.ssh/config` alias is needed.
 
