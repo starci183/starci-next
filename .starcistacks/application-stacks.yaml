@@ -563,13 +563,13 @@ environments:
       healthAssertions: [API /health/live, API /health/ready, App home over TLS, API /auth/session answers the signed-out door, App host /socket.io reaches the core api]
     backup:
       - component: postgres
-        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-production-db-data (the volume of the db service)"
+        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-production-db-data-v2 (the volume of the db service)"
         retention: Thirty daily dumps
         owner: Production operator
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
       # The db backing (backing.db) is the same database: the postgres component in this environment.
       - component: db
-        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-production-db-data (the volume of the db service)"
+        target: "Owner-provisioned encrypted off-host dumps of starci_next from next-production-db-data-v2 (the volume of the db service)"
         retention: Thirty daily dumps
         owner: Production operator
         restoreProof: .starcistacks/production/infra/swarm/recovery/restore-proof.md
@@ -614,13 +614,13 @@ environments:
           app: app
           buildArgs:
             values: {NEXT_PUBLIC_API_URL: "https://api.next.starci.org", NEXT_PUBLIC_AUTH_GOOGLE: "false", NEXT_PUBLIC_LOCAL_API_URL: "http://localhost:3201", NEXT_PUBLIC_SITE_URL: "https://next.starci.org", NEXT_PUBLIC_STATICS_URL: "https://minio.next.starci.org/starci-next-production/statics"}
+      # Production restarts on a fresh, empty database (owner 2026-11-22, "Làm mới như staging"; it held no user, only legacy history rows): the postgres
+      # service mounts the NEW volume next-production-db-data-v2 and the deploy takes the first start. The PostgreSQL 16 volume next-production-postgres-data
+      # (the previous release) is never mounted and stays as the rollback; the encrypted dumps of 2026-11-22 are kept off the host. No dbUpgrade is declared.
       volumes:
-        - next-production-db-data
+        - next-production-db-data-v2
         - next-production-storage-data
         - next-production-redis-data
-      dbUpgrade:
-        volumes:
-          next-production-db-data: next-production-postgres-data
       configs:
         - {name: postgres-roles, file: infra/swarm/postgres-roles.sh, env: POSTGRES_ROLES_CONFIG}
       secrets:
